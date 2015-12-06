@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\Aspects;
+namespace PackageFactory\Guevara\Controller;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "PackageFactory.Guevara".*
@@ -7,15 +7,10 @@ namespace PackageFactory\Guevara\Aspects;
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Mvc\Controller\RestController;
 
-/**
- * - Serialize all nodes related to the currently rendered document
- * - Analyze the rendered response for nodes that are foreign to the current document and serialize them too
- *
- *
- * @Flow\Aspect
- */
-class AugmentationAspect {
+class BackendController extends RestController
+{
 
 
 

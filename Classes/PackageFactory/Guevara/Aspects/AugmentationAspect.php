@@ -27,8 +27,10 @@ class AugmentationAspect
     protected $htmlAugmenter;
 
     /**
-     * @Flow\Around("method(TYPO3\Neos\Service\ContentElementWrappingService->wrapContentObject())")
+     * Hooks into standard content element wrapping to render those attributes needed for Guevara to identify
+     * nodes and typoScript paths
      *
+     * @Flow\Around("method(TYPO3\Neos\Service\ContentElementWrappingService->wrapContentObject())")
      * @param JoinPointInterface $joinPoint the join point
      * @return mixed
      */
@@ -44,6 +46,33 @@ class AugmentationAspect
         ];
 
         return $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
+    }
+
+    /**
+     * Hooks into the editable viewhelper to render those attributes needed for Guevara's inline editing
+     *
+     * @Flow\Around("method(TYPO3\Neos\ViewHelpers\ContentElement\EditableViewHelper->render())")
+     * @param JoinPointInterface $joinPoint the join point
+     * @return mixed
+     */
+    public function editableElementAugmentation(JoinPointInterface $joinPoint) {
+        $property = $joinPoint->getMethodArgument('property');
+        $tag = $joinPoint->getMethodArgument('tag');
+        $node = $joinPoint->getMethodArgument('node');
+
+        $content = $joinPoint->getAdviceChain()->proceed($joinPoint);
+
+        $attributes = [
+            'data-__che-property' => $property
+        ];
+
+        if ($node !== NULL) {
+            $attributes += [
+                'data-__che-node-identifier' => $node->getIdentifier()
+            ];
+        }
+
+        return $this->htmlAugmenter->addAttributes($content, $attributes, $tag);
     }
 
 }

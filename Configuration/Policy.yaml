@@ -1,0 +1,27 @@
+#                                                                        #
+# Security policy for the PackageFactory.Guevara package                 #
+#                                                                        #
+
+privilegeTargets:
+
+  'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+
+    'PackageFactory.Guevara:BackendLogin':
+      matcher: 'method(PackageFactory\Guevara\Controller\LoginController->(index|authenticate)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
+
+    'PackageFactory.Guevara:Backend.GeneralAccess':
+      matcher: 'method(PackageFactory\Guevara\Controller\BackendController->.*())'
+
+roles:
+
+    'TYPO3.Flow:Everybody':
+      privileges:
+        -
+          privilegeTarget: 'PackageFactory.Guevara:BackendLogin'
+          permission: GRANT
+
+    'TYPO3.Neos:Editor':
+      privileges:
+        -
+          privilegeTarget: 'PackageFactory.Guevara:Backend.GeneralAccess'
+          permission: GRANT

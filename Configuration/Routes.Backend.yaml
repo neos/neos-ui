@@ -1,0 +1,6 @@
+-
+  name: 'Hostframe'
+  uriPattern: ''
+  defaults:
+    '@controller': 'Backend'
+    '@action': 'index'

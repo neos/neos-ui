@@ -1,10 +1,23 @@
 <!doctype html>
+{namespace neos=TYPO3\Neos\ViewHelpers}
 <html>
     <head>
         <title>PackageFactory Guevara - Viva la Revolución!</title>
         <script src="{f:uri.resource(path: 'resource://PackageFactory.Guevara/Public/JavaScript/Host.min.js')}"></script>
+        <style><![CDATA[
+          html, body, iframe {
+              height: 100%;
+              width: 100%;
+              margin: 0;
+              padding: 0;
+              border: none;
+              overflow: hidden;
+          }
+        ]]></style>
     </head>
     <body>
-        <div id="appContainer" data-csrf-token="" data-first-tab=""></div>
+        <iframe src="{neos:uri.node(node: node)}" height="100%"></iframe>
+        <div id="appContainer" data-csrf-token="" data-first-tab="">
+        </div>
     </body>
 </html>

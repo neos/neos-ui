@@ -9,7 +9,7 @@ namespace PackageFactory\Guevara\Controller;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\RestController;
 
-class BackendController extends RestController
+class BackendServiceController extends RestController
 {
 
 

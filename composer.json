@@ -1,0 +1,13 @@
+{
+    "name": "packagefactory/guevara",
+    "type": "typo3-flow-package",
+    "description": "Add description here",
+    "require": {
+        "typo3/flow": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "PackageFactory\\Guevara": "Classes"
+        }
+    }
+}

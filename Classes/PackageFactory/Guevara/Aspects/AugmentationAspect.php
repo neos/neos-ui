@@ -41,7 +41,7 @@ class AugmentationAspect
         $typoScriptPath = $joinPoint->getMethodArgument('typoScriptPath');
 
         $attributes = [
-            'data-__che-node-identifier' => $node->getIdentifier(),
+            'data-__che-node-contextpath' => $node->getContextPath(),
             'data-__che-typoscript-path' => $typoScriptPath
         ];
 
@@ -68,7 +68,7 @@ class AugmentationAspect
 
         if ($node !== NULL) {
             $attributes += [
-                'data-__che-node-identifier' => $node->getIdentifier()
+                'data-__che-node-contextpath' => $node->getContextPath()
             ];
         }
 

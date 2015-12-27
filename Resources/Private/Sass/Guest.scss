@@ -1,0 +1,11 @@
+.neos\/contentComponent {
+    outline-offset: 0.5em;
+
+    &:hover {
+        outline: 2px solid rgba(#000, 0.2);
+    }
+}
+
+.neos\/contentComponent--active {
+    outline: 2px solid rgba(#29738C, 0.2);
+}

@@ -1,0 +1,15 @@
+.contentView {
+    box-sizing: border-box;
+    padding: 41px 0;
+    height: 100%;
+}
+
+.contentView__tab {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.contentView__tab--active {
+    display: block;
+}

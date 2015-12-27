@@ -1,0 +1,19 @@
+.tabSwitcher {
+
+}
+
+.tabSwitcher__tab {
+    width: 12%;
+    height: 41px;
+    line-height: 41px;
+    float: left;
+    text-align: center;
+    border-right: 1px solid white;
+    cursor: pointer;
+}
+
+.tabSwitcher__tab--active {
+    background-color: white;
+    color: #222;
+    cursor: auto;
+}

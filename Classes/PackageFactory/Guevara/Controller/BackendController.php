@@ -15,6 +15,7 @@ use TYPO3\Neos\Domain\Repository\SiteRepository;
 use TYPO3\Neos\Domain\Service\ContentContext;
 use TYPO3\Neos\Service\UserService;
 use TYPO3\Flow\Persistence\PersistenceManagerInterface;
+use TYPO3\Neos\Service\LinkingService;
 
 class BackendController extends ActionController
 {
@@ -50,6 +51,12 @@ class BackendController extends ActionController
     protected $persistenceManager;
 
     /**
+     * @Flow\Inject
+     * @var LinkingService
+     */
+    protected $linkingService;
+
+    /**
      * Displays the backend interface
      *
      * @param NodeInterface $node The node that will be displayed on the first tab
@@ -68,7 +75,18 @@ class BackendController extends ActionController
                 $node = $contentContext->getCurrentSiteNode();
             }
 
-            $this->view->assign('node', $node);
+            $this->view->assign('initialState', json_encode([
+                'tabs' => [
+                    'active' => $node->getContextPath(),
+                    'byId' => [
+                        $node->getContextPath() => [
+                            'id' => $node->getContextPath(),
+                            'src' => $this->buildNodeUri($node),
+                            'title' => $node->getProperty('title')
+                        ]
+                    ]
+                ]
+            ]));
             return;
         }
 
@@ -97,5 +115,17 @@ class BackendController extends ActionController
             $contextProperties['currentSite'] = $this->siteRepository->findFirstOnline();
         }
         return $this->contextFactory->create($contextProperties);
+    }
+
+    /**
+     * Build a node uri
+     *
+     * @return string
+     */
+    protected function buildNodeUri(NodeInterface $node) {
+        return $this->linkingService->createNodeUri(
+            $this->controllerContext,
+            $node
+        );
     }
 }

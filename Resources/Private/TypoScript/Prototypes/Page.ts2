@@ -18,8 +18,12 @@ prototype(TYPO3.Neos:Page) {
     // Disable rendering of the Neos backend
     //
     head {
-      neosBackendHeader >
-      neosBackendEndpoints >
+        neosBackendHeader >
+        neosBackendEndpoints >
+
+        javascriptDocumentInformation = PackageFactory.Guevara:DocumentInformation {
+            @position = 'after javascripts'
+        }
     }
 
     //

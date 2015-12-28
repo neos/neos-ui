@@ -59,6 +59,7 @@
   "xo": {
     "esnext": true,
     "extends": "xo-react",
+    "space": 4,
     "envs": [
       "browser",
       "node",

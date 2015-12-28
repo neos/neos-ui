@@ -1,13 +1,13 @@
 import Immutable from 'immutable';
 
 export default serverState => Immutable.fromJS({
-	tabs: {
-		byId: {
-		},
-		active: ''
-	},
+    tabs: {
+        byId: {
+        },
+        active: ''
+    },
 
-	documents: {
-		byId: {}
-	}
+    documents: {
+        byId: {}
+    }
 }).mergeDeep(Immutable.fromJS(serverState));

@@ -3,7 +3,7 @@ import FooterBar from './FooterBar.js';
 import TopBar from './TopBar.js';
 
 export {
-	ContentView,
-	FooterBar,
-	TopBar
+    ContentView,
+    FooterBar,
+    TopBar
 };

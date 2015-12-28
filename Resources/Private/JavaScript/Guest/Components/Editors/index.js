@@ -3,7 +3,7 @@ import onelineEditor from './Oneline.js';
 import richTextEditor from './RichText.js';
 
 export {
-	AbstractEditor,
-	onelineEditor,
-	richTextEditor
+    AbstractEditor,
+    onelineEditor,
+    richTextEditor
 };

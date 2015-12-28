@@ -14,20 +14,24 @@ export default class ContentView extends Component {
     };
 
     render() {
-        const {tabs} = this.props;
+        const activeId = this.props.tabs.get('active');
+
+        // Using Maps as children is not yet fully supported in react 0.14.1.
+        const tabs = this.props.tabs.get('byId').toArray();
 
         return (
             <div className="contentView">
-                {tabs.get('byId').map(tab => {
-                    const tabClasses = classNames({
-                        'contentView__tab': true,
-                        'contentView__tab--active': tab.get('id') === tabs.get('active')
-                    });
-
-                    return <iframe src={tab.get('src')} frameBorder="0" name={tab.get('id')} key={tab.get('id')} className={tabClasses} />;
-                })}
+                {tabs.map(tab => this.renderTab(tab, activeId))}
             </div>
         );
     }
 
+    renderTab(tab, activeId) {
+        const tabClasses = classNames({
+            'contentView__tab': true,
+            'contentView__tab--active': tab.get('id') === activeId
+        });
+
+        return <iframe src={tab.get('src')} frameBorder="0" name={tab.get('id')} key={tab.get('id')} className={tabClasses} />;
+    }
 }

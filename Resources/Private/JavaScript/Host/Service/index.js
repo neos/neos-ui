@@ -1,5 +1,5 @@
-import documentManager from './DocumentManager';
+import documentManager from './DocumentManager.js';
 
 export default {
-  documentManager
+	documentManager
 };

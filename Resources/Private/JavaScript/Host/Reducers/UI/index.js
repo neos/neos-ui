@@ -1,5 +1,5 @@
-import Tabs from './Tabs';
+import Tabs from './Tabs.js';
 
-export default {
-    Tabs
+export {
+	Tabs
 };

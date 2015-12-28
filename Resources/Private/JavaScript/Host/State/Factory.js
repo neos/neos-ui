@@ -1,15 +1,13 @@
-import Immutable, { Set } from 'immutable';
+import Immutable from 'immutable';
 
-export default (serverState) => {
-    return Immutable.fromJS({
-        tabs: {
-            byId: {
-            },
-            active: ''
-        },
+export default serverState => Immutable.fromJS({
+	tabs: {
+		byId: {
+		},
+		active: ''
+	},
 
-        documents: {
-            byId: {}
-        }
-    }).mergeDeep(Immutable.fromJS(serverState));
-};
+	documents: {
+		byId: {}
+	}
+}).mergeDeep(Immutable.fromJS(serverState));

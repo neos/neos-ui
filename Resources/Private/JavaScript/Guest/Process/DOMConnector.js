@@ -1,37 +1,39 @@
-import ContentComponent from '../Components/ContentComponent';
-import Oneline from '../Components/Editors/Oneline';
-import RichText from '../Components/Editors/RichText';
+import {editors, ContentComponent} from '../Components/';
+
+const {onelineEditor, richTextEditor} = editors;
 
 class DOMConnector {
+	constructor(NeosBackend) {
+		this.contentComponents = [];
+		this.neosBackend = NeosBackend;
+	}
 
-    constructor(NeosBackend) {
-        this.contentComponents = [];
-        this.neosBackend = NeosBackend;
-    }
+	run() {
+		[].slice.call(document.querySelectorAll('[data-__neos-access-id]')).forEach(contentElement => {
+			const contentComponent = new ContentComponent(contentElement);
 
-    run() {
-        [].slice.call(document.querySelectorAll('[data-__neos-access-id]')).forEach(contentElement => {
-            const accessId = contentElement.dataset.__neosAccessId;
-            const contentComponent = new ContentComponent(contentElement);
+			contentComponent.injectNeosBackendService(this.neosBackend);
 
-            contentComponent.injectNeosBackendService(this.neosBackend);
+			this.contentComponents.push(contentComponent);
 
-            this.contentComponents.push(contentComponent);
+			if (contentElement.dataset.__neosEditor) {
+				switch (contentElement.dataset.__neosEditor) {
+					case 'Oneline':
+						onelineEditor(contentElement, contentComponent, contentElement.dataset.__neosProperty);
+						break;
 
-            if (contentElement.dataset.__neosEditor) {
-                if (contentElement.dataset.__neosEditor === 'Oneline')
-                    new Oneline(contentElement, contentComponent, contentElement.dataset.__neosProperty);
+					case 'RichText':
+						richTextEditor(contentElement, contentComponent, contentElement.dataset.__neosProperty);
+						break;
 
-                if (contentElement.dataset.__neosEditor === 'RichText')
-                    new RichText(contentElement, contentComponent, contentElement.dataset.__neosProperty);
-            }
+					default:
+						break;
+				}
+			}
 
-            contentComponent.render();
-        });
-    }
-
+			contentComponent.render();
+		});
+	}
 }
 
-export default (NeosBackend, DocumentData) => {
-    return new DOMConnector(NeosBackend, DocumentData);
-};
+export default (NeosBackend, DocumentData) => new DOMConnector(NeosBackend, DocumentData);

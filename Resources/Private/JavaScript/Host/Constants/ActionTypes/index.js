@@ -1,7 +1,7 @@
-import UI from './UI';
-import Transient from './Transient';
+import * as UI from './UI.js';
+import * as Transient from './Transient.js';
 
-export default {
-    UI,
-    Transient
+export {
+	UI,
+	Transient
 };

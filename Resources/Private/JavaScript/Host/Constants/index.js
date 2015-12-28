@@ -1,5 +1,5 @@
-import ActionTypes from './ActionTypes';
+import * as ActionTypes from './ActionTypes/';
 
-export default {
-    ActionTypes
+export {
+	ActionTypes
 };

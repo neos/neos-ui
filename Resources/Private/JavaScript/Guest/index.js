@@ -1,11 +1,12 @@
-import neosBackend from './Service/NeosBackend';
-import domConnector from './Process/DOMConnector';
+import {neosBackend} from './Service/';
+import {domConnector} from './Process/';
 
-const NeosBackendService = neosBackend(window.parent);
+const neosBackendService = neosBackend(window.parent);
+const {documentManager} = neosBackendService;
 
-NeosBackendService.documentManager.addConfiguration(window.name, window['@Neos:DocumentData']);
+documentManager.addConfiguration(window.name, window['@Neos:DocumentData']);
 
-const DocumentData = NeosBackendService.documentManager.getConfiguration(window.name);
-const DOMConnector = domConnector(NeosBackendService, DocumentData);
+const DocumentData = documentManager.getConfiguration(window.name);
+const DOMConnector = domConnector(neosBackendService, DocumentData);
 
 DOMConnector.run();

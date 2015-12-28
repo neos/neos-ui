@@ -1,15 +1,13 @@
-import { BaseClass } from 'domtastic';
+import {BaseClass} from 'domtastic';
 
-export default class DOMNode extends BaseClass {
+class DOMNode extends BaseClass {
+	constructor(selector) {
+		super(selector);
 
-    constructor(selector) {
-        super(selector)
-
-        document.addEventListener('click', e => {
-            const check = el => (el === e.target) || check(el.parentNode);
-
-            if (checkt)
-        });
-    }
-
+		document.addEventListener('click', e => {
+			const check = el => (el === e.target) || check(el.parentNode);
+		});
+	}
 }
+
+export default selector => new DOMNode(selector);

@@ -1,5 +1,5 @@
-import Documents from './Documents';
+import Documents from './Documents.js';
 
-export default {
-    Documents
+export {
+	Documents
 };

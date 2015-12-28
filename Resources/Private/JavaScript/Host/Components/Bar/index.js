@@ -6,7 +6,9 @@ export default class Bar extends Component {
     static propTypes = {
         position: PropTypes.oneOf(['top', 'left', 'bottom']).isRequired,
         className: PropTypes.string,
-        children: PropTypes.node
+        children: PropTypes.node,
+
+        onDrop: PropTypes.func
     }
 
     render() {
@@ -20,9 +22,17 @@ export default class Bar extends Component {
         });
 
         return (
-            <div className={classNames}>
+            <div className={classNames} onDragOver={e => e.preventDefault()} onDrop={e => this.onDrop(e)}>
               {this.props.children}
             </div>
         );
+    }
+
+    onDrop(e) {
+        const {onDrop} = this.props;
+
+        onDrop(e);
+
+        e.stopPropagation();
     }
 }

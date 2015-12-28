@@ -8,8 +8,8 @@ class DocumentManager {
     addConfiguration(documentId, configuration) {
         this.store.dispatch(actions.Transient.Documents.addConfiguration(documentId, configuration));
 
-        if (configuration.properties.title) {
-            this.store.dispatch(actions.UI.Tabs.setTabTitle(documentId, configuration.properties.title));
+        if (configuration.title) {
+            this.store.dispatch(actions.UI.Tabs.setTabTitle(documentId, configuration.title));
         }
     }
 

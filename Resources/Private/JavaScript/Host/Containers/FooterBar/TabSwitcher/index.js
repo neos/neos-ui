@@ -18,7 +18,7 @@ export default class TabSwitcher extends Component {
         const tabs = this.props.tabs.toArray();
 
         return (
-            <Bar position="bottom">
+            <Bar position="bottom" onDrop={(e) => this.onDrop(e)}>
                 <div className={style.wrapper}>
                     {tabs.map((tab, index) => tab.get('id') === active ? this.renderActiveTab(tab, index) : this.renderTab(tab, index))}
                 </div>
@@ -51,5 +51,11 @@ export default class TabSwitcher extends Component {
         const {onSwitchTab} = this.props;
 
         onSwitchTab(tab);
+    }
+
+    onDrop(e) {
+        const { tabManager } = window['@Neos:Backend'];
+
+        tabManager.createTab(e.dataTransfer.getData('href'));
     }
 }

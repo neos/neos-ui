@@ -24,6 +24,13 @@ prototype(TYPO3.Neos:Page) {
         javascriptDocumentInformation = PackageFactory.Guevara:DocumentInformation {
             @position = 'after javascripts'
         }
+
+        guestFrameApplication = TYPO3.TypoScript:Template {
+            @position = 'after javascriptDocumentInformation'
+
+            templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Guest.html'
+            sectionName = 'guestFrameApplication'
+        }
     }
 
     //

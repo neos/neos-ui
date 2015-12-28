@@ -3,7 +3,8 @@ import * as Transient from './Transient/';
 
 const reducerIndex = [
     UI.Tabs,
-    Transient.Documents
+    Transient.Documents,
+    Transient.Nodes
 ];
 
 function reducerFactory(actionHandler) {

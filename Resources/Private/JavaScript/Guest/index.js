@@ -3,11 +3,10 @@ import {domConnector} from './Process/';
 import './style.css';
 
 const neosBackendService = neosBackend(window.parent);
-const {documentManager} = neosBackendService;
+const {tabManager} = neosBackendService;
 
-documentManager.addConfiguration(window.name, window['@Neos:DocumentData']);
+tabManager.commitDocumentLoad(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
 
-const DocumentData = documentManager.getConfiguration(window.name);
-const DOMConnector = domConnector(neosBackendService, DocumentData);
+const DOMConnector = domConnector(neosBackendService);
 
-DOMConnector.run();
+document.addEventListener('DOMContentLoaded', () => DOMConnector.run());

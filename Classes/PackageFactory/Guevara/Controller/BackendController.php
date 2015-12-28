@@ -82,18 +82,9 @@ class BackendController extends ActionController
                 $node = $contentContext->getCurrentSiteNode();
             }
 
-            $this->view->assign('initialState', json_encode([
-                'tabs' => [
-                    'active' => $node->getContextPath(),
-                    'byId' => [
-                        $node->getContextPath() => [
-                            'id' => $node->getContextPath(),
-                            'src' => $this->buildNodeUri($node),
-                            'title' => $node->getProperty('title')
-                        ]
-                    ]
-                ]
-            ]));
+            $this->view->assign('initialState', json_encode([]));
+
+            $this->view->assign('documentNodeUri', $this->buildNodeUri($node));
 
             $this->view->assign('nodeTypeSchema', json_encode(
                 $this->nodeTypeSchemaBuilder->generateNodeTypeSchema()

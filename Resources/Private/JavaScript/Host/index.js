@@ -7,12 +7,13 @@ import reducerFactory from './Reducers/';
 import {initialStateFactory} from './State/';
 
 import {ContentView, FooterBar, TopBar, LeftSideBar} from './Containers/';
-import {documentManager, nodeTypeManager} from './Service/';
+import {documentManager, nodeTypeManager, tabManager} from './Service/';
 
 import './style.css';
 
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('appContainer');
+    const firstTabUri = appContainer.dataset.firstTab;
     const initialState = initialStateFactory(
         JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML)
     );
@@ -37,8 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     window['@Neos:Backend'] = {
-        documentManager: documentManager(store)
+        documentManager: documentManager(store),
+        tabManager: tabManager(store)
     };
+
+    window['@Neos:Backend'].tabManager.createTab(firstTabUri);
 
     window.store = store;
 });

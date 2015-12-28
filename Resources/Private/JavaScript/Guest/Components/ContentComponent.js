@@ -1,18 +1,32 @@
 import Component from '@reduct/component';
 import PropTypes from '@reduct/nitpick';
+import RichText from '../Components/Editors/RichText';
 
 const propTypes = {
-    accessId: PropTypes.isString.isRequired
+    contextPath: PropTypes.isString.isRequired,
+    typoScriptPath: PropTypes.isString.isRequired
 };
+
+function initializeEditor(el, contentComponent, propertyName, editorClass)  {
+    new editorClass(el, contentComponent, propertyName);
+}
 
 export default class ContentComponent extends Component {
     constructor(el) {
         super(el, {
             props: {
-                accessId: el.dataset.__neosAccessId
+                contextPath: el.dataset.__cheNodeContextpath,
+                typoScriptPath: el.dataset.__cheTyposcriptPath
             },
             propTypes
         });
+
+        if (el.dataset.__cheProperty) {
+            initializeEditor(el, this, el.dataset.__cheProperty, RichText);
+        }
+
+        [].slice.call(el.querySelectorAll('[data-__che-property]')).forEach(
+            el => initializeEditor(el, this, el.dataset.__cheProperty, RichText));
     }
 
     injectNeosBackendService(neosBackendService) {
@@ -20,7 +34,7 @@ export default class ContentComponent extends Component {
     }
 
     render() {
-        this.el.classList.add('neos/contentComponent');
+        this.el.classList.add('guevara/contentComponent');
     }
 
     isActive() {
@@ -30,7 +44,7 @@ export default class ContentComponent extends Component {
     commitChange(property, value) {
         this.neosBackendService.documentManager.commitChange(window.name, {
             childNodes: {
-                [this.getProp('accessId')]: {
+                [this.getProp('contextPath')]: {
                     properties: {
                         [property]: value
                     }
@@ -41,6 +55,6 @@ export default class ContentComponent extends Component {
 
     getProperty(property) {
         return this.neosBackendService.documentManager.getConfiguration(window.name)
-            .childNodes[this.getProp('accessId')].properties[property];
+            .childNodes[this.getProp('contextPath')].properties[property];
     }
 }

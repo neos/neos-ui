@@ -19,5 +19,30 @@ export default {
                 }
             }
         });
+    },
+
+    [ActionTypes.UI.CREATE_TAB](state, action) {
+        return state.mergeDeep({
+            tabs: {
+                active: action.tabId,
+                byId: {
+                    [action.tabId]: {
+                        id: action.tabId,
+                        title: '...',
+                        src: action.src
+                    }
+                }
+            }
+        });
+    },
+
+    [ActionTypes.UI.REMOVE_TAB](state, action) {
+        return state.mergeDeep({
+            tabs: {
+                byId: {
+                    [action.tabId]: null
+                }
+            }
+        });
     }
 };

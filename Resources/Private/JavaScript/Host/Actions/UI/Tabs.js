@@ -14,3 +14,18 @@ export function setTabTitle(tabId, title) {
         title
     };
 }
+
+export function removeTab(tabId) {
+    return {
+        type: ActionTypes.UI.REMOVE_TAB,
+        tabId
+    };
+}
+
+export function createTab(tabId, src) {
+    return {
+        type: ActionTypes.UI.CREATE_TAB,
+        tabId,
+        src
+    };
+}

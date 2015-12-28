@@ -1,4 +1,4 @@
-import ContentView from './ContentView.js';
+import ContentView from './ContentView/';
 import FooterBar from './FooterBar.js';
 import TopBar from './TopBar.js';
 

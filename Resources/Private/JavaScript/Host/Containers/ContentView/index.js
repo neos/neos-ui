@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import Immutable from 'immutable';
-import classNames from 'classnames';
+import mergeClassNames from 'classnames';
+import style from './style.css';
 
 @connect(state => {
     return {
@@ -27,9 +28,9 @@ export default class ContentView extends Component {
     }
 
     renderTab(tab, activeId) {
-        const tabClasses = classNames({
-            'contentView__tab': true,
-            'contentView__tab--active': tab.get('id') === activeId
+        const tabClasses = mergeClassNames({
+            [style.item]: true,
+            [style.activeItem]: tab.get('id') === activeId
         });
 
         return <iframe src={tab.get('src')} frameBorder="0" name={tab.get('id')} key={tab.get('id')} className={tabClasses} />;

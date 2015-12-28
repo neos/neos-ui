@@ -11,6 +11,7 @@ import FooterBar from './Containers/FooterBar';
 import ContentView from './Containers/ContentView';
 
 import {documentManager} from './Service';
+import {nodeTypeManager} from './Service/TYPO3CR';
 
 document.addEventListener('DOMContentLoaded', () => {
 	const appContainer = document.getElementById('appContainer');
@@ -19,8 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML)
 	);
 
+	const nodeTypeSchema = JSON.parse(appContainer.querySelector('[data-json="nodeTypeSchema"]').innerHTML);
+
 	const reducers = reducerFactory(initialState);
 	const store = createStore(reducers);
+
+	nodeTypeManager.initializeWithNodeTypeSchema(nodeTypeSchema);
 
 	ReactDOM.render(
 		<div>

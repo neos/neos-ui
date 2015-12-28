@@ -14,6 +14,7 @@ use TYPO3\Neos\Domain\Repository\DomainRepository;
 use TYPO3\Neos\Domain\Repository\SiteRepository;
 use TYPO3\Neos\Domain\Service\ContentContext;
 use TYPO3\Neos\Service\UserService;
+use TYPO3\Neos\Service\NodeTypeSchemaBuilder;
 use TYPO3\Flow\Persistence\PersistenceManagerInterface;
 use TYPO3\Neos\Service\LinkingService;
 
@@ -57,6 +58,12 @@ class BackendController extends ActionController
     protected $linkingService;
 
     /**
+     * @Flow\Inject
+     * @var NodeTypeSchemaBuilder
+     */
+    protected $nodeTypeSchemaBuilder;
+
+    /**
      * Displays the backend interface
      *
      * @param NodeInterface $node The node that will be displayed on the first tab
@@ -87,6 +94,10 @@ class BackendController extends ActionController
                     ]
                 ]
             ]));
+
+            $this->view->assign('nodeTypeSchema', json_encode(
+                $this->nodeTypeSchemaBuilder->generateNodeTypeSchema()
+            ));
             return;
         }
 

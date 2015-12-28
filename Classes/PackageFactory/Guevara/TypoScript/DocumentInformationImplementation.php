@@ -50,7 +50,8 @@ class DocumentInformationImplementation extends AbstractTypoScriptObject
         }
 
         $nodeInformation = [
-            'contextpath' => $node->getContextPath(),
+            'nodeType' => $node->getNodeType()->getName(),
+            'contextPath' => $node->getContextPath(),
             'identifier' => $node->getIdentifier(),
             'properties' => $node->getProperties(),
             'children' => []

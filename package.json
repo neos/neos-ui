@@ -5,29 +5,22 @@
   "main": "index.js",
   "private": true,
   "devDependencies": {
-    "babelify": "^6.3.0",
-    "browserify": "^11.2.0",
-    "gulp": "^3.8.11",
-    "gulp-autoprefixer": "^2.1.0",
-    "gulp-eslint": "^0.14.0",
-    "gulp-if": "^1.2.5",
-    "gulp-imagemin": "^2.2.1",
-    "gulp-load-plugins": "^1.0.0",
-    "gulp-minify-css": "^1.1.1",
-    "gulp-modernizr": "^1.0.0-alpha",
-    "gulp-notify": "^2.2.0",
-    "gulp-sass": "^2.0.4",
-    "gulp-uglify": "^1.1.0",
-    "lodash": "^3.10.1",
+    "babel": "^6.0.14",
+    "babel-plugin-syntax-decorators": "^6.3.13",
+    "babel-plugin-transform-class-properties": "^6.3.13",
+    "babel-plugin-transform-decorators": "^6.3.13",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babelify": "^6.4.0",
+    "browserify": "^12.0.1",
+    "parallelshell": "^2.0.0",
     "redux-devtools": "^2.1.3",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.0.0",
-    "watchify": "^3.2.1"
+    "watchify": "^3.6.1",
+    "xo": "^0.12.1"
   },
   "dependencies": {
     "@reduct/component": "^2.0.3",
     "@reduct/nitpick": "^1.0.0",
-    "babel": "^6.0.14",
     "classnames": "^2.2.0",
     "domtastic": "^0.11.2",
     "immutable": "^3.7.5",
@@ -39,7 +32,24 @@
     "redux-immutable": "^1.3.7"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:scripts:host": "browserify $npm_package_config_browserify_settings $npm_package_config_host_src > $npm_package_config_host_dest",
+    "build:scripts:guest": "browserify $npm_package_config_browserify_settings $npm_package_config_guest_src > $npm_package_config_guest_dest",
+    "build:scripts": "npm run build:scripts:host & npm run build:scripts:guest",
+    "build": "npm run build:scripts",
+    "lint:scripts": "xo Resources/Private/JavaScript/**/*.js",
+    "lint": "npm run lint:scripts",
+    "test": "npm run lint",
+    "watch:scripts:host": "watchify -v $npm_package_config_browserify_settings $npm_package_config_host_src -o $npm_package_config_host_dest",
+    "watch:scripts:guest": "watchify -v $npm_package_config_browserify_settings $npm_package_config_guest_src -o $npm_package_config_guest_dest",
+    "watch:scripts": "parallelshell 'npm run watch:scripts:host' 'npm run watch:scripts:guest'",
+    "watch": "parallelshell 'npm run watch:scripts'"
+  },
+  "config": {
+    "browserify_settings": "-t [ babelify --stage 0 ]",
+    "host_src": "Resources/Private/JavaScript/Host/index.js",
+    "host_dest": "Resources/Public/JavaScript/Host.min.js",
+    "guest_src": "Resources/Private/JavaScript/Guest/index.js",
+    "guest_dest": "Resources/Public/JavaScript/Guest.min.js"
   },
   "author": {
     "name": "Wilhelm Behncke",

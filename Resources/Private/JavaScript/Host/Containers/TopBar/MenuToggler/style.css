@@ -1,0 +1,16 @@
+.menuBtn {
+	display: block;
+  width: 54px;
+  height: 40px;
+  line-height: 45px;
+  float: left;
+  border-right: 1px solid #3f3f3f;
+  text-align: center;
+  background-color: #222;
+	color: #FFF;
+	text-decoration: none;
+}
+.menuBtn:hover {
+	text-decoration: none;
+	color: #00b5ff;
+}

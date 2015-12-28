@@ -26,6 +26,15 @@ body {
 ._Resources_Private_JavaScript_Host_Containers_ContentView_style__activeItem {
     display: block;
 }
+._Resources_Private_JavaScript_Host_Containers_TopBar_style__wrapper {}
+._Resources_Private_JavaScript_Host_Containers_TopBar_style__wrapper:before,
+._Resources_Private_JavaScript_Host_Containers_TopBar_style__wrapper:after {
+  content: '';
+  display: table;
+}
+._Resources_Private_JavaScript_Host_Containers_TopBar_style__wrapper:after {
+  clear: both;
+}
 ._Resources_Private_JavaScript_Host_Containers_FooterBar_TabSwitcher_style__wrapper {}
 
 ._Resources_Private_JavaScript_Host_Containers_FooterBar_TabSwitcher_style__item {
@@ -42,6 +51,22 @@ body {
     background-color: white;
     color: #222;
     cursor: auto;
+}
+._Resources_Private_JavaScript_Host_Containers_TopBar_MenuToggler_style__menuBtn {
+	display: block;
+  width: 54px;
+  height: 40px;
+  line-height: 45px;
+  float: left;
+  border-right: 1px solid #3f3f3f;
+  text-align: center;
+  background-color: #222;
+	color: #FFF;
+	text-decoration: none;
+}
+._Resources_Private_JavaScript_Host_Containers_TopBar_MenuToggler_style__menuBtn:hover {
+	text-decoration: none;
+	color: #00b5ff;
 }
 ._Resources_Private_JavaScript_Host_Components_Bar_style__bar {
     position: absolute;
@@ -82,7 +107,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 ._Resources_Private_JavaScript_Host_Components_Icon_style__big {
-  font-size: 2em;
+  font-size: 1.5em;
 }
 ._Resources_Private_JavaScript_Host_Components_Icon_style__small {
   font-size: .75em;

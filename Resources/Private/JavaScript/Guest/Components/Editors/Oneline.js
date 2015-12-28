@@ -1,4 +1,4 @@
-import AbstractEditor from 'AbstractEditor';
+import AbstractEditor from './AbstractEditor.js';
 
 class Oneline extends AbstractEditor {
     thaw(el, value) {

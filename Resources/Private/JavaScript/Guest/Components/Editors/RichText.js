@@ -1,4 +1,4 @@
-import AbstractEditor from 'AbstractEditor';
+import AbstractEditor from './AbstractEditor.js';
 import MediumEditor from 'medium-editor';
 
 class RichText extends AbstractEditor {

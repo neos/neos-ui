@@ -25,15 +25,25 @@ class DocumentInformationImplementation extends AbstractTypoScriptObject
         $node = $this->tsValue('node');
 
         $documentInformation = [
+            'title' => $node->getProperty('title'),
+            'contextPath' => $node->getContextPath(),
             'nodes' => $this->buildNodeInformation($node)
         ];
 
+        $controllerContext = $this->tsRuntime->getControllerContext();
+        $contentType = $controllerContext->getResponse()->getHeader('Content-Type');
+
+
         $jsonView = new JsonView();
         $jsonView->assign('value', $documentInformation);
-        $jsonView->setControllerContext($this->tsRuntime->getControllerContext());
+        $jsonView->setControllerContext($controllerContext);
 
-        return sprintf('<script>window[\'@PackageFactory.Guevara:DocumentInformation\']=%s</script>',
+        $result = sprintf('<script>window[\'@PackageFactory.Guevara:DocumentInformation\']=%s</script>',
             $jsonView->render());
+
+        $controllerContext->getResponse()->setHeader('Content-Type', $contentType);
+
+        return $result;
     }
 
     /**
@@ -61,10 +71,12 @@ class DocumentInformationImplementation extends AbstractTypoScriptObject
 
         foreach ($node->getChildNodes() as $child) {
             $result = array_merge($result, $this->buildNodeInformation($child, 'TYPO3.Neos:Document'));
-            $nodeInformation['children'][] = $child->getContextPath();
+            $nodeInformation['children'][$child->getContextPath()] = $child->getContextPath();
         }
 
-        $result = array_merge([$nodeInformation], $result);
+        $result = array_merge([
+            $node->getContextPath() => $nodeInformation
+        ], $result);
 
         return $result;
     }

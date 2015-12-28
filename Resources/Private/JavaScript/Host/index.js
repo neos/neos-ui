@@ -6,7 +6,7 @@ import {createStore} from 'redux';
 import reducerFactory from './Reducers/';
 import {initialStateFactory} from './State/';
 
-import {ContentView, FooterBar, TopBar} from './Containers/';
+import {ContentView, FooterBar, TopBar, LeftSideBar} from './Containers/';
 import {documentManager, nodeTypeManager} from './Service/';
 
 import './style.css';
@@ -25,11 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
         <div>
             <Provider store={store}>
-                <div>
-                    <TopBar />
-                    <ContentView />
-                    <FooterBar />
-                </div>
+              <div>
+                  <TopBar />
+                  <LeftSideBar />
+                  <ContentView />
+                  <FooterBar />
+              </div>
             </Provider>
         </div>,
         appContainer

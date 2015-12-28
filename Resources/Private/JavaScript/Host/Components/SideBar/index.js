@@ -2,9 +2,9 @@ import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 
-export default class Bar extends Component {
+export default class SideBar extends Component {
     static propTypes = {
-        position: PropTypes.oneOf(['top', 'left', 'bottom']).isRequired,
+        position: PropTypes.oneOf(['left', 'right']).isRequired,
         className: PropTypes.string,
         children: PropTypes.node
     }
@@ -13,10 +13,9 @@ export default class Bar extends Component {
         const {position, className} = this.props;
         const classNames = mergeClassNames({
             [className]: true,
-            [style.bar]: true,
-            [style.top]: position === 'top',
+            [style.sideBar]: true,
             [style.left]: position === 'left',
-            [style.bottom]: position === 'bottom'
+            [style.right]: position === 'right'
         });
 
         return (

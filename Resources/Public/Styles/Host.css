@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html,
 body,
 body > div,
@@ -8,13 +12,16 @@ body > div > div > div {
 
 body {
     font-family: "Trebuchet MS", Helvetica, sans-serif;
+    color: #FFF;
     margin: 0;
     padding: 0;
 }
 ._Resources_Private_JavaScript_Host_Containers_ContentView_style__wrapper {
-    box-sizing: border-box;
-    padding: 41px 0;
+    float: left;
     height: 100%;
+    width: 100%;
+    padding-left: 300px;
+    padding-top: 41px;
 }
 
 ._Resources_Private_JavaScript_Host_Containers_ContentView_style__item {
@@ -70,21 +77,20 @@ body {
 }
 ._Resources_Private_JavaScript_Host_Components_Bar_style__bar {
     position: absolute;
+    left: 0;
+    z-index: 1;
     width: 100%;
     background-color: #222;
     height: 41px;
-    border-bottom: 1px solid white;
-    color: white;
+    border-bottom: 1px solid #3f3f3f;
 }
 
 ._Resources_Private_JavaScript_Host_Components_Bar_style__top {
     top: 0;
-    left: 0;
 }
 
 ._Resources_Private_JavaScript_Host_Components_Bar_style__bottom {
     bottom: 0;
-    left: 0;
 }
 /*!
  *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome
@@ -2023,4 +2029,35 @@ body {
 }
 ._Resources_Private_JavaScript_Host_Components_Icon_icons__fa-percent:before {
   content: "\F295";
+}
+._Resources_Private_JavaScript_Host_Containers_LeftBar_style__wrapper {
+	width: 300px;
+}
+._Resources_Private_JavaScript_Host_Containers_LeftBar_style__wrapper:before,
+._Resources_Private_JavaScript_Host_Containers_LeftBar_style__wrapper:after {
+  content: '';
+  display: table;
+}
+._Resources_Private_JavaScript_Host_Containers_LeftBar_style__wrapper:after {
+  clear: both;
+}
+._Resources_Private_JavaScript_Host_Components_SideBar_style__sideBar {
+  position: absolute;
+  left: 0;
+	width: 300px;
+}
+._Resources_Private_JavaScript_Host_Containers_LeftSideBar_style__wrapper {
+		padding-top: 41px;
+    padding-bottom: 41px;
+		width: 300px;
+		height: 100%;
+		background: #222;
+}
+._Resources_Private_JavaScript_Host_Containers_LeftSideBar_style__wrapper:before,
+._Resources_Private_JavaScript_Host_Containers_LeftSideBar_style__wrapper:after {
+	  content: '';
+	  display: table;
+}
+._Resources_Private_JavaScript_Host_Containers_LeftSideBar_style__wrapper:after {
+	  clear: both;
 }

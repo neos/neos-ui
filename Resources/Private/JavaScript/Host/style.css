@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html,
 body,
 body > div,
@@ -8,6 +12,7 @@ body > div > div > div {
 
 body {
     font-family: "Trebuchet MS", Helvetica, sans-serif;
+    color: #FFF;
     margin: 0;
     padding: 0;
 }

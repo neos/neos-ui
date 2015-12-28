@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import style from './style.css';
-import Bar from '../../Bar/';
+import {Bar} from '../../../Components/';
 
 export default class TabSwitcher extends Component {
     static propTypes = {

@@ -26,6 +26,23 @@ body {
 ._Resources_Private_JavaScript_Host_Containers_ContentView_style__activeItem {
     display: block;
 }
+._Resources_Private_JavaScript_Host_Containers_FooterBar_TabSwitcher_style__wrapper {}
+
+._Resources_Private_JavaScript_Host_Containers_FooterBar_TabSwitcher_style__item {
+    width: 12%;
+    height: 41px;
+    line-height: 41px;
+    float: left;
+    text-align: center;
+    border-right: 1px solid white;
+    cursor: pointer;
+}
+
+._Resources_Private_JavaScript_Host_Containers_FooterBar_TabSwitcher_style__activeItem {
+    background-color: white;
+    color: #222;
+    cursor: auto;
+}
 ._Resources_Private_JavaScript_Host_Components_Bar_style__bar {
     position: absolute;
     width: 100%;
@@ -1981,21 +1998,4 @@ body {
 }
 ._Resources_Private_JavaScript_Host_Components_Icon_icons__fa-percent:before {
   content: "\F295";
-}
-._Resources_Private_JavaScript_Host_Components_FooterBar_TabSwitcher_style__wrapper {}
-
-._Resources_Private_JavaScript_Host_Components_FooterBar_TabSwitcher_style__item {
-    width: 12%;
-    height: 41px;
-    line-height: 41px;
-    float: left;
-    text-align: center;
-    border-right: 1px solid white;
-    cursor: pointer;
-}
-
-._Resources_Private_JavaScript_Host_Components_FooterBar_TabSwitcher_style__activeItem {
-    background-color: white;
-    color: #222;
-    cursor: auto;
 }

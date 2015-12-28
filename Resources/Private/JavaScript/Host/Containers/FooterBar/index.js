@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import Immutable from 'immutable';
-import actions from '../Actions/';
-import {footerBar, Bar} from '../Components/';
-
-const {TabSwitcher} = footerBar;
+import actions from '../../Actions/';
+import {Bar} from '../../Components/';
+import TabSwitcher from './TabSwitcher/';
 
 @connect(state => {
     return {

@@ -8,6 +8,10 @@
     text-align: center;
     border-right: 1px solid white;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 0.4em;
 }
 
 .activeItem {

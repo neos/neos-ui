@@ -73,7 +73,7 @@ class BackendController extends ActionController
     {
         if($user = $this->userService->getBackendUser()) {
             if ($node === null) {
-                $workspaceName = $this->userService->getCurrentWorkspaceName();
+                $workspaceName = $this->userService->getPersonalWorkspaceName();
                 $contentContext = $this->createContext($workspaceName);
 
                 $contentContext->getWorkspace();

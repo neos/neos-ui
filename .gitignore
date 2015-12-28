@@ -1,2 +1,2 @@
 node_modules/
-Resources/Public/JavaScript/
+Resources/Public/JavaScript/**/*.js

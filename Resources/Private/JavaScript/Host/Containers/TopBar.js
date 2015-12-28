@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Bar} from '../Components/';
 
 @connect()
 export default class TopBar extends Component {
     render() {
         return (
-            <div className="bar bar--top">
+            <Bar position="top">
                 <div style={{lineHeight: '41px', paddingLeft: '1em'}}>I-Frame Example</div>
-            </div>
+            </Bar>
         );
     }
 }

@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import Immutable from 'immutable';
 import actions from '../Actions/';
-import TabSwitcher from '../Components/FooterBar/TabSwitcher.js';
+import {footerBar, Bar} from '../Components/';
+
+const {TabSwitcher} = footerBar;
 
 @connect(state => {
     return {
@@ -19,9 +21,9 @@ export default class FooterBar extends Component {
         const {tabs} = this.props;
 
         return (
-            <div className="bar bar--bottom">
+            <Bar position="bottom">
                 <TabSwitcher tabs={tabs.get('byId')} active={tabs.get('active')} onSwitchTab={tab => this.onSwitchTab(tab)} />
-            </div>
+            </Bar>
         );
     }
 

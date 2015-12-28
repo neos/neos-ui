@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import Immutable from 'immutable';
+import Bar from '../Bar/';
 
-export default class TopBar extends Component {
+export default class TabSwitcher extends Component {
     static propTypes = {
         tabs: PropTypes.instanceOf(Immutable.Map),
         active: PropTypes.string,
@@ -15,11 +16,11 @@ export default class TopBar extends Component {
         const tabs = this.props.tabs.toArray();
 
         return (
-            <div className="bar bar--bottom">
+            <Bar position="bottom">
                 <div className="tabSwitcher">
                     {tabs.map((tab, index) => tab.get('id') === active ? this.renderActiveTab(tab, index) : this.renderTab(tab, index))}
                 </div>
-            </div>
+            </Bar>
         );
     }
 

@@ -7,12 +7,12 @@
     color: white;
 }
 
-.bar--top {
+.top {
     top: 0;
     left: 0;
 }
 
-.bar--bottom {
+.bottom {
     bottom: 0;
     left: 0;
 }

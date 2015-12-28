@@ -2,7 +2,11 @@
 @import 'Components/_ContentView';
 @import 'Components/_TabSwitcher';
 
-html, body, #appContainer, #appContainer > div, #appContainer > div > div {
+html,
+body,
+#appContainer,
+#appContainer > div,
+#appContainer > div > div {
     height: 100%;
 }
 

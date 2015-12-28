@@ -9,6 +9,8 @@ import {initialStateFactory} from './State/';
 import {ContentView, FooterBar, TopBar} from './Containers/';
 import {documentManager, nodeTypeManager} from './Service/';
 
+import './style.css';
+
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('appContainer');
     const initialState = initialStateFactory(

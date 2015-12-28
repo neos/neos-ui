@@ -1,5 +1,6 @@
 import {neosBackend} from './Service/';
 import {domConnector} from './Process/';
+import './style.css';
 
 const neosBackendService = neosBackend(window.parent);
 const {documentManager} = neosBackendService;

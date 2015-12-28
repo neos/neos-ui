@@ -21,7 +21,7 @@ export default class ContentView extends Component {
         const tabs = this.props.tabs.get('byId').toArray();
 
         return (
-            <div className="contentView">
+            <div className={style.wrapper}>
                 {tabs.map(tab => this.renderTab(tab, activeId))}
             </div>
         );

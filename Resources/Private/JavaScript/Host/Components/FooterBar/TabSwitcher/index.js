@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import Immutable from 'immutable';
-import Bar from '../Bar/';
+import mergeClassNames from 'classnames';
+import style from './style.css';
+import Bar from '../../Bar/';
 
 export default class TabSwitcher extends Component {
     static propTypes = {
@@ -17,7 +19,7 @@ export default class TabSwitcher extends Component {
 
         return (
             <Bar position="bottom">
-                <div className="tabSwitcher">
+                <div className={style.wrapper}>
                     {tabs.map((tab, index) => tab.get('id') === active ? this.renderActiveTab(tab, index) : this.renderTab(tab, index))}
                 </div>
             </Bar>
@@ -26,16 +28,21 @@ export default class TabSwitcher extends Component {
 
     renderTab(tab, id) {
         return (
-            <div key={id} className="tabSwitcher__tab" onClick={() => this.onClick(tab)}>
-                <span className="tabSwitcher__tab__label">{tab.get('title')}</span>
+            <div key={id} className={style.item} onClick={() => this.onClick(tab)}>
+                {tab.get('title')}
             </div>
         );
     }
 
     renderActiveTab(tab, id) {
+        const classNames = mergeClassNames({
+            [style.item]: true,
+            [style.activeItem]: true
+        });
+
         return (
-            <div key={id} className="tabSwitcher__tab tabSwitcher__tab--active">
-                <span className="tabSwitcher__tab__label">{tab.get('title')}</span>
+            <div key={id} className={classNames}>
+                {tab.get('title')}
             </div>
         );
     }

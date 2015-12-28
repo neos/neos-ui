@@ -1,4 +1,4 @@
-import TabSwitcher from './TabSwitcher.js';
+import TabSwitcher from './TabSwitcher/';
 
 export {
 	TabSwitcher

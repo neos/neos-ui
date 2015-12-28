@@ -1,3 +1,16 @@
+html,
+body,
+body > div,
+body > div > div,
+body > div > div > div {
+    height: 100%;
+}
+
+body {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
 ._Resources_Private_JavaScript_Host_Containers_ContentView_style__wrapper {
     box-sizing: border-box;
     padding: 41px 0;
@@ -30,4 +43,21 @@
 ._Resources_Private_JavaScript_Host_Components_Bar_style__bottom {
     bottom: 0;
     left: 0;
+}
+._Resources_Private_JavaScript_Host_Components_FooterBar_TabSwitcher_style__wrapper {}
+
+._Resources_Private_JavaScript_Host_Components_FooterBar_TabSwitcher_style__item {
+    width: 12%;
+    height: 41px;
+    line-height: 41px;
+    float: left;
+    text-align: center;
+    border-right: 1px solid white;
+    cursor: pointer;
+}
+
+._Resources_Private_JavaScript_Host_Components_FooterBar_TabSwitcher_style__activeItem {
+    background-color: white;
+    color: #222;
+    cursor: auto;
 }

@@ -1,8 +1,6 @@
-.tabSwitcher {
+.wrapper {}
 
-}
-
-.tabSwitcher__tab {
+.item {
     width: 12%;
     height: 41px;
     line-height: 41px;
@@ -12,7 +10,7 @@
     cursor: pointer;
 }
 
-.tabSwitcher__tab--active {
+.activeItem {
     background-color: white;
     color: #222;
     cursor: auto;

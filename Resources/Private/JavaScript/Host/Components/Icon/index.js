@@ -41,12 +41,10 @@ export default class Icon extends Component {
 
     getIconClassName() {
         const {icon} = this.props;
-        let className = iconStyles[icon];
+        const className = iconStyles[icon] || iconStyles[icon.replace('icon-', 'fa-')];
 
         if (!className) {
-            const iconName = icon.replace('icon-', 'fa-');
-
-            className = iconStyles[iconName];
+            logger.error(`No icon found for icon name "${icon}".`);
         }
 
         return className;

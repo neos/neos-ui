@@ -9,9 +9,10 @@ import TabSwitcher from '../Components/FooterBar/TabSwitcher.js';
 		tabs: state.get('tabs')
 	};
 })
-export default class TopBar extends Component {
+export default class FooterBar extends Component {
 	static propTypes = {
-		tabs: PropTypes.instanceOf(Immutable.Map)
+		tabs: PropTypes.instanceOf(Immutable.Map),
+		dispatch: PropTypes.any.isRequired
 	};
 
 	render() {

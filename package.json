@@ -41,7 +41,7 @@
     "build:scripts:guest": "browserify $npm_package_config_browserify_settings $npm_package_config_guest_src > $npm_package_config_guest_dest",
     "build:scripts": "npm run build:scripts:host & npm run build:scripts:guest",
     "build": "npm run build:scripts",
-    "lint:scripts": "xo Resources/Private/JavaScript/**/**/**/*.js",
+    "lint:scripts": "xo Resources/Private/JavaScript/**/**/**/**/**/*.js",
     "lint": "npm run lint:scripts",
     "test": "npm run lint",
     "watch:scripts:host": "watchify -v $npm_package_config_browserify_settings $npm_package_config_host_src -o $npm_package_config_host_dest",

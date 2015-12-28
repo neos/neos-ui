@@ -25,4 +25,4 @@ class Oneline extends AbstractEditor {
     }
 }
 
-export default (el, value) => new Oneline(el, value);
+export default (el, owner, property) => new Oneline(el, owner, property);

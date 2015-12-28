@@ -31,6 +31,13 @@ prototype(TYPO3.Neos:Page) {
             templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Guest.html'
             sectionName = 'guestFrameApplication'
         }
+
+        mediumStyles = TYPO3.TypoScript:Template {
+            @position = 'after guestFrameApplication'
+
+            templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Guest.html'
+            sectionName = 'mediumStyles'
+        }
     }
 
     //

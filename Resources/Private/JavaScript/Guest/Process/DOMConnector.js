@@ -2,9 +2,17 @@ import {editors, ContentComponent} from '../Components/';
 
 const {onelineEditor, richTextEditor} = editors;
 
+function closestContextPath(el) {
+    if (!el) {
+        return null;
+    }
+
+    return el.dataset.__cheNodeContextpath || closestContextPath(el.parentNode);
+}
+
 class DOMConnector {
   	constructor(NeosBackend) {
-    		this.contentComponents = [];
+    		this.contentComponents = {};
     		this.neosBackend = NeosBackend;
   	}
 
@@ -18,15 +26,20 @@ class DOMConnector {
         });
 
         [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]')).forEach(contentElement => {
-            const nodeContextPath = contentElement.dataset.__cheNodeContextpath;
             const typoScriptPath = contentElement.dataset.__cheTyposcriptPath;
             const contentComponent = new ContentComponent(contentElement);
 
       			contentComponent.injectNeosBackendService(this.neosBackend);
 
-      			this.contentComponents.push(contentComponent);
+      			this.contentComponents[typoScriptPath] = contentComponent;
 
       			contentComponent.render();
+  		  });
+
+        [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(contentElement => {
+            const nodeContextPath = closestContextPath(contentElement);
+
+      			richTextEditor(contentElement);
   		  });
   	}
 }

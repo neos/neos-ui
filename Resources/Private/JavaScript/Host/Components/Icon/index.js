@@ -15,9 +15,16 @@ export default class Icon extends Component {
         icon(props, propName) {
             const val = props[propName];
 
+            // First of, we want to check if the passed value is a deprecated icon name.
             if (DEPRECATED_ICON_NAMES.indexOf(val) > -1) {
                 logger.warn(`Font-Awesome has been updated. The icon name "${val}" has been updated/removed. Please adjust your icon configurations in your .yaml files to the new name-scheme of Font-Awesome 4.5.`);
-            } else if (ICON_NAMES.indexOf(val) === -1) {
+            } else if (
+              // Afterwards, check if the passed value is in the list of available icons...
+              ICON_NAMES.indexOf(val) === -1 &&
+
+              // ... or if it is available but needs the Font-Awesome prefix.
+              ICON_NAMES.indexOf(`fa-${val}`) === -1
+            ) {
                 return new Error(`Icon name "${val}" is not a valid icon name in Font-Awesome 4.5. Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.`);
             }
         }
@@ -41,13 +48,8 @@ export default class Icon extends Component {
 
     getIconClassName() {
         const {icon} = this.props;
-        const className = iconStyles[icon] || iconStyles[icon.replace('icon-', 'fa-')];
 
-        if (!className) {
-            logger.error(`No icon found for icon name "${icon}".`);
-        }
-
-        return className;
+        return iconStyles[icon] || iconStyles[`fa-${icon}`] || iconStyles[icon.replace('icon-', 'fa-')];
     }
 }
 Icon.defaultProps = {

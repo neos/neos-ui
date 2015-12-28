@@ -5,6 +5,7 @@
   "main": "Resources/Public/JavaScript/Host.min.js",
   "private": true,
   "devDependencies": {
+    "autoprefixer": "^6.2.2",
     "babel": "^6.0.14",
     "babelify": "^6.4.0",
     "browserify": "^12.0.1",
@@ -47,8 +48,8 @@
     "watch": "parallelshell 'npm run watch:scripts'"
   },
   "config": {
-    "browserify_settings_host": "-t [ babelify --stage 0 ] -p [ css-modulesify -o Resources/Public/Styles/Host.css ]",
-    "browserify_settings_guest": "-t [ babelify --stage 0 ] -p [ css-modulesify -o Resources/Public/Styles/Guest.css ]",
+    "browserify_settings_host": "-t [ babelify --stage 0 ] -p [ css-modulesify -o Resources/Public/Styles/Host.css --after autoprefixer -c postcss.json ]",
+    "browserify_settings_guest": "-t [ babelify --stage 0 ] -p [ css-modulesify -o Resources/Public/Styles/Guest.css --after autoprefixer -c postcss.json ]",
     "host_src": "Resources/Private/JavaScript/Host/index.js",
     "host_dest": "Resources/Public/JavaScript/Host.min.js",
     "guest_src": "Resources/Private/JavaScript/Guest/index.js",

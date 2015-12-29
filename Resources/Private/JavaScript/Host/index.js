@@ -7,7 +7,7 @@ import reducerFactory from './Reducers/';
 import {initialStateFactory} from './State/';
 
 import {ContentView, FooterBar, TopBar, LeftSideBar} from './Containers/';
-import {documentManager, nodeTypeManager, tabManager, changeManager} from './Service/';
+import {documentManager, nodeTypeManager, tabManager, changeManager, feedbackManager} from './Service/';
 
 import style from './style.css';
 
@@ -45,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window['@Neos:Backend'] = {
         documentManager: documentManager(store),
         tabManager: tabManager(store),
-        changeManager: changeManager(store, csrfToken)
+        changeManager: changeManager(store, csrfToken),
+        feedbackManager: feedbackManager(store)
     };
 
     window['@Neos:Backend'].tabManager.createTab(firstTabUri);

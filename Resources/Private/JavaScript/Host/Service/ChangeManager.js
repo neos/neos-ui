@@ -1,5 +1,4 @@
 import actions from '../Actions/';
-import FeedbackManager from './FeedbackManager';
 
 class ChangeManager {
 
@@ -21,6 +20,7 @@ class ChangeManager {
         const changes = this.store.getState().get('changes');
 
         if (!changes.isEmpty()) {
+            const feedbackManager = window['@Neos:Backend'].feedbackManager;
             // dispatch clear changes action
             this.store.dispatch(actions.Transient.Changes.clearChanges());
 
@@ -34,7 +34,9 @@ class ChangeManager {
                 body: JSON.stringify({
                     changes: changes.toJSON()
                 })
-            }).then(FeedbackManager.handleFeedback);
+            })
+            .then(response => response.json())
+            .then(feedbackManager.handleFeedback.bind(feedbackManager));
         }
     }
 }

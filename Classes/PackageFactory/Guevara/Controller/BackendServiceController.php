@@ -9,6 +9,9 @@ namespace PackageFactory\Guevara\Controller;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\ActionController;
 use PackageFactory\Guevara\Domain\Model\ChangeCollection;
+use PackageFactory\Guevara\Domain\Model\FeedbackCollection;
+use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Error;
+use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Info;
 
 class BackendServiceController extends ActionController
 {
@@ -31,7 +34,24 @@ class BackendServiceController extends ActionController
      */
     public function changeAction(ChangeCollection $changes)
     {
-        $changes->compress()->apply();
+        $feedbackCollection = new FeedbackCollection();
+
+        try {
+            $count = $changes->count();
+            $changes->compress()->apply();
+
+            $success = new Info();
+            $success->setMessage(sprintf('%d change(s) successfully applied.', $count));
+
+            $feedbackCollection->add($success);
+        } catch(\Exception $e) {
+            $error = new Error();
+            $error->setMessage($e->getMessage());
+
+            $feedbackCollection->add($error);
+        }
+
+        $this->view->assign('value', $feedbackCollection);
     }
 
 }

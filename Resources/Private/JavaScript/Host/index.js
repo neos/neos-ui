@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     nodeTypeManager.initializeWithNodeTypeSchema(nodeTypeSchema);
 
     ReactDOM.render(
-        <div>
+        <div className={style.applicationWrapper}>
             <Provider store={store}>
               <div>
                   <TopBar />

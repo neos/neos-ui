@@ -1,26 +1,22 @@
 .neos {
-  @import "normalize.css";
+    @import "normalize.css";
 }
+.applicationWrapper {
+    height: 100vh;
 
-* {
-    box-sizing: border-box;
+    > div {
+        height: 100%;
+    }
 }
-
-html,
-body,
-body > div,
-body > div > div,
-body > div > div > div {
-    height: 100%;
-}
-
 body {
-    font-family: 'Noto Sans', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: normal;
-    color: $brightest;
-    margin: 0;
-    padding: 0;
+    .neos & {
+        font-family: 'Noto Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: normal;
+        color: $brightest;
+        margin: 0;
+        padding: 0;
+    }
 }

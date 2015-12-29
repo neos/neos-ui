@@ -1,6 +1,8 @@
 .wrapper {
     display: inline-block;
+    position: relative;
     vertical-align: top;
+    padding-right: 48px;
 }
 .btn {
     display: inline-block;
@@ -15,15 +17,58 @@
 }
 .btn--disabled {
     opacity: .5;
-    cursor: not-allowed;
+}
+.btn--notAllowed {
+    cursor: not-allowed !important;
 }
 .btn--isSaving {
     background: $warn;
 }
 .btn--publishBtn {
     min-width: 165px;
-    margin-right: 2px !important;
 }
+
 .dropDown {
-    display: none;
+    position: static;
+}
+.dropDown__btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.dropDown__btn--active {
+    opacity: 1;
+}
+.dropDown__contents {}
+.dropDown__contents__item {
+    &:hover {
+        background: $brand;
+    }
+
+    > a,
+    > label,
+    > button {
+      display: block;
+      width: 100%;
+      border: 0;
+      padding: 0 16px;
+      background: 0;
+      color: #FFF;
+      text-decoration: none;
+      line-height: 40px !important;
+      text-align: left;
+
+      > i,
+      > input {
+          margin-right: .5em;
+      }
+    }
+}
+.dropDown__contents__item--disabled {
+    opacity: .5;
+
+    &,
+    > button {
+        cursor: not-allowed !important;
+    }
 }

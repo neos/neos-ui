@@ -1,0 +1,34 @@
+.dropDown {
+    position: relative;
+}
+.dropDown--hasLabel {}
+.dropDown__btn {
+    display: block;
+}
+.dropDown__btn__label {
+    margin-right: .5em;
+}
+.dropDown__contents {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background: $neutral;
+}
+.dropDown__contents--isOpen {
+    display: block;
+}
+.dropDown__btn__beforeIcon {
+    .dropDown--hasLabel  & {
+        margin-right: .5em;
+    }
+}
+.dropDown__btn__afterIcon {
+    .dropDown--hasLabel & {
+        margin-left: .5em;
+    }
+}

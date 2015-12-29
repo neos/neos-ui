@@ -1,40 +1,34 @@
 .wrapper {
     display: inline-block;
+    position: relative;
     vertical-align: top;
 }
-.btn {
+.dropDown {
+    position: static;
+    display: inline-block;
+}
+.dropDown__btn {
     position: relative;
     display: inline-block;
     height: 40px;
-    padding: 0 16px;
+    padding: 0 16px 0 12px;
     border: 0;
-    border-right: 1px solid $dark;
     background-color: $darker;
-    -webkit-font-smoothing: antialiased;
-    text-align: center;
-    vertical-align: middle;
-    width: auto;
 }
-.userIcon {
-    padding-right: .5em;
-}
-.arrowIcon {
-    padding-left: .5em;
-}
-.dropDown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    transform: translateY(1px);
-    z-index: 1000;
-    display: none;
+.dropDown__contents {
     min-width: 160px;
-    padding: 0;
-    margin: 0;
-    list-style: none;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.dropDown__item {
+    height: 40px;
+    background: $neutral;
+    border-top: 1px solid $darker;
 
-    a,
+    &:hover {
+        background: $brand;
+    }
+
+    > a,
     button {
       display: block;
       width: 100%;
@@ -47,21 +41,12 @@
       text-align: left;
     }
 }
-.dopDownVisible {
-    display: block;
-}
-.dropDownItem {
-    height: 40px;
-    background: $neutral;
-    border-top: 1px solid $darker;
-}
 .dropDownItem:hover {
     background: $brand;
 }
-.logoutItem {
+.dropDown__item--topDark {
     border-color: $dark;
 }
-.userSettingsItem {}
-.dropDownItemIcon {
+.dropDown__item__icon {
     padding-right: .5em;
 }

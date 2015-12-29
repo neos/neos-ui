@@ -4,7 +4,7 @@ import DropDown from './DropDown/';
 import I18n from './I18n/';
 import Icon from './Icon/';
 import SideBar from './SideBar/';
-import MenuToggler from './MenuToggler/';
+import {Tabs, Panel} from './Tabs/';
 
 export {
     Bar,
@@ -13,5 +13,6 @@ export {
     I18n,
     Icon,
     SideBar,
-    MenuToggler
+    Tabs,
+    Panel
 };

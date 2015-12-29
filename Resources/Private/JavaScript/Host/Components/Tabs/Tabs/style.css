@@ -1,0 +1,33 @@
+.tabs {
+
+}
+.tabs__navigation {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: $darkest;
+    border-bottom: 1px solid $dark;
+
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+.tabs__navigation__item {
+    float: left;
+    height: 40px;
+    padding: 0 16px;
+    line-height: 40px;
+    border-right: 1px solid $dark;
+    cursor: pointer;
+}
+.tabs__navigation__item--isActive {
+    color: $brand;
+    background-color: $darker;
+    cursor: default;
+}

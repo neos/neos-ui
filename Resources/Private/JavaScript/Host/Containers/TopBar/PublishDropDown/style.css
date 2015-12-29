@@ -35,6 +35,8 @@
     position: absolute;
     right: 0;
     top: 0;
+    width: auto;
+    padding-left: 30px;
 }
 .dropDown__btn--active {
     opacity: 1;

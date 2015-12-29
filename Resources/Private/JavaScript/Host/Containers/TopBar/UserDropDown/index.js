@@ -24,7 +24,7 @@ export default class UserDropDown extends Component {
 
         return (
             <div className={style.wrapper}>
-                <DropDown label={currentUserName} iconBefore="user" iconAfter="chevron-down" iconAfterActive="chevron-up" classNames={dropDownClassNames}>
+                <DropDown label={currentUserName} iconBefore="user" classNames={dropDownClassNames}>
                     <li className={logoutItemClassName}>
                         <form title="Logout" action="/neos/logout" method="post">
                             <button type="submit" name="" value="logout">

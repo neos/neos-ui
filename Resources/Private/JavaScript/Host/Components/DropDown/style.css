@@ -4,6 +4,9 @@
 .dropDown--hasLabel {}
 .dropDown__btn {
     display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0 32px 0 16px;
 }
 .dropDown__btn__label {
     margin-right: .5em;
@@ -28,7 +31,8 @@
     }
 }
 .dropDown__btn__afterIcon {
-    .dropDown--hasLabel & {
-        margin-left: .5em;
-    }
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
 }

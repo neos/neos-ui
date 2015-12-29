@@ -11,7 +11,6 @@
     position: relative;
     display: inline-block;
     height: 40px;
-    padding: 0 16px 0 12px;
     border: 0;
     background-color: $darker;
 }

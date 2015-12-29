@@ -8,8 +8,6 @@ export default class DropDown extends Component {
     static propTypes = {
         classNames: PropTypes.object.isRequired,
         label: PropTypes.string,
-        iconAfter: PropTypes.string,
-        iconAfterActive: PropTypes.string,
         iconBefore: PropTypes.string,
         children: PropTypes.node
     }
@@ -44,7 +42,7 @@ export default class DropDown extends Component {
                 <button className={buttonClassName} onClick={this.onToggleClick.bind(this)}>
                     {this.renderBeforeIcon()}
                     {this.renderLabel()}
-                    {this.renderAfterIcon()}
+                    {this.renderChevronIcon()}
                 </button>
                 <ul className={contentsClassName}>
                     {this.props.children}
@@ -73,16 +71,11 @@ export default class DropDown extends Component {
         return iconBefore ? <Icon icon={iconBefore} className={className} /> : null;
     }
 
-    renderAfterIcon() {
-        const {iconAfter, iconAfterActive, classNames} = this.props;
+    renderChevronIcon() {
         const {isOpened} = this.state;
-        const className = mergeClassNames({
-            [style.dropDown__btn__afterIcon]: true,
-            [classNames.afterIcon]: true
-        });
-        const iconName = isOpened && iconAfterActive ? iconAfterActive : iconAfter;
+        const iconName = isOpened ? 'chevron-up' : 'chevron-down';
 
-        return iconAfter ? <Icon icon={iconName} className={className} /> : null;
+        return <Icon icon={iconName} className={style.dropDown__btn__afterIcon} />;
     }
 
     onToggleClick(e) {

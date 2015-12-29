@@ -7,7 +7,7 @@ import assign from 'lodash.assign';
 import reducerFactory from './Reducers/';
 import {initialStateFactory} from './State/';
 
-import {ContentView, FooterBar, TopBar, LeftSideBar, RightSideBar} from './Containers/';
+import {ContentView, FooterBar, TopBar, LeftSideBar, RightSideBar, ContextBar} from './Containers/';
 import {backend, nodeTypeManager, tabManager, changeManager, feedbackManager} from './Service/';
 
 import style from './style.css';
@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <Provider store={store}>
               <div>
                   <TopBar />
+                  <ContextBar />
                   <LeftSideBar />
                   <ContentView />
                   <RightSideBar />

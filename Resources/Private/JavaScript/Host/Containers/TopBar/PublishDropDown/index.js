@@ -50,7 +50,7 @@ export default class PublishDropDown extends Component {
                 <button className={publishBtnClassName} onClick={this.onPublishClick.bind(this)} {...publishRelatedItemAttributes}>
                     <I18n target="Published" />
                 </button>
-                <DropDown iconAfter="chevron-down" iconAfterActive="chevron-up" classNames={dropDownClassNames}>
+                <DropDown classNames={dropDownClassNames}>
                     <li className={publishRelatedItemClassName}>
                         <button onClick={this.onPublishAllClick.bind(this)} {...publishRelatedItemAttributes}>
                             <Icon icon="upload" />

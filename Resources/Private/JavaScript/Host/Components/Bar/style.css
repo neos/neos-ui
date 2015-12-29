@@ -7,11 +7,9 @@
     height: 41px;
     border-bottom: 1px solid $dark;
 }
-
-.top {
+.bar--top {
     top: 0;
 }
-
-.bottom {
+.bar--bottom {
     bottom: 0;
 }

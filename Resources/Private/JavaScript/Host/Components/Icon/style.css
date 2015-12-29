@@ -6,12 +6,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.big {
+.icon--big {
   font-size: 1.5em;
 }
-.small {
+.icon--small {
   font-size: .75em;
 }
-.tiny {
+.icon--tiny {
   font-size: .5em;
 }

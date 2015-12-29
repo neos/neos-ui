@@ -38,9 +38,9 @@ export default class Icon extends Component {
             [style.icon]: true,
             [iconClassName]: true,
             [className]: true,
-            [style.big]: size === 'big',
-            [style.small]: size === 'small',
-            [style.tiny]: size === 'tiny'
+            [style['icon--big']]: size === 'big',
+            [style['icon--small']]: size === 'small',
+            [style['icon--tiny']]: size === 'tiny'
         });
 
         return (

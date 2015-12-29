@@ -1,16 +1,14 @@
-.wrapper {
+.contentView {
     float: left;
     height: 100%;
     width: 100%;
     padding: 41px 300px;
 }
-
-.item {
+.contentView__item {
     display: none;
     width: 100%;
     height: 100%;
 }
-
-.activeItem {
+.contentView__item--active {
     display: block;
 }

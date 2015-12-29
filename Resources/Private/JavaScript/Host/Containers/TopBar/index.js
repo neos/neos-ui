@@ -10,12 +10,12 @@ import style from './style.css';
 export default class TopBar extends Component {
     render() {
         return (
-            <Bar position="top" className={style.wrapper}>
+            <Bar position="top" className={style.topBar}>
               <MenuToggler onClick={() => this.onMenuToggle()} />
               <TopBarToggler label="Navigate" onClick={() => this.onLeftSidebarToggle()} />
               <TopBarToggler label="Edit / Preview" onClick={() => this.onEditModeToggle()} />
 
-              <div className={style.rightSidedActions}>
+              <div className={style.topBar__rightSidedActions}>
                   <UserDropDown currentUserName="John Doe" />
                   <PublishDropDown />
               </div>

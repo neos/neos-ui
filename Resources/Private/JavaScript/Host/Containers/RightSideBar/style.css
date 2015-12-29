@@ -1,15 +1,16 @@
-.wrapper {
+.rightSideBar {
     padding-top: 41px;
     padding-bottom: 41px;
     width: 300px;
     height: 100%;
     background: $darker;
-}
-.wrapper:before,
-.wrapper:after {
-    content: '';
-    display: table;
-}
-.wrapper:after {
-    clear: both;
+
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
 }

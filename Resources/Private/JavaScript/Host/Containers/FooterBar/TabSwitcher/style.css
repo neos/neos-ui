@@ -1,6 +1,6 @@
-.wrapper {}
+.tabSwitcher {}
 
-.item {
+.tabSwitcher__item {
     width: 12%;
     height: 41px;
     line-height: 41px;
@@ -14,7 +14,7 @@
     padding: 0 0.4em;
 }
 
-.activeItem {
+.tabSwitcher__item--active {
     background-color: $brightest;
     color: $darker;
     cursor: auto;

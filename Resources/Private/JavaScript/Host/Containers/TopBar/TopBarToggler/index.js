@@ -12,7 +12,7 @@ export default class TopBarToggler extends Component {
 
     render() {
         return (
-            <button href="#" className={style.toggler} onClick={this.onClick.bind(this)}>
+            <button href="#" className={style.topBarToggler} onClick={this.onClick.bind(this)}>
                 <I18n target={this.props.label} />
             </button>
         );

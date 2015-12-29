@@ -7,7 +7,7 @@ import style from './style.css';
 export default class LeftSideBar extends Component {
     render() {
         return (
-            <SideBar position="right" className={style.wrapper}>
+            <SideBar position="right" className={style.rightSideBar}>
               This is not sparta!
             </SideBar>
         );

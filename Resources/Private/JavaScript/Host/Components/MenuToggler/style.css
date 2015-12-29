@@ -1,5 +1,4 @@
 $lineHeight: 3px;
-$lineWidth: 22px;
 
 .menuBtn {
     display: inline-block;
@@ -7,31 +6,35 @@ $lineWidth: 22px;
     height: 40px;
     float: left;
     border: 0;
-  border-right: 1px solid $dark;
-  text-align: center;
-  background-color: $darker;
-}
-.menuBtn:before,
-.menuBtn:after {
-    position: absolute;
-    left: 16px;
-  display: block;
-    width: $lineWidth;
-  height: $lineHeight;
-    border-color: currentColor;
-}
-.menuBtn:before {
-  top: 12px;
-    border-top: $lineHeight solid;
-  border-bottom: $lineHeight solid;
-  content: "";
-}
-.menuBtn:after {
-  top: 24px;
-  background-color: currentColor;
-  content: "";
-}
-.menuBtn:hover {
-    text-decoration: none;
-    color: $brand;
+    border-right: 1px solid $dark;
+    text-align: center;
+    background-color: $darker;
+
+    &:before,
+    &:after {
+        position: absolute;
+        left: 16px;
+        display: block;
+        width: 22px;
+        height: $lineHeight;
+        border-color: currentColor;
+    }
+
+    &:before {
+        top: 12px;
+        border-top: $lineHeight solid;
+        border-bottom: $lineHeight solid;
+        content: "";
+    }
+
+    &:after {
+        top: 24px;
+        background-color: currentColor;
+        content: "";
+    }
+
+    &:hover {
+        text-decoration: none;
+        color: $brand;
+    }
 }

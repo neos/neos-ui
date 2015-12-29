@@ -21,7 +21,7 @@ export default class ContentView extends Component {
         const tabs = this.props.tabs.get('byId').toArray();
 
         return (
-            <div className={style.wrapper}>
+            <div className={style.contentView}>
                 {tabs.map(tab => this.renderTab(tab, activeId))}
             </div>
         );
@@ -29,8 +29,8 @@ export default class ContentView extends Component {
 
     renderTab(tab, activeId) {
         const tabClasses = mergeClassNames({
-            [style.item]: true,
-            [style.activeItem]: tab.get('id') === activeId
+            [style.contentView__item]: true,
+            [style['contentView__item--active']]: tab.get('id') === activeId
         });
 
         return <iframe src={tab.get('src')} frameBorder="0" name={tab.get('id')} key={tab.get('id')} className={tabClasses} />;

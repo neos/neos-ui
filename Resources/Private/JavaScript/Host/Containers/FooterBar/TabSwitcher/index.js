@@ -19,7 +19,7 @@ export default class TabSwitcher extends Component {
 
         return (
             <Bar position="bottom" onDrop={(e) => this.onDrop(e)}>
-                <div className={style.wrapper}>
+                <div className={style.tabSwitcher}>
                     {tabs.map((tab, index) => tab.get('id') === active ? this.renderActiveTab(tab, index) : this.renderTab(tab, index))}
                 </div>
             </Bar>
@@ -28,7 +28,7 @@ export default class TabSwitcher extends Component {
 
     renderTab(tab, id) {
         return (
-            <div key={id} className={style.item} onClick={() => this.onClick(tab)}>
+            <div key={id} className={style.tabSwitcher__item} onClick={() => this.onClick(tab)}>
                 {tab.get('title')}
             </div>
         );
@@ -36,8 +36,8 @@ export default class TabSwitcher extends Component {
 
     renderActiveTab(tab, id) {
         const classNames = mergeClassNames({
-            [style.item]: true,
-            [style.activeItem]: true
+            [style.tabSwitcher__item]: true,
+            [style['tabSwitcher__item--active']]: true
         });
 
         return (

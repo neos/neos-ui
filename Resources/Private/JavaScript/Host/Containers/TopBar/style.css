@@ -1,14 +1,15 @@
-.wrapper {}
-.wrapper:before,
-.wrapper:after {
-  content: '';
-  display: table;
+.topBar {
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
 }
-.wrapper:after {
-  clear: both;
-}
-.rightSidedActions {
-  position: absolute;
-  right: 0;
-  top: 0;
+.topBar__rightSidedActions {
+    position: absolute;
+    right: 0;
+    top: 0;
 }

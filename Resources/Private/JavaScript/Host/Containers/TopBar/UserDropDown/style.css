@@ -1,3 +1,7 @@
+.wrapper {
+    display: inline-block;
+    vertical-align: top;
+}
 .btn {
     position: relative;
     display: inline-block;
@@ -21,7 +25,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-		transform: translateY(1px);
+    transform: translateY(1px);
     z-index: 1000;
     display: none;
     min-width: 160px;
@@ -30,8 +34,8 @@
     list-style: none;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 
-  	a,
-  	button {
+    a,
+    button {
       display: block;
       width: 100%;
       border: 0;

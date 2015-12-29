@@ -1,0 +1,29 @@
+.wrapper {
+    display: inline-block;
+    vertical-align: top;
+}
+.btn {
+    display: inline-block;
+    padding: 0 16px;
+    height: 40px;
+    line-height: 40px;
+    border: 0;
+    background: $success;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+}
+.btn--disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+.btn--isSaving {
+    background: $warn;
+}
+.btn--publishBtn {
+    min-width: 165px;
+    margin-right: 2px !important;
+}
+.dropDown {
+    display: none;
+}

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Bar, MenuToggler} from '../../Components/';
 import TopBarToggler from './TopBarToggler/';
 import UserDropDown from './UserDropDown/';
+import PublishDropDown from './PublishDropDown/';
 import style from './style.css';
 
 @connect()
@@ -16,6 +17,7 @@ export default class TopBar extends Component {
 
               <div className={style.rightSidedActions}>
                   <UserDropDown currentUserName="John Doe" />
+                  <PublishDropDown />
               </div>
             </Bar>
         );

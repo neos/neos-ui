@@ -26,14 +26,14 @@ export default class UserDropDown extends Component {
         });
 
         return (
-          <div>
-              <button href="#" className={style.btn} onClick={this.onClick.bind(this)} onBlur={() => this.onBlur()}>
+            <div className={style.wrapper}>
+                <button href="#" className={style.btn} onClick={this.onClick.bind(this)} onBlur={() => this.onBlur()}>
                   <Icon icon="user" className={style.userIcon} />
                   {currentUserName}
 
                   <Icon icon={arrowIconName} className={style.arrowIcon} />
-              </button>
-              <ul className={dropDownClassName}>
+                </button>
+                <ul className={dropDownClassName}>
                   <li className={`${style.logoutItem} ${style.dropDownItem}`}>
                       <form title="Logout" action="/neos/logout" method="post">
                           <button type="submit" name="" value="logout">
@@ -48,8 +48,8 @@ export default class UserDropDown extends Component {
                             <I18n target="User Settings" />
                         </a>
                     </li>
-              </ul>
-          </div>
+                </ul>
+            </div>
         );
     }
 

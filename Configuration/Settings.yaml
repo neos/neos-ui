@@ -16,3 +16,9 @@ TYPO3:
     typoScript:
       autoInclude:
         'PackageFactory.Guevara': TRUE
+
+PackageFactory:
+    Guevara:
+      changes:
+        types:
+            'PackageFactory.Guevara:Property': 'PackageFactory\Guevara\Domain\Model\Changes\Property'

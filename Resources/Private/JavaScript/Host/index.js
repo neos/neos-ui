@@ -7,7 +7,7 @@ import reducerFactory from './Reducers/';
 import {initialStateFactory} from './State/';
 
 import {ContentView, FooterBar, TopBar, LeftSideBar} from './Containers/';
-import {documentManager, nodeTypeManager, tabManager} from './Service/';
+import {documentManager, nodeTypeManager, tabManager, changeManager} from './Service/';
 
 import style from './style.css';
 
@@ -18,6 +18,7 @@ document.documentElement.classList.add(style.neos);
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('appContainer');
     const firstTabUri = appContainer.dataset.firstTab;
+    const csrfToken = appContainer.dataset.csrfToken;
     const initialState = initialStateFactory(
         JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML)
     );
@@ -43,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window['@Neos:Backend'] = {
         documentManager: documentManager(store),
-        tabManager: tabManager(store)
+        tabManager: tabManager(store),
+        changeManager: changeManager(store, csrfToken)
     };
 
     window['@Neos:Backend'].tabManager.createTab(firstTabUri);

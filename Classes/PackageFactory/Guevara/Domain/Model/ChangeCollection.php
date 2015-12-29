@@ -9,17 +9,9 @@ class ChangeCollection
     /**
      * Changes in this collection
      *
-     * @var \SplQueue
+     * @var array
      */
-    protected $changes;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->changes = new \SplQueue();
-    }
+    protected $changes = [];
 
     /**
      * Add a change to this collection
@@ -29,7 +21,7 @@ class ChangeCollection
      */
     public function add(ChangeInterface $change)
     {
-        $this->changes->enqeue($change);
+        $this->changes[] = $change;
     }
 
     /**
@@ -41,12 +33,12 @@ class ChangeCollection
     {
         $compressedChangeCollection = new ChangeCollection();
 
-        while($change = $this->changes->dequeue()) {
-            if ($subsequentChange = $this->changes->dequeue()) {
+        while($change = array_shift($this->changes)) {
+            if ($subsequentChange = array_shift($this->changes)) {
                 if ($change->canMerge($subsequentChange)) {
                     $change = $change->merge($subsequentChange);
                 } else {
-                    $this->changes->unshift($subsequentChange);
+                    array_unshift($this->changes, $subsequentChange);
                 }
             }
 
@@ -54,6 +46,20 @@ class ChangeCollection
         }
 
         return $compressedChangeCollection;
+    }
+
+    /**
+     * Apply all changes
+     *
+     * @return void
+     */
+    public function apply()
+    {
+        while($change = array_shift($this->changes)) {
+            if ($change->canApply()) {
+                $change->apply();
+            }
+        }
     }
 
 }

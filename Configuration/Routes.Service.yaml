@@ -1,0 +1,7 @@
+-
+  name: 'Change'
+  uriPattern: 'change'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'change'
+  httpMethods: ['POST']

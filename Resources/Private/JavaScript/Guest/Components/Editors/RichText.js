@@ -29,4 +29,4 @@ class RichText extends AbstractEditor {
     }
 }
 
-export default (el, owner, property) => new RichText(el, owner, property);
+export default (el, property, contextPath) => new RichText(el, property, contextPath);

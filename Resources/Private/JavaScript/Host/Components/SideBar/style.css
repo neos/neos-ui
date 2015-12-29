@@ -1,5 +1,10 @@
 .sideBar {
-  position: absolute;
-  left: 0;
+    position: absolute;
     width: 300px;
+}
+.sideBar--left {
+    left: 0;
+}
+.sideBar--right {
+    right: 0;
 }

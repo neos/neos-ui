@@ -14,8 +14,8 @@ export default class SideBar extends Component {
         const classNames = mergeClassNames({
             [className]: true,
             [style.sideBar]: true,
-            [style.left]: position === 'left',
-            [style.right]: position === 'right'
+            [style['sideBar--left']]: position === 'left',
+            [style['sideBar--right']]: position === 'right'
         });
 
         return (

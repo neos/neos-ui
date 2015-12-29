@@ -3,6 +3,7 @@ import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 import {Bar} from '../../../Components/';
+import {backend} from '../../../Service/';
 
 export default class TabSwitcher extends Component {
     static propTypes = {
@@ -54,7 +55,7 @@ export default class TabSwitcher extends Component {
     }
 
     onDrop(e) {
-        const { tabManager } = window['@Neos:Backend'];
+        const { tabManager } = backend;
 
         tabManager.createTab(e.dataTransfer.getData('href'));
     }

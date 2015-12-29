@@ -1,4 +1,8 @@
 .neos {
+    * {
+        box-sizing: border-box;
+    }
+
     @import "normalize.css";
 }
 .applicationWrapper {

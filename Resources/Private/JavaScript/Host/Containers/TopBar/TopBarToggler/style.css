@@ -3,18 +3,12 @@
 	display: inline-block;
 	height: 40px;
 	padding: 0 16px;
-	margin: 0;
   border: 0;
 	border-right: 1px solid $dark;
 	background-color: $darker;
-	line-height: 40px;
-	font-family: 'Noto Sans', sans-serif;
 	-webkit-font-smoothing: antialiased;
-	font-size: 14px;
-	color: $brightest;
 	text-align: center;
 	vertical-align: middle;
-	cursor: pointer;
 	width: auto;
 }
 .toggler:hover {

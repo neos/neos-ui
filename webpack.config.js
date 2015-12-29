@@ -2,8 +2,10 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
-const colors = require('./Resources/Private/JavaScript/Shared/Constants/Colors.js');
 const vars = require('postcss-simple-vars');
+const postCssImport = require('postcss-import');
+const colors = require('./Resources/Private/JavaScript/Shared/Constants/Colors.js');
+const nested = require('postcss-nested');
 
 module.exports = {
     entry: {
@@ -43,7 +45,9 @@ module.exports = {
         }),
         vars({
             variables: colors
-        })
+        }),
+        postCssImport(),
+        nested()
     ],
 
     resolve: {

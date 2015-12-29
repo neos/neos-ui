@@ -9,8 +9,12 @@ import {initialStateFactory} from './State/';
 import {ContentView, FooterBar, TopBar, LeftSideBar} from './Containers/';
 import {documentManager, nodeTypeManager, tabManager} from './Service/';
 
-import './style.css';
+import style from './style.css';
 
+// Add the root class which enables the scoped normalize.css
+document.documentElement.classList.add(style.neos);
+
+// Initialize the backend application on load.
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('appContainer');
     const firstTabUri = appContainer.dataset.firstTab;

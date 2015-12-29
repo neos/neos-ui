@@ -32,12 +32,12 @@ export default class Icon extends Component {
     }
 
     render() {
-        const {size, className} = this.props;
+        const {size} = this.props;
         const iconClassName = this.getIconClassName();
         const classNames = mergeClassNames({
             [style.icon]: true,
             [iconClassName]: true,
-            [className]: true,
+            [this.props.className]: Boolean(this.props.className),
             [style['icon--big']]: size === 'big',
             [style['icon--small']]: size === 'small',
             [style['icon--tiny']]: size === 'tiny'

@@ -24,7 +24,7 @@ export default class DropDown extends Component {
         const dropDownClassName = mergeClassNames({
             [classNames.wrapper]: true,
             [style.dropDown]: true,
-            [style['dropDown--hasLabel']]: label
+            [style['dropDown--hasLabel']]: Boolean(label)
         });
         const buttonClassName = mergeClassNames({
             [classNames.btn]: true,

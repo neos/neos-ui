@@ -1,13 +1,16 @@
 import Immutable from 'immutable';
 
 export default serverState => Immutable.fromJS({
+    ui: {
+        //
+        // Contains information about the currently open Tabs
+        //
+        tabs: {
+            byId: {},
+            active: ''
+        },
 
-    //
-    // Contains information about the currently open Tabs
-    //
-    tabs: {
-        byId: {},
-        active: ''
+        contextBar: {}
     },
 
     //

@@ -6,7 +6,7 @@ import style from './style.css';
 
 @connect(state => {
     return {
-        tabs: state.get('tabs')
+        tabs: state.get('ui').get('tabs')
     };
 })
 export default class ContentView extends Component {

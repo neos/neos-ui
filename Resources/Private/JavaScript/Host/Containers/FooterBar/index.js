@@ -7,7 +7,7 @@ import TabSwitcher from './TabSwitcher/';
 
 @connect(state => {
     return {
-        tabs: state.get('tabs')
+        tabs: state.get('ui').get('tabs')
     };
 })
 export default class FooterBar extends Component {

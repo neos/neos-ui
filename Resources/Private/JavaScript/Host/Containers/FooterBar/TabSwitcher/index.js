@@ -19,7 +19,7 @@ export default class TabSwitcher extends Component {
         const tabs = this.props.tabs.toArray();
 
         return (
-            <Bar position="bottom" onDrop={(e) => this.onDrop(e)}>
+            <Bar position="bottom" onDrop={e => this.onDrop(e)}>
                 <div className={style.tabSwitcher}>
                     {tabs.map((tab, index) => tab.get('id') === active ? this.renderActiveTab(tab, index) : this.renderTab(tab, index))}
                 </div>
@@ -55,7 +55,7 @@ export default class TabSwitcher extends Component {
     }
 
     onDrop(e) {
-        const { tabManager } = backend;
+        const {tabManager} = backend;
 
         tabManager.createTab(e.dataTransfer.getData('href'));
     }

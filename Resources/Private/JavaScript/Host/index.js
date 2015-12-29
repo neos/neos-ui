@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import {assign} from 'lodash';
+import assign from 'lodash.assign';
 
 import reducerFactory from './Reducers/';
 import {initialStateFactory} from './State/';

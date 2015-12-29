@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import Icon from '../Icon/';
 import style from './style.css';
 
 @connect()
@@ -11,9 +10,8 @@ export default class MenuToggler extends Component {
 
     render() {
         return (
-          <a href="#" className={style.menuBtn} onClick={this.onClick.bind(this)}>
-            <Icon icon="bars" size="big" />
-          </a>
+          <button className={style.menuBtn} onClick={this.onClick.bind(this)}>
+          </button>
         );
     }
 

@@ -27,15 +27,17 @@ export default class Icon extends Component {
             ) {
                 return new Error(`Icon name "${val}" is not a valid icon name in Font-Awesome 4.5. Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.`);
             }
-        }
+        },
+        className: PropTypes.string
     }
 
     render() {
-        const {size} = this.props;
+        const {size, className} = this.props;
         const iconClassName = this.getIconClassName();
         const classNames = mergeClassNames({
             [style.icon]: true,
             [iconClassName]: true,
+            [className]: true,
             [style.big]: size === 'big',
             [style.small]: size === 'small',
             [style.tiny]: size === 'tiny'

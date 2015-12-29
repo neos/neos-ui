@@ -7,3 +7,8 @@
 .wrapper:after {
   clear: both;
 }
+.rightSidedActions {
+  position: absolute;
+  right: 0;
+  top: 0;
+}

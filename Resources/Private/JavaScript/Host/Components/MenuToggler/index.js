@@ -1,10 +1,13 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {Icon} from '../../../Components/';
+import Icon from '../Icon/';
 import style from './style.css';
 
 @connect()
 export default class MenuToggler extends Component {
+    static propTypes = {
+        onClick: PropTypes.func
+    }
     render() {
         return (
           <a href="#" className={style.menuBtn} onClick={this.onClick.bind(this)}>
@@ -14,8 +17,12 @@ export default class MenuToggler extends Component {
     }
 
     onClick(e) {
+        const {onClick} = this.props;
+
         e.preventDefault();
 
-        console.log('open the menu');
+        if (onClick) {
+            onClick();
+        }
     }
 }

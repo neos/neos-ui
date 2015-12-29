@@ -4,13 +4,13 @@
   height: 40px;
   line-height: 45px;
   float: left;
-  border-right: 1px solid #3f3f3f;
+  border-right: 1px solid $dark;
   text-align: center;
-  background-color: #222;
-	color: #FFF;
+  background-color: $darker;
+	color: $brightest;
 	text-decoration: none;
 }
 .menuBtn:hover {
 	text-decoration: none;
-	color: #00b5ff;
+	color: $brand;
 }

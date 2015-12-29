@@ -2,6 +2,8 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
+const colors = require('./Resources/Private/JavaScript/Shared/Constants/Colors.js');
+const vars = require('postcss-simple-vars');
 
 module.exports = {
     entry: {
@@ -38,6 +40,9 @@ module.exports = {
     postcss: [
         autoprefixer({
             browsers: ['last 2 versions']
+        }),
+        vars({
+            variables: colors
         })
     ],
 

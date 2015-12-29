@@ -12,7 +12,7 @@ body > div > div > div {
 
 body {
     font-family: "Trebuchet MS", Helvetica, sans-serif;
-    color: #FFF;
+    color: $brightest;
     margin: 0;
     padding: 0;
 }

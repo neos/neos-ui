@@ -6,7 +6,7 @@
     line-height: 41px;
     float: left;
     text-align: center;
-    border-right: 1px solid white;
+    border-right: 1px solid $brightest;
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -15,7 +15,7 @@
 }
 
 .activeItem {
-    background-color: white;
-    color: #222;
+    background-color: $brightest;
+    color: $darker;
     cursor: auto;
 }

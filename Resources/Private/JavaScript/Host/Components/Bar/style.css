@@ -3,9 +3,9 @@
     left: 0;
     z-index: 1;
     width: 100%;
-    background-color: #222;
+    background-color: $darker;
     height: 41px;
-    border-bottom: 1px solid #3f3f3f;
+    border-bottom: 1px solid $dark;
 }
 
 .top {

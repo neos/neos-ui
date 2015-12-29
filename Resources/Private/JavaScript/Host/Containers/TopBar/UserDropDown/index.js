@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {Icon} from './../../../Components/';
+import {Icon, I18n} from './../../../Components/';
 import style from './style.css';
 
 @connect()
@@ -38,14 +38,14 @@ export default class UserDropDown extends Component {
                       <form title="Logout" action="/neos/logout" method="post">
                           <button type="submit" name="" value="logout">
                               <Icon icon="power-off" className={style.dropDownItemIcon} />
-                              Logout
+                              <I18n target="Logout" />
                           </button>
                       </form>
                     </li>
                     <li className={`${style.userSettingsItem} ${style.dropDownItem}`}>
                         <a title="User Settings" href="http://neos.h-hotels.com/neos/user/usersettings">
                             <Icon icon="wrench" className={style.dropDownItemIcon} />
-                            User Settings
+                            <I18n target="User Settings" />
                         </a>
                     </li>
               </ul>

@@ -10,8 +10,7 @@ export default class MenuToggler extends Component {
 
     render() {
         return (
-          <button className={style.menuBtn} onClick={this.onClick.bind(this)}>
-          </button>
+          <button className={style.menuBtn} onClick={this.onClick.bind(this)}></button>
         );
     }
 

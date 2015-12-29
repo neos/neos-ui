@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {I18n} from '../../../Components/';
 import style from './style.css';
 
 @connect()
@@ -10,12 +11,10 @@ export default class TopBarToggler extends Component {
     }
 
     render() {
-        const {label} = this.props;
-
         return (
-          <button href="#" className={style.toggler} onClick={this.onClick.bind(this)}>
-            {label}
-          </button>
+            <button href="#" className={style.toggler} onClick={this.onClick.bind(this)}>
+                <I18n target={this.props.label} />
+            </button>
         );
     }
 

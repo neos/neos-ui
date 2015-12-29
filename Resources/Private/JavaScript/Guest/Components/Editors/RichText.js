@@ -11,7 +11,7 @@ class RichText extends AbstractEditor {
     editorDidMount() {
         this.editor = new MediumEditor(this.el, {
             toolbar: {
-                buttons: ['bold', 'italic', 'underline']
+                buttons: ['bold', 'italic', 'underline', 'anchor']
             }
         });
         this.el.focus();
@@ -29,4 +29,4 @@ class RichText extends AbstractEditor {
     }
 }
 
-export default (el, value) => new RichText(el, value);
+export default (el, owner, property) => new RichText(el, owner, property);

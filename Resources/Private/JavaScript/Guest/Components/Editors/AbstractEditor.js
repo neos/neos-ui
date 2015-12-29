@@ -1,10 +1,9 @@
 import Component from '@reduct/component';
 
 export class AbstractEditor extends Component {
-    constructor(el, owner, property, options = {}) {
+    constructor(el, property, options = {}) {
         super(el, options);
 
-        this.owner = owner;
         this.property = property;
         this.initializeEvents();
 
@@ -19,18 +18,16 @@ export class AbstractEditor extends Component {
     }
 
     commenceThaw() {
-        if (this.owner.isActive()) {
-            this.__storedElement = this.el;
-            this.el = this.thaw(this.__storedElement, this.el.innerHTML);
+        this.__storedElement = this.el;
+        this.el = this.thaw(this.__storedElement, this.el.innerHTML);
 
-            this.__storedElement.parentNode.replaceChild(this.el, this.__storedElement);
+        this.__storedElement.parentNode.replaceChild(this.el, this.__storedElement);
 
-            setTimeout(() => {
-                document.addEventListener('keydown', this.handleKeyStroke);
-                document.addEventListener('click', this.handleOutsideClick);
-                this.editorDidMount();
-            }, 0);
-        }
+        setTimeout(() => {
+            document.addEventListener('keydown', this.handleKeyStroke);
+            document.addEventListener('click', this.handleOutsideClick);
+            this.editorDidMount();
+        }, 0);
     }
 
     handleKeyStroke(e) {
@@ -51,7 +48,7 @@ export class AbstractEditor extends Component {
     }
 
     commenceCommit() {
-        this.owner.commitChange(this.property, this.commit());
+        // this.owner.commitChange(this.property, this.commit());
         document.removeEventListener('keydown', this.commenceCommit);
         document.removeEventListener('click', this.handleOutsideClick);
 

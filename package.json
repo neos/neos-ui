@@ -6,17 +6,18 @@
   "private": true,
   "devDependencies": {
     "autoprefixer": "^6.2.2",
-    "babel": "^6.0.14",
-    "babelify": "^6.4.0",
-    "browserify": "^12.0.1",
-    "css-modulesify": "^0.16.1",
+    "babel-core": "^5.8.34",
+    "babel-loader": "^5.4.0",
+    "css-loader": "^0.23.1",
     "eslint": "^1.10.3",
     "eslint-config-xo": "^0.9.1",
     "eslint-config-xo-react": "^0.3.0",
     "eslint-plugin-react": "^3.13.1",
-    "parallelshell": "^2.0.0",
+    "extract-text-webpack-plugin": "^0.9.1",
+    "postcss-loader": "^0.8.0",
     "redux-devtools": "^2.1.3",
-    "watchify": "^3.6.1",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.9",
     "xo": "^0.12.1"
   },
   "dependencies": {
@@ -35,26 +36,11 @@
     "uuid": "^2.0.1"
   },
   "scripts": {
-    "postinstall": "npm run build",
-    "build:scripts:host": "browserify $npm_package_config_browserify_settings_host $npm_package_config_host_src > $npm_package_config_host_dest",
-    "build:scripts:guest": "browserify $npm_package_config_browserify_settings_guest $npm_package_config_guest_src > $npm_package_config_guest_dest",
-    "build:scripts": "npm run build:scripts:host & npm run build:scripts:guest",
-    "build": "npm run build:scripts",
+    "build": "webpack",
     "lint:scripts": "xo Resources/Private/JavaScript/**/**/**/**/**/**/*.js",
     "lint": "npm run lint:scripts",
     "test": "npm run lint",
-    "watch:scripts:host": "watchify -v $npm_package_config_browserify_settings_host $npm_package_config_host_src -o $npm_package_config_host_dest",
-    "watch:scripts:guest": "watchify -v $npm_package_config_browserify_settings_guest $npm_package_config_guest_src -o $npm_package_config_guest_dest",
-    "watch:scripts": "parallelshell 'npm run watch:scripts:host' 'npm run watch:scripts:guest'",
-    "watch": "parallelshell 'npm run watch:scripts'"
-  },
-  "config": {
-    "browserify_settings_host": "-t [ babelify --stage 0 ] -p [ css-modulesify -o Resources/Public/Styles/Host.css --after autoprefixer -c postcss.json ]",
-    "browserify_settings_guest": "-t [ babelify --stage 0 ] -p [ css-modulesify -o Resources/Public/Styles/Guest.css --after autoprefixer -c postcss.json ]",
-    "host_src": "Resources/Private/JavaScript/Host/index.js",
-    "host_dest": "Resources/Public/JavaScript/Host.min.js",
-    "guest_src": "Resources/Private/JavaScript/Guest/index.js",
-    "guest_dest": "Resources/Public/JavaScript/Guest.min.js"
+    "watch": "webpack --progress --colors --watch"
   },
   "xo": {
     "esnext": true,

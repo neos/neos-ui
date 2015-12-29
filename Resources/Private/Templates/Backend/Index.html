@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="{f:uri.resource(path: 'resource://PackageFactory.Guevara/Public/Styles/Neos.css')}">
     </head>
     <body>
-        <div id="appContainer" data-csrf-token="" data-first-tab="{documentNodeUri}">
+        <div id="appContainer" data-csrf-token="{f:security.csrfToken()}" data-first-tab="{documentNodeUri}">
             <div data-json="initialState">{initialState}</div>
             <div data-json="nodeTypeSchema">{nodeTypeSchema}</div>
         </div>

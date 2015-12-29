@@ -26,20 +26,23 @@ class DOMConnector {
         });
 
         [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]')).forEach(contentElement => {
+            const contextPath = contentElement.dataset.__cheNodeContextpath;
             const typoScriptPath = contentElement.dataset.__cheTyposcriptPath;
             const contentComponent = new ContentComponent(contentElement);
 
       			contentComponent.injectNeosBackendService(this.neosBackend);
 
-      			this.contentComponents[typoScriptPath] = contentComponent;
+      			this.contentComponents[typoScriptPath + '::' + contextPath] = contentComponent;
 
       			contentComponent.render();
   		  });
 
         [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(contentElement => {
-            const nodeContextPath = closestContextPath(contentElement);
+            const contextPath = closestContextPath(contentElement);
+            const property = contentElement.dataset.__cheProperty;
+            const editor = richTextEditor(contentElement, property, contextPath);
 
-      			richTextEditor(contentElement);
+            editor.injectNeosBackendService(this.neosBackend);
   		  });
   	}
 }

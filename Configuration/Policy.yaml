@@ -12,6 +12,9 @@ privilegeTargets:
     'PackageFactory.Guevara:Backend.GeneralAccess':
       matcher: 'method(PackageFactory\Guevara\Controller\BackendController->.*())'
 
+    'PackageFactory.Guevara:Backend.ServiceAccess':
+      matcher: 'method(PackageFactory\Guevara\Controller\BackendServiceController->.*())'
+
 roles:
 
     'TYPO3.Flow:Everybody':
@@ -24,4 +27,7 @@ roles:
       privileges:
         -
           privilegeTarget: 'PackageFactory.Guevara:Backend.GeneralAccess'
+          permission: GRANT
+        -
+          privilegeTarget: 'PackageFactory.Guevara:Backend.ServiceAccess'
           permission: GRANT

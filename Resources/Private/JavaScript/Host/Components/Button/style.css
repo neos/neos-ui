@@ -1,16 +1,23 @@
-.topBarToggler {
+.btn {
     position: relative;
     display: inline-block;
     height: 40px;
     padding: 0 16px;
     border: 0;
-    border-right: 1px solid $dark;
-    background-color: $darker;
     -webkit-font-smoothing: antialiased;
     text-align: center;
     vertical-align: middle;
     width: auto;
-
+}
+.btn--clean {
+    background: $darker;
+}
+.btn--brandHover {
+    &:hover {
+        background: $brand;
+    }
+}
+.btn--cleanHover {
     &:hover {
         color: $brand;
     }

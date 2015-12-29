@@ -1,5 +1,5 @@
-import neosBackend from './NeosBackend.js';
+import backend from './Backend.js';
 
 export {
-    neosBackend
+    backend
 };

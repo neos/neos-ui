@@ -1,4 +1,5 @@
 import Component from '@reduct/component';
+import {backend} from '../../Service';
 
 export class AbstractEditor extends Component {
     constructor(el, property, contextPath, options = {}) {
@@ -16,10 +17,6 @@ export class AbstractEditor extends Component {
 
     initializeEvents() {
         this.el.addEventListener('click', () => this.commenceThaw());
-    }
-
-    injectNeosBackendService(neosBackendService) {
-        this.neosBackendService = neosBackendService;
     }
 
     commenceThaw() {
@@ -53,20 +50,17 @@ export class AbstractEditor extends Component {
     }
 
     commenceCommit() {
-        if (this.neosBackendService) {
-            const {changeManager} = this.neosBackendService;
+        const {changeManager} = backend;
 
-            changeManager.commitChange({
-                type: 'PackageFactory.Guevara:Property',
-                subject: this.contextPath,
-                payload: {
-                    propertyName: this.property,
-                    value: this.commit()
-                }
-            });
-        }
+        changeManager.commitChange({
+            type: 'PackageFactory.Guevara:Property',
+            subject: this.contextPath,
+            payload: {
+                propertyName: this.property,
+                value: this.commit()
+            }
+        });
 
-        // this.owner.commitChange(this.property, this.commit());
         document.removeEventListener('keydown', this.commenceCommit);
         document.removeEventListener('click', this.handleOutsideClick);
 

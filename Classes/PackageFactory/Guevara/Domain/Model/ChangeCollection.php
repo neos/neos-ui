@@ -62,4 +62,14 @@ class ChangeCollection
         }
     }
 
+    /**
+     * Get the number of changes in this collection
+     *
+     * @return integer
+     */
+    public function count()
+    {
+        return count($this->changes);
+    }
+
 }

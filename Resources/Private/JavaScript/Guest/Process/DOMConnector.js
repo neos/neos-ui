@@ -11,9 +11,8 @@ function closestContextPath(el) {
 }
 
 class DOMConnector {
-  	constructor(NeosBackend) {
+  	constructor() {
     		this.contentComponents = {};
-    		this.neosBackend = NeosBackend;
   	}
 
     run() {
@@ -30,8 +29,6 @@ class DOMConnector {
             const typoScriptPath = contentElement.dataset.__cheTyposcriptPath;
             const contentComponent = new ContentComponent(contentElement);
 
-      			contentComponent.injectNeosBackendService(this.neosBackend);
-
       			this.contentComponents[typoScriptPath + '::' + contextPath] = contentComponent;
 
       			contentComponent.render();
@@ -41,10 +38,8 @@ class DOMConnector {
             const contextPath = closestContextPath(contentElement);
             const property = contentElement.dataset.__cheProperty;
             const editor = richTextEditor(contentElement, property, contextPath);
-
-            editor.injectNeosBackendService(this.neosBackend);
   		  });
   	}
 }
 
-export default (NeosBackend, DocumentData) => new DOMConnector(NeosBackend, DocumentData);
+export default () => new DOMConnector();

@@ -17,32 +17,11 @@ export default class ContentComponent extends Component {
         });
     }
 
-    injectNeosBackendService(neosBackendService) {
-        this.neosBackendService = neosBackendService;
-    }
-
     render() {
         this.el.classList.add('guevara/contentComponent');
     }
 
     isActive() {
         return true;
-    }
-
-    commitChange(property, value) {
-        this.neosBackendService.documentManager.commitChange(window.name, {
-            childNodes: {
-                [this.getProp('contextPath')]: {
-                    properties: {
-                        [property]: value
-                    }
-                }
-            }
-        });
-    }
-
-    getProperty(property) {
-        return this.neosBackendService.documentManager.getConfiguration(window.name)
-            .childNodes[this.getProp('contextPath')].properties[property];
     }
 }

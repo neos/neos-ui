@@ -1,4 +1,5 @@
 import actions from '../Actions/';
+import backend from './Backend.js';
 
 class ChangeManager {
 
@@ -20,7 +21,7 @@ class ChangeManager {
         const changes = this.store.getState().get('changes');
 
         if (!changes.isEmpty()) {
-            const feedbackManager = window['@Neos:Backend'].feedbackManager;
+            const {feedbackManager} = backend;
             // dispatch clear changes action
             this.store.dispatch(actions.Transient.Changes.clearChanges());
 

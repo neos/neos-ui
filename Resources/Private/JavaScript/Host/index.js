@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
+import {assign} from 'lodash';
 
 import reducerFactory from './Reducers/';
 import {initialStateFactory} from './State/';
 
 import {ContentView, FooterBar, TopBar, LeftSideBar} from './Containers/';
-import {documentManager, nodeTypeManager, tabManager, changeManager, feedbackManager} from './Service/';
+import {backend, nodeTypeManager, tabManager, changeManager, feedbackManager} from './Service/';
 
 import style from './style.css';
 
@@ -42,14 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
         appContainer
     );
 
-    window['@Neos:Backend'] = {
-        documentManager: documentManager(store),
+    // Bootstrap the backend services
+    assign(backend, {
         tabManager: tabManager(store),
         changeManager: changeManager(store, csrfToken),
         feedbackManager: feedbackManager(store)
-    };
+    });
 
-    window['@Neos:Backend'].tabManager.createTab(firstTabUri);
-
-    window.store = store;
+    backend.tabManager.createTab(firstTabUri);
 });

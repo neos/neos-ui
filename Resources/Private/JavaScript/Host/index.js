@@ -3,16 +3,27 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import assign from 'lodash.assign';
-
 import reducerFactory from './Reducers/';
 import {initialStateFactory} from './State/';
-
-import {ContentView, FooterBar, TopBar, LeftSideBar, RightSideBar, ContextBar} from './Containers/';
-import {backend, nodeTypeManager, tabManager, changeManager, feedbackManager} from './Service/';
-
+import {
+    ContentView,
+    FooterBar,
+    TopBar,
+    LeftSideBar,
+    RightSideBar,
+    ContextBar
+} from './Containers/';
+import {
+    backend,
+    nodeTypeManager,
+    tabManager,
+    changeManager,
+    feedbackManager
+} from './Service/';
 import style from './style.css';
 
 // Add the root class which enables the scoped normalize.css
+// ToDo: Remove the scoping and this class to reduce the overall specificity of all styles.
 document.documentElement.classList.add(style.neos);
 
 // Initialize the backend application on load.

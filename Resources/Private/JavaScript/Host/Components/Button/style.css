@@ -2,6 +2,7 @@
     position: relative;
     display: inline-block;
     height: 40px;
+    min-width: 40px;
     padding: 0 16px;
     border: 0;
     -webkit-font-smoothing: antialiased;
@@ -11,6 +12,9 @@
 }
 .btn--clean {
     background: $darker;
+}
+.btn--transparent {
+    background: 0;
 }
 .btn--brandHover {
     &:hover {

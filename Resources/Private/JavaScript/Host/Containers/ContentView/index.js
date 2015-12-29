@@ -4,11 +4,9 @@ import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 
-@connect(state => {
-    return {
-        tabs: state.get('ui').get('tabs')
-    };
-})
+@connect(state => ({
+    tabs: state.get('ui').get('tabs')
+}))
 export default class ContentView extends Component {
     static propTypes = {
         tabs: PropTypes.instanceOf(Immutable.Map)

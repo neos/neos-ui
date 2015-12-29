@@ -5,11 +5,9 @@ import actions from '../../Actions/';
 import {Bar} from '../../Components/';
 import TabSwitcher from './TabSwitcher/';
 
-@connect(state => {
-    return {
-        tabs: state.get('ui').get('tabs')
-    };
-})
+@connect(state => ({
+    tabs: state.get('ui').get('tabs')
+}))
 export default class FooterBar extends Component {
     static propTypes = {
         tabs: PropTypes.instanceOf(Immutable.Map),

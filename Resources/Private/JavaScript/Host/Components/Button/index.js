@@ -16,6 +16,7 @@ export default class Button extends Component {
         const classNames = mergeClassNames({
             [style.btn]: true,
             [style['btn--clean']]: this.props.style === 'clean',
+            [style['btn--transparent']]: this.props.style === 'transparent',
             [style['btn--cleanHover']]: this.props.hoverStyle === 'clean',
             [className]: true
         });

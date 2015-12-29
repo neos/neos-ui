@@ -11,15 +11,15 @@ function closestContextPath(el) {
 }
 
 class DOMConnector {
-  	constructor() {
-    		this.contentComponents = {};
-  	}
+    constructor() {
+        this.contentComponents = {};
+    }
 
     run() {
-        [].slice.call(document.querySelectorAll('a[href]')).forEach((link) => {
+        [].slice.call(document.querySelectorAll('a[href]')).forEach(link => {
             link.draggable = true;
 
-            link.ondragstart = (e) => {
+            link.ondragstart = e => {
                 e.dataTransfer.setData('href', link.href);
             };
         });
@@ -29,17 +29,17 @@ class DOMConnector {
             const typoScriptPath = contentElement.dataset.__cheTyposcriptPath;
             const contentComponent = new ContentComponent(contentElement);
 
-      			this.contentComponents[typoScriptPath + '::' + contextPath] = contentComponent;
+            this.contentComponents[`${typoScriptPath}::${contextPath}`] = contentComponent;
 
-      			contentComponent.render();
-  		  });
+            contentComponent.render();
+        });
 
         [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(contentElement => {
             const contextPath = closestContextPath(contentElement);
             const property = contentElement.dataset.__cheProperty;
             const editor = richTextEditor(contentElement, property, contextPath);
-  		  });
-  	}
+        });
+    }
 }
 
 export default () => new DOMConnector();

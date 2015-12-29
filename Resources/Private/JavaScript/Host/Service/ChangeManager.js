@@ -2,7 +2,6 @@ import actions from '../Actions/';
 import backend from './Backend.js';
 
 class ChangeManager {
-
     constructor(store, csrfToken, endpoint) {
         this.store = store;
         this.csrfToken = csrfToken;

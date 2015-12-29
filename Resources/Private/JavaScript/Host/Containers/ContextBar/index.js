@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Icon, DropDown, Button} from '../../Components/';
+import {Icon, DropDown, IconButton} from '../../Components/';
 import style from './style.css';
 
 @connect()
@@ -27,12 +27,8 @@ export default class ContextBar extends Component {
                 </DropDown>
 
                 <div className={style.contextBar__rightHandedActions}>
-                    <Button className={style.contextBar__rightHandedActions__btn} style="clean" hoverStyle="brand" onClick={this.onClickOpenInNewTab.bind(this)}>
-                      <Icon icon="external-link" />
-                    </Button>
-                    <Button className={style.contextBar__rightHandedActions__btn} style="clean" hoverStyle="brand" onClick={this.onClickHideUi.bind(this)}>
-                      <Icon icon="expand" />
-                    </Button>
+                    <IconButton icon="external-link" onClick={this.onClickOpenInNewTab.bind(this)} />
+                    <IconButton icon="expand" onClick={this.onClickHideUi.bind(this)} />
                 </div>
             </div>
         );

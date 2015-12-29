@@ -1,9 +1,7 @@
 import uuid from 'uuid';
-
 import actions from '../../Actions/';
 
 class TabManager {
-
     constructor(store) {
         this.store = store;
     }

@@ -33,19 +33,7 @@
     float: right;
 }
 .contextBar__rightHandedActions__btn {
-    display: inline-block;
-    height: 40px;
-    min-width: 40px;
-    border: 0;
     vertical-align: top;
-    line-height: 40px;
-    text-align: center;
-    background: 0;
-    color: $brightest;
-
-    &:hover {
-        background: $brand;
-    }
 }
 
 .dimensionCategory {}

@@ -7,7 +7,7 @@ export default {
         return state.set('changes', state.get('changes').push(action.change));
     },
 
-    [ActionTypes.Transient.CHANGES_CLEAR](state, action) {
+    [ActionTypes.Transient.CHANGES_CLEAR](state) {
         return state.set('changes', Immutable.fromJS([]));
     }
 };

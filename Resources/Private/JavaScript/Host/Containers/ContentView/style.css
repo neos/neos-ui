@@ -2,8 +2,7 @@
     float: left;
     height: 100%;
     width: 100%;
-    padding-left: 300px;
-    padding-top: 41px;
+    padding: 41px 300px;
 }
 
 .item {

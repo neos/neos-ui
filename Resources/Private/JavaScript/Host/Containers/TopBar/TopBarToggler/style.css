@@ -1,16 +1,16 @@
 .toggler {
-	position: relative;
-	display: inline-block;
-	height: 40px;
-	padding: 0 16px;
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    padding: 0 16px;
   border: 0;
-	border-right: 1px solid $dark;
-	background-color: $darker;
-	-webkit-font-smoothing: antialiased;
-	text-align: center;
-	vertical-align: middle;
-	width: auto;
+    border-right: 1px solid $dark;
+    background-color: $darker;
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+    vertical-align: middle;
+    width: auto;
 }
 .toggler:hover {
-	color: $brand;
+    color: $brand;
 }

@@ -2,27 +2,27 @@ $lineHeight: 3px;
 $lineWidth: 22px;
 
 .menuBtn {
-	display: inline-block;
-	width: 54px;
-	height: 40px;
-	float: left;
-	border: 0;
+    display: inline-block;
+    width: 54px;
+    height: 40px;
+    float: left;
+    border: 0;
   border-right: 1px solid $dark;
   text-align: center;
   background-color: $darker;
 }
 .menuBtn:before,
 .menuBtn:after {
-	position: absolute;
-	left: 16px;
+    position: absolute;
+    left: 16px;
   display: block;
-	width: $lineWidth;
+    width: $lineWidth;
   height: $lineHeight;
-	border-color: currentColor;
+    border-color: currentColor;
 }
 .menuBtn:before {
   top: 12px;
-	border-top: $lineHeight solid;
+    border-top: $lineHeight solid;
   border-bottom: $lineHeight solid;
   content: "";
 }
@@ -32,6 +32,6 @@ $lineWidth: 22px;
   content: "";
 }
 .menuBtn:hover {
-	text-decoration: none;
-	color: $brand;
+    text-decoration: none;
+    color: $brand;
 }

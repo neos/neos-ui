@@ -6,10 +6,10 @@ import SideBar from './SideBar/';
 import MenuToggler from './MenuToggler/';
 
 export {
-	Bar,
+    Bar,
     DropDown,
-	I18n,
-	Icon,
-	SideBar,
-	MenuToggler
+    I18n,
+    Icon,
+    SideBar,
+    MenuToggler
 };

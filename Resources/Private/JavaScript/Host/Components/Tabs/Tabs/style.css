@@ -20,11 +20,15 @@
 }
 .tabs__navigation__item {
     float: left;
-    height: 40px;
-    padding: 0 16px;
-    line-height: 40px;
     border-right: 1px solid $dark;
-    cursor: pointer;
+
+    > a {
+        display: inline-block;
+        height: 40px;
+        padding: 0 16px;
+        line-height: 40px;
+        cursor: pointer;
+    }
 }
 .tabs__navigation__item--isActive {
     color: $brand;

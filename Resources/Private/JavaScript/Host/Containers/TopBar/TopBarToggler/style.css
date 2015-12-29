@@ -1,11 +1,13 @@
 .toggler {
 	position: relative;
-	background-color: #222;
-	border-right: 1px solid #3f3f3f;
 	display: inline-block;
+	height: 40px;
 	padding: 0 16px;
 	margin: 0;
   border: 0;
+	border-right: 1px solid #3f3f3f;
+	background-color: #222;
+	line-height: 40px;
 	font-family: 'Noto Sans', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	color: #fff;
@@ -14,8 +16,6 @@
 	vertical-align: middle;
 	cursor: pointer;
 	width: auto;
-	height: 40px;
-	line-height: 40px;
 }
 .toggler:hover {
 	color: $brand;

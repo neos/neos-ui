@@ -25,7 +25,9 @@ export default class I18n extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.loadTranslation(newProps);
+        if (newProps.target !== this.props.target) {
+            this.loadTranslation(newProps);
+        }
     }
 
     loadTranslation(props = this.props) {

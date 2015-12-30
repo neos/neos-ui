@@ -95,7 +95,12 @@ export default class AddNode extends Component {
         ];
 
         return (
-            <Dialog isOpen={this.state.isModalOpen} title="Create new" actions={actions}>
+            <Dialog
+                isOpen={this.state.isModalOpen}
+                title="Create new"
+                onRequestClose={this.closeAddNodeDialog.bind(this)}
+                actions={actions}
+                >
                 test
             </Dialog>
         );

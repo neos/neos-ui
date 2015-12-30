@@ -12,11 +12,19 @@
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    width: 80%;
-    min-height: 300px;
-    padding: 16px;
     background: $darker
 }
-.dialog__contents__actions {
+.dialog__contents__inner {
+    position: relative;
+    width: 80vw;
+    min-height: 300px;
+    padding: 16px;
+}
+.dialog__contents__inner__closeBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.dialog__contents__inner__actions {
     text-align: right;
 }

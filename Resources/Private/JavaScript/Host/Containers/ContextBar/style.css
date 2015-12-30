@@ -2,8 +2,7 @@
     position: absolute;
     top: 41px;
     left: 0;
-    padding-left: 300px;
-    padding-right: 300px;
+    padding: 0 320px;
     width: 100%;
     height: 41px;
     background: $neutral;

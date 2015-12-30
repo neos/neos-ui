@@ -3,9 +3,13 @@ import {connect} from 'react-redux';
 import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import style from './style.css';
+import {immutableOperations} from '../../../Shared/Util';
+
+const {$get} = immutableOperations;
+
 
 @connect(state => ({
-    tabs: state.get('ui').get('tabs')
+    tabs: $get(state, 'ui.tabs')
 }))
 export default class ContentView extends Component {
     static propTypes = {
@@ -13,14 +17,14 @@ export default class ContentView extends Component {
     };
 
     render() {
-        const activeId = this.props.tabs.get('active').get('id');
+        const activeId = $get(this.props.tabs, 'active.id');
 
         // Using Maps as children is not yet fully supported in react 0.14.1.
-        const tabs = this.props.tabs.get('byId').toArray();
+        const tabs = $get(this.props.tabs, 'byId');
 
         return (
             <div className={style.contentView}>
-                {tabs.map(tab => this.renderTab(tab, activeId))}
+                {tabs.map(tab => this.renderTab(tab, activeId)).toArray()}
             </div>
         );
     }

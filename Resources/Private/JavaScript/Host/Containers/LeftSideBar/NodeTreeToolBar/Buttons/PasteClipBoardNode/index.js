@@ -1,9 +1,13 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {IconButtonDropDown, Icon} from '../../../../../Components/';
 
 @connect()
 export default class PasteClipBoardNode extends Component {
+    static propTypes = {
+        className: PropTypes.string
+    }
+
     constructor(props) {
         super(props);
 
@@ -29,6 +33,7 @@ export default class PasteClipBoardNode extends Component {
 
         return (
             <IconButtonDropDown
+                className={this.props.className}
                 icon="paste"
                 modeIcon={modeIcon}
                 onClick={this.pasteClipBoardNode.bind(this)}

@@ -6,21 +6,29 @@ import {
     DeleteSelectedNode,
     EditSelectedNode,
     HideSelectedNode,
-    PasteClipBoardNode
+    PasteClipBoardNode,
+    RefreshPageTree
 } from './Buttons/';
 import style from './style.css';
 
 export default class NodeTreeToolBar extends Component {
     render() {
+        const props = {
+            className: style.toolBar__btnGroup__btn
+        };
+
         return (
             <div className={style.toolBar}>
-                <AddNode />
-                <EditSelectedNode />
-                <HideSelectedNode />
-                <CopySelectedNode />
-                <CutSelectedNode />
-                <PasteClipBoardNode />
-                <DeleteSelectedNode />
+                <div className={style.toolBar__btnGroup}>
+                    <AddNode {...props} />
+                    <EditSelectedNode {...props} />
+                    <HideSelectedNode {...props} />
+                    <CopySelectedNode {...props} />
+                    <CutSelectedNode {...props} />
+                    <PasteClipBoardNode {...props} />
+                    <DeleteSelectedNode {...props} />
+                    <RefreshPageTree {...props} />
+                </div>
             </div>
         );
     }

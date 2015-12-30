@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {IconButton} from '../../../../../Components/';
 
 @connect()
-export default class EditSelectedNode extends Component {
+export default class RefreshPageTree extends Component {
     static propTypes = {
         className: PropTypes.string
     }
@@ -12,14 +12,14 @@ export default class EditSelectedNode extends Component {
         return (
             <IconButton
                 className={this.props.className}
-                onClick={this.editSelectedNode.bind(this)}
-                icon="pencil"
+                onClick={this.refreshPageTree.bind(this)}
+                icon="refresh"
                 hoverStyle="clean"
                 />
         );
     }
 
-    editSelectedNode() {
-        console.log('edit selected node');
+    refreshPageTree() {
+        console.log('refresh page tree');
     }
 }

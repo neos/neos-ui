@@ -1,12 +1,21 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {IconButton} from '../../../../../Components/';
 
 @connect()
 export default class CopySelectedNode extends Component {
+    static propTypes = {
+        className: PropTypes.string
+    }
+
     render() {
         return (
-            <IconButton icon="copy" onClick={this.copySelectedNode.bind(this)} hoverStyle="clean" />
+            <IconButton
+                className={this.props.className}
+                onClick={this.copySelectedNode.bind(this)}
+                icon="copy"
+                hoverStyle="clean"
+                />
         );
     }
 

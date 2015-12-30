@@ -5,6 +5,7 @@ import DeleteSelectedNode from './DeleteSelectedNode/';
 import EditSelectedNode from './EditSelectedNode/';
 import HideSelectedNode from './HideSelectedNode/';
 import PasteClipBoardNode from './PasteClipBoardNode/';
+import RefreshPageTree from './RefreshPageTree/';
 
 export {
     AddNode,
@@ -13,5 +14,6 @@ export {
     DeleteSelectedNode,
     EditSelectedNode,
     HideSelectedNode,
-    PasteClipBoardNode
+    PasteClipBoardNode,
+    RefreshPageTree
 };

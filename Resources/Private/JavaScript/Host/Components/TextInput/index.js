@@ -10,7 +10,9 @@ export default class TextInput extends Component {
         placeholder: PropTypes.string,
         className: PropTypes.string,
         isValid: PropTypes.bool.isRequired,
-        onChange: PropTypes.func
+        onChange: PropTypes.func,
+        onFocus: PropTypes.func,
+        onBlur: PropTypes.func
     }
 
     render() {
@@ -39,6 +41,8 @@ export default class TextInput extends Component {
                     type="text"
                     placeholder={placeholder}
                     onChange={this.onChange.bind(this)}
+                    onFocus={this.onFocus.bind(this)}
+                    onBlur={this.onBlur.bind(this)}
                     />
             </div>
         );
@@ -50,6 +54,22 @@ export default class TextInput extends Component {
 
         if (onChange) {
             onChange(value);
+        }
+    }
+
+    onFocus() {
+        const {onFocus} = this.props;
+
+        if (onFocus) {
+            onFocus();
+        }
+    }
+
+    onBlur() {
+        const {onBlur} = this.props;
+
+        if (onBlur) {
+            onBlur();
         }
     }
 }

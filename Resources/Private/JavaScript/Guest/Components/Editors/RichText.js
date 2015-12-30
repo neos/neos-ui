@@ -17,6 +17,14 @@ class RichText extends AbstractEditor {
         this.el.focus();
     }
 
+    hasChanges() {
+        if (this.__storedElement) {
+            return this.__storedElement.innerHTML !== this.el.innerHTML;
+        }
+
+        return false;
+    }
+
     commit() {
         return this.el.innerHTML;
     }

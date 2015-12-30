@@ -23,6 +23,20 @@ export default serverState => Immutable.fromJS({
     },
 
     //
+    // Contains information about the currently logged in user
+    //
+    user: {
+        name: {
+            title: '',
+            firstName: '',
+            middleName: '',
+            lastName: '',
+            otherName: '',
+            fullName: ''
+        }
+    },
+
+    //
     // Contains information about all nodes the are currently loaded
     //
     nodes: {

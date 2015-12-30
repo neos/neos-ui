@@ -10,14 +10,15 @@ export default class Button extends Component {
         cavity: PropTypes.bool,
         label: PropTypes.string,
         indicator: PropTypes.number,
-        icon: PropTypes.string,
         style: PropTypes.object,
+
+        children: PropTypes.node,
 
         onClick: PropTypes.func.isRequired
     };
 
     render() {
-        const {enabled, highlighted, cavity, label, indicator, icon, style} = this.props;
+        const {enabled, highlighted, cavity, label, indicator, style} = this.props;
         const btnClassName = mergeClassNames({
             [style.btn]: true,
             [style['btn--disabled']]: !enabled,
@@ -30,8 +31,7 @@ export default class Button extends Component {
         };
 
         return (<button className={btnClassName} onClick={() => this.onClick()} {...btnAttributes}>
-            {icon ? <Icon icon={icon} /> : ''}
-            <I18n target={label} /> {indicator > 0 ? '(' + indicator + ')' : ''}
+            {this.props.children} {indicator > 0 ? '(' + indicator + ')' : ''}
         </button>)
     }
 

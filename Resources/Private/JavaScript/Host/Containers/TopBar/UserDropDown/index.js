@@ -4,7 +4,15 @@ import mergeClassNames from 'classnames';
 import {I18n, Icon, DropDown} from '../../../Components/';
 import style from './style.css';
 
-@connect()
+import {immutableOperations} from '../../../../Shared/Util';
+
+const {$get} = immutableOperations;
+
+@connect(state => {
+    return {
+        currentUserName: $get(state, 'user.name.fullName')
+    }
+})
 export default class UserDropDown extends Component {
     static propTypes = {
         currentUserName: PropTypes.string.isRequired
@@ -34,7 +42,7 @@ export default class UserDropDown extends Component {
                         </form>
                       </li>
                       <li className={`${style.dropDown__item}`}>
-                          <a title="User Settings" href="http://neos.h-hotels.com/neos/user/usersettings">
+                          <a title="User Settings" href="/neos/user/usersettings">
                               <Icon icon="wrench" className={style.dropDown__item__icon} />
                               <I18n target="User Settings" />
                           </a>

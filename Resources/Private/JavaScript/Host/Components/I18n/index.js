@@ -11,7 +11,7 @@ export default class I18n extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {label: ''};
+        this.state = {label: 'Translation loading...'};
     }
 
     render() {
@@ -20,11 +20,19 @@ export default class I18n extends Component {
         );
     }
 
+    componentDidMount() {
+        this.loadTranslation();
+    }
+
     componentWillReceiveProps(newProps) {
-      const {target} = newProps;
+        this.loadTranslation(newProps);
+    }
 
-      logger.info('translate key: ', target, newProps);
+    loadTranslation(props = this.props) {
+        const {target} = props;
 
-      this.setState({label: target});
+        logger.info('translate key: ', target, props);
+
+        this.setState({label: target});
     }
 }

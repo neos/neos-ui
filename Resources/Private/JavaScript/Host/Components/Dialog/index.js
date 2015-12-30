@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {executeCallback} from '../../Abstracts/';
 import Headline from '../Headline/';
 import style from './style.css';
 

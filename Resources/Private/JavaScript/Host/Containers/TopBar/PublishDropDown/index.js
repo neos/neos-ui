@@ -51,9 +51,11 @@ export default class PublishDropDown extends Component {
                     enabled={canPublishLocally}
                     highlighted={canPublishLocally}
                     indicator={publishableNodesInDocument.count()}
-                    label={canPublishLocally ? 'Publish' : 'Published'}
                     onClick={(e) => this.onPublishClick(e)}
-                />
+                >
+                    <I18n target={canPublishLocally ? 'Publish' : 'Published'}
+                        id={canPublishLocally ? 'publish' : 'published'} />
+                </Button>
                 <DropDown iconAfter="chevron-down" iconAfterActive="chevron-up" classNames={dropDownClassNames}>
                     <li className={style.dropDown__contents__item}>
                         <Button
@@ -62,10 +64,11 @@ export default class PublishDropDown extends Component {
                             enabled={canPublishGlobally}
                             highlighted={false}
                             indicator={publishableNodes.count()}
-                            label="Publish All"
-                            icon="upload"
                             onClick={(e) => this.onPublishAllClick(e)}
-                        />
+                        >
+                            <Icon icon="upload" />
+                            <I18n target="Publish All" id="publishAll" />
+                        </Button>
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <Button
@@ -77,7 +80,10 @@ export default class PublishDropDown extends Component {
                             label="Discard"
                             icon="ban"
                             onClick={(e) => this.onDiscardClick(e)}
-                        />
+                        >
+                            <Icon icon="ban" />
+                            <I18n target="Discard" id="discard" />
+                        </Button>
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <Button
@@ -86,40 +92,27 @@ export default class PublishDropDown extends Component {
                             enabled={canPublishGlobally}
                             highlighted={false}
                             indicator={publishableNodes.count()}
-                            label="Discard All"
-                            icon="ban"
                             onClick={(e) => this.onDiscardAllClick(e)}
-                        />
+                        >
+                            <Icon icon="ban" />
+                            <I18n target="Discard All" id="discardAll" />
+                        </Button>
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <label>
                             <input type="checkbox" onChange={this.onAutoPublishChange.bind(this)} />
-                            <I18n target="Auto-Publish" />
+                            <I18n target="Auto-Publish" id="autoPublish" />
                         </label>
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <a href="/neos/management/workspaces">
                             <Icon icon="th-large" />
-                            <I18n target="Workspaces" />
+                            <I18n target="Workspaces" id="workspaces" />
                         </a>
                     </li>
                 </DropDown>
             </div>
         );
-    }
-
-    renderLocalPublishLabel(publishableNodesInDocument) {
-        const canPublish = publishableNodesInDocument.count() > 0;
-
-        if (canPublish) {
-            return (<span>
-                <I18n target="Publish" /> ({publishableNodesInDocument.count()})
-            </span>);
-        }
-
-        return (<span>
-            <I18n target="Published" />
-        </span>);
     }
 
     onPublishClick() {

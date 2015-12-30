@@ -2,10 +2,17 @@ import React, {Component, PropTypes} from 'react';
 import {service} from '../../../Shared/';
 const {logger} = service;
 
+import {backend} from '../../Service/';
+
 export default class I18n extends Component {
     static propTypes = {
         target: PropTypes.string,
-        className: PropTypes.string
+        className: PropTypes.string,
+
+        id: PropTypes.string,
+        packageKey: PropTypes.string,
+        sourceName: PropTypes.string,
+        params: PropTypes.array
     }
 
     constructor(props) {
@@ -31,10 +38,13 @@ export default class I18n extends Component {
     }
 
     loadTranslation(props = this.props) {
-        const {target} = props;
+        const {target, id, packageKey, sourceName, params} = props;
+        const {i18n} = backend;
 
-        logger.info('translate key: ', target, props);
-
-        this.setState({label: target});
+        if (i18n) {
+            this.setState({label: id ? i18n(id, packageKey || 'TYPO3.Neos', sourceName || 'Main', params || []) : target});
+        } else if (target) {
+            this.setState({label: target});
+        }
     }
 }

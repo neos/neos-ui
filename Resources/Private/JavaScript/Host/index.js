@@ -24,7 +24,8 @@ import {
     tabManager,
     changeManager,
     feedbackManager,
-    publishingService
+    publishingService,
+    i18n
 } from './Service/';
 
 import style from './style.css';
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialState = initialStateFactory(
         JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML)
     );
+    const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML)
     const nodeTypeSchema = JSON.parse(appContainer.querySelector('[data-json="nodeTypeSchema"]').innerHTML);
     const reducers = reducerFactory(initialState);
     const store = createStore(reducers);
@@ -69,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         changeManager: changeManager(store, csrfToken),
         feedbackManager: feedbackManager(store),
         publishingService: publishingService(csrfToken),
+        i18n: i18n(translations),
 
         asyncComponents: {
             feedbackHandlers: registry()

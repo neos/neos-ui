@@ -34,7 +34,7 @@ export default class UserDropDown extends Component {
                         </form>
                       </li>
                       <li className={`${style.dropDown__item}`}>
-                          <a title="User Settings" href="http://neos.h-hotels.com/neos/user/usersettings">
+                          <a title="User Settings" href="/neos/user/usersettings">
                               <Icon icon="wrench" className={style.dropDown__item__icon} />
                               <I18n target="User Settings" />
                           </a>

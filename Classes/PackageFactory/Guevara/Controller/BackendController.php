@@ -17,6 +17,8 @@ use TYPO3\Neos\Service\UserService;
 use TYPO3\Neos\Service\NodeTypeSchemaBuilder;
 use TYPO3\Flow\Persistence\PersistenceManagerInterface;
 use TYPO3\Neos\Service\LinkingService;
+use TYPO3\Neos\Service\XliffService;
+use TYPO3\Flow\I18n\Locale;
 
 class BackendController extends ActionController
 {
@@ -64,6 +66,12 @@ class BackendController extends ActionController
     protected $nodeTypeSchemaBuilder;
 
     /**
+     * @Flow\Inject
+     * @var XliffService
+     */
+    protected $xliffService;
+
+    /**
      * Displays the backend interface
      *
      * @param NodeInterface $node The node that will be displayed on the first tab
@@ -83,6 +91,10 @@ class BackendController extends ActionController
             }
 
             $this->view->assign('initialState', json_encode([]));
+
+            $this->view->assign('translations', $this->xliffService->getCachedJson(
+                new Locale($this->userService->getInterfaceLanguage())
+            ));
 
             $this->view->assign('documentNodeUri', $this->buildNodeUri($node));
 

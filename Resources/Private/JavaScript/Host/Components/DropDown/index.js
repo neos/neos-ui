@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 import mergeClassNames from 'classnames';
 import {executeCallback} from '../../Abstracts/';
 import I18n from '../I18n/';
@@ -17,6 +18,7 @@ export default class DropDown extends Component {
         super(props);
 
         this.state = {isOpened: false};
+        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
     render() {
@@ -39,7 +41,7 @@ export default class DropDown extends Component {
         });
 
         return (
-            <div className={dropDownClassName} ref="dropDown" onBlur={this.onBlur.bind(this)}>
+            <div className={dropDownClassName} ref="dropDown">
                 <button className={buttonClassName} onClick={e => executeCallback(e, this.toggleDropDown.bind(this))}>
                     {this.renderBeforeIcon()}
                     {this.renderLabel()}
@@ -62,6 +64,17 @@ export default class DropDown extends Component {
         return label ? <I18n target={label} className={className} /> : null;
     }
 
+    componentDidMount() {
+        document.addEventListener('click', this.handleClickOutside, true);
+    }
+
+    handleClickOutside(e) {
+        const domNode = ReactDOM.findDOMNode(this);
+        if (!domNode || !domNode.contains(e.target)) {
+            this.closeDropDown();
+        }
+    }
+
     renderBeforeIcon() {
         const {iconBefore, classNames} = this.props;
         const className = mergeClassNames({
@@ -77,16 +90,6 @@ export default class DropDown extends Component {
         const iconName = isOpened ? 'chevron-up' : 'chevron-down';
 
         return <Icon icon={iconName} className={style.dropDown__btn__afterIcon} />;
-    }
-
-    onBlur(e) {
-        console.log('Fire event and close dropDown', e.relatedTarget);
-
-        // ToDo: Automatically close the dropDown after the blur.
-        // Temporarely disabled since the click events in this.props.children wont always trigger before this action is called.
-        // setTimeout is not acceptable here.
-        //
-        // setTimeout(() => this.closeDropDown(), 500);
     }
 
     toggleDropDown() {

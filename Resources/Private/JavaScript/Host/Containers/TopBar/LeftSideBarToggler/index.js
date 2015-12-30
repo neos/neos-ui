@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
+import actions from '../../../Actions/';
 import {Button, I18n} from '../../../Components/';
 
 @connect()
 export default class LeftSideBarToggler extends Component {
     static propTypes = {
-        className: PropTypes.string
+        className: PropTypes.string,
+        dispatch: PropTypes.any.isRequired
     };
 
     render() {
@@ -19,6 +21,6 @@ export default class LeftSideBarToggler extends Component {
     }
 
     onLeftSidebarToggle() {
-        console.log('toggle left sidebar...');
+        this.props.dispatch(actions.UI.LeftSideBar.toggleSideBar());
     }
 }

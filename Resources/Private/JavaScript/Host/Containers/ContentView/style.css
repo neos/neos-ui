@@ -3,6 +3,13 @@
     height: 100%;
     width: 100%;
     padding: 82px 320px 41px;
+    transition: .5s ease padding;
+}
+.contentView--isFringeLeft {
+    padding-left: 0;
+}
+.contentView--isFringeRight {
+    padding-right: 0;
 }
 .contentView__item {
     display: none;

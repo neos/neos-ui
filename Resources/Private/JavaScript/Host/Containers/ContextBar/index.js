@@ -1,14 +1,33 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import mergeClassNames from 'classnames';
 import {IconButton} from '../../Components/';
 import DimensionSwitcher from './DimensionSwitcher/';
 import style from './style.css';
+import {immutableOperations} from '../../../Shared/Util';
 
-@connect()
+const {$get} = immutableOperations;
+
+@connect(state => ({
+    isFringeLeft: $get(state, 'ui.leftSidebar.isHidden'),
+    isFringeRight: $get(state, 'ui.rightSidebar.isHidden')
+}))
 export default class ContextBar extends Component {
+    static propTypes = {
+        isFringeLeft: PropTypes.bool.isRequired,
+        isFringeRight: PropTypes.bool.isRequired
+    };
+
     render() {
+        const {isFringeLeft, isFringeRight} = this.props;
+        const classNames = mergeClassNames({
+            [style.contextBar]: true,
+            [style['contextBar--isFringeLeft']]: isFringeLeft,
+            [style['contextBar--isFringeRight']]: isFringeRight
+        });
+
         return (
-            <div className={style.contextBar}>
+            <div className={classNames}>
                 <DimensionSwitcher />
 
                 <div className={style.contextBar__rightHandedActions}>

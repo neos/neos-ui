@@ -3,6 +3,20 @@ import Immutable from 'immutable';
 export default serverState => Immutable.fromJS({
     ui: {
         //
+        // Contains information about the left sidebar.
+        //
+        leftSidebar: {
+            isHidden: false
+        },
+
+        //
+        // Contains information about the right sidebar.
+        //
+        rightSidebar: {
+            isHidden: false
+        },
+
+        //
         // Contains information about the currently open Tabs
         //
         tabs: {

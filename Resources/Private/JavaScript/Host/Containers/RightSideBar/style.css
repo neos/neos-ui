@@ -1,9 +1,7 @@
 .rightSideBar {
     padding-top: 41px;
     padding-bottom: 41px;
-    width: 320px;
-    height: 100%;
-    background: $darker;
+    transition: .5s ease transform;
 
     &:before,
     &:after {
@@ -14,9 +12,18 @@
         clear: both;
     }
 }
+.rightSideBar--isHidden {
+    transform: translateX(320px);
+}
 .rightSideBar__toggleBtn {
     position: absolute;
     right: 0;
     top: 41px;
     border-left: 1px solid $dark;
+    background: $darker;
+    transition: .5s ease transform;
+
+    .rightSideBar--isHidden & {
+        transform: translateX(-320px);
+    }
 }

@@ -7,23 +7,33 @@ import {immutableOperations} from '../../../Shared/Util';
 
 const {$get} = immutableOperations;
 
-
 @connect(state => ({
-    tabs: $get(state, 'ui.tabs')
+    tabs: $get(state, 'ui.tabs'),
+    isFringeLeft: $get(state, 'ui.leftSidebar.isHidden'),
+    isFringeRight: $get(state, 'ui.rightSidebar.isHidden')
 }))
 export default class ContentView extends Component {
     static propTypes = {
-        tabs: PropTypes.instanceOf(Immutable.Map)
+        tabs: PropTypes.instanceOf(Immutable.Map),
+        isFringeLeft: PropTypes.bool.isRequired,
+        isFringeRight: PropTypes.bool.isRequired
     };
 
     render() {
+        const {isFringeLeft, isFringeRight} = this.props;
         const activeId = $get(this.props.tabs, 'active.id');
 
         // Using Maps as children is not yet fully supported in react 0.14.1.
         const tabs = $get(this.props.tabs, 'byId');
 
+        const classNames = mergeClassNames({
+            [style.contentView]: true,
+            [style['contentView--isFringeLeft']]: isFringeLeft,
+            [style['contentView--isFringeRight']]: isFringeRight
+        });
+
         return (
-            <div className={style.contentView}>
+            <div className={classNames}>
                 {tabs.map(tab => this.renderTab(tab, activeId)).toArray()}
             </div>
         );

@@ -1,13 +1,39 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import {SideBar, Tabs, Panel, IconButton, TextInput, ToggablePanel} from '../../Components/';
+import {
+    SideBar,
+    Tabs,
+    Panel,
+    IconButton,
+    TextInput,
+    ToggablePanel
+} from '../../Components/';
+import actions from '../../Actions/';
 import style from './style.css';
+import {immutableOperations} from '../../../Shared/Util';
 
-@connect()
+const {$get} = immutableOperations;
+
+@connect(state => ({
+    isHidden: $get(state, 'ui.rightSidebar.isHidden')
+}))
 export default class LeftSideBar extends Component {
+    static propTypes = {
+        isHidden: PropTypes.bool.isRequired,
+        dispatch: PropTypes.any.isRequired
+    }
+
     render() {
+        const {isHidden} = this.props;
+        const classNames = mergeClassNames({
+            [style.rightSideBar]: true,
+            [style['rightSideBar--isHidden']]: isHidden
+        });
+        const toggleIcon = isHidden ? 'chevron-left' : 'chevron-right';
+
         return (
-            <SideBar position="right" className={style.rightSideBar}>
+            <SideBar position="right" className={classNames}>
                 <Tabs>
                     <Panel icon="pencil">
                         <ToggablePanel title="My fancy configuration">
@@ -26,12 +52,16 @@ export default class LeftSideBar extends Component {
                     </Panel>
                 </Tabs>
 
-                <IconButton icon="chevron-right" className={style.rightSideBar__toggleBtn} onClick={this.toggleSidebar.bind(this)} />
+                <IconButton
+                    icon={toggleIcon}
+                    className={style.rightSideBar__toggleBtn}
+                    onClick={this.toggleSidebar.bind(this)}
+                    />
             </SideBar>
         );
     }
 
     toggleSidebar() {
-        console.log('Toggle right sidebar');
+        this.props.dispatch(actions.UI.RightSideBar.toggleSideBar());
     }
 }

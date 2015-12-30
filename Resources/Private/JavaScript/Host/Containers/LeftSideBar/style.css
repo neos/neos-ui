@@ -1,9 +1,7 @@
 .leftSideBar {
     padding-top: 41px;
     padding-bottom: 41px;
-    width: 320px;
-    height: 100%;
-    background: $darker;
+    transition: .5s ease transform;
 
     &:before,
     &:after {
@@ -13,4 +11,7 @@
     &:after {
         clear: both;
     }
+}
+.leftSideBar--isHidden {
+    transform: translateX(-320px);
 }

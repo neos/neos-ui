@@ -29,8 +29,10 @@ export default class Bar extends Component {
     onDrop(e) {
         const {onDrop} = this.props;
 
-        onDrop(e);
+        if (onDrop) {
+            onDrop(e);
 
-        e.stopPropagation();
+            e.stopPropagation();
+        }
     }
 }

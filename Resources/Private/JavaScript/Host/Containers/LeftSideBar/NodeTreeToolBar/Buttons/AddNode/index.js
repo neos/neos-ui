@@ -1,6 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {IconButtonDropDown, Icon} from '../../../../../Components/';
+import {
+    IconButtonDropDown,
+    Icon,
+    Dialog,
+    Button,
+    I18n
+} from '../../../../../Components/';
 
 @connect()
 export default class AddNode extends Component {
@@ -12,24 +18,31 @@ export default class AddNode extends Component {
         super(props);
 
         this.mouseHoldTimeout = null;
-        this.state = {currentMode: 'insert'};
+        this.state = {
+            isModalOpen: false,
+            currentMode: 'insert'
+        };
     }
 
     render() {
         const modeIcon = this.getCurrentModeIcon();
+        const modal = this.state.isModalOpen ? this.renderModal() : null;
 
         return (
-            <IconButtonDropDown
-                className={this.props.className}
-                icon="plus"
-                modeIcon={modeIcon}
-                onClick={this.openAddNodeDialog.bind(this)}
-                onItemSelect={this.onModeChanged.bind(this)}
-                >
-                <Icon ref="prepend" icon="long-arrow-up" />
-                <Icon ref="insert" icon="long-arrow-right" />
-                <Icon ref="append" icon="long-arrow-down" />
-            </IconButtonDropDown>
+            <span>
+                <IconButtonDropDown
+                    className={this.props.className}
+                    icon="plus"
+                    modeIcon={modeIcon}
+                    onClick={this.openAddNodeDialog.bind(this)}
+                    onItemSelect={this.onModeChanged.bind(this)}
+                    >
+                    <Icon ref="prepend" icon="long-arrow-up" />
+                    <Icon ref="insert" icon="long-arrow-right" />
+                    <Icon ref="append" icon="long-arrow-down" />
+                </IconButtonDropDown>
+                {modal}
+            </span>
         );
     }
 
@@ -52,12 +65,39 @@ export default class AddNode extends Component {
     }
 
     openAddNodeDialog() {
-        console.log('open add node dialog');
+        this.setState({
+            isModalOpen: true
+        });
+    }
+
+    closeAddNodeDialog() {
+        this.setState({
+            isModalOpen: false
+        });
     }
 
     onModeChanged(currentMode) {
         this.setState({
             currentMode
         });
+    }
+
+    renderModal() {
+        const actions = [
+            <Button
+                style="clean"
+                hoverStyle="brand"
+                onClick={this.closeAddNodeDialog.bind(this)}
+                isFocused={true}
+                >
+                <I18n target="Cancel" />
+            </Button>
+        ];
+
+        return (
+            <Dialog isOpen={this.state.isModalOpen} title="Create new" actions={actions}>
+                test
+            </Dialog>
+        );
     }
 }

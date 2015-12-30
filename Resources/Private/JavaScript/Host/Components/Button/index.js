@@ -6,6 +6,7 @@ import style from './style.css';
 export default class Button extends Component {
     static propTypes = {
         className: PropTypes.string,
+        isFocused: PropTypes.bool,
         style: PropTypes.oneOf(['clean', 'transparent']),
         hoverStyle: PropTypes.oneOf(['clean', 'brand']),
         onClick: PropTypes.func.isRequired,
@@ -20,6 +21,7 @@ export default class Button extends Component {
         const {
             className,
             children,
+            isFocused,
             onClick,
             onMouseDown,
             onMouseUp,
@@ -43,6 +45,11 @@ export default class Button extends Component {
                 onMouseUp={e => executeCallback(e, onMouseUp)}
                 onMouseEnter={e => executeCallback(e, onMouseEnter)}
                 onMouseLeave={e => executeCallback(e, onMouseLeave)}
+                ref={btn => {
+                    if (btn !== null && isFocused) {
+                        btn.focus();
+                    }
+                }}
                 >
                 {children}
             </button>
@@ -51,5 +58,6 @@ export default class Button extends Component {
 }
 Button.defaultProps = {
     style: 'clean',
-    hoverStyle: 'clean'
+    hoverStyle: 'clean',
+    isFocused: false
 };

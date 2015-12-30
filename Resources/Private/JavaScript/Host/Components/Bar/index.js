@@ -7,7 +7,6 @@ export default class Bar extends Component {
         position: PropTypes.oneOf(['top', 'bottom']).isRequired,
         className: PropTypes.string,
         children: PropTypes.node,
-
         onDrop: PropTypes.func
     }
 

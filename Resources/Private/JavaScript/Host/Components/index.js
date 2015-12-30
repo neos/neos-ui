@@ -7,8 +7,10 @@ import I18n from './I18n/';
 import Icon from './Icon/';
 import IconButton from './IconButton/';
 import IconButtonDropDown from './IconButtonDropDown/';
+import Label from './Label/';
 import SideBar from './SideBar/';
 import {Tabs, Panel} from './Tabs/';
+import TextInput from './TextInput/';
 
 export {
     Bar,
@@ -20,7 +22,9 @@ export {
     Icon,
     IconButton,
     IconButtonDropDown,
+    Label,
     SideBar,
     Tabs,
-    Panel
+    Panel,
+    TextInput
 };

@@ -13,7 +13,7 @@ export default class Bar extends Component {
     render() {
         const {position, className} = this.props;
         const classNames = mergeClassNames({
-            [className]: true,
+            [className]: className && className.length,
             [style.bar]: true,
             [style['bar--top']]: position === 'top',
             [style['bar--bottom']]: position === 'bottom'

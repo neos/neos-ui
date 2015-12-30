@@ -12,7 +12,7 @@ export default class SideBar extends Component {
     render() {
         const {position, className} = this.props;
         const classNames = mergeClassNames({
-            [className]: true,
+            [className]: className && className.length,
             [style.sideBar]: true,
             [style['sideBar--left']]: position === 'left',
             [style['sideBar--right']]: position === 'right'

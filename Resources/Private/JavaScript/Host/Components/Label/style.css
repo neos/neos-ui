@@ -1,0 +1,9 @@
+.label {
+    display: block;
+    margin-bottom: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    user-select: none;
+}

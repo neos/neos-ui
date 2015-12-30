@@ -90,7 +90,18 @@ class BackendController extends ActionController
                 $node = $contentContext->getCurrentSiteNode();
             }
 
-            $this->view->assign('initialState', json_encode([]));
+            $this->view->assign('initialState', json_encode([
+                'user' => [
+                    'name' => [
+                        'title' => $user->getName()->getTitle(),
+                        'firstName' => $user->getName()->getFirstName(),
+                        'middleName' => $user->getName()->getMiddleName(),
+                        'lastName' => $user->getName()->getLastName(),
+                        'otherName' => $user->getName()->getOtherName(),
+                        'fullName' => $user->getName()->getFullName()
+                    ]
+                ]
+            ]));
 
             $this->view->assign('translations', $this->xliffService->getCachedJson(
                 new Locale($this->userService->getInterfaceLanguage())

@@ -4,7 +4,15 @@ import mergeClassNames from 'classnames';
 import {I18n, Icon, DropDown} from '../../../Components/';
 import style from './style.css';
 
-@connect()
+import {immutableOperations} from '../../../../Shared/Util';
+
+const {$get} = immutableOperations;
+
+@connect(state => {
+    return {
+        currentUserName: $get(state, 'user.name.fullName')
+    }
+})
 export default class UserDropDown extends Component {
     static propTypes = {
         currentUserName: PropTypes.string.isRequired

@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialState = initialStateFactory(
         JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML)
     );
-    const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML)
+    const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
     const nodeTypeSchema = JSON.parse(appContainer.querySelector('[data-json="nodeTypeSchema"]').innerHTML);
     const reducers = reducerFactory(initialState);
     const store = createStore(reducers);

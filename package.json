@@ -2,7 +2,7 @@
   "name": "@packagefactory/guevara",
   "version": "1.0.0",
   "description": "Some example for inter-iframe communication",
-  "main": "Resources/Public/JavaScript/Host.min.js",
+  "main": "Resources/Public/JavaScript/Host.js",
   "private": true,
   "devDependencies": {
     "autoprefixer": "^6.2.2",

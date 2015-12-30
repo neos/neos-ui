@@ -21,7 +21,8 @@ export default {
 
     [ActionTypes.UI.SET_TAB_METADATA](state, action) {
         const {title, workspace, contextPath} = action.metaData;
-        const {publishableNodes} = workspace;
+        const {publishingState, name} = workspace;
+        const {publishableNodes} = publishingState;
         const [nodePath] = contextPath.split('@');
         const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope => {
             return nodeEnvelope.contextPath.startsWith(nodePath) &&
@@ -32,14 +33,17 @@ export default {
             $merge(state, ['ui', 'tabs', 'byId', action.tabId], {title, contextPath}),
             ['ui', 'tabs', 'byId', action.tabId, 'workspace'],
             {
-                publishableNodes,
-                publishableNodesInDocument
+                name,
+                publishingState: {
+                    publishableNodes,
+                    publishableNodesInDocument
+                }
             }
         ));
     },
 
     [ActionTypes.UI.UPDATE_TAB_WORKSPACE_INFO](state, action) {
-        const {documentContextPath, workspaceInfo} = action;
+        const {documentContextPath, workspaceInfo, workspaceName} = action;
         const publishableNodes = workspaceInfo;
         const [nodePath] = documentContextPath.split('@');
         const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope => {
@@ -48,9 +52,9 @@ export default {
         });
 
         const updateTabs = $get(state, 'ui.tabs.byId').filter(tab => {
-            return $get(tab, 'contextPath') === documentContextPath;
+            return $get(tab, 'workspace.name') === workspaceName;
         }).map(tab => {
-            return $set(tab, 'workspace', {publishableNodes, publishableNodesInDocument});
+            return $set(tab, 'workspace.publishingState', {publishableNodes, publishableNodesInDocument});
         });
 
         return updateActiveTab($merge(state, 'ui.tabs.byId', updateTabs));
@@ -62,8 +66,11 @@ export default {
             title: '...',
             src: action.src,
             workspace: {
-                publishableNodes: [],
-                publishableNodesInDocument: []
+                name: '',
+                publishingState: {
+                    publishableNodes: [],
+                    publishableNodesInDocument: []
+                }
             }
         });
     },

@@ -12,9 +12,9 @@ import {immutableOperations} from '../../../../Shared/Util';
 const {$get,$mapGet} = immutableOperations;
 
 @connect(state => {
-    const workspace = $get(state, 'ui.tabs.active.workspace');
-    const publishableNodes = $get(workspace, 'publishableNodes');
-    const publishableNodesInDocument = $get(workspace, 'publishableNodesInDocument');
+    const publishingState = $get(state, 'ui.tabs.active.workspace.publishingState');
+    const publishableNodes = $get(publishingState, 'publishableNodes');
+    const publishableNodesInDocument = $get(publishingState, 'publishableNodesInDocument');
 
     return {
         publishableNodes,

@@ -15,10 +15,11 @@ export function setTabMetaData(tabId, metaData) {
     };
 }
 
-export function updateWorkspaceInfo(documentContextPath, workspaceInfo) {
+export function updateWorkspaceInfo(documentContextPath, workspaceName, workspaceInfo) {
     return {
         type: ActionTypes.UI.UPDATE_TAB_WORKSPACE_INFO,
         documentContextPath,
+        workspaceName,
         workspaceInfo
     };
 }

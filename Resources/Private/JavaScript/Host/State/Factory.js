@@ -17,8 +17,7 @@ export default serverState => Immutable.fromJS({
         },
 
         contextBar: {}
-    }
-
+    },
 
     //
     // Contains information about all nodes the are currently loaded

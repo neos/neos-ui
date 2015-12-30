@@ -9,29 +9,37 @@ import Button from './Button/';
 import {backend} from '../../../Service/';
 import {immutableOperations} from '../../../../Shared/Util';
 
-const {$get,$mapGet} = immutableOperations;
+const {$get, $mapGet} = immutableOperations;
 
 @connect(state => {
     const publishingState = $get(state, 'ui.tabs.active.workspace.publishingState');
     const publishableNodes = $get(publishingState, 'publishableNodes');
     const publishableNodesInDocument = $get(publishingState, 'publishableNodesInDocument');
+    const isSaving = $get(state, 'ui.remote.isSaving');
+    const isPublishing = $get(state, 'ui.remote.isPublishing');
+    const isDiscarding = $get(state, 'ui.remote.isDiscarding');
 
     return {
+        isSaving,
+        isPublishing,
+        isDiscarding,
         publishableNodes,
         publishableNodesInDocument
     };
 })
 export default class PublishDropDown extends Component {
     static propTypes = {
+        isSaving: PropTypes.bool,
+        isPublishing: PropTypes.bool,
+        isDiscarding: PropTypes.bool,
         publishableNodes: PropTypes.instanceOf(Immutable.List),
         publishableNodesInDocument: PropTypes.instanceOf(Immutable.List)
     }
 
     render() {
-        const {publishableNodes, publishableNodesInDocument} = this.props;
+        const {publishableNodes, publishableNodesInDocument, isSaving} = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
         const canPublishGlobally = publishableNodes.count() > 0;
-
         const dropDownClassNames = {
             wrapper: style.dropDown,
             btn: mergeClassNames({
@@ -42,19 +50,19 @@ export default class PublishDropDown extends Component {
             ['btn--active']: style['dropDown__btn--active'],
             contents: style.dropDown__contents
         };
+        const {mainButtonLabel,mainButtonTarget} = this.getMainButtonLabeling();
 
         return (
             <div className={style.wrapper}>
                 <Button
                     style={style}
                     cavity={true}
-                    enabled={canPublishLocally}
-                    highlighted={canPublishLocally}
+                    enabled={canPublishLocally || isSaving}
+                    highlighted={canPublishLocally || isSaving}
                     indicator={publishableNodesInDocument.count()}
                     onClick={(e) => this.onPublishClick(e)}
                 >
-                    <I18n target={canPublishLocally ? 'Publish' : 'Published'}
-                        id={canPublishLocally ? 'publish' : 'published'} />
+                    <I18n target={mainButtonTarget} id={mainButtonLabel} />
                 </Button>
                 <DropDown iconAfter="chevron-down" iconAfterActive="chevron-up" classNames={dropDownClassNames}>
                     <li className={style.dropDown__contents__item}>
@@ -113,6 +121,44 @@ export default class PublishDropDown extends Component {
                 </DropDown>
             </div>
         );
+    }
+
+    getMainButtonLabeling() {
+        const {publishableNodesInDocument, isSaving, isPublishing, isDiscarding} = this.props;
+        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
+
+        if (isSaving) {
+            return {
+                mainButtonLabel: 'saving',
+                mainButtonTarget: 'Saving...'
+            };
+        }
+
+        if (isPublishing) {
+            return {
+                mainButtonLabel: 'publishing',
+                mainButtonTarget: 'Publishing...'
+            };
+        }
+
+        if (isDiscarding) {
+            return {
+                mainButtonLabel: 'discarding',
+                mainButtonTarget: 'Discarding...'
+            };
+        }
+
+        if (canPublishLocally) {
+            return {
+                mainButtonLabel: 'publish',
+                mainButtonTarget: 'Publish'
+            };
+        }
+
+        return {
+            mainButtonLabel: 'published',
+            mainButtonTarget: 'Published'
+        };
     }
 
     onPublishClick() {

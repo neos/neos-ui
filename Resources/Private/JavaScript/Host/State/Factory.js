@@ -33,7 +33,13 @@ export default serverState => Immutable.fromJS({
             }
         },
 
-        contextBar: {}
+        contextBar: {},
+
+        remote: {
+            isSaving: false,
+            isPublishing: false,
+            isDiscarding: false
+        }
     },
 
     //

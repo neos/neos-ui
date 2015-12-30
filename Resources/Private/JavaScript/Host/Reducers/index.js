@@ -5,6 +5,7 @@ const reducerIndex = [
     UI.Tabs,
     UI.LeftSideBar,
     UI.RightSideBar,
+    UI.Remote,
     Transient.Nodes,
     Transient.Changes
 ];

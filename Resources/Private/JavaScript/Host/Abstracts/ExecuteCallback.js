@@ -9,11 +9,14 @@ import isFunction from 'lodash.isfunction';
  * @example <a onClick={e => executeCallback(e, this.props.onClick)}>Click me</a>
  */
 export default (...args) => {
+    let e;
+
     args.forEach(arg => {
         if (isObject(arg) && isFunction(arg.preventDefault)) {
-            arg.preventDefault();
+            e = arg;
+            e.preventDefault();
         } else if (isFunction(arg)) {
-            arg();
+            arg(e);
         }
     });
 };

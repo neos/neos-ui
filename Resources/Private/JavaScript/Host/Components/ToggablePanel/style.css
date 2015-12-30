@@ -15,10 +15,14 @@
     right: 0;
 }
 .panel__contents {
-    display: none;
-    padding: 5px 16px;
+    padding: 0 16px;
+    transition: .5s ease padding;
 
     .panel--isOpen & {
-        display: block;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
+}
+.panel__contents__target {
+    overflow: hidden;
 }

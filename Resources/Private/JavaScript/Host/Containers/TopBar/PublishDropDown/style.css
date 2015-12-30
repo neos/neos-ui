@@ -10,14 +10,6 @@
     cursor: pointer;
 }
 
-.btn--disabled {
-    opacity: .5;
-}
-
-.btn--notAllowed {
-    cursor: not-allowed !important;
-}
-
 .btn--highlighted {
     background: $warn;
 }
@@ -30,7 +22,7 @@
     display: inline-block;
     position: relative;
     vertical-align: top;
-    padding-right: 48px;
+    padding-right: 47px;
 }
 
 .dropDown {

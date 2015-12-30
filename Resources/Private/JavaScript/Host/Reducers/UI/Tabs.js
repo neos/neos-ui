@@ -2,11 +2,11 @@ import {ActionTypes} from '../../Constants/';
 import Immutable from 'immutable';
 
 function updateActiveTabIfChanged(tabId, state) {
-    if (state.get('tabs').get('active').get('id') === tabId ||
-        (tabId.contains && tabId.contains(state.get('tabs').get('active').get('id')))) {
+    if (state.get('ui').get('tabs').get('active').get('id') === tabId ||
+        (tabId.contains && tabId.contains(state.get('ui').get('tabs').get('active').get('id')))) {
 
-        return state.setIn(['tabs', 'active'], state.get('tabs').get('byId').get(
-            state.get('tabs').get('active').get('id')
+        return state.setIn(['ui', 'tabs', 'active'], state.get('ui').get('tabs').get('byId').get(
+            state.get('ui').get('tabs').get('active').get('id')
         ));
     }
 
@@ -15,7 +15,7 @@ function updateActiveTabIfChanged(tabId, state) {
 
 export default {
     [ActionTypes.UI.SET_ACTIVE_TAB](state, action) {
-        return state.setIn(['ui', 'tabs', 'active'], state.get('tabs').get('byId').get(action.tabId));
+        return state.setIn(['ui', 'tabs', 'active'], state.get('ui').get('tabs').get('byId').get(action.tabId));
     },
 
     [ActionTypes.UI.SET_TAB_METADATA](state, action) {
@@ -28,10 +28,10 @@ export default {
         });
 
         return updateActiveTabIfChanged(action.tabId,
-            state.mergeIn(['tabs', 'byId', action.tabId], {
+            state.mergeIn(['ui', 'tabs', 'byId', action.tabId], {
                 title,
                 contextPath
-            }).setIn(['tabs', 'byId', action.tabId, 'workspace'], Immutable.fromJS({
+            }).setIn(['ui', 'tabs', 'byId', action.tabId, 'workspace'], Immutable.fromJS({
                 publishableNodes,
                 publishableNodesInDocument
             }))
@@ -47,7 +47,7 @@ export default {
                 nodeEnvelope.documentContextPath === documentContextPath;
         });
 
-        const updateTabs = state.get('tabs').get('byId').filter(tab => {
+        const updateTabs = state.get('ui').get('tabs').get('byId').filter(tab => {
             return tab.get('contextPath') === documentContextPath;
         }).map(tab => {
             return tab.setIn(['workspace'], Immutable.fromJS({

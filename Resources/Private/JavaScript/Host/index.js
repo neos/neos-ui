@@ -23,7 +23,8 @@ import {
     nodeTypeManager,
     tabManager,
     changeManager,
-    feedbackManager
+    feedbackManager,
+    publishingService
 } from './Service/';
 
 import style from './style.css';

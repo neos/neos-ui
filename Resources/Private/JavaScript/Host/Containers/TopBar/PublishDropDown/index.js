@@ -7,11 +7,14 @@ import style from './style.css';
 import Button from './Button/';
 
 import {backend} from '../../../Service/';
+import {immutableOperations} from '../../../../Shared/Util';
+
+const {$get,$mapGet} = immutableOperations;
 
 @connect(state => {
-    const workspaceInfo = state.get('ui').get('tabs').get('active').get('workspace');
-    const publishableNodes = workspaceInfo.get('publishableNodes');
-    const publishableNodesInDocument = workspaceInfo.get('publishableNodesInDocument');
+    const workspace = $get(state, 'ui.tabs.active.workspace');
+    const publishableNodes = $get(workspace, 'publishableNodes');
+    const publishableNodesInDocument = $get(workspace, 'publishableNodesInDocument');
 
     return {
         publishableNodes,
@@ -123,28 +126,28 @@ export default class PublishDropDown extends Component {
         const {publishableNodesInDocument} = this.props;
         const {publishingService} = backend;
 
-        publishingService.publishNodes(publishableNodesInDocument.map(n => n.contextPath || n.get('contextPath')), 'live');
+        publishingService.publishNodes($mapGet(publishableNodesInDocument, 'contextPath'), 'live');
     }
 
     onPublishAllClick() {
         const {publishableNodes} = this.props;
         const {publishingService} = backend;
 
-        publishingService.publishNodes(publishableNodes.map(n => n.contextPath || n.get('contextPath')), 'live');
+        publishingService.publishNodes($mapGet(publishableNodes, 'contextPath'), 'live');
     }
 
     onDiscardClick() {
         const {publishableNodesInDocument} = this.props;
         const {publishingService} = backend;
 
-        publishingService.discardNodes(publishableNodesInDocument.map(n => n.contextPath || n.get('contextPath')));
+        publishingService.discardNodes($mapGet(publishableNodesInDocument, 'contextPath'));
     }
 
     onDiscardAllClick() {
         const {publishableNodes} = this.props;
         const {publishingService} = backend;
 
-        publishingService.discardNodes(publishableNodes.map(n => n.contextPath || n.get('contextPath')));
+        publishingService.discardNodes($mapGet(publishableNodes, 'contextPath'));
     }
 
     onAutoPublishChange(e) {

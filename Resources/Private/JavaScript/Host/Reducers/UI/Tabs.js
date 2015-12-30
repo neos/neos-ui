@@ -1,22 +1,23 @@
 import {ActionTypes} from '../../Constants/';
-import Immutable from 'immutable';
+import {immutableOperations} from '../../../Shared/Util/';
 
-function updateActiveTabIfChanged(tabId, state) {
-    if (state.get('ui').get('tabs').get('active').get('id') === tabId ||
-        (tabId.contains && tabId.contains(state.get('ui').get('tabs').get('active').get('id')))) {
+const {$immutable, $get, $set, $merge, $delete} = immutableOperations;
 
-        return state.setIn(['ui', 'tabs', 'active'], state.get('ui').get('tabs').get('byId').get(
-            state.get('ui').get('tabs').get('active').get('id')
-        ));
-    }
+function updateActiveTab(state) {
+    const activeTab = $get(state, 'ui.tabs.active');
+    const activeTabId = $get(activeTab, 'id');
+    const refreshedActiveTab = $get(state, `ui.tabs.byId`).get(activeTabId);
 
-    return state;
+    return $set(state, 'ui.tabs.active', refreshedActiveTab);
 }
 
 export default {
     [ActionTypes.UI.SET_ACTIVE_TAB](state, action) {
-        return state.setIn(['ui', 'tabs', 'active'], state.get('ui').get('tabs').get('byId').get(action.tabId));
+        const newActiveTab = $get(state, 'ui.tabs.byId').get(action.tabId);
+
+        return $set(state, 'ui.tabs.active', newActiveTab);
     },
+
 
     [ActionTypes.UI.SET_TAB_METADATA](state, action) {
         const {title, workspace, contextPath} = action.metaData;
@@ -27,15 +28,14 @@ export default {
                 nodeEnvelope.documentContextPath === contextPath;
         });
 
-        return updateActiveTabIfChanged(action.tabId,
-            state.mergeIn(['ui', 'tabs', 'byId', action.tabId], {
-                title,
-                contextPath
-            }).setIn(['ui', 'tabs', 'byId', action.tabId, 'workspace'], Immutable.fromJS({
+        return updateActiveTab($set(
+            $merge(state, ['ui', 'tabs', 'byId', action.tabId], {title, contextPath}),
+            ['ui', 'tabs', 'byId', action.tabId, 'workspace'],
+            {
                 publishableNodes,
                 publishableNodesInDocument
-            }))
-        );
+            }
+        ));
     },
 
     [ActionTypes.UI.UPDATE_TAB_WORKSPACE_INFO](state, action) {
@@ -47,34 +47,28 @@ export default {
                 nodeEnvelope.documentContextPath === documentContextPath;
         });
 
-        const updateTabs = state.get('ui').get('tabs').get('byId').filter(tab => {
-            return tab.get('contextPath') === documentContextPath;
+        const updateTabs = $get(state, 'ui.tabs.byId').filter(tab => {
+            return $get(tab, 'contextPath') === documentContextPath;
         }).map(tab => {
-            return tab.setIn(['workspace'], Immutable.fromJS({
-                publishableNodes,
-                publishableNodesInDocument
-            }));
+            return $set(tab, 'workspace', {publishableNodes, publishableNodesInDocument});
         });
 
-        return updateActiveTabIfChanged(updateTabs.map(tab => tab.get('id')),
-            state.mergeIn(['ui', 'tabs', 'byId'], updateTabs));
+        return updateActiveTab($merge(state, 'ui.tabs.byId', updateTabs));
     },
 
     [ActionTypes.UI.CREATE_TAB](state, action) {
-        return state.mergeIn(['ui', 'tabs', 'byId'], {
-            [action.tabId]: {
-                id: action.tabId,
-                title: '...',
-                src: action.src,
-                workspace: {
-                    publishableNodes: [],
-                    publishableNodesInDocument: []
-                }
+        return $set(state, ['ui', 'tabs', 'byId', action.tabId], {
+            id: action.tabId,
+            title: '...',
+            src: action.src,
+            workspace: {
+                publishableNodes: [],
+                publishableNodesInDocument: []
             }
         });
     },
 
     [ActionTypes.UI.REMOVE_TAB](state, action) {
-        return state.deleteIn(['ui', 'tabs', 'byId', action.tabId]);
+        return $delete(state, ['ui', 'tabs', 'byId', action.tabId]);
     }
 };

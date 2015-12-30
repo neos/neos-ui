@@ -9,6 +9,12 @@
     vertical-align: top;
     cursor: pointer;
 }
+.btn--disabled {
+    opacity: .5;
+}
+.btn--notAllowed {
+     cursor: not-allowed !important;
+ }
 
 .btn--highlighted {
     background: $warn;

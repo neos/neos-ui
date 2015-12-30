@@ -2,7 +2,9 @@
     font-size: 14px !important;
     text-rendering: optimizelegibility;
 }
-.heading--h1 {}
+.heading--h1 {
+    font-size: 16px !important;
+}
 .heading--h2 {}
 .heading--h3 {}
 .heading--h4 {}

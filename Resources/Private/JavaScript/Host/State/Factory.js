@@ -10,8 +10,11 @@ export default serverState => Immutable.fromJS({
             active: {
                 id: '',
                 workspace: {
-                    publishableNodes: [],
-                    publishableNodesInDocument: []
+                    name: '',
+                    publishingState: {
+                        publishableNodes: [],
+                        publishableNodesInDocument: []
+                    }
                 }
             }
         },

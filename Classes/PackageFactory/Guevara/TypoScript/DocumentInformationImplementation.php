@@ -37,7 +37,12 @@ class DocumentInformationImplementation extends AbstractTypoScriptObject
                 'contextPath' => $node->getContextPath(),
                 'title' => $node->getProperty('title'),
                 'workspace' => [
-                    'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($node->getContext()->getWorkspace())
+                    'name' => $node->getContext()->getWorkspace()->getName(),
+                    'publishingState' => [
+                        'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
+                            $node->getContext()->getWorkspace()
+                        )
+                    ]
                 ]
             ]
         ];

@@ -84,6 +84,7 @@ class UpdateWorkspaceInfo implements FeedbackInterface
     {
         return [
             'documentContextPath' => $this->getDocument()->getContextPath(),
+            'workspaceName' => $this->getDocument()->getContext()->getWorkspace()->getName(),
             'workspaceInfo' => $this->workspaceService->getPublishableNodeInfo(
                 $this->getDocument()->getContext()->getWorkspace()
             )

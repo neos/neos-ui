@@ -3,6 +3,7 @@ import * as Transient from './Transient/';
 
 const reducerIndex = [
     UI.Tabs,
+    UI.Remote,
     Transient.Nodes,
     Transient.Changes
 ];

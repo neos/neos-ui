@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tabManager: tabManager(store),
         changeManager: changeManager(store, csrfToken),
         feedbackManager: feedbackManager(store),
-        publishingService: publishingService(csrfToken),
+        publishingService: publishingService(store, csrfToken),
         i18n: i18n(translations),
 
         asyncComponents: {

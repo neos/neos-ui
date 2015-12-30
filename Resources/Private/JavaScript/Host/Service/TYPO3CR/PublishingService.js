@@ -1,3 +1,4 @@
+import actions from '../../Actions/';
 import backend from '../Backend.js';
 
 /**
@@ -5,7 +6,8 @@ import backend from '../Backend.js';
  */
 class PublishingService {
 
-    constructor(csrfToken, endpoints) {
+    constructor(store, csrfToken, endpoints) {
+        this.store = store;
         this.csrfToken = csrfToken;
         this.endpoints = {
             publish: '/che!/service/publish',
@@ -15,6 +17,8 @@ class PublishingService {
 
     publishNodes(nodeContextPaths, targetWorkspaceName) {
         const {feedbackManager} = backend;
+
+        this.store.dispatch(actions.UI.Remote.startPublishing());
 
         fetch(this.endpoints.publish, {
             method: 'POST',
@@ -29,16 +33,14 @@ class PublishingService {
             })
         })
         .then(response => response.json())
-        .then(feedbackManager.handleFeedback.bind(feedbackManager));
+        .then(feedbackManager.handleFeedback.bind(feedbackManager))
+        .then(() => this.store.dispatch(actions.UI.Remote.finishPublishing()));
     }
 
     discardNodes(nodeContextPaths) {
         const {feedbackManager} = backend;
 
-        console.log('discardNodes', nodeContextPaths.toJS());
-        console.log('discardNodes', JSON.stringify({
-            nodeContextPaths
-        }));
+        this.store.dispatch(actions.UI.Remote.startDiscarding());
 
         fetch(this.endpoints.discard, {
             method: 'POST',
@@ -52,9 +54,10 @@ class PublishingService {
             })
         })
         .then(response => response.json())
-        .then(feedbackManager.handleFeedback.bind(feedbackManager));
+        .then(feedbackManager.handleFeedback.bind(feedbackManager))
+        .then(() => this.store.dispatch(actions.UI.Remote.finishDiscarding()));
     }
 
 }
 
-export default (csrfToken, endpoint) => new PublishingService(csrfToken, endpoint);
+export default (store, csrfToken, endpoint) => new PublishingService(store, csrfToken, endpoint);

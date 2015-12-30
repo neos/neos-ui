@@ -21,7 +21,8 @@ class ChangeManager {
 
         if (!changes.isEmpty()) {
             const {feedbackManager} = backend;
-            // dispatch clear changes action
+
+            this.store.dispatch(actions.UI.Remote.startSaving());
             this.store.dispatch(actions.Transient.Changes.clearChanges());
 
             fetch(this.endpoint, {
@@ -36,7 +37,8 @@ class ChangeManager {
                 })
             })
             .then(response => response.json())
-            .then(feedbackManager.handleFeedback.bind(feedbackManager));
+            .then(feedbackManager.handleFeedback.bind(feedbackManager))
+            .then(() => this.store.dispatch(actions.UI.Remote.finishSaving()));
         }
     }
 }

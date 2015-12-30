@@ -14,3 +14,9 @@
         clear: both;
     }
 }
+.rightSideBar__toggleBtn {
+    position: absolute;
+    right: 0;
+    top: 41px;
+    border-left: 1px solid $dark;
+}

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {SideBar, Tabs, Panel} from '../../Components/';
+import {SideBar, Tabs, Panel, IconButton} from '../../Components/';
 import style from './style.css';
 
 @connect()
@@ -19,7 +19,13 @@ export default class LeftSideBar extends Component {
                         <h2>Content #3 here</h2>
                     </Panel>
                 </Tabs>
+
+                <IconButton icon="chevron-right" className={style.rightSideBar__toggleBtn} onClick={this.toggleSidebar.bind(this)} />
             </SideBar>
         );
+    }
+
+    toggleSidebar() {
+        console.log('Toggle right sidebar');
     }
 }

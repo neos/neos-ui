@@ -15,17 +15,9 @@ export default class IconButton extends Component {
         const {icon} = this.props;
 
         return (
-            <Button className={style.iconButton} style="transparent" hoverStyle="brand" onClick={this.onClick.bind(this)}>
+            <Button className={style.iconButton} style="transparent" hoverStyle="brand" onClick={this.props.onClick}>
               <Icon icon={icon} />
             </Button>
         );
-    }
-
-    onClick() {
-        const {onClick} = this.props;
-
-        if (onClick) {
-            onClick();
-        }
     }
 }

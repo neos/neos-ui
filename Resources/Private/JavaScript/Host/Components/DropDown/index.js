@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
+import {executeCallback} from '../../Abstracts/';
 import I18n from '../I18n/';
 import Icon from '../Icon/';
 import style from './style.css';
@@ -39,7 +40,7 @@ export default class DropDown extends Component {
 
         return (
             <div className={dropDownClassName} ref="dropDown" onBlur={this.onBlur.bind(this)}>
-                <button className={buttonClassName} onClick={this.onToggleClick.bind(this)}>
+                <button className={buttonClassName} onClick={e => executeCallback(e, this.toggleDropDown.bind(this))}>
                     {this.renderBeforeIcon()}
                     {this.renderLabel()}
                     {this.renderChevronIcon()}
@@ -76,12 +77,6 @@ export default class DropDown extends Component {
         const iconName = isOpened ? 'chevron-up' : 'chevron-down';
 
         return <Icon icon={iconName} className={style.dropDown__btn__afterIcon} />;
-    }
-
-    onToggleClick(e) {
-        e.preventDefault();
-
-        this.toggleDropDown();
     }
 
     onBlur(e) {

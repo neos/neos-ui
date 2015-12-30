@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import {executeCallback} from '../../../Abstracts/';
 import Icon from '../../Icon/';
 import mergeClassNames from 'classnames';
 import style from './style.css';
@@ -56,7 +57,7 @@ export default class Tabs extends Component {
 
                 return (
                     <li ref={ref} key={index} className={classes}>
-                        <a onClick={this.onTabClick.bind(this, index + 1)}>
+                        <a onClick={e => executeCallback(e, () => this.activateTabForIndex(index + 1))}>
                             {icon ? <Icon icon={icon} /> : null}
                             {title}
                         </a>
@@ -71,9 +72,7 @@ export default class Tabs extends Component {
         );
     }
 
-    onTabClick(index, e) {
-        e.preventDefault();
-
+    activateTabForIndex(index) {
         const onAfterChange = this.props.onAfterChange;
         const selectedPanel = this.refs['tab-panel'];
         const selectedTabMenu = this.refs[`tab-${index}`];

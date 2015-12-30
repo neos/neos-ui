@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
+import {executeCallback} from '../../Abstracts/';
 import style from './style.css';
 
 export default class Button extends Component {
@@ -22,19 +23,9 @@ export default class Button extends Component {
         });
 
         return (
-            <button className={classNames} onClick={this.onClick.bind(this)}>
+            <button className={classNames} onClick={e => executeCallback(e, this.props.onClick)}>
                 {children}
             </button>
         );
-    }
-
-    onClick(e) {
-        const {onClick} = this.props;
-
-        e.preventDefault();
-
-        if (onClick) {
-            onClick();
-        }
     }
 }

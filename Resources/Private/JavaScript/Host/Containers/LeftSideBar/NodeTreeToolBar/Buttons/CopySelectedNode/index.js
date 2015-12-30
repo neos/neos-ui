@@ -5,13 +5,20 @@ import {IconButton} from '../../../../../Components/';
 @connect()
 export default class CopySelectedNode extends Component {
     static propTypes = {
+        isDisabled: PropTypes.bool,
         className: PropTypes.string
     }
 
     render() {
+        const {
+            isDisabled,
+            className
+        } = this.props;
+
         return (
             <IconButton
-                className={this.props.className}
+                className={className}
+                isDisabled={isDisabled}
                 onClick={this.copySelectedNode.bind(this)}
                 icon="copy"
                 hoverStyle="clean"
@@ -23,3 +30,6 @@ export default class CopySelectedNode extends Component {
         console.log('copy selected node');
     }
 }
+CopySelectedNode.defaultProps = {
+    isDisabled: true
+};

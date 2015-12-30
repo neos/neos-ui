@@ -5,6 +5,7 @@ import {IconButtonDropDown, Icon} from '../../../../../Components/';
 @connect()
 export default class PasteClipBoardNode extends Component {
     static propTypes = {
+        isDisabled: PropTypes.bool,
         className: PropTypes.string
     }
 
@@ -16,10 +17,10 @@ export default class PasteClipBoardNode extends Component {
     }
 
     render() {
-        const {currentMode} = this.state;
+        const {isDisabled, className} = this.props;
         let modeIcon;
 
-        switch (currentMode) {
+        switch (this.state.currentMode) {
             case 'prepend':
                 modeIcon = 'long-arrow-up';
                 break;
@@ -33,7 +34,8 @@ export default class PasteClipBoardNode extends Component {
 
         return (
             <IconButtonDropDown
-                className={this.props.className}
+                isDisabled={isDisabled}
+                className={className}
                 icon="paste"
                 modeIcon={modeIcon}
                 onClick={this.pasteClipBoardNode.bind(this)}
@@ -56,3 +58,6 @@ export default class PasteClipBoardNode extends Component {
         });
     }
 }
+PasteClipBoardNode.defaultProps = {
+    isDisabled: true
+};

@@ -5,13 +5,20 @@ import {IconButton} from '../../../../../Components/';
 @connect()
 export default class CutSelectedNode extends Component {
     static propTypes = {
+        isDisabled: PropTypes.bool,
         className: PropTypes.string
     }
 
     render() {
+        const {
+            isDisabled,
+            className
+        } = this.props;
+
         return (
             <IconButton
-                className={this.props.className}
+                className={className}
+                isDisabled={isDisabled}
                 onClick={this.cutSelectedNode.bind(this)}
                 icon="cut"
                 hoverStyle="clean"
@@ -23,3 +30,6 @@ export default class CutSelectedNode extends Component {
         console.log('cut selected node');
     }
 }
+CutSelectedNode.defaultProps = {
+    isDisabled: true
+};

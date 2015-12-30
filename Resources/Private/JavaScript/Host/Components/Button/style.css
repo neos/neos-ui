@@ -13,6 +13,16 @@
     &:focus {
         outline: 1px dotted $brightest;
     }
+
+    &[disabled] {
+        opacity: .5;
+        cursor: not-allowed !important;
+
+        &:hover {
+            background: inherit;
+            color: inherit;
+        }
+    }
 }
 .btn--clean {
     background: $darker;

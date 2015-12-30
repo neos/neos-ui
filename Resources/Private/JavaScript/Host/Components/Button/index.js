@@ -7,6 +7,7 @@ export default class Button extends Component {
     static propTypes = {
         className: PropTypes.string,
         isFocused: PropTypes.bool,
+        isDisabled: PropTypes.bool,
         style: PropTypes.oneOf(['clean', 'transparent']),
         hoverStyle: PropTypes.oneOf(['clean', 'brand']),
         onClick: PropTypes.func.isRequired,
@@ -22,6 +23,7 @@ export default class Button extends Component {
             className,
             children,
             isFocused,
+            isDisabled,
             onClick,
             onMouseDown,
             onMouseUp,
@@ -36,21 +38,26 @@ export default class Button extends Component {
             [style['btn--brandHover']]: this.props.hoverStyle === 'brand',
             [className]: true
         });
+        const props = {
+            className: classNames,
+            onClick: e => executeCallback(e, onClick),
+            onMouseDown: e => executeCallback(e, onMouseDown),
+            onMouseUp: e => executeCallback(e, onMouseUp),
+            onMouseEnter: e => executeCallback(e, onMouseEnter),
+            onMouseLeave: e => executeCallback(e, onMouseLeave),
+            ref: btn => {
+                if (btn !== null && isFocused) {
+                    btn.focus();
+                }
+            }
+        };
+
+        if (isDisabled) {
+            props.disabled = 'disabled';
+        }
 
         return (
-            <button
-                className={classNames}
-                onClick={e => executeCallback(e, onClick)}
-                onMouseDown={e => executeCallback(e, onMouseDown)}
-                onMouseUp={e => executeCallback(e, onMouseUp)}
-                onMouseEnter={e => executeCallback(e, onMouseEnter)}
-                onMouseLeave={e => executeCallback(e, onMouseLeave)}
-                ref={btn => {
-                    if (btn !== null && isFocused) {
-                        btn.focus();
-                    }
-                }}
-                >
+            <button {...props}>
                 {children}
             </button>
         );
@@ -59,5 +66,6 @@ export default class Button extends Component {
 Button.defaultProps = {
     style: 'clean',
     hoverStyle: 'clean',
-    isFocused: false
+    isFocused: false,
+    isDisabled: false
 };

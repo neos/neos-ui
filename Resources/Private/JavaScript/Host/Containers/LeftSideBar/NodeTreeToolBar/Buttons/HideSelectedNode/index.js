@@ -5,13 +5,20 @@ import {IconButton} from '../../../../../Components/';
 @connect()
 export default class HideSelectedNode extends Component {
     static propTypes = {
+        isDisabled: PropTypes.bool,
         className: PropTypes.string
     }
 
     render() {
+        const {
+            isDisabled,
+            className
+        } = this.props;
+
         return (
             <IconButton
-                className={this.props.className}
+                className={className}
+                isDisabled={isDisabled}
                 onClick={this.hideSelectedNode.bind(this)}
                 icon="eye-slash"
                 hoverStyle="clean"
@@ -23,3 +30,6 @@ export default class HideSelectedNode extends Component {
         console.log('hide selected node');
     }
 }
+HideSelectedNode.defaultProps = {
+    isDisabled: true
+};

@@ -5,13 +5,20 @@ import {IconButton} from '../../../../../Components/';
 @connect()
 export default class EditSelectedNode extends Component {
     static propTypes = {
+        isDisabled: PropTypes.bool,
         className: PropTypes.string
     }
 
     render() {
+        const {
+            isDisabled,
+            className
+        } = this.props;
+
         return (
             <IconButton
-                className={this.props.className}
+                className={className}
+                isDisabled={isDisabled}
                 onClick={this.editSelectedNode.bind(this)}
                 icon="pencil"
                 hoverStyle="clean"
@@ -23,3 +30,6 @@ export default class EditSelectedNode extends Component {
         console.log('edit selected node');
     }
 }
+EditSelectedNode.defaultProps = {
+    isDisabled: true
+};

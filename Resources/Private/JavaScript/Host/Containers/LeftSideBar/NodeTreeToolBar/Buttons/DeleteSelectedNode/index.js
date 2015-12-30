@@ -5,13 +5,20 @@ import {IconButton} from '../../../../../Components/';
 @connect()
 export default class DeleteSelectedNode extends Component {
     static propTypes = {
+        isDisabled: PropTypes.bool,
         className: PropTypes.string
     }
 
     render() {
+        const {
+            isDisabled,
+            className
+        } = this.props;
+
         return (
             <IconButton
-                className={this.props.className}
+                className={className}
+                isDisabled={isDisabled}
                 onClick={this.deleteSelectedNode.bind(this)}
                 icon="trash"
                 hoverStyle="clean"
@@ -23,3 +30,6 @@ export default class DeleteSelectedNode extends Component {
         console.log('delete selected node');
     }
 }
+DeleteSelectedNode.defaultProps = {
+    isDisabled: true
+};

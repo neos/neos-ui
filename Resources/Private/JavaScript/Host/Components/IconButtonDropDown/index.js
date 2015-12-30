@@ -11,6 +11,7 @@ const {logger} = service;
 export default class IconButtonDropDown extends Component {
     static propTypes = {
         className: PropTypes.string,
+        isDisabled: PropTypes.bool,
         icon: PropTypes.string.isRequired,
         modeIcon: PropTypes.string.isRequired,
         onClick: PropTypes.func.isRequired,
@@ -28,6 +29,7 @@ export default class IconButtonDropDown extends Component {
     render() {
         const {
             className,
+            isDisabled,
             icon,
             modeIcon
         } = this.props;
@@ -51,6 +53,7 @@ export default class IconButtonDropDown extends Component {
         return (
             <div className={classNames} onMouseLeave={this.onMouseLeave.bind(this)}>
                 <Button
+                    isDisabled={isDisabled}
                     className={style.wrapper__btn}
                     onMouseDown={this.createHoldTimeout.bind(this)}
                     onClick={this.onClick.bind(this)}
@@ -113,5 +116,6 @@ export default class IconButtonDropDown extends Component {
     }
 }
 IconButtonDropDown.defaultProps = {
-    modeIcon: 'long-arrow-right'
+    modeIcon: 'long-arrow-right',
+    isDisabled: false
 };

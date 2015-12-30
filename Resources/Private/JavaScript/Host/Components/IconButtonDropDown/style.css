@@ -4,14 +4,18 @@
 }
 .wrapper__btn {
     position: relative;
+    width: 40px;
 }
 .wrapper__btn__modeIcon {
     position: absolute;
     right: 4px;
     bottom: 4px;
     color: $brand;
-}
 
+    [disabled] > & {
+        opacity: 0;
+    }
+}
 .wrapper__dropDown {
     position: absolute;
     top: 100%;

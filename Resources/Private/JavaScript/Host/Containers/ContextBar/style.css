@@ -16,18 +16,6 @@
         clear: both;
     }
 }
-.contextBar__dimensionDropDown {
-    display: inline-block;
-    min-width: 352px;
-}
-.contextBar__dimensionDropDown__btn {
-    height: 40px;
-    border: 0;
-    background: 0;
-}
-.contextBar__dimensionDropDown__contents {
-    padding: 16px;
-}
 .contextBar__rightHandedActions {
     float: right;
 }

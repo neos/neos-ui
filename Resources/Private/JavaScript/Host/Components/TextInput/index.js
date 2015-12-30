@@ -23,13 +23,17 @@ export default class TextInput extends Component {
             [className]: className && className.length,
             [style.textInput]: true
         });
+        const inputClassNames = mergeClassNames({
+            [style.textInput__input]: true,
+            [style['textInput--invalid']]: !isValid
+        });
         const id = uuid.v1();
 
         return (
             <div className={classNames}>
                 <Label htmlFor={id} label={label} />
                 <input
-                    className={style.textInput__input}
+                    className={inputClassNames}
                     id={id}
                     type="text"
                     placeholder={placeholder}
@@ -38,3 +42,6 @@ export default class TextInput extends Component {
         );
     }
 }
+TextInput.defaultProps = {
+    isValid: true
+};

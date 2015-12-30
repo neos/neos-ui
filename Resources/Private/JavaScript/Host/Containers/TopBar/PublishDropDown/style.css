@@ -12,6 +12,7 @@
 .btn--disabled {
     opacity: .5;
 }
+
 .btn--notAllowed {
      cursor: not-allowed !important;
  }

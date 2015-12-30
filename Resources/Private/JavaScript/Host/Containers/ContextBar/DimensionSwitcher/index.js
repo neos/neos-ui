@@ -18,7 +18,11 @@ export default class DimensionSwitcher extends Component {
         };
 
         return (
-            <DropDown iconBefore="globe" label="ToDo: Current dimension name" classNames={dimensionClassNames}>
+            <DropDown
+                iconBefore="globe"
+                label="ToDo: Current dimension name"
+                classNames={dimensionClassNames}
+                >
                 {dimensions.map((dimensionCategory, index) => this.renderDimensionCategory(dimensionCategory, index))}
             </DropDown>
         );

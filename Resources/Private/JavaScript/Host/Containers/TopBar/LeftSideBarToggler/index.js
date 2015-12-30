@@ -26,7 +26,12 @@ export default class LeftSideBarToggler extends Component {
         });
 
         return (
-            <Button className={classNames} style="clean" hoverStyle="clean" onClick={this.onLeftSidebarToggle.bind(this)}>
+            <Button
+                className={classNames}
+                style="clean"
+                hoverStyle="clean"
+                onClick={this.onLeftSidebarToggle.bind(this)}
+                >
                 <I18n target="Navigate" />
             </Button>
         );

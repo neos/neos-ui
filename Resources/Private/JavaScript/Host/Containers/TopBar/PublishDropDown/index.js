@@ -50,7 +50,7 @@ export default class PublishDropDown extends Component {
             ['btn--active']: style['dropDown__btn--active'],
             contents: style.dropDown__contents
         };
-        const {mainButtonLabel,mainButtonTarget} = this.getMainButtonLabeling();
+        const {mainButtonLabel, mainButtonTarget} = this.getMainButtonLabeling();
 
         return (
             <div className={style.wrapper}>
@@ -60,8 +60,8 @@ export default class PublishDropDown extends Component {
                     enabled={canPublishLocally || isSaving}
                     highlighted={canPublishLocally || isSaving}
                     indicator={publishableNodesInDocument.count()}
-                    onClick={(e) => this.onPublishClick(e)}
-                >
+                    onClick={e => this.onPublishClick(e)}
+                    >
                     <I18n target={mainButtonTarget} id={mainButtonLabel} />
                 </Button>
                 <DropDown iconAfter="chevron-down" iconAfterActive="chevron-up" classNames={dropDownClassNames}>
@@ -72,8 +72,8 @@ export default class PublishDropDown extends Component {
                             enabled={canPublishGlobally}
                             highlighted={false}
                             indicator={publishableNodes.count()}
-                            onClick={(e) => this.onPublishAllClick(e)}
-                        >
+                            onClick={e => this.onPublishAllClick(e)}
+                            >
                             <Icon icon="upload" />
                             <I18n target="Publish All" id="publishAll" />
                         </Button>
@@ -87,8 +87,8 @@ export default class PublishDropDown extends Component {
                             indicator={publishableNodesInDocument.count()}
                             label="Discard"
                             icon="ban"
-                            onClick={(e) => this.onDiscardClick(e)}
-                        >
+                            onClick={e => this.onDiscardClick(e)}
+                            >
                             <Icon icon="ban" />
                             <I18n target="Discard" id="discard" />
                         </Button>
@@ -100,8 +100,8 @@ export default class PublishDropDown extends Component {
                             enabled={canPublishGlobally}
                             highlighted={false}
                             indicator={publishableNodes.count()}
-                            onClick={(e) => this.onDiscardAllClick(e)}
-                        >
+                            onClick={e => this.onDiscardAllClick(e)}
+                            >
                             <Icon icon="ban" />
                             <I18n target="Discard All" id="discardAll" />
                         </Button>
@@ -124,7 +124,12 @@ export default class PublishDropDown extends Component {
     }
 
     getMainButtonLabeling() {
-        const {publishableNodesInDocument, isSaving, isPublishing, isDiscarding} = this.props;
+        const {
+            publishableNodesInDocument,
+            isSaving,
+            isPublishing,
+            isDiscarding
+        } = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
 
         if (isSaving) {

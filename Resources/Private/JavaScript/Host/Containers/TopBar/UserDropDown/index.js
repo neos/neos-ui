@@ -8,11 +8,9 @@ import {immutableOperations} from '../../../../Shared/Util';
 
 const {$get} = immutableOperations;
 
-@connect(state => {
-    return {
-        currentUserName: $get(state, 'user.name.fullName')
-    }
-})
+@connect(state => ({
+    currentUserName: $get(state, 'user.name.fullName')
+}))
 export default class UserDropDown extends Component {
     static propTypes = {
         currentUserName: PropTypes.string.isRequired

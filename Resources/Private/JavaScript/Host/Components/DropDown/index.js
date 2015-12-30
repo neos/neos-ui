@@ -42,7 +42,10 @@ export default class DropDown extends Component {
 
         return (
             <div className={dropDownClassName} ref="dropDown">
-                <button className={buttonClassName} onClick={e => executeCallback(e, this.toggleDropDown.bind(this))}>
+                <button
+                    className={buttonClassName}
+                    onClick={e => executeCallback(e, this.toggleDropDown.bind(this))}
+                    >
                     {this.renderBeforeIcon()}
                     {this.renderLabel()}
                     {this.renderChevronIcon()}

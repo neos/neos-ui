@@ -1,8 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 
-import {I18n, Icon} from '../../../../Components/';
-
 export default class Button extends Component {
     static propTypes = {
         enabled: PropTypes.bool,
@@ -18,7 +16,13 @@ export default class Button extends Component {
     };
 
     render() {
-        const {enabled, highlighted, cavity, label, indicator, style} = this.props;
+        const {
+            enabled,
+            highlighted,
+            cavity,
+            indicator,
+            style
+        } = this.props;
         const btnClassName = mergeClassNames({
             [style.btn]: true,
             [style['btn--disabled']]: !enabled,
@@ -30,9 +34,11 @@ export default class Button extends Component {
             disabled: !enabled
         };
 
-        return (<button className={btnClassName} onClick={() => this.onClick()} {...btnAttributes}>
-            {this.props.children} {indicator > 0 ? '(' + indicator + ')' : ''}
-        </button>)
+        return (
+            <button className={btnClassName} onClick={() => this.onClick()} {...btnAttributes}>
+                {this.props.children} {indicator > 0 ? `(${indicator})` : ''}
+            </button>
+        );
     }
 
     onClick() {

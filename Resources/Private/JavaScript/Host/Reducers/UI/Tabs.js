@@ -1,7 +1,7 @@
 import {ActionTypes} from '../../Constants/';
 import {immutableOperations} from '../../../Shared/Util/';
 
-const {$immutable, $get, $set, $merge, $delete} = immutableOperations;
+const {$get, $set, $merge, $delete} = immutableOperations;
 
 function updateActiveTab(state) {
     const activeTab = $get(state, 'ui.tabs.active');
@@ -18,16 +18,15 @@ export default {
         return $set(state, 'ui.tabs.active', newActiveTab);
     },
 
-
     [ActionTypes.UI.SET_TAB_METADATA](state, action) {
         const {title, workspace, contextPath} = action.metaData;
         const {publishingState, name} = workspace;
         const {publishableNodes} = publishingState;
         const [nodePath] = contextPath.split('@');
-        const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope => {
-            return nodeEnvelope.contextPath.startsWith(nodePath) &&
-                nodeEnvelope.documentContextPath === contextPath;
-        });
+        const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope =>
+            nodeEnvelope.contextPath.startsWith(nodePath) &&
+            nodeEnvelope.documentContextPath === contextPath
+        );
 
         return updateActiveTab($set(
             $merge(state, ['ui', 'tabs', 'byId', action.tabId], {title, contextPath}),
@@ -46,16 +45,16 @@ export default {
         const {documentContextPath, workspaceInfo, workspaceName} = action;
         const publishableNodes = workspaceInfo;
         const [nodePath] = documentContextPath.split('@');
-        const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope => {
-            return nodeEnvelope.contextPath.startsWith(nodePath) &&
-                nodeEnvelope.documentContextPath === documentContextPath;
-        });
+        const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope =>
+            nodeEnvelope.contextPath.startsWith(nodePath) &&
+            nodeEnvelope.documentContextPath === documentContextPath
+        );
 
-        const updateTabs = $get(state, 'ui.tabs.byId').filter(tab => {
-            return $get(tab, 'workspace.name') === workspaceName;
-        }).map(tab => {
-            return $set(tab, 'workspace.publishingState', {publishableNodes, publishableNodesInDocument});
-        });
+        const updateTabs = $get(state, 'ui.tabs.byId').filter(tab =>
+            $get(tab, 'workspace.name') === workspaceName
+        ).map(tab =>
+            $set(tab, 'workspace.publishingState', {publishableNodes, publishableNodesInDocument})
+        );
 
         return updateActiveTab($merge(state, 'ui.tabs.byId', updateTabs));
     },

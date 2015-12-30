@@ -20,7 +20,11 @@ export default class Bar extends Component {
         });
 
         return (
-            <div className={classNames} onDragOver={e => e.preventDefault()} onDrop={e => this.onDrop(e)}>
+            <div
+                className={classNames}
+                onDragOver={e => e.preventDefault()}
+                onDrop={e => this.onDrop(e)}
+                >
               {this.props.children}
             </div>
         );

@@ -10,7 +10,12 @@ export default class EditModePanelToggler extends Component {
 
     render() {
         return (
-            <Button className={this.props.className} style="clean" hoverStyle="clean" onClick={this.onEditModeToggle.bind(this)}>
+            <Button
+                className={this.props.className}
+                style="clean"
+                hoverStyle="clean"
+                onClick={this.onEditModeToggle.bind(this)}
+                >
                 <I18n target="Edit / Preview" />
             </Button>
         );

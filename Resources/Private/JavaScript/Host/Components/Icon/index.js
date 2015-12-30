@@ -17,7 +17,8 @@ export default class Icon extends Component {
 
             // First of, we want to check if the passed value is a deprecated icon name.
             if (DEPRECATED_ICON_NAMES.indexOf(val) > -1) {
-                logger.warn(`Font-Awesome has been updated. The icon name "${val}" has been updated/removed. Please adjust your icon configurations in your .yaml files to the new name-scheme of Font-Awesome 4.5.`);
+                logger.warn(`Font-Awesome has been updated. The icon name "${val}" has been updated/removed.
+Please adjust your icon configurations in your .yaml files to the new name-scheme of Font-Awesome 4.5.`);
             } else if (
               // Afterwards, check if the passed value is in the list of available icons...
               ICON_NAMES.indexOf(val) === -1 &&
@@ -25,7 +26,8 @@ export default class Icon extends Component {
               // ... or if it is available but needs the Font-Awesome prefix.
               ICON_NAMES.indexOf(`fa-${val}`) === -1
             ) {
-                return new Error(`Icon name "${val}" is not a valid icon name in Font-Awesome 4.5. Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.`);
+                return new Error(`Icon name "${val}" is not a valid icon name in Font-Awesome 4.5.
+Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.`);
             }
         },
         className: PropTypes.string

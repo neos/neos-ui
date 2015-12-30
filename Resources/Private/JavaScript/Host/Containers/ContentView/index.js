@@ -45,7 +45,15 @@ export default class ContentView extends Component {
             [style['contentView__item--active']]: tab.get('id') === activeId
         });
 
-        return <iframe src={tab.get('src')} frameBorder="0" name={tab.get('id')} key={tab.get('id')}
-            data-context-path={tab.get('contextPath')} className={tabClasses} />;
+        return (
+            <iframe
+                src={tab.get('src')}
+                frameBorder="0"
+                name={tab.get('id')}
+                key={tab.get('id')}
+                data-context-path={tab.get('contextPath')}
+                className={tabClasses}
+                />
+        );
     }
 }

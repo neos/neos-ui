@@ -1,4 +1,4 @@
-export default (feedback) => {
+export default feedback => {
     const {documentContextPath} = feedback.payload;
 
     [].slice.call(document.querySelectorAll(`iframe[data-context-path="${documentContextPath}"]`)).forEach(iframe => {

@@ -1,18 +1,15 @@
 import React, {Component, PropTypes} from 'react';
-import {service} from '../../../Shared/';
-const {logger} = service;
-
 import {backend} from '../../Service/';
 
 export default class I18n extends Component {
     static propTypes = {
-        target: PropTypes.string,
+        target: PropTypes.string.isRequired,
         className: PropTypes.string,
 
-        id: PropTypes.string,
-        packageKey: PropTypes.string,
-        sourceName: PropTypes.string,
-        params: PropTypes.array
+        id: PropTypes.string.isRequired,
+        packageKey: PropTypes.string.isRequired,
+        sourceName: PropTypes.string.isRequired,
+        params: PropTypes.array.isRequired
     }
 
     constructor(props) {
@@ -42,9 +39,17 @@ export default class I18n extends Component {
         const {i18n} = backend;
 
         if (i18n) {
-            this.setState({label: id ? i18n(id, packageKey || 'TYPO3.Neos', sourceName || 'Main', params || []) : target});
+            const label = id ? i18n(id, packageKey, sourceName, params) : target;
+            this.setState({
+                label
+            });
         } else if (target) {
             this.setState({label: target});
         }
     }
 }
+I18n.defaultProps = {
+    packageKey: 'TYPO3.Neos',
+    sourceName: 'Main',
+    params: []
+};

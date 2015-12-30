@@ -5,7 +5,6 @@ import backend from '../Backend.js';
  * The publishing service
  */
 class PublishingService {
-
     constructor(store, csrfToken, endpoints) {
         this.store = store;
         this.csrfToken = csrfToken;

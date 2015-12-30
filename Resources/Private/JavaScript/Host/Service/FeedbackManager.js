@@ -3,7 +3,6 @@ import backend from './Backend.js';
 const {logger} = service;
 
 class FeedbackManager {
-
     constructor(store) {
         this.store = store;
     }
@@ -22,12 +21,13 @@ class FeedbackManager {
 
         try {
             return feedbackHandlers.get(type);
-        } catch(err) { console.error(err); }
-
+        } catch (err) {
+            console.error(err);
+        }
 
         // Fallback: just log the feedback
         return (feedback, envelope) => {
-            logger.info('[' + envelope.timestamp + '] ' + feedback.description);
+            logger.info(`[${envelope.timestamp}] ${feedback.description}`);
         };
     }
 

@@ -13,7 +13,12 @@ export default class MenuToggler extends Component {
         const {className} = this.props;
 
         return (
-            <Button className={className} style="clean" hoverStyle="clean" onClick={this.onMenuToggle.bind(this)}>
+            <Button
+                className={className}
+                style="clean"
+                hoverStyle="clean"
+                onClick={this.onMenuToggle.bind(this)}
+                >
                 <div className={style.menuIcon}></div>
             </Button>
         );

@@ -50,8 +50,17 @@ export default class ToggablePanel extends Component {
 
         return (
             <div className={classNames}>
-                <Headline className={style.panel__headline} title={title} type="h1" style="h4" />
-                <IconButton className={style.panel__toggleBtn} icon={icon} onClick={this.togglePanel.bind(this)} />
+                <Headline
+                    className={style.panel__headline}
+                    title={title}
+                    type="h1"
+                    style="h4"
+                    />
+                <IconButton
+                    className={style.panel__toggleBtn}
+                    icon={icon}
+                    onClick={this.togglePanel.bind(this)}
+                    />
                 <div ref="contentHeightMirror" style={contentHeightMirrorStyle}>
                     {children}
                 </div>
@@ -67,7 +76,11 @@ export default class ToggablePanel extends Component {
                         {Object.keys(styles).map((key, index) => {
                             const {...inlineStyle} = styles[key];
                             return (
-                              <div key={index} style={inlineStyle} className={style.panel__contents__target}>
+                              <div
+                                  key={index}
+                                  style={inlineStyle}
+                                  className={style.panel__contents__target}
+                                  >
                                 {children}
                               </div>
                           );

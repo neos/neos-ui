@@ -7,18 +7,25 @@ export default serverState => Immutable.fromJS({
         //
         tabs: {
             byId: {},
-            active: ''
+            active: {
+                id: '',
+                workspace: {
+                    publishableNodes: [],
+                    publishableNodesInDocument: []
+                }
+            }
         },
 
         contextBar: {}
-    },
+    }
+
 
     //
     // Contains information about all nodes the are currently loaded
     //
     nodes: {
         byContextPath: {},
-        selected: ''
+        selected: {}
     },
 
     //

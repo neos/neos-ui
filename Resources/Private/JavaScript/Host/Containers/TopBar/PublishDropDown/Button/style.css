@@ -1,0 +1,27 @@
+.btn {
+    display: inline-block;
+    padding: 0 16px;
+    height: 40px;
+    line-height: 40px;
+    border: 0;
+    background: $success;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.btn--disabled {
+    opacity: .5;
+}
+
+.btn--notAllowed {
+    cursor: not-allowed !important;
+}
+
+.btn--highlighted {
+    background: $warn;
+}
+
+.btn--cavity {
+    min-width: 165px;
+}

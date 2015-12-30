@@ -6,6 +6,7 @@ use TYPO3\Flow\Property\PropertyMapper;
 use TYPO3\Flow\Mvc\View\JsonView;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TypoScript\TypoScriptObjects\AbstractTypoScriptObject;
+use PackageFactory\Guevara\TYPO3CR\Service\WorkspaceService;
 
 class DocumentInformationImplementation extends AbstractTypoScriptObject
 {
@@ -14,6 +15,12 @@ class DocumentInformationImplementation extends AbstractTypoScriptObject
      * @var PropertyMapper
      */
     protected $propertyMapper;
+
+    /**
+     * @Flow\Inject
+     * @var WorkspaceService
+     */
+    protected $workspaceService;
 
     /**
      * Renders information about a document node and all of its child nodes into json
@@ -25,9 +32,14 @@ class DocumentInformationImplementation extends AbstractTypoScriptObject
         $node = $this->tsValue('node');
 
         $documentInformation = [
-            'title' => $node->getProperty('title'),
-            'contextPath' => $node->getContextPath(),
-            'nodes' => $this->buildNodeInformation($node)
+            'nodes' => $this->buildNodeInformation($node),
+            'metaData' => [
+                'contextPath' => $node->getContextPath(),
+                'title' => $node->getProperty('title'),
+                'workspace' => [
+                    'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($node->getContext()->getWorkspace())
+                ]
+            ]
         ];
 
         $controllerContext = $this->tsRuntime->getControllerContext();

@@ -8,7 +8,7 @@ import {backend} from '../../../Service/';
 export default class TabSwitcher extends Component {
     static propTypes = {
         tabs: PropTypes.instanceOf(Immutable.Map),
-        active: PropTypes.string,
+        active: PropTypes.instanceOf(Immutable.Map),
         onSwitchTab: PropTypes.func
     }
 
@@ -21,7 +21,7 @@ export default class TabSwitcher extends Component {
         return (
             <Bar position="bottom" onDrop={e => this.onDrop(e)}>
                 <div className={style.tabSwitcher}>
-                    {tabs.map((tab, index) => tab.get('id') === active ? this.renderActiveTab(tab, index) : this.renderTab(tab, index))}
+                    {tabs.map((tab, index) => tab.get('id') === active.get('id') ? this.renderActiveTab(tab, index) : this.renderTab(tab, index))}
                 </div>
             </Bar>
         );

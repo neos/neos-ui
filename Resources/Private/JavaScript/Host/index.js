@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import assign from 'lodash.assign';
+import registry from '@reduct/registry';
+
 import reducerFactory from './Reducers/';
 import {initialStateFactory} from './State/';
+
+import * as feedbackHandler from './Service/FeedbackHandler/';
+
 import {
     ContentView,
     FooterBar,
@@ -20,6 +25,7 @@ import {
     changeManager,
     feedbackManager
 } from './Service/';
+
 import style from './style.css';
 
 // Add the root class which enables the scoped normalize.css
@@ -60,8 +66,22 @@ document.addEventListener('DOMContentLoaded', () => {
     assign(backend, {
         tabManager: tabManager(store),
         changeManager: changeManager(store, csrfToken),
-        feedbackManager: feedbackManager(store)
+        feedbackManager: feedbackManager(store),
+        publishingService: publishingService(csrfToken),
+
+        asyncComponents: {
+            feedbackHandlers: registry()
+        }
     });
 
     backend.tabManager.createTab(firstTabUri);
+
+    // Register FeedbackHandlers
+    backend.asyncComponents.feedbackHandlers.registerAll({
+        'PackageFactory.Guevara:Success': feedbackHandler.flashMessage,
+        'PackageFactory.Guevara:Error': feedbackHandler.flashMessage,
+        'PackageFactory.Guevara:Info': feedbackHandler.logToConsole,
+        'PackageFactory.Guevara:UpdateWorkspaceInfo': feedbackHandler.updateWorkspaceInfo,
+        'PackageFactory.Guevara:ReloadDocument': feedbackHandler.reloadDocument
+    });
 });

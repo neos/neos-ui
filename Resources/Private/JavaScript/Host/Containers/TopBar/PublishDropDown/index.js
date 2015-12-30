@@ -4,70 +4,89 @@ import mergeClassNames from 'classnames';
 import Immutable from 'immutable';
 import {I18n, Icon, DropDown} from '../../../Components/';
 import style from './style.css';
+import Button from './Button/';
+
+import {backend} from '../../../Service/';
 
 @connect(state => {
+    const workspaceInfo = state.get('ui').get('tabs').get('active').get('workspace');
+    const publishableNodes = workspaceInfo.get('publishableNodes');
+    const publishableNodesInDocument = workspaceInfo.get('publishableNodesInDocument');
+
     return {
-        changes: state.get('changes')
+        publishableNodes,
+        publishableNodesInDocument
     };
 })
 export default class PublishDropDown extends Component {
     static propTypes = {
-        changes: PropTypes.instanceOf(Immutable.List)
+        publishableNodes: PropTypes.instanceOf(Immutable.List),
+        publishableNodesInDocument: PropTypes.instanceOf(Immutable.List)
     }
 
     render() {
-        const {changes} = this.props;
-        const isPublishable = changes.count() > 0;
-        const publishBtnClassName = mergeClassNames({
-            [style.btn]: true,
-            [style['btn--publishBtn']]: true,
-            [style['btn--disabled']]: !isPublishable,
-            [style['btn--notAllowed']]: !isPublishable,
-            [style['btn--isSaving']]: false
-        });
+        const {publishableNodes, publishableNodesInDocument} = this.props;
+        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
+        const canPublishGlobally = publishableNodes.count() > 0;
+
         const dropDownClassNames = {
             wrapper: style.dropDown,
             btn: mergeClassNames({
                 [style.btn]: true,
                 [style.dropDown__btn]: true,
-                [style['btn--disabled']]: !isPublishable
+                [style['btn--highlighted']]: canPublishGlobally
             }),
             ['btn--active']: style['dropDown__btn--active'],
             contents: style.dropDown__contents
         };
-        const publishRelatedItemClassName = mergeClassNames({
-            [style.dropDown__contents__item]: true,
-            [style['dropDown__contents__item--disabled']]: !isPublishable
-        });
-        const publishRelatedItemAttributes = {};
-
-        if (!isPublishable) {
-            publishRelatedItemAttributes.disabled = 'disabled';
-        }
 
         return (
             <div className={style.wrapper}>
-                <button className={publishBtnClassName} onClick={this.onPublishClick.bind(this)} {...publishRelatedItemAttributes}>
-                    <I18n target="Published" />
-                </button>
-                <DropDown classNames={dropDownClassNames}>
-                    <li className={publishRelatedItemClassName}>
-                        <button onClick={this.onPublishAllClick.bind(this)} {...publishRelatedItemAttributes}>
-                            <Icon icon="upload" />
-                            <I18n target="Publish all" />
-                        </button>
+                <Button
+                    style={style}
+                    cavity={true}
+                    enabled={canPublishLocally}
+                    highlighted={canPublishLocally}
+                    indicator={publishableNodesInDocument.count()}
+                    label={canPublishLocally ? 'Publish' : 'Published'}
+                    onClick={(e) => this.onPublishClick(e)}
+                />
+                <DropDown iconAfter="chevron-down" iconAfterActive="chevron-up" classNames={dropDownClassNames}>
+                    <li className={style.dropDown__contents__item}>
+                        <Button
+                            style={style}
+                            cavity={false}
+                            enabled={canPublishGlobally}
+                            highlighted={false}
+                            indicator={publishableNodes.count()}
+                            label="Publish All"
+                            icon="upload"
+                            onClick={(e) => this.onPublishAllClick(e)}
+                        />
                     </li>
-                    <li className={publishRelatedItemClassName}>
-                        <button onClick={this.onDiscardClick.bind(this)} {...publishRelatedItemAttributes}>
-                            <Icon icon="ban" />
-                            <I18n target="Discard" />
-                        </button>
+                    <li className={style.dropDown__contents__item}>
+                        <Button
+                            style={style}
+                            cavity={false}
+                            enabled={canPublishLocally}
+                            highlighted={false}
+                            indicator={publishableNodesInDocument.count()}
+                            label="Discard"
+                            icon="ban"
+                            onClick={(e) => this.onDiscardClick(e)}
+                        />
                     </li>
-                    <li className={publishRelatedItemClassName}>
-                        <button onClick={this.onDiscardAllClick.bind(this)} {...publishRelatedItemAttributes}>
-                            <Icon icon="ban" />
-                            <I18n target="Discard all" />
-                        </button>
+                    <li className={style.dropDown__contents__item}>
+                        <Button
+                            style={style}
+                            cavity={false}
+                            enabled={canPublishGlobally}
+                            highlighted={false}
+                            indicator={publishableNodes.count()}
+                            label="Discard All"
+                            icon="ban"
+                            onClick={(e) => this.onDiscardAllClick(e)}
+                        />
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <label>
@@ -76,7 +95,7 @@ export default class PublishDropDown extends Component {
                         </label>
                     </li>
                     <li className={style.dropDown__contents__item}>
-                        <a href="http://neos.h-hotels.com/neos/management/workspaces">
+                        <a href="/neos/management/workspaces">
                             <Icon icon="th-large" />
                             <I18n target="Workspaces" />
                         </a>
@@ -86,28 +105,46 @@ export default class PublishDropDown extends Component {
         );
     }
 
-    onPublishClick(e) {
-        e.preventDefault();
+    renderLocalPublishLabel(publishableNodesInDocument) {
+        const canPublish = publishableNodesInDocument.count() > 0;
 
-        console.log('publish changes');
+        if (canPublish) {
+            return (<span>
+                <I18n target="Publish" /> ({publishableNodesInDocument.count()})
+            </span>);
+        }
+
+        return (<span>
+            <I18n target="Published" />
+        </span>);
     }
 
-    onPublishAllClick(e) {
-        e.preventDefault();
+    onPublishClick() {
+        const {publishableNodesInDocument} = this.props;
+        const {publishingService} = backend;
 
-        console.log('publish changes');
+        publishingService.publishNodes(publishableNodesInDocument.map(n => n.contextPath || n.get('contextPath')), 'live');
     }
 
-    onDiscardClick(e) {
-        e.preventDefault();
+    onPublishAllClick() {
+        const {publishableNodes} = this.props;
+        const {publishingService} = backend;
 
-        console.log('discard changes');
+        publishingService.publishNodes(publishableNodes.map(n => n.contextPath || n.get('contextPath')), 'live');
     }
 
-    onDiscardAllClick(e) {
-        e.preventDefault();
+    onDiscardClick() {
+        const {publishableNodesInDocument} = this.props;
+        const {publishingService} = backend;
 
-        console.log('discard all changes');
+        publishingService.discardNodes(publishableNodesInDocument.map(n => n.contextPath || n.get('contextPath')));
+    }
+
+    onDiscardAllClick() {
+        const {publishableNodes} = this.props;
+        const {publishingService} = backend;
+
+        publishingService.discardNodes(publishableNodes.map(n => n.contextPath || n.get('contextPath')));
     }
 
     onAutoPublishChange(e) {

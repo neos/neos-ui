@@ -20,17 +20,11 @@ export default class I18n extends Component {
         );
     }
 
-    componentDidMount() {
-        this.getTranslation();
-    }
+    componentWillReceiveProps(newProps) {
+      const {target} = newProps;
 
-    getTranslation() {
-        const {target} = this.props;
+      logger.info('translate key: ', target, newProps);
 
-        logger.info('translate key: ', target, this.props);
-
-        this.setState({label: target});
-
-        return target;
+      this.setState({label: target});
     }
 }

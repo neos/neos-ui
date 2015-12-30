@@ -1,6 +1,8 @@
 import uuid from 'uuid';
 import actions from '../../Actions/';
 
+import assign from 'lodash.assign';
+
 class TabManager {
     constructor(store) {
         this.store = store;
@@ -10,6 +12,7 @@ class TabManager {
         const tabId = uuid.v4();
 
         this.store.dispatch(actions.UI.Tabs.createTab(tabId, src));
+        this.store.dispatch(actions.UI.Tabs.switchToTab(tabId));
     }
 
     closeTab(tabId) {
@@ -25,7 +28,13 @@ class TabManager {
 
     commitDocumentLoad(tabId, configuration) {
         this.store.dispatch(actions.Transient.Nodes.addNodeBulk(configuration.nodes));
-        this.store.dispatch(actions.UI.Tabs.setTabTitle(tabId, configuration.title || tabId));
+
+        this.store.dispatch(actions.UI.Tabs.setTabMetaData(tabId, assign({
+            title: tabId,
+            workspace: {
+                publishableNodes: []
+            }
+        }, configuration.metaData || {})));
     }
 }
 

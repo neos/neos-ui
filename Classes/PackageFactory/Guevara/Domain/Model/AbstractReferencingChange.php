@@ -32,4 +32,20 @@ abstract class AbstractReferencingChange extends AbstractChange implements Refer
     {
         return $this->reference;
     }
+
+    /**
+     * Helper method to inform the client, that new workspace information is available
+     *
+     * @return void
+     */
+    protected function updateWorkspaceInfo() {
+        parent::updateWorkspaceInfo();
+
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo();
+        $updateWorkspaceInfo->setDocument(
+            $this->getClosestDocument($this->getReference())
+        );
+
+        $this->feedbackCollection->add($updateWorkspaceInfo);
+    }
 }

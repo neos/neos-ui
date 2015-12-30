@@ -47,6 +47,24 @@ abstract class AbstractMessageFeedback implements FeedbackInterface
     }
 
     /**
+     * Checks whether this feedback is similar to another
+     *
+     * @param FeedbackInterface $feedback
+     * @return boolean
+     */
+    public function isSimilarTo(FeedbackInterface $feedback)
+    {
+        if (!$feedback instanceof AbstractMessageFeedback) {
+            return false;
+        }
+
+        return(
+            $this->getSeverity() === $feedback->getSeverity() &&
+            $this->getMessage() === $feedback->getMessage()
+        );
+    }
+
+    /**
      * Serialize the payload for this feedback
      *
      * @return mixed

@@ -136,6 +136,8 @@ class Property extends AbstractChange
                 $node->getNodeType(), $this->getPropertyName(), $this->getValue(), $node->getContext());
 
             $node->setProperty($this->getPropertyName(), $value);
+
+            $this->updateWorkspaceInfo();
         }
     }
 }

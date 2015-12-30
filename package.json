@@ -27,7 +27,7 @@
     "@reduct/component": "^2.0.3",
     "@reduct/logger": "^1.1.0",
     "@reduct/nitpick": "^1.0.0",
-    "@reduct/registry": "^1.0.0",
+    "@reduct/registry": "^1.0.1",
     "classnames": "^2.2.0",
     "domtastic": "^0.11.2",
     "immutable": "^3.7.5",

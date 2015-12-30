@@ -31,7 +31,7 @@ export default class Headline extends Component {
             [style[`heading--${headingStyle}`]]: true,
             [className]: className && className.length
         });
-        const title = <I18n target={this.props.title} className={className} />;
+        const title = <I18n target={this.props.title} />;
         let heading;
 
         switch (type) {

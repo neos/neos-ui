@@ -1,0 +1,24 @@
+.panel {
+    position: relative;
+    border-bottom: 1px solid $dark;
+}
+.panel--isOpen {}
+.panel__headline {
+    height: 40px;
+    margin: 0 !important;
+    padding: 0 16px;
+    line-height: 40px;
+}
+.panel__toggleBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.panel__contents {
+    display: none;
+    padding: 5px 16px;
+
+    .panel--isOpen & {
+        display: block;
+    }
+}

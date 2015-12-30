@@ -11,6 +11,7 @@ import Label from './Label/';
 import SideBar from './SideBar/';
 import {Tabs, Panel} from './Tabs/';
 import TextInput from './TextInput/';
+import ToggablePanel from './ToggablePanel/';
 
 export {
     Bar,
@@ -26,5 +27,6 @@ export {
     SideBar,
     Tabs,
     Panel,
-    TextInput
+    TextInput,
+    ToggablePanel
 };

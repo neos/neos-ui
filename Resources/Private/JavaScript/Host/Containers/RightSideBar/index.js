@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {SideBar, Tabs, Panel, IconButton, TextInput} from '../../Components/';
+import {SideBar, Tabs, Panel, IconButton, TextInput, ToggablePanel} from '../../Components/';
 import style from './style.css';
 
 @connect()
@@ -10,18 +10,19 @@ export default class LeftSideBar extends Component {
             <SideBar position="right" className={style.rightSideBar}>
                 <Tabs>
                     <Panel icon="pencil">
-                        <h2>Content #1 here</h2>
+                        <ToggablePanel title="My fancy configuration">
+                            <TextInput
+                                label="Title"
+                                placeholder="Type to search"
+                                />
+                        </ToggablePanel>
 
-                        <TextInput
-                            label="Title"
-                            placeholder="Type to search"
-                            />
                     </Panel>
                     <Panel icon="cog">
-                        <h2>Content #2 here</h2>
+                        <p>Content #2 here</p>
                     </Panel>
                     <Panel icon="bullseye">
-                        <h2>Content #3 here</h2>
+                        <p>Content #3 here</p>
                     </Panel>
                 </Tabs>
 

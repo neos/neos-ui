@@ -1,4 +1,7 @@
-.heading {}
+.heading {
+    font-size: 14px !important;
+    text-rendering: optimizelegibility;
+}
 .heading--h1 {}
 .heading--h2 {}
 .heading--h3 {}

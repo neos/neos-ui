@@ -12,6 +12,7 @@ class MoveInto extends AbstractMove
     {
         if ($this->canApply()) {
             $this->getSubject()->moveInto($this->getReference());
+            $this->updateWorkspaceInfo();
         }
     }
 }

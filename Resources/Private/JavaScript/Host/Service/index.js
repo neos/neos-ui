@@ -1,7 +1,7 @@
 import backend from './Backend.js';
 import changeManager from './ChangeManager.js';
 import feedbackManager from './FeedbackManager.js';
-import {nodeTypeManager} from './TYPO3CR/';
+import {nodeTypeManager, publishingService} from './TYPO3CR/';
 import {tabManager} from './UI/';
 
 export default {
@@ -9,5 +9,6 @@ export default {
     nodeTypeManager,
     tabManager,
     changeManager,
-    feedbackManager
+    feedbackManager,
+    publishingService
 };

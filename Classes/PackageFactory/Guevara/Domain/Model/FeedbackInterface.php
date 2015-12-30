@@ -18,6 +18,14 @@ interface FeedbackInterface
     public function getDescription();
 
     /**
+     * Checks whether this feedback is similar to another
+     *
+     * @param FeedbackInterface $feedback
+     * @return boolean
+     */
+    public function isSimilarTo(FeedbackInterface $feedback);
+
+    /**
      * Serialize the payload for this feedback
      *
      * @return mixed

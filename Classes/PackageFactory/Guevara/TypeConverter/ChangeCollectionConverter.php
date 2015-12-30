@@ -17,10 +17,9 @@ use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
 use TYPO3\Flow\Object\ObjectManagerInterface;
 use TYPO3\Flow\Reflection\ObjectAccess;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Domain\Utility\NodePaths;
-use TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface;
 use PackageFactory\Guevara\Domain\Model\ChangeCollection;
 use PackageFactory\Guevara\Domain\Model\ChangeInterface;
+use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
 
 /**
  * An Object Converter for ChangeCollections.
@@ -63,9 +62,9 @@ class ChangeCollectionConverter extends AbstractTypeConverter
 
     /**
      * @Flow\Inject
-     * @var ContextFactoryInterface
+     * @var NodeService
      */
-    protected $contextFactory;
+    protected $nodeService;
 
     /**
      * Converts a accordingly formatted, associative array to a change collection
@@ -118,7 +117,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
         $changeClassInstance = $this->objectManager->get($changeClass);
 
         $subjectContextPath = $changeData['subject'];
-        $subject = $this->getNodeFromContextPath($subjectContextPath);
+        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath);
 
         if ($subject instanceof \TYPO3\Flow\Error\Error) {
             return $subject;
@@ -128,7 +127,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
 
         if (isset($changeData['reference']) && method_exists($changeClassInstance, 'setReference')) {
             $referenceContextPath = $changeData['reference'];
-            $reference = $this->getNodeFromContextPath($referenceContextPath);
+            $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath);
 
             if ($reference instanceof \TYPO3\Flow\Error\Error) {
                 return $reference;
@@ -146,57 +145,5 @@ class ChangeCollectionConverter extends AbstractTypeConverter
         }
 
         return $changeClassInstance;
-    }
-
-    /**
-     * Converts a given context path to a node object
-     *
-     * @param string $contextPath
-     * @return NodeInterface
-     */
-    protected function getNodeFromContextPath($contextPath)
-    {
-        $nodePathAndContext = NodePaths::explodeContextPath($contextPath);
-        $nodePath = $nodePathAndContext['nodePath'];
-        $workspaceName = $nodePathAndContext['workspaceName'];
-        $dimensions = $nodePathAndContext['dimensions'];
-
-        $context = $this->contextFactory->create(
-            $this->prepareContextProperties($workspaceName, $dimensions)
-        );
-
-        $workspace = $context->getWorkspace(false);
-        if (!$workspace) {
-            return new \TYPO3\Flow\Error\Error(
-                sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName), 1451392329);
-        }
-
-        return $context->getNode($nodePath);
-    }
-
-    /**
-     * Prepares the context properties for the nodes based on the given workspace and dimensions
-     *
-     * @param string $workspaceName
-     * @param array $dimensions
-     * @return array
-     */
-    protected function prepareContextProperties($workspaceName, array $dimensions = null)
-    {
-        $contextProperties = array(
-            'workspaceName' => $workspaceName,
-            'invisibleContentShown' => false,
-            'removedContentShown' => false
-        );
-
-        if ($workspaceName !== 'live') {
-            $contextProperties['invisibleContentShown'] = true;
-        }
-
-        if ($dimensions !== null) {
-            $contextProperties['dimensions'] = $dimensions;
-        }
-
-        return $contextProperties;
     }
 }

@@ -7,11 +7,19 @@ export function switchToTab(tabId) {
     };
 }
 
-export function setTabTitle(tabId, title) {
+export function setTabMetaData(tabId, metaData) {
     return {
-        type: ActionTypes.UI.SET_TAB_TITLE,
+        type: ActionTypes.UI.SET_TAB_METADATA,
         tabId,
-        title
+        metaData
+    };
+}
+
+export function updateWorkspaceInfo(documentContextPath, workspaceInfo) {
+    return {
+        type: ActionTypes.UI.UPDATE_TAB_WORKSPACE_INFO,
+        documentContextPath,
+        workspaceInfo
     };
 }
 

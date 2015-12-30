@@ -12,6 +12,7 @@ class MoveBefore extends AbstractMove
     {
         if ($this->canApply()) {
             $this->getSubject()->moveBefore($this->getReference());
+            $this->updateWorkspaceInfo();
         }
     }
 }

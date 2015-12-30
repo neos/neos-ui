@@ -1,15 +1,23 @@
 <?php
 namespace PackageFactory\Guevara\Domain\Model\Feedback\Operations;
 
-use PackageFactory\Guevara\Domain\Model\FeedbackInterface;
+use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use PackageFactory\Guevara\Domain\Model\FeedbackInterface;
+use PackageFactory\Guevara\TYPO3CR\Service\WorkspaceService;
 
-class ReloadDocument implements FeedbackInterface
+class UpdateWorkspaceInfo implements FeedbackInterface
 {
     /**
      * @var NodeInterface
      */
     protected $document;
+
+    /**
+     * @Flow\Inject
+     * @var WorkspaceService
+     */
+    protected $workspaceService;
 
     /**
      * Set the document
@@ -39,7 +47,7 @@ class ReloadDocument implements FeedbackInterface
      */
     public function getType()
     {
-        return 'PackageFactory.Guevara:ReloadDocument';
+        return 'PackageFactory.Guevara:UpdateWorkspaceInfo';
     }
 
     /**
@@ -49,7 +57,7 @@ class ReloadDocument implements FeedbackInterface
      */
     public function getDescription()
     {
-        return sprintf('Reload of document "%s" required.', $this->getDocument()->getProperty('title'));
+        return sprintf('New workspace info for "%s" available.', $this->getDocument()->getProperty('title'));
     }
 
     /**
@@ -60,7 +68,7 @@ class ReloadDocument implements FeedbackInterface
      */
     public function isSimilarTo(FeedbackInterface $feedback)
     {
-        if (!$feedback instanceof ReloadDocument) {
+        if (!$feedback instanceof UpdateWorkspaceInfo) {
             return false;
         }
 
@@ -75,7 +83,10 @@ class ReloadDocument implements FeedbackInterface
     public function serializePayload()
     {
         return [
-            'documentContextPath' => $this->getDocument()->getContextPath()
+            'documentContextPath' => $this->getDocument()->getContextPath(),
+            'workspaceInfo' => $this->workspaceService->getPublishableNodeInfo(
+                $this->getDocument()->getContext()->getWorkspace()
+            )
         ];
     }
 }

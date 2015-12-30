@@ -1,6 +1,11 @@
 <?php
 namespace PackageFactory\Guevara\Domain\Model;
 
+use TYPO3\Flow\Annotations as Flow;
+
+/**
+ * @Flow\Scope("singleton")
+ */
 class FeedbackCollection implements \JsonSerializable
 {
     /**
@@ -16,6 +21,12 @@ class FeedbackCollection implements \JsonSerializable
      */
     public function add(FeedbackInterface $feedback)
     {
+        foreach ($this->feedbacks as $value) {
+            if ($value->isSimilarTo($feedback)) {
+                return;
+            }
+        }
+
         $this->feedbacks[] = $feedback;
     }
 

@@ -9,7 +9,8 @@ export default class TextInput extends Component {
         label: PropTypes.string.isRequired,
         placeholder: PropTypes.string,
         className: PropTypes.string,
-        isValid: PropTypes.bool.isRequired
+        isValid: PropTypes.bool.isRequired,
+        onChange: PropTypes.func
     }
 
     render() {
@@ -37,9 +38,19 @@ export default class TextInput extends Component {
                     id={id}
                     type="text"
                     placeholder={placeholder}
+                    onChange={this.onChange.bind(this)}
                     />
             </div>
         );
+    }
+
+    onChange(e) {
+        const value = e.target.value.substr(0, 140);
+        const {onChange} = this.props;
+
+        if (onChange) {
+            onChange(value);
+        }
     }
 }
 TextInput.defaultProps = {

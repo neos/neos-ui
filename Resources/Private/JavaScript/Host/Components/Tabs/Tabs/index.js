@@ -38,7 +38,7 @@ export default class Tabs extends Component {
         return (
             <div className={className}>
                 {this.renderMenuItems()}
-                {this.renderActivePanel()}
+                {this.renderPanels()}
             </div>
         );
     }
@@ -48,16 +48,16 @@ export default class Tabs extends Component {
             .map(panel => typeof panel === 'function' ? panel() : panel)
             .filter(panel => panel)
             .map((panel, index) => {
-                const ref = `tab-${index + 1}`;
+                const ref = `tab-${index}`;
                 const {title, icon} = panel.props;
                 const classes = mergeClassNames({
                     [style.tabs__navigation__item]: true,
-                    [style['tabs__navigation__item--isActive']]: this.state.activeTab === (index + 1)
+                    [style['tabs__navigation__item--isActive']]: this.state.activeTab === (index)
                 });
 
                 return (
                     <li ref={ref} key={index} className={classes}>
-                        <a onClick={e => executeCallback(e, () => this.activateTabForIndex(index + 1))}>
+                        <a onClick={e => executeCallback(e, () => this.activateTabForIndex(index))}>
                             {icon ? <Icon icon={icon} /> : null}
                             {title}
                         </a>
@@ -84,17 +84,27 @@ export default class Tabs extends Component {
         });
     }
 
-    renderActivePanel() {
-        const index = this.state.activeTab - 1;
-        const panel = this.props.children[index];
+    renderPanels() {
+        const {children} = this.props;
+        const activeIndex = this.state.activeTab;
 
         return (
             <div ref="tab-panel">
-                {panel}
+                {children.map((panel, index) => {
+                    const style = {
+                        display: activeIndex === index ? 'block' : 'none'
+                    };
+
+                    return (
+                        <div key={index} style={style}>
+                            {panel}
+                        </div>
+                    );
+                })}
             </div>
         );
     }
 }
 Tabs.defaultProps = {
-    activeTab: 1
+    activeTab: 0
 };

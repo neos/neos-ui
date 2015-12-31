@@ -4,10 +4,10 @@
 > A prototype for the [Neos CMS](https://www.neos.io/) written in ReactJS with Immutable data structures.
 
 ## Features
-* Updated Font-Awesome to v4.5.0.
 * Better editing experience for responsive websites.
 * Faster load times for the backend.
 * No reload constraint for the correct stylesheets on multi-site systems.
+* Updated Font-Awesome to v4.5.0 (old icon names are migrated on the fly).
 
 ## Installation
 *Composer support coming soon...*

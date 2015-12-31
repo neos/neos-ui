@@ -4,8 +4,7 @@ import {service} from '../../../Shared/';
 import style from './style.css';
 import iconStyles from './icons.css';
 import {
-  ICON_NAMES,
-  DEPRECATED_ICON_NAMES
+  validateIconId
 } from './IconNames.js';
 const {logger} = service;
 
@@ -13,21 +12,22 @@ export default class Icon extends Component {
     static propTypes = {
         // The icon key of Font-Awesome.
         icon(props, propName) {
-            const val = props[propName];
+            const id = props[propName];
+            const {isValid, isMigrated, iconName} = validateIconId(id);
 
-            // First of, we want to check if the passed value is a deprecated icon name.
-            if (DEPRECATED_ICON_NAMES.indexOf(val) > -1) {
-                logger.warn(`Font-Awesome has been updated. The icon name "${val}" has been updated/removed.
-Please adjust your icon configurations in your .yaml files to the new name-scheme of Font-Awesome 4.5.`);
-            } else if (
-              // Afterwards, check if the passed value is in the list of available icons...
-              ICON_NAMES.indexOf(val) === -1 &&
+            if (!isValid) {
+                if (isMigrated && iconName) {
+                    logger.warn(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
 
-              // ... or if it is available but needs the Font-Awesome prefix.
-              ICON_NAMES.indexOf(`fa-${val}`) === -1
-            ) {
-                return new Error(`Icon name "${val}" is not a valid icon name in Font-Awesome 4.5.
-Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.`);
+Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
+
+https://github.com/FortAwesome/Font-Awesome/wiki/Upgrading-from-3.2.1-to-4`);
+                } else {
+                    return new Error(`Icon name "${id}" was not a found in Font-Awesome 4.5.
+Please use the icon names from the Font-Awesome website.
+
+http://fortawesome.github.io/Font-Awesome/icons/`);
+                }
             }
         },
 
@@ -57,8 +57,8 @@ Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.
     }
 
     getIconClassName() {
-        const {icon} = this.props;
+        const {iconName} = validateIconId(this.props.icon);
 
-        return iconStyles[icon] || iconStyles[`fa-${icon}`] || iconStyles[icon.replace('icon-', 'fa-')];
+        return iconStyles[iconName];
     }
 }

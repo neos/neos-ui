@@ -9,7 +9,7 @@ export default class Button extends Component {
         isFocused: PropTypes.bool,
         isDisabled: PropTypes.bool,
         style: PropTypes.oneOf(['clean', 'transparent']),
-        hoverStyle: PropTypes.oneOf(['clean', 'brand']),
+        hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']),
         onClick: PropTypes.func.isRequired,
         onMouseDown: PropTypes.func,
         onMouseUp: PropTypes.func,
@@ -36,6 +36,7 @@ export default class Button extends Component {
             [style['btn--transparent']]: this.props.style === 'transparent',
             [style['btn--cleanHover']]: this.props.hoverStyle === 'clean',
             [style['btn--brandHover']]: this.props.hoverStyle === 'brand',
+            [style['btn--darkenHover']]: this.props.hoverStyle === 'darken',
             [className]: true
         });
         const props = {

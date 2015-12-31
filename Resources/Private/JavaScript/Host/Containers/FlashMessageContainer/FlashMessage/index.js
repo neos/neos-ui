@@ -44,6 +44,8 @@ export default class FooterBar extends Component {
                 <IconButton
                     icon="close"
                     className={style.flashMessage__btnClose}
+                    style="transparent"
+                    hoverStyle="darken"
                     onClick={e => executeCallback(e, this.commenceClose.bind(this))}
                     />
             </div>

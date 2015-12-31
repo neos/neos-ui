@@ -39,8 +39,21 @@ export default class OffCanvas extends Component {
             icon: 'file',
             title: 'Content',
             children: [{
-                icon: 'file',
+                icon: 'globe',
                 title: 'test'
+            }]
+        }, {
+            icon: 'briefcase',
+            title: 'Management',
+            children: [{
+                icon: 'th-large',
+                title: 'Workspaces'
+            }, {
+                icon: 'camera',
+                title: 'Media'
+            }, {
+                icon: 'calendar',
+                title: 'History'
             }]
         }];
 

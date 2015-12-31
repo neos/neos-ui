@@ -5,8 +5,11 @@ import {
     Icon,
     Dialog,
     Button,
+    Grid,
+    GridItem,
     I18n
 } from '../../../../../Components/';
+import style from './style.css';
 
 @connect()
 export default class AddNode extends Component {
@@ -93,6 +96,25 @@ export default class AddNode extends Component {
                 <I18n fallback="Cancel" />
             </Button>
         ];
+        const dummyNodeTypes = [{
+            icon: 'font',
+            title: 'Headline'
+        }, {
+            icon: 'file-text',
+            title: 'Text'
+        }, {
+            icon: 'picture-o',
+            title: 'Image'
+        }, {
+            icon: 'picture-o',
+            title: 'Text with Image'
+        }].map(nodeType => {
+            nodeType.onClick = () => {
+                console.log('Create NodeType:', nodeType);
+            };
+
+            return nodeType;
+        });
 
         return (
             <Dialog
@@ -101,7 +123,30 @@ export default class AddNode extends Component {
                 onRequestClose={this.closeAddNodeDialog.bind(this)}
                 actions={actions}
                 >
-                test
+                <Grid>
+                    {dummyNodeTypes.map((nodeType, index) => {
+                        const {
+                            icon,
+                            title,
+                            onClick
+                        } = nodeType;
+
+                        return (
+                            <GridItem width="33%" key={index}>
+                                <Button
+                                    className={style.nodeType}
+                                    hoverStyle="brand"
+                                    textAlign="left"
+                                    width="full"
+                                    onClick={onClick}
+                                    >
+                                    <Icon icon={icon} className={style.nodeType__icon} padded="right" />
+                                    <I18n fallback={title} />
+                                </Button>
+                            </GridItem>
+                        );
+                    })}
+                </Grid>
             </Dialog>
         );
     }

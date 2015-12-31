@@ -15,3 +15,9 @@
 .icon--tiny {
   font-size: .5em;
 }
+.icon--paddedLeft {
+    padding-left: .75em;
+}
+.icon--paddedRight {
+    padding-right: .75em;
+}

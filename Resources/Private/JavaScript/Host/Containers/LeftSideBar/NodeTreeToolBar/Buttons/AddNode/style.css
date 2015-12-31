@@ -1,0 +1,8 @@
+.nodeType {}
+.nodeType__icon {
+    color: $brand;
+
+    .nodeType:hover & {
+        color: $brightest;
+    }
+}

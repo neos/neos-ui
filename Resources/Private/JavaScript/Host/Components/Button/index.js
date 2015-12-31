@@ -8,6 +8,8 @@ export default class Button extends Component {
         className: PropTypes.string,
         isFocused: PropTypes.bool,
         isDisabled: PropTypes.bool,
+        textAlign: PropTypes.oneOf(['left', 'center']),
+        width: PropTypes.oneOf(['auto', 'full']),
         style: PropTypes.oneOf(['clean', 'transparent']),
         hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']),
         onClick: PropTypes.func.isRequired,
@@ -20,24 +22,29 @@ export default class Button extends Component {
 
     render() {
         const {
-            className,
             children,
+            className,
             isFocused,
             isDisabled,
             onClick,
             onMouseDown,
             onMouseUp,
             onMouseEnter,
-            onMouseLeave
+            onMouseLeave,
+            hoverStyle,
+            width,
+            textAlign
         } = this.props;
         const classNames = mergeClassNames({
             [style.btn]: true,
             [style['btn--clean']]: this.props.style === 'clean',
             [style['btn--transparent']]: this.props.style === 'transparent',
-            [style['btn--cleanHover']]: this.props.hoverStyle === 'clean',
-            [style['btn--brandHover']]: this.props.hoverStyle === 'brand',
-            [style['btn--darkenHover']]: this.props.hoverStyle === 'darken',
-            [className]: true
+            [style['btn--cleanHover']]: hoverStyle === 'clean',
+            [style['btn--brandHover']]: hoverStyle === 'brand',
+            [style['btn--darkenHover']]: hoverStyle === 'darken',
+            [style['btn--full']]: width === 'full',
+            [style['btn--textAlignLeft']]: textAlign === 'left',
+            [className]: className && className.length
         });
         const props = {
             className: classNames,
@@ -47,12 +54,14 @@ export default class Button extends Component {
             onMouseEnter: e => executeCallback(e, onMouseEnter),
             onMouseLeave: e => executeCallback(e, onMouseLeave),
             ref: btn => {
+                // Initially focus the btn if the propType was set.
                 if (btn !== null && isFocused) {
                     btn.focus();
                 }
             }
         };
 
+        // Disable the btn if the prop was set.
         if (isDisabled) {
             props.disabled = 'disabled';
         }

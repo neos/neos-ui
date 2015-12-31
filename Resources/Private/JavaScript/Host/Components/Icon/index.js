@@ -30,11 +30,12 @@ Please adjust your icon configurations in your .yaml files to the new name-schem
 Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.`);
             }
         },
+        padded: PropTypes.oneOf(['none', 'left', 'right']),
         className: PropTypes.string
     }
 
     render() {
-        const {size} = this.props;
+        const {size, padded} = this.props;
         const iconClassName = this.getIconClassName();
         const classNames = mergeClassNames({
             [style.icon]: true,
@@ -42,7 +43,9 @@ Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.
             [this.props.className]: Boolean(this.props.className),
             [style['icon--big']]: size === 'big',
             [style['icon--small']]: size === 'small',
-            [style['icon--tiny']]: size === 'tiny'
+            [style['icon--tiny']]: size === 'tiny',
+            [style['icon--paddedLeft']]: padded === 'left',
+            [style['icon--paddedRight']]: padded === 'right'
         });
 
         return (

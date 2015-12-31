@@ -1,0 +1,13 @@
+.grid {
+    margin-left: -10px;
+    margin-right: -10px;
+
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}

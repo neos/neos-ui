@@ -6,7 +6,6 @@
     padding: 0 16px;
     border: 0;
     -webkit-font-smoothing: antialiased;
-    text-align: center;
     vertical-align: middle;
     width: auto;
 
@@ -44,4 +43,10 @@
     &:hover {
         background: rgba(0, 0, 0, .1);
     }
+}
+.btn--textAlignLeft {
+    text-align: left;
+}
+.btn--full {
+    width: 100%;
 }

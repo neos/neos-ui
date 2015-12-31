@@ -16,7 +16,7 @@ export default class EditModePanelToggler extends Component {
                 hoverStyle="clean"
                 onClick={this.onEditModeToggle.bind(this)}
                 >
-                <I18n target="Edit / Preview" />
+                <I18n fallback="Edit / Preview" />
             </Button>
         );
     }

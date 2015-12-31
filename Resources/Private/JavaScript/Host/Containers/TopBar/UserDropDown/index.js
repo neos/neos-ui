@@ -35,14 +35,14 @@ export default class UserDropDown extends Component {
                         <form title="Logout" action="/neos/logout" method="post">
                             <button type="submit" name="" value="logout">
                                 <Icon icon="power-off" className={style.dropDown__item__icon} />
-                                <I18n target="Logout" />
+                                <I18n fallback="Logout" />
                             </button>
                         </form>
                       </li>
                       <li className={`${style.dropDown__item}`}>
                           <a title="User Settings" href="/neos/user/usersettings">
                               <Icon icon="wrench" className={style.dropDown__item__icon} />
-                              <I18n target="User Settings" />
+                              <I18n fallback="User Settings" />
                           </a>
                       </li>
                 </DropDown>

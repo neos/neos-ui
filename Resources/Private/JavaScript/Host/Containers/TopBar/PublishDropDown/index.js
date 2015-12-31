@@ -62,7 +62,7 @@ export default class PublishDropDown extends Component {
                     indicator={publishableNodesInDocument.count()}
                     onClick={e => this.onPublishClick(e)}
                     >
-                    <I18n target={mainButtonTarget} id={mainButtonLabel} />
+                    <I18n fallback={mainButtonTarget} id={mainButtonLabel} />
                 </Button>
                 <DropDown iconAfter="chevron-down" iconAfterActive="chevron-up" classNames={dropDownClassNames}>
                     <li className={style.dropDown__contents__item}>
@@ -75,7 +75,7 @@ export default class PublishDropDown extends Component {
                             onClick={e => this.onPublishAllClick(e)}
                             >
                             <Icon icon="upload" />
-                            <I18n target="Publish All" id="publishAll" />
+                            <I18n fallback="Publish All" id="publishAll" />
                         </Button>
                     </li>
                     <li className={style.dropDown__contents__item}>
@@ -90,7 +90,7 @@ export default class PublishDropDown extends Component {
                             onClick={e => this.onDiscardClick(e)}
                             >
                             <Icon icon="ban" />
-                            <I18n target="Discard" id="discard" />
+                            <I18n fallback="Discard" id="discard" />
                         </Button>
                     </li>
                     <li className={style.dropDown__contents__item}>
@@ -103,19 +103,19 @@ export default class PublishDropDown extends Component {
                             onClick={e => this.onDiscardAllClick(e)}
                             >
                             <Icon icon="ban" />
-                            <I18n target="Discard All" id="discardAll" />
+                            <I18n fallback="Discard All" id="discardAll" />
                         </Button>
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <label>
                             <input type="checkbox" onChange={this.onAutoPublishChange.bind(this)} />
-                            <I18n target="Auto-Publish" id="autoPublish" />
+                            <I18n fallback="Auto-Publish" id="autoPublish" />
                         </label>
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <a href="/neos/management/workspaces">
                             <Icon icon="th-large" />
-                            <I18n target="Workspaces" id="workspaces" />
+                            <I18n fallback="Workspaces" id="workspaces" />
                         </a>
                     </li>
                 </DropDown>

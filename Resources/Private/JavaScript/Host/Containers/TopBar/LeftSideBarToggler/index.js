@@ -32,7 +32,7 @@ export default class LeftSideBarToggler extends Component {
                 hoverStyle="clean"
                 onClick={this.onLeftSidebarToggle.bind(this)}
                 >
-                <I18n target="Navigate" />
+                <I18n id="Navigate" fallback="Navigate" />
             </Button>
         );
     }

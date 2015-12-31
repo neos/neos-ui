@@ -3,10 +3,10 @@ import {backend} from '../../Service/';
 
 export default class I18n extends Component {
     static propTypes = {
-        target: PropTypes.string.isRequired,
+        fallback: PropTypes.string.isRequired,
         className: PropTypes.string,
 
-        id: PropTypes.string.isRequired,
+        id: PropTypes.string,
         packageKey: PropTypes.string.isRequired,
         sourceName: PropTypes.string.isRequired,
         params: PropTypes.array.isRequired
@@ -29,23 +29,19 @@ export default class I18n extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.target !== this.props.target) {
+        if (newProps.fallback !== this.props.fallback) {
             this.loadTranslation(newProps);
         }
     }
 
     loadTranslation(props = this.props) {
-        const {target, id, packageKey, sourceName, params} = props;
+        const {fallback, id, packageKey, sourceName, params} = props;
         const {i18n} = backend;
+        const label = i18n && id ? i18n(id, packageKey, sourceName, params) : fallback;
 
-        if (i18n) {
-            const label = id ? i18n(id, packageKey, sourceName, params) : target;
-            this.setState({
-                label
-            });
-        } else if (target) {
-            this.setState({label: target});
-        }
+        this.setState({
+            label
+        });
     }
 }
 I18n.defaultProps = {

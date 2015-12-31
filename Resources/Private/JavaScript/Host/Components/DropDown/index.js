@@ -64,7 +64,7 @@ export default class DropDown extends Component {
             [classNames.label]: true
         });
 
-        return label ? <I18n target={label} className={className} /> : null;
+        return label ? <I18n fallback={label} id={label} className={className} /> : null;
     }
 
     componentDidMount() {

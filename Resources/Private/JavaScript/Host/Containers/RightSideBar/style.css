@@ -27,3 +27,6 @@
         transform: translateX(-320px);
     }
 }
+.rightSideBar__section {
+    border-bottom: 1px solid $dark;
+}

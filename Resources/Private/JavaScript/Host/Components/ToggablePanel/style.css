@@ -1,6 +1,5 @@
 .panel {
     position: relative;
-    border-bottom: 1px solid $dark;
 }
 .panel--isOpen {}
 .panel__headline {

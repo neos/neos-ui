@@ -36,7 +36,10 @@ export default class LeftSideBar extends Component {
             <SideBar position="right" className={classNames}>
                 <Tabs>
                     <Panel icon="pencil">
-                        <ToggablePanel title="My fancy configuration">
+                        <ToggablePanel
+                            className={style.rightSideBar__section}
+                            title="My fancy configuration"
+                            >
                             <TextInput
                                 label="Title"
                                 placeholder="Type to search"

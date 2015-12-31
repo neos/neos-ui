@@ -6,9 +6,10 @@ import style from './style.css';
 
 export default class Tabs extends Component {
     static propTypes = {
-        className: PropTypes.string,
+        // The INT for the active tab, the count starts at 0.
         activeTab: PropTypes.number,
-        onAfterChange: PropTypes.func,
+
+        className: PropTypes.string,
         children: PropTypes.oneOfType([
             PropTypes.array,
             PropTypes.element
@@ -73,15 +74,7 @@ export default class Tabs extends Component {
     }
 
     activateTabForIndex(index) {
-        const onAfterChange = this.props.onAfterChange;
-        const selectedPanel = this.refs['tab-panel'];
-        const selectedTabMenu = this.refs[`tab-${index}`];
-
-        this.setState({activeTab: index}, () => {
-            if (onAfterChange) {
-                onAfterChange(index, selectedPanel, selectedTabMenu);
-            }
-        });
+        this.setState({activeTab: index});
     }
 
     renderPanels() {

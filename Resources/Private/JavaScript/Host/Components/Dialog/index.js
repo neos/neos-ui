@@ -7,12 +7,21 @@ import style from './style.css';
 
 export default class Dialog extends Component {
     static propTypes = {
-        actions: PropTypes.node,
-        children: PropTypes.node,
-        className: PropTypes.string,
-        onRequestClose: PropTypes.func.isRequired,
+        // State propTypes.
         isOpen: PropTypes.bool.isRequired,
-        title: PropTypes.string.isRequired
+
+        // Will be called once the close icon in the top right corner gets clicked.
+        onRequestClose: PropTypes.func.isRequired,
+
+        // Contents of the Dialog.
+        children: PropTypes.node.isRequired,
+        title: PropTypes.string.isRequired,
+
+        // Optional Array of nodes(Action buttons f.e.) which are placed at the bottom of the Dialog.
+        actions: PropTypes.node,
+
+        // Style related propTypes.
+        className: PropTypes.string
     }
 
     render() {

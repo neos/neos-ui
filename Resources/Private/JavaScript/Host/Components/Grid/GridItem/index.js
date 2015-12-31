@@ -4,8 +4,8 @@ import style from './style.css';
 
 export default class GridItem extends Component {
     static propTypes = {
-        className: PropTypes.string,
         width: PropTypes.oneOf(['33%', '50%']).isRequired,
+        className: PropTypes.string,
         children: PropTypes.node
     }
 

@@ -10,13 +10,23 @@ const {logger} = service;
 
 export default class IconButtonDropDown extends Component {
     static propTypes = {
+        // The icon key which is always displayed.
+        icon: PropTypes.string.isRequired,
+
+        // You can pass an modeIcon which displays the current selected item in a leaner way.
+        // Modify this prop via listening to the `onItemSelect` propType.
+        modeIcon: PropTypes.string.isRequired,
+
+        // Style related propTypes.
         className: PropTypes.string,
         isDisabled: PropTypes.bool,
-        icon: PropTypes.string.isRequired,
-        modeIcon: PropTypes.string.isRequired,
+
+        // Child items of the DropDown.
+        children: PropTypes.node.isRequired,
+
+        // Interaction related propTypes.
         onClick: PropTypes.func.isRequired,
-        onItemSelect: PropTypes.func,
-        children: PropTypes.node.isRequired
+        onItemSelect: PropTypes.func.isRequired
     }
 
     constructor(props) {

@@ -4,8 +4,8 @@ import style from './style.css';
 
 export default class Grid extends Component {
     static propTypes = {
-        className: PropTypes.string,
-        children: PropTypes.node
+        children: PropTypes.node.isRequired,
+        className: PropTypes.string
     }
 
     render() {

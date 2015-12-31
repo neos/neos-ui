@@ -11,7 +11,7 @@ const {logger} = service;
 
 export default class Icon extends Component {
     static propTypes = {
-        size: PropTypes.oneOf(['big', 'regular', 'small', 'tiny']).isRequired,
+        // The icon key of Font-Awesome.
         icon(props, propName) {
             const val = props[propName];
 
@@ -30,6 +30,9 @@ Please adjust your icon configurations in your .yaml files to the new name-schem
 Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.`);
             }
         },
+
+        // Style related propTypes.
+        size: PropTypes.oneOf(['big', 'small', 'tiny']),
         padded: PropTypes.oneOf(['none', 'left', 'right']),
         className: PropTypes.string
     }
@@ -59,6 +62,3 @@ Please use the icon names from http://fortawesome.github.io/Font-Awesome/icons/.
         return iconStyles[icon] || iconStyles[`fa-${icon}`] || iconStyles[icon.replace('icon-', 'fa-')];
     }
 }
-Icon.defaultProps = {
-    size: 'regular'
-};

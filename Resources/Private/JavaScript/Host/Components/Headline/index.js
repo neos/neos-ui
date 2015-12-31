@@ -14,8 +14,14 @@ const types = [
 
 export default class Headline extends Component {
     static propTypes = {
+        // The contents of the headline.
         title: PropTypes.string.isRequired,
+
+        // The semantic tag type of the headline.
         type: PropTypes.oneOf(types).isRequired,
+
+        // Optional style identifier,
+        // this enables the possibility to diff the semantic value of the UI to the displayed style.
         style: PropTypes.oneOf(types),
         className: PropTypes.string
     }

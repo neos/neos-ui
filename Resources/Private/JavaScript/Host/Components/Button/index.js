@@ -5,18 +5,25 @@ import style from './style.css';
 
 export default class Button extends Component {
     static propTypes = {
+        // ARIA & UI related propTypes.
+        isFocused: PropTypes.bool.isRequired,
+        isDisabled: PropTypes.bool.isRequired,
+
+        // Style related propTypes.
+        style: PropTypes.oneOf(['clean', 'transparent']).isRequired,
+        hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']).isRequired,
         className: PropTypes.string,
-        isFocused: PropTypes.bool,
-        isDisabled: PropTypes.bool,
         textAlign: PropTypes.oneOf(['left', 'center']),
         width: PropTypes.oneOf(['auto', 'full']),
-        style: PropTypes.oneOf(['clean', 'transparent']),
-        hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']),
+
+        // Interaction related propTypes.
         onClick: PropTypes.func.isRequired,
         onMouseDown: PropTypes.func,
         onMouseUp: PropTypes.func,
         onMouseEnter: PropTypes.func,
         onMouseLeave: PropTypes.func,
+
+        // Contents of the Button.
         children: PropTypes.node.isRequired
     }
 

@@ -8,9 +8,15 @@ import style from './style.css';
 
 export default class DropDown extends Component {
     static propTypes = {
+        // Style related propTypes.
         classNames: PropTypes.object.isRequired,
+
+        // Either a label, icon or both need to be passed to have a clickable target which will toggle the DropDown.
+        // ToDo: Add a check that one of both need to be passed to the Component.
         label: PropTypes.string,
         iconBefore: PropTypes.string,
+
+        // Contents of the DropDown.
         children: PropTypes.node
     }
 

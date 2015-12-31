@@ -8,8 +8,14 @@ export default class TextInput extends Component {
     static propTypes = {
         label: PropTypes.string.isRequired,
         placeholder: PropTypes.string,
+
+        // Style related propTypes.
         className: PropTypes.string,
+
+        // State related propTypes.
         isValid: PropTypes.bool.isRequired,
+
+        // Interaction related propTypes.
         onChange: PropTypes.func,
         onFocus: PropTypes.func,
         onBlur: PropTypes.func

@@ -4,9 +4,14 @@ import style from './style.css';
 
 export default class Bar extends Component {
     static propTypes = {
+        // Style related propTypes.
         position: PropTypes.oneOf(['top', 'bottom']).isRequired,
         className: PropTypes.string,
-        children: PropTypes.node,
+
+        // Contents of the Bar.
+        children: PropTypes.node.isRequired,
+
+        // Interaction related propTypes.
         onDrop: PropTypes.func
     }
 

@@ -31,7 +31,7 @@ export default class Headline extends Component {
             [style[`heading--${headingStyle}`]]: true,
             [className]: className && className.length
         });
-        const title = <I18n fallback={this.props.title} id={this.props.title} />;
+        const title = <I18n fallback={this.props.title} />;
         let heading;
 
         switch (type) {

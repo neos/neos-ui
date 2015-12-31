@@ -90,7 +90,7 @@ export default class AddNode extends Component {
                 onClick={this.closeAddNodeDialog.bind(this)}
                 isFocused={true}
                 >
-                <I18n target="Cancel" />
+                <I18n fallback="Cancel" />
             </Button>
         ];
 

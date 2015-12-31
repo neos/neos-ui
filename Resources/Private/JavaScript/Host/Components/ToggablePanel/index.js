@@ -15,6 +15,7 @@ export default class ToggablePanel extends Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
         className: PropTypes.string,
+        headerClassName: PropTypes.string,
         children: PropTypes.oneOfType([
             PropTypes.array,
             PropTypes.element
@@ -33,23 +34,34 @@ export default class ToggablePanel extends Component {
 
     render() {
         const {
-            title,
-            className,
-            children
+            className
         } = this.props;
-        const {isOpened, isContentHeightMirrorHidden} = this.state;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [style.panel]: true,
-            [style['panel--isOpen']]: isOpened
+            [style['panel--isOpen']]: this.state.isOpened
         });
-        const icon = isOpened ? 'chevron-up' : 'chevron-down';
-        const contentHeightMirrorStyle = {
-            display: isContentHeightMirrorHidden ? 'none' : 'block'
-        };
 
         return (
             <div className={classNames}>
+                {this.renderHeader()}
+                {this.renderContents()}
+            </div>
+        );
+    }
+
+    renderHeader() {
+        const {
+            title,
+            headerClassName
+        } = this.props;
+        const icon = this.state.isOpened ? 'chevron-up' : 'chevron-down';
+        const className = mergeClassNames({
+            [headerClassName]: headerClassName && headerClassName.length
+        });
+
+        return (
+            <div className={className}>
                 <Headline
                     className={style.panel__headline}
                     title={title}
@@ -61,6 +73,21 @@ export default class ToggablePanel extends Component {
                     icon={icon}
                     onClick={this.togglePanel.bind(this)}
                     />
+            </div>
+        );
+    }
+
+    renderContents() {
+        const {
+            children
+        } = this.props;
+        const {isContentHeightMirrorHidden} = this.state;
+        const contentHeightMirrorStyle = {
+            display: isContentHeightMirrorHidden ? 'none' : 'block'
+        };
+
+        return (
+            <div>
                 <div ref="contentHeightMirror" style={contentHeightMirrorStyle}>
                     {children}
                 </div>

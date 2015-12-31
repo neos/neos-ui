@@ -1,5 +1,9 @@
+.menuToggler--isActive {
+    color: $brand !important;
+}
+
 $lineHeight: 3px;
-.menuIcon {
+.menuToggler__icon {
     position: relative;
     display: inline-block;
     width: 22px;

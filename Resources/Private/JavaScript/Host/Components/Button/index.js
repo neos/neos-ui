@@ -54,9 +54,11 @@ export default class Button extends Component {
             onMouseEnter: e => executeCallback(e, onMouseEnter),
             onMouseLeave: e => executeCallback(e, onMouseLeave),
             ref: btn => {
+                const method = isFocused ? 'focus' : 'blur';
+
                 // Initially focus the btn if the propType was set.
-                if (btn !== null && isFocused) {
-                    btn.focus();
+                if (btn !== null) {
+                    btn[method]();
                 }
             }
         };

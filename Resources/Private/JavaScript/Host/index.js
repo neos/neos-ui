@@ -15,6 +15,7 @@ import {
     FooterBar,
     TopBar,
     LeftSideBar,
+    OffCanvas,
     RightSideBar,
     ContextBar,
     FlashMessageContainer
@@ -53,14 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
         <div className={style.applicationWrapper}>
             <Provider store={store}>
-              <div>
-                  <FlashMessageContainer />
-                  <TopBar />
-                  <ContextBar />
-                  <LeftSideBar />
-                  <ContentView />
-                  <RightSideBar />
-                  <FooterBar />
+                <div>
+                    <FlashMessageContainer />
+                    <TopBar />
+                    <ContextBar />
+                    <OffCanvas />
+                    <LeftSideBar />
+                    <ContentView />
+                    <RightSideBar />
+                    <FooterBar />
               </div>
             </Provider>
         </div>,

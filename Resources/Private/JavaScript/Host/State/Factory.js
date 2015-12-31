@@ -3,6 +3,13 @@ import Immutable from 'immutable';
 export default serverState => Immutable.fromJS({
     ui: {
         //
+        // Contains information about the left offCanvas menu.
+        //
+        offCanvas: {
+            isHidden: true
+        },
+
+        //
         // Contains information about the left sidebar.
         //
         leftSidebar: {

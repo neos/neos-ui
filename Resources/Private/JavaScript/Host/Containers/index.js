@@ -4,6 +4,7 @@ import FlashMessageContainer from './FlashMessageContainer/';
 import FooterBar from './FooterBar/';
 import TopBar from './TopBar/';
 import LeftSideBar from './LeftSideBar/';
+import OffCanvas from './OffCanvas/';
 import RightSideBar from './RightSideBar/';
 
 export {
@@ -12,6 +13,7 @@ export {
     FlashMessageContainer,
     FooterBar,
     LeftSideBar,
+    OffCanvas,
     RightSideBar,
     TopBar
 };

@@ -1,0 +1,17 @@
+.offCanvas {
+    position: fixed;
+    top: 41px;
+    left: 0;
+    z-index: 8000;
+    height: 100%;
+    width: 320px;
+    background: $darker;
+    transition: .3s ease transform;
+}
+.offCanvas--isHidden {
+    transform: translateX(-320px);
+}
+.offCanvas__menuItem {}
+.offCanvas__menuItem__header {
+    
+}

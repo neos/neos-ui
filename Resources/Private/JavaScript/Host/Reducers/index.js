@@ -5,6 +5,7 @@ const reducerIndex = [
     UI.Tabs,
     UI.Remote,
     UI.LeftSideBar,
+    UI.OffCanvas,
     UI.RightSideBar,
     UI.FlashMessages,
     Transient.Nodes,

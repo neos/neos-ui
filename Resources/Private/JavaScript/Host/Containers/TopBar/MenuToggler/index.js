@@ -1,30 +1,45 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
+import mergeClassNames from 'classnames';
+import actions from '../../../Actions/';
 import {Button} from '../../../Components/';
+import {immutableOperations} from '../../../../Shared/Util';
 import style from './style.css';
 
-@connect()
+const {$get} = immutableOperations;
+
+@connect(state => ({
+    isMenuHidden: $get(state, 'ui.offCanvas.isHidden')
+}))
 export default class MenuToggler extends Component {
     static propTypes = {
-        className: PropTypes.string
+        className: PropTypes.string,
+        isMenuHidden: PropTypes.bool.isRequired,
+        dispatch: PropTypes.any.isRequired
     };
 
     render() {
-        const {className} = this.props;
+        const {className, isMenuHidden} = this.props;
+        const isMenuVisible = !isMenuHidden;
+        const classNames = mergeClassNames({
+            [style['menuToggler--isActive']]: isMenuVisible,
+            [className]: className && className.length
+        });
 
         return (
             <Button
-                className={className}
+                className={classNames}
                 style="clean"
                 hoverStyle="clean"
+                isFocused={isMenuVisible}
                 onClick={this.onMenuToggle.bind(this)}
                 >
-                <div className={style.menuIcon}></div>
+                <div className={style.menuToggler__icon}></div>
             </Button>
         );
     }
 
     onMenuToggle() {
-        console.log('toggle menu...');
+        this.props.dispatch(actions.UI.OffCanvas.toggleOffCanvas());
     }
 }

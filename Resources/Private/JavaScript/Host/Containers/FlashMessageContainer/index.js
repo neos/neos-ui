@@ -16,7 +16,8 @@ const {$get} = immutableOperations;
 }))
 export default class FlashMessageContainer extends Component {
     static propTypes = {
-        flashMessages: PropTypes.instanceOf(Immutable.Map)
+        flashMessages: PropTypes.instanceOf(Immutable.Map),
+        dispatch: PropTypes.any.isRequired
     };
 
     render() {
@@ -30,7 +31,15 @@ export default class FlashMessageContainer extends Component {
             <div className={flashMessageContainerClasses}>
                 {flashMessages.map(flashMessage => {
                     const {id, message, severity, timeout} = flashMessage.toJS();
-                    return <FlashMessage key={id} message={message} severity={severity} timeout={timeout} onClose={() => this.onClose(id)} />
+                    return (
+                        <FlashMessage
+                            key={id}
+                            message={message}
+                            severity={severity}
+                            timeout={timeout}
+                            onClose={() => this.onClose(id)}
+                            />
+                    );
                 }).toArray()}
             </div>
         );

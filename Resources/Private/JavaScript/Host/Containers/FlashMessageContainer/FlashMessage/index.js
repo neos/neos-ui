@@ -10,7 +10,6 @@ export default class FooterBar extends Component {
         message: PropTypes.string.isRequired,
         severity: PropTypes.string.isRequired,
         timeout: PropTypes.number,
-
         onClose: PropTypes.func.isRequired
     };
 
@@ -32,9 +31,9 @@ export default class FooterBar extends Component {
         });
 
         const iconName = mergeClassNames({
-            'check': severity.toLowerCase() === 'success',
-            'ban': severity.toLowerCase() === 'error',
-            'info': severity.toLowerCase() === 'info'
+            check: severity.toLowerCase() === 'success',
+            ban: severity.toLowerCase() === 'error',
+            info: severity.toLowerCase() === 'info'
         }) || 'info';
 
         return (
@@ -54,7 +53,7 @@ export default class FooterBar extends Component {
 
     componentDidMount() {
         const {timeout} = this.props;
-        setTimeout(() => this.setState({ isVisible: true }), 0);
+        setTimeout(() => this.setState({isVisible: true}), 0);
 
         if (timeout) {
             setTimeout(() => this.onTimeout(), timeout);
@@ -67,7 +66,7 @@ export default class FooterBar extends Component {
 
     commenceClose() {
         const {onClose} = this.props;
-        this.setState({ isVisible: false });
+        this.setState({isVisible: false});
 
         setTimeout(onClose, 100);
     }

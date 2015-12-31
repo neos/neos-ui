@@ -39,6 +39,24 @@ export default serverState => Immutable.fromJS({
             isSaving: false,
             isPublishing: false,
             isDiscarding: false
+        },
+
+        flashMessages: {
+            'test1': {
+                id: 'test1',
+                message: 'Dies ist ein Test',
+                severity: 'info'
+            },
+            'test2': {
+                id: 'test2',
+                message: 'Dies ist ein Fehler',
+                severity: 'error'
+            },
+            'test3': {
+                id: 'test3',
+                message: 'Dies ist ein Erfolg',
+                severity: 'success'
+            }
         }
     },
 

@@ -16,7 +16,8 @@ import {
     TopBar,
     LeftSideBar,
     RightSideBar,
-    ContextBar
+    ContextBar,
+    FlashMessageContainer
 } from './Containers/';
 import {
     backend,
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div className={style.applicationWrapper}>
             <Provider store={store}>
               <div>
+                  <FlashMessageContainer />
                   <TopBar />
                   <ContextBar />
                   <LeftSideBar />

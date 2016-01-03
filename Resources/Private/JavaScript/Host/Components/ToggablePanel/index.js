@@ -16,6 +16,7 @@ const defaultAnimatedStyles = {
 export default class ToggablePanel extends Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
+        isOpened: PropTypes.bool,
         icon: PropTypes.string,
         className: PropTypes.string,
         headerClassName: PropTypes.string,
@@ -29,7 +30,7 @@ export default class ToggablePanel extends Component {
         super(props);
 
         this.state = {
-            isOpened: false,
+            isOpened: props.isOpened || false,
             isContentHeightMirrorHidden: false,
             contentHeight: 0
         };

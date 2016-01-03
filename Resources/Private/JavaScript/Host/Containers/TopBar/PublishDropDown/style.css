@@ -42,7 +42,7 @@
       background: 0;
       color: #FFF;
       text-decoration: none;
-      line-height: 40px !important;
+      line-height: 40px;
       text-align: left;
 
       > i,
@@ -55,8 +55,8 @@
     opacity: .5;
 
     &,
-    > button {
-        cursor: not-allowed !important;
+    > button[disabled] {
+        cursor: not-allowed;
     }
 }
 .dropDown__contents__item--canPublish {

@@ -32,10 +32,6 @@ import {
 
 import style from './style.css';
 
-// Add the root class which enables the scoped normalize.css
-// ToDo: Remove the scoping and this class to reduce the overall specificity of all styles.
-document.documentElement.classList.add(style.neos);
-
 // Initialize the backend application on load.
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('appContainer');

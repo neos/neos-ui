@@ -14,7 +14,9 @@
 }
 
 .btn--notAllowed {
-     cursor: not-allowed !important;
+    &[disabled] {
+        cursor: not-allowed;
+    }
  }
 
 .btn--highlighted {

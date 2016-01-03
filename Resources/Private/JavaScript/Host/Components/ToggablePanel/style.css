@@ -4,7 +4,7 @@
 .panel--isOpen {}
 .panel__headline {
     height: 40px;
-    margin: 0 !important;
+    margin: 0;
     padding: 0 16px;
     line-height: 40px;
 }

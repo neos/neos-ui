@@ -15,7 +15,7 @@
 
     &[disabled] {
         opacity: .5;
-        cursor: not-allowed !important;
+        cursor: not-allowed;
 
         &:hover {
             background: inherit;

@@ -36,7 +36,7 @@
       background: 0;
       color: #FFF;
       text-decoration: none;
-      line-height: 40px !important;
+      line-height: 40px;
       text-align: left;
     }
 }

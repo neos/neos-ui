@@ -1,5 +1,5 @@
 .menuToggler--isActive {
-    color: $brand !important;
+    color: $brand;
 }
 
 $lineHeight: 3px;

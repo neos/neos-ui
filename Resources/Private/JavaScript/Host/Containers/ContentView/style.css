@@ -3,7 +3,8 @@
     height: 100%;
     width: 100%;
     padding: 82px 320px 41px;
-    transition: .5s ease padding;
+    transition: .2s ease padding;
+    will-change: padding;
 }
 .contentView--isFringeLeft {
     padding-left: 0;

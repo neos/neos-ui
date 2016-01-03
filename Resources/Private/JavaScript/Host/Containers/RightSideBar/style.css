@@ -1,7 +1,8 @@
 .rightSideBar {
     padding-top: 41px;
     padding-bottom: 41px;
-    transition: .5s ease transform;
+    transition: .2s ease transform;
+    will-change: transform;
 
     &:before,
     &:after {
@@ -21,7 +22,8 @@
     top: 41px;
     border-left: 1px solid $dark;
     background: $darker;
-    transition: .5s ease transform;
+    transition: .2s ease transform;
+    will-change: transform;
 
     .rightSideBar--isHidden & {
         transform: translateX(-320px);

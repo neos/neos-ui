@@ -5,7 +5,7 @@
 .panel__headline {
     height: 40px;
     margin: 0;
-    padding: 0 16px;
+    padding: 0 $spacing;
     line-height: 40px;
 }
 .panel__toggleBtn {
@@ -14,7 +14,7 @@
     right: 0;
 }
 .panel__contents {
-    padding: 0 16px;
+    padding: 0 $spacing;
     transition: .5s ease padding;
 
     .panel--isOpen & {

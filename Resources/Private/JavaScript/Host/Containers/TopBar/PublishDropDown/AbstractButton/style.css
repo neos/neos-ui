@@ -1,6 +1,6 @@
 .btn {
     display: inline-block;
-    padding: 0 16px;
+    padding: 0 $spacing;
     height: 40px;
     line-height: 40px;
     border: 0;

@@ -1,5 +1,5 @@
 .textInput {
-    padding-bottom: 16px;
+    padding-bottom: $spacing;
 }
 .textInput__input {
     width: 100%;

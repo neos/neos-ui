@@ -6,7 +6,7 @@
     display: block;
     width: 100%;
     text-align: left;
-    padding: 0 32px 0 16px;
+    padding: 0 32px 0 $spacing;
 
     &:focus {
         outline: 1px dotted $brightest;

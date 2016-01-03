@@ -1,5 +1,5 @@
-import colors from './Colors.js';
+import theme from './Theme.js';
 
 export {
-	colors
+	theme
 };

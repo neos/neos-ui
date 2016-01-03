@@ -18,7 +18,7 @@
     position: relative;
     width: 80vw;
     min-height: 300px;
-    padding: 16px;
+    padding: $spacing;
 }
 .dialog__contents__inner__closeBtn {
     position: absolute;

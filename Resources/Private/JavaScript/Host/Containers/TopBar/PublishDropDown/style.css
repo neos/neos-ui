@@ -6,7 +6,7 @@
 }
 
 .publishBtn {
-    min-width: 165px;    
+    min-width: 165px;
 }
 .dropDown {
     position: static;
@@ -18,7 +18,7 @@
     display: inline-block;
     width: auto;
     height: 40px;
-    padding: 0 30px 0 16px;
+    padding: 0 30px 0 $spacing;
     border: 0;
     line-height: 40px;
     background: $success;
@@ -41,7 +41,7 @@
       display: block;
       width: 100%;
       border: 0;
-      padding: 0 16px;
+      padding: 0 $spacing;
       background: 0;
       color: #FFF;
       text-decoration: none;

@@ -4,7 +4,6 @@ const autoprefixer = require('autoprefixer');
 const path = require('path');
 const vars = require('postcss-simple-vars');
 const postCssImport = require('postcss-import');
-const colors = require('./Resources/Private/JavaScript/Shared/Constants/Colors.js');
 const nested = require('postcss-nested');
 
 module.exports = {
@@ -44,7 +43,7 @@ module.exports = {
             browsers: ['last 2 versions']
         }),
         vars({
-            variables: colors
+            variables: require('./Resources/Private/JavaScript/Shared/Constants/Theme.js')
         }),
         postCssImport(),
         nested()

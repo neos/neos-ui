@@ -8,5 +8,5 @@
     background: 0;
 }
 .dropDown__contents {
-    padding: 16px;
+    padding: $spacing;
 }

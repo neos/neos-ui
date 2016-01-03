@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => DOMConnector.run());
 //
 // Forward click event to host frame, since this seems not to happen automatically *weird*
 //
-document.addEventListener('click', (e) => {
+document.addEventListener('click', () => {
     const parentDocument = window.parent.document;
 
     if (parentDocument.createEvent) {

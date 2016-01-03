@@ -16,8 +16,6 @@ export function addChange(change) {
 /**
  * Clears all local changes from the global state.
  * If you want to flush the changes, use the ChangeManager API.
- *
- * @return {[type]} [description]
  */
 export function clearChanges() {
     return {

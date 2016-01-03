@@ -1,7 +1,7 @@
 import {ActionTypes} from '../../Constants/';
 
 /**
- * Toggles the left sidebar out/in of the users viewport.
+ * Toggles the auto publishing mode for the current logged in user.
  */
 export function toggleAutoPublishing() {
     return {

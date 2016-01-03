@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {executeCallback} from '../../Abstracts/';
-import Headline from '../Headline/';
 import IconButton from '../IconButton/';
 import style from './style.css';
 
@@ -15,7 +14,6 @@ export default class Dialog extends Component {
 
         // Contents of the Dialog.
         children: PropTypes.node.isRequired,
-        title: PropTypes.string.isRequired,
 
         // Optional Array of nodes(Action buttons f.e.) which are placed at the bottom of the Dialog.
         actions: PropTypes.node,
@@ -27,8 +25,7 @@ export default class Dialog extends Component {
     render() {
         const {
             className,
-            children,
-            title
+            children
         } = this.props;
         const classNames = mergeClassNames({
             [style.dialog]: true,
@@ -40,7 +37,6 @@ export default class Dialog extends Component {
             <section className={classNames} ref="dialog">
                 <div className={style.dialog__contents} ref="contentWrapper">
                     <div className={style.dialog__contents__inner}>
-                        <Headline type="h1" title={title} />
                         {children}
 
                         <IconButton

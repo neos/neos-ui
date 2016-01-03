@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import I18n from '../I18n/';
 import style from './style.css';
 
 const types = [
@@ -14,8 +13,8 @@ const types = [
 
 export default class Headline extends Component {
     static propTypes = {
-        // The contents of the headline.
-        title: PropTypes.string.isRequired,
+        // Contents of the Headline.
+        children: PropTypes.node.isRequired,
 
         // The semantic tag type of the headline.
         type: PropTypes.oneOf(types).isRequired,
@@ -29,7 +28,8 @@ export default class Headline extends Component {
     render() {
         const {
             type,
-            className
+            className,
+            children
         } = this.props;
         const headingStyle = this.props.style || type;
         const classNames = mergeClassNames({
@@ -37,32 +37,31 @@ export default class Headline extends Component {
             [style[`heading--${headingStyle}`]]: true,
             [className]: className && className.length
         });
-        const title = <I18n fallback={this.props.title} />;
         let heading;
 
         switch (type) {
             case 'h1':
-                heading = <h1 className={classNames}>{title}</h1>;
+                heading = <h1 className={classNames}>{children}</h1>;
                 break;
 
             case 'h2':
-                heading = <h2 className={classNames}>{title}</h2>;
+                heading = <h2 className={classNames}>{children}</h2>;
                 break;
 
             case 'h3':
-                heading = <h3 className={classNames}>{title}</h3>;
+                heading = <h3 className={classNames}>{children}</h3>;
                 break;
 
             case 'h4':
-                heading = <h4 className={classNames}>{title}</h4>;
+                heading = <h4 className={classNames}>{children}</h4>;
                 break;
 
             case 'h5':
-                heading = <h5 className={classNames}>{title}</h5>;
+                heading = <h5 className={classNames}>{children}</h5>;
                 break;
 
             default:
-                heading = <h6 className={classNames}>{title}</h6>;
+                heading = <h6 className={classNames}>{children}</h6>;
                 break;
         }
 

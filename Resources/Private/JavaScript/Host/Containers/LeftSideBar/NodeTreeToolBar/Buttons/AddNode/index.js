@@ -4,6 +4,7 @@ import {
     IconButtonDropDown,
     Icon,
     Dialog,
+    Headline,
     Button,
     Grid,
     GridItem,
@@ -119,10 +120,13 @@ export default class AddNode extends Component {
         return (
             <Dialog
                 isOpen={this.state.isModalOpen}
-                title="Create new"
                 onRequestClose={this.closeAddNodeDialog.bind(this)}
                 actions={actions}
                 >
+                <Headline type="h1">
+                    <I18n fallback="Create new" id="Create new" />
+                </Headline>
+
                 <Grid>
                     {dummyNodeTypes.map((nodeType, index) => {
                         const {

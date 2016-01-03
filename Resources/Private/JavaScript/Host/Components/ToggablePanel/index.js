@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import {TransitionMotion, spring} from 'react-motion';
 import mergeClassNames from 'classnames';
 import Headline from '../Headline/';
+import I18n from '../I18n/';
+import Icon from '../Icon/';
 import IconButton from '../IconButton/';
 import style from './style.css';
 
@@ -14,6 +16,7 @@ const defaultAnimatedStyles = {
 export default class ToggablePanel extends Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
+        icon: PropTypes.string,
         className: PropTypes.string,
         headerClassName: PropTypes.string,
         children: PropTypes.oneOfType([
@@ -53,9 +56,10 @@ export default class ToggablePanel extends Component {
     renderHeader() {
         const {
             title,
+            icon,
             headerClassName
         } = this.props;
-        const icon = this.state.isOpened ? 'chevron-up' : 'chevron-down';
+        const toggleIcon = this.state.isOpened ? 'chevron-up' : 'chevron-down';
         const className = mergeClassNames({
             [headerClassName]: headerClassName && headerClassName.length
         });
@@ -64,13 +68,15 @@ export default class ToggablePanel extends Component {
             <div className={className}>
                 <Headline
                     className={style.panel__headline}
-                    title={title}
                     type="h1"
                     style="h4"
-                    />
+                    >
+                    {icon ? <Icon icon={icon} /> : null}
+                    <I18n fallback={title} id={title} />
+                </Headline>
                 <IconButton
                     className={style.panel__toggleBtn}
-                    icon={icon}
+                    icon={toggleIcon}
                     onClick={this.togglePanel.bind(this)}
                     />
             </div>

@@ -12,7 +12,7 @@ import {
 } from '../../../Components/';
 import actions from '../../../Actions/';
 import style from './style.css';
-import Button from './Button/';
+import AbstractButton from './AbstractButton/';
 
 const {$get, $mapGet} = immutableOperations;
 
@@ -71,7 +71,7 @@ export default class PublishDropDown extends Component {
 
         return (
             <div className={style.wrapper}>
-                <Button
+                <AbstractButton
                     className={style.publishBtn}
                     isEnabled={canPublishLocally || isSaving}
                     isHighlighted={canPublishLocally || isSaving}
@@ -79,10 +79,10 @@ export default class PublishDropDown extends Component {
                     onClick={e => this.onPublishClick(e)}
                     >
                     <I18n fallback={mainButtonTarget} id={mainButtonLabel} />
-                </Button>
+                </AbstractButton>
                 <DropDown classNames={dropDownClassNames}>
                     <li className={style.dropDown__contents__item}>
-                        <Button
+                        <AbstractButton
                             isEnabled={canPublishGlobally}
                             isHighlighted={false}
                             indicator={publishableNodes.count()}
@@ -90,10 +90,10 @@ export default class PublishDropDown extends Component {
                             >
                             <Icon icon="upload" />
                             <I18n fallback="Publish All" id="publishAll" />
-                        </Button>
+                        </AbstractButton>
                     </li>
                     <li className={style.dropDown__contents__item}>
-                        <Button
+                        <AbstractButton
                             isEnabled={canPublishLocally}
                             isHighlighted={false}
                             indicator={publishableNodesInDocument.count()}
@@ -103,10 +103,10 @@ export default class PublishDropDown extends Component {
                             >
                             <Icon icon="ban" />
                             <I18n fallback="Discard" id="discard" />
-                        </Button>
+                        </AbstractButton>
                     </li>
                     <li className={style.dropDown__contents__item}>
-                        <Button
+                        <AbstractButton
                             isEnabled={canPublishGlobally}
                             isHighlighted={false}
                             indicator={publishableNodes.count()}
@@ -114,7 +114,7 @@ export default class PublishDropDown extends Component {
                             >
                             <Icon icon="ban" />
                             <I18n fallback="Discard All" id="discardAll" />
-                        </Button>
+                        </AbstractButton>
                     </li>
                     <li className={autoPublishWrapperClassNames}>
                         <CheckBox

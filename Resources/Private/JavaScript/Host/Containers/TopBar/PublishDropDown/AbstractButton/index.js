@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 
-export default class Button extends Component {
+export default class AbstractButton extends Component {
     static propTypes = {
         isEnabled: PropTypes.bool,
         isHighlighted: PropTypes.bool,

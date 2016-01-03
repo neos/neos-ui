@@ -1554,7 +1554,7 @@ export function validateIconId(id) {
 
     return {
         isValid,
-        isMigrated: true,
+        isMigrationNeeded: true,
         iconName: migration.name
     };
 }

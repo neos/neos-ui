@@ -140,8 +140,6 @@ export default class AddNode extends Component {
                                 <Button
                                     className={style.nodeType}
                                     hoverStyle="brand"
-                                    textAlign="left"
-                                    width="full"
                                     onClick={onClick}
                                     >
                                     <Icon icon={icon} className={style.nodeType__icon} padded="right" />

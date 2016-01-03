@@ -20,10 +20,7 @@ export default class ToggablePanel extends Component {
         icon: PropTypes.string,
         className: PropTypes.string,
         headerClassName: PropTypes.string,
-        children: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.element
-        ]).isRequired
+        children: PropTypes.node.isRequired
     }
 
     constructor(props) {

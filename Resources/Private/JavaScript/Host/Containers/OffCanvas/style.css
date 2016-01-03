@@ -12,6 +12,8 @@
     transform: translateX(-320px);
 }
 .offCanvas__menuItem {}
-.offCanvas__menuItem__header {
-    
+.offCanvas__menuItem__header {}
+.offCanvas__menuItem__btn {
+    width: 100%;
+    text-align: left;
 }

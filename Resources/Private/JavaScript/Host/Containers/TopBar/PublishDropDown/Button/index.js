@@ -9,7 +9,7 @@ export default class Button extends Component {
         cavity: PropTypes.bool,
         label: PropTypes.string,
         indicator: PropTypes.number,
-        children: PropTypes.node,
+        children: PropTypes.node.isRequired,
         onClick: PropTypes.func.isRequired
     };
 

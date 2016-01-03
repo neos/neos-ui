@@ -17,7 +17,7 @@ export default class DropDown extends Component {
         iconBefore: PropTypes.string,
 
         // Contents of the DropDown.
-        children: PropTypes.node
+        children: PropTypes.node.isRequired
     }
 
     constructor(props) {
@@ -63,16 +63,6 @@ export default class DropDown extends Component {
         );
     }
 
-    renderLabel() {
-        const {label, classNames} = this.props;
-        const className = mergeClassNames({
-            [style.dropDown__btn__label]: true,
-            [classNames.label]: true
-        });
-
-        return label ? <I18n fallback={label} id={label} className={className} /> : null;
-    }
-
     componentDidMount() {
         document.addEventListener('click', this.handleClickOutside, true);
     }
@@ -82,6 +72,16 @@ export default class DropDown extends Component {
         if (!domNode || !domNode.contains(e.target)) {
             this.closeDropDown();
         }
+    }
+
+    renderLabel() {
+        const {label, classNames} = this.props;
+        const className = mergeClassNames({
+            [style.dropDown__btn__label]: true,
+            [classNames.label]: true
+        });
+
+        return label ? <I18n fallback={label} id={label} className={className} /> : null;
     }
 
     renderBeforeIcon() {

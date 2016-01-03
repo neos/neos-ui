@@ -62,7 +62,7 @@ export default class PublishDropDown extends Component {
                     >
                     <I18n fallback={mainButtonTarget} id={mainButtonLabel} />
                 </Button>
-                <DropDown iconAfter="chevron-down" iconAfterActive="chevron-up" classNames={dropDownClassNames}>
+                <DropDown classNames={dropDownClassNames}>
                     <li className={style.dropDown__contents__item}>
                         <Button
                             cavity={false}

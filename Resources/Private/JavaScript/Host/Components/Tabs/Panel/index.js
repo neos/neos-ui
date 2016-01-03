@@ -8,10 +8,7 @@ export default class Panel extends Component {
         icon: PropTypes.string,
 
         // Contents of the Panel.
-        children: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.element
-        ]).isRequired
+        children: PropTypes.node.isRequired
     }
 
     render() {

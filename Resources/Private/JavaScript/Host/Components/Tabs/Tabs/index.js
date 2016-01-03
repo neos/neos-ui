@@ -10,10 +10,7 @@ export default class Tabs extends Component {
         activeTab: PropTypes.number,
 
         className: PropTypes.string,
-        children: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.element
-        ]).isRequired
+        children: PropTypes.node.isRequired
     }
 
     constructor(props) {

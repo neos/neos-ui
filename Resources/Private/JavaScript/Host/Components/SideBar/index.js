@@ -6,7 +6,7 @@ export default class SideBar extends Component {
     static propTypes = {
         position: PropTypes.oneOf(['left', 'right']).isRequired,
         className: PropTypes.string,
-        children: PropTypes.node
+        children: PropTypes.node.isRequired
     }
 
     render() {

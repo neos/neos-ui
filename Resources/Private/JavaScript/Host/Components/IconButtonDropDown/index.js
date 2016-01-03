@@ -51,18 +51,6 @@ export default class IconButtonDropDown extends Component {
             [style.wrapper__dropDown]: true,
             [style['wrapper__dropDown--isOpen']]: this.state.isOpened
         });
-        const children = this.props.children
-            .map(child => typeof child === 'function' ? child() : child)
-            .filter(child => child)
-            .map((child, index) => (
-                <a
-                    className={style.wrapper__dropDown__item}
-                    onClick={this.onItemSelect.bind(this, child.ref)}
-                    key={index}
-                    >
-                    {child}
-                </a>
-            ));
 
         return (
             <div className={classNames} onMouseLeave={this.onMouseLeave.bind(this)}>
@@ -76,10 +64,25 @@ export default class IconButtonDropDown extends Component {
                     <Icon icon={icon} />
                 </Button>
                 <div className={dropDownClassNames}>
-                    {children}
+                    {this.renderChildren()}
                 </div>
             </div>
         );
+    }
+
+    renderChildren() {
+        return this.props.children
+            .map(child => typeof child === 'function' ? child() : child)
+            .filter(child => child)
+            .map((child, index) => (
+                <a
+                    className={style.wrapper__dropDown__item}
+                    onClick={this.onItemSelect.bind(this, child.ref)}
+                    key={index}
+                    >
+                    {child}
+                </a>
+            ));
     }
 
     createHoldTimeout() {

@@ -13,10 +13,10 @@ export default class Icon extends Component {
         // The icon key of Font-Awesome.
         icon(props, propName) {
             const id = props[propName];
-            const {isValid, isMigrated, iconName} = validateIconId(id);
+            const {isValid, isMigrationNeeded, iconName} = validateIconId(id);
 
             if (!isValid) {
-                if (isMigrated && iconName) {
+                if (isMigrationNeeded && iconName) {
                     logger.warn(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
 
 Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".

@@ -4,9 +4,11 @@ import style from './style.css';
 
 export default class GridItem extends Component {
     static propTypes = {
+        // Since we don't want to get the grids get out of control,
+        // we specify a set of allowed widths here.
         width: PropTypes.oneOf(['33%', '50%']).isRequired,
-        className: PropTypes.string,
-        children: PropTypes.node
+        children: PropTypes.node.isRequired,
+        className: PropTypes.string
     }
 
     render() {

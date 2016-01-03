@@ -13,8 +13,6 @@ export default class Button extends Component {
         style: PropTypes.oneOf(['clean', 'transparent']).isRequired,
         hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']).isRequired,
         className: PropTypes.string,
-        textAlign: PropTypes.oneOf(['left', 'center']),
-        width: PropTypes.oneOf(['auto', 'full']),
 
         // Interaction related propTypes.
         onClick: PropTypes.func.isRequired,
@@ -38,9 +36,7 @@ export default class Button extends Component {
             onMouseUp,
             onMouseEnter,
             onMouseLeave,
-            hoverStyle,
-            width,
-            textAlign
+            hoverStyle
         } = this.props;
         const classNames = mergeClassNames({
             [style.btn]: true,
@@ -49,8 +45,6 @@ export default class Button extends Component {
             [style['btn--cleanHover']]: hoverStyle === 'clean',
             [style['btn--brandHover']]: hoverStyle === 'brand',
             [style['btn--darkenHover']]: hoverStyle === 'darken',
-            [style['btn--full']]: width === 'full',
-            [style['btn--textAlignLeft']]: textAlign === 'left',
             [className]: className && className.length
         });
         const props = {

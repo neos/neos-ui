@@ -20,9 +20,10 @@ export default class LeftSideBarToggler extends Component {
 
     render() {
         const {className, isSideBarHidden} = this.props;
+        const isActive = !isSideBarHidden;
         const classNames = mergeClassNames({
             [className]: true,
-            [style['btn--isActive']]: !isSideBarHidden
+            [style['btn--isActive']]: isActive
         });
 
         return (
@@ -30,6 +31,7 @@ export default class LeftSideBarToggler extends Component {
                 className={classNames}
                 style="clean"
                 hoverStyle="clean"
+                isFocused={isActive}
                 onClick={this.onLeftSidebarToggle.bind(this)}
                 >
                 <I18n id="Navigate" fallback="Navigate" />

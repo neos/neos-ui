@@ -9,9 +9,7 @@ export default class Button extends Component {
         label: PropTypes.string,
         indicator: PropTypes.number,
         style: PropTypes.object,
-
         children: PropTypes.node,
-
         onClick: PropTypes.func.isRequired
     };
 

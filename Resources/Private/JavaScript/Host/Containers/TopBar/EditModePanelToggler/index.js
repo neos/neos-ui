@@ -9,11 +9,14 @@ export default class EditModePanelToggler extends Component {
     };
 
     render() {
+        const isActive = false;
+
         return (
             <Button
                 className={this.props.className}
                 style="clean"
                 hoverStyle="clean"
+                isFocused={isActive}
                 onClick={this.onEditModeToggle.bind(this)}
                 >
                 <I18n fallback="Edit / Preview" />

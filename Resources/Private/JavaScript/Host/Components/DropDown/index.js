@@ -51,6 +51,14 @@ export default class DropDown extends Component {
                 <button
                     className={buttonClassName}
                     onClick={e => executeCallback(e, this.toggleDropDown.bind(this))}
+                    ref={btn => {
+                        const method = isOpened ? 'focus' : 'blur';
+
+                        // Initially focus the btn if the propType was set.
+                        if (btn !== null) {
+                            btn[method]();
+                        }
+                    }}
                     >
                     {this.renderBeforeIcon()}
                     {this.renderLabel()}

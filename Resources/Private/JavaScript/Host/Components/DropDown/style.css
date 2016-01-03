@@ -7,6 +7,10 @@
     width: 100%;
     text-align: left;
     padding: 0 32px 0 16px;
+
+    &:focus {
+        outline: 1px dotted $brightest;
+    }
 }
 .dropDown__btn__label {
     margin-right: .5em;

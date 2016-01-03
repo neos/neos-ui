@@ -5,6 +5,9 @@
     padding-right: 47px;
 }
 
+.publishBtn {
+    min-width: 165px;    
+}
 .dropDown {
     position: static;
 }

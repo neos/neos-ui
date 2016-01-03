@@ -72,9 +72,9 @@ export default class PublishDropDown extends Component {
         return (
             <div className={style.wrapper}>
                 <Button
-                    cavity={true}
+                    className={style.publishBtn}
                     isEnabled={canPublishLocally || isSaving}
-                    highlighted={canPublishLocally || isSaving}
+                    isHighlighted={canPublishLocally || isSaving}
                     indicator={publishableNodesInDocument.count()}
                     onClick={e => this.onPublishClick(e)}
                     >
@@ -83,9 +83,8 @@ export default class PublishDropDown extends Component {
                 <DropDown classNames={dropDownClassNames}>
                     <li className={style.dropDown__contents__item}>
                         <Button
-                            cavity={false}
                             isEnabled={canPublishGlobally}
-                            highlighted={false}
+                            isHighlighted={false}
                             indicator={publishableNodes.count()}
                             onClick={e => this.onPublishAllClick(e)}
                             >
@@ -95,9 +94,8 @@ export default class PublishDropDown extends Component {
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <Button
-                            cavity={false}
                             isEnabled={canPublishLocally}
-                            highlighted={false}
+                            isHighlighted={false}
                             indicator={publishableNodesInDocument.count()}
                             label="Discard"
                             icon="ban"
@@ -109,9 +107,8 @@ export default class PublishDropDown extends Component {
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <Button
-                            cavity={false}
                             isEnabled={canPublishGlobally}
-                            highlighted={false}
+                            isHighlighted={false}
                             indicator={publishableNodes.count()}
                             onClick={e => this.onDiscardAllClick(e)}
                             >

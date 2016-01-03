@@ -12,17 +12,11 @@
 .btn--disabled {
     opacity: .5;
 }
-
 .btn--notAllowed {
     &[disabled] {
         cursor: not-allowed;
     }
  }
-
 .btn--highlighted {
     background: $warn;
-}
-
-.btn--cavity {
-    min-width: 165px;
 }

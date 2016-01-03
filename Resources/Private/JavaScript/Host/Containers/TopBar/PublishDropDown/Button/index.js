@@ -5,8 +5,8 @@ import style from './style.css';
 export default class Button extends Component {
     static propTypes = {
         isEnabled: PropTypes.bool,
-        highlighted: PropTypes.bool,
-        cavity: PropTypes.bool,
+        isHighlighted: PropTypes.bool,
+        className: PropTypes.string,
         label: PropTypes.string,
         indicator: PropTypes.number,
         children: PropTypes.node.isRequired,
@@ -16,16 +16,16 @@ export default class Button extends Component {
     render() {
         const {
             isEnabled,
-            highlighted,
-            cavity,
-            indicator
+            isHighlighted,
+            indicator,
+            className
         } = this.props;
         const btnClassName = mergeClassNames({
             [style.btn]: true,
             [style['btn--disabled']]: !isEnabled,
             [style['btn--notAllowed']]: !isEnabled,
-            [style['btn--highlighted']]: highlighted,
-            [style['btn--cavity']]: cavity
+            [style['btn--highlighted']]: isHighlighted,
+            [className]: className && className.length
         });
         const attributes = {
             disabled: !isEnabled

@@ -1,5 +1,6 @@
-import * as UI from './UI/';
 import * as Transient from './Transient/';
+import * as UI from './UI/';
+import * as User from './User/';
 
 const reducerIndex = [
     UI.Tabs,
@@ -8,6 +9,7 @@ const reducerIndex = [
     UI.OffCanvas,
     UI.RightSideBar,
     UI.FlashMessages,
+    User.Settings,
     Transient.Nodes,
     Transient.Changes
 ];

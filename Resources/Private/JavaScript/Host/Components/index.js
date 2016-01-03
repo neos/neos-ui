@@ -1,5 +1,6 @@
 import Bar from './Bar/';
 import Button from './Button/';
+import CheckBox from './CheckBox/';
 import Dialog from './Dialog/';
 import DropDown from './DropDown/';
 import Grid from './Grid/';
@@ -18,6 +19,7 @@ import ToggablePanel from './ToggablePanel/';
 export {
     Bar,
     Button,
+    CheckBox,
     Dialog,
     DropDown,
     Grid,

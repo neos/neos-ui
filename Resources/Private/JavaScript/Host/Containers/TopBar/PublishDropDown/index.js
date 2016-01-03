@@ -2,12 +2,17 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import Immutable from 'immutable';
-import {I18n, Icon, DropDown} from '../../../Components/';
+import {immutableOperations} from '../../../../Shared/Util';
+import {backend} from '../../../Service/';
+import {
+    I18n,
+    Icon,
+    DropDown,
+    CheckBox
+} from '../../../Components/';
+import actions from '../../../Actions/';
 import style from './style.css';
 import Button from './Button/';
-
-import {backend} from '../../../Service/';
-import {immutableOperations} from '../../../../Shared/Util';
 
 const {$get, $mapGet} = immutableOperations;
 
@@ -18,13 +23,15 @@ const {$get, $mapGet} = immutableOperations;
     const isSaving = $get(state, 'ui.remote.isSaving');
     const isPublishing = $get(state, 'ui.remote.isPublishing');
     const isDiscarding = $get(state, 'ui.remote.isDiscarding');
+    const isAutoPublishingEnabled = $get(state, 'user.settings.isAutoPublishingEnabled');
 
     return {
         isSaving,
         isPublishing,
         isDiscarding,
         publishableNodes,
-        publishableNodesInDocument
+        publishableNodesInDocument,
+        isAutoPublishingEnabled
     };
 })
 export default class PublishDropDown extends Component {
@@ -33,11 +40,18 @@ export default class PublishDropDown extends Component {
         isPublishing: PropTypes.bool,
         isDiscarding: PropTypes.bool,
         publishableNodes: PropTypes.instanceOf(Immutable.List),
-        publishableNodesInDocument: PropTypes.instanceOf(Immutable.List)
+        publishableNodesInDocument: PropTypes.instanceOf(Immutable.List),
+        isAutoPublishingEnabled: PropTypes.bool,
+        dispatch: PropTypes.any.isRequired
     }
 
     render() {
-        const {publishableNodes, publishableNodesInDocument, isSaving} = this.props;
+        const {
+            publishableNodes,
+            publishableNodesInDocument,
+            isSaving,
+            isAutoPublishingEnabled
+        } = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
         const canPublishGlobally = publishableNodes.count() > 0;
         const dropDownClassNames = {
@@ -49,6 +63,10 @@ export default class PublishDropDown extends Component {
             ['btn--active']: style['dropDown__btn--active'],
             contents: style.dropDown__contents
         };
+        const autoPublishWrapperClassNames = mergeClassNames({
+            [style.dropDown__contents__item]: true,
+            [style['dropDown__contents__item--noHover']]: true
+        });
         const {mainButtonLabel, mainButtonTarget} = this.getMainButtonLabeling();
 
         return (
@@ -101,11 +119,12 @@ export default class PublishDropDown extends Component {
                             <I18n fallback="Discard All" id="discardAll" />
                         </Button>
                     </li>
-                    <li className={style.dropDown__contents__item}>
-                        <label>
-                            <input type="checkbox" onChange={this.onAutoPublishChange.bind(this)} />
-                            <I18n fallback="Auto-Publish" id="autoPublish" />
-                        </label>
+                    <li className={autoPublishWrapperClassNames}>
+                        <CheckBox
+                            label="autoPublish"
+                            onChange={this.onAutoPublishChange.bind(this)}
+                            isChecked={isAutoPublishingEnabled}
+                            />
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <a href="/neos/management/workspaces">
@@ -123,7 +142,8 @@ export default class PublishDropDown extends Component {
             publishableNodesInDocument,
             isSaving,
             isPublishing,
-            isDiscarding
+            isDiscarding,
+            isAutoPublishingEnabled
         } = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
 
@@ -145,6 +165,13 @@ export default class PublishDropDown extends Component {
             return {
                 mainButtonLabel: 'discarding',
                 mainButtonTarget: 'Discarding...'
+            };
+        }
+
+        if (isAutoPublishingEnabled) {
+            return {
+                mainButtonLabel: 'autoPublish',
+                mainButtonTarget: 'Auto-Publish'
             };
         }
 
@@ -189,7 +216,7 @@ export default class PublishDropDown extends Component {
         publishingService.discardNodes($mapGet(publishableNodes, 'contextPath'));
     }
 
-    onAutoPublishChange(e) {
-        console.log('auto publish changed', e);
+    onAutoPublishChange() {
+        this.props.dispatch(actions.User.Settings.toggleAutoPublishing());
     }
 }

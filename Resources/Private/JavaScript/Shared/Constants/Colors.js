@@ -5,6 +5,7 @@ module.exports = {
     dark: '#3f3f3f',
     neutral: '#323232',
     bright: '#999',
+    brighter: '#adadad',
     brightest: '#FFF',
     brand: '#00b5ff',
     success: '#00a338',

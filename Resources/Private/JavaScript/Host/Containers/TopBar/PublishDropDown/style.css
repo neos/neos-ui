@@ -51,6 +51,9 @@
       }
     }
 }
+.dropDown__contents__item--noHover:hover {
+    background: 0;
+}
 .dropDown__contents__item--disabled {
     opacity: .5;
 

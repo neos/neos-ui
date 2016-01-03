@@ -11,7 +11,7 @@ import IconButton from './IconButton/';
 import IconButtonDropDown from './IconButtonDropDown/';
 import Label from './Label/';
 import SideBar from './SideBar/';
-import {Tabs, Panel} from './Tabs/';
+import Tabs from './Tabs/';
 import TextInput from './TextInput/';
 import ToggablePanel from './ToggablePanel/';
 
@@ -30,7 +30,6 @@ export {
     Label,
     SideBar,
     Tabs,
-    Panel,
     TextInput,
     ToggablePanel
 };

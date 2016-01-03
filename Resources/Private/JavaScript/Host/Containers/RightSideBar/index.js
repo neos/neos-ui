@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {
     SideBar,
     Tabs,
-    Panel,
     IconButton,
     TextInput,
     ToggablePanel
@@ -35,7 +34,7 @@ export default class LeftSideBar extends Component {
         return (
             <SideBar position="right" className={classNames}>
                 <Tabs>
-                    <Panel icon="pencil">
+                    <Tabs.Panel icon="pencil">
                         <ToggablePanel
                             className={style.rightSideBar__section}
                             title="My fancy configuration"
@@ -46,13 +45,13 @@ export default class LeftSideBar extends Component {
                                 />
                         </ToggablePanel>
 
-                    </Panel>
-                    <Panel icon="cog">
+                    </Tabs.Panel>
+                    <Tabs.Panel icon="cog">
                         <p>Content #2 here</p>
-                    </Panel>
-                    <Panel icon="bullseye">
+                    </Tabs.Panel>
+                    <Tabs.Panel icon="bullseye">
                         <p>Content #3 here</p>
-                    </Panel>
+                    </Tabs.Panel>
                 </Tabs>
 
                 <IconButton

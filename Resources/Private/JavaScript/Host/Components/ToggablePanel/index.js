@@ -46,10 +46,10 @@ export default class ToggablePanel extends Component {
         });
 
         return (
-            <div className={classNames}>
+            <section className={classNames}>
                 {this.renderHeader()}
                 {this.renderContents()}
-            </div>
+            </section>
         );
     }
 
@@ -71,7 +71,7 @@ export default class ToggablePanel extends Component {
                     type="h1"
                     style="h4"
                     >
-                    {icon ? <Icon icon={icon} /> : null}
+                    {icon ? <Icon icon={icon} padded="right" /> : null}
                     <I18n fallback={title} id={title} />
                 </Headline>
                 <IconButton

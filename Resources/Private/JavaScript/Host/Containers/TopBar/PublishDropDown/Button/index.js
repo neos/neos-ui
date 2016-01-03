@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
+import style from './style.css';
 
 export default class Button extends Component {
     static propTypes = {
@@ -8,7 +9,6 @@ export default class Button extends Component {
         cavity: PropTypes.bool,
         label: PropTypes.string,
         indicator: PropTypes.number,
-        style: PropTypes.object,
         children: PropTypes.node,
         onClick: PropTypes.func.isRequired
     };
@@ -18,8 +18,7 @@ export default class Button extends Component {
             enabled,
             highlighted,
             cavity,
-            indicator,
-            style
+            indicator
         } = this.props;
         const btnClassName = mergeClassNames({
             [style.btn]: true,

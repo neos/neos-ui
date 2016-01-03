@@ -43,7 +43,6 @@ export default class PublishDropDown extends Component {
         const dropDownClassNames = {
             wrapper: style.dropDown,
             btn: mergeClassNames({
-                [style.btn]: true,
                 [style.dropDown__btn]: true,
                 [style['btn--highlighted']]: canPublishGlobally
             }),
@@ -55,7 +54,6 @@ export default class PublishDropDown extends Component {
         return (
             <div className={style.wrapper}>
                 <Button
-                    style={style}
                     cavity={true}
                     enabled={canPublishLocally || isSaving}
                     highlighted={canPublishLocally || isSaving}
@@ -67,7 +65,6 @@ export default class PublishDropDown extends Component {
                 <DropDown iconAfter="chevron-down" iconAfterActive="chevron-up" classNames={dropDownClassNames}>
                     <li className={style.dropDown__contents__item}>
                         <Button
-                            style={style}
                             cavity={false}
                             enabled={canPublishGlobally}
                             highlighted={false}
@@ -80,7 +77,6 @@ export default class PublishDropDown extends Component {
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <Button
-                            style={style}
                             cavity={false}
                             enabled={canPublishLocally}
                             highlighted={false}
@@ -95,7 +91,6 @@ export default class PublishDropDown extends Component {
                     </li>
                     <li className={style.dropDown__contents__item}>
                         <Button
-                            style={style}
                             cavity={false}
                             enabled={canPublishGlobally}
                             highlighted={false}

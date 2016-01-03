@@ -1,30 +1,3 @@
-.btn {
-    display: inline-block;
-    padding: 0 16px;
-    height: 40px;
-    line-height: 40px;
-    border: 0;
-    background: $success;
-    text-align: center;
-    vertical-align: top;
-    cursor: pointer;
-}
-.btn--disabled {
-    opacity: .5;
-}
-
-.btn--notAllowed {
-     cursor: not-allowed !important;
- }
-
-.btn--highlighted {
-    background: $warn;
-}
-
-.btn--cavity {
-    min-width: 165px;
-}
-
 .wrapper {
     display: inline-block;
     position: relative;
@@ -39,8 +12,16 @@
     position: absolute;
     right: 0;
     top: 0;
+    display: inline-block;
     width: auto;
-    padding-left: 30px;
+    height: 40px;
+    padding: 0 30px 0 16px;
+    border: 0;
+    line-height: 40px;
+    background: $success;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
 }
 .dropDown__btn--active {
     opacity: 1;

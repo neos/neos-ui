@@ -52,3 +52,7 @@ export default class Label extends Component {
         return this.props.children;
     }
 }
+Label.defaultProps = {
+    labelPosition: 'before',
+    isChildrenInlined: false
+};

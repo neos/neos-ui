@@ -4,7 +4,7 @@ import style from './style.css';
 
 export default class Button extends Component {
     static propTypes = {
-        enabled: PropTypes.bool,
+        isEnabled: PropTypes.bool,
         highlighted: PropTypes.bool,
         cavity: PropTypes.bool,
         label: PropTypes.string,
@@ -15,24 +15,24 @@ export default class Button extends Component {
 
     render() {
         const {
-            enabled,
+            isEnabled,
             highlighted,
             cavity,
             indicator
         } = this.props;
         const btnClassName = mergeClassNames({
             [style.btn]: true,
-            [style['btn--disabled']]: !enabled,
-            [style['btn--notAllowed']]: !enabled,
+            [style['btn--disabled']]: !isEnabled,
+            [style['btn--notAllowed']]: !isEnabled,
             [style['btn--highlighted']]: highlighted,
             [style['btn--cavity']]: cavity
         });
-        const btnAttributes = {
-            disabled: !enabled
+        const attributes = {
+            disabled: !isEnabled
         };
 
         return (
-            <button className={btnClassName} onClick={() => this.onClick()} {...btnAttributes}>
+            <button className={btnClassName} onClick={() => this.onClick()} {...attributes}>
                 {this.props.children} {indicator > 0 ? `(${indicator})` : ''}
             </button>
         );

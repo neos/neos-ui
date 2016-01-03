@@ -73,7 +73,7 @@ export default class PublishDropDown extends Component {
             <div className={style.wrapper}>
                 <Button
                     cavity={true}
-                    enabled={canPublishLocally || isSaving}
+                    isEnabled={canPublishLocally || isSaving}
                     highlighted={canPublishLocally || isSaving}
                     indicator={publishableNodesInDocument.count()}
                     onClick={e => this.onPublishClick(e)}
@@ -84,7 +84,7 @@ export default class PublishDropDown extends Component {
                     <li className={style.dropDown__contents__item}>
                         <Button
                             cavity={false}
-                            enabled={canPublishGlobally}
+                            isEnabled={canPublishGlobally}
                             highlighted={false}
                             indicator={publishableNodes.count()}
                             onClick={e => this.onPublishAllClick(e)}
@@ -96,7 +96,7 @@ export default class PublishDropDown extends Component {
                     <li className={style.dropDown__contents__item}>
                         <Button
                             cavity={false}
-                            enabled={canPublishLocally}
+                            isEnabled={canPublishLocally}
                             highlighted={false}
                             indicator={publishableNodesInDocument.count()}
                             label="Discard"
@@ -110,7 +110,7 @@ export default class PublishDropDown extends Component {
                     <li className={style.dropDown__contents__item}>
                         <Button
                             cavity={false}
-                            enabled={canPublishGlobally}
+                            isEnabled={canPublishGlobally}
                             highlighted={false}
                             indicator={publishableNodes.count()}
                             onClick={e => this.onDiscardAllClick(e)}

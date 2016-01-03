@@ -124,7 +124,7 @@ export default class AddNode extends Component {
                 actions={actions}
                 >
                 <Headline type="h1">
-                    <I18n fallback="Create new" id="Create new" />
+                    <I18n fallback="Create new" id="createNew" />
                 </Headline>
 
                 <Grid>

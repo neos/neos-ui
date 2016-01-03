@@ -43,7 +43,13 @@ export default class I18n extends Component {
     }
 
     loadTranslation(props = this.props) {
-        const {fallback, id, packageKey, sourceName, params} = props;
+        const {
+            fallback,
+            id,
+            packageKey,
+            sourceName,
+            params
+        } = props;
         const {i18n} = backend;
         const label = i18n && id ? i18n(id, packageKey, sourceName, params) : fallback;
 

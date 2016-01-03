@@ -65,7 +65,7 @@ export default class Headline extends Component {
                 break;
         }
 
-        return (<div>{heading}</div>);
+        return heading;
     }
 }
 Headline.defaultProps = {

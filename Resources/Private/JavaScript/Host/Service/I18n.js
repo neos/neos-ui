@@ -8,5 +8,12 @@ export default translations =>
         packageKey = formatIdentifier(packageKey);
         sourceName = formatIdentifier(sourceName);
 
-        return [packageKey, sourceName, transUnitId].reduce((prev, cur) => prev ? prev[cur] || '' : '', translations);
+        const translation = [packageKey, sourceName, transUnitId].reduce((prev, cur) => prev ? prev[cur] || '' : '', translations);
+
+        if (translation && translation.length) {
+            return translation;
+        }
+
+        // ToDo: Use the neos logger util.
+        console.error(`No translation found for id "${transUnitId}" in:`, translations);
     };

@@ -24,8 +24,8 @@
     "xo": "^0.12.1"
   },
   "dependencies": {
-    "@reduct/component": "^2.0.3",
-    "@reduct/logger": "^1.1.0",
+    "@reduct/component": "^2.0.4",
+    "@reduct/logger": "^1.1.1",
     "@reduct/nitpick": "^1.0.0",
     "@reduct/registry": "^1.0.1",
     "classnames": "^2.2.0",

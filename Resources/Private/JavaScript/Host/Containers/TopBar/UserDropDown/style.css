@@ -43,9 +43,6 @@
 .dropDownItem:hover {
     background: $brand;
 }
-.dropDown__item--topDark {
-    border-color: $dark;
-}
 .dropDown__item__icon {
     padding-right: .5em;
 }

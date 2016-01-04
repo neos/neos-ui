@@ -8,7 +8,7 @@ import {
     TextInput,
     ToggablePanel
 } from '../../Components/';
-import actions from '../../Actions/';
+import actions from '../../Ducks/';
 import style from './style.css';
 import {immutableOperations} from '../../../Shared/Util';
 

@@ -1,4 +1,4 @@
-import {immutableOperations} from '../../../Shared/Util/';
+import {immutableOperations} from '../../../../Shared/Util/';
 
 const {$get, $set, $merge, $delete} = immutableOperations;
 
@@ -23,7 +23,62 @@ function updateActiveTab(state) {
     return $set(state, 'ui.tabs.active', refreshedActiveTab);
 }
 
-export default funtion reducer (state, action) {
+/**
+ * Helper function to perfrom the SET_METADATA action
+ *
+ * @param  {Immutable.Collection} state
+ * @param  {Object} action
+ * @return {Immutable.Collection}
+ */
+function doSetMetaData(state, action) {
+    const {title, workspace, contextPath} = action.metaData;
+    const {publishingState, name} = workspace;
+    const {publishableNodes} = publishingState;
+    const [nodePath] = contextPath.split('@');
+    const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope =>
+        nodeEnvelope.contextPath.startsWith(nodePath) &&
+        nodeEnvelope.documentContextPath === contextPath
+    );
+
+    return updateActiveTab($set(
+        $merge(state, ['ui', 'tabs', 'byId', action.tabId], {title, contextPath}),
+        ['ui', 'tabs', 'byId', action.tabId, 'workspace'],
+        {
+            name,
+            publishingState: {
+                publishableNodes,
+                publishableNodesInDocument
+            }
+        }
+    ));
+}
+
+/**
+ * Helper function to perfrom the UPDATE_WORKSPACE_INFO action
+ *
+ * @param  {Immutable.Collection} state
+ * @param  {Object} action
+ * @return {Immutable.Collection}
+ */
+function doUpdateWorkspaceInfo(state, action) {
+    const {documentContextPath, workspaceInfo, workspaceName} = action;
+    const publishableNodes = workspaceInfo;
+    const [nodePath] = documentContextPath.split('@');
+    const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope =>
+        nodeEnvelope.contextPath.startsWith(nodePath) &&
+        nodeEnvelope.documentContextPath === documentContextPath
+    );
+
+    const updateTabs = $get(state, 'ui.tabs.byId').filter(tab =>
+        $get(tab, 'workspace.name') === workspaceName
+    ).map(tab =>
+        $set(tab, 'workspace.publishingState', {publishableNodes, publishableNodesInDocument})
+    );
+
+    return updateActiveTab($merge(state, 'ui.tabs.byId', updateTabs));
+}
+
+export default function reducer (state, action) {
     switch(action.type) {
 
         case ADD:
@@ -49,44 +104,11 @@ export default funtion reducer (state, action) {
             return $set(state, 'ui.tabs.active', newActiveTab);
 
         case SET_METADATA:
-            const {title, workspace, contextPath} = action.metaData;
-            const {publishingState, name} = workspace;
-            const {publishableNodes} = publishingState;
-            const [nodePath] = contextPath.split('@');
-            const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope =>
-                nodeEnvelope.contextPath.startsWith(nodePath) &&
-                nodeEnvelope.documentContextPath === contextPath
-            );
-
-            return updateActiveTab($set(
-                $merge(state, ['ui', 'tabs', 'byId', action.tabId], {title, contextPath}),
-                ['ui', 'tabs', 'byId', action.tabId, 'workspace'],
-                {
-                    name,
-                    publishingState: {
-                        publishableNodes,
-                        publishableNodesInDocument
-                    }
-                }
-            ));
+            return doSetMetaData(state, action);
 
         case UPDATE_WORKSPACE_INFO:
-            const {documentContextPath, workspaceInfo, workspaceName} = action;
-            const publishableNodes = workspaceInfo;
-            const [nodePath] = documentContextPath.split('@');
-            const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope =>
-                nodeEnvelope.contextPath.startsWith(nodePath) &&
-                nodeEnvelope.documentContextPath === documentContextPath
-            );
-
-            const updateTabs = $get(state, 'ui.tabs.byId').filter(tab =>
-                $get(tab, 'workspace.name') === workspaceName
-            ).map(tab =>
-                $set(tab, 'workspace.publishingState', {publishableNodes, publishableNodesInDocument})
-            );
-
-            return updateActiveTab($merge(state, 'ui.tabs.byId', updateTabs));
-
+            return doUpdateWorkspaceInfo(state, action);
+            
         default: return state;
 
     }

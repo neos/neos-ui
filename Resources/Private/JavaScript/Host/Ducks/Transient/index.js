@@ -18,7 +18,7 @@ export default function reducer(state, action) {
 };
 
 // Export Actions
-export const actions = {
+export {
     Changes,
     Nodes
 };

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import style from './style.css';
-import actions from '../../Actions/';
+import actions from '../../Ducks/';
 
 import FlashMessage from './FlashMessage/';
 

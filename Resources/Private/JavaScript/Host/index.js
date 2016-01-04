@@ -5,7 +5,7 @@ import {createStore} from 'redux';
 import assign from 'lodash.assign';
 import registry from '@reduct/registry';
 
-import reducerFactory from './Reducers/';
+import reducerFactory from './Ducks/';
 import {initialStateFactory} from './State/';
 
 import * as feedbackHandler from './Service/FeedbackHandler/';

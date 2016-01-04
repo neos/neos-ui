@@ -7,12 +7,12 @@ import UIReducer from './UI/';
 import UserReducer from './User/';
 
 // Import Actions
-import actions as Transient from './Transient/';
-import actions as UI from './UI/';
-import actions as User from './User/';
+import * as Transient from './Transient/';
+import * as UI from './UI/';
+import * as User from './User/';
 
 // Export Reducer
-export default function reducer(state, action) {
+export default initialState => (state = initialState, action) => {
     return compose(
         TransientReducer,
         UIReducer,

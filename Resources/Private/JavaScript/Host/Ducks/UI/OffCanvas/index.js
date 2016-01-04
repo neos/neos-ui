@@ -1,4 +1,4 @@
-import {immutableOperations} from '../../../Shared/Util/';
+import {immutableOperations} from '../../../../Shared/Util/';
 
 const {$get, $set} = immutableOperations;
 
@@ -15,7 +15,7 @@ export default function reducer (state, action) {
 
         case HIDE:
             return $set(state, 'ui.offCanvas.isHidden', true);
-            
+
         default: return state;
 
     }

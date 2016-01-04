@@ -1,10 +1,10 @@
-import {immutableOperations} from '../../../Shared/Util/';
+import {immutableOperations} from '../../../../Shared/Util/';
 
 const {$get, $set} = immutableOperations;
 
 const TOGGLE = '@packagefactory/guevara/UI/RightSidebar/TOGGLE';
 
-export default funtion reducer (state, action) {
+export default function reducer (state, action) {
     switch(action.type) {
 
         case TOGGLE:

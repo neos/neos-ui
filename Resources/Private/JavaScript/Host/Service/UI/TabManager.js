@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import actions from '../../Actions/';
+import actions from '../../Ducks/';
 
 import assign from 'lodash.assign';
 

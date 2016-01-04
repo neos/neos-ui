@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import actions from '../../../Actions/';
+import actions from '../../../Ducks/';
 import {Button, I18n} from '../../../Components/';
 import {immutableOperations} from '../../../../Shared/Util';
 import style from './style.css';

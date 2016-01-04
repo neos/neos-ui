@@ -1,13 +1,13 @@
-import {immutableOperations} from '../../../Shared/Util/';
+import {immutableOperations} from '../../../../Shared/Util/';
 
 const {$set} = immutableOperations;
 
-const START_SAVING = '@packagefactory/guevara/UI/Remote/START_SAVING':
-const FINISH_SAVING = '@packagefactory/guevara/UI/Remote/FINISH_SAVING':
-const START_PUBLISHING = '@packagefactory/guevara/UI/Remote/START_PUBLISHING':
-const FINISH_PUBLISHING = '@packagefactory/guevara/UI/Remote/FINISH_PUBLISHING':
-const START_DISCARDING = '@packagefactory/guevara/UI/Remote/START_DISCARDING':
-const FINISH_DISCARDING = '@packagefactory/guevara/UI/Remote/FINISH_DISCARDING':
+const START_SAVING = '@packagefactory/guevara/UI/Remote/START_SAVING';
+const FINISH_SAVING = '@packagefactory/guevara/UI/Remote/FINISH_SAVING';
+const START_PUBLISHING = '@packagefactory/guevara/UI/Remote/START_PUBLISHING';
+const FINISH_PUBLISHING = '@packagefactory/guevara/UI/Remote/FINISH_PUBLISHING';
+const START_DISCARDING = '@packagefactory/guevara/UI/Remote/START_DISCARDING';
+const FINISH_DISCARDING = '@packagefactory/guevara/UI/Remote/FINISH_DISCARDING';
 
 export default function reducer (state, action) {
     switch(action.type) {

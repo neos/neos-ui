@@ -1,4 +1,4 @@
-import {immutableOperations} from '../../../Shared/Util/';
+import {immutableOperations} from '../../../../Shared/Util/';
 
 const {$set, $delete} = immutableOperations;
 

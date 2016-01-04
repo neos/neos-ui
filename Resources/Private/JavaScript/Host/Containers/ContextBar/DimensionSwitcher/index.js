@@ -31,7 +31,7 @@ export default class DimensionSwitcher extends Component {
     renderDimensionCategory(dimensionCategory, index) {
         return (
             <li key={index} className={style.dimensionCategory}>
-                <Icon icon="globe" className={style.dimensionCategory__icon} />
+                <Icon icon="globe" padded="right" className={style.dimensionCategory__icon} />
                 {dimensionCategory.name}
                 <br />
 

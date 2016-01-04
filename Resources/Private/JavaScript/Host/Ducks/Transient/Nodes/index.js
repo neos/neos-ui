@@ -1,4 +1,3 @@
-import Immutable from 'immutable';
 import {immutableOperations} from '../../../Shared/Util/';
 
 const {$set, $merge} = immutableOperations;
@@ -34,7 +33,7 @@ export function add(contextPath, data) {
 
 /**
  * Adds multiple nodes to the application state
- * 
+ *
  * @param {Array} nodes A list of nodes
  */
 export function addBulk(nodes) {

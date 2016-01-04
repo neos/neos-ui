@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div className={style.applicationWrapper}>
             <Provider store={store}>
                 <div>
+                    <div id="dialog" />
                     <FlashMessageContainer />
                     <TopBar />
                     <ContextBar />

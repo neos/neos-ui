@@ -11,6 +11,7 @@ import Icon from './Icon/';
 import IconButton from './IconButton/';
 import IconButtonDropDown from './IconButtonDropDown/';
 import Label from './Label/';
+import Portal from './Portal/';
 import SideBar from './SideBar/';
 import Tabs from './Tabs/';
 import TextInput from './TextInput/';
@@ -30,6 +31,7 @@ export {
     IconButton,
     IconButtonDropDown,
     Label,
+    Portal,
     SideBar,
     Tabs,
     TextInput,

@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {executeCallback} from '../../Abstracts/';
 import IconButton from '../IconButton/';
+import Portal from '../Portal/';
 import style from './style.css';
 
 export default class Dialog extends Component {
@@ -25,7 +26,8 @@ export default class Dialog extends Component {
     render() {
         const {
             className,
-            children
+            children,
+            isOpen
         } = this.props;
         const classNames = mergeClassNames({
             [style.dialog]: true,
@@ -34,23 +36,25 @@ export default class Dialog extends Component {
         const actions = this.props.actions.map((action, index) => <span key={index}>{action}</span>);
 
         return (
-            <section className={classNames} ref="dialog">
-                <div className={style.dialog__contents} ref="contentWrapper">
-                    <div className={style.dialog__contents__inner}>
-                        {children}
+            <Portal targetId="dialog" isOpened={isOpen}>
+                <section className={classNames} ref="dialog">
+                    <div className={style.dialog__contents} ref="contentWrapper">
+                        <div className={style.dialog__contents__inner}>
+                            {children}
 
-                        <IconButton
-                            icon="close"
-                            className={style.dialog__contents__inner__closeBtn}
-                            onClick={e => executeCallback(e, this.onCloseClick.bind(this))}
-                            />
+                            <IconButton
+                                icon="close"
+                                className={style.dialog__contents__inner__closeBtn}
+                                onClick={e => executeCallback(e, this.onCloseClick.bind(this))}
+                                />
 
-                        <div className={style.dialog__contents__inner__actions}>
-                            {actions}
+                            <div className={style.dialog__contents__inner__actions}>
+                                {actions}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </Portal>
         );
     }
 

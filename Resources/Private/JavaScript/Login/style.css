@@ -58,4 +58,9 @@ button {
     cursor: pointer;
     padding: 0 2.5em;
     height: 40px;
+
+    &:hover {
+        outline: 0;
+        transform: translateY(2px);
+    }
 }

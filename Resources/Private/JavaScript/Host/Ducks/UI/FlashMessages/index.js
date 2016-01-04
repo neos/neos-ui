@@ -1,6 +1,6 @@
 import {immutableOperations} from '../../../Shared/Util/';
 
-const {$set,$delete} = immutableOperations;
+const {$set, $delete} = immutableOperations;
 
 const ADD = '@packagefactory/guevara/UI/FlashMessages/ADD';
 const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';

@@ -3,56 +3,8 @@
 <html>
     <head>
         <title>PackageFactory Guevara - Viva la Revolución!</title>
-        <style>
-            body, html {
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-
-            body {
-                background-color: #141414;
-                background-image: url('resource://PackageFactory.Guevara/Public/Images/loginBackground.gif');
-                background-repeat: no-repeat;
-                background-position: bottom right;
-                color: #ffffff;
-                font-family: verdana;
-            }
-
-            form {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-
-            form header {
-                font-size: 1.2em;
-                text-align: center;
-                margin-bottom: 1.2em;
-            }
-
-            fieldset {
-                border: none;
-            }
-
-            input {
-                border: none;
-                font-size: 1.2em;
-                padding: 0.3em;
-                margin-bottom: 0.3em;
-            }
-
-            button {
-                float: right;
-                font-size: 1.2em;
-                border: 2px solid #928686;
-                background-color: #141414;
-                color: #928686;
-                cursor: pointer;
-                padding: 0.3em 1em;
-            }
-        </style>
+        <link rel="stylesheet" href="{f:uri.resource(path: 'resource://PackageFactory.Guevara/Public/Styles/Login.css')}">
+		<link rel="stylesheet" href="{f:uri.resource(path: 'resource://PackageFactory.Guevara/Public/JavaScript/Login.js')}">
     </head>
     <body>
         <f:form name="login" action="authenticate">

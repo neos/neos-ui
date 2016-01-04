@@ -9,7 +9,8 @@ const nested = require('postcss-nested');
 module.exports = {
     entry: {
         Host: './Resources/Private/JavaScript/Host/index.js',
-        Guest: './Resources/Private/JavaScript/Guest/index.js'
+        Guest: './Resources/Private/JavaScript/Guest/index.js',
+        Login: './Resources/Private/JavaScript/Login/index.js'
     },
 
     output: {

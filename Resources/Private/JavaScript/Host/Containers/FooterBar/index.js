@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import Immutable from 'immutable';
-import actions from '../../Ducks/';
+import {actions} from '../../Ducks/';
 import {Bar} from '../../Components/';
 import TabSwitcher from './TabSwitcher/';
 
@@ -27,6 +27,6 @@ export default class FooterBar extends Component {
     onSwitchTab(tab) {
         const {dispatch} = this.props;
 
-        dispatch(actions.UI.Tabs.switchToTab(tab.get('id')));
+        dispatch(actions.UI.Tabs.switchTo(tab.get('id')));
     }
 }

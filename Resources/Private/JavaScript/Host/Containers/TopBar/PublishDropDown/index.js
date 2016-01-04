@@ -10,7 +10,7 @@ import {
     DropDown,
     CheckBox
 } from '../../../Components/';
-import actions from '../../../Ducks/';
+import {actions} from '../../../Ducks/';
 import style from './style.css';
 import AbstractButton from './AbstractButton/';
 

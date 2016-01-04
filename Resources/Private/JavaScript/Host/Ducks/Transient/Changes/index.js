@@ -3,7 +3,7 @@ import Immutable from 'immutable';
 const ADD = '@packagefactory/guevara/Transient/Changes/ADD';
 const CLEAR = '@packagefactory/guevara/Transient/Changes/CLEAR';
 
-export default function reducer(staste, action) {
+export default function reducer(state, action) {
     switch(action.type) {
         case ADD:
             return state.set('changes', state.get('changes').push(action.change));

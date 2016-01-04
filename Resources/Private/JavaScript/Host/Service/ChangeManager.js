@@ -1,4 +1,4 @@
-import actions from '../Ducks/';
+import {actions} from '../Ducks/';
 import backend from './Backend.js';
 
 class ChangeManager {
@@ -13,7 +13,7 @@ class ChangeManager {
 
     commitChange(change) {
         // dispatch add change action
-        this.store.dispatch(actions.Transient.Changes.addChange(change));
+        this.store.dispatch(actions.Transient.Changes.add(change));
     }
 
     flushChanges() {
@@ -23,7 +23,7 @@ class ChangeManager {
             const {feedbackManager} = backend;
 
             this.store.dispatch(actions.UI.Remote.startSaving());
-            this.store.dispatch(actions.Transient.Changes.clearChanges());
+            this.store.dispatch(actions.Transient.Changes.clear());
 
             fetch(this.endpoint, {
                 method: 'POST',

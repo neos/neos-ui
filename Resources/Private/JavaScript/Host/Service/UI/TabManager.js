@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import actions from '../../Ducks/';
+import {actions} from '../../Ducks/';
 
 import assign from 'lodash.assign';
 
@@ -11,8 +11,8 @@ class TabManager {
     createTab(src) {
         const tabId = uuid.v4();
 
-        this.store.dispatch(actions.UI.Tabs.createTab(tabId, src));
-        this.store.dispatch(actions.UI.Tabs.switchToTab(tabId));
+        this.store.dispatch(actions.UI.Tabs.add(tabId, src));
+        this.store.dispatch(actions.UI.Tabs.switchTo(tabId));
     }
 
     closeTab(tabId) {
@@ -23,13 +23,13 @@ class TabManager {
         const tabConfiguration = this.store.getState().get('ui').get('tabs').get('byId').get(tabId);
 
         // remove nodes that are not needed any longer
-        this.store.dispatch(actions.UI.Tabs.removeTab(tabId));
+        this.store.dispatch(actions.UI.Tabs.remove(tabId));
     }
 
     commitDocumentLoad(tabId, configuration) {
-        this.store.dispatch(actions.Transient.Nodes.addNodeBulk(configuration.nodes));
+        this.store.dispatch(actions.Transient.Nodes.addBulk(configuration.nodes));
 
-        this.store.dispatch(actions.UI.Tabs.setTabMetaData(tabId, assign({
+        this.store.dispatch(actions.UI.Tabs.setMetaData(tabId, assign({
             title: tabId,
             workspace: {
                 publishableNodes: []

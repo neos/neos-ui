@@ -1,5 +1,8 @@
 // Third party
 import compose from 'lodash.compose';
+import curry from 'lodash.curry';
+
+const _ = curry.placeholder;
 
 // Import Reducers
 import TransientReducer from './Transient/';
@@ -14,10 +17,10 @@ import * as User from './User/';
 // Export Reducer
 export default initialState => (state = initialState, action) => {
     return compose(
-        TransientReducer,
-        UIReducer,
-        UserReducer
-    );
+        curry(TransientReducer)(_, action),
+        curry(UIReducer)(_, action),
+        curry(UserReducer)(_, action)
+    )(state);
 };
 
 // Export Actions

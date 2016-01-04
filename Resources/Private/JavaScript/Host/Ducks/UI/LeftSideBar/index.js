@@ -25,6 +25,6 @@ export default function reducer (state, action) {
  */
 export function toggle() {
     return {
-        type: ActionTypes.UI.TOGGLE_LEFT_SIDEBAR
+        type: TOGGLE
     };
 }

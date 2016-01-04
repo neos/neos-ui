@@ -108,7 +108,7 @@ export default function reducer (state, action) {
 
         case UPDATE_WORKSPACE_INFO:
             return doUpdateWorkspaceInfo(state, action);
-            
+
         default: return state;
 
     }

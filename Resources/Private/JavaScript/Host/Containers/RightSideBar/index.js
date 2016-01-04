@@ -8,7 +8,7 @@ import {
     TextInput,
     ToggablePanel
 } from '../../Components/';
-import actions from '../../Ducks/';
+import {actions} from '../../Ducks/';
 import style from './style.css';
 import {immutableOperations} from '../../../Shared/Util';
 
@@ -64,6 +64,6 @@ export default class LeftSideBar extends Component {
     }
 
     toggleSidebar() {
-        this.props.dispatch(actions.UI.RightSideBar.toggleSideBar());
+        this.props.dispatch(actions.UI.RightSideBar.toggle());
     }
 }

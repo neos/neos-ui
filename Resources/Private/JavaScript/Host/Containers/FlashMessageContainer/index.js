@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import style from './style.css';
-import actions from '../../Actions/';
+import {actions} from '../../Ducks/';
 
 import FlashMessage from './FlashMessage/';
 
@@ -12,7 +12,7 @@ import {immutableOperations} from '../../../Shared/Util';
 const {$get} = immutableOperations;
 
 @connect(state => ({
-    flashMessages: $get(state, 'ui.flashMessages')
+      flashMessages: $get(state, 'ui.flashMessages')
 }))
 export default class FlashMessageContainer extends Component {
     static propTypes = {

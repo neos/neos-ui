@@ -11,7 +11,7 @@ export function toggleOffCanvas() {
 
 /**
  * Hides the off canvas menu.
- * @return {[type]} [description]
+ * @return {Object} [description]
  */
 export function hideOffCanvas() {
     return {

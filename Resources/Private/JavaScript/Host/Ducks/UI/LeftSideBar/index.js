@@ -23,7 +23,7 @@ export default function reducer (state, action) {
  *
  * @return {Object}
  */
-export function toggleSideBar() {
+export function toggle() {
     return {
         type: ActionTypes.UI.TOGGLE_LEFT_SIDEBAR
     };

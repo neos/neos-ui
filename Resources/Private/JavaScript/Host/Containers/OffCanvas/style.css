@@ -11,8 +11,13 @@
 .offCanvas--isHidden {
     transform: translateX(-320px);
 }
-.offCanvas__menuItem {}
-.offCanvas__menuItem__header {}
+.offCanvas__menuItem {
+    border-top: 1px solid $dark;
+
+    &:first-child {
+        border-top: 0;
+    }
+}
 .offCanvas__menuItem__btn {
     width: 100%;
     text-align: left;

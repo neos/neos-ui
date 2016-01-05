@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import actions from '../../../Actions/';
+import {actions} from '../../../Ducks/';
 import {Button} from '../../../Components/';
 import {immutableOperations} from '../../../../Shared/Util';
 import style from './style.css';
@@ -40,6 +40,6 @@ export default class MenuToggler extends Component {
     }
 
     onMenuToggle() {
-        this.props.dispatch(actions.UI.OffCanvas.toggleOffCanvas());
+        this.props.dispatch(actions.UI.OffCanvas.toggle());
     }
 }

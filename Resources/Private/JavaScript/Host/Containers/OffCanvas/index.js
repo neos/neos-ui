@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import actions from '../../Actions/';
+import {actions} from '../../Ducks/';
 import {
     Button,
     Icon,
@@ -79,6 +79,6 @@ export default class OffCanvas extends Component {
     }
 
     hideOffCanvas() {
-        this.props.dispatch(actions.UI.OffCanvas.hideOffCanvas());
+        this.props.dispatch(actions.UI.OffCanvas.hide());
     }
 }

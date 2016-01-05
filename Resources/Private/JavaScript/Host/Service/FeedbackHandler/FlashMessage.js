@@ -1,4 +1,4 @@
-import actions from '../../Actions/';
+import {actions} from '../../Ducks/';
 import uuid from 'uuid';
 
 export default (feedback, envelope, store) => {

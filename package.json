@@ -20,6 +20,7 @@
     "postcss-simple-vars": "^1.2.0",
     "redux-devtools": "^2.1.3",
     "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
     "webpack": "^1.12.9",
     "xo": "^0.12.1"
   },
@@ -43,7 +44,6 @@
     "react-redux": "^4.0.0",
     "redux": "^3.0.4",
     "redux-immutable": "^1.3.7",
-    "url-loader": "^0.5.7",
     "uuid": "^2.0.1",
     "whatwg-fetch": "^0.10.1"
   },

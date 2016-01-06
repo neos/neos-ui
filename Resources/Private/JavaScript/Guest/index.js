@@ -5,6 +5,9 @@ import './style.css';
 const {tabManager} = backend;
 const DOMConnector = domConnector();
 
+//
+// Initialize the guest application as soon as the DOM has been fully initialized.
+//
 document.addEventListener('DOMContentLoaded', () => {
     tabManager.commitDocumentLoad(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
     DOMConnector.run();

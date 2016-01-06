@@ -19,8 +19,6 @@ class NodeTypeManager {
 
             this.nodeTypes.push(nodeType);
         });
-
-        console.log(this.nodeTypes);
     }
 
     /**

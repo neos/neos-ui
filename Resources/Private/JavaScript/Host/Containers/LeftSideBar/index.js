@@ -1,10 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
+import {immutableOperations} from '../../../Shared/Util';
 import {SideBar} from '../../Components/';
 import NodeTreeToolBar from './NodeTreeToolBar/';
+import PageTree from './PageTree/';
 import style from './style.css';
-import {immutableOperations} from '../../../Shared/Util';
 
 const {$get} = immutableOperations;
 
@@ -25,7 +26,7 @@ export default class LeftSideBar extends Component {
         return (
             <SideBar position="left" className={classNames}>
                 <NodeTreeToolBar />
-                This is sparta!
+                <PageTree />
             </SideBar>
         );
     }

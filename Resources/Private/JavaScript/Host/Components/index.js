@@ -16,6 +16,7 @@ import SideBar from './SideBar/';
 import Tabs from './Tabs/';
 import TextInput from './TextInput/';
 import ToggablePanel from './ToggablePanel/';
+import Tree from './Tree/';
 
 export {
     Bar,
@@ -35,5 +36,6 @@ export {
     SideBar,
     Tabs,
     TextInput,
-    ToggablePanel
+    ToggablePanel,
+    Tree
 };

@@ -1,0 +1,7 @@
+.treeWrapper {
+    padding: 5px;
+}
+.treeWrapper__tree {}
+.treeWrapper__tree__children {
+    margin-left: $spacing;
+}

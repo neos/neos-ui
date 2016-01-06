@@ -3,12 +3,12 @@ import {domConnector} from './Process/';
 import './style.css';
 
 const {tabManager} = backend;
-
-tabManager.commitDocumentLoad(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
-
 const DOMConnector = domConnector();
 
-document.addEventListener('DOMContentLoaded', () => DOMConnector.run());
+document.addEventListener('DOMContentLoaded', () => {
+    tabManager.commitDocumentLoad(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
+    DOMConnector.run();
+});
 
 //
 // Forward click event to host frame, since this seems not to happen automatically *weird*

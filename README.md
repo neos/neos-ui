@@ -23,6 +23,8 @@ and paste the following configuration into the head of your global `Routes.yaml`
       package: 'PackageFactory.Guevara'
 ```
 
+Afterwards open the sub-route `/che!` to login to the new interface.
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
 

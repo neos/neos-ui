@@ -10,25 +10,34 @@ class NodeTypeManager {
      * @param  {Object} nodeTypeSchema The schema as JSON
      */
     initializeWithNodeTypeSchema(nodeTypeSchema) {
-        this.nodeTypes = {};
-        Object.keys(nodeTypeSchema.nodeTypes).forEach(nodeTypeName => {
-            this.nodeTypes[nodeTypeName] = new NodeType(nodeTypeSchema.nodeTypes[nodeTypeName], this);
+        this.nodeTypes = [];
+
+        const {nodeTypes} = nodeTypeSchema;
+
+        Object.keys(nodeTypes).forEach(nodeTypeName => {
+            const nodeType = new NodeType(nodeTypeName, nodeTypes[nodeTypeName], this);
+
+            this.nodeTypes.push(nodeType);
         });
+
+        console.log(this.nodeTypes);
     }
 
     /**
-     * Get a node type by its name
+     * Get a single node type by its name
      *
      * @param  {String} nodeTypeName The fully qualified node type name
      * @return {NodeType}            The node type object
      * @throws {Error}
      */
     getNodeType(nodeTypeName) {
+        const nodeType = this.nodeTypes.filter(nodeType => nodeType.name === nodeTypeName).shift();
+
         if (!this.nodeTypes[nodeTypeName]) {
             throw new Error(`NodeType "${nodeTypeName} does not exist"`);
         }
 
-        return this.nodeTypes[nodeTypeName];
+        return nodeType;
     }
 
     /**

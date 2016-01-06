@@ -39,6 +39,15 @@ class NodeTypeManager {
     }
 
     /**
+     * Get all node types of this service.
+     *
+     * @return {Array} All node types of this service.
+     */
+    getAllNodeTypes() {
+        return this.nodeTypes;
+    }
+
+    /**
      * Check whether a node type is a subtype of another node type
      *
      * @param  {String} nodeTypeName           The fully qualified node type name of the inheritor

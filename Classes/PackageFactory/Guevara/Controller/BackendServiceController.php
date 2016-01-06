@@ -17,6 +17,7 @@ use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Error;
 use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Info;
 use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Success;
 use PackageFactory\Guevara\Domain\Model\Feedback\Operations\ReloadDocument;
+use PackageFactory\Guevara\Domain\Service\NodeTreeBuilder;
 use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
 
 class BackendServiceController extends ActionController
@@ -160,4 +161,21 @@ class BackendServiceController extends ActionController
         $this->view->assign('value', $this->feedbackCollection);
     }
 
+    public function initializeLoadTreeAction()
+    {
+        $this->arguments['nodeTreeArguments']->getPropertyMappingConfiguration()->allowAllProperties();
+    }
+
+    /**
+     * Load the nodetree
+     *
+     * @param NodeTreeBuilder $nodeTreeArguments
+     * @param boolean $includeRoot
+     * @return void
+     */
+    public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, $includeRoot = false)
+    {
+        $nodeTreeArguments->setControllerContext($this->controllerContext);
+        $this->view->assign('value', $nodeTreeArguments->build($includeRoot));
+    }
 }

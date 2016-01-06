@@ -23,6 +23,7 @@ import {
 import {
     backend,
     nodeTypeManager,
+    nodeTreeService,
     tabManager,
     changeManager,
     feedbackManager,
@@ -65,6 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>,
         appContainer
     );
+
+    window.treeService = nodeTreeService(store, csrfToken);
 
     // Bootstrap the backend services
     assign(backend, {

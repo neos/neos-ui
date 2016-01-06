@@ -11,6 +11,7 @@ import OffCanvasReducer from './OffCanvas/';
 import RemoteReducer from './Remote/';
 import RightSideBarReducer from './RightSideBar/';
 import TabsReducer from './Tabs/';
+import PageTreeReducer from './PageTree/';
 
 // Import Actions
 import * as FlashMessages from './FlashMessages/';
@@ -19,6 +20,7 @@ import * as OffCanvas from './OffCanvas/';
 import * as Remote from './Remote/';
 import * as RightSideBar from './RightSideBar/';
 import * as Tabs from './Tabs/';
+import * as PageTree from './PageTree/';
 
 // Export Reducer
 export default function reducer(state, action) {
@@ -28,7 +30,8 @@ export default function reducer(state, action) {
         curry(OffCanvasReducer)(_, action),
         curry(RemoteReducer)(_, action),
         curry(RightSideBarReducer)(_, action),
-        curry(TabsReducer)(_, action)
+        curry(TabsReducer)(_, action),
+        curry(PageTreeReducer)(_, action)
     )(state);
 }
 
@@ -39,5 +42,6 @@ export {
     OffCanvas,
     Remote,
     RightSideBar,
-    Tabs
+    Tabs,
+    PageTree
 };

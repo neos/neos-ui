@@ -1,12 +1,16 @@
 import React, {Component, PropTypes} from 'react';
+import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import {filterDeep} from 'Host/Abstracts/';
+import {immutableOperations} from 'Shared/Util';
 import NodeHeader from './NodeHeader/';
 import style from './style.css';
 
+const {$get} = immutableOperations;
+
 export default class Tree extends Component {
     static propTypes = {
-        data: PropTypes.array.isRequired,
+        data: PropTypes.instanceOf(Immutable.Map),
         onNodeToggle: PropTypes.func,
         onNodeClick: PropTypes.func,
         onNodeFocusChanged: PropTypes.func,
@@ -29,10 +33,8 @@ export default class Tree extends Component {
 
     renderTree(nodes) {
         return nodes.map((node, key) => {
-            const {
-                children,
-                isCollapsed
-            } = node;
+            const children = $get(node, 'children');
+            const isCollapsed = false;//$get(node, 'isCollapsed');
 
             return (
                 <div className={style.treeWrapper__tree} key={key}>

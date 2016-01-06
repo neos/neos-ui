@@ -1,11 +1,16 @@
 import React, {Component, PropTypes} from 'react';
+import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import Icon from 'Host/Components/Icon/';
+import {nodeTypeManager} from 'Host/Service/';
+import {immutableOperations} from 'Shared/Util';
 import style from './style.css';
+
+const {$get} = immutableOperations;
 
 class NodeHeader extends Component {
     static propTypes = {
-        node: PropTypes.object.isRequired,
+        node: PropTypes.instanceOf(Immutable.Map),
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
         onLabelClick: PropTypes.func
@@ -17,14 +22,13 @@ class NodeHeader extends Component {
             onClick,
             onLabelClick
         } = this.props;
-        const {
-            icon,
-            name,
-            children,
-            isActive,
-            isFocused
-        } = node;
-        const isCollapsable = children && children.length !== 0;
+
+        const label = $get(node, 'label');
+        const icon = $get(node, 'icon') || nodeTypeManager.getIconForNodeType($get(node, 'nodeType')) || 'question';
+        const children = $get(node, 'children');
+        const isActive = $get(node, 'isActive');
+        const isFocused = $get(node, 'isFocused');
+        const isCollapsable = $get(node, 'isCollapsable');
 
         const dataClassNames = mergeClassNames({
             [style.nodeHeader__data]: true,
@@ -38,7 +42,7 @@ class NodeHeader extends Component {
                 <div onClick={onClick} className={dataClassNames}>
                     <Icon icon={icon} padded="right" />
                     <span className={style.nodeHeader__data__title} onClick={onLabelClick}>
-                        {name}
+                        {label}
                     </span>
                 </div>
             </div>

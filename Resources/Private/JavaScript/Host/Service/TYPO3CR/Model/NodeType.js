@@ -36,7 +36,7 @@ export default class NodeType {
     }
 
     /**
-     * Get the label (falls bac to the node type name, if no label can be found)
+     * Get the label (falls back to the node type name, if no label can be found)
      *
      * @return {String} The label
      */
@@ -46,6 +46,19 @@ export default class NodeType {
         }
 
         return this.schema.get('label');
+    }
+
+    /**
+     * Get the icon of this node type (falls back to "question", if no icon can be found)
+     *
+     * @return {String} The icon
+     */
+    getIcon() {
+        if (!this.schema.get('ui') || !this.schema.get('ui').get('icon')) {
+            return 'question';
+        }
+
+        return this.schema.get('ui').get('icon');
     }
 
     /**

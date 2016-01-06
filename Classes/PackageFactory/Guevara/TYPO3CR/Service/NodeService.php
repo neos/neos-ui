@@ -6,6 +6,10 @@ use TYPO3\Eel\FlowQuery\FlowQuery;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Utility\NodePaths;
 use TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface;
+use TYPO3\Neos\Domain\Model\Site;
+use TYPO3\Neos\Domain\Repository\SiteRepository;
+use TYPO3\Neos\Domain\Model\Domain;
+use TYPO3\Neos\Domain\Repository\DomainRepository;
 
 /**
  * @Flow\Scope("singleton")
@@ -17,6 +21,18 @@ class NodeService
      * @var ContextFactoryInterface
      */
     protected $contextFactory;
+
+    /**
+     * @Flow\Inject
+     * @var SiteRepository
+     */
+    protected $siteRepository;
+
+    /**
+     * @Flow\Inject
+     * @var DomainRepository
+     */
+    protected $domainRepository;
 
     /**
      * Helper method to retrieve the closest document for a node
@@ -39,15 +55,29 @@ class NodeService
      * @param string $contextPath
      * @return NodeInterface
      */
-    public function getNodeFromContextPath($contextPath)
+    public function getNodeFromContextPath($contextPath, Site $site = null, Domain $domain = null)
     {
         $nodePathAndContext = NodePaths::explodeContextPath($contextPath);
         $nodePath = $nodePathAndContext['nodePath'];
         $workspaceName = $nodePathAndContext['workspaceName'];
         $dimensions = $nodePathAndContext['dimensions'];
 
+        $contextProperties = $this->prepareContextProperties($workspaceName, $dimensions);
+
+        if ($site === null) {
+            list(,,$siteNodeName) = explode('/', $nodePath);
+            $site = $this->siteRepository->findOneByNodeName($siteNodeName);
+        }
+
+        if ($domain === null) {
+            $domain = $this->domainRepository->findOneBySite($site);
+        }
+
+        $contextProperties['currentSite'] = $site;
+        $contextProperties['currentDomain'] = $domain;
+
         $context = $this->contextFactory->create(
-            $this->prepareContextProperties($workspaceName, $dimensions)
+            $contextProperties
         );
 
         $workspace = $context->getWorkspace(false);

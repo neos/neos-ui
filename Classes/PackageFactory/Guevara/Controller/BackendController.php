@@ -133,12 +133,14 @@ class BackendController extends ActionController
         );
 
         $currentDomain = $this->domainRepository->findOneByActiveRequest();
+
         if ($currentDomain !== null) {
             $contextProperties['currentSite'] = $currentDomain->getSite();
             $contextProperties['currentDomain'] = $currentDomain;
         } else {
             $contextProperties['currentSite'] = $this->siteRepository->findFirstOnline();
         }
+
         return $this->contextFactory->create($contextProperties);
     }
 

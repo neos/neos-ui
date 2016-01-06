@@ -21,3 +21,11 @@
     '@controller': 'BackendService'
     '@action': 'discard'
   httpMethods: ['POST']
+
+-
+  name: 'Load Tree'
+  uriPattern: 'load-tree'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'loadTree'
+  httpMethods: ['POST']

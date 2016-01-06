@@ -64,7 +64,12 @@ export default serverState => Immutable.fromJS({
                 message: 'Dies ist ein Erfolg',
                 severity: 'success'
             }
-        }
+        },
+
+        //
+        // Contains information to render the page tree
+        //
+        pageTree: {}
     },
 
     //
@@ -91,11 +96,6 @@ export default serverState => Immutable.fromJS({
         byContextPath: {},
         selected: {}
     },
-
-    //
-    // Contains information to render the page tree
-    //
-    pageTree: {},
 
     //
     // Contains the current set of changes

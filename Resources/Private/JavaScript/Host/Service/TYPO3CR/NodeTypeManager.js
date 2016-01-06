@@ -31,7 +31,7 @@ class NodeTypeManager {
     getNodeType(nodeTypeName) {
         const nodeType = this.nodeTypes.filter(nodeType => nodeType.name === nodeTypeName).shift();
 
-        if (!this.nodeTypes[nodeTypeName]) {
+        if (!nodeType) {
             throw new Error(`NodeType "${nodeTypeName} does not exist"`);
         }
 
@@ -45,6 +45,16 @@ class NodeTypeManager {
      */
     getAllNodeTypes() {
         return this.nodeTypes;
+    }
+
+    getIconForNodeType(nodeTypeName) {
+        const nodeType = this.getNodeType(nodeTypeName);
+
+        if (nodeType) {
+            return nodeType.getIcon();
+        }
+
+        return 'question';
     }
 
     /**

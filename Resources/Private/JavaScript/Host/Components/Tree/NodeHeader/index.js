@@ -10,8 +10,9 @@ class NodeHeader extends Component {
         isCollapsable: React.PropTypes.bool.isRequired,
         isCollapsed: React.PropTypes.bool.isRequired,
         isActive: React.PropTypes.bool.isRequired,
+        onToggle: React.PropTypes.func,
         onClick: React.PropTypes.func,
-        onToggle: React.PropTypes.func
+        onLabelClick: React.PropTypes.func
     };
 
     render() {
@@ -19,6 +20,7 @@ class NodeHeader extends Component {
             icon,
             title,
             onClick,
+            onLabelClick,
             isCollapsable,
             isActive
         } = this.props;
@@ -32,7 +34,7 @@ class NodeHeader extends Component {
                 {isCollapsable ? this.renderCollapseChevron() : null}
                 <div onClick={onClick} className={dataClassNames}>
                     <Icon icon={icon} padded="right" />
-                    <span className={style.nodeHeader__data__title}>{title}</span>
+                    <span className={style.nodeHeader__data__title} onClick={onLabelClick}>{title}</span>
                 </div>
             </div>
         );

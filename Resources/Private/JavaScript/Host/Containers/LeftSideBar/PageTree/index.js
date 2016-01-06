@@ -64,6 +64,7 @@ export default class PageTree extends Component {
                 data={fixture}
                 onNodeToggle={this.onPageNodeToggle.bind(this)}
                 onNodeClick={this.onPageNodeClick.bind(this)}
+                onNodeLabelClick={this.onPageNodeLabelClick.bind(this)}
                 />
         );
     }
@@ -80,5 +81,9 @@ export default class PageTree extends Component {
 
     onPageNodeClick(node) {
         console.log('page clicked', node);
+    }
+
+    onPageNodeLabelClick(node) {
+        console.log('page label clicked', node);
     }
 }

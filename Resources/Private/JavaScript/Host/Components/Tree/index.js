@@ -7,6 +7,7 @@ export default class Tree extends Component {
     static propTypes = {
         data: PropTypes.array.isRequired,
         onNodeToggle: PropTypes.func,
+        onNodeLabelClick: PropTypes.func,
         onNodeClick: PropTypes.func,
         className: PropTypes.string
     }
@@ -32,7 +33,6 @@ export default class Tree extends Component {
     renderTree(nodes) {
         return nodes.map((node, key) => {
             const {
-                id,
                 icon,
                 name,
                 children,
@@ -51,6 +51,7 @@ export default class Tree extends Component {
                         isActive={isActive}
                         onToggle={e => this.onTreeToggle(e, node)}
                         onClick={e => this.onNodeClick(e, node)}
+                        onLabelClick={e => this.onNodeLabelClick(e, node)}
                         />
                     <div className={style.treeWrapper__tree__children}>
                         {children && !isCollapsed ? this.renderTree(children) : null}
@@ -73,6 +74,16 @@ export default class Tree extends Component {
 
         if (onNodeClick) {
             onNodeClick(node);
+        }
+    }
+
+    onNodeLabelClick(e, node) {
+        const {onNodeLabelClick} = this.props;
+
+        e.stopPropagation();
+
+        if (onNodeLabelClick) {
+            onNodeLabelClick(node);
         }
     }
 }

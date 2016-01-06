@@ -21,7 +21,6 @@ export default class AddNode extends Component {
     constructor(props) {
         super(props);
 
-        this.mouseHoldTimeout = null;
         this.state = {
             isModalOpen: false,
             currentMode: 'insert'

@@ -1,5 +1,9 @@
 .treeWrapper {
     padding: 5px;
+
+    &:focus {
+        outline: 0;
+    }
 }
 .treeWrapper__tree {}
 .treeWrapper__tree__children {

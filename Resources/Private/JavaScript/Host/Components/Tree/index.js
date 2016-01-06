@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
+import {filterDeep} from '../../Abstracts/';
 import NodeHeader from './NodeHeader/';
 import style from './style.css';
 
@@ -7,13 +8,9 @@ export default class Tree extends Component {
     static propTypes = {
         data: PropTypes.array.isRequired,
         onNodeToggle: PropTypes.func,
-        onNodeLabelClick: PropTypes.func,
         onNodeClick: PropTypes.func,
+        onNodeFocusChanged: PropTypes.func,
         className: PropTypes.string
-    }
-
-    constructor(props) {
-        super(props);
     }
 
     render() {
@@ -24,7 +21,7 @@ export default class Tree extends Component {
         });
 
         return (
-            <div className={classNames}>
+            <div className={classNames} tabIndex="0" onKeyDown={this.onKeyDown.bind(this)}>
                 {this.renderTree(data)}
             </div>
         );
@@ -33,24 +30,16 @@ export default class Tree extends Component {
     renderTree(nodes) {
         return nodes.map((node, key) => {
             const {
-                icon,
-                name,
                 children,
-                isCollapsed,
-                isActive
+                isCollapsed
             } = node;
-            const isCollapsable = children && children.length !== 0;
 
             return (
                 <div className={style.treeWrapper__tree} key={key}>
                     <NodeHeader
-                        title={name}
-                        icon={icon}
-                        isCollapsable={isCollapsable}
-                        isCollapsed={isCollapsed}
-                        isActive={isActive}
-                        onToggle={e => this.onTreeToggle(e, node)}
-                        onClick={e => this.onNodeClick(e, node)}
+                        node={node}
+                        onToggle={this.onTreeToggle.bind(this)}
+                        onClick={this.onNodeClick.bind(this)}
                         onLabelClick={e => this.onNodeLabelClick(e, node)}
                         />
                     <div className={style.treeWrapper__tree__children}>
@@ -61,7 +50,7 @@ export default class Tree extends Component {
         });
     }
 
-    onTreeToggle(e, node) {
+    onTreeToggle(node) {
         const {onNodeToggle} = this.props;
 
         if (onNodeToggle) {
@@ -69,7 +58,7 @@ export default class Tree extends Component {
         }
     }
 
-    onNodeClick(e, node) {
+    onNodeClick(node) {
         const {onNodeClick} = this.props;
 
         if (onNodeClick) {
@@ -78,12 +67,43 @@ export default class Tree extends Component {
     }
 
     onNodeLabelClick(e, node) {
-        const {onNodeLabelClick} = this.props;
-
         e.stopPropagation();
 
-        if (onNodeLabelClick) {
-            onNodeLabelClick(node);
+        this.onNodeFocusChanged(node);
+    }
+
+    onNodeFocusChanged(node) {
+        const {onNodeFocusChanged} = this.props;
+
+        if (onNodeFocusChanged) {
+            onNodeFocusChanged(node);
         }
+    }
+
+    onKeyDown(e) {
+        const focusedNode = this.getFocusedNode();
+
+        switch (e.key) {
+            case 'ArrowUp':
+                // ToDo: Implement the onFocusChanged prop.
+                this.onNodeFocusChanged('todo');
+                break;
+            case 'ArrowDown':
+                // ToDo: Implement the onFocusChanged prop.
+                this.onNodeFocusChanged('todo');
+                break;
+            case 'ArrowRight':
+                this.onTreeToggle(focusedNode);
+                break;
+            case 'Enter':
+                this.onNodeClick(focusedNode);
+                break;
+            default:
+                break;
+        }
+    }
+
+    getFocusedNode() {
+        return filterDeep(this.props.data, item => item.isFocused === true);
     }
 }

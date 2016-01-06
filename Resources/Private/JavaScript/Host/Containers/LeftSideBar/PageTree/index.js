@@ -7,6 +7,7 @@ const fixture = [{
     name: 'My sitename',
     icon: 'globe',
     isActive: true,
+    isFocused: true,
     children: [
         {
             id: '0.0',
@@ -20,23 +21,23 @@ const fixture = [{
             children: [
                 {
                     id: '0.1.0',
-                    name: 'Hotels',
+                    name: 'Sub-Page',
                     icon: 'share-square-o'
                 }, {
                     id: '0.1.1',
-                    name: 'Angebote in Hannover',
+                    name: 'Another Sub-Page',
                     icon: 'share-square-o'
                 }, {
                     id: '0.1.2',
-                    name: 'Angebote in Lübeck',
+                    name: 'Yet another Sub-Page',
                     icon: 'share-square-o'
                 }, {
                     id: '0.1.3',
-                    name: 'Angebote in Münster',
+                    name: 'and here comes another one',
                     icon: 'share-square-o'
                 }, {
                     id: '0.1.4',
-                    name: 'Angebote in Bayreuth',
+                    name: 'well thats not exciting',
                     icon: 'share-square-o'
                 }
             ]
@@ -64,7 +65,7 @@ export default class PageTree extends Component {
                 data={fixture}
                 onNodeToggle={this.onPageNodeToggle.bind(this)}
                 onNodeClick={this.onPageNodeClick.bind(this)}
-                onNodeLabelClick={this.onPageNodeLabelClick.bind(this)}
+                onNodeFocusChanged={this.onPageNodeFocusChanged.bind(this)}
                 />
         );
     }
@@ -76,14 +77,14 @@ export default class PageTree extends Component {
 
         // this.replaceNodeForIdPath(id, newNode);
 
-        console.log('toggled', node, newNode);
+        console.log('page tree toggled', node, newNode);
     }
 
     onPageNodeClick(node) {
-        console.log('page clicked', node);
+        console.log('page activated', node);
     }
 
-    onPageNodeLabelClick(node) {
-        console.log('page label clicked', node);
+    onPageNodeFocusChanged(node) {
+        console.log('page focus changed', node);
     }
 }

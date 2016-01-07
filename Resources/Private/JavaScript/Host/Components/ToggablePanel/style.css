@@ -1,5 +1,9 @@
 .panel {
     position: relative;
+
+    > div {
+        overflow: hidden;
+    }
 }
 .panel--isOpen {}
 .panel__headline {
@@ -21,7 +25,4 @@
         padding-top: 5px;
         padding-bottom: 5px;
     }
-}
-.panel__contents__target {
-    overflow: hidden;
 }

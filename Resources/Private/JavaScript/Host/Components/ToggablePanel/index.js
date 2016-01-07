@@ -76,21 +76,10 @@ export default class ToggablePanel extends Component {
     renderContents() {
         return (
             <div>
-                <Transition
-                    enter={{
-                        height: 'auto',
-                        opacity: 1
-                    }}
-                    leave={{
-                        height: 0,
-                        opacity: 0
-                    }}
-                    >
+                <Transition enter={{height: 'auto'}} leave={{height: 0}}>
                     {this.state.isOpened ? (
                         <div className={style.panel__contents}>
-                            <div className={style.panel__contents__target}>
-                                {this.props.children}
-                            </div>
+                            {this.props.children}
                         </div>
                     ) : null}
                 </Transition>

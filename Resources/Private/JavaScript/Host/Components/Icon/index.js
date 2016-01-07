@@ -1,11 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {service} from '../../../Shared/';
+import {service} from 'Shared/';
 import style from './style.css';
 import iconStyles from './icons.css';
-import {
-  validateIconId
-} from './IconNames.js';
+import {validateIconId} from './IconNames.js';
 const {logger} = service;
 
 export default class Icon extends Component {

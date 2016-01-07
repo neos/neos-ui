@@ -3,11 +3,9 @@ import {connect} from 'react-redux';
 import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import style from './style.css';
-import {actions} from '../../Ducks/';
-
+import {actions} from 'Host/Ducks/';
+import {immutableOperations} from 'Shared/Util';
 import FlashMessage from './FlashMessage/';
-
-import {immutableOperations} from '../../../Shared/Util';
 
 const {$get} = immutableOperations;
 

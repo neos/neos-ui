@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Bar} from '../../Components/';
+import {Bar} from 'Host/Components/';
 import UserDropDown from './UserDropDown/';
 import PublishDropDown from './PublishDropDown/';
 import MenuToggler from './MenuToggler/';

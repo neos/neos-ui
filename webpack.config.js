@@ -51,7 +51,11 @@ module.exports = {
     ],
 
     resolve: {
-        modulesDirectories: ['node_modules']
+        root: [path.resolve(__dirname, 'Resources/Private/JavaScript')],
+        modulesDirectories: [
+            'node_modules',
+            path.resolve(__dirname, './node_modules')
+        ]
     },
 
     plugins: [

@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
-import IconButton from '../../../Components/IconButton/';
-import Icon from '../../../Components/Icon/';
-import {executeCallback} from '../../../Abstracts/';
+import {IconButton, Icon} from 'Host/Components/';
+import {executeCallback} from 'Host/Abstracts/';
 
 export default class FooterBar extends Component {
     static propTypes = {

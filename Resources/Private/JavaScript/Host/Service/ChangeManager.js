@@ -1,4 +1,4 @@
-import {actions} from '../Ducks/';
+import {actions} from 'Host/Ducks/';
 import backend from './Backend.js';
 
 class ChangeManager {

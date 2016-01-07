@@ -7,10 +7,10 @@ import {
     IconButton,
     TextInput,
     ToggablePanel
-} from '../../Components/';
-import {actions} from '../../Ducks/';
+} from 'Host/Components/';
+import {actions} from 'Host/Ducks/';
+import {immutableOperations} from 'Shared/Util';
 import style from './style.css';
-import {immutableOperations} from '../../../Shared/Util';
 
 const {$get} = immutableOperations;
 

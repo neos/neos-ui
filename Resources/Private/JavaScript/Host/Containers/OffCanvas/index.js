@@ -1,14 +1,14 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import {actions} from '../../Ducks/';
+import {actions} from 'Host/Ducks/';
 import {
     Button,
     Icon,
     ToggablePanel
-} from '../../Components/';
+} from 'Host/Components/';
+import {immutableOperations} from 'Shared/Util';
 import style from './style.css';
-import {immutableOperations} from '../../../Shared/Util';
 
 const {$get} = immutableOperations;
 

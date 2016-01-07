@@ -1,12 +1,11 @@
-import {immutableOperations} from '../../../../Shared/Util/';
+import {immutableOperations} from 'Shared/Util/';
 
 const {$get, $set} = immutableOperations;
 
 const TOGGLE_AUTO_PUBLISHING = '@packagefactory/guevara/User/Settings/TOGGLE_AUTO_PUBLISHING';
 
-export default function reducer (state, action) {
-    switch(action.type) {
-
+export default function reducer(state, action) {
+    switch (action.type) {
         case TOGGLE_AUTO_PUBLISHING:
             const isCurrentlyEnabled = $get(state, 'user.settings.isAutoPublishingEnabled');
 

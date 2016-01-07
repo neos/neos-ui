@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import mergeClassNames from 'classnames';
-import {executeCallback} from '../../Abstracts/';
-import I18n from '../I18n/';
-import Icon from '../Icon/';
+import {executeCallback} from 'Host/Abstracts/';
+import I18n from 'Host/Components/I18n/';
+import Icon from 'Host/Components/Icon/';
 import style from './style.css';
 
 export default class DropDown extends Component {

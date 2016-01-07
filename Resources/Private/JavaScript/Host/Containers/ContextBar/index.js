@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {IconButton} from '../../Components/';
+import {IconButton} from 'Host/Components/';
 import DimensionSwitcher from './DimensionSwitcher/';
 import style from './style.css';
-import {immutableOperations} from '../../../Shared/Util';
+import {immutableOperations} from 'Shared/Util';
 
 const {$get} = immutableOperations;
 

@@ -1,12 +1,11 @@
-import {immutableOperations} from '../../../../Shared/Util/';
+import {immutableOperations} from 'Shared/Util/';
 
 const {$get, $set} = immutableOperations;
 
 const TOGGLE = '@packagefactory/guevara/UI/RightSidebar/TOGGLE';
 
-export default function reducer (state, action) {
-    switch(action.type) {
-
+export default function reducer(state, action) {
+    switch (action.type) {
         case TOGGLE:
             const isCurrentlyHidden = $get(state, 'ui.rightSidebar.isHidden');
 

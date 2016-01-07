@@ -1,4 +1,4 @@
-import {service} from '../../Shared/';
+import {service} from 'Shared/';
 import backend from './Backend.js';
 const {logger} = service;
 

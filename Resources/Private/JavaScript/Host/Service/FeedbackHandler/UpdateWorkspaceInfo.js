@@ -1,4 +1,4 @@
-import {actions} from '../../Ducks/';
+import {actions} from 'Host/Ducks/';
 
 export default (feedback, envelope, store) => {
     const {documentContextPath, workspaceName, workspaceInfo} = feedback.payload;

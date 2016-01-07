@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import uuid from 'uuid';
 import mergeClassNames from 'classnames';
-import Label from '../Label/';
+import Label from 'Host/Components/Label/';
 import style from './style.css';
 
 export default class TextInput extends Component {

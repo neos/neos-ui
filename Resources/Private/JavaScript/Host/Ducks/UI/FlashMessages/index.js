@@ -1,13 +1,12 @@
-import {immutableOperations} from '../../../../Shared/Util/';
+import {immutableOperations} from 'Shared/Util/';
 
 const {$set, $delete} = immutableOperations;
 
 const ADD = '@packagefactory/guevara/UI/FlashMessages/ADD';
 const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
 
-export default function reducer (state, action) {
-    switch(action.type) {
-
+export default function reducer(state, action) {
+    switch (action.type) {
         case ADD:
             const {id, message, severity, timeout} = action;
             return $set(state, `ui.flashMessages.${id}`, {

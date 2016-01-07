@@ -2,10 +2,10 @@ import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import {TransitionMotion, spring} from 'react-motion';
 import mergeClassNames from 'classnames';
-import Headline from '../Headline/';
-import I18n from '../I18n/';
-import Icon from '../Icon/';
-import IconButton from '../IconButton/';
+import Headline from 'Host/Components/Headline/';
+import I18n from 'Host/Components/I18n/';
+import Icon from 'Host/Components/Icon/';
+import IconButton from 'Host/Components/IconButton/';
 import style from './style.css';
 
 const gentle = [120, 14];

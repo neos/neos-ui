@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import Icon from '../../Icon/';
+import Icon from 'Host/Components/Icon/';
 import style from './style.css';
 
 class NodeHeader extends Component {

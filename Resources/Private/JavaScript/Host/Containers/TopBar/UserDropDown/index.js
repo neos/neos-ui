@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {I18n, Icon, DropDown} from '../../../Components/';
+import {I18n, Icon, DropDown} from 'Host/Components/';
 import style from './style.css';
 
-import {immutableOperations} from '../../../../Shared/Util';
+import {immutableOperations} from 'Shared/Util';
 
 const {$get} = immutableOperations;
 

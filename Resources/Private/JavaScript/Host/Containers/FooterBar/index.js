@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import Immutable from 'immutable';
-import {actions} from '../../Ducks/';
-import {Bar} from '../../Components/';
+import {actions} from 'Host/Ducks/';
+import {Bar} from 'Host/Components/';
 import TabSwitcher from './TabSwitcher/';
 
 @connect(state => ({

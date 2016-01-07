@@ -1,12 +1,12 @@
-import {immutableOperations} from '../../../../Shared/Util/';
+import {immutableOperations} from 'Shared/Util/';
 
 const {$set, $merge} = immutableOperations;
 
 const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
 const ADD_BULK = '@packagefactory/guevara/Transient/Nodes/ADD_BULK';
 
-export default function reducer (state, action) {
-    switch(action.type) {
+export default function reducer(state, action) {
+    switch (action.type) {
         case ADD:
             return $set(state, ['nodes', 'byContextPath', action.contextPath], action.data);
 

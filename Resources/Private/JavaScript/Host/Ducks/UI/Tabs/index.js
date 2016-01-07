@@ -1,4 +1,4 @@
-import {immutableOperations} from '../../../../Shared/Util/';
+import {immutableOperations} from 'Shared/Util/';
 
 const {$get, $set, $merge, $delete} = immutableOperations;
 
@@ -78,9 +78,8 @@ function doUpdateWorkspaceInfo(state, action) {
     return updateActiveTab($merge(state, 'ui.tabs.byId', updateTabs));
 }
 
-export default function reducer (state, action) {
-    switch(action.type) {
-
+export default function reducer(state, action) {
+    switch (action.type) {
         case ADD:
             return $set(state, ['ui', 'tabs', 'byId', action.tabId], {
                 id: action.tabId,

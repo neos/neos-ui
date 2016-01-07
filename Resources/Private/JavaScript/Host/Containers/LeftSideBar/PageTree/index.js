@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Tree} from '../../../Components/';
+import {Tree} from 'Host/Components/';
 import {connect} from 'react-redux';
 
 const fixture = [{

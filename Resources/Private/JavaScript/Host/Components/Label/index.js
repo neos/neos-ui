@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import I18n from '../I18n/';
+import I18n from 'Host/Components/I18n/';
 import style from './style.css';
 
 export default class Label extends Component {

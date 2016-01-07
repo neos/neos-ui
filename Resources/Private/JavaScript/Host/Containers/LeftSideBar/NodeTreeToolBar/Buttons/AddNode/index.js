@@ -9,7 +9,7 @@ import {
     Grid,
     GridItem,
     I18n
-} from '../../../../../Components/';
+} from 'Host/Components/';
 import style from './style.css';
 
 @connect()

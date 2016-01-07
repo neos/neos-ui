@@ -1,4 +1,4 @@
-import {immutableOperations} from '../../../../Shared/Util/';
+import {immutableOperations} from 'Shared/Util/';
 
 const {$set} = immutableOperations;
 
@@ -9,9 +9,8 @@ const FINISH_PUBLISHING = '@packagefactory/guevara/UI/Remote/FINISH_PUBLISHING';
 const START_DISCARDING = '@packagefactory/guevara/UI/Remote/START_DISCARDING';
 const FINISH_DISCARDING = '@packagefactory/guevara/UI/Remote/FINISH_DISCARDING';
 
-export default function reducer (state, action) {
-    switch(action.type) {
-
+export default function reducer(state, action) {
+    switch (action.type) {
         case START_SAVING:
             return $set(state, 'ui.remote.isSaving', true);
 

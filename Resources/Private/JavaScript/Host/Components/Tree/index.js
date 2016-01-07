@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {filterDeep} from '../../Abstracts/';
+import {filterDeep} from 'Host/Abstracts/';
 import NodeHeader from './NodeHeader/';
 import style from './style.css';
 

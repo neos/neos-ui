@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {actions} from '../../../Ducks/';
-import {Button, I18n} from '../../../Components/';
-import {immutableOperations} from '../../../../Shared/Util';
+import {actions} from 'Host/Ducks/';
+import {Button, I18n} from 'Host/Components/';
+import {immutableOperations} from 'Shared/Util';
 import style from './style.css';
 
 const {$get} = immutableOperations;

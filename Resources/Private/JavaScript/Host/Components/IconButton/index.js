@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import Icon from '../Icon/';
-import Button from '../Button/';
+import Icon from 'Host/Components/Icon/';
+import Button from 'Host/Components/Button/';
 import style from './style.css';
 
 @connect()

@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {IconButton} from '../../../../../Components/';
+import {IconButton} from 'Host/Components/';
 
 @connect()
 export default class EditSelectedNode extends Component {

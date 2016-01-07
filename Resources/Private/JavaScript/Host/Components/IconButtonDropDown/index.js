@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {executeCallback} from '../../Abstracts/';
-import {service} from '../../../Shared/';
-import Icon from '../Icon/';
-import Button from '../Button/';
+import {executeCallback} from 'Host/Abstracts/';
+import {service} from 'Shared/';
+import Icon from 'Host/Components/Icon/';
+import Button from 'Host/Components/Button/';
 import style from './style.css';
 
 const {logger} = service;

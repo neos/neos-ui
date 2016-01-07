@@ -9,21 +9,21 @@ import {immutableOperations} from 'Shared/Util';
 const {$get} = immutableOperations;
 
 @connect(state => ({
-    isFringeLeft: $get(state, 'ui.leftSidebar.isHidden'),
-    isFringeRight: $get(state, 'ui.rightSidebar.isHidden')
+    isFringedLeft: $get(state, 'ui.leftSidebar.isHidden'),
+    isFringedRight: $get(state, 'ui.rightSidebar.isHidden')
 }))
 export default class ContextBar extends Component {
     static propTypes = {
-        isFringeLeft: PropTypes.bool.isRequired,
-        isFringeRight: PropTypes.bool.isRequired
+        isFringedLeft: PropTypes.bool.isRequired,
+        isFringedRight: PropTypes.bool.isRequired
     };
 
     render() {
-        const {isFringeLeft, isFringeRight} = this.props;
+        const {isFringedLeft, isFringedRight} = this.props;
         const classNames = mergeClassNames({
             [style.contextBar]: true,
-            [style['contextBar--isFringeLeft']]: isFringeLeft,
-            [style['contextBar--isFringeRight']]: isFringeRight
+            [style['contextBar--isFringeLeft']]: isFringedLeft,
+            [style['contextBar--isFringeRight']]: isFringedRight
         });
 
         return (

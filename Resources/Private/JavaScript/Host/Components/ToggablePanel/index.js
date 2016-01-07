@@ -1,17 +1,11 @@
 import React, {Component, PropTypes} from 'react';
-import ReactDOM from 'react-dom';
-import {TransitionMotion, spring} from 'react-motion';
+import Transition from 'react-motion-ui-pack';
 import mergeClassNames from 'classnames';
 import Headline from 'Host/Components/Headline/';
 import I18n from 'Host/Components/I18n/';
 import Icon from 'Host/Components/Icon/';
 import IconButton from 'Host/Components/IconButton/';
 import style from './style.css';
-
-const gentle = [120, 14];
-const defaultAnimatedStyles = {
-    height: spring(0)
-};
 
 export default class ToggablePanel extends Component {
     static propTypes = {
@@ -27,9 +21,7 @@ export default class ToggablePanel extends Component {
         super(props);
 
         this.state = {
-            isOpened: props.isOpened || false,
-            isContentHeightMirrorHidden: false,
-            contentHeight: 0
+            isOpened: props.isOpened || false
         };
     }
 
@@ -82,93 +74,33 @@ export default class ToggablePanel extends Component {
     }
 
     renderContents() {
-        const {
-            children
-        } = this.props;
-        const {isContentHeightMirrorHidden} = this.state;
-        const contentHeightMirrorStyle = {
-            display: isContentHeightMirrorHidden ? 'none' : 'block'
-        };
-
         return (
             <div>
-                <div ref="contentHeightMirror" style={contentHeightMirrorStyle}>
-                    {children}
-                </div>
-
-                <TransitionMotion
-                    defaultStyles={this.getDefaultValue()}
-                    styles={this.getEndValue()}
-                    willLeave={this.willLeave}
-                    willEnter={this.willEnter}
+                <Transition
+                    enter={{
+                        height: 'auto',
+                        opacity: 1
+                    }}
+                    leave={{
+                        height: 0,
+                        opacity: 0
+                    }}
                     >
-                  {styles =>
-                      <div className={style.panel__contents}>
-                        {Object.keys(styles).map((key, index) => {
-                            const {...inlineStyle} = styles[key];
-                            return (
-                              <div
-                                  key={index}
-                                  style={inlineStyle}
-                                  className={style.panel__contents__target}
-                                  >
-                                {children}
-                              </div>
-                          );
-                        })}
-                    </div>
-                  }
-                </TransitionMotion>
+                    {this.state.isOpened ? (
+                        <div className={style.panel__contents}>
+                            <div className={style.panel__contents__target}>
+                                {this.props.children}
+                            </div>
+                        </div>
+                    ) : null}
+                </Transition>
             </div>
         );
-    }
-
-    componentDidMount() {
-        this.updateContentHeight();
-        this.hideContentHeightMirror();
     }
 
     togglePanel() {
         this.setState({
             isOpened: !this.state.isOpened
-        });
-    }
-
-    getDefaultValue() {
-        return {
-            children: defaultAnimatedStyles
-        };
-    }
-
-    getEndValue() {
-        const {isOpened, contentHeight} = this.state;
-
-        return isOpened ? {
-            children: {
-                height: spring(contentHeight, gentle)
-            }
-        } : {};
-    }
-
-    willEnter() {
-        return defaultAnimatedStyles;
-    }
-
-    willLeave() {
-        return defaultAnimatedStyles;
-    }
-
-    updateContentHeight() {
-        const node = ReactDOM.findDOMNode(this.refs.contentHeightMirror);
-
-        this.setState({
-            contentHeight: node.clientHeight
-        });
-    }
-
-    hideContentHeightMirror() {
-        this.setState({
-            isContentHeightMirrorHidden: true
         });
     }
 }

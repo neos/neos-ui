@@ -8,7 +8,7 @@ import isFunction from 'lodash.isfunction';
  * @return {Null}
  * @example <a onClick={e => executeCallback(e, this.props.onClick)}>Click me</a>
  */
-export default (...args) => {
+const executeCallback = (...args) => {
     let e;
 
     args.forEach(arg => {
@@ -20,3 +20,5 @@ export default (...args) => {
         }
     });
 };
+
+export default executeCallback;

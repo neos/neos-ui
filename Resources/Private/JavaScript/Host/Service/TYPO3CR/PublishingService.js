@@ -1,5 +1,5 @@
-import {actions} from '../../Redux/';
-import backend from '../Backend.js';
+import {actions} from 'Host/Redux/';
+import backend from 'Host/Service/Backend.js';
 
 /**
  * The publishing service

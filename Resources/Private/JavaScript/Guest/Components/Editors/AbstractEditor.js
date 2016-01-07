@@ -1,5 +1,5 @@
 import Component from '@reduct/component';
-import {backend} from '../../Service';
+import {backend} from 'Guest/Service/';
 import debounce from 'lodash.debounce';
 
 export class AbstractEditor extends Component {

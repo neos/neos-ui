@@ -1,4 +1,4 @@
-import {editors, ContentComponent} from '../Components/';
+import {editors, ContentComponent} from 'Guest/Components/';
 
 const {richTextEditor} = editors;
 

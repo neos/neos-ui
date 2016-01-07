@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import {actions} from '../../Redux/';
+import {actions} from 'Host/Redux/';
 
 import assign from 'lodash.assign';
 

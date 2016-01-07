@@ -15,13 +15,13 @@ import * as UI from './UI/';
 import * as User from './User/';
 
 // Export Reducer
-export default initialState => (state = initialState, action) => {
-    return compose(
-        curry(TransientReducer)(_, action),
-        curry(UIReducer)(_, action),
-        curry(UserReducer)(_, action)
-    )(state);
-};
+export default initialState =>
+    (state = initialState, action) =>
+        compose(
+            curry(TransientReducer)(_, action),
+            curry(UIReducer)(_, action),
+            curry(UserReducer)(_, action)
+        )(state);
 
 // Export Actions
 export const actions = {

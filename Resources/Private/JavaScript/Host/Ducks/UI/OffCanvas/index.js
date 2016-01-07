@@ -5,13 +5,13 @@ const {$get, $set} = immutableOperations;
 const TOGGLE = '@packagefactory/guevara/UI/OffCanvas/TOGGLE';
 const HIDE = '@packagefactory/guevara/UI/OffCanvas/HIDE';
 
-export default function reducer (state, action) {
-    switch(action.type) {
-
-        case TOGGLE:
+export default function reducer(state, action) {
+    switch (action.type) {
+        case TOGGLE: {
             const isCurrentlyHidden = $get(state, 'ui.offCanvas.isHidden');
 
             return $set(state, 'ui.offCanvas.isHidden', !isCurrentlyHidden);
+        }
 
         case HIDE:
             return $set(state, 'ui.offCanvas.isHidden', true);

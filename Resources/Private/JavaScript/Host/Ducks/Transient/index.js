@@ -18,7 +18,7 @@ export default function reducer(state, action) {
         curry(ChangesReducer)(_, action),
         curry(NodesReducer)(_, action)
     )(state);
-};
+}
 
 // Export Actions
 export {

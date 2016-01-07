@@ -2,7 +2,7 @@ import {actions} from 'Host/Ducks/';
 import backend from './Backend.js';
 
 class ChangeManager {
-    constructor(store, csrfToken, endpoint) {
+    constructor(store, csrfToken) {
         this.store = store;
         this.csrfToken = csrfToken;
         this.endpoint = '/che!/service/change';

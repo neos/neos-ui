@@ -4,7 +4,7 @@ const ADD = '@packagefactory/guevara/Transient/Changes/ADD';
 const CLEAR = '@packagefactory/guevara/Transient/Changes/CLEAR';
 
 export default function reducer(state, action) {
-    switch(action.type) {
+    switch (action.type) {
         case ADD:
             return state.set('changes', state.get('changes').push(action.change));
 

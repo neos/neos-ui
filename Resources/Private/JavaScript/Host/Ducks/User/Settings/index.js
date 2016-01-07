@@ -6,10 +6,11 @@ const TOGGLE_AUTO_PUBLISHING = '@packagefactory/guevara/User/Settings/TOGGLE_AUT
 
 export default function reducer(state, action) {
     switch (action.type) {
-        case TOGGLE_AUTO_PUBLISHING:
+        case TOGGLE_AUTO_PUBLISHING: {
             const isCurrentlyEnabled = $get(state, 'user.settings.isAutoPublishingEnabled');
 
             return $set(state, 'user.settings.isAutoPublishingEnabled', !isCurrentlyEnabled);
+        }
 
         default: return state;
 

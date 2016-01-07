@@ -7,7 +7,7 @@ const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
 
 export default function reducer(state, action) {
     switch (action.type) {
-        case ADD:
+        case ADD: {
             const {id, message, severity, timeout} = action;
             return $set(state, `ui.flashMessages.${id}`, {
                 id,
@@ -15,6 +15,7 @@ export default function reducer(state, action) {
                 severity,
                 timeout
             });
+        }
 
         case REMOVE:
             return $delete(state, `ui.flashMessages.${action.id}`);

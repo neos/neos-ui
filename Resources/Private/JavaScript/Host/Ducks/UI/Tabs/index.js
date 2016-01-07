@@ -97,10 +97,11 @@ export default function reducer(state, action) {
         case REMOVE:
             return $delete(state, ['ui', 'tabs', 'byId', action.tabId]);
 
-        case SET_ACTIVE:
+        case SET_ACTIVE: {
             const newActiveTab = $get(state, 'ui.tabs.byId').get(action.tabId);
 
             return $set(state, 'ui.tabs.active', newActiveTab);
+        }
 
         case SET_METADATA:
             return doSetMetaData(state, action);

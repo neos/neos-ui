@@ -6,10 +6,11 @@ const TOGGLE = '@packagefactory/guevara/UI/RightSidebar/TOGGLE';
 
 export default function reducer(state, action) {
     switch (action.type) {
-        case TOGGLE:
+        case TOGGLE: {
             const isCurrentlyHidden = $get(state, 'ui.rightSidebar.isHidden');
 
             return $set(state, 'ui.rightSidebar.isHidden', !isCurrentlyHidden);
+        }
 
         default: return state;
 

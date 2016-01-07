@@ -1,6 +1,6 @@
 import {editors, ContentComponent} from '../Components/';
 
-const {onelineEditor, richTextEditor} = editors;
+const {richTextEditor} = editors;
 
 function closestContextPath(el) {
     if (!el) {
@@ -37,7 +37,8 @@ class DOMConnector {
         [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(contentElement => {
             const contextPath = closestContextPath(contentElement);
             const property = contentElement.dataset.__cheProperty;
-            const editor = richTextEditor(contentElement, property, contextPath);
+
+            richTextEditor(contentElement, property, contextPath);
         });
     }
 }

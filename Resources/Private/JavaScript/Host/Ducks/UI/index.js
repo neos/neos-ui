@@ -30,7 +30,7 @@ export default function reducer(state, action) {
         curry(RightSideBarReducer)(_, action),
         curry(TabsReducer)(_, action)
     )(state);
-};
+}
 
 // Export Actions
 export {

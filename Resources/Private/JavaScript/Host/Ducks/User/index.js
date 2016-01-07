@@ -15,7 +15,7 @@ export default function reducer(state, action) {
     return compose(
         curry(SettingsReducer)(_, action)
     )(state);
-};
+}
 
 // Export Actions
 export {

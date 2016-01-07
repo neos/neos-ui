@@ -7,7 +7,7 @@ import {
     Icon,
     ToggablePanel
 } from 'Host/Components/';
-import {immutableOperations} from 'Shared/Util';
+import {immutableOperations} from 'Shared/Util/';
 import style from './style.css';
 
 const {$get} = immutableOperations;

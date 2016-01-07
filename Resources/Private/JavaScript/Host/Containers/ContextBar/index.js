@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 import {IconButton} from 'Host/Components/';
 import DimensionSwitcher from './DimensionSwitcher/';
 import style from './style.css';
-import {immutableOperations} from 'Shared/Util';
+import {immutableOperations} from 'Shared/Util/';
 
 const {$get} = immutableOperations;
 

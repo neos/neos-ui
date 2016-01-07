@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Util';
+import {immutableOperations} from 'Shared/Util/';
 import {backend} from 'Host/Service/';
 import {
     I18n,

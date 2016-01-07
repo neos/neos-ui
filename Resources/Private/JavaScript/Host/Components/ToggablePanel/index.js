@@ -21,8 +21,16 @@ export default class ToggablePanel extends Component {
         super(props);
 
         this.state = {
-            isOpened: props.isOpened || false
+            isOpened: props.isOpened
         };
+    }
+
+    componentWillReceiveProps(newProps) {
+        const {isOpened} = newProps;
+
+        if (isOpened !== this.state.isOpened) {
+            this.setState({isOpened});
+        }
     }
 
     render() {
@@ -93,3 +101,6 @@ export default class ToggablePanel extends Component {
         });
     }
 }
+ToggablePanel.defaultProps = {
+    isOpened: false
+};

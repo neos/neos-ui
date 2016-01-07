@@ -17,7 +17,7 @@ const {$get} = immutableOperations;
 @connect(state => ({
     isHidden: $get(state, 'ui.rightSidebar.isHidden')
 }))
-export default class LeftSideBar extends Component {
+export default class RightSideBar extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         dispatch: PropTypes.any.isRequired

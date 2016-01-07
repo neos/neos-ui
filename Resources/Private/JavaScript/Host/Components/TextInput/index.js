@@ -1,84 +1,70 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import uuid from 'uuid';
 import mergeClassNames from 'classnames';
+import {executeCallback} from 'Host/Abstracts/';
 import Label from 'Host/Components/Label/';
 import style from './style.css';
 
-export default class TextInput extends Component {
-    static propTypes = {
-        label: PropTypes.string.isRequired,
-        placeholder: PropTypes.string,
+const onChangeHandler = (e, cb) => {
+    const value = e.target.value.substr(0, 140);
 
-        // Style related propTypes.
-        className: PropTypes.string,
-
-        // State related propTypes.
-        isValid: PropTypes.bool.isRequired,
-
-        // Interaction related propTypes.
-        onChange: PropTypes.func,
-        onFocus: PropTypes.func,
-        onBlur: PropTypes.func
+    if (cb) {
+        cb(value);
     }
+};
 
-    render() {
-        const {
-            label,
-            placeholder,
-            className,
-            isValid
-        } = this.props;
-        const classNames = mergeClassNames({
-            [className]: className && className.length,
-            [style.textInput]: true
-        });
-        const inputClassNames = mergeClassNames({
-            [style.textInput__input]: true,
-            [style['textInput--invalid']]: !isValid
-        });
-        const id = uuid.v1();
+const TextInput = props => {
+    const {
+        label,
+        placeholder,
+        className,
+        isValid,
+        onChange,
+        onFocus,
+        onBlur
+    } = props;
+    const classNames = mergeClassNames({
+        [className]: className && className.length,
+        [style.textInput]: true
+    });
+    const inputClassNames = mergeClassNames({
+        [style.textInput__input]: true,
+        [style['textInput--invalid']]: !isValid
+    });
+    const id = uuid.v1();
 
-        return (
-            <div className={classNames}>
-                <Label htmlFor={id} label={label} />
-                <input
-                    className={inputClassNames}
-                    id={id}
-                    type="text"
-                    placeholder={placeholder}
-                    onChange={this.onChange.bind(this)}
-                    onFocus={this.onFocus.bind(this)}
-                    onBlur={this.onBlur.bind(this)}
-                    />
-            </div>
-        );
-    }
+    return (
+        <div className={classNames}>
+            <Label htmlFor={id} label={label} />
+            <input
+                className={inputClassNames}
+                id={id}
+                type="text"
+                placeholder={placeholder}
+                onChange={e => onChangeHandler(e, onChange)}
+                onFocus={() => executeCallback(onFocus)}
+                onBlur={() => executeCallback(onBlur)}
+                />
+        </div>
+    );
+};
+TextInput.propTypes = {
+    label: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
 
-    onChange(e) {
-        const value = e.target.value.substr(0, 140);
-        const {onChange} = this.props;
+    // Style related propTypes.
+    className: PropTypes.string,
 
-        if (onChange) {
-            onChange(value);
-        }
-    }
+    // State related propTypes.
+    isValid: PropTypes.bool.isRequired,
 
-    onFocus() {
-        const {onFocus} = this.props;
-
-        if (onFocus) {
-            onFocus();
-        }
-    }
-
-    onBlur() {
-        const {onBlur} = this.props;
-
-        if (onBlur) {
-            onBlur();
-        }
-    }
-}
+    // Interaction related propTypes.
+    onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func
+};
 TextInput.defaultProps = {
     isValid: true
 };
+
+export default TextInput;

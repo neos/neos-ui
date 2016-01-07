@@ -1,58 +1,46 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import I18n from 'Host/Components/I18n/';
 import style from './style.css';
 
-export default class Label extends Component {
-    static propTypes = {
-        label: PropTypes.string.isRequired,
-        htmlFor: PropTypes.string.isRequired,
-        labelPosition: PropTypes.oneOf(['before', 'after']),
-        className: PropTypes.string,
+const renderLabel = label => <I18n id={label} fallback={label} />;
+const renderLabelBreak = (isChildrenInlined, children) => children && !isChildrenInlined ? <br /> : null;
 
-        // Children related propTypes.
-        isChildrenInlined: PropTypes.bool,
-        children: PropTypes.node
-    }
+const Label = props => {
+    const {
+        label,
+        htmlFor,
+        children,
+        className,
+        labelPosition,
+        isChildrenInlined
+    } = props;
+    const classNames = mergeClassNames({
+        [style.label]: true,
+        [className]: className && className.length
+    });
 
-    render() {
-        const {
-            label,
-            htmlFor,
-            className,
-            labelPosition
-        } = this.props;
-        const classNames = mergeClassNames({
-            [style.label]: true,
-            [className]: className && className.length
-        });
+    return (
+        <label className={classNames} htmlFor={htmlFor}>
+            {labelPosition === 'before' ? renderLabel(label) : children}
+            {renderLabelBreak(isChildrenInlined, children)}
+            {labelPosition === 'after' ? renderLabel(label) : children}
+        </label>
+    );
+};
+Label.propTypes = {
+    label: PropTypes.string.isRequired,
+    htmlFor: PropTypes.string.isRequired,
+    labelPosition: PropTypes.oneOf(['before', 'after']),
+    className: PropTypes.string,
 
-        return (
-            <label className={classNames} htmlFor={htmlFor}>
-                {labelPosition === 'before' ? this.renderLabel() : this.renderChildren()}
-                {this.renderLabelBreak()}
-                {labelPosition === 'after' ? this.renderLabel() : this.renderChildren()}
-            </label>
-        );
-    }
-
-    renderLabel() {
-        const {label} = this.props;
-
-        return <I18n id={label} fallback={label} />;
-    }
-
-    renderLabelBreak() {
-        const {isChildrenInlined, children} = this.props;
-
-        return children && !isChildrenInlined ? <br /> : null;
-    }
-
-    renderChildren() {
-        return this.props.children;
-    }
-}
+    // Children related propTypes.
+    isChildrenInlined: PropTypes.bool,
+    children: PropTypes.node
+};
 Label.defaultProps = {
     labelPosition: 'before',
     isChildrenInlined: false
 };
+
+export default Label;

@@ -41,9 +41,9 @@ export default class PasteClipBoardNode extends Component {
                 onClick={this.pasteClipBoardNode.bind(this)}
                 onItemSelect={this.onModeChanged.bind(this)}
                 >
-                <Icon ref="prepend" icon="long-arrow-up" />
-                <Icon ref="insert" icon="long-arrow-right" />
-                <Icon ref="append" icon="long-arrow-down" />
+                <Icon dropDownId="prepend" icon="long-arrow-up" />
+                <Icon dropDownId="insert" icon="long-arrow-right" />
+                <Icon dropDownId="append" icon="long-arrow-down" />
             </IconButtonDropDown>
         );
     }

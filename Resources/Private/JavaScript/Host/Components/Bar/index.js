@@ -1,47 +1,44 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 
-export default class Bar extends Component {
-    static propTypes = {
-        // Style related propTypes.
-        position: PropTypes.oneOf(['top', 'bottom']).isRequired,
-        className: PropTypes.string,
+const onDropHandler = (e, cb) => {
+    if (cb) {
+        e.stopPropagation();
 
-        // Contents of the Bar.
-        children: PropTypes.node.isRequired,
-
-        // Interaction related propTypes.
-        onDrop: PropTypes.func
+        cb(e);
     }
+};
 
-    render() {
-        const {position, className} = this.props;
-        const classNames = mergeClassNames({
-            [className]: className && className.length,
-            [style.bar]: true,
-            [style['bar--top']]: position === 'top',
-            [style['bar--bottom']]: position === 'bottom'
-        });
+const Bar = props => {
+    const {position, className, onDrop} = props;
+    const classNames = mergeClassNames({
+        [className]: className && className.length,
+        [style.bar]: true,
+        [style['bar--top']]: position === 'top',
+        [style['bar--bottom']]: position === 'bottom'
+    });
 
-        return (
-            <div
-                className={classNames}
-                onDragOver={e => e.preventDefault()}
-                onDrop={e => this.onDrop(e)}
-                >
-              {this.props.children}
-            </div>
-        );
-    }
+    return (
+        <div
+            className={classNames}
+            onDragOver={e => e.preventDefault()}
+            onDrop={e => onDropHandler(e, onDrop)}
+            >
+          {props.children}
+        </div>
+    );
+};
+Bar.propTypes = {
+    // Style related propTypes.
+    position: PropTypes.oneOf(['top', 'bottom']).isRequired,
+    className: PropTypes.string,
 
-    onDrop(e) {
-        const {onDrop} = this.props;
+    // Contents of the Bar.
+    children: PropTypes.node.isRequired,
 
-        if (onDrop) {
-            onDrop(e);
+    // Interaction related propTypes.
+    onDrop: PropTypes.func
+};
 
-            e.stopPropagation();
-        }
-    }
-}
+export default Bar;

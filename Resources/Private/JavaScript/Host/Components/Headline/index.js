@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 
@@ -11,63 +11,62 @@ const types = [
     'h6'
 ];
 
-export default class Headline extends Component {
-    static propTypes = {
-        // Contents of the Headline.
-        children: PropTypes.node.isRequired,
+const Headline = props => {
+    const {
+        type,
+        className,
+        children
+    } = props;
+    const headingStyle = props.style || type;
+    const classNames = mergeClassNames({
+        [style.heading]: true,
+        [style[`heading--${headingStyle}`]]: true,
+        [className]: className && className.length
+    });
+    let heading;
 
-        // The semantic tag type of the headline.
-        type: PropTypes.oneOf(types).isRequired,
+    switch (type) {
+        case 'h1':
+            heading = <h1 className={classNames}>{children}</h1>;
+            break;
 
-        // Optional style identifier,
-        // this enables the possibility to diff the semantic value of the UI to the displayed style.
-        style: PropTypes.oneOf(types),
-        className: PropTypes.string
+        case 'h2':
+            heading = <h2 className={classNames}>{children}</h2>;
+            break;
+
+        case 'h3':
+            heading = <h3 className={classNames}>{children}</h3>;
+            break;
+
+        case 'h4':
+            heading = <h4 className={classNames}>{children}</h4>;
+            break;
+
+        case 'h5':
+            heading = <h5 className={classNames}>{children}</h5>;
+            break;
+
+        default:
+            heading = <h6 className={classNames}>{children}</h6>;
+            break;
     }
 
-    render() {
-        const {
-            type,
-            className,
-            children
-        } = this.props;
-        const headingStyle = this.props.style || type;
-        const classNames = mergeClassNames({
-            [style.heading]: true,
-            [style[`heading--${headingStyle}`]]: true,
-            [className]: className && className.length
-        });
-        let heading;
+    return heading;
+};
+Headline.propTypes = {
+    // Contents of the Headline.
+    children: PropTypes.node.isRequired,
 
-        switch (type) {
-            case 'h1':
-                heading = <h1 className={classNames}>{children}</h1>;
-                break;
+    // The semantic tag type of the headline.
+    type: PropTypes.oneOf(types).isRequired,
 
-            case 'h2':
-                heading = <h2 className={classNames}>{children}</h2>;
-                break;
-
-            case 'h3':
-                heading = <h3 className={classNames}>{children}</h3>;
-                break;
-
-            case 'h4':
-                heading = <h4 className={classNames}>{children}</h4>;
-                break;
-
-            case 'h5':
-                heading = <h5 className={classNames}>{children}</h5>;
-                break;
-
-            default:
-                heading = <h6 className={classNames}>{children}</h6>;
-                break;
-        }
-
-        return heading;
-    }
-}
+    // Optional style identifier,
+    // this enables the possibility to diff the semantic value of the UI to the displayed style.
+    style: PropTypes.oneOf(types),
+    className: PropTypes.string
+};
 Headline.defaultProps = {
     type: 'h1'
 };
+
+export default Headline;

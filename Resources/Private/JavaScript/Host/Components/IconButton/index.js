@@ -1,34 +1,31 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, {PropTypes} from 'react';
 import Icon from 'Host/Components/Icon/';
 import Button from 'Host/Components/Button/';
 import style from './style.css';
 
-@connect()
-export default class IconButton extends Component {
-    static propTypes = {
-        // The icon key which gets passed to the Icon Component.
-        icon: PropTypes.string.isRequired,
+const IconButton = props => {
+    // Since `this.props` isn't writable, we need to clone it
+    // and add the component specific className to the passed props.
+    const buttonProps = Object.assign({}, props, {
+        className: `${props.className} ${style.iconButton}`
+    });
 
-        // Additional className for the Button.
-        className: PropTypes.string
-    };
+    return (
+        <Button {...buttonProps}>
+          <Icon icon={props.icon} />
+        </Button>
+    );
+};
+IconButton.propTypes = {
+    // The icon key which gets passed to the Icon Component.
+    icon: PropTypes.string.isRequired,
 
-    render() {
-        // Since `this.props` isn't writable, we need to clone it
-        // and add the component specific className to the passed props.
-        const props = Object.assign({}, this.props, {
-            className: `${this.props.className} ${style.iconButton}`
-        });
-
-        return (
-            <Button {...props}>
-              <Icon icon={this.props.icon} />
-            </Button>
-        );
-    }
-}
+    // Additional className for the Button.
+    className: PropTypes.string
+};
 IconButton.defaultProps = {
     style: 'transparent',
     hoverStyle: 'brand'
 };
+
+export default IconButton;

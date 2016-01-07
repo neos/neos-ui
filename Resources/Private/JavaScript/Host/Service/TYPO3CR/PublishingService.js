@@ -1,4 +1,4 @@
-import {actions} from '../../Ducks/';
+import {actions} from '../../Redux/';
 import backend from '../Backend.js';
 
 /**

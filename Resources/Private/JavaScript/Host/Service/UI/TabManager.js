@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import {actions} from '../../Ducks/';
+import {actions} from '../../Redux/';
 
 import assign from 'lodash.assign';
 

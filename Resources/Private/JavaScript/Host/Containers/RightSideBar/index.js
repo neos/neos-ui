@@ -8,7 +8,7 @@ import {
     TextInput,
     ToggablePanel
 } from 'Host/Components/';
-import {actions} from 'Host/Ducks/';
+import {actions} from 'Host/Redux/';
 import {immutableOperations} from 'Shared/Util';
 import style from './style.css';
 

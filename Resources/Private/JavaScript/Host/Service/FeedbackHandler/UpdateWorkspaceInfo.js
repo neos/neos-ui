@@ -1,4 +1,4 @@
-import {actions} from 'Host/Ducks/';
+import {actions} from 'Host/Redux/';
 
 export default (feedback, envelope, store) => {
     const {documentContextPath, workspaceName, workspaceInfo} = feedback.payload;

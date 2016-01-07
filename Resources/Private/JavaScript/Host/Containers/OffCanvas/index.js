@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import {actions} from 'Host/Ducks/';
+import {actions} from 'Host/Redux/';
 import {
     Button,
     Icon,

@@ -10,7 +10,7 @@ import {
     DropDown,
     CheckBox
 } from 'Host/Components/';
-import {actions} from 'Host/Ducks/';
+import {actions} from 'Host/Redux/';
 import style from './style.css';
 import AbstractButton from './AbstractButton/';
 

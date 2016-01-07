@@ -5,31 +5,31 @@
 
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../FontAwesome/fontawesome-webfont.woff2') format('woff2'), url('../FontAwesome/fontawesome-webfont.woff') format('woff');
+  src: url('./FontAwesome/fontawesome-webfont.woff2') format('woff2'), url('./FontAwesome/fontawesome-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
     font-family: 'Noto Sans';
-    src: url('../NotoSans/notosans-regular-webfont.woff2') format('woff2'), url('../NotoSans/notosans-regular-webfont.woff') format('woff');
+    src: url('./NotoSans/notosans-regular-webfont.woff2') format('woff2'), url('./NotoSans/notosans-regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
     font-family: 'Noto Sans';
-    src: url('../NotoSans/notosans-bold-webfont.woff2') format('woff2'), url('../NotoSans/notosans-bold-webfont.woff') format('woff');
+    src: url('./NotoSans/notosans-bold-webfont.woff2') format('woff2'), url('./NotoSans/notosans-bold-webfont.woff') format('woff');
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
     font-family: 'Noto Sans';
-    src: url('../NotoSans/notosans-bolditalic-webfont.woff2') format('woff2'), url('../NotoSans/notosans-bolditalic-webfont.woff') format('woff');
+    src: url('./NotoSans/notosans-bolditalic-webfont.woff2') format('woff2'), url('./NotoSans/notosans-bolditalic-webfont.woff') format('woff');
     font-weight: 700;
     font-style: italic;
 }
 @font-face {
     font-family: 'Noto Sans';
-    src: url('../NotoSans/notosans-italic-webfont.woff2') format('woff2'), url('../NotoSans/notosans-italic-webfont.woff') format('woff');
+    src: url('./NotoSans/notosans-italic-webfont.woff2') format('woff2'), url('./NotoSans/notosans-italic-webfont.woff') format('woff');
     font-weight: normal;
     font-style: italic;
 }

@@ -1,4 +1,5 @@
 import {immutableOperations} from 'Shared/Util/';
+import {createAction, handleActions} from 'redux-actions';
 
 const {$get, $set, $merge, $delete} = immutableOperations;
 
@@ -8,8 +9,35 @@ export const SET_ACTIVE = '@packagefactory/guevara/UI/Tabs/SET_ACTIVE';
 export const SET_METADATA = '@packagefactory/guevara/UI/Tabs/SET_METADATA';
 export const UPDATE_WORKSPACE_INFO = '@packagefactory/guevara/UI/Tabs/UPDATE_WORKSPACE_INFO';
 
+export default handleActions({
+    [ADD]: (state, action) => {
+        const {payload} = action;
+
+        return $set(state, ['ui', 'tabs', 'byId', payload.tabId], {
+            id: payload.tabId,
+            title: '...',
+            src: payload.src,
+            workspace: {
+                name: '',
+                publishingState: {
+                    publishableNodes: [],
+                    publishableNodesInDocument: []
+                }
+            }
+        });
+    },
+    [REMOVE]: (state, action) => $delete(state, ['ui', 'tabs', 'byId', action.payload.tabId]),
+    [SET_ACTIVE]: (state, action) => {
+        const newActiveTab = $get(state, 'ui.tabs.byId').get(action.payload.tabId);
+
+        return $set(state, 'ui.tabs.active', newActiveTab);
+    },
+    [SET_METADATA]: (state, action) => doSetMetaData(state, action.payload),
+    [UPDATE_WORKSPACE_INFO]: (state, action) => doUpdateWorkspaceInfo(state, action.payload)
+});
+
 /**
- * Helper function to make updating the active tab data easier
+ * Helper function to make updating the active tab data easier.
  *
  * @private
  * @param  {[type]} state [description]
@@ -24,14 +52,14 @@ function updateActiveTab(state) {
 }
 
 /**
- * Helper function to perfrom the SET_METADATA action
+ * Helper function to perfrom the SET_METADATA action.
  *
  * @param  {Immutable.Collection} state
  * @param  {Object} action
  * @return {Immutable.Collection}
  */
-function doSetMetaData(state, action) {
-    const {title, workspace, contextPath} = action.metaData;
+function doSetMetaData(state, payload) {
+    const {title, workspace, contextPath} = payload.metaData;
     const {publishingState, name} = workspace;
     const {publishableNodes} = publishingState;
     const [nodePath] = contextPath.split('@');
@@ -41,8 +69,8 @@ function doSetMetaData(state, action) {
     );
 
     return updateActiveTab($set(
-        $merge(state, ['ui', 'tabs', 'byId', action.tabId], {title, contextPath}),
-        ['ui', 'tabs', 'byId', action.tabId, 'workspace'],
+        $merge(state, ['ui', 'tabs', 'byId', payload.tabId], {title, contextPath}),
+        ['ui', 'tabs', 'byId', payload.tabId, 'workspace'],
         {
             name,
             publishingState: {
@@ -54,14 +82,14 @@ function doSetMetaData(state, action) {
 }
 
 /**
- * Helper function to perfrom the UPDATE_WORKSPACE_INFO action
+ * Helper function to perfrom the UPDATE_WORKSPACE_INFO action.
  *
  * @param  {Immutable.Collection} state
  * @param  {Object} action
  * @return {Immutable.Collection}
  */
-function doUpdateWorkspaceInfo(state, action) {
-    const {documentContextPath, workspaceInfo, workspaceName} = action;
+function doUpdateWorkspaceInfo(state, payload) {
+    const {documentContextPath, workspaceInfo, workspaceName} = payload;
     const publishableNodes = workspaceInfo;
     const [nodePath] = documentContextPath.split('@');
     const publishableNodesInDocument = publishableNodes.filter(nodeEnvelope =>
@@ -78,97 +106,45 @@ function doUpdateWorkspaceInfo(state, action) {
     return updateActiveTab($merge(state, 'ui.tabs.byId', updateTabs));
 }
 
-export default function reducer(state, action) {
-    switch (action.type) {
-        case ADD:
-            return $set(state, ['ui', 'tabs', 'byId', action.tabId], {
-                id: action.tabId,
-                title: '...',
-                src: action.src,
-                workspace: {
-                    name: '',
-                    publishingState: {
-                        publishableNodes: [],
-                        publishableNodesInDocument: []
-                    }
-                }
-            });
-
-        case REMOVE:
-            return $delete(state, ['ui', 'tabs', 'byId', action.tabId]);
-
-        case SET_ACTIVE: {
-            const newActiveTab = $get(state, 'ui.tabs.byId').get(action.tabId);
-
-            return $set(state, 'ui.tabs.active', newActiveTab);
-        }
-
-        case SET_METADATA:
-            return doSetMetaData(state, action);
-
-        case UPDATE_WORKSPACE_INFO:
-            return doUpdateWorkspaceInfo(state, action);
-
-        default: return state;
-
-    }
-}
-
 /**
- * Adds a new tab
+ * Adds a new tab.
  *
  * @param {String} tabId must be unique within the ui.tabs portion of the store
  * @param {String} src
- * @return {Object}
  */
-export function add(tabId, src) {
-    return {
-        type: ADD,
-        tabId,
-        src
-    };
-}
+export const add = createAction(ADD, (tabId, src) => ({
+    tabId,
+    src
+}));
 
 /**
- * Removes a tab
+ * Removes a tab for the given id.
  *
- * @param {String} tabId
- * @return {Object}
+ * @param {String} tabId}
  */
-export function remove(tabId) {
-    return {
-        type: REMOVE,
-        tabId
-    };
-}
+export const remove = createAction(REMOVE, tabId => ({
+    tabId
+}));
 
 /**
- * Sets the active tab
+ * Sets the active tab to the given id.
  *
  * @param  {String} tabId
- * @return {Object}
  */
-export function switchTo(tabId) {
-    return {
-        type: SET_ACTIVE,
-        tabId
-    };
-}
+export const switchTo = createAction(SET_ACTIVE, tabId => ({
+    tabId
+}));
 
 /**
  * Sets the meta data for a tab (e.g. title, workspace info)
  *
  * @param {String} tabId
  * @param {Object} metaData
- * @return {Object}
  */
-export function setMetaData(tabId, metaData) {
-    return {
-        type: SET_METADATA,
-        tabId,
-        metaData
-    };
-}
+export const setMetaData = createAction(SET_METADATA, (tabId, metaData) => ({
+    tabId,
+    metaData
+}));
 
 /**
  * Sets new workspace info for the given workspace in all tabs that are showing a document with the
@@ -177,13 +153,12 @@ export function setMetaData(tabId, metaData) {
  * @param  {String} documentContextPath
  * @param  {String} workspaceName
  * @param  {Object} workspaceInfo
- * @return {Object}
  */
-export function updateWorkspaceInfo(documentContextPath, workspaceName, workspaceInfo) {
-    return {
-        type: UPDATE_WORKSPACE_INFO,
+export const updateWorkspaceInfo = createAction(
+    UPDATE_WORKSPACE_INFO,
+    (documentContextPath, workspaceName, workspaceInfo) => ({
         documentContextPath,
         workspaceName,
         workspaceInfo
-    };
-}
+    })
+);

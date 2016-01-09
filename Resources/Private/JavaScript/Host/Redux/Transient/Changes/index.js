@@ -1,39 +1,22 @@
 import Immutable from 'immutable';
+import {createAction, handleActions} from 'redux-actions';
 
 const ADD = '@packagefactory/guevara/Transient/Changes/ADD';
 const CLEAR = '@packagefactory/guevara/Transient/Changes/CLEAR';
 
-export default function reducer(state, action) {
-    switch (action.type) {
-        case ADD:
-            return state.set('changes', state.get('changes').push(action.change));
-
-        case CLEAR:
-            return state.set('changes', Immutable.fromJS([]));
-
-        default: return state;
-    }
-}
+export default handleActions({
+    [ADD]: (state, action) => state.set('changes', state.get('changes').push(action.payload.change)),
+    [CLEAR]: state => state.set('changes', Immutable.fromJS([]))
+});
 
 /**
  * Adds the given chagnge to the global state.
  * If you want to add a change, use the the ChangeManager API.
- *
- * @param {Object} change The changeset to add.
  */
-export function add(change) {
-    return {
-        type: ADD,
-        change
-    };
-}
+export const add = createAction(ADD, change => ({change}));
 
 /**
  * Clears all local changes from the global state.
  * If you want to flush the changes, use the ChangeManager API.
  */
-export function clear() {
-    return {
-        type: CLEAR
-    };
-}
+export const clear = createAction(CLEAR);

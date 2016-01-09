@@ -1,5 +1,6 @@
 import uuid from 'uuid';
 import {actions} from 'Host/Redux/';
+import backend from 'Host/Service/Backend.js';
 
 import assign from 'lodash.assign';
 
@@ -27,6 +28,7 @@ class TabManager {
     }
 
     commitDocumentLoad(tabId, configuration) {
+        const {nodeTreeService} = backend;
         this.store.dispatch(actions.Transient.Nodes.addBulk(configuration.nodes));
 
         this.store.dispatch(actions.UI.Tabs.setMetaData(tabId, assign({
@@ -35,6 +37,8 @@ class TabManager {
                 publishableNodes: []
             }
         }, configuration.metaData || {})));
+
+        nodeTreeService.loadTree(configuration.metaData.contextPath);
     }
 }
 

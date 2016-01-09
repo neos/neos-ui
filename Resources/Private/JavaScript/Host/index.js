@@ -67,14 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
         appContainer
     );
 
-    window.treeService = nodeTreeService(store, csrfToken);
-
     // Bootstrap the backend services
     assign(backend, {
         tabManager: tabManager(store),
         changeManager: changeManager(store, csrfToken),
         feedbackManager: feedbackManager(store),
         publishingService: publishingService(store, csrfToken),
+        nodeTreeService: nodeTreeService(store, csrfToken),
         i18n: i18n(translations),
 
         asyncComponents: {

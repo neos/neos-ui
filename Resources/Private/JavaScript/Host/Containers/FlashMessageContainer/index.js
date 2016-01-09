@@ -10,7 +10,7 @@ import style from './style.css';
 const {$get} = immutableOperations;
 
 @connect(state => ({
-      flashMessages: $get(state, 'ui.flashMessages')
+    flashMessages: $get(state, 'ui.flashMessages')
 }))
 export default class FlashMessageContainer extends Component {
     static propTypes = {

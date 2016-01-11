@@ -154,6 +154,7 @@ class NodeTreeBuilder
 
         foreach ($root->getChildNodes($this->nodeTypeFilter) as $childNode) {
             $hasChildNodes = $childNode->hasChildNodes($this->nodeTypeFilter);
+            $shouldLoadChildNodes = $hasChildNodes && ($depth > 1 || $this->isInRootLine($this->active, $childNode));
 
             $result[$childNode->getName()] = [
                 'label' => $childNode->getNodeType()->isOfType('TYPO3.Neos:Document') ?
@@ -161,11 +162,11 @@ class NodeTreeBuilder
                 'contextPath' => $childNode->getContextPath(),
                 'nodeType' => $childNode->getNodeType()->getName(),
                 'hasChildren' => $hasChildNodes,
-                'isCollapsed' => !$hasChildNodes || ($depth <= 1),
+                'isCollapsed' => !$shouldLoadChildNodes,
                 'isCollapsable' => $hasChildNodes
             ];
 
-            if ($depth > 1 || $this->isInRootLine($this->active, $childNode)) {
+            if ($shouldLoadChildNodes) {
                 $result[$childNode->getName()]['children'] =
                     $this->build(false, $childNode, $depth - 1);
             }
@@ -195,7 +196,7 @@ class NodeTreeBuilder
                   'contextPath' => $root->getContextPath(),
                   'nodeType' => $root->getNodeType()->getName(),
                   'hasChildren' => count($result),
-                  'isCollapsed' => true,
+                  'isCollapsed' => false,
                   'children' => $result
               ]
           ];

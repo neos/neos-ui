@@ -53,7 +53,7 @@ class NodeHeader extends Component {
         const {node, onToggle} = this.props;
         const classnames = mergeClassNames({
             [style.nodeHeader__chevron]: true,
-            [style['nodeHeader__chevron--isCollapsed']]: node.isCollapsed
+            [style['nodeHeader__chevron--isCollapsed']]: $get(node, 'isCollapsed')
         });
 
         return (

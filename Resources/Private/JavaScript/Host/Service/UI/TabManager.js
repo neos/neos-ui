@@ -1,6 +1,9 @@
 import uuid from 'uuid';
 import {actions} from 'Host/Redux/';
+import {immutableOperations} from 'Shared/Util/';
 import backend from 'Host/Service/Backend.js';
+
+const {$get} = immutableOperations;
 
 import assign from 'lodash.assign';
 
@@ -11,6 +14,14 @@ class TabManager {
 
     createTab(src) {
         const tabId = uuid.v4();
+
+        this.store.dispatch(actions.UI.Tabs.add(tabId, src));
+        this.store.dispatch(actions.UI.Tabs.switchTo(tabId));
+    }
+
+    changeActiveTabSrc(src) {
+        const state = this.store.getState();
+        const tabId = $get(state, 'ui.tabs.active.id');
 
         this.store.dispatch(actions.UI.Tabs.add(tabId, src));
         this.store.dispatch(actions.UI.Tabs.switchTo(tabId));

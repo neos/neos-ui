@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import Immutable from 'immutable';
 import {Tree} from 'Host/Components/';
 import {immutableOperations} from 'Shared/Util';
+import backend from 'Host/Service/Backend.js';
 import {connect} from 'react-redux';
 
 const {$get} = immutableOperations;
@@ -100,6 +101,9 @@ export default class PageTree extends Component {
     }
 
     onPageNodeFocusChanged(node) {
-        console.log('page focus changed', node);
+        const {tabManager} = backend;
+        const href = $get(node, 'href');
+
+        tabManager.changeActiveTabSrc(href);
     }
 }

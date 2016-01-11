@@ -7,18 +7,11 @@ use TYPO3\TYPO3CR\Domain\Model\NodeType;
 class LoadTreeDto
 {
     /**
-     * The root node of the tree
+     * The currently active node in the tree
      *
      * @var NodeInterface
      */
-    protected $root;
-
-    /**
-     * The currently active node in the tree (optional)
-     *
-     * @var NodeInterface
-     */
-    protected $active = null;
+    protected $active;
 
     /**
      * An (optional) node type filter
@@ -42,24 +35,14 @@ class LoadTreeDto
     protected $depth = 1;
 
     /**
-     * Set the root node
-     *
-     * @param NodeInterface $root
-     * @return void
-     */
-    public function setRoot(NodeInterface $root)
-    {
-        $this->root = $root;
-    }
-
-    /**
      * Get the root node
      *
      * @return NodeInterface
      */
     public function getRoot()
     {
-        return $this->root;
+        var_dump($this->active->geContext()->getCurrentSiteNode()); die;
+        return $this->active->geContext()->getCurrentSiteNode();
     }
 
     /**

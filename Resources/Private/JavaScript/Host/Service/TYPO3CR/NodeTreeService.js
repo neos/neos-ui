@@ -25,9 +25,9 @@ class NodeTreeService {
         };
     }
 
-    loadTree(root, nodeTypeFilter = 'TYPO3.Neos:Document') {
+    loadTree(active, nodeTypeFilter = 'TYPO3.Neos:Document') {
         const {feedbackManager} = backend;
-        const [nodePath] = root.split('@');
+        const [nodePath] = active.split('@');
         const storePath = nodePathToStorePath(nodePath);
 
         // this.store.dispatch(actions.UI.PageTree.startLoading(storePath));
@@ -41,7 +41,7 @@ class NodeTreeService {
             },
             body: JSON.stringify({
                 nodeTreeArguments: {
-                    root,
+                    active,
                     nodeTypeFilter
                 },
                 includeRoot: true

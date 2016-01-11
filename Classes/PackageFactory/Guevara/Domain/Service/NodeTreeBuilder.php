@@ -11,18 +11,18 @@ use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
 class NodeTreeBuilder
 {
     /**
-     * The root node of the tree
+     * The site node
      *
      * @var NodeInterface
      */
     protected $root;
 
     /**
-     * The currently active node in the tree (optional)
+     * The currently active node in the tree
      *
      * @var NodeInterface
      */
-    protected $active = null;
+    protected $active;
 
     /**
      * An (optional) node type filter
@@ -71,6 +71,20 @@ class NodeTreeBuilder
     public function setRoot($rootContextPath)
     {
         $this->root = $this->nodeService->getNodeFromContextPath($rootContextPath);
+    }
+
+    /**
+     * Get the root node
+     *
+     * @return NodeInterface
+     */
+    public function getRoot()
+    {
+        if (!$this->root) {
+            $this->root = $this->active->getContext()->getCurrentSiteNode();
+        }
+
+        return $this->root;
     }
 
     /**
@@ -133,7 +147,7 @@ class NodeTreeBuilder
      */
     public function build($includeRoot = false, $root = null, $depth = null)
     {
-        $root = $root === null ? $this->root : $root;
+        $root = $root === null ? $this->getRoot() : $root;
         $depth = $depth === null ? $this->depth : $depth;
 
         $result = [];

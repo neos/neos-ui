@@ -165,9 +165,9 @@ class NodeTreeBuilder
                 'isCollapsable' => $hasChildNodes
             ];
 
-            if ($depth > 1) {
+            if ($depth > 1 || $this->isInRootLine($this->active, $childNode)) {
                 $result[$childNode->getName()]['children'] =
-                    $this->build($childNode, $depth - 1);
+                    $this->build(false, $childNode, $depth - 1);
             }
 
             if ($childNode->getNodeType()->isOfType('TYPO3.Neos:Document')) {
@@ -201,8 +201,15 @@ class NodeTreeBuilder
           ];
         }
 
-        return [
-            $root->getPath() => $result
-        ];
+        return $result;
+    }
+
+    protected function isInRootLine(NodeInterface $haystack = null, NodeInterface $needle)
+    {
+        if ($haystack === null) {
+            return false;
+        }
+
+        return mb_strrpos($haystack->getPath(), $needle->getPath(), null, 'UTF-8') === 0;
     }
 }

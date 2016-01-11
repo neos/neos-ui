@@ -162,6 +162,8 @@ class NodeTreeBuilder
                 'contextPath' => $childNode->getContextPath(),
                 'nodeType' => $childNode->getNodeType()->getName(),
                 'hasChildren' => $hasChildNodes,
+                'isActive' => $this->active && ($childNode->getPath() === $this->active->getPath()),
+                'isFocused' => $this->active && ($childNode->getPath() === $this->active->getPath()),
                 'isCollapsed' => !$shouldLoadChildNodes,
                 'isCollapsable' => $hasChildNodes
             ];
@@ -197,6 +199,8 @@ class NodeTreeBuilder
                   'nodeType' => $root->getNodeType()->getName(),
                   'hasChildren' => count($result),
                   'isCollapsed' => false,
+                  'isActive' => $this->active && ($root->getPath() === $this->active->getPath()),
+                  'isFocused' => $this->active && ($root->getPath() === $this->active->getPath()),
                   'children' => $result
               ]
           ];

@@ -12,6 +12,7 @@
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^0.9.1",
     "glob": "^6.0.4",
+    "jsdom": "^7.2.2",
     "mocha": "^2.3.4",
     "postcss-import": "^7.1.3",
     "postcss-loader": "^0.8.0",
@@ -39,8 +40,8 @@
     "lodash.isobject": "^3.0.2",
     "medium-editor": "^5.10.0",
     "normalize.css": "^3.0.3",
-    "react": "^0.14.5",
-    "react-dom": "^0.14.1",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
     "react-motion": "^0.3.1",
     "react-motion-ui-pack": "^0.5.2",
     "react-redux": "^4.0.0",
@@ -54,7 +55,7 @@
     "build": "webpack --config webpack.build.config.js",
     "watch": "webpack --config webpack.build.config.js --progress --colors --watch",
     "pretest": "webpack --config webpack.testing.config.js --target node",
-    "test": "mocha Resources/Public/JavaScript/Tests.js"
+    "test": "mocha mocha.runTests.js"
   },
   "xo": {
     "esnext": true,

@@ -1,0 +1,22 @@
+.btn {
+    display: inline-block;
+    padding: 0 $spacing;
+    height: 40px;
+    line-height: 40px;
+    border: 0;
+    background: $success;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+}
+.btn--disabled {
+    opacity: .5;
+}
+.btn--notAllowed {
+    &[disabled] {
+        cursor: not-allowed;
+    }
+ }
+.btn--highlighted {
+    background: $warn;
+}

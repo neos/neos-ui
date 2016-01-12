@@ -1,0 +1,39 @@
+.menuToggler--isActive {
+    color: $brand;
+}
+
+$lineHeight: 3px;
+.menuToggler__icon {
+    position: relative;
+    display: inline-block;
+    width: 22px;
+    height: 34px;
+
+    &:before,
+    &:after {
+        position: absolute;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: $lineHeight;
+        border-color: currentColor;
+    }
+
+    &:before {
+        top: 12px;
+        border-top: $lineHeight solid;
+        border-bottom: $lineHeight solid;
+        content: "";
+    }
+
+    &:after {
+        top: 24px;
+        background-color: currentColor;
+        content: "";
+    }
+
+    &:hover {
+        text-decoration: none;
+        color: $brand;
+    }
+}

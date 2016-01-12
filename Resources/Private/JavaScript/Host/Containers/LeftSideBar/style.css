@@ -1,0 +1,18 @@
+.leftSideBar {
+    padding-top: 41px;
+    padding-bottom: 41px;
+    transition: .2s ease transform;
+    will-change: transform;
+
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+.leftSideBar--isHidden {
+    transform: translateX(-320px);
+}

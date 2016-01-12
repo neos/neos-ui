@@ -1,0 +1,44 @@
+##
+# Authentication
+
+-
+  name:  'Authentication'
+  uriPattern: 'che!/<AuthenticationSubRoutes>'
+  defaults:
+    '@package':    'PackageFactory.Guevara'
+    '@controller': 'Login'
+    '@action':     'index'
+  subRoutes:
+    'AuthenticationSubRoutes':
+      package: 'PackageFactory.Guevara'
+      suffix:  'Authentication'
+
+##
+# Backend
+
+-
+  name:  'Backend'
+  uriPattern: 'che!/<BackendSubRoutes>'
+  defaults:
+    '@package':    'PackageFactory.Guevara'
+    '@action':     'index'
+    '@format':     'html'
+  subRoutes:
+    'BackendSubRoutes':
+      package: 'PackageFactory.Guevara'
+      suffix:  'Backend'
+
+##
+# Service
+
+-
+  name:  'Backend'
+  uriPattern: 'che!/service/<ServiceSubRoutes>'
+  defaults:
+    '@package':    'PackageFactory.Guevara'
+    '@action':     'index'
+    '@format':     'html'
+  subRoutes:
+    'ServiceSubRoutes':
+      package: 'PackageFactory.Guevara'
+      suffix:  'Service'

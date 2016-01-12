@@ -1,0 +1,19 @@
+.topBar {
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+.topBar__rightSidedActions {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.topBar__btn {
+    border-right: 1px solid $dark;
+}

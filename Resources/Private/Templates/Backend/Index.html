@@ -1,0 +1,16 @@
+<!doctype html>
+{namespace neos=TYPO3\Neos\ViewHelpers}
+<html>
+    <head>
+        <title>PackageFactory Guevara - Viva la Revolución!</title>
+        <script src="{f:uri.resource(path: 'resource://PackageFactory.Guevara/Public/JavaScript/Host.js')}"></script>
+        <link rel="stylesheet" href="{f:uri.resource(path: 'resource://PackageFactory.Guevara/Public/Styles/Host.css')}">
+    </head>
+    <body>
+        <div id="appContainer" data-csrf-token="{f:security.csrfToken()}" data-first-tab="{documentNodeUri}">
+            <div data-json="initialState">{initialState}</div>
+            <div data-json="translations">{translations}</div>
+            <div data-json="nodeTypeSchema">{nodeTypeSchema}</div>
+        </div>
+    </body>
+</html>

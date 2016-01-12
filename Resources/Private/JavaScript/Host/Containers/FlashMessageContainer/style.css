@@ -1,0 +1,9 @@
+.flashMessageContainer {
+    position: fixed;
+    z-index: 999999;
+    top: 0;
+    left: 50%;
+    width: 512px;
+    padding-top: 8px;
+    transform: translate(-50%, 0);
+}

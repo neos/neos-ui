@@ -1,0 +1,30 @@
+.dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0, .35);
+}
+.dialog__contents {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background: $darker
+}
+.dialog__contents__inner {
+    position: relative;
+    width: 80vw;
+    min-height: 300px;
+    padding: $spacing;
+}
+.dialog__contents__inner__closeBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.dialog__contents__inner__actions {
+    text-align: right;
+}

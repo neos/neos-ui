@@ -1,0 +1,12 @@
+.dropDown {
+    display: inline-block;
+    min-width: 352px;
+}
+.dropDown__btn {
+    height: 40px;
+    border: 0;
+    background: 0;
+}
+.dropDown__contents {
+    padding: $spacing;
+}

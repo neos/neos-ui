@@ -1,0 +1,23 @@
+.textInput {
+    padding-bottom: $spacing;
+}
+.textInput__input {
+    width: 100%;
+    height: 40px;
+    padding: 0 14px;
+    border: 0;
+    background: $neutral;
+
+    &:focus {
+        outline: 0;
+        background: $brightest;
+        color: $darkest;
+    }
+}
+.textInput__input::-webkit-input-placeholder {
+    font-family: 'Noto Sans', sans-serif;
+    color: $bright;
+}
+.textInput--invalid {
+    outline: 2px solid $error;
+}

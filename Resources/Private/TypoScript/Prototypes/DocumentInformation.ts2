@@ -1,0 +1,8 @@
+prototype(PackageFactory.Guevara:DocumentInformation) {
+    @class = 'PackageFactory\\Guevara\\TypoScript\\DocumentInformationImplementation'
+
+    //
+    // Use the node from context by default
+    //
+    node = ${node}
+}

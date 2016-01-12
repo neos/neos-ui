@@ -1,0 +1,34 @@
+.nodeHeader {
+    position: relative;
+    height: 24px;
+    line-height: 24px;
+}
+.nodeHeader__chevron {
+    position: absolute;
+    top: 50%;
+    left: -15px;
+    transform: translateY(-50%);
+    margin-top: -3px;
+    cursor: pointer;
+    color: $brighter;
+
+    &:hover {
+        color: $brand;
+    }
+}
+.nodeHeader__chevron--isCollapsed {
+    transform: translateY(-35%) translateX(-25%) rotate(-90deg);
+}
+.nodeHeader__data {
+    display: block;
+    cursor: pointer;
+}
+.nodeHeader__data--isActive {}
+.nodeHeader__data--isFocused {
+    background: $neutral;
+}
+.nodeHeader__data__title {
+    .nodeHeader__data--isActive & {
+        color: $brand;
+    }
+}

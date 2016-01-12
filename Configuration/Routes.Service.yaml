@@ -1,0 +1,23 @@
+-
+  name: 'Change'
+  uriPattern: 'change'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'change'
+  httpMethods: ['POST']
+
+-
+  name: 'Publish'
+  uriPattern: 'publish'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'publish'
+  httpMethods: ['POST']
+
+-
+  name: 'Discard'
+  uriPattern: 'discard'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'discard'
+  httpMethods: ['POST']

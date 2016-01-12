@@ -1,0 +1,70 @@
+.wrapper {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    padding-right: 47px;
+}
+
+.publishBtn {
+    min-width: 165px;
+}
+.dropDown {
+    position: static;
+}
+.dropDown__btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: inline-block;
+    width: auto;
+    height: 40px;
+    padding: 0 30px 0 $spacing;
+    border: 0;
+    line-height: 40px;
+    background: $success;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+}
+.dropDown__btn--active {
+    opacity: 1;
+}
+.dropDown__contents {}
+.dropDown__contents__item {
+    &:hover {
+        background: $brand;
+    }
+
+    > a,
+    > label,
+    > button {
+      display: block;
+      width: 100%;
+      border: 0;
+      padding: 0 $spacing;
+      background: 0;
+      color: #FFF;
+      text-decoration: none;
+      line-height: 40px;
+      text-align: left;
+
+      > i,
+      > input {
+          margin-right: .5em;
+      }
+    }
+}
+.dropDown__contents__item--noHover:hover {
+    background: 0;
+}
+.dropDown__contents__item--disabled {
+    opacity: .5;
+
+    &,
+    > button[disabled] {
+        cursor: not-allowed;
+    }
+}
+.dropDown__contents__item--canPublish {
+    background: $warn;
+}

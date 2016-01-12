@@ -1,0 +1,28 @@
+.panel {
+    position: relative;
+
+    > div {
+        overflow: hidden;
+    }
+}
+.panel--isOpen {}
+.panel__headline {
+    height: 40px;
+    margin: 0;
+    padding: 0 $spacing;
+    line-height: 40px;
+}
+.panel__toggleBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.panel__contents {
+    padding: 0 $spacing;
+    transition: .5s ease padding;
+
+    .panel--isOpen & {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}

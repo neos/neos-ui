@@ -1,0 +1,12 @@
+.heading {
+    font-size: 14px;
+    text-rendering: optimizelegibility;
+}
+.heading--h1 {
+    font-size: 16px;
+}
+.heading--h2 {}
+.heading--h3 {}
+.heading--h4 {}
+.heading--h5 {}
+.heading--h6 {}

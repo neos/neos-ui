@@ -1,0 +1,42 @@
+.dropDown {
+    position: relative;
+}
+.dropDown--hasLabel {}
+.dropDown__btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0 32px 0 $spacing;
+
+    &:focus {
+        outline: 1px dotted $brightest;
+    }
+}
+.dropDown__btn__label {
+    margin-right: .5em;
+}
+.dropDown__contents {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background: $neutral;
+}
+.dropDown__contents--isOpen {
+    display: block;
+}
+.dropDown__btn__beforeIcon {
+    .dropDown--hasLabel  & {
+        margin-right: .5em;
+    }
+}
+.dropDown__btn__afterIcon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}

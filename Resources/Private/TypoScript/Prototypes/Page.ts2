@@ -1,0 +1,67 @@
+//
+// Reset some rendering steps of the Neos backend, since Guevara
+// augments the website itself
+//
+prototype(TYPO3.Neos:Page) {
+
+    //
+    // Disable all html attributes printed for the Neos backend
+    //
+    htmlTag.attributes {
+        version.@if.disableNeosBackendAttributes = FALSE
+        xmlns.@if.disableNeosBackendAttributes = FALSE
+        xmlns:typo3.@if.disableNeosBackendAttributes = FALSE
+        xmlns:xsd.@if.disableNeosBackendAttributes = FALSE
+    }
+
+    //
+    // Disable rendering of the Neos backend
+    //
+    head {
+        neosBackendHeader >
+        neosBackendEndpoints >
+
+        javascriptDocumentInformation = PackageFactory.Guevara:DocumentInformation {
+            @position = 'after javascripts'
+        }
+
+        guestFrameApplication = TYPO3.TypoScript:Template {
+            @position = 'after javascriptDocumentInformation'
+
+            templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Guest.html'
+            sectionName = 'guestFrameApplication'
+        }
+
+        mediumStyles = TYPO3.TypoScript:Template {
+            @position = 'after guestFrameApplication'
+
+            templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Guest.html'
+            sectionName = 'mediumStyles'
+        }
+    }
+
+    //
+    // Do not add Neos backend clas
+    //
+    bodyTag.attributes.class.@process.addNeosBackendClass >
+
+    //
+    // Do not print document meta data
+    //
+    neosBackendDocumentNodeData >
+
+    //
+    // Do not render the Neos backend container
+    //
+    neosBackendContainer >
+
+    //
+    // Disable memorizing last visited node
+    //
+    lastVisitedNodeScript >
+
+    //
+    // Do not render the Neos backend footer
+    //
+    neosBackendFooter >
+}

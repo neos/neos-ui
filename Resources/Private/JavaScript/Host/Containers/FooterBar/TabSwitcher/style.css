@@ -1,0 +1,21 @@
+.tabSwitcher {}
+
+.tabSwitcher__item {
+    width: 12%;
+    height: 41px;
+    line-height: 41px;
+    float: left;
+    text-align: center;
+    border-right: 1px solid $brightest;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 0.4em;
+}
+
+.tabSwitcher__item--active {
+    background-color: $brightest;
+    color: $darker;
+    cursor: auto;
+}

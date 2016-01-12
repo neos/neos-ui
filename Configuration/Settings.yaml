@@ -1,0 +1,24 @@
+TYPO3:
+  Flow:
+    security:
+      authentication:
+        providers:
+          Typo3BackendProvider:
+            requestPatterns:
+              controllerObjectName: 'PackageFactory\Guevara\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|TYPO3\Media\Controller\.*'
+            entryPoint: 'WebRedirect'
+            entryPointOptions:
+              routeValues:
+                '@package':    'PackageFactory.Guevara'
+                '@controller': 'Login'
+                '@action':     'index'
+  Neos:
+    typoScript:
+      autoInclude:
+        'PackageFactory.Guevara': TRUE
+
+PackageFactory:
+    Guevara:
+      changes:
+        types:
+            'PackageFactory.Guevara:Property': 'PackageFactory\Guevara\Domain\Model\Changes\Property'

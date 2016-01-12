@@ -1,0 +1,11 @@
+.nodeType {
+    width: 100%;
+    text-align: left;
+}
+.nodeType__icon {
+    color: $brand;
+
+    .nodeType:hover & {
+        color: $brightest;
+    }
+}

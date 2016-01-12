@@ -1,0 +1,91 @@
+{
+  "name": "@packagefactory/guevara",
+  "version": "1.0.0",
+  "description": "Some example for inter-iframe communication",
+  "main": "Resources/Public/JavaScript/Host.js",
+  "private": true,
+  "devDependencies": {
+    "autoprefixer": "^6.2.2",
+    "babel-core": "^5.8.34",
+    "babel-loader": "^5.4.0",
+    "chai": "^3.4.1",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^0.9.1",
+    "glob": "^6.0.4",
+    "jsdom": "^7.2.2",
+    "mocha": "^2.3.4",
+    "postcss-import": "^7.1.3",
+    "postcss-loader": "^0.8.0",
+    "postcss-nested": "^1.0.0",
+    "postcss-simple-vars": "^1.2.0",
+    "react-addons-test-utils": "^0.14.6",
+    "redux-devtools": "^2.1.3",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.9"
+  },
+  "dependencies": {
+    "@reduct/component": "^2.0.4",
+    "@reduct/logger": "^1.1.3",
+    "@reduct/nitpick": "^1.0.0",
+    "@reduct/registry": "^1.0.1",
+    "classnames": "^2.2.0",
+    "domtastic": "^0.11.2",
+    "immutable": "^3.7.5",
+    "lodash.assign": "^3.2.0",
+    "lodash.compose": "^2.4.1",
+    "lodash.curry": "^3.0.2",
+    "lodash.debounce": "^3.1.1",
+    "lodash.isfunction": "^3.0.6",
+    "lodash.isobject": "^3.0.2",
+    "medium-editor": "^5.10.0",
+    "normalize.css": "^3.0.3",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "react-motion": "^0.3.1",
+    "react-motion-ui-pack": "^0.5.2",
+    "react-redux": "^4.0.0",
+    "redux": "^3.0.4",
+    "redux-actions": "^0.9.0",
+    "redux-immutable": "^1.3.7",
+    "uuid": "^2.0.1",
+    "whatwg-fetch": "^0.10.1"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.build.config.js",
+    "watch": "webpack --config webpack.build.config.js --progress --colors --watch",
+    "pretest": "webpack --config webpack.testing.config.js --target node",
+    "test": "mocha mocha.runTests.js"
+  },
+  "xo": {
+    "esnext": true,
+    "extends": "xo-react",
+    "space": 4,
+    "envs": [
+      "browser",
+      "node",
+      "mocha",
+      "es6"
+    ],
+    "rules": {
+      "react/jsx-indent-props": [
+        2,
+        4
+      ],
+      "react/jsx-boolean-value": 0
+    }
+  },
+  "contributors": [
+    {
+      "name": "Wilhelm Behncke",
+      "email": "wilhelm.behncke@googlemail.com",
+      "url": "https://github.com/grebaldi"
+    },
+    {
+      "name": "Tyll Weiß",
+      "email": "inkdpixels@googlemail.com",
+      "url": "https://github.com/Inkdpixels/"
+    }
+  ],
+  "license": "MIT"
+}

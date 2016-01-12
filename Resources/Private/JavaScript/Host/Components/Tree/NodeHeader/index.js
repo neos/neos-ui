@@ -39,9 +39,9 @@ class NodeHeader extends Component {
         return (
             <div className={style.nodeHeader}>
                 {isCollapsable ? this.renderCollapseChevron() : null}
-                <div onClick={onClick} className={dataClassNames}>
+                <div onClick={() => onClick(node)} className={dataClassNames}>
                     <Icon icon={icon} padded="right" />
-                    <span className={style.nodeHeader__data__title} onClick={onLabelClick}>
+                    <span className={style.nodeHeader__data__title} onClick={() => onLabelClick(node)}>
                         {label}
                     </span>
                 </div>
@@ -57,7 +57,7 @@ class NodeHeader extends Component {
         });
 
         return (
-            <a onClick={onToggle} className={classnames}>
+            <a onClick={() => onToggle(node)} className={classnames}>
                 <Icon icon="sort-desc" />
             </a>
         );

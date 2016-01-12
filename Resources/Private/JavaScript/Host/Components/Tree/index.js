@@ -34,7 +34,7 @@ export default class Tree extends Component {
     renderTree(nodes) {
         return nodes.map((node, key) => {
             const children = $get(node, 'children');
-            const isCollapsed = false;//$get(node, 'isCollapsed');
+            const isCollapsed = $get(node, 'isCollapsed');
 
             return (
                 <div className={style.treeWrapper__tree} key={key}>
@@ -49,7 +49,7 @@ export default class Tree extends Component {
                     </div>
                 </div>
             );
-        });
+        }).toArray();
     }
 
     onTreeToggle(node) {
@@ -68,9 +68,7 @@ export default class Tree extends Component {
         }
     }
 
-    onNodeLabelClick(e, node) {
-        e.stopPropagation();
-
+    onNodeLabelClick(node) {
         this.onNodeFocusChanged(node);
     }
 

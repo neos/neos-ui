@@ -1,15 +1,20 @@
 import {actions} from '../../Redux/';
 import backend from '../Backend.js';
+import {immutableOperations} from 'Shared/Util/';
 
-function nodePathToStorePath(nodePath) {
-    return nodePath.split('/').reduce((prev, cur) => {
-        if (cur) {
-            prev.push(cur);
-            prev.push('children');
-        }
+const {$get, $set} = immutableOperations;
 
-        return prev;
-    }, []).slice(0, -1);
+function storePathToChildrenOf(node) {
+    return ['ui', 'pageTree'].concat(
+          (node.get ? node.get('contextPath') : node).split('@')[0]
+              .split('/')
+              .reduce((prev, cur) => cur ? prev.concat([cur, 'children']) : prev, [])
+              .slice(2)
+    );
+}
+
+function storePathTo(node) {
+    return storePathToChildrenOf(node).slice(0, -1);
 }
 
 /**
@@ -25,35 +30,72 @@ class NodeTreeService {
         };
     }
 
-    loadTree(active, nodeTypeFilter = 'TYPO3.Neos:Document') {
-        const {feedbackManager} = backend;
-        const [nodePath] = active.split('@');
-        const storePath = nodePathToStorePath(nodePath);
+    getNode(node) {
+        const storePath = storePathTo(node);
+        const nodeInStore = $get(this.store.getState(), storePath);
 
-        // this.store.dispatch(actions.UI.PageTree.startLoading(storePath));
-
-        fetch(this.endpoints.loadTree, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'X-Flow-Csrftoken': this.csrfToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                nodeTreeArguments: {
-                    active,
-                    nodeTypeFilter
-                },
-                includeRoot: true
-            })
-        })
-        .then(response => response.json())
-        .then(json => this.store.dispatch(actions.UI.PageTree.setData(json)));
-        // .then(() => this.store.dispatch(actions.UI.PageTree.finishLoading(storePath)));
+        return nodeInStore;
     }
 
-    loadSubTree(root) {
+    loadTree(active, nodeTypeFilter = 'TYPO3.Neos:Document') {
+        const {feedbackManager} = backend;
+        const activeInStore = this.getNode(active);
 
+        if (activeInStore) {
+            const activated = $set(activeInStore, 'isActive', true);
+            const focused = $set(activated, 'isFocused', true);
+
+            this.updateNode(focused);
+        } else {
+            fetch(this.endpoints.loadTree, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'X-Flow-Csrftoken': this.csrfToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nodeTreeArguments: {
+                        active,
+                        nodeTypeFilter
+                    },
+                    includeRoot: true
+                })
+            })
+            .then(response => response.json())
+            .then(json => this.store.dispatch(actions.UI.PageTree.setData(json)));
+        }
+    }
+
+    loadSubTree(root, nodeTypeFilter = 'TYPO3.Neos:Document') {
+        const storePath = storePathToChildrenOf(root);
+        const rootInStore = this.getNode(root);
+
+        if (!rootInStore.get('children')) {
+            fetch(this.endpoints.loadTree, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'X-Flow-Csrftoken': this.csrfToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nodeTreeArguments: {
+                        root,
+                        nodeTypeFilter
+                    },
+                    includeRoot: false
+                })
+            })
+            .then(response => response.json())
+            .then(json => this.store.dispatch(actions.UI.PageTree.setSubTree(storePath, json)));
+        }
+    }
+
+    updateNode(node) {
+        const storePath = storePathTo(node);
+
+        this.store.dispatch(actions.UI.PageTree.setNode(storePath, node));
     }
 }
 

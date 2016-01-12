@@ -7,17 +7,6 @@ const postCssImport = require('postcss-import');
 const nested = require('postcss-nested');
 
 module.exports = {
-    entry: {
-        Host: './Resources/Private/JavaScript/Host/index.js',
-        Guest: './Resources/Private/JavaScript/Guest/index.js',
-        Login: './Resources/Private/JavaScript/Login/index.js'
-    },
-
-    output: {
-        filename: 'JavaScript/[name].js',
-        path: path.resolve('./Resources/Public/')
-    },
-
     module: {
         loaders: [
             {
@@ -61,6 +50,6 @@ module.exports = {
 
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
-        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
+        new ExtractTextPlugin('./Styles/Tests.css', {allChunks: true})
     ]
 };

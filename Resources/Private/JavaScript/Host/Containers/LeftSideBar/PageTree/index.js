@@ -40,13 +40,19 @@ export default class PageTree extends Component {
     }
 
     onPageNodeClick(node) {
-        console.log('page activated', node);
+        const {nodeTreeService} = backend;
+        const newNode = $set(node, 'isFocused', !$get(node, 'isFocused'));
+
+        nodeTreeService.updateNode(newNode);
     }
 
     onPageNodeFocusChanged(node) {
-        const {tabManager} = backend;
+        const {tabManager, nodeTreeService} = backend;
         const href = $get(node, 'href');
+        const focused = $set(node, 'isFocused', !$get(node, 'isFocused'));
+        const active = $set(focused, 'isActive', !$get(focused, 'isActive'));
 
+        nodeTreeService.updateNode(active);
         tabManager.changeActiveTabSrc(href);
     }
 }

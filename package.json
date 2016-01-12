@@ -8,21 +8,21 @@
     "autoprefixer": "^6.2.2",
     "babel-core": "^5.8.34",
     "babel-loader": "^5.4.0",
+    "chai": "^3.4.1",
     "css-loader": "^0.23.1",
-    "eslint": "^1.10.3",
-    "eslint-config-xo": "^0.9.1",
-    "eslint-config-xo-react": "^0.3.0",
-    "eslint-plugin-react": "^3.13.1",
     "extract-text-webpack-plugin": "^0.9.1",
+    "glob": "^6.0.4",
+    "jsdom": "^7.2.2",
+    "mocha": "^2.3.4",
     "postcss-import": "^7.1.3",
     "postcss-loader": "^0.8.0",
     "postcss-nested": "^1.0.0",
     "postcss-simple-vars": "^1.2.0",
+    "react-addons-test-utils": "^0.14.6",
     "redux-devtools": "^2.1.3",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.9",
-    "xo": "^0.12.1"
+    "webpack": "^1.12.9"
   },
   "dependencies": {
     "@reduct/component": "^2.0.4",
@@ -40,8 +40,8 @@
     "lodash.isobject": "^3.0.2",
     "medium-editor": "^5.10.0",
     "normalize.css": "^3.0.3",
-    "react": "^0.14.5",
-    "react-dom": "^0.14.1",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
     "react-motion": "^0.3.1",
     "react-motion-ui-pack": "^0.5.2",
     "react-redux": "^4.0.0",
@@ -52,11 +52,10 @@
     "whatwg-fetch": "^0.10.1"
   },
   "scripts": {
-    "build": "webpack",
-    "lint:scripts": "xo Resources/Private/JavaScript/**/**/**/**/**/**/*.js",
-    "lint": "npm run lint:scripts",
-    "test": "npm run lint",
-    "watch": "webpack --progress --colors --watch"
+    "build": "webpack --config webpack.build.config.js",
+    "watch": "webpack --config webpack.build.config.js --progress --colors --watch",
+    "pretest": "webpack --config webpack.testing.config.js --target node",
+    "test": "mocha mocha.runTests.js"
   },
   "xo": {
     "esnext": true,

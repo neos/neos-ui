@@ -18,7 +18,7 @@ export default class DropDown extends Component {
 
         // Contents of the DropDown.
         children: PropTypes.node.isRequired
-    }
+    };
 
     constructor(props) {
         super(props);

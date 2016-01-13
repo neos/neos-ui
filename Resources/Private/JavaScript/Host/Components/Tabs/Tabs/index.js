@@ -11,7 +11,7 @@ export default class Tabs extends Component {
 
         className: PropTypes.string,
         children: PropTypes.node.isRequired
-    }
+    };
 
     constructor(props) {
         super(props);

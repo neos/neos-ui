@@ -13,7 +13,7 @@ const {$get} = immutableOperations;
 export default class UserDropDown extends Component {
     static propTypes = {
         userName: PropTypes.string.isRequired
-    }
+    };
 
     render() {
         const dropDownClassNames = {

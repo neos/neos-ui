@@ -15,7 +15,7 @@ export default class Tree extends Component {
         onNodeClick: PropTypes.func,
         onNodeFocusChanged: PropTypes.func,
         className: PropTypes.string
-    }
+    };
 
     render() {
         const {className, data} = this.props;
@@ -41,7 +41,7 @@ export default class Tree extends Component {
                     <NodeHeader
                         node={node}
                         onToggle={this.onTreeToggle.bind(this)}
-                        onClick={this.onNodeClick.bind(this)}
+                        onClick={this.onNodeClicked.bind(this)}
                         onLabelClick={e => this.onNodeLabelClick(e, node)}
                         />
                     <div className={style.treeWrapper__tree__children}>
@@ -60,7 +60,7 @@ export default class Tree extends Component {
         }
     }
 
-    onNodeClick(node) {
+    onNodeClicked(node) {
         const {onNodeClick} = this.props;
 
         if (onNodeClick) {
@@ -69,10 +69,10 @@ export default class Tree extends Component {
     }
 
     onNodeLabelClick(node) {
-        this.onNodeFocusChanged(node);
+        this.changeNodeFocus(node);
     }
 
-    onNodeFocusChanged(node) {
+    changeNodeFocus(node) {
         const {onNodeFocusChanged} = this.props;
 
         if (onNodeFocusChanged) {
@@ -86,11 +86,11 @@ export default class Tree extends Component {
         switch (e.key) {
             case 'ArrowUp':
                 // ToDo: Implement the onFocusChanged prop.
-                this.onNodeFocusChanged('todo');
+                this.changeNodeFocus('todo');
                 break;
             case 'ArrowDown':
                 // ToDo: Implement the onFocusChanged prop.
-                this.onNodeFocusChanged('todo');
+                this.changeNodeFocus('todo');
                 break;
             case 'ArrowRight':
                 this.onTreeToggle(focusedNode);

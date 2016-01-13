@@ -15,7 +15,7 @@ const {$get} = immutableOperations;
 export default class LeftSideBar extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired
-    }
+    };
 
     render() {
         const classNames = mergeClassNames({

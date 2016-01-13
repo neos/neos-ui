@@ -13,10 +13,9 @@ const {$get, $set} = immutableOperations;
     };
 })
 export default class PageTree extends Component {
-
     static propTypes = {
         treeData: PropTypes.instanceOf(Immutable.Map)
-    }
+    };
 
     render() {
         const {treeData} = this.props;

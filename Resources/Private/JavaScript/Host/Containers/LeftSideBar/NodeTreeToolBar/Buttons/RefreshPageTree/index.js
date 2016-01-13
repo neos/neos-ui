@@ -6,7 +6,7 @@ import {IconButton} from 'Host/Components/';
 export default class RefreshPageTree extends Component {
     static propTypes = {
         className: PropTypes.string
-    }
+    };
 
     render() {
         return (

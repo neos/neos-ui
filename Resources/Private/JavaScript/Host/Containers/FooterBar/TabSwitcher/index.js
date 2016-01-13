@@ -10,7 +10,7 @@ export default class TabSwitcher extends Component {
         tabs: PropTypes.instanceOf(Immutable.Map),
         active: PropTypes.instanceOf(Immutable.Map),
         onSwitchTab: PropTypes.func
-    }
+    };
 
     render() {
         const {active} = this.props;

@@ -18,7 +18,8 @@ export default class AbstractButton extends Component {
             isEnabled,
             isHighlighted,
             indicator,
-            className
+            className,
+            onClick
         } = this.props;
         const btnClassName = mergeClassNames({
             [style.btn]: true,
@@ -32,15 +33,9 @@ export default class AbstractButton extends Component {
         };
 
         return (
-            <button className={btnClassName} onClick={() => this.onClick()} {...attributes}>
+            <button className={btnClassName} onClick={() => onClick()} {...attributes}>
                 {this.props.children} {indicator > 0 ? `(${indicator})` : ''}
             </button>
         );
-    }
-
-    onClick() {
-        const {onClick} = this.props;
-
-        onClick();
     }
 }

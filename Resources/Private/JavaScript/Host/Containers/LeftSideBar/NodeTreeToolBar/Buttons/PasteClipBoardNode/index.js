@@ -7,7 +7,7 @@ export default class PasteClipBoardNode extends Component {
     static propTypes = {
         isDisabled: PropTypes.bool,
         className: PropTypes.string
-    }
+    };
 
     constructor(props) {
         super(props);

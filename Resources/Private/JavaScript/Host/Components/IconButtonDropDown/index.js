@@ -26,7 +26,7 @@ export default class IconButtonDropDown extends Component {
         // Interaction related propTypes.
         onClick: PropTypes.func.isRequired,
         onItemSelect: PropTypes.func.isRequired
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -76,7 +76,7 @@ export default class IconButtonDropDown extends Component {
             .map((child, index) => (
                 <a
                     className={style.wrapper__dropDown__item}
-                    onClick={this.onItemSelect.bind(this, child.props.dropDownId)}
+                    onClick={this.onItemSelected.bind(this, child.props.dropDownId)}
                     key={index}
                     >
                     {child}
@@ -109,7 +109,7 @@ export default class IconButtonDropDown extends Component {
         this.closeDropDown();
     }
 
-    onItemSelect(ref) {
+    onItemSelected(ref) {
         const {onItemSelect} = this.props;
 
         if (!ref) {

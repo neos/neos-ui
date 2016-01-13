@@ -43,7 +43,7 @@ export default class PublishDropDown extends Component {
         publishableNodesInDocument: PropTypes.instanceOf(Immutable.List),
         isAutoPublishingEnabled: PropTypes.bool,
         dispatch: PropTypes.any.isRequired
-    }
+    };
 
     render() {
         const {

@@ -23,7 +23,10 @@ and paste the following configuration into the head of your global `Routes.yaml`
       package: 'PackageFactory.Guevara'
 ```
 
-Afterwards open the sub-route `/che!` to login to the new interface.
+Change into the directory of the Guevara package, execute `npm install` as well as `npm run build` to build the JS compiled files.
+__Note: We recommend the node version `4.2.2` as well as the npm version `2.14.7`.__
+
+Done. Open the sub-route `/che!` to login to the new interface.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.

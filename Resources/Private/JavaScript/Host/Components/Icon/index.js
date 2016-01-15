@@ -23,7 +23,8 @@ const Icon = props => {
         [style['icon--small']]: size === 'small',
         [style['icon--tiny']]: size === 'tiny',
         [style['icon--paddedLeft']]: padded === 'left',
-        [style['icon--paddedRight']]: padded === 'right'
+        [style['icon--paddedRight']]: padded === 'right',
+        [style['icon--spin']]: props.spin
     });
 
     return (
@@ -55,7 +56,8 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
     // Style related propTypes.
     size: PropTypes.oneOf(['big', 'small', 'tiny']),
     padded: PropTypes.oneOf(['none', 'left', 'right']),
-    className: PropTypes.string
+    className: PropTypes.string,
+    spin: PropTypes.boolean
 };
 
 export default Icon;

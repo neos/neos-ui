@@ -13,6 +13,7 @@
     "extract-text-webpack-plugin": "^0.9.1",
     "glob": "^6.0.4",
     "imports-loader": "^0.6.5",
+    "istanbul": "^0.4.2",
     "jsdom": "^7.2.2",
     "mocha": "^2.3.4",
     "postcss-import": "^7.1.3",

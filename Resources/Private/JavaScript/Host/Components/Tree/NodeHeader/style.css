@@ -19,6 +19,12 @@
 .nodeHeader__chevron--isCollapsed {
     transform: translateY(-35%) translateX(-25%) rotate(-90deg);
 }
+
+.nodeHeader__chevron--isLoading,
+.nodeHeader__chevron--isLoading:hover {
+    color: $brighter !important;
+}
+
 .nodeHeader__data {
     display: block;
     cursor: pointer;

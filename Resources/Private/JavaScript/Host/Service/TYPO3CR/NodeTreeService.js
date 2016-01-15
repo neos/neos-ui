@@ -72,6 +72,9 @@ class NodeTreeService {
         const rootInStore = this.getNode(root);
 
         if (!rootInStore.get('children')) {
+            const updatedRootInStore = $set(rootInStore, 'isLoading', true);
+            this.updateNode(updatedRootInStore);
+
             fetch(this.endpoints.loadTree, {
                 method: 'POST',
                 credentials: 'include',
@@ -88,7 +91,11 @@ class NodeTreeService {
                 })
             })
             .then(response => response.json())
-            .then(json => this.store.dispatch(actions.UI.PageTree.setSubTree(storePath, json)));
+            .then(json => {
+                const nodeWhichIsNotLoadingAnymore = $set(updatedRootInStore, 'isLoading', false);
+                this.updateNode(nodeWhichIsNotLoadingAnymore);
+                this.store.dispatch(actions.UI.PageTree.setSubTree(storePath, json));
+            });
         }
     }
 

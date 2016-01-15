@@ -50,6 +50,6 @@ module.exports = {
 
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
-        new ExtractTextPlugin('./Styles/Tests.css', {allChunks: true})
+        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
     ]
 };

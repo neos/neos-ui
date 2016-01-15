@@ -41,9 +41,9 @@ const TextInput = props => {
                 id={id}
                 type="text"
                 placeholder={placeholder}
-                onChange={e => onChangeHandler(e, onChange)}
-                onFocus={() => executeCallback(onFocus)}
-                onBlur={() => executeCallback(onBlur)}
+                onChange={e => onChangeHandler({e, cb: onChange})}
+                onFocus={() => executeCallback({cb: onFocus})}
+                onBlur={() => executeCallback({cb: onBlur})}
                 />
         </div>
     );

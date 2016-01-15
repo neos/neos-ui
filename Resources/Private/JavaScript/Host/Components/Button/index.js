@@ -27,11 +27,11 @@ const Button = props => {
     });
     const attributes = {
         className: classNames,
-        onClick: e => executeCallback(e, onClick),
-        onMouseDown: e => executeCallback(e, onMouseDown),
-        onMouseUp: e => executeCallback(e, onMouseUp),
-        onMouseEnter: e => executeCallback(e, onMouseEnter),
-        onMouseLeave: e => executeCallback(e, onMouseLeave),
+        onClick: e => executeCallback({e, cb: onClick}),
+        onMouseDown: e => executeCallback({e, cb: onMouseDown}),
+        onMouseUp: e => executeCallback({e, cb: onMouseUp}),
+        onMouseEnter: e => executeCallback({e, cb: onMouseEnter}),
+        onMouseLeave: e => executeCallback({e, cb: onMouseLeave}),
         ref: btn => {
             const method = isFocused ? 'focus' : 'blur';
 

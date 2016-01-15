@@ -50,7 +50,7 @@ export default class DropDown extends Component {
             <div className={dropDownClassName} ref="dropDown">
                 <button
                     className={buttonClassName}
-                    onClick={e => executeCallback(e, this.toggleDropDown.bind(this))}
+                    onClick={e => executeCallback({e, cb: this.toggleDropDown.bind(this)})}
                     ref={btn => {
                         const method = isOpened ? 'focus' : 'blur';
 

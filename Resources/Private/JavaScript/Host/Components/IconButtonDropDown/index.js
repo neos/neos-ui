@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Host/Abstracts/';
 import {service} from 'Shared/';
 import Icon from 'Host/Components/Icon/';
 import Button from 'Host/Components/Button/';
@@ -101,7 +100,7 @@ export default class IconButtonDropDown extends Component {
         this.cancelHoldTimeout();
 
         if (!isOpened) {
-            executeCallback(this.props.onClick);
+            this.props.onClick();
         }
     }
 

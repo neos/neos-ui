@@ -34,6 +34,10 @@ export default class FooterBar extends Component {
             ban: severity.toLowerCase() === 'error',
             info: severity.toLowerCase() === 'info'
         }) || 'info';
+        const onClick = e => executeCallback({
+            e,
+            cb: () => this.commenceClose()
+        });
 
         return (
             <div className={flashMessageClasses}>
@@ -44,7 +48,7 @@ export default class FooterBar extends Component {
                     className={style.flashMessage__btnClose}
                     style="transparent"
                     hoverStyle="darken"
-                    onClick={e => executeCallback(e, this.commenceClose.bind(this))}
+                    onClick={onClick}
                     />
             </div>
         );

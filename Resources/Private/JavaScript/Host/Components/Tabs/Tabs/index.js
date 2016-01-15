@@ -52,10 +52,11 @@ export default class Tabs extends Component {
                     [style.tabs__navigation__item]: true,
                     [style['tabs__navigation__item--isActive']]: this.state.activeTab === (index)
                 });
+                const onClick = e => executeCallback({e, cb: () => this.activateTabForIndex(index)});
 
                 return (
                     <li ref={ref} key={index} className={classes}>
-                        <a onClick={e => executeCallback(e, () => this.activateTabForIndex(index))}>
+                        <a onClick={onClick}>
                             {icon ? <Icon icon={icon} /> : null}
                             {title}
                         </a>

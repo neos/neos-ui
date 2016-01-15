@@ -9,7 +9,8 @@ const Dialog = props => {
     const {
         className,
         children,
-        isOpen
+        isOpen,
+        onRequestClose
     } = props;
     const classNames = mergeClassNames({
         [style.dialog]: true,
@@ -24,7 +25,7 @@ const Dialog = props => {
                         <IconButton
                             icon="close"
                             className={style.dialog__contents__inner__closeBtn}
-                            onClick={e => executeCallback(e, props.onRequestClose)}
+                            onClick={e => executeCallback({e, cb: onRequestClose})}
                             />
 
                         {children}

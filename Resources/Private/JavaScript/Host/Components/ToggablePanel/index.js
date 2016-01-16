@@ -15,7 +15,7 @@ export default class ToggablePanel extends Component {
         className: PropTypes.string,
         headerClassName: PropTypes.string,
         children: PropTypes.node.isRequired
-    }
+    };
 
     constructor(props) {
         super(props);

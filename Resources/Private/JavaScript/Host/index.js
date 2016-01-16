@@ -1,3 +1,4 @@
+import compose from 'lodash.compose';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
@@ -44,7 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
     const nodeTypeSchema = JSON.parse(appContainer.querySelector('[data-json="nodeTypeSchema"]').innerHTML);
     const reducers = reducerFactory(initialState);
-    const store = createStore(reducers);
+
+    const finalCreateStore = compose(
+        // Middleware you want to use in development:
+        // Required! Enable Redux DevTools with the monitors you chose
+        window.devToolsExtension ? window.devToolsExtension() : f => f
+    )(createStore);
+
+    const store = finalCreateStore(reducers);
 
     nodeTypeManager.initializeWithNodeTypeSchema(nodeTypeSchema);
 

@@ -18,7 +18,7 @@ export default class I18n extends Component {
 
         // Optional className which gets added to the translation span.
         className: PropTypes.string
-    }
+    };
 
     constructor(props) {
         super(props);

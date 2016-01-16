@@ -5,7 +5,7 @@ import i18n from './I18n.js';
 import {nodeTypeManager, nodeTreeService, publishingService} from './TYPO3CR/';
 import {tabManager} from './UI/';
 
-export default {
+export {
     backend,
     nodeTypeManager,
     nodeTreeService,

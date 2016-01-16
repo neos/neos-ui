@@ -16,7 +16,7 @@ import style from './style.css';
 export default class AddNode extends Component {
     static propTypes = {
         className: PropTypes.string
-    }
+    };
 
     constructor(props) {
         super(props);

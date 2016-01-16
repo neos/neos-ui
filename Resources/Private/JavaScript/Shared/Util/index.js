@@ -1,5 +1,5 @@
 import * as immutableOperations from './ImmutableOperations.js';
 
-export default {
+export {
     immutableOperations
 };

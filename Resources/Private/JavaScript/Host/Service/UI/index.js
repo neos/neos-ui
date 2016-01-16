@@ -1,5 +1,5 @@
 import tabManager from './TabManager';
 
-export default {
+export {
     tabManager
 };

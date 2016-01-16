@@ -19,7 +19,7 @@ export default class OffCanvas extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         dispatch: PropTypes.any.isRequired
-    }
+    };
 
     render() {
         const classNames = mergeClassNames({

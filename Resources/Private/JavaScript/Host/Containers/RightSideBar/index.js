@@ -21,7 +21,7 @@ export default class RightSideBar extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         dispatch: PropTypes.any.isRequired
-    }
+    };
 
     render() {
         const {isHidden} = this.props;

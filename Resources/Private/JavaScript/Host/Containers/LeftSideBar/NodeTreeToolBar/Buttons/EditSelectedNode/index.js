@@ -7,7 +7,7 @@ export default class EditSelectedNode extends Component {
     static propTypes = {
         isDisabled: PropTypes.bool,
         className: PropTypes.string
-    }
+    };
 
     render() {
         const {

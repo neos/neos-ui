@@ -30,6 +30,15 @@ __Note: We recommend the node version `4.2.2` as well as the npm version `2.14.7
 
 Done. Open the sub-route `/che!` to login to the new interface.
 
+## Libraries
+| Name | Description/Usecase          |
+| ------------- | ----------- |
+| [immutable](https://facebook.github.io/immutable-js/) | Transforms data into immutable structures. [Read more](http://jlongster.com/Using-Immutable-Data-Structures-in-JavaScript) |
+| [redux](https://github.com/rackt/redux) | Handles the state of the application in general. |
+| [react](https://facebook.github.io/react/) | The view layer on which the UI is based upon. [Read more](http://www.jchapron.com/2015/08/14/getting-started-with-redux/) |
+| [react-motion](https://github.com/chenglou/react-motion) / [react-motion-ui-pack](https://github.com/souporserious/react-motion-ui-pack) | Simple animations in react. |
+| [@reduct/component](https://github.com/reduct/component) | Used for low-level components which interact directly with server side rendered markup. |
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
 

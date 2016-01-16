@@ -3,7 +3,7 @@ import logToConsole from './LogToConsole.js';
 import updateWorkspaceInfo from './UpdateWorkspaceInfo.js';
 import reloadDocument from './ReloadDocument.js';
 
-export default {
+export {
     flashMessage,
     logToConsole,
     updateWorkspaceInfo,

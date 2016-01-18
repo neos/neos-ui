@@ -6,4 +6,8 @@
     width: 512px;
     padding-top: 8px;
     transform: translate(-50%, 0);
+
+    &:empty {
+        display: none;
+    }
 }

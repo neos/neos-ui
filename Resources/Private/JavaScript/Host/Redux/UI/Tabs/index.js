@@ -3,11 +3,24 @@ import {createAction, handleActions} from 'redux-actions';
 
 const {$get, $set, $merge, $delete} = immutableOperations;
 
-export const ADD = '@packagefactory/guevara/UI/Tabs/ADD';
-export const REMOVE = '@packagefactory/guevara/UI/Tabs/REMOVE';
-export const SET_ACTIVE = '@packagefactory/guevara/UI/Tabs/SET_ACTIVE';
-export const SET_METADATA = '@packagefactory/guevara/UI/Tabs/SET_METADATA';
-export const UPDATE_WORKSPACE_INFO = '@packagefactory/guevara/UI/Tabs/UPDATE_WORKSPACE_INFO';
+const ADD = '@packagefactory/guevara/UI/Tabs/ADD';
+const REMOVE = '@packagefactory/guevara/UI/Tabs/REMOVE';
+const SET_ACTIVE = '@packagefactory/guevara/UI/Tabs/SET_ACTIVE';
+const SET_METADATA = '@packagefactory/guevara/UI/Tabs/SET_METADATA';
+const UPDATE_WORKSPACE_INFO = '@packagefactory/guevara/UI/Tabs/UPDATE_WORKSPACE_INFO';
+const initialState = {
+    byId: {},
+    active: {
+        id: '',
+        workspace: {
+            name: '',
+            publishingState: {
+                publishableNodes: [],
+                publishableNodesInDocument: []
+            }
+        }
+    }
+};
 
 export default handleActions({
     [ADD]: (state, action) => {
@@ -34,7 +47,7 @@ export default handleActions({
     },
     [SET_METADATA]: (state, action) => doSetMetaData(state, action.payload),
     [UPDATE_WORKSPACE_INFO]: (state, action) => doUpdateWorkspaceInfo(state, action.payload)
-});
+}, initialState);
 
 /**
  * Helper function to make updating the active tab data easier.

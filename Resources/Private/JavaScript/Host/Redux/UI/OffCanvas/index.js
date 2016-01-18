@@ -5,6 +5,9 @@ const {$get, $set} = immutableOperations;
 
 const TOGGLE = '@packagefactory/guevara/UI/OffCanvas/TOGGLE';
 const HIDE = '@packagefactory/guevara/UI/OffCanvas/HIDE';
+const initialState = {
+    isHidden: true
+};
 
 export default handleActions({
     [TOGGLE]: state => {
@@ -13,7 +16,7 @@ export default handleActions({
         return $set(state, 'ui.offCanvas.isHidden', !isCurrentlyHidden);
     },
     [HIDE]: state => $set(state, 'ui.offCanvas.isHidden', true)
-});
+}, initialState);
 
 /**
  * Toggles the off canvas menu out/in of the users viewport.

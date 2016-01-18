@@ -4,6 +4,9 @@ import {createAction, handleActions} from 'redux-actions';
 const {$get, $set} = immutableOperations;
 
 const TOGGLE = '@packagefactory/guevara/UI/RightSidebar/TOGGLE';
+const initialState = {
+    isHidden: false
+};
 
 export default handleActions({
     [TOGGLE]: state => {
@@ -11,7 +14,7 @@ export default handleActions({
 
         return $set(state, 'ui.rightSidebar.isHidden', !isCurrentlyHidden);
     }
-});
+}, initialState);
 
 /**
  * Toggles the right sidebar out/in of the users viewport.

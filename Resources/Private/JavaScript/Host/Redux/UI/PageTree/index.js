@@ -5,6 +5,7 @@ const {$get, $set} = immutableOperations;
 const SET = '@packagefactory/guevara/UI/PageTree/SET';
 const SET_SUB_TREE = '@packagefactory/guevara/UI/PageTree/SET_SUB_TREE';
 const SET_NODE = '@packagefactory/guevara/UI/PageTree/SET_NODE';
+const initialState = {};
 
 function resetFocusAndActive(node, keepActive, keepFocus) {
     return node && node.map(page => page
@@ -14,7 +15,7 @@ function resetFocusAndActive(node, keepActive, keepFocus) {
     ));
 }
 
-export default function reducer(state, action) {
+export default function reducer(state = initialState, action) {
     switch (action.type) {
         case SET: {
             return $set(state, 'ui.pageTree', action.data);

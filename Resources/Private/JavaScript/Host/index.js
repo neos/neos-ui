@@ -1,13 +1,10 @@
-import compose from 'lodash.compose';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
 import assign from 'lodash.assign';
 import registry from '@reduct/registry';
 
-import reducerFactory from './Redux/';
-import {initialStateFactory} from './Redux/State/';
+import {configureStore} from './Redux/';
 
 import * as feedbackHandler from './Service/FeedbackHandler/';
 
@@ -39,20 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('appContainer');
     const firstTabUri = appContainer.dataset.firstTab;
     const csrfToken = appContainer.dataset.csrfToken;
-    const initialState = initialStateFactory(
-        JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML)
-    );
+    const serverState = JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
     const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
     const nodeTypeSchema = JSON.parse(appContainer.querySelector('[data-json="nodeTypeSchema"]').innerHTML);
-    const reducers = reducerFactory(initialState);
+    const store = configureStore({serverState});
 
-    const finalCreateStore = compose(
-        // Middleware you want to use in development:
-        // Required! Enable Redux DevTools with the monitors you chose
-        window.devToolsExtension ? window.devToolsExtension() : f => f
-    )(createStore);
-
-    const store = finalCreateStore(reducers);
+    console.log(store.getState());
 
     nodeTypeManager.initializeWithNodeTypeSchema(nodeTypeSchema);
 

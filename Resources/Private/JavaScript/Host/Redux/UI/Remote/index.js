@@ -9,6 +9,11 @@ const START_PUBLISHING = '@packagefactory/guevara/UI/Remote/START_PUBLISHING';
 const FINISH_PUBLISHING = '@packagefactory/guevara/UI/Remote/FINISH_PUBLISHING';
 const START_DISCARDING = '@packagefactory/guevara/UI/Remote/START_DISCARDING';
 const FINISH_DISCARDING = '@packagefactory/guevara/UI/Remote/FINISH_DISCARDING';
+const initialState = {
+    isSaving: false,
+    isPublishing: false,
+    isDiscarding: false
+};
 
 export default handleActions({
     [START_SAVING]: state => $set(state, 'ui.remote.isSaving', true),
@@ -17,7 +22,7 @@ export default handleActions({
     [FINISH_PUBLISHING]: state => $set(state, 'ui.remote.isPublishing', false),
     [START_DISCARDING]: state => $set(state, 'ui.remote.isDiscarding', true),
     [FINISH_DISCARDING]: state => $set(state, 'ui.remote.isDiscarding', false)
-});
+}, initialState);
 
 /**
  * Marks an ongoing saving process.

@@ -5,11 +5,15 @@ const {$set, $merge} = immutableOperations;
 
 const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
 const ADD_BULK = '@packagefactory/guevara/Transient/Nodes/ADD_BULK';
+const initialState = {
+    byContextPath: {},
+    selected: {}
+};
 
 export default handleActions({
     [ADD]: (state, action) => $set(state, ['nodes', 'byContextPath', action.payload.contextPath], action.payload.data),
     [ADD_BULK]: state => $merge(state, 'nodes.byContextPath', state.nodes)
-});
+}, initialState);
 
 /**
  * Adds a node to the application state

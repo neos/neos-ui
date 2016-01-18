@@ -1,27 +1,37 @@
-// Third party
-import compose from 'lodash.compose';
-import curry from 'lodash.curry';
+import {
+    applyMiddleware,
+    combineReducers,
+    createStore
+} from 'redux';
 
-const _ = curry.placeholder;
+import TransientReducer, * as Transient from './Transient/';
+import UIReducer, * as UI from './UI/';
+import UserReducer, * as User from './User/';
 
-// Import Reducers
-import TransientReducer from './Transient/';
-import UIReducer from './UI/';
-import UserReducer from './User/';
+const reducers = Object.assign(
+    {},
+    TransientReducer,
+    UIReducer,
+    UserReducer
+);
 
-// Import Actions
-import * as Transient from './Transient/';
-import * as UI from './UI/';
-import * as User from './User/';
+const rootReducer = combineReducers(reducers);
 
-// Export Reducer
-export default initialState =>
-    (state = initialState, action) =>
-        compose(
-            curry(TransientReducer)(_, action),
-            curry(UIReducer)(_, action),
-            curry(UserReducer)(_, action)
-        )(state);
+//
+// Middleware you want to use in development:
+// Required! Enable Redux DevTools with the monitors you chose
+//
+function devToolsMiddleware() {
+    return window.devToolsExtension ? window.devToolsExtension() : () => () => null;
+}
+
+export function configureStore({serverState = {}} = {}) {
+    const middleware = applyMiddleware(
+        // devToolsMiddleware()
+    );
+
+    return middleware(createStore)(rootReducer, serverState);
+}
 
 // Export Actions
 export const actions = {

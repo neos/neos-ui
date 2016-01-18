@@ -1,23 +1,16 @@
-// Third party
-import compose from 'lodash.compose';
-import curry from 'lodash.curry';
+import {combineReducers} from 'redux';
+import SettingsReducer, * as Settings from './Settings/';
+import NameReducer from './Name/';
 
-const _ = curry.placeholder;
+// Export reducers & state structure.
+export default {
+    user: combineReducers({
+        settings: SettingsReducer,
+        name: NameReducer
+    })
+};
 
-// Import Reducers
-import SettingsReducer from './Settings/';
-
-// Import Actions
-import * as Settings from './Settings/';
-
-// Export Reducer
-export default function reducer(state, action) {
-    return compose(
-        curry(SettingsReducer)(_, action)
-    )(state);
-}
-
-// Export Actions
+// Export all actions
 export {
     Settings
 };

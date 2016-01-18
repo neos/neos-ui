@@ -3,11 +3,12 @@ import {createAction, handleActions} from 'redux-actions';
 
 const ADD = '@packagefactory/guevara/Transient/Changes/ADD';
 const CLEAR = '@packagefactory/guevara/Transient/Changes/CLEAR';
+const initialState = [];
 
 export default handleActions({
     [ADD]: (state, action) => state.set('changes', state.get('changes').push(action.payload.change)),
     [CLEAR]: state => state.set('changes', Immutable.fromJS([]))
-});
+}, initialState);
 
 /**
  * Adds the given chagnge to the global state.

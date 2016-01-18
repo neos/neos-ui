@@ -1,41 +1,26 @@
-// Third party
-import compose from 'lodash.compose';
-import curry from 'lodash.curry';
+import {combineReducers} from 'redux';
+import FlashMessagesReducer, * as FlashMessages from './FlashMessages/';
+import LeftSideBarReducer, * as LeftSideBar from './LeftSideBar/';
+import OffCanvasReducer, * as OffCanvas from './OffCanvas/';
+import RemoteReducer, * as Remote from './Remote/';
+import RightSideBarReducer, * as RightSideBar from './RightSideBar/';
+import TabsReducer, * as Tabs from './Tabs/';
+import PageTreeReducer, * as PageTree from './PageTree/';
 
-const _ = curry.placeholder;
+// Export reducers & state structure.
+export default {
+    ui: combineReducers({
+        flashMessages: FlashMessagesReducer,
+        leftSideBar: LeftSideBarReducer,
+        offCanvas: OffCanvasReducer,
+        remote: RemoteReducer,
+        rightSideBar: RightSideBarReducer,
+        tabs: TabsReducer,
+        pageTree: PageTreeReducer
+    })
+};
 
-// Import Reducers
-import FlashMessagesReducer from './FlashMessages/';
-import LeftSideBarReducer from './LeftSideBar/';
-import OffCanvasReducer from './OffCanvas/';
-import RemoteReducer from './Remote/';
-import RightSideBarReducer from './RightSideBar/';
-import TabsReducer from './Tabs/';
-import PageTreeReducer from './PageTree/';
-
-// Import Actions
-import * as FlashMessages from './FlashMessages/';
-import * as LeftSideBar from './LeftSideBar/';
-import * as OffCanvas from './OffCanvas/';
-import * as Remote from './Remote/';
-import * as RightSideBar from './RightSideBar/';
-import * as Tabs from './Tabs/';
-import * as PageTree from './PageTree/';
-
-// Export Reducer
-export default function reducer(state, action) {
-    return compose(
-        curry(FlashMessagesReducer)(_, action),
-        curry(LeftSideBarReducer)(_, action),
-        curry(OffCanvasReducer)(_, action),
-        curry(RemoteReducer)(_, action),
-        curry(RightSideBarReducer)(_, action),
-        curry(TabsReducer)(_, action),
-        curry(PageTreeReducer)(_, action)
-    )(state);
-}
-
-// Export Actions
+// Export actions
 export {
     FlashMessages,
     LeftSideBar,

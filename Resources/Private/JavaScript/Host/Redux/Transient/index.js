@@ -1,26 +1,16 @@
-// Third party
-import compose from 'lodash.compose';
-import curry from 'lodash.curry';
+import {combineReducers} from 'redux';
+import ChangesReducer, * as Changes from './Changes/';
+import NodesReducer, * as Nodes from './Nodes/';
 
-const _ = curry.placeholder;
+// Export reducers & state structure.
+export default {
+    transient: combineReducers({
+        changes: ChangesReducer,
+        nodes: NodesReducer
+    })
+};
 
-// Import Reducers
-import ChangesReducer from './Changes/';
-import NodesReducer from './Nodes/';
-
-// Import Actions
-import * as Changes from './Changes/';
-import * as Nodes from './Nodes/';
-
-// Export Reducer
-export default function reducer(state, action) {
-    return compose(
-        curry(ChangesReducer)(_, action),
-        curry(NodesReducer)(_, action)
-    )(state);
-}
-
-// Export Actions
+// Export actions
 export {
     Changes,
     Nodes

@@ -69,7 +69,10 @@ export default serverState => Immutable.fromJS({
         //
         // Contains information to render the page tree
         //
-        pageTree: {}
+        pageTree: {},
+        contentTree: {
+            collapsedNodes: []
+        }
     },
 
     //

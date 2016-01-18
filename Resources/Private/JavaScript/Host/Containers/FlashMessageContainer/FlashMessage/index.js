@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 import {IconButton, Icon} from 'Host/Components/';

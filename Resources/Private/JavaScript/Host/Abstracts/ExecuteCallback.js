@@ -32,10 +32,10 @@ export default ({e, cb, preventDefault = true, stopImmediatePropagation = false}
         //
         try {
             e.stopImmediatePropagation();
-        } catch(e) {}
+        } catch (e) {}
         try {
             e.stopPropagation();
-        } catch(e) {}
+        } catch (e) {}
     }
 
     if (cb && isFunction(cb)) {

@@ -1,5 +1,4 @@
 import {actions} from '../../Redux/';
-import backend from '../Backend.js';
 import {immutableOperations} from 'Shared/Util/';
 
 const {$get, $set} = immutableOperations;
@@ -21,7 +20,7 @@ function storePathTo(node) {
  * The node tree service
  */
 class NodeTreeService {
-    constructor(store, csrfToken, endpoints) {
+    constructor(store, csrfToken) {
         this.store = store;
         this.csrfToken = csrfToken;
 
@@ -38,7 +37,6 @@ class NodeTreeService {
     }
 
     loadTree(active, nodeTypeFilter = 'TYPO3.Neos:Document') {
-        const {feedbackManager} = backend;
         const activeInStore = this.getNode(active);
 
         if (activeInStore) {

@@ -8,7 +8,7 @@ export default (feedback, envelope) => {
             break;
 
         default:
-            logger.info(feedback.payload.message);
+            logger.info(feedback.payload.message, `Envelope: ${envelope}`);
             break;
     }
 };

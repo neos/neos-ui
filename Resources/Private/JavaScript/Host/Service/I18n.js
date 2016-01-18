@@ -3,7 +3,7 @@ function formatIdentifier(identifier) {
 }
 
 export default translations =>
-    (transUnitId, packageKey = 'TYPO3.Neos', sourceName = 'Main', params = []) => {
+    (transUnitId, packageKey = 'TYPO3.Neos', sourceName = 'Main') => {
         transUnitId = formatIdentifier(transUnitId);
         packageKey = formatIdentifier(packageKey);
         sourceName = formatIdentifier(sourceName);

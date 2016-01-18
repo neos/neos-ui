@@ -45,7 +45,7 @@ describe('"ExecuteCallback" abstract', () => {
             e: {
                 nope: true
             }
-        });;
+        });
 
         expect(fn).to.throw(ERROR_INVALID_EVENT);
     });

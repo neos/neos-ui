@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {DropDown, Icon} from 'Host/Components/';
 import style from './style.css';

@@ -25,7 +25,7 @@ class NodeHeader extends Component {
 
         const label = $get(node, 'label');
         const icon = $get(node, 'icon') || nodeTypeManager.getIconForNodeType($get(node, 'nodeType')) || 'question';
-        const children = $get(node, 'children');
+        /* const children = $get(node, 'children'); */
         const isActive = $get(node, 'isActive');
         const isFocused = $get(node, 'isFocused');
         const isCollapsable = $get(node, 'isCollapsable');

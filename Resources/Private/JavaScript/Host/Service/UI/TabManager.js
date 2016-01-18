@@ -31,8 +31,7 @@ class TabManager {
         if (!this.store.getState().get('ui').get('tabs').get('byId').get(tabId)) {
             throw new Error(`Cannot close tab with id ${tabId}, because it does not exist!`);
         }
-
-        const tabConfiguration = this.store.getState().get('ui').get('tabs').get('byId').get(tabId);
+        /* const tabConfiguration = this.store.getState().get('ui').get('tabs').get('byId').get(tabId); */
 
         // remove nodes that are not needed any longer
         this.store.dispatch(actions.UI.Tabs.remove(tabId));

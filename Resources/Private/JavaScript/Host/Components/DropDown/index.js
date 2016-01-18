@@ -31,17 +31,17 @@ export default class DropDown extends Component {
         const {classNames, label} = this.props;
         const {isOpened} = this.state;
         const dropDownClassName = mergeClassNames({
-            [classNames.wrapper]: true,
+            [classNames.wrapper]: classNames.wrapper && classNames.wrapper.length,
             [style.dropDown]: true,
             [style['dropDown--hasLabel']]: Boolean(label)
         });
         const buttonClassName = mergeClassNames({
-            [classNames.btn]: true,
+            [classNames.btn]: classNames.btn && classNames.btn.length,
             [classNames['btn--active']]: isOpened,
             [style.dropDown__btn]: true
         });
         const contentsClassName = mergeClassNames({
-            [classNames.contents]: true,
+            [classNames.contents]: classNames.contents && classNames.contents.length,
             [style.dropDown__contents]: true,
             [style['dropDown__contents--isOpen']]: isOpened
         });
@@ -58,6 +58,8 @@ export default class DropDown extends Component {
                         if (btn !== null) {
                             btn[method]();
                         }
+
+                        this.toggler = btn;
                     }}
                     >
                     {this.renderBeforeIcon()}
@@ -86,7 +88,7 @@ export default class DropDown extends Component {
         const {label, classNames} = this.props;
         const className = mergeClassNames({
             [style.dropDown__btn__label]: true,
-            [classNames.label]: true
+            [classNames.label]: classNames.label && classNames.label.length
         });
 
         return label ? <I18n fallback={label} id={label} className={className} /> : null;
@@ -96,7 +98,7 @@ export default class DropDown extends Component {
         const {iconBefore, classNames} = this.props;
         const className = mergeClassNames({
             [style.dropDown__btn__beforeIcon]: true,
-            [classNames.beforeIcon]: true
+            [classNames.beforeIcon]: classNames.beforeIcon && classNames.beforeIcon.length
         });
 
         return iconBefore ? <Icon icon={iconBefore} className={className} /> : null;
@@ -117,3 +119,6 @@ export default class DropDown extends Component {
         this.setState({isOpened: false});
     }
 }
+DropDown.defaultProps = {
+    classNames: {}
+};

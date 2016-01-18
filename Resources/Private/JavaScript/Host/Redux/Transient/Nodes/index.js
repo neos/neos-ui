@@ -8,7 +8,7 @@ const ADD_BULK = '@packagefactory/guevara/Transient/Nodes/ADD_BULK';
 
 export default handleActions({
     [ADD]: (state, action) => $set(state, ['nodes', 'byContextPath', action.payload.contextPath], action.payload.data),
-    [ADD_BULK]: state => $merge(state, 'nodes.byContextPath', state.nodes)
+    [ADD_BULK]: (state, action) => $merge(state, 'nodes.byContextPath', action.payload.nodes)
 });
 
 /**
@@ -25,6 +25,6 @@ export const add = createAction(ADD, (contextPath, data) => ({
 /**
  * Adds multiple nodes to the application state
  *
- * @param {Array} nodes A list of nodes
+ * @param {Object} nodes A list of nodes indexed by ContextNodePath (which is the node identifier)
  */
 export const addBulk = createAction(ADD_BULK, nodes => ({nodes}));

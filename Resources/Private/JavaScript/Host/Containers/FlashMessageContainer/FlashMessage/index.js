@@ -20,19 +20,22 @@ export default class FooterBar extends Component {
 
     render() {
         const {message, severity} = this.props;
+        const isSuccess = severity === 'success';
+        const isError = severity === 'error';
+        const isInfo = severity === 'info';
 
         const flashMessageClasses = mergeClassNames({
             [style.flashMessage]: true,
-            [style['flashMessage--success']]: severity.toLowerCase() === 'success',
-            [style['flashMessage--error']]: severity.toLowerCase() === 'error',
-            [style['flashMessage--info']]: severity.toLowerCase() === 'info',
+            [style['flashMessage--success']]: isSuccess,
+            [style['flashMessage--error']]: isError,
+            [style['flashMessage--info']]: isInfo,
             [style['flashMessage--visible']]: this.state.isVisible
         });
 
         const iconName = mergeClassNames({
-            check: severity.toLowerCase() === 'success',
-            ban: severity.toLowerCase() === 'error',
-            info: severity.toLowerCase() === 'info'
+            check: isSuccess,
+            ban: isError,
+            info: isInfo
         }) || 'info';
         const onClick = e => executeCallback({
             e,

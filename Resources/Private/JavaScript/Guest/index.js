@@ -1,6 +1,5 @@
 import {backend} from './Service/';
 import {domConnector} from './Process/';
-import './style.css';
 
 const {tabManager} = backend;
 const DOMConnector = domConnector();

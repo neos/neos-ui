@@ -1,5 +1,5 @@
 import * as editors from './Editors/';
-import ContentComponent from './ContentComponent.js';
+import ContentComponent from './ContentComponent/';
 
 export {
     ContentComponent,

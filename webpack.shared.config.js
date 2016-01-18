@@ -3,6 +3,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const vars = require('postcss-simple-vars');
+const hexToRgba = require('postcss-hexrgba');
 const postCssImport = require('postcss-import');
 const nested = require('postcss-nested');
 
@@ -42,7 +43,8 @@ module.exports = {
             variables: require('./Resources/Private/JavaScript/Shared/Constants/Theme.js')
         }),
         postCssImport(),
-        nested()
+        nested(),
+        hexToRgba()
     ],
 
     resolve: {

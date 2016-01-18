@@ -30,8 +30,6 @@ class DOMConnector {
             const contentComponent = new ContentComponent(contentElement);
 
             this.contentComponents[`${typoScriptPath}::${contextPath}`] = contentComponent;
-
-            contentComponent.render();
         });
 
         [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(contentElement => {

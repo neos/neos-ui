@@ -1,6 +1,7 @@
 import Component from '@reduct/component';
 import {backend} from 'Guest/Service/';
 import debounce from 'lodash.debounce';
+import style from './style.css';
 
 export class AbstractEditor extends Component {
     constructor(el, property, contextPath, options = {}) {
@@ -8,7 +9,7 @@ export class AbstractEditor extends Component {
 
         this.property = property;
         this.contextPath = contextPath;
-        this.initializeEvents();
+        this.initializeElement();
 
         this.handleKeyStroke = this.handleKeyStroke.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
@@ -17,8 +18,11 @@ export class AbstractEditor extends Component {
         this.__storedElement = null;
     }
 
-    initializeEvents() {
-        this.el.addEventListener('click', () => this.commenceThaw());
+    initializeElement() {
+        const {el} = this;
+
+        el.classList.add(style.editor);
+        el.addEventListener('click', () => this.commenceThaw());
     }
 
     hasChanges() {

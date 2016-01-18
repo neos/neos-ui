@@ -15,10 +15,10 @@ export default class ContentComponent extends Component {
             },
             propTypes
         });
-    }
 
-    render() {
-        this.el.classList.add('guevara/contentComponent');
+        this.el.addEventListener('blur', () => {
+            console.log('focus');
+        });
     }
 
     isActive() {

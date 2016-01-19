@@ -21,9 +21,9 @@ const rootReducer = combineReducers(reducers);
 // Middleware you want to use in development:
 // Required! Enable Redux DevTools with the monitors you chose
 //
-function devToolsMiddleware() {
-    return window.devToolsExtension ? window.devToolsExtension() : () => () => null;
-}
+// function devToolsMiddleware() {
+//     return window.devToolsExtension ? window.devToolsExtension() : () => () => null;
+// }
 
 export function configureStore({serverState = {}} = {}) {
     const middleware = applyMiddleware(

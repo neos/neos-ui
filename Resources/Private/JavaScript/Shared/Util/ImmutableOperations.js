@@ -28,7 +28,9 @@ export function $mapGet(realm, path) {
 }
 
 export function $set(realm, path, value) {
-    return realm.setIn(resolvePath(path), Immutable.fromJS(value));
+    const immutableValue = Immutable.fromJS(value);
+
+    return path ? realm.setIn(resolvePath(path), immutableValue) : realm.set(immutableValue);
 }
 
 export function $updateIn(realm, path, updater) {

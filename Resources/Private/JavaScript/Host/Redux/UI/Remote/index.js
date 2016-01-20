@@ -1,3 +1,4 @@
+import Immutable from 'immutable';
 import {immutableOperations} from 'Shared/Util/';
 import {createAction, handleActions} from 'redux-actions';
 
@@ -9,19 +10,19 @@ const START_PUBLISHING = '@packagefactory/guevara/UI/Remote/START_PUBLISHING';
 const FINISH_PUBLISHING = '@packagefactory/guevara/UI/Remote/FINISH_PUBLISHING';
 const START_DISCARDING = '@packagefactory/guevara/UI/Remote/START_DISCARDING';
 const FINISH_DISCARDING = '@packagefactory/guevara/UI/Remote/FINISH_DISCARDING';
-const initialState = {
+const initialState = Immutable.fromJS({
     isSaving: false,
     isPublishing: false,
     isDiscarding: false
-};
+});
 
 export default handleActions({
-    [START_SAVING]: state => $set(state, 'ui.remote.isSaving', true),
-    [FINISH_SAVING]: state => $set(state, 'ui.remote.isSaving', false),
-    [START_PUBLISHING]: state => $set(state, 'ui.remote.isPublishing', true),
-    [FINISH_PUBLISHING]: state => $set(state, 'ui.remote.isPublishing', false),
-    [START_DISCARDING]: state => $set(state, 'ui.remote.isDiscarding', true),
-    [FINISH_DISCARDING]: state => $set(state, 'ui.remote.isDiscarding', false)
+    [START_SAVING]: state => $set(state, 'isSaving', true),
+    [FINISH_SAVING]: state => $set(state, 'isSaving', false),
+    [START_PUBLISHING]: state => $set(state, 'isPublishing', true),
+    [FINISH_PUBLISHING]: state => $set(state, 'isPublishing', false),
+    [START_DISCARDING]: state => $set(state, 'isDiscarding', true),
+    [FINISH_DISCARDING]: state => $set(state, 'isDiscarding', false)
 }, initialState);
 
 /**

@@ -1,3 +1,4 @@
+import Immutable from 'immutable';
 import {immutableOperations} from 'Shared/Util/';
 import {createAction, handleActions} from 'redux-actions';
 
@@ -5,14 +6,14 @@ const {$set, $merge} = immutableOperations;
 
 const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
 const ADD_BULK = '@packagefactory/guevara/Transient/Nodes/ADD_BULK';
-const initialState = {
+const initialState = Immutable.fromJS({
     byContextPath: {},
     selected: {}
-};
+});
 
 export default handleActions({
-    [ADD]: (state, action) => $set(state, ['nodes', 'byContextPath', action.payload.contextPath], action.payload.data),
-    [ADD_BULK]: state => $merge(state, 'nodes.byContextPath', state.nodes)
+    [ADD]: (state, action) => $set(state, ['byContextPath', action.payload.contextPath], action.payload.data),
+    [ADD_BULK]: state => $merge(state, 'byContextPath', state.nodes)
 }, initialState);
 
 /**

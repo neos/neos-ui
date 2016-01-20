@@ -6,8 +6,8 @@ const CLEAR = '@packagefactory/guevara/Transient/Changes/CLEAR';
 const initialState = Immutable.fromJS([]);
 
 export default handleActions({
-    [ADD]: (state, action) => state.set('changes', state.get('changes').push(action.payload.change)),
-    [CLEAR]: state => state.set('changes', initialState)
+    [ADD]: (state, action) => state.push(action.payload.change),
+    [CLEAR]: () => initialState
 }, initialState);
 
 /**

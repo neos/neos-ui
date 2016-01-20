@@ -36,9 +36,11 @@ class NodeHeader extends Component {
             [style['nodeHeader__data--isFocused']]: isFocused
         });
 
+        const collapsableControl = (isCollapsable ? this.renderCollapseChevron() : null);
+
         return (
             <div className={style.nodeHeader}>
-                {isCollapsable ? this.renderCollapseChevron() : null}
+                {collapsableControl}
                 <div onClick={() => onClick(node)} className={dataClassNames}>
                     <Icon icon={icon} padded="right" />
                     <span className={style.nodeHeader__data__title} onClick={() => onLabelClick(node)}>
@@ -53,12 +55,17 @@ class NodeHeader extends Component {
         const {node, onToggle} = this.props;
         const classnames = mergeClassNames({
             [style.nodeHeader__chevron]: true,
-            [style['nodeHeader__chevron--isCollapsed']]: $get(node, 'isCollapsed')
+            [style['nodeHeader__chevron--isCollapsed']]: $get(node, 'isCollapsed'),
+            [style['nodeHeader__chevron--isLoading']]: $get(node, 'isLoading')
         });
+
+        const isLoading = $get(node, 'isLoading');
+
+        const icon = (isLoading ? <Icon icon="spinner" spin={true} />  : <Icon icon="sort-desc" />);
 
         return (
             <a onClick={() => onToggle(node)} className={classnames}>
-                <Icon icon="sort-desc" />
+                {icon}
             </a>
         );
     }

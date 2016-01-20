@@ -99,6 +99,8 @@ class NodeTreeService {
     updateNode(node) {
         const storePath = storePathTo(node);
 
+        console.log('updateNode', storePath);
+
         this.store.dispatch(actions.UI.PageTree.setNode(storePath, node));
     }
 }

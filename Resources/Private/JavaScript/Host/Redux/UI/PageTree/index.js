@@ -19,11 +19,7 @@ function resetFocusAndActive(node, keepActive, keepFocus) {
 
 export default handleActions({
     [SET]: (state, action) => Immutable.fromJS(action.payload),
-    [SET_SUB_TREE]: (state, action) => {
-        console.log(action.payload.path);
-
-        return $set(state, action.payload.path, action.payload.data);
-    },
+    [SET_SUB_TREE]: (state, action) => $set(state, action.payload.path, action.payload.data),
     [SET_NODE]: (state, action) => {
         const {data, path} = action.payload;
         const isFocused = $get(data, 'isFocused');

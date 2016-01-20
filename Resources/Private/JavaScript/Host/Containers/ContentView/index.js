@@ -9,8 +9,8 @@ const {$get} = immutableOperations;
 
 @connect(state => ({
     tabs: $get(state, 'ui.tabs'),
-    isFringeLeft: $get(state, 'ui.leftSidebar.isHidden'),
-    isFringeRight: $get(state, 'ui.rightSidebar.isHidden')
+    isFringeLeft: $get(state, 'ui.leftSideBar.isHidden'),
+    isFringeRight: $get(state, 'ui.rightSideBar.isHidden')
 }))
 export default class ContentView extends Component {
     static propTypes = {

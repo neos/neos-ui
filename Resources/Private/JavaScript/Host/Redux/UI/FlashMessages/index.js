@@ -1,3 +1,4 @@
+import Immutable from 'immutable';
 import {immutableOperations} from 'Shared/Util/';
 import {createAction, handleActions} from 'redux-actions';
 
@@ -5,7 +6,7 @@ const {$set, $delete} = immutableOperations;
 
 const ADD = '@packagefactory/guevara/UI/FlashMessages/ADD';
 const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
-const initialState = {
+const initialState = Immutable.fromJS({
     test1: {
         id: 'test1',
         message: 'Dies ist ein Test',
@@ -21,11 +22,11 @@ const initialState = {
         message: 'Dies ist ein Erfolg',
         severity: 'success'
     }
-};
+});
 
 export default handleActions({
-    [ADD]: (state, action) => $set(state, `ui.flashMessages.${action.payload.id}`, action.payload),
-    [REMOVE]: (state, action) => $delete(state, `ui.flashMessages.${action.payload.id}`)
+    [ADD]: (state, action) => $set(state, `${action.payload.id}`, action.payload),
+    [REMOVE]: (state, action) => $delete(state, `${action.payload.id}`)
 }, initialState);
 
 /**

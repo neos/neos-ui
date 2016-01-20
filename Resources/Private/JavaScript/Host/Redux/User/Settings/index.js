@@ -1,18 +1,19 @@
+import Immutable from 'immutable';
 import {immutableOperations} from 'Shared/Util/';
 import {createAction, handleActions} from 'redux-actions';
 
 const {$get, $set} = immutableOperations;
 
 const TOGGLE_AUTO_PUBLISHING = '@packagefactory/guevara/User/Settings/TOGGLE_AUTO_PUBLISHING';
-const initialState = {
+const initialState = Immutable.fromJS({
     isAutoPublishingEnabled: false
-};
+});
 
 export default handleActions({
     [TOGGLE_AUTO_PUBLISHING]: state => {
-        const isCurrentlyEnabled = $get(state, 'user.settings.isAutoPublishingEnabled');
+        const isCurrentlyEnabled = $get(state, 'isAutoPublishingEnabled');
 
-        return $set(state, 'user.settings.isAutoPublishingEnabled', !isCurrentlyEnabled);
+        return $set(state, 'isAutoPublishingEnabled', !isCurrentlyEnabled);
     }
 }, initialState);
 

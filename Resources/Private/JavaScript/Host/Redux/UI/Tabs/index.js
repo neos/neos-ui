@@ -1,3 +1,4 @@
+import Immutable from 'immutable';
 import {immutableOperations} from 'Shared/Util/';
 import {createAction, handleActions} from 'redux-actions';
 
@@ -8,7 +9,7 @@ const REMOVE = '@packagefactory/guevara/UI/Tabs/REMOVE';
 const SET_ACTIVE = '@packagefactory/guevara/UI/Tabs/SET_ACTIVE';
 const SET_METADATA = '@packagefactory/guevara/UI/Tabs/SET_METADATA';
 const UPDATE_WORKSPACE_INFO = '@packagefactory/guevara/UI/Tabs/UPDATE_WORKSPACE_INFO';
-const initialState = {
+const initialState = Immutable.fromJS({
     byId: {},
     active: {
         id: '',
@@ -20,13 +21,13 @@ const initialState = {
             }
         }
     }
-};
+});
 
 export default handleActions({
     [ADD]: (state, action) => {
         const {payload} = action;
 
-        return $set(state, ['ui', 'tabs', 'byId', payload.tabId], {
+        return $set(state, ['byId', payload.tabId], {
             id: payload.tabId,
             title: '...',
             src: payload.src,
@@ -39,11 +40,11 @@ export default handleActions({
             }
         });
     },
-    [REMOVE]: (state, action) => $delete(state, ['ui', 'tabs', 'byId', action.payload.tabId]),
+    [REMOVE]: (state, action) => $delete(state, ['byId', action.payload.tabId]),
     [SET_ACTIVE]: (state, action) => {
-        const newActiveTab = $get(state, 'ui.tabs.byId').get(action.payload.tabId);
+        const newActiveTab = $get(state, 'byId').get(action.payload.tabId);
 
-        return $set(state, 'ui.tabs.active', newActiveTab);
+        return $set(state, 'active', newActiveTab);
     },
     [SET_METADATA]: (state, action) => doSetMetaData(state, action.payload),
     [UPDATE_WORKSPACE_INFO]: (state, action) => doUpdateWorkspaceInfo(state, action.payload)
@@ -57,11 +58,11 @@ export default handleActions({
  * @return {[type]}       [description]
  */
 function updateActiveTab(state) {
-    const activeTab = $get(state, 'ui.tabs.active');
+    const activeTab = $get(state, 'active');
     const activeTabId = $get(activeTab, 'id');
-    const refreshedActiveTab = $get(state, `ui.tabs.byId`).get(activeTabId);
+    const refreshedActiveTab = $get(state, `byId`).get(activeTabId);
 
-    return $set(state, 'ui.tabs.active', refreshedActiveTab);
+    return $set(state, 'active', refreshedActiveTab);
 }
 
 /**
@@ -82,8 +83,8 @@ function doSetMetaData(state, payload) {
     );
 
     return updateActiveTab($set(
-        $merge(state, ['ui', 'tabs', 'byId', payload.tabId], {title, contextPath}),
-        ['ui', 'tabs', 'byId', payload.tabId, 'workspace'],
+        $merge(state, ['byId', payload.tabId], {title, contextPath}),
+        ['byId', payload.tabId, 'workspace'],
         {
             name,
             publishingState: {
@@ -110,13 +111,13 @@ function doUpdateWorkspaceInfo(state, payload) {
         nodeEnvelope.documentContextPath === documentContextPath
     );
 
-    const updateTabs = $get(state, 'ui.tabs.byId').filter(tab =>
+    const updateTabs = $get(state, 'byId').filter(tab =>
         $get(tab, 'workspace.name') === workspaceName
     ).map(tab =>
         $set(tab, 'workspace.publishingState', {publishableNodes, publishableNodesInDocument})
     );
 
-    return updateActiveTab($merge(state, 'ui.tabs.byId', updateTabs));
+    return updateActiveTab($merge(state, 'byId', updateTabs));
 }
 
 /**

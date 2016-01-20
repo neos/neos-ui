@@ -17,7 +17,7 @@ class ChangeManager {
     }
 
     flushChanges() {
-        const changes = this.store.getState().get('changes');
+        const changes = this.store.getState().transient.changes;
 
         if (!changes.isEmpty()) {
             const {feedbackManager} = backend;

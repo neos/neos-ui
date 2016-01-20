@@ -1,11 +1,13 @@
+import Immutable from 'immutable';
 import {immutableOperations} from 'Shared/Util/';
+import {createAction, handleActions} from 'redux-actions';
 
 const {$get, $set} = immutableOperations;
 
 const SET = '@packagefactory/guevara/UI/PageTree/SET';
 const SET_SUB_TREE = '@packagefactory/guevara/UI/PageTree/SET_SUB_TREE';
 const SET_NODE = '@packagefactory/guevara/UI/PageTree/SET_NODE';
-const initialState = {};
+const initialState = Immutable.fromJS({});
 
 function resetFocusAndActive(node, keepActive, keepFocus) {
     return node && node.map(page => page
@@ -15,69 +17,47 @@ function resetFocusAndActive(node, keepActive, keepFocus) {
     ));
 }
 
-export default function reducer(state = initialState, action) {
-    switch (action.type) {
-        case SET: {
-            return $set(state, 'ui.pageTree', action.data);
+export default handleActions({
+    [SET]: (state, action) => Immutable.fromJS(action.payload),
+    [SET_SUB_TREE]: (state, action) => $set(state, action.payload.path, action.payload.data),
+    [SET_NODE]: (state, action) => {
+        const {data, path} = action.payload;
+        const isFocused = $get(data, 'isFocused');
+        const isActive = $get(data, 'isActive');
+
+        if (!isFocused && !isActive) {
+            return $set(state, path, data);
         }
 
-        case SET_SUB_TREE: {
-            return $set(state, action.path, action.data);
-        }
+        const resetState = $set(state, null, resetFocusAndActive(state, !isActive, !isFocused));
 
-        case SET_NODE: {
-            const isFocused = $get(action.data, 'isFocused');
-            const isActive = $get(action.data, 'isActive');
-
-            if (!isFocused && !isActive) {
-                return $set(state, action.path, action.data);
-            }
-
-            const pageTree = $get(state, 'ui.pageTree');
-            const resetState = $set(state, 'ui.pageTree', resetFocusAndActive(pageTree, !isActive, !isFocused));
-
-            return $set(resetState, action.path, action.data);
-        }
-
-        default: return state;
-
+        return $set(resetState, path, data);
     }
-}
+}, initialState);
 
 /**
  * Set the tree data for the entire page tree
  *
  * @return {Object}
  */
-export function setData(data) {
-    return {
-        type: SET,
-        data
-    };
-}
+export const setData = createAction(SET, data => data);
 
 /**
  * Set the tree data for a subtree
  *
  * @return {Object}
  */
-export function setSubTree(path, data) {
-    return {
-        type: SET_SUB_TREE,
-        path,
-        data
-    };
-}
+export const setSubTree = createAction(SET_SUB_TREE, (path, data) => ({
+    path,
+    data
+}));
 
 /**
  * Set a single node in the page tree
  *
  * @return {Object}
  */
-export function setNode(path, data) {
-    return {
-        type: SET_NODE,
-        path,
-        data
-    };
-}
+export const setNode = createAction(SET_NODE, (path, data) => ({
+    path,
+    data
+}));

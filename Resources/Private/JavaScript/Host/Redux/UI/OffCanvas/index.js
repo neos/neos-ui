@@ -1,3 +1,4 @@
+import Immutable from 'immutable';
 import {immutableOperations} from 'Shared/Util/';
 import {createAction, handleActions} from 'redux-actions';
 
@@ -5,17 +6,17 @@ const {$get, $set} = immutableOperations;
 
 const TOGGLE = '@packagefactory/guevara/UI/OffCanvas/TOGGLE';
 const HIDE = '@packagefactory/guevara/UI/OffCanvas/HIDE';
-const initialState = {
+const initialState = Immutable.fromJS({
     isHidden: true
-};
+});
 
 export default handleActions({
     [TOGGLE]: state => {
-        const isCurrentlyHidden = $get(state, 'ui.offCanvas.isHidden');
+        const isCurrentlyHidden = $get(state, 'isHidden');
 
-        return $set(state, 'ui.offCanvas.isHidden', !isCurrentlyHidden);
+        return $set(state, 'isHidden', !isCurrentlyHidden);
     },
-    [HIDE]: state => $set(state, 'ui.offCanvas.isHidden', true)
+    [HIDE]: state => $set(state, 'isHidden', true)
 }, initialState);
 
 /**

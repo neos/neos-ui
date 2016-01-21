@@ -57,7 +57,7 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
     size: PropTypes.oneOf(['big', 'small', 'tiny']),
     padded: PropTypes.oneOf(['none', 'left', 'right']),
     className: PropTypes.string,
-    spin: PropTypes.boolean
+    spin: PropTypes.bool
 };
 
 export default Icon;

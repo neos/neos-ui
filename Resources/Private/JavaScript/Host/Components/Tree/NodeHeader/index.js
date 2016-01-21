@@ -61,7 +61,7 @@ class NodeHeader extends Component {
 
         const isLoading = $get(node, 'isLoading');
 
-        const icon = (isLoading ? <Icon icon="spinner" spin={true} />  : <Icon icon="sort-desc" />);
+        const icon = (isLoading ? <Icon icon="spinner" spin={true} /> : <Icon icon="sort-desc" />);
 
         return (
             <a onClick={() => onToggle(node)} className={classnames}>

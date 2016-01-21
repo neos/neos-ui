@@ -1,5 +1,5 @@
+import compose from 'lodash.compose';
 import {
-    applyMiddleware,
     combineReducers,
     createStore
 } from 'redux';
@@ -26,11 +26,13 @@ const rootReducer = combineReducers(reducers);
 // }
 
 export function configureStore({serverState = {}} = {}) {
-    const middleware = applyMiddleware(
-        // devToolsMiddleware()
-    );
+    const finalCreateStore = compose(
+        typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ?
+            window.devToolsExtension() :
+            f => f
+    )(createStore);
 
-    return middleware(createStore)(rootReducer, serverState);
+    return finalCreateStore(rootReducer, serverState);
 }
 
 // Export Actions

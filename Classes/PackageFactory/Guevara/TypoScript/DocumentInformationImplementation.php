@@ -81,6 +81,7 @@ class DocumentInformationImplementation extends AbstractTypoScriptObject
             'contextPath' => $node->getContextPath(),
             'identifier' => $node->getIdentifier(),
             'properties' => $node->getProperties(),
+            'label' => $node->getLabel(),
             'children' => []
         ];
 
@@ -88,7 +89,7 @@ class DocumentInformationImplementation extends AbstractTypoScriptObject
 
         foreach ($node->getChildNodes() as $child) {
             $result = array_merge($result, $this->buildNodeInformation($child, 'TYPO3.Neos:Document'));
-            $nodeInformation['children'][$child->getContextPath()] = $child->getContextPath();
+            $nodeInformation['children'][] = $child->getContextPath();
         }
 
         $result = array_merge([

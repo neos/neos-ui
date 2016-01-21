@@ -38,7 +38,7 @@ export default handleActions({
  * @param {Integer} timeout An (optional) timeout, after which the flash message will disappear
  * @return {Object}
  */
-export const add = createAction(REMOVE, (id, message, severity, timeout = 0) => ({
+export const add = createAction(ADD, (id, message, severity, timeout = 0) => ({
     severity: severity.toLowerCase(),
     id,
     message,

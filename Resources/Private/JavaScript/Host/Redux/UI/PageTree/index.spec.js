@@ -5,7 +5,7 @@ import reducers, {setData, setSubTree, setNode} from './index.js';
 
 const expect = chai.expect;
 
-describe('"pageTree" ', () => {
+describe('"ui.pageTree" ', () => {
     let store = null;
 
     beforeEach(done => {

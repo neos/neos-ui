@@ -12,7 +12,7 @@ import reducers, {
 
 const expect = chai.expect;
 
-describe('"remote" ', () => {
+describe('"ui.remote" ', () => {
     let store = null;
 
     beforeEach(done => {

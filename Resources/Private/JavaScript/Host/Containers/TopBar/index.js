@@ -18,7 +18,7 @@ export default class TopBar extends Component {
                 <EditModePanelToggler className={style.topBar__btn} />
 
                 <div className={style.topBar__rightSidedActions}>
-                      <UserDropDown currentUserName="John Doe" />
+                      <UserDropDown />
                       <PublishDropDown />
                 </div>
             </Bar>

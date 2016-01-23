@@ -41,8 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const nodeTypeSchema = JSON.parse(appContainer.querySelector('[data-json="nodeTypeSchema"]').innerHTML);
     const store = configureStore({serverState});
 
-    console.log(store.getState());
-
     nodeTypeManager.initializeWithNodeTypeSchema(nodeTypeSchema);
 
     ReactDOM.render(

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import uuid from 'uuid';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Host/Abstracts/';
+import {executeCallback} from 'Shared/Utilities/';
 import Label from 'Host/Components/Label/';
 import style from './style.css';
 

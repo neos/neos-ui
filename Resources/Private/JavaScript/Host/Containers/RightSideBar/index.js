@@ -9,7 +9,7 @@ import {
     ToggablePanel
 } from 'Host/Components/';
 import {actions} from 'Host/Redux/';
-import {immutableOperations} from 'Shared/Util/';
+import {immutableOperations} from 'Shared/Utilities/';
 import style from './style.css';
 
 const {$get} = immutableOperations;

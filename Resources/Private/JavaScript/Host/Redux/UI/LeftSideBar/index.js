@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 import {createAction, handleActions} from 'redux-actions';
-import {immutableOperations} from 'Shared/Util/';
+import {immutableOperations} from 'Shared/Utilities/';
 
 const {$get, $set} = immutableOperations;
 

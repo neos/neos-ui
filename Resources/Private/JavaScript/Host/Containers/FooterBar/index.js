@@ -4,7 +4,7 @@ import Immutable from 'immutable';
 import {actions} from 'Host/Redux/';
 import {Bar} from 'Host/Components/';
 import TabSwitcher from './TabSwitcher/';
-import {immutableOperations} from 'Shared/Util/';
+import {immutableOperations} from 'Shared/Utilities/';
 
 const {$get} = immutableOperations;
 

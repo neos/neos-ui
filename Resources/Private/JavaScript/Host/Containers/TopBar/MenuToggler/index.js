@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {actions} from 'Host/Redux/';
 import {Button} from 'Host/Components/';
-import {immutableOperations} from 'Shared/Util/';
+import {immutableOperations} from 'Shared/Utilities/';
 import style from './style.css';
 
 const {$get} = immutableOperations;

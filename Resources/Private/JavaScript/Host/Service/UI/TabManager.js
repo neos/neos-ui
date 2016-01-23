@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 import {actions} from 'Host/Redux/';
-import {immutableOperations} from 'Shared/Util/';
+import {immutableOperations} from 'Shared/Utilities/';
 import backend from 'Host/Service/Backend.js';
 
 const {$get} = immutableOperations;

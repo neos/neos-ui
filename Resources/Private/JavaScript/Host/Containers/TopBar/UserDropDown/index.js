@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {I18n, Icon, DropDown} from 'Host/Components/';
 import style from './style.css';
 
-import {immutableOperations} from 'Shared/Util/';
+import {immutableOperations} from 'Shared/Utilities/';
 
 const {$get} = immutableOperations;
 

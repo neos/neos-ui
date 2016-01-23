@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Host/Abstracts/';
+import {executeCallback} from 'Shared/Utilities/';
 import I18n from 'Host/Components/I18n/';
 import Icon from 'Host/Components/Icon/';
 import style from './style.css';

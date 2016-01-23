@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Host/Abstracts/';
+import {executeCallback} from 'Shared/Utilities/';
 import style from './style.css';
 
 const Button = props => {

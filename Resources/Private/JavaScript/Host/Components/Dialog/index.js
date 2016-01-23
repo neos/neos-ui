@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Host/Abstracts/';
+import {executeCallback} from 'Shared/Utilities/';
 import IconButton from 'Host/Components/IconButton/';
 import Portal from 'Host/Components/Portal/';
 import style from './style.css';

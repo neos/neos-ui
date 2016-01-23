@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
-import {filterDeep} from 'Host/Abstracts/';
+import {filterDeep} from 'Shared/Utilities/';
 import {immutableOperations} from 'Shared/Util';
 import NodeHeader from './NodeHeader/';
 import style from './style.css';

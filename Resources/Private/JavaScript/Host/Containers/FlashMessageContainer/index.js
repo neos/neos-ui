@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Immutable from 'immutable';
 import {actions} from 'Host/Redux/';
-import {immutableOperations} from 'Shared/Util/';
+import {immutableOperations} from 'Shared/Utilities/';
 import FlashMessage from './FlashMessage/';
 import style from './style.css';
 

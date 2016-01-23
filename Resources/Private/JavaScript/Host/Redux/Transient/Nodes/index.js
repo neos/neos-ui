@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Util/';
+import {immutableOperations} from 'Shared/Utilities/';
 import {createAction, handleActions} from 'redux-actions';
 
 const {$set, $merge} = immutableOperations;

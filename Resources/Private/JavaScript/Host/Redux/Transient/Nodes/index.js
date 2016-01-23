@@ -13,7 +13,7 @@ const initialState = Immutable.fromJS({
 
 export default handleActions({
     [ADD]: (state, action) => $set(state, ['byContextPath', action.payload.contextPath], action.payload.data),
-    [ADD_BULK]: state => $merge(state, 'byContextPath', state.nodes)
+    [ADD_BULK]: (state, action) => $merge(state, 'byContextPath', action.payload.nodes)
 }, initialState);
 
 /**

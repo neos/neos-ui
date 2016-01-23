@@ -1,22 +1,23 @@
 import chai from 'chai';
 import Immutable from 'immutable';
 import {createStore} from 'redux';
-import reducers, {
+import {reducer, actions} from './index.js';
+
+const {
     startSaving,
     finishSaving,
     startPublishing,
     finishPublishing,
     startDiscarding,
     finishDiscarding
-} from './index.js';
-
-const expect = chai.expect;
+} = actions;
+const {expect} = chai;
 
 describe('"host.redux.ui.remote" ', () => {
     let store = null;
 
     beforeEach(done => {
-        store = createStore(reducers);
+        store = createStore(reducer);
 
         done();
     });

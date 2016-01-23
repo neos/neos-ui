@@ -9,46 +9,6 @@ const REMOVE = '@packagefactory/guevara/UI/Tabs/REMOVE';
 const SET_ACTIVE = '@packagefactory/guevara/UI/Tabs/SET_ACTIVE';
 const SET_METADATA = '@packagefactory/guevara/UI/Tabs/SET_METADATA';
 const UPDATE_WORKSPACE_INFO = '@packagefactory/guevara/UI/Tabs/UPDATE_WORKSPACE_INFO';
-const initialState = Immutable.fromJS({
-    byId: {},
-    active: {
-        id: '',
-        workspace: {
-            name: '',
-            publishingState: {
-                publishableNodes: [],
-                publishableNodesInDocument: []
-            }
-        }
-    }
-});
-
-export default handleActions({
-    [ADD]: (state, action) => {
-        const {payload} = action;
-
-        return $set(state, ['byId', payload.tabId], {
-            id: payload.tabId,
-            title: '...',
-            src: payload.src,
-            workspace: {
-                name: '',
-                publishingState: {
-                    publishableNodes: [],
-                    publishableNodesInDocument: []
-                }
-            }
-        });
-    },
-    [REMOVE]: (state, action) => $delete(state, ['byId', action.payload.tabId]),
-    [SET_ACTIVE]: (state, action) => {
-        const newActiveTab = $get(state, 'byId').get(action.payload.tabId);
-
-        return $set(state, 'active', newActiveTab);
-    },
-    [SET_METADATA]: (state, action) => doSetMetaData(state, action.payload),
-    [UPDATE_WORKSPACE_INFO]: (state, action) => doUpdateWorkspaceInfo(state, action.payload)
-}, initialState);
 
 /**
  * Helper function to make updating the active tab data easier.
@@ -131,7 +91,7 @@ function doUpdateWorkspaceInfo(state, payload) {
  * @param {String} tabId must be unique within the ui.tabs portion of the store
  * @param {String} src
  */
-export const add = createAction(ADD, (tabId, src) => ({
+const add = createAction(ADD, (tabId, src) => ({
     tabId,
     src
 }));
@@ -141,7 +101,7 @@ export const add = createAction(ADD, (tabId, src) => ({
  *
  * @param {String} tabId}
  */
-export const remove = createAction(REMOVE, tabId => ({
+const remove = createAction(REMOVE, tabId => ({
     tabId
 }));
 
@@ -150,7 +110,7 @@ export const remove = createAction(REMOVE, tabId => ({
  *
  * @param  {String} tabId
  */
-export const switchTo = createAction(SET_ACTIVE, tabId => ({
+const switchTo = createAction(SET_ACTIVE, tabId => ({
     tabId
 }));
 
@@ -160,7 +120,7 @@ export const switchTo = createAction(SET_ACTIVE, tabId => ({
  * @param {String} tabId
  * @param {Object} metaData
  */
-export const setMetaData = createAction(SET_METADATA, (tabId, metaData) => ({
+const setMetaData = createAction(SET_METADATA, (tabId, metaData) => ({
     tabId,
     metaData
 }));
@@ -173,7 +133,7 @@ export const setMetaData = createAction(SET_METADATA, (tabId, metaData) => ({
  * @param  {String} workspaceName
  * @param  {Object} workspaceInfo
  */
-export const updateWorkspaceInfo = createAction(
+const updateWorkspaceInfo = createAction(
     UPDATE_WORKSPACE_INFO,
     (documentContextPath, workspaceName, workspaceInfo) => ({
         documentContextPath,
@@ -181,3 +141,58 @@ export const updateWorkspaceInfo = createAction(
         workspaceInfo
     })
 );
+
+//
+// Export the actions
+//
+export const actions = {
+    add,
+    remove,
+    switchTo,
+    setMetaData,
+    updateWorkspaceInfo
+};
+
+//
+// Export the reducer
+//
+const initialState = Immutable.fromJS({
+    byId: {},
+    active: {
+        id: '',
+        workspace: {
+            name: '',
+            publishingState: {
+                publishableNodes: [],
+                publishableNodesInDocument: []
+            }
+        }
+    }
+});
+
+export const reducer = handleActions({
+    [ADD]: (state, action) => {
+        const {payload} = action;
+
+        return $set(state, ['byId', payload.tabId], {
+            id: payload.tabId,
+            title: '...',
+            src: payload.src,
+            workspace: {
+                name: '',
+                publishingState: {
+                    publishableNodes: [],
+                    publishableNodesInDocument: []
+                }
+            }
+        });
+    },
+    [REMOVE]: (state, action) => $delete(state, ['byId', action.payload.tabId]),
+    [SET_ACTIVE]: (state, action) => {
+        const newActiveTab = $get(state, 'byId').get(action.payload.tabId);
+
+        return $set(state, 'active', newActiveTab);
+    },
+    [SET_METADATA]: (state, action) => doSetMetaData(state, action.payload),
+    [UPDATE_WORKSPACE_INFO]: (state, action) => doUpdateWorkspaceInfo(state, action.payload)
+}, initialState);

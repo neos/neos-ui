@@ -1,17 +1,27 @@
 import {combineReducers} from 'redux';
-import ChangesReducer, * as Changes from './Changes/';
-import NodesReducer, * as Nodes from './Nodes/';
+import {
+    reducer as ChangesReducer,
+    actions as Changes
+} from './Changes/';
+import {
+    reducer as NodesReducer,
+    actions as Nodes
+} from './Nodes/';
 
-// Export reducers & state structure.
-export default {
+//
+// Export the actions
+//
+export const actions = {
+    Changes,
+    Nodes
+};
+
+//
+// Export the reducer
+//
+export const reducer = {
     transient: combineReducers({
         changes: ChangesReducer,
         nodes: NodesReducer
     })
-};
-
-// Export actions
-export {
-    Changes,
-    Nodes
 };

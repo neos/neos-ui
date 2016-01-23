@@ -1,15 +1,16 @@
 import chai from 'chai';
 import Immutable from 'immutable';
 import {createStore} from 'redux';
-import reducers, {add, remove} from './index.js';
+import {reducer, actions} from './index.js';
 
-const expect = chai.expect;
+const {add, remove} = actions;
+const {expect} = chai;
 
 describe('"host.redux.ui.flashMessages" ', () => {
     let store = null;
 
     beforeEach(done => {
-        store = createStore(reducers);
+        store = createStore(reducer);
 
         done();
     });

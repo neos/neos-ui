@@ -1,16 +1,25 @@
 import {combineReducers} from 'redux';
-import SettingsReducer, * as Settings from './Settings/';
-import NameReducer from './Name/';
+import {
+    reducer as SettingsReducer,
+    actions as Settings
+} from './Settings/';
+import {
+    reducer as NameReducer
+} from './Name/';
 
-// Export reducers & state structure.
-export default {
+//
+// Export the actions
+//
+export const actions = {
+    Settings
+};
+
+//
+// Export the reducer
+//
+export const reducer = {
     user: combineReducers({
         settings: SettingsReducer,
         name: NameReducer
     })
-};
-
-// Export all actions
-export {
-    Settings
 };

@@ -1,5 +1,9 @@
 import Immutable from 'immutable';
 import {handleActions} from 'redux-actions';
+
+//
+// Export the reducer
+//
 const initialState = Immutable.fromJS({
     title: '',
     firstName: '',
@@ -9,4 +13,4 @@ const initialState = Immutable.fromJS({
     fullName: ''
 });
 
-export default handleActions({}, initialState);
+export const reducer = handleActions({}, initialState);

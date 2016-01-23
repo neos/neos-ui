@@ -1,15 +1,16 @@
 import chai from 'chai';
 import Immutable from 'immutable';
 import {createStore} from 'redux';
-import reducers, {add, addBulk} from './index.js';
+import {reducer, actions} from './index.js';
 
-const expect = chai.expect;
+const {add, addBulk} = actions;
+const {expect} = chai;
 
 describe('"host.redux.transient.nodes" ', () => {
     let store = null;
 
     beforeEach(done => {
-        store = createStore(reducers);
+        store = createStore(reducer);
 
         done();
     });

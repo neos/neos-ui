@@ -1,9 +1,10 @@
 import chai from 'chai';
 import Immutable from 'immutable';
 import {createStore} from 'redux';
-import reducers, {add, clear} from './index.js';
+import {reducer, actions} from './index.js';
 
-const expect = chai.expect;
+const {add, clear} = actions;
+const {expect} = chai;
 
 describe('"host.redux.transient.changes" ', () => {
     const changeFixture = {
@@ -17,7 +18,7 @@ describe('"host.redux.transient.changes" ', () => {
     let store = null;
 
     beforeEach(done => {
-        store = createStore(reducers);
+        store = createStore(reducer);
 
         done();
     });

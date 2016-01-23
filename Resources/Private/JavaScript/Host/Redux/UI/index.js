@@ -1,14 +1,50 @@
 import {combineReducers} from 'redux';
-import FlashMessagesReducer, * as FlashMessages from './FlashMessages/';
-import LeftSideBarReducer, * as LeftSideBar from './LeftSideBar/';
-import OffCanvasReducer, * as OffCanvas from './OffCanvas/';
-import RemoteReducer, * as Remote from './Remote/';
-import RightSideBarReducer, * as RightSideBar from './RightSideBar/';
-import TabsReducer, * as Tabs from './Tabs/';
-import PageTreeReducer, * as PageTree from './PageTree/';
+import {
+    reducer as FlashMessagesReducer,
+    actions as FlashMessages
+} from './FlashMessages/';
+import {
+    reducer as LeftSideBarReducer,
+    actions as LeftSideBar
+} from './LeftSideBar/';
+import {
+    reducer as OffCanvasReducer,
+    actions as OffCanvas
+} from './OffCanvas/';
+import {
+    reducer as RemoteReducer,
+    actions as Remote
+} from './Remote/';
+import {
+    reducer as RightSideBarReducer,
+    actions as RightSideBar
+} from './RightSideBar/';
+import {
+    reducer as TabsReducer,
+    actions as Tabs
+} from './Tabs/';
+import {
+    reducer as PageTreeReducer,
+    actions as PageTree
+} from './PageTree/';
 
-// Export reducers & state structure.
-export default {
+//
+// Export the actions
+//
+export const actions = {
+    FlashMessages,
+    LeftSideBar,
+    OffCanvas,
+    Remote,
+    RightSideBar,
+    Tabs,
+    PageTree
+};
+
+//
+// Export the reducer
+//
+export const reducer = {
     ui: combineReducers({
         flashMessages: FlashMessagesReducer,
         leftSideBar: LeftSideBarReducer,
@@ -18,15 +54,4 @@ export default {
         tabs: TabsReducer,
         pageTree: PageTreeReducer
     })
-};
-
-// Export actions
-export {
-    FlashMessages,
-    LeftSideBar,
-    OffCanvas,
-    Remote,
-    RightSideBar,
-    Tabs,
-    PageTree
 };

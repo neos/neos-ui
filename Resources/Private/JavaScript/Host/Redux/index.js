@@ -3,10 +3,18 @@ import {
     combineReducers,
     createStore
 } from 'redux';
-
-import TransientReducer, * as Transient from './Transient/';
-import UIReducer, * as UI from './UI/';
-import UserReducer, * as User from './User/';
+import {
+    reducer as TransientReducer,
+    actions as Transient
+} from './Transient/';
+import {
+    reducer as UIReducer,
+    actions as UI
+} from './UI/';
+import {
+    reducer as UserReducer,
+    actions as User
+} from './User/';
 
 const reducers = Object.assign(
     {},
@@ -14,17 +22,11 @@ const reducers = Object.assign(
     UIReducer,
     UserReducer
 );
-
 const rootReducer = combineReducers(reducers);
 
 //
-// Middleware you want to use in development:
-// Required! Enable Redux DevTools with the monitors you chose
+// Export the store factory
 //
-// function devToolsMiddleware() {
-//     return window.devToolsExtension ? window.devToolsExtension() : () => () => null;
-// }
-
 export function configureStore({serverState = {}} = {}) {
     const finalCreateStore = compose(
         typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ?
@@ -35,7 +37,9 @@ export function configureStore({serverState = {}} = {}) {
     return finalCreateStore(rootReducer, serverState);
 }
 
-// Export Actions
+//
+// Export the actions
+//
 export const actions = {
     Transient,
     UI,

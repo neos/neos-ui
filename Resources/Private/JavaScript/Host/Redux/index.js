@@ -1,29 +1,44 @@
-// Third party
 import compose from 'lodash.compose';
-import curry from 'lodash.curry';
+import {
+    combineReducers,
+    createStore
+} from 'redux';
+import {
+    reducer as TransientReducer,
+    actions as Transient
+} from './Transient/';
+import {
+    reducer as UIReducer,
+    actions as UI
+} from './UI/';
+import {
+    reducer as UserReducer,
+    actions as User
+} from './User/';
 
-const _ = curry.placeholder;
+const reducers = Object.assign(
+    {},
+    TransientReducer,
+    UIReducer,
+    UserReducer
+);
+const rootReducer = combineReducers(reducers);
+const devToolsMiddleware = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
 
-// Import Reducers
-import TransientReducer from './Transient/';
-import UIReducer from './UI/';
-import UserReducer from './User/';
+//
+// Export the store factory
+//
+export function configureStore({serverState = {}} = {}) {
+    const finalCreateStore = compose(
+        devToolsMiddleware()
+    )(createStore);
 
-// Import Actions
-import * as Transient from './Transient/';
-import * as UI from './UI/';
-import * as User from './User/';
+    return finalCreateStore(rootReducer, serverState);
+}
 
-// Export Reducer
-export default initialState =>
-    (state = initialState, action) =>
-        compose(
-            curry(TransientReducer)(_, action),
-            curry(UIReducer)(_, action),
-            curry(UserReducer)(_, action)
-        )(state);
-
-// Export Actions
+//
+// Export the actions
+//
 export const actions = {
     Transient,
     UI,

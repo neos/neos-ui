@@ -1,3 +1,4 @@
+import Immutable from 'immutable';
 import {immutableOperations} from 'Shared/Util/';
 import {createAction, handleActions} from 'redux-actions';
 
@@ -5,11 +6,6 @@ const {$set, $delete} = immutableOperations;
 
 const ADD = '@packagefactory/guevara/UI/FlashMessages/ADD';
 const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
-
-export default handleActions({
-    [ADD]: (state, action) => $set(state, `ui.flashMessages.${action.payload.id}`, action.payload),
-    [REMOVE]: (state, action) => $delete(state, `ui.flashMessages.${action.payload.id}`)
-});
 
 /**
  * Adds a flash message
@@ -20,7 +16,7 @@ export default handleActions({
  * @param {Integer} timeout An (optional) timeout, after which the flash message will disappear
  * @return {Object}
  */
-export const add = createAction(REMOVE, (id, message, severity, timeout = 0) => ({
+const add = createAction(ADD, (id, message, severity, timeout = 0) => ({
     severity: severity.toLowerCase(),
     id,
     message,
@@ -32,6 +28,40 @@ export const add = createAction(REMOVE, (id, message, severity, timeout = 0) => 
  *
  * @param  {String} id The flashMessage id to delete.
  */
-export const remove = createAction(REMOVE, id => ({
+const remove = createAction(REMOVE, id => ({
     id
 }));
+
+//
+// Export the actions
+//
+export const actions = {
+    add,
+    remove
+};
+
+//
+// Export the reducer
+//
+const initialState = Immutable.fromJS({
+    test1: {
+        id: 'test1',
+        message: 'Dies ist ein Test',
+        severity: 'info'
+    },
+    test2: {
+        id: 'test2',
+        message: 'Dies ist ein Fehler',
+        severity: 'error'
+    },
+    test3: {
+        id: 'test3',
+        message: 'Dies ist ein Erfolg',
+        severity: 'success'
+    }
+});
+
+export const reducer = handleActions({
+    [ADD]: (state, action) => $set(state, `${action.payload.id}`, action.payload),
+    [REMOVE]: (state, action) => $delete(state, `${action.payload.id}`)
+}, initialState);

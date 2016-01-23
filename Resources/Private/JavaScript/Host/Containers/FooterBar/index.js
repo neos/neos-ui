@@ -4,9 +4,12 @@ import Immutable from 'immutable';
 import {actions} from 'Host/Redux/';
 import {Bar} from 'Host/Components/';
 import TabSwitcher from './TabSwitcher/';
+import {immutableOperations} from 'Shared/Util/';
+
+const {$get} = immutableOperations;
 
 @connect(state => ({
-    tabs: state.get('ui').get('tabs')
+    tabs: $get(state, 'ui.tabs')
 }))
 export default class FooterBar extends Component {
     static propTypes = {

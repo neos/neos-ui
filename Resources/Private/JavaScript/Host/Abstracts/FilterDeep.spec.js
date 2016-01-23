@@ -8,7 +8,7 @@ const expect = chai.expect;
 chai.should();
 chai.use(sinonMiddleware);
 
-describe('"FilterDeep" abstract', () => {
+describe('"host.abstracts.filterDeep" abstract', () => {
     it('should throw an error if no comparator function was passed as the second argument.', () => {
         const fn = () => filterDeep({
             foo: 'bar'

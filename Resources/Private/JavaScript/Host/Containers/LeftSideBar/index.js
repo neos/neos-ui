@@ -10,7 +10,7 @@ import style from './style.css';
 const {$get} = immutableOperations;
 
 @connect(state => ({
-    isHidden: $get(state, 'ui.leftSidebar.isHidden')
+    isHidden: $get(state, 'ui.leftSideBar.isHidden')
 }))
 export default class LeftSideBar extends Component {
     static propTypes = {

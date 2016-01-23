@@ -9,8 +9,8 @@ import {immutableOperations} from 'Shared/Util/';
 const {$get} = immutableOperations;
 
 @connect(state => ({
-    isFringedLeft: $get(state, 'ui.leftSidebar.isHidden'),
-    isFringedRight: $get(state, 'ui.rightSidebar.isHidden')
+    isFringedLeft: $get(state, 'ui.leftSideBar.isHidden'),
+    isFringedRight: $get(state, 'ui.rightSideBar.isHidden')
 }))
 export default class ContextBar extends Component {
     static propTypes = {

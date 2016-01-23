@@ -9,7 +9,7 @@ import style from './style.css';
 const {$get} = immutableOperations;
 
 @connect(state => ({
-    isSideBarHidden: $get(state, 'ui.leftSidebar.isHidden')
+    isSideBarHidden: $get(state, 'ui.leftSideBar.isHidden')
 }))
 export default class LeftSideBarToggler extends Component {
     static propTypes = {

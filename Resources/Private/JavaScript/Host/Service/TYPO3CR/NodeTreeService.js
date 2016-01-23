@@ -4,7 +4,7 @@ import {immutableOperations} from 'Shared/Util/';
 const {$get, $set} = immutableOperations;
 
 function storePathToChildrenOf(node) {
-    return ['ui', 'pageTree'].concat(
+    return [].concat(
           (node.get ? node.get('contextPath') : node).split('@')[0]
               .split('/')
               .reduce((prev, cur) => cur ? prev.concat([cur, 'children']) : prev, [])
@@ -13,7 +13,13 @@ function storePathToChildrenOf(node) {
 }
 
 function storePathTo(node) {
-    return storePathToChildrenOf(node).slice(0, -1);
+    const path = storePathToChildrenOf(node);
+
+    return path.slice(0, -1);
+}
+
+function rootStorePathTo(node) {
+    return ['ui', 'pageTree'].concat(storePathTo(node));
 }
 
 /**
@@ -30,7 +36,7 @@ class NodeTreeService {
     }
 
     getNode(node) {
-        const storePath = storePathTo(node);
+        const storePath = rootStorePathTo(node);
         const nodeInStore = $get(this.store.getState(), storePath);
 
         return nodeInStore;
@@ -99,6 +105,8 @@ class NodeTreeService {
 
     updateNode(node) {
         const storePath = storePathTo(node);
+
+        console.log('updateNode', storePath);
 
         this.store.dispatch(actions.UI.PageTree.setNode(storePath, node));
     }

@@ -7,11 +7,9 @@ import {connect} from 'react-redux';
 
 const {$get, $set} = immutableOperations;
 
-@connect(state => {
-    return {
-        treeData: $get(state, 'ui.pageTree')
-    };
-})
+@connect(state => ({
+    treeData: $get(state, 'ui.pageTree')
+}))
 export default class PageTree extends Component {
     static propTypes = {
         treeData: PropTypes.instanceOf(Immutable.Map)

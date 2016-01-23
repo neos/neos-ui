@@ -8,10 +8,6 @@ function resolvePath(path) {
     return path;
 }
 
-export function $immutable(value) {
-    return Immutable.fromJS(value);
-}
-
 export function $get(realm, path) {
     const result = resolvePath(path).reduce((prev, cur) => prev[cur] || prev.get(cur), realm);
 

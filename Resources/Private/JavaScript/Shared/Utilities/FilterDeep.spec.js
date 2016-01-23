@@ -3,12 +3,12 @@ import sinon from 'sinon';
 import sinonMiddleware from 'sinon-chai';
 import filterDeep, {ERROR_INVALID_COMPARATOR} from './FilterDeep.js';
 
-const expect = chai.expect;
+const {expect} = chai;
 
 chai.should();
 chai.use(sinonMiddleware);
 
-describe('"host.abstracts.filterDeep" abstract', () => {
+describe('"shared.utilities.filterDeep"', () => {
     it('should throw an error if no comparator function was passed as the second argument.', () => {
         const fn = () => filterDeep({
             foo: 'bar'

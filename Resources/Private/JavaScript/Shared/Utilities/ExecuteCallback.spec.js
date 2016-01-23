@@ -3,12 +3,12 @@ import sinon from 'sinon';
 import sinonMiddleware from 'sinon-chai';
 import executeCallback, {ERROR_INVALID_EVENT} from './ExecuteCallback.js';
 
-const expect = chai.expect;
+const {expect} = chai;
 
 chai.should();
 chai.use(sinonMiddleware);
 
-describe('"host.abstracts.executeCallback" abstract', () => {
+describe('"shared.utilities.executeCallback"', () => {
     let eventMock = null;
 
     beforeEach(done => {

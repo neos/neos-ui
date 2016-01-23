@@ -59,6 +59,11 @@ export default handleActions({
  */
 function updateActiveTab(state) {
     const activeTab = $get(state, 'active');
+
+    if (!activeTab) {
+        return state;
+    }
+
     const activeTabId = $get(activeTab, 'id');
     const refreshedActiveTab = $get(state, `byId`).get(activeTabId);
 

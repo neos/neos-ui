@@ -24,7 +24,7 @@ export function $get(realm, path) {
 }
 
 export function $mapGet(realm, path) {
-    return realm.map(r => $get(r, path));
+    return realm.map(r => $get(r, path)).filter(i => i !== undefined);
 }
 
 export function $set(realm, path, value) {

@@ -23,15 +23,14 @@ const reducers = Object.assign(
     UserReducer
 );
 const rootReducer = combineReducers(reducers);
+const devToolsMiddleware = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
 
 //
 // Export the store factory
 //
 export function configureStore({serverState = {}} = {}) {
     const finalCreateStore = compose(
-        typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ?
-            window.devToolsExtension() :
-            f => f
+        devToolsMiddleware()
     )(createStore);
 
     return finalCreateStore(rootReducer, serverState);

@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Immutable from 'immutable';
 import {Tree} from 'Host/Components/';
-import {immutableOperations} from 'Shared/Util';
+import {immutableOperations} from 'Shared/Utilities/';
 import backend from 'Host/Service/Backend.js';
 import {connect} from 'react-redux';
 

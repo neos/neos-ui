@@ -3,7 +3,7 @@ import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
 import Icon from 'Host/Components/Icon/';
 import {nodeTypeManager} from 'Host/Service/';
-import {immutableOperations} from 'Shared/Util';
+import {immutableOperations} from 'Shared/Utilities/';
 import style from './style.css';
 
 const {$get} = immutableOperations;

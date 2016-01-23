@@ -12,7 +12,7 @@ import reducers, {
 
 const expect = chai.expect;
 
-describe('"ui.remote" ', () => {
+describe('"host.redux.ui.remote" ', () => {
     let store = null;
 
     beforeEach(done => {

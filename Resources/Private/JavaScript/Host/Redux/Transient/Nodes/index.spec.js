@@ -5,7 +5,7 @@ import reducers, {add, addBulk} from './index.js';
 
 const expect = chai.expect;
 
-describe('"transient.nodes" ', () => {
+describe('"host.redux.transient.nodes" ', () => {
     let store = null;
 
     beforeEach(done => {

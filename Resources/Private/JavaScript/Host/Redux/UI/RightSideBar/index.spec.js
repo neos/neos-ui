@@ -5,7 +5,7 @@ import reducers, {toggle} from './index.js';
 
 const expect = chai.expect;
 
-describe('"ui.rightSideBar" ', () => {
+describe('"host.redux.ui.rightSideBar" ', () => {
     let store = null;
 
     beforeEach(done => {

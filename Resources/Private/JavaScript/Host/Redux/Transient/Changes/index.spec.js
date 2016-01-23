@@ -5,7 +5,7 @@ import reducers, {add, clear} from './index.js';
 
 const expect = chai.expect;
 
-describe('"transient.changes" ', () => {
+describe('"host.redux.transient.changes" ', () => {
     const changeFixture = {
         type: 'PackageFactory.Guevara:Property',
         subject: '/sites/neosdemotypo3org/teaser/node52697bdfee199@user-admin;language=en_US',

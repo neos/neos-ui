@@ -8,7 +8,7 @@ const expect = chai.expect;
 chai.should();
 chai.use(sinonMiddleware);
 
-describe('"ExecuteCallback" abstract', () => {
+describe('"host.abstracts.executeCallback" abstract', () => {
     let eventMock = null;
 
     beforeEach(done => {

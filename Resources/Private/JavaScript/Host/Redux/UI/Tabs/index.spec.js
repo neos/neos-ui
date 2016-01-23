@@ -11,7 +11,7 @@ import reducers, {
 
 const expect = chai.expect;
 
-describe('"Tabs" ', () => {
+describe('"host.redux.ui.tabs" ', () => {
     let store = null;
 
     beforeEach(done => {

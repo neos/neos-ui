@@ -5,7 +5,7 @@ import reducers from './index.js';
 
 const expect = chai.expect;
 
-describe('"user.name" ', () => {
+describe('"host.redux.user.name" ', () => {
     let store = null;
 
     beforeEach(done => {

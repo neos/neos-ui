@@ -5,7 +5,7 @@ import reducers, {toggle, hide} from './index.js';
 
 const expect = chai.expect;
 
-describe('"ui.offCanvas" ', () => {
+describe('"host.redux.ui.offCanvas" ', () => {
     let store = null;
 
     beforeEach(done => {

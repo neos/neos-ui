@@ -5,7 +5,7 @@ import reducers, {toggleAutoPublishing} from './index.js';
 
 const expect = chai.expect;
 
-describe('"user.settings" ', () => {
+describe('"host.redux.user.settings" ', () => {
     let store = null;
 
     beforeEach(done => {

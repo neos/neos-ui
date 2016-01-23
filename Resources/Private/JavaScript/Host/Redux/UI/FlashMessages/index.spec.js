@@ -5,7 +5,7 @@ import reducers, {add, remove} from './index.js';
 
 const expect = chai.expect;
 
-describe('"ui.flashMessages" ', () => {
+describe('"host.redux.ui.flashMessages" ', () => {
     let store = null;
 
     beforeEach(done => {

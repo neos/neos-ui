@@ -16,7 +16,8 @@ import {
     OffCanvas,
     RightSideBar,
     ContextBar,
-    FlashMessageContainer
+    FlashMessageContainer,
+    FullScreen
 } from './Containers/';
 import {
     backend,
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div>
                     <div id="dialog" />
                     <FlashMessageContainer />
+                    <FullScreen />
                     <TopBar />
                     <ContextBar />
                     <OffCanvas />

@@ -16,3 +16,6 @@
 .leftSideBar--isHidden {
     transform: translateX(-320px);
 }
+.leftSideBar--isFullScreen {
+    display: none;
+}

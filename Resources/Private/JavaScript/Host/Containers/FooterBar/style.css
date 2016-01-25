@@ -1,0 +1,4 @@
+.footerBar {}
+.footerBar--hidden {
+    display: none;
+}

@@ -12,6 +12,9 @@
 .contentView--isFringeRight {
     padding-right: 0;
 }
+.contentView--isFullScreen {
+    padding: 0;
+}
 .contentView__item {
     display: none;
     width: 100%;

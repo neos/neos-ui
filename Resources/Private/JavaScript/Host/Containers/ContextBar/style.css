@@ -24,6 +24,9 @@
 .contextBar--isFringeRight {
     padding-right: 40px;
 }
+.contextBar--isHidden {
+    display: none;
+}
 .contextBar__rightHandedActions {
     float: right;
 }

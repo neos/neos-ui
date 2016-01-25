@@ -10,17 +10,19 @@ const {$get} = immutableOperations;
 @connect(state => ({
     tabs: $get(state, 'ui.tabs'),
     isFringeLeft: $get(state, 'ui.leftSideBar.isHidden'),
-    isFringeRight: $get(state, 'ui.rightSideBar.isHidden')
+    isFringeRight: $get(state, 'ui.rightSideBar.isHidden'),
+    isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
 }))
 export default class ContentView extends Component {
     static propTypes = {
         tabs: PropTypes.instanceOf(Immutable.Map),
         isFringeLeft: PropTypes.bool.isRequired,
-        isFringeRight: PropTypes.bool.isRequired
+        isFringeRight: PropTypes.bool.isRequired,
+        isFullScreen: PropTypes.bool.isRequired
     };
 
     render() {
-        const {isFringeLeft, isFringeRight} = this.props;
+        const {isFringeLeft, isFringeRight, isFullScreen} = this.props;
         const activeId = $get(this.props.tabs, 'active.id');
 
         // Using Maps as children is not yet fully supported in react 0.14.1.
@@ -29,7 +31,8 @@ export default class ContentView extends Component {
         const classNames = mergeClassNames({
             [style.contentView]: true,
             [style['contentView--isFringeLeft']]: isFringeLeft,
-            [style['contentView--isFringeRight']]: isFringeRight
+            [style['contentView--isFringeRight']]: isFringeRight,
+            [style['contentView--isFullScreen']]: isFullScreen
         });
 
         return (

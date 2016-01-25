@@ -4,6 +4,10 @@ import {
     actions as FlashMessages
 } from './FlashMessages/';
 import {
+    reducer as FullScreenReducer,
+    actions as FullScreen
+} from './FullScreen/';
+import {
     reducer as LeftSideBarReducer,
     actions as LeftSideBar
 } from './LeftSideBar/';
@@ -33,6 +37,7 @@ import {
 //
 export const actions = {
     FlashMessages,
+    FullScreen,
     LeftSideBar,
     OffCanvas,
     Remote,
@@ -47,6 +52,7 @@ export const actions = {
 export const reducer = {
     ui: combineReducers({
         flashMessages: FlashMessagesReducer,
+        fullScreen: FullScreenReducer,
         leftSideBar: LeftSideBarReducer,
         offCanvas: OffCanvasReducer,
         remote: RemoteReducer,

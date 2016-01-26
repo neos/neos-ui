@@ -12,20 +12,20 @@ const {$get} = immutableOperations;
 
 @connect(state => ({
     tabs: $get(state, 'ui.tabs'),
-    isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
+    isHidden: $get(state, 'ui.fullScreen.isFullScreen')
 }))
 export default class FooterBar extends Component {
     static propTypes = {
         tabs: PropTypes.instanceOf(Immutable.Map),
-        isFullScreen: PropTypes.bool.isRequired,
+        isHidden: PropTypes.bool.isRequired,
         dispatch: PropTypes.any.isRequired
     };
 
     render() {
-        const {tabs, isFullScreen} = this.props;
+        const {tabs, isHidden} = this.props;
         const classNames = mergeClassNames({
             [style.footerBar]: true,
-            [style['footerBar--hidden']]: isFullScreen
+            [style['footerBar--isHidden']]: isHidden
         });
         return (
             <Bar className={classNames} position="bottom">

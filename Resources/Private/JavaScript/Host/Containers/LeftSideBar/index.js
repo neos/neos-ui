@@ -10,20 +10,17 @@ import style from './style.css';
 const {$get} = immutableOperations;
 
 @connect(state => ({
-    isHidden: $get(state, 'ui.leftSideBar.isHidden'),
-    isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
+    isHidden: $get(state, 'ui.leftSideBar.isHidden') || $get(state, 'ui.fullScreen.isFullScreen')
 }))
 export default class LeftSideBar extends Component {
     static propTypes = {
-        isHidden: PropTypes.bool.isRequired,
-        isFullScreen: PropTypes.bool.isRequired
+        isHidden: PropTypes.bool.isRequired
     };
 
     render() {
         const classNames = mergeClassNames({
             [style.leftSideBar]: true,
-            [style['leftSideBar--isHidden']]: this.props.isHidden,
-            [style['leftSideBar--isFullScreen']]: this.props.isFullScreen
+            [style['leftSideBar--isHidden']]: this.props.isHidden
         });
 
         return (

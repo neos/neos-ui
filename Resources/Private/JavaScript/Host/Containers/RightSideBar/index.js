@@ -29,10 +29,16 @@ export default class RightSideBar extends Component {
         const {isHidden, isFullScreen} = this.props;
         const classNames = mergeClassNames({
             [style.rightSideBar]: true,
-            [style['rightSideBar--isHidden']]: isHidden,
-            [style['rightSideBar--isFullScreen']]: isFullScreen
+            [style['rightSideBar--isHidden']]: isHidden || isFullScreen
         });
         const toggleIcon = isHidden ? 'chevron-left' : 'chevron-right';
+        const toggle = isFullScreen ? null : (
+          <IconButton
+              icon={toggleIcon}
+              className={style.rightSideBar__toggleBtn}
+              onClick={this.toggleSidebar.bind(this)}
+              />
+        );
 
         return (
             <SideBar position="right" className={classNames}>
@@ -57,11 +63,8 @@ export default class RightSideBar extends Component {
                     </Tabs.Panel>
                 </Tabs>
 
-                <IconButton
-                    icon={toggleIcon}
-                    className={style.rightSideBar__toggleBtn}
-                    onClick={this.toggleSidebar.bind(this)}
-                    />
+                {toggle}
+
             </SideBar>
         );
     }

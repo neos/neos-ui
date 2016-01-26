@@ -16,9 +16,6 @@
 .rightSideBar--isHidden {
     transform: translateX(320px);
 }
-.rightSideBar--isFullScreen {
-    display: none;
-}
 .rightSideBar__toggleBtn {
     position: absolute;
     right: 0;

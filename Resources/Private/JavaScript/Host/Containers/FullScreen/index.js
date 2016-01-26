@@ -10,7 +10,7 @@ const {$get} = immutableOperations;
 @connect(state => ({
     isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
 }))
-export default class ContextBar extends Component {
+export default class FullScreen extends Component {
     static propTypes = {
         isFullScreen: PropTypes.bool.isRequired,
         dispatch: PropTypes.func.isRequired

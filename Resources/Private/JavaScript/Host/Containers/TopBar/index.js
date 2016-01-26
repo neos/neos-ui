@@ -13,16 +13,16 @@ import {immutableOperations} from 'Shared/Utilities/';
 const {$get} = immutableOperations;
 
 @connect(state => ({
-    isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
+    isHidden: $get(state, 'ui.fullScreen.isFullScreen')
 }))
 export default class TopBar extends Component {
     static propTypes = {
-        isFullScreen: PropTypes.bool.isRequired
+        isHidden: PropTypes.bool.isRequired
     };
     render() {
         const classNames = mergeClassNames({
             [style.topBar]: true,
-            [style['topBar--isHidden']]: this.props.isFullScreen
+            [style['topBar--isHidden']]: this.props.isHidden
         });
         return (
             <Bar position="top" className={classNames}>

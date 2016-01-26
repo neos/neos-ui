@@ -8,6 +8,9 @@
         clear: both;
     }
 }
+.topBar--isHidden {
+    display: none;
+}
 .topBar__rightSidedActions {
     position: absolute;
     right: 0;

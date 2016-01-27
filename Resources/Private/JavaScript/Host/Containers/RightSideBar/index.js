@@ -15,21 +15,30 @@ import style from './style.css';
 const {$get} = immutableOperations;
 
 @connect(state => ({
-    isHidden: $get(state, 'ui.rightSideBar.isHidden')
+    isHidden: $get(state, 'ui.rightSideBar.isHidden'),
+    isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
 }))
 export default class RightSideBar extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
+        isFullScreen: PropTypes.bool.isRequired,
         dispatch: PropTypes.any.isRequired
     };
 
     render() {
-        const {isHidden} = this.props;
+        const {isHidden, isFullScreen} = this.props;
         const classNames = mergeClassNames({
             [style.rightSideBar]: true,
-            [style['rightSideBar--isHidden']]: isHidden
+            [style['rightSideBar--isHidden']]: isHidden || isFullScreen
         });
         const toggleIcon = isHidden ? 'chevron-left' : 'chevron-right';
+        const toggle = isFullScreen ? null : (
+          <IconButton
+              icon={toggleIcon}
+              className={style.rightSideBar__toggleBtn}
+              onClick={this.toggleSidebar.bind(this)}
+              />
+        );
 
         return (
             <SideBar position="right" className={classNames}>
@@ -54,11 +63,8 @@ export default class RightSideBar extends Component {
                     </Tabs.Panel>
                 </Tabs>
 
-                <IconButton
-                    icon={toggleIcon}
-                    className={style.rightSideBar__toggleBtn}
-                    onClick={this.toggleSidebar.bind(this)}
-                    />
+                {toggle}
+
             </SideBar>
         );
     }

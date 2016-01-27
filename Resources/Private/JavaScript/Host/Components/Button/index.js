@@ -35,14 +35,18 @@ const Button = props => {
         ref: btn => {
             const method = isFocused ? 'focus' : 'blur';
 
+            //
             // Initially focus the btn if the propType was set.
+            //
             if (btn !== null) {
                 btn[method]();
             }
         }
     };
 
+    //
     // Disable the btn if the prop was set.
+    //
     if (isDisabled) {
         attributes.disabled = 'disabled';
     }

@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const glob = require('glob');
 const config = require('./webpack.shared.config.js');
@@ -16,13 +17,19 @@ const loaders = Object.create(config.module.loaders);
 const resolve = Object.create(config.resolve);
 loaders.push({
     test: /sinon\.js$/,
-    loader: "imports?define=>false,require=>false"
+    loader: 'imports?define=>false,require=>false'
 });
 
 if (!resolve.alias) {
     resolve.alias = {};
 }
 resolve.alias.sinon = 'sinon/pkg/sinon';
+
+//
+// Setup for the
+//
+const plugins = [].concat(config.plugins);
+plugins.push(new webpack.IgnorePlugin(/ReactContext/));
 
 //
 // Export the webpack configuration for the test environment.
@@ -41,5 +48,6 @@ module.exports = Object.assign({}, config, {
         loaders
     },
 
-    resolve
+    resolve,
+    plugins
 });

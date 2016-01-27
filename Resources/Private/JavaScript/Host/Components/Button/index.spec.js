@@ -1,28 +1,51 @@
 import React from 'react';
 import chai from 'chai';
-import TestUtils from 'react-addons-test-utils';
+import {shallowRender} from 'skin-deep';
 import Button from './index.js';
 
-const expect = chai.expect;
+const {expect} = chai;
+
+function renderTree(props) {
+    return shallowRender(
+        <Button {...props}>
+            My button text
+        </Button>
+    );
+}
 
 describe('Button Component', () => {
-    let renderer;
+    it('should render a `<button>` element and the passed text as the label.', () => {
+        const tree = renderTree({
+            isFocused: false,
+            isDisabled: false,
+            style: 'clean',
+            hoverStyle: 'clean',
+            onClick: () => null
+        });
 
-    beforeEach(() => {
-        renderer = TestUtils.createRenderer();
+        expect(tree.getRenderOutput().type).to.equal('button');
+        expect(tree.text()).to.equal('My button text');
     });
 
-    it('should render a button element and the passed children.', () => {
-        const onClickHandler = () => null;
+    it('should add the `disabled` attribute to the `<button>` node if the `isDisabled` prop was passed as `true`.', () => {
+        const disabledTree = renderTree({
+            isFocused: false,
+            isDisabled: true,
+            style: 'clean',
+            hoverStyle: 'clean',
+            onClick: () => null
+        });
 
-        renderer.render(
-            <Button isFocused={false} isDisabled={false} style="clean" hoverStyle="clean" onClick={onClickHandler}>
-                "test"
-            </Button>
-        );
+        expect(disabledTree.toString().indexOf('disabled') > -1).to.equal(true);
 
-        const actualElement = renderer.getRenderOutput();
+        const tree = renderTree({
+            isFocused: false,
+            isDisabled: false,
+            style: 'clean',
+            hoverStyle: 'clean',
+            onClick: () => null
+        });
 
-        expect(actualElement.type).to.equal('button');
+        expect(tree.toString().indexOf('disabled') > -1).to.equal(false);
     });
 });

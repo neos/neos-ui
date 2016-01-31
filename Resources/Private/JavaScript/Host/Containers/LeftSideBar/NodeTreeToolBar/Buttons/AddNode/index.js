@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {backend} from 'Host/Service/';
 import {
     IconButtonDropDown,
     Icon,
@@ -10,12 +11,16 @@ import {
     GridItem,
     I18n
 } from 'Host/Components/';
+import {activePageTreeNodeSelector} from 'Host/Selectors/activePageTreeNodeSelector';
 import style from './style.css';
 
-@connect()
+@connect(state => ({
+    activePageTreeNode: activePageTreeNodeSelector(state)
+}))
 export default class AddNode extends Component {
     static propTypes = {
-        className: PropTypes.string
+        className: PropTypes.string,
+        activePageTreeNode: PropTypes.object
     };
 
     constructor(props) {
@@ -96,21 +101,37 @@ export default class AddNode extends Component {
                 <I18n fallback="Cancel" />
             </Button>
         ];
+        const {changeManager} = backend;
+        let changeType;
+        switch (this.state.currentMode) {
+            case 'prepend':
+                changeType = 'PackageFactory.Guevara:CreateBefore';
+                break;
+            case 'append':
+                changeType = 'PackageFactory.Guevara:CreateAfter';
+                break;
+            default:
+                changeType = 'PackageFactory.Guevara:Create';
+                break;
+        }
+        const contextPath = this.props.activePageTreeNode.get('contextPath');
         const dummyNodeTypes = [{
-            icon: 'font',
-            title: 'Headline'
-        }, {
             icon: 'file-text',
-            title: 'Text'
-        }, {
-            icon: 'picture-o',
-            title: 'Image'
-        }, {
-            icon: 'picture-o',
-            title: 'Text with Image'
+            title: 'Page',
+            nodeType: 'TYPO3.Neos.NodeTypes:Page'
         }].map(nodeType => {
             nodeType.onClick = () => {
-                console.log('Create NodeType:', nodeType);
+                changeManager.commitChange({
+                    type: changeType,
+                    subject: contextPath,
+                    payload: {
+                        nodeType: nodeType.nodeType,
+                        initialProperties: {
+                            title: 'test'
+                        }
+                    }
+                });
+                this.closeAddNodeDialog();
             };
 
             return nodeType;

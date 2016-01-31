@@ -7,6 +7,7 @@ use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
 class Create extends AbstractCreate
 {
     /**
+     * TODO: find out why everything breaks if I remove this dependency
      * @var NodeTypeManager
      * @Flow\Inject
      */

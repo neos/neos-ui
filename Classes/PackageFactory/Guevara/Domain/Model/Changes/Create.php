@@ -1,8 +1,17 @@
 <?php
 namespace PackageFactory\Guevara\Domain\Model\Changes;
 
+use TYPO3\Flow\Annotations as Flow;
+use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
+
 class Create extends AbstractCreate
 {
+    /**
+     * @var NodeTypeManager
+     * @Flow\Inject
+     */
+    protected $nodeTypeManager;
+
     /**
      * Check if the new node's node type is allowed in the requested position
      *
@@ -14,8 +23,7 @@ class Create extends AbstractCreate
         $parent = $subject->getParent();
         $nodeType = $this->getNodeType();
 
-        return $subject->getNodeType()->allowsChildNodeType($nodeType) &&
-            $parent->getNodeType()->allowsGrandchildNodeType($subject->getName(), $nodeType);
+        return $subject->isNodeTypeAllowedAsChildNode($nodeType);
     }
 
     /**

@@ -1,10 +1,7 @@
 import React from 'react';
-import chai from 'chai';
 import {renderIntoDocument, Simulate} from 'react-addons-test-utils';
 import {findDOMNode} from 'react-dom';
 import DropDown from './index.js';
-
-const expect = chai.expect;
 
 describe('DropDown Component', () => {
     it('should be hidden initially.', () => {

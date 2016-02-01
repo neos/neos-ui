@@ -1,10 +1,8 @@
-import chai from 'chai';
 import Immutable from 'immutable';
 import {createStore} from 'redux';
 import {reducer, actions} from './index.js';
 
 const {setData, setSubTree, setNode} = actions;
-const {expect} = chai;
 
 describe('"host.redux.ui.pageTree" ', () => {
     let store = null;

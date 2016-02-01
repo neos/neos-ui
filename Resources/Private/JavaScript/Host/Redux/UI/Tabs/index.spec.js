@@ -1,4 +1,3 @@
-import chai from 'chai';
 import Immutable from 'immutable';
 import {createStore} from 'redux';
 import {reducer, actions} from './index.js';
@@ -10,7 +9,6 @@ const {
     setMetaData,
     updateWorkspaceInfo
 } = actions;
-const {expect} = chai;
 
 describe('"host.redux.ui.tabs" ', () => {
     let store = null;

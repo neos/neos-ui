@@ -1,9 +1,6 @@
 import React from 'react';
-import chai from 'chai';
 import {shallowRender} from 'skin-deep';
 import Button from './index.js';
-
-const {expect} = chai;
 
 function renderTree(props) {
     return shallowRender(

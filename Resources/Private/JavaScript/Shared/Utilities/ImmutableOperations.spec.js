@@ -1,4 +1,3 @@
-import chai from 'chai';
 import Immutable from 'immutable';
 import {
     $get,
@@ -9,8 +8,6 @@ import {
     $mergeDeep,
     $delete
 } from './ImmutableOperations.js';
-
-const {expect} = chai;
 
 describe('"shared.utilities.immutableOperations" ', () => {
     describe('$get helper', () => {

@@ -41,6 +41,10 @@ Done. Open the sub-route `/che!` to login to the new interface.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
+We also embrace the testability of our code, so make sure to add tests and/or maintain the current coverage level.
+
+### Writing tests
+By default, our tests are ran with Karma and PhantomJS. Instead of relying on the default settings of Karma, we use [chai]('http://chaijs.com/') as our assertion library and [sinon](http://sinonjs.org/) for spies. If you want to add tests for React Components, we recommend [skin-deep](https://github.com/glenjamin/skin-deep) which utilizes the shallow render test utility of React.
 
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR

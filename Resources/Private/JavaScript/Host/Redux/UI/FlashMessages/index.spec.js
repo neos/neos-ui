@@ -1,10 +1,8 @@
-import chai from 'chai';
 import Immutable from 'immutable';
 import {createStore} from 'redux';
 import {reducer, actions} from './index.js';
 
 const {add, remove} = actions;
-const {expect} = chai;
 
 describe('"host.redux.ui.flashMessages" ', () => {
     let store = null;

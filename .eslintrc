@@ -13,6 +13,10 @@
         "commonjs": true,
         "mocha": true
     },
+    "globals": {
+        "expect": true,
+        "sinon": false
+    },
     "rules": {
         // Errors
         "comma-dangle": [2, "never"],

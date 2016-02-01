@@ -1,9 +1,6 @@
-import chai from 'chai';
 import Immutable from 'immutable';
 import {createStore} from 'redux';
 import {reducer} from './index.js';
-
-const {expect} = chai;
 
 describe('"host.redux.user.name" ', () => {
     let store = null;

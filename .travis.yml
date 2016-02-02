@@ -11,6 +11,6 @@ before_script:
   - npm prune
 script:
   - npm run lint
-  - npm run mocha
+  - npm run karma
 after_script:
   # - codeclimate-test-reporter < coverage/lcov.info

@@ -1,4 +1,5 @@
 Coverage/
+lcov.info
 node_modules/
 Resources/Public/JavaScript/**/*.js
 Resources/Public/Styles/**/*.css

@@ -1,36 +1,18 @@
 const webpackConfig = require('./webpack.config.js');
-const filePattern = 'Resources/Private/JavaScript/**/*.spec.js';
-
-//
-// Delay the coverage until all tests are run.
-//
-webpackConfig.devtool = 'inline-source-map';
-webpackConfig.module.postLoaders = [{
-    test: /\.js$/,
-    exclude: /(test|node_modules|bower_components)\//,
-    loader: 'istanbul-instrumenter'
-}];
-
-//
-// Workaround for sinon since it requires itself, and webpack can't find the circular dependencies.
-//
-// @see https://github.com/webpack/webpack/issues/177
-//
-webpackConfig.module.loaders.push({
-    test: /sinon\.js$/,
-    loader: 'imports?define=>false,require=>false'
-});
 
 module.exports = function (config) {
     config.set({
         browsers: ['PhantomJS'],
-        singleRun: Boolean(process.env.CONTINUOUS_INTEGRATION),
+        singleRun: true,
         frameworks: ['mocha', 'sinon-chai'],
         files: [
             './node_modules/phantomjs-polyfill/bind-polyfill.js',
             './node_modules/babel-polyfill/browser.js',
-            filePattern
+            'webpack.tests.js'
         ],
+        preprocessors: {
+            'webpack.tests.js': 'webpack'
+        },
         plugins: [
             'karma-phantomjs-launcher',
             'karma-chai',
@@ -41,19 +23,52 @@ module.exports = function (config) {
             'karma-coverage',
             'karma-mocha-reporter'
         ],
-        preprocessors: {
-            [filePattern]: [
-                'webpack',
-                'sourcemap'
-            ]
-        },
         reporters: ['mocha', 'coverage'],
-        webpack: webpackConfig,
+        webpack: Object.assign({}, webpackConfig, {
+            devtool: 'inline-source-map',
+
+            module: {
+                preLoaders: [
+                    // Transpile all the spec files with babel.
+                    {
+                        test: /\.sepc.js$/,
+                        loader: 'babel'
+                    },
+                    // Transpile and instrument the testing source files with isparta.
+                    {
+                        test: /\.js$/,
+                        exclude: /(node_modules|bower_components)\/|\.spec.js$/,
+                        loader: 'isparta'
+                    }
+                ],
+
+                loaders: webpackConfig.module.loaders.concat(
+                    //
+                    // Workaround for sinon since it requires itself, and webpack can't find the circular dependencies.
+                    //
+                    // @see https://github.com/webpack/webpack/issues/177
+                    //
+                    {
+                        test: /sinon\.js$/,
+                        loader: 'imports?define=>false,require=>false'
+                    }
+                )
+            },
+
+            isparta: {
+                embedSource: true,
+                noAutoWrap: true,
+                babel: {
+                    presets: ['react', 'es2015', 'stage-0'],
+                    plugins: ['transform-decorators-legacy', 'transform-object-rest-spread']
+                }
+            }
+        }),
         webpackServer: {
             noInfo: true
         },
         coverageReporter: {
-            type: 'html',
+            type: 'lcov',
             dir: 'Coverage/'
         }
     });

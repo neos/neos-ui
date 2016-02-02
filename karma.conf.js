@@ -1,4 +1,6 @@
+const fs = require('fs');
 const webpackConfig = require('./webpack.config.js');
+const babelConfig = JSON.parse(fs.readFileSync('./.babelrc', 'utf8'));
 
 module.exports = function (config) {
     config.set({
@@ -72,7 +74,7 @@ module.exports = function (config) {
             isparta: {
                 embedSource: true,
                 noAutoWrap: true,
-                babel: require('./.babelrc')
+                babel: babelConfig
             }
         }),
         webpackServer: {

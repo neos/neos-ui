@@ -1,5 +1,4 @@
 const webpackConfig = require('./webpack.config.js');
-const babelConfig = require('./.babelrc');
 
 module.exports = function (config) {
     config.set({
@@ -7,6 +6,10 @@ module.exports = function (config) {
         singleRun: true,
         frameworks: ['mocha', 'sinon-chai'],
         files: [
+            //
+            // Since `PhantomJS` itself uses an outdated V8 core,
+            // we need to polyfill a lot of ES5 & E2015 functionallity.
+            //
             './node_modules/phantomjs-polyfill/bind-polyfill.js',
             './node_modules/babel-polyfill/browser.js',
             'webpack.tests.js'
@@ -30,12 +33,20 @@ module.exports = function (config) {
 
             module: {
                 preLoaders: [
-                    // Transpile all the spec files with babel.
+                    //
+                    // Since the coverage of karma doesn't relate to the ES2015 source files,
+                    // we need to use the isparta loader which will handle the generation of ES2015 coverage metrics.
+                    //
+                    // Since the `.spec.js` should not be included in the coverage metrics, they will be compiled
+                    // traditionally via `babel` instead.
+                    //
+                    // Note: Isparta itself uses babel as well, so all changes in the `.babelrc` will be reflected in
+                    // the test suite as well.
+                    //
                     {
                         test: /\.sepc.js$/,
                         loader: 'babel'
                     },
-                    // Transpile and instrument the testing source files with isparta.
                     {
                         test: /\.js$/,
                         exclude: /(node_modules|bower_components)\/|\.spec.js$/,
@@ -45,7 +56,8 @@ module.exports = function (config) {
 
                 loaders: webpackConfig.module.loaders.concat(
                     //
-                    // Workaround for sinon since it requires itself, and webpack can't find the circular dependencies.
+                    // Workaround for sinon since it requires itself,
+                    // and webpack can't handle circular dependencies.
                     //
                     // @see https://github.com/webpack/webpack/issues/177
                     //
@@ -59,7 +71,7 @@ module.exports = function (config) {
             isparta: {
                 embedSource: true,
                 noAutoWrap: true,
-                babel: babelConfig
+                babel: require('./.babelrc')
             }
         }),
         webpackServer: {

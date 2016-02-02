@@ -9,20 +9,18 @@ const nested = require('postcss-nested');
 
 module.exports = {
     module: {
-        preLoaders: [{
-            test: /\.js$/,
-            loader: 'eslint-loader',
-            exclude: /node_modules/
-        }],
+        preLoaders: [
+            {
+                test: /\.js$/,
+                loader: 'eslint-loader',
+                exclude: /node_modules/
+            }
+        ],
         loaders: [
             {
                 test: /\.js$/,
                 exclude: /(node_modules)/,
-                loader: 'babel',
-                query: {
-                    presets: ['react', 'es2015', 'stage-0'],
-                    plugins: ['transform-decorators-legacy', 'transform-object-rest-spread']
-                }
+                loader: 'babel'
             },
             {
                 test: /\.(woff|woff2)$/,

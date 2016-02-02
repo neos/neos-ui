@@ -1,4 +1,5 @@
 const webpackConfig = require('./webpack.config.js');
+const babelConfig = require('./.babelrc');
 
 module.exports = function (config) {
     config.set({
@@ -58,10 +59,7 @@ module.exports = function (config) {
             isparta: {
                 embedSource: true,
                 noAutoWrap: true,
-                babel: {
-                    presets: ['react', 'es2015', 'stage-0'],
-                    plugins: ['transform-decorators-legacy', 'transform-object-rest-spread']
-                }
+                babel: babelConfig
             }
         }),
         webpackServer: {

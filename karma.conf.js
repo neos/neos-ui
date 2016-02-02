@@ -23,12 +23,16 @@ webpackConfig.module.loaders.push({
 
 module.exports = function (config) {
     config.set({
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
         singleRun: Boolean(process.env.CONTINUOUS_INTEGRATION),
         frameworks: ['mocha', 'sinon-chai'],
-        files: [filePattern],
+        files: [
+            './node_modules/phantomjs-polyfill/bind-polyfill.js',
+            './node_modules/babel-polyfill/browser.js',
+            filePattern
+        ],
         plugins: [
-            'karma-chrome-launcher',
+            'karma-phantomjs-launcher',
             'karma-chai',
             'karma-sinon-chai',
             'karma-mocha',

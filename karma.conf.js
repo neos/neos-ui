@@ -2,9 +2,8 @@ const webpackConfig = require('./webpack.config.js');
 
 module.exports = function (config) {
     config.set({
-        browsers: ['PhantomJS'],
+        port: 9876,
         singleRun: true,
-        frameworks: ['mocha', 'sinon-chai'],
         files: [
             //
             // Since `PhantomJS` itself uses an outdated V8 core,
@@ -12,11 +11,14 @@ module.exports = function (config) {
             //
             './node_modules/phantomjs-polyfill/bind-polyfill.js',
             './node_modules/babel-polyfill/browser.js',
-            'webpack.tests.js'
+            'karma.entry.js'
         ],
         preprocessors: {
-            'webpack.tests.js': 'webpack'
+            'karma.entry.js': 'webpack'
         },
+        browsers: ['PhantomJS'],
+        frameworks: ['mocha', 'sinon-chai'],
+        reporters: ['mocha', 'coverage'],
         plugins: [
             'karma-phantomjs-launcher',
             'karma-chai',
@@ -27,7 +29,6 @@ module.exports = function (config) {
             'karma-coverage',
             'karma-mocha-reporter'
         ],
-        reporters: ['mocha', 'coverage'],
         webpack: Object.assign({}, webpackConfig, {
             devtool: 'inline-source-map',
 

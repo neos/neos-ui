@@ -65,3 +65,9 @@ export const reducer = handleActions({
     [ADD]: (state, action) => $set(state, `${action.payload.id}`, action.payload),
     [REMOVE]: (state, action) => $delete(state, `${action.payload.id}`)
 }, initialState);
+
+//
+// Export the event map
+//
+export const events = {
+};

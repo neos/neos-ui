@@ -196,3 +196,9 @@ export const reducer = handleActions({
     [SET_METADATA]: (state, action) => doSetMetaData(state, action.payload),
     [UPDATE_WORKSPACE_INFO]: (state, action) => doUpdateWorkspaceInfo(state, action.payload)
 }, initialState);
+
+//
+// Export the event map
+//
+export const events = {
+};

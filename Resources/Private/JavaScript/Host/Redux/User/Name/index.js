@@ -14,3 +14,9 @@ const initialState = Immutable.fromJS({
 });
 
 export const reducer = handleActions({}, initialState);
+
+//
+// Export the event map
+//
+export const events = {
+};

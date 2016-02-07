@@ -25,3 +25,9 @@ export const reducer = handleActions({
         return $set(state, 'isFullScreen', !isFullScreen);
     }
 }, initialState);
+
+//
+// Export the event map
+//
+export const events = {
+};

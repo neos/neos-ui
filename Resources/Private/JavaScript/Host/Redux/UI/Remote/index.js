@@ -70,3 +70,9 @@ export const reducer = handleActions({
     [START_DISCARDING]: state => $set(state, 'isDiscarding', true),
     [FINISH_DISCARDING]: state => $set(state, 'isDiscarding', false)
 }, initialState);
+
+//
+// Export the event map
+//
+export const events = {
+};

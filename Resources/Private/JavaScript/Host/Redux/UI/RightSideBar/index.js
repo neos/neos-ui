@@ -32,3 +32,9 @@ export const reducer = handleActions({
         return $set(state, 'isHidden', !isCurrentlyHidden);
     }
 }, initialState);
+
+//
+// Export the event map
+//
+export const events = {
+};

@@ -8,6 +8,7 @@ namespace PackageFactory\Guevara\Controller;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\ActionController;
+use TYPO3\Flow\Session\SessionInterface;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface;
 use TYPO3\Neos\Domain\Repository\DomainRepository;
@@ -19,6 +20,7 @@ use TYPO3\Flow\Persistence\PersistenceManagerInterface;
 use TYPO3\Neos\Service\LinkingService;
 use TYPO3\Neos\Service\XliffService;
 use TYPO3\Flow\I18n\Locale;
+use TYPO3\TypoScript\Core\Cache\ContentCache;
 
 class BackendController extends ActionController
 {
@@ -71,6 +73,20 @@ class BackendController extends ActionController
      */
     protected $xliffService;
 
+
+    /**
+     * @Flow\Inject
+     * @var SessionInterface
+     */
+    protected $session;
+
+
+    /**
+     * @Flow\Inject
+     * @var ContentCache
+     */
+    protected $contentCache;
+
     /**
      * Displays the backend interface
      *
@@ -79,6 +95,11 @@ class BackendController extends ActionController
      */
     public function indexAction(NodeInterface $node = null)
     {
+
+        $this->contentCache->flush();
+        $this->session->start();
+        $this->session->putData('__cheEnabled__', TRUE);
+
         if($user = $this->userService->getBackendUser()) {
             if ($node === null) {
                 $workspaceName = $this->userService->getPersonalWorkspaceName();

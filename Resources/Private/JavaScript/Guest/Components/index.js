@@ -1,7 +1,9 @@
 import * as editors from './Editors/';
-import ContentComponent from './ContentComponent/';
+import nodeComponent from './NodeComponent/';
+import inlineToolbar from './InlineToolbar/';
 
 export {
-    ContentComponent,
-    editors
+    editors,
+    nodeComponent,
+    inlineToolbar
 };

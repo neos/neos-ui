@@ -1,4 +1,4 @@
-import {editors, ContentComponent} from 'Guest/Components/';
+import {editors, nodeComponent} from 'Guest/Components/';
 
 const {richTextEditor} = editors;
 
@@ -24,13 +24,8 @@ class DOMConnector {
             };
         });
 
-        [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]')).forEach(contentElement => {
-            const contextPath = contentElement.dataset.__cheNodeContextpath;
-            const typoScriptPath = contentElement.dataset.__cheTyposcriptPath;
-            const contentComponent = new ContentComponent(contentElement);
-
-            this.contentComponents[`${typoScriptPath}::${contextPath}`] = contentComponent;
-        });
+        [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]'))
+            .forEach(contentElement => nodeComponent(contentElement));
 
         [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(contentElement => {
             const contextPath = closestContextPath(contentElement);

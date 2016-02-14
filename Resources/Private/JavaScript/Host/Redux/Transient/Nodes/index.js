@@ -1,11 +1,16 @@
 import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Utilities/';
 import {createAction, handleActions} from 'redux-actions';
 
-const {$set, $merge} = immutableOperations;
+import {immutableOperations} from 'Shared/Utilities/';
+import {events as Events} from 'Shared/Constants/';
+
+const {HOST_NODE_FOCUSED} = Events;
+const {$set, $get, $merge} = immutableOperations;
 
 const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
 const ADD_BULK = '@packagefactory/guevara/Transient/Nodes/ADD_BULK';
+const FOCUS = '@packagefactory/guevara/Transient/Nodes/FOCUS';
+const BLUR = '@packagefactory/guevara/Transient/Nodes/BLUR';
 
 /**
  * Adds a node to the application state
@@ -25,12 +30,28 @@ const add = createAction(ADD, (contextPath, data) => ({
  */
 const addBulk = createAction(ADD_BULK, nodes => ({nodes}));
 
+/**
+ * Marks a node as focused
+ *
+ * @param {String} contextPath The context path of the focused node
+ */
+const focus = createAction(FOCUS, (contextPath, typoscriptPath) => ({contextPath, typoscriptPath}));
+
+/**
+ * Marks a node as blurred
+ *
+ * @param {String} contextPath The context path of the blurred node
+ */
+const blur = createAction(BLUR, contextPath => ({contextPath}));
+
 //
 // Export the actions
 //
 export const actions = {
     add,
-    addBulk
+    addBulk,
+    focus,
+    blur
 };
 
 //
@@ -38,16 +59,35 @@ export const actions = {
 //
 const initialState = Immutable.fromJS({
     byContextPath: {},
-    selected: {}
+    focused: ''
 });
 
 export const reducer = handleActions({
     [ADD]: (state, action) => $set(state, ['byContextPath', action.payload.contextPath], action.payload.data),
-    [ADD_BULK]: (state, action) => $merge(state, 'byContextPath', action.payload.nodes)
+    [ADD_BULK]: (state, action) => $merge(state, 'byContextPath', action.payload.nodes),
+    [FOCUS]: (state, action) => $set(state, 'focused', action.payload.contextPath),
+    [BLUR]: (state, action) => {
+        if ($get(state, 'focused') === action.payload.contextPath) {
+            return $set(state, 'focused', '');
+        }
+
+        return state;
+    }
 }, initialState);
 
 //
 // Export the event map
 //
 export const events = {
+    [FOCUS]: {
+        [HOST_NODE_FOCUSED]: (state, action) => {
+            return {
+                node: $get(state.transient.nodes, [
+                    'byContextPath',
+                    $get(state.transient.nodes, 'focused')
+                ]),
+                typoscriptPath: action.payload.typoscriptPath
+            };
+        }
+    }
 };

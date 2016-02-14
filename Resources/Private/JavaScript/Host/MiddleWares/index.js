@@ -1,5 +1,5 @@
 import eventsMiddleware from './Events/';
 
-export default {
+export {
     eventsMiddleware
 };

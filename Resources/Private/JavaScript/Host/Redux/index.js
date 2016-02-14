@@ -1,8 +1,9 @@
 import compose from 'lodash.compose';
-import {eventsMiddleware} from 'Host/Middlewares/';
+import {eventsMiddleware} from 'Host/MiddleWares/';
 import {
     combineReducers,
-    createStore
+    createStore,
+    applyMiddleware
 } from 'redux';
 import {
     reducer as TransientReducer,
@@ -32,13 +33,19 @@ const devToolsMiddleware = () => typeof window === 'object' && typeof window.dev
 //
 // Export the store factory
 //
-export function configureStore({serverState = {}} = {}) {
-    const finalCreateStore = compose(
-        devToolsMiddleware(),
-        eventsMiddleware()
-    )(createStore);
-
-    return finalCreateStore(rootReducer, serverState);
+export function configureStore({serverState = {}} = {}, neos) {
+    return createStore(rootReducer, serverState,
+        compose(
+            applyMiddleware(
+                eventsMiddleware({
+                    ...TransientEvents,
+                    ...UIEvents,
+                    ...UserEvents
+                }, neos),
+            ),
+            devToolsMiddleware()
+        )
+    );
 }
 
 //
@@ -48,13 +55,4 @@ export const actions = {
     Transient,
     UI,
     User
-};
-
-//
-// Export the event map
-//
-export const events = {
-    ...TransientEvents,
-    ...UIEvents,
-    ...UserEvents
 };

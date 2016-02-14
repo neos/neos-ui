@@ -6,6 +6,12 @@ import registry from '@reduct/registry';
 
 import {configureStore} from './Redux/';
 
+import initializeJSAPI from 'API/';
+import {
+    broadcast
+} from './Plugins/';
+import initializeSubscribers from './Subscriber/';
+
 import * as feedbackHandler from './Service/FeedbackHandler/';
 
 import {
@@ -40,7 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const serverState = JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
     const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
     const nodeTypeSchema = JSON.parse(appContainer.querySelector('[data-json="nodeTypeSchema"]').innerHTML);
-    const store = configureStore({serverState});
+    const neos = initializeJSAPI(window);
+    const store = configureStore({serverState}, neos);
+
+    // Initialize Neos JS API plugins
+    neos.use(broadcast(store.dispatch));
+
+    // Initialize subscriber
+    initializeSubscribers(neos);
 
     nodeTypeManager.initializeWithNodeTypeSchema(nodeTypeSchema);
 

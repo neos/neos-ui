@@ -1,5 +1,5 @@
 import theme from './Theme.js';
-import events from './Events.js';
+import * as events from './Events.js';
 
 export {
 	theme,

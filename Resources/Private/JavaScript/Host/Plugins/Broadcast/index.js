@@ -16,19 +16,19 @@ export default dispatch => createPlugin(
         },
 
         //
-        // Subscribe to the global event bus.
+        // Subscribe to the global event bus
         //
         subscribe: (topic, listener) => {
             if (listener.__isAwareOfRedux === true) {
-                return subscribe(topic, (topic, payload) => listener(topic, payload, dispatch));
-            } else {
-                return subscribe(topic, listener);
+                return subscribe(topic, (topic, payload) => listener(topic, payload, dispatch, publish));
             }
+
+            return subscribe(topic, listener);
         },
 
         //
-        // Unsubscribe from the global event bus.
+        // Unsubscribe from the global event bus
         //
         unsubscribe
-    });
+    })
 );

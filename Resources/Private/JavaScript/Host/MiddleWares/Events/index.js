@@ -3,7 +3,7 @@ import defer from 'lodash.defer';
 //
 // Middleware to publish events alongside actions
 //
-export default (eventMap, neos) => () => next => action => {
+export default (eventMap, neos) => store => next => action => {
     if (!eventMap[action.type]) {
         return next(action);
     }
@@ -17,7 +17,7 @@ export default (eventMap, neos) => () => next => action => {
     //
     defer(() => Object.keys(payloadCreators).forEach(eventIdentifier => {
         const payloadCreator = payloadCreators[eventIdentifier];
-        neos.broadcast.publish(eventIdentifier, payloadCreator(result));
+        neos.broadcast.publish(eventIdentifier, payloadCreator(store.getState(), action));
     }));
 
     return result;
@@ -35,7 +35,7 @@ export const createSubscriber = (eventIdentifier, listener) => (neos) => {
 //
 // Create a factory that initializes multiple event subscribers at once
 //
-export const initializeSubscribers = (subscriberFactoryMap, neos) =>
+export const initializeSubscribers = subscriberFactoryMap => neos =>
     Object.keys(subscriberFactoryMap)
         .map(key => subscriberFactoryMap[key])
         .forEach(subscriberFactory => subscriberFactory(neos));

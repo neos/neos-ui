@@ -39,8 +39,7 @@ export default (parent, alias = 'neos') => {
 //
 // Expose a method to create API plugins
 //
-export const createPlugin = (name, factory) => {
-    factory.name = name;
-
-    return neosApi => factory(neosApi);
+export const createPlugin = (identifier, factory) => {
+    factory.identifier = identifier;
+    return factory;
 };

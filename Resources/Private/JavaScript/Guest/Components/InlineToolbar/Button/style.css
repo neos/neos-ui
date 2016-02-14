@@ -1,0 +1,78 @@
+.btn {
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    min-width: 40px;
+    padding: 0 $spacing;
+    border: 0;
+    -webkit-font-smoothing: antialiased;
+    vertical-align: middle;
+    width: auto;
+    color: #fff;
+
+    &:focus {
+        outline: 1px dotted $brightest;
+    }
+
+    &[disabled] {
+        opacity: .5;
+        cursor: not-allowed;
+
+        &:hover {
+            background: inherit;
+            color: inherit;
+        }
+    }
+}
+.btn--clean {
+    background: $darker;
+}
+.btn--transparent {
+    background: 0;
+}
+.btn--brandHover {
+    &:hover {
+        background: $brand;
+    }
+}
+.btn--cleanHover {
+    &:hover {
+        color: $brand;
+    }
+}
+.btn--darkenHover {
+    &:hover {
+        background: rgba(0, 0, 0, .1);
+    }
+}
+.btn__icon,
+.btn__annotation {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.btn__icon--big {
+  font-size: 1.5em;
+}
+.btn__icon--small {
+  font-size: .75em;
+}
+.btn__icon--tiny {
+  font-size: .5em;
+}
+.btn__icon--paddedLeft {
+    padding-left: .75em;
+}
+.btn__icon--paddedRight {
+    padding-right: .75em;
+}
+
+.btn__annotation {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    color: $brand;
+}

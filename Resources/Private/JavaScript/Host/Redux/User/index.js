@@ -29,7 +29,7 @@ export const reducer = {
 //
 // Export the event map
 //
-export const actions = {
+export const events = {
     ...SettingsEvents,
     ...NameEvents
 };

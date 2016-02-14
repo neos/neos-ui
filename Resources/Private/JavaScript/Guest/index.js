@@ -1,15 +1,22 @@
-import {backend} from './Service/';
+import {events} from 'Shared/Constants/';
 import {domConnector} from './Process/';
+import {inlineToolbar} from './Components/';
 
-const {tabManager} = backend;
+const {broadcast} = window.neos;
+const {GUEST_DOCUMENT_LOADED} = events;
 const DOMConnector = domConnector();
 
 //
 // Initialize the guest application as soon as the DOM has been fully initialized.
 //
 document.addEventListener('DOMContentLoaded', () => {
-    tabManager.commitDocumentLoad(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
+    broadcast.publish(GUEST_DOCUMENT_LOADED, {
+        tabId: window.name,
+        documentInformation: window['@PackageFactory.Guevara:DocumentInformation']
+    });
+
     DOMConnector.run();
+    document.body.appendChild(inlineToolbar());
 });
 
 //

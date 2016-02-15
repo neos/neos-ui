@@ -2,17 +2,9 @@
 namespace PackageFactory\Guevara\Domain\Model\Changes;
 
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
 
 class Create extends AbstractCreate
 {
-    /**
-     * TODO: find out why everything breaks if I remove this dependency
-     * @var NodeTypeManager
-     * @Flow\Inject
-     */
-    protected $nodeTypeManager;
-
     /**
      * Check if the new node's node type is allowed in the requested position
      *

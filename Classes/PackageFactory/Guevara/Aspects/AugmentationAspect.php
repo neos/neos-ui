@@ -8,6 +8,7 @@ namespace PackageFactory\Guevara\Aspects;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\FLOW\AOP\JoinPointInterface;
+use TYPO3\Flow\Session\SessionInterface;
 use TYPO3\Neos\Service\HtmlAugmenter;
 
 /**
@@ -26,6 +27,13 @@ class AugmentationAspect
      */
     protected $htmlAugmenter;
 
+
+    /**
+     * @Flow\Inject
+     * @var SessionInterface
+     */
+    protected $session;
+
     /**
      * Hooks into standard content element wrapping to render those attributes needed for Guevara to identify
      * nodes and typoScript paths
@@ -36,6 +44,10 @@ class AugmentationAspect
      */
     public function contentElementAugmentation(JoinPointInterface $joinPoint)
     {
+        if (!$this->session->isStarted() || !$this->session->getData('__cheEnabled__')) {
+            return $joinPoint->getAdviceChain()->proceed($joinPoint);
+        }
+
         $node = $joinPoint->getMethodArgument('node');
         $content = $joinPoint->getMethodArgument('content');
         $typoScriptPath = $joinPoint->getMethodArgument('typoScriptPath');
@@ -56,6 +68,10 @@ class AugmentationAspect
      * @return mixed
      */
     public function editableElementAugmentation(JoinPointInterface $joinPoint) {
+        if (!$this->session->isStarted() || !$this->session->getData('__cheEnabled__')) {
+            return $joinPoint->getAdviceChain()->proceed($joinPoint);
+        }
+
         $property = $joinPoint->getMethodArgument('property');
         $tag = $joinPoint->getMethodArgument('tag');
         $node = $joinPoint->getMethodArgument('node');

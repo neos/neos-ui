@@ -6,17 +6,14 @@ TYPO3:
           Typo3BackendProvider:
             requestPatterns:
               controllerObjectName: 'PackageFactory\Guevara\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|TYPO3\Media\Controller\.*'
-            entryPoint: 'WebRedirect'
-            entryPointOptions:
-              routeValues:
-                '@package':    'PackageFactory.Guevara'
-                '@controller': 'Login'
-                '@action':     'index'
   Neos:
     typoScript:
       autoInclude:
         'PackageFactory.Guevara': TRUE
 
+  TypoScript:
+    defaultContext:
+      'Guevara.Activation': 'PackageFactory\Guevara\TypoScript\Helper\ActivationHelper'
 PackageFactory:
     Guevara:
       changes:

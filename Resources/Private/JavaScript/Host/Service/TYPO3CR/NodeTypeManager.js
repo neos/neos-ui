@@ -47,6 +47,15 @@ class NodeTypeManager {
         return this.nodeTypes;
     }
 
+    /**
+     * Get all document node types.
+     *
+     * @return {Array} All document node types.
+     */
+    getAllDocumentNodeTypes() {
+        return this.nodeTypes.filter(nodeType => nodeType.isOfType('TYPO3.Neos:Document'));
+    }
+
     getIconForNodeType(nodeTypeName) {
         const nodeType = this.getNodeType(nodeTypeName);
 

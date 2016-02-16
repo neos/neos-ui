@@ -14,8 +14,7 @@ class CreateBefore extends AbstractCreate
         $grandParent = $parent->getParent();
         $nodeType = $this->getNodeType();
 
-        return $parent->getNodeType()->allowsChildNodeType($nodeType) &&
-            (!$grandParent || $grandParent->getNodeType()->allowsGrandchildNodeType($parent->getName(), $nodeType));
+        return $parent->isNodeTypeAllowedAsChildNode($nodeType);
     }
 
     /**

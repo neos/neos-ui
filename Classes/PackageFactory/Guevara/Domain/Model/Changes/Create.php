@@ -1,6 +1,8 @@
 <?php
 namespace PackageFactory\Guevara\Domain\Model\Changes;
 
+use TYPO3\Flow\Annotations as Flow;
+
 class Create extends AbstractCreate
 {
     /**
@@ -14,8 +16,7 @@ class Create extends AbstractCreate
         $parent = $subject->getParent();
         $nodeType = $this->getNodeType();
 
-        return $subject->getNodeType()->allowsChildNodeType($nodeType) &&
-            $parent->getNodeType()->allowsGrandchildNodeType($subject->getName(), $nodeType);
+        return $subject->isNodeTypeAllowedAsChildNode($nodeType);
     }
 
     /**

@@ -1,6 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {
+    backend,
+    nodeTypeManager
+} from 'Host/Service/';
+import {
     IconButtonDropDown,
     Icon,
     Dialog,
@@ -10,17 +14,20 @@ import {
     GridItem,
     I18n
 } from 'Host/Components/';
+import {activePageTreeNodeSelector} from 'Host/Selectors/activePageTreeNodeSelector';
 import style from './style.css';
 
-@connect()
+@connect(state => ({
+    activePageTreeNode: activePageTreeNodeSelector(state)
+}))
 export default class AddNode extends Component {
     static propTypes = {
-        className: PropTypes.string
+        className: PropTypes.string,
+        activePageTreeNode: PropTypes.object
     };
 
     constructor(props) {
         super(props);
-
         this.state = {
             isModalOpen: false,
             currentMode: 'insert'
@@ -96,24 +103,39 @@ export default class AddNode extends Component {
                 <I18n fallback="Cancel" />
             </Button>
         ];
-        const dummyNodeTypes = [{
-            icon: 'font',
-            title: 'Headline'
-        }, {
-            icon: 'file-text',
-            title: 'Text'
-        }, {
-            icon: 'picture-o',
-            title: 'Image'
-        }, {
-            icon: 'picture-o',
-            title: 'Text with Image'
-        }].map(nodeType => {
-            nodeType.onClick = () => {
-                console.log('Create NodeType:', nodeType);
+        const {changeManager} = backend;
+        let changeType;
+        switch (this.state.currentMode) {
+            case 'prepend':
+                changeType = 'PackageFactory.Guevara:CreateBefore';
+                break;
+            case 'append':
+                changeType = 'PackageFactory.Guevara:CreateAfter';
+                break;
+            default:
+                changeType = 'PackageFactory.Guevara:Create';
+                break;
+        }
+        const contextPath = this.props.activePageTreeNode.get('contextPath');
+        // TODO: apply restrictions here
+        const allowedNodeTypes = nodeTypeManager.getAllDocumentNodeTypes().map(nodeType => {
+            return {
+                title: nodeType.schema.get('label'),
+                icon: nodeType.schema.getIn(['ui', 'icon']),
+                onClick: () => {
+                    changeManager.commitChange({
+                        type: changeType,
+                        subject: contextPath,
+                        payload: {
+                            nodeType: nodeType.name,
+                            initialProperties: {
+                                title: 'test'
+                            }
+                        }
+                    });
+                    this.closeAddNodeDialog();
+                }
             };
-
-            return nodeType;
         });
 
         return (
@@ -127,7 +149,7 @@ export default class AddNode extends Component {
                 </Headline>
 
                 <Grid>
-                    {dummyNodeTypes.map((nodeType, index) => {
+                    {allowedNodeTypes.map((nodeType, index) => {
                         const {
                             icon,
                             title,

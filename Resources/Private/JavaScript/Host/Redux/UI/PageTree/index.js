@@ -67,7 +67,7 @@ export const reducer = handleActions({
         if (!isFocused && !isActive) {
             return $set(state, path, data);
         }
-
-        return resetFocusAndActive(state, !isActive, !isFocused);
+        const resetState = resetFocusAndActive(state, !isActive, !isFocused);
+        return $set(resetState, path, data);
     }
 }, initialState);

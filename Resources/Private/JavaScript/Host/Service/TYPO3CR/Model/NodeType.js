@@ -86,11 +86,11 @@ export default class NodeType {
      * @return {Boolean}              True, if this node type inherits from `nodeTypeName`
      */
     isOfType(nodeTypeName) {
-        if (!this.schema.superTypes) {
+        if (!this.schema.get('superTypes')) {
             return false;
         }
 
-        return this.schema.superTypes.indexOf(nodeTypeName) !== -1;
+        return this.schema.get('superTypes').has(nodeTypeName);
     }
 
     /**

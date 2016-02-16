@@ -69,12 +69,16 @@ describe('"host.redux.ui.pageTree" ', () => {
             expect(store.getState().get('node').get('children')).to.be.an('undefined');
         });
 
-        it('should reset recursivly the "isActive", "isFocused" key the given object path.', () => {
+        it('should reset recursivly the "isActive" and "isFocused" states on other nodes', () => {
             store.dispatch(setData({
                 node: {
+                    isActive: false,
+                    isFocused: false
+                },
+                anotherNode: {
                     children: {
                         deepNode: {
-                            isActive: false,
+                            isActive: true,
                             isFocused: true
                         }
                     }
@@ -88,10 +92,10 @@ describe('"host.redux.ui.pageTree" ', () => {
             store.dispatch(setNode('node', data));
 
             const node = store.getState().get('node');
-            const deepNode = node.get('children').get('deepNode');
+            const deepNode = store.getState().get('anotherNode').get('children').get('deepNode');
 
-            expect(node.get('isActive')).to.equal(false);
-            expect(node.get('isFocused')).to.equal(false);
+            expect(node.get('isActive')).to.equal(true);
+            expect(node.get('isFocused')).to.equal(true);
             expect(deepNode.get('isActive')).to.equal(false);
             expect(deepNode.get('isActive')).to.equal(false);
         });

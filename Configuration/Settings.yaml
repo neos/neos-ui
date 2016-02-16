@@ -19,3 +19,6 @@ PackageFactory:
       changes:
         types:
             'PackageFactory.Guevara:Property': 'PackageFactory\Guevara\Domain\Model\Changes\Property'
+            'PackageFactory.Guevara:Create': 'PackageFactory\Guevara\Domain\Model\Changes\Create'
+            'PackageFactory.Guevara:CreateBefore': 'PackageFactory\Guevara\Domain\Model\Changes\CreateBefore'
+            'PackageFactory.Guevara:CreateAfter': 'PackageFactory\Guevara\Domain\Model\Changes\CreateAfter'

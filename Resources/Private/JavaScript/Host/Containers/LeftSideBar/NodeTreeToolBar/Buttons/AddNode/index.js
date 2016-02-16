@@ -1,6 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {backend} from 'Host/Service/';
+import {
+    backend,
+    nodeTypeManager
+} from 'Host/Service/';
 import {
     IconButtonDropDown,
     Icon,
@@ -25,7 +28,6 @@ export default class AddNode extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             isModalOpen: false,
             currentMode: 'insert'
@@ -115,26 +117,25 @@ export default class AddNode extends Component {
                 break;
         }
         const contextPath = this.props.activePageTreeNode.get('contextPath');
-        const dummyNodeTypes = [{
-            icon: 'file-text',
-            title: 'Page',
-            nodeType: 'TYPO3.Neos.NodeTypes:Page'
-        }].map(nodeType => {
-            nodeType.onClick = () => {
-                changeManager.commitChange({
-                    type: changeType,
-                    subject: contextPath,
-                    payload: {
-                        nodeType: nodeType.nodeType,
-                        initialProperties: {
-                            title: 'test'
+        // TODO: apply restrictions here
+        const allowedNodeTypes = nodeTypeManager.getAllDocumentNodeTypes().map(nodeType => {
+            return {
+                title: nodeType.schema.get('label'),
+                icon: nodeType.schema.getIn(['ui', 'icon']),
+                onClick: () => {
+                    changeManager.commitChange({
+                        type: changeType,
+                        subject: contextPath,
+                        payload: {
+                            nodeType: nodeType.name,
+                            initialProperties: {
+                                title: 'test'
+                            }
                         }
-                    }
-                });
-                this.closeAddNodeDialog();
+                    });
+                    this.closeAddNodeDialog();
+                }
             };
-
-            return nodeType;
         });
 
         return (
@@ -148,7 +149,7 @@ export default class AddNode extends Component {
                 </Headline>
 
                 <Grid>
-                    {dummyNodeTypes.map((nodeType, index) => {
+                    {allowedNodeTypes.map((nodeType, index) => {
                         const {
                             icon,
                             title,

@@ -82,7 +82,7 @@
     "karma": "karma start",
     "lint": "eslint Resources/Private/JavaScript/**",
     "test": "npm run lint && npm run karma",
-    "watch:build": "webpack -- --watch",
+    "watch:build": "npm run build -- --watch",
     "watch:karma": "npm run karma -- --watch",
     "watch": "npm run watch:build & npm run watch:karma"
   },

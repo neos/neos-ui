@@ -15,7 +15,8 @@
     },
     "globals": {
         "expect": true,
-        "sinon": false
+        "sinon": false,
+        "browser": true
     },
     "rules": {
         // Errors

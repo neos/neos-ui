@@ -2,7 +2,13 @@
 # Test suite & generated coverage.
 #
 Coverage/
+Build/Selenium/Screenshots/*.png
 lcov.info
+
+#
+# Customized credentials for the neos backend which the WebDriverIO runner uses.
+#
+Build/TestSuite.Settings.yaml
 
 #
 # Application & development dependencies.

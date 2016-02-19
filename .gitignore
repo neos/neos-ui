@@ -1,5 +1,16 @@
+#
+# Test suite & generated coverage.
+#
 Coverage/
 lcov.info
+
+#
+# Application & development dependencies.
+#
 node_modules/
+
+#
+# Compiled assets.
+#
 Resources/Public/JavaScript/**/*.js
 Resources/Public/Styles/**/*.css

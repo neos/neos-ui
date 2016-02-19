@@ -1,11 +1,18 @@
 const fs = require('fs');
 const webpackConfig = require('./webpack.config.js');
 const babelConfig = JSON.parse(fs.readFileSync('./.babelrc', 'utf8'));
+const processArgs = process.argv.slice(3);
+
+console.log(processArgs)
 
 module.exports = function (config) {
     config.set({
         port: 9876,
-        singleRun: true,
+
+        //
+        // Run karma in a 'watch'-mode if executed with the '--watch' flag.
+        //
+        singleRun: processArgs[0] === '--watch',
         files: [
             //
             // Since `PhantomJS` itself uses an outdated V8 core,

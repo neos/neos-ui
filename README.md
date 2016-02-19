@@ -16,7 +16,7 @@
 ## Installation
 *Composer support coming soon...*
 
-Clone the repository into your Neos `Packages/Application/` folder, delete the default flowpack Neos login package from the `Packages/Plugins` directory
+Clone the repository into your Neos `Packages/Application/` folder, delete the default `Flowpack.Neos.FrontendLogin` package from the `Packages/Plugins` directory
 and paste the following configuration into the head of your global `Routes.yaml` which is located in `Configuration/`.
 ```yaml
 -
@@ -27,10 +27,7 @@ and paste the following configuration into the head of your global `Routes.yaml`
       package: 'PackageFactory.Guevara'
 ```
 
-Change into the directory of the Guevara package, execute `npm install` as well as `npm run build` to build the JS compiled files.
-
-
-Done. Open the sub-route `/che!` to login to the new interface.
+Change into the directory of the Guevara package and execute `bash Build/init.sh` which will download the application dependencies and compiles the source files into the distributed versions. Done. Open the sub-route `/che!` to login to the new interface.
 
 
 ## Contributing
@@ -46,15 +43,26 @@ __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as we
 If you've installed `nvm` make sure that the node LTS version `4.2.2` is correctly installed - You can do so by executing `nvm install 4.2.2`.
 If you need help setting up `nvm` or `npm`, join our [Slack](https://neos-project.slack.com/) channel :).__
 
+### Code style
+Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `npm run lint` in your shell.
 
-### Writing tests
-By default, our tests are executed with Karma and PhantomJS.
+### Writing unit tests
+The unit tests are executed with Karma and PhantomJS.
 Instead of relying on the default settings of Karma, we use [chai]('http://chaijs.com/') as our assertion library and
-[sinon](http://sinonjs.org/) for spies.
+[sinon](http://sinonjs.org/) for spies. To run the unit tests, execute `npm run karma` in your shell.
 
-### Libraries
-| Name | Description/Usecase          |
-| ------------- | ----------- |
+Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
+
+### Writing behavior tests
+The behavior behavior tests are running on a selenium grid which is installed & started by the `npm run selenium:start` command,
+and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with [chai]('http://chaijs.com/').
+To run the behavior tests, execute `npm run selenium:start` first, and `npm run selenium:run` in a separate session afterwards.
+
+Adding behavior tests is as simple as creating unit tests, the only difference is that the file should end with `*.behavior.js` instead of `*.spec.js`.
+
+### Libraries which are used by the application
+| Name          | Description/Usecase          |
+| ------------- | ---------------------------- |
 | [immutable](https://facebook.github.io/immutable-js/) | Transforms data into immutable structures. [Read more](http://jlongster.com/Using-Immutable-Data-Structures-in-JavaScript) |
 | [redux](https://github.com/rackt/redux) | Handles the state of the application in general. [Read more](http://www.jchapron.com/2015/08/14/getting-started-with-redux/) |
 | [react](https://facebook.github.io/react/) | The view layer on which the UI is based upon. |

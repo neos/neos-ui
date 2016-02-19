@@ -89,7 +89,7 @@
     "lint": "eslint Resources/Private/JavaScript/**",
     "selenium:start": "selenium-standalone start",
     "selenium:run": "wdio wdio.config.js",
-    "test": "npm run lint && npm run karma",
+    "test": "npm run lint && npm run karma && npm run selenium:run",
     "watch:build": "npm run build -- --watch",
     "watch:karma": "karma start",
     "watch": "npm run watch:build & npm run watch:karma"

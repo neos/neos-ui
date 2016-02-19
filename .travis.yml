@@ -5,6 +5,8 @@ cache:
     - node_modules
 notifications:
   email: false
+addons:
+  sauce_connect: true
 before_install:
   - npm i -g codeclimate-test-reporter
 before_script:

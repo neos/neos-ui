@@ -3,8 +3,6 @@ const webpackConfig = require('./webpack.config.js');
 const babelConfig = JSON.parse(fs.readFileSync('./.babelrc', 'utf8'));
 const processArgs = process.argv.slice(3);
 
-console.log(processArgs)
-
 module.exports = function (config) {
     config.set({
         port: 9876,

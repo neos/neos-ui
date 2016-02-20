@@ -35,11 +35,11 @@ before_install:
   - mkdir Neos
   - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
   - cd Neos
-  - mv ../PackageFactory.Guevara Packages/Application/
 
   # Install composer since it is not available in the TravisCI nodejs scope.
   - curl https://getcomposer.org/installer | php
   - php composer.phar composer install -q
+  - mv ../PackageFactory.Guevara Packages/Application/
 
   # Remove the default login package since our routes currenctly conflicts it.
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin

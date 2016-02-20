@@ -69,8 +69,6 @@ const config = {
 // Adjust some settings for CI runs.
 //
 if (isEnvCi) {
-    const buildIdentifier = '#' + process.env.TRAVIS_JOB_NUMBER + ' ' + process.env.TRAVIS_REPO_SLUG + ': ' + process.env.COMMIT_MESSAGE;
-
     config.user = process.env.SAUCE_USERNAME;
     config.key = process.env.SAUCE_ACCESS_KEY;
     config.logLevel = 'verbose';
@@ -80,8 +78,8 @@ if (isEnvCi) {
         'version': '27.0',
         'platform': 'XP',
         'tunnel-identifier': process.env.TRAVIS_BUILD_NUMBER,
-        'name': buildIdentifier,
-        'build': buildIdentifier
+        'name': '#' + process.env.TRAVIS_JOB_NUMBER + ' ' + process.env.TRAVIS_REPO_SLUG + ': ' + process.env.COMMIT_MESSAGE,
+        'build': process.env.TRAVIS_BUILD_NUMBER
     }];
 }
 

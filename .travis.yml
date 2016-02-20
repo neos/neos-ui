@@ -46,17 +46,15 @@ before_install:
 # Install and setup the neos instance.
 #
 install:
-  # Install the node dependencies, and prune it to remove extranous packages from previous runs.
-  - npm install
-  - npm prune
-
-  # Create the running neos instance for the behavior tests.
+  # Create a working directory for the neos instance and install all neos depedencies.
   - cd ..
   - if [ ! -d "Neos" ]; then mkdir Neos; fi;
   - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
   - cd Neos
   - composer install -q
   - if [ ! -d "Packages/Application/PackageFactory.Guevara" ]; then mkdir Packages/Application/PackageFactory.Guevara; fi;
+
+  # Move our cloned repository into the neos working directory.
   - mv ../PackageFactory.Guevara/** Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.babelrc Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
@@ -82,6 +80,10 @@ install:
 
   # Change back into the repository directory where the tests will be executed.
   - cd Packages/Application/PackageFactory.Guevara
+
+  # Install the node dependencies, and prune it to remove extranous packages from previous runs.
+  - npm install
+  - npm prune
 
 #
 # In case a script has failed, we want a more precise output by Travis CI on which script has exited with `0`.

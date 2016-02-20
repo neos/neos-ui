@@ -1,19 +1,42 @@
 sudo: false
 language: node_js
-cache:
-  directories:
-    - node_modules
 notifications:
   email: false
 addons:
   sauce_connect: true
+
+#
+# Cache the node_modules directory to speeden up the `npm install` command.
+#
+cache:
+  directories:
+    - node_modules
+
+#
+# Install dependencies for other services.
+#
 before_install:
   - npm i -g codeclimate-test-reporter
+
+#
+# Since we cache the node_modules folder, we should prune it to remove extranous packages from older runs.
+#
 before_script:
   - npm prune
+
+#
+# In case a script has failed, we want a more precise output by Travis CI on which script has exited with `0`.
+# If we stick with the basic `npm test` command, we would only get the message `The script npm test has exited with code 0`
+# which isn't that informative at all.
+#
 script:
   - npm run lint
   - npm run karma
+  - npm run selenium:run
+
+#
+# Publish the code coverage to codeclimate.com once the tests have passed.
+#
 after_script:
   - mv Coverage/**/lcov.info .
   - codeclimate-test-reporter < lcov.info

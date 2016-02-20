@@ -2,15 +2,23 @@ sudo: false
 language: node_js
 notifications:
   email: false
+services:
+  - mysql
 addons:
   sauce_connect: true
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.0
+      env: DB=mysql
 
 #
-# Cache the node_modules directory to speeden up the `npm install` command.
+# Cache the composer and node_modules directory to speeden up the the installation of dependencies.
 #
 cache:
   directories:
     - node_modules
+    - $HOME/.composer/cache
 
 #
 # Install dependencies for other services & expose the commit message for SauceLabs.
@@ -20,9 +28,44 @@ cache:
 before_install:
   - npm i -g codeclimate-test-reporter
   - "export COMMIT_MESSAGE=\"$(git log --format=%B --no-merges -n 1)\""
+  - export FLOW_CONTEXT=Test
+
+  # Create the running neos instance for the behavior tests.
+  - cd ..
+  - composer self-update -q
+  - mkdir Neos
+  - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
+  - cd Neos
+  - composer install -q
+  - mv ../PackageFactory.Guevara Packages/Application/
+
+  # Remove the default login package since our routes currenctly conflicts it.
+  - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
+
+  # Create the test database and move the configuration files into place.
+  - mysql -e 'create database neos collate utf8_unicode_ci;'
+  - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Settings.yaml
+
+  # Setup the database scheme and import the demo site package.
+  - ./flow cache:warmup
+  - ./flow doctrine:migrate
+  - ./flow site:import --package-key=TYPO3.NeosDemoTypo3Org
+
+  # Create the demo backend user.
+  - ./flow user:create --username=johndoe --password=demo --first-name=John --last-name=Doe --roles=TYPO3.Neos:Administrator
+
+  # Start the development server.
+  - ./flow server:run --port 8081 &
+
+  # Give the server some time to start...
+  - sleep 3
+
+  # Change back into the repository directory where the tests will be executed.
+  - cd Packages/Application/PackageFactory.Guevara
 
 #
-# Since we cache the node_modules folder, we should prune it to remove extranous packages from older runs.
+# Since we cache the node_modules folder,
+# we should prune it to remove extranous packages from older runs.
 #
 before_script:
   - npm prune

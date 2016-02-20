@@ -1,0 +1,44 @@
+{
+    "name": "typo3/neos-base-distribution",
+    "description": "Neos Base Distribution",
+    "license": "GPL-3.0+",
+    "support": {
+        "email": "hello@neos.io",
+        "slack": "http://slack.neos.io/",
+        "forum": "https://discuss.neos.io/",
+        "wiki": "https://discuss.neos.io/c/the-neos-project/project-documentation",
+        "issues": "https://jira.neos.io/browse/NEOS",
+        "docs": "http://neos.readthedocs.org/",
+        "source": "https://github.com/neos/neos-base-distribution"
+    },
+    "config": {
+        "vendor-dir": "Packages/Libraries",
+        "bin-dir": "bin"
+    },
+    "require": {
+        "typo3/neos": "~2.1.0",
+        "typo3/neos-nodetypes": "~2.1.0",
+        "typo3/neosdemotypo3org": "~2.1.0",
+        "typo3/neos-kickstarter": "~2.1.0",
+        "typo3/neos-seo": "@dev",
+        "typo3/imagine": "@dev",
+        "typo3/twitter-bootstrap": "@dev",
+        "typo3/form": "@dev",
+        "typo3/setup": "@dev"
+    },
+    "require-dev": {
+        "typo3/buildessentials": "3.1.x-dev",
+        "mikey179/vfsstream": "~1.6",
+        "phpunit/phpunit": "~4.8 || ~5.0",
+        "flowpack/behat": "dev-master"
+    },
+    "suggest": {
+        "ext-pdo_sqlite": "For running functional tests out-of-the-box this is required"
+    },
+    "scripts": {
+        "post-update-cmd": "TYPO3\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-install-cmd": "TYPO3\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-package-update": "TYPO3\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall",
+        "post-package-install": "TYPO3\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall"
+    }
+}

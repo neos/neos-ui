@@ -60,6 +60,7 @@ install:
   - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
 
   # Remove the default login package since our routes currenctly conflicts it.
+  - composer remove flowpack/neos-frontendlogin
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
 
   # Create the test database and move the configuration files into place.
@@ -69,9 +70,11 @@ install:
   - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Testing/Settings.yaml
   - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Routes.yaml Configuration/Routes.yaml
 
-  # Setup the database scheme and import the demo site package.
+  # Clear all caches to avoid errors regarding the recently removed FrontendLogin package, 
+  # setup the database scheme and import the demo site package.
   - rm -rf Data/Temporary/*
   - ./flow cache:warmup
+  - ./flow flow:cache:flush
   - ./flow doctrine:migrate
   - ./flow site:import --package-key=TYPO3.NeosDemoTypo3Org
 

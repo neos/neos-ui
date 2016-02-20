@@ -78,6 +78,7 @@ install:
 
   # Create the demo backend user.
   - ./flow user:create --username=johndoe --password=demo --first-name=John --last-name=Doe --roles=TYPO3.Neos:Administrator
+  - ./flow routing:list
 
   # Change back into the repository directory where the tests will be executed.
   - cd Packages/Application/PackageFactory.Guevara

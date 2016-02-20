@@ -6,12 +6,6 @@ addons:
   sauce_connect: true
 
 #
-# Expose the commit message for SauceLabs.
-#
-env:
-  - COMMIT_MESSAGE=git log --format=%B -n 1 $TRAVIS_COMMIT
-
-#
 # Cache the node_modules directory to speeden up the `npm install` command.
 #
 cache:
@@ -19,10 +13,13 @@ cache:
     - node_modules
 
 #
-# Install dependencies for other services.
+# Install dependencies for other services & expose the commit message for SauceLabs.
+# The export cannot be placed in the `env` section since there are usecases where this isn't reliable.
+# @see https://github.com/mapbox/node-pre-gyp/issues/196
 #
 before_install:
   - npm i -g codeclimate-test-reporter
+  - "export COMMIT_MESSAGE=\"$(git log --format=%B --no-merges -n 1)\""
 
 #
 # Since we cache the node_modules folder, we should prune it to remove extranous packages from older runs.

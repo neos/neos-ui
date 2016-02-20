@@ -6,6 +6,12 @@ addons:
   sauce_connect: true
 
 #
+# Expose the commit message for SauceLabs.
+#
+env:
+  - COMMIT_MESSAGE=git log --format=%B -n 1 $TRAVIS_COMMIT
+
+#
 # Cache the node_modules directory to speeden up the `npm install` command.
 #
 cache:

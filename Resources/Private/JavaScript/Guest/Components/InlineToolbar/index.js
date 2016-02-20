@@ -28,7 +28,7 @@ const position = dom => {
     return {x: 0, y: 0};
 };
 
-export default () => {
+export default (ui, connection) => {
     const defaultState = {
         create: {
             activeButton: 0,
@@ -103,21 +103,18 @@ export default () => {
         const newToolbar = render(update, node, typoscriptPath, state);
         patch(toolbarNode, diff(toolbar, newToolbar));
         toolbar = newToolbar;
-
-        if (node !== null) {
-            const token = broadcast.subscribe([HOST_NODE_BLURRED, node.contextPath].join('.'), () => {
-                update();
-                broadcast.unsubscribe(token);
-            });
-        }
     };
 
     //
     // Listen to Host events
     //
+    connection.observe('nodes.focused').react(res => {
+        if (res.node) {
+            update(res.node, res.typoscriptPath);
+            return;
+        }
 
-    broadcast.subscribe(HOST_NODE_FOCUSED, (event, payload) => {
-        setTimeout(() => update(payload.node, payload.typoscriptPath), 20);
+        update();
     });
 
     return toolbarNode;

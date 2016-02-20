@@ -15,7 +15,7 @@ class DOMConnector {
         this.contentComponents = {};
     }
 
-    run() {
+    run(ui, connection) {
         [].slice.call(document.querySelectorAll('a[href]')).forEach(link => {
             link.draggable = true;
 
@@ -25,7 +25,7 @@ class DOMConnector {
         });
 
         [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]'))
-            .forEach(contentElement => nodeComponent(contentElement));
+            .forEach(contentElement => nodeComponent(contentElement, ui, connection));
 
         [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(contentElement => {
             const contextPath = closestContextPath(contentElement);

@@ -2,21 +2,19 @@ import {events} from 'Shared/Constants/';
 import {domConnector} from './Process/';
 import {inlineToolbar} from './Components/';
 
-const {broadcast} = window.neos;
-const {GUEST_DOCUMENT_LOADED} = events;
+const {ui} = window.neos;
 const DOMConnector = domConnector();
+const connection = ui.connect();
+
+//neosUi.observe('nodes.focused').then(val => console.log(val));
 
 //
 // Initialize the guest application as soon as the DOM has been fully initialized.
 //
 document.addEventListener('DOMContentLoaded', () => {
-    broadcast.publish(GUEST_DOCUMENT_LOADED, {
-        tabId: window.name,
-        documentInformation: window['@PackageFactory.Guevara:DocumentInformation']
-    });
-
-    DOMConnector.run();
-    document.body.appendChild(inlineToolbar());
+    ui.setDocumentInformation(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
+    DOMConnector.run(ui, connection);
+    document.body.appendChild(inlineToolbar(ui, connection));
 });
 
 //

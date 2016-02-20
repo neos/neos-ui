@@ -24,7 +24,7 @@ const {
 
 const {broadcast} = window.neos;
 
-export default el => {
+export default (el, ui, connection) => {
     const contextPath = el.dataset.__cheNodeContextpath;
     const typoscriptPath = el.dataset.__cheTyposcriptPath;
     const nodeEvent = topic => [topic, contextPath].join('.');
@@ -49,25 +49,34 @@ export default el => {
     //
 
     compose(
-        handle('click', () => broadcast.publish(events.guest.focused, {contextPath, typoscriptPath}), stopPropagation, preventDefault),
-        handleOutside('click', () => broadcast.publish(events.guest.blurred, {contextPath, typoscriptPath})),
-        handle('mouseover', () => broadcast.publish(events.guest.mouseentered, {contextPath, typoscriptPath}), stopPropagation),
-        handle('mouseout', () => broadcast.publish(events.guest.mouseleft, {contextPath, typoscriptPath}))
+        handle('click', () => ui.focusNode(contextPath, typoscriptPath), stopPropagation, preventDefault),
+        handleOutside('click', () => ui.blurNode(contextPath, typoscriptPath)),
+        handle('mouseover', () => ui.hoverNode(contextPath, typoscriptPath), stopPropagation),
+        handle('mouseout', () => ui.unhoverNode(contextPath, typoscriptPath))
     )(el);
 
     //
     // Subscribe to host events
     //
 
-    broadcast.subscribe(HOST_NODE_FOCUSED, (event, payload) => {
-        if (payload.node.contextPath === contextPath) {
-            el.classList.add(style['node--focused']);
-        } else {
-            broadcast.publish(events.guest.blurred, {contextPath, typoscriptPath});
+    connection.observe('nodes.focused').react(res => {
+        if (res.node) {
+            if (res.node.contextPath === contextPath && typoscriptPath === res.typoscriptPath) {
+                el.classList.add(style['node--focused']);
+                return;
+            }
         }
+
+        el.classList.remove(style['node--focused']);
     });
 
-    broadcast.subscribe(events.host.blurred, () => el.classList.remove(style['node--focused']));
-    broadcast.subscribe(events.host.mouseentered, () => el.classList.add(style['node--hover']));
-    broadcast.subscribe(events.host.mouseleft, () => el.classList.remove(style['node--hover']));
+    connection.observe('nodes.hovered').react(res => {
+        if (res.node) {
+            if (res.node.contextPath === contextPath && typoscriptPath === res.typoscriptPath) {
+                el.classList.add(style['node--hover']);
+                return;
+            }
+        }
+        el.classList.remove(style['node--hover']);
+    });
 };

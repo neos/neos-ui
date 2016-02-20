@@ -82,6 +82,7 @@ install:
   - ./flow flow:cache:flush
   - ./flow doctrine:migrate
   - ./flow site:import --package-key=TYPO3.NeosDemoTypo3Org
+  - ./flow configuration:show --type Settings --path TYPO3.Flow.security
 
   # Create the demo backend user.
   - ./flow user:create --username=johndoe --password=demo --first-name=John --last-name=Doe --roles=TYPO3.Neos:Administrator

@@ -83,7 +83,6 @@
     "whatwg-fetch": "^0.11.0"
   },
   "scripts": {
-    "postinstall": "npm run build",
     "build": "webpack --progress --colors",
     "karma": "karma start --single-run",
     "lint": "eslint Resources/Private/JavaScript/**",

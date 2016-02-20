@@ -1,5 +1,6 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
+const isEnvCi = process.env.CI;
 
 function readYaml(path, fileNotFoundMessage) {
     var data = {};
@@ -7,7 +8,7 @@ function readYaml(path, fileNotFoundMessage) {
     try {
         data = yaml.safeLoad(fs.readFileSync(path, 'utf8'));
     } catch (e) {
-        if (e.code === 'ENOENT' && fileNotFoundMessage) {
+        if (e.code === 'ENOENT' && fileNotFoundMessage && !isEnvCi) {
             console.error(fileNotFoundMessage);
         } else {
             throw e;
@@ -64,7 +65,7 @@ const config = {
 //
 // Adjust some settings for CI runs.
 //
-if (process.env.CI) {
+if (isEnvCi) {
     config.user = process.env.SAUCE_USERNAME;
     config.key = process.env.SAUCE_ACCESS_KEY;
     config.logLevel = 'verbose';

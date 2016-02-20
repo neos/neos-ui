@@ -67,6 +67,7 @@ install:
   - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Routes.yaml Configuration/Routes.yaml
 
   # Setup the database scheme and import the demo site package.
+  - rm -rf Data/Temporary/*
   - ./flow cache:warmup
   - ./flow doctrine:migrationstatus
   - ./flow configuation:show --type=Settings --path=TYPO3.Flow.persistence

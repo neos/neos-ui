@@ -6,9 +6,9 @@ Build/Selenium/Screenshots/*.png
 lcov.info
 
 #
-# Customized credentials for the neos backend which the WebDriverIO runner uses.
+# Customized credentials for the Neos backend which the WebDriverIO runner uses.
 #
-Build/TestSuite.Settings.yaml
+Build/Selenium/Settings.yaml
 
 #
 # Application & development dependencies.

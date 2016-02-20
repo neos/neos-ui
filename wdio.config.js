@@ -1,22 +1,27 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
 
-function readYaml(path) {
+function readYaml(path, fileNotFoundMessage) {
     var data = {};
 
     try {
         data = yaml.safeLoad(fs.readFileSync(path, 'utf8'));
     } catch (e) {
-        console.log(e);
+        if (e.code === 'ENOENT' && fileNotFoundMessage) {
+            console.error(fileNotFoundMessage);
+        } else {
+            throw e;
+        }
     }
 
     return data;
 }
 
-const defaultConfig = readYaml('Build/TestSuite.Settings.yaml.example');
-const buildConfig = Object.assign(defaultConfig, readYaml('Build/TestSuite.Settings.yaml')).WebdriverIO;
+const buildConfig = Object.assign(
+    readYaml('Build/Selenium/Settings.yaml.example'),
+    readYaml('Build/Selenium/Settings.yaml', 'Neos UI: No customized Settings.yaml for selenium was found. This may lead to unexpected problems since we need login credentials for the neos backend.')
+).WebdriverIO;
 const credentials = buildConfig.credentials;
-
 const config = {
     updateJob: true,
     specs: [

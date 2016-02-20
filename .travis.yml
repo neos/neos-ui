@@ -9,7 +9,7 @@ addons:
 matrix:
   fast_finish: true
   include:
-    - php: 7.0
+    - php: 5.6
       env: DB=mysql
 
 #
@@ -32,12 +32,14 @@ before_install:
 
   # Create the running neos instance for the behavior tests.
   - cd ..
-  - composer self-update -q
   - mkdir Neos
   - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
   - cd Neos
-  - composer install -q
   - mv ../PackageFactory.Guevara Packages/Application/
+
+  # Install composer since it is not available in the TravisCI nodejs scope.
+  - curl https://getcomposer.org/installer | php
+  - php composer.phar composer install -q
 
   # Remove the default login package since our routes currenctly conflicts it.
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin

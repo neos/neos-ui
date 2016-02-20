@@ -43,18 +43,18 @@ before_install:
   - composer self-update -q
 
 #
-# Install the neos instance.
+# Install and setup the neos instance.
 #
 install:
   - npm install
 
   # Create the running neos instance for the behavior tests.
   - cd ..
-  - mkdir Neos
+  - if [ ! -d "Neos" ]; then mkdir Neos; fi;
   - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
   - cd Neos
   - composer install -q
-  - mv ../PackageFactory.Guevara Packages/Application/
+  - mv ../PackageFactory.Guevara/** Packages/Application/PackageFactory.Guevara/
 
   # Remove the default login package since our routes currenctly conflicts it.
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin

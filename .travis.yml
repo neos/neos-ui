@@ -42,7 +42,7 @@ before_install:
   # The export cannot be placed in the `env` section since there are usecases where this isn't reliable.
   # @see https://github.com/mapbox/node-pre-gyp/issues/196
   - "export COMMIT_MESSAGE=\"$(git log --format=%B --no-merges -n 1)\""
-  - export FLOW_CONTEXT=Testing
+  - export FLOW_CONTEXT=Development
 
   # Update composer.
   - composer self-update -q

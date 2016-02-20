@@ -46,7 +46,9 @@ before_install:
 # Install and setup the neos instance.
 #
 install:
+  # Install the node dependencies, and prune it to remove extranous packages from previous runs.
   - npm install
+  - npm prune
 
   # Create the running neos instance for the behavior tests.
   - cd ..
@@ -54,7 +56,10 @@ install:
   - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
   - cd Neos
   - composer install -q
+  - if [ ! -d "Packages/Application/PackageFactory.Guevara" ]; then mkdir Packages/Application/PackageFactory.Guevara; fi;
   - mv ../PackageFactory.Guevara/** Packages/Application/PackageFactory.Guevara/
+  - mv ../PackageFactory.Guevara/.babelrc Packages/Application/PackageFactory.Guevara/
+  - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
 
   # Remove the default login package since our routes currenctly conflicts it.
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
@@ -69,29 +74,14 @@ install:
   # Setup the database scheme and import the demo site package.
   - rm -rf Data/Temporary/*
   - ./flow cache:warmup
-  - ./flow doctrine:migrationstatus
-  - ./flow configuation:show --type=Settings --path=TYPO3.Flow.persistence
   - ./flow doctrine:migrate
   - ./flow site:import --package-key=TYPO3.NeosDemoTypo3Org
 
   # Create the demo backend user.
   - ./flow user:create --username=johndoe --password=demo --first-name=John --last-name=Doe --roles=TYPO3.Neos:Administrator
 
-  # Start the development server.
-  - ./flow server:run --port 8081 &
-
-  # Give the server some time to start...
-  - sleep 3
-
   # Change back into the repository directory where the tests will be executed.
   - cd Packages/Application/PackageFactory.Guevara
-
-#
-# Since we cache the node_modules folder,
-# we should prune it to remove extranous packages from older runs.
-#
-before_script:
-  - npm prune
 
 #
 # In case a script has failed, we want a more precise output by Travis CI on which script has exited with `0`.
@@ -99,8 +89,13 @@ before_script:
 # which isn't that informative at all.
 #
 script:
-  - npm run lint
-  - npm run karma
+  # Since the karma task is enduring a big time span, we execute it in
+  # parallel to the lint task to reduce the overall time for each CI build.
+  - npm run lint & npm run karma
+
+  # Start the development server and wait some time to boot it up, afterwards start the selenium tests.
+  - ./flow server:run --port 8081 &
+  - sleep 3
   - npm run selenium:run
 
 #

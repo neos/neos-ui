@@ -1,115 +1,137 @@
 import h from 'virtual-dom/h';
-import diff from 'virtual-dom/diff';
-import patch from 'virtual-dom/patch';
-import createElement from 'virtual-dom/create-element';
 import mergeClassNames from 'classnames';
 
+import {position} from 'Guest/Process/DOMUtils.js';
+import iconButton from 'Guest/Components/IconButton/';
+import iconButtonDropDown from 'Guest/Components/IconButtonDropDown/';
+
 import style from './style.css';
-import button from './Button/';
-import buttonDropDown from './ButtonDropDown/';
 
-const position = dom => {
-    if (dom !== null) {
-        const bodyBounds = document.body.getBoundingClientRect();
-        const domBounds = dom.getBoundingClientRect();
-
-        return {
-            x: domBounds.left - bodyBounds.left,
-            y: domBounds.top - bodyBounds.top
-        };
-    }
-
-    return {x: 0, y: 0};
+const setButtonMode = (button, mode, props) => () => {
+    const newProps = Object.assign({}, props);
+    newProps.buttons[button].mode = mode;
+    newProps.buttons[button].isOpened = false;
+    props.onUpdate(newProps);
 };
 
-export default (ui, connection) => {
-    const defaultState = {
-        create: {
-            activeButton: 0,
-            isOpen: false
-        },
-        paste: {
-            activeButton: 0,
-            isOpen: false
-        }
-    };
-    const render = (update, node = null, typoscriptPath = '', state = defaultState) => {
-        const dom = node && document.querySelector(`[data-__che-typoscript-path="${typoscriptPath}"][data-__che-node-contextpath="${node.contextPath}"]`);
-        const {x, y} = position(dom);
+let savedProps = {};
 
-        return h('div', {
-            className: mergeClassNames({
-                [style.toolbar]: true
-            }),
-            style: {
-                display: Boolean(dom) ? 'block' : 'none',
-                top: `${(y - 49)}px`,
-                left: `${(x - 9)}px`
+export default props => {
+    props = Object.assign({
+        node: null,
+        typoscriptPath: '',
+        buttons: {
+            create: {
+                mode: 'into',
+                isDisabled:  false,
+                isOpen: false
+            },
+            paste: {
+                mode: 'into',
+                isDisabled: false,
+                isOpen: false
+            }
+        },
+        onUpdate: () => {}
+    }, savedProps, props);
+    savedProps = props;
+
+    const dom = props.node && document.querySelector(
+        `[data-__che-typoscript-path="${props.typoscriptPath}"][data-__che-node-contextpath="${props.node.contextPath}"]`
+    );
+    const {x, y} = position(dom);
+
+    return h('div', {
+        onclick: e => e.stopPropagation(),
+        className: mergeClassNames({
+            [style.toolbar]: true,
+            [style['toolbar--isVisible']]: Boolean(dom)
+        }),
+        style: {
+            top: `${(y - 49)}px`,
+            left: `${(x - 9)}px`
+        }
+    }, [
+        //
+        // Create Button
+        //
+        iconButtonDropDown({
+            ...props.buttons.create,
+            icon: 'fa-plus',
+            onUpdate: buttonProps => {
+                const newProps = Object.assign({}, props);
+                newProps.buttons.create = buttonProps;
+                props.onUpdate(newProps);
+            },
+            onClick: mode => {
+                switch (mode) {
+                    case 'into':
+                        console.log('create into');
+                    break;
+
+                    case 'before':
+                        console.log('create before');
+                    break;
+
+                    case 'after':
+                    default:
+                        console.log('create after');
+                    break;
+                }
             }
         }, [
-            buttonDropDown({
-                buttons: [
-                    {
-                        icon: 'fa-plus',
-                        annotation: 'fa-long-arrow-up',
-                        onClick: () => console.log('Create before Node dialog')
-                    },
-                    {
-                        icon: 'fa-plus',
-                        annotation: 'fa-long-arrow-right',
-                        onClick: () => console.log('Create into Node dialog')
-                    },
-                    {
-                        icon: 'fa-plus',
-                        annotation: 'fa-long-arrow-down',
-                        onClick: () => console.log('Create after Node dialog')
-                    }
-                ],
-                onUpdate: (activeButton, isOpen) => {
-                    update(node, typoscriptPath, Object.assign({}, state, {create: {activeButton, isOpen}}));
-                }
-            }, state.create),
-            button({
-                icon: 'fa-eye-slash',
-                onClick: () => console.log('Hide node')
+            iconButton({
+                icon: 'fa-long-arrow-up',
+                onClick: setButtonMode('create', 'before', props)
             }),
-            button({
-                icon: 'fa-copy',
-                onClick: () => console.log('Copy node')
+            iconButton({
+                icon: 'fa-long-arrow-right',
+                onClick: setButtonMode('create', 'into', props)
             }),
-            button({
-                icon: 'fa-cut',
-                onClick: () => console.log('Cut node')
-            }),
-            button({
-                icon: 'fa-paste',
-                onClick: () => console.log('Paste node')
-            }),
-            button({
-                icon: 'fa-trash',
-                onClick: () => console.log('Delete node')
+            iconButton({
+                icon: 'fa-long-arrow-down',
+                onClick: setButtonMode('create', 'after', props)
             })
-        ]);
-    };
-    let toolbar = render();
-    const toolbarNode = createElement(toolbar);
-    const update = (node = null, typoscriptPath = '', state = defaultState) => {
-        const newToolbar = render(update, node, typoscriptPath, state);
-        patch(toolbarNode, diff(toolbar, newToolbar));
-        toolbar = newToolbar;
-    };
+        ]),
 
-    //
-    // Listen to Host events
-    //
-    connection.observe('nodes.focused').react(res => {
-        if (res.node) {
-            update(res.node, res.typoscriptPath);
-            return;
-        }
+        //
+        // Hide / unhide button
+        //
+        iconButton({
+            icon: 'fa-eye-slash',
+            onClick: () => console.log('hide')
+        }),
 
-        update();
-    });
+        //
+        // Copy button
+        //
+        iconButton({
+            icon: 'fa-copy',
+            onClick: () => console.log('copy')
+        }),
 
-    return toolbarNode;
+        //
+        // Cut button
+        //
+        iconButton({
+            icon: 'fa-cut',
+            onClick: () => console.log('cut')
+        }),
+
+        //
+        // Paste button
+        //
+        iconButton({
+            icon: 'fa-paste',
+            onClick: () => console.log('paste')
+        }),
+
+        //
+        // Delete button
+        //
+        iconButton({
+            icon: 'fa-trash',
+            onClick: () => console.log('delete')
+        })
+    ]);
 };

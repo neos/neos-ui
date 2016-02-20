@@ -6,6 +6,7 @@
     border-bottom: 1px solid #3f3f3f;
     height: 40px;
     display: none;
+    color: #fff;
 }
 
 .toolbar--isVisible {

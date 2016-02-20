@@ -26,3 +26,17 @@ export const handleOutside = (events, handler, modifier = []) => dom => {
 
 export const stopPropagation = e => e.stopPropagation();
 export const preventDefault = e => e.preventDefault();
+
+export const position = dom => {
+    if (dom && dom.getBoundingClientRect) {
+        const bodyBounds = document.body.getBoundingClientRect();
+        const domBounds = dom.getBoundingClientRect();
+
+        return {
+            x: domBounds.left - bodyBounds.left,
+            y: domBounds.top - bodyBounds.top
+        };
+    }
+
+    return {x: 0, y: 0};
+};

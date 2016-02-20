@@ -1,8 +1,6 @@
 import {domConnector} from './Process/';
-import {inlineToolbar} from './Components/';
 
 const {ui} = window.neos;
-const DOMConnector = domConnector();
 const connection = ui.connect();
 
 //
@@ -10,8 +8,7 @@ const connection = ui.connect();
 //
 document.addEventListener('DOMContentLoaded', () => {
     ui.setDocumentInformation(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
-    DOMConnector.run(ui, connection);
-    document.body.appendChild(inlineToolbar(ui, connection));
+    domConnector(ui, connection);
 });
 
 //

@@ -31,7 +31,7 @@ before_install:
   - nvm use
   - npm i -g codeclimate-test-reporter
   - "export COMMIT_MESSAGE=\"$(git log --format=%B --no-merges -n 1)\""
-  - export FLOW_CONTEXT=Test
+  - export FLOW_CONTEXT=Testing
 
   # Create the running neos instance for the behavior tests.
   - cd ..

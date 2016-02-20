@@ -17,7 +17,7 @@ matrix:
 #
 cache:
   directories:
-    - $HOME/PackageFactory/Neos/Packages/Application/PackageFactory.Guevara/node_modules
+    - $HOME/build/PackageFactory/Neos/Packages/Application/PackageFactory.Guevara/node_modules
     - $HOME/.composer/cache
 
 #
@@ -54,7 +54,7 @@ install:
   - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
   - cd Neos
   - composer install -q
-  - mv ../PackageFactory.Guevara Neos/Packages/Application/
+  - mv ../PackageFactory.Guevara Packages/Application/
 
   # Remove the default login package since our routes currenctly conflicts it.
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin

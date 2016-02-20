@@ -73,6 +73,7 @@ if (process.env.CI) {
         'version': '27.0',
         'platform': 'XP',
         'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+        'name': process.env.TRAVIS_REPO_SLUG + ': ' + process.env.TRAVIS_COMMIT,
         'build': process.env.TRAVIS_BUILD_NUMBER
     }];
 }

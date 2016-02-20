@@ -1,12 +1,10 @@
 import {combineReducers} from 'redux';
 import {
     reducer as ChangesReducer,
-    events as ChangesEvents,
     actions as Changes
 } from './Changes/';
 import {
     reducer as NodesReducer,
-    events as NodesEvents,
     actions as Nodes
 } from './Nodes/';
 
@@ -26,12 +24,4 @@ export const reducer = {
         changes: ChangesReducer,
         nodes: NodesReducer
     })
-};
-
-//
-// Export the event map
-//
-export const events = {
-    ...ChangesEvents,
-    ...NodesEvents
 };

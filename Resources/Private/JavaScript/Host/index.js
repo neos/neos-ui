@@ -7,11 +7,7 @@ import registry from '@reduct/registry';
 import {configureStore} from './Redux/';
 
 import initializeJSAPI from 'API/';
-import {
-    broadcast,
-    ui
-} from './Plugins/';
-import initializeSubscribers from './Subscriber/';
+import {ui} from './Plugins/';
 import initializeExposers from './Exposer/';
 
 import * as feedbackHandler from './Service/FeedbackHandler/';
@@ -52,11 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const store = configureStore({serverState}, neos);
 
     // Initialize Neos JS API plugins
-    neos.use(broadcast(store.dispatch));
     neos.use(ui(store));
 
     // Initialize subscriber
-    initializeSubscribers(neos);
     initializeExposers();
 
     nodeTypeManager.initializeWithNodeTypeSchema(nodeTypeSchema);

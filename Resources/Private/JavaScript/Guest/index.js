@@ -1,12 +1,9 @@
-import {events} from 'Shared/Constants/';
 import {domConnector} from './Process/';
 import {inlineToolbar} from './Components/';
 
 const {ui} = window.neos;
 const DOMConnector = domConnector();
 const connection = ui.connect();
-
-//neosUi.observe('nodes.focused').then(val => console.log(val));
 
 //
 // Initialize the guest application as soon as the DOM has been fully initialized.

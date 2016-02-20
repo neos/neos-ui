@@ -4,15 +4,9 @@ import patch from 'virtual-dom/patch';
 import createElement from 'virtual-dom/create-element';
 import mergeClassNames from 'classnames';
 
-import {events} from 'Shared/Constants/';
-
 import style from './style.css';
 import button from './Button/';
 import buttonDropDown from './ButtonDropDown/';
-
-const {HOST_NODE_FOCUSED, HOST_NODE_BLURRED} = events;
-
-const {broadcast} = window.neos;
 
 const position = dom => {
     if (dom !== null) {

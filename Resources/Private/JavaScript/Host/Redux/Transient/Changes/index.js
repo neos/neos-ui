@@ -33,9 +33,3 @@ export const reducer = handleActions({
     [ADD]: (state, action) => state.push(action.payload.change),
     [CLEAR]: () => initialState
 }, initialState);
-
-//
-// Export the event map
-//
-export const events = {
-};

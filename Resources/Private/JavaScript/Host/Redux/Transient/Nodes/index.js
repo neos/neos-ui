@@ -2,9 +2,7 @@ import Immutable from 'immutable';
 import {createAction, handleActions} from 'redux-actions';
 
 import {immutableOperations} from 'Shared/Utilities/';
-import {events as Events} from 'Shared/Constants/';
 
-const {HOST_NODE_FOCUSED} = Events;
 const {$set, $get, $merge} = immutableOperations;
 
 const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
@@ -121,20 +119,3 @@ export const reducer = handleActions({
         return state;
     }
 }, initialState);
-
-//
-// Export the event map
-//
-export const events = {
-    [FOCUS]: {
-        [HOST_NODE_FOCUSED]: (state, action) => {
-            return {
-                node: $get(state.transient.nodes, [
-                    'byContextPath',
-                    $get(state.transient.nodes, 'focused')
-                ]),
-                typoscriptPath: action.payload.typoscriptPath
-            };
-        }
-    }
-};

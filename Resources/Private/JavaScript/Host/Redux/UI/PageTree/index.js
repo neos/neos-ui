@@ -71,9 +71,3 @@ export const reducer = handleActions({
         return resetFocusAndActive(state, !isActive, !isFocused);
     }
 }, initialState);
-
-//
-// Export the event map
-//
-export const events = {
-};

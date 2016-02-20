@@ -32,9 +32,3 @@ export const reducer = handleActions({
         return $set(state, 'isAutoPublishingEnabled', !isCurrentlyEnabled);
     }
 }, initialState);
-
-//
-// Export the event map
-//
-export const events = {
-};

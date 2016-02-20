@@ -17,30 +17,44 @@ matrix:
 #
 cache:
   directories:
-    - Packages/Application/PackageFactory.Guevara/node_modules
+    - $HOME/PackageFactory/Neos/Packages/Application/PackageFactory.Guevara/node_modules
     - $HOME/.composer/cache
 
 #
-# Install dependencies for other services & expose the commit message for SauceLabs.
-# The export cannot be placed in the `env` section since there are usecases where this isn't reliable.
-# @see https://github.com/mapbox/node-pre-gyp/issues/196
+# Install nvm, the node depdencie and setup the VM.
 #
 before_install:
+  # Install `nvm` since we are running in a php infrastructure VM.
   - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
   - nvm install v4.2.2
   - nvm use
+
+  # Since the language is set to `php`, we need to execute `npm install` explicitly.
+
   - npm i -g codeclimate-test-reporter
+
+  # Expose the commit message for SauceLabs.
+  # The export cannot be placed in the `env` section since there are usecases where this isn't reliable.
+  # @see https://github.com/mapbox/node-pre-gyp/issues/196
   - "export COMMIT_MESSAGE=\"$(git log --format=%B --no-merges -n 1)\""
   - export FLOW_CONTEXT=Testing
+
+  # Update composer.
+  - composer self-update -q
+
+#
+# Install the neos instance.
+#
+install:
+  - npm install
 
   # Create the running neos instance for the behavior tests.
   - cd ..
   - mkdir Neos
   - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
   - cd Neos
-  - composer self-update -q
   - composer install -q
-  - mv ../PackageFactory.Guevara Packages/Application/
+  - mv ../PackageFactory.Guevara Neos/Packages/Application/
 
   # Remove the default login package since our routes currenctly conflicts it.
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
@@ -70,12 +84,6 @@ before_install:
 
   # Change back into the repository directory where the tests will be executed.
   - cd Packages/Application/PackageFactory.Guevara
-
-#
-# Since the language is set to `php`, we need to execute `npm install`.
-#
-install:
-  - npm install
 
 #
 # Since we cache the node_modules folder,

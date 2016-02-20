@@ -83,14 +83,14 @@
     "whatwg-fetch": "^0.11.0"
   },
   "scripts": {
-    "build": "./node_modules/.bin/webpack",
-    "karma": "./node_modules/.bin/karma start --single-run",
-    "lint": "./node_modules/.bin/eslint Resources/Private/JavaScript/**",
-    "selenium:start": "./node_modules/.bin/selenium-standalone install && ./node_modules/.bin/selenium-standalone start",
-    "selenium:run": "./node_modules/.bin/wdio wdio.config.js",
+    "build": "webpack",
+    "karma": "karma start --single-run",
+    "lint": "eslint Resources/Private/JavaScript/**",
+    "selenium:start": "selenium-standalone install && selenium-standalone start",
+    "selenium:run": "wdio wdio.config.js",
     "test": "npm run lint && npm run karma && npm run selenium:run",
     "watch:build": "npm run build -- --watch --progress --colors",
-    "watch:karma": "./node_modules/.bin/karma start",
+    "watch:karma": "karma start",
     "watch": "npm run watch:build & npm run watch:karma"
   },
   "contributors": [

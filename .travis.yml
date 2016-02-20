@@ -31,7 +31,6 @@ before_install:
   - nvm use
 
   # Since the language is set to `php`, we need to execute `npm install` explicitly.
-
   - npm i -g codeclimate-test-reporter
 
   # Expose the commit message for SauceLabs.
@@ -78,12 +77,15 @@ install:
 
   # Create the demo backend user.
   - ./flow user:create --username=johndoe --password=demo --first-name=John --last-name=Doe --roles=TYPO3.Neos:Administrator
-  - ./flow routing:list
+
+  # Start the development server and wait a bit to let it correctly boot up.
+  - ./flow server:run --port 8081 &
+  - sleep 3
 
   # Change back into the repository directory where the tests will be executed.
   - cd Packages/Application/PackageFactory.Guevara
 
-  # Install the node dependencies, and prune it to remove extranous packages from previous runs.
+  # Install the node dependencies, and prune it to remove extranous packages from previous/cached runs.
   - npm install
   - npm prune
 
@@ -97,9 +99,7 @@ script:
   # parallel to the lint task to reduce the overall time for each CI build.
   - npm run lint & npm run karma
 
-  # Start the development server and wait some time to boot it up, afterwards start the selenium tests.
-  - ./flow server:run --port 8081 &
-  - sleep 3
+  # After the unit tests have finished, we can continue with the behavior tests.
   - npm run selenium:run
 
 #

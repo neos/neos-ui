@@ -70,6 +70,12 @@ before_install:
   - cd Packages/Application/PackageFactory.Guevara
 
 #
+# Since the language is set to `php`, we need to execute `npm install`.
+#
+install:
+  - npm install
+
+#
 # Since we cache the node_modules folder,
 # we should prune it to remove extranous packages from older runs.
 #

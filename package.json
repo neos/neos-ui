@@ -83,13 +83,13 @@
     "whatwg-fetch": "^0.11.0"
   },
   "scripts": {
-    "build": "webpack --progress --colors",
+    "build": "webpack",
     "karma": "karma start --single-run",
     "lint": "eslint Resources/Private/JavaScript/**",
     "selenium:start": "selenium-standalone start",
     "selenium:run": "wdio wdio.config.js",
     "test": "npm run lint && npm run karma && npm run selenium:run",
-    "watch:build": "npm run build -- --watch",
+    "watch:build": "npm run build -- --watch --progress --colors",
     "watch:karma": "karma start",
     "watch": "npm run watch:build & npm run watch:karma"
   },

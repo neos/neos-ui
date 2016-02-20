@@ -47,11 +47,13 @@ before_install:
 
   # Create the test database and move the configuration files into place.
   - mysql -e 'create database neos collate utf8_unicode_ci;'
-  - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Settings.yaml
+  - rm Configuration/Testing/Settings.yaml
+  - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Testing/Settings.yaml
 
   # Setup the database scheme and import the demo site package.
   - ./flow cache:warmup
   - ./flow doctrine:migrationstatus
+  - ./flow configuation:show --type=Settings --path=TYPO3.Flow.persistence
   - ./flow doctrine:migrate
   - ./flow site:import --package-key=TYPO3.NeosDemoTypo3Org
 

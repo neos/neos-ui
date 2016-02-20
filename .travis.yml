@@ -2,18 +2,26 @@ sudo: false
 language: php
 notifications:
   email: false
-services:
-  - mysql
+
+#
+# Make sure that the selenium driver can connect to the SauceLabs grid.
+#
 addons:
   sauce_connect: true
+
+#
+# Describe the overall PHP env.
+#
 matrix:
   fast_finish: true
   include:
     - php: 5.6
       env: DB=mysql
+services:
+  - mysql
 
 #
-# Cache the composer and node_modules directory to speeden up the the installation of dependencies.
+# Cache the composer and node_modules directory to speed up the the installation of dependencies.
 #
 cache:
   directories:
@@ -22,16 +30,13 @@ cache:
     - $HOME/.nvm/versions/
 
 #
-# Install nvm, the node depdencie and setup the VM.
+# Install nvm, the node depdencie and setup the some env variables.
 #
 before_install:
-  # Install `nvm` since we are running in a php infrastructure VM.
+  # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
   - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
   - nvm install v4.2.2
   - nvm use
-
-  # Since the language is set to `php`, we need to execute `npm install` explicitly.
-  - npm i -g codeclimate-test-reporter
 
   # Expose the commit message for SauceLabs.
   # The export cannot be placed in the `env` section since there are usecases where this isn't reliable.
@@ -59,20 +64,20 @@ install:
   - mv ../PackageFactory.Guevara/.babelrc Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
 
-  # Remove the default login package since our routes currenctly conflicts it.
+  # Remove the default login package since our `che!` routes currenctly conflicts with the package.
   - composer remove flowpack/neos-frontendlogin
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
 
   # Create the test database and move the configuration files into place.
-  - mysql -e 'create database neos collate utf8_unicode_ci;'
   - rm Configuration/Testing/Settings.yaml
   - rm Configuration/Routes.yaml
   - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Testing/Settings.yaml
   - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Routes.yaml Configuration/Routes.yaml
 
-  # Clear all caches to avoid errors regarding the recently removed FrontendLogin package, 
-  # setup the database scheme and import the demo site package.
+  # Clear all caches to avoid errors regarding the recently removed FrontendLogin package,
+  # setup the database and import the demo site package.
   - rm -rf Data/Temporary/*
+  - mysql -e 'create database neos collate utf8_unicode_ci;'
   - ./flow cache:warmup
   - ./flow flow:cache:flush
   - ./flow doctrine:migrate
@@ -102,12 +107,13 @@ script:
   # parallel to the lint task to reduce the overall time for each CI build.
   - npm run lint & npm run karma
 
-  # After the unit tests have finished, we can continue with the behavior tests.
+  # After the unit tests have been executed, we can continue with the behavior tests.
   - npm run selenium:run
 
 #
 # Publish the code coverage to codeclimate.com once the tests have passed.
 #
 after_script:
+  - npm install -g codeclimate-test-reporter
   - mv Coverage/**/lcov.info .
   - codeclimate-test-reporter < lcov.info

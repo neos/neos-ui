@@ -31,7 +31,7 @@ Change into the directory of the Guevara package and execute `bash Build/init.sh
 
 
 ## Contributing
-### Setup
+#### Setup
 After installing the package into your Flow application, execute
 ```
 bash Build/init.sh
@@ -43,7 +43,7 @@ __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as we
 If you've installed `nvm` make sure that the node LTS version `4.2.2` is correctly installed - You can do so by executing `nvm install 4.2.2`.
 If you need help setting up `nvm` or `npm`, join our [Slack](https://neos-project.slack.com/) channel :).__
 
-### Development commands
+#### Development commands
 | Command         | Description                    |
 | --------------- | ------------------------------ |
 | `npm run build` | Builds all assets via webpack. |
@@ -56,24 +56,24 @@ If you need help setting up `nvm` or `npm`, join our [Slack](https://neos-projec
 | `npm run watch`  | Runs the above stated watch commands sequentially. |
 | `npm test`  | Executes both `npm run lint`, `npm run karma` and `npm run selenium:run` sequentially. |
 
-### Code style
+#### Code style
 Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `npm run lint` in your shell.
 
-### Writing unit tests
+#### Writing unit tests
 The unit tests are executed with Karma and PhantomJS.
 Instead of relying on the default settings of Karma, we use [chai]('http://chaijs.com/') as our assertion library and
 [sinon](http://sinonjs.org/) for spies. To run the unit tests, execute `npm run karma` in your shell.
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 
-### <a name="behavior-tests"></a> Writing behavior tests
+#### <a name="behavior-tests"></a> Writing behavior tests
 The behavior behavior tests are running on a selenium grid which is installed & started by the `npm run selenium:start` command,
 and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with [chai]('http://chaijs.com/').
 To run the behavior tests, execute `npm run selenium:start` first, and `npm run selenium:run` in a separate session afterwards.
 
 Adding behavior tests is as simple as creating unit tests, the only difference is that the file should end with `*.behavior.js` instead of `*.spec.js`.
 
-### Libraries which are used by the application
+#### Libraries which are used by the application
 | Name          | Description/Usecase          |
 | ------------- | ---------------------------- |
 | [immutable](https://facebook.github.io/immutable-js/) | Transforms data into immutable structures. [Read more](http://jlongster.com/Using-Immutable-Data-Structures-in-JavaScript) |

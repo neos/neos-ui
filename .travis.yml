@@ -72,9 +72,9 @@ install:
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
 
   # Create the test database and move the configuration files into place.
-  - rm Configuration/Testing/Settings.yaml
+  - rm Configuration/Development/Settings.yaml
   - rm Configuration/Routes.yaml
-  - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Testing/Settings.yaml
+  - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Development/Settings.yaml
   - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Routes.yaml Configuration/Routes.yaml
 
   # Clear all caches to avoid errors regarding the recently removed FrontendLogin package,

@@ -43,6 +43,19 @@ __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as we
 If you've installed `nvm` make sure that the node LTS version `4.2.2` is correctly installed - You can do so by executing `nvm install 4.2.2`.
 If you need help setting up `nvm` or `npm`, join our [Slack](https://neos-project.slack.com/) channel :).__
 
+### Development commands
+| Command         | Description                    |
+| --------------- | ------------------------------ |
+| `npm run build` | Builds all assets via webpack. |
+| `npm run lint`  | Lints all `.js` files via ESLint. |
+| `npm run karma` | Executes a single run of all unit tests via karma. (This is pretty slow due to webpack's single-compilation speed, use the watch task instead for development) |
+| `npm run selenium:start` | Installs and boots the selenium server. See [Writing behavior tests](#behavior-tests) for more info. |
+| `npm run selenium:run` | Executes all behavior tests via WebdriverIO. See [Writing behavior tests](#behavior-tests) for more info. |
+| `npm run watch:build`  | Watches all source files and rebuilds the compiled files on file changes. |
+| `npm run watch:karma`  | Watches all source & unit test specs and runs karma after the compilation has been completed. |
+| `npm run watch`  | Runs the above stated watch commands sequentially. |
+| `npm test`  | Executes both  |
+
 ### Code style
 Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `npm run lint` in your shell.
 
@@ -53,7 +66,7 @@ Instead of relying on the default settings of Karma, we use [chai]('http://chaij
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 
-### Writing behavior tests
+### <a name="behavior-tests"></a> Writing behavior tests
 The behavior behavior tests are running on a selenium grid which is installed & started by the `npm run selenium:start` command,
 and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with [chai]('http://chaijs.com/').
 To run the behavior tests, execute `npm run selenium:start` first, and `npm run selenium:run` in a separate session afterwards.

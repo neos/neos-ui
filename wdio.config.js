@@ -8,8 +8,11 @@ function readYaml(path, fileNotFoundMessage) {
     try {
         data = yaml.safeLoad(fs.readFileSync(path, 'utf8'));
     } catch (e) {
-        if (e.code === 'ENOENT' && fileNotFoundMessage && !isEnvCi) {
-            console.error(fileNotFoundMessage);
+        if (e.code === 'ENOENT' && fileNotFoundMessage) {
+            // Do not display warnings while running in CI.
+            if (!isEnvCi) {
+                console.error(fileNotFoundMessage);
+            }
         } else {
             throw e;
         }

@@ -48,7 +48,9 @@ before_install:
   # Create the test database and move the configuration files into place.
   - mysql -e 'create database neos collate utf8_unicode_ci;'
   - rm Configuration/Testing/Settings.yaml
+  - rm Configuration/Routes.yaml
   - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Testing/Settings.yaml
+  - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Routes.yaml Configuration/Routes.yaml
 
   # Setup the database scheme and import the demo site package.
   - ./flow cache:warmup

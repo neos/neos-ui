@@ -52,9 +52,9 @@ If you need help setting up `nvm` or `npm`, join our [Slack](https://neos-projec
 | `npm run selenium:start` | Installs and boots the selenium server. See [Writing behavior tests](#behavior-tests) for more info. |
 | `npm run selenium:run` | Executes all behavior tests via WebdriverIO. See [Writing behavior tests](#behavior-tests) for more info. |
 | `npm run watch:build`  | Watches all source files and rebuilds the compiled files on file changes. |
-| `npm run watch:karma`  | Watches all source & unit test specs and runs karma after the compilation has been completed. |
+| `npm run watch:karma`  | Watches all source files and unit test specs and runs karma after the compilation has been completed. |
 | `npm run watch`  | Runs the above stated watch commands sequentially. |
-| `npm test`  | Executes both  |
+| `npm test`  | Executes both `npm run lint`, `npm run karma` and `npm run selenium:run` sequentially. |
 
 ### Code style
 Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `npm run lint` in your shell.

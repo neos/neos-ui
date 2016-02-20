@@ -19,6 +19,7 @@ cache:
   directories:
     - $HOME/build/PackageFactory/Neos/Packages/Application/PackageFactory.Guevara/node_modules
     - $HOME/.composer/cache
+    - $HOME/.nvm/versions/
 
 #
 # Install nvm, the node depdencie and setup the VM.

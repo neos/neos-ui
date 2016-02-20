@@ -40,7 +40,7 @@ bash Build/init.sh
 which will install all dependencies and creates the initial bundle for the application.
 
 __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
-If you've installed `nvm` make sure that the node LTS version `4.2.2` is correctly installed - You can do so by executing `nvm install 4.2.2`.
+If you've installed `nvm` make sure that the node LTS version `4.2.2` is correctly installed - You can do so by executing `nvm install v4.2.2`.
 If you need help setting up `nvm` or `npm`, join our [Slack](https://neos-project.slack.com/) channel :).__
 
 #### Development commands

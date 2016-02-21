@@ -26,23 +26,19 @@ Clone the repository into your Neos `Packages/Application/` folder, delete the d
       package: 'PackageFactory.Guevara'
 ```
 
-You may additionally need to execute `rm -rf Data/Temporary/* && ./flow flow:cache:flush` to flush all caches since the default FrontendLogin package may still be your caches somewhere. Change into the directory of the Guevara package and execute `bash Build/init.sh` which will download the application dependencies and compiles the source files into the distributed versions.
-
-Done. Open the sub-route `/che!` to login to the new interface.
-
-
-## Contributing
-#### Setup
-After installing the package into your Flow application, execute
+You may additionally need to execute `rm -rf Data/Temporary/* && ./flow flow:cache:flush` to flush all caches since the default FrontendLogin package may still be your caches somewhere. Change into the directory of the Guevara package and execute the following to install all frontend dependencies and build the bundles.
 ```
 bash Build/init.sh
 ```
 
-which will install all dependencies and creates the initial bundle for the application.
+After the script finished, you are all set up and can open the sub-route `/che!` to login to the new interface.
 
 __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
 If you've installed `nvm` make sure that the node LTS version `4.2.2` is correctly installed - You can do so by executing `nvm install v4.2.2`.
-If you need help setting up `nvm` or `npm`, join our [Slack](https://neos-project.slack.com/) channel :).__
+If you need help setting up `nvm`, `npm` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
+
+
+## Contributing
 
 #### Development commands
 | Command         | Description                    |

@@ -1,5 +1,4 @@
 sudo: false
-language: php
 notifications:
   email: false
 
@@ -12,11 +11,9 @@ addons:
 #
 # Describe the overall PHP env.
 #
-matrix:
-  fast_finish: true
-  include:
-    - php: 5.6
-      env: DB=mysql
+language: php
+php:
+  - '5.6'
 services:
   - mysql
 
@@ -77,6 +74,9 @@ install:
   - mv ../PackageFactory.Guevara/.babelrc Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
 
+  # Execute the optional install shell script for the environment.
+  - if [ -f "Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
+
   # Change into the repository directory where the environment based shell script will be executed.
   - cd Packages/Application/PackageFactory.Guevara
 
@@ -88,4 +88,9 @@ install:
 #
 # Execute the test environment specific shell script.
 #
-script: "bash Build/TravisCi/Scripts/$TEST_SUITE.sh"
+script: "if [ -f "Build/TravisCi/Scripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/Scripts/$TEST_SUITE.sh; fi"
+
+#
+# Execute the test environment specific after_script shell script.
+#
+after_script: "if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi"

@@ -71,7 +71,7 @@ install:
   - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
 
   # Remove the default login package since our `che!` routes currenctly conflicts with the package.
-  - composer remove flowpack/neos-frontendlogin &
+  - composer remove flowpack/neos-frontendlogin
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
   - rm -rf Data/Temporary/*
 

@@ -28,7 +28,7 @@ export default class DropDown extends Component {
     }
 
     render() {
-        const {classNames, label} = this.props;
+        const {classNames, label, ...directProps} = this.props;
         const {isOpened} = this.state;
         const dropDownClassName = mergeClassNames({
             [classNames.wrapper]: classNames.wrapper && classNames.wrapper.length,
@@ -61,6 +61,7 @@ export default class DropDown extends Component {
 
                         this.toggler = btn;
                     }}
+                    {...directProps}
                     >
                     {this.renderBeforeIcon()}
                     {this.renderLabel()}

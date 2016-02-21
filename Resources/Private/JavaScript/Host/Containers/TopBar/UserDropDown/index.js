@@ -24,17 +24,17 @@ export default class UserDropDown extends Component {
 
         return (
             <div className={style.wrapper}>
-                <DropDown label={this.props.userName} iconBefore="user" classNames={dropDownClassNames}>
+                <DropDown label={this.props.userName} iconBefore="user" classNames={dropDownClassNames} id="neos__topBar__userDropDownButton">
                     <li className={style.dropDown__item}>
                         <form title="Logout" action="/neos/logout" method="post">
-                            <button type="submit" name="" value="logout">
+                            <button type="submit" name="" value="logout" id="neos__topBar__userDropDown__logoutButton">
                                 <Icon icon="power-off" className={style.dropDown__item__icon} />
                                 <I18n fallback="Logout" />
                             </button>
                         </form>
                       </li>
                       <li className={style.dropDown__item}>
-                          <a title="User Settings" href="/neos/user/usersettings">
+                          <a title="User Settings" href="/neos/user/usersettings" id="neos__topBar__userDropDown__userSettings">
                               <Icon icon="wrench" className={style.dropDown__item__icon} />
                               <I18n fallback="User Settings" />
                           </a>

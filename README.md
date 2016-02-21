@@ -19,7 +19,7 @@
 ## Installation
 *Composer support coming soon...*
 
-Clone the repository into your Neos `Packages/Application/` folder, delete the default `Flowpack.Neos.FrontendLogin` package from the `Packages/Plugins` directory and paste the following configuration into the head of your global `Routes.yaml` which is located in `Configuration/`.
+Clone the repository into your Neos `Packages/Application/` folder and paste the following configuration into the head of your global `Routes.yaml` which is located in `Configuration/`.
 ```yaml
 -
   name: 'PackageFactory Guevara'
@@ -29,6 +29,7 @@ Clone the repository into your Neos `Packages/Application/` folder, delete the d
       package: 'PackageFactory.Guevara'
 ```
 
+Since our package currently conflicts with the default FrontendLogin package, we need to remove it prior visiting the new backend interface.
 You may additionally need to execute `rm -rf Data/Temporary/*` to flush all caches since the default FrontendLogin package may still be your caches somewhere. Change into the directory of the Guevara package and execute the following to install all frontend dependencies and build the bundles.
 ```
 bash Build/init.sh

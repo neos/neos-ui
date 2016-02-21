@@ -71,7 +71,7 @@ install:
   - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
 
   # Remove the default login package since our `che!` routes currenctly conflicts with the package.
-  - composer remove flowpack/neos-frontendlogin
+  - composer remove flowpack/neos-frontendlogin &
   - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
   - rm -rf Data/Temporary/*
 
@@ -87,7 +87,7 @@ install:
   - ./flow site:import --package-key=TYPO3.NeosDemoTypo3Org
 
   # Create the demo backend user.
-  - ./flow user:create --username=johndoe --password=demo --first-name=John --last-name=Doe --roles=TYPO3.Neos:Administrator
+  - ./flow user:create --username=johndoe --password=demo --first-name=John --last-name=Doe --roles=TYPO3.Neos:Administrator &
 
   # Start the development server on which the behavior tests will act on.
   - ./flow server:run --port 8081 &

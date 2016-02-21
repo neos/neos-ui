@@ -61,14 +61,14 @@ Our code style is based upon `xo`, with one big difference - We use 4 spaces ins
 
 #### Writing unit tests
 The unit tests are executed with Karma and PhantomJS.
-Instead of relying on the default settings of Karma, we use [chai]('http://chaijs.com/') as our assertion library and
+Instead of relying on the default settings of Karma, we use [chai](http://chaijs.com/) as our assertion library and
 [sinon](http://sinonjs.org/) for spies. To run the unit tests, execute `npm run karma` in your shell.
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 
 #### <a name="behavior-tests"></a> Writing behavior tests
 The behavior behavior tests are running on a selenium grid which is installed & started by the `npm run selenium:start` command,
-and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with [chai]('http://chaijs.com/').
+and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with [chai](http://chaijs.com/).
 To run the behavior tests, execute `npm run selenium:start` first, and `npm run selenium:run` in a separate session afterwards.
 
 Adding behavior tests is as simple as creating unit tests, the only difference is that the file should end with `*.behavior.js` instead of `*.spec.js`.

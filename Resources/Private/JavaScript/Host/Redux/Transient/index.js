@@ -7,13 +7,18 @@ import {
     reducer as NodesReducer,
     actions as Nodes
 } from './Nodes/';
+import {
+    reducer as NodeTypesReducer,
+    actions as NodeTypes
+} from './NodeTypes/';
 
 //
 // Export the actions
 //
 export const actions = {
     Changes,
-    Nodes
+    Nodes,
+    NodeTypes
 };
 
 //
@@ -22,6 +27,7 @@ export const actions = {
 export const reducer = {
     transient: combineReducers({
         changes: ChangesReducer,
-        nodes: NodesReducer
+        nodes: NodesReducer,
+        nodeTypes: NodeTypesReducer
     })
 };

@@ -1,5 +1,3 @@
-import mergeClassNames from 'classnames';
-
 import icon from 'Guest/Components/Icon/';
 import button from 'Guest/Components/Button/';
 
@@ -12,6 +10,6 @@ export default props => {
     }, props);
 
     return button(Object.assign({}, props, {
-            className: `${props.className} ${style.iconButton}`
-    }), icon({ icon: props.icon }));
-}
+        className: `${props.className} ${style.iconButton}`
+    }), icon({icon: props.icon}));
+};

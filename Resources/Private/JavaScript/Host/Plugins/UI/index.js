@@ -7,7 +7,7 @@ import methods from './Methods/';
 const observers = {};
 const exposers = {};
 
-const registerObserver = (uuid, topic) => {
+const registerObserver = (uuid, topic, params = []) => {
     if (!observers[topic]) {
         observers[topic] = {};
     }
@@ -18,23 +18,28 @@ const registerObserver = (uuid, topic) => {
 
     return {
         react: callback => observers[topic][uuid]
-            .push(payload => callback(payload))
+            .push({
+                state: null,
+                action: payload => callback(payload),
+                params
+            })
     };
 };
 
 export const expose = (topic, expose) => {
-    let currentState = null;
-
-    exposers[topic] = state => {
-        const newState = expose(state);
-
-        if (newState !== currentState && observers[topic]) {
+    exposers[topic] = reduxState => {
+        if (observers[topic]) {
             Object.keys(observers[topic]).map(key => observers[topic][key]).forEach(
-                observers => observers.forEach(observer => observer(newState))
+                observers => observers.forEach(observer => {
+                    const state = expose(reduxState, ...observer.params);
+
+                    if (observer.state !== state) {
+                        observer.action(state, ...observer.params);
+                        observer.state = state;
+                    }
+                })
             );
         }
-
-        currentState = newState;
     };
 
     return exposers[topic];
@@ -60,10 +65,10 @@ export default store => {
                     //
                     // Observe an exposed portion of the ui state
                     //
-                    observe: topic => registerObserver(id, topic),
+                    observe: (topic, ...params) => registerObserver(id, topic, params),
 
                     //
-                    // Remove all observers
+                    // Remove all observers for this connection
                     //
                     cleanup: () => Object.keys(observers).forEach(
                         key => observers[key][id] = null

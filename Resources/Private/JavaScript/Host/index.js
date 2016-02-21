@@ -1,3 +1,5 @@
+import 'Shared/Styles/style.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
@@ -8,7 +10,7 @@ import {configureStore} from './Redux/';
 
 import initializeJSAPI from 'API/';
 import {ui} from './Plugins/';
-import initializeExposers from './Exposer/';
+import initializeExposers from './Plugins/UI/Exposer/';
 
 import * as feedbackHandler from './Service/FeedbackHandler/';
 
@@ -25,7 +27,6 @@ import {
 } from './Containers/';
 import {
     backend,
-    nodeTypeManager,
     nodeTreeService,
     tabManager,
     changeManager,
@@ -43,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const csrfToken = appContainer.dataset.csrfToken;
     const serverState = JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
     const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
-    const nodeTypeSchema = JSON.parse(appContainer.querySelector('[data-json="nodeTypeSchema"]').innerHTML);
     const neos = initializeJSAPI(window);
     const store = configureStore({serverState}, neos);
 
@@ -52,8 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize subscriber
     initializeExposers();
-
-    nodeTypeManager.initializeWithNodeTypeSchema(nodeTypeSchema);
 
     ReactDOM.render(
         <div className={style.applicationWrapper}>

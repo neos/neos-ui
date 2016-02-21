@@ -1,7 +1,7 @@
-import {editors, nodeComponent, inlineToolbar} from 'Guest/Components/';
-import {render} from 'Guest/Process/';
+import {nodeComponent, inlineToolbar} from 'Guest/Components/';
+import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/';
 
-const {richTextEditor} = editors;
+import render from './Render.js';
 
 const closestContextPath = el => {
     if (!el) {
@@ -24,16 +24,16 @@ export default (ui, connection) => {
     // Initialize node components
     //
     [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]'))
-        .forEach(contentElement => nodeComponent(contentElement, ui, connection));
+        .forEach(dom => nodeComponent(dom, ui, connection));
 
     //
     // Initialize inline editors
     //
-    [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(contentElement => {
-        const contextPath = closestContextPath(contentElement);
-        const property = contentElement.dataset.__cheProperty;
+    [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(dom => {
+        const contextPath = closestContextPath(dom);
+        const propertyName = dom.dataset.__cheProperty;
 
-        richTextEditor(contentElement, property, contextPath);
+        ckEditor({contextPath, propertyName}, dom, ui, connection);
     });
 
     //

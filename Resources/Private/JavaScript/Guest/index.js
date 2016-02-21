@@ -1,3 +1,4 @@
+import 'Shared/Styles/style.css';
 import {domConnector} from './Process/';
 
 const {ui} = window.neos;

@@ -121,6 +121,10 @@ class BackendController extends ActionController
                         'otherName' => $user->getName()->getOtherName(),
                         'fullName' => $user->getName()->getFullName()
                     ]
+                ],
+
+                'transient' => [
+                    'nodeTypes' => $this->nodeTypeSchemaBuilder->generateNodeTypeSchema()
                 ]
             ]));
 
@@ -129,10 +133,6 @@ class BackendController extends ActionController
             ));
 
             $this->view->assign('documentNodeUri', $this->buildNodeUri($node));
-
-            $this->view->assign('nodeTypeSchema', json_encode(
-                $this->nodeTypeSchemaBuilder->generateNodeTypeSchema()
-            ));
             return;
         }
 

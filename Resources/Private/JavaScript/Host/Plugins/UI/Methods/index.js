@@ -1,3 +1,4 @@
+import addChange from './AddChange/';
 import blurNode from './BlurNode/';
 import focusNode from './FocusNode/';
 import hoverNode from './HoverNode/';
@@ -12,6 +13,7 @@ const initializeMethods = methodMap => dispatch => {
 };
 
 export default initializeMethods({
+    addChange,
     blurNode,
     focusNode,
     hoverNode,

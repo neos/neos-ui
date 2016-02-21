@@ -23,7 +23,7 @@ export default props => {
         buttons: {
             create: {
                 mode: 'into',
-                isDisabled:  false,
+                isDisabled: false,
                 isOpen: false
             },
             paste: {
@@ -67,16 +67,16 @@ export default props => {
                 switch (mode) {
                     case 'into':
                         console.log('create into');
-                    break;
+                        break;
 
                     case 'before':
                         console.log('create before');
-                    break;
+                        break;
 
                     case 'after':
                     default:
                         console.log('create after');
-                    break;
+                        break;
                 }
             }
         }, [

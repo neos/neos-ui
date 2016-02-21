@@ -79,7 +79,6 @@ install:
   # Clear all caches to avoid errors regarding the recently removed FrontendLogin package,
   # setup the database and import the demo site package.
   - rm -rf Data/Temporary/*
-  - ./flow flow:cache:flush
   - mysql -e 'create database neos collate utf8_unicode_ci;'
   - ./flow cache:warmup
   - ./flow doctrine:migrate

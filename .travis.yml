@@ -63,9 +63,9 @@ install:
   - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
   - cd Neos
   - composer install -q
-  - if [ ! -d "Packages/Application/PackageFactory.Guevara" ]; then mkdir Packages/Application/PackageFactory.Guevara; fi;
 
   # Move our cloned repository into the neos working directory.
+  - if [ ! -d "Packages/Application/PackageFactory.Guevara" ]; then mkdir Packages/Application/PackageFactory.Guevara; fi;
   - mv ../PackageFactory.Guevara/** Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.babelrc Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/

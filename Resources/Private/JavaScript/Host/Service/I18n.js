@@ -1,5 +1,5 @@
 function formatIdentifier(identifier) {
-    return identifier.replace('.', '_');
+    return identifier.replace(/\./g, '_');
 }
 
 export default translations =>

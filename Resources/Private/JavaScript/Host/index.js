@@ -1,3 +1,5 @@
+import 'Shared/Styles/style.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
@@ -5,6 +7,10 @@ import assign from 'lodash.assign';
 import registry from '@reduct/registry';
 
 import {configureStore} from './Redux/';
+
+import initializeJSAPI from 'API/';
+import {ui} from './Plugins/';
+import initializeExposers from './Plugins/UI/Exposer/';
 
 import * as feedbackHandler from './Service/FeedbackHandler/';
 
@@ -21,7 +27,6 @@ import {
 } from './Containers/';
 import {
     backend,
-    nodeTypeManager,
     nodeTreeService,
     tabManager,
     changeManager,
@@ -39,10 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const csrfToken = appContainer.dataset.csrfToken;
     const serverState = JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
     const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
-    const nodeTypeSchema = JSON.parse(appContainer.querySelector('[data-json="nodeTypeSchema"]').innerHTML);
-    const store = configureStore({serverState});
+    const neos = initializeJSAPI(window);
+    const store = configureStore({serverState}, neos);
 
-    nodeTypeManager.initializeWithNodeTypeSchema(nodeTypeSchema);
+    // Initialize Neos JS API plugins
+    neos.use(ui(store));
+
+    // Initialize subscriber
+    initializeExposers();
 
     ReactDOM.render(
         <div className={style.applicationWrapper}>

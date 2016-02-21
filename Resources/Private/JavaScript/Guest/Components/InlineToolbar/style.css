@@ -1,0 +1,14 @@
+.toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #222;
+    border-bottom: 1px solid #3f3f3f;
+    height: 40px;
+    display: none;
+    color: #fff;
+}
+
+.toolbar--isVisible {
+    display: block;
+}

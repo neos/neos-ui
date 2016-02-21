@@ -33,14 +33,6 @@ prototype(TYPO3.Neos:Page) {
             sectionName = 'guestFrameApplication'
             @if.newBackend = ${Guevara.Activation.enableNewBackend()}
         }
-
-        mediumStyles = TYPO3.TypoScript:Template {
-            @position = 'after guestFrameApplication'
-
-            templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Guest.html'
-            sectionName = 'mediumStyles'
-            @if.newBackend = ${Guevara.Activation.enableNewBackend()}
-        }
     }
 
     //

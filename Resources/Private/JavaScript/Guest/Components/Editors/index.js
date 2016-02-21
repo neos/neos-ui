@@ -1,9 +1,5 @@
-import {AbstractEditor} from './AbstractEditor.js';
-import onelineEditor from './Oneline.js';
-import richTextEditor from './RichText.js';
+import ckEditor from './CKEditorAdaptor/';
 
 export {
-    AbstractEditor,
-    onelineEditor,
-    richTextEditor
+    ckEditor
 };

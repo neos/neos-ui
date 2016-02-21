@@ -1,44 +1,58 @@
-import {editors, ContentComponent} from 'Guest/Components/';
+import {nodeComponent, inlineToolbar} from 'Guest/Components/';
+import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/';
 
-const {richTextEditor} = editors;
+import render from './Render.js';
 
-function closestContextPath(el) {
+const closestContextPath = el => {
     if (!el) {
         return null;
     }
 
     return el.dataset.__cheNodeContextpath || closestContextPath(el.parentNode);
-}
+};
 
-class DOMConnector {
-    constructor() {
-        this.contentComponents = {};
-    }
+export default (ui, connection) => {
+    [].slice.call(document.querySelectorAll('a[href]')).forEach(link => {
+        link.draggable = true;
 
-    run() {
-        [].slice.call(document.querySelectorAll('a[href]')).forEach(link => {
-            link.draggable = true;
+        link.ondragstart = e => {
+            e.dataTransfer.setData('href', link.href);
+        };
+    });
 
-            link.ondragstart = e => {
-                e.dataTransfer.setData('href', link.href);
-            };
+    //
+    // Initialize node components
+    //
+    [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]'))
+        .forEach(dom => nodeComponent(dom, ui, connection));
+
+    //
+    // Initialize inline editors
+    //
+    [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(dom => {
+        const contextPath = closestContextPath(dom);
+        const propertyName = dom.dataset.__cheProperty;
+
+        ckEditor({contextPath, propertyName}, dom, ui, connection);
+    });
+
+    //
+    // Initialize inline toolbar
+    //
+    const toolbar = render(inlineToolbar, {});
+    document.body.appendChild(
+        toolbar.dom
+    );
+
+    connection.observe('nodes.focused').react(res => {
+        if (res.node) {
+            toolbar.update(res);
+            return;
+        }
+
+        toolbar.update({
+            node: null,
+            typoscriptPath: ''
         });
-
-        [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]')).forEach(contentElement => {
-            const contextPath = contentElement.dataset.__cheNodeContextpath;
-            const typoScriptPath = contentElement.dataset.__cheTyposcriptPath;
-            const contentComponent = new ContentComponent(contentElement);
-
-            this.contentComponents[`${typoScriptPath}::${contextPath}`] = contentComponent;
-        });
-
-        [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(contentElement => {
-            const contextPath = closestContextPath(contentElement);
-            const property = contentElement.dataset.__cheProperty;
-
-            richTextEditor(contentElement, property, contextPath);
-        });
-    }
-}
-
-export default () => new DOMConnector();
+    });
+};

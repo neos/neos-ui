@@ -1,4 +1,3 @@
-import compose from 'lodash.compose';
 import {
     combineReducers,
     createStore
@@ -23,17 +22,13 @@ const reducers = Object.assign(
     UserReducer
 );
 const rootReducer = combineReducers(reducers);
-const devToolsMiddleware = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
+const devToolsStoreEnhancer = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
 
 //
 // Export the store factory
 //
 export function configureStore({serverState = {}} = {}) {
-    const finalCreateStore = compose(
-        devToolsMiddleware()
-    )(createStore);
-
-    return finalCreateStore(rootReducer, serverState);
+    return createStore(rootReducer, serverState, devToolsStoreEnhancer());
 }
 
 //

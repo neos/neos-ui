@@ -1,9 +1,6 @@
 <f:section name="guestFrameApplication">
+    <script>window.neos = window.parent.neos;</script>
+    <script src="{f:uri.resource(path: 'resource://PackageFactory.Guevara/Public/Plugins/ckeditor/ckeditor.js')}"></script>
     <script src="{f:uri.resource(path: 'resource://PackageFactory.Guevara/Public/JavaScript/Guest.js')}"></script>
     <link rel="stylesheet" href="{f:uri.resource(path: 'resource://PackageFactory.Guevara/Public/Styles/Guest.css')}">
-</f:section>
-
-<f:section name="mediumStyles">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css"
-        type="text/css" media="screen" charset="utf-8">
 </f:section>

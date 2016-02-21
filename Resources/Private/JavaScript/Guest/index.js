@@ -1,15 +1,15 @@
-import {backend} from './Service/';
+import 'Shared/Styles/style.css';
 import {domConnector} from './Process/';
 
-const {tabManager} = backend;
-const DOMConnector = domConnector();
+const {ui} = window.neos;
+const connection = ui.connect();
 
 //
 // Initialize the guest application as soon as the DOM has been fully initialized.
 //
 document.addEventListener('DOMContentLoaded', () => {
-    tabManager.commitDocumentLoad(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
-    DOMConnector.run();
+    ui.setDocumentInformation(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
+    domConnector(ui, connection);
 });
 
 //

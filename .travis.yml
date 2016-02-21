@@ -89,9 +89,8 @@ install:
   # Create the demo backend user.
   - ./flow user:create --username=johndoe --password=demo --first-name=John --last-name=Doe --roles=TYPO3.Neos:Administrator
 
-  # Start the development server and wait a bit to let it correctly boot up.
+  # Start the development server on which the behavior tests will act on.
   - ./flow server:run --port 8081 &
-  - sleep 3
 
   # Change back into the repository directory where the tests will be executed.
   - cd Packages/Application/PackageFactory.Guevara

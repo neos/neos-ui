@@ -4,7 +4,7 @@ const itemNameSelector = '#neos__leftSidebar__pageTree [data-neos-integrational-
 
 describe('LeftSideBar.PageTree', () => {
     it('should be able to open child trees when clicking on an treeToggleChevron.', () => {
-        browser.waitForVisible(subTreeTogglerSelector);
+        browser.pause(4000);
 
         const sizeBefore = browser.getElementSize(wrapperSelector);
 
@@ -17,7 +17,7 @@ describe('LeftSideBar.PageTree', () => {
     });
 
     it('should be able to close child trees when clicking on an treeToggleChevron.', () => {
-        browser.waitForVisible(subTreeTogglerSelector);
+        browser.pause(4000);
 
         const sizeBefore = browser.getElementSize(wrapperSelector);
 
@@ -30,7 +30,7 @@ describe('LeftSideBar.PageTree', () => {
     });
 
     it('should change to the given page when clicking on the name of a pagetree item.', () => {
-        browser.waitForVisible(subTreeTogglerSelector);
+        browser.pause(4000);
 
         const srcBefore = browser.getAttribute('#neos__contentView iframe', 'src');
 

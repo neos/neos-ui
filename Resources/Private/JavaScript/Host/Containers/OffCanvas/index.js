@@ -28,7 +28,7 @@ export default class OffCanvas extends Component {
         });
 
         return (
-            <div className={classNames} onMouseLeave={this.hideOffCanvas.bind(this)}>
+            <div className={classNames} onMouseLeave={this.hideOffCanvas.bind(this)} id="neos__offCanvas">
                 {this.renderMenu()}
             </div>
         );

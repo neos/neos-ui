@@ -36,7 +36,7 @@ export default class ContentView extends Component {
         });
 
         return (
-            <div className={classNames}>
+            <div className={classNames} id="neos__contentView">
                 {tabs.map(tab => this.renderTab(tab, activeId)).toArray()}
             </div>
         );

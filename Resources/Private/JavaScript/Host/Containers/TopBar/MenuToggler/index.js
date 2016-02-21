@@ -33,6 +33,7 @@ export default class MenuToggler extends Component {
                 hoverStyle="clean"
                 isFocused={isMenuVisible}
                 onClick={this.onMenuToggle.bind(this)}
+                id="neos__topBar__menuToggler"
                 >
                 <div className={style.menuToggler__icon}></div>
             </Button>

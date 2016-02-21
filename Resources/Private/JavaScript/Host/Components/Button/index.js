@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {executeCallback} from 'Shared/Utilities/';
-import style from './style.css';
+import styles from './style.css';
 
 const Button = props => {
     const {
@@ -14,15 +14,17 @@ const Button = props => {
         onMouseUp,
         onMouseEnter,
         onMouseLeave,
-        hoverStyle
+        hoverStyle,
+        style,
+        ...directProps
     } = props;
     const classNames = mergeClassNames({
-        [style.btn]: true,
-        [style['btn--clean']]: props.style === 'clean',
-        [style['btn--transparent']]: props.style === 'transparent',
-        [style['btn--cleanHover']]: hoverStyle === 'clean',
-        [style['btn--brandHover']]: hoverStyle === 'brand',
-        [style['btn--darkenHover']]: hoverStyle === 'darken',
+        [styles.btn]: true,
+        [styles['btn--clean']]: style === 'clean',
+        [styles['btn--transparent']]: style === 'transparent',
+        [styles['btn--cleanHover']]: hoverStyle === 'clean',
+        [styles['btn--brandHover']]: hoverStyle === 'brand',
+        [styles['btn--darkenHover']]: hoverStyle === 'darken',
         [className]: className && className.length
     });
     const attributes = {
@@ -52,7 +54,7 @@ const Button = props => {
     }
 
     return (
-        <button {...attributes}>
+        <button {...attributes} {...directProps}>
             {children}
         </button>
     );

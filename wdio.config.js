@@ -34,7 +34,7 @@ const config = {
     capabilities: [{
         browserName: 'firefox'
     }],
-    logLevel: 'result',
+    logLevel: 'verbose',
     coloredLogs: true,
     screenshotPath: './Build/Selenium/Screenshots/',
     baseUrl: buildConfig.baseUrl,
@@ -71,7 +71,6 @@ const config = {
 if (isEnvCi) {
     config.user = process.env.SAUCE_USERNAME;
     config.key = process.env.SAUCE_ACCESS_KEY;
-    config.logLevel = 'verbose';
 
     config.capabilities = [{
         'browserName': 'chrome',

@@ -155,7 +155,6 @@ export default class AddNode extends Component {
                             title,
                             onClick
                         } = nodeType;
-
                         return (
                             <GridItem width="33%" key={index}>
                                 <Button
@@ -164,7 +163,7 @@ export default class AddNode extends Component {
                                     onClick={onClick}
                                     >
                                     <Icon icon={icon} className={style.nodeType__icon} padded="right" />
-                                    <I18n fallback={title} />
+                                    <I18n id={title} />
                                 </Button>
                             </GridItem>
                         );

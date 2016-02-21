@@ -74,7 +74,6 @@ if (isEnvCi) {
 
     config.capabilities = [{
         'browserName': 'chrome',
-        'version': '27.0',
         'platform': 'XP',
         'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
         'name': '#' + process.env.TRAVIS_JOB_NUMBER + ' ' + process.env.TRAVIS_REPO_SLUG + ': ' + process.env.COMMIT_MESSAGE,

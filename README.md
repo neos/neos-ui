@@ -50,8 +50,8 @@ If you need help setting up `nvm`, `npm` or if you got any other problems, join 
 | `npm run build` | Builds all assets via webpack. |
 | `npm run lint`  | Lints all `.js` files via ESLint. |
 | `npm run karma` | Executes a single run of all unit tests via karma. (This is pretty slow due to webpack's single-compilation speed, use the watch task instead for development) |
-| `npm run selenium:start` | Installs and boots the selenium server. See [Writing behavior tests](#behavior-tests) for more info. |
-| `npm run selenium:run` | Executes all behavior tests via WebdriverIO. See [Writing behavior tests](#behavior-tests) for more info. |
+| `npm run selenium:start` | Installs and boots the selenium server. See [Writing integration tests](#integration-tests) for more info. |
+| `npm run selenium:run` | Executes all integration tests via WebdriverIO. See [Writing integration tests](#integration-tests) for more info. |
 | `npm run watch:build`  | Watches all source files and rebuilds the compiled files on file changes. |
 | `npm run watch:karma`  | Watches all source files and unit test specs and runs karma after the compilation has been completed. |
 | `npm run watch`  | Runs the above stated watch commands sequentially. |
@@ -67,12 +67,12 @@ Instead of relying on the default settings of Karma, we use [chai](http://chaijs
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 
-#### <a name="behavior-tests"></a> Writing behavior tests
-The behavior behavior tests are running on a selenium grid which is installed & started by the `npm run selenium:start` command,
+#### <a name="integration-tests"></a> Writing integration tests
+The integration tests are running on a selenium grid which is installed & started by the `npm run selenium:start` command,
 and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with [chai](http://chaijs.com/).
-To run the behavior tests, execute `npm run selenium:start` first, and `npm run selenium:run` in a separate session afterwards.
+To run the integration tests, execute `npm run selenium:start` first, and `npm run selenium:run` in a separate session afterwards.
 
-Adding behavior tests is as simple as creating unit tests, the only difference is that the file should end with `*.behavior.js` instead of `*.spec.js`.
+Adding integration tests is as simple as creating unit tests, the only difference is that the file should end with `*.behavior.js` instead of `*.spec.js`.
 
 #### Libraries which are used by the application
 | Name          | Description/Usecase          |

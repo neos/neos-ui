@@ -33,7 +33,15 @@ cache:
     - $HOME/.nvm/versions/
 
 #
-# Install nvm, the node depdencie and setup the some env variables.
+# Parallel environments, the value represents the name of the shell script which needs to be placed in `Build/TravisCi/Scripts/[name].sh`.
+#
+env:
+  - TEST_SUITE=CodeStyle
+  - TEST_SUITE=UnitTests
+  - TEST_SUITE=IntegrationTests
+
+#
+# Install nvm, the node depdencies and setup the some env variables.
 #
 before_install:
   # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
@@ -57,66 +65,27 @@ before_install:
 # Install and setup the neos instance.
 #
 install:
-  # Create a working directory for the neos instance and install all neos depedencies.
+  # Create a separate working directory in which the neos instance can be installed in.
   - cd ..
   - if [ ! -d "Neos" ]; then mkdir Neos; fi;
   - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
   - cd Neos
-  - composer install -q
 
-  # Move our cloned repository into the neos working directory.
+  # Move our repository and the configuration files into place.
   - if [ ! -d "Packages/Application/PackageFactory.Guevara" ]; then mkdir Packages/Application/PackageFactory.Guevara; fi;
   - mv ../PackageFactory.Guevara/** Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.babelrc Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
 
-  # Remove the default login package since our `che!` routes currenctly conflicts with the package.
-  - composer remove flowpack/neos-frontendlogin
-  - rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
-  - rm -rf Data/Temporary/*
-
-  # Move the configuration files into place.
-  - rm Configuration/Routes.yaml
-  - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Development/Settings.yaml
-  - cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Routes.yaml Configuration/Routes.yaml
-
-  # Setup the database and import the demo site package.
-  - mysql -e 'create database neos collate utf8_unicode_ci;'
-  - ./flow cache:warmup
-  - ./flow doctrine:migrate
-  - ./flow site:import --package-key=TYPO3.NeosDemoTypo3Org
-
-  # Create the demo backend user.
-  - ./flow user:create --username=johndoe --password=demo --first-name=John --last-name=Doe --roles=TYPO3.Neos:Administrator &
-
-  # Start the development server on which the behavior tests will act on.
-  - ./flow server:run --port 8081 &
-
-  # Change back into the repository directory where the tests will be executed.
+  # Change into the repository directory where the environment based shell script will be executed.
   - cd Packages/Application/PackageFactory.Guevara
 
-  # Install the node dependencies, and prune it to remove extranous packages from previous/cached runs.
+  # Since all environments depend on the node dependencies, install and
+  # afterwards prune them to remove extranous packages from previous/cached runs.
   - npm install
   - npm prune
 
 #
-# In case a script has failed, we want a more precise output by Travis CI on which script has exited with `0`.
-# If we stick with the basic `npm test` command, we would only get the message `The script npm test has exited with code 0`
-# which isn't that informative at all.
+# Execute the test environment specific shell script.
 #
-script:
-  # Since the karma task is enduring a big time span, we execute it in
-  # parallel to the lint task to reduce the overall time for each CI build.
-  - npm run lint & npm run karma
-
-  # After the unit tests have been executed, we can continue with the behavior tests.
-  - npm run build
-  - npm run selenium:run
-
-#
-# Publish the code coverage to codeclimate.com once the tests have passed.
-#
-after_script:
-  - npm install -g codeclimate-test-reporter
-  - mv Coverage/**/lcov.info .
-  - codeclimate-test-reporter < lcov.info
+script: "bash Build/TravisCi/Scripts/$TEST_SUITE.sh"

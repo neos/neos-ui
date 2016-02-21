@@ -43,23 +43,7 @@ export const actions = {
 //
 // Export the reducer
 //
-const initialState = Immutable.fromJS({
-    test1: {
-        id: 'test1',
-        message: 'Dies ist ein Test',
-        severity: 'info'
-    },
-    test2: {
-        id: 'test2',
-        message: 'Dies ist ein Fehler',
-        severity: 'error'
-    },
-    test3: {
-        id: 'test3',
-        message: 'Dies ist ein Erfolg',
-        severity: 'success'
-    }
-});
+const initialState = Immutable.fromJS({});
 
 export const reducer = handleActions({
     [ADD]: (state, action) => $set(state, `${action.payload.id}`, action.payload),

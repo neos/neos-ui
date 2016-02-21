@@ -37,6 +37,7 @@ export default class RightSideBar extends Component {
               icon={toggleIcon}
               className={style.rightSideBar__toggleBtn}
               onClick={this.toggleSidebar.bind(this)}
+              id="neos__rightSideBar__toggler"
               />
         );
 
@@ -64,7 +65,6 @@ export default class RightSideBar extends Component {
                 </Tabs>
 
                 {toggle}
-
             </SideBar>
         );
     }

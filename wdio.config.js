@@ -38,7 +38,7 @@ const config = {
     coloredLogs: true,
     screenshotPath: './Build/Selenium/Screenshots/',
     baseUrl: buildConfig.baseUrl,
-    waitforTimeout: 10000,
+    waitforTimeout: 30000,
     connectionRetryTimeout: 90000,
     connectionRetryCount: 3,
     services: ['sauce'],

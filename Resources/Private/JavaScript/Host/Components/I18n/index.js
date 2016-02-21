@@ -42,16 +42,37 @@ export default class I18n extends Component {
         }
     }
 
+    splitIdentifier(id, packageKey, sourceName) {
+        if (id && id.split) {
+            const idParts = id.split(':', 3);
+            switch (idParts.length) {
+                case 2:
+                    packageKey = idParts[0];
+                    id = idParts[1];
+                    break;
+                case 3:
+                    packageKey = idParts[0];
+                    sourceName = idParts[1];
+                    id = idParts[2];
+                    break;
+                default:
+                    break;
+            }
+        }
+        return {id, packageKey, sourceName};
+    }
+
     loadTranslation(props = this.props) {
         const {
-            fallback,
             id,
             packageKey,
             sourceName,
+            fallback,
             params
         } = props;
         const {i18n} = backend;
-        const label = i18n && id ? i18n(id, packageKey, sourceName, params) : fallback;
+        const splitedId = this.splitIdentifier(id, packageKey, sourceName);
+        const label = i18n && id ? i18n(splitedId.id, splitedId.packageKey, splitedId.sourceName, params) : fallback;
 
         this.setState({
             label

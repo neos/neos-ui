@@ -26,6 +26,9 @@ services:
 cache:
   directories:
     - $HOME/build/PackageFactory/Neos/Packages/Application/PackageFactory.Guevara/node_modules
+    - $HOME/build/PackageFactory/Neos/Packages/Framework
+    - $HOME/build/PackageFactory/Neos/Packages/Libraries
+    - $HOME/build/PackageFactory/Neos/Packages/Sites
     - $HOME/.composer/cache
     - $HOME/.nvm/versions/
 

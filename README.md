@@ -29,7 +29,7 @@ Clone the repository into your Neos `Packages/Application/` folder, delete the d
       package: 'PackageFactory.Guevara'
 ```
 
-You may additionally need to execute `rm -rf Data/Temporary/* && ./flow flow:cache:flush` to flush all caches since the default FrontendLogin package may still be your caches somewhere. Change into the directory of the Guevara package and execute the following to install all frontend dependencies and build the bundles.
+You may additionally need to execute `rm -rf Data/Temporary/*` to flush all caches since the default FrontendLogin package may still be your caches somewhere. Change into the directory of the Guevara package and execute the following to install all frontend dependencies and build the bundles.
 ```
 bash Build/init.sh
 ```

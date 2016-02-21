@@ -16,8 +16,7 @@
 ## Installation
 *Composer support coming soon...*
 
-Clone the repository into your Neos `Packages/Application/` folder, delete the default `Flowpack.Neos.FrontendLogin` package from the `Packages/Plugins` directory
-and paste the following configuration into the head of your global `Routes.yaml` which is located in `Configuration/`.
+Clone the repository into your Neos `Packages/Application/` folder, delete the default `Flowpack.Neos.FrontendLogin` package from the `Packages/Plugins` directory and paste the following configuration into the head of your global `Routes.yaml` which is located in `Configuration/`.
 ```yaml
 -
   name: 'PackageFactory Guevara'
@@ -27,7 +26,9 @@ and paste the following configuration into the head of your global `Routes.yaml`
       package: 'PackageFactory.Guevara'
 ```
 
-Change into the directory of the Guevara package and execute `bash Build/init.sh` which will download the application dependencies and compiles the source files into the distributed versions. Done. Open the sub-route `/che!` to login to the new interface.
+You may additionally need to execute `rm -rf Data/Temporary/* && ./flow flow:cache:flush` to flush all caches since the default FrontendLogin package may still be your caches somewhere. Change into the directory of the Guevara package and execute `bash Build/init.sh` which will download the application dependencies and compiles the source files into the distributed versions.
+
+Done. Open the sub-route `/che!` to login to the new interface.
 
 
 ## Contributing

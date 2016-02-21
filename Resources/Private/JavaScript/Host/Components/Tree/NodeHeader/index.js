@@ -43,7 +43,7 @@ class NodeHeader extends Component {
                 {collapsableControl}
                 <div onClick={() => onClick(node)} className={dataClassNames}>
                     <Icon icon={icon} padded="right" />
-                    <span className={style.nodeHeader__data__title} onClick={() => onLabelClick(node)}>
+                    <span className={style.nodeHeader__data__title} onClick={() => onLabelClick(node)} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>
                 </div>
@@ -58,13 +58,11 @@ class NodeHeader extends Component {
             [style['nodeHeader__chevron--isCollapsed']]: $get(node, 'isCollapsed'),
             [style['nodeHeader__chevron--isLoading']]: $get(node, 'isLoading')
         });
-
         const isLoading = $get(node, 'isLoading');
-
         const icon = (isLoading ? <Icon icon="spinner" spin={true} /> : <Icon icon="sort-desc" />);
 
         return (
-            <a onClick={() => onToggle(node)} className={classnames}>
+            <a onClick={() => onToggle(node)} className={classnames} data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle">
                 {icon}
             </a>
         );

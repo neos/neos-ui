@@ -17,14 +17,14 @@ export default class Tree extends Component {
     };
 
     render() {
-        const {className, data} = this.props;
+        const {className, data, ...directProps} = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [style.treeWrapper]: true
         });
 
         return (
-            <div className={classNames} tabIndex="0" onKeyDown={this.onKeyDown.bind(this)}>
+            <div className={classNames} tabIndex="0" onKeyDown={this.onKeyDown.bind(this)} {...directProps}>
                 {this.renderTree(data)}
             </div>
         );

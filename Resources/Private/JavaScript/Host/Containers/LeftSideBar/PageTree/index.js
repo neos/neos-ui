@@ -24,6 +24,7 @@ export default class PageTree extends Component {
                 onNodeToggle={this.onPageNodeToggle.bind(this)}
                 onNodeClick={this.onPageNodeClick.bind(this)}
                 onNodeFocusChanged={this.onPageNodeFocusChanged.bind(this)}
+                id="neos__leftSidebar__pageTree"
                 />
         );
     }

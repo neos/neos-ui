@@ -30,9 +30,9 @@ Clone the repository into your Neos `Packages/Application/` folder and paste the
 ```
 
 Since our package currently conflicts with the default FrontendLogin package, we need to remove it prior visiting the new backend interface.
-You may additionally need to execute `rm -rf Data/Temporary/*` to flush all caches since the default FrontendLogin package may still be your caches somewhere. Change into the directory of the Guevara package and execute the following to install all frontend dependencies and build the bundles.
+Execute the following command in your shell to delete the FrontendLogin package and to install all frontend dependencies as well as build the frontend application bundles.
 ```
-bash Build/init.sh
+composer remove flowpack/neos-frontendlogin && rm -rf Data/Temporary/* && cd Packages/Application/PackageFactory.Guevara && bash Build/init.sh
 ```
 
 After the script finished, you are all set up and can open the sub-route `/che!` to login to the new interface.

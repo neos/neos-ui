@@ -24,7 +24,7 @@ export default class LeftSideBar extends Component {
         });
 
         return (
-            <SideBar position="left" className={classNames}>
+            <SideBar position="left" className={classNames} id="neos__leftSidebar">
                 <NodeTreeToolBar />
                 <PageTree />
             </SideBar>

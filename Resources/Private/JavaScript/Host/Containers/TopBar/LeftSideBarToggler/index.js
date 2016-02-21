@@ -33,6 +33,7 @@ export default class LeftSideBarToggler extends Component {
                 hoverStyle="clean"
                 isFocused={isActive}
                 onClick={this.onLeftSidebarToggle.bind(this)}
+                id="neos__topBar__leftSideBarToggler"
                 >
                 <I18n id="Navigate" fallback="Navigate" />
             </Button>

@@ -6,7 +6,8 @@ const SideBar = props => {
     const {
         position,
         className,
-        children
+        children,
+        ...directProps
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
@@ -16,7 +17,7 @@ const SideBar = props => {
     });
 
     return (
-        <div className={classNames}>
+        <div className={classNames} {...directProps}>
           {children}
         </div>
     );

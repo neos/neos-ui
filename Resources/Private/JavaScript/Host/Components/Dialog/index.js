@@ -10,7 +10,8 @@ const Dialog = props => {
         className,
         children,
         isOpen,
-        onRequestClose
+        onRequestClose,
+        ...directProps
     } = props;
     const classNames = mergeClassNames({
         [style.dialog]: true,
@@ -19,12 +20,13 @@ const Dialog = props => {
 
     return (
         <Portal targetId="dialog" isOpened={isOpen}>
-            <section className={classNames}>
+            <section className={classNames} {...directProps}>
                 <div className={style.dialog__contents}>
                     <div className={style.dialog__contents__inner}>
                         <IconButton
                             icon="close"
                             className={style.dialog__contents__inner__closeBtn}
+                            id="neos__modal__closeModal"
                             onClick={e => executeCallback({e, cb: onRequestClose})}
                             />
 

@@ -30,6 +30,9 @@ export default class AddNode extends Component {
     render() {
         const modeIcon = this.getCurrentModeIcon();
         const modal = this.state.isModalOpen ? this.renderModal() : null;
+        const directButtonProps = {
+            id: 'neos__leftSidebar__nodeTreeToolBar__addNode'
+        };
 
         return (
             <span>
@@ -39,6 +42,7 @@ export default class AddNode extends Component {
                     modeIcon={modeIcon}
                     onClick={this.openAddNodeDialog.bind(this)}
                     onItemSelect={this.onModeChanged.bind(this)}
+                    directButtonProps={directButtonProps}
                     >
                     <Icon dropDownId="prepend" icon="long-arrow-up" />
                     <Icon dropDownId="insert" icon="long-arrow-right" />
@@ -121,6 +125,7 @@ export default class AddNode extends Component {
                 isOpen={this.state.isModalOpen}
                 onRequestClose={this.closeAddNodeDialog.bind(this)}
                 actions={actions}
+                id="neos__addNodeModal"
                 >
                 <Headline type="h1">
                     <I18n fallback="Create new" id="createNew" />

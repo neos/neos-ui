@@ -25,7 +25,10 @@ export default class IconButtonDropDown extends Component {
 
         // Interaction related propTypes.
         onClick: PropTypes.func.isRequired,
-        onItemSelect: PropTypes.func.isRequired
+        onItemSelect: PropTypes.func.isRequired,
+
+        // Props which are propagated to the <Button> component.
+        directButtonProps: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -40,7 +43,8 @@ export default class IconButtonDropDown extends Component {
             className,
             isDisabled,
             icon,
-            modeIcon
+            modeIcon,
+            directButtonProps
         } = this.props;
         const classNames = mergeClassNames({
             [style.wrapper]: true,
@@ -58,6 +62,7 @@ export default class IconButtonDropDown extends Component {
                     className={style.wrapper__btn}
                     onMouseDown={this.createHoldTimeout.bind(this)}
                     onClick={this.onClick.bind(this)}
+                    {...directButtonProps}
                     >
                     <Icon icon={modeIcon} className={style.wrapper__btn__modeIcon} />
                     <Icon icon={icon} />
@@ -133,5 +138,6 @@ export default class IconButtonDropDown extends Component {
 }
 IconButtonDropDown.defaultProps = {
     modeIcon: 'long-arrow-right',
-    isDisabled: false
+    isDisabled: false,
+    directButtonProps: {}
 };

@@ -88,9 +88,11 @@ install:
 #
 # Execute the test environment specific shell script.
 #
-script: "if [ -f "Build/TravisCi/Scripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/Scripts/$TEST_SUITE.sh; fi"
+script:
+  - if [ -f "Build/TravisCi/Scripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/Scripts/$TEST_SUITE.sh; fi
 
 #
 # Execute the test environment specific after_script shell script.
 #
-after_script: "if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi"
+after_script:
+  - if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi

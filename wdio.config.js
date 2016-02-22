@@ -1,35 +1,23 @@
-const yaml = require('js-yaml');
-const fs = require('fs');
-const isEnvCi = process.env.CI;
+const utils = require('./Build/Utilities/');
+const selectors = require('./Resources/Private/JavaScript/Shared/Constants/Selectors.js');
+const helperSequences = require('./Build/Selenium/Sequences/');
 
-function readYaml(path, fileNotFoundMessage) {
-    var data = {};
-
-    try {
-        data = yaml.safeLoad(fs.readFileSync(path, 'utf8'));
-    } catch (e) {
-        if (e.code === 'ENOENT' && fileNotFoundMessage) {
-            // Do not display warnings while running in CI.
-            if (!isEnvCi) {
-                console.error(fileNotFoundMessage);
-            }
-        } else {
-            throw e;
-        }
-    }
-
-    return data;
-}
-
+//
+// Parse the configuration out of the `.yaml` files.
+//
 const buildConfig = Object.assign(
-    readYaml('Build/Selenium/Settings.yaml.example'),
-    readYaml('Build/Selenium/Settings.yaml', 'Neos UI: No customized Settings.yaml for selenium was found. This may lead to unexpected problems since we need login credentials for the neos backend.')
+    utils.parseYaml('Build/Selenium/Settings.yaml.example'),
+    utils.parseYaml('Build/Selenium/Settings.yaml', 'Neos UI: No customized Settings.yaml for selenium was found. This may lead to unexpected problems since we need login credentials for the neos backend.')
 ).WebdriverIO;
 const credentials = buildConfig.credentials;
+
+//
+// Create the main config object for the wdio test runner.
+//
 const config = {
     updateJob: true,
     specs: [
-        './Resources/Private/JavaScript/**/*.behavior.js'
+        './Resources/Private/JavaScript/**/*.behavior.test.js'
     ],
     capabilities: [{
         browserName: 'firefox'
@@ -50,25 +38,33 @@ const config = {
     },
 
     //
-    // Automatically log-in into the backend before the testsuite starts.
+    // Bootstrap the environment.
     //
     before() {
+        // Automatically log-in into the backend with the provided credentials.
         browser.url(buildConfig.url);
         browser.setValue('#username', credentials.username);
         browser.setValue('#password', credentials.password);
         browser.submitForm('[name="login"]');
 
+        // Initialize chai as the assertion library.
         const chai = require('chai');
 
         expect = chai.expect;
         chai.should();
+
+        // Attach the global helper methods and selectors to the test suite.
+        __neosSelenium = {
+            selectors: selectors,
+            utils: helperSequences
+        };
     }
 };
 
 //
 // Adjust some settings for CI runs.
 //
-if (isEnvCi) {
+if (utils.env.isCi) {
     config.user = process.env.SAUCE_USERNAME;
     config.key = process.env.SAUCE_ACCESS_KEY;
 

@@ -15,7 +15,8 @@ const CheckBox = props => {
         isChecked,
         label,
         className,
-        onChange
+        onChange,
+        ...directProps
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
@@ -41,6 +42,7 @@ const CheckBox = props => {
                     className={style.checkbox__input}
                     type="checkbox" checked={isChecked}
                     onChange={() => onChange(onChangeHandler, !isChecked)}
+                    {...directProps}
                     />
                 <div className={mirrorClassNames}></div>
             </div>

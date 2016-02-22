@@ -16,7 +16,8 @@
     "globals": {
         "expect": true,
         "sinon": false,
-        "browser": true
+        "browser": true,
+        "__neosSelenium": true
     },
     "rules": {
         // Errors

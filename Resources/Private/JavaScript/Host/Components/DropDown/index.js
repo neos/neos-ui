@@ -17,7 +17,10 @@ export default class DropDown extends Component {
         iconBefore: PropTypes.string,
 
         // Contents of the DropDown.
-        children: PropTypes.node.isRequired
+        children: PropTypes.node.isRequired,
+
+        // Optional id for the dropDown contents wrapper.
+        contentsId: PropTypes.string
     };
 
     constructor(props) {
@@ -28,7 +31,7 @@ export default class DropDown extends Component {
     }
 
     render() {
-        const {classNames, label, ...directProps} = this.props;
+        const {classNames, label, contentsId, ...directProps} = this.props;
         const {isOpened} = this.state;
         const dropDownClassName = mergeClassNames({
             [classNames.wrapper]: classNames.wrapper && classNames.wrapper.length,
@@ -67,7 +70,7 @@ export default class DropDown extends Component {
                     {this.renderLabel()}
                     {this.renderChevronIcon()}
                 </button>
-                <ul className={contentsClassName}>
+                <ul className={contentsClassName} id={contentsId}>
                     {this.props.children}
                 </ul>
             </div>
@@ -121,5 +124,6 @@ export default class DropDown extends Component {
     }
 }
 DropDown.defaultProps = {
-    classNames: {}
+    classNames: {},
+    contentsId: ''
 };

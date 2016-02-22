@@ -1,16 +1,18 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import {immutableOperations} from 'Shared/Utilities/';
+import {$transform, $get, $or} from 'plow-js';
+
 import {SideBar} from 'Host/Components/';
 import NodeTreeToolBar from './NodeTreeToolBar/';
 import PageTree from './PageTree/';
 import style from './style.css';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    isHidden: $get(state, 'ui.leftSideBar.isHidden') || $get(state, 'ui.fullScreen.isFullScreen')
+@connect($transform({
+    isHidden: $or(
+        $get('ui.leftSideBar.isHidden'),
+        $get('ui.fullScreen.isFullScreen')
+    )
 }))
 export default class LeftSideBar extends Component {
     static propTypes = {

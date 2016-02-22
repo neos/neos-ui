@@ -1,32 +1,28 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
+import {$transform, $get} from 'plow-js';
+
 import style from './style.css';
-import {immutableOperations} from 'Shared/Utilities/';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    tabs: $get(state, 'ui.tabs'),
-    isFringeLeft: $get(state, 'ui.leftSideBar.isHidden'),
-    isFringeRight: $get(state, 'ui.rightSideBar.isHidden'),
-    isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
+@connect($transform({
+    isFringeLeft: $get('ui.leftSideBar.isHidden'),
+    isFringeRight: $get('ui.rightSideBar.isHidden'),
+    isFullScreen: $get('ui.fullScreen.isFullScreen'),
+    src: $get('ui.contentView.src'),
+    contextPath: $get('ui.contentView.contextPath')
 }))
 export default class ContentView extends Component {
     static propTypes = {
-        tabs: PropTypes.instanceOf(Immutable.Map),
         isFringeLeft: PropTypes.bool.isRequired,
         isFringeRight: PropTypes.bool.isRequired,
-        isFullScreen: PropTypes.bool.isRequired
+        isFullScreen: PropTypes.bool.isRequired,
+        src: PropTypes.string.isRequired,
+        contextPath: PropTypes.string.isRequired
     };
 
     render() {
-        const {isFringeLeft, isFringeRight, isFullScreen} = this.props;
-        const activeId = $get(this.props.tabs, 'active.id');
-
-        // Using Maps as children is not yet fully supported in react 0.14.1.
-        const tabs = $get(this.props.tabs, 'byId');
+        const {isFringeLeft, isFringeRight, isFullScreen, src, contextPath} = this.props;
 
         const classNames = mergeClassNames({
             [style.contentView]: true,
@@ -37,26 +33,14 @@ export default class ContentView extends Component {
 
         return (
             <div className={classNames} id="neos__contentView">
-                {tabs.map(tab => this.renderTab(tab, activeId)).toArray()}
+                <iframe
+                    src={src}
+                    frameBorder="0"
+                    name={'neos-content-main'}
+                    data-context-path={contextPath}
+                    className={style.contentView__item}
+                    />
             </div>
-        );
-    }
-
-    renderTab(tab, activeId) {
-        const tabClasses = mergeClassNames({
-            [style.contentView__item]: true,
-            [style['contentView__item--active']]: tab.get('id') === activeId
-        });
-
-        return (
-            <iframe
-                src={tab.get('src')}
-                frameBorder="0"
-                name={tab.get('id')}
-                key={tab.get('id')}
-                data-context-path={tab.get('contextPath')}
-                className={tabClasses}
-                />
         );
     }
 }

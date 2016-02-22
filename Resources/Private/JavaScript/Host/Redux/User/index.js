@@ -1,9 +1,11 @@
 import {
     reducer as SettingsReducer,
+    initialState as SettingsInitialState,
     actions as Settings
 } from './Settings/';
 import {
-    reducer as NameReducer
+    reducer as NameReducer,
+    initialState as NameInitialState
 } from './Name/';
 
 //
@@ -11,6 +13,14 @@ import {
 //
 export const actions = {
     Settings
+};
+
+//
+// Export the initial state
+//
+export const initialState = {
+    settings: SettingsInitialState,
+    name: NameInitialState
 };
 
 //

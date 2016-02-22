@@ -1,15 +1,15 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
+import {$transform, $get} from 'plow-js';
+
 import {actions} from 'Host/Redux/';
 import {Button, I18n} from 'Host/Components/';
-import {immutableOperations} from 'Shared/Utilities/';
+
 import style from './style.css';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    isSideBarHidden: $get(state, 'ui.leftSideBar.isHidden')
+@connect($transform({
+    isSideBarHidden: $get('ui.leftSideBar.isHidden')
 }), {
     toggleSidebar: actions.UI.LeftSideBar.toggle
 })

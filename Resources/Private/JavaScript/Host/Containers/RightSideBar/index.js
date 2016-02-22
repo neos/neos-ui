@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
+import {$transform, $get} from 'plow-js';
+
 import {
     SideBar,
     Tabs,
@@ -10,14 +12,12 @@ import {
     ToggablePanel
 } from 'Host/Components/';
 import {actions} from 'Host/Redux/';
-import {immutableOperations} from 'Shared/Utilities/';
+
 import style from './style.css';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    isHidden: $get(state, 'ui.rightSideBar.isHidden'),
-    isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
+@connect($transform({
+    isHidden: $get('ui.rightSideBar.isHidden'),
+    isFullScreen: $get('ui.fullScreen.isFullScreen')
 }), {
     toggleSidebar: actions.UI.RightSideBar.toggle
 })

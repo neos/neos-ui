@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
+import {$transform, $get} from 'plow-js';
+
 import {actions} from 'Host/Redux/';
 import {
     Button,
@@ -8,13 +10,11 @@ import {
     I18n,
     ToggablePanel
 } from 'Host/Components/';
-import {immutableOperations} from 'Shared/Utilities/';
+
 import style from './style.css';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    isHidden: $get(state, 'ui.offCanvas.isHidden')
+@connect($transform({
+    isHidden: $get('ui.offCanvas.isHidden')
 }), {
     hideOffCanvas: actions.UI.OffCanvas.hide
 })

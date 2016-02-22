@@ -1,18 +1,16 @@
 import React, {Component, PropTypes} from 'react';
-import Immutable from 'immutable';
+import {$transform, $toggle, $all, $get} from 'plow-js';
+
 import {Tree} from 'Host/Components/';
-import {immutableOperations} from 'Shared/Utilities/';
 import backend from 'Host/Service/Backend.js';
 import {connect} from 'react-redux';
 
-const {$get, $set} = immutableOperations;
-
-@connect(state => ({
-    treeData: $get(state, 'ui.pageTree')
+@connect($transform({
+    treeData: $get('ui.pageTree')
 }))
 export default class PageTree extends Component {
     static propTypes = {
-        treeData: PropTypes.instanceOf(Immutable.Map)
+        treeData: PropTypes.object
     };
 
     render() {
@@ -31,26 +29,31 @@ export default class PageTree extends Component {
 
     onPageNodeToggle(node) {
         const {nodeTreeService} = backend;
-        const newNode = $set(node, 'isCollapsed', !$get(node, 'isCollapsed'));
+        const {contextPath} = node;
 
-        nodeTreeService.updateNode(newNode);
-        nodeTreeService.loadSubTree($get(node, 'contextPath'), 'TYPO3.Neos:Document');
+        nodeTreeService.updateNode(
+            $toggle('isCollapsed', node)
+        );
+        nodeTreeService.loadSubTree(contextPath, 'TYPO3.Neos:Document');
     }
 
     onPageNodeClick(node) {
         const {nodeTreeService} = backend;
-        const newNode = $set(node, 'isFocused', !$get(node, 'isFocused'));
 
-        nodeTreeService.updateNode(newNode);
+        nodeTreeService.updateNode(
+            $toggle('isFocused', node)
+        );
     }
 
     onPageNodeFocusChanged(node) {
         const {tabManager, nodeTreeService} = backend;
-        const href = $get(node, 'href');
-        const focused = $set(node, 'isFocused', !$get(node, 'isFocused'));
-        const active = $set(focused, 'isActive', !$get(focused, 'isActive'));
+        const {href} = node;
 
-        nodeTreeService.updateNode(active);
+        nodeTreeService.updateNode($all(
+            $toggle('isFocused'),
+            $toggle('isActive'),
+            node
+        ));
         tabManager.changeActiveTabSrc(href);
     }
 }

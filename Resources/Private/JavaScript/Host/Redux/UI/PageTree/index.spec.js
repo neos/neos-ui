@@ -1,6 +1,7 @@
-import Immutable from 'immutable';
 import {createStore} from 'redux';
-import {reducer, actions} from './index.js';
+import {reducer, actions, initialState} from './index.js';
+
+import {handleActions} from 'Host/Util/HandleActions/';
 
 const {setData, setSubTree, setNode} = actions;
 
@@ -8,7 +9,14 @@ describe('"host.redux.ui.pageTree" ', () => {
     let store = null;
 
     beforeEach(done => {
-        store = createStore(reducer);
+        store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: initialState
+                }
+            }
+        );
 
         done();
     });
@@ -20,8 +28,10 @@ describe('"host.redux.ui.pageTree" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return a immutable map as the initial state.', () => {
-            expect(store.getState()).to.be.an.instanceof(Immutable.Map);
+        it('should return an object as the initial state.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree).to.be.an('object');
         });
     });
 
@@ -31,8 +41,12 @@ describe('"host.redux.ui.pageTree" ', () => {
                 node: {}
             }));
 
-            expect(store.getState().count()).to.equal(1);
-            expect(store.getState().get('node')).to.be.an.instanceof(Immutable.Map);
+            const state = store.getState();
+
+            expect(Object.keys(state.ui.pageTree).length).to.equal(1);
+            expect(state.ui.pageTree).to.deep.equal({
+                node: {}
+            });
         });
     });
 
@@ -46,8 +60,12 @@ describe('"host.redux.ui.pageTree" ', () => {
                 children: {}
             }));
 
-            expect(store.getState().get('node').get('children')).to.not.be.an('undefined');
-            expect(store.getState().get('node').get('children')).to.be.an.instanceof(Immutable.Map);
+            const state = store.getState();
+
+            expect(state.ui.pageTree.node.children).to.not.be.an('undefined');
+            expect(state.ui.pageTree.node).to.deep.equal({
+                children: {}
+            });
         });
     });
 
@@ -59,41 +77,19 @@ describe('"host.redux.ui.pageTree" ', () => {
                 }
             }));
 
-            const data = Immutable.fromJS({
+            const data = {
                 foo: 'bar'
-            });
+            };
             store.dispatch(setNode('node', data));
 
-            expect(store.getState().get('node')).to.not.be.an('undefined');
-            expect(store.getState().get('node').get('foo')).to.equal('bar');
-            expect(store.getState().get('node').get('children')).to.be.an('undefined');
-        });
+            const state = store.getState();
 
-        it('should reset recursivly the "isActive", "isFocused" key the given object path.', () => {
-            store.dispatch(setData({
+            expect(state.ui.pageTree.node).to.not.be.an('undefined');
+            expect(state.ui.pageTree).to.deep.equal({
                 node: {
-                    children: {
-                        deepNode: {
-                            isActive: false,
-                            isFocused: true
-                        }
-                    }
+                    foo: 'bar'
                 }
-            }));
-
-            const data = Immutable.fromJS({
-                isActive: true,
-                isFocused: true
             });
-            store.dispatch(setNode('node', data));
-
-            const node = store.getState().get('node');
-            const deepNode = node.get('children').get('deepNode');
-
-            expect(node.get('isActive')).to.equal(false);
-            expect(node.get('isFocused')).to.equal(false);
-            expect(deepNode.get('isActive')).to.equal(false);
-            expect(deepNode.get('isActive')).to.equal(false);
         });
     });
 });

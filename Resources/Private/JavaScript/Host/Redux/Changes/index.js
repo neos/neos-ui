@@ -1,5 +1,5 @@
-import Immutable from 'immutable';
-import {createAction, handleActions} from 'redux-actions';
+import {createAction} from 'redux-actions';
+import {$add, $set} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/Transient/Changes/ADD';
 const CLEAR = '@packagefactory/guevara/Transient/Changes/CLEAR';
@@ -25,11 +25,14 @@ export const actions = {
 };
 
 //
+// Export the initial state
+//
+export const initialState = [];
+
+//
 // Export the reducer
 //
-const initialState = Immutable.fromJS([]);
-
-export const reducer = handleActions({
-    [ADD]: (state, action) => state.push(action.payload.change),
-    [CLEAR]: () => initialState
-}, initialState);
+export const reducer = {
+    [ADD]: ({change}) => $add('changes', change),
+    [CLEAR]: () => $set('changes', initialState)
+};

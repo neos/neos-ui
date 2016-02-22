@@ -1,11 +1,15 @@
+import {createStore} from 'redux';
+
+import {handleActions} from 'Host/Util/HandleActions/';
+
 import {
-    combineReducers,
-    createStore
-} from 'redux';
+    reducer as ChangesReducer,
+    actions as Changes
+} from './Changes/';
 import {
-    reducer as TransientReducer,
-    actions as Transient
-} from './Transient/';
+    reducer as CRReducer,
+    actions as CR
+} from './CR/';
 import {
     reducer as UIReducer,
     actions as UI
@@ -15,13 +19,13 @@ import {
     actions as User
 } from './User/';
 
-const reducers = Object.assign(
-    {},
-    TransientReducer,
-    UIReducer,
-    UserReducer
-);
-const rootReducer = combineReducers(reducers);
+const reducers = {
+    ...ChangesReducer,
+    ...CRReducer,
+    ...UIReducer,
+    ...UserReducer
+};
+const rootReducer = handleActions(reducers);
 const devToolsStoreEnhancer = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
 
 //
@@ -35,7 +39,8 @@ export function configureStore({serverState = {}} = {}) {
 // Export the actions
 //
 export const actions = {
-    Transient,
+    Changes,
+    CR,
     UI,
     User
 };

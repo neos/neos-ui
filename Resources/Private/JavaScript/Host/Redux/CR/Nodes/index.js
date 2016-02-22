@@ -1,12 +1,7 @@
-import Immutable from 'immutable';
-import {createAction, handleActions} from 'redux-actions';
-
-import {immutableOperations} from 'Shared/Utilities/';
-
-const {$set, $get, $merge} = immutableOperations;
+import {createAction} from 'redux-actions';
+import {$set, $add, $get} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
-const ADD_BULK = '@packagefactory/guevara/Transient/Nodes/ADD_BULK';
 const FOCUS = '@packagefactory/guevara/Transient/Nodes/FOCUS';
 const BLUR = '@packagefactory/guevara/Transient/Nodes/BLUR';
 const HOVER = '@packagefactory/guevara/Transient/Nodes/HOVER';
@@ -22,13 +17,6 @@ const add = createAction(ADD, (contextPath, data) => ({
     contextPath,
     data
 }));
-
-/**
- * Adds multiple nodes to the application state
- *
- * @param {Array} nodes A list of nodes
- */
-const addBulk = createAction(ADD_BULK, nodes => ({nodes}));
 
 /**
  * Marks a node as focused
@@ -65,7 +53,6 @@ const unhover = createAction(UNHOVER, contextPath => ({contextPath}));
 //
 export const actions = {
     add,
-    addBulk,
     focus,
     blur,
     hover,
@@ -73,9 +60,9 @@ export const actions = {
 };
 
 //
-// Export the reducer
+// Export the initial state
 //
-const initialState = Immutable.fromJS({
+export const initialState = {
     byContextPath: {},
     focused: {
         contextPath: '',
@@ -85,37 +72,29 @@ const initialState = Immutable.fromJS({
         contextPath: '',
         typoscriptPath: ''
     }
-});
+};
 
-export const reducer = handleActions({
-    [ADD]: (state, action) => $set(state, ['byContextPath', action.payload.contextPath], action.payload.data),
-    [ADD_BULK]: (state, action) => $merge(state, 'byContextPath', action.payload.nodes),
-    [FOCUS]: (state, action) => $set(state, 'focused', {
-        contextPath: action.payload.contextPath,
-        typoscriptPath: action.payload.typoscriptPath
+//
+// Export the reducer
+//
+export const reducer = {
+    [ADD]: ({contextPath, data}) => $add('cr.nodes.byContextPath', {
+        [contextPath]: data
     }),
-    [BLUR]: (state, action) => {
-        if ($get(state, 'focused.contextPath') === action.payload.contextPath) {
-            return $set(state, 'focused', {
-                contextPath: '',
-                typoscriptPath: ''
-            });
+    [FOCUS]: ({contextPath, typoscriptPath}) => $set('cr.nodes.focused', {contextPath, typoscriptPath}),
+    [BLUR]: ({contextPath}) => state => {
+        if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
+            return $set('cr.nodes.focused', initialState.focused, state);
         }
 
         return state;
     },
-    [HOVER]: (state, action) => $set(state, 'hovered', {
-        contextPath: action.payload.contextPath,
-        typoscriptPath: action.payload.typoscriptPath
-    }),
-    [UNHOVER]: (state, action) => {
-        if ($get(state, 'hovered.contextPath') === action.payload.contextPath) {
-            return $set(state, 'hovered', {
-                contextPath: '',
-                typoscriptPath: ''
-            });
+    [HOVER]: ({contextPath, typoscriptPath}) => $set('cr.nodes.hovered', {contextPath, typoscriptPath}),
+    [UNHOVER]: ({contextPath}) => state => {
+        if ($get('cr.nodes.hovered.contextPath', state) === contextPath) {
+            return $set('cr.nodes.hovered', initialState.hovered, state);
         }
 
         return state;
     }
-}, initialState);
+};

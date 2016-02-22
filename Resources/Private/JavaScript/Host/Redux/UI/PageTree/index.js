@@ -1,20 +1,10 @@
-import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Utilities/';
-import {createAction, handleActions} from 'redux-actions';
-
-const {$get, $set} = immutableOperations;
+import {createAction} from 'redux-actions';
+import {$get, $set} from 'plow-js';
 
 const SET = '@packagefactory/guevara/UI/PageTree/SET';
 const SET_SUB_TREE = '@packagefactory/guevara/UI/PageTree/SET_SUB_TREE';
 const SET_NODE = '@packagefactory/guevara/UI/PageTree/SET_NODE';
 
-function resetFocusAndActive(node, keepActive, keepFocus) {
-    return node && node.map(page => page
-          .set('isActive', keepActive ? page.get('isActive') : false)
-          .set('isFocused', keepFocus ? page.get('isFocused') : false)
-          .set('children', resetFocusAndActive(page.get('children'), keepActive, keepFocus)
-    ));
-}
 /**
  * Set the tree data for the entire page tree
  *
@@ -52,22 +42,24 @@ export const actions = {
 };
 
 //
+// Export the initial state
+//
+export const initialState = {};
+
+//
 // Export the reducer
 //
-const initialState = Immutable.fromJS({});
-
-export const reducer = handleActions({
-    [SET]: (state, action) => Immutable.fromJS(action.payload),
-    [SET_SUB_TREE]: (state, action) => $set(state, action.payload.path, action.payload.data),
-    [SET_NODE]: (state, action) => {
-        const {data, path} = action.payload;
-        const isFocused = $get(data, 'isFocused');
-        const isActive = $get(data, 'isActive');
+export const reducer = {
+    [SET]: treeData => $set('ui.pageTree', treeData),
+    [SET_SUB_TREE]: ({path, data}) => $set(['ui', 'pageTree', path], data),
+    [SET_NODE]: ({path, data}) => state => {
+        const isFocused = $get('isFocused', data);
+        const isActive = $get('isActive', data);
 
         if (!isFocused && !isActive) {
-            return $set(state, path, data);
+            return $set(['ui', 'pageTree', path], data, state);
         }
 
-        return resetFocusAndActive(state, !isActive, !isFocused);
+        return state;
     }
-}, initialState);
+};

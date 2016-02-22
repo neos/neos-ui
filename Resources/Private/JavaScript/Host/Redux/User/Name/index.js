@@ -1,16 +1,16 @@
-import Immutable from 'immutable';
-import {handleActions} from 'redux-actions';
-
 //
-// Export the reducer
+// Export the initial state
 //
-const initialState = Immutable.fromJS({
+export const initialState = {
     title: '',
     firstName: '',
     middleName: '',
     lastName: '',
     otherName: '',
     fullName: ''
-});
+};
 
-export const reducer = handleActions({}, initialState);
+//
+// Export the reducer
+//
+export const reducer = {};

@@ -1,4 +1,3 @@
-import {combineReducers} from 'redux';
 import {
     reducer as SettingsReducer,
     actions as Settings
@@ -18,8 +17,6 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = {
-    user: combineReducers({
-        settings: SettingsReducer,
-        name: NameReducer
-    })
+    ...SettingsReducer,
+    ...NameReducer
 };

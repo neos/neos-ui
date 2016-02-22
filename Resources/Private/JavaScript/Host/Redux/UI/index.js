@@ -1,4 +1,3 @@
-import {combineReducers} from 'redux';
 import {
     reducer as FlashMessagesReducer,
     actions as FlashMessages
@@ -24,10 +23,6 @@ import {
     actions as RightSideBar
 } from './RightSideBar/';
 import {
-    reducer as TabsReducer,
-    actions as Tabs
-} from './Tabs/';
-import {
     reducer as PageTreeReducer,
     actions as PageTree
 } from './PageTree/';
@@ -42,7 +37,6 @@ export const actions = {
     OffCanvas,
     Remote,
     RightSideBar,
-    Tabs,
     PageTree
 };
 
@@ -50,14 +44,11 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = {
-    ui: combineReducers({
-        flashMessages: FlashMessagesReducer,
-        fullScreen: FullScreenReducer,
-        leftSideBar: LeftSideBarReducer,
-        offCanvas: OffCanvasReducer,
-        remote: RemoteReducer,
-        rightSideBar: RightSideBarReducer,
-        tabs: TabsReducer,
-        pageTree: PageTreeReducer
-    })
+    ...FlashMessagesReducer,
+    ...FullScreenReducer,
+    ...LeftSideBarReducer,
+    ...OffCanvasReducer,
+    ...RemoteReducer,
+    ...RightSideBarReducer,
+    ...PageTreeReducer
 };

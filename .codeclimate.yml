@@ -6,3 +6,8 @@ ratings:
     - "Resources/Private/JavaScript/**"
 exclude_paths:
  - "package.json"
+ - "karma.conf.js"
+ - "karma.entry.js"
+ - "wdio.config.js"
+ - "webpack.config.js"
+ - "Build/**/*"

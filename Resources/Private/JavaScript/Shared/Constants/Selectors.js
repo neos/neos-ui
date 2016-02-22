@@ -6,17 +6,31 @@
 //
 
 module.exports = {
-    contentView: '',
+    contentView: '#neos__contentView',
+    guestFrame: {
+        iframe: '#neos__contentView iframe',
+        inlineEditableNodeTypes: '[data-__che-property]'
+    },
     contextBar: {},
     fullScreen: {},
     leftSideBar: {
+        container: '#neos__leftSidebar',
         nodeTreeToolBar: {
             addNode: '#neos__leftSidebar__nodeTreeToolBar__addNode'
         }
     },
-    offCanvas: {},
-    rightSideBar: {},
+    offCanvas: '#neos__offCanvas',
+    rightSideBar: {
+        container: '#neos__rightSideBar',
+        toggler: '#neos__rightSideBar__toggler'
+    },
     topBar: {
+        menuToggler: '#neos__topBar__menuToggler',
+        leftSideBarToggler: '#neos__topBar__leftSideBarToggler',
+        userDropDown: {
+            contents: '#neos__topBar__userDropDown__contents',
+            btn: '#neos__topBar__userDropDown__btn'
+        },
         publishDropDown: {
             contents: '#neos__topBar__publishDropDown__contents',
             btn: '#neos__topBar__publishDropDown__btn',

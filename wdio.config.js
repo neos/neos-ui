@@ -1,6 +1,5 @@
 const utils = require('./Build/Utilities/');
 const selectors = require('./Resources/Private/JavaScript/Shared/Constants/Selectors.js');
-const helperSequences = require('./Build/Selenium/Sequences/');
 
 //
 // Parse the configuration out of the `.yaml` files.
@@ -12,12 +11,19 @@ const buildConfig = Object.assign(
 const credentials = buildConfig.credentials;
 
 //
+// List of keys which are depending on the plattform this script will run on.
+//
+const keys = {
+    CTRL_CMD: process.platform === 'darwin' ? 'Command' : 'Control'
+};
+
+//
 // Create the main config object for the wdio test runner.
 //
 const config = {
     updateJob: true,
     specs: [
-        './Resources/Private/JavaScript/**/*.behavior.test.js'
+        './Tests/**/*.story.js'
     ],
     capabilities: [{
         browserName: 'firefox'
@@ -56,7 +62,7 @@ const config = {
         // Attach the global helper methods and selectors to the test suite.
         __neosSelenium = {
             selectors: selectors,
-            utils: helperSequences
+            keys: keys
         };
     }
 };

@@ -7,21 +7,21 @@ describe('Inline editing', () => {
     // Reset the server state.
     //
     before(() => {
-        // Open the publish dropdown if it is not already opened.
-        if (!browser.isVisibleWithinViewport(selectors.topBar.publishDropDown.contents)) {
-            browser.click(selectors.topBar.publishDropDown.btn);
-        }
-
         // If the `Discard All` button is enabled, click and reset all local changes which where already synced to the server.
         // @todo: We should not rely on the functionality of the `Discard All` button.
         if (browser.isEnabled(selectors.topBar.publishDropDown.discardAllBtn)) {
+            // Open the publish dropdown if it is not already opened.
+            if (!browser.isVisibleWithinViewport(selectors.topBar.publishDropDown.contents)) {
+                browser.click(selectors.topBar.publishDropDown.btn);
+            }
+
             browser.click(selectors.topBar.publishDropDown.discardAllBtn);
             browser.pause(4000);
-        }
 
-        // Hide the publish dropdown if it was opened.
-        if (browser.isVisibleWithinViewport(selectors.topBar.publishDropDown.contents)) {
-            browser.click(selectors.topBar.publishDropDown.btn);
+            // Hide the publish dropdown if it was opened.
+            if (browser.isVisibleWithinViewport(selectors.topBar.publishDropDown.contents)) {
+                browser.click(selectors.topBar.publishDropDown.btn);
+            }
         }
     });
 

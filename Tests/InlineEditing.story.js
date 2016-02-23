@@ -31,7 +31,9 @@ describe('Inline editing', () => {
         // Focus the guest frame and edit the first node property selenium can find in the DOM.
         browser.frame(browser.element(selectors.guestFrame.iframe).value)
             .click(selectors.guestFrame.inlineEditableNodeTypes)
-            .keys(addedText)
+            .pause(200);
+
+        browser.keys(addedText)
             .click('body')
 
             // Wait a bit until the server request has finished.

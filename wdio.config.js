@@ -82,7 +82,8 @@ if (utils.env.isCi) {
         'platform': 'XP',
         'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
         'name': '#' + process.env.TRAVIS_JOB_NUMBER + ' ' + process.env.TRAVIS_REPO_SLUG + ': ' + process.env.COMMIT_MESSAGE, //eslint-disable-line
-        'build': process.env.TRAVIS_BUILD_NUMBER
+        'build': process.env.TRAVIS_BUILD_NUMBER,
+        'screenResolution': '1280x800'
     }];
 }
 

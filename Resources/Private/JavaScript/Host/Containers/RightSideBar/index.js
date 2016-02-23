@@ -42,7 +42,7 @@ export default class RightSideBar extends Component {
         );
 
         return (
-            <SideBar position="right" className={classNames}>
+            <SideBar position="right" className={classNames} id="neos__rightSideBar">
                 <Tabs>
                     <Tabs.Panel icon="pencil">
                         <ToggablePanel

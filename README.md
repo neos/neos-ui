@@ -71,7 +71,7 @@ The integration tests are running on a selenium grid which is installed & starte
 and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with [chai](http://chaijs.com/).
 To run the integration tests, execute `npm run selenium:init` first, and `npm run selenium:run` in a separate session afterwards.
 
-Adding integration tests is as simple as creating unit tests, the only difference is that the file should end with `*.behavior.js` instead of `*.spec.js`.
+Adding user stories is as simple as creating unit tests, the only difference is that the file needs to be placed in the `Tests` root directory and should end with `*.story.js` instead of `*.spec.js`.
 
 #### Libraries which are used by the application
 | Name          | Description/Usecase          |

@@ -53,17 +53,20 @@ const config = {
         browser.setValue('#password', credentials.password);
         browser.submitForm('[name="login"]');
 
-        // Initialize chai as the assertion library.
-        const chai = require('chai');
-
-        expect = chai.expect;
-        chai.should();
-
         // Attach the global helper methods and selectors to the test suite.
         __neosSelenium = {
-            selectors: selectors,
-            keys: keys
+            selectors: selectors, //eslint-disable-line
+            keys: keys //eslint-disable-line
         };
+
+        // Setup chai as our assertion library.
+        const chai = require('chai');
+        const chaiAsPromised = require('chai-as-promised');
+
+        chai.should();
+        chai.use(chaiAsPromised);
+        expect = chai.expect;
+        chaiAsPromised.transferPromiseness = browser.transferPromiseness;
     }
 };
 
@@ -78,7 +81,7 @@ if (utils.env.isCi) {
         'browserName': 'chrome',
         'platform': 'XP',
         'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-        'name': '#' + process.env.TRAVIS_JOB_NUMBER + ' ' + process.env.TRAVIS_REPO_SLUG + ': ' + process.env.COMMIT_MESSAGE,
+        'name': '#' + process.env.TRAVIS_JOB_NUMBER + ' ' + process.env.TRAVIS_REPO_SLUG + ': ' + process.env.COMMIT_MESSAGE, //eslint-disable-line
         'build': process.env.TRAVIS_BUILD_NUMBER
     }];
 }

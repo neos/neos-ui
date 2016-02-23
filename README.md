@@ -5,7 +5,7 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/inkdpixels.svg)](https://saucelabs.com/u/inkdpixels)
 
-> A prototype for the [Neos CMS](https://www.neos.io/) written in ReactJS with Immutable data structures.
+> The next generation Neos CMS interface written in ReactJS with Immutable data structures. 
 
 
 ## Features

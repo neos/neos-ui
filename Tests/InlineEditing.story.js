@@ -1,6 +1,5 @@
 const {selectors} = __neosSelenium;
 const addedText = `My added text v${Math.random()}`;
-let beforeAddedText;
 
 describe('Inline editing', () => {
     //
@@ -30,12 +29,8 @@ describe('Inline editing', () => {
 
     it('should be able to type into a nodeType in the guest frame.', () => {
         // Focus the guest frame and edit the first node property selenium can find in the DOM.
-        browser.frame(browser.element(selectors.guestFrame.iframe).value);
-
-        // But first, lets save the previous value for a later comparison.
-        beforeAddedText = browser.getText(selectors.guestFrame.inlineEditableNodeTypes)[0];
-
-        browser.click(selectors.guestFrame.inlineEditableNodeTypes)
+        browser.frame(browser.element(selectors.guestFrame.iframe).value)
+            .click(selectors.guestFrame.inlineEditableNodeTypes)
             .keys(addedText)
             .click('body')
 
@@ -46,9 +41,7 @@ describe('Inline editing', () => {
     });
 
     it('should persist the changes on the server after editing the nodeType in the guest frame and reloading the backend.', () => {
-        browser.refresh()
-            .frame(browser.element(selectors.guestFrame.iframe).value)
-            .pause(2000);
+        browser.refresh().frame(browser.element(selectors.guestFrame.iframe).value);
 
         expect(browser.elementIdText(browser.element(selectors.guestFrame.inlineEditableNodeTypes).value.ELEMENT).value).to.contain(addedText);
     });
@@ -59,9 +52,12 @@ describe('Inline editing', () => {
     });
 
     it('should reset all changes when clicking the discard button.', () => {
-        browser.click(selectors.topBar.publishDropDown.discardBtn).pause(2000);
-        browser.refresh().frame(browser.element(selectors.guestFrame.iframe).value);
+        browser.click(selectors.topBar.publishDropDown.discardBtn)
+            .pause(2000);
 
-        expect(browser.elementIdText(browser.element(selectors.guestFrame.inlineEditableNodeTypes).value.ELEMENT).value).to.equal(beforeAddedText);
+        browser.refresh()
+            .frame(browser.element(selectors.guestFrame.iframe).value);
+
+        expect(browser.elementIdText(browser.element(selectors.guestFrame.inlineEditableNodeTypes).value.ELEMENT).value).to.not.contain(addedText);
     });
 });

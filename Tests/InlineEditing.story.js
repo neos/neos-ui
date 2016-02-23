@@ -1,6 +1,6 @@
 const {selectors} = __neosSelenium;
+const addedText = `My added text v${Math.random()}`;
 let beforeAddedText;
-let addedText;
 
 describe('Inline editing', () => {
     //
@@ -16,7 +16,7 @@ describe('Inline editing', () => {
             }
 
             browser.click(selectors.topBar.publishDropDown.discardAllBtn);
-            browser.pause(4000);
+            browser.pause(2000);
 
             // Hide the publish dropdown if it was opened.
             if (browser.isVisibleWithinViewport(selectors.topBar.publishDropDown.contents)) {
@@ -29,41 +29,39 @@ describe('Inline editing', () => {
     beforeEach(() => browser.frameParent());
 
     it('should be able to type into a nodeType in the guest frame.', () => {
-        addedText = `My added text v${Math.random()} `;
-
         // Focus the guest frame and edit the first node property selenium can find in the DOM.
-        // @todo: We should find a better way to adress dom nodes which we can edit via selenium.
         browser.frame(browser.element(selectors.guestFrame.iframe).value);
+
+        // But first, lets save the previous value for a later comparison.
         beforeAddedText = browser.getText(selectors.guestFrame.inlineEditableNodeTypes)[0];
 
-        // Click into the element and edit the text.
         browser.click(selectors.guestFrame.inlineEditableNodeTypes)
             .keys(addedText)
-            .click('body');
+            .click('body')
 
-        // Wait a bit until the server request has finished.
-        browser.pause(2000);
+            // Wait a bit until the server request has finished.
+            .pause(2000);
 
         expect(browser.elementIdText(browser.element(selectors.guestFrame.inlineEditableNodeTypes).value.ELEMENT).value).to.contain(addedText);
     });
 
     it('should persist the changes on the server after editing the nodeType in the guest frame and reloading the backend.', () => {
-        return browser.refresh()
+        browser.refresh()
             .frame(browser.element(selectors.guestFrame.iframe).value)
-            .waitUntil(() => browser.getText(selectors.guestFrame.inlineEditableNodeTypes).then(res => res[0].indexOf(addedText) > -1));
+            .pause(2000);
+
+        expect(browser.elementIdText(browser.element(selectors.guestFrame.inlineEditableNodeTypes).value.ELEMENT).value).to.contain(addedText);
     });
 
-    it('should display the publish dropdown contents after the publish dropdown chevron was clicked.', () => {
+    it('should be able to display the publish dropdown contents after the publish dropdown chevron was clicked.', () => {
         return browser.click(selectors.topBar.publishDropDown.btn)
             .isVisibleWithinViewport(selectors.topBar.publishDropDown.contents).should.equal(true);
     });
 
     it('should reset all changes when clicking the discard button.', () => {
-        browser.click(selectors.topBar.publishDropDown.discardBtn)
-            .pause(2000);
+        browser.click(selectors.topBar.publishDropDown.discardBtn).pause(2000);
+        browser.refresh().frame(browser.element(selectors.guestFrame.iframe).value);
 
-        return browser
-            .frame(browser.element(selectors.guestFrame.iframe).value)
-            .waitUntil(() => browser.getText(selectors.guestFrame.inlineEditableNodeTypes).then(res => res[0] === beforeAddedText));
+        expect(browser.elementIdText(browser.element(selectors.guestFrame.inlineEditableNodeTypes).value.ELEMENT).value).to.equal(beforeAddedText);
     });
 });

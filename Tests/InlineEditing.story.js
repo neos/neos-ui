@@ -29,21 +29,22 @@ describe('Inline editing', () => {
     beforeEach(() => browser.frameParent());
 
     it('should be able to type into a nodeType in the guest frame.', () => {
-        addedText = `my added text ${Math.random()}`;
+        addedText = `My added text v${Math.random()} `;
 
         // Focus the guest frame and edit the first node property selenium can find in the DOM.
         // @todo: We should find a better way to adress dom nodes which we can edit via selenium.
         browser.frame(browser.element(selectors.guestFrame.iframe).value);
         beforeAddedText = browser.getText(selectors.guestFrame.inlineEditableNodeTypes)[0];
 
-        const result = browser.click(selectors.guestFrame.inlineEditableNodeTypes)
+        // Click into the element and edit the text.
+        browser.click(selectors.guestFrame.inlineEditableNodeTypes)
             .keys(addedText)
-            .elementIdText(browser.element(selectors.guestFrame.inlineEditableNodeTypes).value.ELEMENT);
-
-        expect(result.value).to.contain(addedText);
+            .click('body');
 
         // Wait a bit until the server request has finished.
         browser.pause(2000);
+
+        expect(browser.elementIdText(browser.element(selectors.guestFrame.inlineEditableNodeTypes).value.ELEMENT).value).to.contain(addedText);
     });
 
     it('should persist the changes on the server after editing the nodeType in the guest frame and reloading the backend.', () => {
@@ -58,8 +59,10 @@ describe('Inline editing', () => {
     });
 
     it('should reset all changes when clicking the discard button.', () => {
+        browser.click(selectors.topBar.publishDropDown.discardBtn)
+            .pause(2000);
+
         return browser
-            .click(selectors.topBar.publishDropDown.discardBtn)
             .frame(browser.element(selectors.guestFrame.iframe).value)
             .waitUntil(() => browser.getText(selectors.guestFrame.inlineEditableNodeTypes).then(res => res[0] === beforeAddedText));
     });

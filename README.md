@@ -5,7 +5,7 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/inkdpixels.svg)](https://saucelabs.com/u/inkdpixels)
 
-> The next generation Neos CMS interface written in ReactJS with Immutable data structures. 
+> The next generation Neos CMS interface written in ReactJS with Immutable data structures.
 
 
 ## Features
@@ -34,7 +34,7 @@ Execute the following command in your shell to delete the FrontendLogin package 
 composer remove flowpack/neos-frontendlogin && rm -rf Data/Temporary/* && cd Packages/Application/PackageFactory.Guevara && bash Build/init.sh
 ```
 
-After the script finished, you are all set up and can open the sub-route `/che!` to login to the new interface.
+After the script has finished, you are all set up and can open the sub-route `/che!` to login to the new interface.
 
 __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
 If you've installed `nvm` make sure that the node LTS version `4.2.2` is correctly installed - You can do so by executing `nvm install v4.2.2`.

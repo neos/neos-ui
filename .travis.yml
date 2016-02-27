@@ -62,6 +62,9 @@ before_install:
 # Install and setup the neos instance.
 #
 install:
+  # Handle hidden files with the `mv` command.
+  - shopt -s dotglob
+
   # Create a separate working directory in which the neos instance can be installed in.
   - cd ..
   - if [ ! -d "Neos" ]; then mkdir Neos; fi;
@@ -83,6 +86,9 @@ install:
   # afterwards prune them to remove extranous packages from previous/cached runs.
   - npm install
   - npm prune
+
+  # Deactivate the previous enabled handling of hidden files with the `mv` command.
+  - shopt -u dotglob
 
 #
 # Execute the test environment specific shell script.

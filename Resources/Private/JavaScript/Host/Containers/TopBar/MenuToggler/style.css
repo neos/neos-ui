@@ -23,13 +23,13 @@ $lineHeight: 3px;
         top: 12px;
         border-top: $lineHeight solid;
         border-bottom: $lineHeight solid;
-        content: "";
+        content: '';
     }
 
     &:after {
         top: 24px;
         background-color: currentColor;
-        content: "";
+        content: '';
     }
 
     &:hover {

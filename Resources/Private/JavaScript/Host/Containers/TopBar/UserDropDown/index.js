@@ -34,7 +34,7 @@ export default class UserDropDown extends Component {
                     <li className={style.dropDown__item}>
                         <form title="Logout" action="/neos/logout" method="post">
                             <button type="submit" name="" value="logout" id="neos__topBar__userDropDown__logoutButton">
-                                <Icon icon="power-off" className={style.dropDown__item__icon} />
+                                <Icon icon="power-off" className={style.dropDown__itemIcon} />
                                 <I18n fallback="Logout" />
                             </button>
                         </form>

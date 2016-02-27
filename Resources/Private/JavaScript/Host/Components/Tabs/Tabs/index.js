@@ -49,8 +49,8 @@ export default class Tabs extends Component {
                 const ref = `tab-${index}`;
                 const {title, icon} = panel.props;
                 const classes = mergeClassNames({
-                    [style.tabs__navigation__item]: true,
-                    [style['tabs__navigation__item--isActive']]: this.state.activeTab === (index)
+                    [style.tabNavigation__item]: true,
+                    [style['tabNavigation__item--isActive']]: this.state.activeTab === (index)
                 });
                 const onClick = e => executeCallback({e, cb: () => this.activateTabForIndex(index)});
 
@@ -65,7 +65,7 @@ export default class Tabs extends Component {
             });
 
         return (
-            <ul className={style.tabs__navigation}>
+            <ul className={style.tabNavigation}>
                 {menuItems}
             </ul>
         );

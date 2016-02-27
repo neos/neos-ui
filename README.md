@@ -47,14 +47,16 @@ If you need help setting up `nvm`, `npm` or if you got any other problems, join 
 | Command         | Description                    |
 | --------------- | ------------------------------ |
 | `npm run build` | Builds all assets via webpack. |
-| `npm run lint`  | Lints all `.js` files via ESLint. |
-| `npm run karma` | Executes a single run of all unit tests via karma. (This is pretty slow due to webpack's single-compilation speed, use the watch task instead for development) |
+| `npm run lint:scripts`  | Lints all `.js` files via ESLint. |
+| `npm run lint:css`  | Lints all `.css` files via StyleLint. |
+| `npm run lint`  | Runs the above stated watch commands sequentially. |
+| `npm run karma` | Executes a single run of all unit tests via karma. (This is pretty slow due to webpack's single-compilation speed, use the `watch:karma` task instead for development) |
 | `npm run selenium:init` | Installs and boots the selenium server. See [Writing integration tests](#integration-tests) for more info. |
 | `npm run selenium:run` | Executes all integration tests via WebdriverIO. See [Writing integration tests](#integration-tests) for more info. |
 | `npm run watch:build`  | Watches all source files and rebuilds the compiled files on file changes. |
 | `npm run watch:karma`  | Watches all source files and unit test specs and runs karma after the compilation has been completed. |
 | `npm run watch`  | Runs the above stated watch commands sequentially. |
-| `npm test`  | Executes both `npm run lint`, `npm run karma` and `npm run selenium:run` sequentially. |
+| `npm test`  | Executes both `npm run lint` and `npm run karma` sequentially. |
 
 #### Code style
 Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `npm run lint` in your shell.

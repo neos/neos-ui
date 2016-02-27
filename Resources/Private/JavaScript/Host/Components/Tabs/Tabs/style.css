@@ -1,7 +1,4 @@
-.tabs {
-
-}
-.tabs__navigation {
+.tabNavigation {
     display: block;
     margin: 0;
     padding: 0;
@@ -18,7 +15,7 @@
         clear: both;
     }
 }
-.tabs__navigation__item {
+.tabNavigation__item {
     float: left;
     border-right: 1px solid $dark;
 
@@ -30,7 +27,7 @@
         cursor: pointer;
     }
 }
-.tabs__navigation__item--isActive {
+.tabNavigation__item--isActive {
     color: $brand;
     background-color: $darker;
     cursor: default;

@@ -21,18 +21,18 @@ const Dialog = props => {
     return (
         <Portal targetId="dialog" isOpened={isOpen}>
             <section className={classNames} {...directProps}>
-                <div className={style.dialog__contents}>
-                    <div className={style.dialog__contents__inner}>
+                <div className={style.dialog__contentsPosition}>
+                    <div className={style.dialog__contents}>
                         <IconButton
                             icon="close"
-                            className={style.dialog__contents__inner__closeBtn}
+                            className={style.dialog__closeBtn}
                             id="neos__modal__closeModal"
                             onClick={e => executeCallback({e, cb: onRequestClose})}
                             />
 
                         {children}
 
-                        <div className={style.dialog__contents__inner__actions}>
+                        <div className={style.dialog__actions}>
                             {props.actions.map((action, index) => <span key={index}>{action}</span>)}
                         </div>
                     </div>

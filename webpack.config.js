@@ -6,6 +6,7 @@ const vars = require('postcss-simple-vars');
 const hexToRgba = require('postcss-hexrgba');
 const postCssImport = require('postcss-import');
 const nested = require('postcss-nested');
+const stylelint = require('stylelint');
 
 module.exports = {
     module: {
@@ -34,6 +35,7 @@ module.exports = {
     },
 
     postcss: [
+        stylelint(),
         autoprefixer({
             browsers: ['last 2 versions']
         }),

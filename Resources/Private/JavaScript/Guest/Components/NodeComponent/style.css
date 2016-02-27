@@ -1,9 +1,9 @@
 .node {
-    outline-offset: 0.5em;
+    outline-offset: .5em;
 }
 
 .node--hover {
-    outline: 2px solid rgba(#000, 0.2);
+    outline: 2px solid rgba(#000, .2);
 }
 
 .node--focused {

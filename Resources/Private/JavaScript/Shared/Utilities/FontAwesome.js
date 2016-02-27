@@ -1,6 +1,6 @@
-import iconStyles from './icons.css';
+import icons from 'Shared/Styles/FontAwesome/icons.css';
 
-const ICON_NAMES = Object.keys(iconStyles);
+const ICON_NAMES = Object.keys(icons);
 const MIGRATION_PATH = [
     {
         deprecated: ['icon-glass'],
@@ -1539,7 +1539,12 @@ const MIGRATION_PATH = [
         name: 'fa-renre'
     }
 ];
-export function validateIconId(id) {
+
+export function validateId(id = '') {
+    //
+    // Automatically add the "fa-" prefix for the passed id for the first validation if
+    // the id was not already prefixed.
+    //
     const name = id.indexOf('fa-') === 0 ? id : `fa-${id}`;
     const isValid = ICON_NAMES.indexOf(name) > -1;
 
@@ -1550,11 +1555,18 @@ export function validateIconId(id) {
         };
     }
 
+    //
+    // Try to migrate the passed id if the id is not on pair with the latest Font-Awesome version.
+    //
     const migration = MIGRATION_PATH.filter(migration => migration.deprecated.indexOf(id) > -1).shift();
 
     return {
         isValid,
         isMigrationNeeded: true,
-        iconName: migration.name
+        iconName: migration && migration.name ? migration.name : null
     };
+}
+
+export function getClassName(id = '') {
+    return icons[validateId(id).iconName];
 }

@@ -2,19 +2,12 @@ import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {service} from 'Shared/';
 import style from './style.css';
-import iconStyles from './icons.css';
-import {validateIconId} from './IconNames.js';
+import {fontAwesome} from 'Shared/Utilities/';
 const {logger} = service;
-
-const getIconClassName = id => {
-    const {iconName} = validateIconId(id);
-
-    return iconStyles[iconName];
-};
 
 const Icon = props => {
     const {size, padded} = props;
-    const iconClassName = getIconClassName(props.icon);
+    const iconClassName = fontAwesome.getClassName(props.icon);
     const classNames = mergeClassNames({
         [style.icon]: true,
         [iconClassName]: true,
@@ -35,7 +28,7 @@ Icon.propTypes = {
     // The icon key of Font-Awesome.
     icon(props, propName) {
         const id = props[propName];
-        const {isValid, isMigrationNeeded, iconName} = validateIconId(id);
+        const {isValid, isMigrationNeeded, iconName} = fontAwesome.validateId(id);
 
         if (!isValid) {
             if (isMigrationNeeded && iconName) {

@@ -29,8 +29,8 @@
 .dropDown__btn--active {
     opacity: 1;
 }
-.dropDown__contents {}
-.dropDown__contents__item {
+
+.dropDown__item {
     &:hover {
         background: $brand;
     }
@@ -54,10 +54,10 @@
       }
     }
 }
-.dropDown__contents__item--noHover:hover {
+.dropDown__item--noHover:hover {
     background: 0;
 }
-.dropDown__contents__item--disabled {
+.dropDown__item--disabled {
     opacity: .5;
 
     &,
@@ -65,6 +65,6 @@
         cursor: not-allowed;
     }
 }
-.dropDown__contents__item--canPublish {
+.dropDown__item--canPublish {
     background: $warn;
 }

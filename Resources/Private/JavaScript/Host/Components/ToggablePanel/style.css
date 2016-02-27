@@ -5,7 +5,6 @@
         overflow: hidden;
     }
 }
-.panel--isOpen {}
 .panel__headline {
     height: 40px;
     margin: 0;

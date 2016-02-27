@@ -5,14 +5,14 @@
     z-index: 999;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0, .35);
+    background: rgba(#000, .35);
 }
 .dialog__contentsPosition {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    background: $darker
+    background: $darker;
 }
 .dialog__contents {
     position: relative;

@@ -16,7 +16,7 @@
 }
 .dropDown__contents {
     min-width: 160px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(#000, .2);
 }
 .dropDown__item {
     height: 40px;

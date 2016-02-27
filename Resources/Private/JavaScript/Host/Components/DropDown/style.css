@@ -1,7 +1,6 @@
 .dropDown {
     position: relative;
 }
-.dropDown--hasLabel {}
 .dropDown__btn {
     display: block;
     width: 100%;

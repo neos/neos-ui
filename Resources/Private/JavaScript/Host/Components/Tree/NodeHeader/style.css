@@ -29,7 +29,6 @@
     display: block;
     cursor: pointer;
 }
-.nodeHeader__data--isActive {}
 .nodeHeader__data--isFocused {
     background: $neutral;
 }

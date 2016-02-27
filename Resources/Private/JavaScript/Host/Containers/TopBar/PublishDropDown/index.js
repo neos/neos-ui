@@ -61,11 +61,11 @@ export default class PublishDropDown extends Component {
                 [style['btn--highlighted']]: canPublishGlobally
             }),
             ['btn--active']: style['dropDown__btn--active'],
-            contents: style.dropDown__contents
+            contents: ''
         };
         const autoPublishWrapperClassNames = mergeClassNames({
-            [style.dropDown__contents__item]: true,
-            [style['dropDown__contents__item--noHover']]: true
+            [style.dropDown__item]: true,
+            [style['dropDown__item--noHover']]: true
         });
         const {mainButtonLabel, mainButtonTarget} = this.getMainButtonLabeling();
 
@@ -82,7 +82,7 @@ export default class PublishDropDown extends Component {
                     <I18n fallback={mainButtonTarget} id={mainButtonLabel} />
                 </AbstractButton>
                 <DropDown classNames={dropDownClassNames} id="neos__topBar__publishDropDown__btn" contentsId="neos__topBar__publishDropDown__contents">
-                    <li className={style.dropDown__contents__item}>
+                    <li className={style.dropDown__item}>
                         <AbstractButton
                             isEnabled={canPublishGlobally}
                             isHighlighted={false}
@@ -94,7 +94,7 @@ export default class PublishDropDown extends Component {
                             <I18n fallback="Publish All" id="publishAll" />
                         </AbstractButton>
                     </li>
-                    <li className={style.dropDown__contents__item}>
+                    <li className={style.dropDown__item}>
                         <AbstractButton
                             isEnabled={canPublishLocally}
                             isHighlighted={false}
@@ -108,7 +108,7 @@ export default class PublishDropDown extends Component {
                             <I18n fallback="Discard" id="discard" />
                         </AbstractButton>
                     </li>
-                    <li className={style.dropDown__contents__item}>
+                    <li className={style.dropDown__item}>
                         <AbstractButton
                             isEnabled={canPublishGlobally}
                             isHighlighted={false}
@@ -128,7 +128,7 @@ export default class PublishDropDown extends Component {
                             id="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox"
                             />
                     </li>
-                    <li className={style.dropDown__contents__item}>
+                    <li className={style.dropDown__item}>
                         <a href="/neos/management/workspaces" id="neos__topBar__publishDropDown__workspacesBtn">
                             <Icon icon="th-large" />
                             <I18n fallback="Workspaces" id="workspaces" />

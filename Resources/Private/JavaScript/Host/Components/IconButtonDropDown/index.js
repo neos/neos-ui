@@ -64,7 +64,7 @@ export default class IconButtonDropDown extends Component {
                     onClick={this.onClick.bind(this)}
                     {...directButtonProps}
                     >
-                    <Icon icon={modeIcon} className={style.wrapper__btn__modeIcon} />
+                    <Icon icon={modeIcon} className={style.wrapper__btnModeIcon} />
                     <Icon icon={icon} />
                 </Button>
                 <div className={dropDownClassNames}>
@@ -80,7 +80,7 @@ export default class IconButtonDropDown extends Component {
             .filter(child => child)
             .map((child, index) => (
                 <a
-                    className={style.wrapper__dropDown__item}
+                    className={style.wrapper__dropDownItem}
                     onClick={this.onItemSelected.bind(this, child.props.dropDownId)}
                     key={index}
                     >

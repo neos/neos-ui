@@ -43,7 +43,7 @@ class NodeHeader extends Component {
                 {collapsableControl}
                 <div onClick={() => onClick(node)} className={dataClassNames}>
                     <Icon icon={icon} padded="right" />
-                    <span className={style.nodeHeader__data__title} onClick={() => onLabelClick(node)} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                    <span className={style.nodeHeader__dataTitle} onClick={() => onLabelClick(node)} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>
                 </div>

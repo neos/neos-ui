@@ -40,9 +40,6 @@
       text-align: left;
     }
 }
-.dropDownItem:hover {
-    background: $brand;
-}
-.dropDown__item__icon {
+.dropDown__itemIcon {
     padding-right: .5em;
 }

@@ -7,24 +7,24 @@
     height: 100vh;
     background: rgba(0,0,0, .35);
 }
-.dialog__contents {
+.dialog__contentsPosition {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     background: $darker
 }
-.dialog__contents__inner {
+.dialog__contents {
     position: relative;
     width: 80vw;
     min-height: 300px;
     padding: $spacing;
 }
-.dialog__contents__inner__closeBtn {
+.dialog__closeBtn {
     position: absolute;
     top: 0;
     right: 0;
 }
-.dialog__contents__inner__actions {
+.dialog__actions {
     text-align: right;
 }

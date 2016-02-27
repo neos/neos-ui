@@ -33,7 +33,7 @@
 .nodeHeader__data--isFocused {
     background: $neutral;
 }
-.nodeHeader__data__title {
+.nodeHeader__dataTitle {
     .nodeHeader__data--isActive & {
         color: $brand;
     }

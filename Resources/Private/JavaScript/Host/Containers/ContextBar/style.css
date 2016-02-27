@@ -30,9 +30,6 @@
 .contextBar__rightHandedActions {
     float: right;
 }
-.contextBar__rightHandedActions__btn {
-    vertical-align: top;
-}
 
 .dimensionCategory {}
 .dimensionCategory__icon {

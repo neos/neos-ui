@@ -78,7 +78,7 @@ if (utils.env.isCi) {
     config.key = process.env.SAUCE_ACCESS_KEY;
 
     config.capabilities = [{
-        'browserName': 'chrome',
+        'browserName': 'firefox',
         'platform': 'XP',
         'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
         'name': '#' + process.env.TRAVIS_JOB_NUMBER + ' ' + process.env.TRAVIS_REPO_SLUG + ': ' + process.env.COMMIT_MESSAGE, //eslint-disable-line

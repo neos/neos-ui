@@ -74,6 +74,7 @@ install:
   - mv ../PackageFactory.Guevara/.git Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.babelrc Packages/Application/PackageFactory.Guevara/
   - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
+  - mv ../PackageFactory.Guevara/.stylelint Packages/Application/PackageFactory.Guevara/
 
   # Execute the optional install shell script for the environment.
   - if [ -f "Packages/Application/PackageFactory.Guevara/Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Packages/Application/PackageFactory.Guevara/Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi

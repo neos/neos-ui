@@ -51,6 +51,7 @@
     "sinon-chai": "^2.8.0",
     "skin-deep": "^0.14.0",
     "style-loader": "^0.13.0",
+    "stylelint": "^4.4.0",
     "url-loader": "^0.5.7",
     "wdio-dot-reporter": "^0.0.5",
     "wdio-mocha-framework": "^0.2.11",
@@ -85,7 +86,9 @@
   "scripts": {
     "build": "webpack",
     "karma": "karma start --single-run",
-    "lint": "eslint Resources/Private/JavaScript/**",
+    "lint": "npm run lint:scripts && npm run lint:css",
+    "lint:css": "stylelint 'Resources/Private/JavaScript/**/*.css'",
+    "lint:scripts": "eslint Resources/Private/JavaScript/**",
     "selenium:init": "selenium-standalone install && selenium-standalone start",
     "selenium:run": "wdio wdio.config.js",
     "test": "npm run lint && npm run karma",

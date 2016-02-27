@@ -1,7 +1,6 @@
 .dropDown {
     position: relative;
 }
-.dropDown--hasLabel {}
 .dropDown__btn {
     display: block;
     width: 100%;
@@ -12,8 +11,19 @@
         outline: 1px dotted $brightest;
     }
 }
-.dropDown__btn__label {
+.dropDown__btnLabel {
     margin-right: .5em;
+}
+.dropDown__btnBeforeIcon {
+    .dropDown--hasLabel & {
+        margin-right: .5em;
+    }
+}
+.dropDown__btnAfterIcon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .dropDown__contents {
     position: absolute;
@@ -28,15 +38,4 @@
 }
 .dropDown__contents--isOpen {
     display: block;
-}
-.dropDown__btn__beforeIcon {
-    .dropDown--hasLabel  & {
-        margin-right: .5em;
-    }
-}
-.dropDown__btn__afterIcon {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
 }

@@ -78,7 +78,7 @@ export default class OffCanvas extends Component {
                 {children.map((item, index) => this.renderMenuItem(item, index))}
             </ToggablePanel>
         ) : (
-            <Button className={style.offCanvas__menuItem__btn} onClick={onClick} key={key}>
+            <Button className={style.offCanvas__menuItemBtn} onClick={onClick} key={key}>
                 <Icon icon={icon} padded="right" />
                 {title}
             </Button>

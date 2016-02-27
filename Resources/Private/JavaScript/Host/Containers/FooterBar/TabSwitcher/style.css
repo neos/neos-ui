@@ -1,6 +1,4 @@
-.tabSwitcher {}
-
-.tabSwitcher__item {
+.tabSwitcherItem {
     width: 12%;
     height: 41px;
     line-height: 41px;
@@ -11,10 +9,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 0 0.4em;
+    padding: 0 .4em;
 }
 
-.tabSwitcher__item--active {
+.tabSwitcherItem--active {
     background-color: $brightest;
     color: $darker;
     cursor: auto;

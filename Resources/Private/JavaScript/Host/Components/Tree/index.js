@@ -36,14 +36,14 @@ export default class Tree extends Component {
             const isCollapsed = $get(node, 'isCollapsed');
 
             return (
-                <div className={style.treeWrapper__tree} key={key}>
+                <div key={key}>
                     <NodeHeader
                         node={node}
                         onToggle={this.onTreeToggle.bind(this)}
                         onClick={this.onNodeClicked.bind(this)}
                         onLabelClick={e => this.onNodeLabelClick(e, node)}
                         />
-                    <div className={style.treeWrapper__tree__children}>
+                    <div className={style.treeWrapper__treeChildren}>
                         {children && !isCollapsed ? this.renderTree(children) : null}
                     </div>
                 </div>

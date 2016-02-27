@@ -62,6 +62,9 @@ before_install:
 # Install and setup the neos instance.
 #
 install:
+  # Handle hidden files with the `mv` command.
+  - shopt -s dotglob
+
   # Create a separate working directory in which the neos instance can be installed in.
   - cd ..
   - if [ ! -d "Neos" ]; then mkdir Neos; fi;
@@ -71,9 +74,6 @@ install:
   # Move our repository and the configuration files into place.
   - if [ ! -d "Packages/Application/PackageFactory.Guevara" ]; then mkdir Packages/Application/PackageFactory.Guevara; fi;
   - mv ../PackageFactory.Guevara/** Packages/Application/PackageFactory.Guevara/
-  - mv ../PackageFactory.Guevara/.git Packages/Application/PackageFactory.Guevara/
-  - mv ../PackageFactory.Guevara/.babelrc Packages/Application/PackageFactory.Guevara/
-  - mv ../PackageFactory.Guevara/.eslintrc Packages/Application/PackageFactory.Guevara/
 
   # Execute the optional install shell script for the environment.
   - if [ -f "Packages/Application/PackageFactory.Guevara/Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Packages/Application/PackageFactory.Guevara/Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
@@ -85,6 +85,9 @@ install:
   # afterwards prune them to remove extranous packages from previous/cached runs.
   - npm install
   - npm prune
+
+  # Deactivate the previous enabled handling of hidden files with the `mv` command.
+  - shopt -u dotglob
 
 #
 # Execute the test environment specific shell script.

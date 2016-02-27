@@ -50,7 +50,7 @@ export default (props, children) => {
                 }, 200);
             }
         }, [
-            icon({icon: modeIconMap[props.mode], className: style.wrapper__btn__modeIcon}),
+            icon({icon: modeIconMap[props.mode], className: style.wrapper__btnModeIcon}),
             icon({icon: props.icon})
         ]),
         h('div', {

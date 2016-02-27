@@ -91,7 +91,7 @@ export default class DropDown extends Component {
     renderLabel() {
         const {label, classNames} = this.props;
         const className = mergeClassNames({
-            [style.dropDown__btn__label]: true,
+            [style.dropDown__btnLabel]: true,
             [classNames.label]: classNames.label && classNames.label.length
         });
 
@@ -101,7 +101,7 @@ export default class DropDown extends Component {
     renderBeforeIcon() {
         const {iconBefore, classNames} = this.props;
         const className = mergeClassNames({
-            [style.dropDown__btn__beforeIcon]: true,
+            [style.dropDown__btnBeforeIcon]: true,
             [classNames.beforeIcon]: classNames.beforeIcon && classNames.beforeIcon.length
         });
 
@@ -112,7 +112,7 @@ export default class DropDown extends Component {
         const {isOpened} = this.state;
         const iconName = isOpened ? 'chevron-up' : 'chevron-down';
 
-        return <Icon icon={iconName} className={style.dropDown__btn__afterIcon} />;
+        return <Icon icon={iconName} className={style.dropDown__btnAfterIcon} />;
     }
 
     toggleDropDown() {

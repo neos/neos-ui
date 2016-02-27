@@ -29,7 +29,7 @@ export default class TabSwitcher extends Component {
 
     renderTab(tab, id) {
         return (
-            <div key={id} className={style.tabSwitcher__item} onClick={() => this.onClick(tab)}>
+            <div key={id} className={style.tabSwitcherItem} onClick={() => this.onClick(tab)}>
                 {tab.get('title')}
             </div>
         );
@@ -37,8 +37,8 @@ export default class TabSwitcher extends Component {
 
     renderActiveTab(tab, id) {
         const classNames = mergeClassNames({
-            [style.tabSwitcher__item]: true,
-            [style['tabSwitcher__item--active']]: true
+            [style.tabSwitcherItem]: true,
+            [style['tabSwitcherItem--active']]: true
         });
 
         return (

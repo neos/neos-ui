@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {validateId, getClassName} from './FontAwesome.js';
 
 describe('"shared.utilities.fontAwesome"', () => {

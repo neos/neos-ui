@@ -1,7 +1,7 @@
 import h from 'virtual-dom/h';
 import mergeClassNames from 'classnames';
 import style from './style.css';
-import icons from './icons.css';
+import {fontAwesome} from 'Shared/Utilities/';
 
 export default props => {
     props = Object.assign({
@@ -11,11 +11,12 @@ export default props => {
         padded: '',
         spin: false
     }, props);
+    const iconClassName = fontAwesome.getClassName(props.icon);
 
     return h('i', {
         className: mergeClassNames({
             [style.icon]: true,
-            [icons[props.icon]]: true,
+            [iconClassName]: true,
             [props.className]: props.className && props.className.length,
             [style['icon--big']]: props.size === 'big',
             [style['icon--small']]: props.size === 'small',

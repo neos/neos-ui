@@ -5,6 +5,13 @@
 # The script will be executed in the neos instance root directory.
 #
 
+#
+# Safe way of propagating the exit code of all commands through the script.
+# Without this line, commands could fail/exit 1 and the script itself would
+# complete and exit with code 0.
+#
+set -e
+
 # Install all dependencies for the neos instance.
 composer install -q
 

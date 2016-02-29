@@ -13,12 +13,14 @@ const {$get} = immutableOperations;
 @connect(state => ({
     tabs: $get(state, 'ui.tabs'),
     isHidden: $get(state, 'ui.fullScreen.isFullScreen')
-}))
+}), {
+    switchTo: actions.UI.Tabs.switchTo
+})
 export default class FooterBar extends Component {
     static propTypes = {
         tabs: PropTypes.instanceOf(Immutable.Map),
         isHidden: PropTypes.bool.isRequired,
-        dispatch: PropTypes.any.isRequired
+        switchTo: PropTypes.func.isRequired
     };
 
     render() {
@@ -29,14 +31,8 @@ export default class FooterBar extends Component {
         });
         return (
             <Bar className={classNames} position="bottom">
-                <TabSwitcher tabs={tabs.get('byId')} active={tabs.get('active')} onSwitchTab={tab => this.onSwitchTab(tab)} />
+                <TabSwitcher tabs={tabs.get('byId')} active={tabs.get('active')} onSwitchTab={tab => this.props.switchTo(tab.get('id'))} />
             </Bar>
         );
-    }
-
-    onSwitchTab(tab) {
-        const {dispatch} = this.props;
-
-        dispatch(actions.UI.Tabs.switchTo(tab.get('id')));
     }
 }

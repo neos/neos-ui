@@ -33,6 +33,8 @@ const {$get, $mapGet} = immutableOperations;
         publishableNodesInDocument,
         isAutoPublishingEnabled
     };
+}, {
+    toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing
 })
 export default class PublishDropDown extends Component {
     static propTypes = {
@@ -42,7 +44,7 @@ export default class PublishDropDown extends Component {
         publishableNodes: PropTypes.instanceOf(Immutable.List),
         publishableNodesInDocument: PropTypes.instanceOf(Immutable.List),
         isAutoPublishingEnabled: PropTypes.bool,
-        dispatch: PropTypes.any.isRequired
+        toggleAutoPublishing: PropTypes.func.isRequired
     };
 
     render() {
@@ -123,7 +125,7 @@ export default class PublishDropDown extends Component {
                     <li className={autoPublishWrapperClassNames}>
                         <CheckBox
                             label="autoPublish"
-                            onChange={this.onAutoPublishChange.bind(this)}
+                            onChange={() => this.props.toggleAutoPublishing()}
                             isChecked={isAutoPublishingEnabled}
                             id="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox"
                             />
@@ -216,9 +218,5 @@ export default class PublishDropDown extends Component {
         const {publishingService} = backend;
 
         publishingService.discardNodes($mapGet(publishableNodes, 'contextPath'));
-    }
-
-    onAutoPublishChange() {
-        this.props.dispatch(actions.User.Settings.toggleAutoPublishing());
     }
 }

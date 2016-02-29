@@ -10,11 +10,13 @@ const {$get} = immutableOperations;
 
 @connect(state => ({
     flashMessages: $get(state, 'ui.flashMessages')
-}))
+}), {
+    removeMessage: actions.UI.FlashMessages.remove
+})
 export default class FlashMessageContainer extends Component {
     static propTypes = {
         flashMessages: PropTypes.instanceOf(Immutable.Map),
-        dispatch: PropTypes.any.isRequired
+        removeMessage: PropTypes.func.isRequired
     };
 
     render() {
@@ -30,15 +32,11 @@ export default class FlashMessageContainer extends Component {
                             message={message}
                             severity={severity}
                             timeout={timeout}
-                            onClose={() => this.onClose(id)}
+                            onClose={() => this.props.removeMessage(id)}
                             />
                     );
                 }).toArray()}
             </div>
         );
-    }
-
-    onClose(flashMessageId) {
-        this.props.dispatch(actions.UI.FlashMessages.remove(flashMessageId));
     }
 }

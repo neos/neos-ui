@@ -14,11 +14,13 @@ const {$get} = immutableOperations;
 
 @connect(state => ({
     isHidden: $get(state, 'ui.offCanvas.isHidden')
-}))
+}), {
+    hideOffCanvas: actions.UI.OffCanvas.hide
+})
 export default class OffCanvas extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
-        dispatch: PropTypes.any.isRequired
+        hideOffCanvas: PropTypes.func.isRequired
     };
 
     render() {
@@ -28,7 +30,7 @@ export default class OffCanvas extends Component {
         });
 
         return (
-            <div className={classNames} onMouseLeave={this.hideOffCanvas.bind(this)} id="neos__offCanvas">
+            <div className={classNames} onMouseLeave={() => this.props.hideOffCanvas()} id="neos__offCanvas">
                 {this.renderMenu()}
             </div>
         );
@@ -83,9 +85,5 @@ export default class OffCanvas extends Component {
                 {title}
             </Button>
         );
-    }
-
-    hideOffCanvas() {
-        this.props.dispatch(actions.UI.OffCanvas.hide());
     }
 }

@@ -17,12 +17,14 @@ const {$get} = immutableOperations;
 @connect(state => ({
     isHidden: $get(state, 'ui.rightSideBar.isHidden'),
     isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
-}))
+}), {
+    toggleSidebar: actions.UI.RightSideBar.toggle
+})
 export default class RightSideBar extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
-        dispatch: PropTypes.any.isRequired
+        toggleSidebar: PropTypes.func.isRequired
     };
 
     render() {
@@ -36,7 +38,7 @@ export default class RightSideBar extends Component {
           <IconButton
               icon={toggleIcon}
               className={style.rightSideBar__toggleBtn}
-              onClick={this.toggleSidebar.bind(this)}
+              onClick={() => this.props.toggleSidebar()}
               id="neos__rightSideBar__toggler"
               />
         );
@@ -67,9 +69,5 @@ export default class RightSideBar extends Component {
                 {toggle}
             </SideBar>
         );
-    }
-
-    toggleSidebar() {
-        this.props.dispatch(actions.UI.RightSideBar.toggle());
     }
 }

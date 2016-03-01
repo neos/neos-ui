@@ -10,12 +10,14 @@ const {$get} = immutableOperations;
 
 @connect(state => ({
     isSideBarHidden: $get(state, 'ui.leftSideBar.isHidden')
-}))
+}), {
+    toggleSidebar: actions.UI.LeftSideBar.toggle
+})
 export default class LeftSideBarToggler extends Component {
     static propTypes = {
         className: PropTypes.string,
         isSideBarHidden: PropTypes.bool.isRequired,
-        dispatch: PropTypes.any.isRequired
+        toggleSidebar: PropTypes.func.isRequired
     };
 
     render() {
@@ -32,15 +34,11 @@ export default class LeftSideBarToggler extends Component {
                 style="clean"
                 hoverStyle="clean"
                 isFocused={isActive}
-                onClick={this.onLeftSidebarToggle.bind(this)}
+                onClick={() => this.props.toggleSidebar()}
                 id="neos__topBar__leftSideBarToggler"
                 >
                 <I18n id="Navigate" fallback="Navigate" />
             </Button>
         );
-    }
-
-    onLeftSidebarToggle() {
-        this.props.dispatch(actions.UI.LeftSideBar.toggle());
     }
 }

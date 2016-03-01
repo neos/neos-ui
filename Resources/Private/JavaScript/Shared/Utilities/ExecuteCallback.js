@@ -9,7 +9,7 @@ export const ERROR_INVALID_EVENT = 'Please supply a valid native or Synthetic Ev
  * @param  {Boolean}  preventDefault           Should the function call e.preventDefault();? (Defaults to `true`)
  * @param  {Boolean}  stopImmediatePropagation Should the function call e.stopImmediatePropagation();? (Defaults to `false`)
  *
- * @example <a onClick={e => executeCallback(e, this.props.onClick)}>Click me</a>
+ * @example <a onClick={e => executeCallback({e, cb: this.props.onClick})}>Click me</a>
  */
 export default ({e, cb, preventDefault = true, stopImmediatePropagation = false} = {}) => {
     //

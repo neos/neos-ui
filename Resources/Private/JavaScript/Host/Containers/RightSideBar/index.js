@@ -30,9 +30,10 @@ export default class RightSideBar extends Component {
 
     render() {
         const {isHidden, isFullScreen} = this.props;
+        const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
             [style.rightSideBar]: true,
-            [style['rightSideBar--isHidden']]: isHidden || isFullScreen
+            [style['rightSideBar--isHidden']]: isSideBarHidden
         });
         const toggleIcon = isHidden ? 'chevron-left' : 'chevron-right';
         const toggle = isFullScreen ? null : (
@@ -45,7 +46,12 @@ export default class RightSideBar extends Component {
         );
 
         return (
-            <SideBar position="right" className={classNames} id="neos__rightSideBar">
+            <SideBar
+                position="right"
+                className={classNames}
+                id="neos__rightSideBar"
+                aria-hidden={isSideBarHidden ? 'true' : 'false'}
+                >
                 <Tabs>
                     <Tabs.Panel icon="pencil">
                         <ToggablePanel.Wrapper className={style.rightSideBar__section}>

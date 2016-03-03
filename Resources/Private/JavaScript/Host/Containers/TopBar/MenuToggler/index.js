@@ -28,6 +28,9 @@ export default class MenuToggler extends Component {
             [className]: className && className.length
         });
 
+        //
+        // ToDo: Replace the static 'Menu' aria-label with a label from the i18n service.
+        //
         return (
             <Button
                 className={classNames}
@@ -36,6 +39,9 @@ export default class MenuToggler extends Component {
                 isFocused={isMenuVisible}
                 onClick={() => this.props.toggleOffCanvas()}
                 id="neos__topBar__menuToggler"
+                aria-label="Menu"
+                aria-controls="navigation"
+                aria-expanded={isMenuHidden ? 'false' : 'true'}
                 >
                 <div className={style.menuToggler__icon}></div>
             </Button>

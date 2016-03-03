@@ -97,7 +97,7 @@ export class Header extends Component {
         });
 
         return (
-            <div className={classNames}>
+            <div className={classNames} aria-expanded={isOpened ? 'true' : 'false'}>
                 <Headline
                     className={style.panel__headline}
                     type="h1"
@@ -143,7 +143,7 @@ export class Contents extends Component {
         return (
             <div>
                 <Collapse isOpened={isOpened}>
-                    <div className={classNames} key="panelContents">
+                    <div className={classNames} key="panelContents" aria-hidden={isOpened ? 'false' : 'true'}>
                         {children}
                     </div>
                 </Collapse>

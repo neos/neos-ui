@@ -43,7 +43,7 @@ export default class FlashMessage extends Component {
         });
 
         return (
-            <div className={flashMessageClasses}>
+            <div className={flashMessageClasses} role="alert">
                 <Icon icon={iconName} className={style.flashMessage__icon} />
                 <div className={style.flashMessage__heading}>{message}</div>
                 <IconButton

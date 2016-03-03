@@ -31,6 +31,7 @@ const TextInput = props => {
         <input
             className={classNames}
             type="text"
+            role="textbox"
             placeholder={placeholder}
             onChange={e => onChangeHandler({e, cb: onChange})}
             onFocus={() => executeCallback({cb: onFocus})}

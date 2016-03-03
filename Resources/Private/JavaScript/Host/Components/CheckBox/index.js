@@ -40,7 +40,10 @@ const CheckBox = props => {
                 <input
                     id={id}
                     className={style.checkbox__input}
-                    type="checkbox" checked={isChecked}
+                    type="checkbox"
+                    role="checkbox"
+                    checked={isChecked}
+                    aria-checked={isChecked}
                     onChange={() => onChange(onChangeHandler, !isChecked)}
                     {...directProps}
                     />

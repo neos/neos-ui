@@ -25,13 +25,19 @@ export default class OffCanvas extends Component {
     };
 
     render() {
+        const {isHidden} = this.props;
         const classNames = mergeClassNames({
             [style.offCanvas]: true,
-            [style['offCanvas--isHidden']]: this.props.isHidden
+            [style['offCanvas--isHidden']]: isHidden
         });
 
         return (
-            <div className={classNames} onMouseLeave={() => this.props.hideOffCanvas()} id="neos__offCanvas">
+            <div
+                className={classNames}
+                onMouseLeave={() => this.props.hideOffCanvas()}
+                id="neos__offCanvas"
+                aria-hidden={isHidden ? 'true' : 'false'}
+                >
                 {this.renderMenu()}
             </div>
         );

@@ -96,6 +96,7 @@ export class Header extends Component {
                     }
                 }}
                 className={classNames}
+                aria-haspopup="true"
                 {...directProps}
                 >
                 {children}
@@ -134,9 +135,10 @@ export class Contents extends Component {
             [style.dropDown__contents]: true,
             [style['dropDown__contents--isOpen']]: isOpened
         });
+        const ariaIsHiddenLabel = isOpened ? 'false' : 'true';
 
         return (
-            <ul className={contentsClassName} {...directProps}>
+            <ul className={contentsClassName} {...directProps} aria-hidden={ariaIsHiddenLabel} aria-label="dropdown">
                 {this.props.children}
             </ul>
         );

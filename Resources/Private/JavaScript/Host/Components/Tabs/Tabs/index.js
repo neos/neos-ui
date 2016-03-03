@@ -34,7 +34,7 @@ export default class Tabs extends Component {
         const className = mergeClassNames(style.tabs, this.props.className);
 
         return (
-            <div className={className}>
+            <div className={className} role="tablist">
                 {this.renderMenuItems()}
                 {this.renderPanels()}
             </div>
@@ -48,18 +48,25 @@ export default class Tabs extends Component {
             .map((panel, index) => {
                 const ref = `tab-${index}`;
                 const {title, icon} = panel.props;
+                const isActive = this.state.activeTab === index;
                 const classes = mergeClassNames({
                     [style.tabNavigation__item]: true,
-                    [style['tabNavigation__item--isActive']]: this.state.activeTab === (index)
+                    [style['tabNavigation__item--isActive']]: isActive
                 });
                 const onClick = e => executeCallback({e, cb: () => this.activateTabForIndex(index)});
 
                 return (
-                    <li ref={ref} key={index} className={classes}>
-                        <a onClick={onClick}>
+                    <li ref={ref} key={index} className={classes} role="presentation">
+                        <button
+                            className={style.tabNavigation__itemBtn}
+                            onClick={onClick}
+                            role="tab"
+                            aria-selected={isActive ? 'true' : 'false'}
+                            aria-controls={`section${index}`}
+                            >
                             {icon ? <Icon icon={icon} /> : null}
                             {title}
-                        </a>
+                        </button>
                     </li>
                 );
             });
@@ -77,17 +84,22 @@ export default class Tabs extends Component {
 
     renderPanels() {
         const {children} = this.props;
-        const activeIndex = this.state.activeTab;
 
         return (
             <div ref="tab-panel">
                 {children.map((panel, index) => {
+                    const isActive = this.state.activeTab === index;
                     const style = {
-                        display: activeIndex === index ? 'block' : 'none'
+                        display: isActive ? 'block' : 'none'
                     };
+                    const panelProps = {};
+
+                    if (!isActive) {
+                        panelProps['aria-hidden'] = 'true';
+                    }
 
                     return (
-                        <div key={index} style={style}>
+                        <div key={index} style={style} role="tabpanel" {...panelProps}>
                             {panel}
                         </div>
                     );

@@ -1,8 +1,6 @@
 import React, {PropTypes} from 'react';
-import uuid from 'uuid';
 import mergeClassNames from 'classnames';
 import {executeCallback} from 'Shared/Utilities/';
-import Label from 'Host/Components/Label/';
 import style from './style.css';
 
 const onChangeHandler = (e, cb) => {
@@ -15,48 +13,38 @@ const onChangeHandler = (e, cb) => {
 
 const TextInput = props => {
     const {
-        label,
         placeholder,
         className,
         isValid,
         onChange,
         onFocus,
-        onBlur
+        onBlur,
+        ...directProps
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
-        [style.textInput]: true
-    });
-    const inputClassNames = mergeClassNames({
-        [style.textInput__input]: true,
+        [style.textInput]: true,
         [style['textInput--invalid']]: !isValid
     });
-    const id = uuid.v1();
 
     return (
-        <div className={classNames}>
-            <Label htmlFor={id} label={label} />
-            <input
-                className={inputClassNames}
-                id={id}
-                type="text"
-                placeholder={placeholder}
-                onChange={e => onChangeHandler({e, cb: onChange})}
-                onFocus={() => executeCallback({cb: onFocus})}
-                onBlur={() => executeCallback({cb: onBlur})}
-                />
-        </div>
+        <input
+            className={classNames}
+            type="text"
+            role="textbox"
+            placeholder={placeholder}
+            onChange={e => onChangeHandler(e, onChange)}
+            onFocus={() => executeCallback({cb: onFocus})}
+            onBlur={() => executeCallback({cb: onBlur})}
+            {...directProps}
+            />
     );
 };
 TextInput.propTypes = {
-    label: PropTypes.string.isRequired,
-    placeholder: PropTypes.string,
-
     // Style related propTypes.
-    className: PropTypes.string,
-
-    // State related propTypes.
     isValid: PropTypes.bool.isRequired,
+    className: PropTypes.string,
+    placeholder: PropTypes.string,
 
     // Interaction related propTypes.
     onChange: PropTypes.func,

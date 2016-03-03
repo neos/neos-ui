@@ -43,8 +43,7 @@ export default class IconButtonDropDown extends Component {
             className,
             isDisabled,
             icon,
-            modeIcon,
-            directButtonProps
+            modeIcon
         } = this.props;
         const classNames = mergeClassNames({
             [style.wrapper]: true,
@@ -53,6 +52,10 @@ export default class IconButtonDropDown extends Component {
         const dropDownClassNames = mergeClassNames({
             [style.wrapper__dropDown]: true,
             [style['wrapper__dropDown--isOpen']]: this.state.isOpened
+        });
+        const ariaIsHiddenLabel = this.state.isOpened ? 'false' : 'true';
+        const directButtonProps = Object.assign({}, this.props.directButtonProps, {
+            'aria-haspopup': 'true'
         });
 
         return (
@@ -67,7 +70,7 @@ export default class IconButtonDropDown extends Component {
                     <Icon icon={modeIcon} className={style.wrapper__btnModeIcon} />
                     <Icon icon={icon} />
                 </Button>
-                <div className={dropDownClassNames}>
+                <div className={dropDownClassNames} aria-hidden={ariaIsHiddenLabel}>
                     {this.renderChildren()}
                 </div>
             </div>

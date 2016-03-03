@@ -11,6 +11,7 @@ const Dialog = props => {
         children,
         isOpen,
         onRequestClose,
+        actions,
         ...directProps
     } = props;
     const classNames = mergeClassNames({
@@ -20,7 +21,7 @@ const Dialog = props => {
 
     return (
         <Portal targetId="dialog" isOpened={isOpen}>
-            <section className={classNames} {...directProps}>
+            <section className={classNames} {...directProps} role="dialog" tabIndex="0">
                 <div className={style.dialog__contentsPosition}>
                     <div className={style.dialog__contents}>
                         <IconButton
@@ -33,7 +34,7 @@ const Dialog = props => {
                         {children}
 
                         <div className={style.dialog__actions}>
-                            {props.actions.map((action, index) => <span key={index}>{action}</span>)}
+                            {actions.map((action, index) => <span key={index}>{action}</span>)}
                         </div>
                     </div>
                 </div>

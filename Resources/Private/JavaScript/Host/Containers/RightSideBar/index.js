@@ -5,6 +5,7 @@ import {
     SideBar,
     Tabs,
     IconButton,
+    Label,
     TextInput,
     ToggablePanel
 } from 'Host/Components/';
@@ -29,9 +30,10 @@ export default class RightSideBar extends Component {
 
     render() {
         const {isHidden, isFullScreen} = this.props;
+        const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
             [style.rightSideBar]: true,
-            [style['rightSideBar--isHidden']]: isHidden || isFullScreen
+            [style['rightSideBar--isHidden']]: isSideBarHidden
         });
         const toggleIcon = isHidden ? 'chevron-left' : 'chevron-right';
         const toggle = isFullScreen ? null : (
@@ -44,19 +46,25 @@ export default class RightSideBar extends Component {
         );
 
         return (
-            <SideBar position="right" className={classNames} id="neos__rightSideBar">
+            <SideBar
+                position="right"
+                className={classNames}
+                id="neos__rightSideBar"
+                aria-hidden={isSideBarHidden ? 'true' : 'false'}
+                >
                 <Tabs>
                     <Tabs.Panel icon="pencil">
-                        <ToggablePanel
-                            className={style.rightSideBar__section}
-                            title="My fancy configuration"
-                            >
-                            <TextInput
-                                label="Title"
-                                placeholder="Type to search"
-                                />
+                        <ToggablePanel className={style.rightSideBar__section}>
+                            <ToggablePanel.Header>
+                                My fancy configuration
+                            </ToggablePanel.Header>
+                            <ToggablePanel.Contents>
+                                <Label htmlFor="testInput">
+                                    Title
+                                </Label>
+                                <TextInput placeholder="Type to search" id="testInput" />
+                            </ToggablePanel.Contents>
                         </ToggablePanel>
-
                     </Tabs.Panel>
                     <Tabs.Panel icon="cog">
                         <p>Content #2 here</p>

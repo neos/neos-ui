@@ -18,13 +18,19 @@ export default class LeftSideBar extends Component {
     };
 
     render() {
+        const {isHidden} = this.props;
         const classNames = mergeClassNames({
             [style.leftSideBar]: true,
-            [style['leftSideBar--isHidden']]: this.props.isHidden
+            [style['leftSideBar--isHidden']]: isHidden
         });
 
         return (
-            <SideBar position="left" className={classNames} id="neos__leftSidebar">
+            <SideBar
+                position="left"
+                className={classNames}
+                id="neos__leftSidebar"
+                aria-hidden={isHidden ? 'true' : 'false'}
+                >
                 <NodeTreeToolBar />
                 <PageTree />
             </SideBar>

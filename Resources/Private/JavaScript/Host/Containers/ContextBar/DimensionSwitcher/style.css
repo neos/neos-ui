@@ -7,6 +7,9 @@
     border: 0;
     background: 0;
 }
+.dropDown__btnIcon {
+    margin-right: .5em;
+}
 .dropDown__contents {
     padding: $spacing;
 }

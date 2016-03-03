@@ -18,17 +18,22 @@
 .tabNavigation__item {
     float: left;
     border-right: 1px solid $dark;
-
-    > a {
-        display: inline-block;
-        height: 40px;
-        padding: 0 $spacing;
-        line-height: 40px;
-        cursor: pointer;
-    }
 }
 .tabNavigation__item--isActive {
     color: $brand;
     background-color: $darker;
     cursor: default;
+}
+.tabNavigation__itemBtn {
+    display: inline-block;
+    height: 40px;
+    padding: 0 $spacing;
+    line-height: 40px;
+    cursor: pointer;
+    border: 0;
+    background: 0;
+
+    &:focus {
+        outline: 0;
+    }
 }

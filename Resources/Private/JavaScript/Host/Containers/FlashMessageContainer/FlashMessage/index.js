@@ -4,7 +4,7 @@ import style from './style.css';
 import {IconButton, Icon} from 'Host/Components/';
 import {executeCallback} from 'Shared/Utilities/';
 
-export default class FooterBar extends Component {
+export default class FlashMessage extends Component {
     static propTypes = {
         message: PropTypes.string.isRequired,
         severity: PropTypes.string.isRequired,

@@ -76,7 +76,7 @@ export class Header extends Component {
     }
 
     render() {
-        const {className, children} = this.props;
+        const {className, children, ...directProps} = this.props;
         const {isOpened, toggleDropDown} = this.context;
         const classNames = mergeClassNames({
             [style.dropDown__btn]: true,
@@ -96,6 +96,7 @@ export class Header extends Component {
                     }
                 }}
                 className={classNames}
+                {...directProps}
                 >
                 {children}
                 {chevron}

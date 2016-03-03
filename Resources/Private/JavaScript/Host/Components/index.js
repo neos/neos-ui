@@ -2,7 +2,7 @@ import Bar from './Bar/';
 import Button from './Button/';
 import CheckBox from './CheckBox/';
 import Dialog from './Dialog/';
-import DropDown from './DropDown/';
+import * as DropDown from './DropDown/';
 import Grid from './Grid/';
 import GridItem from './Grid/GridItem/';
 import Headline from './Headline/';

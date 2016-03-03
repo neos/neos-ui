@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {I18n, Icon, DropDown} from 'Host/Components/';
 import style from './style.css';
-
 import {immutableOperations} from 'Shared/Utilities/';
 
 const {$get} = immutableOperations;
@@ -16,37 +15,30 @@ export default class UserDropDown extends Component {
     };
 
     render() {
-        const dropDownClassNames = {
-            wrapper: style.dropDown,
-            btn: style.dropDown__btn,
-            contents: style.dropDown__contents
-        };
-
         return (
             <div className={style.wrapper}>
-                <DropDown
-                    label={this.props.userName}
-                    translateLabel={false}
-                    iconBefore="user"
-                    classNames={dropDownClassNames}
-                    id="neos__topBar__userDropDown__btn"
-                    contentsId="neos__topBar__userDropDown__contents"
-                    >
-                    <li className={style.dropDown__item}>
-                        <form title="Logout" action="/neos/logout" method="post">
-                            <button type="submit" name="" value="logout" id="neos__topBar__userDropDown__logoutButton">
-                                <Icon icon="power-off" className={style.dropDown__itemIcon} />
-                                <I18n fallback="Logout" />
-                            </button>
-                        </form>
-                      </li>
-                      <li className={style.dropDown__item}>
-                          <a title="User Settings" href="/neos/user/usersettings" id="neos__topBar__userDropDown__userSettings">
-                              <Icon icon="wrench" className={style.dropDown__item__icon} />
-                              <I18n fallback="User Settings" />
-                          </a>
-                      </li>
-                </DropDown>
+                <DropDown.Wrapper className={style.dropDown}>
+                    <DropDown.Header className={style.dropDown__btn} id="neos__topBar__userDropDown__btn">
+                        <Icon className={style.dropDown__btnIcon} icon="user" />
+                        {this.props.userName}
+                    </DropDown.Header>
+                    <DropDown.Contents className={style.dropDown__contents} id="neos__topBar__userDropDown__contents">
+                        <li className={style.dropDown__item}>
+                            <form title="Logout" action="/neos/logout" method="post">
+                                <button type="submit" name="" value="logout" id="neos__topBar__userDropDown__logoutButton">
+                                    <Icon icon="power-off" className={style.dropDown__itemIcon} />
+                                    <I18n fallback="Logout" />
+                                </button>
+                            </form>
+                          </li>
+                          <li className={style.dropDown__item}>
+                              <a title="User Settings" href="/neos/user/usersettings" id="neos__topBar__userDropDown__userSettings">
+                                  <Icon icon="wrench" className={style.dropDown__item__icon} />
+                                  <I18n fallback="User Settings" />
+                              </a>
+                          </li>
+                    </DropDown.Contents>
+                </DropDown.Wrapper>
             </div>
         );
     }

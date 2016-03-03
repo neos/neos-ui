@@ -26,9 +26,6 @@
     vertical-align: top;
     cursor: pointer;
 }
-.dropDown__btn--active {
-    opacity: 1;
-}
 
 .dropDown__item {
     &:hover {

@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import Transition from 'react-motion-ui-pack';
+import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
 import Headline from 'Host/Components/Headline/';
 import IconButton from 'Host/Components/IconButton/';
@@ -142,13 +142,11 @@ export class Contents extends Component {
 
         return (
             <div>
-                <Transition enter={{height: 'auto'}} leave={{height: 0}}>
-                    {isOpened ? (
-                        <div className={classNames}>
-                            {children}
-                        </div>
-                    ) : null}
-                </Transition>
+                <Collapse isOpened={isOpened}>
+                    <div className={classNames} key="panelContents">
+                        {children}
+                    </div>
+                </Collapse>
             </div>
         );
     }

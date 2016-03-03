@@ -36,7 +36,7 @@ const CheckBox = props => {
             isChildrenInlined={true}
             labelPosition="after"
             >
-                <div className={classNames}>
+            <div className={classNames}>
                 <input
                     id={id}
                     className={style.checkbox__input}

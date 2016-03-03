@@ -47,6 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const neos = initializeJSAPI(window);
     const store = configureStore({serverState}, neos);
 
+    // Bootstrap the i18n service before the initial render.
+    assign(backend, {
+        i18n: i18n(translations)
+    });
+
     // Initialize Neos JS API plugins
     neos.use(ui(store));
 
@@ -80,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackManager: feedbackManager(store),
         publishingService: publishingService(store, csrfToken),
         nodeTreeService: nodeTreeService(store, csrfToken),
-        i18n: i18n(translations),
 
         asyncComponents: {
             feedbackHandlers: registry()

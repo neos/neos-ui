@@ -19,7 +19,7 @@ export default class EditModePanelToggler extends Component {
                 isFocused={isActive}
                 onClick={this.onEditModeToggle.bind(this)}
                 >
-                <I18n fallback="Edit / Preview" />
+                <I18n id="editPreview" fallback="Edit / Preview" />
             </Button>
         );
     }

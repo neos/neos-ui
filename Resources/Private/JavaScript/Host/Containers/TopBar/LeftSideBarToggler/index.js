@@ -37,7 +37,7 @@ export default class LeftSideBarToggler extends Component {
                 onClick={() => this.props.toggleSidebar()}
                 id="neos__topBar__leftSideBarToggler"
                 >
-                <I18n id="Navigate" fallback="Navigate" />
+                <I18n id="navigate" fallback="Navigate" />
             </Button>
         );
     }

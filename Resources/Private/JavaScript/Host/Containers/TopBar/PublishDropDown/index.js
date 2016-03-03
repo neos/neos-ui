@@ -8,6 +8,7 @@ import {
     I18n,
     Icon,
     DropDown,
+    Label,
     CheckBox
 } from 'Host/Components/';
 import {actions} from 'Host/Redux/';
@@ -52,7 +53,8 @@ export default class PublishDropDown extends Component {
             publishableNodes,
             publishableNodesInDocument,
             isSaving,
-            isAutoPublishingEnabled
+            isAutoPublishingEnabled,
+            toggleAutoPublishing
         } = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
         const canPublishGlobally = publishableNodes.count() > 0;
@@ -129,12 +131,14 @@ export default class PublishDropDown extends Component {
                             </AbstractButton>
                         </li>
                         <li className={autoPublishWrapperClassNames}>
-                            <CheckBox
-                                label="autoPublish"
-                                onChange={() => this.props.toggleAutoPublishing()}
-                                isChecked={isAutoPublishingEnabled}
-                                id="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox"
-                                />
+                            <Label htmlFor="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox">
+                                <CheckBox
+                                    id="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox"
+                                    onChange={() => toggleAutoPublishing()}
+                                    isChecked={isAutoPublishingEnabled}
+                                    />
+                                <I18n id="autoPublish" fallback="Auto-Publish" />
+                            </Label>
                         </li>
                         <li className={style.dropDown__item}>
                             <a href="/neos/management/workspaces" id="neos__topBar__publishDropDown__workspacesBtn">

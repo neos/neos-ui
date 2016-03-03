@@ -59,7 +59,9 @@ export default class RightSideBar extends Component {
                                 My fancy configuration
                             </ToggablePanel.Header>
                             <ToggablePanel.Contents>
-                                <Label label="Title" htmlFor="testInput" />
+                                <Label htmlFor="testInput">
+                                    Title
+                                </Label>
                                 <TextInput placeholder="Type to search" id="testInput" />
                             </ToggablePanel.Contents>
                         </ToggablePanel>

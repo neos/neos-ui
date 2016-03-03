@@ -33,7 +33,7 @@ const TextInput = props => {
             type="text"
             role="textbox"
             placeholder={placeholder}
-            onChange={e => onChangeHandler({e, cb: onChange})}
+            onChange={e => onChangeHandler(e, onChange)}
             onFocus={() => executeCallback({cb: onFocus})}
             onBlur={() => executeCallback({cb: onBlur})}
             {...directProps}

@@ -45,8 +45,17 @@ export default class PublishDropDown extends Component {
             isAutoPublishingEnabled,
             toggleAutoPublishing
         } = this.props;
-        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
-        const canPublishGlobally = publishableNodes.count() > 0;
+        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
+        const canPublishGlobally = publishableNodes && (publishableNodes.length > 0);
+        const dropDownClassNames = {
+            wrapper: style.dropDown,
+            btn: mergeClassNames({
+                [style.dropDown__btn]: true,
+                [style['btn--highlighted']]: canPublishGlobally
+            }),
+            ['btn--active']: style['dropDown__btn--active'],
+            contents: ''
+        };
         const autoPublishWrapperClassNames = mergeClassNames({
             [style.dropDown__item]: true,
             [style['dropDown__item--noHover']]: true
@@ -63,79 +72,65 @@ export default class PublishDropDown extends Component {
                     className={style.publishBtn}
                     isEnabled={canPublishLocally || isSaving}
                     isHighlighted={canPublishLocally || isSaving}
-                    indicator={publishableNodesInDocument.count()}
+                    indicator={publishableNodesInDocument ? publishableNodesInDocument.length : 0}
                     onClick={e => this.onPublishClick(e)}
                     id="neos__topBar__publishDropDown__publishBtn"
                     >
                     <I18n fallback={mainButtonTarget} id={mainButtonLabel} />
                 </AbstractButton>
-
-                <DropDown className={style.dropDown}>
-                    <DropDown.Header
-                        className={dropDownBtnClassName}
-                        id="neos__topBar__publishDropDown__btn"
-                        >
-                    </DropDown.Header>
-
-                    <DropDown.Contents
-                        className={style.dropDown__contents}
-                        id="neos__topBar__publishDropDown__contents"
-                        >
-                        <li className={style.dropDown__item}>
-                            <AbstractButton
-                                isEnabled={canPublishGlobally}
-                                isHighlighted={false}
-                                indicator={publishableNodes.count()}
-                                onClick={e => this.onPublishAllClick(e)}
-                                id="neos__topBar__publishDropDown__publishAllBtn"
-                                >
-                                <Icon icon="upload" />
-                                <I18n fallback="Publish All" id="publishAll" />
-                            </AbstractButton>
-                        </li>
-                        <li className={style.dropDown__item}>
-                            <AbstractButton
-                                isEnabled={canPublishLocally}
-                                isHighlighted={false}
-                                indicator={publishableNodesInDocument.count()}
-                                label="Discard"
-                                icon="ban"
-                                onClick={e => this.onDiscardClick(e)}
-                                id="neos__topBar__publishDropDown__discardBtn"
-                                >
-                                <Icon icon="ban" />
-                                <I18n fallback="Discard" id="discard" />
-                            </AbstractButton>
-                        </li>
-                        <li className={style.dropDown__item}>
-                            <AbstractButton
-                                isEnabled={canPublishGlobally}
-                                isHighlighted={false}
-                                indicator={publishableNodes.count()}
-                                onClick={e => this.onDiscardAllClick(e)}
-                                id="neos__topBar__publishDropDown__discardAllBtn"
-                                >
-                                <Icon icon="ban" />
-                                <I18n fallback="Discard All" id="discardAll" />
-                            </AbstractButton>
-                        </li>
-                        <li className={autoPublishWrapperClassNames}>
-                            <Label htmlFor="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox">
-                                <CheckBox
-                                    id="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox"
-                                    onChange={() => toggleAutoPublishing()}
-                                    isChecked={isAutoPublishingEnabled}
-                                    />
-                                <I18n id="autoPublish" fallback="Auto-Publish" />
-                            </Label>
-                        </li>
-                        <li className={style.dropDown__item}>
-                            <a href="/neos/management/workspaces" id="neos__topBar__publishDropDown__workspacesBtn">
-                                <Icon icon="th-large" />
-                                <I18n fallback="Workspaces" id="workspaces" />
-                            </a>
-                        </li>
-                    </DropDown.Contents>
+                <DropDown classNames={dropDownClassNames} id="neos__topBar__publishDropDown__btn" contentsId="neos__topBar__publishDropDown__contents">
+                    <li className={style.dropDown__item}>
+                        <AbstractButton
+                            isEnabled={canPublishGlobally}
+                            isHighlighted={false}
+                            indicator={publishableNodes ? publishableNodes.length : 0}
+                            onClick={e => this.onPublishAllClick(e)}
+                            id="neos__topBar__publishDropDown__publishAllBtn"
+                            >
+                            <Icon icon="upload" />
+                            <I18n fallback="Publish All" id="publishAll" />
+                        </AbstractButton>
+                    </li>
+                    <li className={style.dropDown__item}>
+                        <AbstractButton
+                            isEnabled={canPublishLocally}
+                            isHighlighted={false}
+                            indicator={publishableNodesInDocument ? publishableNodesInDocument.length : 0}
+                            label="Discard"
+                            icon="ban"
+                            onClick={e => this.onDiscardClick(e)}
+                            id="neos__topBar__publishDropDown__discardBtn"
+                            >
+                            <Icon icon="ban" />
+                            <I18n fallback="Discard" id="discard" />
+                        </AbstractButton>
+                    </li>
+                    <li className={style.dropDown__item}>
+                        <AbstractButton
+                            isEnabled={canPublishGlobally}
+                            isHighlighted={false}
+                            indicator={publishableNodes ? publishableNodes.length : 0}
+                            onClick={e => this.onDiscardAllClick(e)}
+                            id="neos__topBar__publishDropDown__discardAllBtn"
+                            >
+                            <Icon icon="ban" />
+                            <I18n fallback="Discard All" id="discardAll" />
+                        </AbstractButton>
+                    </li>
+                    <li className={autoPublishWrapperClassNames}>
+                        <CheckBox
+                            label="autoPublish"
+                            onChange={() => this.props.toggleAutoPublishing()}
+                            isChecked={isAutoPublishingEnabled}
+                            id="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox"
+                            />
+                    </li>
+                    <li className={style.dropDown__item}>
+                        <a href="/neos/management/workspaces" id="neos__topBar__publishDropDown__workspacesBtn">
+                            <Icon icon="th-large" />
+                            <I18n fallback="Workspaces" id="workspaces" />
+                        </a>
+                    </li>
                 </DropDown>
             </div>
         );

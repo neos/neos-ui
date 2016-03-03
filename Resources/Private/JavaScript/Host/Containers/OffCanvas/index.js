@@ -76,7 +76,7 @@ export default class OffCanvas extends Component {
         };
 
         return children && children.length ? (
-            <ToggablePanel.Wrapper isOpened={true} className={style.offCanvas__menuItem} key={key}>
+            <ToggablePanel isOpened={true} className={style.offCanvas__menuItem} key={key}>
                 <ToggablePanel.Header className={style.offCanvas__menuItem__header}>
                     <Icon icon={icon} padded="right" />
                     <I18n id={title} fallback={title} />
@@ -84,7 +84,7 @@ export default class OffCanvas extends Component {
                 <ToggablePanel.Contents>
                     {children.map((item, index) => this.renderMenuItem(item, index))}
                 </ToggablePanel.Contents>
-            </ToggablePanel.Wrapper>
+            </ToggablePanel>
         ) : (
             <Button className={style.offCanvas__menuItemBtn} onClick={onClick} key={key}>
                 <Icon icon={icon} padded="right" />

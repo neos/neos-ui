@@ -31,7 +31,7 @@ export default class DimensionSwitcher extends Component {
         const {dimensions} = this.props;
 
         return (
-            <DropDown.Wrapper className={style.dropDown}>
+            <DropDown className={style.dropDown}>
                 <DropDown.Header className={style.dropDown__btn}>
                     <Icon className={style.dropDown__btnIcon} icon="globe" />
                     ToDo: Current dimension name
@@ -39,7 +39,7 @@ export default class DimensionSwitcher extends Component {
                 <DropDown.Contents className={style.dropDown__contents}>
                     {dimensions.map((dimensionCategory, index) => <DimensionCategory data={dimensionCategory} key={index} />)}
                 </DropDown.Contents>
-            </DropDown.Wrapper>
+            </DropDown>
         );
     }
 }

@@ -17,7 +17,7 @@ export default class UserDropDown extends Component {
     render() {
         return (
             <div className={style.wrapper}>
-                <DropDown.Wrapper className={style.dropDown}>
+                <DropDown className={style.dropDown}>
                     <DropDown.Header className={style.dropDown__btn} id="neos__topBar__userDropDown__btn">
                         <Icon className={style.dropDown__btnIcon} icon="user" />
                         {this.props.userName}
@@ -38,7 +38,7 @@ export default class UserDropDown extends Component {
                               </a>
                           </li>
                     </DropDown.Contents>
-                </DropDown.Wrapper>
+                </DropDown>
             </div>
         );
     }

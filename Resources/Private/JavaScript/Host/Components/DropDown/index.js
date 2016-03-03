@@ -5,7 +5,7 @@ import {executeCallback} from 'Shared/Utilities/';
 import Icon from 'Host/Components/Icon/';
 import style from './style.css';
 
-export class Wrapper extends Component {
+class DropDown extends Component {
     static propTypes = {
         className: PropTypes.string,
         isOpened: PropTypes.bool.isRequired,
@@ -61,7 +61,7 @@ export class Wrapper extends Component {
     }
 }
 
-export class Header extends Component {
+class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node
@@ -113,7 +113,7 @@ export class Header extends Component {
     }
 }
 
-export class Contents extends Component {
+class Contents extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node.isRequired
@@ -144,3 +144,12 @@ export class Contents extends Component {
         );
     }
 }
+
+//
+// Assign the Child Component to the parent,
+// to replicate the structure of a `DropDown` Component.
+//
+DropDown.Header = Header;
+DropDown.Contents = Contents;
+
+export default DropDown;

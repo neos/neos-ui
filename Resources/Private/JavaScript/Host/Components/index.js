@@ -2,7 +2,7 @@ import Bar from './Bar/';
 import Button from './Button/';
 import CheckBox from './CheckBox/';
 import Dialog from './Dialog/';
-import * as DropDown from './DropDown/';
+import DropDown from './DropDown/';
 import Grid from './Grid/';
 import GridItem from './Grid/GridItem/';
 import Headline from './Headline/';
@@ -15,7 +15,7 @@ import Portal from './Portal/';
 import SideBar from './SideBar/';
 import Tabs from './Tabs/';
 import TextInput from './TextInput/';
-import * as ToggablePanel from './ToggablePanel/';
+import ToggablePanel from './ToggablePanel/';
 import Tree from './Tree/';
 
 export {

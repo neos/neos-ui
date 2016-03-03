@@ -79,7 +79,7 @@ export default class PublishDropDown extends Component {
                     <I18n fallback={mainButtonTarget} id={mainButtonLabel} />
                 </AbstractButton>
 
-                <DropDown.Wrapper className={style.dropDown}>
+                <DropDown className={style.dropDown}>
                     <DropDown.Header
                         className={dropDownBtnClassName}
                         id="neos__topBar__publishDropDown__btn"
@@ -143,7 +143,7 @@ export default class PublishDropDown extends Component {
                             </a>
                         </li>
                     </DropDown.Contents>
-                </DropDown.Wrapper>
+                </DropDown>
             </div>
         );
     }

@@ -54,7 +54,7 @@ export default class RightSideBar extends Component {
                 >
                 <Tabs>
                     <Tabs.Panel icon="pencil">
-                        <ToggablePanel.Wrapper className={style.rightSideBar__section}>
+                        <ToggablePanel className={style.rightSideBar__section}>
                             <ToggablePanel.Header>
                                 My fancy configuration
                             </ToggablePanel.Header>
@@ -62,7 +62,7 @@ export default class RightSideBar extends Component {
                                 <Label label="Title" htmlFor="testInput" />
                                 <TextInput placeholder="Type to search" id="testInput" />
                             </ToggablePanel.Contents>
-                        </ToggablePanel.Wrapper>
+                        </ToggablePanel>
                     </Tabs.Panel>
                     <Tabs.Panel icon="cog">
                         <p>Content #2 here</p>

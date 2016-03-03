@@ -5,7 +5,7 @@ import Headline from 'Host/Components/Headline/';
 import IconButton from 'Host/Components/IconButton/';
 import style from './style.css';
 
-export class Wrapper extends Component {
+class ToggablePanel extends Component {
     static propTypes = {
         isOpened: PropTypes.bool,
         className: PropTypes.string,
@@ -70,7 +70,7 @@ export class Wrapper extends Component {
     }
 }
 
-export class Header extends Component {
+class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node.isRequired
@@ -115,7 +115,7 @@ export class Header extends Component {
     }
 }
 
-export class Contents extends Component {
+class Contents extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node.isRequired
@@ -151,3 +151,12 @@ export class Contents extends Component {
         );
     }
 }
+
+//
+// Assign the Child Component to the parent,
+// to replicate the structure of a `DropDown` Component.
+//
+ToggablePanel.Header = Header;
+ToggablePanel.Contents = Contents;
+
+export default ToggablePanel;

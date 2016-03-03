@@ -67,7 +67,6 @@
     "immutable": "^3.7.5",
     "lodash.assign": "^4.0.0",
     "lodash.compose": "^2.4.1",
-    "lodash.curry": "^3.0.2",
     "lodash.debounce": "^4.0.0",
     "lodash.defer": "^4.0.0",
     "lodash.isfunction": "^3.0.6",

@@ -1,0 +1,14 @@
+include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/ArrayCollection.ts2
+
+prototype(PackageFactory.Guevara:Node) < prototype(TYPO3.TypoScript:RawArray) {
+    contextPath = ${q(node).property('_contextPath')}
+    identifier = ${q(node).property('_identifier')}
+    nodeType = ${q(node).property('_nodeType.name')}
+    properties = ${q(node).property('_properties')}
+
+    children = PackageFactory.Guevara:ArrayCollection {
+        collection = ${q(node).children().get()}
+        itemName = 'node'
+        itemRenderer = ${q(node).property('_contextPath')}
+    }
+}

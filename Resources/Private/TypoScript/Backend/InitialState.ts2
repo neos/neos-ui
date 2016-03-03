@@ -1,0 +1,68 @@
+include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/AppendToCollection.ts2
+
+prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawArray) {
+    cr = TYPO3.TypoScript:RawArray {
+        nodeTypes = TYPO3.TypoScript:RawArray {
+            byName = ${nodeTypeSchema.nodeTypes}
+            constraints = ${nodeTypeSchema.constraints}
+            inheritanceMap = ${nodeTypeSchema.inheritanceMap}
+        }
+        nodes = TYPO3.TypoScript:RawArray {
+            byContextPath = TYPO3.TypoScript:RawArray
+            byContextPath.@process.addCurrentDocumentNode = PackageFactory.Guevara:AppendToCollection {
+                key = ${q(documentNode).property('_contextPath')}
+                item = PackageFactory.Guevara:Node {
+                    @context.node = ${documentNode}
+                }
+            }
+        }
+        workspaces = TYPO3.TypoScript:RawArray {
+            @context.personalWorkspace = ${Guevara.Workspace.getPersonalWorkspace()}
+
+            byName = TYPO3.TypoScript:RawArray
+            byName.@process.addPersonalWorkspace = PackageFactory.Guevara:AppendToCollection {
+                key = ${q(personalWorkspace).property('name')}
+                item = PackageFactory.Guevara:Workspace {
+                    @context.workspace = ${personalWorkspace}
+                }
+            }
+
+            active = ${q(personalWorkspace).property('name')}
+        }
+    }
+
+    ui = TYPO3.TypoScript:RawArray {
+        flashMessages = TYPO3.TypoScript:RawArray
+        fullScreen = TYPO3.TypoScript:RawArray {
+            isFullScreen = FALSE
+        }
+        leftSideBar = TYPO3.TypoScript:RawArray {
+            isHidden = FALSE
+        }
+        rightSideBar = TYPO3.TypoScript:RawArray {
+            isHidden = FALSE
+        }
+        offCanvas = TYPO3.TypoScript:RawArray {
+            isHidden = FALSE
+        }
+        pageTree = TYPO3.TypoScript:RawArray
+        remote = TYPO3.TypoScript:RawArray {
+            isSaving = FALSE
+            isPublishing = FALSE
+            isDiscarding = FALSE
+        }
+    }
+
+    user = TYPO3.TypoScript:RawArray {
+        name = TYPO3.TypoScript:RawArray {
+            title = ${q(user).property('name.title')}
+            firstName = ${q(user).property('name.firstName')}
+            middleName = ${q(user).property('name.middleName')}
+            lastName = ${q(user).property('name.lastName')}
+            otherName = ${q(user).property('name.otherName')}
+            fullName = ${q(user).property('name.fullName')}
+        }
+
+        settings = TYPO3.TypoScript:RawArray
+    }
+}

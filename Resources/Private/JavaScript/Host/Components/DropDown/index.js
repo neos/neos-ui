@@ -14,6 +14,7 @@ export default class DropDown extends Component {
         // Either a label, icon or both need to be passed to have a clickable target which will toggle the DropDown.
         // ToDo: Add a check that one of both need to be passed to the Component.
         label: PropTypes.string,
+        translateLabel: PropTypes.bool,
         iconBefore: PropTypes.string,
 
         // Contents of the DropDown.
@@ -89,13 +90,13 @@ export default class DropDown extends Component {
     }
 
     renderLabel() {
-        const {label, classNames} = this.props;
+        const {label, classNames, translateLabel} = this.props;
         const className = mergeClassNames({
             [style.dropDown__btnLabel]: true,
             [classNames.label]: classNames.label && classNames.label.length
         });
 
-        return label ? <I18n fallback={label} id={label} className={className} /> : null;
+        return label && translateLabel ? <I18n fallback={label} id={label} className={className} /> : null;
     }
 
     renderBeforeIcon() {
@@ -125,5 +126,6 @@ export default class DropDown extends Component {
 }
 DropDown.defaultProps = {
     classNames: {},
-    contentsId: ''
+    contentsId: '',
+    translateLabel: true
 };

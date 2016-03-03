@@ -26,6 +26,7 @@ export default class UserDropDown extends Component {
             <div className={style.wrapper}>
                 <DropDown
                     label={this.props.userName}
+                    translateLabel={false}
                     iconBefore="user"
                     classNames={dropDownClassNames}
                     id="neos__topBar__userDropDown__btn"

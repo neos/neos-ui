@@ -39,14 +39,14 @@ export default class OffCanvas extends Component {
     renderMenu() {
         const staticMenuData = [{
             icon: 'file',
-            title: 'Content',
+            title: 'content_menu_menuPanel_content',
             children: [{
                 icon: 'globe',
                 title: 'test'
             }]
         }, {
             icon: 'briefcase',
-            title: 'Management',
+            title: 'management_label',
             children: [{
                 icon: 'th-large',
                 title: 'Workspaces'

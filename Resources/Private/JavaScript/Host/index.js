@@ -38,7 +38,6 @@ import style from './style.css';
 // Initialize the backend application on load.
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('appContainer');
-    const initialUri = appContainer.dataset.initialUri;
     const csrfToken = appContainer.dataset.csrfToken;
     const serverState = JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
     const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
@@ -67,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <ContextBar />
                     <OffCanvas />
                     <LeftSideBar />
-                    <ContentView uri={initialUri} />
+                    <ContentView />
                     <RightSideBar />
                     <FooterBar />
               </div>

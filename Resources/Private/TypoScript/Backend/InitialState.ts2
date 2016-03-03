@@ -1,3 +1,4 @@
+include: resource://TYPO3.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
 include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/AppendToCollection.ts2
 
 prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawArray) {
@@ -32,6 +33,13 @@ prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawA
     }
 
     ui = TYPO3.TypoScript:RawArray {
+        contentView = TYPO3.TypoScript:RawArray {
+            src = TYPO3.Neos:NodeUri {
+                node = ${documentNode}
+            }
+            contextPath = ${q(documentNode).property('_contextPath')}
+        }
+        debugMode = FALSE
         flashMessages = TYPO3.TypoScript:RawArray
         fullScreen = TYPO3.TypoScript:RawArray {
             isFullScreen = FALSE
@@ -43,7 +51,7 @@ prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawA
             isHidden = FALSE
         }
         offCanvas = TYPO3.TypoScript:RawArray {
-            isHidden = FALSE
+            isHidden = TRUE
         }
         pageTree = TYPO3.TypoScript:RawArray
         remote = TYPO3.TypoScript:RawArray {

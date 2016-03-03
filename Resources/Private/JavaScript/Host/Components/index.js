@@ -15,7 +15,7 @@ import Portal from './Portal/';
 import SideBar from './SideBar/';
 import Tabs from './Tabs/';
 import TextInput from './TextInput/';
-import ToggablePanel from './ToggablePanel/';
+import * as ToggablePanel from './ToggablePanel/';
 import Tree from './Tree/';
 
 export {

@@ -5,6 +5,7 @@ import {
     SideBar,
     Tabs,
     IconButton,
+    Label,
     TextInput,
     ToggablePanel
 } from 'Host/Components/';
@@ -47,16 +48,15 @@ export default class RightSideBar extends Component {
             <SideBar position="right" className={classNames} id="neos__rightSideBar">
                 <Tabs>
                     <Tabs.Panel icon="pencil">
-                        <ToggablePanel
-                            className={style.rightSideBar__section}
-                            title="My fancy configuration"
-                            >
-                            <TextInput
-                                label="Title"
-                                placeholder="Type to search"
-                                />
-                        </ToggablePanel>
-
+                        <ToggablePanel.Wrapper className={style.rightSideBar__section}>
+                            <ToggablePanel.Header>
+                                My fancy configuration
+                            </ToggablePanel.Header>
+                            <ToggablePanel.Contents>
+                                <Label label="Title" htmlFor="testInput" />
+                                <TextInput placeholder="Type to search" id="testInput" />
+                            </ToggablePanel.Contents>
+                        </ToggablePanel.Wrapper>
                     </Tabs.Panel>
                     <Tabs.Panel icon="cog">
                         <p>Content #2 here</p>

@@ -2,26 +2,39 @@ import React, {Component, PropTypes} from 'react';
 import Transition from 'react-motion-ui-pack';
 import mergeClassNames from 'classnames';
 import Headline from 'Host/Components/Headline/';
-import I18n from 'Host/Components/I18n/';
-import Icon from 'Host/Components/Icon/';
 import IconButton from 'Host/Components/IconButton/';
 import style from './style.css';
 
-export default class ToggablePanel extends Component {
+export class Wrapper extends Component {
     static propTypes = {
-        title: PropTypes.string.isRequired,
         isOpened: PropTypes.bool,
-        icon: PropTypes.string,
         className: PropTypes.string,
-        headerClassName: PropTypes.string,
         children: PropTypes.node.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    static defaultProps = {
+        isOpened: false
+    };
+
+    static childContextTypes = {
+        isOpened: PropTypes.bool.isRequired,
+        togglePanel: PropTypes.func.isRequired,
+        closePanel: PropTypes.func.isRequired
+    };
+
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             isOpened: props.isOpened
+        };
+    }
+
+    getChildContext() {
+        return {
+            isOpened: this.state.isOpened,
+            togglePanel: () => this.toggle(),
+            closePanel: () => this.close()
         };
     }
 
@@ -34,9 +47,7 @@ export default class ToggablePanel extends Component {
     }
 
     render() {
-        const {
-            className
-        } = this.props;
+        const {children, className} = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [style.panel]: true,
@@ -45,62 +56,100 @@ export default class ToggablePanel extends Component {
 
         return (
             <section className={classNames}>
-                {this.renderHeader()}
-                {this.renderContents()}
+                {children}
             </section>
         );
     }
 
-    renderHeader() {
+    close() {
+        this.setState({isOpened: false});
+    }
+
+    toggle() {
+        this.setState({isOpened: !this.state.isOpened});
+    }
+}
+
+export class Header extends Component {
+    static propTypes = {
+        className: PropTypes.string,
+        children: PropTypes.node.isRequired
+    };
+
+    static contextTypes = {
+        isOpened: PropTypes.bool.isRequired,
+        togglePanel: PropTypes.func.isRequired
+    };
+
+    constructor(props, context) {
+        super(props, context);
+    }
+
+    render() {
         const {
-            title,
-            icon,
-            headerClassName
+            children,
+            className
         } = this.props;
-        const toggleIcon = this.state.isOpened ? 'chevron-up' : 'chevron-down';
-        const className = mergeClassNames({
-            [headerClassName]: headerClassName && headerClassName.length
+        const {isOpened, togglePanel} = this.context;
+        const toggleIcon = isOpened ? 'chevron-up' : 'chevron-down';
+        const classNames = mergeClassNames({
+            [className]: className && className.length
         });
 
         return (
-            <div className={className}>
+            <div className={classNames}>
                 <Headline
                     className={style.panel__headline}
                     type="h1"
                     style="h4"
                     >
-                    {icon ? <Icon icon={icon} padded="right" /> : null}
-                    <I18n fallback={title} id={title} />
+                    {children}
                 </Headline>
                 <IconButton
                     className={style.panel__toggleBtn}
                     icon={toggleIcon}
-                    onClick={this.togglePanel.bind(this)}
+                    onClick={() => togglePanel()}
                     />
             </div>
         );
     }
+}
 
-    renderContents() {
+export class Contents extends Component {
+    static propTypes = {
+        className: PropTypes.string,
+        children: PropTypes.node.isRequired
+    };
+
+    static contextTypes = {
+        isOpened: PropTypes.bool.isRequired
+    };
+
+    constructor(props, context) {
+        super(props, context);
+    }
+
+    render() {
+        const {
+            children,
+            className
+        } = this.props;
+        const {isOpened} = this.context;
+        const classNames = mergeClassNames({
+            [style.panel__contents]: true,
+            [className]: className && className.length
+        });
+
         return (
             <div>
                 <Transition enter={{height: 'auto'}} leave={{height: 0}}>
-                    {this.state.isOpened ? (
-                        <div className={style.panel__contents}>
-                            {this.props.children}
+                    {isOpened ? (
+                        <div className={classNames}>
+                            {children}
                         </div>
                     ) : null}
                 </Transition>
             </div>
         );
     }
-
-    togglePanel() {
-        this.setState({
-            isOpened: !this.state.isOpened
-        });
-    }
 }
-ToggablePanel.defaultProps = {
-    isOpened: false
-};

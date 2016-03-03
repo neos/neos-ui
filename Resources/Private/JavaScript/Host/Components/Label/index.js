@@ -9,11 +9,11 @@ const renderLabelBreak = (isChildrenInlined, children) => children && !isChildre
 const Label = props => {
     const {
         label,
-        htmlFor,
         children,
         className,
         labelPosition,
-        isChildrenInlined
+        isChildrenInlined,
+        ...directProps
     } = props;
     const classNames = mergeClassNames({
         [style.label]: true,
@@ -21,7 +21,7 @@ const Label = props => {
     });
 
     return (
-        <label className={classNames} htmlFor={htmlFor}>
+        <label className={classNames} {...directProps}>
             {labelPosition === 'before' ? renderLabel(label) : children}
             {renderLabelBreak(isChildrenInlined, children)}
             {labelPosition === 'after' ? renderLabel(label) : children}
@@ -30,7 +30,6 @@ const Label = props => {
 };
 Label.propTypes = {
     label: PropTypes.string.isRequired,
-    htmlFor: PropTypes.string.isRequired,
     labelPosition: PropTypes.oneOf(['before', 'after']),
     className: PropTypes.string,
 

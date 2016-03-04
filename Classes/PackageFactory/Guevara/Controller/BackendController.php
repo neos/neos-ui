@@ -112,19 +112,22 @@ class BackendController extends ActionController
         $this->session->putData('__cheEnabled__', TRUE);
 
         if($user = $this->userService->getBackendUser()) {
+            $workspaceName = $this->userService->getPersonalWorkspaceName();
+            $contentContext = $this->createContext($workspaceName);
+
+            $contentContext->getWorkspace();
+            $this->persistenceManager->persistAll();
+
+            $siteNode = $contentContext->getCurrentSiteNode();
+
             if ($node === null) {
-                $workspaceName = $this->userService->getPersonalWorkspaceName();
-                $contentContext = $this->createContext($workspaceName);
-
-                $contentContext->getWorkspace();
-                $this->persistenceManager->persistAll();
-
-                $node = $contentContext->getCurrentSiteNode();
+                $node = $siteNode;
             }
 
             $this->view->assign('nodeTypeSchema', $this->nodeTypeSchemaBuilder->generateNodeTypeSchema());
             $this->view->assign('user', $user);
             $this->view->assign('documentNode', $node);
+            $this->view->assign('site', $node);
 
             $this->view->assign('translations', $this->xliffService->getCachedJson(
                 new Locale($this->userService->getInterfaceLanguage())

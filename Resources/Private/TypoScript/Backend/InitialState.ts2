@@ -1,5 +1,6 @@
 include: resource://TYPO3.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
 include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/AppendToCollection.ts2
+include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/AppendAllToCollection.ts2
 
 prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawArray) {
     cr = TYPO3.TypoScript:RawArray {
@@ -10,6 +11,20 @@ prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawA
         }
         nodes = TYPO3.TypoScript:RawArray {
             byContextPath = TYPO3.TypoScript:RawArray
+            byContextPath.@process.addSiteNode = PackageFactory.Guevara:AppendToCollection {
+                key = ${q(site).property('_contextPath')}
+                item = PackageFactory.Guevara:Node {
+                    @context.node = ${site}
+                }
+
+                @if.onlyRenderWhenDocumentIsNotTheSiteNode = ${site != documentNode}
+            }
+            byContextPath.@process.addSiteNodeChildren = PackageFactory.Guevara:AppendAllToCollection {
+                items = ${q(site).children('[instanceof TYPO3.Neos:Document]').get()}
+                itemName = 'node'
+                itemKey = ${q(node).property('_contextPath')}
+                itemRenderer = PackageFactory.Guevara:Node
+            }
             byContextPath.@process.addCurrentDocumentNode = PackageFactory.Guevara:AppendToCollection {
                 key = ${q(documentNode).property('_contextPath')}
                 item = PackageFactory.Guevara:Node {
@@ -53,7 +68,10 @@ prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawA
         offCanvas = TYPO3.TypoScript:RawArray {
             isHidden = TRUE
         }
-        pageTree = TYPO3.TypoScript:RawArray
+        pageTree = TYPO3.TypoScript:RawArray {
+            isLoading = FALSE
+            hasError = FALSE
+        }
         remote = TYPO3.TypoScript:RawArray {
             isSaving = FALSE
             isPublishing = FALSE

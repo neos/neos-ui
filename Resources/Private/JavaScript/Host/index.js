@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import 'Shared/Styles/style.css';
 
 import React from 'react';
@@ -6,7 +7,7 @@ import {Provider} from 'react-redux';
 import assign from 'lodash.assign';
 import registry from '@reduct/registry';
 
-import {configureStore} from './Redux/';
+import {configureStore, actions} from './Redux/';
 
 import initializeJSAPI from 'API/';
 import {ui} from './Plugins/';
@@ -94,4 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'PackageFactory.Guevara:UpdateWorkspaceInfo': feedbackHandler.updateWorkspaceInfo,
         'PackageFactory.Guevara:ReloadDocument': feedbackHandler.reloadDocument
     });
+
+    //
+    // Inform everybody, that the UI has booted successfully
+    //
+    store.dispatch(actions.System.boot());
 });

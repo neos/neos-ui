@@ -1,65 +1,82 @@
 import {createAction} from 'redux-actions';
-import {$get, $set} from 'plow-js';
+import {$all, $set, $override} from 'plow-js';
 
-const SET = '@packagefactory/guevara/UI/PageTree/SET';
-const SET_SUB_TREE = '@packagefactory/guevara/UI/PageTree/SET_SUB_TREE';
-const SET_NODE = '@packagefactory/guevara/UI/PageTree/SET_NODE';
+const ADD = '@packagefactory/guevara/UI/PageTree/ADD';
+const COMMENCE_UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/COMMENCE_UNCOLLAPSE';
+const UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/UNCOLLAPSE';
+const COLLAPSE = '@packagefactory/guevara/UI/PageTree/COLLAPSE';
+const INVALIDATE = '@packagefactory/guevara/UI/PageTree/INVALIDATE';
+const REQUEST_CHILDREN = '@packagefactory/guevara/UI/PageTree/REQUEST_CHILDREN';
 
-/**
- * Set the tree data for the entire page tree
- *
- * @return {Object}
- */
-const setData = createAction(SET, data => data);
+//
+// Export the action types
+//
+export const actionTypes = {
+    ADD,
+    COMMENCE_UNCOLLAPSE,
+    UNCOLLAPSE,
+    COLLAPSE,
+    INVALIDATE,
+    REQUEST_CHILDREN
+};
 
-/**
- * Set the tree data for a subtree
- *
- * @return {Object}
- */
-const setSubTree = createAction(SET_SUB_TREE, (path, data) => ({
-    path,
-    data
-}));
-
-/**
- * Set a single node in the page tree
- *
- * @return {Object}
- */
-const setNode = createAction(SET_NODE, (path, data) => ({
-    path,
-    data
-}));
+const add = createAction(ADD, (contextPath, node) => ({contextPath, node}));
+const commenceUncollapse = createAction(COMMENCE_UNCOLLAPSE, contextPath => ({contextPath}));
+const uncollapse = createAction(UNCOLLAPSE, contextPath => ({contextPath}));
+const collapse = createAction(COLLAPSE, contextPath => ({contextPath}));
+const invalidate = createAction(INVALIDATE, contextPath => ({contextPath}));
+const requestChildren = createAction(REQUEST_CHILDREN, contextPath => ({contextPath}));
 
 //
 // Export the actions
 //
 export const actions = {
-    setData,
-    setSubTree,
-    setNode
+    add,
+    commenceUncollapse,
+    uncollapse,
+    invalidate,
+    requestChildren
 };
 
 //
 // Export the initial state
 //
-export const initialState = {};
+export const initialState = {
+    isLoading: false,
+    hasError: false,
+    nodesByContextPath: {}
+};
 
 //
 // Export the reducer
 //
 export const reducer = {
-    [SET]: treeData => $set('ui.pageTree', treeData),
-    [SET_SUB_TREE]: ({path, data}) => $set(['ui', 'pageTree', path], data),
-    [SET_NODE]: ({path, data}) => state => {
-        const isFocused = $get('isFocused', data);
-        const isActive = $get('isActive', data);
-
-        if (!isFocused && !isActive) {
-            return $set(['ui', 'pageTree', path], data, state);
-        }
-
-        return state;
-    }
+    [ADD]: ({contextPath, node}) => $set(['ui', 'pageTree', 'nodesByContextPath', contextPath], node),
+    [UNCOLLAPSE]: ({contextPath}) => $all(
+        $set('ui.pageTree.isLoading', false),
+        $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
+            isLoading: false,
+            isCollapsed: false
+        })
+    ),
+    [COLLAPSE]: ({contextPath}) => $all(
+        $set('ui.pageTree.isLoading', false),
+        $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
+            isLoading: false,
+            isCollapsed: true
+        })
+    ),
+    [INVALIDATE]: ({contextPath}) => $all(
+        $set('ui.pageTree.isLoading', false),
+        $set('ui.pageTree.hasError', true),
+        $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
+            isLoading: false,
+            hasError: true,
+            isCollapsed: true
+        })
+    ),
+    [REQUEST_CHILDREN]: ({contextPath}) => $all(
+        $set('ui.pageTree.isLoading', true),
+        $set(['ui', 'pageTree', 'nodesByContextPath', contextPath, 'isLoading'], true)
+    )
 };

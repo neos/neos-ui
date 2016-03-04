@@ -34,7 +34,6 @@ export default class LeftSideBar extends Component {
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 <NodeTreeToolBar />
-                <PageTree />
             </SideBar>
         );
     }

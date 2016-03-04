@@ -31,8 +31,16 @@ import {
 import {
     reducer as PageTreeReducer,
     initialState as PageTreeInitialState,
+    actionTypes as PageTreeActionTypes,
     actions as PageTree
 } from './PageTree/';
+
+//
+// Export the action types
+//
+export const actionTypes = {
+    PageTree: PageTreeActionTypes
+};
 
 //
 // Export the actions

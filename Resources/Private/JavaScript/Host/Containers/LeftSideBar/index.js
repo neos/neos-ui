@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
 
 import {SideBar} from 'Host/Components/';
+
 import NodeTreeToolBar from './NodeTreeToolBar/';
 import PageTree from './PageTree/';
 import style from './style.css';
@@ -34,6 +35,7 @@ export default class LeftSideBar extends Component {
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 <NodeTreeToolBar />
+                <PageTree />
             </SideBar>
         );
     }

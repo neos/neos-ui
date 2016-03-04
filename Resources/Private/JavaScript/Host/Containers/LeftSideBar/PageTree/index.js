@@ -1,59 +1,38 @@
 import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import {$transform, $toggle, $all, $get} from 'plow-js';
 
 import {Tree} from 'Host/Components/';
-import backend from 'Host/Service/Backend.js';
-import {connect} from 'react-redux';
+import {UI} from 'Host/Selectors/';
+import {actions} from 'Host/Redux/';
 
 @connect($transform({
-    treeData: $get('ui.pageTree')
-}))
+    rootNode: UI.PageTree.treeSelector
+}), {
+    onNodeToggle: actions.UI.PageTree.toggle,
+    onNodeClick: actions.UI.PageTree.activate,
+    onNodeFocus: actions.UI.PageTree.focus
+})
 export default class PageTree extends Component {
     static propTypes = {
-        treeData: PropTypes.object
+        rootNode: PropTypes.object,
+
+        onNodeToggle: PropTypes.func,
+        onNodeClick: PropTypes.func,
+        onNodeFocus: PropTypes.func
     };
 
     render() {
-        const {treeData} = this.props;
+        const {rootNode, onNodeToggle, onNodeClick, onNodeFocus} = this.props;
 
         return (
-            <Tree
-                data={treeData}
-                onNodeToggle={this.onPageNodeToggle.bind(this)}
-                onNodeClick={this.onPageNodeClick.bind(this)}
-                onNodeFocusChanged={this.onPageNodeFocusChanged.bind(this)}
+            rootNode ? <Tree
+                rootNode={rootNode}
+                onNodeToggle={node => onNodeToggle(node.contextPath)}
+                onNodeClick={node => onNodeClick(node.contextPath)}
+                onNodeFocus={node => onNodeFocus(node.contextPath)}
                 id="neos__leftSidebar__pageTree"
-                />
+                /> : null
         );
-    }
-
-    onPageNodeToggle(node) {
-        const {nodeTreeService} = backend;
-        const {contextPath} = node;
-
-        nodeTreeService.updateNode(
-            $toggle('isCollapsed', node)
-        );
-        nodeTreeService.loadSubTree(contextPath, 'TYPO3.Neos:Document');
-    }
-
-    onPageNodeClick(node) {
-        const {nodeTreeService} = backend;
-
-        nodeTreeService.updateNode(
-            $toggle('isFocused', node)
-        );
-    }
-
-    onPageNodeFocusChanged(node) {
-        const {tabManager, nodeTreeService} = backend;
-        const {href} = node;
-
-        nodeTreeService.updateNode($all(
-            $toggle('isFocused'),
-            $toggle('isActive'),
-            node
-        ));
-        tabManager.changeActiveTabSrc(href);
     }
 }

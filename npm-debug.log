@@ -1,0 +1,40 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/wbehncke/.nvm/versions/node/v4.2.1/bin/node',
+1 verbose cli   '/home/wbehncke/.nvm/versions/node/v4.2.1/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'watch' ]
+2 info using npm@2.14.7
+3 info using node@v4.2.1
+4 verbose run-script [ 'prewatch', 'watch', 'postwatch' ]
+5 info prewatch @packagefactory/guevara@1.0.0
+6 info watch @packagefactory/guevara@1.0.0
+7 verbose unsafe-perm in lifecycle true
+8 info @packagefactory/guevara@1.0.0 Failed to exec watch script
+9 verbose stack Error: @packagefactory/guevara@1.0.0 watch: `npm run watch:build & npm run watch:karma`
+9 verbose stack Exit status 1
+9 verbose stack     at EventEmitter.<anonymous> (/home/wbehncke/.nvm/versions/node/v4.2.1/lib/node_modules/npm/lib/utils/lifecycle.js:214:16)
+9 verbose stack     at emitTwo (events.js:87:13)
+9 verbose stack     at EventEmitter.emit (events.js:172:7)
+9 verbose stack     at ChildProcess.<anonymous> (/home/wbehncke/.nvm/versions/node/v4.2.1/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+9 verbose stack     at emitTwo (events.js:87:13)
+9 verbose stack     at ChildProcess.emit (events.js:172:7)
+9 verbose stack     at maybeClose (internal/child_process.js:818:16)
+9 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+10 verbose pkgid @packagefactory/guevara@1.0.0
+11 verbose cwd /home/wbehncke/Workspaces/PackageFactory/NeosBase21/Packages/Application/PackageFactory.Guevara
+12 error Linux 3.13.0-55-generic
+13 error argv "/home/wbehncke/.nvm/versions/node/v4.2.1/bin/node" "/home/wbehncke/.nvm/versions/node/v4.2.1/bin/npm" "run" "watch"
+14 error node v4.2.1
+15 error npm  v2.14.7
+16 error code ELIFECYCLE
+17 error @packagefactory/guevara@1.0.0 watch: `npm run watch:build & npm run watch:karma`
+17 error Exit status 1
+18 error Failed at the @packagefactory/guevara@1.0.0 watch script 'npm run watch:build & npm run watch:karma'.
+18 error This is most likely a problem with the @packagefactory/guevara package,
+18 error not with npm itself.
+18 error Tell the author that this fails on your system:
+18 error     npm run watch:build & npm run watch:karma
+18 error You can get their info via:
+18 error     npm owner ls @packagefactory/guevara
+18 error There is likely additional logging output above.
+19 verbose exit [ 1, true ]

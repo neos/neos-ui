@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$add, $drop} from 'plow-js';
+import {$set, $drop} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/UI/FlashMessages/ADD';
 const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
@@ -14,10 +14,12 @@ const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
  * @return {Object}
  */
 const add = createAction(ADD, (id, message, severity, timeout = 0) => ({
-    severity: severity.toLowerCase(),
-    id,
-    message,
-    timeout
+    message: {
+        severity: severity.toLowerCase(),
+        id,
+        message,
+        timeout
+    }
 }));
 
 /**
@@ -46,6 +48,6 @@ export const initialState = {};
 // Export the reducer
 //
 export const reducer = {
-    [ADD]: message => $add(`ui.flashMessages`, {[message.id]: message}),
-    [REMOVE]: message => $drop(['ui', 'flashMessages', message.id])
+    [ADD]: ({message}) => $set(['ui', 'flashMessages', message.id], message),
+    [REMOVE]: ({id}) => $drop(['ui', 'flashMessages', id])
 };

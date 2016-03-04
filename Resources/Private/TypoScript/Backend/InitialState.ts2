@@ -31,6 +31,8 @@ prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawA
                     @context.node = ${documentNode}
                 }
             }
+
+            siteNode = ${q(site).property('_contextPath')}
         }
         workspaces = TYPO3.TypoScript:RawArray {
             @context.personalWorkspace = ${Guevara.Workspace.getPersonalWorkspace()}

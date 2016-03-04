@@ -5,6 +5,8 @@ import style from './style.css';
 import {fontAwesome} from 'Shared/Utilities/';
 const {logger} = service;
 
+const cachedWarnings = {};
+
 const Icon = props => {
     const {size, padded} = props;
     const iconClassName = fontAwesome.getClassName(props.icon);
@@ -31,13 +33,14 @@ Icon.propTypes = {
         const {isValid, isMigrationNeeded, iconName} = fontAwesome.validateId(id);
 
         if (!isValid) {
-            if (isMigrationNeeded && iconName) {
+            if (isMigrationNeeded && iconName && !cachedWarnings[iconName]) {
+                cachedWarnings[iconName] = true;
                 logger.warn(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
 
 Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
 
 https://github.com/FortAwesome/Font-Awesome/wiki/Upgrading-from-3.2.1-to-4`);
-            } else {
+            } else if(!iconName || !cachedWarnings[iconName]) {
                 return new Error(`Icon name "${id}" was not a found in Font-Awesome 4.5.
 Please use the icon names from the Font-Awesome website.
 

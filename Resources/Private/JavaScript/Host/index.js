@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const csrfToken = appContainer.dataset.csrfToken;
     const serverState = JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
     const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
-    const neos = initializeJSAPI(window);
+    const neos = initializeJSAPI(window, csrfToken);
     const store = configureStore({serverState}, neos);
 
     // Bootstrap the i18n service before the initial render.

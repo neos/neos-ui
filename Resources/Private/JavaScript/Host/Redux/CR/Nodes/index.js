@@ -64,6 +64,7 @@ export const actions = {
 //
 export const initialState = {
     byContextPath: {},
+    siteNode: '',
     focused: {
         contextPath: '',
         typoscriptPath: ''

@@ -41,8 +41,8 @@ export const hoveredSelector = createSelector(
     resolveNodeFromContextPath
 );
 
-export const byContextPathSelector = contextPath => defaultMemoize(
-    createSelector(
+export const byContextPathSelector = defaultMemoize(
+    contextPath => createSelector(
         [
             () => contextPath,
             byContextPath,
@@ -52,8 +52,8 @@ export const byContextPathSelector = contextPath => defaultMemoize(
     )
 );
 
-export const byNodeTypeSelector = nodeTypeName => defaultMemoize(
-    createSelector(
+export const byNodeTypeSelector = defaultMemoize(
+    nodeTypeName => createSelector(
         [
             all,
             subTypesSelector(nodeTypeName),

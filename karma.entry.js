@@ -9,6 +9,6 @@
 // Instead, this way of requiring all spec files results in one big test bundle webpack
 // needs to compile, which is a lot faster than the default configuration.
 //
-const context = require.context('./Resources/Private/JavaScript', true, /.spec\.js$/);
+const context = require.context('./Resources/Private/JavaScript', true, /.js$/);
 
 context.keys().forEach(context);

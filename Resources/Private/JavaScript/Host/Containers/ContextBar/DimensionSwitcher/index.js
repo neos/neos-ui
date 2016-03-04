@@ -27,6 +27,10 @@ export default class DimensionSwitcher extends Component {
         dimensions: PropTypes.array.isRequired
     };
 
+    static defaultProps = {
+        dimensions: []
+    };
+
     render() {
         const {dimensions} = this.props;
 
@@ -43,6 +47,3 @@ export default class DimensionSwitcher extends Component {
         );
     }
 }
-DimensionSwitcher.defaultProps = {
-    dimensions: []
-};

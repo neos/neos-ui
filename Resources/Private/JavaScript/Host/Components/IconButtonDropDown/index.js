@@ -31,6 +31,12 @@ export default class IconButtonDropDown extends Component {
         directButtonProps: PropTypes.object.isRequired
     };
 
+    static defaultProps = {
+        modeIcon: 'long-arrow-right',
+        isDisabled: false,
+        directButtonProps: {}
+    };
+
     constructor(props) {
         super(props);
 
@@ -139,8 +145,3 @@ export default class IconButtonDropDown extends Component {
         this.setState({isOpened: false});
     }
 }
-IconButtonDropDown.defaultProps = {
-    modeIcon: 'long-arrow-right',
-    isDisabled: false,
-    directButtonProps: {}
-};

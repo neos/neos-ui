@@ -13,6 +13,10 @@ export default class Tabs extends Component {
         children: PropTypes.node.isRequired
     };
 
+    static defaultProps = {
+        activeTab: 0
+    };
+
     constructor(props) {
         super(props);
 
@@ -108,6 +112,3 @@ export default class Tabs extends Component {
         );
     }
 }
-Tabs.defaultProps = {
-    activeTab: 0
-};

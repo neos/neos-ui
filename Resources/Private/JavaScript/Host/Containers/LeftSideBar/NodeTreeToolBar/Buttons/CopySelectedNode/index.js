@@ -9,6 +9,10 @@ export default class CopySelectedNode extends Component {
         className: PropTypes.string
     };
 
+    static defaultProps = {
+        isDisabled: true
+    };
+
     render() {
         const {
             isDisabled,
@@ -30,6 +34,3 @@ export default class CopySelectedNode extends Component {
         console.log('copy selected node');
     }
 }
-CopySelectedNode.defaultProps = {
-    isDisabled: true
-};

@@ -20,6 +20,12 @@ export default class I18n extends Component {
         className: PropTypes.string
     };
 
+    static defaultProps = {
+        packageKey: 'TYPO3.Neos',
+        sourceName: 'Main',
+        params: []
+    };
+
     constructor(props) {
         super(props);
 
@@ -58,8 +64,3 @@ export default class I18n extends Component {
         });
     }
 }
-I18n.defaultProps = {
-    packageKey: 'TYPO3.Neos',
-    sourceName: 'Main',
-    params: []
-};

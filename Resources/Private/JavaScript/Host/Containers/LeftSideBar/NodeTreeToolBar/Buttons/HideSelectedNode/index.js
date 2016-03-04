@@ -9,6 +9,10 @@ export default class HideSelectedNode extends Component {
         className: PropTypes.string
     };
 
+    static defaultProps = {
+        isDisabled: true
+    };
+
     render() {
         const {
             isDisabled,
@@ -30,6 +34,3 @@ export default class HideSelectedNode extends Component {
         console.log('hide selected node');
     }
 }
-HideSelectedNode.defaultProps = {
-    isDisabled: true
-};

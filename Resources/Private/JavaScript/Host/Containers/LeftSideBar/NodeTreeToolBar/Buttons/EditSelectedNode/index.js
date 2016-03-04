@@ -9,6 +9,10 @@ export default class EditSelectedNode extends Component {
         className: PropTypes.string
     };
 
+    static defaultProps = {
+        isDisabled: true
+    };
+
     render() {
         const {
             isDisabled,
@@ -30,6 +34,3 @@ export default class EditSelectedNode extends Component {
         console.log('edit selected node');
     }
 }
-EditSelectedNode.defaultProps = {
-    isDisabled: true
-};

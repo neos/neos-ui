@@ -72,7 +72,7 @@
     "lodash.isfunction": "^3.0.6",
     "normalize.css": "^3.0.3",
     "react": "^0.14.7",
-    "react-click-outside": "tj/react-click-outside",
+    "react-click-outside": "^2.1.0",
     "react-collapse": "^2.0.0",
     "react-dom": "^0.14.6",
     "react-height": "^2.0.4",

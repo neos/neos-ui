@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import ClickOutside from 'react-click-outside';
+import enhanceWithClickOutside from 'react-click-outside';
 import {executeCallback} from 'Shared/Utilities/';
 import Icon from 'Host/Components/Icon/';
 import style from './style.css';
@@ -45,11 +45,13 @@ class DropDown extends Component {
 
         return (
             <div className={dropDownClassName} {...directProps}>
-                <ClickOutside onClickOutside={() => this.close()}>
-                    {children}
-                </ClickOutside>
+                {children}
             </div>
         );
+    }
+
+    handleClickOutside() {
+        this.close();
     }
 
     close() {
@@ -146,10 +148,15 @@ class Contents extends Component {
 }
 
 //
+// Add the click-outside functionality to the DropDown component.
+//
+const EnhancedDropDown = enhanceWithClickOutside(DropDown);
+
+//
 // Assign the Child Component to the parent,
 // to replicate the structure of a `DropDown` Component.
 //
-DropDown.Header = Header;
-DropDown.Contents = Contents;
+EnhancedDropDown.Header = Header;
+EnhancedDropDown.Contents = Contents;
 
-export default DropDown;
+export default EnhancedDropDown;

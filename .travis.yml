@@ -3,31 +3,16 @@ notifications:
   email: false
 
 #
-# Make sure that the selenium driver can connect to the SauceLabs grid.
-#
-addons:
-  sauce_connect: true
-
-#
 # Describe the overall PHP env.
 #
-language: php
-php:
-  - '5.6'
-services:
-  - mysql
+language: node_js
 
 #
-# Cache the composer and node_modules directory to speed up the the installation of dependencies.
+# Cache the node_modules directory to speed up the the installation of dependencies.
 #
 cache:
   directories:
-    - $HOME/build/PackageFactory/Neos/Packages/Application/PackageFactory.Guevara/node_modules
-    - $HOME/build/PackageFactory/Neos/Packages/Framework
-    - $HOME/build/PackageFactory/Neos/Packages/Libraries
-    - $HOME/build/PackageFactory/Neos/Packages/Sites
-    - $HOME/.composer/cache
-    - $HOME/.nvm/versions/
+    - node_modules
 
 #
 # Parallel environments, the value represents the name of the shell script which needs to be placed in `Build/TravisCi/Scripts/[name].sh`.
@@ -35,68 +20,26 @@ cache:
 env:
   - TEST_SUITE=CodeStyle
   - TEST_SUITE=UnitTests
-  - TEST_SUITE=IntegrationTests
 
 #
-# Install nvm, the node depdencies and setup the some env variables.
+# Prune the node_modules to remove extranous packages from previous/cached runs.
 #
 before_install:
-  # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
-  - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
-  - nvm install v4.2.2
-  - nvm use
-
-  # Expose the commit message for SauceLabs.
-  # The export cannot be placed in the `env` section since there are usecases where this isn't reliable.
-  # @see https://github.com/mapbox/node-pre-gyp/issues/196
-  - "export COMMIT_MESSAGE=\"$(git log --format=%B --no-merges -n 1)\""
-  - export FLOW_CONTEXT=Development
-
-  # Disable xDebug
-  - phpenv config-rm xdebug.ini
-
-  # Update composer.
-  - composer self-update -q
+  - npm prune
 
 #
 # Install and setup the neos instance.
 #
 install:
-  # Handle hidden files with the `mv` command.
-  - shopt -s dotglob
+  # Execute the test environment specific `install` shell script.
+  - if [ -f "Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
 
-  # Create a separate working directory in which the neos instance can be installed in.
-  - cd ..
-  - if [ ! -d "Neos" ]; then mkdir Neos; fi;
-  - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
-  - cd Neos
-
-  # Move our repository and the configuration files into place.
-  - if [ ! -d "Packages/Application/PackageFactory.Guevara" ]; then mkdir Packages/Application/PackageFactory.Guevara; fi;
-  - mv ../PackageFactory.Guevara/** Packages/Application/PackageFactory.Guevara/
-
-  # Execute the optional install shell script for the environment.
-  - if [ -f "Packages/Application/PackageFactory.Guevara/Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Packages/Application/PackageFactory.Guevara/Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
-
-  # Change into the repository directory where the environment based shell script will be executed.
-  - cd Packages/Application/PackageFactory.Guevara
-
-  # Since all environments depend on the node dependencies, install and
-  # afterwards prune them to remove extranous packages from previous/cached runs.
-  - npm install
-  - npm prune
-
-  # Deactivate the previous enabled handling of hidden files with the `mv` command.
-  - shopt -u dotglob
-
-#
-# Execute the test environment specific shell script.
-#
 script:
+  # Execute the test environment specific `script` shell script.
   - if [ -f "Build/TravisCi/Scripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/Scripts/$TEST_SUITE.sh; fi
 
 #
-# Execute the test environment specific after_script shell script.
+# Execute the test environment specific `after_script` shell script.
 #
 after_script:
   - if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi

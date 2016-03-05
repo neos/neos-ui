@@ -1,11 +1,7 @@
 sudo: false
+language: node_js
 notifications:
   email: false
-
-#
-# Describe the overall PHP env.
-#
-language: node_js
 
 #
 # Cache the node_modules directory to speed up the the installation of dependencies.

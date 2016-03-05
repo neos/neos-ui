@@ -27,8 +27,6 @@ before_install:
 # Install and setup the neos instance.
 #
 install:
-  - npm install
-
   # Execute the test environment specific `install` shell script.
   - if [ -f "Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
 

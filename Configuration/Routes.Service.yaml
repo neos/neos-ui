@@ -29,3 +29,11 @@
     '@controller': 'BackendService'
     '@action': 'loadTree'
   httpMethods: ['POST']
+
+-
+  name: 'FlowQuery'
+  uriPattern: 'flow-query'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'flowQuery'
+  httpMethods: ['POST']

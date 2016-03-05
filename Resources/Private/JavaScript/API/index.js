@@ -1,4 +1,5 @@
 import initializeUse from './Use/';
+import initializeFlowQuery from './FlowQuery/';
 
 const createReadOnlyValue = value => ({
     value,
@@ -31,6 +32,8 @@ export default (parent, csrfToken, alias = 'neos') => {
     const addLibrary = define(neos);
 
     addLibrary('use', initializeUse(addLibrary, neos));
+    console.log('what?');
+    addLibrary('q', initializeFlowQuery(csrfToken));
     addLibrary('csrfToken', () => csrfToken);
 
     //

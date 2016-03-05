@@ -73,6 +73,8 @@ prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawA
         pageTree = TYPO3.TypoScript:RawArray {
             isLoading = FALSE
             hasError = FALSE
+            focused = ${q(documentNode).property('_contextPath')}
+            active = ${q(documentNode).property('_contextPath')}
         }
         remote = TYPO3.TypoScript:RawArray {
             isSaving = FALSE

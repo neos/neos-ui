@@ -12,6 +12,7 @@ const getNode = CR.Nodes.byContextPathSelector;
 const createTreeNode = (node, state) => $transform({
     contextPath: $get('contextPath'),
     label: $get('label'),
+    uri: $get('uri'),
     icon: $get('nodeType.ui.icon'),
     isLoading: false,
     isCollapsed: true,

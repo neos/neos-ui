@@ -10,7 +10,7 @@ import {actions} from 'Host/Redux/';
     rootNode: UI.PageTree.treeSelector
 }), {
     onNodeToggle: actions.UI.PageTree.toggle,
-    onNodeClick: actions.UI.PageTree.activate,
+    onNodeClick: actions.UI.ContentView.setSrc,
     onNodeFocus: actions.UI.PageTree.focus
 })
 export default class PageTree extends Component {
@@ -29,7 +29,7 @@ export default class PageTree extends Component {
             rootNode ? <Tree
                 rootNode={rootNode}
                 onNodeToggle={node => onNodeToggle(node.contextPath)}
-                onNodeClick={node => onNodeClick(node.contextPath)}
+                onNodeClick={node => onNodeClick(node.uri)}
                 onNodeFocus={node => onNodeFocus(node.contextPath)}
                 id="neos__leftSidebar__pageTree"
                 /> : null

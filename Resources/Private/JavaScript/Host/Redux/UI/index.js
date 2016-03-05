@@ -34,12 +34,19 @@ import {
     actionTypes as PageTreeActionTypes,
     actions as PageTree
 } from './PageTree/';
+import {
+    reducer as ContentViewReducer,
+    initialState as ContentViewInitialState,
+    actionTypes as ContentViewActionTypes,
+    actions as ContentView
+} from './ContentView/';
 
 //
 // Export the action types
 //
 export const actionTypes = {
-    PageTree: PageTreeActionTypes
+    PageTree: PageTreeActionTypes,
+    ContentView: ContentViewActionTypes
 };
 
 //
@@ -52,7 +59,8 @@ export const actions = {
     OffCanvas,
     Remote,
     RightSideBar,
-    PageTree
+    PageTree,
+    ContentView
 };
 
 //
@@ -65,7 +73,8 @@ export const initialState = {
     offCanvas: OffCanvasInitialState,
     remote: RemoteInitialState,
     rightSideBar: RightSideBarInitialState,
-    pageTree: PageTreeInitialState
+    pageTree: PageTreeInitialState,
+    contentView: ContentViewInitialState
 };
 
 //
@@ -78,5 +87,6 @@ export const reducer = {
     ...OffCanvasReducer,
     ...RemoteReducer,
     ...RightSideBarReducer,
-    ...PageTreeReducer
+    ...PageTreeReducer,
+    ...ContentViewReducer
 };

@@ -17,7 +17,6 @@ const REQUEST_CHILDREN = '@packagefactory/guevara/UI/PageTree/REQUEST_CHILDREN';
 export const actionTypes = {
     ADD,
     FOCUS,
-    ACTIVATE,
     COMMENCE_UNCOLLAPSE,
     UNCOLLAPSE,
     COLLAPSE,
@@ -28,7 +27,6 @@ export const actionTypes = {
 
 const add = createAction(ADD, (contextPath, node) => ({contextPath, node}));
 const focus = createAction(FOCUS, contextPath => ({contextPath}));
-const activate = createAction(ACTIVATE, contextPath => ({contextPath}));
 const commenceUncollapse = createAction(COMMENCE_UNCOLLAPSE, contextPath => ({contextPath}));
 const uncollapse = createAction(UNCOLLAPSE, contextPath => ({contextPath}));
 const collapse = createAction(COLLAPSE, contextPath => ({contextPath}));
@@ -42,7 +40,6 @@ const requestChildren = createAction(REQUEST_CHILDREN, contextPath => ({contextP
 export const actions = {
     add,
     focus,
-    activate,
     commenceUncollapse,
     uncollapse,
     collapse,
@@ -57,7 +54,6 @@ export const actions = {
 export const initialState = {
     isLoading: false,
     hasError: false,
-    active: '',
     focused: '',
     nodesByContextPath: {}
 };
@@ -68,7 +64,6 @@ export const initialState = {
 export const reducer = {
     [ADD]: ({contextPath, node}) => $set(['ui', 'pageTree', 'nodesByContextPath', contextPath], node),
     [FOCUS]: ({contextPath}) => $set('ui.pageTree.focused', contextPath),
-    [ACTIVATE]: ({contextPath}) => $set('ui.pageTree.active', contextPath),
     [UNCOLLAPSE]: ({contextPath}) => $all(
         $set('ui.pageTree.isLoading', false),
         $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {

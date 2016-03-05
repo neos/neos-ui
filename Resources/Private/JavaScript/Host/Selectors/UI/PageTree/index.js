@@ -4,7 +4,7 @@ import {createSelector, defaultMemoize} from 'reselect';
 const getSiteNodeContextPath = $get('cr.nodes.siteNode');
 const getTreeNode = state => contextPath => $get(['ui', 'pageTree', 'nodesByContextPath', contextPath], state);
 const getChildren = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state);
-const getActive = $get('ui.pageTree.active');
+const getActive = $get('ui.contentView.contextPath');
 const getFocused = $get('ui.pageTree.focused');
 
 const recursivelyResolveChildNodes = (contextPath, getTreeNode, getChildren, active, focused) => {

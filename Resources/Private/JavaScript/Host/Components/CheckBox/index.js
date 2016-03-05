@@ -32,7 +32,7 @@ const CheckBox = props => {
                 role="checkbox"
                 checked={isChecked}
                 aria-checked={isChecked}
-                onChange={() => onChange(onChangeHandler, !isChecked)}
+                onChange={() => onChangeHandler(onChange, !isChecked)}
                 {...directProps}
                 />
             <div className={mirrorClassNames}></div>

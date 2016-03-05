@@ -43,7 +43,7 @@ export default class I18n extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.fallback !== this.props.fallback) {
+        if (newProps.id !== this.props.id) {
             this.loadTranslation(newProps);
         }
     }

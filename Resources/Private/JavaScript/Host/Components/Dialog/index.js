@@ -53,7 +53,7 @@ Dialog.propTypes = {
     children: PropTypes.node.isRequired,
 
     // Optional Array of nodes(Action buttons f.e.) which are placed at the bottom of the Dialog.
-    actions: PropTypes.node,
+    actions: PropTypes.node.isRequired,
 
     // Style related propTypes.
     className: PropTypes.string

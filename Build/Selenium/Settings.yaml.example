@@ -1,0 +1,15 @@
+#                                                                        #
+# Settings for the Test suite.                                           #
+#                                                                        #
+# This file contains settings for the WebdriverIO runner.                #
+#                                                                        #
+# Please refer to the default settings file(s) or the manuals for        #
+# possible configuration options.                                        #
+#                                                                        #
+
+WebdriverIO:
+    baseUrl: 'http://127.0.0.1:8081'
+    url: 'http://127.0.0.1:8081/che!'
+    credentials:
+        username: 'johndoe'
+        password: 'demo'

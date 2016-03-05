@@ -5,7 +5,7 @@ import {executeCallback} from 'Shared/Utilities/';
 import Icon from 'Host/Components/Icon/';
 import style from './style.css';
 
-class DropDown extends Component {
+export class DropDown extends Component {
     static propTypes = {
         className: PropTypes.string,
         isOpened: PropTypes.bool.isRequired,
@@ -63,7 +63,7 @@ class DropDown extends Component {
     }
 }
 
-class Header extends Component {
+export class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node
@@ -115,7 +115,7 @@ class Header extends Component {
     }
 }
 
-class Contents extends Component {
+export class Contents extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node.isRequired

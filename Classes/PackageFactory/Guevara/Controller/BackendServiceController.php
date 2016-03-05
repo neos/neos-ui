@@ -20,6 +20,7 @@ use PackageFactory\Guevara\Domain\Model\Feedback\Operations\ReloadDocument;
 use PackageFactory\Guevara\Domain\Service\NodeTreeBuilder;
 use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
 use TYPO3\Eel\FlowQuery\FlowQuery;
+use PackageFactory\Guevara\View\BackendTypoScriptView;
 
 class BackendServiceController extends ActionController
 {
@@ -206,15 +207,11 @@ class BackendServiceController extends ActionController
             $result = $flowQuery->get();
         }
 
-        $this->view->assign('value', array_map(
-            function($node) {
-                return [
-                    'contextPath' => $node->getContextPath(),
-                    'label' => $node->getLabel(),
-                    'properties' => $node->getProperties()
-                ];
-            },
-            $result
-        ));
+        $typoScriptView = new BackendTypoScriptView();
+        $typoScriptView->setControllerContext($this->controllerContext);
+        $typoScriptView->setTypoScriptPath('nodes');
+        $typoScriptView->assign('nodes', $result);
+
+        $this->view->assign('value', $typoScriptView->render());
     }
 }

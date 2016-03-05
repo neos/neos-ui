@@ -29,7 +29,7 @@ class BackendController extends ActionController
     /**
      * @var string
      */
-    protected $defaultViewObjectName = 'TYPO3\TypoScript\View\TypoScriptView';
+    protected $defaultViewObjectName = 'PackageFactory\Guevara\View\BackendTypoScriptView';
 
     /**
      * @var TypoScriptView
@@ -95,7 +95,6 @@ class BackendController extends ActionController
     public function initializeView(ViewInterface $view)
     {
         $view->setTypoScriptPath('backend');
-        $view->setTypoScriptPathPattern('resource://PackageFactory.Guevara/Private/TypoScript/Backend');
     }
 
     /**

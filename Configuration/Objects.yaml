@@ -1,0 +1,6 @@
+PackageFactory\Guevara\View\BackendTypoScriptView:
+  properties:
+    typoScriptParser:
+      object: TYPO3\TypoScript\Core\Parser
+    fallbackView:
+      object: TYPO3\Fluid\View\TemplateView

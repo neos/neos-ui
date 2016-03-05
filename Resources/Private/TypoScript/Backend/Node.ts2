@@ -10,6 +10,9 @@ prototype(PackageFactory.Guevara:Node) < prototype(TYPO3.TypoScript:RawArray) {
     children = PackageFactory.Guevara:ArrayCollection {
         collection = ${q(node).children().get()}
         itemName = 'node'
-        itemRenderer = ${q(node).property('_contextPath')}
+        itemRenderer = TYPO3.TypoScript:RawArray {
+            contextPath = ${q(node).property('_contextPath')}
+            nodeType = ${q(node).property('_nodeType.name')}
+        }
     }
 }

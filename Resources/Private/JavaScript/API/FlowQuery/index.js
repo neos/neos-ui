@@ -56,8 +56,7 @@ export default (csrfToken) => {
                 },
                 body: JSON.stringify({chain})
             })
-            .then(response => response.json())
-            .then(json => console.log(json));
+            .then(response => response.json());
         }
     };
     const applyMiddleware = (chain, operation) => middlewares.reduce(

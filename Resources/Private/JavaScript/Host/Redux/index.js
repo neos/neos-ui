@@ -11,6 +11,7 @@ import {
 import {
     reducer as CRReducer,
     initialState as CRInitialState,
+    actionTypes as CRActionTypes,
     actions as CR
 } from './CR/';
 import {
@@ -65,7 +66,8 @@ export function configureStore({serverState = {}} = {}) {
 //
 export const actionTypes = {
     System: SystemActionTypes,
-    UI: UIActionTypes
+    UI: UIActionTypes,
+    CR: CRActionTypes
 };
 
 //

@@ -14,7 +14,7 @@ const hovered = $get('cr.nodes.hovered.contextPath');
 const resolveNode = (node, getNodeType) => {
     if (node) {
         const nodeType = getNodeType(node.nodeType);
-        return $set('nodeType', nodeType, node);
+        return $set('nodeType', {...nodeType, name: node.nodeType}, node);
     }
 }
 
@@ -62,5 +62,15 @@ export const byNodeTypeSelector = defaultMemoize(
         (nodes, nodeTypes, getNodeType) => Object.keys(nodes).map(k => nodes[k]).filter(
             node => nodeTypes.indexOf(node.nodeType) !== -1
         ).map(node => resolveNode(node, getNodeType))
+    )
+);
+
+export const isOfTypeSelector = defaultMemoize(
+    nodeTypeName => contextPath => createSelector(
+        [
+            byContextPathSelector(contextPath),
+            subTypesSelector(nodeTypeName)
+        ],
+        (node, nodeTypes) => nodeTypes.indexOf(node.nodeType.name) !== -1
     )
 );

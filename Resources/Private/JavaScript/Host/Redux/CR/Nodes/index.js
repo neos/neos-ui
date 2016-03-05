@@ -7,6 +7,17 @@ const BLUR = '@packagefactory/guevara/Transient/Nodes/BLUR';
 const HOVER = '@packagefactory/guevara/Transient/Nodes/HOVER';
 const UNHOVER = '@packagefactory/guevara/Transient/Nodes/UNHOVER';
 
+//
+// Export the action types
+//
+export const actionTypes = {
+    ADD,
+    FOCUS,
+    BLUR,
+    HOVER,
+    UNHOVER
+};
+
 /**
  * Adds a node to the application state
  *

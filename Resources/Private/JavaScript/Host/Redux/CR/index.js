@@ -1,6 +1,7 @@
 import {
     reducer as NodesReducer,
     initialState as NodesInitialState,
+    actionTypes as NodesActionTypes,
     actions as Nodes
 } from './Nodes/';
 import {
@@ -13,6 +14,13 @@ import {
     initialState as WorkspacesInitialState,
     actions as Workspaces
 } from './Workspaces/';
+
+//
+// Export the actionTypes
+//
+export const actionTypes = {
+    Nodes: NodesActionTypes
+};
 
 //
 // Export the actions

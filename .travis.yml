@@ -41,6 +41,9 @@ env:
 # Install nvm, the node depdencies and setup the some env variables.
 #
 before_install:
+  # Add the oAuth token to git to avoid errors with composer because of https://github.com/composer/composer/issues/1314
+  - git config --global github.accesstoken $GITHUB_OAUTH_TOKEN
+
   # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
   - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
   - nvm install v4.2.2

@@ -1,48 +1,76 @@
 import React from 'react';
-import {shallowRender} from 'skin-deep';
+import chai, {expect} from 'chai';
+import sinon from 'sinon/pkg/sinon.js';
+import {shallow} from 'enzyme';
+import chaiEnzyme from 'chai-enzyme';
+import sinonChai from 'sinon-chai';
 import Button from './index.js';
 
-function renderTree(props) {
-    return shallowRender(
-        <Button {...props}>
-            My button text
-        </Button>
-    );
-}
+chai.should();
+chai.use(sinonChai);
+chai.use(chaiEnzyme());
 
-describe('Button Component', () => {
-    it('should render a `<button>` element and the passed text as the label.', () => {
-        const tree = renderTree({
-            isFocused: false,
-            isDisabled: false,
-            style: 'clean',
-            hoverStyle: 'clean',
-            onClick: () => null
-        });
+describe('"Button" component', () => {
+    it('should render a "button" node with the role="button" attribute.', () => {
+        const btn = shallow(<Button />);
 
-        expect(tree.getRenderOutput().type).to.equal('button');
-        expect(tree.text()).to.equal('My button text');
+        expect(btn.type()).to.equal('button');
     });
 
-    it('should add the `disabled` attribute to the `<button>` node if the `isDisabled` prop was passed as `true`.', () => {
-        const disabledTree = renderTree({
-            isFocused: false,
-            isDisabled: true,
-            style: 'clean',
-            hoverStyle: 'clean',
-            onClick: () => null
-        });
+    it('should add the passed "className" prop to the rendered button if passed.', () => {
+        const btn = shallow(<Button className="test" />);
 
-        expect(disabledTree.toString().indexOf('disabled') > -1).to.equal(true);
+        expect(btn).to.have.className('test');
+    });
 
-        const tree = renderTree({
-            isFocused: false,
-            isDisabled: false,
-            style: 'clean',
-            hoverStyle: 'clean',
-            onClick: () => null
-        });
+    it('should call the passed "onClick" prop when clicking the button.', () => {
+        const spy = sinon.spy();
+        const btn = shallow(<Button onClick={spy} />);
 
-        expect(tree.toString().indexOf('disabled') > -1).to.equal(false);
+        btn.simulate('click');
+
+        expect(spy).to.have.callCount(1);
+    });
+
+    it('should call the passed "onMouseDown" prop when clicking the button.', () => {
+        const spy = sinon.spy();
+        const btn = shallow(<Button onMouseDown={spy} />);
+
+        btn.simulate('mouseDown');
+
+        expect(spy).to.have.callCount(1);
+    });
+
+    it('should call the passed "onMouseUp" prop when clicking the button.', () => {
+        const spy = sinon.spy();
+        const btn = shallow(<Button onMouseUp={spy} />);
+
+        btn.simulate('mouseUp');
+
+        expect(spy).to.have.callCount(1);
+    });
+
+    it('should call the passed "onMouseEnter" prop when clicking the button.', () => {
+        const spy = sinon.spy();
+        const btn = shallow(<Button onMouseEnter={spy} />);
+
+        btn.simulate('mouseEnter');
+
+        expect(spy).to.have.callCount(1);
+    });
+
+    it('should call the passed "onMouseLeave" prop when clicking the button.', () => {
+        const spy = sinon.spy();
+        const btn = shallow(<Button onMouseLeave={spy} />);
+
+        btn.simulate('mouseLeave');
+
+        expect(spy).to.have.callCount(1);
+    });
+
+    it('should add the disabled attribute when passing a truthy "isDisabled" prop.', () => {
+        const btn = shallow(<Button isDisabled={true} />);
+
+        expect(btn).to.have.attr('disabled');
     });
 });

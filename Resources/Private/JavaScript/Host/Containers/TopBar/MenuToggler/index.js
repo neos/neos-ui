@@ -10,12 +10,14 @@ const {$get} = immutableOperations;
 
 @connect(state => ({
     isMenuHidden: $get(state, 'ui.offCanvas.isHidden')
-}))
+}), {
+    toggleOffCanvas: actions.UI.OffCanvas.toggle
+})
 export default class MenuToggler extends Component {
     static propTypes = {
         className: PropTypes.string,
         isMenuHidden: PropTypes.bool.isRequired,
-        dispatch: PropTypes.any.isRequired
+        toggleOffCanvas: PropTypes.func.isRequired
     };
 
     render() {
@@ -26,21 +28,23 @@ export default class MenuToggler extends Component {
             [className]: className && className.length
         });
 
+        //
+        // ToDo: Replace the static 'Menu' aria-label with a label from the i18n service.
+        //
         return (
             <Button
                 className={classNames}
                 style="clean"
                 hoverStyle="clean"
                 isFocused={isMenuVisible}
-                onClick={this.onMenuToggle.bind(this)}
+                onClick={() => this.props.toggleOffCanvas()}
                 id="neos__topBar__menuToggler"
+                aria-label="Menu"
+                aria-controls="navigation"
+                aria-expanded={isMenuHidden ? 'false' : 'true'}
                 >
                 <div className={style.menuToggler__icon}></div>
             </Button>
         );
-    }
-
-    onMenuToggle() {
-        this.props.dispatch(actions.UI.OffCanvas.toggle());
     }
 }

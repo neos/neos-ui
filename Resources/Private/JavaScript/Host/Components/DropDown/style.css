@@ -1,5 +1,6 @@
 .dropDown {
     position: relative;
+    display: inline-block;
 }
 .dropDown__btn {
     display: block;
@@ -14,12 +15,7 @@
 .dropDown__btnLabel {
     margin-right: .5em;
 }
-.dropDown__btnBeforeIcon {
-    .dropDown--hasLabel & {
-        margin-right: .5em;
-    }
-}
-.dropDown__btnAfterIcon {
+.dropDown__chevron {
     position: absolute;
     right: 16px;
     top: 50%;

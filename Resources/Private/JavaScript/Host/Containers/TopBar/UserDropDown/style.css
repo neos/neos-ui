@@ -14,6 +14,9 @@
     border: 0;
     background-color: $darker;
 }
+.dropDown__btnIcon {
+    margin-right: .5em;
+}
 .dropDown__contents {
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);

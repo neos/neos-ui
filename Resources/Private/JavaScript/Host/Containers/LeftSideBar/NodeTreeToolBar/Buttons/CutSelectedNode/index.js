@@ -9,6 +9,10 @@ export default class CutSelectedNode extends Component {
         className: PropTypes.string
     };
 
+    static defaultProps = {
+        isDisabled: true
+    };
+
     render() {
         const {
             isDisabled,
@@ -30,6 +34,3 @@ export default class CutSelectedNode extends Component {
         console.log('cut selected node');
     }
 }
-CutSelectedNode.defaultProps = {
-    isDisabled: true
-};

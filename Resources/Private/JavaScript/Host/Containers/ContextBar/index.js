@@ -13,13 +13,15 @@ const {$get} = immutableOperations;
     isFringedLeft: $get(state, 'ui.leftSideBar.isHidden'),
     isFringedRight: $get(state, 'ui.rightSideBar.isHidden'),
     isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
-}))
+}), {
+    toggleFullScreen: actions.UI.FullScreen.toggle
+})
 export default class ContextBar extends Component {
     static propTypes = {
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
-        dispatch: PropTypes.func.isRequired
+        toggleFullScreen: PropTypes.func.isRequired
     };
 
     render() {
@@ -37,7 +39,7 @@ export default class ContextBar extends Component {
 
                 <div className={style.contextBar__rightHandedActions}>
                     <IconButton icon="external-link" onClick={this.onClickOpenInNewTab.bind(this)} />
-                    <IconButton icon="expand" onClick={this.onClickToggleFullScreen.bind(this)} />
+                    <IconButton icon="expand" onClick={() => this.props.toggleFullScreen()} />
                 </div>
             </div>
         );
@@ -45,9 +47,5 @@ export default class ContextBar extends Component {
 
     onClickOpenInNewTab() {
         console.log('open the current opened session into a new browser tab.');
-    }
-
-    onClickToggleFullScreen() {
-        this.props.dispatch(actions.UI.FullScreen.toggle());
     }
 }

@@ -9,6 +9,10 @@ export default class PasteClipBoardNode extends Component {
         className: PropTypes.string
     };
 
+    static defaultProps = {
+        isDisabled: true
+    };
+
     constructor(props) {
         super(props);
 
@@ -58,6 +62,3 @@ export default class PasteClipBoardNode extends Component {
         });
     }
 }
-PasteClipBoardNode.defaultProps = {
-    isDisabled: true
-};

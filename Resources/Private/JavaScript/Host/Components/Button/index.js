@@ -54,7 +54,7 @@ const Button = props => {
     }
 
     return (
-        <button {...attributes} {...directProps}>
+        <button role="button" {...attributes} {...directProps}>
             {children}
         </button>
     );

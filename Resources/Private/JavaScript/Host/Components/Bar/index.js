@@ -1,14 +1,7 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
+import {executeCallback} from 'Shared/Utilities/';
 import style from './style.css';
-
-const onDropHandler = (e, cb) => {
-    if (cb) {
-        e.stopPropagation();
-
-        cb(e);
-    }
-};
 
 const Bar = props => {
     const {position, className, onDrop} = props;
@@ -22,8 +15,8 @@ const Bar = props => {
     return (
         <div
             className={classNames}
-            onDragOver={e => e.preventDefault()}
-            onDrop={e => onDropHandler(e, onDrop)}
+            onDragOver={e => executeCallback({e, preventDefault: true})}
+            onDrop={e => executeCallback({e, cb: onDrop, preventDefault: true})}
             >
           {props.children}
         </div>

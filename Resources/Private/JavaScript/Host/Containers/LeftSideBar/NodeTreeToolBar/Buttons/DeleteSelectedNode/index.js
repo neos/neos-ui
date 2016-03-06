@@ -9,6 +9,10 @@ export default class DeleteSelectedNode extends Component {
         className: PropTypes.string
     };
 
+    static defaultProps = {
+        isDisabled: true
+    };
+
     render() {
         const {
             isDisabled,
@@ -30,6 +34,3 @@ export default class DeleteSelectedNode extends Component {
         console.log('delete selected node');
     }
 }
-DeleteSelectedNode.defaultProps = {
-    isDisabled: true
-};

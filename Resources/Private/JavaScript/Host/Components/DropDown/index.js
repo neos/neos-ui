@@ -1,129 +1,162 @@
 import React, {Component, PropTypes} from 'react';
-import ReactDOM from 'react-dom';
 import mergeClassNames from 'classnames';
+import enhanceWithClickOutside from 'react-click-outside';
 import {executeCallback} from 'Shared/Utilities/';
-import I18n from 'Host/Components/I18n/';
 import Icon from 'Host/Components/Icon/';
 import style from './style.css';
 
-export default class DropDown extends Component {
+export class DropDown extends Component {
     static propTypes = {
-        // Style related propTypes.
-        classNames: PropTypes.object.isRequired,
-
-        // Either a label, icon or both need to be passed to have a clickable target which will toggle the DropDown.
-        // ToDo: Add a check that one of both need to be passed to the Component.
-        label: PropTypes.string,
-        iconBefore: PropTypes.string,
-
-        // Contents of the DropDown.
-        children: PropTypes.node.isRequired,
-
-        // Optional id for the dropDown contents wrapper.
-        contentsId: PropTypes.string
+        className: PropTypes.string,
+        isOpened: PropTypes.bool.isRequired,
+        children: PropTypes.node.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    static defaultProps = {
+        isOpened: false
+    };
+
+    static childContextTypes = {
+        isOpened: PropTypes.bool.isRequired,
+        toggleDropDown: PropTypes.func.isRequired,
+        closeDropDown: PropTypes.func.isRequired
+    };
+
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {isOpened: false};
-        this.handleClickOutside = this.handleClickOutside.bind(this);
+    }
+
+    getChildContext() {
+        return {
+            isOpened: this.state.isOpened,
+            toggleDropDown: () => this.toggle(),
+            closeDropDown: () => this.close()
+        };
     }
 
     render() {
-        const {classNames, label, contentsId, ...directProps} = this.props;
-        const {isOpened} = this.state;
+        const {children, className, ...directProps} = this.props;
         const dropDownClassName = mergeClassNames({
-            [classNames.wrapper]: classNames.wrapper && classNames.wrapper.length,
-            [style.dropDown]: true,
-            [style['dropDown--hasLabel']]: Boolean(label)
-        });
-        const buttonClassName = mergeClassNames({
-            [classNames.btn]: classNames.btn && classNames.btn.length,
-            [classNames['btn--active']]: isOpened,
-            [style.dropDown__btn]: true
-        });
-        const contentsClassName = mergeClassNames({
-            [classNames.contents]: classNames.contents && classNames.contents.length,
-            [style.dropDown__contents]: true,
-            [style['dropDown__contents--isOpen']]: isOpened
+            [className]: className && className.length,
+            [style.dropDown]: true
         });
 
         return (
-            <div className={dropDownClassName} ref="dropDown">
-                <button
-                    className={buttonClassName}
-                    onClick={e => executeCallback({e, cb: this.toggleDropDown.bind(this)})}
-                    ref={btn => {
-                        const method = isOpened ? 'focus' : 'blur';
-
-                        // Initially focus the btn if the propType was set.
-                        if (btn !== null) {
-                            btn[method]();
-                        }
-
-                        this.toggler = btn;
-                    }}
-                    {...directProps}
-                    >
-                    {this.renderBeforeIcon()}
-                    {this.renderLabel()}
-                    {this.renderChevronIcon()}
-                </button>
-                <ul className={contentsClassName} id={contentsId}>
-                    {this.props.children}
-                </ul>
+            <div className={dropDownClassName} {...directProps}>
+                {children}
             </div>
         );
     }
 
-    componentDidMount() {
-        document.addEventListener('click', this.handleClickOutside, true);
+    handleClickOutside() {
+        this.close();
     }
 
-    handleClickOutside(e) {
-        const domNode = ReactDOM.findDOMNode(this);
-        if (!domNode || !domNode.contains(e.target)) {
-            this.closeDropDown();
-        }
+    close() {
+        this.setState({isOpened: false});
     }
 
-    renderLabel() {
-        const {label, classNames} = this.props;
-        const className = mergeClassNames({
-            [style.dropDown__btnLabel]: true,
-            [classNames.label]: classNames.label && classNames.label.length
+    toggle() {
+        this.setState({isOpened: !this.state.isOpened});
+    }
+}
+
+export class Header extends Component {
+    static propTypes = {
+        className: PropTypes.string,
+        children: PropTypes.node
+    };
+    static contextTypes = {
+        isOpened: PropTypes.bool.isRequired,
+        toggleDropDown: PropTypes.func.isRequired
+    };
+
+    constructor(props, context) {
+        super(props, context);
+    }
+
+    render() {
+        const {className, children, ...directProps} = this.props;
+        const {isOpened, toggleDropDown} = this.context;
+        const classNames = mergeClassNames({
+            [style.dropDown__btn]: true,
+            [className]: className && className.length
         });
+        const chevron = this.renderChevronIcon();
 
-        return label ? <I18n fallback={label} id={label} className={className} /> : null;
-    }
+        return (
+            <button
+                onClick={e => executeCallback({e, cb: () => toggleDropDown()})}
+                ref={btn => {
+                    const method = isOpened ? 'focus' : 'blur';
 
-    renderBeforeIcon() {
-        const {iconBefore, classNames} = this.props;
-        const className = mergeClassNames({
-            [style.dropDown__btnBeforeIcon]: true,
-            [classNames.beforeIcon]: classNames.beforeIcon && classNames.beforeIcon.length
-        });
-
-        return iconBefore ? <Icon icon={iconBefore} className={className} /> : null;
+                    // Initially focus the btn if the propType was set.
+                    if (btn !== null) {
+                        btn[method]();
+                    }
+                }}
+                className={classNames}
+                aria-haspopup="true"
+                {...directProps}
+                >
+                {children}
+                {chevron}
+            </button>
+        );
     }
 
     renderChevronIcon() {
-        const {isOpened} = this.state;
+        const {isOpened} = this.context;
         const iconName = isOpened ? 'chevron-up' : 'chevron-down';
 
-        return <Icon icon={iconName} className={style.dropDown__btnAfterIcon} />;
-    }
-
-    toggleDropDown() {
-        this.setState({isOpened: !this.state.isOpened});
-    }
-
-    closeDropDown() {
-        this.setState({isOpened: false});
+        return <Icon icon={iconName} className={style.dropDown__chevron} />;
     }
 }
-DropDown.defaultProps = {
-    classNames: {},
-    contentsId: ''
-};
+
+export class Contents extends Component {
+    static propTypes = {
+        className: PropTypes.string,
+        children: PropTypes.node.isRequired
+    };
+
+    static contextTypes = {
+        isOpened: PropTypes.bool.isRequired
+    };
+
+    constructor(props, context) {
+        super(props, context);
+    }
+
+    render() {
+        const {className, ...directProps} = this.props;
+        const {isOpened} = this.context;
+        const contentsClassName = mergeClassNames({
+            [className]: className && className.length,
+            [style.dropDown__contents]: true,
+            [style['dropDown__contents--isOpen']]: isOpened
+        });
+        const ariaIsHiddenLabel = isOpened ? 'false' : 'true';
+
+        return (
+            <ul className={contentsClassName} {...directProps} aria-hidden={ariaIsHiddenLabel} aria-label="dropdown">
+                {this.props.children}
+            </ul>
+        );
+    }
+}
+
+//
+// Add the click-outside functionality to the DropDown component.
+//
+const EnhancedDropDown = enhanceWithClickOutside(DropDown);
+
+//
+// Assign the Child Component to the parent,
+// to replicate the structure of a `DropDown` Component.
+//
+EnhancedDropDown.Header = Header;
+EnhancedDropDown.Contents = Contents;
+
+export default EnhancedDropDown;

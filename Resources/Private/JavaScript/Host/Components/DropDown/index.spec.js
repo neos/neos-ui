@@ -1,32 +1,42 @@
 import React from 'react';
-import {renderIntoDocument, Simulate} from 'react-addons-test-utils';
-import {findDOMNode} from 'react-dom';
-import DropDown from './index.js';
+import chai, {expect} from 'chai';
+import {shallow} from 'enzyme';
+import chaiEnzyme from 'chai-enzyme';
+import sinonChai from 'sinon-chai';
+import {DropDown} from './index.js';
 
-describe('DropDown Component', () => {
-    it('should be hidden initially.', () => {
-        const component = renderIntoDocument(
-            <DropDown>
-                test
-            </DropDown>
-        );
+chai.should();
+chai.use(sinonChai);
+chai.use(chaiEnzyme());
 
-        expect(component.state.isOpened).to.equal(false);
+describe('"DropDown" component', () => {
+    it('should initially have a falsy "isOpened" state value.', () => {
+        const dd = shallow(<DropDown />);
+
+        expect(dd.state('isOpened')).to.equal(false);
     });
 
-    it('should toggle the internal state when clicking the toggle <button>.', () => {
-        const component = renderIntoDocument(
-            <DropDown>
-                test
-            </DropDown>
-        );
+    it('should set the "isOpened" state value to opposite when calling the toggle method.', () => {
+        const dd = shallow(<DropDown />);
 
-        const node = findDOMNode(component.toggler);
+        dd.instance().toggle();
 
-        Simulate.click(node);
-        expect(component.state.isOpened).to.equal(true);
+        expect(dd.state('isOpened')).to.equal(true);
 
-        Simulate.click(node);
-        expect(component.state.isOpened).to.equal(false);
+        dd.instance().toggle();
+
+        expect(dd.state('isOpened')).to.equal(false);
+    });
+
+    it('should set the "isOpened" state value to false when calling the close method.', () => {
+        const dd = shallow(<DropDown />);
+
+        dd.setState({
+            isOpened: true
+        });
+
+        dd.instance().close();
+
+        expect(dd.state('isOpened')).to.equal(false);
     });
 });

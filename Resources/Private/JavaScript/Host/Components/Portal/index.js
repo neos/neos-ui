@@ -5,8 +5,8 @@ import shallowCompare from 'react/lib/shallowCompare';
 
 export default class Portal extends Component {
     static propTypes = {
-        // The target ID in which the children will be mounted in.
-        // If not `targetId` was specified, the children will be mounted in the <body> element.
+        // The target ID in which the children will be rendered into.
+        // If no `targetId` was specified, the children will be rendered into the <body> element.
         targetId: PropTypes.string,
 
         // The children to render in the <Portal />.

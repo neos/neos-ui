@@ -106,7 +106,6 @@
         "no-undef-init": 2,
         "no-undef": [2, {typeof: true}],
         "no-unused-vars": 2,
-        "no-use-before-define": [2, "nofunc"],
 
         // Stylistic rules
         "array-bracket-spacing": [2, "never"],

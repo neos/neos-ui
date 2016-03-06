@@ -8,7 +8,10 @@ import setDocumentInformation from './SetDocumentInformation/';
 const initializeMethods = methodMap => dispatch => {
     const api = {};
 
-    Object.keys(methodMap).forEach(key => api[key] = methodMap[key](dispatch));
+    Object.keys(methodMap).forEach(key => {
+        api[key] = methodMap[key](dispatch);
+    });
+
     return api;
 };
 

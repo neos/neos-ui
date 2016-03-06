@@ -26,7 +26,7 @@ const Icon = props => {
 };
 Icon.propTypes = {
     // The icon key of Font-Awesome.
-    icon(props, propName) {
+    icon(props, propName) {//eslint-disable-line
         const id = props[propName];
         const {isValid, isMigrationNeeded, iconName} = fontAwesome.validateId(id);
 

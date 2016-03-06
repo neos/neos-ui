@@ -22,7 +22,7 @@ export const hoveredNode = () => expose(
 
 export const byContextPath = () => expose(
     'nodes.byContextPath',
-    (state, contextPath) => {
+    (state, contextPath) => { //eslint-disable-line
         const node = state.transient && state.transient.nodes ?
             state.transient.nodes.get('byContextPath').get(contextPath) : null;
 

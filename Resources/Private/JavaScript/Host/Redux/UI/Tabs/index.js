@@ -25,7 +25,7 @@ function updateActiveTab(state) {
     }
 
     const activeTabId = $get(activeTab, 'id');
-    const refreshedActiveTab = $get(state, `byId`).get(activeTabId);
+    const refreshedActiveTab = $get(state, 'byId').get(activeTabId);
 
     return $set(state, 'active', refreshedActiveTab);
 }

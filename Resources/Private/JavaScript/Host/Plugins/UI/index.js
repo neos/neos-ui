@@ -70,9 +70,9 @@ export default store => {
                     //
                     // Remove all observers for this connection
                     //
-                    cleanup: () => Object.keys(observers).forEach(
-                        key => observers[key][id] = null
-                    )
+                    cleanup: () => Object.keys(observers).forEach(key => {
+                        observers[key][id] = null;
+                    })
                 };
             },
 

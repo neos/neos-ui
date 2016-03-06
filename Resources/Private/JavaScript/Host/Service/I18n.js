@@ -16,4 +16,6 @@ export default translations =>
 
         // ToDo: Use the neos logger util.
         console.error(`No translation found for id "${transUnitId}" in:`, translations);
+
+        return '';
     };

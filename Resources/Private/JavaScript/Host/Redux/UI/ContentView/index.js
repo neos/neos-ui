@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$all, $set, $override} from 'plow-js';
+import {$set} from 'plow-js';
 
 const SET_CONTEXT_PATH = '@packagefactory/guevara/UI/PageTree/SET_CONTEXT_PATH';
 const SET_SRC = '@packagefactory/guevara/UI/PageTree/SET_SRC';
@@ -13,7 +13,7 @@ export const actionTypes = {
 };
 
 const setContextPath = createAction(SET_CONTEXT_PATH, contextPath => ({contextPath}));
-const setSrc = createAction(SET_SRC, src => console.log('action!') || ({src}));
+const setSrc = createAction(SET_SRC, src => ({src}));
 
 //
 // Export the actions

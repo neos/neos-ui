@@ -40,7 +40,7 @@ Icon.propTypes = {
 Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
 
 https://github.com/FortAwesome/Font-Awesome/wiki/Upgrading-from-3.2.1-to-4`);
-            } else if(!iconName || !cachedWarnings[iconName]) {
+            } else if (!iconName || !cachedWarnings[iconName]) {
                 return new Error(`Icon name "${id}" was not a found in Font-Awesome 4.5.
 Please use the icon names from the Font-Awesome website.
 

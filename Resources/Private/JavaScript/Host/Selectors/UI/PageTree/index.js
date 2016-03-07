@@ -1,5 +1,5 @@
 import {$get} from 'plow-js';
-import {createSelector, defaultMemoize} from 'reselect';
+import {createSelector} from 'reselect';
 
 const getSiteNodeContextPath = $get('cr.nodes.siteNode');
 const getTreeNode = state => contextPath => $get(['ui', 'pageTree', 'nodesByContextPath', contextPath], state);

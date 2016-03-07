@@ -3,7 +3,14 @@ import {reducer, actions, initialState} from './index.js';
 
 import {handleActions} from 'Host/Util/HandleActions/';
 
-const {setData, setSubTree, setNode} = actions;
+const {
+    add,
+    focus,
+    uncollapse,
+    collapse,
+    invalidate,
+    requestChildren
+} = actions;
 
 describe('"host.redux.ui.pageTree" ', () => {
     let store = null;
@@ -35,61 +42,194 @@ describe('"host.redux.ui.pageTree" ', () => {
         });
     });
 
-    describe('"setData" action.', () => {
-        it('should replace the initial state with the given argument.', () => {
-            store.dispatch(setData({
-                node: {}
+    describe('"add" action.', () => {
+        it('should add a node representation to the state.', () => {
+            store.dispatch(add('someContextPath', {
+                contextPath: 'someContextPath',
+                node: 'someNode'
             }));
 
             const state = store.getState();
 
-            expect(Object.keys(state.ui.pageTree).length).to.equal(1);
-            expect(state.ui.pageTree).to.deep.equal({
-                node: {}
+            expect(Object.keys(state.ui.pageTree.nodesByContextPath).length).to.equal(1);
+            expect(state.ui.pageTree.nodesByContextPath).to.deep.equal({
+                someContextPath: {
+                    contextPath: 'someContextPath',
+                    node: 'someNode'
+                }
             });
         });
     });
 
-    describe('"setSubTree" action.', () => {
-        it('should set the given data as the contents of the given object path.', () => {
-            store.dispatch(setData({
-                node: {}
-            }));
-
-            store.dispatch(setSubTree('node', {
-                children: {}
-            }));
+    describe('"focus" action.', () => {
+        it('should set the focused node context path.', () => {
+            store.dispatch(focus('someContextPath'));
 
             const state = store.getState();
 
-            expect(state.ui.pageTree.node.children).to.not.be.an('undefined');
-            expect(state.ui.pageTree.node).to.deep.equal({
-                children: {}
-            });
+            expect(state.ui.pageTree.focused).to.equal('someContextPath');
         });
     });
 
-    describe('"setNode" action.', () => {
-        it('should replace the given data as the contents of the given object path.', () => {
-            store.dispatch(setData({
-                node: {
-                    children: {}
+    describe('"uncollapse" action.', () => {
+        const store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: {
+                        isLoading: true,
+                        nodesByContextPath: {
+                            someContextPath: {
+                                isLoading: true,
+                                isCollapsed: true
+                            }
+                        }
+                    }
                 }
-            }));
+            }
+        );
 
-            const data = {
-                foo: 'bar'
-            };
-            store.dispatch(setNode('node', data));
+        store.dispatch(uncollapse('someContextPath'));
 
+        it('should set the loading state of the given node to false.', () => {
             const state = store.getState();
 
-            expect(state.ui.pageTree.node).to.not.be.an('undefined');
-            expect(state.ui.pageTree).to.deep.equal({
-                node: {
-                    foo: 'bar'
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(false);
+        });
+
+        it('should set the collapsed state of the given node to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isCollapsed).to.equal(false);
+        });
+
+        it('should set the loading state of the pageTree to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.isLoading).to.equal(false);
+        });
+    });
+
+    describe('"collapse" action.', () => {
+        const store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: {
+                        isLoading: true,
+                        nodesByContextPath: {
+                            someContextPath: {
+                                isLoading: true,
+                                isCollapsed: false
+                            }
+                        }
+                    }
                 }
-            });
+            }
+        );
+
+        store.dispatch(collapse('someContextPath'));
+
+        it('should set the loading state of the given node to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(false);
+        });
+
+        it('should set the collapsed state of the given node to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isCollapsed).to.equal(true);
+        });
+
+        it('should set the loading state of the pageTree to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.isLoading).to.equal(false);
+        });
+    });
+
+    describe('"invalidate" action.', () => {
+        const store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: {
+                        isLoading: true,
+                        hasError: false,
+                        nodesByContextPath: {
+                            someContextPath: {
+                                isLoading: true,
+                                hasError: false
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        store.dispatch(invalidate('someContextPath'));
+
+        it('should set the loading state of the given node to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(false);
+        });
+
+        it('should set the error state of the given node to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.hasError).to.equal(true);
+        });
+
+        it('should set the collapsed state of the given node to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isCollapsed).to.equal(true);
+        });
+
+        it('should set the loading state of the pageTree to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.isLoading).to.equal(false);
+        });
+
+        it('should set the error state of the pageTree to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.hasError).to.equal(true);
+        });
+    });
+
+    describe('"requestChildren" action.', () => {
+        const store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: {
+                        isLoading: false,
+                        nodesByContextPath: {
+                            someContextPath: {
+                                isLoading: false
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        store.dispatch(requestChildren('someContextPath'));
+
+        it('should set the loading state of the given node to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(true);
+        });
+
+        it('should set the loading state of the pageTree to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.isLoading).to.equal(true);
         });
     });
 });

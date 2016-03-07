@@ -1,4 +1,4 @@
-export default chain => filter => ({
+export default () => filter => ({
     type: 'CHILDREN',
     payload: [filter]
 });

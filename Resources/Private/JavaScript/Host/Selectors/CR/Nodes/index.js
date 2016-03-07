@@ -16,7 +16,9 @@ const resolveNode = (node, getNodeType) => {
         const nodeType = getNodeType(node.nodeType);
         return $set('nodeType', {...nodeType, name: node.nodeType}, node);
     }
-}
+
+    return null;
+};
 
 const resolveNodeFromContextPath = (contextPath, byContextPath, getNodeType) => {
     const node = byContextPath(contextPath);

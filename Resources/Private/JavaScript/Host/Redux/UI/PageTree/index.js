@@ -3,7 +3,6 @@ import {$all, $set, $override} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/UI/PageTree/ADD';
 const FOCUS = '@packagefactory/guevara/UI/PageTree/FOCUS';
-const ACTIVATE = '@packagefactory/guevara/UI/PageTree/ACTIVATE';
 const COMMENCE_UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/COMMENCE_UNCOLLAPSE';
 const UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/UNCOLLAPSE';
 const COLLAPSE = '@packagefactory/guevara/UI/PageTree/COLLAPSE';

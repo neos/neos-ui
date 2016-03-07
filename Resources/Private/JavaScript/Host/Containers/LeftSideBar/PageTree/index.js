@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform, $toggle, $all, $get} from 'plow-js';
+import {$transform} from 'plow-js';
 
 import {Tree} from 'Host/Components/';
 import {UI} from 'Host/Selectors/';

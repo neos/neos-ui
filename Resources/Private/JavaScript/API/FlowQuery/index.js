@@ -33,7 +33,6 @@ const isNodeEnvelope = envelope =>
 export default (csrfToken) => {
     const middlewares = [];
     const resolveChain = chain => {
-        const finisher = $last('chain', {chain});
         const lastOperation = $last('chain', $pop('chain', {chain}));
 
         if (isStartingOperation(lastOperation)) {
@@ -46,18 +45,18 @@ export default (csrfToken) => {
             }
 
             console.log('would fetch remaining nodes now', envelopes);
-        } else {
-            return fetch('/che!/service/flow-query', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'X-Flow-Csrftoken': csrfToken,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({chain})
-            })
-            .then(response => response.json());
         }
+
+        return fetch('/che!/service/flow-query', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'X-Flow-Csrftoken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({chain})
+        })
+        .then(response => response.json());
     };
     const applyMiddleware = (chain, operation) => middlewares.reduce(
         (operation, middleware) => middleware(chain, operation),

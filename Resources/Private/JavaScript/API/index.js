@@ -21,7 +21,7 @@ const define = parent => (name, value) => {
 //
 export default (parent, csrfToken, alias = 'neos') => {
     if (typeof csrfToken === 'undefined') {
-        throw new Error(`You need to provide a valid csrf token for the Neos API`);
+        throw new Error('You need to provide a valid csrf token for the Neos API');
     }
 
     if (typeof parent[alias] !== 'undefined') {
@@ -32,7 +32,6 @@ export default (parent, csrfToken, alias = 'neos') => {
     const addLibrary = define(neos);
 
     addLibrary('use', initializeUse(addLibrary, neos));
-    console.log('what?');
     addLibrary('q', initializeFlowQuery(csrfToken));
     addLibrary('csrfToken', () => csrfToken);
 

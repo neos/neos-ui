@@ -1,4 +1,4 @@
-export default chain => (index = 'ALL') => ({
+export default () => (index = 'ALL') => ({
     type: 'GET',
     payload: index
 });

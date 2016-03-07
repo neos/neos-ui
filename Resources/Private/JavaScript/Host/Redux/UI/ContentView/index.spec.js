@@ -3,7 +3,10 @@ import {reducer, actions, initialState} from './index.js';
 
 import {handleActions} from 'Host/Util/HandleActions/';
 
-const {setData, setSubTree, setNode} = actions;
+const {
+    setContextPath,
+    setSrc
+} = actions;
 
 describe('"host.redux.ui.contentView" ', () => {
     let store = null;
@@ -25,5 +28,33 @@ describe('"host.redux.ui.contentView" ', () => {
         store = null;
 
         done();
+    });
+
+    describe('reducer.', () => {
+        it('should return an object as the initial state.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree).to.be.an('object');
+        });
+    });
+
+    describe('"setContextPath" action.', () => {
+        it('should set the currently opened documents context path.', () => {
+            store.dispatch(setContextPath('someContextPath'));
+
+            const state = store.getState();
+
+            expect(state.ui.contentView.contextPath).to.equal('someContextPath');
+        });
+    });
+
+    describe('"setSrc" action.', () => {
+        it('should set the currently opened documents src uri.', () => {
+            store.dispatch(setSrc('http://www.some-source.com/document.html'));
+
+            const state = store.getState();
+
+            expect(state.ui.contentView.src).to.equal('http://www.some-source.com/document.html');
+        });
     });
 });

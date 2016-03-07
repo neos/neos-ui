@@ -8,7 +8,6 @@ import {
     I18n,
     Icon,
     DropDown,
-    Label,
     CheckBox
 } from 'Host/Components/';
 import {actions} from 'Host/Redux/';
@@ -42,8 +41,7 @@ export default class PublishDropDown extends Component {
             publishableNodes,
             publishableNodesInDocument,
             isSaving,
-            isAutoPublishingEnabled,
-            toggleAutoPublishing
+            isAutoPublishingEnabled
         } = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
         const canPublishGlobally = publishableNodes && (publishableNodes.length > 0);
@@ -61,10 +59,6 @@ export default class PublishDropDown extends Component {
             [style['dropDown__item--noHover']]: true
         });
         const {mainButtonLabel, mainButtonTarget} = this.getMainButtonLabeling();
-        const dropDownBtnClassName = mergeClassNames({
-            [style.dropDown__btn]: true,
-            [style['btn--highlighted']]: canPublishGlobally
-        });
 
         return (
             <div className={style.wrapper}>

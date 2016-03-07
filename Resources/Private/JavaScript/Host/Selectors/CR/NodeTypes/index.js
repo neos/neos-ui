@@ -1,4 +1,4 @@
-import {$get, $set} from 'plow-js';
+import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
 
 export const byNameSelector = state => name => $get(['cr', 'nodeTypes', 'byName', name], state);

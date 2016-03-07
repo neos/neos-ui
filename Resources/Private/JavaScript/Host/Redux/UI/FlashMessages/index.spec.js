@@ -84,8 +84,6 @@ describe('"host.redux.ui.flashMessages" ', () => {
 
             store.dispatch(remove('myMessageId'));
 
-            console.log(store.getState().ui.flashMessages);
-
             expect(Object.keys(store.getState().ui.flashMessages).length).to.equal(countBefore);
         });
     });

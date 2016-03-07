@@ -75,6 +75,8 @@ install:
   - cd Neos
 
   # Move our repository and the configuration files into place.
+  - if [ ! -d "Packages" ]; then mkdir Packages; fi;
+  - if [ ! -d "Packages/Application" ]; then mkdir Packages/Application; fi;
   - if [ ! -d "Packages/Application/PackageFactory.Guevara" ]; then mkdir Packages/Application/PackageFactory.Guevara; fi;
   - mv ../PackageFactory.Guevara/** Packages/Application/PackageFactory.Guevara/
 

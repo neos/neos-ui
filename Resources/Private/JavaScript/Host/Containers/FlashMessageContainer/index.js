@@ -14,7 +14,7 @@ import style from './style.css';
 })
 export default class FlashMessageContainer extends Component {
     static propTypes = {
-        flashMessages: PropTypes.object,
+        flashMessages: PropTypes.array,
         removeMessage: PropTypes.func.isRequired
     };
 

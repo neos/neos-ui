@@ -17,8 +17,8 @@ export default class FooterBar extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         isActive: PropTypes.bool.isRequired,
-        hoveredNodeContextPath: PropTypes.string.isRequired,
-        focusedNodeContextPath: PropTypes.string.isRequired
+        hoveredNodeContextPath: PropTypes.string,
+        focusedNodeContextPath: PropTypes.string
     };
 
     render() {
@@ -30,7 +30,7 @@ export default class FooterBar extends Component {
 
         return (
             <Bar className={classNames} position="bottom">
-                <small>{hoveredNodeContextPath || focusedNodeContextPath}</small>
+                <small>{hoveredNodeContextPath || focusedNodeContextPath || null}</small>
             </Bar>
         );
     }

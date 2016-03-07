@@ -93,6 +93,8 @@ prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawA
             fullName = ${q(user).property('name.fullName')}
         }
 
-        settings = TYPO3.TypoScript:RawArray
+        settings = TYPO3.TypoScript:RawArray {
+            isAutoPublishingEnabled = FALSE
+        }
     }
 }

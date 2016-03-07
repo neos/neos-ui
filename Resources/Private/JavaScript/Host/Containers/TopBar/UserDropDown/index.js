@@ -1,13 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {$transform, $get} from 'plow-js';
+
 import {I18n, Icon, DropDown} from 'Host/Components/';
+
 import style from './style.css';
-import {immutableOperations} from 'Shared/Utilities/';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    userName: $get(state, 'user.name.fullName')
+@connect($transform({
+    userName: $get('user.name.fullName')
 }))
 export default class UserDropDown extends Component {
     static propTypes = {

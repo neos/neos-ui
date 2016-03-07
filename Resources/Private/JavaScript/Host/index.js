@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import 'Shared/Styles/style.css';
 
 import React from 'react';
@@ -6,7 +7,7 @@ import {Provider} from 'react-redux';
 import assign from 'lodash.assign';
 import registry from '@reduct/registry';
 
-import {configureStore} from './Redux/';
+import {configureStore, actions} from './Redux/';
 
 import initializeJSAPI from 'API/';
 import {ui} from './Plugins/';
@@ -28,8 +29,6 @@ import {
 import {
     backend,
     nodeTreeService,
-    tabManager,
-    changeManager,
     feedbackManager,
     publishingService,
     i18n
@@ -40,11 +39,10 @@ import style from './style.css';
 // Initialize the backend application on load.
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('appContainer');
-    const firstTabUri = appContainer.dataset.firstTab;
     const csrfToken = appContainer.dataset.csrfToken;
     const serverState = JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
     const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
-    const neos = initializeJSAPI(window);
+    const neos = initializeJSAPI(window, csrfToken);
     const store = configureStore({serverState}, neos);
 
     // Bootstrap the i18n service before the initial render.
@@ -80,8 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Bootstrap the backend services
     assign(backend, {
-        tabManager: tabManager(store),
-        changeManager: changeManager(store, csrfToken),
         feedbackManager: feedbackManager(store),
         publishingService: publishingService(store, csrfToken),
         nodeTreeService: nodeTreeService(store, csrfToken),
@@ -91,8 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    backend.tabManager.createTab(firstTabUri);
-
     // Register FeedbackHandlers
     backend.asyncComponents.feedbackHandlers.registerAll({
         'PackageFactory.Guevara:Success': feedbackHandler.flashMessage,
@@ -101,4 +95,14 @@ document.addEventListener('DOMContentLoaded', () => {
         'PackageFactory.Guevara:UpdateWorkspaceInfo': feedbackHandler.updateWorkspaceInfo,
         'PackageFactory.Guevara:ReloadDocument': feedbackHandler.reloadDocument
     });
+
+    //
+    // Inform everybody, that the UI has booted successfully
+    //
+    store.dispatch(actions.System.boot());
+
+    //
+    // Reoccurring tasks
+    //
+    setInterval(() => store.dispatch(actions.Changes.flush()), 1000);
 });

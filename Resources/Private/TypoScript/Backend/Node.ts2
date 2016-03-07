@@ -1,0 +1,23 @@
+include: resource://TYPO3.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
+include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/ArrayCollection.ts2
+
+prototype(PackageFactory.Guevara:Node) < prototype(TYPO3.TypoScript:RawArray) {
+    contextPath = ${q(node).property('_contextPath')}
+    identifier = ${q(node).property('_identifier')}
+    nodeType = ${q(node).property('_nodeType.name')}
+    properties = ${q(node).property('_properties')}
+    label = ${q(node).property('_label')}
+    uri = TYPO3.Neos:NodeUri {
+        node = ${node}
+        @if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof TYPO3.Neos:Document]')}
+    }
+
+    children = PackageFactory.Guevara:ArrayCollection {
+        collection = ${q(node).children().get()}
+        itemName = 'node'
+        itemRenderer = TYPO3.TypoScript:RawArray {
+            contextPath = ${q(node).property('_contextPath')}
+            nodeType = ${q(node).property('_nodeType.name')}
+        }
+    }
+}

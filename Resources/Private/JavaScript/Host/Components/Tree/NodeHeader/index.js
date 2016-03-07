@@ -1,16 +1,13 @@
 import React, {Component, PropTypes} from 'react';
-import Immutable from 'immutable';
 import mergeClassNames from 'classnames';
+
 import Icon from 'Host/Components/Icon/';
-import {nodeTypeManager} from 'Host/Service/';
-import {immutableOperations} from 'Shared/Utilities/';
+
 import style from './style.css';
 
-const {$get} = immutableOperations;
-
-class NodeHeader extends Component {
+export default class NodeHeader extends Component {
     static propTypes = {
-        node: PropTypes.instanceOf(Immutable.Map),
+        node: PropTypes.object,
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
         onLabelClick: PropTypes.func
@@ -23,12 +20,7 @@ class NodeHeader extends Component {
             onLabelClick
         } = this.props;
 
-        const label = $get(node, 'label');
-        const icon = $get(node, 'icon') || nodeTypeManager.getIconForNodeType($get(node, 'nodeType')) || 'question';
-        /* const children = $get(node, 'children'); */
-        const isActive = $get(node, 'isActive');
-        const isFocused = $get(node, 'isFocused');
-        const isCollapsable = $get(node, 'isCollapsable');
+        const {label, icon, hasChildren, isActive, isFocused} = node;
 
         const dataClassNames = mergeClassNames({
             [style.nodeHeader__data]: true,
@@ -36,13 +28,13 @@ class NodeHeader extends Component {
             [style['nodeHeader__data--isFocused']]: isFocused
         });
 
-        const collapsableControl = (isCollapsable ? this.renderCollapseChevron() : null);
+        const collapsibleControl = (hasChildren ? this.renderCollapseChevron() : null);
 
         return (
             <div className={style.nodeHeader}>
-                {collapsableControl}
+                {collapsibleControl}
                 <div onClick={() => onClick(node)} className={dataClassNames}>
-                    <Icon icon={icon} padded="right" />
+                    <Icon icon={icon || 'question'} padded="right" />
                     <span className={style.nodeHeader__dataTitle} onClick={() => onLabelClick(node)} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>
@@ -53,13 +45,25 @@ class NodeHeader extends Component {
 
     renderCollapseChevron() {
         const {node, onToggle} = this.props;
+        const {isLoading, isCollapsed, hasError} = node;
         const classnames = mergeClassNames({
             [style.nodeHeader__chevron]: true,
-            [style['nodeHeader__chevron--isCollapsed']]: $get(node, 'isCollapsed'),
-            [style['nodeHeader__chevron--isLoading']]: $get(node, 'isLoading')
+            [style['nodeHeader__chevron--isCollapsed']]: isCollapsed,
+            [style['nodeHeader__chevron--isLoading']]: isLoading
         });
-        const isLoading = $get(node, 'isLoading');
-        const icon = (isLoading ? <Icon icon="spinner" spin={true} /> : <Icon icon="sort-desc" />);
+        let icon;
+
+        switch (true) {
+            case hasError:
+                icon = <Icon icon="ban" />;
+                break;
+            case isLoading:
+                icon = <Icon icon="spinner" spin={true} />;
+                break;
+            default:
+                icon = <Icon icon="sort-desc" />;
+                break;
+        }
 
         return (
             <a onClick={() => onToggle(node)} className={classnames} data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle">
@@ -68,5 +72,3 @@ class NodeHeader extends Component {
         );
     }
 }
-
-export default NodeHeader;

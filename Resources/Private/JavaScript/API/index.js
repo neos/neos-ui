@@ -1,4 +1,5 @@
 import initializeUse from './Use/';
+import initializeFlowQuery from './FlowQuery/';
 
 const createReadOnlyValue = value => ({
     value,
@@ -18,7 +19,11 @@ const define = parent => (name, value) => {
 //
 // Initializes the Neos API
 //
-export default (parent, alias = 'neos') => {
+export default (parent, csrfToken, alias = 'neos') => {
+    if (typeof csrfToken === 'undefined') {
+        throw new Error('You need to provide a valid csrf token for the Neos API');
+    }
+
     if (typeof parent[alias] !== 'undefined') {
         throw new Error(`Could not initialize Neos API, because ${alias} is already defined.`);
     }
@@ -27,6 +32,8 @@ export default (parent, alias = 'neos') => {
     const addLibrary = define(neos);
 
     addLibrary('use', initializeUse(addLibrary, neos));
+    addLibrary('q', initializeFlowQuery(csrfToken));
+    addLibrary('csrfToken', () => csrfToken);
 
     //
     // Attach Neos API to the parent object

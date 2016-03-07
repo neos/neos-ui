@@ -17,6 +17,7 @@
         "expect": true,
         "sinon": false,
         "browser": true,
+        "Promise": true,
         "__neosSelenium": true
     },
     "rules": {

@@ -1,0 +1,4 @@
+prototype(PackageFactory.Guevara:AppendAllToCollection) {
+    @class = 'PackageFactory\\Guevara\\TypoScript\\AppendAllToCollectionImplementation'
+    collection = ${value}
+}

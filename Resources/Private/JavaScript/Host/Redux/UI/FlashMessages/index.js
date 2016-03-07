@@ -1,8 +1,5 @@
-import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Utilities/';
-import {createAction, handleActions} from 'redux-actions';
-
-const {$set, $delete} = immutableOperations;
+import {createAction} from 'redux-actions';
+import {$set, $drop} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/UI/FlashMessages/ADD';
 const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
@@ -17,10 +14,12 @@ const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
  * @return {Object}
  */
 const add = createAction(ADD, (id, message, severity, timeout = 0) => ({
-    severity: severity.toLowerCase(),
-    id,
-    message,
-    timeout
+    message: {
+        severity: severity.toLowerCase(),
+        id,
+        message,
+        timeout
+    }
 }));
 
 /**
@@ -41,11 +40,14 @@ export const actions = {
 };
 
 //
+// Export the initial state
+//
+export const initialState = {};
+
+//
 // Export the reducer
 //
-const initialState = Immutable.fromJS({});
-
-export const reducer = handleActions({
-    [ADD]: (state, action) => $set(state, `${action.payload.id}`, action.payload),
-    [REMOVE]: (state, action) => $delete(state, `${action.payload.id}`)
-}, initialState);
+export const reducer = {
+    [ADD]: ({message}) => $set(['ui', 'flashMessages', message.id], message),
+    [REMOVE]: ({id}) => $drop(['ui', 'flashMessages', id])
+};

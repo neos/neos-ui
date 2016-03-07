@@ -1,12 +1,10 @@
 import {actions} from 'Host/Redux/';
 
 export default dispatch => (tabId, documentInformation) => {
-    dispatch(actions.Transient.Nodes.addBulk(documentInformation.nodes));
+    dispatch(actions.UI.ContentView.setContextPath(documentInformation.metaData.contextPath));
 
-    dispatch(actions.UI.Tabs.setMetaData(tabId, Object.assign({
-        title: tabId,
-        workspace: {
-            publishableNodes: []
-        }
-    }, documentInformation.metaData || {})));
+    Object.keys(documentInformation.nodes).forEach(contextPath => {
+        const node = documentInformation.nodes[contextPath];
+        dispatch(actions.CR.Nodes.add(contextPath, node));
+    });
 };

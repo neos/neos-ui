@@ -1,56 +1,38 @@
 import React, {Component, PropTypes} from 'react';
-import Immutable from 'immutable';
-import {Tree} from 'Host/Components/';
-import {immutableOperations} from 'Shared/Utilities/';
-import backend from 'Host/Service/Backend.js';
 import {connect} from 'react-redux';
+import {$transform} from 'plow-js';
 
-const {$get, $set} = immutableOperations;
+import {Tree} from 'Host/Components/';
+import {UI} from 'Host/Selectors/';
+import {actions} from 'Host/Redux/';
 
-@connect(state => ({
-    treeData: $get(state, 'ui.pageTree')
-}))
+@connect($transform({
+    rootNode: UI.PageTree.treeSelector
+}), {
+    onNodeToggle: actions.UI.PageTree.toggle,
+    onNodeClick: actions.UI.ContentView.setSrc,
+    onNodeFocus: actions.UI.PageTree.focus
+})
 export default class PageTree extends Component {
     static propTypes = {
-        treeData: PropTypes.instanceOf(Immutable.Map)
+        rootNode: PropTypes.object,
+
+        onNodeToggle: PropTypes.func,
+        onNodeClick: PropTypes.func,
+        onNodeFocus: PropTypes.func
     };
 
     render() {
-        const {treeData} = this.props;
+        const {rootNode, onNodeToggle, onNodeClick, onNodeFocus} = this.props;
 
         return (
-            <Tree
-                data={treeData}
-                onNodeToggle={this.onPageNodeToggle.bind(this)}
-                onNodeClick={this.onPageNodeClick.bind(this)}
-                onNodeFocusChanged={this.onPageNodeFocusChanged.bind(this)}
+            rootNode ? <Tree
+                rootNode={rootNode}
+                onNodeToggle={node => onNodeToggle(node.contextPath)}
+                onNodeClick={node => onNodeClick(node.uri)}
+                onNodeFocus={node => onNodeFocus(node.contextPath)}
                 id="neos__leftSidebar__pageTree"
-                />
+                /> : null
         );
-    }
-
-    onPageNodeToggle(node) {
-        const {nodeTreeService} = backend;
-        const newNode = $set(node, 'isCollapsed', !$get(node, 'isCollapsed'));
-
-        nodeTreeService.updateNode(newNode);
-        nodeTreeService.loadSubTree($get(node, 'contextPath'), 'TYPO3.Neos:Document');
-    }
-
-    onPageNodeClick(node) {
-        const {nodeTreeService} = backend;
-        const newNode = $set(node, 'isFocused', !$get(node, 'isFocused'));
-
-        nodeTreeService.updateNode(newNode);
-    }
-
-    onPageNodeFocusChanged(node) {
-        const {tabManager, nodeTreeService} = backend;
-        const href = $get(node, 'href');
-        const focused = $set(node, 'isFocused', !$get(node, 'isFocused'));
-        const active = $set(focused, 'isActive', !$get(focused, 'isActive'));
-
-        nodeTreeService.updateNode(active);
-        tabManager.changeActiveTabSrc(href);
     }
 }

@@ -1,8 +1,5 @@
-import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Utilities/';
-import {createAction, handleActions} from 'redux-actions';
-
-const {$get, $set} = immutableOperations;
+import {createAction} from 'redux-actions';
+import {$toggle} from 'plow-js';
 
 const TOGGLE = '@packagefactory/guevara/UI/FullScreen/TOGGLE';
 
@@ -11,17 +8,23 @@ const TOGGLE = '@packagefactory/guevara/UI/FullScreen/TOGGLE';
  */
 const toggle = createAction(TOGGLE);
 
+//
+// Export the actions
+//
 export const actions = {
     toggle
 };
 
-const initialState = Immutable.fromJS({
+//
+// Export the initial state
+//
+export const initialState = {
     isFullScreen: false
-});
+};
 
-export const reducer = handleActions({
-    [TOGGLE]: state => {
-        const isFullScreen = $get(state, 'isFullScreen');
-        return $set(state, 'isFullScreen', !isFullScreen);
-    }
-}, initialState);
+//
+// Export the reducer
+//
+export const reducer = {
+    [TOGGLE]: () => $toggle('ui.fullScreen.isFullScreen')
+};

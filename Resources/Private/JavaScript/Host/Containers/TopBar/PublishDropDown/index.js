@@ -1,40 +1,29 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Utilities/';
+import {$transform, $get, $map} from 'plow-js';
+
 import {backend} from 'Host/Service/';
 import {
     I18n,
     Icon,
     DropDown,
-    Label,
-    CheckBox
+    CheckBox,
+    Label
 } from 'Host/Components/';
 import {actions} from 'Host/Redux/';
-import style from './style.css';
+
 import AbstractButton from './AbstractButton/';
+import style from './style.css';
 
-const {$get, $mapGet} = immutableOperations;
-
-@connect(state => {
-    const publishingState = $get(state, 'ui.tabs.active.workspace.publishingState');
-    const publishableNodes = $get(publishingState, 'publishableNodes');
-    const publishableNodesInDocument = $get(publishingState, 'publishableNodesInDocument');
-    const isSaving = $get(state, 'ui.remote.isSaving');
-    const isPublishing = $get(state, 'ui.remote.isPublishing');
-    const isDiscarding = $get(state, 'ui.remote.isDiscarding');
-    const isAutoPublishingEnabled = $get(state, 'user.settings.isAutoPublishingEnabled');
-
-    return {
-        isSaving,
-        isPublishing,
-        isDiscarding,
-        publishableNodes,
-        publishableNodesInDocument,
-        isAutoPublishingEnabled
-    };
-}, {
+@connect($transform({
+    isSaving: $get('ui.remote.isSaving'),
+    isPublishing: $get('ui.remote.isPublishing'),
+    isDiscarding: $get('ui.remote.isDiscarding'),
+    publishableNodes: $get('ui.tabs.active.workspace.publishingState.publishableNodes'),
+    publishableNodesInDocument: $get('ui.tabs.active.workspace.publishingState.publishableNodesInDocument'),
+    isAutoPublishingEnabled: $get('user.settings.isAutoPublishingEnabled')
+}), {
     toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing
 })
 export default class PublishDropDown extends Component {
@@ -42,8 +31,8 @@ export default class PublishDropDown extends Component {
         isSaving: PropTypes.bool,
         isPublishing: PropTypes.bool,
         isDiscarding: PropTypes.bool,
-        publishableNodes: PropTypes.instanceOf(Immutable.List),
-        publishableNodesInDocument: PropTypes.instanceOf(Immutable.List),
+        publishableNodes: PropTypes.array,
+        publishableNodesInDocument: PropTypes.array,
         isAutoPublishingEnabled: PropTypes.bool,
         toggleAutoPublishing: PropTypes.func.isRequired
     };
@@ -56,8 +45,8 @@ export default class PublishDropDown extends Component {
             isAutoPublishingEnabled,
             toggleAutoPublishing
         } = this.props;
-        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
-        const canPublishGlobally = publishableNodes.count() > 0;
+        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
+        const canPublishGlobally = publishableNodes && (publishableNodes.length > 0);
         const autoPublishWrapperClassNames = mergeClassNames({
             [style.dropDown__item]: true,
             [style['dropDown__item--noHover']]: true
@@ -74,7 +63,7 @@ export default class PublishDropDown extends Component {
                     className={style.publishBtn}
                     isEnabled={canPublishLocally || isSaving}
                     isHighlighted={canPublishLocally || isSaving}
-                    indicator={publishableNodesInDocument.count()}
+                    indicator={publishableNodesInDocument ? publishableNodesInDocument.length : 0}
                     onClick={e => this.onPublishClick(e)}
                     id="neos__topBar__publishDropDown__publishBtn"
                     >
@@ -96,7 +85,7 @@ export default class PublishDropDown extends Component {
                             <AbstractButton
                                 isEnabled={canPublishGlobally}
                                 isHighlighted={false}
-                                indicator={publishableNodes.count()}
+                                indicator={publishableNodes ? publishableNodes.length : 0}
                                 onClick={e => this.onPublishAllClick(e)}
                                 id="neos__topBar__publishDropDown__publishAllBtn"
                                 >
@@ -108,7 +97,7 @@ export default class PublishDropDown extends Component {
                             <AbstractButton
                                 isEnabled={canPublishLocally}
                                 isHighlighted={false}
-                                indicator={publishableNodesInDocument.count()}
+                                indicator={publishableNodesInDocument ? publishableNodesInDocument.length : 0}
                                 label="Discard"
                                 icon="ban"
                                 onClick={e => this.onDiscardClick(e)}
@@ -122,7 +111,7 @@ export default class PublishDropDown extends Component {
                             <AbstractButton
                                 isEnabled={canPublishGlobally}
                                 isHighlighted={false}
-                                indicator={publishableNodes.count()}
+                                indicator={publishableNodes ? publishableNodes.length : 0}
                                 onClick={e => this.onDiscardAllClick(e)}
                                 id="neos__topBar__publishDropDown__discardAllBtn"
                                 >
@@ -207,27 +196,27 @@ export default class PublishDropDown extends Component {
         const {publishableNodesInDocument} = this.props;
         const {publishingService} = backend;
 
-        publishingService.publishNodes($mapGet(publishableNodesInDocument, 'contextPath'), 'live');
+        publishingService.publishNodes($map('contextPath', publishableNodesInDocument), 'live');
     }
 
     onPublishAllClick() {
         const {publishableNodes} = this.props;
         const {publishingService} = backend;
 
-        publishingService.publishNodes($mapGet(publishableNodes, 'contextPath'), 'live');
+        publishingService.publishNodes($map('contextPath', publishableNodes), 'live');
     }
 
     onDiscardClick() {
         const {publishableNodesInDocument} = this.props;
         const {publishingService} = backend;
 
-        publishingService.discardNodes($mapGet(publishableNodesInDocument, 'contextPath'));
+        publishingService.discardNodes($map('contextPath', publishableNodesInDocument));
     }
 
     onDiscardAllClick() {
         const {publishableNodes} = this.props;
         const {publishingService} = backend;
 
-        publishingService.discardNodes($mapGet(publishableNodes, 'contextPath'));
+        publishingService.discardNodes($map('contextPath', publishableNodes));
     }
 }

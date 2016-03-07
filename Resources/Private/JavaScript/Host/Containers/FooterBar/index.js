@@ -1,37 +1,36 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import Immutable from 'immutable';
-import {actions} from 'Host/Redux/';
-import {Bar} from 'Host/Components/';
-import TabSwitcher from './TabSwitcher/';
 import mergeClassNames from 'classnames';
+import {$transform, $get} from 'plow-js';
+
+import {Bar} from 'Host/Components/';
+
 import style from './style.css';
-import {immutableOperations} from 'Shared/Utilities/';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    tabs: $get(state, 'ui.tabs'),
-    isHidden: $get(state, 'ui.fullScreen.isFullScreen')
-}), {
-    switchTo: actions.UI.Tabs.switchTo
-})
+@connect($transform({
+    isHidden: $get('ui.fullScreen.isFullScreen'),
+    isActive: $get('ui.debugMode'),
+    hoveredNodeContextPath: $get('cr.nodes.hovered.contextPath'),
+    focusedNodeContextPath: $get('cr.nodes.focused.contextPath')
+}))
 export default class FooterBar extends Component {
     static propTypes = {
-        tabs: PropTypes.instanceOf(Immutable.Map),
         isHidden: PropTypes.bool.isRequired,
-        switchTo: PropTypes.func.isRequired
+        isActive: PropTypes.bool.isRequired,
+        hoveredNodeContextPath: PropTypes.string,
+        focusedNodeContextPath: PropTypes.string
     };
 
     render() {
-        const {tabs, isHidden} = this.props;
+        const {isHidden, isActive, hoveredNodeContextPath, focusedNodeContextPath} = this.props;
         const classNames = mergeClassNames({
             [style.footerBar]: true,
-            [style['footerBar--isHidden']]: isHidden
+            [style['footerBar--isHidden']]: isHidden || !isActive
         });
+
         return (
             <Bar className={classNames} position="bottom">
-                <TabSwitcher tabs={tabs.get('byId')} active={tabs.get('active')} onSwitchTab={tab => this.props.switchTo(tab.get('id'))} />
+                <small>{hoveredNodeContextPath || focusedNodeContextPath || null}</small>
             </Bar>
         );
     }

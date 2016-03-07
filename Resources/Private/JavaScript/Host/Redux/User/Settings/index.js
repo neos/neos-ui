@@ -1,8 +1,5 @@
-import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Utilities/';
-import {createAction, handleActions} from 'redux-actions';
-
-const {$get, $set} = immutableOperations;
+import {createAction} from 'redux-actions';
+import {$toggle} from 'plow-js';
 
 const TOGGLE_AUTO_PUBLISHING = '@packagefactory/guevara/User/Settings/TOGGLE_AUTO_PUBLISHING';
 
@@ -19,16 +16,15 @@ export const actions = {
 };
 
 //
+// Export the initial state
+//
+export const initialState = {
+    isAutoPublishingEnabled: false
+};
+
+//
 // Export the reducer
 //
-const initialState = Immutable.fromJS({
-    isAutoPublishingEnabled: false
-});
-
-export const reducer = handleActions({
-    [TOGGLE_AUTO_PUBLISHING]: state => {
-        const isCurrentlyEnabled = $get(state, 'isAutoPublishingEnabled');
-
-        return $set(state, 'isAutoPublishingEnabled', !isCurrentlyEnabled);
-    }
-}, initialState);
+export const reducer = {
+    [TOGGLE_AUTO_PUBLISHING]: () => $toggle('user.settings.isAutoPublishingEnabled')
+};

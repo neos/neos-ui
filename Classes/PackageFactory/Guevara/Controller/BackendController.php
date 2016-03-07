@@ -17,13 +17,24 @@ use TYPO3\Neos\Domain\Service\ContentContext;
 use TYPO3\Neos\Service\UserService;
 use TYPO3\Neos\Service\NodeTypeSchemaBuilder;
 use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Neos\Service\LinkingService;
 use TYPO3\Neos\Service\XliffService;
 use TYPO3\Flow\I18n\Locale;
 use TYPO3\TypoScript\Core\Cache\ContentCache;
+use TYPO3\TypoScript\View\TypoScriptView;
+use TYPO3\Flow\Mvc\View\ViewInterface;
 
 class BackendController extends ActionController
 {
+
+    /**
+     * @var string
+     */
+    protected $defaultViewObjectName = 'PackageFactory\Guevara\View\BackendTypoScriptView';
+
+    /**
+     * @var TypoScriptView
+     */
+    protected $view;
 
     /**
      * @Flow\Inject
@@ -57,12 +68,6 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var LinkingService
-     */
-    protected $linkingService;
-
-    /**
-     * @Flow\Inject
      * @var NodeTypeSchemaBuilder
      */
     protected $nodeTypeSchemaBuilder;
@@ -87,6 +92,11 @@ class BackendController extends ActionController
      */
     protected $contentCache;
 
+    public function initializeView(ViewInterface $view)
+    {
+        $view->setTypoScriptPath('backend');
+    }
+
     /**
      * Displays the backend interface
      *
@@ -101,38 +111,26 @@ class BackendController extends ActionController
         $this->session->putData('__cheEnabled__', TRUE);
 
         if($user = $this->userService->getBackendUser()) {
+            $workspaceName = $this->userService->getPersonalWorkspaceName();
+            $contentContext = $this->createContext($workspaceName);
+
+            $contentContext->getWorkspace();
+            $this->persistenceManager->persistAll();
+
+            $siteNode = $contentContext->getCurrentSiteNode();
+
             if ($node === null) {
-                $workspaceName = $this->userService->getPersonalWorkspaceName();
-                $contentContext = $this->createContext($workspaceName);
-
-                $contentContext->getWorkspace();
-                $this->persistenceManager->persistAll();
-
-                $node = $contentContext->getCurrentSiteNode();
+                $node = $siteNode;
             }
 
-            $this->view->assign('initialState', json_encode([
-                'user' => [
-                    'name' => [
-                        'title' => $user->getName()->getTitle(),
-                        'firstName' => $user->getName()->getFirstName(),
-                        'middleName' => $user->getName()->getMiddleName(),
-                        'lastName' => $user->getName()->getLastName(),
-                        'otherName' => $user->getName()->getOtherName(),
-                        'fullName' => $user->getName()->getFullName()
-                    ]
-                ],
-
-                'transient' => [
-                    'nodeTypes' => $this->nodeTypeSchemaBuilder->generateNodeTypeSchema()
-                ]
-            ]));
+            $this->view->assign('nodeTypeSchema', $this->nodeTypeSchemaBuilder->generateNodeTypeSchema());
+            $this->view->assign('user', $user);
+            $this->view->assign('documentNode', $node);
+            $this->view->assign('site', $node);
 
             $this->view->assign('translations', $this->xliffService->getCachedJson(
                 new Locale($this->userService->getInterfaceLanguage())
             ));
-
-            $this->view->assign('documentNodeUri', $this->buildNodeUri($node));
             return;
         }
 
@@ -163,17 +161,5 @@ class BackendController extends ActionController
         }
 
         return $this->contextFactory->create($contextProperties);
-    }
-
-    /**
-     * Build a node uri
-     *
-     * @return string
-     */
-    protected function buildNodeUri(NodeInterface $node) {
-        return $this->linkingService->createNodeUri(
-            $this->controllerContext,
-            $node
-        );
     }
 }

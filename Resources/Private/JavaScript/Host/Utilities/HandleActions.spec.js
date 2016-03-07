@@ -1,7 +1,7 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon/pkg/sinon.js';
 import sinonChai from 'sinon-chai';
-import handleActions from './handleActions.js';
+import handleActions from './HandleActions.js';
 
 chai.should();
 chai.use(sinonChai);

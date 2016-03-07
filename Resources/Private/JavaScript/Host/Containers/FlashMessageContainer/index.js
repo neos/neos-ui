@@ -20,19 +20,20 @@ export default class FlashMessageContainer extends Component {
     };
 
     render() {
-        const {flashMessages} = this.props;
+        const {flashMessages, removeMessage} = this.props;
 
         return (
             <div className={style.flashMessageContainer}>
                 {flashMessages.map(flashMessage => {
                     const {id, message, severity, timeout} = flashMessage.toJS();
+
                     return (
                         <FlashMessage
                             key={id}
                             message={message}
                             severity={severity}
                             timeout={timeout}
-                            onClose={() => this.props.removeMessage(id)}
+                            onClose={() => removeMessage(id)}
                             />
                     );
                 }).toArray()}

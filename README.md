@@ -68,6 +68,8 @@ Instead of relying on the default settings of Karma, we use [chai](http://chaijs
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 
+Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a specific test and not the whole test suite.
+
 #### <a name="integration-tests"></a> Writing integration tests
 The integration tests are running on a selenium grid which is installed & started by the `npm run selenium:init` command,
 and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with [chai](http://chaijs.com/).

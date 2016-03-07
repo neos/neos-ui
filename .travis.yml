@@ -16,6 +16,7 @@ php:
   - '5.6'
 services:
   - mysql
+  - docker
 
 #
 # Cache the composer and node_modules directory to speed up the the installation of dependencies.
@@ -36,6 +37,8 @@ env:
   - TEST_SUITE=CodeStyle
   - TEST_SUITE=UnitTests
   - TEST_SUITE=IntegrationTests
+  - TEST_SUITE=Docker
+
 
 #
 # Install nvm, the node depdencies and setup the some env variables.

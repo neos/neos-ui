@@ -42,7 +42,8 @@ export default class PublishDropDown extends Component {
             publishableNodes,
             publishableNodesInDocument,
             isSaving,
-            isAutoPublishingEnabled
+            isAutoPublishingEnabled,
+            toggleAutoPublishing
         } = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
         const canPublishGlobally = publishableNodes && (publishableNodes.length > 0);

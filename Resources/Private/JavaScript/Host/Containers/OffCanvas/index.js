@@ -13,6 +13,9 @@ import {
 
 import style from './style.css';
 
+const moduleLabel = (label, sourceName = 'Main') =>
+    <I18n id={label} sourceName={sourceName} fallback={label} />;
+
 @connect($transform({
     isHidden: $get('ui.offCanvas.isHidden')
 }), {
@@ -46,14 +49,14 @@ export default class OffCanvas extends Component {
     renderMenu() {
         const staticMenuData = [{
             icon: 'file',
-            title: 'content_menu_menuPanel_content',
+            title: moduleLabel('content_menu_menuPanel_content'),
             children: [{
                 icon: 'globe',
                 title: 'test'
             }]
         }, {
             icon: 'briefcase',
-            title: 'management_label',
+            title: moduleLabel('management_label', 'Modules'),
             children: [{
                 icon: 'th-large',
                 title: 'Workspaces'
@@ -79,7 +82,7 @@ export default class OffCanvas extends Component {
             <ToggablePanel isOpened={true} className={style.offCanvas__menuItem} key={key}>
                 <ToggablePanel.Header className={style.offCanvas__menuItem__header}>
                     <Icon icon={icon} padded="right" />
-                    <I18n id={title} fallback={title} />
+                    {title}
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {children.map((item, index) => this.renderMenuItem(item, index))}

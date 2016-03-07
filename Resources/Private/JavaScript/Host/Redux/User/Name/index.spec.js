@@ -1,7 +1,7 @@
 import {createStore} from 'redux';
 import {reducer, initialState} from './index.js';
 
-import {handleActions} from 'Host/Util/HandleActions/';
+import {handleActions} from 'Host/Utilities/';
 
 describe('"host.redux.user.name" ', () => {
     let store = null;

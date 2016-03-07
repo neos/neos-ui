@@ -1,7 +1,7 @@
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import {handleActions} from 'Host/Util/HandleActions/';
+import {handleActions} from 'Host/Utilities/';
 
 import {
     reducer as ChangesReducer,

@@ -1,7 +1,7 @@
 import {createStore} from 'redux';
 import {reducer, actions, initialState} from './index.js';
 
-import {handleActions} from 'Host/Util/HandleActions/';
+import {handleActions} from 'Host/Utilities/';
 
 const {add, clear} = actions;
 

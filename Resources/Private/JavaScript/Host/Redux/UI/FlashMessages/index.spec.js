@@ -1,6 +1,6 @@
 import {createStore} from 'redux';
 
-import {handleActions} from 'Host/Util/HandleActions/';
+import {handleActions} from 'Host/Utilities/';
 
 import {reducer, actions, initialState} from './index.js';
 

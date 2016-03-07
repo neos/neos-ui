@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+
+  app:
+    image: node:4.3
+    command: npm run watch:build
+    working_dir: /app
+    
+    volumes:
+      - .:/app

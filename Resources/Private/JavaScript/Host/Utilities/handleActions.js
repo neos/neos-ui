@@ -1,7 +1,14 @@
 //
 // Handle redux actions
 //
-const handleActions = handlers => (state, action) =>
-    handlers[action.type] ? handlers[action.type](action.payload)(state) : state;
+const handleActions = (handlers = {}) => (state, action) => {
+    const handler = handlers[action.type];
+
+    if (handler) {
+        return handler(action.payload)(state);
+    }
+
+    return state;
+};
 
 export default handleActions;

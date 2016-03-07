@@ -9,7 +9,7 @@ const createReadOnlyValue = value => ({
 });
 
 const define = parent => (name, value) => {
-    if (typeof parent[name] !== 'undefined') {
+    if (parent[name] !== undefined) {
         throw new Error(`Could not add library ${name}, because it is already defined.`);
     }
 
@@ -20,11 +20,11 @@ const define = parent => (name, value) => {
 // Initializes the Neos API
 //
 export default (parent, csrfToken, alias = 'neos') => {
-    if (typeof csrfToken === 'undefined') {
+    if (csrfToken === undefined) {
         throw new Error('You need to provide a valid csrf token for the Neos API');
     }
 
-    if (typeof parent[alias] !== 'undefined') {
+    if (parent[alias] !== undefined) {
         throw new Error(`Could not initialize Neos API, because ${alias} is already defined.`);
     }
 

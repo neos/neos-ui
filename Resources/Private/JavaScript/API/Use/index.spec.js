@@ -6,7 +6,7 @@ import initializeUse from './index.js';
 chai.should();
 chai.use(sinonChai);
 
-describe.only('Neos JS API > use', () => {
+describe('Neos JS API > use', () => {
     it('should return a function when called', () => {
         expect(initializeUse()).to.be.an('function');
     });

@@ -8,7 +8,7 @@ const createReadOnlyValue = value => ({
     configurable: false
 });
 
-const define = parent => (name, value) => {
+export const define = parent => (name, value) => {
     if (parent[name] !== undefined) {
         throw new Error(`Could not add library ${name}, because it is already defined.`);
     }

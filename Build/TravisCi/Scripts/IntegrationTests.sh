@@ -13,5 +13,7 @@ set -e
 #
 
 # Build the assets and execute the integration tests.
-npm run build
-npm run selenium:run
+if [ -n "$SAUCE_ACCESS_KEY" ]; then
+    npm run build
+    npm run selenium:run
+fi

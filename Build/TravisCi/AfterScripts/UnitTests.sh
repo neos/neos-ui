@@ -13,6 +13,8 @@ set -e
 #
 
 # Publish the code coverage to codeclimate.com once the tests have passed.
-npm install -g codeclimate-test-reporter
-mv Coverage/**/lcov.info .
-codeclimate-test-reporter < lcov.info
+if [ -n "$CODECLIMATE_REPO_TOKEN" ]; then
+    npm install -g codeclimate-test-reporter
+    mv Coverage/**/lcov.info .
+    codeclimate-test-reporter < lcov.info
+fi

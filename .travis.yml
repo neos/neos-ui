@@ -42,7 +42,7 @@ env:
 #
 before_install:
   # Add the oAuth token to git to avoid errors with composer because of https://github.com/composer/composer/issues/1314
-  - git config --global github.accesstoken $GITHUB_OAUTH_TOKEN
+  - if [ -n "$GITHUB_OAUTH_TOKEN" ]; then composer config github-oauth.github.com ${GITHUB_OAUTH_TOKEN}; fi;
 
   # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
   - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash

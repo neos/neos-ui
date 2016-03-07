@@ -1,0 +1,6 @@
+include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/ArrayCollection.ts2
+
+prototype(PackageFactory.Guevara:Workspace) < prototype(TYPO3.TypoScript:RawArray) {
+    name = ${q(workspace).property('_name')}
+    publishableNodes = ${Guevara.Workspace.getPublishableNodeInfo(workspace)}
+}

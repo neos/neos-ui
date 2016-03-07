@@ -1,14 +1,29 @@
-import Immutable from 'immutable';
 import {createStore} from 'redux';
-import {reducer, actions} from './index.js';
+import {reducer, actions, initialState} from './index.js';
 
-const {setData, setSubTree, setNode} = actions;
+import {handleActions} from 'Host/Util/HandleActions/';
+
+const {
+    add,
+    focus,
+    uncollapse,
+    collapse,
+    invalidate,
+    requestChildren
+} = actions;
 
 describe('"host.redux.ui.pageTree" ', () => {
     let store = null;
 
     beforeEach(done => {
-        store = createStore(reducer);
+        store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: initialState
+                }
+            }
+        );
 
         done();
     });
@@ -20,80 +35,201 @@ describe('"host.redux.ui.pageTree" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return a immutable map as the initial state.', () => {
-            expect(store.getState()).to.be.an.instanceof(Immutable.Map);
+        it('should return an object as the initial state.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree).to.be.an('object');
         });
     });
 
-    describe('"setData" action.', () => {
-        it('should replace the initial state with the given argument.', () => {
-            store.dispatch(setData({
-                node: {}
+    describe('"add" action.', () => {
+        it('should add a node representation to the state.', () => {
+            store.dispatch(add('someContextPath', {
+                contextPath: 'someContextPath',
+                node: 'someNode'
             }));
 
-            expect(store.getState().count()).to.equal(1);
-            expect(store.getState().get('node')).to.be.an.instanceof(Immutable.Map);
-        });
-    });
+            const state = store.getState();
 
-    describe('"setSubTree" action.', () => {
-        it('should set the given data as the contents of the given object path.', () => {
-            store.dispatch(setData({
-                node: {}
-            }));
-
-            store.dispatch(setSubTree('node', {
-                children: {}
-            }));
-
-            expect(store.getState().get('node').get('children')).to.not.be.an('undefined');
-            expect(store.getState().get('node').get('children')).to.be.an.instanceof(Immutable.Map);
-        });
-    });
-
-    describe('"setNode" action.', () => {
-        it('should replace the given data as the contents of the given object path.', () => {
-            store.dispatch(setData({
-                node: {
-                    children: {}
+            expect(Object.keys(state.ui.pageTree.nodesByContextPath).length).to.equal(1);
+            expect(state.ui.pageTree.nodesByContextPath).to.deep.equal({
+                someContextPath: {
+                    contextPath: 'someContextPath',
+                    node: 'someNode'
                 }
-            }));
-
-            const data = Immutable.fromJS({
-                foo: 'bar'
             });
-            store.dispatch(setNode('node', data));
-
-            expect(store.getState().get('node')).to.not.be.an('undefined');
-            expect(store.getState().get('node').get('foo')).to.equal('bar');
-            expect(store.getState().get('node').get('children')).to.be.an('undefined');
         });
+    });
 
-        it('should reset recursivly the "isActive", "isFocused" key the given object path.', () => {
-            store.dispatch(setData({
-                node: {
-                    children: {
-                        deepNode: {
-                            isActive: false,
-                            isFocused: true
+    describe('"focus" action.', () => {
+        it('should set the focused node context path.', () => {
+            store.dispatch(focus('someContextPath'));
+
+            const state = store.getState();
+
+            expect(state.ui.pageTree.focused).to.equal('someContextPath');
+        });
+    });
+
+    describe('"uncollapse" action.', () => {
+        const store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: {
+                        isLoading: true,
+                        nodesByContextPath: {
+                            someContextPath: {
+                                isLoading: true,
+                                isCollapsed: true
+                            }
                         }
                     }
                 }
-            }));
+            }
+        );
 
-            const data = Immutable.fromJS({
-                isActive: true,
-                isFocused: true
-            });
-            store.dispatch(setNode('node', data));
+        store.dispatch(uncollapse('someContextPath'));
 
-            const node = store.getState().get('node');
-            const deepNode = node.get('children').get('deepNode');
+        it('should set the loading state of the given node to false.', () => {
+            const state = store.getState();
 
-            expect(node.get('isActive')).to.equal(false);
-            expect(node.get('isFocused')).to.equal(false);
-            expect(deepNode.get('isActive')).to.equal(false);
-            expect(deepNode.get('isActive')).to.equal(false);
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(false);
+        });
+
+        it('should set the collapsed state of the given node to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isCollapsed).to.equal(false);
+        });
+
+        it('should set the loading state of the pageTree to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.isLoading).to.equal(false);
+        });
+    });
+
+    describe('"collapse" action.', () => {
+        const store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: {
+                        isLoading: true,
+                        nodesByContextPath: {
+                            someContextPath: {
+                                isLoading: true,
+                                isCollapsed: false
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        store.dispatch(collapse('someContextPath'));
+
+        it('should set the loading state of the given node to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(false);
+        });
+
+        it('should set the collapsed state of the given node to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isCollapsed).to.equal(true);
+        });
+
+        it('should set the loading state of the pageTree to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.isLoading).to.equal(false);
+        });
+    });
+
+    describe('"invalidate" action.', () => {
+        const store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: {
+                        isLoading: true,
+                        hasError: false,
+                        nodesByContextPath: {
+                            someContextPath: {
+                                isLoading: true,
+                                hasError: false
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        store.dispatch(invalidate('someContextPath'));
+
+        it('should set the loading state of the given node to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(false);
+        });
+
+        it('should set the error state of the given node to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.hasError).to.equal(true);
+        });
+
+        it('should set the collapsed state of the given node to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isCollapsed).to.equal(true);
+        });
+
+        it('should set the loading state of the pageTree to false.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.isLoading).to.equal(false);
+        });
+
+        it('should set the error state of the pageTree to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.hasError).to.equal(true);
+        });
+    });
+
+    describe('"requestChildren" action.', () => {
+        const store = createStore(
+            handleActions(reducer),
+            {
+                ui: {
+                    pageTree: {
+                        isLoading: false,
+                        nodesByContextPath: {
+                            someContextPath: {
+                                isLoading: false
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        store.dispatch(requestChildren('someContextPath'));
+
+        it('should set the loading state of the given node to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(true);
+        });
+
+        it('should set the loading state of the pageTree to true.', () => {
+            const state = store.getState();
+
+            expect(state.ui.pageTree.isLoading).to.equal(true);
         });
     });
 });

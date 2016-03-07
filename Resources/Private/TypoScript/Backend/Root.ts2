@@ -1,0 +1,18 @@
+include: resource://TYPO3.TypoScript/Private/TypoScript/Root.ts2
+
+backend = TYPO3.TypoScript:Template {
+    templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Index.html'
+
+    initialState = PackageFactory.Guevara:InitialState
+    initialState.@process.json = ${Json.stringify(value)}
+
+    translations = ${translations}
+}
+
+nodes = PackageFactory.Guevara:ArrayCollection {
+    collection = ${nodes}
+    itemName = 'node'
+    itemRenderer = PackageFactory.Guevara:Node {
+        @context.documentNode = ${node}
+    }
+}

@@ -19,6 +19,8 @@ use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Success;
 use PackageFactory\Guevara\Domain\Model\Feedback\Operations\ReloadDocument;
 use PackageFactory\Guevara\Domain\Service\NodeTreeBuilder;
 use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
+use TYPO3\Eel\FlowQuery\FlowQuery;
+use PackageFactory\Guevara\View\BackendTypoScriptView;
 
 class BackendServiceController extends ActionController
 {
@@ -177,5 +179,39 @@ class BackendServiceController extends ActionController
     {
         $nodeTreeArguments->setControllerContext($this->controllerContext);
         $this->view->assign('value', $nodeTreeArguments->build($includeRoot));
+    }
+
+    /**
+     * Build and execute a flow query chain
+     *
+     * @param array $chain
+     * @return void
+     */
+    public function flowQueryAction(array $chain)
+    {
+        $createContext = array_shift($chain);
+        $finisher = array_pop($chain);
+
+        $flowQuery = new FlowQuery(array_map(
+            function ($envelope) {
+                return $this->nodeService->getNodeFromContextPath($envelope['$node']);
+            },
+            $createContext['payload']
+        ));
+
+        foreach ($chain as $operation) {
+            $flowQuery = call_user_func_array([$flowQuery, strtolower($operation['type'])], $operation['payload']);
+        }
+
+        if ('GET' === $finisher['type']) {
+            $result = $flowQuery->get();
+        }
+
+        $typoScriptView = new BackendTypoScriptView();
+        $typoScriptView->setControllerContext($this->controllerContext);
+        $typoScriptView->setTypoScriptPath('nodes');
+        $typoScriptView->assign('nodes', $result);
+
+        $this->view->assign('value', $typoScriptView->render());
     }
 }

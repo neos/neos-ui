@@ -1,8 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import style from './style.css';
+
 import {IconButton, Icon} from 'Host/Components/';
 import {executeCallback} from 'Shared/Utilities/';
+
+import style from './style.css';
 
 export default class FlashMessage extends Component {
     static propTypes = {

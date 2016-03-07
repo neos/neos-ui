@@ -1,14 +1,14 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {$transform, $get} from 'plow-js';
+
 import {actions} from 'Host/Redux/';
 import {IconButton} from 'Host/Components/';
+
 import style from './style.css';
-import {immutableOperations} from 'Shared/Utilities/';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
+@connect($transform({
+    isFullScreen: $get('ui.fullScreen.isFullScreen')
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })

@@ -1,18 +1,18 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {actions} from 'Host/Redux/';
 import mergeClassNames from 'classnames';
+import {$transform, $get} from 'plow-js';
+
+import {actions} from 'Host/Redux/';
 import {IconButton} from 'Host/Components/';
 import DimensionSwitcher from './DimensionSwitcher/';
+
 import style from './style.css';
-import {immutableOperations} from 'Shared/Utilities/';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    isFringedLeft: $get(state, 'ui.leftSideBar.isHidden'),
-    isFringedRight: $get(state, 'ui.rightSideBar.isHidden'),
-    isFullScreen: $get(state, 'ui.fullScreen.isFullScreen')
+@connect($transform({
+    isFringedLeft: $get('ui.leftSideBar.isHidden'),
+    isFringedRight: $get('ui.rightSideBar.isHidden'),
+    isFullScreen: $get('ui.fullScreen.isFullScreen')
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })

@@ -1,21 +1,20 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import Immutable from 'immutable';
+import {$transform, $get} from 'plow-js';
+
 import {actions} from 'Host/Redux/';
-import {immutableOperations} from 'Shared/Utilities/';
 import FlashMessage from './FlashMessage/';
+
 import style from './style.css';
 
-const {$get} = immutableOperations;
-
-@connect(state => ({
-    flashMessages: $get(state, 'ui.flashMessages')
+@connect($transform({
+    flashMessages: $get('ui.flashMessages')
 }), {
     removeMessage: actions.UI.FlashMessages.remove
 })
 export default class FlashMessageContainer extends Component {
     static propTypes = {
-        flashMessages: PropTypes.instanceOf(Immutable.Map),
+        flashMessages: PropTypes.array,
         removeMessage: PropTypes.func.isRequired
     };
 
@@ -24,8 +23,8 @@ export default class FlashMessageContainer extends Component {
 
         return (
             <div className={style.flashMessageContainer}>
-                {flashMessages.map(flashMessage => {
-                    const {id, message, severity, timeout} = flashMessage.toJS();
+                {Object.keys(flashMessages || {}).map(k => flashMessages[k]).map(flashMessage => {
+                    const {id, message, severity, timeout} = flashMessage;
 
                     return (
                         <FlashMessage
@@ -36,7 +35,7 @@ export default class FlashMessageContainer extends Component {
                             onClose={() => removeMessage(id)}
                             />
                     );
-                }).toArray()}
+                })}
             </div>
         );
     }

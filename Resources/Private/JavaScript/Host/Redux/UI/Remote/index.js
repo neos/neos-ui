@@ -1,8 +1,5 @@
-import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Utilities/';
-import {createAction, handleActions} from 'redux-actions';
-
-const {$set} = immutableOperations;
+import {createAction} from 'redux-actions';
+import {$set} from 'plow-js';
 
 const START_SAVING = '@packagefactory/guevara/UI/Remote/START_SAVING';
 const FINISH_SAVING = '@packagefactory/guevara/UI/Remote/FINISH_SAVING';
@@ -54,19 +51,22 @@ export const actions = {
 };
 
 //
-// Export the reducer
+// Export the initial state
 //
-const initialState = Immutable.fromJS({
+export const initialState = {
     isSaving: false,
     isPublishing: false,
     isDiscarding: false
-});
+};
 
-export const reducer = handleActions({
-    [START_SAVING]: state => $set(state, 'isSaving', true),
-    [FINISH_SAVING]: state => $set(state, 'isSaving', false),
-    [START_PUBLISHING]: state => $set(state, 'isPublishing', true),
-    [FINISH_PUBLISHING]: state => $set(state, 'isPublishing', false),
-    [START_DISCARDING]: state => $set(state, 'isDiscarding', true),
-    [FINISH_DISCARDING]: state => $set(state, 'isDiscarding', false)
-}, initialState);
+//
+// Export the reducer
+//
+export const reducer = {
+    [START_SAVING]: () => $set('ui.remote.isSaving', true),
+    [FINISH_SAVING]: () => $set('ui.remote.isSaving', false),
+    [START_PUBLISHING]: () => $set('ui.remote.isPublishing', true),
+    [FINISH_PUBLISHING]: () => $set('ui.remote.isPublishing', false),
+    [START_DISCARDING]: () => $set('ui.remote.isDiscarding', true),
+    [FINISH_DISCARDING]: () => $set('ui.remote.isDiscarding', false)
+};

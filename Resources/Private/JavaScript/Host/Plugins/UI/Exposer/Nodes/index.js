@@ -1,41 +1,25 @@
+import {$get, $transform} from 'plow-js';
+
 import {expose} from 'Host/Plugins/UI/';
+import {CR} from 'Host/Selectors/';
 
 export const focusedNode = () => expose(
     'nodes.focused',
-    state => (state.transient && state.transient.nodes ? {
-        node: state.transient.nodes.get('byContextPath').get(
-            state.transient.nodes.get('focused').get('contextPath')
-        ),
-        typoscriptPath: state.transient.nodes.get('focused').get('typoscriptPath')
-    } : {})
+    $transform({
+        node: CR.Nodes.focusedSelector,
+        typoscriptPath: $get('cr.nodes.focused.typoscriptPath')
+    })
 );
 
 export const hoveredNode = () => expose(
     'nodes.hovered',
-    state => (state.transient && state.transient.nodes ? {
-        node: state.transient.nodes.get('byContextPath').get(
-            state.transient.nodes.get('hovered').get('contextPath')
-        ),
-        typoscriptPath: state.transient.nodes.get('hovered').get('typoscriptPath')
-    } : {})
+    $transform({
+        node: CR.Nodes.hoveredSelector,
+        typoscriptPath: $get('cr.nodes.hovered.typoscriptPath')
+    })
 );
 
 export const byContextPath = () => expose(
     'nodes.byContextPath',
-    (state, contextPath) => { //eslint-disable-line
-        const node = state.transient && state.transient.nodes ?
-            state.transient.nodes.get('byContextPath').get(contextPath) : null;
-
-        if (node) {
-            return {
-                ...node,
-                nodeType: state.transient.nodeTypes.nodeTypes[node.nodeType]
-            };
-        }
-    }
+    (state, contextPath) => CR.Nodes.byContextPathSelector(contextPath)(state)
 );
-
-// export const logToConsole = () => expose(
-//     'log.to.console',
-//     state => console.log(state.transient && state.transient.nodes && state.transient.nodes.toJS())
-// );

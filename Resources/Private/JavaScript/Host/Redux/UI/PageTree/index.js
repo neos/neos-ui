@@ -1,73 +1,93 @@
-import Immutable from 'immutable';
-import {immutableOperations} from 'Shared/Utilities/';
-import {createAction, handleActions} from 'redux-actions';
+import {createAction} from 'redux-actions';
+import {$all, $set, $override} from 'plow-js';
 
-const {$get, $set} = immutableOperations;
+const ADD = '@packagefactory/guevara/UI/PageTree/ADD';
+const FOCUS = '@packagefactory/guevara/UI/PageTree/FOCUS';
+const COMMENCE_UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/COMMENCE_UNCOLLAPSE';
+const UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/UNCOLLAPSE';
+const COLLAPSE = '@packagefactory/guevara/UI/PageTree/COLLAPSE';
+const TOGGLE = '@packagefactory/guevara/UI/PageTree/TOGGLE';
+const INVALIDATE = '@packagefactory/guevara/UI/PageTree/INVALIDATE';
+const REQUEST_CHILDREN = '@packagefactory/guevara/UI/PageTree/REQUEST_CHILDREN';
 
-const SET = '@packagefactory/guevara/UI/PageTree/SET';
-const SET_SUB_TREE = '@packagefactory/guevara/UI/PageTree/SET_SUB_TREE';
-const SET_NODE = '@packagefactory/guevara/UI/PageTree/SET_NODE';
+//
+// Export the action types
+//
+export const actionTypes = {
+    ADD,
+    FOCUS,
+    COMMENCE_UNCOLLAPSE,
+    UNCOLLAPSE,
+    COLLAPSE,
+    TOGGLE,
+    INVALIDATE,
+    REQUEST_CHILDREN
+};
 
-function resetFocusAndActive(node, keepActive, keepFocus) {
-    return node && node.map(page => page
-          .set('isActive', keepActive ? page.get('isActive') : false)
-          .set('isFocused', keepFocus ? page.get('isFocused') : false)
-          .set('children', resetFocusAndActive(page.get('children'), keepActive, keepFocus)
-    ));
-}
-/**
- * Set the tree data for the entire page tree
- *
- * @return {Object}
- */
-const setData = createAction(SET, data => data);
-
-/**
- * Set the tree data for a subtree
- *
- * @return {Object}
- */
-const setSubTree = createAction(SET_SUB_TREE, (path, data) => ({
-    path,
-    data
-}));
-
-/**
- * Set a single node in the page tree
- *
- * @return {Object}
- */
-const setNode = createAction(SET_NODE, (path, data) => ({
-    path,
-    data
-}));
+const add = createAction(ADD, (contextPath, node) => ({contextPath, node}));
+const focus = createAction(FOCUS, contextPath => ({contextPath}));
+const commenceUncollapse = createAction(COMMENCE_UNCOLLAPSE, contextPath => ({contextPath}));
+const uncollapse = createAction(UNCOLLAPSE, contextPath => ({contextPath}));
+const collapse = createAction(COLLAPSE, contextPath => ({contextPath}));
+const toggle = createAction(TOGGLE, contextPath => ({contextPath}));
+const invalidate = createAction(INVALIDATE, contextPath => ({contextPath}));
+const requestChildren = createAction(REQUEST_CHILDREN, contextPath => ({contextPath}));
 
 //
 // Export the actions
 //
 export const actions = {
-    setData,
-    setSubTree,
-    setNode
+    add,
+    focus,
+    commenceUncollapse,
+    uncollapse,
+    collapse,
+    toggle,
+    invalidate,
+    requestChildren
+};
+
+//
+// Export the initial state
+//
+export const initialState = {
+    isLoading: false,
+    hasError: false,
+    focused: '',
+    nodesByContextPath: {}
 };
 
 //
 // Export the reducer
 //
-const initialState = Immutable.fromJS({});
-
-export const reducer = handleActions({
-    [SET]: (state, action) => Immutable.fromJS(action.payload),
-    [SET_SUB_TREE]: (state, action) => $set(state, action.payload.path, action.payload.data),
-    [SET_NODE]: (state, action) => {
-        const {data, path} = action.payload;
-        const isFocused = $get(data, 'isFocused');
-        const isActive = $get(data, 'isActive');
-
-        if (!isFocused && !isActive) {
-            return $set(state, path, data);
-        }
-
-        return resetFocusAndActive(state, !isActive, !isFocused);
-    }
-}, initialState);
+export const reducer = {
+    [ADD]: ({contextPath, node}) => $set(['ui', 'pageTree', 'nodesByContextPath', contextPath], node),
+    [FOCUS]: ({contextPath}) => $set('ui.pageTree.focused', contextPath),
+    [UNCOLLAPSE]: ({contextPath}) => $all(
+        $set('ui.pageTree.isLoading', false),
+        $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
+            isLoading: false,
+            isCollapsed: false
+        })
+    ),
+    [COLLAPSE]: ({contextPath}) => $all(
+        $set('ui.pageTree.isLoading', false),
+        $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
+            isLoading: false,
+            isCollapsed: true
+        })
+    ),
+    [INVALIDATE]: ({contextPath}) => $all(
+        $set('ui.pageTree.isLoading', false),
+        $set('ui.pageTree.hasError', true),
+        $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
+            isLoading: false,
+            hasError: true,
+            isCollapsed: true
+        })
+    ),
+    [REQUEST_CHILDREN]: ({contextPath}) => $all(
+        $set('ui.pageTree.isLoading', true),
+        $set(['ui', 'pageTree', 'nodesByContextPath', contextPath, 'isLoading'], true)
+    )
+};

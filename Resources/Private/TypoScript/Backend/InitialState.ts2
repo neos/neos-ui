@@ -1,0 +1,100 @@
+include: resource://TYPO3.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
+include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/AppendToCollection.ts2
+include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/AppendAllToCollection.ts2
+
+prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawArray) {
+    cr = TYPO3.TypoScript:RawArray {
+        nodeTypes = TYPO3.TypoScript:RawArray {
+            byName = ${nodeTypeSchema.nodeTypes}
+            constraints = ${nodeTypeSchema.constraints}
+            inheritanceMap = ${nodeTypeSchema.inheritanceMap}
+        }
+        nodes = TYPO3.TypoScript:RawArray {
+            byContextPath = TYPO3.TypoScript:RawArray
+            byContextPath.@process.addSiteNode = PackageFactory.Guevara:AppendToCollection {
+                key = ${q(site).property('_contextPath')}
+                item = PackageFactory.Guevara:Node {
+                    @context.node = ${site}
+                }
+
+                @if.onlyRenderWhenDocumentIsNotTheSiteNode = ${site != documentNode}
+            }
+            byContextPath.@process.addSiteNodeChildren = PackageFactory.Guevara:AppendAllToCollection {
+                items = ${q(site).children('[instanceof TYPO3.Neos:Document]').get()}
+                itemName = 'node'
+                itemKey = ${q(node).property('_contextPath')}
+                itemRenderer = PackageFactory.Guevara:Node
+            }
+            byContextPath.@process.addCurrentDocumentNode = PackageFactory.Guevara:AppendToCollection {
+                key = ${q(documentNode).property('_contextPath')}
+                item = PackageFactory.Guevara:Node {
+                    @context.node = ${documentNode}
+                }
+            }
+
+            siteNode = ${q(site).property('_contextPath')}
+        }
+        workspaces = TYPO3.TypoScript:RawArray {
+            @context.personalWorkspace = ${Guevara.Workspace.getPersonalWorkspace()}
+
+            byName = TYPO3.TypoScript:RawArray
+            byName.@process.addPersonalWorkspace = PackageFactory.Guevara:AppendToCollection {
+                key = ${q(personalWorkspace).property('name')}
+                item = PackageFactory.Guevara:Workspace {
+                    @context.workspace = ${personalWorkspace}
+                }
+            }
+
+            active = ${q(personalWorkspace).property('name')}
+        }
+    }
+
+    ui = TYPO3.TypoScript:RawArray {
+        contentView = TYPO3.TypoScript:RawArray {
+            src = TYPO3.Neos:NodeUri {
+                node = ${documentNode}
+            }
+            contextPath = ${q(documentNode).property('_contextPath')}
+        }
+        debugMode = FALSE
+        flashMessages = TYPO3.TypoScript:RawArray
+        fullScreen = TYPO3.TypoScript:RawArray {
+            isFullScreen = FALSE
+        }
+        leftSideBar = TYPO3.TypoScript:RawArray {
+            isHidden = FALSE
+        }
+        rightSideBar = TYPO3.TypoScript:RawArray {
+            isHidden = FALSE
+        }
+        offCanvas = TYPO3.TypoScript:RawArray {
+            isHidden = TRUE
+        }
+        pageTree = TYPO3.TypoScript:RawArray {
+            isLoading = FALSE
+            hasError = FALSE
+            focused = ${q(documentNode).property('_contextPath')}
+            active = ${q(documentNode).property('_contextPath')}
+        }
+        remote = TYPO3.TypoScript:RawArray {
+            isSaving = FALSE
+            isPublishing = FALSE
+            isDiscarding = FALSE
+        }
+    }
+
+    user = TYPO3.TypoScript:RawArray {
+        name = TYPO3.TypoScript:RawArray {
+            title = ${q(user).property('name.title')}
+            firstName = ${q(user).property('name.firstName')}
+            middleName = ${q(user).property('name.middleName')}
+            lastName = ${q(user).property('name.lastName')}
+            otherName = ${q(user).property('name.otherName')}
+            fullName = ${q(user).property('name.fullName')}
+        }
+
+        settings = TYPO3.TypoScript:RawArray {
+            isAutoPublishingEnabled = FALSE
+        }
+    }
+}

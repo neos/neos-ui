@@ -1,10 +1,11 @@
-import {combineReducers} from 'redux';
 import {
     reducer as SettingsReducer,
+    initialState as SettingsInitialState,
     actions as Settings
 } from './Settings/';
 import {
-    reducer as NameReducer
+    reducer as NameReducer,
+    initialState as NameInitialState
 } from './Name/';
 
 //
@@ -15,11 +16,17 @@ export const actions = {
 };
 
 //
+// Export the initial state
+//
+export const initialState = {
+    settings: SettingsInitialState,
+    name: NameInitialState
+};
+
+//
 // Export the reducer
 //
 export const reducer = {
-    user: combineReducers({
-        settings: SettingsReducer,
-        name: NameReducer
-    })
+    ...SettingsReducer,
+    ...NameReducer
 };

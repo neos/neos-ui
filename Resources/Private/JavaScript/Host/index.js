@@ -100,4 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inform everybody, that the UI has booted successfully
     //
     store.dispatch(actions.System.boot());
+
+    //
+    // Reoccurring tasks
+    //
+    setInterval(() => store.dispatch(actions.Changes.flush()), 1000);
 });

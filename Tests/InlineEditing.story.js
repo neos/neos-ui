@@ -53,7 +53,7 @@ describe('Inline editing', () => {
             .isVisibleWithinViewport(selectors.topBar.publishDropDown.contents).should.equal(true);
     });
 
-    it('should reset all changes when clicking the discard button.', () => {
+    it.skip('should reset all changes when clicking the discard button.', () => {
         browser.click(selectors.topBar.publishDropDown.discardBtn)
             .pause(2000);
 

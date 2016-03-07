@@ -1,5 +1,7 @@
 import UI from './UI/';
+import * as Changes from './Changes/';
 
 export default [
-    ...UI
+    ...UI,
+    ...Object.keys(Changes).map(k => Changes[k])
 ];

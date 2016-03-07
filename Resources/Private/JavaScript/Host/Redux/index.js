@@ -5,6 +5,7 @@ import {handleActions} from 'Host/Util/HandleActions/';
 
 import {
     reducer as ChangesReducer,
+    actionTypes as ChangesActionTypes,
     initialState as ChangesInitialState,
     actions as Changes
 } from './Changes/';
@@ -66,6 +67,7 @@ export function configureStore({serverState = {}} = {}) {
 //
 export const actionTypes = {
     System: SystemActionTypes,
+    Changes: ChangesActionTypes,
     UI: UIActionTypes,
     CR: CRActionTypes
 };

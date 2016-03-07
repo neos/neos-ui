@@ -20,9 +20,19 @@ describe.only('Neos JS API > use', () => {
 
         use(pluginFactory);
 
-        expect(addLibrary).to.callCount(1);
+        expect(addLibrary).to.have.callCount(1);
         expect(addLibrary).to.have.been.calledWith('myPlugin', pluginFactory());
     });
 
-    it('should pass the api to the plugin factory');
+    it('should call the "pluginFactory" when initializing a plugin factory called', () => {
+        const apiTarget = {};
+        const addLibrary = () => {};
+        const use = initializeUse(addLibrary, apiTarget);
+        const pluginFactory = sinon.spy();
+        pluginFactory.identifier = 'myPlugin';
+
+        use(pluginFactory);
+
+        expect(pluginFactory).to.have.callCount(1);
+    });
 });

@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+require('check-dependencies')({
+    install: true,
+    verbose: true
+});

@@ -14,6 +14,10 @@ import {
     initialState as WorkspacesInitialState,
     actions as Workspaces
 } from './Workspaces/';
+import {
+    reducer as DimensionReducer,
+    initialState as DimensionInitialState
+} from './Dimensions';
 
 //
 // Export the actionTypes
@@ -37,7 +41,8 @@ export const actions = {
 export const initialState = {
     nodes: NodesInitialState,
     nodeTypes: NodeTypesInitialState,
-    workspaces: WorkspacesInitialState
+    workspaces: WorkspacesInitialState,
+    dimensions: DimensionInitialState
 };
 
 //
@@ -46,5 +51,6 @@ export const initialState = {
 export const reducer = {
     ...NodesReducer,
     ...NodeTypesReducer,
-    ...WorkspacesReducer
+    ...WorkspacesReducer,
+    ...DimensionReducer
 };

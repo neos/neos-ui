@@ -9,6 +9,7 @@ import {
 const all = $get(['cr', 'nodes', 'byContextPath']);
 const storedNodeByContextPath = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 const focused = $get('cr.nodes.focused.contextPath');
+const currentDocumentNode = $get('ui.contentView.contextPath');
 const hovered = $get('cr.nodes.hovered.contextPath');
 
 // Implementation detail of resolveNodeFromContextPath, which enriches a stored node and makes it a "node" ready for usage to the outside.
@@ -29,10 +30,12 @@ const resolveNodeFromContextPath = (contextPath, getStoredNodeByContextPath, get
 export const focusedSelector = createSelector(
     [
         focused,
+        currentDocumentNode,
         storedNodeByContextPath,
         nodeTypeByNameSelector
     ],
-    resolveNodeFromContextPath
+    (focused, currentDocumentNode, storedNode, nodeType) =>
+        resolveNodeFromContextPath(focused || currentDocumentNode, storedNode, nodeType)
 );
 
 export const hoveredSelector = createSelector(

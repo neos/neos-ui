@@ -11,6 +11,7 @@ module.exports = function (config) {
             //
             './node_modules/phantomjs-polyfill/bind-polyfill.js',
             './node_modules/babel-polyfill/browser.js',
+            './node_modules/whatwg-fetch/fetch.js',
             'karma.entry.js'
         ],
         preprocessors: {

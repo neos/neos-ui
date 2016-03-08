@@ -4,14 +4,10 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import {CR} from 'Host/Selectors/';
 
-
 import {
     SideBar,
     Tabs,
-    IconButton,
-    Label,
-    TextInput,
-    ToggablePanel
+    IconButton
 } from 'Host/Components/';
 import {actions} from 'Host/Redux/';
 
@@ -28,7 +24,14 @@ const generateTabs = (nodeType) => {
 };
 
 const renderTab = (tab, focusedNode) => {
-    return (<Inspector.TabPanel tab={tab} focusedNode={focusedNode} key={tab.id} icon={tab.icon}></Inspector.TabPanel>)
+    return (
+        <Inspector.TabPanel
+            tab={tab}
+            focusedNode={focusedNode}
+            key={tab.id}
+            icon={tab.icon}
+            />
+    );
 };
 
 @connect($transform({

@@ -10,7 +10,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"I18n" component', () => {
+describe('"host.components.i18n"', () => {
     it('should render a "span" node.', () => {
         const tag = shallow(<I18n />);
 

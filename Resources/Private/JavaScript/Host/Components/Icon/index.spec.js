@@ -10,7 +10,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"Icon" component', () => {
+describe('"host.components.icon"', () => {
     it('should render a "i" node.', () => {
         const tag = shallow(<Icon />);
 

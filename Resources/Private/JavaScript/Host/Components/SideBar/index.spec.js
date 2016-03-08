@@ -9,7 +9,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"SideBar" component', () => {
+describe('"host.components.sideBar"', () => {
     it('should render a "div" node.', () => {
         const bar = shallow(<SideBar />);
 

@@ -10,7 +10,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"TextInput" component', () => {
+describe('"host.components.textInput"', () => {
     it('should render an "input" node.', () => {
         const input = shallow(<TextInput />);
 

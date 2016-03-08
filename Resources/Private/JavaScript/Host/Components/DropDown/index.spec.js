@@ -9,7 +9,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"DropDown" component', () => {
+describe('"host.components.dropDown"', () => {
     it('should initially have a falsy "isOpened" state value.', () => {
         const dd = shallow(<DropDown />);
 

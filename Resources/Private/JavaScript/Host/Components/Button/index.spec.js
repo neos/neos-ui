@@ -10,7 +10,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"Button" component', () => {
+describe('"host.components.button"', () => {
     it('should render a "button" node with the role="button" attribute.', () => {
         const btn = shallow(<Button />);
 

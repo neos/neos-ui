@@ -9,7 +9,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"Grid" component', () => {
+describe('"host.components.grid"', () => {
     it('should render a "div" node.', () => {
         const grid = shallow(<Grid />);
 

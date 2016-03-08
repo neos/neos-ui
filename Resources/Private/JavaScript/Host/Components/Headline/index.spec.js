@@ -9,7 +9,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"Headline" component', () => {
+describe('"host.components.headline"', () => {
     it('should render a "h1" node if no "type" prop was passed.', () => {
         const headline = shallow(<Headline />);
 

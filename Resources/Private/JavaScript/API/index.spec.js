@@ -1,6 +1,6 @@
 import api, {createPlugin, define} from './index.js';
 
-describe('Neos JS API', () => {
+describe('"api.factory"', () => {
     describe('"createPlugin" utility', () => {
         it('should expose a method to create plugins which will add the given identifier to the constructor.', () => {
             const plugin = createPlugin('myName', () => null);

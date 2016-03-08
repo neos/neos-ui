@@ -10,7 +10,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"CheckBox" component', () => {
+describe('"host.components.checkBox"', () => {
     it('should render checkbox input as one of its children.', () => {
         const cb = shallow(<CheckBox />);
 

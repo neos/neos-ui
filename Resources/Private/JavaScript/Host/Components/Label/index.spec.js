@@ -9,7 +9,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"Label" component', () => {
+describe('"host.components.label"', () => {
     it('should render a "label" node.', () => {
         const label = shallow(<Label />);
 

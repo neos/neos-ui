@@ -10,7 +10,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-describe('"Bar" component', () => {
+describe('"host.components.bar"', () => {
     it('should add the passed "className" prop to the rendered button if passed.', () => {
         const bar = shallow(<Bar className="test" />);
 

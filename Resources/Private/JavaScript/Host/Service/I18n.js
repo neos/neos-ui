@@ -1,9 +1,13 @@
 function formatIdentifier(identifier) {
-    return identifier.replace('.', '_');
+    return identifier.replace(/\./g, '_');
 }
 
 export default translations =>
     (transUnitId, packageKey = 'TYPO3.Neos', sourceName = 'Main') => {
+        if (transUnitId.indexOf(':') !== -1) {
+            [packageKey, sourceName, transUnitId] = transUnitId.split(':');
+        }
+
         transUnitId = formatIdentifier(transUnitId);
         packageKey = formatIdentifier(packageKey);
         sourceName = formatIdentifier(sourceName);
@@ -15,7 +19,7 @@ export default translations =>
         }
 
         // ToDo: Use the neos logger util.
-        console.error(`No translation found for id "${transUnitId}" in:`, translations);
+        console.error(`No translation found for id "${packageKey}:${sourceName}:${transUnitId}" in:`, translations);
 
         return '';
     };

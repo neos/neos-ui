@@ -1,4 +1,5 @@
 import {createStore, applyMiddleware, compose} from 'redux';
+import merge from 'lodash.merge';
 import createSagaMiddleware from 'redux-saga';
 
 import {handleActions} from 'Host/Utilities/';
@@ -56,7 +57,7 @@ const initialState = {
 // Export the store factory
 //
 export function configureStore({serverState = {}} = {}) {
-    return createStore(rootReducer, Object.assign(initialState, serverState), compose(
+    return createStore(rootReducer, merge({}, initialState, serverState), compose(
         applyMiddleware(sagaMiddleWare),
         devToolsStoreEnhancer()
     ));

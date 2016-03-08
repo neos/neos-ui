@@ -2,6 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import {CR} from 'Host/Selectors/';
+
 
 import {
     SideBar,
@@ -15,9 +17,24 @@ import {actions} from 'Host/Redux/';
 
 import style from './style.css';
 
+import Inspector from './Inspector/';
+
+const generateTabs = (nodeType) => {
+    const tabs = nodeType.ui.inspector.tabs;
+    return Object.keys(tabs).map(tabId => ({
+        ...tabs[tabId],
+        id: tabId
+    })).sort((a, b) => (a.position - b.position) || (a.id - b.id));
+};
+
+const renderTab = (tab, focusedNode) => {
+    return (<Inspector.TabPanel tab={tab} focusedNode={focusedNode} key={tab.id} icon={tab.icon}></Inspector.TabPanel>)
+};
+
 @connect($transform({
     isHidden: $get('ui.rightSideBar.isHidden'),
-    isFullScreen: $get('ui.fullScreen.isFullScreen')
+    isFullScreen: $get('ui.fullScreen.isFullScreen'),
+    focusedNode: CR.Nodes.focusedSelector
 }), {
     toggleSidebar: actions.UI.RightSideBar.toggle
 })
@@ -25,10 +42,12 @@ export default class RightSideBar extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
-        toggleSidebar: PropTypes.func.isRequired
+        toggleSidebar: PropTypes.func.isRequired,
+        focusedNode: PropTypes.object.isRequired
     };
 
     render() {
+        const tabs = generateTabs(this.props.focusedNode.nodeType);
         const {isHidden, isFullScreen} = this.props;
         const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
@@ -53,25 +72,7 @@ export default class RightSideBar extends Component {
                 aria-hidden={isSideBarHidden ? 'true' : 'false'}
                 >
                 <Tabs>
-                    <Tabs.Panel icon="pencil">
-                        <ToggablePanel className={style.rightSideBar__section}>
-                            <ToggablePanel.Header>
-                                My fancy configuration
-                            </ToggablePanel.Header>
-                            <ToggablePanel.Contents>
-                                <Label htmlFor="testInput">
-                                    Title
-                                </Label>
-                                <TextInput placeholder="Type to search" id="testInput" />
-                            </ToggablePanel.Contents>
-                        </ToggablePanel>
-                    </Tabs.Panel>
-                    <Tabs.Panel icon="cog">
-                        <p>Content #2 here</p>
-                    </Tabs.Panel>
-                    <Tabs.Panel icon="bullseye">
-                        <p>Content #3 here</p>
-                    </Tabs.Panel>
+                    {tabs.map(tab => renderTab(tab, this.props.focusedNode))}
                 </Tabs>
 
                 {toggle}

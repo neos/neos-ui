@@ -1,19 +1,21 @@
+import isObject from 'lodash.isobject';
+import isString from 'lodash.isstring';
+import isArray from 'lodash.isarray';
 import * as operations from './Operations/';
-import {$add, $pop, $last} from 'plow-js';
+import {$add} from 'plow-js';
 
-const isStartingOperation = operation => operation.type === 'CREATE_CONTEXT';
-const isFinishingOperation = operation => ['GET', 'COUNT'].indexOf(operation.type) !== -1;
+export const isStartingOperation = (operation = {}) => operation.type === 'CREATE_CONTEXT';
+export const isFinishingOperation = (operation = {}) => ['GET', 'COUNT'].indexOf(operation.type) !== -1;
 
-const createNodeEnvelope = node => {
+export const isNodeEnvelope = envelope =>
+    typeof envelope === 'object' && !Array.isArray(envelope) && typeof envelope.$node !== 'undefined';
+
+export const createNodeEnvelope = (node = {}) => {
     let contextPath = '';
 
-    if (typeof node === 'object' && !Array.isArray(node)) {
-        if (node.contextPath) {
-            contextPath = node.contextPath;
-        } else if (node.$node) {
-            contextPath = node.$node;
-        }
-    } else if (typeof node === 'string') {
+    if (isObject(node)) {
+        contextPath = node.contextPath || node.$node;
+    } else if (isString(node)) {
         contextPath = node;
     }
 
@@ -24,44 +26,40 @@ const createNodeEnvelope = node => {
     return {$node: contextPath};
 };
 
-const isNodeEnvelope = envelope =>
-    typeof envelope === 'object' && !Array.isArray(envelope) && typeof envelope.$node !== 'undefined';
+export const resolveChain = (chain, csrfToken) => {
+    return fetch('/che!/service/flow-query', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({chain})
+    })
+    .then(response => response.json());
+};
 
 //
 // The core FlowQuery plugin
 //
 export default (csrfToken) => {
     const middlewares = [];
-    const resolveChain = chain => {
-        const lastOperation = $last('chain', $pop('chain', {chain}));
 
-        if (isStartingOperation(lastOperation)) {
-            const context = lastOperation.payload;
-            const nodes = context.filter(node => !isNodeEnvelope(node));
-            const envelopes = context.filter(isNodeEnvelope);
+    if (!csrfToken || csrfToken.length === 0) {
+        throw new Error('Please provide a csrfToken as the first argument while initializing the FlowQuery API.');
+    }
 
-            if (envelopes.length === 0) {
-                return Promise.resolve(nodes);
-            }
-
-            console.log('would fetch remaining nodes now', envelopes);
-        }
-
-        return fetch('/che!/service/flow-query', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'X-Flow-Csrftoken': csrfToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({chain})
-        })
-        .then(response => response.json());
-    };
+    //
+    // Helper function which calls all registered middleswares when calling the API.
+    //
     const applyMiddleware = (chain, operation) => middlewares.reduce(
         (operation, middleware) => middleware(chain, operation),
         operation
     );
+
+    //
+    // Recursive function which will chain the middleware functions recursivly.
+    //
     const createChainableApi = (operations, chain, ignoreMiddleware) => Object.keys(operations).reduce(
         (api, operationKey) => {
             api[operationKey] = (...args) => {
@@ -75,7 +73,7 @@ export default (csrfToken) => {
                 }
 
                 if (isFinishingOperation(result)) {
-                    return resolveChain($add('chain', result, {chain}).chain);
+                    return resolveChain($add('chain', result, {chain}).chain, csrfToken);
                 }
 
                 return createChainableApi(operations, $add('chain', result, {chain}).chain, ignoreMiddleware);
@@ -85,11 +83,19 @@ export default (csrfToken) => {
         },
         {}
     );
+
+    //
+    // The main API factory which will return it's own mechanism as well as the chained middlewares.
+    //
     const q = (context, ignoreMiddleware = false) => {
-        if (typeof context === 'object' && !Array.isArray(context) && context.contextPath) {
+        if (isObject(context) && context.contextPath) {
             context = [context.contextPath];
-        } else if (typeof context === 'string') {
+        } else if (isString(context)) {
             context = [context];
+        }
+
+        if (!isArray(context)) {
+            throw new Error('Please provide either a string, an array or an object containing a `contextPath` to the FlowQuery API.');
         }
 
         const chain = [
@@ -103,7 +109,7 @@ export default (csrfToken) => {
     };
 
     //
-    // The middleware mechanism
+    // Expose the middleware mechanism.
     //
     q.applyMiddleware = middleware => middlewares.push(middleware);
 

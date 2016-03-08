@@ -9,6 +9,8 @@ const nested = require('postcss-nested');
 const stylelint = require('stylelint');
 
 module.exports = {
+    // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
+    devtool: 'eval-source-map',
     module: {
         preLoaders: [
             {

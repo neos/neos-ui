@@ -14,7 +14,7 @@ const generateInspectorGroups = (nodeType, tabIdentifier) => {
     .sort((a, b) => (a.position - b.position) || (a.id - b.id));
 };
 
-const renderInspectorGroup = (inspectorGroup, focusedNode) => {
+const renderInspectorGroup = inspectorGroup => {
     return (<ToggablePanel className={style.rightSideBar__section} key={inspectorGroup.id}>
         <ToggablePanel.Header>
             <I18n id={inspectorGroup.label}/>
@@ -29,7 +29,6 @@ const renderInspectorGroup = (inspectorGroup, focusedNode) => {
 };
 
 const TabPanel = props => {
-
     const inspectorGroups = generateInspectorGroups(props.focusedNode.nodeType, props.tab.id);
 
     return (<Tabs.Panel>

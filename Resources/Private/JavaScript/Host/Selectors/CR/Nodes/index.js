@@ -7,28 +7,29 @@ import {
 } from '../NodeTypes/';
 
 const all = $get(['cr', 'nodes', 'byContextPath']);
-const byContextPath = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath], state);
+const storedNodeByContextPath = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 const focused = $get('cr.nodes.focused.contextPath');
 const hovered = $get('cr.nodes.hovered.contextPath');
 
-const resolveNode = (node, getNodeType) => {
-    if (node) {
-        const nodeType = getNodeType(node.nodeType);
-        return $set('nodeType', {...nodeType, name: node.nodeType}, node);
+// Implementation detail of resolveNodeFromContextPath, which enriches a stored node and makes it a "node" ready for usage to the outside.
+const prepareStoredNodeForUsage = (storedNode, getStoredNodeType) => {
+    if (storedNode) {
+        const nodeType = getStoredNodeType(storedNode.nodeType);
+        return $set('nodeType', {...nodeType, name: storedNode.nodeType}, storedNode);
     }
 
     return null;
 };
 
-const resolveNodeFromContextPath = (contextPath, byContextPath, getNodeType) => {
-    const node = byContextPath(contextPath);
-    return resolveNode(node, getNodeType);
+const resolveNodeFromContextPath = (contextPath, getStoredNodeByContextPath, getNodeType) => {
+    const node = getStoredNodeByContextPath(contextPath);
+    return prepareStoredNodeForUsage(node, getNodeType);
 };
 
 export const focusedSelector = createSelector(
     [
         focused,
-        byContextPath,
+        storedNodeByContextPath,
         nodeTypeByNameSelector
     ],
     resolveNodeFromContextPath
@@ -37,7 +38,7 @@ export const focusedSelector = createSelector(
 export const hoveredSelector = createSelector(
     [
         hovered,
-        byContextPath,
+        storedNodeByContextPath,
         nodeTypeByNameSelector
     ],
     resolveNodeFromContextPath
@@ -47,7 +48,7 @@ export const byContextPathSelector = defaultMemoize(
     contextPath => createSelector(
         [
             () => contextPath,
-            byContextPath,
+            storedNodeByContextPath,
             nodeTypeByNameSelector
         ],
         resolveNodeFromContextPath
@@ -63,7 +64,7 @@ export const byNodeTypeSelector = defaultMemoize(
         ],
         (nodes, nodeTypes, getNodeType) => Object.keys(nodes).map(k => nodes[k]).filter(
             node => nodeTypes.indexOf(node.nodeType) !== -1
-        ).map(node => resolveNode(node, getNodeType))
+        ).map(node => prepareStoredNodeForUsage(node, getNodeType))
     )
 );
 

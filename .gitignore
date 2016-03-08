@@ -19,4 +19,6 @@ node_modules/
 # Compiled assets.
 #
 Resources/Public/JavaScript/**/*.js
+Resources/Public/JavaScript/**/*.map
 Resources/Public/Styles/**/*.css
+Resources/Public/Styles/**/*.map

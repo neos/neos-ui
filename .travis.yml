@@ -22,5 +22,5 @@ script:
 #
 after_script:
   - npm install -g codeclimate-test-reporter
-  - mv Coverage/**/lcov.info
+  - mv Coverage/**/lcov.info .
   - if [ -n "$CODECLIMATE_REPO_TOKEN" ]; then codeclimate-test-reporter < lcov.info; fi;

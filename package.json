@@ -62,7 +62,8 @@
     "wdio-mocha-framework": "^0.2.11",
     "wdio-sauce-service": "^0.2.2",
     "webdriverio": "^4.0.3",
-    "webpack": "^1.12.9"
+    "webpack": "^1.12.9",
+    "webpack-livereload-plugin": "^0.6.0"
   },
   "dependencies": {
     "@reduct/logger": "^1.1.3",

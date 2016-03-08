@@ -7,6 +7,7 @@ const hexToRgba = require('postcss-hexrgba');
 const postCssImport = require('postcss-import');
 const nested = require('postcss-nested');
 const stylelint = require('stylelint');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
     module: {
@@ -57,7 +58,8 @@ module.exports = {
 
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
-        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
+        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true}),
+        new LiveReloadPlugin({appendScriptTag: true})
     ],
 
     entry: {

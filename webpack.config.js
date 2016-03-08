@@ -9,7 +9,7 @@ const nested = require('postcss-nested');
 const stylelint = require('stylelint');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 
-module.exports = {
+const config = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'eval-source-map',
     module: {
@@ -51,7 +51,9 @@ module.exports = {
     ],
 
     resolve: {
-        root: [path.resolve(__dirname, 'Resources/Private/JavaScript')],
+        root: [
+            path.resolve(__dirname, 'Resources/Private/JavaScript')
+        ],
         modulesDirectories: [
             'node_modules',
             path.resolve(__dirname, './node_modules')
@@ -60,8 +62,7 @@ module.exports = {
 
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
-        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true}),
-        new LiveReloadPlugin({appendScriptTag: true})
+        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
     ],
 
     entry: {
@@ -75,3 +76,12 @@ module.exports = {
         path: path.resolve('./Resources/Public/')
     }
 };
+
+//
+// Adjust the config depending on the env.
+//
+if (!process.env.CI) {
+    config.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
+}
+
+module.exports = config;

@@ -21,6 +21,7 @@ import {
     TopBar,
     LeftSideBar,
     OffCanvas,
+    AddNodeModal,
     RightSideBar,
     ContextBar,
     FlashMessageContainer,
@@ -66,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <TopBar />
                     <ContextBar />
                     <OffCanvas />
+                    <AddNodeModal />
                     <LeftSideBar />
                     <ContentView />
                     <RightSideBar />

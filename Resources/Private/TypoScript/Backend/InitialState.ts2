@@ -67,6 +67,10 @@ prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawA
         rightSideBar = TYPO3.TypoScript:RawArray {
             isHidden = FALSE
         }
+        addNodeModal = TYPO3.TypoScript:RawArray {
+            referenceNode = ''
+            mode = 'insert'
+        }
         offCanvas = TYPO3.TypoScript:RawArray {
             isHidden = TRUE
         }

@@ -7,6 +7,7 @@ import TopBar from './TopBar/';
 import LeftSideBar from './LeftSideBar/';
 import OffCanvas from './OffCanvas/';
 import RightSideBar from './RightSideBar/';
+import AddNodeModal from './AddNodeModal/';
 
 export {
     ContentView,
@@ -17,5 +18,6 @@ export {
     LeftSideBar,
     OffCanvas,
     RightSideBar,
-    TopBar
+    TopBar,
+    AddNodeModal
 };

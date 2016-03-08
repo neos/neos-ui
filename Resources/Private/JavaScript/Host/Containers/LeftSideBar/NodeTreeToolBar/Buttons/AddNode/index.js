@@ -1,35 +1,34 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {actions} from 'Host/Redux/';
+import {$transform, $get} from 'plow-js';
 import {
     IconButtonDropDown,
-    Icon,
-    Dialog,
-    Headline,
-    Button,
-    Grid,
-    GridItem,
-    I18n
+    Icon
 } from 'Host/Components/';
-import style from './style.css';
 
-@connect()
+@connect($transform({
+    focusedNode: $get('ui.pageTree.focused')
+}), {
+    open: actions.UI.AddNodeModal.open
+})
 export default class AddNode extends Component {
     static propTypes = {
-        className: PropTypes.string
+        className: PropTypes.string,
+        open: PropTypes.func.isRequired,
+        focusedNode: PropTypes.string.isRequired
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            isModalOpen: false,
             currentMode: 'insert'
         };
     }
 
     render() {
         const modeIcon = this.getCurrentModeIcon();
-        const modal = this.state.isModalOpen ? this.renderModal() : null;
         const directButtonProps = {
             id: 'neos__leftSidebar__nodeTreeToolBar__addNode'
         };
@@ -40,7 +39,7 @@ export default class AddNode extends Component {
                     className={this.props.className}
                     icon="plus"
                     modeIcon={modeIcon}
-                    onClick={this.openAddNodeDialog.bind(this)}
+                    onClick={this.onIconClick.bind(this)}
                     onItemSelect={this.onModeChanged.bind(this)}
                     directButtonProps={directButtonProps}
                     >
@@ -48,7 +47,6 @@ export default class AddNode extends Component {
                     <Icon dropDownId="insert" icon="long-arrow-right" />
                     <Icon dropDownId="append" icon="long-arrow-down" />
                 </IconButtonDropDown>
-                {modal}
             </span>
         );
     }
@@ -71,89 +69,13 @@ export default class AddNode extends Component {
         return modeIcon;
     }
 
-    openAddNodeDialog() {
-        this.setState({
-            isModalOpen: true
-        });
-    }
-
-    closeAddNodeDialog() {
-        this.setState({
-            isModalOpen: false
-        });
+    onIconClick() {
+        this.props.open(this.props.focusedNode, this.state.currentMode);
     }
 
     onModeChanged(currentMode) {
         this.setState({
             currentMode
         });
-    }
-
-    renderModal() {
-        const actions = [
-            <Button
-                style="clean"
-                hoverStyle="brand"
-                onClick={this.closeAddNodeDialog.bind(this)}
-                isFocused={true}
-                >
-                <I18n fallback="Cancel" />
-            </Button>
-        ];
-        const dummyNodeTypes = [{
-            icon: 'font',
-            title: 'Headline'
-        }, {
-            icon: 'file-text',
-            title: 'Text'
-        }, {
-            icon: 'picture-o',
-            title: 'Image'
-        }, {
-            icon: 'picture-o',
-            title: 'Text with Image'
-        }].map(nodeType => {
-            nodeType.onClick = () => {
-                console.log('Create NodeType:', nodeType);
-            };
-
-            return nodeType;
-        });
-
-        return (
-            <Dialog
-                isOpen={this.state.isModalOpen}
-                onRequestClose={this.closeAddNodeDialog.bind(this)}
-                actions={actions}
-                id="neos__addNodeModal"
-                >
-                <Headline type="h1">
-                    <I18n fallback="Create new" id="createNew" />
-                </Headline>
-
-                <Grid>
-                    {dummyNodeTypes.map((nodeType, index) => {
-                        const {
-                            icon,
-                            title,
-                            onClick
-                        } = nodeType;
-
-                        return (
-                            <GridItem width="33%" key={index}>
-                                <Button
-                                    className={style.nodeType}
-                                    hoverStyle="brand"
-                                    onClick={onClick}
-                                    >
-                                    <Icon icon={icon} className={style.nodeType__icon} padded="right" />
-                                    <I18n fallback={title} />
-                                </Button>
-                            </GridItem>
-                        );
-                    })}
-                </Grid>
-            </Dialog>
-        );
     }
 }

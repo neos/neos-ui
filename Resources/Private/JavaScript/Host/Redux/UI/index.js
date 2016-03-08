@@ -29,6 +29,11 @@ import {
     actions as RightSideBar
 } from './RightSideBar/';
 import {
+    reducer as AddNodeModalReducer,
+    initialState as AddNodeModalInitialState,
+    actions as AddNodeModal
+} from './AddNodeModal/';
+import {
     reducer as PageTreeReducer,
     initialState as PageTreeInitialState,
     actionTypes as PageTreeActionTypes,
@@ -59,6 +64,7 @@ export const actions = {
     OffCanvas,
     Remote,
     RightSideBar,
+    AddNodeModal,
     PageTree,
     ContentView
 };
@@ -73,6 +79,7 @@ export const initialState = {
     offCanvas: OffCanvasInitialState,
     remote: RemoteInitialState,
     rightSideBar: RightSideBarInitialState,
+    addNodeModal: AddNodeModalInitialState,
     pageTree: PageTreeInitialState,
     contentView: ContentViewInitialState
 };
@@ -87,6 +94,7 @@ export const reducer = {
     ...OffCanvasReducer,
     ...RemoteReducer,
     ...RightSideBarReducer,
+    ...AddNodeModalReducer,
     ...PageTreeReducer,
     ...ContentViewReducer
 };

@@ -3,8 +3,10 @@ namespace PackageFactory\Guevara\Domain\Model\Changes;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeType;
+use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Utility as NodeUtility;
 use TYPO3\TYPO3CR\Domain\Service\NodeServiceInterface;
+use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
 use PackageFactory\Guevara\Domain\Model\AbstractChange;
 use PackageFactory\Guevara\Domain\Model\ChangeInterface;
 
@@ -16,6 +18,12 @@ abstract class AbstractCreate extends AbstractChange
      * @var NodeType
      */
     protected $nodeType;
+
+    /**
+     * @var NodeTypeManager
+     * @Flow\Inject
+     */
+    protected $nodeTypeManager;
 
     /**
      * A set of properties, that will be saved with the new node
@@ -45,7 +53,7 @@ abstract class AbstractCreate extends AbstractChange
     public function setNodeType($nodeType)
     {
         if (is_string($nodeType)) {
-            $nodeType = $this->nodeTypeManager->get($nodeType);
+            $nodeType = $this->nodeTypeManager->getNodeType($nodeType);
         }
 
         if (!$nodeType instanceof NodeType) {

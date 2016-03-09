@@ -11,11 +11,9 @@ class CreateBefore extends AbstractCreate
     public function canApply()
     {
         $parent = $this->getSubject()->getParent();
-        $grandParent = $parent->getParent();
         $nodeType = $this->getNodeType();
 
-        return $parent->getNodeType()->allowsChildNodeType($nodeType) &&
-            (!$grandParent || $grandParent->getNodeType()->allowsGrandchildNodeType($parent->getName(), $nodeType));
+        return $parent->isNodeTypeAllowedAsChildNode($nodeType);
     }
 
     /**

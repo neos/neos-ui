@@ -44,7 +44,11 @@ describe('Inline editing', () => {
 
     it('should persist the changes on the server after editing the nodeType in the guest frame and reloading the backend.', () => {
         browser.refresh().frame(browser.element(selectors.guestFrame.iframe).value)
-            .pause(1000);
+            .waitUntil(() => {
+                return browser.getText('#neos__topBar__publishDropDown__publishBtn').then((text) => {
+                    return text === 'Published';
+                });
+            });
 
         expect(browser.elementIdText(browser.element(selectors.guestFrame.inlineEditableNodeTypes).value.ELEMENT).value).to.contain(addedText);
     });

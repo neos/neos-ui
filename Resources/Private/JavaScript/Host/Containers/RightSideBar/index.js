@@ -24,15 +24,8 @@ const generateTabs = (nodeType) => {
     })).sort((a, b) => (a.position - b.position) || (a.id - b.id));
 };
 
-const renderTab = (tab, focusedNode) => {
-    return (
-        <Inspector.TabPanel
-            tab={tab}
-            focusedNode={focusedNode}
-            key={tab.id}
-            icon={tab.icon}
-            />
-    );
+const renderTab = (tab) => {
+    return (<Inspector.TabPanel tab={tab} key={tab.id} icon={tab.icon}></Inspector.TabPanel>)
 };
 
 @connect($transform({
@@ -77,7 +70,7 @@ export default class RightSideBar extends Component {
                 aria-hidden={isSideBarHidden ? 'true' : 'false'}
                 >
                 <Tabs>
-                    {tabs.map(tab => renderTab(tab, focusedNode))}
+                    {tabs.map(tab => renderTab(tab))}
                 </Tabs>
 
                 {toggle}

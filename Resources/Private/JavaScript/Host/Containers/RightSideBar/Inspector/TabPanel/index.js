@@ -1,6 +1,8 @@
-import React, {PropTypes} from 'react';
-import {$get} from 'plow-js';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {$transform, $get} from 'plow-js';
 
+import {CR} from 'Host/Selectors/';
 import NeosPropTypes from 'Shared/PropTypes/index';
 import {
     Tabs,
@@ -9,7 +11,6 @@ import {
     TextInput,
     I18n
 } from 'Components/index';
-
 
 import style from '../../style.css';
 
@@ -40,12 +41,12 @@ const renderEditors = (inspectorGroup, focusedNode) => {
 };
 
 const renderEditor = (property, focusedNode) => {
-    return <div key={property.id}>
+    return (<div key={property.id}>
         <Label htmlFor="testInput">
             <I18n id={property.ui.label} />
         </Label>
         <TextInput placeholder="Type to search" id="testInput" value={focusedNode.properties[property.id]} />
-    </div>;
+    </div>);
 };
 
 const renderInspectorGroup = (inspectorGroup, focusedNode) => {
@@ -59,19 +60,23 @@ const renderInspectorGroup = (inspectorGroup, focusedNode) => {
     </ToggablePanel>);
 };
 
-const TabPanel = props => {
-    const inspectorGroups = generateInspectorGroups(props.focusedNode.nodeType, props.tab.id);
+@connect($transform({
+    focusedNode: CR.Nodes.focusedSelector
+}))
+export default class TabPanel extends Component {
+    static displayName = 'Inspector Tab Panel';
+    static propTypes = {
+        tab: PropTypes.object.isRequired,
+        focusedNode: PropTypes.object.isRequired
+    };
 
-    return (
-        <Tabs.Panel>
-            {inspectorGroups.map(inspectorGroup => renderInspectorGroup(inspectorGroup, props.focusedNode))}
-        </Tabs.Panel>
-    );
-};
-TabPanel.displayName = 'Inspector Tab Panel';
-TabPanel.propTypes = {
-    tab: PropTypes.object.isRequired,
-    focusedNode: NeosPropTypes.cr.node.isRequired
-};
+    render() {
+        const inspectorGroups = generateInspectorGroups(this.props.focusedNode.nodeType, this.props.tab.id);
 
-export default TabPanel;
+        return (
+            <Tabs.Panel>
+                {inspectorGroups.map(inspectorGroup => renderInspectorGroup(inspectorGroup, this.props.focusedNode))}
+            </Tabs.Panel>
+        );
+    }
+}

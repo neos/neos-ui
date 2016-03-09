@@ -14,8 +14,12 @@ import style from './style.css';
 })
 export default class FlashMessageContainer extends Component {
     static propTypes = {
-        flashMessages: PropTypes.array,
+        flashMessages: PropTypes.object,
         removeMessage: PropTypes.func.isRequired
+    };
+
+    static defaultProps = {
+        flashMessages: {}
     };
 
     render() {
@@ -23,7 +27,7 @@ export default class FlashMessageContainer extends Component {
 
         return (
             <div className={style.flashMessageContainer}>
-                {Object.keys(flashMessages || {}).map(k => flashMessages[k]).map(flashMessage => {
+                {Object.keys(flashMessages).map(k => flashMessages[k]).map(flashMessage => {
                     const {id, message, severity, timeout} = flashMessage;
 
                     return (

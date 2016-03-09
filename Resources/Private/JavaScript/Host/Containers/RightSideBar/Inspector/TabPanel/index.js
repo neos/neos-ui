@@ -24,13 +24,13 @@ const renderInspectorGroup = inspectorGroup => {
     return (
         <ToggablePanel className={style.rightSideBar__section} key={inspectorGroup.id}>
             <ToggablePanel.Header>
-                <I18n id={inspectorGroup.label}/>
+                <I18n id={inspectorGroup.label} fallback={inspectorGroup.label} />
             </ToggablePanel.Header>
             <ToggablePanel.Contents>
                 <Label htmlFor="testInput">
                     Title
                 </Label>
-                <TextInput placeholder="Type to search" id="testInput"/>
+                <TextInput placeholder="Type to search" id="testInput" />
             </ToggablePanel.Contents>
         </ToggablePanel>
     );

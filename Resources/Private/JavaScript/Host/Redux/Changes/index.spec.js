@@ -3,7 +3,7 @@ import {reducer, actions, initialState} from './index.js';
 
 import {handleActions} from 'Host/Utilities/';
 
-const {add, clear} = actions;
+const {add, flush, finish, fail, retry} = actions;
 
 describe('"host.redux.transient.changes" ', () => {
     const changeFixture = {
@@ -34,10 +34,12 @@ describe('"host.redux.transient.changes" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an array as the initial state.', () => {
+        it('should return the initial state to be of the right shape.', () => {
             const state = store.getState();
 
-            expect(state.changes).to.be.an('array');
+            expect(state.changes.pending).to.be.an('array');
+            expect(state.changes.processing).to.be.an('array');
+            expect(state.changes.failed).to.be.an('array');
         });
     });
 
@@ -45,17 +47,49 @@ describe('"host.redux.transient.changes" ', () => {
         it('should add the passed data as a new change item to the state.', () => {
             store.dispatch(add(changeFixture));
 
-            expect(store.getState().changes.length).to.equal(1);
-            expect(store.getState().changes[0]).to.deep.equal(changeFixture);
+            expect(store.getState().changes.pending.length).to.equal(1);
+            expect(store.getState().changes.pending[0]).to.deep.equal(changeFixture);
         });
     });
 
-    describe('"clear" action.', () => {
-        it('should be able to remove all added added changes.', () => {
+    describe('"flush" action.', () => {
+        it('should move all pending changes to processing state.', () => {
             store.dispatch(add(changeFixture));
-            store.dispatch(clear());
+            store.dispatch(flush());
+            expect(store.getState().changes.pending.length).to.equal(0);
+            expect(store.getState().changes.processing.length).to.equal(1);
+        });
+    });
+    describe('"finish" action.', () => {
+        it('should clear all changes from processing state.', () => {
+            store.dispatch(add(changeFixture));
+            store.dispatch(flush());
+            store.dispatch(finish());
 
-            expect(store.getState().changes.length).to.equal(0);
+            expect(store.getState().changes.pending.length).to.equal(0);
+            expect(store.getState().changes.processing.length).to.equal(0);
+        });
+    });
+    describe('"fail" action.', () => {
+        it('should move all changes from processing state to failed.', () => {
+            store.dispatch(add(changeFixture));
+            store.dispatch(flush());
+            store.dispatch(fail());
+
+            expect(store.getState().changes.failed.length).to.equal(1);
+            expect(store.getState().changes.processing.length).to.equal(0);
+        });
+    });
+    describe('"retry" action.', () => {
+        it('should move all changes from failed state to pending.', () => {
+            store.dispatch(add(changeFixture));
+            store.dispatch(flush());
+            store.dispatch(fail());
+            store.dispatch(retry());
+
+            expect(store.getState().changes.failed.length).to.equal(0);
+            expect(store.getState().changes.processing.length).to.equal(0);
+            expect(store.getState().changes.pending.length).to.equal(1);
         });
     });
 });

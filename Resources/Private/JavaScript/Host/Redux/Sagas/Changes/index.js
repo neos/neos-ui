@@ -4,7 +4,7 @@ import {$get} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/';
 
-const getChanges = $get('changes');
+const getChanges = $get('changes.processing');
 
 export function* autoFlush() {
     yield* takeEvery(actionTypes.Changes.ADD, function* triggerFlush() {
@@ -35,7 +35,7 @@ export function* watchFlush(getState) {
             .then(response => response.json());
 
             yield put(actions.UI.Remote.finishSaving());
-            yield put(actions.Changes.clear());
+            yield put(actions.Changes.finish());
         }
     });
 }

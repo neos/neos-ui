@@ -57,10 +57,13 @@ const initialState = {
 // Export the store factory
 //
 export function configureStore({serverState = {}} = {}) {
-    return createStore(rootReducer, merge({}, initialState, serverState), compose(
+    const mergedInitialState = merge({}, initialState, serverState);
+    const store = createStore(rootReducer, mergedInitialState, compose(
         applyMiddleware(sagaMiddleWare),
         devToolsStoreEnhancer()
     ));
+
+    return store;
 }
 
 //

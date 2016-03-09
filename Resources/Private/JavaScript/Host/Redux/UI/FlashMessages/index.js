@@ -47,7 +47,7 @@ export const initialState = {};
 //
 //
 export const reducer = {
-    [ADD]: message => {
+    [ADD]: message => state => {
         const allowedSeverities = ['success', 'error', 'info'];
         const {id, severity} = message;
         const messageContents = message.message;
@@ -69,7 +69,7 @@ export const reducer = {
         //
         message.severity = message.severity.toLowerCase();
 
-        return $set(['ui', 'flashMessages', message.id], message);
+        return $set(['ui', 'flashMessages', message.id], message, state);
     },
     [REMOVE]: ({id}) => $drop(['ui', 'flashMessages', id])
 };

@@ -64,12 +64,8 @@ export default class FlashMessage extends Component {
         setTimeout(() => this.setState({isVisible: true}), 0);
 
         if (timeout) {
-            setTimeout(() => this.onTimeout(), timeout);
+            setTimeout(() => this.commenceClose(), timeout);
         }
-    }
-
-    onTimeout() {
-        this.commenceClose();
     }
 
     commenceClose() {

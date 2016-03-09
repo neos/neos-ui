@@ -46,7 +46,7 @@ const renderEditor = (property, focusedNode) => {
         </Label>
         <TextInput placeholder="Type to search" id="testInput" value={focusedNode.properties[property.id]} />
     </div>;
-}
+};
 
 const renderInspectorGroup = (inspectorGroup, focusedNode) => {
     return (<ToggablePanel className={style.rightSideBar__section} key={inspectorGroup.id}>

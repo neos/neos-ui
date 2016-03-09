@@ -5,6 +5,13 @@ const {ui} = window.neos;
 const connection = ui.connect();
 
 //
+// Propagate errors of the Guest frame to the Host FlashMessages.
+//
+window.onerror = function (err) {
+    ui.addFlashMessage(`Whoops. Something went wrong in the guest frame. Error message states "${err}".`);
+};
+
+//
 // Initialize the guest application as soon as the DOM has been fully initialized.
 //
 document.addEventListener('DOMContentLoaded', () => {

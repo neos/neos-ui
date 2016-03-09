@@ -8,6 +8,7 @@ const postCssImport = require('postcss-import');
 const nested = require('postcss-nested');
 const stylelint = require('stylelint');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const env = require('./Build/Utilities/').env;
 
 const config = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
@@ -80,7 +81,7 @@ const config = {
 //
 // Adjust the config depending on the env.
 //
-if (!process.env.CI) {
+if (!env.isCi && !env.isTesting) {
     config.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
 }
 

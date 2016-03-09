@@ -3,17 +3,17 @@
     font-size: 14px;
     position: relative;
     width: 512px;
-    height: 0px;
+    max-height: 0;
     margin: 0 auto 4px;
     word-wrap: break-word;
     overflow: hidden;
     box-sizing: border-box;
     box-shadow: 0 0 14px rgba(#000, .15);
-    transition: .1s ease height;
+    transition: .1s ease max-height;
 }
 
 .flashMessage--visible {
-    height: 40px;
+    max-height: 100vh;
 }
 
 .flashMessage--success {
@@ -32,7 +32,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    height: 40px;
+	height: 100%;
     line-height: 40px;
     width: 40px;
     text-align: center;

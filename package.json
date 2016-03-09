@@ -101,7 +101,7 @@
   },
   "scripts": {
     "build": "webpack --progress --colors",
-    "karma": "karma start --single-run",
+    "karma": "export TEST=true && karma start --single-run",
     "lint": "npm run lint:scripts && npm run lint:css",
     "lint:css": "stylelint 'Resources/Private/JavaScript/**/*.css'",
     "lint:scripts": "eslint Resources/Private/JavaScript/**",
@@ -109,7 +109,7 @@
     "selenium:run": "wdio wdio.config.js",
     "test": "npm run lint && npm run karma",
     "watch:build": "npm run build -- --watch",
-    "watch:karma": "karma start",
+    "watch:karma": "export TEST=true && karma start",
     "watch": "npm run watch:build & npm run watch:karma",
     "prewatch": "Build/check-dependencies",
     "prebuild": "Build/check-dependencies"

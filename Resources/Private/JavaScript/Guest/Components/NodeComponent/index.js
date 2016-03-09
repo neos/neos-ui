@@ -18,7 +18,6 @@ export default (el, ui, connection) => {
     //
     // React on guest events
     //
-
     compose(
         handle('click', () => ui.focusNode(contextPath, typoscriptPath), stopPropagation, preventDefault),
         handleOutside('click', () => ui.blurNode(contextPath, typoscriptPath)),
@@ -29,25 +28,25 @@ export default (el, ui, connection) => {
     //
     // Observe host state
     //
+    const isNodeFocused = res => (
+        res.node &&
+        res.node.contextPath === contextPath &&
+        res.typoscriptPath === typoscriptPath
+    );
 
     connection.observe('nodes.focused').react(res => {
-        if (res.node) {
-            if (res.node.contextPath === contextPath && typoscriptPath === res.typoscriptPath) {
-                el.classList.add(style['node--focused']);
-                return;
-            }
+        if (isNodeFocused(res)) {
+            el.classList.add(style['node--focused']);
+        } else {
+            el.classList.remove(style['node--focused']);
         }
-
-        el.classList.remove(style['node--focused']);
     });
 
     connection.observe('nodes.hovered').react(res => {
-        if (res.node) {
-            if (res.node.contextPath === contextPath && typoscriptPath === res.typoscriptPath) {
-                el.classList.add(style['node--hover']);
-                return;
-            }
+        if (isNodeFocused(res)) {
+            el.classList.add(style['node--hover']);
+        } else {
+            el.classList.remove(style['node--hover']);
         }
-        el.classList.remove(style['node--hover']);
     });
 };

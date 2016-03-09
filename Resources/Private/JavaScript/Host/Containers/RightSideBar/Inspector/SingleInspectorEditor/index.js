@@ -11,6 +11,19 @@ const resolveEditor = (legacyEditorName) => {
     switch (legacyEditorName) {
         case 'TYPO3.Neos/Inspector/Editors/TextFieldEditor':
             return Editors.TextField;
+        case 'TYPO3.Neos/Inspector/Editors/BooleanEditor':
+            return Editors.Boolean;
+        case 'TYPO3.Neos/Inspector/Editors/DateTimeEditor':
+            return Editors.DateTime;
+        case 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor':
+            return Editors.SelectBox;
+        case 'TYPO3.Neos/Inspector/Editors/ImageEditor':
+            return Editors.Image;
+        case 'TYPO3.Neos/Inspector/Editors/TextAreaEditor':
+            return Editors.TextArea;
+        case 'Content/Inspector/Editors/NodeTypeEditor':
+            return Editors.NodeType;
+
         default:
             console.error(`ERROR: ${legacyEditorName} is not implemented`);
     }

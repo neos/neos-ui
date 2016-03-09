@@ -1,4 +1,9 @@
 import TextField from './TextField/';
+import Boolean from './Boolean/';
+import DateTime from './DateTime/';
+import TextArea from './TextArea/';
+import SelectBox from './SelectBox/';
+import NodeType from './NodeType/';
 
 /**
  * Every editor gets passed in:
@@ -7,5 +12,10 @@ import TextField from './TextField/';
  */
 
 export {
-    TextField
+    TextField,
+    Boolean,
+    DateTime,
+    TextArea,
+    SelectBox,
+    NodeType
 };

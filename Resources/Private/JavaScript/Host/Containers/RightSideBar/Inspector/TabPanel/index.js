@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
 import {CR} from 'Host/Selectors/';
+<<<<<<< HEAD
 import NeosPropTypes from 'Shared/PropTypes/index';
 import {
     Tabs,
@@ -11,6 +12,10 @@ import {
     TextInput,
     I18n
 } from 'Components/index';
+=======
+import {Tabs, ToggablePanel, Label, TextInput, I18n} from 'Components/index';
+import EditorContainer from '../EditorContainer/';
+>>>>>>> TASK: create EditorContainer
 
 import style from '../../style.css';
 
@@ -25,37 +30,13 @@ const generateInspectorGroups = (nodeType, tabIdentifier) => {
     .sort((a, b) => (a.position - b.position) || (a.id - b.id));
 };
 
-const prepareListOfPropertiesToBeEdited = (inspectorGroup, focusedNode) => {
-    const nodeTypeProperties = focusedNode.nodeType.properties;
-    return Object.keys(nodeTypeProperties).map(propertyId => ({
-        ...nodeTypeProperties[propertyId],
-        id: propertyId
-    }))
-    .filter((property) => $get('ui.inspector.group', property) === inspectorGroup.id)
-    .sort((a, b) => (a.position - b.position) || (a.id - b.id));
-};
-
-const renderEditors = (inspectorGroup, focusedNode) => {
-    const listOfProperties = prepareListOfPropertiesToBeEdited(inspectorGroup, focusedNode);
-    return listOfProperties.map(property => renderEditor(property, focusedNode));
-};
-
-const renderEditor = (property, focusedNode) => {
-    return (<div key={property.id}>
-        <Label htmlFor="testInput">
-            <I18n id={property.ui.label} />
-        </Label>
-        <TextInput placeholder="Type to search" id="testInput" value={focusedNode.properties[property.id]} />
-    </div>);
-};
-
-const renderInspectorGroup = (inspectorGroup, focusedNode) => {
+const renderInspectorGroup = (inspectorGroup) => {
     return (<ToggablePanel className={style.rightSideBar__section} key={inspectorGroup.id}>
         <ToggablePanel.Header>
             <I18n id={inspectorGroup.label}/>
         </ToggablePanel.Header>
         <ToggablePanel.Contents>
-            {renderEditors(inspectorGroup, focusedNode)}
+            <EditorContainer inspectorGroup={inspectorGroup} />
         </ToggablePanel.Contents>
     </ToggablePanel>);
 };
@@ -75,7 +56,7 @@ export default class TabPanel extends Component {
 
         return (
             <Tabs.Panel>
-                {inspectorGroups.map(inspectorGroup => renderInspectorGroup(inspectorGroup, this.props.focusedNode))}
+                {inspectorGroups.map(inspectorGroup => renderInspectorGroup(inspectorGroup))}
             </Tabs.Panel>
         );
     }

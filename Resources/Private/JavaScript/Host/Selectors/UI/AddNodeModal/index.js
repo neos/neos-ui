@@ -1,11 +1,11 @@
 import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
 import {storedNodeByContextPath, parentNodeSelector} from '../../CR/Nodes/';
-import {byNameSelector as nodeTypeByNameSelector, allowedChildNodeTypesSelector} from '../../CR/NodeTypes/';
+import {byNameSelector as nodeTypeByNameSelector, allowedChildNodeTypesSelector, allowedChildNodeTypesForAutocreatedNodeSelector} from '../../CR/NodeTypes/';
 
 const referenceNodeContextPathSelector = state => $get('ui.addNodeModal.referenceNode', state);
 
-const referenceNodeSelector = createSelector(
+export const referenceNodeSelector = createSelector(
     [
         referenceNodeContextPathSelector,
         storedNodeByContextPath
@@ -26,9 +26,15 @@ export const allowedNodeTypesSelector = createSelector(
     ],
     (referenceNode, mode, getParentNode, getAllowedChildNodeTypes, getNodeTypeByName) => {
         if (!referenceNode || !mode) {
-            return null;
+            return [];
         }
-        const allowedNodeTypes = mode === 'insert' ? getAllowedChildNodeTypes(referenceNode.nodeType) : getParentNode(referenceNode) && getAllowedChildNodeTypes(getParentNode(referenceNode).nodeType);
+        const baseNode = mode === 'insert' ? referenceNode : getParentNode(referenceNode);
+        if (!baseNode) {
+            return [];
+        }
+        const allowedNodeTypes = baseNode.isAutoCreated ?
+            allowedChildNodeTypesForAutocreatedNodeSelector(getParentNode(baseNode.nodeType), baseNode.name) :
+            getAllowedChildNodeTypes(baseNode.nodeType);
         if (!allowedNodeTypes) {
             return [];
         }

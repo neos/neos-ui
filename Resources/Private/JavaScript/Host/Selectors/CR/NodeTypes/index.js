@@ -17,3 +17,8 @@ export const allowedChildNodeTypesSelector = state => nodeTypeName => {
     const nodeTypes = $get(['cr', 'nodeTypes', 'constraints', nodeTypeName, 'nodeTypes'], state);
     return nodeTypes ? Object.keys(nodeTypes) : [];
 };
+
+export const allowedChildNodeTypesForAutocreatedNodeSelector = state => (nodeTypeName, autoCreatedNodeName) => {
+    const nodeTypes = $get(['cr', 'nodeTypes', 'constraints', nodeTypeName, 'childNodes', autoCreatedNodeName, 'nodeTypes'], state);
+    return nodeTypes ? Object.keys(nodeTypes) : [];
+};

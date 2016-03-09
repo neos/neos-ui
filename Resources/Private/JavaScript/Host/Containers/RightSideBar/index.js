@@ -5,6 +5,7 @@ import {$transform, $get} from 'plow-js';
 
 import {CR} from 'Host/Selectors/index';
 import {
+    Button,
     SideBar,
     Tabs,
     IconButton
@@ -33,7 +34,9 @@ const renderTab = (tab) => {
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     focusedNode: CR.Nodes.focusedSelector
 }), {
-    toggleSidebar: actions.UI.RightSideBar.toggle
+    toggleSidebar: actions.UI.RightSideBar.toggle,
+    inspectorApply: actions.UI.RightSideBar.inspectorApply,
+    inspectorCancel: actions.UI.RightSideBar.inspectorCancel
 })
 export default class RightSideBar extends Component {
     static propTypes = {
@@ -72,8 +75,20 @@ export default class RightSideBar extends Component {
                 <Tabs>
                     {tabs.map(tab => renderTab(tab))}
                 </Tabs>
-
+                <Bar position="bottom">
+                    <Button
+                        onClick={() => this.props.inspectorApply(this.props.focusedNode.contextPath)}
+                    >
+                        Apply Here
+                    </Button>
+                    <Button
+                        onClick={() => this.props.inspectorCancel(this.props.focusedNode.contextPath)}
+                    >
+                        Revert
+                    </Button>
+                </Bar>
                 {toggle}
+
             </SideBar>
         );
     }

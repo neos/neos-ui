@@ -4,6 +4,7 @@ import {$transform, $get} from 'plow-js';
 
 import {CR} from 'Host/Selectors/';
 import {Label, TextInput, I18n} from 'Host/Components/';
+import SingleInspectorEditor from '../SingleInspectorEditor/';
 
 const prepareListOfPropertiesToBeEdited = (inspectorGroup, focusedNode) => {
     const nodeTypeProperties = focusedNode.nodeType.properties;
@@ -20,7 +21,7 @@ const renderEditor = (property, focusedNode) => {
         <Label htmlFor="testInput">
             <I18n id={property.ui.label} />
         </Label>
-        <TextInput placeholder="Type to search" id="testInput" value={focusedNode.properties[property.id]} />
+        <SingleInspectorEditor property={property} />
     </div>);
 };
 

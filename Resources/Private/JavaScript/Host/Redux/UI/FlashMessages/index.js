@@ -13,13 +13,11 @@ const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
  * @param {Integer} timeout An (optional) timeout, after which the flash message will disappear
  * @return {Object}
  */
-const add = createAction(ADD, (id, message, severity, timeout = 0) => ({
-    message: {
-        severity: severity.toLowerCase(),
-        id,
-        message,
-        timeout
-    }
+const add = createAction(ADD, (id, message, severity = '', timeout = 0) => ({
+    severity,
+    id,
+    message,
+    timeout
 }));
 
 /**
@@ -47,7 +45,31 @@ export const initialState = {};
 //
 // Export the reducer
 //
+//
 export const reducer = {
-    [ADD]: ({message}) => $set(['ui', 'flashMessages', message.id], message),
+    [ADD]: message => {
+        const allowedSeverities = ['success', 'error', 'info'];
+        const {id, severity} = message;
+        const messageContents = message.message;
+
+        if (!id || id.length < 0) {
+            throw new Error('Empty or non existent "id" passed to the addFlashMessage reducer. Please specify a string containing a random id.');
+        }
+
+        if (!messageContents || messageContents.length < 0) {
+            throw new Error('Empty or non existent "message" passed to the addFlashMessage reducer. Please specify a string containing your desired message.');
+        }
+
+        if (!severity || allowedSeverities.indexOf(severity.toLowerCase()) < 0) {
+            throw new Error(`Invalid "severity" specified while adding a new FlashMessage. Allowed severities are ${allowedSeverities.join(' ')}.`);
+        }
+
+        //
+        // Lowercase the severitiy because we need a consistent format in the FlashMessages container.
+        //
+        message.severity = message.severity.toLowerCase();
+
+        return $set(['ui', 'flashMessages', message.id], message);
+    },
     [REMOVE]: ({id}) => $drop(['ui', 'flashMessages', id])
 };

@@ -16,13 +16,12 @@ import style from '../../style.css';
 const generateInspectorGroups = (nodeType, tabIdentifier) => {
     const groups = nodeType.ui.inspector.groups;
 
-    return Object.keys(groups)
-        .map(groupId => ({
-            ...groups[groupId],
-            id: groupId
-        }))
-        .filter((group) => group.tab === tabIdentifier)
-        .sort((a, b) => (a.position - b.position) || (a.id - b.id));
+    return Object.keys(groups).map(groupId => ({
+        ...groups[groupId],
+        id: groupId
+    }))
+    .filter((group) => group.tab === tabIdentifier || (tabIdentifier === 'default' && !group.tab))
+    .sort((a, b) => (a.position - b.position) || (a.id - b.id));
 };
 
 const prepareListOfPropertiesToBeEdited = (inspectorGroup, focusedNode) => {

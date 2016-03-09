@@ -12,3 +12,8 @@ export const isOfTypeSelector = defaultMemoize(
         subTypes => subTypes.indexOf(subTypeName) !== -1
     )
 );
+
+export const allowedChildNodeTypesSelector = state => nodeTypeName => {
+    const nodeTypes = $get(['cr', 'nodeTypes', 'constraints', nodeTypeName, 'nodeTypes'], state);
+    return nodeTypes ? Object.keys(nodeTypes) : [];
+};

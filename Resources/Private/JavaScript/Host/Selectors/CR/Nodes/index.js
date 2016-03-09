@@ -7,7 +7,7 @@ import {
 } from '../NodeTypes/';
 
 const all = $get(['cr', 'nodes', 'byContextPath']);
-const storedNodeByContextPath = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath], state);
+export const storedNodeByContextPath = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 const focused = $get('cr.nodes.focused.contextPath');
 const currentDocumentNode = $get('ui.contentView.contextPath');
 const hovered = $get('cr.nodes.hovered.contextPath');
@@ -80,3 +80,16 @@ export const isOfTypeSelector = defaultMemoize(
         (node, nodeTypes) => nodeTypes.indexOf(node.nodeType.name) !== -1
     )
 );
+
+const parentNodeContextPath = contextPath => {
+    if (typeof contextPath !== 'string') {
+        return null;
+    }
+    const [path, context] = contextPath.split('@');
+    return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
+};
+
+export const parentNodeSelector = state => baseNode =>
+    storedNodeByContextPath(state)(parentNodeContextPath(baseNode.contextPath));
+export const grandParentNodeSelector = state => baseNode =>
+    storedNodeByContextPath(state)(parentNodeContextPath(parentNodeContextPath(baseNode.contextPath)));

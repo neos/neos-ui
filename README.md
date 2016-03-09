@@ -3,6 +3,8 @@
 [![Code Climate](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara/badges/gpa.svg)](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara)
 [![Test Coverage](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara/badges/coverage.svg)](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara/coverage) [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/inkdpixels.svg)](https://saucelabs.com/u/inkdpixels)
+
 > The next generation Neos CMS interface written in ReactJS with Immutable data structures.
 
 
@@ -74,6 +76,11 @@ and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with
 To run the integration tests, execute `npm run selenium:init` first, and `npm run selenium:run` in a separate session afterwards.
 
 Adding user stories is as simple as creating unit tests, the only difference is that the file needs to be placed in the `Tests` root directory and should end with `*.story.js` instead of `*.spec.js`.
+
+Since acceptance testing can be relatively time-intensive, it’s important to plan how to organize your tests. It is possible to organize your tests by creating multiple configuration files: each file can define a different list of “specs” directories.
+Additionally, Mocha’s “grep” option is exposed to the --mochaOpts option, so you can use it to perform pattern matching on your test descriptions:
+
+    npm run selenium:run -- --mochaOpts.grep "should persist the changes"
 
 #### Libraries which are used by the application
 | Name          | Description/Usecase          |

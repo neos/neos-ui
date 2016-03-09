@@ -20,7 +20,8 @@ import {
     allowedNodeTypes: allowedNodeTypesSelector,
     mode: $get('ui.addNodeModal.mode')
 }), {
-    close: actions.UI.AddNodeModal.close
+    close: actions.UI.AddNodeModal.close,
+    addChange: actions.Changes.add
 })
 export default class AddNodeModal extends Component {
     static propTypes = {
@@ -28,7 +29,8 @@ export default class AddNodeModal extends Component {
         referenceNode: PropTypes.object,
         allowedNodeTypes: PropTypes.array,
         mode: PropTypes.string.isRequired,
-        close: PropTypes.func.isRequired
+        close: PropTypes.func.isRequired,
+        addChange: PropTypes.func.isRequired
     };
 
     render() {
@@ -43,15 +45,36 @@ export default class AddNodeModal extends Component {
                     <I18n fallback="Cancel" />
                 </Button>
             ];
+            let changeType;
+            switch (this.props.mode) {
+                case 'prepend':
+                    changeType = 'PackageFactory.Guevara:CreateBefore';
+                    break;
+                case 'append':
+                    changeType = 'PackageFactory.Guevara:CreateAfter';
+                    break;
+                default:
+                    changeType = 'PackageFactory.Guevara:Create';
+                    break;
+            }
             const allowedNodeTypes = this.props.allowedNodeTypes.map(nodeType => ({
                 icon: nodeType.ui.icon,
-                title: nodeType.ui.label
-            })).map(nodeType => {
-                nodeType.onClick = () => {
-                    console.log('Create NodeType:', nodeType);
-                };
-                return nodeType;
-            });
+                title: nodeType.ui.label,
+                onClick: () => {
+                    const change = {
+                        type: changeType,
+                        subject: this.props.referenceNode.contextPath,
+                        payload: {
+                            nodeType: nodeType.name,
+                            initialProperties: {
+                                title: 'test'
+                            }
+                        }
+                    };
+                    this.props.addChange(change);
+                    this.props.close();
+                }
+            }));
 
             return (
                 <Dialog

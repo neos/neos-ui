@@ -37,6 +37,24 @@ describe('"host.redux.ui.flashMessages" ', () => {
     });
 
     describe('"add" action.', () => {
+        it('should throw an error if no arguments where passed.', () => {
+            const fn = () => store.dispatch(add());
+
+            expect(fn).to.throw('Empty or non existent "id" passed to the addFlashMessage reducer.');
+        });
+
+        it('should throw an error no "message" was passed.', () => {
+            const fn = () => store.dispatch(add('myMessageId', null));
+
+            expect(fn).to.throw('Empty or non existent "message" passed to the addFlashMessage reducer.');
+        });
+
+        it('should throw an error if an invalid "severity" was passed.', () => {
+            const fn = () => store.dispatch(add('myMessageId', 'myMessage', null));
+
+            expect(fn).to.throw('Invalid "severity" specified while adding a new FlashMessage.');
+        });
+
         it('should be able to add the passed data as a new flashMessage item.', () => {
             store.dispatch(add('myMessageId', 'myMessage', 'error', 300));
 

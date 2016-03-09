@@ -57,7 +57,6 @@ prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawA
             contextPath = ${q(documentNode).property('_contextPath')}
         }
         debugMode = FALSE
-        flashMessages = TYPO3.TypoScript:RawArray
         fullScreen = TYPO3.TypoScript:RawArray {
             isFullScreen = FALSE
         }

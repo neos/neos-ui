@@ -1,4 +1,5 @@
 import addChange from './AddChange/';
+import addFlashMessage from './AddFlashMessage/';
 import blurNode from './BlurNode/';
 import focusNode from './FocusNode/';
 import hoverNode from './HoverNode/';
@@ -17,6 +18,7 @@ const initializeMethods = methodMap => dispatch => {
 
 export default initializeMethods({
     addChange,
+    addFlashMessage,
     blurNode,
     focusNode,
     hoverNode,

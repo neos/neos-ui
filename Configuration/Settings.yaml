@@ -15,6 +15,7 @@ TYPO3:
     defaultContext:
       'Guevara.Activation': 'PackageFactory\Guevara\TypoScript\Helper\ActivationHelper'
       'Guevara.Workspace': 'PackageFactory\Guevara\TypoScript\Helper\WorkspaceHelper'
+      'Guevara.NodeInfo': 'PackageFactory\Guevara\TypoScript\Helper\NodeInfoHelper'
 PackageFactory:
     Guevara:
       changes:

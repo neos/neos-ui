@@ -8,6 +8,7 @@ prototype(PackageFactory.Guevara:Node) < prototype(TYPO3.TypoScript:RawArray) {
     nodeType = ${q(node).property('_nodeType.name')}
     properties = ${q(node).property('_properties')}
     label = ${q(node).property('_label')}
+    isAutoCreated = ${Guevara.NodeInfo.isAutoCreated(node)}
     uri = TYPO3.Neos:NodeUri {
         node = ${node}
         @if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof TYPO3.Neos:Document]')}

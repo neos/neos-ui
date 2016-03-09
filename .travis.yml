@@ -33,8 +33,8 @@ cache:
 # Parallel environments, the value represents the name of the shell script which needs to be placed in `Build/TravisCi/Scripts/[name].sh`.
 #
 env:
-  - TEST_SUITE=CodeStyle
-  - TEST_SUITE=UnitTests
+  #- TEST_SUITE=CodeStyle
+  #- TEST_SUITE=UnitTests
   - TEST_SUITE=IntegrationTests
 
 #

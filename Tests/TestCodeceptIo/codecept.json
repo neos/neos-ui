@@ -1,0 +1,20 @@
+{
+  "tests": "./*.story.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "WebDriverIO": {
+      "url": "http://localhost:8081",
+      "browser": "firefox"
+    },
+    "Frame": {
+      "require": "./frame_helper.js"
+    }
+  },
+  "include": {
+    "I": "./steps_file.js"
+  },
+  "bootstrap": false,
+  "mocha": {},
+  "name": "TestCodeceptIo"
+}

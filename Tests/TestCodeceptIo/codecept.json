@@ -7,7 +7,7 @@
       "url": "http://neos-development.local",
       "browser": "firefox"
     },
-    "Frame": {
+    "Neos": {
       "require": "./neos_helper.js"
     }
   },

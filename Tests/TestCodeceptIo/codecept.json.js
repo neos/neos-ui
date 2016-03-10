@@ -29,7 +29,7 @@ let config = {
             coloredLogs: true,
             waitforTimeout: 10000
         },
-        Frame: {
+        Neos: {
           "require": "./neos_helper.js"
         }
     },

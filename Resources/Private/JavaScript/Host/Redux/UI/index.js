@@ -46,6 +46,12 @@ import {
     actions as ContentCanvas
 } from './ContentCanvas/index';
 
+import {
+    reducer as InspectorReducer,
+    hydrate as InspectorHydrator,
+    actions as Inspector
+} from './Inspector/index';
+
 //
 // Export the action types
 //
@@ -66,7 +72,8 @@ export const actions = {
     RightSideBar,
     AddNodeModal,
     PageTree,
-    ContentCanvas
+    ContentCanvas,
+    Inspector
 };
 
 //
@@ -81,7 +88,8 @@ export const hydrators = [
     RightSideBarHydrator,
     AddNodeModalHydrator,
     PageTreeHydrator,
-    ContentCanvasHydrator
+    ContentCanvasHydrator,
+    InspectorHydrator
 ];
 
 //
@@ -96,5 +104,6 @@ export const reducer = {
     ...RightSideBarReducer,
     ...AddNodeModalReducer,
     ...PageTreeReducer,
-    ...ContentCanvasReducer
+    ...ContentCanvasReducer,
+    ...InspectorReducer
 };

@@ -32,23 +32,23 @@ const resolveEditor = (legacyEditorName) => {
 
 @connect($transform({
     focusedNode: CR.Nodes.focusedSelector,
-    inspectorValuesByNodePath: $get('ui.rightSideBar.inspectorValuesByNodePath')
+    inspectorValuesByNodePath: $get('ui.inspector.valuesByNodePath')
 }), {
-    inspectorWriteValue: actions.UI.RightSideBar.inspectorWriteValue
+    writeValue: actions.UI.Inspector.writeValue
 })
 export default class SingleInspectorEditor extends Component {
 
     static propTypes = {
         property: PropTypes.object.isRequired,
         focusedNode: PropTypes.object.isRequired,
-        inspectorWriteValue: PropTypes.func.isRequired,
+        writeValue: PropTypes.func.isRequired,
         inspectorValuesByNodePath: PropTypes.object.isRequired
     };
 
     render() {
         const Editor = resolveEditor(this.props.property.ui.inspector.editor);
         const changeFn = value => {
-            this.props.inspectorWriteValue(this.props.focusedNode.contextPath, this.props.property.id, value);
+            this.props.writeValue(this.props.focusedNode.contextPath, this.props.property.id, value);
         };
 
         const value = $get([this.props.focusedNode.contextPath, this.props.property.id], this.props.inspectorValuesByNodePath) || this.props.focusedNode.properties[this.props.property.id];

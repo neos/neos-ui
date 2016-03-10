@@ -8,7 +8,7 @@
       "browser": "firefox"
     },
     "Frame": {
-      "require": "./frame_helper.js"
+      "require": "./neos_helper.js"
     }
   },
   "include": {

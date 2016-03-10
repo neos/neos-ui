@@ -3,7 +3,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 
-class Frame extends Helper {
+class Neos extends Helper {
 
     // before/after hooks
     _before() {

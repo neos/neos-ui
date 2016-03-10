@@ -30,7 +30,7 @@ let config = {
             waitforTimeout: 10000
         },
         Frame: {
-          "require": "./frame_helper.js"
+          "require": "./neos_helper.js"
         }
     },
     include: {

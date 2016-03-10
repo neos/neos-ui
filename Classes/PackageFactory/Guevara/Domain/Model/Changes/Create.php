@@ -11,11 +11,9 @@ class Create extends AbstractCreate
     public function canApply()
     {
         $subject = $this->getSubject();
-        $parent = $subject->getParent();
         $nodeType = $this->getNodeType();
 
-        return $subject->getNodeType()->allowsChildNodeType($nodeType) &&
-            $parent->getNodeType()->allowsGrandchildNodeType($subject->getName(), $nodeType);
+        return $subject->isNodeTypeAllowedAsChildNode($nodeType);
     }
 
     /**

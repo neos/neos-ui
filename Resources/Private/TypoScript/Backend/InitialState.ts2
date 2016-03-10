@@ -3,11 +3,18 @@ include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/AppendT
 include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/AppendAllToCollection.ts2
 
 prototype(PackageFactory.Guevara:InitialState) < prototype(TYPO3.TypoScript:RawArray) {
+    changes = TYPO3.TypoScript:RawArray {
+        pending = TYPO3.TypoScript:RawArray
+        processing = TYPO3.TypoScript:RawArray
+        failed = TYPO3.TypoScript:RawArray
+    }
+
     cr = TYPO3.TypoScript:RawArray {
         nodeTypes = TYPO3.TypoScript:RawArray {
             byName = ${nodeTypeSchema.nodeTypes}
             constraints = ${nodeTypeSchema.constraints}
             inheritanceMap = ${nodeTypeSchema.inheritanceMap}
+            groups = ${Configuration.setting('TYPO3.Neos.nodeTypes.groups')}
         }
         nodes = TYPO3.TypoScript:RawArray {
             byContextPath = TYPO3.TypoScript:RawArray

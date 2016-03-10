@@ -102,4 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inform everybody, that the UI has booted successfully
     //
     store.dispatch(actions.System.boot());
+
+    //
+    // Reoccurring tasks
+    //
 });

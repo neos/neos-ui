@@ -14,7 +14,7 @@ class Frame extends Helper {
         // remove if not used
     }
     //todo split and make more flexible
-    focusAndEditInGuestFrame(selector, text) {
+    focusAndEditInGuestFrame(text) {
         // access current client of WebDriverIO helper
         const client = this.helpers['WebDriverIO'].browser;
         return client.frame('neos-content-main').click('.typo3-neos-nodetypes-text').keys(text);

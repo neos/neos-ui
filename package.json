@@ -106,7 +106,7 @@
     "lint:css": "stylelint 'Resources/Private/JavaScript/**/*.css'",
     "lint:scripts": "eslint Resources/Private/JavaScript/**",
     "selenium:init": "selenium-standalone install && selenium-standalone start",
-    "selenium:run": "wdio wdio.config.js",
+    "selenium:run": "codeceptjs run --steps Tests/TestCodeceptIo",
     "test": "npm run lint && npm run karma",
     "watch:build": "npm run build -- --watch",
     "watch:karma": "export TEST=true && karma start",

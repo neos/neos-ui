@@ -4,7 +4,7 @@
   "output": "./output",
   "helpers": {
     "WebDriverIO": {
-      "url": "http://localhost:8081",
+      "url": "http://neos-development.local",
       "browser": "firefox"
     },
     "Frame": {

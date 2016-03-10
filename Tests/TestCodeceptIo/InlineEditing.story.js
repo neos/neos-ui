@@ -13,7 +13,7 @@ Scenario('should be able to type into a nodeType in the guest frame.', (I) => {
     I.seeElement({id: 'appContainer'});
 
     I.waitForElement({css: '#neos__contentView iframe'}, 30);
-    I.focusAndEditInGuestFrame('neos-content-main', 'Hello Worlds');
+    I.focusAndEditInGuestFrame('Hello Worlds');
 });
 
 Scenario('should be able to display the publish dropdown contents after the publish dropdown chevron was clicked.', (I) => {

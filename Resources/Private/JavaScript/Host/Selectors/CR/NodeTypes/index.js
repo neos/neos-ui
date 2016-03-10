@@ -22,3 +22,5 @@ export const allowedChildNodeTypesForAutocreatedNodeSelector = state => (nodeTyp
     const nodeTypes = $get(['cr', 'nodeTypes', 'constraints', nodeTypeName, 'childNodes', autoCreatedNodeName, 'nodeTypes'], state);
     return nodeTypes ? Object.keys(nodeTypes) : [];
 };
+
+export const nodeTypeGroupsSelector = $get('cr.nodeTypes.groups');

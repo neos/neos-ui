@@ -6,6 +6,12 @@ import {actionTypes, actions} from 'Host/Redux/';
 
 const getChanges = $get('changes');
 
+export function* autoFlush() {
+    yield* takeEvery(actionTypes.Changes.ADD, function* triggerFlush() {
+        yield put(actions.Changes.flush());
+    });
+}
+
 export function* watchFlush(getState) {
     yield* takeEvery(actionTypes.Changes.FLUSH, function* generatePageTreeData() {
         const {csrfToken} = window.neos;

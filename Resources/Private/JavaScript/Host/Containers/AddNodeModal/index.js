@@ -14,13 +14,13 @@ import {
 } from 'Host/Components/';
 import {
     referenceNodeSelector,
-    groupedAllowedNodeTypesSelector
+    nodeTypesForAddNodeModalSelector
 } from 'Host/Selectors/UI/AddNodeModal/';
 
 @connect($transform({
     nodeTypes: $get('cr.nodeTypes.byName'),
     referenceNode: referenceNodeSelector,
-    groupedAllowedNodeTypes: groupedAllowedNodeTypesSelector,
+    groupedAllowedNodeTypes: nodeTypesForAddNodeModalSelector,
     mode: $get('ui.addNodeModal.mode')
 }), {
     close: actions.UI.AddNodeModal.close,

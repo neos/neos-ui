@@ -7,10 +7,11 @@ import {
 } from '../NodeTypes/';
 
 const all = $get(['cr', 'nodes', 'byContextPath']);
-export const storedNodeByContextPath = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 const focused = $get('cr.nodes.focused.contextPath');
 const currentDocumentNode = $get('ui.contentView.contextPath');
 const hovered = $get('cr.nodes.hovered.contextPath');
+
+export const storedNodeByContextPath = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 
 // Implementation detail of resolveNodeFromContextPath, which enriches a stored node and makes it a "node" ready for usage to the outside.
 const prepareStoredNodeForUsage = (storedNode, getStoredNodeType) => {
@@ -91,5 +92,6 @@ const parentNodeContextPath = contextPath => {
 
 export const parentNodeSelector = state => baseNode =>
     storedNodeByContextPath(state)(parentNodeContextPath(baseNode.contextPath));
+
 export const grandParentNodeSelector = state => baseNode =>
     storedNodeByContextPath(state)(parentNodeContextPath(parentNodeContextPath(baseNode.contextPath)));

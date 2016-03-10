@@ -11,6 +11,15 @@ export const actionTypes = {
 
 /**
  * Perists the change.
+ * Example:
+ * {
+ *   type: 'PackageFactory.Guevara:Property',
+ *   subject: nodeContext.contextPath,
+ *   payload: {
+ *     propertyName: nodeContext.propertyName,
+ *     value
+ *   }
+ * }
  */
 const persistChange = createAction(PERSIST, change => ({change}));
 

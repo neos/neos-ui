@@ -40,63 +40,62 @@ export default class AddNodeModal extends Component {
         return referenceNode !== this.props.referenceNode;
     }
 
+    renderNodeTypeItem(nodeType, key) {
+        let changeType;
+        switch (this.props.mode) {
+            case 'prepend':
+                changeType = 'PackageFactory.Guevara:CreateBefore';
+                break;
+            case 'append':
+                changeType = 'PackageFactory.Guevara:CreateAfter';
+                break;
+            default:
+                changeType = 'PackageFactory.Guevara:Create';
+                break;
+        }
+        const onClick = () => {
+            const change = {
+                type: changeType,
+                subject: this.props.referenceNode.contextPath,
+                payload: {
+                    nodeType: nodeType.name,
+                    initialProperties: {
+                        title: 'test'
+                    }
+                }
+            };
+            this.props.addChange(change);
+            this.props.close();
+        };
+        return (
+            <GridItem width="33%" key={key}>
+                <Button
+                    hoverStyle="brand"
+                    className={style.nodeType}
+                    onClick={onClick}
+                    >
+                    <Icon icon={nodeType.ui.icon} className={style.nodeType__icon} padded="right" />
+                    <I18n id={nodeType.ui.label} fallback={nodeType.ui.label} />
+                </Button>
+            </GridItem>
+        );
+    }
+
+    renderNodeTypeGroup(group, key) {
+        return (
+            <div key={key}>
+                <Headline type="h2">
+                    <I18n fallback={group.label} id={group.label} />
+                </Headline>
+                <Grid>
+                    {group.nodeTypes.map(this.renderNodeTypeItem.bind(this))}
+                </Grid>
+            </div>
+        );
+    }
+
     render() {
         if (this.props.referenceNode) {
-            let changeType;
-            switch (this.props.mode) {
-                case 'prepend':
-                    changeType = 'PackageFactory.Guevara:CreateBefore';
-                    break;
-                case 'append':
-                    changeType = 'PackageFactory.Guevara:CreateAfter';
-                    break;
-                default:
-                    changeType = 'PackageFactory.Guevara:Create';
-                    break;
-            }
-
-            const renderNodeTypeItem = (nodeType, key) => {
-                const onClick = () => {
-                    const change = {
-                        type: changeType,
-                        subject: this.props.referenceNode.contextPath,
-                        payload: {
-                            nodeType: nodeType.name,
-                            initialProperties: {
-                                title: 'test'
-                            }
-                        }
-                    };
-                    this.props.addChange(change);
-                    this.props.close();
-                };
-                return (
-                    <GridItem width="33%" key={key}>
-                        <Button
-                            hoverStyle="brand"
-                            className={style.nodeType}
-                            onClick={onClick}
-                            >
-                            <Icon icon={nodeType.ui.icon} className={style.nodeType__icon} padded="right" />
-                            <I18n id={nodeType.ui.label} fallback={nodeType.ui.label} />
-                        </Button>
-                    </GridItem>
-                );
-            };
-
-            const renderNodeTypeGroup = (group, key) => {
-                return (
-                    <div key={key}>
-                        <Headline type="h2">
-                            <I18n fallback={group.label} id={group.label} />
-                        </Headline>
-                        <Grid>
-                            {group.nodeTypes.map(renderNodeTypeItem)}
-                        </Grid>
-                    </div>
-                );
-            };
-
             const actions = [
                 <Button
                     style="clean"
@@ -118,7 +117,7 @@ export default class AddNodeModal extends Component {
                     <Headline type="h1">
                         <I18n fallback="Create new" id="createNew" />
                     </Headline>
-                    {this.props.groupedAllowedNodeTypes.map(renderNodeTypeGroup)}
+                    {this.props.groupedAllowedNodeTypes.map(this.renderNodeTypeGroup.bind(this))}
                 </Dialog>
             );
         }

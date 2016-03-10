@@ -54,23 +54,28 @@ export const groupedAllowedNodeTypesSelector = createSelector(
     (nodeTypeGroups, getAllowedNodeTypes) =>
         (referenceNode, mode) => {
             // Distribute nodetypes into groups
-            getAllowedNodeTypes(referenceNode, mode).map(nodeType => {
+            const groups = getAllowedNodeTypes(referenceNode, mode).reduce((groups, nodeType) => {
                 // Fallback to 'general' group
                 const groupName = nodeType.ui && nodeType.ui.group ? nodeType.ui.group : 'general';
                 if (groupName in nodeTypeGroups) {
-                    if (!nodeTypeGroups[groupName].nodeTypes) {
-                        nodeTypeGroups[groupName].nodeTypes = [];
+                    const group = groups[groupName] || Object.assign({}, nodeTypeGroups[groupName]);
+
+                    if (!group.nodeTypes) {
+                        group.nodeTypes = [];
                     }
-                    nodeTypeGroups[groupName].nodeTypes.push(nodeType);
+                    group.nodeTypes.push(nodeType);
+                    groups[groupName] = group;
                 }
-            });
+
+                return groups;
+            }, {});
             // Sort both groups and nodetypes within the group and return as array
-            return Object.keys(nodeTypeGroups).map(i => {
-                if (nodeTypeGroups[i].nodeTypes) {
-                    nodeTypeGroups[i].nodeTypes.sort((a, b) => a.ui.position > b.ui.position ? 1 : -1);
+            return Object.keys(groups).map(i => {
+                if (groups[i].nodeTypes) {
+                    groups[i].nodeTypes.sort((a, b) => a.ui.position > b.ui.position ? 1 : -1);
                 }
-                nodeTypeGroups[i].name = i;
-                return nodeTypeGroups[i];
+                groups[i].name = i;
+                return groups[i];
             }).filter(i => i.nodeTypes).sort((a, b) => a.position > b.position ? 1 : -1);
         }
 );

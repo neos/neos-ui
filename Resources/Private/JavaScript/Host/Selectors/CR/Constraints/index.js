@@ -23,6 +23,9 @@ export const allowedNodeTypesSelector = createSelector(
     ],
     (getParentNode, getAllowedChildNodeTypes, getNodeTypeByName) =>
         (referenceNode, mode) => {
+            if (!referenceNode) {
+                throw new Error('Reference node not defined');
+            }
             if (!referenceNode.nodeType) {
                 throw new Error('Reference node does not have the nodetype set');
             }

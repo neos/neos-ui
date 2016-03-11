@@ -5,12 +5,12 @@ import {byNameSelector} from '../NodeTypes';
 
 const nodeTypeGroupsSelector = $get('cr.nodeTypes.groups');
 
-const allowedChildNodeTypesSelector = state => nodeTypeName => {
+export const allowedChildNodeTypesSelector = state => nodeTypeName => {
     const nodeTypes = $get(['cr', 'nodeTypes', 'constraints', nodeTypeName, 'nodeTypes'], state);
     return nodeTypes ? Object.keys(nodeTypes) : [];
 };
 
-const allowedChildNodeTypesForAutocreatedNodeSelector = state => (nodeTypeName, autoCreatedNodeName) => {
+export const allowedChildNodeTypesForAutocreatedNodeSelector = state => (nodeTypeName, autoCreatedNodeName) => {
     const nodeTypes = $get(['cr', 'nodeTypes', 'constraints', nodeTypeName, 'childNodes', autoCreatedNodeName, 'nodeTypes'], state);
     return nodeTypes ? Object.keys(nodeTypes) : [];
 };
@@ -23,12 +23,15 @@ export const allowedNodeTypesSelector = createSelector(
     ],
     (getParentNode, getAllowedChildNodeTypes, getNodeTypeByName) =>
         (referenceNode, mode) => {
-            if (!referenceNode || !mode) {
-                return [];
+            if (!referenceNode.nodeType) {
+                throw new Error('Reference node does not have the nodetype set');
+            }
+            if (['insert', 'append', 'prepend'].indexOf(mode) === -1) {
+                throw new Error(`allowedNodeTypesSelector expects "mode" to be one of "insert", "append", "prepend", but "${mode}" given`);
             }
             const baseNode = mode === 'insert' ? referenceNode : getParentNode(referenceNode);
-            if (!baseNode) {
-                return [];
+            if (!baseNode.nodeType) {
+                throw new Error('Base node does not have the nodetype set');
             }
             const allowedNodeTypes = baseNode.isAutoCreated ?
                 allowedChildNodeTypesForAutocreatedNodeSelector(getParentNode(baseNode.nodeType), baseNode.name) :

@@ -34,6 +34,9 @@ module.exports = function (config) {
         webpackServer: {
             noInfo: true
         },
+        mochaReporter: {
+            showDiff: true
+        },
         coverageReporter: {
             type: 'lcov',
             dir: 'Coverage/'

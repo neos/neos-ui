@@ -13,6 +13,7 @@ import IconButtonDropDown from './IconButtonDropDown/';
 import Label from './Label/';
 import Portal from './Portal/';
 import SideBar from './SideBar/';
+import Select from './Select/';
 import Tabs from './Tabs/';
 import TextInput from './TextInput/';
 import ToggablePanel from './ToggablePanel/';
@@ -34,6 +35,7 @@ export {
     Label,
     Portal,
     SideBar,
+    Select,
     Tabs,
     TextInput,
     ToggablePanel,

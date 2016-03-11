@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {DropDown, Icon} from 'Host/Components/';
+import {DropDown, Icon, Select} from 'Host/Components/';
 import {$transform, $get} from 'plow-js';
 import style from './style.css';
 
@@ -10,10 +10,14 @@ const DimensionCategory = props => {
     return (
         <li key={key} className={style.dimensionCategory}>
             <Icon icon="globe" padded="right" className={style.dimensionCategory__icon} />
-            {data.myvar}
             <br />
 
-            ToDo: Render the select for all dimension items
+            <Select
+                name="form-field-name"
+                value="intl"
+                options={data.presets}
+                />
+
         </li>
     );
 };
@@ -44,7 +48,7 @@ export default class DimensionSwitcher extends Component {
                     ToDo: Current dimension name {dimensions.myvar}
                 </DropDown.Header>
                 <DropDown.Contents className={style.dropDown__contents}>
-                    {dimensions.map((myvar, index) => <DimensionCategory data={myvar} key={index} />)}
+                    {dimensions.map((dimension, index) => <DimensionCategory data={dimension} key={index} />)}
                 </DropDown.Contents>
             </DropDown>
         );

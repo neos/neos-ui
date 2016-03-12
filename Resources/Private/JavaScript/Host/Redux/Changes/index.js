@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import {$all, $add, $set, $get} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/Transient/Changes/ADD';
-const FLUSH = '@packagefactory/guevara/Transient/Changes/FLUSH';
+const START = '@packagefactory/guevara/Transient/Changes/START';
 const FINISH = '@packagefactory/guevara/Transient/Changes/FINISH';
 const FAIL = '@packagefactory/guevara/Transient/Changes/FAIL';
 const RETRY = '@packagefactory/guevara/Transient/Changes/RETRY';
@@ -12,7 +12,7 @@ const RETRY = '@packagefactory/guevara/Transient/Changes/RETRY';
 //
 export const actionTypes = {
     ADD,
-    FLUSH,
+    START,
     FINISH,
     FAIL,
     RETRY
@@ -27,7 +27,7 @@ const add = createAction(ADD, change => ({change}));
 /**
  * Sends all local changes to the server.
  */
-const flush = createAction(FLUSH);
+const start = createAction(START);
 
 /**
  * Clear the changes from `processing` state on succsesfull publishing.
@@ -49,7 +49,7 @@ const retry = createAction(RETRY);
 //
 export const actions = {
     add,
-    flush,
+    start,
     finish,
     fail,
     retry
@@ -69,7 +69,7 @@ export const initialState = {
 //
 export const reducer = {
     [ADD]: ({change}) => $add('changes.pending', change),
-    [FLUSH]: () => state => $all(
+    [START]: () => state => $all(
         state => $set('changes.processing',
             [
                 ...$get('changes.processing', state),

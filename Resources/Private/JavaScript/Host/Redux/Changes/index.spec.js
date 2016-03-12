@@ -3,7 +3,7 @@ import {reducer, actions, initialState} from './index.js';
 
 import {handleActions} from 'Shared/Utilities/index';
 
-const {add, flush, finish, fail, retry} = actions;
+const {add, start, finish, fail, retry} = actions;
 
 describe('"host.redux.transient.changes" ', () => {
     const changeFixture = {
@@ -52,10 +52,10 @@ describe('"host.redux.transient.changes" ', () => {
         });
     });
 
-    describe('"flush" action.', () => {
+    describe('"start" action.', () => {
         it('should move all pending changes to processing state.', () => {
             store.dispatch(add(changeFixture));
-            store.dispatch(flush());
+            store.dispatch(start());
             expect(store.getState().changes.pending.length).to.equal(0);
             expect(store.getState().changes.processing.length).to.equal(1);
         });
@@ -63,7 +63,7 @@ describe('"host.redux.transient.changes" ', () => {
     describe('"finish" action.', () => {
         it('should clear all changes from processing state.', () => {
             store.dispatch(add(changeFixture));
-            store.dispatch(flush());
+            store.dispatch(start());
             store.dispatch(finish());
 
             expect(store.getState().changes.pending.length).to.equal(0);
@@ -73,7 +73,7 @@ describe('"host.redux.transient.changes" ', () => {
     describe('"fail" action.', () => {
         it('should move all changes from processing state to failed.', () => {
             store.dispatch(add(changeFixture));
-            store.dispatch(flush());
+            store.dispatch(start());
             store.dispatch(fail());
 
             expect(store.getState().changes.failed.length).to.equal(1);
@@ -83,7 +83,7 @@ describe('"host.redux.transient.changes" ', () => {
     describe('"retry" action.', () => {
         it('should move all changes from failed state to pending.', () => {
             store.dispatch(add(changeFixture));
-            store.dispatch(flush());
+            store.dispatch(start());
             store.dispatch(fail());
             store.dispatch(retry());
 

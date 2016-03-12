@@ -4,21 +4,16 @@ import {$get} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/index';
 
-const getChanges = $get('changes.processing');
+const getChanges = $get('changes.pending');
 
-export function* autoFlush() {
-    yield* takeEvery(actionTypes.Changes.ADD, function* triggerFlush() {
-        yield put(actions.Changes.flush());
-    });
-}
-
-export function* watchFlush(getState) {
-    yield* takeEvery(actionTypes.Changes.FLUSH, function* generatePageTreeData() {
+export function* watchAdd(getState) {
+    yield* takeEvery(actionTypes.Changes.ADD, function* triggerStart() {
         const {csrfToken} = window.neos;
         const state = getState();
         const changes = getChanges(state);
 
         if (changes.length) {
+            yield put(actions.Changes.start());
             yield put(actions.UI.Remote.startSaving());
 
             yield fetch('/che!/service/change', {

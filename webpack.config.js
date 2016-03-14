@@ -75,6 +75,10 @@ const config = {
     output: {
         filename: 'JavaScript/[name].js',
         path: path.resolve('./Resources/Public/')
+    },
+    stats: {
+        assets: false,
+        children: false
     }
 };
 

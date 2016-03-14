@@ -1,15 +1,14 @@
 import {createAction} from 'redux-actions';
-import {$set, $toggle, $drop} from 'plow-js';
+import {$set, $toggle, $drop, $all} from 'plow-js';
 
 const WRITE_VALUE = '@packagefactory/guevara/UI/Inspector/WRITE_VALUE';
 const APPLY = '@packagefactory/guevara/UI/Inspector/APPLY';
+const APPLY_FINISHED = '@packagefactory/guevara/UI/Inspector/APPLY_FINISHED';
 const CANCEL = '@packagefactory/guevara/UI/Inspector/CANCEL';
 
-/**
- * Toggles the right sidebar out/in of the users viewport.
- */
 const writeValue = createAction(WRITE_VALUE, (nodeContextPath, propertyId, value) => ({nodeContextPath, propertyId, value}));
 const apply = createAction(APPLY, (nodeContextPath) => ({nodeContextPath}));
+const applyFinished = createAction(APPLY_FINISHED, (nodeContextPath) => ({nodeContextPath}));
 const cancel = createAction(CANCEL, (nodeContextPath) => ({nodeContextPath}));
 
 //
@@ -18,7 +17,13 @@ const cancel = createAction(CANCEL, (nodeContextPath) => ({nodeContextPath}));
 export const actions = {
     writeValue,
     apply,
+    applyFinished,
     cancel
+
+};
+
+export const actionTypes = {
+    APPLY
 };
 
 //
@@ -36,7 +41,9 @@ export const hydrate = () => $set(
 //
 export const reducer = {
     [WRITE_VALUE]: ({nodeContextPath, propertyId, value}) => $set(['ui', 'inspector', 'valuesByNodePath', nodeContextPath, propertyId], value),
-        // TODO: how to apply?
-    //[APPLY]: ({nodeContextPath}) => $drop(['ui', 'rightSideBar', 'inspectorValuesByNodePath', nodeContextPath], value)
-    [CANCEL]: ({nodeContextPath}) => $drop(['ui', 'rightSideBar', 'valuesByNodePath', nodeContextPath])
+    // APPLY is handled by a saga.
+    // APPLY_FINISHED is only triggered by the saga which listens on APPLY.
+    [APPLY_FINISHED]: ({nodeContextPath}) => $drop(['ui', 'inspector', 'valuesByNodePath', nodeContextPath]),
+    // TODO: APPLY_FINISHED needs to UPDATE the Node properties on the client. Or should the "Changes" API do this? I guess yes.
+    [CANCEL]: ({nodeContextPath}) => $drop(['ui', 'inspector', 'valuesByNodePath', nodeContextPath])
 };

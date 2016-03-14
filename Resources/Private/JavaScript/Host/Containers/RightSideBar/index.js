@@ -35,8 +35,8 @@ const renderTab = (tab) => {
     focusedNode: CR.Nodes.focusedSelector
 }), {
     toggleSidebar: actions.UI.RightSideBar.toggle,
-    inspectorApply: actions.UI.RightSideBar.inspectorApply,
-    inspectorCancel: actions.UI.RightSideBar.inspectorCancel
+    inspectorApply: actions.UI.Inspector.apply,
+    inspectorCancel: actions.UI.Inspector.cancel
 })
 export default class RightSideBar extends Component {
     static propTypes = {

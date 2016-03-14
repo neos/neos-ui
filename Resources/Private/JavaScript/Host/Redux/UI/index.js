@@ -49,6 +49,7 @@ import {
 import {
     reducer as InspectorReducer,
     hydrate as InspectorHydrator,
+    actionTypes as InspectorActionTypes,
     actions as Inspector
 } from './Inspector/index';
 
@@ -57,7 +58,8 @@ import {
 //
 export const actionTypes = {
     PageTree: PageTreeActionTypes,
-    ContentCanvas: ContentCanvasActionTypes
+    ContentCanvas: ContentCanvasActionTypes,
+    Inspector: InspectorActionTypes
 };
 
 //

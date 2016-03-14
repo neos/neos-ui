@@ -1,5 +1,5 @@
-import children from './Children/';
-import get from './Get/';
+import children from './Children/index';
+import get from './Get/index';
 
 export {
     children,

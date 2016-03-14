@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import {actions} from 'Host/Redux/';
+import {actions} from 'Host/Redux/index';
 import style from './style.css';
 import {
     Icon,
@@ -11,11 +11,11 @@ import {
     Grid,
     GridItem,
     I18n
-} from 'Host/Components/';
+} from 'Host/Components/index';
 import {
     referenceNodeSelector,
     nodeTypesForAddNodeModalSelector
-} from 'Host/Selectors/UI/AddNodeModal/';
+} from 'Host/Selectors/UI/AddNodeModal/index';
 
 @connect($transform({
     nodeTypes: $get('cr.nodeTypes.byName'),

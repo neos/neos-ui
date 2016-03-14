@@ -2,18 +2,18 @@ import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import {CR} from 'Host/Selectors/';
+import {CR} from 'Host/Selectors/index';
 
 import {
     SideBar,
     Tabs,
     IconButton
-} from 'Host/Components/';
-import {actions} from 'Host/Redux/';
+} from 'Host/Components/index';
+import {actions} from 'Host/Redux/index';
 
 import style from './style.css';
 
-import Inspector from './Inspector/';
+import Inspector from './Inspector/index';
 
 const generateTabs = (nodeType) => {
     const tabs = nodeType.ui.inspector.tabs;

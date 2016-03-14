@@ -1,5 +1,5 @@
-import {nodeComponent, inlineToolbar} from 'Guest/Components/';
-import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/';
+import {nodeComponent, inlineToolbar} from 'Guest/Components/index';
+import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/index';
 
 import render from './Render.js';
 

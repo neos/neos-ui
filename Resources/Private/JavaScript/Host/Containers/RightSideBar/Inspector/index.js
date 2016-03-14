@@ -1,4 +1,4 @@
-import TabPanel from './TabPanel/';
+import TabPanel from './TabPanel/index';
 
 export default {
     TabPanel

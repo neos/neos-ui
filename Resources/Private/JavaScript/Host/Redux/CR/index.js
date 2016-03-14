@@ -3,17 +3,17 @@ import {
     initialState as NodesInitialState,
     actionTypes as NodesActionTypes,
     actions as Nodes
-} from './Nodes/';
+} from './Nodes/index';
 import {
     reducer as NodeTypesReducer,
     initialState as NodeTypesInitialState,
     actions as NodeTypes
-} from './NodeTypes/';
+} from './NodeTypes/index';
 import {
     reducer as WorkspacesReducer,
     initialState as WorkspacesInitialState,
     actions as Workspaces
-} from './Workspaces/';
+} from './Workspaces/index';
 
 //
 // Export the actionTypes

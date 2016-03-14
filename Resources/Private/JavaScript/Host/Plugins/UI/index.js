@@ -1,8 +1,8 @@
 import uuid from 'uuid';
 
-import {createPlugin} from 'API/';
+import {createPlugin} from 'API/index';
 
-import methods from './Methods/';
+import methods from './Methods/index';
 
 const observers = {};
 const exposers = {};

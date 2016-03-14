@@ -2,8 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
-import {actions} from 'Host/Redux/';
-import FlashMessage from './FlashMessage/';
+import {actions} from 'Host/Redux/index';
+import FlashMessage from './FlashMessage/index';
 
 import style from './style.css';
 

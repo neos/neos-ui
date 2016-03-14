@@ -1,5 +1,5 @@
-import * as CR from './CR/';
-import * as UI from './UI/';
+import * as CR from './CR/index';
+import * as UI from './UI/index';
 
 export {
     CR,

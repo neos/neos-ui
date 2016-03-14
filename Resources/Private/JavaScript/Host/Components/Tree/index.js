@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 
-import NodeHeader from './NodeHeader/';
+import NodeHeader from './NodeHeader/index';
 import style from './style.css';
 
 export default class Tree extends Component {

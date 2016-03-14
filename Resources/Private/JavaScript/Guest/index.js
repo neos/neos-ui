@@ -1,5 +1,5 @@
 import 'Shared/Styles/style.css';
-import {domConnector} from './Process/';
+import {domConnector} from './Process/index';
 
 const {ui} = window.neos;
 const connection = ui.connect();

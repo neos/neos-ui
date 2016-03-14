@@ -1,5 +1,5 @@
-import initializeUse from './Use/';
-import initializeFlowQuery from './FlowQuery/';
+import initializeUse from './Use/index';
+import initializeFlowQuery from './FlowQuery/index';
 
 const createReadOnlyValue = value => ({
     value,

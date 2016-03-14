@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {IconButton} from 'Host/Components/';
+import {IconButton} from 'Host/Components/index';
 
 @connect()
 export default class CutSelectedNode extends Component {

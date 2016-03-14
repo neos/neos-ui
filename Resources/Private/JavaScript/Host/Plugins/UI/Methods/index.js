@@ -1,10 +1,10 @@
-import addChange from './AddChange/';
-import addFlashMessage from './AddFlashMessage/';
-import blurNode from './BlurNode/';
-import focusNode from './FocusNode/';
-import hoverNode from './HoverNode/';
-import unhoverNode from './UnhoverNode/';
-import setDocumentInformation from './SetDocumentInformation/';
+import addChange from './AddChange/index';
+import addFlashMessage from './AddFlashMessage/index';
+import blurNode from './BlurNode/index';
+import focusNode from './FocusNode/index';
+import hoverNode from './HoverNode/index';
+import unhoverNode from './UnhoverNode/index';
+import setDocumentInformation from './SetDocumentInformation/index';
 
 const initializeMethods = methodMap => dispatch => {
     const api = {};

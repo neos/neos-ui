@@ -1,11 +1,11 @@
-import AddNode from './AddNode/';
-import CopySelectedNode from './CopySelectedNode/';
-import CutSelectedNode from './CutSelectedNode/';
-import DeleteSelectedNode from './DeleteSelectedNode/';
-import EditSelectedNode from './EditSelectedNode/';
-import HideSelectedNode from './HideSelectedNode/';
-import PasteClipBoardNode from './PasteClipBoardNode/';
-import RefreshPageTree from './RefreshPageTree/';
+import AddNode from './AddNode/index';
+import CopySelectedNode from './CopySelectedNode/index';
+import CutSelectedNode from './CutSelectedNode/index';
+import DeleteSelectedNode from './DeleteSelectedNode/index';
+import EditSelectedNode from './EditSelectedNode/index';
+import HideSelectedNode from './HideSelectedNode/index';
+import PasteClipBoardNode from './PasteClipBoardNode/index';
+import RefreshPageTree from './RefreshPageTree/index';
 
 export {
     AddNode,

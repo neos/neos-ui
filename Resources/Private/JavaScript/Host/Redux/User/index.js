@@ -2,11 +2,11 @@ import {
     reducer as SettingsReducer,
     initialState as SettingsInitialState,
     actions as Settings
-} from './Settings/';
+} from './Settings/index';
 import {
     reducer as NameReducer,
     initialState as NameInitialState
-} from './Name/';
+} from './Name/index';
 
 //
 // Export the actions

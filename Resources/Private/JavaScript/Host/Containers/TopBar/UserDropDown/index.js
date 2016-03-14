@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
-import {I18n, Icon, DropDown} from 'Host/Components/';
+import {I18n, Icon, DropDown} from 'Host/Components/index';
 
 import style from './style.css';
 

@@ -1,4 +1,4 @@
-import {service} from 'Shared/';
+import {service} from 'Shared/index';
 const {logger} = service;
 
 export default (feedback, envelope) => {

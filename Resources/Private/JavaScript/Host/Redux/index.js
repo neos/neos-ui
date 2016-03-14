@@ -2,38 +2,38 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import merge from 'lodash.merge';
 import createSagaMiddleware from 'redux-saga';
 
-import {handleActions} from 'Host/Utilities/';
+import {handleActions} from 'Host/Utilities/index';
 
 import {
     reducer as ChangesReducer,
     actionTypes as ChangesActionTypes,
     initialState as ChangesInitialState,
     actions as Changes
-} from './Changes/';
+} from './Changes/index';
 import {
     reducer as CRReducer,
     initialState as CRInitialState,
     actionTypes as CRActionTypes,
     actions as CR
-} from './CR/';
+} from './CR/index';
 import {
     reducer as SystemReducer,
     initialState as SystemInitialState,
     actionTypes as SystemActionTypes,
     actions as System
-} from './System/';
+} from './System/index';
 import {
     reducer as UIReducer,
     initialState as UIInitialState,
     actionTypes as UIActionTypes,
     actions as UI
-} from './UI/';
+} from './UI/index';
 import {
     reducer as UserReducer,
     initialState as UserInitialState,
     actions as User
-} from './User/';
-import sagas from './Sagas/';
+} from './User/index';
+import sagas from './Sagas/index';
 
 const reducers = {
     ...ChangesReducer,

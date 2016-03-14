@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {IconButtonDropDown, Icon} from 'Host/Components/';
+import {IconButtonDropDown, Icon} from 'Host/Components/index';
 
 @connect()
 export default class PasteClipBoardNode extends Component {

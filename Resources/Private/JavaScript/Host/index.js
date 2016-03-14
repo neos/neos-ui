@@ -7,13 +7,13 @@ import {Provider} from 'react-redux';
 import assign from 'lodash.assign';
 import registry from '@reduct/registry';
 
-import {configureStore, actions} from './Redux/';
+import {configureStore, actions} from './Redux/index';
 
-import initializeJSAPI from 'API/';
-import {ui} from './Plugins/';
-import initializeExposers from './Plugins/UI/Exposer/';
+import initializeJSAPI from 'API/index';
+import {ui} from './Plugins/index';
+import initializeExposers from './Plugins/UI/Exposer/index';
 
-import * as feedbackHandler from './Service/FeedbackHandler/';
+import * as feedbackHandler from './Service/FeedbackHandler/index';
 
 import {
     ContentView,
@@ -26,14 +26,14 @@ import {
     ContextBar,
     FlashMessageContainer,
     FullScreen
-} from './Containers/';
+} from './Containers/index';
 import {
     backend,
     nodeTreeService,
     feedbackManager,
     publishingService,
     i18n
-} from './Service/';
+} from './Service/index';
 
 import style from './style.css';
 

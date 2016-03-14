@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 
-import Icon from 'Host/Components/Icon/';
+import Icon from 'Host/Components/Icon/index';
 
 import style from './style.css';
 

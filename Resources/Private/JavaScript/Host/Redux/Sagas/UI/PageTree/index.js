@@ -2,8 +2,8 @@ import {takeLatest, takeEvery} from 'redux-saga';
 import {put} from 'redux-saga/effects';
 import {$get, $transform} from 'plow-js';
 
-import {actionTypes, actions} from 'Host/Redux/';
-import {CR} from 'Host/Selectors/';
+import {actionTypes, actions} from 'Host/Redux/index';
+import {CR} from 'Host/Selectors/index';
 
 const getDocumentNodes = CR.Nodes.byNodeTypeSelector('TYPO3.Neos:Document');
 const isDocumentNode = CR.Nodes.isOfTypeSelector('TYPO3.Neos:Document');

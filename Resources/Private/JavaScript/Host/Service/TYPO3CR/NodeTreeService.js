@@ -1,5 +1,5 @@
-import {actions} from '../../Redux/';
-import {immutableOperations} from 'Shared/Utilities/';
+import {actions} from '../../Redux/index';
+import {immutableOperations} from 'Shared/Utilities/index';
 
 const {$get, $set} = immutableOperations;
 

@@ -1,5 +1,5 @@
-import * as Nodes from './Nodes/';
-import * as NodeTypes from './NodeTypes/';
+import * as Nodes from './Nodes/index';
+import * as NodeTypes from './NodeTypes/index';
 
 export {
     Nodes,

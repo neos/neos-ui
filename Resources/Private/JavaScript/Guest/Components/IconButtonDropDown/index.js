@@ -1,8 +1,8 @@
 import h from 'virtual-dom/h';
 import mergeClassNames from 'classnames';
 
-import icon from 'Guest/Components/Icon/';
-import button from 'Guest/Components/Button/';
+import icon from 'Guest/Components/Icon/index';
+import button from 'Guest/Components/Button/index';
 
 import style from './style.css';
 

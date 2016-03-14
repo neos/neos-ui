@@ -1,5 +1,5 @@
-import UI from './UI/';
-import * as Changes from './Changes/';
+import UI from './UI/index';
+import * as Changes from './Changes/index';
 
 export default [
     ...UI,

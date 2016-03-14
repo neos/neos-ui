@@ -2,9 +2,9 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform} from 'plow-js';
 
-import {Tree} from 'Host/Components/';
-import {UI} from 'Host/Selectors/';
-import {actions} from 'Host/Redux/';
+import {Tree} from 'Host/Components/index';
+import {UI} from 'Host/Selectors/index';
+import {actions} from 'Host/Redux/index';
 
 @connect($transform({
     rootNode: UI.PageTree.treeSelector

@@ -1,4 +1,4 @@
-import {actions} from 'Host/Redux/';
+import {actions} from 'Host/Redux/index';
 import uuid from 'uuid';
 
 export default (feedback, envelope, store) => {

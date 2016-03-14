@@ -1,4 +1,4 @@
-import createEditor from 'Guest/Components/Editors/CreateEditor/';
+import createEditor from 'Guest/Components/Editors/CreateEditor/index';
 
 export const editor = ckApi => {
     if (!ckApi) {

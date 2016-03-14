@@ -2,7 +2,7 @@ import {takeEvery} from 'redux-saga';
 import {put} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
-import {actionTypes, actions} from 'Host/Redux/';
+import {actionTypes, actions} from 'Host/Redux/index';
 
 const getChanges = $get('changes.processing');
 

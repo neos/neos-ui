@@ -1,6 +1,6 @@
 import h from 'virtual-dom/h';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Shared/Utilities/';
+import {executeCallback} from 'Shared/Utilities/index';
 import style from './style.css';
 
 export default (props, children) => {

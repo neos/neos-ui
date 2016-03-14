@@ -3,17 +3,17 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get, $map} from 'plow-js';
 
-import {backend} from 'Host/Service/';
+import {backend} from 'Host/Service/index';
 import {
     I18n,
     Icon,
     DropDown,
     CheckBox,
     Label
-} from 'Host/Components/';
-import {actions} from 'Host/Redux/';
+} from 'Host/Components/index';
+import {actions} from 'Host/Redux/index';
 
-import AbstractButton from './AbstractButton/';
+import AbstractButton from './AbstractButton/index';
 import style from './style.css';
 
 @connect($transform({

@@ -1,7 +1,7 @@
 import {$get, $transform} from 'plow-js';
 
-import {expose} from 'Host/Plugins/UI/';
-import {CR} from 'Host/Selectors/';
+import {expose} from 'Host/Plugins/UI/index';
+import {CR} from 'Host/Selectors/index';
 
 export const focusedNode = () => expose(
     'nodes.focused',

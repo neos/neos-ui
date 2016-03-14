@@ -3,13 +3,13 @@ import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
-import {actions} from 'Host/Redux/';
+import {actions} from 'Host/Redux/index';
 import {
     Button,
     Icon,
     I18n,
     ToggablePanel
-} from 'Host/Components/';
+} from 'Host/Components/index';
 
 import style from './style.css';
 

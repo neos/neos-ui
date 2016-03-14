@@ -2,8 +2,8 @@ import h from 'virtual-dom/h';
 import mergeClassNames from 'classnames';
 
 import {position} from 'Guest/Process/DOMUtils.js';
-import iconButton from 'Guest/Components/IconButton/';
-import iconButtonDropDown from 'Guest/Components/IconButtonDropDown/';
+import iconButton from 'Guest/Components/IconButton/index';
+import iconButtonDropDown from 'Guest/Components/IconButtonDropDown/index';
 
 import style from './style.css';
 

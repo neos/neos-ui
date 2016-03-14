@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {service} from 'Shared/';
+import {service} from 'Shared/index';
 import style from './style.css';
-import {fontAwesome} from 'Shared/Utilities/';
+import {fontAwesome} from 'Shared/Utilities/index';
 const {logger} = service;
 
 const cachedWarnings = {};

@@ -1,11 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {actions} from 'Host/Redux/';
+import {actions} from 'Host/Redux/index';
 import {$transform, $get} from 'plow-js';
 import {
     IconButtonDropDown,
     Icon
-} from 'Host/Components/';
+} from 'Host/Components/index';
 
 @connect($transform({
     focusedNode: $get('ui.pageTree.focused')

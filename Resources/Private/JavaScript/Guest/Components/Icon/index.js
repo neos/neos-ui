@@ -1,7 +1,7 @@
 import h from 'virtual-dom/h';
 import mergeClassNames from 'classnames';
 import style from './style.css';
-import {fontAwesome} from 'Shared/Utilities/';
+import {fontAwesome} from 'Shared/Utilities/index';
 
 export default props => {
     props = Object.assign({

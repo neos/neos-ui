@@ -1,4 +1,4 @@
-import ui from './UI/';
+import ui from './UI/index';
 
 export {
     ui

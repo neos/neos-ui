@@ -1,7 +1,7 @@
 import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
-import {storedNodeByContextPath} from '../../CR/Nodes/';
-import {groupedAllowedNodeTypesSelector} from '../../CR/Constraints/';
+import {storedNodeByContextPath} from '../../CR/Nodes/index';
+import {groupedAllowedNodeTypesSelector} from '../../CR/Constraints/index';
 
 const referenceNodeContextPathSelector = state => $get('ui.addNodeModal.referenceNode', state);
 

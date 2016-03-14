@@ -1,6 +1,6 @@
-import * as editors from './Editors/';
-import nodeComponent from './NodeComponent/';
-import inlineToolbar from './InlineToolbar/';
+import * as editors from './Editors/index';
+import nodeComponent from './NodeComponent/index';
+import inlineToolbar from './InlineToolbar/index';
 
 export {
     editors,

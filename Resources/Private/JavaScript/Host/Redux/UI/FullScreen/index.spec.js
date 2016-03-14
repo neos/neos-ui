@@ -1,7 +1,7 @@
 import {createStore} from 'redux';
 import {reducer, actions, initialState} from './index.js';
 
-import {handleActions} from 'Host/Utilities/';
+import {handleActions} from 'Host/Utilities/index';
 
 const {toggle} = actions;
 

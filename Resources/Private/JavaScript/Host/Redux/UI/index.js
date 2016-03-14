@@ -2,49 +2,49 @@ import {
     reducer as FlashMessagesReducer,
     initialState as FlashMessagesInitialState,
     actions as FlashMessages
-} from './FlashMessages/';
+} from './FlashMessages/index';
 import {
     reducer as FullScreenReducer,
     initialState as FullScreenInitialState,
     actions as FullScreen
-} from './FullScreen/';
+} from './FullScreen/index';
 import {
     reducer as LeftSideBarReducer,
     initialState as LeftSideBarInitialState,
     actions as LeftSideBar
-} from './LeftSideBar/';
+} from './LeftSideBar/index';
 import {
     reducer as OffCanvasReducer,
     initialState as OffCanvasInitialState,
     actions as OffCanvas
-} from './OffCanvas/';
+} from './OffCanvas/index';
 import {
     reducer as RemoteReducer,
     initialState as RemoteInitialState,
     actions as Remote
-} from './Remote/';
+} from './Remote/index';
 import {
     reducer as RightSideBarReducer,
     initialState as RightSideBarInitialState,
     actions as RightSideBar
-} from './RightSideBar/';
+} from './RightSideBar/index';
 import {
     reducer as AddNodeModalReducer,
     initialState as AddNodeModalInitialState,
     actions as AddNodeModal
-} from './AddNodeModal/';
+} from './AddNodeModal/index';
 import {
     reducer as PageTreeReducer,
     initialState as PageTreeInitialState,
     actionTypes as PageTreeActionTypes,
     actions as PageTree
-} from './PageTree/';
+} from './PageTree/index';
 import {
     reducer as ContentViewReducer,
     initialState as ContentViewInitialState,
     actionTypes as ContentViewActionTypes,
     actions as ContentView
-} from './ContentView/';
+} from './ContentView/index';
 
 //
 // Export the action types

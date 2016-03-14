@@ -4,7 +4,7 @@ import {createSelector, defaultMemoize} from 'reselect';
 import {
     byNameSelector as nodeTypeByNameSelector,
     subTypesSelector
-} from '../NodeTypes/';
+} from '../NodeTypes/index';
 
 const all = $get(['cr', 'nodes', 'byContextPath']);
 const focused = $get('cr.nodes.focused.contextPath');

@@ -1,4 +1,4 @@
-import {actions} from 'Host/Redux/';
+import {actions} from 'Host/Redux/index';
 
 export default dispatch => (tabId, documentInformation) => {
     dispatch(actions.UI.ContentView.setContextPath(documentInformation.metaData.contextPath));

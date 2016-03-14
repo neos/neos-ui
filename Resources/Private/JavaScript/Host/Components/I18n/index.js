@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {backend} from 'Host/Service/';
+import {backend} from 'Host/Service/index';
 
 export default class I18n extends Component {
     static propTypes = {

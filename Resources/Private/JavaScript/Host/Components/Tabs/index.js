@@ -1,5 +1,5 @@
-import Tabs from './Tabs/';
-import Panel from './Panel/';
+import Tabs from './Tabs/index';
+import Panel from './Panel/index';
 
 //
 // Assign the Child Component to the parent,

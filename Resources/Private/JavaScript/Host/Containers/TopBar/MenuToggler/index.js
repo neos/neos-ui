@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
-import {actions} from 'Host/Redux/';
-import {Button} from 'Host/Components/';
+import {actions} from 'Host/Redux/index';
+import {Button} from 'Host/Components/index';
 
 import style from './style.css';
 

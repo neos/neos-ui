@@ -3,13 +3,13 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
-import {Bar} from 'Host/Components/';
+import {Bar} from 'Host/Components/index';
 
-import UserDropDown from './UserDropDown/';
-import PublishDropDown from './PublishDropDown/';
-import MenuToggler from './MenuToggler/';
-import LeftSideBarToggler from './LeftSideBarToggler/';
-import EditModePanelToggler from './EditModePanelToggler/';
+import UserDropDown from './UserDropDown/index';
+import PublishDropDown from './PublishDropDown/index';
+import MenuToggler from './MenuToggler/index';
+import LeftSideBarToggler from './LeftSideBarToggler/index';
+import EditModePanelToggler from './EditModePanelToggler/index';
 import style from './style.css';
 
 @connect($transform({

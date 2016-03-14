@@ -1,7 +1,7 @@
 import isObject from 'lodash.isobject';
 import isString from 'lodash.isstring';
 import isArray from 'lodash.isarray';
-import * as operations from './Operations/';
+import * as operations from './Operations/index';
 import {$add} from 'plow-js';
 
 export const isStartingOperation = (operation = {}) => operation.type === 'CREATE_CONTEXT';

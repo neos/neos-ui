@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
-import {executeCallback} from 'Shared/Utilities/';
-import Icon from 'Host/Components/Icon/';
+import {executeCallback} from 'Shared/Utilities/index';
+import Icon from 'Host/Components/Icon/index';
 import style from './style.css';
 
 export class DropDown extends Component {

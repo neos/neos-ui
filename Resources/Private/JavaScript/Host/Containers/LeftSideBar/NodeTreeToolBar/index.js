@@ -8,7 +8,7 @@ import {
     HideSelectedNode,
     PasteClipBoardNode,
     RefreshPageTree
-} from './Buttons/';
+} from './Buttons/index';
 import style from './style.css';
 
 export default class NodeTreeToolBar extends Component {

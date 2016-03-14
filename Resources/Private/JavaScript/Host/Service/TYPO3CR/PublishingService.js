@@ -1,4 +1,4 @@
-import {actions} from 'Host/Redux/';
+import {actions} from 'Host/Redux/index';
 import backend from 'Host/Service/Backend.js';
 
 /**

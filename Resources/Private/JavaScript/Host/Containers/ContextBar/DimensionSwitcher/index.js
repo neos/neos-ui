@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {DropDown, Icon} from 'Host/Components/';
+import {DropDown, Icon} from 'Host/Components/index';
 import style from './style.css';
 
 const DimensionCategory = props => {

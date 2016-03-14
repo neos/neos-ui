@@ -3,9 +3,9 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
-import {actions} from 'Host/Redux/';
-import {IconButton} from 'Host/Components/';
-import DimensionSwitcher from './DimensionSwitcher/';
+import {actions} from 'Host/Redux/index';
+import {IconButton} from 'Host/Components/index';
+import DimensionSwitcher from './DimensionSwitcher/index';
 
 import style from './style.css';
 

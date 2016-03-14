@@ -1,4 +1,4 @@
-import * as nodes from './Nodes/';
+import * as nodes from './Nodes/index';
 
 const exposers = {
     ...nodes

@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-import {executeCallback} from 'Shared/Utilities/';
-import Icon from 'Host/Components/Icon/';
+import {executeCallback} from 'Shared/Utilities/index';
+import Icon from 'Host/Components/Icon/index';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 

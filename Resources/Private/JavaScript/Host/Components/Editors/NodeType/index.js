@@ -1,6 +1,6 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 
-const NodeType = props => {
+const NodeType = () => {
     return (<div>TODO NodeType</div>);
 };
 

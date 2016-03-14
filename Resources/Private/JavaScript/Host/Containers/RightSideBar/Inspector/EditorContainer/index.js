@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
 import {CR} from 'Host/Selectors/';
-import {Label, TextInput, I18n} from 'Host/Components/';
+import {Label, I18n} from 'Host/Components/';
 import SingleInspectorEditor from '../SingleInspectorEditor/';
 
 const prepareListOfPropertiesToBeEdited = (inspectorGroup, focusedNode) => {
@@ -16,7 +16,7 @@ const prepareListOfPropertiesToBeEdited = (inspectorGroup, focusedNode) => {
     .sort((a, b) => (a.position - b.position) || (a.id - b.id));
 };
 
-const renderEditor = (property, focusedNode) => {
+const renderEditor = (property) => {
     return (<div key={property.id}>
         <Label htmlFor="testInput">
             <I18n id={property.ui.label} />
@@ -39,7 +39,7 @@ export default class EditorContainer extends Component {
         const listOfProperties = prepareListOfPropertiesToBeEdited(this.props.inspectorGroup, this.props.focusedNode);
         return (
             <div>
-                {listOfProperties.map(property => renderEditor(property, this.props.focusedNode))}
+                {listOfProperties.map(property => renderEditor(property))}
             </div>);
     }
 }

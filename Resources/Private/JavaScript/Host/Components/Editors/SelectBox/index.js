@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 
-const SelectBox = props => {
-    return (<div>TODO selectbox</div>);
+const SelectBox = () => {
+    return (<div>TODO SelectBox</div>);
 };
 
 export default SelectBox;

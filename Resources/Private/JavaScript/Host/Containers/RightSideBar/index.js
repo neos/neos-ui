@@ -26,7 +26,12 @@ const generateTabs = (nodeType) => {
 };
 
 const renderTab = (tab) => {
-    return (<Inspector.TabPanel tab={tab} key={tab.id} icon={tab.icon}></Inspector.TabPanel>)
+    return (<Inspector.TabPanel
+        tab={tab}
+        key={tab.id}
+        icon={tab.icon}
+        />
+    );
 };
 
 @connect($transform({
@@ -42,8 +47,10 @@ export default class RightSideBar extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
+        focusedNode: NeosPropTypes.cr.node.isRequired,
         toggleSidebar: PropTypes.func.isRequired,
-        focusedNode: NeosPropTypes.cr.node.isRequired
+        inspectorApply: PropTypes.func.isRequired,
+        inspectorCancel: PropTypes.func.isRequired
     };
 
     render() {
@@ -76,14 +83,10 @@ export default class RightSideBar extends Component {
                     {tabs.map(tab => renderTab(tab))}
                 </Tabs>
                 <Bar position="bottom">
-                    <Button
-                        onClick={() => this.props.inspectorApply(this.props.focusedNode.contextPath)}
-                    >
+                    <Button onClick={() => this.props.inspectorApply(this.props.focusedNode.contextPath)}>
                         Apply Here
                     </Button>
-                    <Button
-                        onClick={() => this.props.inspectorCancel(this.props.focusedNode.contextPath)}
-                    >
+                    <Button onClick={() => this.props.inspectorCancel(this.props.focusedNode.contextPath)}>
                         Revert
                     </Button>
                 </Bar>

@@ -1,6 +1,6 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 
-const Image = props => {
+const Image = () => {
     return (<div>TODO image</div>);
 };
 

@@ -1,6 +1,6 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 
-const TextArea = props => {
+const TextArea = () => {
     return (<div>TODO textarea</div>);
 };
 

@@ -6,4 +6,8 @@ const Boolean = props => {
     return (<CheckBox isChecked={value} {...remainingProps} />);
 };
 
+Boolean.propTypes = {
+    value: PropTypes.boolean.isRequired
+};
+
 export default Boolean;

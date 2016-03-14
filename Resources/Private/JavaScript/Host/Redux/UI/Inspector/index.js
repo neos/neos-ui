@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$set, $toggle, $drop, $all} from 'plow-js';
+import {$set, $drop} from 'plow-js';
 
 const WRITE_VALUE = '@packagefactory/guevara/UI/Inspector/WRITE_VALUE';
 const APPLY = '@packagefactory/guevara/UI/Inspector/APPLY';

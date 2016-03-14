@@ -1,9 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {$transform} from 'plow-js';
 
 import {CR} from 'Host/Selectors/';
-<<<<<<< HEAD
 import NeosPropTypes from 'Shared/PropTypes/index';
 import {
     Tabs,
@@ -12,11 +11,8 @@ import {
     TextInput,
     I18n
 } from 'Components/index';
-=======
-import {Tabs, ToggablePanel, Label, TextInput, I18n} from 'Components/index';
-import EditorContainer from '../EditorContainer/';
->>>>>>> TASK: create EditorContainer
 
+import EditorContainer from '../EditorContainer/index';
 import style from '../../style.css';
 
 const generateInspectorGroups = (nodeType, tabIdentifier) => {

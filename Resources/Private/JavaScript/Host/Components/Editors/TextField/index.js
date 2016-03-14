@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {TextInput} from 'Host/Components';
 
 const TextField = props => {

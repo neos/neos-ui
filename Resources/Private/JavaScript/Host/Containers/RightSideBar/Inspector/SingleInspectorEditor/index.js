@@ -1,13 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {$transform} from 'plow-js';
 
 import {CR, UI} from 'Host/Selectors/';
-import {Label, TextInput, I18n, Editors} from 'Host/Components/';
+import {Editors} from 'Host/Components/';
 import {actions} from 'Host/Redux/';
 
 const resolveEditor = (legacyEditorName) => {
-    // TODO: here, the new functionality should also be implemented for extension of editors
+    // NOTE: this is the extension point for custom editors later.
     switch (legacyEditorName) {
         case 'TYPO3.Neos/Inspector/Editors/TextFieldEditor':
             return Editors.TextField;
@@ -26,9 +26,9 @@ const resolveEditor = (legacyEditorName) => {
 
         default:
             console.error(`ERROR: ${legacyEditorName} is not implemented`);
+            return null;
     }
 };
-
 
 @connect($transform({
     focusedNode: CR.Nodes.focusedSelector,
@@ -40,6 +40,7 @@ export default class SingleInspectorEditor extends Component {
 
     static propTypes = {
         property: PropTypes.object.isRequired,
+        focusedNode: PropTypes.object.isRequired,
         currentInspectorValue: PropTypes.func.isRequired,
         writeValue: PropTypes.func.isRequired
     };
@@ -57,8 +58,8 @@ export default class SingleInspectorEditor extends Component {
 
         if (Editor) {
             return (<Editor value={value} onChange={this.changeFn} />);
-        } else {
-            return (<div>NOT EXISTING</div>);
         }
+
+        return (<div>Missing Editor</div>);
     }
 }

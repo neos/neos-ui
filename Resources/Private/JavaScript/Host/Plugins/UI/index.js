@@ -49,6 +49,17 @@ export const expose = (topic, expose) => {
     return exposers[topic];
 };
 
+export const getObservers = (...parts) => {
+    const observersById = parts
+        .reduce((cur, next) => cur.map(cur => cur[next]).filter(cur => cur !== undefined), [observers])[0];
+
+    if (observersById === undefined) {
+        return [];
+    }
+
+    return Object.keys(observersById).map(id => observersById[id]).reduce((a, b) => a.concat(b), []);
+};
+
 //
 // Expose portions of the ui state
 //
@@ -65,7 +76,7 @@ export default store => {
                     //
                     // Observe an exposed portion of the ui state
                     //
-                    observe: (topic, ...params) => registerObserver(topic, id, ...params),
+                    observe: (...params) => registerObserver(...params, id),
 
                     //
                     // Remove all observers for this connection

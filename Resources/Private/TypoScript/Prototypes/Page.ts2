@@ -37,6 +37,9 @@ prototype(TYPO3.Neos:Page) {
 
             metaData = TYPO3.TypoScript:RawArray {
                 contextPath = ${q(documentNode).property('_contextPath')}
+                previewUrl = TYPO3.Neos:NodeUri {
+                    node = ${q(documentNode).context({workspaceName: 'live'}).get(0)}
+                }
             }
 
             @process.json = ${Json.stringify(value)}

@@ -5,7 +5,6 @@ import {createPlugin} from 'API/index';
 import methods from './Methods/index';
 
 const observers = {};
-const exposers = {};
 
 const registerObserver = (...parts) => {
     //
@@ -24,31 +23,18 @@ const registerObserver = (...parts) => {
         return deep[part];
     }, observers);
 
+    //
+    // Expose a small API for a more readable registration of observers
+    //
     return {
         react: callback => parts.reduce((deep, part) => deep[part], observers)
             .push(payload => callback(payload))
     };
 };
 
-export const expose = (topic, expose) => {
-    exposers[topic] = reduxState => {
-        if (observers[topic]) {
-            Object.keys(observers[topic]).map(key => observers[topic][key]).forEach(
-                observers => observers.forEach(observer => {
-                    const state = expose(reduxState, ...observer.params);
-
-                    if (observer.state !== state) {
-                        observer.action(state, ...observer.params);
-                        observer.state = state;
-                    }
-                })
-            );
-        }
-    };
-
-    return exposers[topic];
-};
-
+//
+// Get all observers for a given address
+//
 export const getObservers = (...parts) => {
     const observersById = parts
         .reduce((cur, next) => cur.map(cur => cur[next]).filter(cur => cur !== undefined), [observers])[0];

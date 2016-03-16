@@ -20,6 +20,26 @@ export const editor = ckApi => {
             });
 
             ckInstance.on('change', () => api.commit(ckInstance.getData()));
+            document.addEventListener('mouseup', ev => {
+				if (ev.button !== 0 || ev.ctrlKey || ev.altKey || ev.shiftKey) {
+                    return true;
+                }
+
+				setTimeout(() => {
+                    const selection = ckInstance.getSelection();
+                    const nativeSelection = selection.getNative();
+                    if (nativeSelection) {
+                        const range = nativeSelection.getRangeAt(0);
+                        const {top, left} = range.getBoundingClientRect();
+
+    					if (ckInstance.getSelection().getSelectedText() != '') {
+                            console.log('show toolbar', {top, left});
+    					} else {
+    						console.log('hide toolbar');
+    					}
+                    }
+				}, 100);
+			});
         }
     );
 };

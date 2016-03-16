@@ -11,7 +11,6 @@ import {configureStore, actions} from './Redux/index';
 
 import initializeJSAPI from 'API/index';
 import {ui} from './Plugins/index';
-import initializeExposers from './Plugins/UI/Exposer/index';
 
 import * as feedbackHandler from './Service/FeedbackHandler/index';
 
@@ -53,9 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Neos JS API plugins
     neos.use(ui(store));
-
-    // Initialize subscriber
-    initializeExposers();
 
     ReactDOM.render(
         <div className={style.applicationWrapper}>
@@ -102,8 +98,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inform everybody, that the UI has booted successfully
     //
     store.dispatch(actions.System.boot());
-
-    //
-    // Reoccurring tasks
-    //
 });

@@ -28,14 +28,14 @@ export default (el, ui, connection) => {
     //
     // Observe host state
     //
-    const isNodeFocused = res => (
+    const isCurrentNode = res => (
         res.node &&
         res.node.contextPath === contextPath &&
         res.typoscriptPath === typoscriptPath
     );
 
     connection.observe('nodes.focused').react(res => {
-        if (isNodeFocused(res)) {
+        if (isCurrentNode(res)) {
             el.classList.add(style['node--focused']);
         } else {
             el.classList.remove(style['node--focused']);
@@ -43,7 +43,7 @@ export default (el, ui, connection) => {
     });
 
     connection.observe('nodes.hovered').react(res => {
-        if (isNodeFocused(res)) {
+        if (isCurrentNode(res)) {
             el.classList.add(style['node--hover']);
         } else {
             el.classList.remove(style['node--hover']);

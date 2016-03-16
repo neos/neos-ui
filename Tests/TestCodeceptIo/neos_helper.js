@@ -37,4 +37,4 @@ class Neos extends Helper {
     }
 }
 
-module.exports = Frame;
+module.exports = Neos;

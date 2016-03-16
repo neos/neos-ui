@@ -1,0 +1,20 @@
+{
+  "tests": "./*.story.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "WebDriverIO": {
+      "url": "http://neos-development.local",
+      "browser": "firefox"
+    },
+    "Neos": {
+      "require": "./neos_helper.js"
+    }
+  },
+  "include": {
+    "I": "./steps_file.js"
+  },
+  "bootstrap": false,
+  "mocha": {},
+  "name": "TestCodeceptIo"
+}

@@ -4,12 +4,13 @@ import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
 import {actions} from 'Host/Redux/index';
-import {IconButton} from 'Host/Components/index';
+import {IconButton, Icon} from 'Host/Components/index';
 import DimensionSwitcher from './DimensionSwitcher/index';
 
 import style from './style.css';
 
 @connect($transform({
+    previewUrl: $get('ui.contentView.previewUrl'),
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen')
@@ -18,6 +19,7 @@ import style from './style.css';
 })
 export default class ContextBar extends Component {
     static propTypes = {
+        previewUrl: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
@@ -25,12 +27,16 @@ export default class ContextBar extends Component {
     };
 
     render() {
-        const {isFringedLeft, isFringedRight, isFullScreen} = this.props;
+        const {previewUrl, isFringedLeft, isFringedRight, isFullScreen} = this.props;
         const classNames = mergeClassNames({
             [style.contextBar]: true,
             [style['contextBar--isFringeLeft']]: isFringedLeft,
             [style['contextBar--isFringeRight']]: isFringedRight,
             [style['contextBar--isHidden']]: isFullScreen
+        });
+        const previewButtonClassNames = mergeClassNames({
+            [style.contextBar__buttonLink]: true,
+            [style['contextBar__buttonLink--isDisabled']]: !previewUrl
         });
 
         return (
@@ -38,14 +44,17 @@ export default class ContextBar extends Component {
                 <DimensionSwitcher />
 
                 <div className={style.contextBar__rightHandedActions}>
-                    <IconButton icon="external-link" onClick={this.onClickOpenInNewTab.bind(this)} />
+                    <a
+                        href={previewUrl ? previewUrl : '#'}
+                        target="_blank"
+                        className={previewButtonClassNames}
+                        rel="noopener"
+                        >
+                        <Icon icon="external-link" />
+                    </a>
                     <IconButton icon="expand" onClick={() => this.props.toggleFullScreen()} />
                 </div>
             </div>
         );
-    }
-
-    onClickOpenInNewTab() {
-        console.log('open the current opened session into a new browser tab.');
     }
 }

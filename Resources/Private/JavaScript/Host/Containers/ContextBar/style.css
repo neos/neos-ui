@@ -34,3 +34,30 @@
 .dimensionCategory__icon {
     margin-right: .5em;
 }
+
+.contextBar__buttonLink {
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    min-width: 40px;
+    padding: 0;
+    border: 0;
+    -webkit-font-smoothing: antialiased;
+    vertical-align: top;
+    width: 40px;
+    color: $brightest;
+    text-align: center;
+
+    &:focus {
+        outline: 1px dotted $brightest;
+    }
+}
+
+a.contextBar__buttonLink:hover {
+    background: $brand;
+}
+
+.contextBar__buttonLink--isDisabled {
+    opacity: .5;
+}

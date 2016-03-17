@@ -8,7 +8,7 @@ export default (ckApi, dom, getSelectionData, toolbar) => {
             const selectionData = getSelectionData(editor);
 
             if (selectionData) {
-                toolbar.update({
+                const update = () => toolbar.update({
                     isVisible: !selectionData.isEmpty,
                     position: {
                         x: selectionData.region.left,
@@ -19,18 +19,39 @@ export default (ckApi, dom, getSelectionData, toolbar) => {
                             type: 'button',
                             props: {
                                 icon: 'fa-bold',
-                                onClick: () => editor.execCommand('bold')
+                                isActive: editor.getCommand('bold').state === ckApi.TRISTATE_ON,
+                                onClick: () => {
+                                    editor.execCommand('bold');
+                                    update();
+                                }
                             }
                         },
                         italic: {
                             type: 'button',
                             props: {
                                 icon: 'fa-italic',
-                                onClick: () => editor.execCommand('italic')
+                                isActive: editor.getCommand('italic').state === ckApi.TRISTATE_ON,
+                                onClick: () => {
+                                    editor.execCommand('italic');
+                                    update();
+                                }
+                            }
+                        },
+                        strikeThrough: {
+                            type: 'button',
+                            props: {
+                                icon: 'fa-strikethrough',
+                                isActive: editor.getCommand('strike').state === ckApi.TRISTATE_ON,
+                                onClick: () => {
+                                    editor.execCommand('strike');
+                                    update();
+                                }
                             }
                         }
                     }
                 });
+
+                update();
             }
         }
     };

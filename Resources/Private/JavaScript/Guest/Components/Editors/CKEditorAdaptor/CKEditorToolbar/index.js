@@ -58,7 +58,9 @@ export default () => {
             }
         }, Object.keys(buttons).map(k => buttons[k]).map(button => {
             const {type, props} = button;
-            const component = componentMap[type]; // TODO: add error handling
+
+            // TODO: add error handling
+            const component = componentMap[type];
             return component(props);
         }));
     };

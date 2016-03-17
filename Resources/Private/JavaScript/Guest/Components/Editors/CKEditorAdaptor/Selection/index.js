@@ -135,8 +135,11 @@ export default ckApi => editor => {
         const element = selection.getSelectedElement();
         const text = selection.getSelectedText();
         const region = getSelectionRegion(selection, nativeSelection, ckApi);
+        const ranges = selection.getRanges();
+        const isEmpty = (selection.getType() === ckApi.SELECTION_NONE) ||
+            (ranges && ranges.length === 1 && ranges[0].collapsed);
 
-        return {element, text, region};
+        return {element, text, region, isEmpty};
     }
 
     return null;

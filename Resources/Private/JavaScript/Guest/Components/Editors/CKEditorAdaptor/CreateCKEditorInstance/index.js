@@ -1,4 +1,4 @@
-export default (ckApi, dom, getSelectionData) => {
+export default (ckApi, dom, getSelectionData, toolbar) => {
     const editor = ckApi.inline(dom, {
         removePlugins: 'toolbar',
         allowedContent: true
@@ -8,7 +8,13 @@ export default (ckApi, dom, getSelectionData) => {
             const selectionData = getSelectionData(editor);
 
             if (selectionData) {
-                console.log(selectionData);
+                toolbar.update({
+                    isVisible: !selectionData.isEmpty,
+                    position: {
+                        x: selectionData.region.left,
+                        y: selectionData.region.top
+                    }
+                });
             }
         }
     };
@@ -18,6 +24,7 @@ export default (ckApi, dom, getSelectionData) => {
         event.removeListener('mouseup', handleUserInteraction);
 
         handleUserInteraction(event);
+        toolbar.update({isVisible: false});
     };
     const handleEditorFocus = event => {
         const editable = editor.editable();

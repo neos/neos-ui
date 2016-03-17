@@ -1,5 +1,8 @@
 import createEditor from 'Guest/Components/Editors/CreateEditor/index';
 
+import createCKEditorInstance from './CreateCKEditorInstance/index';
+import getSelectionData from './Selection/index';
+
 export const editor = ckApi => {
     if (!ckApi) {
         console.error('CKEditor not found!');
@@ -14,32 +17,9 @@ export const editor = ckApi => {
 
     return createEditor(
         (config, api, dom) => {
-            const ckInstance = ckApi.inline(dom, {
-                removePlugins: 'toolbar',
-                allowedContent: true
-            });
+            const ckInstance = createCKEditorInstance(ckApi, dom, getSelectionData);
 
             ckInstance.on('change', () => api.commit(ckInstance.getData()));
-            document.addEventListener('mouseup', ev => {
-				if (ev.button !== 0 || ev.ctrlKey || ev.altKey || ev.shiftKey) {
-                    return true;
-                }
-
-				setTimeout(() => {
-                    const selection = ckInstance.getSelection();
-                    const nativeSelection = selection.getNative();
-                    if (nativeSelection) {
-                        const range = nativeSelection.getRangeAt(0);
-                        const {top, left} = range.getBoundingClientRect();
-
-    					if (ckInstance.getSelection().getSelectedText() != '') {
-                            console.log('show toolbar', {top, left});
-    					} else {
-    						console.log('hide toolbar');
-    					}
-                    }
-				}, 100);
-			});
         }
     );
 };

@@ -13,6 +13,22 @@ export default (ckApi, dom, getSelectionData, toolbar) => {
                     position: {
                         x: selectionData.region.left,
                         y: selectionData.region.top
+                    },
+                    buttons: {
+                        bold: {
+                            type: 'button',
+                            props: {
+                                icon: 'fa-bold',
+                                onClick: () => editor.execCommand('bold')
+                            }
+                        },
+                        italic: {
+                            type: 'button',
+                            props: {
+                                icon: 'fa-italic',
+                                onClick: () => editor.execCommand('italic')
+                            }
+                        }
                     }
                 });
             }

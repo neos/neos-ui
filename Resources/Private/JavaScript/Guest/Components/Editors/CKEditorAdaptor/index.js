@@ -17,7 +17,7 @@ export const editor = ckApi => {
 
     return createEditor(
         (config, api, dom) => {
-            const ckInstance = createCKEditorInstance(ckApi, dom, getSelectionData);
+            const ckInstance = createCKEditorInstance(ckApi, dom, getSelectionData(ckApi));
 
             ckInstance.on('change', () => api.commit(ckInstance.getData()));
         }

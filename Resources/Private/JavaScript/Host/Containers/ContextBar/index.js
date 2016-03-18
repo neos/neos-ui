@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
 import {actions} from 'Host/Redux/index';
-import {IconButton, Icon} from 'Host/Components/index';
+import {IconButton, Icon} from 'Components/index';
 import DimensionSwitcher from './DimensionSwitcher/index';
 
 import style from './style.css';

@@ -5,7 +5,7 @@ import {$transform, $get} from 'plow-js';
 import {
     IconButtonDropDown,
     Icon
-} from 'Host/Components/index';
+} from 'Components/index';
 
 @connect($transform({
     focusedNode: $get('ui.pageTree.focused')

@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {executeCallback} from 'Shared/Utilities/index';
-import IconButton from 'Host/Components/IconButton/index';
-import Portal from 'Host/Components/Portal/index';
+import IconButton from 'Components/IconButton/index';
+import Portal from 'Components/Portal/index';
 import style from './style.css';
 
 const Dialog = props => {

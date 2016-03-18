@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
-import {Bar} from 'Host/Components/index';
+import {Bar} from 'Components/index';
 
 import UserDropDown from './UserDropDown/index';
 import PublishDropDown from './PublishDropDown/index';

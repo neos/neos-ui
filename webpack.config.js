@@ -68,6 +68,12 @@ const config = {
 
     entry: {
         Host: './Resources/Private/JavaScript/Host/index.js',
+
+        //
+        // Workaround according to https://github.com/webpack/webpack/issues/300,
+        // since entry points are not allowed as dependencies in webpack?!?
+        //
+        Components: ['./Resources/Private/JavaScript/Components/index.js'],
         Guest: './Resources/Private/JavaScript/Guest/index.js',
         Login: './Resources/Private/JavaScript/Login/index.js'
     },

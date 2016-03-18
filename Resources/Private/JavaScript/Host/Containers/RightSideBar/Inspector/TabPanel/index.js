@@ -5,7 +5,7 @@ import {
     Label,
     TextInput,
     I18n
-} from 'Host/Components/index';
+} from 'Components/index';
 import style from '../../style.css';
 
 const generateInspectorGroups = (nodeType, tabIdentifier) => {

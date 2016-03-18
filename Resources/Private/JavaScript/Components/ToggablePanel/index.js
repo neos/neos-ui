@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
-import Headline from 'Host/Components/Headline/index';
-import IconButton from 'Host/Components/IconButton/index';
+import Headline from 'Components/Headline/index';
+import IconButton from 'Components/IconButton/index';
 import style from './style.css';
 
 class ToggablePanel extends Component {

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
-import Icon from 'Host/Components/Icon/index';
-import Button from 'Host/Components/Button/index';
+import Icon from 'Components/Icon/index';
+import Button from 'Components/Button/index';
 import style from './style.css';
 
 const IconButton = props => {

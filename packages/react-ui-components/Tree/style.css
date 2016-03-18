@@ -1,0 +1,10 @@
+.treeWrapper {
+    padding: 5px;
+
+    &:focus {
+        outline: 0;
+    }
+}
+.treeWrapper__treeChildren {
+    margin-left: $spacing;
+}

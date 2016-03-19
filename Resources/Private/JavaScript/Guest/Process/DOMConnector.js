@@ -1,7 +1,9 @@
-import {nodeComponent, inlineToolbar} from 'Guest/Components/index';
-import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/index';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import render from './Render.js';
+import {nodeComponent} from 'Guest/Components/index';
+import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/index';
+import {InlineUI} from 'Guest/Containers/index';
 
 const closestContextPath = el => {
     if (!el) {
@@ -37,22 +39,47 @@ export default (ui, connection) => {
     });
 
     //
-    // Initialize inline toolbar
+    // Initialize Inline UI
     //
-    const toolbar = render(inlineToolbar, {});
-    document.body.appendChild(
-        toolbar.dom
+    const inlineUiContainer = document.createElement('div');
+    inlineUiContainer.id = `neosInlineUi--${connection.id}`;
+    document.body.appendChild(inlineUiContainer);
+
+    //
+    // Attach some source information to events that are fired
+    // from withing the inline UI, so that if in doubt they can
+    // be handled differently
+    //
+    const isolatedEvents = [
+        'click',
+        'dblclick',
+        'drag',
+        'dragend',
+        'dragenter',
+        'dragleave',
+        'dragover',
+        'dragstart',
+        'drop',
+        'focus',
+        'focusin',
+        'focusout',
+        'keydown',
+        'keypress',
+        'keyup',
+        'mousedown',
+        'mouseenter',
+        'mouseleave',
+        'mousemove',
+        'mouseout',
+        'mouseover',
+        'mouseup',
+        'mousewheel'
+    ];
+    isolatedEvents.forEach(
+        event => inlineUiContainer.addEventListener(event, e => {
+            e['@neos/inline-ui-event'] = true;
+        })
     );
 
-    connection.observe('nodes.focused').react(res => {
-        if (res.node) {
-            toolbar.update(res);
-            return;
-        }
-
-        toolbar.update({
-            node: null,
-            typoscriptPath: ''
-        });
-    });
+    ReactDOM.render(<InlineUI ui={ui} connection={connection} />, inlineUiContainer);
 };

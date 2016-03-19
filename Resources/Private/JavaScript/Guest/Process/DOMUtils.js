@@ -12,6 +12,9 @@ export const handle = (events, handler, ...modifier) => dom => {
 export const handleOutside = (events, handler, modifier = []) => dom => {
     events.split(' ').forEach(
         event => document.addEventListener(event, e => {
+            if (e['@neos/inline-ui-event']) {
+                return;
+            }
             const check = el => el === dom || (el && check(el.parentNode));
 
             if (!check(e.target)) {

@@ -9,7 +9,7 @@ import {
     Icon,
     I18n,
     ToggablePanel
-} from 'Host/Components/index';
+} from 'Components/index';
 
 import style from './style.css';
 

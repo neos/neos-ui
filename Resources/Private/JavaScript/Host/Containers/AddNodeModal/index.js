@@ -11,7 +11,7 @@ import {
     Grid,
     GridItem,
     I18n
-} from 'Host/Components/index';
+} from 'Components/index';
 import {
     referenceNodeSelector,
     nodeTypesForAddNodeModalSelector

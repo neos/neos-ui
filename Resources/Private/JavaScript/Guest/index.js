@@ -1,4 +1,5 @@
 import 'Shared/Styles/style.css';
+import 'babel-polyfill';
 import {domConnector} from './Process/index';
 
 const {ui} = window.neos;

@@ -57,6 +57,7 @@ export default store => {
         () => ({
             connect: () => {
                 const id = uuid.v4();
+                const registry = {};
 
                 return {
                     //
@@ -69,7 +70,30 @@ export default store => {
                     //
                     cleanup: () => Object.keys(observers).forEach(key => {
                         observers[key][id] = null;
-                    })
+                    }),
+
+                    put: (namespace, item) => {
+                        if (registry[namespace] === undefined) {
+                            registry[namespace] = [];
+                        }
+
+                        registry[namespace].push(item);
+
+                        return () => {
+                            registry[namespace] = registry[namespace].filter(i => i === item);
+                        };
+                    },
+
+                    get: namespace => (registry[namespace] || []),
+
+                    reset: namespace => {
+                        registry[namespace] = [];
+                    },
+
+                    //
+                    // Expose the id of this connection for use in element id's and classes
+                    //
+                    id
                 };
             },
 

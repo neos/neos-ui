@@ -3,7 +3,7 @@ import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
 
-import {SideBar} from 'Host/Components/index';
+import {SideBar} from 'Components/index';
 
 import NodeTreeToolBar from './NodeTreeToolBar/index';
 import PageTree from './PageTree/index';

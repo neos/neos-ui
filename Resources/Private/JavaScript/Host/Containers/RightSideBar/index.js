@@ -8,7 +8,7 @@ import {
     SideBar,
     Tabs,
     IconButton
-} from 'Host/Components/index';
+} from 'Components/index';
 import {actions} from 'Host/Redux/index';
 
 import style from './style.css';

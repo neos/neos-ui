@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {IconButton} from 'Host/Components/index';
+import {IconButton} from 'Components/index';
 
 @connect()
 export default class DeleteSelectedNode extends Component {

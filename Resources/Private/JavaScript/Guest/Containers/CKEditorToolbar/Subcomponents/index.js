@@ -7,6 +7,7 @@ import StrikeThrough from './StrikeThrough/index';
 import OrderedList from './OrderedList/index';
 import UnorderedList from './UnorderedList/index';
 import AlignRight from './AlignRight/index';
+import AlignLeft from './AlignLeft/index';
 
 export {
     Bold,
@@ -17,5 +18,6 @@ export {
     StrikeThrough,
     OrderedList,
     UnorderedList,
-    AlignRight
+    AlignRight,
+    AlignLeft
 };

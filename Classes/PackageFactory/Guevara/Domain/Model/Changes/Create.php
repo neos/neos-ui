@@ -26,6 +26,7 @@ class Create extends AbstractCreate
         if ($this->canApply()) {
             $subject = $this->getSubject();
             $this->createNode($subject);
+            $this->updateWorkspaceInfo();
         }
     }
 }

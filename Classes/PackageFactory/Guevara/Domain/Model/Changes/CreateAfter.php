@@ -29,6 +29,7 @@ class CreateAfter extends AbstractCreate
             $node = $this->createNode($parent);
 
             $node->moveAfter($subject);
+            $this->updateWorkspaceInfo();
         }
     }
 }

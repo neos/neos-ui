@@ -28,7 +28,8 @@ class CreateBefore extends AbstractCreate
             $parent = $subject->getParent();
             $node = $this->createNode($parent);
 
-            $node->moveAfter($subject);
+            $node->moveBefore($subject);
+            $this->updateWorkspaceInfo();
         }
     }
 }

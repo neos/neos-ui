@@ -33,7 +33,7 @@ export const actions = {
 export const initialState = {
     x: 0,
     y: 0,
-    isVisible: false
+    isVisible: true
 };
 
 //

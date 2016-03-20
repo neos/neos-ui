@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$set, $get} from 'plow-js';
+import {$set} from 'plow-js';
 
 const UPDATE = '@packagefactory/guevara/CR/Workspaces/UPDATE';
 const SWITCH = '@packagefactory/guevara/CR/Workspaces/SWITCH';

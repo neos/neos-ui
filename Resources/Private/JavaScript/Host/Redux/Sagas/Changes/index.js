@@ -8,13 +8,13 @@ import backend from 'Host/Service/Backend.js';
 export function* watchPersist() {
     yield* takeEvery(actionTypes.Changes.PERSIST, function* persistChanges(action) {
         const changes = [action.payload.change];
+        const {feedbackManager} = backend;
 
         yield put(actions.UI.Remote.startSaving());
         try {
             const feedback = yield call(change, changes);
             yield put(actions.UI.Remote.finishSaving());
-            const {feedbackManager} = backend;
-            yield put(feedbackManager.handleFeedback(feedback).bind(feedbackManager));
+            yield put(feedbackManager.handleFeedback.bind(feedbackManager)(feedback));
         } catch (error) {
             console.error('Failed to persist changes', error);
         }

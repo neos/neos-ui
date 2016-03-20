@@ -3,16 +3,18 @@ import {put, call} from 'redux-saga/effects';
 
 import {actionTypes, actions} from 'Host/Redux/index';
 import {publish, discard} from 'API/Endpoints/index';
+import backend from 'Host/Service/Backend.js';
 
 export function* watchPublish() {
     yield* takeEvery(actionTypes.Publish.PUBLISH, function* publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
+        const {feedbackManager} = backend;
 
         yield put(actions.UI.Remote.startPublishing());
         try {
-            yield call(publish, nodeContextPaths, targetWorkspaceName);
+            const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
             yield put(actions.UI.Remote.finishPublishing());
-            yield put(actions.CR.Workspaces.clear(nodeContextPaths));
+            yield put(feedbackManager.handleFeedback.bind(feedbackManager)(feedback));
         } catch (error) {
             console.error('Failed to publish', error);
         }
@@ -21,13 +23,13 @@ export function* watchPublish() {
 export function* watchDiscard() {
     yield* takeEvery(actionTypes.Publish.DISCARD, function* discardNodes(action) {
         const {nodeContextPaths} = action.payload;
+        const {feedbackManager} = backend;
 
         yield put(actions.UI.Remote.startDiscarding());
         try {
-            yield call(discard, nodeContextPaths);
+            const feedback = yield call(discard, nodeContextPaths);
             yield put(actions.UI.Remote.finishDiscarding());
-            console.log(actions.CR.Workspaces.clear);
-            yield put(actions.CR.Workspaces.clear(nodeContextPaths));
+            yield put(feedbackManager.handleFeedback.bind(feedbackManager)(feedback));
         } catch (error) {
             console.error('Failed to discard', error);
         }

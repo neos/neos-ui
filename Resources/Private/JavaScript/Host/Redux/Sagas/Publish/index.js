@@ -6,7 +6,7 @@ import {publish, discard} from 'API/Endpoints/index';
 import backend from 'Host/Service/Backend.js';
 
 export function* watchPublish() {
-    yield* takeEvery(actionTypes.Publish.PUBLISH, function* publishNodes(action) {
+    yield* takeEvery(actionTypes.CR.Workspaces.PUBLISH, function* publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
         const {feedbackManager} = backend;
 
@@ -20,8 +20,9 @@ export function* watchPublish() {
         }
     });
 }
+
 export function* watchDiscard() {
-    yield* takeEvery(actionTypes.Publish.DISCARD, function* discardNodes(action) {
+    yield* takeEvery(actionTypes.CR.Workspaces.DISCARD, function* discardNodes(action) {
         const {nodeContextPaths} = action.payload;
         const {feedbackManager} = backend;
 

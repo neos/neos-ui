@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
-import {backend} from 'Host/Service/index';
 import {
     I18n,
     Icon,
@@ -25,7 +24,9 @@ import style from './style.css';
     publishableNodesInDocument: publishableNodesInDocumentSelector,
     isAutoPublishingEnabled: $get('user.settings.isAutoPublishingEnabled')
 }), {
-    toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing
+    toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing,
+    publishAction: actions.CR.Workspaces.publish,
+    discardAction: actions.CR.Workspaces.discard
 })
 export default class PublishDropDown extends Component {
     static propTypes = {
@@ -35,7 +36,9 @@ export default class PublishDropDown extends Component {
         publishableNodes: PropTypes.array,
         publishableNodesInDocument: PropTypes.array,
         isAutoPublishingEnabled: PropTypes.bool,
-        toggleAutoPublishing: PropTypes.func.isRequired
+        toggleAutoPublishing: PropTypes.func.isRequired,
+        publishAction: PropTypes.func.isRequired,
+        discardAction: PropTypes.func.isRequired
     };
 
     render() {
@@ -194,30 +197,25 @@ export default class PublishDropDown extends Component {
     }
 
     onPublishClick() {
-        const {publishableNodesInDocument} = this.props;
-        const {publishingService} = backend;
+        const {publishableNodesInDocument, publishAction} = this.props;
 
-        publishingService.publishNodes(publishableNodesInDocument.map(i => i.contextPath), 'live');
+        publishAction(publishableNodesInDocument.map(i => i.contextPath), 'live');
     }
 
     onPublishAllClick() {
-        const {publishableNodes} = this.props;
-        const {publishingService} = backend;
-
-        publishingService.publishNodes(publishableNodes.map(i => i.contextPath), 'live');
+        const {publishableNodes, publishAction} = this.props;
+        publishAction(publishableNodes.map(i => i.contextPath), 'live');
     }
 
     onDiscardClick() {
-        const {publishableNodesInDocument} = this.props;
-        const {publishingService} = backend;
+        const {publishableNodesInDocument, discardAction} = this.props;
 
-        publishingService.discardNodes(publishableNodesInDocument.map(i => i.contextPath));
+        discardAction(publishableNodesInDocument.map(i => i.contextPath));
     }
 
     onDiscardAllClick() {
-        const {publishableNodes} = this.props;
-        const {publishingService} = backend;
+        const {publishableNodes, discardAction} = this.props;
 
-        publishingService.discardNodes(publishableNodes.map(i => i.contextPath));
+        discardAction(publishableNodes.map(i => i.contextPath));
     }
 }

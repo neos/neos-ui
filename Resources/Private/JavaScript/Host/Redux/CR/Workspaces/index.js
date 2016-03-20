@@ -6,6 +6,12 @@ const SWITCH = '@packagefactory/guevara/CR/Workspaces/SWITCH';
 const PUBLISH = '@packagefactory/guevara/CR/Workspaces/PUBLISH';
 const DISCARD = '@packagefactory/guevara/CR/Workspaces/DISCARD';
 
+export const actionTypes = {
+    UPDATE,
+    SWITCH,
+    PUBLISH,
+    DISCARD
+};
 /**
  * Updates the data of a workspace
  */

@@ -57,10 +57,10 @@ export default class I18n extends Component {
             params
         } = props;
         const {i18n} = backend;
-        const label = i18n && id ? i18n(id, packageKey, sourceName, params) : fallback;
+        const label = i18n && id && i18n(id, packageKey, sourceName, params);
 
         this.setState({
-            label
+            label: label ? label : fallback
         });
     }
 }

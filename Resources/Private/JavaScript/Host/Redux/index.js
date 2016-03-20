@@ -2,7 +2,7 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import merge from 'lodash.merge';
 import createSagaMiddleware from 'redux-saga';
 
-import {handleActions} from 'Host/Utilities/index';
+import {handleActions} from 'Shared/Utilities/index';
 
 import {
     reducer as ChangesReducer,

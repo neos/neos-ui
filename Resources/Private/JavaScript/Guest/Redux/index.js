@@ -1,7 +1,7 @@
 import {createStore} from 'redux';
 import merge from 'lodash.merge';
 
-import {handleActions} from 'Host/Utilities/index';
+import {handleActions} from 'Shared/Utilities/index';
 
 import {
     reducer as InlineToolbarReducer,

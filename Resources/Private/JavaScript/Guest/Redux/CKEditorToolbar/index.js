@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$set, $override} from 'plow-js';
+import {$override} from 'plow-js';
 
 const SET_POSITION = '@packagefactory/guevara/GUEST/CKEditorToolbar/SET_POSITION';
 const SHOW = '@packagefactory/guevara/GUEST/CKEditorToolbar/SHOW';
@@ -15,7 +15,7 @@ export const actionTypes = {
 };
 
 const setPosition = createAction(SET_POSITION, (x, y) => ({x, y}));
-const show = createAction(SHOW);
+const show = createAction(SHOW, editorName => ({editorName}));
 const hide = createAction(HIDE);
 
 //
@@ -33,7 +33,8 @@ export const actions = {
 export const initialState = {
     x: 0,
     y: 0,
-    isVisible: false
+    isVisible: false,
+    editorName: ''
 };
 
 //
@@ -41,6 +42,12 @@ export const initialState = {
 //
 export const reducer = {
     [SET_POSITION]: ({x, y}) => $override('ckEditorToolbar', {x, y}),
-    [SHOW]: () => $set('ckEditorToolbar.isVisible', true),
-    [HIDE]: () => $set('ckEditorToolbar.isVisible', false)
+    [SHOW]: ({editorName}) => $override('ckEditorToolbar', {
+        isVisible: true,
+        editorName
+    }),
+    [HIDE]: () => $override('ckEditorToolbar', {
+        isVisible: false,
+        editorName: ''
+    })
 };

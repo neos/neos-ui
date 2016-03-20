@@ -15,7 +15,7 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
                 if (selectionData.isEmpty) {
                     editorApi.hideToolbar();
                 } else {
-                    editorApi.showToolbar();
+                    editorApi.showToolbar(editor.name);
                 }
             }
         }
@@ -26,8 +26,6 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
         event.removeListener('mouseup', handleUserInteraction);
 
         handleUserInteraction(event);
-
-        editorApi.setToolbarPosition(0, 0);
         editorApi.hideToolbar();
     };
     const handleEditorFocus = event => {

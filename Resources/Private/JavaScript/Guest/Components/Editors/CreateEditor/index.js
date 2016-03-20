@@ -18,7 +18,7 @@ export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => 
         }), 200),
 
         setToolbarPosition: (x, y) => dispatch(actions.CKEditorToolbar.setPosition(x, y)),
-        showToolbar: () => dispatch(actions.CKEditorToolbar.show()),
+        showToolbar: editorName => dispatch(actions.CKEditorToolbar.show(editorName)),
         hideToolbar: () => dispatch(actions.CKEditorToolbar.hide())
     };
 

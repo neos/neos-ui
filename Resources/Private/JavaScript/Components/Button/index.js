@@ -9,6 +9,7 @@ const Button = props => {
         className,
         isFocused,
         isDisabled,
+        isActive,
         onClick,
         onMouseDown,
         onMouseUp,
@@ -26,6 +27,8 @@ const Button = props => {
         [styles['btn--cleanHover']]: hoverStyle === 'clean',
         [styles['btn--lighterHover']]: hoverStyle === 'lighter',
         [styles['btn--brandHover']]: hoverStyle === 'brand',
+        [styles['btn--darkenHover']]: hoverStyle === 'darken',
+        [styles['btn--brandActive']]: isActive,
         [className]: className && className.length
     });
     const attributes = {
@@ -64,6 +67,7 @@ Button.propTypes = {
     // ARIA & UI related propTypes.
     isFocused: PropTypes.bool.isRequired,
     isDisabled: PropTypes.bool.isRequired,
+    isActive: PropTypes.bool.isRequired,
 
     // Style related propTypes.
     style: PropTypes.oneOf(['clean', 'lighter', 'transparent']).isRequired,
@@ -84,7 +88,8 @@ Button.defaultProps = {
     style: 'clean',
     hoverStyle: 'clean',
     isFocused: false,
-    isDisabled: false
+    isDisabled: false,
+    isActive: false
 };
 
 export default Button;

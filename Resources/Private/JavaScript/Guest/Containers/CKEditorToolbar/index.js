@@ -3,6 +3,9 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$get} from 'plow-js';
 
+import {
+    Bold
+} from './Subcomponents/index';
 import style from './style.css';
 
 //
@@ -14,14 +17,16 @@ class CKEditorToolbar extends Component {
     static propTypes = {
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired,
-        isVisible: PropTypes.bool.isRequired
+        isVisible: PropTypes.bool.isRequired,
+        editorName: PropTypes.string.isRequired
     };
 
     render() {
         const props = {
             className: style.toolBar__btnGroup__btn
         };
-        const {x, y, isVisible} = this.props;
+        const {x, y, isVisible, editorName} = this.props;
+        const editor = ckApi.instances[editorName];
         const classNames = mergeClassNames({
             [style.toolBar]: true,
             [style['toolBar--isHidden']]: !isVisible
@@ -30,7 +35,7 @@ class CKEditorToolbar extends Component {
         return (
             <div className={classNames} style={{top: y - 49, left: x - 9}}>
                 <div className={style.toolBar__btnGroup}>
-                    TEST
+                    <Bold editor={editor} ckApi={ckApi} {...props} />
                 </div>
             </div>
         );

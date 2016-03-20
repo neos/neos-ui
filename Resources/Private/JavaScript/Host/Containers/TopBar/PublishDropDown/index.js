@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform, $get, $map} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 import {backend} from 'Host/Service/index';
 import {
@@ -12,6 +12,7 @@ import {
     Label
 } from 'Components/index';
 import {actions} from 'Host/Redux/index';
+import {publishableNodesSelector, publishableNodesInDocumentSelector} from 'Host/Selectors/CR/Workspaces/index';
 
 import AbstractButton from './AbstractButton/index';
 import style from './style.css';
@@ -20,8 +21,8 @@ import style from './style.css';
     isSaving: $get('ui.remote.isSaving'),
     isPublishing: $get('ui.remote.isPublishing'),
     isDiscarding: $get('ui.remote.isDiscarding'),
-    publishableNodes: $get('ui.tabs.active.workspace.publishingState.publishableNodes'),
-    publishableNodesInDocument: $get('ui.tabs.active.workspace.publishingState.publishableNodesInDocument'),
+    publishableNodes: publishableNodesSelector,
+    publishableNodesInDocument: publishableNodesInDocumentSelector,
     isAutoPublishingEnabled: $get('user.settings.isAutoPublishingEnabled')
 }), {
     toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing
@@ -54,7 +55,7 @@ export default class PublishDropDown extends Component {
         const {mainButtonLabel, mainButtonTarget} = this.getMainButtonLabeling();
         const dropDownBtnClassName = mergeClassNames({
             [style.dropDown__btn]: true,
-            [style['btn--highlighted']]: canPublishGlobally
+            [style['dropDown__item--canPublish']]: canPublishGlobally
         });
 
         return (
@@ -149,7 +150,7 @@ export default class PublishDropDown extends Component {
             isDiscarding,
             isAutoPublishingEnabled
         } = this.props;
-        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
+        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
 
         if (isSaving) {
             return {
@@ -196,27 +197,27 @@ export default class PublishDropDown extends Component {
         const {publishableNodesInDocument} = this.props;
         const {publishingService} = backend;
 
-        publishingService.publishNodes($map('contextPath', publishableNodesInDocument), 'live');
+        publishingService.publishNodes(publishableNodesInDocument.map(i => i.contextPath), 'live');
     }
 
     onPublishAllClick() {
         const {publishableNodes} = this.props;
         const {publishingService} = backend;
 
-        publishingService.publishNodes($map('contextPath', publishableNodes), 'live');
+        publishingService.publishNodes(publishableNodes.map(i => i.contextPath), 'live');
     }
 
     onDiscardClick() {
         const {publishableNodesInDocument} = this.props;
         const {publishingService} = backend;
 
-        publishingService.discardNodes($map('contextPath', publishableNodesInDocument));
+        publishingService.discardNodes(publishableNodesInDocument.map(i => i.contextPath));
     }
 
     onDiscardAllClick() {
         const {publishableNodes} = this.props;
         const {publishingService} = backend;
 
-        publishingService.discardNodes($map('contextPath', publishableNodes));
+        publishingService.discardNodes(publishableNodes.map(i => i.contextPath));
     }
 }

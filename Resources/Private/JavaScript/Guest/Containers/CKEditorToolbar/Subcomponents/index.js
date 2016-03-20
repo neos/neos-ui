@@ -9,6 +9,7 @@ import UnorderedList from './UnorderedList/index';
 import AlignRight from './AlignRight/index';
 import AlignLeft from './AlignLeft/index';
 import AlignCenter from './AlignCenter/index';
+import AlignJustify from './AlignJustify/index';
 
 export {
     Bold,
@@ -21,5 +22,6 @@ export {
     UnorderedList,
     AlignRight,
     AlignLeft,
-    AlignCenter
+    AlignCenter,
+    AlignJustify
 };

@@ -14,7 +14,8 @@ import {
     UnorderedList,
     AlignRight,
     AlignLeft,
-    AlignCenter
+    AlignCenter,
+    AlignJustify
 } from './Subcomponents/index';
 import style from './style.css';
 
@@ -56,6 +57,7 @@ class CKEditorToolbar extends Component {
                     <AlignRight editor={editor} ckApi={ckApi} {...props} />
                     <AlignLeft editor={editor} ckApi={ckApi} {...props} />
                     <AlignCenter editor={editor} ckApi={ckApi} {...props} />
+                    <AlignJustify editor={editor} ckApi={ckApi} {...props} />
                 </div>
             </div>
         ) : null;

@@ -5,6 +5,7 @@ import SubScript from './SubScript/index';
 import SuperScript from './SuperScript/index';
 import StrikeThrough from './StrikeThrough/index';
 import OrderedList from './OrderedList/index';
+import UnorderedList from './UnorderedList/index';
 
 export {
     Bold,
@@ -13,5 +14,6 @@ export {
     SubScript,
     SuperScript,
     StrikeThrough,
-    OrderedList
+    OrderedList,
+    UnorderedList
 };

@@ -1,100 +1,32 @@
 import {createAction} from 'redux-actions';
-import {$all, $add, $set, $get} from 'plow-js';
 
-const ADD = '@packagefactory/guevara/Transient/Changes/ADD';
-const START = '@packagefactory/guevara/Transient/Changes/START';
-const FINISH = '@packagefactory/guevara/Transient/Changes/FINISH';
-const FAIL = '@packagefactory/guevara/Transient/Changes/FAIL';
-const RETRY = '@packagefactory/guevara/Transient/Changes/RETRY';
+const PERSIST = '@packagefactory/guevara/Transient/Changes/PERSIST';
 
 //
 // Export the action types
 //
 export const actionTypes = {
-    ADD,
-    START,
-    FINISH,
-    FAIL,
-    RETRY
+    PERSIST
 };
 
 /**
- * Adds the given chagnge to the pending changes state.
- * If you want to add a change, use the the ChangeManager API.
+ * Perists the change.
  */
-const add = createAction(ADD, change => ({change}));
-
-/**
- * Sends all local changes to the server.
- */
-const start = createAction(START);
-
-/**
- * Clear the changes from `processing` state on succsesfull publishing.
- */
-const finish = createAction(FINISH);
-
-/**
- * Move changes from `processing` to `failed` states when publishing fails.
- */
-const fail = createAction(FAIL);
-
-/**
- * Move changes from `failed` to `pending` stated to retry publishing.
- */
-const retry = createAction(RETRY);
+const persistChange = createAction(PERSIST, change => ({change}));
 
 //
 // Export the actions
 //
 export const actions = {
-    add,
-    start,
-    finish,
-    fail,
-    retry
+    persistChange
 };
 
 //
 // Export the initial state
 //
-export const initialState = {
-    pending: [],
-    processing: [],
-    failed: []
-};
+export const initialState = {};
 
 //
 // Export the reducer
 //
-export const reducer = {
-    [ADD]: ({change}) => $add('changes.pending', change),
-    [START]: () => state => $all(
-        state => $set('changes.processing',
-            [
-                ...$get('changes.processing', state),
-                ...$get('changes.pending', state)
-            ], state),
-        state => $set('changes.pending', [], state),
-        state
-    ),
-    [FINISH]: () => state => $set('changes.processing', [], state),
-    [FAIL]: () => state => $all(
-        state => $set('changes.failed',
-            [
-                ...$get('changes.failed', state),
-                ...$get('changes.processing', state)
-            ], state),
-        state => $set('changes.processing', [], state),
-        state
-    ),
-    [RETRY]: () => state => $all(
-        state => $set('changes.pending',
-            [
-                ...$get('changes.pending', state),
-                ...$get('changes.failed', state)
-            ], state),
-        state => $set('changes.failed', [], state),
-        state
-    )
-};
+export const reducer = {};

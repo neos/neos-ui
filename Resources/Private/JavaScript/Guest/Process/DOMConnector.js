@@ -97,7 +97,7 @@ export default (ui, connection) => {
 
     ReactDOM.render(
         <Provider store={store}>
-            <InlineUI ui={ui} connection={connection} />
+            <InlineUI />
         </Provider>,
         inlineUiContainer
     );

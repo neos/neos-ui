@@ -15,8 +15,6 @@ import style from './style.css';
 @connect($get('nodeToolbar'))
 export default class NodeToolbar extends Component {
     static propTypes = {
-        ui: PropTypes.object.isRequired,
-        connection: PropTypes.object.isRequired,
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired,
         isVisible: PropTypes.bool.isRequired

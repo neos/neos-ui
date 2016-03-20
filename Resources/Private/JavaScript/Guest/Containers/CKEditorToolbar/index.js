@@ -37,7 +37,7 @@ class CKEditorToolbar extends Component {
             [style['toolBar--isHidden']]: !isVisible
         });
 
-        return (
+        return editor ? (
             <div className={classNames} style={{top: y - 49, left: x - 9}}>
                 <div className={style.toolBar__btnGroup}>
                     <Bold editor={editor} ckApi={ckApi} {...props} />
@@ -48,7 +48,7 @@ class CKEditorToolbar extends Component {
                     <StrikeThrough editor={editor} ckApi={ckApi} {...props} />
                 </div>
             </div>
-        );
+        ) : null;
     }
 });
 

@@ -12,7 +12,7 @@ import {
 } from './Buttons/index';
 import style from './style.css';
 
-@connect($get('inlineToolbar'))
+@connect($get('nodeToolbar'))
 export default class NodeToolbar extends Component {
     static propTypes = {
         ui: PropTypes.object.isRequired,

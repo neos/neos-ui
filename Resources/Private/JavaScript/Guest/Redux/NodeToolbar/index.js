@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions';
 import {$set, $override} from 'plow-js';
 
-const SET_POSITION = '@packagefactory/guevara/GUEST/InlineToolbar/SET_POSITION';
-const SHOW = '@packagefactory/guevara/GUEST/InlineToolbar/SHOW';
-const HIDE = '@packagefactory/guevara/GUEST/InlineToolbar/HIDE';
+const SET_POSITION = '@packagefactory/guevara/GUEST/NodeToolbar/SET_POSITION';
+const SHOW = '@packagefactory/guevara/GUEST/NodeToolbar/SHOW';
+const HIDE = '@packagefactory/guevara/GUEST/NodeToolbar/HIDE';
 
 //
 // Export the action types
@@ -40,7 +40,7 @@ export const initialState = {
 // Export the reducer
 //
 export const reducer = {
-    [SET_POSITION]: ({x, y}) => $override('inlineToolbar', {x, y}),
-    [SHOW]: () => $set('inlineToolbar.isVisible', true),
-    [HIDE]: () => $set('inlineToolbar.isVisible', false)
+    [SET_POSITION]: ({x, y}) => $override('nodeToolbar', {x, y}),
+    [SHOW]: () => $set('nodeToolbar.isVisible', true),
+    [HIDE]: () => $set('nodeToolbar.isVisible', false)
 };

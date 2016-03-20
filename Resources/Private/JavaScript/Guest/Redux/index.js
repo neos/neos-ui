@@ -4,19 +4,19 @@ import merge from 'lodash.merge';
 import {handleActions} from 'Shared/Utilities/index';
 
 import {
-    reducer as InlineToolbarReducer,
-    actionTypes as InlineToolbarActionTypes,
-    initialState as InlineToolbarInitialState,
-    actions as InlineToolbar
-} from './InlineToolbar/index';
+    reducer as NodeToolbarReducer,
+    actionTypes as NodeToolbarActionTypes,
+    initialState as NodeToolbarInitialState,
+    actions as NodeToolbar
+} from './NodeToolbar/index';
 
 const reducers = {
-    ...InlineToolbarReducer
+    ...NodeToolbarReducer
 };
 const rootReducer = handleActions(reducers);
 const devToolsStoreEnhancer = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
 const initialState = {
-    inlineToolbar: InlineToolbarInitialState
+    nodeToolbar: NodeToolbarInitialState
 };
 
 //
@@ -31,12 +31,12 @@ export function configureStore() {
 // Export the action types
 //
 export const actionTypes = {
-    InlineToolbar: InlineToolbarActionTypes
+    NodeToolbar: NodeToolbarActionTypes
 };
 
 //
 // Export the actions
 //
 export const actions = {
-    InlineToolbar
+    NodeToolbar
 };

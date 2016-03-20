@@ -5,7 +5,7 @@ import {
     groupedAllowedNodeTypesSelector
 } from './index.js';
 
-describe.only('"host.selectors.cr.constraints" ', () => {
+describe('"host.selectors.cr.constraints" ', () => {
     let state = null;
 
     beforeEach(done => {

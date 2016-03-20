@@ -23,12 +23,11 @@ export function* watchPublish() {
 
 export function* watchDiscard() {
     yield* takeEvery(actionTypes.CR.Workspaces.DISCARD, function* discardNodes(action) {
-        const {nodeContextPaths} = action.payload;
         const {feedbackManager} = backend;
 
         yield put(actions.UI.Remote.startDiscarding());
         try {
-            const feedback = yield call(discard, nodeContextPaths);
+            const feedback = yield call(discard, action.payload);
             yield put(actions.UI.Remote.finishDiscarding());
             yield put(feedbackManager.handleFeedback.bind(feedbackManager)(feedback));
         } catch (error) {

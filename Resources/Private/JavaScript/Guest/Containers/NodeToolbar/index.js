@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import mergeClassNames from 'classnames';
 import {$get} from 'plow-js';
 
 import {
@@ -25,12 +26,13 @@ export default class NodeToolbar extends Component {
             className: style.toolBar__btnGroup__btn
         };
         const {x, y, isVisible} = this.props;
+        const classNames = mergeClassNames({
+            [style.toolBar]: true,
+            [style['toolBar--isHidden']]: !isVisible
+        });
 
         return (
-            <div
-                className={style.toolBar}
-                style={{top: y, left: x, display: isVisible ? 'block' : 'none'}}
-                >
+            <div className={classNames} style={{top: y, left: x}}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...props} />
                     <HideSelectedNode {...props} />

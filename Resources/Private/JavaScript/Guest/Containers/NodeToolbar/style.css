@@ -18,3 +18,7 @@
 .toolBar__btnGroup__btn {
     float: left;
 }
+
+.toolBar--isHidden {
+    display: none;
+}

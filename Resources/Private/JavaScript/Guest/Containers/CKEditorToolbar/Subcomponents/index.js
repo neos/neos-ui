@@ -4,6 +4,7 @@ import Underline from './Underline/index';
 import SubScript from './SubScript/index';
 import SuperScript from './SuperScript/index';
 import StrikeThrough from './StrikeThrough/index';
+import OrderedList from './OrderedList/index';
 
 export {
     Bold,
@@ -11,5 +12,6 @@ export {
     Underline,
     SubScript,
     SuperScript,
-    StrikeThrough
+    StrikeThrough,
+    OrderedList
 };

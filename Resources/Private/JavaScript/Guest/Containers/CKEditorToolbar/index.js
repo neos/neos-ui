@@ -7,7 +7,8 @@ import {
     Bold,
     Italic,
     Underline,
-    SubScript
+    SubScript,
+    SuperScript
 } from './Subcomponents/index';
 import style from './style.css';
 
@@ -42,6 +43,7 @@ class CKEditorToolbar extends Component {
                     <Italic editor={editor} ckApi={ckApi} {...props} />
                     <Underline editor={editor} ckApi={ckApi} {...props} />
                     <SubScript editor={editor} ckApi={ckApi} {...props} />
+                    <SuperScript editor={editor} ckApi={ckApi} {...props} />
                 </div>
             </div>
         );

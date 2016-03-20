@@ -9,6 +9,7 @@ const connection = ui.connect();
 // Propagate errors of the Guest frame to the Host FlashMessages.
 //
 window.onerror = function (err) {
+    console.error(err);
     ui.addFlashMessage(`Whoops. Something went wrong in the guest frame. Error message states "${err}".`);
 };
 

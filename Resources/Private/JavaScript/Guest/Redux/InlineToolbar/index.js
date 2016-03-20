@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$set, $merge} from 'plow-js';
+import {$set, $override} from 'plow-js';
 
 const SET_POSITION = '@packagefactory/guevara/GUEST/InlineToolbar/SET_POSITION';
 const SHOW = '@packagefactory/guevara/GUEST/InlineToolbar/SHOW';
@@ -33,14 +33,14 @@ export const actions = {
 export const initialState = {
     x: 0,
     y: 0,
-    isVisible: true
+    isVisible: false
 };
 
 //
 // Export the reducer
 //
 export const reducer = {
-    [SET_POSITION]: ({x, y}) => $merge('inlineToolbar', {x, y}),
+    [SET_POSITION]: ({x, y}) => $override('inlineToolbar', {x, y}),
     [SHOW]: () => $set('inlineToolbar.isVisible', true),
     [HIDE]: () => $set('inlineToolbar.isVisible', false)
 };

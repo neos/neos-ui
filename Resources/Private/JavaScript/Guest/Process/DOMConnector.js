@@ -7,6 +7,8 @@ import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/index';
 import {InlineUI} from 'Guest/Containers/index';
 import {configureStore} from 'Guest/Redux/index';
 
+import initializeStoreSynchronization from './Synchronization.js';
+
 const closestContextPath = el => {
     if (!el) {
         return null;
@@ -99,4 +101,9 @@ export default (ui, connection) => {
         </Provider>,
         inlineUiContainer
     );
+
+    //
+    // Initialize central store synchronization
+    //
+    initializeStoreSynchronization(ui, connection, store.dispatch);
 };

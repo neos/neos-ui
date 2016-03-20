@@ -8,6 +8,7 @@ import OrderedList from './OrderedList/index';
 import UnorderedList from './UnorderedList/index';
 import AlignRight from './AlignRight/index';
 import AlignLeft from './AlignLeft/index';
+import AlignCenter from './AlignCenter/index';
 
 export {
     Bold,
@@ -19,5 +20,6 @@ export {
     OrderedList,
     UnorderedList,
     AlignRight,
-    AlignLeft
+    AlignLeft,
+    AlignCenter
 };

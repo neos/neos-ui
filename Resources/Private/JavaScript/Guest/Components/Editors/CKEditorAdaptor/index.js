@@ -1,9 +1,7 @@
 import createEditor from 'Guest/Components/Editors/CreateEditor/index';
-import render from 'Guest/Process/Render.js';
 
 import createCKEditorInstance from './CreateCKEditorInstance/index';
 import getSelectionData from './Selection/index';
-import createToolbar from './CKEditorToolbar/index';
 
 export const editor = ckApi => {
     if (!ckApi) {
@@ -18,15 +16,9 @@ export const editor = ckApi => {
     ckApi.disableAutoInline = true;
 
     return createEditor(
-        (config, api, dom) => {
-            const toolbar = render(createToolbar(), {});
-            const ckInstance = createCKEditorInstance(ckApi, dom, getSelectionData(ckApi), toolbar);
-
+        (config, api, connection, dom) => {
+            const ckInstance = createCKEditorInstance(ckApi, api, dom, getSelectionData(ckApi));
             ckInstance.on('change', () => api.commit(ckInstance.getData()));
-
-            document.body.appendChild(
-                toolbar.dom
-            );
         }
     );
 };

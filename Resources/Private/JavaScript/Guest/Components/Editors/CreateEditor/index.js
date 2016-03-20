@@ -1,8 +1,10 @@
 import debounce from 'lodash.debounce';
 
+import {actions} from 'Guest/Redux/index';
+
 import style from './style.css';
 
-export default editorFactory => (nodeContext, dom, ui, connection) => {
+export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => {
     let editor = null;
 
     const editorApi = {
@@ -13,7 +15,11 @@ export default editorFactory => (nodeContext, dom, ui, connection) => {
                 propertyName: nodeContext.propertyName,
                 value
             }
-        }), 200)
+        }), 200),
+
+        setToolbarPosition: (x, y) => dispatch(actions.CKEditorToolbar.setPosition(x, y)),
+        showToolbar: () => dispatch(actions.CKEditorToolbar.show()),
+        hideToolbar: () => dispatch(actions.CKEditorToolbar.hide())
     };
 
     dom.setAttribute('contentEditable', true);
@@ -34,6 +40,11 @@ export default editorFactory => (nodeContext, dom, ui, connection) => {
                     // Pass the API object to the editor
                     //
                     editorApi,
+
+                    //
+                    // Pass the host frame connection to the editor
+                    //
+                    connection,
 
                     //
                     // Pass the dom element

@@ -33,16 +33,6 @@ export default (ui, connection) => {
         .forEach(dom => nodeComponent(dom, ui, connection));
 
     //
-    // Initialize inline editors
-    //
-    [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(dom => {
-        const contextPath = closestContextPath(dom);
-        const propertyName = dom.dataset.__cheProperty;
-
-        ckEditor({contextPath, propertyName}, dom, ui, connection);
-    });
-
-    //
     // Initialize Inline UI
     //
     const inlineUiContainer = document.createElement('div');
@@ -106,4 +96,14 @@ export default (ui, connection) => {
     // Initialize central store synchronization
     //
     initializeStoreSynchronization(ui, connection, store.dispatch);
+
+    //
+    // Initialize inline editors
+    //
+    [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(dom => {
+        const contextPath = closestContextPath(dom);
+        const propertyName = dom.dataset.__cheProperty;
+
+        ckEditor({contextPath, propertyName}, dom, ui, connection, store.dispatch);
+    });
 };

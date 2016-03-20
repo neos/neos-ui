@@ -1,4 +1,4 @@
-export default (ckApi, dom, getSelectionData, toolbar) => {
+export default (ckApi, editorApi, dom, getSelectionData) => {
     const editor = ckApi.inline(dom, {
         removePlugins: 'toolbar',
         allowedContent: true
@@ -8,50 +8,15 @@ export default (ckApi, dom, getSelectionData, toolbar) => {
             const selectionData = getSelectionData(editor);
 
             if (selectionData) {
-                const update = () => toolbar.update({
-                    isVisible: !selectionData.isEmpty,
-                    position: {
-                        x: selectionData.region.left,
-                        y: selectionData.region.top
-                    },
-                    buttons: {
-                        bold: {
-                            type: 'button',
-                            props: {
-                                icon: 'fa-bold',
-                                isActive: editor.getCommand('bold').state === ckApi.TRISTATE_ON,
-                                onClick: () => {
-                                    editor.execCommand('bold');
-                                    update();
-                                }
-                            }
-                        },
-                        italic: {
-                            type: 'button',
-                            props: {
-                                icon: 'fa-italic',
-                                isActive: editor.getCommand('italic').state === ckApi.TRISTATE_ON,
-                                onClick: () => {
-                                    editor.execCommand('italic');
-                                    update();
-                                }
-                            }
-                        },
-                        strikeThrough: {
-                            type: 'button',
-                            props: {
-                                icon: 'fa-strikethrough',
-                                isActive: editor.getCommand('strike').state === ckApi.TRISTATE_ON,
-                                onClick: () => {
-                                    editor.execCommand('strike');
-                                    update();
-                                }
-                            }
-                        }
-                    }
-                });
+                const {left, top} = selectionData.region;
 
-                update();
+                editorApi.setToolbarPosition(left, top);
+
+                if (selectionData.isEmpty) {
+                    editorApi.hideToolbar();
+                } else {
+                    editorApi.showToolbar();
+                }
             }
         }
     };
@@ -61,7 +26,9 @@ export default (ckApi, dom, getSelectionData, toolbar) => {
         event.removeListener('mouseup', handleUserInteraction);
 
         handleUserInteraction(event);
-        toolbar.update({isVisible: false});
+
+        editorApi.setToolbarPosition(0, 0);
+        editorApi.hideToolbar();
     };
     const handleEditorFocus = event => {
         const editable = editor.editable();

@@ -11,7 +11,8 @@ import {
     SuperScript,
     StrikeThrough,
     OrderedList,
-    UnorderedList
+    UnorderedList,
+    AlignRight
 } from './Subcomponents/index';
 import style from './style.css';
 
@@ -50,6 +51,7 @@ class CKEditorToolbar extends Component {
                     <StrikeThrough editor={editor} ckApi={ckApi} {...props} />
                     <OrderedList editor={editor} ckApi={ckApi} {...props} />
                     <UnorderedList editor={editor} ckApi={ckApi} {...props} />
+                    <AlignRight editor={editor} ckApi={ckApi} {...props} />
                 </div>
             </div>
         ) : null;

@@ -6,6 +6,7 @@ import SuperScript from './SuperScript/index';
 import StrikeThrough from './StrikeThrough/index';
 import OrderedList from './OrderedList/index';
 import UnorderedList from './UnorderedList/index';
+import AlignRight from './AlignRight/index';
 
 export {
     Bold,
@@ -15,5 +16,6 @@ export {
     SuperScript,
     StrikeThrough,
     OrderedList,
-    UnorderedList
+    UnorderedList,
+    AlignRight
 };

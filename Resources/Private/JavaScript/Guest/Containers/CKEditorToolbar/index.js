@@ -5,7 +5,8 @@ import {$get} from 'plow-js';
 
 import {
     Bold,
-    Italic
+    Italic,
+    Underline
 } from './Subcomponents/index';
 import style from './style.css';
 
@@ -38,6 +39,7 @@ class CKEditorToolbar extends Component {
                 <div className={style.toolBar__btnGroup}>
                     <Bold editor={editor} ckApi={ckApi} {...props} />
                     <Italic editor={editor} ckApi={ckApi} {...props} />
+                    <Underline editor={editor} ckApi={ckApi} {...props} />
                 </div>
             </div>
         );

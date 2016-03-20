@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Provider} from 'react-redux';
 
 import {nodeComponent} from 'Guest/Components/index';
 import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/index';
 import {InlineUI} from 'Guest/Containers/index';
+import {configureStore} from 'Guest/Redux/index';
+
+import initializeStoreSynchronization from './Synchronization.js';
 
 const closestContextPath = el => {
     if (!el) {
@@ -77,9 +81,29 @@ export default (ui, connection) => {
     ];
     isolatedEvents.forEach(
         event => inlineUiContainer.addEventListener(event, e => {
+            //
+            // React captures its own events on document level - so we cannot stop propagation at this point.
+            // We need to attach this flag on particular events that are passing through the application
+            // container to then handle them differently (e.g. click outside)
+            //
             e['@neos/inline-ui-event'] = true;
         })
     );
 
-    ReactDOM.render(<InlineUI ui={ui} connection={connection} />, inlineUiContainer);
+    //
+    // Configure redux store
+    //
+    const store = configureStore();
+
+    ReactDOM.render(
+        <Provider store={store}>
+            <InlineUI />
+        </Provider>,
+        inlineUiContainer
+    );
+
+    //
+    // Initialize central store synchronization
+    //
+    initializeStoreSynchronization(ui, connection, store.dispatch);
 };

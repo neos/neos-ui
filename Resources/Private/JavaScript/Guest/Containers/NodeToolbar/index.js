@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
-
-import {position} from 'Guest/Process/DOMUtils.js';
+import {connect} from 'react-redux';
+import mergeClassNames from 'classnames';
+import {$get} from 'plow-js';
 
 import {
     AddNode,
@@ -12,52 +13,26 @@ import {
 } from './Buttons/index';
 import style from './style.css';
 
+@connect($get('nodeToolbar'))
 export default class NodeToolbar extends Component {
     static propTypes = {
-        ui: PropTypes.object.isRequired,
-        connection: PropTypes.object.isRequired
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired,
+        isVisible: PropTypes.bool.isRequired
     };
-
-    constructor(props) {
-        super(props);
-
-        const {connection} = props;
-
-        this.state = {
-            top: 0,
-            left: 0,
-            isVisible: false
-        };
-
-        connection.observe('nodes.focused').react(({node, typoscriptPath}) => {
-            if (node && typoscriptPath) {
-                const dom = document.querySelector(
-                    `[data-__che-typoscript-path="${typoscriptPath}"][data-__che-node-contextpath="${node.contextPath}"]`
-                );
-                const {x, y} = position(dom);
-
-                this.setState({
-                    left: x - 9,
-                    top: y - 49,
-                    isVisible: true
-                });
-            } else {
-                this.setState({isVisible: false});
-            }
-        });
-    }
 
     render() {
         const props = {
             className: style.toolBar__btnGroup__btn
         };
-        const {top, left, isVisible} = this.state;
+        const {x, y, isVisible} = this.props;
+        const classNames = mergeClassNames({
+            [style.toolBar]: true,
+            [style['toolBar--isHidden']]: !isVisible
+        });
 
         return (
-            <div
-                className={style.toolBar}
-                style={{top, left, display: isVisible ? 'block' : 'none'}}
-                >
+            <div className={classNames} style={{top: y, left: x}}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...props} />
                     <HideSelectedNode {...props} />

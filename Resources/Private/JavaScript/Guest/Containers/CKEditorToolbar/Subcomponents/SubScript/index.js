@@ -38,7 +38,6 @@ export default class SubScript extends Component {
 
         if (editor) {
             editor.execCommand('subscript');
-            this.setState(this.state);
         }
     }
 }

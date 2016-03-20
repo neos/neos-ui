@@ -38,7 +38,6 @@ export default class Bold extends Component {
 
         if (editor) {
             editor.execCommand('bold');
-            this.setState(this.state);
         }
     }
 }

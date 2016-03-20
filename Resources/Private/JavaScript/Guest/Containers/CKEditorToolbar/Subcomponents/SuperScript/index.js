@@ -38,7 +38,6 @@ export default class SuperScript extends Component {
 
         if (editor) {
             editor.execCommand('superscript');
-            this.setState(this.state);
         }
     }
 }

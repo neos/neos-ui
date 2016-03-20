@@ -32,6 +32,30 @@ class CKEditorToolbar extends Component {
         editorName: PropTypes.string.isRequired
     };
 
+    constructor(props) {
+        super(props);
+
+        this.removeEditorListener = null;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.editorName !== nextProps.editorName) {
+            if (this.removeEditorListener) {
+                this.removeEditorListener();
+            }
+
+            const editor = ckApi.instances[nextProps.editorName];
+
+            if (editor) {
+                const {removeListener} = editor.on('change', () => {
+                    this.setState(this.state);
+                });
+
+                this.removeEditorListener = removeListener;
+            }
+        }
+    }
+
     render() {
         const props = {
             className: style.toolBar__btnGroup__btn

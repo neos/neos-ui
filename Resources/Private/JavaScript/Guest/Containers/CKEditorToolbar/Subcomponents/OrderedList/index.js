@@ -38,7 +38,6 @@ export default class OrderedList extends Component {
 
         if (editor) {
             editor.execCommand('numberedlist');
-            this.setState(this.state);
         }
     }
 }

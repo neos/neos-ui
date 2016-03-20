@@ -38,7 +38,6 @@ export default class AlignLeft extends Component {
 
         if (editor) {
             editor.execCommand('justifyleft');
-            this.setState(this.state);
         }
     }
 }

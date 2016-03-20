@@ -38,7 +38,6 @@ export default class StrikeThrough extends Component {
 
         if (editor) {
             editor.execCommand('strike');
-            this.setState(this.state);
         }
     }
 }

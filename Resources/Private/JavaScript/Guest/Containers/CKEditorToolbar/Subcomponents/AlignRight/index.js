@@ -38,7 +38,6 @@ export default class AlignRight extends Component {
 
         if (editor) {
             editor.execCommand('justifyright');
-            this.setState(this.state);
         }
     }
 }

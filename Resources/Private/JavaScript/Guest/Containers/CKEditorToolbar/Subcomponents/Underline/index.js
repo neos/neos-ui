@@ -38,7 +38,6 @@ export default class Underline extends Component {
 
         if (editor) {
             editor.execCommand('underline');
-            this.setState(this.state);
         }
     }
 }

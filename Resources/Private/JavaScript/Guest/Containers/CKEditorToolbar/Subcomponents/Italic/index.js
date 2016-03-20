@@ -38,7 +38,6 @@ export default class Italic extends Component {
 
         if (editor) {
             editor.execCommand('italic');
-            this.setState(this.state);
         }
     }
 }

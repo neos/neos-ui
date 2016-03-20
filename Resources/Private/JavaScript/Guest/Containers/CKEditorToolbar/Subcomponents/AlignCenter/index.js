@@ -38,7 +38,6 @@ export default class AlignCenter extends Component {
 
         if (editor) {
             editor.execCommand('justifycenter');
-            this.setState(this.state);
         }
     }
 }

@@ -38,7 +38,6 @@ export default class AlignJustify extends Component {
 
         if (editor) {
             editor.execCommand('justifyblock');
-            this.setState(this.state);
         }
     }
 }

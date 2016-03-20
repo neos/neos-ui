@@ -38,7 +38,6 @@ export default class UnorderedList extends Component {
 
         if (editor) {
             editor.execCommand('bulletedlist');
-            this.setState(this.state);
         }
     }
 }

@@ -1,9 +1,17 @@
 import {createAction} from 'redux-actions';
-import {$set, $merge} from 'plow-js';
+import {$set} from 'plow-js';
 
 const UPDATE = '@packagefactory/guevara/CR/Workspaces/UPDATE';
 const SWITCH = '@packagefactory/guevara/CR/Workspaces/SWITCH';
+const PUBLISH = '@packagefactory/guevara/CR/Workspaces/PUBLISH';
+const DISCARD = '@packagefactory/guevara/CR/Workspaces/DISCARD';
 
+export const actionTypes = {
+    UPDATE,
+    SWITCH,
+    PUBLISH,
+    DISCARD
+};
 /**
  * Updates the data of a workspace
  */
@@ -14,12 +22,24 @@ const update = createAction(UPDATE, (name, data) => ({name, data}));
  */
 const switchTo = createAction(SWITCH, name => name);
 
+/**
+ * Publish nodes to the given workspace
+ */
+const publish = createAction(PUBLISH, (nodeContextPaths, targetWorkspaceName) => ({nodeContextPaths, targetWorkspaceName}));
+
+/**
+ * Discard given nodes
+ */
+const discard = createAction(DISCARD, nodeContextPaths => nodeContextPaths);
+
 //
 // Export the actions
 //
 export const actions = {
     update,
-    switchTo
+    switchTo,
+    publish,
+    discard
 };
 
 //
@@ -34,6 +54,6 @@ export const initialState = {
 // Export the reducer
 //
 export const reducer = {
-    [UPDATE]: ({name, data}) => $merge('cr.workspaces', {[name]: data}),
+    [UPDATE]: ({name, data}) => $set(['cr', 'workspaces', 'byName', name, 'publishableNodes'], data),
     [SWITCH]: name => $set('cr.workspaces.active', name)
 };

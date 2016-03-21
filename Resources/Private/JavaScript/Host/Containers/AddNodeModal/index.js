@@ -24,7 +24,7 @@ import {
     mode: $get('ui.addNodeModal.mode')
 }), {
     close: actions.UI.AddNodeModal.close,
-    addChange: actions.Changes.add
+    persistChange: actions.Changes.persistChange
 })
 export default class AddNodeModal extends Component {
     static propTypes = {
@@ -33,7 +33,7 @@ export default class AddNodeModal extends Component {
         groupedAllowedNodeTypes: PropTypes.array,
         mode: PropTypes.string.isRequired,
         close: PropTypes.func.isRequired,
-        addChange: PropTypes.func.isRequired
+        persistChange: PropTypes.func.isRequired
     };
 
     shouldComponentUpdate({referenceNode}) {
@@ -64,7 +64,7 @@ export default class AddNodeModal extends Component {
                     }
                 }
             };
-            this.props.addChange(change);
+            this.props.persistChange(change);
             this.props.close();
         };
         return (

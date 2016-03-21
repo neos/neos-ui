@@ -17,6 +17,7 @@ use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Error;
 use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Info;
 use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Success;
 use PackageFactory\Guevara\Domain\Model\Feedback\Operations\ReloadDocument;
+use PackageFactory\Guevara\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use PackageFactory\Guevara\Domain\Service\NodeTreeBuilder;
 use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
 use TYPO3\Eel\FlowQuery\FlowQuery;
@@ -64,6 +65,22 @@ class BackendServiceController extends ActionController
      * @var WorkspaceRepository
      */
     protected $workspaceRepository;
+
+    /**
+     * Helper method to inform the client, that new workspace information is available
+     * @param string $documentNodeContextPath
+     * @return void
+     */
+    protected function updateWorkspaceInfo($documentNodeContextPath) {
+        $nodeService = new NodeService();
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo();
+        $documnetNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath);
+        $updateWorkspaceInfo->setDocument(
+            $nodeService->getClosestDocument($documnetNode)
+        );
+
+        $this->feedbackCollection->add($updateWorkspaceInfo);
+    }
 
     /**
      * Apply a set of changes to the system
@@ -116,6 +133,7 @@ class BackendServiceController extends ActionController
             $success = new Success();
             $success->setMessage(sprintf('Published %d change(s) to %s.', count($nodeContextPaths), $targetWorkspaceName));
 
+            $this->updateWorkspaceInfo($nodeContextPaths[0]);
             $this->feedbackCollection->add($success);
 
             $this->persistenceManager->persistAll();
@@ -150,6 +168,7 @@ class BackendServiceController extends ActionController
             $success = new Success();
             $success->setMessage(sprintf('Discarded %d node(s).', count($nodeContextPaths)));
 
+            $this->updateWorkspaceInfo($nodeContextPaths[0]);
             $this->feedbackCollection->add($success);
 
             $this->persistenceManager->persistAll();

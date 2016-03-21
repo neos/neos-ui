@@ -12,6 +12,7 @@ import {
 import {
     reducer as WorkspacesReducer,
     initialState as WorkspacesInitialState,
+    actionTypes as WorkspacesActionTypes,
     actions as Workspaces
 } from './Workspaces/index';
 
@@ -19,7 +20,8 @@ import {
 // Export the actionTypes
 //
 export const actionTypes = {
-    Nodes: NodesActionTypes
+    Nodes: NodesActionTypes,
+    Workspaces: WorkspacesActionTypes
 };
 
 //

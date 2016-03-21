@@ -30,7 +30,6 @@ import {
     backend,
     nodeTreeService,
     feedbackManager,
-    publishingService,
     i18n
 } from './Service/index';
 
@@ -77,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Bootstrap the backend services
     assign(backend, {
         feedbackManager: feedbackManager(store),
-        publishingService: publishingService(store, csrfToken),
         nodeTreeService: nodeTreeService(store, csrfToken),
 
         asyncComponents: {

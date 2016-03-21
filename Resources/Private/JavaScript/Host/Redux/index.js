@@ -33,7 +33,7 @@ import {
     initialState as UserInitialState,
     actions as User
 } from './User/index';
-import sagas from './Sagas/index';
+import sagas from 'Host/Sagas/index';
 
 const reducers = {
     ...ChangesReducer,

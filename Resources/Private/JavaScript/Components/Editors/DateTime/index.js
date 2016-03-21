@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextInput} from 'Host/Components';
+import {TextInput} from 'Components';
 
 const DateTime = props => {
     return (<TextInput {...props} />);

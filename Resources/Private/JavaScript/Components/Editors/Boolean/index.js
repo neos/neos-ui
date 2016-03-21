@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {CheckBox} from 'Host/Components';
+import {CheckBox} from 'Components/index';
 
 const Boolean = props => {
     const {value, ...remainingProps} = props;
@@ -7,7 +7,7 @@ const Boolean = props => {
 };
 
 Boolean.propTypes = {
-    value: PropTypes.boolean.isRequired
+    value: PropTypes.bool.isRequired
 };
 
 export default Boolean;

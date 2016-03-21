@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
 import {CR} from 'Host/Selectors/';
-import {Label, I18n} from 'Host/Components/';
+import {Label, I18n} from 'Components/index';
 import SingleInspectorEditor from '../SingleInspectorEditor/';
 
 const prepareListOfPropertiesToBeEdited = (inspectorGroup, focusedNode) => {

@@ -5,6 +5,7 @@ import {$transform, $get} from 'plow-js';
 
 import {CR} from 'Host/Selectors/index';
 import {
+    Bar,
     Button,
     SideBar,
     Tabs,

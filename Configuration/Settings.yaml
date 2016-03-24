@@ -14,13 +14,83 @@ TYPO3:
   TypoScript:
     defaultContext:
       'Guevara.Activation': 'PackageFactory\Guevara\TypoScript\Helper\ActivationHelper'
-      'Guevara.Workspace': 'PackageFactory\Guevara\TypoScript\Helper\WorkspaceHelper'
-      'Guevara.NodeInfo': 'PackageFactory\Guevara\TypoScript\Helper\NodeInfoHelper'
 PackageFactory:
-    Guevara:
-      changes:
-        types:
-            'PackageFactory.Guevara:Property': 'PackageFactory\Guevara\Domain\Model\Changes\Property'
-            'PackageFactory.Guevara:Create': 'PackageFactory\Guevara\Domain\Model\Changes\Create'
-            'PackageFactory.Guevara:CreateBefore': 'PackageFactory\Guevara\Domain\Model\Changes\CreateBefore'
-            'PackageFactory.Guevara:CreateAfter': 'PackageFactory\Guevara\Domain\Model\Changes\CreateAfter'
+  Guevara:
+    # All PRIVATE, not meant for public extensibility.
+    state:
+      defaultEelContext:
+        String: 'TYPO3\Eel\Helper\StringHelper'
+        Array: 'TYPO3\Eel\Helper\ArrayHelper'
+        Date: 'TYPO3\Eel\Helper\DateHelper'
+        Configuration: 'TYPO3\Eel\Helper\ConfigurationHelper'
+        Math: 'TYPO3\Eel\Helper\MathHelper'
+        Json: 'TYPO3\Eel\Helper\JsonHelper'
+        I18n: 'TYPO3\Flow\I18n\EelHelper\TranslationHelper'
+        'Guevara.Workspace': 'PackageFactory\Guevara\TypoScript\Helper\WorkspaceHelper'
+        'Guevara.NodeInfo': 'PackageFactory\Guevara\TypoScript\Helper\NodeInfoHelper'
+        'Guevara.NodeTypes': 'PackageFactory\Guevara\TypoScript\Helper\NodeTypesHelper'
+
+      documentNode:
+        nodes: '${Guevara.NodeInfo.renderDocumentNodeAndChildContent(documentNode, controllerContext)}'
+        metaData:
+          contextPath: '${q(documentNode).property("_contextPath")}'
+          previewUrl: '${Guevara.NodeInfo.uri(q(documentNode).context({workspaceName: "live"}).get(0), controllerContext)}'
+      backend:
+        changes:
+          pending: []
+          processing: []
+          failed: []
+        cr:
+          nodeTypes:
+            byName: ${Guevara.NodeTypes.nodeTypesByName()}
+            constraints: ${Guevara.NodeTypes.nodeTypeConstraints()}
+            inheritanceMap: ${Guevara.NodeTypes.nodeTypeInheritanceMap()}
+            groups: ${Configuration.setting('TYPO3.Neos.nodeTypes.groups')}
+          nodes:
+            byContextPath: ${Guevara.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}
+            siteNode: ${q(site).property('_contextPath')}
+          workspaces:
+            byName: ${Guevara.Workspace.initializeWorkspacesByName()}
+            active: ${Guevara.Workspace.getPersonalWorkspaceName()}
+        ui:
+          contentView:
+            src: ${Guevara.NodeInfo.uri(documentNode, controllerContext)}
+            contextPath: ${q(documentNode).property('_contextPath')}
+          debugMode: false
+          fullScreen:
+            isFullScreen: false
+          leftSideBar:
+            isHidden: false
+          rightSideBar:
+            isHidden: false
+          addNodeModal:
+            referenceNode: ''
+            mode: 'insert'
+          offCanvas:
+            isHidden: true
+          pageTree:
+            isLoading: false
+            hasError: false
+            focused: ${q(documentNode).property('_contextPath')}
+            active: ${q(documentNode).property('_contextPath')}
+          remote:
+            isSaving: FALSE
+            isPublishing: FALSE
+            isDiscarding: FALSE
+        user:
+          name:
+            title: ${q(user).property('name.title')}
+            firstName: ${q(user).property('name.firstName')}
+            middleName: ${q(user).property('name.middleName')}
+            lastName: ${q(user).property('name.lastName')}
+            otherName: ${q(user).property('name.otherName')}
+            fullName: ${q(user).property('name.fullName')}
+          settings:
+            isAutoPublishingEnabled: false
+
+    changes:
+      types:
+          'PackageFactory.Guevara:Property': 'PackageFactory\Guevara\Domain\Model\Changes\Property'
+          'PackageFactory.Guevara:Create': 'PackageFactory\Guevara\Domain\Model\Changes\Create'
+          'PackageFactory.Guevara:CreateBefore': 'PackageFactory\Guevara\Domain\Model\Changes\CreateBefore'
+          'PackageFactory.Guevara:CreateAfter': 'PackageFactory\Guevara\Domain\Model\Changes\CreateAfter'

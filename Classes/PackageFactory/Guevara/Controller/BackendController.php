@@ -68,12 +68,6 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var NodeTypeSchemaBuilder
-     */
-    protected $nodeTypeSchemaBuilder;
-
-    /**
-     * @Flow\Inject
      * @var XliffService
      */
     protected $xliffService;
@@ -123,7 +117,6 @@ class BackendController extends ActionController
                 $node = $siteNode;
             }
 
-            $this->view->assign('nodeTypeSchema', $this->nodeTypeSchemaBuilder->generateNodeTypeSchema());
             $this->view->assign('user', $user);
             $this->view->assign('documentNode', $node);
             $this->view->assign('site', $node);

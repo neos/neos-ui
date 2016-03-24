@@ -1,9 +1,18 @@
 include: resource://TYPO3.TypoScript/Private/TypoScript/Root.ts2
-
+include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/RenderState.ts2
 backend = TYPO3.TypoScript:Template {
     templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Index.html'
 
-    initialState = PackageFactory.Guevara:InitialState
+    initialState = PackageFactory.Guevara:RenderState {
+        state = 'backend'
+        context {
+            documentNode = ${documentNode}
+            site = ${site}
+            user = ${user}
+        }
+
+        @process.json = ${Json.stringify(value)}
+    }
     initialState.@process.json = ${Json.stringify(value)}
 
     translations = ${translations}

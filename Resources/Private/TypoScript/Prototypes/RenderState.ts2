@@ -1,0 +1,5 @@
+prototype(PackageFactory.Guevara:RenderState) {
+    @class = 'PackageFactory\\Guevara\\TypoScript\\RenderStateImplementation'
+
+    context = TYPO3.TypoScript:RawArray
+}

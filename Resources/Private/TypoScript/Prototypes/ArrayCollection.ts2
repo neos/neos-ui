@@ -1,3 +1,0 @@
-prototype(PackageFactory.Guevara:ArrayCollection) {
-    @class = 'PackageFactory\\Guevara\\TypoScript\\ArrayCollectionImplementation'
-}

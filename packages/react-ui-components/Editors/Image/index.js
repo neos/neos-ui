@@ -1,6 +1,9 @@
 import React from 'react';
+import reactCrop from 'react-image-crop';
 
-const Image = () => {
+
+const Image = (value) => {
+    console.log("IMAGE", value);
     return (<div>TODO image</div>);
 };
 

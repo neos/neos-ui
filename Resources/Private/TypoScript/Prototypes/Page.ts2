@@ -1,5 +1,3 @@
-include: ../Backend/Node.ts2
-
 //
 // Reset some rendering steps of the Neos backend, since Guevara
 // augments the website itself
@@ -23,24 +21,13 @@ prototype(TYPO3.Neos:Page) {
         neosBackendHeader.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
         neosBackendEndpoints.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
 
-        javascriptDocumentInformation = TYPO3.TypoScript:RawArray {
+        javascriptBackendInformation = PackageFactory.Guevara:RenderState {
+            state = 'documentNode'
+            context {
+                documentNode = ${documentNode}
+            }
+
             @position = 'after javascripts'
-
-            nodes = PackageFactory.Guevara:ArrayCollection {
-                collection = ${q(documentNode).add(q(documentNode).find('[instanceof TYPO3.Neos:Content]'))}
-                itemName = 'node'
-                itemKey = ${q(node).property('_contextPath')}
-                itemRenderer = PackageFactory.Guevara:Node {
-                    @context.documentNode = ${node}
-                }
-            }
-
-            metaData = TYPO3.TypoScript:RawArray {
-                contextPath = ${q(documentNode).property('_contextPath')}
-                previewUrl = TYPO3.Neos:NodeUri {
-                    node = ${q(documentNode).context({workspaceName: 'live'}).get(0)}
-                }
-            }
 
             @process.json = ${Json.stringify(value)}
             @process.wrapInJsObject = ${'<script>window[\'@PackageFactory.Guevara:DocumentInformation\']=' + value + '</script>'}

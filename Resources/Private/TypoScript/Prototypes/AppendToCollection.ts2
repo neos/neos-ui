@@ -1,4 +1,0 @@
-prototype(PackageFactory.Guevara:AppendToCollection) {
-    @class = 'PackageFactory\\Guevara\\TypoScript\\AppendToCollectionImplementation'
-    collection = ${value}
-}

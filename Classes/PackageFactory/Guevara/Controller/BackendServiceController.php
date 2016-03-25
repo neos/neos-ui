@@ -6,6 +6,7 @@ namespace PackageFactory\Guevara\Controller;
  *                                                                        *
  *                                                                        */
 
+use PackageFactory\Guevara\TypoScript\Helper\NodeInfoHelper;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\ActionController;
 use TYPO3\Flow\Persistence\PersistenceManagerInterface;
@@ -21,7 +22,6 @@ use PackageFactory\Guevara\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use PackageFactory\Guevara\Domain\Service\NodeTreeBuilder;
 use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
 use TYPO3\Eel\FlowQuery\FlowQuery;
-use PackageFactory\Guevara\View\BackendTypoScriptView;
 
 class BackendServiceController extends ActionController
 {
@@ -226,11 +226,7 @@ class BackendServiceController extends ActionController
             $result = $flowQuery->get();
         }
 
-        $typoScriptView = new BackendTypoScriptView();
-        $typoScriptView->setControllerContext($this->controllerContext);
-        $typoScriptView->setTypoScriptPath('nodes');
-        $typoScriptView->assign('nodes', $result);
-
-        $this->view->assign('value', $typoScriptView->render());
+        $nodeInfoHelper = new NodeInfoHelper();
+        return json_encode($nodeInfoHelper->renderNodes($result, $this->getControllerContext()));
     }
 }

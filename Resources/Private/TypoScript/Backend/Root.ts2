@@ -17,11 +17,3 @@ backend = TYPO3.TypoScript:Template {
 
     translations = ${translations}
 }
-
-nodes = PackageFactory.Guevara:ArrayCollection {
-    collection = ${nodes}
-    itemName = 'node'
-    itemRenderer = PackageFactory.Guevara:Node {
-        @context.documentNode = ${node}
-    }
-}

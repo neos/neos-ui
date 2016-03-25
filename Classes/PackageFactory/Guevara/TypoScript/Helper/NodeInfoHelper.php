@@ -66,6 +66,15 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodes[$node->getContextPath()] = $this->renderNode($node, $controllerContext);
     }
 
+    public function renderNodes(array $nodes, ControllerContext $controllerContext)
+    {
+        $renderedNodes = [];
+        foreach ($nodes as $node) {
+            $renderedNodes[] = $this->renderNode($node, $controllerContext);
+        }
+        return $renderedNodes;
+    }
+
     public function renderDocumentNodeAndChildContent(NodeInterface $documentNode, ControllerContext $controllerContext)
     {
         $nodes = [];

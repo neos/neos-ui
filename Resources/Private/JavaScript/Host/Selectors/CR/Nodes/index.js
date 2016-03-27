@@ -16,8 +16,8 @@ export const storedNodeByContextPath = state => contextPath => $get(['cr', 'node
 // Implementation detail of resolveNodeFromContextPath, which enriches a stored node and makes it a "node" ready for usage to the outside.
 const prepareStoredNodeForUsage = (storedNode, getStoredNodeType) => {
     if (storedNode) {
-        const nodeType = getStoredNodeType(storedNode.nodeType);
-        return $set('nodeType', {...nodeType, name: storedNode.nodeType}, storedNode);
+        const nodeType = getStoredNodeType(storedNode.get('nodeType'));
+        return $set('nodeType', nodeType.set('name', storedNode.get('nodeType')), storedNode);
     }
 
     return null;
@@ -66,8 +66,8 @@ export const byNodeTypeSelector = defaultMemoize(
             subTypesSelector(nodeTypeName),
             nodeTypeByNameSelector
         ],
-        (nodes, nodeTypes, getNodeType) => Object.keys(nodes).map(k => nodes[k]).filter(
-            node => nodeTypes.indexOf(node.nodeType) !== -1
+        (nodes, nodeTypes, getNodeType) => nodes.filter(
+            node => nodeTypes.contains($get('nodeType', node))
         ).map(node => prepareStoredNodeForUsage(node, getNodeType))
     )
 );
@@ -78,7 +78,7 @@ export const isOfTypeSelector = defaultMemoize(
             byContextPathSelector(contextPath),
             subTypesSelector(nodeTypeName)
         ],
-        (node, nodeTypes) => nodeTypes.indexOf(node.nodeType.name) !== -1
+        (node, nodeTypes) => nodeTypes.indexOf($get('nodeType.name', node)) !== -1
     )
 );
 

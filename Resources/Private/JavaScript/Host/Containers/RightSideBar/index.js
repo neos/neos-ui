@@ -50,7 +50,8 @@ export default class RightSideBar extends Component {
     };
 
     render() {
-        const tabs = generateTabs(this.props.focusedNode.nodeType);
+        const focusedNode = this.props.focusedNode.toJS();
+        const tabs = generateTabs(focusedNode.nodeType);
         const {isHidden, isFullScreen} = this.props;
         const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
@@ -75,7 +76,7 @@ export default class RightSideBar extends Component {
                 aria-hidden={isSideBarHidden ? 'true' : 'false'}
                 >
                 <Tabs>
-                    {tabs.map(tab => renderTab(tab, this.props.focusedNode))}
+                    {tabs.map(tab => renderTab(tab, focusedNode))}
                 </Tabs>
 
                 {toggle}

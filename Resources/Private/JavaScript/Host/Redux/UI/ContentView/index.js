@@ -31,12 +31,12 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = () => new Map({
+export const hydrate = state => new Map({
     ui: new Map({
         contentView: new Map({
-            contextPath: '',
+            contextPath: state.ui.contentView.contextPath,
             previewUrl: '',
-            src: ''
+            src: state.ui.contentView.src
         })
     })
 });

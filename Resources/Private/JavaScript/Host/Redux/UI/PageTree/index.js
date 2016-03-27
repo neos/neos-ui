@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 import {$all, $set, $override} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/UI/PageTree/ADD';
@@ -25,7 +25,7 @@ export const actionTypes = {
     REQUEST_CHILDREN
 };
 
-const add = createAction(ADD, (contextPath, node) => ({contextPath, node}));
+const add = createAction(ADD, (nodes) => ({nodes}));
 const focus = createAction(FOCUS, contextPath => ({contextPath}));
 const commenceUncollapse = createAction(COMMENCE_UNCOLLAPSE, contextPath => ({contextPath}));
 const uncollapse = createAction(UNCOLLAPSE, contextPath => ({contextPath}));
@@ -66,9 +66,12 @@ export const hydrate = () => new Map({
 // Export the reducer
 //
 export const reducer = {
-    [ADD]: ({contextPath, node}) => $set(['ui', 'pageTree', 'nodesByContextPath', contextPath], node),
+    [ADD]: ({nodes}) => state => nodes.reduce(
+        (state, node) => $set(['ui', 'pageTree', 'nodesByContextPath', node.contextPath], Immutable.fromJS(node), state),
+        state
+    ),
     [FOCUS]: ({contextPath}) => $set('ui.pageTree.focused', contextPath),
-    [UNCOLLAPSE]: ({contextPath}) => $all(
+    [UNCOLLAPSE]: ({contextPath}) => console.log(contextPath) || $all(
         $set('ui.pageTree.isLoading', false),
         $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
             isLoading: false,

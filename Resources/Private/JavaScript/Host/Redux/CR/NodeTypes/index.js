@@ -1,4 +1,4 @@
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 import {$get} from 'plow-js';
 
 //
@@ -16,10 +16,10 @@ export const hydrate = state => {
     return new Map({
         cr: new Map({
             nodeTypes: new Map({
-                byName: new Map(nodeTypes.byName),
-                constraints: new Map(nodeTypes.constraints),
-                inheritanceMap: new Map(nodeTypes.inheritanceMap),
-                groups: new Map(nodeTypes.groups)
+                byName: Immutable.fromJS(nodeTypes.byName),
+                constraints: Immutable.fromJS(nodeTypes.constraints),
+                inheritanceMap: Immutable.fromJS(nodeTypes.inheritanceMap),
+                groups: Immutable.fromJS(nodeTypes.groups)
             })
         })
     });

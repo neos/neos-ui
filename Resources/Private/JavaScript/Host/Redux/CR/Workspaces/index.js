@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 import {$set, $head, $get} from 'plow-js';
 
 const UPDATE = '@packagefactory/guevara/CR/Workspaces/UPDATE';
@@ -52,7 +52,7 @@ export const hydrate = state => {
     return new Map({
         cr: new Map({
             workspaces: new Map({
-                byName: new Map(workspaces.byName),
+                byName: Immutable.fromJS(workspaces.byName),
                 active: workspaces.active || $head('byName', workspaces)
             })
         })

@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 import {$set, $drop} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/UI/FlashMessages/ADD';
@@ -74,7 +74,7 @@ export const reducer = {
         //
         message.severity = message.severity.toLowerCase();
 
-        return $set(['ui', 'flashMessages', message.id], message, state);
+        return $set(['ui', 'flashMessages', message.id], Immutable.fromJS(message), state);
     },
     [REMOVE]: ({id}) => $drop(['ui', 'flashMessages', id])
 };

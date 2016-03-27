@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
-import {$set, $add, $get} from 'plow-js';
+import Immutable, {Map} from 'immutable';
+import {$set, $get} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
 const FOCUS = '@packagefactory/guevara/Transient/Nodes/FOCUS';
@@ -80,7 +80,7 @@ export const hydrate = state => {
     return new Map({
         cr: new Map({
             nodes: new Map({
-                byContextPath: new Map(nodes.byContextPath),
+                byContextPath: Immutable.fromJS(nodes.byContextPath),
                 siteNode: nodes.siteNode,
                 focused: new Map({
                     contextPath: '',
@@ -99,10 +99,8 @@ export const hydrate = state => {
 // Export the reducer
 //
 export const reducer = {
-    [ADD]: ({contextPath, data}) => $add('cr.nodes.byContextPath', {
-        [contextPath]: data
-    }),
-    [FOCUS]: ({contextPath, typoscriptPath}) => $set('cr.nodes.focused', {contextPath, typoscriptPath}),
+    [ADD]: ({contextPath, data}) => $set(['cr', 'nodes', 'byContextPath', contextPath], Immutable.fromJS({...data})),
+    [FOCUS]: ({contextPath, typoscriptPath}) => $set('cr.nodes.focused', new Map({contextPath, typoscriptPath})),
     [BLUR]: ({contextPath}) => state => {
         if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
             return $set('cr.nodes.focused', '', state);
@@ -110,7 +108,7 @@ export const reducer = {
 
         return state;
     },
-    [HOVER]: ({contextPath, typoscriptPath}) => $set('cr.nodes.hovered', {contextPath, typoscriptPath}),
+    [HOVER]: ({contextPath, typoscriptPath}) => $set('cr.nodes.hovered', new Map({contextPath, typoscriptPath})),
     [UNHOVER]: ({contextPath}) => state => {
         if ($get('cr.nodes.hovered.contextPath', state) === contextPath) {
             return $set('cr.nodes.hovered', '', state);

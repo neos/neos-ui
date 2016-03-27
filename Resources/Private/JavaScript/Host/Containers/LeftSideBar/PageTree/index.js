@@ -27,7 +27,7 @@ export default class PageTree extends Component {
 
         return (
             rootNode ? <Tree
-                rootNode={rootNode}
+                rootNode={rootNode.toJS()}
                 onNodeToggle={node => onNodeToggle(node.contextPath)}
                 onNodeClick={node => onNodeClick(node.uri)}
                 onNodeFocus={node => onNodeFocus(node.contextPath)}

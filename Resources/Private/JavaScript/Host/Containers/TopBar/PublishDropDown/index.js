@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
@@ -33,8 +34,8 @@ export default class PublishDropDown extends Component {
         isSaving: PropTypes.bool,
         isPublishing: PropTypes.bool,
         isDiscarding: PropTypes.bool,
-        publishableNodes: PropTypes.array,
-        publishableNodesInDocument: PropTypes.array,
+        publishableNodes: ImmutablePropTypes.list,
+        publishableNodesInDocument: ImmutablePropTypes.list,
         isAutoPublishingEnabled: PropTypes.bool,
         toggleAutoPublishing: PropTypes.func.isRequired,
         publishAction: PropTypes.func.isRequired,
@@ -49,8 +50,8 @@ export default class PublishDropDown extends Component {
             isAutoPublishingEnabled,
             toggleAutoPublishing
         } = this.props;
-        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
-        const canPublishGlobally = publishableNodes && (publishableNodes.length > 0);
+        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
+        const canPublishGlobally = publishableNodes && (publishableNodes.count() > 0);
         const autoPublishWrapperClassNames = mergeClassNames({
             [style.dropDown__item]: true,
             [style['dropDown__item--noHover']]: true
@@ -67,7 +68,7 @@ export default class PublishDropDown extends Component {
                     className={style.publishBtn}
                     isEnabled={canPublishLocally || isSaving}
                     isHighlighted={canPublishLocally || isSaving}
-                    indicator={publishableNodesInDocument ? publishableNodesInDocument.length : 0}
+                    indicator={publishableNodesInDocument ? publishableNodesInDocument.count() : 0}
                     onClick={e => this.onPublishClick(e)}
                     id="neos__topBar__publishDropDown__publishBtn"
                     >
@@ -89,7 +90,7 @@ export default class PublishDropDown extends Component {
                             <AbstractButton
                                 isEnabled={canPublishGlobally}
                                 isHighlighted={false}
-                                indicator={publishableNodes ? publishableNodes.length : 0}
+                                indicator={publishableNodes ? publishableNodes.count() : 0}
                                 onClick={e => this.onPublishAllClick(e)}
                                 id="neos__topBar__publishDropDown__publishAllBtn"
                                 >
@@ -101,7 +102,7 @@ export default class PublishDropDown extends Component {
                             <AbstractButton
                                 isEnabled={canPublishLocally}
                                 isHighlighted={false}
-                                indicator={publishableNodesInDocument ? publishableNodesInDocument.length : 0}
+                                indicator={publishableNodesInDocument ? publishableNodesInDocument.count() : 0}
                                 label="Discard"
                                 icon="ban"
                                 onClick={e => this.onDiscardClick(e)}
@@ -115,7 +116,7 @@ export default class PublishDropDown extends Component {
                             <AbstractButton
                                 isEnabled={canPublishGlobally}
                                 isHighlighted={false}
-                                indicator={publishableNodes ? publishableNodes.length : 0}
+                                indicator={publishableNodes ? publishableNodes.count() : 0}
                                 onClick={e => this.onDiscardAllClick(e)}
                                 id="neos__topBar__publishDropDown__discardAllBtn"
                                 >
@@ -153,7 +154,7 @@ export default class PublishDropDown extends Component {
             isDiscarding,
             isAutoPublishingEnabled
         } = this.props;
-        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
+        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
 
         if (isSaving) {
             return {

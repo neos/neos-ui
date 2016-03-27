@@ -16,7 +16,7 @@ const createTreeNode = (node, state) => $transform({
     icon: $get('nodeType.ui.icon'),
     isLoading: false,
     isCollapsed: true,
-    hasChildren: $get('children', node).filter(childEnvelope => isDocumentType(childEnvelope.nodeType)(state)).length > 0,
+    hasChildren: $get('children', node).filter(childEnvelope => isDocumentType(childEnvelope.nodeType)(state)).count() > 0,
     hasError: false
 }, node);
 
@@ -25,7 +25,9 @@ export function* watchBoot(getState) {
         const state = getState();
         const documentNodes = getDocumentNodes(state);
 
-        yield documentNodes.map(node => put(actions.UI.PageTree.add(node.contextPath, createTreeNode(node, state))));
+        yield put(actions.UI.PageTree.add(
+            documentNodes.toArray().map(node => createTreeNode(node, state))
+        ));
     });
 }
 
@@ -37,7 +39,7 @@ export function* watchAddNode(getState) {
         if (isDocumentNode(contextPath)(state)) {
             const node = getNode(contextPath)(state);
 
-            yield put(actions.UI.PageTree.add(contextPath, createTreeNode(node, state)));
+            yield put(actions.UI.PageTree.add([createTreeNode(node, state)]));
         }
     });
 }

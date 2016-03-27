@@ -18,7 +18,6 @@ import {
 } from 'Host/Selectors/UI/AddNodeModal/index';
 
 @connect($transform({
-    nodeTypes: $get('cr.nodeTypes.byName'),
     referenceNode: referenceNodeSelector,
     groupedAllowedNodeTypes: nodeTypesForAddNodeModalSelector,
     mode: $get('ui.addNodeModal.mode')
@@ -28,10 +27,10 @@ import {
 })
 export default class AddNodeModal extends Component {
     static propTypes = {
-        nodeTypes: PropTypes.object.isRequired,
         referenceNode: PropTypes.object,
         groupedAllowedNodeTypes: PropTypes.array,
         mode: PropTypes.string.isRequired,
+
         close: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired
     };

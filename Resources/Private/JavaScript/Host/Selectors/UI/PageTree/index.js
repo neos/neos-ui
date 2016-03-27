@@ -10,14 +10,13 @@ const getFocused = $get('ui.pageTree.focused');
 const recursivelyResolveChildNodes = (contextPath, getTreeNode, getChildren, active, focused) => {
     const treeNode = getTreeNode(contextPath);
 
-    return treeNode && {
-        ...treeNode,
+    return treeNode && treeNode.merge({
         isActive: treeNode.contextPath === active,
         isFocused: treeNode.contextPath === focused,
         children: treeNode.isCollapsed ? [] : getChildren(contextPath).map(
             childEnvelope => recursivelyResolveChildNodes(childEnvelope.contextPath, getTreeNode, getChildren, active, focused)
         ).filter(item => typeof item !== 'undefined')
-    };
+    });
 };
 
 export const treeSelector = createSelector(

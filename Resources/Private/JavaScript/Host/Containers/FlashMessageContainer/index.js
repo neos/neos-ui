@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
@@ -14,7 +15,7 @@ import style from './style.css';
 })
 export default class FlashMessageContainer extends Component {
     static propTypes = {
-        flashMessages: PropTypes.object,
+        flashMessages: ImmutablePropTypes.map,
         removeMessage: PropTypes.func.isRequired
     };
 
@@ -22,13 +23,17 @@ export default class FlashMessageContainer extends Component {
         flashMessages: {}
     };
 
+    shouldComponentUpdate({flashMessages}) {
+        return flashMessages !== this.props.flashMessages;
+    }
+
     render() {
         const {flashMessages, removeMessage} = this.props;
 
         return (
             <div className={style.flashMessageContainer}>
-                {Object.keys(flashMessages).map(k => flashMessages[k]).map(flashMessage => {
-                    const {id, message, severity, timeout} = flashMessage;
+                {flashMessages.map(flashMessage => {
+                    const {id, message, severity, timeout} = flashMessage.toJS();
 
                     return (
                         <FlashMessage
@@ -39,7 +44,7 @@ export default class FlashMessageContainer extends Component {
                             onClose={() => removeMessage(id)}
                             />
                     );
-                })}
+                }).toArray()}
             </div>
         );
     }

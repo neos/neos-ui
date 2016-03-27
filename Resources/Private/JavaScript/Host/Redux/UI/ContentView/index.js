@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions';
+import {Map} from 'immutable';
 import {$set} from 'plow-js';
 
 const SET_CONTEXT_PATH = '@packagefactory/guevara/UI/PageTree/SET_CONTEXT_PATH';

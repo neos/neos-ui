@@ -84,7 +84,7 @@
     "lodash.isstring": "^4.0.1",
     "lodash.merge": "^4.3.2",
     "normalize.css": "^3.0.3",
-    "plow-js": "^1.1.0",
+    "plow-js": "^1.2.0",
     "react": "^0.14.7",
     "react-click-outside": "^2.1.0",
     "react-collapse": "^2.0.0",

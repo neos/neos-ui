@@ -1,47 +1,47 @@
 import {
     reducer as FlashMessagesReducer,
-    initialState as FlashMessagesInitialState,
+    hydrate as FlashMessagesHydrator,
     actions as FlashMessages
 } from './FlashMessages/index';
 import {
     reducer as FullScreenReducer,
-    initialState as FullScreenInitialState,
+    hydrate as FullScreenHydrator,
     actions as FullScreen
 } from './FullScreen/index';
 import {
     reducer as LeftSideBarReducer,
-    initialState as LeftSideBarInitialState,
+    hydrate as LeftSideBarHydrator,
     actions as LeftSideBar
 } from './LeftSideBar/index';
 import {
     reducer as OffCanvasReducer,
-    initialState as OffCanvasInitialState,
+    hydrate as OffCanvasHydrator,
     actions as OffCanvas
 } from './OffCanvas/index';
 import {
     reducer as RemoteReducer,
-    initialState as RemoteInitialState,
+    hydrate as RemoteHydrator,
     actions as Remote
 } from './Remote/index';
 import {
     reducer as RightSideBarReducer,
-    initialState as RightSideBarInitialState,
+    hydrate as RightSideBarHydrator,
     actions as RightSideBar
 } from './RightSideBar/index';
 import {
     reducer as AddNodeModalReducer,
-    initialState as AddNodeModalInitialState,
+    hydrate as AddNodeModalHydrator,
     actions as AddNodeModal
 } from './AddNodeModal/index';
 import {
     reducer as PageTreeReducer,
-    initialState as PageTreeInitialState,
+    hydrate as PageTreeHydrator,
     actionTypes as PageTreeActionTypes,
     actions as PageTree
 } from './PageTree/index';
 import {
     reducer as ContentViewReducer,
-    initialState as ContentViewInitialState,
+    hydrate as ContentViewHydrator,
     actionTypes as ContentViewActionTypes,
     actions as ContentView
 } from './ContentView/index';
@@ -70,19 +70,19 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrators
 //
-export const initialState = {
-    flashMessages: FlashMessagesInitialState,
-    fullScreen: FullScreenInitialState,
-    leftSideBar: LeftSideBarInitialState,
-    offCanvas: OffCanvasInitialState,
-    remote: RemoteInitialState,
-    rightSideBar: RightSideBarInitialState,
-    addNodeModal: AddNodeModalInitialState,
-    pageTree: PageTreeInitialState,
-    contentView: ContentViewInitialState
-};
+export const hydrators = [
+    FlashMessagesHydrator,
+    FullScreenHydrator,
+    LeftSideBarHydrator,
+    OffCanvasHydrator,
+    RemoteHydrator,
+    RightSideBarHydrator,
+    AddNodeModalHydrator,
+    PageTreeHydrator,
+    ContentViewHydrator
+];
 
 //
 // Export the reducer

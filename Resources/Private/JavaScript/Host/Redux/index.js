@@ -23,6 +23,7 @@ import {
 import {
     reducer as UIReducer,
     actionTypes as UIActionTypes,
+    hydrators as UIHydrators,
     actions as UI
 } from './UI/index';
 import {
@@ -42,7 +43,8 @@ const rootReducer = handleActions(reducers);
 const devToolsStoreEnhancer = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
 const sagaMiddleWare = createSagaMiddleware(...sagas);
 const hydrators = [
-    ...CRHydrators
+    ...CRHydrators,
+    ...UIHydrators
 ];
 
 //

@@ -24,11 +24,11 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = () => new Map({
+export const hydrate = () => new Map({
     ui: new Map({
-        offCanvas: new map({
+        offCanvas: new Map({
             isHidden: true
         })
     })

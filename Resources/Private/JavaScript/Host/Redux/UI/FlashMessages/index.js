@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions';
+import {Map} from 'immutable';
 import {$set, $drop} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/UI/FlashMessages/ADD';

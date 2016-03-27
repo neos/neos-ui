@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions';
+import {Map} from 'immutable';
 import {$set, $add, $get} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
@@ -73,18 +74,18 @@ export const actions = {
 //
 // Export the initial state
 //
-export const initialState = {
-    byContextPath: {},
+export const initialState = new Map({
+    byContextPath: new Map(),
     siteNode: '',
-    focused: {
+    focused: new Map({
         contextPath: '',
         typoscriptPath: ''
-    },
-    hovered: {
+    }),
+    hovered: new Map({
         contextPath: '',
         typoscriptPath: ''
-    }
-};
+    })
+});
 
 //
 // Export the reducer

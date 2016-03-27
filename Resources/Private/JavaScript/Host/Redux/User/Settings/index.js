@@ -19,7 +19,7 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = () => new map({
+export const hydrate = () => new Map({
     user: new Map({
         settings: new Map({
             isAutoPublishingEnabled: false

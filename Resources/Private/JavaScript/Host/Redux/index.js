@@ -28,6 +28,7 @@ import {
 } from './UI/index';
 import {
     reducer as UserReducer,
+    hydrators as UserHydrators,
     actions as User
 } from './User/index';
 import sagas from 'Host/Sagas/index';
@@ -44,7 +45,8 @@ const devToolsStoreEnhancer = () => typeof window === 'object' && typeof window.
 const sagaMiddleWare = createSagaMiddleware(...sagas);
 const hydrators = [
     ...CRHydrators,
-    ...UIHydrators
+    ...UIHydrators,
+    ...UserHydrators
 ];
 
 //

@@ -1,11 +1,11 @@
 import {
     reducer as SettingsReducer,
-    initialState as SettingsInitialState,
+    hydrate as SettingsHydrator,
     actions as Settings
 } from './Settings/index';
 import {
     reducer as NameReducer,
-    initialState as NameInitialState
+    hydrate as NameHydrator
 } from './Name/index';
 
 //
@@ -16,12 +16,12 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrators
 //
-export const initialState = {
-    settings: SettingsInitialState,
-    name: NameInitialState
-};
+export const hydrators = [
+    SettingsHydrator,
+    NameHydrator
+];
 
 //
 // Export the reducer

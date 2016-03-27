@@ -72,20 +72,28 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = new Map({
-    byContextPath: new Map(),
-    siteNode: '',
-    focused: new Map({
-        contextPath: '',
-        typoscriptPath: ''
-    }),
-    hovered: new Map({
-        contextPath: '',
-        typoscriptPath: ''
-    })
-});
+export const hydrate = state => {
+    const {nodes} = $get('cr', state);
+
+    return new Map({
+        cr: {
+            nodes: {
+                byContextPath: new Map(nodes.byContextPath),
+                siteNode: nodes.siteNode,
+                focused: new Map({
+                    contextPath: '',
+                    typoscriptPath: ''
+                }),
+                hovered: new Map({
+                    contextPath: '',
+                    typoscriptPath: ''
+                })
+            }
+        }
+    });
+};
 
 //
 // Export the reducer

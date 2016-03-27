@@ -28,13 +28,17 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    contextPath: '',
-    previewUrl: '',
-    src: ''
-};
+export const hydrate = () => new Map({
+    ui: new Map({
+        contentView: new Map({
+            contextPath: '',
+            previewUrl: '',
+            src: ''
+        })
+    })
+});
 
 //
 // Export the reducer

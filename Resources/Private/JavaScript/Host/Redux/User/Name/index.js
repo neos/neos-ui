@@ -1,14 +1,20 @@
+import {Map} from 'immutable';
+
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    title: '',
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    otherName: '',
-    fullName: ''
-};
+export const hydrate = () => new Map({
+    user: new Map({
+        name: new Map({
+            title: '',
+            firstName: '',
+            middleName: '',
+            lastName: '',
+            otherName: '',
+            fullName: ''
+        })
+    })
+});
 
 //
 // Export the reducer

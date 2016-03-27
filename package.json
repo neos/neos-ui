@@ -90,6 +90,7 @@
     "react-collapse": "^2.0.0",
     "react-dom": "^0.14.6",
     "react-height": "^2.0.4",
+    "react-immutable-proptypes": "^1.7.0",
     "react-motion": "^0.4.2",
     "react-redux": "^4.0.0",
     "redux": "^3.3.1",

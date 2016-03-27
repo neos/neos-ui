@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions';
+import {Map} from 'immutable';
 import {$all, $set, $override} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/UI/PageTree/ADD';
@@ -48,14 +49,18 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    isLoading: false,
-    hasError: false,
-    focused: '',
-    nodesByContextPath: {}
-};
+export const hydrate = () => new Map({
+    ui: new Map({
+        pageTree: new Map({
+            isLoading: false,
+            hasError: false,
+            focused: '',
+            nodesByContextPath: new Map()
+        })
+    })
+});
 
 //
 // Export the reducer

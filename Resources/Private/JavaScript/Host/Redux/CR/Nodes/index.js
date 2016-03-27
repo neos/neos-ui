@@ -78,8 +78,8 @@ export const hydrate = state => {
     const {nodes} = $get('cr', state);
 
     return new Map({
-        cr: {
-            nodes: {
+        cr: new Map({
+            nodes: new Map({
                 byContextPath: new Map(nodes.byContextPath),
                 siteNode: nodes.siteNode,
                 focused: new Map({
@@ -90,8 +90,8 @@ export const hydrate = state => {
                     contextPath: '',
                     typoscriptPath: ''
                 })
-            }
-        }
+            })
+        })
     });
 };
 
@@ -105,7 +105,7 @@ export const reducer = {
     [FOCUS]: ({contextPath, typoscriptPath}) => $set('cr.nodes.focused', {contextPath, typoscriptPath}),
     [BLUR]: ({contextPath}) => state => {
         if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
-            return $set('cr.nodes.focused', initialState.focused, state);
+            return $set('cr.nodes.focused', '', state);
         }
 
         return state;
@@ -113,7 +113,7 @@ export const reducer = {
     [HOVER]: ({contextPath, typoscriptPath}) => $set('cr.nodes.hovered', {contextPath, typoscriptPath}),
     [UNHOVER]: ({contextPath}) => state => {
         if ($get('cr.nodes.hovered.contextPath', state) === contextPath) {
-            return $set('cr.nodes.hovered', initialState.hovered, state);
+            return $set('cr.nodes.hovered', '', state);
         }
 
         return state;

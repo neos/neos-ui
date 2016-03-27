@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$set, $head} from 'plow-js';
+import {$set, $head, $get} from 'plow-js';
 
 const UPDATE = '@packagefactory/guevara/CR/Workspaces/UPDATE';
 const SWITCH = '@packagefactory/guevara/CR/Workspaces/SWITCH';
@@ -50,12 +50,12 @@ export const hydrate = state => {
     const {workspaces} = $get('cr', state);
 
     return new Map({
-        cr: {
-            workspaces: {
+        cr: new Map({
+            workspaces: new Map({
                 byName: new Map(workspaces.byName),
                 active: workspaces.active || $head('byName', workspaces)
-            }
-        }
+            })
+        })
     });
 };
 

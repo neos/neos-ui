@@ -73,7 +73,7 @@
     "@reduct/registry": "^1.0.1",
     "babel-polyfill": "^6.6.1",
     "classnames": "^2.2.0",
-    "immutable": "^3.7.5",
+    "immutable": "^3.7.6",
     "lodash.assign": "^4.0.0",
     "lodash.compose": "^2.4.1",
     "lodash.debounce": "^4.0.0",

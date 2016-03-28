@@ -1,10 +1,10 @@
-.nodeHeader {
+.header {
     position: relative;
     height: 24px;
     line-height: 24px;
     padding-left: 15px;
 }
-.nodeHeader__chevron {
+.header__chevron {
     position: absolute;
     top: 50%;
     left: 0;
@@ -17,24 +17,28 @@
         color: $brand;
     }
 }
-.nodeHeader__chevron--isCollapsed {
+.header__chevron--isCollapsed {
     transform: translateY(-35%) translateX(-25%) rotate(-90deg);
 }
 
-.nodeHeader__chevron--isLoading,
-.nodeHeader__chevron--isLoading:hover {
+.header__chevron--isLoading,
+.header__chevron--isLoading:hover {
     color: $brighter !important;
 }
 
-.nodeHeader__data {
+.header__data {
     display: block;
     cursor: pointer;
 }
-.nodeHeader__data--isFocused {
+.header__data--isFocused {
     background: $neutral;
 }
-.nodeHeader__dataTitle {
-    .nodeHeader__data--isActive & {
+.header__label {
+    .header__data--isActive & {
         color: $brand;
     }
+}
+
+.contents {
+    margin-left: $spacing;
 }

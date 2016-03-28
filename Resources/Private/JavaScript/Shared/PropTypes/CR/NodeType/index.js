@@ -79,7 +79,7 @@ export const nodeType = PropTypes.shape({
     }),
     label: PropTypes.string.isRequired,
     properties: PropTypes.objectOf(propertyDefinition).isRequired,
-    superTypes: PropTypes.objectOf(PropTypes.boolean),
+    superTypes: PropTypes.objectOf(PropTypes.bool),
     ui: PropTypes.shape({
         label: PropTypes.string,
         help: PropTypes.object,
@@ -88,20 +88,20 @@ export const nodeType = PropTypes.shape({
         position: PropTypes.number,
         inspector: PropTypes.shape({
             tabs: PropTypes.shape({
-                label: PropTypes.string.isRequired,
-                icon: PropTypes.string.isRequired,
+                label: PropTypes.string,
+                icon: PropTypes.string,
                 position: PropTypes.number
             }),
             groups: PropTypes.shape({
-                label: PropTypes.string.isRequired,
-                tab: PropTypes.string.isRequired,
+                label: PropTypes.string,
+                tab: PropTypes.string,
                 position: PropTypes.number,
                 collapsed: PropTypes.bool
             }),
             views: PropTypes.shape({
-                label: PropTypes.string.isRequired,
-                group: PropTypes.string.isRequired,
-                view: PropTypes.string.isRequired,
+                label: PropTypes.string,
+                group: PropTypes.string,
+                view: PropTypes.string,
                 position: PropTypes.number
             })
         }),

@@ -16,7 +16,7 @@ const createTreeNode = (node, state) => $transform({
     icon: $get('nodeType.ui.icon'),
     isLoading: false,
     isCollapsed: true,
-    hasChildren: $get('children', node).filter(childEnvelope => isDocumentType(childEnvelope.nodeType)(state)).count() > 0,
+    hasChildren: $get('children', node).filter(childEnvelope => isDocumentType(childEnvelope.nodeType)(state)).length > 0,
     hasError: false
 }, node);
 
@@ -26,7 +26,7 @@ export function* watchBoot(getState) {
         const documentNodes = getDocumentNodes(state);
 
         yield put(actions.UI.PageTree.add(
-            documentNodes.toArray().map(node => createTreeNode(node, state))
+            documentNodes.toArray().map(node => createTreeNode(node.toJS(), state))
         ));
     });
 }

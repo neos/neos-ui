@@ -22,5 +22,6 @@ export const nodeTypesForAddNodeModalSelector = createSelector(
         modeSelector,
         groupedAllowedNodeTypesSelector
     ],
-    (referenceNode, mode, getGroupedAllowedNodeTypes) => referenceNode && mode && getGroupedAllowedNodeTypes(referenceNode, mode)
+    (referenceNode, mode, getGroupedAllowedNodeTypes) =>
+        referenceNode && mode && getGroupedAllowedNodeTypes(referenceNode, mode)
 );

@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+
 import {
     Tabs,
     ToggablePanel,
@@ -6,6 +7,8 @@ import {
     TextInput,
     I18n
 } from 'Components/index';
+import NeosPropTypes from 'Shared/PropTypes/index';
+
 import style from '../../style.css';
 
 const generateInspectorGroups = (nodeType, tabIdentifier) => {
@@ -48,7 +51,7 @@ const TabPanel = props => {
 TabPanel.displayName = 'Inspector Tab Panel';
 TabPanel.propTypes = {
     tab: PropTypes.object.isRequired,
-    focusedNode: PropTypes.object.isRequired
+    focusedNode: NeosPropTypes.cr.node.isRequired
 };
 
 export default TabPanel;

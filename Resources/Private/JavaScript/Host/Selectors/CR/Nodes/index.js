@@ -24,8 +24,8 @@ const prepareStoredNodeForUsage = (storedNode, getStoredNodeType) => {
 };
 
 const resolveNodeFromContextPath = (contextPath, getStoredNodeByContextPath, getNodeType) => {
-    const node = getStoredNodeByContextPath(contextPath);
-    return prepareStoredNodeForUsage(node, getNodeType);
+    const storedNode = getStoredNodeByContextPath(contextPath);
+    return storedNode && prepareStoredNodeForUsage(storedNode, getNodeType).toJS();
 };
 
 export const focusedSelector = createSelector(

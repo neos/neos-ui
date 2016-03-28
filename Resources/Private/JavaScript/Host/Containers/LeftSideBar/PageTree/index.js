@@ -1,13 +1,18 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 import {Tree} from 'Components/index';
 import {UI} from 'Host/Selectors/index';
 import {actions} from 'Host/Redux/index';
 
+import Node from './Node/index';
+
 @connect($transform({
-    rootNode: UI.PageTree.treeSelector
+    allNodes: $get('cr.nodes.byContextPath'),
+    pageTreeState: $get('ui.pageTree'),
+    siteNodeContextPath: $get('cr.nodes.siteNode'),
+    getTreeNode: UI.PageTree.getTreeNodeSelector
 }), {
     onNodeToggle: actions.UI.PageTree.toggle,
     onNodeClick: actions.UI.ContentView.setSrc,
@@ -15,24 +20,38 @@ import {actions} from 'Host/Redux/index';
 })
 export default class PageTree extends Component {
     static propTypes = {
-        rootNode: PropTypes.object,
+        allNodes: PropTypes.object.isRequired,
+        pageTreeState: PropTypes.object.isRequired,
+        siteNodeContextPath: PropTypes.string,
 
+        getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
         onNodeClick: PropTypes.func,
         onNodeFocus: PropTypes.func
     };
 
-    render() {
-        const {rootNode, onNodeToggle, onNodeClick, onNodeFocus} = this.props;
-
+    shouldComponentUpdate({allNodes, pageTreeState}) {
         return (
-            rootNode ? <Tree
-                rootNode={rootNode.toJS()}
-                onNodeToggle={node => onNodeToggle(node.contextPath)}
-                onNodeClick={node => onNodeClick(node.uri)}
-                onNodeFocus={node => onNodeFocus(node.contextPath)}
-                id="neos__leftSidebar__pageTree"
-                /> : null
+            allNodes !== this.props.allNodes ||
+            pageTreeState !== this.props.pageTreeState
         );
+    }
+
+    render() {
+        const {siteNodeContextPath, getTreeNode, onNodeToggle, onNodeClick, onNodeFocus} = this.props;
+        const siteNode = getTreeNode(siteNodeContextPath);
+
+        if (siteNode) {
+            return (<Tree>
+                <Node
+                    item={siteNode}
+                    onNodeToggle={({contextPath}) => onNodeToggle(contextPath)}
+                    onNodeClick={({uri}) => onNodeClick(uri)}
+                    onNodeFocus={({contextPath}) => onNodeFocus(contextPath)}
+                    />
+            </Tree>);
+        }
+
+        return null;
     }
 }

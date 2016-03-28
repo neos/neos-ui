@@ -18,6 +18,7 @@ export default class Node extends Component {
             hasError: PropTypes.bool.isRequired,
             label: PropTypes.string.isRequired,
             icon: PropTypes.string,
+            uri: PropTypes.string.isRequired,
             children: PropTypes.arrayOf(
                 PropTypes.string
             )
@@ -47,8 +48,8 @@ export default class Node extends Component {
                 <Tree.Node.Header
                     item={item}
                     onToggle={() => onNodeToggle(item)}
-                    onClick={() => onNodeClick(item)}
-                    onLabelClick={() => onNodeFocus(item)}
+                    onClick={() => onNodeFocus(item)}
+                    onLabelClick={() => onNodeClick(item)}
                     />
                 {item.isCollapsed ? null : (
                     <Tree.Node.Contents>

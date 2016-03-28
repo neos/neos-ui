@@ -49,6 +49,7 @@ export const getTreeNodeSelector = createSelector(
             return {
                 contextPath: node.contextPath,
                 label: node.label,
+                uri: node.uri,
                 icon: node.nodeType.ui.icon,
                 isActive: node.contextPath === activeNodeContextPath,
                 isFocused: node.contextPath === focusedNodeContextPath,

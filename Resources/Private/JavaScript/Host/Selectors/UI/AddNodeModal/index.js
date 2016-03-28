@@ -1,6 +1,6 @@
 import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
-import {storedNodeByContextPath} from '../../CR/Nodes/index';
+import {byContextPathSelector} from '../../CR/Nodes/index';
 import {groupedAllowedNodeTypesSelector} from '../../CR/Constraints/index';
 
 const referenceNodeContextPathSelector = state => $get('ui.addNodeModal.referenceNode', state);
@@ -8,10 +8,10 @@ const referenceNodeContextPathSelector = state => $get('ui.addNodeModal.referenc
 export const referenceNodeSelector = createSelector(
     [
         referenceNodeContextPathSelector,
-        storedNodeByContextPath
+        state => state
     ],
-    (referenceNodeContextPath, getNodeByContextPath) =>
-        getNodeByContextPath(referenceNodeContextPath)
+    (referenceNodeContextPath, state) =>
+        byContextPathSelector(referenceNodeContextPath)(state)
 );
 
 const modeSelector = state => $get('ui.addNodeModal.mode', state);

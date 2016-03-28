@@ -91,7 +91,7 @@ const parentNodeContextPath = contextPath => {
 };
 
 export const parentNodeSelector = state => baseNode =>
-    storedNodeByContextPath(state)(parentNodeContextPath(baseNode.contextPath));
+    byContextPathSelector(parentNodeContextPath(baseNode.contextPath))(state);
 
 export const grandParentNodeSelector = state => baseNode =>
-    storedNodeByContextPath(state)(parentNodeContextPath(parentNodeContextPath(baseNode.contextPath)));
+    byContextPathSelector(parentNodeContextPath(parentNodeContextPath(baseNode.contextPath)))(state);

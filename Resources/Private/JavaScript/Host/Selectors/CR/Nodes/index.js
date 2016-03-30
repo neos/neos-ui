@@ -24,9 +24,15 @@ const prepareStoredNodeForUsage = (storedNode, getStoredNodeType) => {
     return null;
 };
 
+const storedNodeLookupCache = {}; // Needed to ensure immutability
+
 const resolveNodeFromContextPath = (contextPath, getStoredNodeByContextPath, getNodeType) => {
-    const storedNode = getStoredNodeByContextPath(contextPath);
-    return storedNode && prepareStoredNodeForUsage(storedNode, getNodeType).toJS();
+    if (!storedNodeLookupCache[contextPath]) {
+        const storedNode = getStoredNodeByContextPath(contextPath);
+        storedNodeLookupCache[contextPath] = storedNode && prepareStoredNodeForUsage(storedNode, getNodeType).toJS();
+    }
+
+    return storedNodeLookupCache[contextPath];
 };
 
 export const focusedSelector = createSelector(

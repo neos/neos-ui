@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 import {$set, $add, $get, $all} from 'plow-js';
 
 const START_LOADING = '@packagefactory/guevara/CR/Images/START_LOADING';
@@ -43,15 +43,13 @@ export const hydrate = () => $set(
         byUuid: new Map()
     })
 );
-
 //
 // Export the reducer
 //
 export const reducer = {
     [START_LOADING]: ({imageUuid}) => $set(['cr', 'images', 'byUuid', imageUuid, 'status'], 'LOADING'),
-    [FINISH_LOADING]: ({imageUuid, loadedData}) => $set(['cr', 'images', 'byUuid', imageUuid], loadedData),
-    /*[FINISH_LOADING]: ({imageUuid, loadedData}) => $all(
-        $set(['cr', 'images', 'byUuid', imageUuid], loadedData),
+    [FINISH_LOADING]: ({imageUuid, loadedData}) => $all(
+        $set(['cr', 'images', 'byUuid', imageUuid], Immutable.fromJS(loadedData)),
         $set(['cr', 'images', 'byUuid', imageUuid, 'status'], 'LOADED')
-    )*/
+    )
 };

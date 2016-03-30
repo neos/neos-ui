@@ -1,6 +1,6 @@
 import {
     reducer as ImagesReducer,
-    initialState as ImagesInitialState,
+    hydrate as ImagesHydrator,
     actionTypes as ImagesActionTypes,
     actions as Images
 } from './Images/index';
@@ -43,21 +43,12 @@ export const actions = {
 //
 // Export the initial state hydrators
 //
-<<<<<<< HEAD
 export const hydrators = [
+    ImagesHydrator,
     NodesHydrator,
     NodeTypesHydrator,
     WorkspacesHydrator
 ];
-=======
-export const initialState = {
-    images: ImagesInitialState,
-    nodes: NodesInitialState,
-    nodeTypes: NodeTypesInitialState,
-    workspaces: WorkspacesInitialState
-};
->>>>>>> WIP: load image data
-
 //
 // Export the reducer
 //

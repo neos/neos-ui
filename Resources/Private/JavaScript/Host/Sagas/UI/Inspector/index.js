@@ -30,7 +30,7 @@ function* loadImage(imageValue, state) {
 
 export function* watchInspectorNodeChange(getState) {
     // TODO: needs to be triggered after init
-    yield* takeEvery([actionTypes.CR.Nodes.FOCUS, actionTypes.CR.Nodes.BLUR], function* focusChanged(action) {
+    yield* takeEvery([actionTypes.System.BOOT, actionTypes.CR.Nodes.FOCUS, actionTypes.CR.Nodes.BLUR], function* focusChanged(action) {
         const state = getState();
 
         // TODO: the following is not really nice, as the current node can be "blurred". Maybe we should get rid of this "blur"??

@@ -1,5 +1,6 @@
 import {createAction} from 'redux-actions';
 import {$set, $drop} from 'plow-js';
+import {Map} from 'immutable';
 
 const WRITE_VALUE = '@packagefactory/guevara/UI/Inspector/WRITE_VALUE';
 const APPLY = '@packagefactory/guevara/UI/Inspector/APPLY';

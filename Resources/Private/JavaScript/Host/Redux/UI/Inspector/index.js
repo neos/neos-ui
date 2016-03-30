@@ -41,7 +41,7 @@ export const hydrate = () => $set(
 // Export the reducer
 //
 export const reducer = {
-    [WRITE_VALUE]: ({nodeContextPath, propertyId, value}) => $set(['ui', 'inspector', 'valuesByNodePath', nodeContextPath, propertyId], value),
+    [WRITE_VALUE]: ({nodeContextPath, propertyId, value}) => $set(['ui', 'inspector', 'valuesByNodePath', nodeContextPath, 'nodeProperties', propertyId], value),
     // APPLY is handled by a saga.
     // APPLY_FINISHED is only triggered by the saga which listens on APPLY.
     [APPLY_FINISHED]: ({nodeContextPath}) => $drop(['ui', 'inspector', 'valuesByNodePath', nodeContextPath]),

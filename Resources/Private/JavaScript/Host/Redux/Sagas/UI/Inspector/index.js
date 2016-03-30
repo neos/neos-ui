@@ -11,7 +11,7 @@ export function* applyInspectorState(getState) {
         const state = getState();
         const {nodeContextPath} = action.payload;
 
-        const transientNodeInspectorValues = $get([nodeContextPath], getTransientInspectorValues(state));
+        const transientNodeInspectorValues = $get([nodeContextPath, 'nodeProperties'], getTransientInspectorValues(state));
 
         for (const key of Object.keys(transientNodeInspectorValues)) {
             yield put(actions.Changes.add({

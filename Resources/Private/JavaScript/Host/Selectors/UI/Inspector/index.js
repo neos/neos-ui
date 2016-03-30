@@ -9,7 +9,7 @@ export const currentValue = createSelector(
         $get('ui.inspector.valuesByNodePath')
     ],
     (focusedNode, transientValuesByNodePath) => propertyId => {
-        const transientValue = $get([focusedNode.contextPath, propertyId], transientValuesByNodePath);
+        const transientValue = $get([focusedNode.contextPath, 'nodeProperties', propertyId], transientValuesByNodePath);
         const originalValue = focusedNode.properties[propertyId];
 
         return transientValue || originalValue;

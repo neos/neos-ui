@@ -14,7 +14,7 @@
     }
 }
 .rightSideBar--isHidden {
-    transform: translateX(320px);
+    transform: translateX($sidebarWidth);
 }
 .rightSideBar__toggleBtn {
     position: absolute;
@@ -26,7 +26,7 @@
     will-change: transform;
 
     .rightSideBar--isHidden & {
-        transform: translateX(-320px);
+        transform: translateX(-$sidebarWidth);
     }
 }
 .rightSideBar__section {

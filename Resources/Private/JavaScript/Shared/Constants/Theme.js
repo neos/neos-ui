@@ -25,5 +25,8 @@ module.exports = {
     //
     spacing: '16px',
     halfSpacing: '8px',
-    unit: '40px'
+    unit: '40px',
+
+    // Sizes
+    sidebarWidth: '320px'
 };

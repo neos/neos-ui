@@ -3,7 +3,6 @@ import Button from './Button/index';
 import CheckBox from './CheckBox/index';
 import Dialog from './Dialog/index';
 import DropDown from './DropDown/index';
-import Editors from './Editors/index';
 import Grid from './Grid/index';
 import GridItem from './Grid/GridItem/index';
 import Headline from './Headline/index';
@@ -25,7 +24,6 @@ export {
     CheckBox,
     Dialog,
     DropDown,
-    Editors,
     Grid,
     GridItem,
     Headline,

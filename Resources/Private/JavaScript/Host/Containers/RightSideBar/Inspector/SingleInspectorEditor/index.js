@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {$transform} from 'plow-js';
 
 import {CR, UI} from 'Host/Selectors/';
-import {Editors} from 'Components/index';
+import {Editors} from 'Host/Containers/index';
 import {actions} from 'Host/Redux/';
 
 const resolveEditor = (legacyEditorName) => {

@@ -1,0 +1,35 @@
+$maxImageWidth:   calc($sidebarWidth - $spacing * 2);
+$maxImageHeight: calc(($sidebarWidth - $spacing * 2) / 4 * 3);
+
+.imageEditor {
+    min-width: calc($sidebarWidth - $spacing * 2);
+}
+
+.imageEditor--dropzone {
+
+}
+
+.imageEditor--thumbnail {
+    position: relative;
+    border: 1px dashed $neutral;
+    margin-bottom: calc($spacing - $quarterSpacing);
+    width: $maxImageWidth;
+    height: $maxImageHeight;
+    display: table;
+
+    /* TODO: border-color: #fff; on hover */
+}
+
+
+.imageEditor--thumbnailInner {
+    /** TODO neos-inspector-image-thumbnail-cropped **/
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    overflow: hidden;
+}
+
+.imageEditor--thumbnailInner img {
+    max-width: $maxImageWidth;
+    max-height: $maxImageHeight;
+}

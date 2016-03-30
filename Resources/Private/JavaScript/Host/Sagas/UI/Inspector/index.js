@@ -17,15 +17,14 @@ function* loadImage(imageValue, state) {
         return;
     }
     const loadedImageInStore = imageByUuid(imageValue.__identity);
-    console.log("LOADED", loadedImageInStore(state));
     if (loadedImageInStore(state)) {
         // do nothing
     } else {
         yield put(actions.CR.Images.startLoading(imageValue.__identity));
         const r = yield loadImageMetadata(imageValue.__identity);
         yield put(actions.CR.Images.finishLoading(imageValue.__identity, r));
+        console.log("LOADED IMAGE", imageValue.__identity);
     }
-    console.log(imageValue, imageByUuid(imageValue.__identity)(state));
 }
 
 export function* watchInspectorNodeChange(getState) {

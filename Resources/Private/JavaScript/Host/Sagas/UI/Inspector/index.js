@@ -22,8 +22,8 @@ function* loadImage(imageValue, state) {
     } else {
         yield put(actions.CR.Images.startLoading(imageValue.__identity));
         const r = yield loadImageMetadata(imageValue.__identity);
-        yield put(actions.CR.Images.finishLoading(imageValue.__identity, r));
         console.log("LOADED IMAGE", imageValue.__identity);
+        yield put(actions.CR.Images.finishLoading(imageValue.__identity, r));
     }
 }
 

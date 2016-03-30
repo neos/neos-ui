@@ -33,6 +33,7 @@ export default class ContentCanvas extends Component {
 
         return (
             <div className={classNames} id="neos__contentCanvas">
+                <div id="centerArea" />
                 <iframe
                     src={src}
                     frameBorder="0"

@@ -1,13 +1,15 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import reactCrop from 'react-image-crop';
+import ReactCrop from 'react-image-crop';
 import {$transform, $get, $map} from 'plow-js';
 import {CR} from 'Host/Selectors/';
 import style from './style.css';
 import Dropzone from 'react-dropzone';
+import {actions} from 'Host/Redux/index';
 
 import {
-    Button
+    Button,
+    Portal
 } from 'Components/index';
 
 
@@ -54,10 +56,18 @@ const imagePreviewMaximumDimensions = {
     height: 216
 };
 
+const ImageCropper = (props) => {
+    return (<Portal targetId="centerArea" isOpened={props.isOpened}>
+        <ReactCrop src={props.sourceImage} />
+    </Portal>);
+}
+
 @connect($transform({
     // imageLookup: CR.Images.imageLookup // TODO: does not work
-    imagesByUuid: $get(['cr', 'images', 'byUuid'])
+    imagesByUuid: $get(['cr', 'images', 'byUuid']),
+    cropScreenVisible: $get(['ui', 'editors', 'image', 'cropScreenVisible'])
 }), {
+    openCropScreen: actions.UI.Editors.Image.openCropScreen
 })
 export default class Image extends Component {
     static propTypes = {
@@ -111,6 +121,7 @@ export default class Image extends Component {
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
+                <ImageCropper sourceImage={previewImageResourceUri} isOpened={this.props.cropScreenVisible} />
                 <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']}>
                     <div className={style['imageEditor--thumbnail']}>
                         <div className={style['imageEditor--thumbnailInner']} style={containerStyles}>
@@ -122,10 +133,11 @@ export default class Image extends Component {
                 <div>
                     <Button>Media</Button>
                     <Button onClick={this.onChooseFile.bind(this)}>Choose</Button>
-                    <Button className="neos-button neos-inspector-image-remove-button">
-                        Remove
+                    <Button onClick={this.props.openCropScreen}>
+                        Crop
                     </Button>
                 </div>
+                <div style={{"paddingBottom": "50px"}}>TODO remove this</div>
             </div>
         );
     }

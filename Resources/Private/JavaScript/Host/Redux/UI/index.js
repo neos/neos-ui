@@ -53,13 +53,21 @@ import {
     actions as Inspector
 } from './Inspector/index';
 
+import {
+    reducer as EditorReducer,
+    hydrators as EditorHydrators,
+    actionTypes as EditorActionTypes,
+    actions as Editors
+} from './Editors/index';
+
 //
 // Export the action types
 //
 export const actionTypes = {
     PageTree: PageTreeActionTypes,
     ContentCanvas: ContentCanvasActionTypes,
-    Inspector: InspectorActionTypes
+    Inspector: InspectorActionTypes,
+    Editors: EditorActionTypes
 };
 
 //
@@ -75,7 +83,8 @@ export const actions = {
     AddNodeModal,
     PageTree,
     ContentCanvas,
-    Inspector
+    Inspector,
+    Editors
 };
 
 //
@@ -91,7 +100,8 @@ export const hydrators = [
     AddNodeModalHydrator,
     PageTreeHydrator,
     ContentCanvasHydrator,
-    InspectorHydrator
+    InspectorHydrator,
+    ...EditorHydrators // This is a LIST of hydrators!
 ];
 
 //
@@ -107,5 +117,6 @@ export const reducer = {
     ...AddNodeModalReducer,
     ...PageTreeReducer,
     ...ContentCanvasReducer,
-    ...InspectorReducer
+    ...InspectorReducer,
+    ...EditorReducer
 };

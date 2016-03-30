@@ -1,6 +1,6 @@
 .sideBar {
     position: absolute;
-    width: 320px;
+    width: $sidebarWidth;
     height: 100%;
     background: $darker;
 }

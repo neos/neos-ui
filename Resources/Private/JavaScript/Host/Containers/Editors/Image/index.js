@@ -9,6 +9,7 @@ import Dropzone from 'react-dropzone';
 import {actions} from 'Host/Redux/index';
 
 import {
+    Icon,
     Button,
     Portal
 } from 'Components/index';
@@ -36,7 +37,7 @@ const calculatePreviewScalingFactor = image =>
     $get('previewDimensions.width', image) / $get('originalDimensions.width', image);
 
 const transformOriginalDimensionsToPreviewImageDimensions = (coordinates, scalingFactor) =>
-    $map(v => v*scalingFactor, [], coordinates);
+    $map(v => v * scalingFactor, [], coordinates);
 
 
 /**
@@ -57,9 +58,37 @@ const imagePreviewMaximumDimensions = {
     height: 216
 };
 
+const AspectRatioControl = (props) => {
+    /* {{#if view.aspectRatioAllowCustom}}
+    {{input valueBinding="view.aspectRatioWidth" type="number"}}
+    <button {{action "exchangeAspectRatio" target="view"}}><i class="icon-exchange"></i></button>
+    {{input valueBinding="view.aspectRatioHeight" type="number"}}
+    {{else}}
+    <input {{bindAttr value="view.aspectRatioWidth"}} type="number" readonly="readonly" />
+    <input {{bindAttr value="view.aspectRatioHeight"}} type="number" readonly="readonly" />
+        {{/if}}
+    {{/unless}} */
+
+    return (<div />);
+}
+
 const ImageCropper = (props) => {
+    const aspectRatioLocked = false;
+    const aspectRatioReduced = "5:3";
+
+    const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock" /> : null);
+
     return (<Portal targetId="neos__contentView__hook" isOpened={true} className={style.fullscreenImageCropper}>
-        <ReactCrop src={props.sourceImage} crop={props.crop} onComplete={props.onComplete}/>
+        <div>
+            <Button className={style.fullscreenImageCropper__closeButton} onClick={props.onClose}/>
+            <span>
+                <Icon icon="crop" />
+                {(aspectRatioReduced ? <span title={aspectRatioReduced}>{aspectRatioReduced}</span> : null)}
+                {aspectRatioLockIcon}
+            </span>
+            {(!aspectRatioLocked ? <AspectRatioControl /> : null)}
+            <ReactCrop src={props.sourceImage} crop={props.crop} onChange={props.onComplete} onComplete={props.onComplete}/>
+        </div>
     </Portal>);
 };
 
@@ -95,10 +124,10 @@ export default class Image extends Component {
         const imageWidth = $get('originalDimensions.width', image);
         const imageHeight = $get('originalDimensions.height', image);
         const cropAdjustments = {
-            x: Math.round(cropArea.x/100 * imageWidth),
-            y: Math.round(cropArea.y/100 * imageHeight),
-            width: Math.round(cropArea.width/100 * imageWidth),
-            height: Math.round(cropArea.height/100 * imageHeight)
+            x: Math.round(cropArea.x / 100 * imageWidth),
+            y: Math.round(cropArea.y / 100 * imageHeight),
+            width: Math.round(cropArea.width / 100 * imageWidth),
+            height: Math.round(cropArea.height / 100 * imageHeight)
         };
         image = $override(['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'], cropAdjustments, image);
 
@@ -157,11 +186,12 @@ export default class Image extends Component {
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
-                {this.props.identifier == this.props.cropScreenVisible ? <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} /> : null}
+                {this.props.identifier == this.props.cropScreenVisible ?
+                    <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} onClose={this.onOpenCropScreen.bind(this)}/> : null}
                 <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']}>
                     <div className={style['imageEditor--thumbnail']}>
                         <div className={style['imageEditor--thumbnailInner']} style={containerStyles}>
-                            <img src={previewImageResourceUri} style={imageStyles} />
+                            <img src={previewImageResourceUri} style={imageStyles}/>
                         </div>
                     </div>
                 </Dropzone>

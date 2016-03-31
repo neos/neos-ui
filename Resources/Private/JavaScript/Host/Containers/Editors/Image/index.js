@@ -1,8 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import ReactCrop from 'react-image-crop';
-import {$transform, $get, $map} from 'plow-js';
-import {CR} from 'Host/Selectors/';
+import {$transform, $get, $map, $override} from 'plow-js';
+import {Map} from 'immutable';
+import {UI, CR} from 'Host/Selectors/index';
 import style from './style.css';
 import Dropzone from 'react-dropzone';
 import {actions} from 'Host/Redux/index';
@@ -58,16 +59,18 @@ const imagePreviewMaximumDimensions = {
 
 const ImageCropper = (props) => {
     return (<Portal targetId="centerArea" isOpened={props.isOpened}>
-        <ReactCrop src={props.sourceImage} />
+        <ReactCrop src={props.sourceImage} crop={props.crop} onComplete={props.onComplete} />
     </Portal>);
 }
 
 @connect($transform({
     // imageLookup: CR.Images.imageLookup // TODO: does not work
-    imagesByUuid: $get(['cr', 'images', 'byUuid']),
+    currentImageValue: UI.Inspector.currentImageValue,
+    focusedNode: CR.Nodes.focusedSelector,
     cropScreenVisible: $get(['ui', 'editors', 'image', 'cropScreenVisible'])
 }), {
-    openCropScreen: actions.UI.Editors.Image.openCropScreen
+    openCropScreen: actions.UI.Editors.Image.openCropScreen, // TODO: toggle
+    cropImage: actions.UI.Editors.Image.cropImage
 })
 export default class Image extends Component {
     static propTypes = {
@@ -81,13 +84,32 @@ export default class Image extends Component {
     }
 
 
+    onCrop(cropArea) {
+        const imageIdentity = $get('__identity', this.props.value);
 
+        let image;
+        if (imageIdentity) {
+            image = this.props.currentImageValue(imageIdentity);
+        }
+        const imageWidth = $get('originalDimensions.width', image);
+        const imageHeight = $get('originalDimensions.height', image);
+        const cropAdjustments = {
+            x: Math.round(cropArea.x/100 * imageWidth),
+            y: Math.round(cropArea.y/100 * imageHeight),
+            width: Math.round(cropArea.width/100 * imageWidth),
+            height: Math.round(cropArea.height/100 * imageHeight)
+        };
+        image = $override(['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'], cropAdjustments, image);
+
+        // TODO: we basically would need to create a new Image adjustment probably????
+        this.props.cropImage($get('contextPath', this.props.focusedNode), imageIdentity, image);
+    }
 
     render() {
         const imageIdentity = $get('__identity', this.props.value);
         let image;
-        if (this.props.imagesByUuid && imageIdentity) {
-            image = $get([imageIdentity], this.props.imagesByUuid);
+        if (imageIdentity) {
+            image = this.props.currentImageValue(imageIdentity);
         }
 
         const previewScalingFactor = calculatePreviewScalingFactor(image);
@@ -98,11 +120,11 @@ export default class Image extends Component {
 
         const thumbnailScalingFactor = calculateThumbnailScalingFactor(cropInformationRelativeToPreviewImage, imagePreviewMaximumDimensions);
 
-
         const previewBoundingBoxDimensions = {
             width: Math.floor(cropInformationRelativeToPreviewImage.width * thumbnailScalingFactor),
             height: Math.floor(cropInformationRelativeToPreviewImage.height * thumbnailScalingFactor)
         };
+
         const containerStyles = {
             width: previewBoundingBoxDimensions.width + 'px',
             height: previewBoundingBoxDimensions.height + 'px',
@@ -118,10 +140,19 @@ export default class Image extends Component {
             marginTop: '-' + (cropInformationRelativeToPreviewImage.y * thumbnailScalingFactor) + 'px'
         };
 
+        const imageWidth = $get('originalDimensions.width', image);
+        const imageHeight = $get('originalDimensions.height', image);
+        const crop = {
+            x: cropInformationRelativeToOriginalImage.x / imageWidth * 100,
+            y: cropInformationRelativeToOriginalImage.y / imageHeight * 100,
+            width: cropInformationRelativeToOriginalImage.width / imageWidth * 100,
+            height: cropInformationRelativeToOriginalImage.height / imageHeight * 100
+        };
+
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
-                <ImageCropper sourceImage={previewImageResourceUri} isOpened={this.props.cropScreenVisible} />
+                <ImageCropper sourceImage={previewImageResourceUri} isOpened={this.props.cropScreenVisible} onComplete={this.onCrop.bind(this)} crop={crop} />
                 <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']}>
                     <div className={style['imageEditor--thumbnail']}>
                         <div className={style['imageEditor--thumbnailInner']} style={containerStyles}>

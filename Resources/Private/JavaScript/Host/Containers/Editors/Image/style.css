@@ -30,8 +30,3 @@ $maxImageHeight: calc(($sidebarWidth - $spacing * 2) / 4 * 3);
     text-align: center;
     overflow: hidden;
 }
-
-.imageEditor--thumbnailInner img {
-    max-width: $maxImageWidth;
-    max-height: $maxImageHeight;
-}

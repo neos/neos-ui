@@ -49,7 +49,7 @@ const calculateThumbnailScalingFactor = (coordinates, maximumDisplaySize) => {
     const yFactor = calculateThumbnailScalingFactorInOneDimension('height', coordinates, maximumDisplaySize);
 
     return Math.min(xFactor, yFactor);
-}
+};
 
 // TODO: make publicly configurable
 const imagePreviewMaximumDimensions = {
@@ -58,10 +58,10 @@ const imagePreviewMaximumDimensions = {
 };
 
 const ImageCropper = (props) => {
-    return (<Portal targetId="centerArea" isOpened={props.isOpened}>
-        <ReactCrop src={props.sourceImage} crop={props.crop} onComplete={props.onComplete} />
+    return (<Portal targetId="neos__contentView__hook" isOpened={true} className={style.fullscreenImageCropper}>
+        <ReactCrop src={props.sourceImage} crop={props.crop} onComplete={props.onComplete}/>
     </Portal>);
-}
+};
 
 @connect($transform({
     // imageLookup: CR.Images.imageLookup // TODO: does not work
@@ -77,6 +77,7 @@ export default class Image extends Component {
         //value: PropTypes.object.isRequired
         // TODO: public configuration for editors??
         //imagePreviewMaximumDimensions: {width: 288, height: 216},
+        // identifier
     };
 
     onChooseFile() {
@@ -103,6 +104,10 @@ export default class Image extends Component {
 
         // TODO: we basically would need to create a new Image adjustment probably????
         this.props.cropImage($get('contextPath', this.props.focusedNode), imageIdentity, image);
+    }
+
+    onOpenCropScreen() {
+        this.props.openCropScreen(this.props.identifier)
     }
 
     render() {
@@ -152,7 +157,7 @@ export default class Image extends Component {
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
-                <ImageCropper sourceImage={previewImageResourceUri} isOpened={this.props.cropScreenVisible} onComplete={this.onCrop.bind(this)} crop={crop} />
+                {this.props.identifier == this.props.cropScreenVisible ? <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} /> : null}
                 <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']}>
                     <div className={style['imageEditor--thumbnail']}>
                         <div className={style['imageEditor--thumbnailInner']} style={containerStyles}>
@@ -164,7 +169,7 @@ export default class Image extends Component {
                 <div>
                     <Button>Media</Button>
                     <Button onClick={this.onChooseFile.bind(this)}>Choose</Button>
-                    <Button onClick={this.props.openCropScreen}>
+                    <Button onClick={this.onOpenCropScreen.bind(this)}>
                         Crop
                     </Button>
                 </div>

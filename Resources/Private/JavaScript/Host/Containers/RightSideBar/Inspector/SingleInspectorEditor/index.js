@@ -55,9 +55,10 @@ export default class SingleInspectorEditor extends Component {
         const {currentInspectorValue, property} = this.props;
         const Editor = resolveEditor(property.ui.inspector.editor);
         const value = currentInspectorValue(property.id);
+        const identifier = this.props.focusedNode.contextPath + '#' + this.props.property.id;
 
         if (Editor) {
-            return (<Editor value={value} onChange={this.changeFn} />);
+            return (<Editor value={value} onChange={this.changeFn} identifier={identifier} />);
         }
 
         return (<div>Missing Editor</div>);

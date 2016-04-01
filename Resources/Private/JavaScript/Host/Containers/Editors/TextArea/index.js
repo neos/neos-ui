@@ -1,7 +1,8 @@
 import React from 'react';
+import {TextArea} from 'Components/index';
 
-const TextArea = () => {
-    return (<div>TODO textarea</div>);
+const TextAreaEditor = props => {
+    return (<TextArea {...props} />);
 };
 
-export default TextArea;
+export default TextAreaEditor;

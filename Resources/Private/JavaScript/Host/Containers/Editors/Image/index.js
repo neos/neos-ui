@@ -11,7 +11,7 @@ import {actions} from 'Host/Redux/index';
 import {
     Icon,
     Button,
-    Portal
+    FullscreenContentOverlay
 } from 'Components/index';
 
 
@@ -78,18 +78,15 @@ const ImageCropper = (props) => {
 
     const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock" /> : null);
 
-    return (<Portal targetId="neos__contentView__hook" isOpened={true} className={style.fullscreenImageCropper}>
-        <div>
-            <Button className={style.fullscreenImageCropper__closeButton} onClick={props.onClose}/>
-            <span>
-                <Icon icon="crop" />
-                {(aspectRatioReduced ? <span title={aspectRatioReduced}>{aspectRatioReduced}</span> : null)}
-                {aspectRatioLockIcon}
-            </span>
-            {(!aspectRatioLocked ? <AspectRatioControl /> : null)}
-            <ReactCrop src={props.sourceImage} crop={props.crop} onChange={props.onComplete} onComplete={props.onComplete}/>
-        </div>
-    </Portal>);
+    return (<FullscreenContentOverlay onClose={props.onClose}>
+        <span>
+            <Icon icon="crop" />
+            {(aspectRatioReduced ? <span title={aspectRatioReduced}>{aspectRatioReduced}</span> : null)}
+            {aspectRatioLockIcon}
+        </span>
+        {(!aspectRatioLocked ? <AspectRatioControl /> : null)}
+        <ReactCrop src={props.sourceImage} crop={props.crop} onChange={props.onComplete} onComplete={props.onComplete}/>
+    </FullscreenContentOverlay>);
 };
 
 @connect($transform({
@@ -183,10 +180,12 @@ export default class Image extends Component {
             height: cropInformationRelativeToOriginalImage.height / imageHeight * 100
         };
 
+        const isCropperVisible = (this.props.identifier == this.props.cropScreenVisible);
+
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
-                {this.props.identifier == this.props.cropScreenVisible ?
+                {isCropperVisible ?
                     <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} onClose={this.onOpenCropScreen.bind(this)}/> : null}
                 <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']}>
                     <div className={style['imageEditor--thumbnail']}>
@@ -199,7 +198,7 @@ export default class Image extends Component {
                 <div>
                     <Button>Media</Button>
                     <Button onClick={this.onChooseFile.bind(this)}>Choose</Button>
-                    <Button onClick={this.onOpenCropScreen.bind(this)}>
+                    <Button isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
                         Crop
                     </Button>
                 </div>

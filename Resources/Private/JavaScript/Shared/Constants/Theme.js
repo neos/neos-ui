@@ -23,6 +23,7 @@ module.exports = {
     //
     // Spacings
     //
+    unit: '44px',
     spacing: '16px',
     halfSpacing: '8px',
     unit: '40px',

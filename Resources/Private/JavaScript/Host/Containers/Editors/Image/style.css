@@ -31,8 +31,3 @@ $maxImageHeight: calc(($sidebarWidth - $spacing * 2) / 4 * 3);
     overflow: hidden;
 }
 
-.fullscreenImageCropper {
-    background: $dark;
-    width: 100%;
-    height: 100%;
-}

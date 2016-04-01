@@ -104,6 +104,7 @@ const MediaSelectionScreen = (props) => {
 const cropScreenIdentifier = value => value + '#crop';
 const mediaSelectionScreenIdentifier = value => value + '#mediaSelection';
 
+
 @connect($transform({
     // imageLookup: CR.Images.imageLookup // TODO: does not work
     currentImageValue: UI.Inspector.currentImageValue,
@@ -160,12 +161,30 @@ export default class Image extends Component {
         this.onOpenMediaSelectionScreen()
     }
 
+    onThumbnailClicked() {
+        const imageIdentity = $get('__identity', this.props.value);
+        let image;
+        if (imageIdentity) {
+            image = this.props.currentImageValue(imageIdentity);
+        }
+        if (image) {
+            // TODO: display media preview
+            this.onChooseFile();
+        } else {
+            this.onChooseFile();
+        }
+
+    }
+
     render() {
         const imageIdentity = $get('__identity', this.props.value);
         let image;
         if (imageIdentity) {
             image = this.props.currentImageValue(imageIdentity);
         }
+        const isLoadingImage = ($get('status', image) === 'LOADING');
+
+        const imageLoaded = !!$get('previewImageResourceUri', image);
 
         const previewScalingFactor = calculatePreviewScalingFactor(image);
         const cropInformationRelativeToOriginalImage = extractCropInformationRelativeToOriginalDimensions(image);
@@ -180,20 +199,23 @@ export default class Image extends Component {
             height: Math.floor(cropInformationRelativeToPreviewImage.height * thumbnailScalingFactor)
         };
 
-        const containerStyles = {
-            width: previewBoundingBoxDimensions.width + 'px',
-            height: previewBoundingBoxDimensions.height + 'px',
-            position: 'absolute',
-            left: ((imagePreviewMaximumDimensions.width - previewBoundingBoxDimensions.width) / 2 ) + 'px',
-            top: ((imagePreviewMaximumDimensions.height - previewBoundingBoxDimensions.height) / 2) + 'px'
-        };
-
-        const imageStyles = {
-            width: Math.floor($get('previewDimensions.width', image) * thumbnailScalingFactor) + 'px',
-            height: Math.floor($get('previewDimensions.height', image) * thumbnailScalingFactor) + 'px',
-            marginLeft: '-' + (cropInformationRelativeToPreviewImage.x * thumbnailScalingFactor) + 'px',
-            marginTop: '-' + (cropInformationRelativeToPreviewImage.y * thumbnailScalingFactor) + 'px'
-        };
+        let containerStyles = {};
+        let imageStyles = {};
+        if (imageLoaded) {
+            containerStyles = {
+                width: previewBoundingBoxDimensions.width + 'px',
+                height: previewBoundingBoxDimensions.height + 'px',
+                position: 'absolute',
+                left: ((imagePreviewMaximumDimensions.width - previewBoundingBoxDimensions.width) / 2 ) + 'px',
+                top: ((imagePreviewMaximumDimensions.height - previewBoundingBoxDimensions.height) / 2) + 'px'
+            };
+            imageStyles = {
+                width: Math.floor($get('previewDimensions.width', image) * thumbnailScalingFactor) + 'px',
+                height: Math.floor($get('previewDimensions.height', image) * thumbnailScalingFactor) + 'px',
+                marginLeft: '-' + (cropInformationRelativeToPreviewImage.x * thumbnailScalingFactor) + 'px',
+                marginTop: '-' + (cropInformationRelativeToPreviewImage.y * thumbnailScalingFactor) + 'px'
+            };
+        }
 
         const imageWidth = $get('originalDimensions.width', image);
         const imageHeight = $get('originalDimensions.height', image);
@@ -207,6 +229,7 @@ export default class Image extends Component {
         const isCropperVisible = (cropScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
         const isMediaSelectionScreenVisible = (mediaSelectionScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
 
+
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
@@ -214,16 +237,17 @@ export default class Image extends Component {
                     <MediaSelectionScreen onClose={this.onOpenCropScreen.bind(this)} onComplete={this.onMediaSelected.bind(this)} /> : null}
                 {isCropperVisible ?
                     <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} onClose={this.onOpenCropScreen.bind(this)}/> : null}
-                <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']}>
-                    <div className={style['imageEditor--thumbnail']}>
+
+                <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']} disableClick={true}>
+                    <div className={style['imageEditor--thumbnail']} onClick={this.onThumbnailClicked.bind(this)}>
                         <div className={style['imageEditor--thumbnailInner']} style={containerStyles}>
-                            <img src={previewImageResourceUri} style={imageStyles}/>
+                            {isLoadingImage ? <Icon icon="spinner" spin={true} size="big" /> : <img src={previewImageResourceUri} style={imageStyles}/>}
                         </div>
                     </div>
                 </Dropzone>
 
                 <div>
-                    <Button onClick={this.onOpenMediaSelectionScreen.bind(this)}>Media</Button>
+                    <Button isPressed={isMediaSelectionScreenVisible} onClick={this.onOpenMediaSelectionScreen.bind(this)}>Media</Button>
                     <Button onClick={this.onChooseFile.bind(this)}>Choose</Button>
                     <Button isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
                         Crop

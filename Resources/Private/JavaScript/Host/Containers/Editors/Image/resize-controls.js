@@ -6,6 +6,7 @@ import {
     CheckBox,
     TextInput
 } from 'Components/index';
+import style from './style.css';
 
 const buildResizeAdjustment = (width, height) => new Map({
     allowUpScaling: null,
@@ -48,22 +49,22 @@ const ResizeControls = (props) => {
         <div>
             <div>
                 <label><I18n id="width" fallback="Width" />:</label>
-                <div>
-                    <span><CheckBox onChange={toggleResizeAdjustment(props)} isChecked={props.resizeAdjustment} /></span>
-                    <span>
+                <div className={style.resizeControls}>
+                    <span className={style.resizeControls__before}><CheckBox onChange={toggleResizeAdjustment(props)} isChecked={props.resizeAdjustment} /></span>
+                    <span className={style.resizeControls__main}>
                         <TextInput type="number" pattern="\d*" step="1" min="0" placeholder={$get('width', props.imageDimensions)} value={$get('width', props.resizeAdjustment)} onChange={onChangeValue(props, 'width')} />
                     </span>
-                    <span>px</span>
+                    <span className={style.resizeControls__after}>px</span>
                 </div>
             </div>
             <div>
                 <label><I18n id="height" fallback="Height" />:</label>
-                <div>
-                    <span><CheckBox onChange={toggleResizeAdjustment(props)} isChecked={props.resizeAdjustment} /></span>
-                    <span>
+                <div className={style.resizeControls}>
+                    <span className={style.resizeControls__before}><CheckBox onChange={toggleResizeAdjustment(props)} isChecked={props.resizeAdjustment} /></span>
+                    <span className={style.resizeControls__main}>
                         <TextInput type="number" pattern="\d*" step="1" min="0" placeholder={$get('height', props.imageDimensions)} value={$get('height', props.resizeAdjustment)} onChange={onChangeValue(props, 'height')} />
                     </span>
-                    <span>px</span>
+                    <span className={style.resizeControls__after}>px</span>
                 </div>
             </div>
         </div>

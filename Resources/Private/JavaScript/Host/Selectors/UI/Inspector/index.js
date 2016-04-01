@@ -16,8 +16,6 @@ export const currentValue = createSelector(
     }
 );
 
-
-
 export const currentImageValue = createSelector(
     [
         Nodes.focusedSelector,

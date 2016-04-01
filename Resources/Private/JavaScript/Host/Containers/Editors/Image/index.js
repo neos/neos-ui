@@ -1,8 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import ReactCrop from 'react-image-crop';
 import {$set, $transform, $get, $map, $override} from 'plow-js';
-import {Map} from 'immutable';
 import {UI, CR} from 'Host/Selectors/index';
 import style from './style.css';
 import Dropzone from 'react-dropzone';
@@ -10,24 +8,25 @@ import {actions} from 'Host/Redux/index';
 
 import {
     Icon,
-    Button,
-    FullscreenContentOverlay
+    Button
 } from 'Components/index';
 
+import ImageCropper from './image-cropper';
+import MediaSelectionScreen from './media-selection-screen';
+import MediaDetailsScreen from './media-details-screen';
 
 const extractCropInformationRelativeToOriginalDimensions = (image) => {
     const cropImageAdjustment = $get(['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'], image);
 
     if (cropImageAdjustment) {
         return cropImageAdjustment.toJS();
-    } else {
-        return {
-            height: $get('originalDimensions.height', image),
-            width: $get('originalDimensions.width', image),
-            x: 0,
-            y: 0
-        };
     }
+    return {
+        height: $get('originalDimensions.height', image),
+        width: $get('originalDimensions.width', image),
+        x: 0,
+        y: 0
+    };
 };
 
 /**
@@ -38,7 +37,6 @@ const calculatePreviewScalingFactor = image =>
 
 const transformOriginalDimensionsToPreviewImageDimensions = (coordinates, scalingFactor) =>
     $map(v => v * scalingFactor, [], coordinates);
-
 
 /**
  * @return scaleFactor, where coordinates * scaleFactor = maximumDisplaySize
@@ -58,64 +56,9 @@ const imagePreviewMaximumDimensions = {
     height: 216
 };
 
-const AspectRatioControl = (props) => {
-    /* {{#if view.aspectRatioAllowCustom}}
-    {{input valueBinding="view.aspectRatioWidth" type="number"}}
-    <button {{action "exchangeAspectRatio" target="view"}}><i class="icon-exchange"></i></button>
-    {{input valueBinding="view.aspectRatioHeight" type="number"}}
-    {{else}}
-    <input {{bindAttr value="view.aspectRatioWidth"}} type="number" readonly="readonly" />
-    <input {{bindAttr value="view.aspectRatioHeight"}} type="number" readonly="readonly" />
-        {{/if}}
-    {{/unless}} */
-
-    return (<div />);
-}
-
-const ImageCropper = (props) => {
-    const aspectRatioLocked = false;
-    const aspectRatioReduced = "5:3";
-
-    const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock" /> : null);
-
-    return (<FullscreenContentOverlay onClose={props.onClose}>
-        <span>
-            <Icon icon="crop" />
-            {(aspectRatioReduced ? <span title={aspectRatioReduced}>{aspectRatioReduced}</span> : null)}
-            {aspectRatioLockIcon}
-        </span>
-        {(!aspectRatioLocked ? <AspectRatioControl /> : null)}
-        <ReactCrop src={props.sourceImage} crop={props.crop} onComplete={props.onComplete}/>
-    </FullscreenContentOverlay>);
-};
-
-
-const MediaSelectionScreen = (props) => {
-    window.Typo3MediaBrowserCallbacks = {
-        assetChosen: assetIdentifier => {
-            props.onComplete(assetIdentifier);
-        }
-    };
-    return (<FullscreenContentOverlay onClose={props.onClose}>
-        <iframe src="/neos/content/images.html" className={style.mediaSelectionScreen__iframe} />
-    </FullscreenContentOverlay>);
-}
-
-const MediaDetailsScreen = (props) => {
-    window.Typo3MediaBrowserCallbacks = {
-        close() {
-            props.onClose();
-        }
-    };
-    return (<FullscreenContentOverlay onClose={props.onClose}>
-        <iframe src={`/neos/content/images/edit.html?asset[__identity]=${props.imageIdentity}`} className={style.mediaSelectionScreen__iframe} />
-    </FullscreenContentOverlay>);
-};
-
 const cropScreenIdentifier = value => value + '#crop';
 const mediaSelectionScreenIdentifier = value => value + '#mediaSelection';
 const mediaDetailsScreenIdentifier = value => value + '#mediaDetails';
-
 
 @connect($transform({
     // imageLookup: CR.Images.imageLookup // TODO: does not work
@@ -222,17 +165,17 @@ export default class Image extends Component {
         let imageStyles = {};
         if (imageLoaded) {
             containerStyles = {
-                width: previewBoundingBoxDimensions.width + 'px',
-                height: previewBoundingBoxDimensions.height + 'px',
+                width: `${previewBoundingBoxDimensions.width}px`,
+                height: `${previewBoundingBoxDimensions.height}px`,
                 position: 'absolute',
-                left: ((imagePreviewMaximumDimensions.width - previewBoundingBoxDimensions.width) / 2 ) + 'px',
-                top: ((imagePreviewMaximumDimensions.height - previewBoundingBoxDimensions.height) / 2) + 'px'
+                left: `${(imagePreviewMaximumDimensions.width - previewBoundingBoxDimensions.width) / 2 }px`,
+                top: `${(imagePreviewMaximumDimensions.height - previewBoundingBoxDimensions.height) / 2}px`
             };
             imageStyles = {
-                width: Math.floor($get('previewDimensions.width', image) * thumbnailScalingFactor) + 'px',
-                height: Math.floor($get('previewDimensions.height', image) * thumbnailScalingFactor) + 'px',
-                marginLeft: '-' + (cropInformationRelativeToPreviewImage.x * thumbnailScalingFactor) + 'px',
-                marginTop: '-' + (cropInformationRelativeToPreviewImage.y * thumbnailScalingFactor) + 'px'
+                width: `${Math.floor($get('previewDimensions.width', image) * thumbnailScalingFactor)}px`,
+                height: `${Math.floor($get('previewDimensions.height', image) * thumbnailScalingFactor)}px`,
+                marginLeft: `-${(cropInformationRelativeToPreviewImage.x * thumbnailScalingFactor)}px`,
+                marginTop: `-${(cropInformationRelativeToPreviewImage.y * thumbnailScalingFactor)}px`
             };
         }
 
@@ -245,9 +188,9 @@ export default class Image extends Component {
             height: cropInformationRelativeToOriginalImage.height / imageHeight * 100
         };
 
-        const isCropperVisible = (cropScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
-        const isMediaSelectionScreenVisible = (mediaSelectionScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
-        const isMediaDetailsScreenVisible = (mediaDetailsScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
+        const isCropperVisible = (cropScreenIdentifier(this.props.identifier) === this.props.cropScreenVisible);
+        const isMediaSelectionScreenVisible = (mediaSelectionScreenIdentifier(this.props.identifier) === this.props.cropScreenVisible);
+        const isMediaDetailsScreenVisible = (mediaDetailsScreenIdentifier(this.props.identifier) === this.props.cropScreenVisible);
 
 
         // Thumbnail-inner has style width and height

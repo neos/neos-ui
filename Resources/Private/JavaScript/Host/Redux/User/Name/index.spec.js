@@ -1,8 +1,9 @@
 import {createStore} from 'redux';
 import {Map} from 'immutable';
-import {reducer, hydrate} from './index.js';
 
 import {handleActions} from 'Shared/Utilities/index';
+
+import {reducer, hydrate} from './index.js';
 
 describe('"host.redux.user.name" ', () => {
     let store = null;

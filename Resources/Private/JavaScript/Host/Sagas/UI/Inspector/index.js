@@ -13,7 +13,7 @@ import {loadImageMetadata} from 'API/Endpoints/index';
 
 
 function* loadImage(imageValue, state) {
-    if (!imageValue) {
+    if (!imageValue || !imageValue.__identity) {
         return;
     }
     const loadedImageInStore = imageByUuid(imageValue.__identity);

@@ -155,10 +155,14 @@ export default class Image extends Component {
     onOpenMediaSelectionScreen() {
         this.props.openCropScreen(mediaSelectionScreenIdentifier(this.props.identifier))
     }
+    onRemoveFile() {
+        this.props.openCropScreen(false);
+        this.props.onChange($set('__identity', '', this.props.value));
+    }
 
     onMediaSelected(assetIdentifier) {
         this.props.onChange($set('__identity', assetIdentifier, this.props.value));
-        this.onOpenMediaSelectionScreen()
+        this.onOpenMediaSelectionScreen(); // Closes it again
     }
 
     onThumbnailClicked() {
@@ -249,9 +253,10 @@ export default class Image extends Component {
                 <div>
                     <Button isPressed={isMediaSelectionScreenVisible} onClick={this.onOpenMediaSelectionScreen.bind(this)}>Media</Button>
                     <Button onClick={this.onChooseFile.bind(this)}>Choose</Button>
-                    <Button isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
+                    <Button onClick={this.onRemoveFile.bind(this)}>Remove</Button>
+                    {imageLoaded ? <Button isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
                         Crop
-                    </Button>
+                    </Button> : null}
                 </div>
                 <div style={{"paddingBottom": "50px"}}>TODO remove this</div>
             </div>

@@ -55,7 +55,7 @@ export const actions = {
 // Export the initial state hydrator
 //
 export const hydrate = () => $set(
-    'ui.remove',
+    'ui.remote',
     new Map({
         isSaving: false,
         isPublishing: false,

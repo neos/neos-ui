@@ -1,7 +1,9 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
+
+import {reducer, actions, hydrate} from './index.js';
 
 const {
     startSaving,
@@ -18,11 +20,7 @@ describe('"host.redux.ui.remote" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    remote: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -35,18 +33,18 @@ describe('"host.redux.ui.remote" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.ui.remote).to.be.an('object');
+            expect(state.get('ui').get('remote')).to.be.an.instanceOf(Map);
         });
 
         it('should initially mark the remotes state as inactive.', () => {
             const state = store.getState();
 
-            expect(state.ui.remote.isSaving).to.equal(false);
-            expect(state.ui.remote.isPublishing).to.equal(false);
-            expect(state.ui.remote.isDiscarding).to.equal(false);
+            expect(state.get('ui').get('remote').get('isSaving')).to.equal(false);
+            expect(state.get('ui').get('remote').get('isPublishing')).to.equal(false);
+            expect(state.get('ui').get('remote').get('isDiscarding')).to.equal(false);
         });
     });
 
@@ -56,7 +54,7 @@ describe('"host.redux.ui.remote" ', () => {
 
             const state = store.getState();
 
-            expect(state.ui.remote.isSaving).to.equal(true);
+            expect(state.get('ui').get('remote').get('isSaving')).to.equal(true);
         });
     });
 
@@ -67,7 +65,7 @@ describe('"host.redux.ui.remote" ', () => {
 
             const state = store.getState();
 
-            expect(state.ui.remote.isSaving).to.equal(false);
+            expect(state.get('ui').get('remote').get('isSaving')).to.equal(false);
         });
     });
 
@@ -77,7 +75,7 @@ describe('"host.redux.ui.remote" ', () => {
 
             const state = store.getState();
 
-            expect(state.ui.remote.isPublishing).to.equal(true);
+            expect(state.get('ui').get('remote').get('isPublishing')).to.equal(true);
         });
     });
 
@@ -88,7 +86,7 @@ describe('"host.redux.ui.remote" ', () => {
 
             const state = store.getState();
 
-            expect(state.ui.remote.isPublishing).to.equal(false);
+            expect(state.get('ui').get('remote').get('isPublishing')).to.equal(false);
         });
     });
 
@@ -98,7 +96,7 @@ describe('"host.redux.ui.remote" ', () => {
 
             const state = store.getState();
 
-            expect(state.ui.remote.isDiscarding).to.equal(true);
+            expect(state.get('ui').get('remote').get('isDiscarding')).to.equal(true);
         });
     });
 
@@ -109,7 +107,7 @@ describe('"host.redux.ui.remote" ', () => {
 
             const state = store.getState();
 
-            expect(state.ui.remote.isDiscarding).to.equal(false);
+            expect(state.get('ui').get('remote').get('isDiscarding')).to.equal(false);
         });
     });
 });

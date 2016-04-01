@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import ReactCrop from 'react-image-crop';
-import {$transform, $get, $map, $override} from 'plow-js';
+import {$set, $transform, $get, $map, $override} from 'plow-js';
 import {Map} from 'immutable';
 import {UI, CR} from 'Host/Selectors/index';
 import style from './style.css';
@@ -85,9 +85,24 @@ const ImageCropper = (props) => {
             {aspectRatioLockIcon}
         </span>
         {(!aspectRatioLocked ? <AspectRatioControl /> : null)}
-        <ReactCrop src={props.sourceImage} crop={props.crop} onChange={props.onComplete} onComplete={props.onComplete}/>
+        <ReactCrop src={props.sourceImage} crop={props.crop} onComplete={props.onComplete}/>
     </FullscreenContentOverlay>);
 };
+
+
+const MediaSelectionScreen = (props) => {
+    window.Typo3MediaBrowserCallbacks = {
+        assetChosen: assetIdentifier => {
+            props.onComplete(assetIdentifier);
+        }
+    };
+    return (<FullscreenContentOverlay onClose={props.onClose}>
+        <iframe src="/neos/content/images.html" className={style.mediaSelectionScreen__iframe} />
+    </FullscreenContentOverlay>);
+}
+
+const cropScreenIdentifier = value => value + '#crop';
+const mediaSelectionScreenIdentifier = value => value + '#mediaSelection';
 
 @connect($transform({
     // imageLookup: CR.Images.imageLookup // TODO: does not work
@@ -133,7 +148,16 @@ export default class Image extends Component {
     }
 
     onOpenCropScreen() {
-        this.props.openCropScreen(this.props.identifier)
+        this.props.openCropScreen(cropScreenIdentifier(this.props.identifier))
+    }
+
+    onOpenMediaSelectionScreen() {
+        this.props.openCropScreen(mediaSelectionScreenIdentifier(this.props.identifier))
+    }
+
+    onMediaSelected(assetIdentifier) {
+        this.props.onChange($set('__identity', assetIdentifier, this.props.value));
+        this.onOpenMediaSelectionScreen()
     }
 
     render() {
@@ -180,11 +204,14 @@ export default class Image extends Component {
             height: cropInformationRelativeToOriginalImage.height / imageHeight * 100
         };
 
-        const isCropperVisible = (this.props.identifier == this.props.cropScreenVisible);
+        const isCropperVisible = (cropScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
+        const isMediaSelectionScreenVisible = (mediaSelectionScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
 
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
+                {isMediaSelectionScreenVisible ?
+                    <MediaSelectionScreen onClose={this.onOpenCropScreen.bind(this)} onComplete={this.onMediaSelected.bind(this)} /> : null}
                 {isCropperVisible ?
                     <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} onClose={this.onOpenCropScreen.bind(this)}/> : null}
                 <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']}>
@@ -196,7 +223,7 @@ export default class Image extends Component {
                 </Dropzone>
 
                 <div>
-                    <Button>Media</Button>
+                    <Button onClick={this.onOpenMediaSelectionScreen.bind(this)}>Media</Button>
                     <Button onClick={this.onChooseFile.bind(this)}>Choose</Button>
                     <Button isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
                         Crop

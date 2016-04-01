@@ -11,4 +11,5 @@
     width: calc($unit + 1px);
     height: calc($unit + 1px);
     font-size: 18px;
+    z-index: 1;
 }

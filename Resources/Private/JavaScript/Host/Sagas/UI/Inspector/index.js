@@ -43,6 +43,23 @@ export function* watchInspectorNodeChange(getState) {
             if (selectedNode.nodeType.properties[propertyNames[i]].type === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
                 yield fork(loadImage, selectedNode.properties[propertyNames[i]], state);
             }
+        }
+    });
+}
+
+export function* watchPropertyChangeInInspector(getState) {
+    yield* takeEvery([actionTypes.UI.Inspector.WRITE_VALUE], function* watchPropertyChange(action) {
+        const state = getState();
+
+        const focusedNodeContextPath = action.payload.nodeContextPath;
+        const selectedNode = getNode(focusedNodeContextPath)(state);
+
+        const propertyNames = [action.payload.propertyId];
+        for (const i in propertyNames) {
+            // TODO: generalize!
+            if (selectedNode.nodeType.properties[propertyNames[i]].type === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
+                yield fork(loadImage, action.payload.value, state);
+            }
         };
     });
 }

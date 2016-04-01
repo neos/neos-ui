@@ -24,7 +24,10 @@ export const actions = {
 };
 
 export const actionTypes = {
-    APPLY
+    WRITE_VALUE,
+    APPLY,
+    APPLY_FINISHED,
+    CANCEL
 };
 
 //

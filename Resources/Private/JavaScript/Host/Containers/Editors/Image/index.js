@@ -101,8 +101,20 @@ const MediaSelectionScreen = (props) => {
     </FullscreenContentOverlay>);
 }
 
+const MediaDetailsScreen = (props) => {
+    window.Typo3MediaBrowserCallbacks = {
+        close() {
+            props.onClose();
+        }
+    };
+    return (<FullscreenContentOverlay onClose={props.onClose}>
+        <iframe src={`/neos/content/images/edit.html?asset[__identity]=${props.imageIdentity}`} className={style.mediaSelectionScreen__iframe} />
+    </FullscreenContentOverlay>);
+};
+
 const cropScreenIdentifier = value => value + '#crop';
 const mediaSelectionScreenIdentifier = value => value + '#mediaSelection';
+const mediaDetailsScreenIdentifier = value => value + '#mediaDetails';
 
 
 @connect($transform({
@@ -165,6 +177,10 @@ export default class Image extends Component {
         this.onOpenMediaSelectionScreen(); // Closes it again
     }
 
+    onOpenMediaDetailsScreen() {
+        this.props.openCropScreen(mediaDetailsScreenIdentifier(this.props.identifier));
+    }
+
     onThumbnailClicked() {
         const imageIdentity = $get('__identity', this.props.value);
         let image;
@@ -172,8 +188,7 @@ export default class Image extends Component {
             image = this.props.currentImageValue(imageIdentity);
         }
         if (image) {
-            // TODO: display media preview
-            this.onChooseFile();
+            this.onOpenMediaDetailsScreen();
         } else {
             this.onChooseFile();
         }
@@ -232,16 +247,12 @@ export default class Image extends Component {
 
         const isCropperVisible = (cropScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
         const isMediaSelectionScreenVisible = (mediaSelectionScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
+        const isMediaDetailsScreenVisible = (mediaDetailsScreenIdentifier(this.props.identifier) == this.props.cropScreenVisible);
 
 
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
-                {isMediaSelectionScreenVisible ?
-                    <MediaSelectionScreen onClose={this.onOpenCropScreen.bind(this)} onComplete={this.onMediaSelected.bind(this)} /> : null}
-                {isCropperVisible ?
-                    <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} onClose={this.onOpenCropScreen.bind(this)}/> : null}
-
                 <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']} disableClick={true}>
                     <div className={style['imageEditor--thumbnail']} onClick={this.onThumbnailClicked.bind(this)}>
                         <div className={style['imageEditor--thumbnailInner']} style={containerStyles}>
@@ -259,6 +270,14 @@ export default class Image extends Component {
                     </Button> : null}
                 </div>
                 <div style={{"paddingBottom": "50px"}}>TODO remove this</div>
+
+                {isMediaSelectionScreenVisible ?
+                    <MediaSelectionScreen onClose={this.onOpenMediaSelectionScreen.bind(this)} onComplete={this.onMediaSelected.bind(this)} /> : null}
+                {isMediaDetailsScreenVisible ?
+                    <MediaDetailsScreen onClose={this.onOpenMediaDetailsScreen.bind(this)} imageIdentity={imageIdentity} /> : null}
+                {isCropperVisible ?
+                    <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} onClose={this.onOpenCropScreen.bind(this)}/> : null}
+
             </div>
         );
     }

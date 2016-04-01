@@ -82,15 +82,14 @@ const RESIZE_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\
     // imageLookup: CR.Images.imageLookup // TODO: does not work
     currentImageValue: UI.Inspector.currentImageValue,
     focusedNode: CR.Nodes.focusedSelector,
-    cropScreenVisible: $get(['ui', 'editors', 'image', 'cropScreenVisible'])
+    visibleDetailsScreen: $get('ui.editors.image.visibleDetailsScreen')
 }), {
-    openCropScreen: actions.UI.Editors.Image.openCropScreen, // TODO: toggle
+    toggleImageDetailsScreen: actions.UI.Editors.Image.toggleImageDetailsScreen,
     updateImage: actions.UI.Editors.Image.updateImage
 })
 export default class Image extends Component {
     static propTypes = {
         //value: PropTypes.object.isRequired
-        // TODO: public configuration for editors??
         //imagePreviewMaximumDimensions: {width: 288, height: 216},
         // identifier
 
@@ -100,6 +99,7 @@ export default class Image extends Component {
 
     isFeatureEnabled(featureName) {
         const features = Object.assign({}, DEFAULT_FEATURES, this.props.features);
+        return true;
         return features[featureName];
     }
 
@@ -144,25 +144,25 @@ export default class Image extends Component {
         }
     }
 
-    onOpenCropScreen() {
-        this.props.openCropScreen(cropScreenIdentifier(this.props.identifier))
+    onToggleCropScreen() {
+        this.props.toggleImageDetailsScreen(cropScreenIdentifier(this.props.identifier))
     }
 
-    onOpenMediaSelectionScreen() {
-        this.props.openCropScreen(mediaSelectionScreenIdentifier(this.props.identifier))
+    onToggleMediaSelectionScreen() {
+        this.props.toggleImageDetailsScreen(mediaSelectionScreenIdentifier(this.props.identifier))
     }
     onRemoveFile() {
-        this.props.openCropScreen(false);
+        this.props.toggleImageDetailsScreen(false);
         this.props.onChange($set('__identity', '', this.props.value));
     }
 
     onMediaSelected(assetIdentifier) {
         this.props.onChange($set('__identity', assetIdentifier, this.props.value));
-        this.onOpenMediaSelectionScreen(); // Closes it again
+        this.onToggleMediaSelectionScreen(); // Closes it again
     }
 
-    onOpenMediaDetailsScreen() {
-        this.props.openCropScreen(mediaDetailsScreenIdentifier(this.props.identifier));
+    onToggleMediaDetailsScreen() {
+        this.props.toggleImageDetailsScreen(mediaDetailsScreenIdentifier(this.props.identifier));
     }
 
     onThumbnailClicked() {
@@ -172,7 +172,7 @@ export default class Image extends Component {
             image = this.props.currentImageValue(imageIdentity);
         }
         if (image) {
-            this.onOpenMediaDetailsScreen();
+            this.onToggleMediaDetailsScreen();
         } else {
             this.onChooseFile();
         }
@@ -229,9 +229,9 @@ export default class Image extends Component {
             height: cropInformationRelativeToOriginalImage.height / imageHeight * 100
         };
 
-        const isCropperVisible = (cropScreenIdentifier(this.props.identifier) === this.props.cropScreenVisible);
-        const isMediaSelectionScreenVisible = (mediaSelectionScreenIdentifier(this.props.identifier) === this.props.cropScreenVisible);
-        const isMediaDetailsScreenVisible = (mediaDetailsScreenIdentifier(this.props.identifier) === this.props.cropScreenVisible);
+        const isCropperVisible = (cropScreenIdentifier(this.props.identifier) === this.props.visibleDetailsScreen);
+        const isMediaSelectionScreenVisible = (mediaSelectionScreenIdentifier(this.props.identifier) === this.props.visibleDetailsScreen);
+        const isMediaDetailsScreenVisible = (mediaDetailsScreenIdentifier(this.props.identifier) === this.props.visibleDetailsScreen);
 
 
         // Thumbnail-inner has style width and height
@@ -246,10 +246,10 @@ export default class Image extends Component {
                 </Dropzone>
 
                 <div>
-                    <Button style="small" isPressed={isMediaSelectionScreenVisible} onClick={this.onOpenMediaSelectionScreen.bind(this)}><I18n id="TYPO3.Neos:Main:media" fallback="Media" /></Button>
+                    <Button style="small" isPressed={isMediaSelectionScreenVisible} onClick={this.onToggleMediaSelectionScreen.bind(this)}><I18n id="TYPO3.Neos:Main:media" fallback="Media" /></Button>
                     <Button style="small" onClick={this.onChooseFile.bind(this)}><I18n id={this.props.fileChooserLabel} fallback="Choose file" /></Button>
                     <Button style="small" onClick={this.onRemoveFile.bind(this)}><I18n id="TYPO3.Neos:Main:remove" fallback="Remove" /></Button>
-                    {imageLoaded && this.isFeatureEnabled('crop') ? <Button style="small" className={style['imageEditor--cropButton']} isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
+                    {imageLoaded && this.isFeatureEnabled('crop') ? <Button style="small" className={style['imageEditor--cropButton']} isPressed={isCropperVisible} onClick={this.onToggleCropScreen.bind(this)}>
                         <I18n id="TYPO3.Neos:Main:crop" fallback="Crop" />
                     </Button> : null}
                 </div>
@@ -259,11 +259,11 @@ export default class Image extends Component {
                 <div style={{"paddingBottom": "50px"}}>TODO remove this</div>
 
                 {isMediaSelectionScreenVisible ?
-                    <MediaSelectionScreen onClose={this.onOpenMediaSelectionScreen.bind(this)} onComplete={this.onMediaSelected.bind(this)} /> : null}
+                    <MediaSelectionScreen onClose={this.onToggleMediaSelectionScreen.bind(this)} onComplete={this.onMediaSelected.bind(this)} /> : null}
                 {isMediaDetailsScreenVisible ?
-                    <MediaDetailsScreen onClose={this.onOpenMediaDetailsScreen.bind(this)} imageIdentity={imageIdentity} /> : null}
+                    <MediaDetailsScreen onClose={this.onToggleMediaDetailsScreen.bind(this)} imageIdentity={imageIdentity} /> : null}
                 {isCropperVisible ?
-                    <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} onClose={this.onOpenCropScreen.bind(this)}/> : null}
+                    <ImageCropper sourceImage={previewImageResourceUri} onComplete={this.onCrop.bind(this)} crop={crop} onClose={this.onToggleCropScreen.bind(this)}/> : null}
 
             </div>
         );

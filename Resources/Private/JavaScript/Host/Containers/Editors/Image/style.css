@@ -31,6 +31,9 @@ $maxImageHeight: calc(($sidebarWidth - $spacing * 2) / 4 * 3);
     overflow: hidden;
 }
 
+.imageEditor--cropButton {
+    float: right;
+}
 
 
 .mediaSelectionScreen__iframe {

@@ -246,10 +246,10 @@ export default class Image extends Component {
                 </Dropzone>
 
                 <div>
-                    <Button isPressed={isMediaSelectionScreenVisible} onClick={this.onOpenMediaSelectionScreen.bind(this)}>Media</Button>
-                    <Button onClick={this.onChooseFile.bind(this)}><I18n id={this.props.fileChooserLabel} fallback="Choose file" /></Button>
-                    <Button onClick={this.onRemoveFile.bind(this)}>Remove</Button>
-                    {imageLoaded && this.isFeatureEnabled('crop') ? <Button isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
+                    <Button style="small" isPressed={isMediaSelectionScreenVisible} onClick={this.onOpenMediaSelectionScreen.bind(this)}>Media</Button>
+                    <Button style="small" onClick={this.onChooseFile.bind(this)}><I18n id={this.props.fileChooserLabel} fallback="Choose file" /></Button>
+                    <Button style="small" onClick={this.onRemoveFile.bind(this)}>Remove</Button>
+                    {imageLoaded && this.isFeatureEnabled('crop') ? <Button style="small" className={style['imageEditor--cropButton']} isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
                         Crop
                     </Button> : null}
                 </div>

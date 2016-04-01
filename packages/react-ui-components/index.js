@@ -16,6 +16,7 @@ import Portal from './Portal/index';
 import SideBar from './SideBar/index';
 import Tabs from './Tabs/index';
 import TextInput from './TextInput/index';
+import TextArea from './TextArea/index';
 import ToggablePanel from './ToggablePanel/index';
 import Tree from './Tree/index';
 
@@ -38,6 +39,7 @@ export {
     SideBar,
     Tabs,
     TextInput,
+    TextArea,
     ToggablePanel,
     Tree
 };

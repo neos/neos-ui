@@ -11,11 +11,10 @@ export const actions = {
 // Helper function to exchange immutable types at certain paths
 //
 const fixProperties = (...conversions) => subject => conversions.reduce(
-    (subject, [path, wrongType, correctedType]) => $set(
+    (subject, [path, WrongType, CorrectedType]) => $set(
         path,
-        $get(path, subject) instanceof wrongType
-            ? new correctedType()
-            : $get(path, subject)
+        $get(path, subject) instanceof WrongType ?
+            new CorrectedType() : $get(path, subject)
         ,
         subject
     ),

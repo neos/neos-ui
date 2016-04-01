@@ -5,23 +5,23 @@ import {Map} from 'immutable';
 
 
 const OPEN_CROP_SCREEN = '@packagefactory/guevara/UI/Editors/Image/OPEN_CROP_SCREEN';
-const CROP_IMAGE = '@packagefactory/guevara/UI/Editors/Image/CROP_IMAGE';
+const UPDATE_IMAGE = '@packagefactory/guevara/UI/Editors/Image/UPDATE_IMAGE';
 
 
 const openCropScreen = createAction(OPEN_CROP_SCREEN, (cropImageIdentifier) => ({cropImageIdentifier}));
-const cropImage = createAction(CROP_IMAGE, (nodeContextPath, imageUuid, transientImage) => ({nodeContextPath, imageUuid, transientImage}));
+const updateImage = createAction(UPDATE_IMAGE, (nodeContextPath, imageUuid, transientImage) => ({nodeContextPath, imageUuid, transientImage}));
 
 //
 // Export the actions
 //
 export const actions = {
     openCropScreen,
-    cropImage
+    updateImage
 };
 
 export const actionTypes = {
     OPEN_CROP_SCREEN,
-    CROP_IMAGE
+    UPDATE_IMAGE
 };
 
 //
@@ -43,5 +43,5 @@ export const reducer = {
         }
         return $set(CROP_SCREEN_STATE_PATH, cropImageIdentifier, state);
     },
-    [CROP_IMAGE]: ({nodeContextPath, imageUuid, transientImage}) => $set(['ui', 'inspector', 'valuesByNodePath', nodeContextPath, 'images', imageUuid], transientImage) // !!! DIFFERENT PATH -> in ui.inspector!!!
+    [UPDATE_IMAGE]: ({nodeContextPath, imageUuid, transientImage}) => $set(['ui', 'inspector', 'valuesByNodePath', nodeContextPath, 'images', imageUuid], transientImage) // !!! DIFFERENT PATH -> in ui.inspector!!!
 };

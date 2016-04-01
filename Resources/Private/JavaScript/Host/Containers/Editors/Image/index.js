@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$set, $transform, $get, $map, $override} from 'plow-js';
+import {$set, $drop, $transform, $get, $map, $override} from 'plow-js';
 import {UI, CR} from 'Host/Selectors/index';
 import style from './style.css';
 import Dropzone from 'react-dropzone';
@@ -15,6 +15,7 @@ import {
 import ImageCropper from './image-cropper';
 import MediaSelectionScreen from './media-selection-screen';
 import MediaDetailsScreen from './media-details-screen';
+import ResizeControls from './resize-controls';
 
 const extractCropInformationRelativeToOriginalDimensions = (image) => {
     const cropImageAdjustment = $get(['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'], image);
@@ -28,6 +29,15 @@ const extractCropInformationRelativeToOriginalDimensions = (image) => {
         x: 0,
         y: 0
     };
+};
+
+const extractResizeImageAdjustment = (image) => {
+    const resizeImageAdjustment = $get(['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'], image);
+
+    if (resizeImageAdjustment) {
+        return resizeImageAdjustment.toJS();
+    }
+    return null;
 };
 
 /**
@@ -66,6 +76,8 @@ const cropScreenIdentifier = value => value + '#crop';
 const mediaSelectionScreenIdentifier = value => value + '#mediaSelection';
 const mediaDetailsScreenIdentifier = value => value + '#mediaDetails';
 
+const RESIZE_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'];
+
 @connect($transform({
     // imageLookup: CR.Images.imageLookup // TODO: does not work
     currentImageValue: UI.Inspector.currentImageValue,
@@ -73,7 +85,7 @@ const mediaDetailsScreenIdentifier = value => value + '#mediaDetails';
     cropScreenVisible: $get(['ui', 'editors', 'image', 'cropScreenVisible'])
 }), {
     openCropScreen: actions.UI.Editors.Image.openCropScreen, // TODO: toggle
-    cropImage: actions.UI.Editors.Image.cropImage
+    updateImage: actions.UI.Editors.Image.updateImage
 })
 export default class Image extends Component {
     static propTypes = {
@@ -114,7 +126,22 @@ export default class Image extends Component {
         image = $override(['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'], cropAdjustments, image);
 
         // TODO: we basically would need to create a new Image adjustment probably????
-        this.props.cropImage($get('contextPath', this.props.focusedNode), imageIdentity, image);
+        this.props.updateImage($get('contextPath', this.props.focusedNode), imageIdentity, image);
+    }
+
+    onResize(resizeAdjustment) {
+        const imageIdentity = $get('__identity', this.props.value);
+
+        let image;
+        if (imageIdentity) {
+            image = this.props.currentImageValue(imageIdentity);
+        }
+
+        if (resizeAdjustment) {
+            this.props.updateImage($get('contextPath', this.props.focusedNode), imageIdentity, $set(RESIZE_IMAGE_ADJUSTMENT, resizeAdjustment, image));
+        } else {
+            this.props.updateImage($get('contextPath', this.props.focusedNode), imageIdentity, $drop(RESIZE_IMAGE_ADJUSTMENT, image));
+        }
     }
 
     onOpenCropScreen() {
@@ -226,6 +253,9 @@ export default class Image extends Component {
                         Crop
                     </Button> : null}
                 </div>
+
+                {imageLoaded && this.isFeatureEnabled('resize') ? <ResizeControls imageDimensions={cropInformationRelativeToOriginalImage} resizeAdjustment={extractResizeImageAdjustment(image)} onChange={this.onResize.bind(this)} />: null}
+
                 <div style={{"paddingBottom": "50px"}}>TODO remove this</div>
 
                 {isMediaSelectionScreenVisible ?

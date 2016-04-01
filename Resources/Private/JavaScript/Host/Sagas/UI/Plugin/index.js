@@ -22,8 +22,9 @@ export function* watchNodes(getState) {
         const observers = getObservers('nodes.byContextPath', contextPath);
 
         try {
-            observers.forEach(observer => observer(node && node.toJS()));
+            observers.forEach(observer => observer(node));
         } catch (err) {
+            console.error(err);
             yield put(actions.UI.FlashMessages.add('@packagefactory/guevara/ui/plugin/observer/watchNodes',
                 err.message, 'error', 5000));
         }
@@ -45,6 +46,7 @@ export function* watchFocusedNode(getState) {
         try {
             observers.forEach(observer => observer({node, typoscriptPath}));
         } catch (err) {
+            console.error(err);
             yield put(actions.UI.FlashMessages.add('@packagefactory/guevara/ui/plugin/observer/watchFocusedNode',
                 err.message, 'error', 5000));
         }
@@ -66,6 +68,7 @@ export function* watchHoveredNode(getState) {
         try {
             observers.forEach(observer => observer({node, typoscriptPath}));
         } catch (err) {
+            console.error(err);
             yield put(actions.UI.FlashMessages.add('@packagefactory/guevara/ui/plugin/observer/watchHoveredNode',
                 err.message, 'error', 5000));
         }

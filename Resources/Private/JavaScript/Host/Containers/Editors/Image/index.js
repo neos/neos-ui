@@ -57,6 +57,11 @@ const imagePreviewMaximumDimensions = {
     height: 216
 };
 
+const DEFAULT_FEATURES = {
+    crop: true,
+    resize: false
+};
+
 const cropScreenIdentifier = value => value + '#crop';
 const mediaSelectionScreenIdentifier = value => value + '#mediaSelection';
 const mediaDetailsScreenIdentifier = value => value + '#mediaDetails';
@@ -80,6 +85,11 @@ export default class Image extends Component {
         // I18N key
         fileChooserlabel: PropTypes.string
     };
+
+    isFeatureEnabled(featureName) {
+        const features = Object.assign({}, DEFAULT_FEATURES, this.props.features);
+        return features[featureName];
+    }
 
     onChooseFile() {
         this.refs.dropzone.open();
@@ -212,7 +222,7 @@ export default class Image extends Component {
                     <Button isPressed={isMediaSelectionScreenVisible} onClick={this.onOpenMediaSelectionScreen.bind(this)}>Media</Button>
                     <Button onClick={this.onChooseFile.bind(this)}><I18n id={this.props.fileChooserLabel} fallback="Choose file" /></Button>
                     <Button onClick={this.onRemoveFile.bind(this)}>Remove</Button>
-                    {imageLoaded ? <Button isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
+                    {imageLoaded && this.isFeatureEnabled('crop') ? <Button isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
                         Crop
                     </Button> : null}
                 </div>

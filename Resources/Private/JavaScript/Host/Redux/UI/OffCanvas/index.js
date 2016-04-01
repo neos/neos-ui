@@ -26,13 +26,12 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = () => new Map({
-    ui: new Map({
-        offCanvas: new Map({
-            isHidden: true
-        })
+export const hydrate = () => $set(
+    'ui.offCanvas',
+    new Map({
+        isHidden: true
     })
-});
+);
 
 //
 // Export the reducer

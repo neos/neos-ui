@@ -54,9 +54,7 @@ const hydrators = [
 //
 export function configureStore({serverState = {}} = {}) {
     const mergedInitialState = hydrators.reduce((state, hydrator) => {
-        return state.mergeDeep(
-            hydrator(serverState)
-        );
+        return hydrator(serverState)(state);
     }, new Map());
     const store = createStore(rootReducer, mergedInitialState, compose(
         applyMiddleware(sagaMiddleWare),

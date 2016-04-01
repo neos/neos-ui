@@ -46,18 +46,13 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = state => {
-    const {workspaces} = $get('cr', state);
-
-    return new Map({
-        cr: new Map({
-            workspaces: new Map({
-                byName: Immutable.fromJS(workspaces.byName),
-                active: workspaces.active || $head('byName', workspaces)
-            })
-        })
-    });
-};
+export const hydrate = state => $set(
+    'cr.workspaces',
+    new Map({
+        byName: Immutable.fromJS($get('cr.workspaces.byName', state)),
+        active: $get('cr.workspaces.active', state) || $head('cr.workspaces.byName', state)
+    })
+);
 
 //
 // Export the reducer

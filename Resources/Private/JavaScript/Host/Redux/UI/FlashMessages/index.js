@@ -41,11 +41,10 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = () => new Map({
-    ui: new Map({
-        flashMessages: new Map()
-    })
-});
+export const hydrate = () => $set(
+    'ui.flashMessages',
+    new Map()
+);
 
 //
 // Export the reducer

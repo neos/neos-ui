@@ -54,15 +54,14 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = () => new Map({
-    ui: new Map({
-        remote: new Map({
-            isSaving: false,
-            isPublishing: false,
-            isDiscarding: false
-        })
+export const hydrate = () => $set(
+    'ui.remove',
+    new Map({
+        isSaving: false,
+        isPublishing: false,
+        isDiscarding: false
     })
-});
+);
 
 //
 // Export the reducer

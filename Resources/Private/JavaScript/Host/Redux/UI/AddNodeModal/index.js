@@ -26,14 +26,13 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = () => new Map({
-    ui: new Map({
-        addNodeModal: new Map({
-            referenceNode: '',
-            mode: 'insert'
-        })
+export const hydrate = () => $set(
+    'ui.addNodeModal',
+    new Map({
+        referenceNode: '',
+        mode: 'insert'
     })
-});
+);
 
 //
 // Export error messages for testing

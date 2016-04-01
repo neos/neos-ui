@@ -74,26 +74,21 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = state => {
-    const {nodes} = $get('cr', state);
-
-    return new Map({
-        cr: new Map({
-            nodes: new Map({
-                byContextPath: Immutable.fromJS(nodes.byContextPath),
-                siteNode: nodes.siteNode,
-                focused: new Map({
-                    contextPath: '',
-                    typoscriptPath: ''
-                }),
-                hovered: new Map({
-                    contextPath: '',
-                    typoscriptPath: ''
-                })
-            })
+export const hydrate = state => $set(
+    'cr.nodes',
+    new Map({
+        byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)),
+        siteNode: $get('cr.nodes.siteNode', state),
+        focused: new Map({
+            contextPath: '',
+            typoscriptPath: ''
+        }),
+        hovered: new Map({
+            contextPath: '',
+            typoscriptPath: ''
         })
-    });
-};
+    })
+);
 
 //
 // Export the reducer

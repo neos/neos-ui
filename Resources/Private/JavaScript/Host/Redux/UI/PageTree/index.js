@@ -47,16 +47,15 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = () => new Map({
-    ui: new Map({
-        pageTree: new Map({
-            focused: '',
-            uncollapsed: new Set(),
-            loading: new Set(),
-            errors: new Set()
-        })
+export const hydrate = () => $set(
+    'ui.pageTree',
+    new Map({
+        focused: '',
+        uncollapsed: new Set(),
+        loading: new Set(),
+        errors: new Set()
     })
-});
+);
 
 //
 // Export the reducer

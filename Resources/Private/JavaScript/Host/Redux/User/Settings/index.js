@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$toggle} from 'plow-js';
+import {$set, $toggle} from 'plow-js';
 
 const TOGGLE_AUTO_PUBLISHING = '@packagefactory/guevara/User/Settings/TOGGLE_AUTO_PUBLISHING';
 
@@ -19,13 +19,12 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = () => new Map({
-    user: new Map({
-        settings: new Map({
-            isAutoPublishingEnabled: false
-        })
+export const hydrate = () => $set(
+    'user.settings',
+    new Map({
+        isAutoPublishingEnabled: false
     })
-});
+);
 
 //
 // Export the reducer

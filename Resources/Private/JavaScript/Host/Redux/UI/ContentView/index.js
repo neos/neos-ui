@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$set} from 'plow-js';
+import {$set, $get} from 'plow-js';
 
 const SET_CONTEXT_PATH = '@packagefactory/guevara/UI/PageTree/SET_CONTEXT_PATH';
 const SET_PREVIEW_URL = '@packagefactory/guevara/UI/PageTree/SET_PREVIEW_URL';
@@ -31,15 +31,14 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = state => new Map({
-    ui: new Map({
-        contentView: new Map({
-            contextPath: state.ui.contentView.contextPath,
-            previewUrl: '',
-            src: state.ui.contentView.src
-        })
+export const hydrate = state => $set(
+    'ui.contentView',
+    new Map({
+        contextPath: $get('ui.contentView.contextPath', state) || '',
+        previewUrl: '',
+        src: $get('ui.contentView.src', state) || ''
     })
-});
+);
 
 //
 // Export the reducer

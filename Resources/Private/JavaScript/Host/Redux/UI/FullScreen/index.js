@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$toggle} from 'plow-js';
+import {$set, $toggle} from 'plow-js';
 
 const TOGGLE = '@packagefactory/guevara/UI/FullScreen/TOGGLE';
 
@@ -19,13 +19,12 @@ export const actions = {
 //
 // Export the initial state hydrator
 //
-export const hydrate = () => new Map({
-    ui: new Map({
-        fullScreen: new Map({
-            isFullScreen: false
-        })
+export const hydrate = () => $set(
+    'ui.fullScreen',
+    new Map({
+        isFullScreen: false
     })
-});
+);
 
 //
 // Export the reducer

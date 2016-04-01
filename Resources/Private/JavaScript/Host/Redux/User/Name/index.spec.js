@@ -1,5 +1,6 @@
 import {createStore} from 'redux';
-import {reducer, initialState} from './index.js';
+import {Map} from 'immutable';
+import {reducer, hydrate} from './index.js';
 
 import {handleActions} from 'Shared/Utilities/index';
 
@@ -9,11 +10,7 @@ describe('"host.redux.user.name" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                user: {
-                    name: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -26,16 +23,16 @@ describe('"host.redux.user.name" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.user.name).to.be.an('object');
+            expect(state.get('user').get('name')).to.be.an.instanceOf(Map);
         });
 
         it('should initially contain placeholder data.', () => {
             const state = store.getState();
 
-            expect(state.user.name).to.deep.equal({
+            expect(state.get('user').get('name').toJS()).to.deep.equal({
                 title: '',
                 firstName: '',
                 middleName: '',

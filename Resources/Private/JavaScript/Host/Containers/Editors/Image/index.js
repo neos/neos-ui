@@ -8,7 +8,8 @@ import {actions} from 'Host/Redux/index';
 
 import {
     Icon,
-    Button
+    Button,
+    I18n
 } from 'Components/index';
 
 import ImageCropper from './image-cropper';
@@ -75,6 +76,9 @@ export default class Image extends Component {
         // TODO: public configuration for editors??
         //imagePreviewMaximumDimensions: {width: 288, height: 216},
         // identifier
+
+        // I18N key
+        fileChooserlabel: PropTypes.string
     };
 
     onChooseFile() {
@@ -206,7 +210,7 @@ export default class Image extends Component {
 
                 <div>
                     <Button isPressed={isMediaSelectionScreenVisible} onClick={this.onOpenMediaSelectionScreen.bind(this)}>Media</Button>
-                    <Button onClick={this.onChooseFile.bind(this)}>Choose</Button>
+                    <Button onClick={this.onChooseFile.bind(this)}><I18n id={this.props.fileChooserLabel} fallback="Choose file" /></Button>
                     <Button onClick={this.onRemoveFile.bind(this)}>Remove</Button>
                     {imageLoaded ? <Button isPressed={isCropperVisible} onClick={this.onOpenCropScreen.bind(this)}>
                         Crop

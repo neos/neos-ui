@@ -1,7 +1,9 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
+
+import {reducer, actions, hydrate} from './index.js';
 
 const {add} = actions;
 
@@ -11,11 +13,7 @@ describe('"host.redux.transient.nodes" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                cr: {
-                    nodes: initialState
-                }
-            }
+            hydrate({})({})
         );
 
         done();
@@ -27,12 +25,10 @@ describe('"host.redux.transient.nodes" ', () => {
         done();
     });
 
-    describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
-            const state = store.getState();
-
-            expect(state.cr.nodes).to.be.an('object');
-        });
+    describe('hydrate.', () => {
+        it('should take cr.nodes.byContextPath from the server state.');
+        it('should take cr.nodes.siteNode from the server state.');
+        it('should deliver a vlid initial state.');
     });
 
     describe('"add" action.', () => {
@@ -43,10 +39,11 @@ describe('"host.redux.transient.nodes" ', () => {
                 foo: 'bar'
             }));
 
-            const addedItem = store.getState().cr.nodes.byContextPath[contextPath];
+            const addedItem = store.getState().get('cr').get('nodes').get('byContextPath').get(contextPath);
 
             expect(addedItem).to.not.be.an('undefined');
-            expect(addedItem).to.deep.equal({
+            expect(addedItem).to.be.an.instanceOf(Map);
+            expect(addedItem.toJS()).to.deep.equal({
                 foo: 'bar'
             });
         });

@@ -4,7 +4,7 @@ import {
     publishableNodesInDocumentSelector
 } from './index.js';
 
-describe.only('"host.selectors.workspaces" ', () => {
+describe('"host.selectors.workspaces" ', () => {
     let state = null;
 
     beforeEach(done => {

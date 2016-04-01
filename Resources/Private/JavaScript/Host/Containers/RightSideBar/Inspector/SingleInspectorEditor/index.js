@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 import {CR, UI} from 'Host/Selectors/';
 import {Editors} from 'Host/Containers/index';
@@ -52,13 +52,14 @@ export default class SingleInspectorEditor extends Component {
     }
 
     render() {
-        const {currentInspectorValue, property} = this.props;
+        const {currentInspectorValue, property, focusedNode} = this.props;
+        const editorOptions = $get('ui.inspector.editorOptions', property) || {};
         const Editor = resolveEditor(property.ui.inspector.editor);
         const value = currentInspectorValue(property.id);
-        const identifier = `${this.props.focusedNode.contextPath}#${this.props.property.id}`;
+        const identifier = `${focusedNode.contextPath}#${this.props.property.id}`;
 
         if (Editor) {
-            return (<Editor value={value} onChange={this.changeFn} identifier={identifier} />);
+            return (<Editor value={value} onChange={this.changeFn} identifier={identifier} {...editorOptions} />);
         }
 
         return (<div>Missing Editor</div>);

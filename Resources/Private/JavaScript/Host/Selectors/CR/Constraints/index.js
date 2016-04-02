@@ -81,7 +81,6 @@ export const groupedAllowedNodeTypesSelector = createSelector(
                 return groups;
             }, {});
 
-
             // Sort both groups and nodetypes within the group and return as array
             return Object.keys(groups).map(i => {
                 if (groups[i].nodeTypes) {

@@ -13,7 +13,7 @@ describe('"host.redux.ui.flashMessages" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            hydrate({})(new Map)
+            hydrate({})(new Map())
         );
 
         done();

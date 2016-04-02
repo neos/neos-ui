@@ -77,8 +77,8 @@ export const actions = {
 export const hydrate = state => $set(
     'cr.nodes',
     new Map({
-        byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)),
-        siteNode: $get('cr.nodes.siteNode', state),
+        byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)) || new Map(),
+        siteNode: $get('cr.nodes.siteNode', state) || '',
         focused: new Map({
             contextPath: '',
             typoscriptPath: ''

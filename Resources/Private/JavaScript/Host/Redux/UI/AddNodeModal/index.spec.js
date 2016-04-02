@@ -1,7 +1,9 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState, errorMessages} from './index.js';
+import {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
+
+import {reducer, actions, hydrate, errorMessages} from './index.js';
 
 const {open, close} = actions;
 
@@ -11,11 +13,7 @@ describe('"host.redux.ui.addNodeModal" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    addNodeModal: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -28,16 +26,16 @@ describe('"host.redux.ui.addNodeModal" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.ui.addNodeModal).to.be.an('object');
+            expect(state.get('ui').get('addNodeModal')).to.be.an.instanceOf(Map);
         });
 
         it('modal should initially be closed.', () => {
             const state = store.getState();
 
-            expect(state.ui.addNodeModal.referenceNode).to.equal('');
+            expect(state.get('ui').get('addNodeModal').get('referenceNode')).to.equal('');
         });
     });
 
@@ -45,13 +43,13 @@ describe('"host.redux.ui.addNodeModal" ', () => {
         it('should set "referenceNode" key.', () => {
             store.dispatch(open('someContextPath', 'append'));
 
-            expect(store.getState().ui.addNodeModal.referenceNode).to.equal('someContextPath');
+            expect(store.getState().get('ui').get('addNodeModal').get('referenceNode')).to.equal('someContextPath');
         });
 
         it('should set "mode" key.', () => {
             store.dispatch(open('someContextPath', 'append'));
 
-            expect(store.getState().ui.addNodeModal.mode).to.equal('append');
+            expect(store.getState().get('ui').get('addNodeModal').get('mode')).to.equal('append');
         });
 
         it('should throw on incorrect mode.', () => {
@@ -71,7 +69,7 @@ describe('"host.redux.ui.addNodeModal" ', () => {
         it('should set "isOpen" key to false.', () => {
             store.dispatch(close());
 
-            expect(store.getState().ui.addNodeModal.referenceNode).to.equal('');
+            expect(store.getState().get('ui').get('addNodeModal').get('referenceNode')).to.equal('');
         });
     });
 });

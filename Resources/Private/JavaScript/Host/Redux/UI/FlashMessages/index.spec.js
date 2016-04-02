@@ -1,8 +1,9 @@
 import {createStore} from 'redux';
+import {Map} from 'immutable';
+
+import {reducer, actions, hydrate} from './index.js';
 
 import {handleActions} from 'Shared/Utilities/index';
-
-import {reducer, actions, initialState} from './index.js';
 
 const {add, remove} = actions;
 
@@ -12,11 +13,7 @@ describe('"host.redux.ui.flashMessages" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    flashMessages: initialState
-                }
-            }
+            hydrate({})(new Map)
         );
 
         done();
@@ -29,10 +26,10 @@ describe('"host.redux.ui.flashMessages" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.ui.flashMessages).to.be.an('object');
+            expect(state.get('ui').get('flashMessages')).to.be.an.instanceOf(Map);
         });
     });
 
@@ -58,10 +55,11 @@ describe('"host.redux.ui.flashMessages" ', () => {
         it('should be able to add the passed data as a new flashMessage item.', () => {
             store.dispatch(add('myMessageId', 'myMessage', 'error', 300));
 
-            const addedMessage = store.getState().ui.flashMessages.myMessageId;
+            const addedMessage = store.getState().get('ui').get('flashMessages').get('myMessageId');
 
             expect(addedMessage).not.to.be.an('undefined');
-            expect(addedMessage).to.deep.equal({
+            expect(addedMessage).to.be.an.instanceOf(Map);
+            expect(addedMessage.toJS()).to.deep.equal({
                 severity: 'error',
                 id: 'myMessageId',
                 message: 'myMessage',
@@ -74,35 +72,35 @@ describe('"host.redux.ui.flashMessages" ', () => {
             store.dispatch(add('myMessageId2', 'myMessage', 'ERROR', 300));
             store.dispatch(add('myMessageId3', 'myMessage', 'eRrOr', 300));
 
-            const addedMessage1 = store.getState().ui.flashMessages.myMessageId1;
-            const addedMessage2 = store.getState().ui.flashMessages.myMessageId2;
-            const addedMessage3 = store.getState().ui.flashMessages.myMessageId3;
+            const addedMessage1 = store.getState().get('ui').get('flashMessages').get('myMessageId1');
+            const addedMessage2 = store.getState().get('ui').get('flashMessages').get('myMessageId2');
+            const addedMessage3 = store.getState().get('ui').get('flashMessages').get('myMessageId3');
 
-            expect(addedMessage1.severity).to.equal('error');
-            expect(addedMessage2.severity).to.equal('error');
-            expect(addedMessage3.severity).to.equal('error');
+            expect(addedMessage1.get('severity')).to.equal('error');
+            expect(addedMessage2.get('severity')).to.equal('error');
+            expect(addedMessage3.get('severity')).to.equal('error');
         });
 
         it('should set a default timeout of "0" if none was passed for the new flashMessage item.', () => {
             store.dispatch(add('myMessageId', 'myMessage', 'Error'));
 
-            const addedMessage = store.getState().ui.flashMessages.myMessageId;
+            const addedMessage = store.getState().get('ui').get('flashMessages').get('myMessageId');
 
-            expect(addedMessage.timeout).to.equal(0);
+            expect(addedMessage.get('timeout')).to.equal(0);
         });
     });
 
     describe('"remove" action.', () => {
         it('should be able to remove an added flashMessage item for the passed key.', () => {
-            const countBefore = Object.keys(store.getState().ui.flashMessages).length;
+            const countBefore = store.getState().get('ui').get('flashMessages').count();
 
             store.dispatch(add('myMessageId', 'myMessage', 'Error'));
 
-            expect(Object.keys(store.getState().ui.flashMessages).length).to.equal(countBefore + 1);
+            expect(store.getState().get('ui').get('flashMessages').count()).to.equal(countBefore + 1);
 
             store.dispatch(remove('myMessageId'));
 
-            expect(Object.keys(store.getState().ui.flashMessages).length).to.equal(countBefore);
+            expect(store.getState().get('ui').get('flashMessages').count()).to.equal(countBefore);
         });
     });
 });

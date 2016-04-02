@@ -1,7 +1,9 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
+
+import {reducer, actions, hydrate} from './index.js';
 
 const {toggle} = actions;
 
@@ -11,11 +13,7 @@ describe('"host.redux.ui.fullScreen" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    fullScreen: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -28,16 +26,16 @@ describe('"host.redux.ui.fullScreen" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.ui.fullScreen).to.be.an('object');
+            expect(state.get('ui').get('fullScreen')).to.be.an.instanceOf(Map);
         });
 
         it('should initially set fullscreen mode to off.', () => {
             const state = store.getState();
 
-            expect(state.ui.fullScreen.isFullScreen).to.equal(false);
+            expect(state.get('ui').get('fullScreen').get('isFullScreen')).to.equal(false);
         });
     });
 
@@ -45,11 +43,11 @@ describe('"host.redux.ui.fullScreen" ', () => {
         it('should be able to reverse the value of the "isFullScreen" key.', () => {
             store.dispatch(toggle());
 
-            expect(store.getState().ui.fullScreen.isFullScreen).to.equal(true);
+            expect(store.getState().get('ui').get('fullScreen').get('isFullScreen')).to.equal(true);
 
             store.dispatch(toggle());
 
-            expect(store.getState().ui.fullScreen.isFullScreen).to.equal(false);
+            expect(store.getState().get('ui').get('fullScreen').get('isFullScreen')).to.equal(false);
         });
     });
 });

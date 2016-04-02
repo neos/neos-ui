@@ -1,5 +1,6 @@
 import {createAction} from 'redux-actions';
-import {$set} from 'plow-js';
+import Immutable, {Map} from 'immutable';
+import {$set, $head, $get} from 'plow-js';
 
 const UPDATE = '@packagefactory/guevara/CR/Workspaces/UPDATE';
 const SWITCH = '@packagefactory/guevara/CR/Workspaces/SWITCH';
@@ -43,12 +44,15 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    byName: {},
-    active: ''
-};
+export const hydrate = state => $set(
+    'cr.workspaces',
+    new Map({
+        byName: Immutable.fromJS($get('cr.workspaces.byName', state)),
+        active: $get('cr.workspaces.active', state) || $head('cr.workspaces.byName', state)
+    })
+);
 
 //
 // Export the reducer

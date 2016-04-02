@@ -1,5 +1,6 @@
 import {createAction} from 'redux-actions';
-import {$toggle} from 'plow-js';
+import {Map} from 'immutable';
+import {$set, $toggle} from 'plow-js';
 
 const TOGGLE = '@packagefactory/guevara/UI/RightSidebar/TOGGLE';
 
@@ -16,11 +17,14 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    isHidden: false
-};
+export const hydrate = () => $set(
+    'ui.rightSideBar',
+    new Map({
+        isHidden: false
+    })
+);
 
 //
 // Export the reducer

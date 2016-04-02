@@ -7,12 +7,12 @@ const nodeTypeGroupsSelector = $get('cr.nodeTypes.groups');
 
 export const allowedChildNodeTypesSelector = state => nodeTypeName => {
     const nodeTypes = $get(['cr', 'nodeTypes', 'constraints', nodeTypeName, 'nodeTypes'], state);
-    return nodeTypes ? Object.keys(nodeTypes) : [];
+    return nodeTypes ? Object.keys(nodeTypes.toJS()) : [];
 };
 
 export const allowedChildNodeTypesForAutocreatedNodeSelector = state => (nodeTypeName, autoCreatedNodeName) => {
     const nodeTypes = $get(['cr', 'nodeTypes', 'constraints', nodeTypeName, 'childNodes', autoCreatedNodeName, 'nodeTypes'], state);
-    return nodeTypes ? Object.keys(nodeTypes) : [];
+    return nodeTypes ? Object.keys(nodeTypes.toJS()) : [];
 };
 
 export const allowedNodeTypesSelector = createSelector(
@@ -26,6 +26,7 @@ export const allowedNodeTypesSelector = createSelector(
             if (!referenceNode) {
                 throw new Error('Reference node not defined');
             }
+
             if (!referenceNode.nodeType) {
                 throw new Error('Reference node does not have the nodetype set');
             }
@@ -37,17 +38,19 @@ export const allowedNodeTypesSelector = createSelector(
                 throw new Error('Base node does not have the nodetype set');
             }
             const allowedNodeTypes = baseNode.isAutoCreated ?
-                allowedChildNodeTypesForAutocreatedNodeSelector(getParentNode(baseNode.nodeType), baseNode.name) :
-                getAllowedChildNodeTypes(baseNode.nodeType);
+                allowedChildNodeTypesForAutocreatedNodeSelector(getParentNode(baseNode.nodeType.name), baseNode.name) :
+                getAllowedChildNodeTypes(baseNode.nodeType.name);
+
             if (!allowedNodeTypes) {
                 return [];
             }
+
             return allowedNodeTypes.map(nodeTypeName => {
                 const nodeType = getNodeTypeByName(nodeTypeName);
-                if (nodeType) {
-                    nodeType.name = nodeTypeName;
-                }
-                return nodeType;
+                return nodeType && {
+                    ...nodeType.toJS(),
+                    name: nodeTypeName
+                };
             }).filter(i => i);
         }
 );
@@ -57,8 +60,10 @@ export const groupedAllowedNodeTypesSelector = createSelector(
         nodeTypeGroupsSelector,
         allowedNodeTypesSelector
     ],
-    (nodeTypeGroups, getAllowedNodeTypes) =>
-        (referenceNode, mode) => {
+    (immutableNodeTypeGroups, getAllowedNodeTypes) => {
+        const nodeTypeGroups = immutableNodeTypeGroups.toJS();
+
+        return (referenceNode, mode) => {
             // Distribute nodetypes into groups
             const groups = getAllowedNodeTypes(referenceNode, mode).reduce((groups, nodeType) => {
                 // Fallback to 'general' group
@@ -75,6 +80,7 @@ export const groupedAllowedNodeTypesSelector = createSelector(
 
                 return groups;
             }, {});
+
             // Sort both groups and nodetypes within the group and return as array
             return Object.keys(groups).map(i => {
                 if (groups[i].nodeTypes) {
@@ -83,5 +89,6 @@ export const groupedAllowedNodeTypesSelector = createSelector(
                 groups[i].name = i;
                 return groups[i];
             }).filter(i => i.nodeTypes).sort((a, b) => a.position > b.position ? 1 : -1);
-        }
+        };
+    }
 );

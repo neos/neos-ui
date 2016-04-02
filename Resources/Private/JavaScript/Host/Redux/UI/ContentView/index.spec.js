@@ -1,7 +1,9 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
+
+import {reducer, actions, hydrate} from './index.js';
 
 const {
     setContextPath,
@@ -14,11 +16,7 @@ describe('"host.redux.ui.contentView" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    pageTree: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -31,10 +29,10 @@ describe('"host.redux.ui.contentView" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.ui.pageTree).to.be.an('object');
+            expect(state.get('ui').get('contentView')).to.be.an.instanceOf(Map);
         });
     });
 
@@ -44,7 +42,7 @@ describe('"host.redux.ui.contentView" ', () => {
 
             const state = store.getState();
 
-            expect(state.ui.contentView.contextPath).to.equal('someContextPath');
+            expect(state.get('ui').get('contentView').get('contextPath')).to.equal('someContextPath');
         });
     });
 
@@ -54,7 +52,7 @@ describe('"host.redux.ui.contentView" ', () => {
 
             const state = store.getState();
 
-            expect(state.ui.contentView.src).to.equal('http://www.some-source.com/document.html');
+            expect(state.get('ui').get('contentView').get('src')).to.equal('http://www.some-source.com/document.html');
         });
     });
 });

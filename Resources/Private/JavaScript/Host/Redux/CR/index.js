@@ -1,17 +1,17 @@
 import {
     reducer as NodesReducer,
-    initialState as NodesInitialState,
+    hydrate as NodesHydrator,
     actionTypes as NodesActionTypes,
     actions as Nodes
 } from './Nodes/index';
 import {
     reducer as NodeTypesReducer,
-    initialState as NodeTypesInitialState,
+    hydrate as NodeTypesHydrator,
     actions as NodeTypes
 } from './NodeTypes/index';
 import {
     reducer as WorkspacesReducer,
-    initialState as WorkspacesInitialState,
+    hydrate as WorkspacesHydrator,
     actionTypes as WorkspacesActionTypes,
     actions as Workspaces
 } from './Workspaces/index';
@@ -34,13 +34,13 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrators
 //
-export const initialState = {
-    nodes: NodesInitialState,
-    nodeTypes: NodeTypesInitialState,
-    workspaces: WorkspacesInitialState
-};
+export const hydrators = [
+    NodesHydrator,
+    NodeTypesHydrator,
+    WorkspacesHydrator
+];
 
 //
 // Export the reducer

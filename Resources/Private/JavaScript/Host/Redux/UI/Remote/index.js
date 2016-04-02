@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions';
+import {Map} from 'immutable';
 import {$set} from 'plow-js';
 
 const START_SAVING = '@packagefactory/guevara/UI/Remote/START_SAVING';
@@ -51,13 +52,16 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    isSaving: false,
-    isPublishing: false,
-    isDiscarding: false
-};
+export const hydrate = () => $set(
+    'ui.remote',
+    new Map({
+        isSaving: false,
+        isPublishing: false,
+        isDiscarding: false
+    })
+);
 
 //
 // Export the reducer

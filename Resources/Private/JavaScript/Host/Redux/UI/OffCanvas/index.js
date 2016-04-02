@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions';
+import {Map} from 'immutable';
 import {$toggle, $set} from 'plow-js';
 
 const TOGGLE = '@packagefactory/guevara/UI/OffCanvas/TOGGLE';
@@ -23,11 +24,14 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    isHidden: true
-};
+export const hydrate = () => $set(
+    'ui.offCanvas',
+    new Map({
+        isHidden: true
+    })
+);
 
 //
 // Export the reducer

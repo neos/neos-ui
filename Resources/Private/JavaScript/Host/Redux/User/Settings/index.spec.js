@@ -1,7 +1,9 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
+
+import {reducer, actions, hydrate} from './index.js';
 
 const {toggleAutoPublishing} = actions;
 
@@ -11,11 +13,7 @@ describe('"host.redux.user.settings" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                user: {
-                    settings: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -28,16 +26,16 @@ describe('"host.redux.user.settings" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.user.settings).to.be.an('object');
+            expect(state.get('user').get('settings')).to.be.an.instanceOf(Map);
         });
 
         it('should initially mark the auto publishing mode as deactivated.', () => {
             const state = store.getState();
 
-            expect(state.user.settings.isAutoPublishingEnabled).to.equal(false);
+            expect(state.get('user').get('settings').get('isAutoPublishingEnabled')).to.equal(false);
         });
     });
 
@@ -45,11 +43,11 @@ describe('"host.redux.user.settings" ', () => {
         it('should be able to reverse the value of the "isAutoPublishingEnabled" key.', () => {
             store.dispatch(toggleAutoPublishing());
 
-            expect(store.getState().user.settings.isAutoPublishingEnabled).to.equal(true);
+            expect(store.getState().get('user').get('settings').get('isAutoPublishingEnabled')).to.equal(true);
 
             store.dispatch(toggleAutoPublishing());
 
-            expect(store.getState().user.settings.isAutoPublishingEnabled).to.equal(false);
+            expect(store.getState().get('user').get('settings').get('isAutoPublishingEnabled')).to.equal(false);
         });
     });
 });

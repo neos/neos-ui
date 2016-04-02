@@ -1,3 +1,5 @@
+import Immutable from 'immutable';
+
 import {
     allowedChildNodeTypesSelector,
     allowedChildNodeTypesForAutocreatedNodeSelector,
@@ -9,21 +11,27 @@ describe('"host.selectors.cr.constraints" ', () => {
     let state = null;
 
     beforeEach(done => {
-        state = {
+        state = Immutable.fromJS({
             cr: {
                 nodes: {
                     byContextPath: {
                         '/sites/neosdemotypo3org@user-bob;language=en_US': {
                             name: 'neosdemotypo3org',
-                            nodeType: 'TYPO3.Neos.NodeTypes:Page'
+                            nodeType: {
+                                name: 'TYPO3.Neos.NodeTypes:Page'
+                            }
                         },
                         '/sites/neosdemotypo3org/download@user-bob;language=en_US': {
                             name: 'download',
-                            nodeType: 'TYPO3.Neos.NodeTypes:Page'
+                            nodeType: {
+                                name: 'TYPO3.Neos.NodeTypes:Page'
+                            }
                         },
                         '/sites/neosdemotypo3org/download/inside@user-bob;language=en_US': {
                             name: 'inside',
-                            nodeType: 'TYPO3.Neos.NodeTypes:Page'
+                            nodeType: {
+                                name: 'TYPO3.Neos.NodeTypes:Page'
+                            }
                         }
                     }
                 },
@@ -82,7 +90,7 @@ describe('"host.selectors.cr.constraints" ', () => {
                     }
                 }
             }
-        };
+        });
 
         done();
     });
@@ -106,7 +114,8 @@ describe('"host.selectors.cr.constraints" ', () => {
 
     describe('allowedNodeTypesSelector.', () => {
         it('should work.', () => {
-            const referenceNode = state.cr.nodes.byContextPath['/sites/neosdemotypo3org/download/inside@user-bob;language=en_US'];
+            const referenceNode = state.get('cr').get('nodes').get('byContextPath')
+                .get('/sites/neosdemotypo3org/download/inside@user-bob;language=en_US').toJS();
             const mode = 'insert';
             const result = allowedNodeTypesSelector(state)(referenceNode, mode);
             const expected = [
@@ -140,7 +149,8 @@ describe('"host.selectors.cr.constraints" ', () => {
 
     describe('groupedAllowedNodeTypesSelector.', () => {
         it('should work.', () => {
-            const referenceNode = state.cr.nodes.byContextPath['/sites/neosdemotypo3org/download/inside@user-bob;language=en_US'];
+            const referenceNode = state.get('cr').get('nodes').get('byContextPath')
+                    .get('/sites/neosdemotypo3org/download/inside@user-bob;language=en_US').toJS();
             const mode = 'insert';
             const result = groupedAllowedNodeTypesSelector(state)(referenceNode, mode);
             const expected = [
@@ -182,7 +192,7 @@ describe('"host.selectors.cr.constraints" ', () => {
                     ]
                 }
             ];
-            expect(result).to.eql(expected);
+            expect(result).to.deep.equal(expected);
         });
     });
 });

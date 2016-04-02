@@ -1,8 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+
 import {actions} from 'Host/Redux/index';
-import style from './style.css';
+import NeosPropTypes from 'Shared/PropTypes/index';
 import {
     Icon,
     Dialog,
@@ -17,8 +18,9 @@ import {
     nodeTypesForAddNodeModalSelector
 } from 'Host/Selectors/UI/AddNodeModal/index';
 
+import style from './style.css';
+
 @connect($transform({
-    nodeTypes: $get('cr.nodeTypes.byName'),
     referenceNode: referenceNodeSelector,
     groupedAllowedNodeTypes: nodeTypesForAddNodeModalSelector,
     mode: $get('ui.addNodeModal.mode')
@@ -28,10 +30,10 @@ import {
 })
 export default class AddNodeModal extends Component {
     static propTypes = {
-        nodeTypes: PropTypes.object.isRequired,
-        referenceNode: PropTypes.object,
+        referenceNode: NeosPropTypes.cr.node,
         groupedAllowedNodeTypes: PropTypes.array,
         mode: PropTypes.string.isRequired,
+
         close: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired
     };

@@ -1,5 +1,6 @@
 import {createAction} from 'redux-actions';
-import {$set, $add, $get} from 'plow-js';
+import Immutable, {Map} from 'immutable';
+import {$set, $get} from 'plow-js';
 
 const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
 const FOCUS = '@packagefactory/guevara/Transient/Nodes/FOCUS';
@@ -71,40 +72,41 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    byContextPath: {},
-    siteNode: '',
-    focused: {
-        contextPath: '',
-        typoscriptPath: ''
-    },
-    hovered: {
-        contextPath: '',
-        typoscriptPath: ''
-    }
-};
+export const hydrate = state => $set(
+    'cr.nodes',
+    new Map({
+        byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)) || new Map(),
+        siteNode: $get('cr.nodes.siteNode', state) || '',
+        focused: new Map({
+            contextPath: '',
+            typoscriptPath: ''
+        }),
+        hovered: new Map({
+            contextPath: '',
+            typoscriptPath: ''
+        })
+    })
+);
 
 //
 // Export the reducer
 //
 export const reducer = {
-    [ADD]: ({contextPath, data}) => $add('cr.nodes.byContextPath', {
-        [contextPath]: data
-    }),
-    [FOCUS]: ({contextPath, typoscriptPath}) => $set('cr.nodes.focused', {contextPath, typoscriptPath}),
+    [ADD]: ({contextPath, data}) => $set(['cr', 'nodes', 'byContextPath', contextPath], Immutable.fromJS({...data})),
+    [FOCUS]: ({contextPath, typoscriptPath}) => $set('cr.nodes.focused', new Map({contextPath, typoscriptPath})),
     [BLUR]: ({contextPath}) => state => {
         if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
-            return $set('cr.nodes.focused', initialState.focused, state);
+            return $set('cr.nodes.focused', '', state);
         }
 
         return state;
     },
-    [HOVER]: ({contextPath, typoscriptPath}) => $set('cr.nodes.hovered', {contextPath, typoscriptPath}),
+    [HOVER]: ({contextPath, typoscriptPath}) => $set('cr.nodes.hovered', new Map({contextPath, typoscriptPath})),
     [UNHOVER]: ({contextPath}) => state => {
         if ($get('cr.nodes.hovered.contextPath', state) === contextPath) {
-            return $set('cr.nodes.hovered', initialState.hovered, state);
+            return $set('cr.nodes.hovered', '', state);
         }
 
         return state;

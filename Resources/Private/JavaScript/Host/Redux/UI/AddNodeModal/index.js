@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions';
+import {Map} from 'immutable';
 import {$all, $set} from 'plow-js';
 
 const OPEN = '@packagefactory/guevara/UI/AddNodeModal/OPEN';
@@ -23,12 +24,15 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    referenceNode: '',
-    mode: 'insert'
-};
+export const hydrate = () => $set(
+    'ui.addNodeModal',
+    new Map({
+        referenceNode: '',
+        mode: 'insert'
+    })
+);
 
 //
 // Export error messages for testing

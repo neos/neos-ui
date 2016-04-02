@@ -16,7 +16,6 @@ import * as feedbackHandler from './Service/FeedbackHandler/index';
 
 import {
     ContentView,
-    FooterBar,
     TopBar,
     LeftSideBar,
     OffCanvas,
@@ -66,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <LeftSideBar />
                     <ContentView />
                     <RightSideBar />
-                    <FooterBar />
               </div>
             </Provider>
         </div>,

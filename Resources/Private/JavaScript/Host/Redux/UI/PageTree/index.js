@@ -1,7 +1,7 @@
 import {createAction} from 'redux-actions';
-import {$all, $set, $override} from 'plow-js';
+import {Map, Set} from 'immutable';
+import {$all, $set, $remove, $add} from 'plow-js';
 
-const ADD = '@packagefactory/guevara/UI/PageTree/ADD';
 const FOCUS = '@packagefactory/guevara/UI/PageTree/FOCUS';
 const COMMENCE_UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/COMMENCE_UNCOLLAPSE';
 const UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/UNCOLLAPSE';
@@ -14,7 +14,6 @@ const REQUEST_CHILDREN = '@packagefactory/guevara/UI/PageTree/REQUEST_CHILDREN';
 // Export the action types
 //
 export const actionTypes = {
-    ADD,
     FOCUS,
     COMMENCE_UNCOLLAPSE,
     UNCOLLAPSE,
@@ -24,7 +23,6 @@ export const actionTypes = {
     REQUEST_CHILDREN
 };
 
-const add = createAction(ADD, (contextPath, node) => ({contextPath, node}));
 const focus = createAction(FOCUS, contextPath => ({contextPath}));
 const commenceUncollapse = createAction(COMMENCE_UNCOLLAPSE, contextPath => ({contextPath}));
 const uncollapse = createAction(UNCOLLAPSE, contextPath => ({contextPath}));
@@ -37,7 +35,6 @@ const requestChildren = createAction(REQUEST_CHILDREN, contextPath => ({contextP
 // Export the actions
 //
 export const actions = {
-    add,
     focus,
     commenceUncollapse,
     uncollapse,
@@ -48,46 +45,41 @@ export const actions = {
 };
 
 //
-// Export the initial state
+// Export the initial state hydrator
 //
-export const initialState = {
-    isLoading: false,
-    hasError: false,
-    focused: '',
-    nodesByContextPath: {}
-};
+export const hydrate = () => $set(
+    'ui.pageTree',
+    new Map({
+        focused: '',
+        uncollapsed: new Set(),
+        loading: new Set(),
+        errors: new Set()
+    })
+);
 
 //
 // Export the reducer
 //
 export const reducer = {
-    [ADD]: ({contextPath, node}) => $set(['ui', 'pageTree', 'nodesByContextPath', contextPath], node),
     [FOCUS]: ({contextPath}) => $set('ui.pageTree.focused', contextPath),
     [UNCOLLAPSE]: ({contextPath}) => $all(
-        $set('ui.pageTree.isLoading', false),
-        $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
-            isLoading: false,
-            isCollapsed: false
-        })
+        $remove('ui.pageTree.errors', contextPath),
+        $remove('ui.pageTree.loading', contextPath),
+        $add('ui.pageTree.uncollapsed', contextPath)
     ),
     [COLLAPSE]: ({contextPath}) => $all(
-        $set('ui.pageTree.isLoading', false),
-        $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
-            isLoading: false,
-            isCollapsed: true
-        })
+        $remove('ui.pageTree.errors', contextPath),
+        $remove('ui.pageTree.loading', contextPath),
+        $remove('ui.pageTree.uncollapsed', contextPath)
     ),
     [INVALIDATE]: ({contextPath}) => $all(
-        $set('ui.pageTree.isLoading', false),
-        $set('ui.pageTree.hasError', true),
-        $override(['ui', 'pageTree', 'nodesByContextPath', contextPath], {
-            isLoading: false,
-            hasError: true,
-            isCollapsed: true
-        })
+        $remove('ui.pageTree.uncollapsed', contextPath),
+        $remove('ui.pageTree.loading', contextPath),
+        $add('ui.pageTree.errors', contextPath)
     ),
     [REQUEST_CHILDREN]: ({contextPath}) => $all(
-        $set('ui.pageTree.isLoading', true),
-        $set(['ui', 'pageTree', 'nodesByContextPath', contextPath, 'isLoading'], true)
+        $remove('ui.pageTree.uncollapsed', contextPath),
+        $remove('ui.pageTree.errors', contextPath),
+        $add('ui.pageTree.loading', contextPath)
     )
 };

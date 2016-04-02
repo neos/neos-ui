@@ -1,10 +1,12 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map, Set} from 'immutable';
+import {$set} from 'plow-js';
 
 import {handleActions} from 'Shared/Utilities/index';
 
+import {reducer, actions, hydrate} from './index.js';
+
 const {
-    add,
     focus,
     uncollapse,
     collapse,
@@ -18,11 +20,7 @@ describe('"host.redux.ui.pageTree" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    pageTree: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -35,29 +33,10 @@ describe('"host.redux.ui.pageTree" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.ui.pageTree).to.be.an('object');
-        });
-    });
-
-    describe('"add" action.', () => {
-        it('should add a node representation to the state.', () => {
-            store.dispatch(add('someContextPath', {
-                contextPath: 'someContextPath',
-                node: 'someNode'
-            }));
-
-            const state = store.getState();
-
-            expect(Object.keys(state.ui.pageTree.nodesByContextPath).length).to.equal(1);
-            expect(state.ui.pageTree.nodesByContextPath).to.deep.equal({
-                someContextPath: {
-                    contextPath: 'someContextPath',
-                    node: 'someNode'
-                }
-            });
+            expect(state.get('ui').get('pageTree')).to.be.an.instanceOf(Map);
         });
     });
 
@@ -67,169 +46,179 @@ describe('"host.redux.ui.pageTree" ', () => {
 
             const state = store.getState();
 
-            expect(state.ui.pageTree.focused).to.equal('someContextPath');
+            expect(state.get('ui').get('pageTree').get('focused')).to.equal('someContextPath');
         });
     });
 
     describe('"uncollapse" action.', () => {
-        const store = createStore(
+        const initialize = () => createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    pageTree: {
-                        isLoading: true,
-                        nodesByContextPath: {
-                            someContextPath: {
-                                isLoading: true,
-                                isCollapsed: true
-                            }
-                        }
-                    }
-                }
-            }
+            $set(
+                'ui.pageTree',
+                new Map({
+                    focused: '',
+                    uncollapsed: new Set(),
+                    loading: new Set(['someContextPath']),
+                    errors: new Set(['someContextPath'])
+                }),
+                new Map()
+            )
         );
 
-        store.dispatch(uncollapse('someContextPath'));
+        it('should remove the given node from error state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('errors').contains('someContextPath')).to.equal(true);
 
-        it('should set the loading state of the given node to false.', () => {
-            const state = store.getState();
+            store.dispatch(uncollapse('someContextPath'));
 
-            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(false);
+            expect(store.getState().get('ui').get('pageTree').get('errors').contains('someContextPath')).to.equal(false);
         });
 
-        it('should set the collapsed state of the given node to false.', () => {
-            const state = store.getState();
+        it('should remove the given node from loading state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('loading').contains('someContextPath')).to.equal(true);
 
-            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isCollapsed).to.equal(false);
+            store.dispatch(uncollapse('someContextPath'));
+
+            expect(store.getState().get('ui').get('pageTree').get('loading').contains('someContextPath')).to.equal(false);
         });
 
-        it('should set the loading state of the pageTree to false.', () => {
-            const state = store.getState();
+        it('should add the given node to uncollapsed state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('uncollapsed').contains('someContextPath')).to.equal(false);
 
-            expect(state.ui.pageTree.isLoading).to.equal(false);
+            store.dispatch(uncollapse('someContextPath'));
+
+            expect(store.getState().get('ui').get('pageTree').get('uncollapsed').contains('someContextPath')).to.equal(true);
         });
     });
 
     describe('"collapse" action.', () => {
-        const store = createStore(
+        const initialize = () => createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    pageTree: {
-                        isLoading: true,
-                        nodesByContextPath: {
-                            someContextPath: {
-                                isLoading: true,
-                                isCollapsed: false
-                            }
-                        }
-                    }
-                }
-            }
+            $set(
+                'ui.pageTree',
+                new Map({
+                    focused: '',
+                    uncollapsed: new Set(['someContextPath']),
+                    loading: new Set(['someContextPath']),
+                    errors: new Set(['someContextPath'])
+                }),
+                new Map()
+            )
         );
 
-        store.dispatch(collapse('someContextPath'));
+        it('should remove the given node from error state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('errors').contains('someContextPath')).to.equal(true);
 
-        it('should set the loading state of the given node to false.', () => {
-            const state = store.getState();
+            store.dispatch(collapse('someContextPath'));
 
-            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(false);
+            expect(store.getState().get('ui').get('pageTree').get('errors').contains('someContextPath')).to.equal(false);
         });
 
-        it('should set the collapsed state of the given node to true.', () => {
-            const state = store.getState();
+        it('should remove the given node from loading state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('loading').contains('someContextPath')).to.equal(true);
 
-            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isCollapsed).to.equal(true);
+            store.dispatch(collapse('someContextPath'));
+
+            expect(store.getState().get('ui').get('pageTree').get('loading').contains('someContextPath')).to.equal(false);
         });
 
-        it('should set the loading state of the pageTree to false.', () => {
-            const state = store.getState();
+        it('should remove the given node from uncollapsed state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('uncollapsed').contains('someContextPath')).to.equal(true);
 
-            expect(state.ui.pageTree.isLoading).to.equal(false);
+            store.dispatch(collapse('someContextPath'));
+
+            expect(store.getState().get('ui').get('pageTree').get('uncollapsed').contains('someContextPath')).to.equal(false);
         });
     });
 
     describe('"invalidate" action.', () => {
-        const store = createStore(
+        const initialize = () => createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    pageTree: {
-                        isLoading: true,
-                        hasError: false,
-                        nodesByContextPath: {
-                            someContextPath: {
-                                isLoading: true,
-                                hasError: false
-                            }
-                        }
-                    }
-                }
-            }
+            $set(
+                'ui.pageTree',
+                new Map({
+                    focused: '',
+                    uncollapsed: new Set(['someContextPath']),
+                    loading: new Set(['someContextPath']),
+                    errors: new Set()
+                }),
+                new Map()
+            )
         );
 
-        store.dispatch(invalidate('someContextPath'));
+        it('should remove the given node from uncollapsed state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('uncollapsed').contains('someContextPath')).to.equal(true);
 
-        it('should set the loading state of the given node to false.', () => {
-            const state = store.getState();
+            store.dispatch(invalidate('someContextPath'));
 
-            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(false);
+            expect(store.getState().get('ui').get('pageTree').get('uncollapsed').contains('someContextPath')).to.equal(false);
         });
 
-        it('should set the error state of the given node to true.', () => {
-            const state = store.getState();
+        it('should remove the given node from loading state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('loading').contains('someContextPath')).to.equal(true);
 
-            expect(state.ui.pageTree.nodesByContextPath.someContextPath.hasError).to.equal(true);
+            store.dispatch(invalidate('someContextPath'));
+
+            expect(store.getState().get('ui').get('pageTree').get('loading').contains('someContextPath')).to.equal(false);
         });
 
-        it('should set the collapsed state of the given node to true.', () => {
-            const state = store.getState();
+        it('should add the given node to error state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('errors').contains('someContextPath')).to.equal(false);
 
-            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isCollapsed).to.equal(true);
-        });
+            store.dispatch(invalidate('someContextPath'));
 
-        it('should set the loading state of the pageTree to false.', () => {
-            const state = store.getState();
-
-            expect(state.ui.pageTree.isLoading).to.equal(false);
-        });
-
-        it('should set the error state of the pageTree to true.', () => {
-            const state = store.getState();
-
-            expect(state.ui.pageTree.hasError).to.equal(true);
+            expect(store.getState().get('ui').get('pageTree').get('errors').contains('someContextPath')).to.equal(true);
         });
     });
 
     describe('"requestChildren" action.', () => {
-        const store = createStore(
+        const initialize = () => createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    pageTree: {
-                        isLoading: false,
-                        nodesByContextPath: {
-                            someContextPath: {
-                                isLoading: false
-                            }
-                        }
-                    }
-                }
-            }
+            $set(
+                'ui.pageTree',
+                new Map({
+                    focused: '',
+                    uncollapsed: new Set(['someContextPath']),
+                    loading: new Set([]),
+                    errors: new Set(['someContextPath'])
+                }),
+                new Map()
+            )
         );
 
-        store.dispatch(requestChildren('someContextPath'));
+        it('should remove the given node from error state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('errors').contains('someContextPath')).to.equal(true);
 
-        it('should set the loading state of the given node to true.', () => {
-            const state = store.getState();
+            store.dispatch(requestChildren('someContextPath'));
 
-            expect(state.ui.pageTree.nodesByContextPath.someContextPath.isLoading).to.equal(true);
+            expect(store.getState().get('ui').get('pageTree').get('errors').contains('someContextPath')).to.equal(false);
         });
 
-        it('should set the loading state of the pageTree to true.', () => {
-            const state = store.getState();
+        it('should remove the given node from uncollapsed state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('uncollapsed').contains('someContextPath')).to.equal(true);
 
-            expect(state.ui.pageTree.isLoading).to.equal(true);
+            store.dispatch(requestChildren('someContextPath'));
+
+            expect(store.getState().get('ui').get('pageTree').get('uncollapsed').contains('someContextPath')).to.equal(false);
+        });
+
+        it('should add the given node to loading state', () => {
+            const store = initialize();
+            expect(store.getState().get('ui').get('pageTree').get('loading').contains('someContextPath')).to.equal(false);
+
+            store.dispatch(requestChildren('someContextPath'));
+
+            expect(store.getState().get('ui').get('pageTree').get('loading').contains('someContextPath')).to.equal(true);
         });
     });
 });

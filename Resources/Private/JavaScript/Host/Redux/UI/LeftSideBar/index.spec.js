@@ -1,7 +1,9 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
+
+import {reducer, actions, hydrate} from './index.js';
 
 const {toggle} = actions;
 
@@ -11,11 +13,7 @@ describe('"host.redux.ui.leftSideBar" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    leftSideBar: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -28,16 +26,16 @@ describe('"host.redux.ui.leftSideBar" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.ui.leftSideBar).to.be.an('object');
+            expect(state.get('ui').get('leftSideBar')).to.be.an.instanceOf(Map);
         });
 
         it('should initially mark the sidebar as visible.', () => {
             const state = store.getState();
 
-            expect(state.ui.leftSideBar.isHidden).to.equal(false);
+            expect(state.get('ui').get('leftSideBar').get('isHidden')).to.equal(false);
         });
     });
 
@@ -45,11 +43,11 @@ describe('"host.redux.ui.leftSideBar" ', () => {
         it('should be able to reverse the value of the "isHidden" key.', () => {
             store.dispatch(toggle());
 
-            expect(store.getState().ui.leftSideBar.isHidden).to.equal(true);
+            expect(store.getState().get('ui').get('leftSideBar').get('isHidden')).to.equal(true);
 
             store.dispatch(toggle());
 
-            expect(store.getState().ui.leftSideBar.isHidden).to.equal(false);
+            expect(store.getState().get('ui').get('leftSideBar').get('isHidden')).to.equal(false);
         });
     });
 });

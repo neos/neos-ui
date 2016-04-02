@@ -1,7 +1,9 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
+
+import {reducer, actions, hydrate} from './index.js';
 
 const {toggle, hide} = actions;
 
@@ -11,11 +13,7 @@ describe('"host.redux.ui.offCanvas" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    offCanvas: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -28,16 +26,16 @@ describe('"host.redux.ui.offCanvas" ', () => {
     });
 
     describe('reducer.', () => {
-        it('should return an object as the initial state.', () => {
+        it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state).to.be.an('object');
+            expect(state.get('ui').get('offCanvas')).to.be.an.instanceOf(Map);
         });
 
         it('should initially mark the offCanvas container as hidden.', () => {
             const state = store.getState();
 
-            expect(state.ui.offCanvas.isHidden).to.equal(true);
+            expect(state.get('ui').get('offCanvas').get('isHidden')).to.equal(true);
         });
     });
 
@@ -45,11 +43,11 @@ describe('"host.redux.ui.offCanvas" ', () => {
         it('should be able to reverse the value of the "isHidden" key.', () => {
             store.dispatch(toggle());
 
-            expect(store.getState().ui.offCanvas.isHidden).to.equal(false);
+            expect(store.getState().get('ui').get('offCanvas').get('isHidden')).to.equal(false);
 
             store.dispatch(toggle());
 
-            expect(store.getState().ui.offCanvas.isHidden).to.equal(true);
+            expect(store.getState().get('ui').get('offCanvas').get('isHidden')).to.equal(true);
         });
     });
 
@@ -57,12 +55,12 @@ describe('"host.redux.ui.offCanvas" ', () => {
         it('should set the "isHidden" key to "false".', () => {
             store.dispatch(hide());
 
-            expect(store.getState().ui.offCanvas.isHidden).to.equal(true);
+            expect(store.getState().get('ui').get('offCanvas').get('isHidden')).to.equal(true);
 
             store.dispatch(toggle());
             store.dispatch(hide());
 
-            expect(store.getState().ui.offCanvas.isHidden).to.equal(true);
+            expect(store.getState().get('ui').get('offCanvas').get('isHidden')).to.equal(true);
         });
     });
 });

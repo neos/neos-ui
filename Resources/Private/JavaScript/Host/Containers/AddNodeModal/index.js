@@ -89,7 +89,7 @@ export default class AddNodeModal extends Component {
                 <div className={style.groupTitle}>
                     <I18n fallback={group.label} id={group.label} />
                 </div>
-                <Grid className={style.grid}>
+                <Grid className={style.grid} id="neos__addNodeModal__grid">
                     {group.nodeTypes.map(this.renderNodeTypeItem.bind(this))}
                 </Grid>
             </div>
@@ -104,6 +104,7 @@ export default class AddNodeModal extends Component {
                     hoverStyle="brand"
                     onClick={this.props.close}
                     isFocused={true}
+                    id="neos__addNodeModal__cancel"
                     >
                     <I18n fallback="Cancel" />
                 </Button>

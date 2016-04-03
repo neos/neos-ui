@@ -26,6 +26,9 @@
 .btn--clean {
     background: $darker;
 }
+.btn--lighter {
+    background-color: $dark;
+}
 .btn--transparent {
     background: 0;
 }

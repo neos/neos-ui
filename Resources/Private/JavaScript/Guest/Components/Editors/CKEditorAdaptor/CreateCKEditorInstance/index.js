@@ -1,9 +1,25 @@
 import {handleOutside} from 'Guest/Process/DOMUtils.js';
+import {createSignal} from 'Guest/Containers/EditorToolbar/SignalRegistry/index';
 
 export default (ckApi, editorApi, dom, getSelectionData) => {
     const editor = ckApi.inline(dom, {
         removePlugins: 'toolbar',
         allowedContent: true
+    });
+    const updateToolbarConfiguration = editorApi.registerToolbar({
+        components: [
+            {
+                type: 'Button',
+                options: {
+                    icon: 'bold',
+                    isActive: () => false,
+                    isEnabled: () => true,
+                    onClick: createSignal(
+                        () => console.log('Hello World!')
+                    )
+                }
+            }
+        ]
     });
     const handleUserInteraction = event => {
         if (event.name !== 'keyup' || event.data.$.keyCode !== 27) {
@@ -18,6 +34,7 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
                     editorApi.hideToolbar();
                 } else {
                     editorApi.showToolbar(editor.name);
+                    updateToolbarConfiguration();
                 }
             }
         }
@@ -45,6 +62,7 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
 
         editable.attachListener(editable, 'focus', handleEditorFocus);
         handleOutside('click', handleEditorBlur)(editable);
+        editor.on('change', () => updateToolbarConfiguration());
     });
 
     return editor;

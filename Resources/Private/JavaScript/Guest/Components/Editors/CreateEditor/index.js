@@ -1,6 +1,7 @@
 import debounce from 'lodash.debounce';
 
 import {actions} from 'Guest/Redux/index';
+import {registerToolbar} from 'Guest/Containers/EditorToolbar/index';
 
 import style from './style.css';
 
@@ -17,9 +18,11 @@ export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => 
             }
         }), 200),
 
-        setToolbarPosition: (x, y) => dispatch(actions.CKEditorToolbar.setPosition(x, y)),
-        showToolbar: editorName => dispatch(actions.CKEditorToolbar.show(editorName)),
-        hideToolbar: () => dispatch(actions.CKEditorToolbar.hide())
+        setToolbarPosition: (x, y) => dispatch(actions.EditorToolbar.setPosition(x, y)),
+        showToolbar: editorName => dispatch(actions.EditorToolbar.show(editorName)),
+        hideToolbar: () => dispatch(actions.EditorToolbar.hide()),
+
+        registerToolbar: configuration => registerToolbar({dispatch}, configuration)
     };
 
     dom.setAttribute('contentEditable', true);

@@ -15,16 +15,24 @@ import {
     initialState as CKEditorToolbarInitialState,
     actions as CKEditorToolbar
 } from './CKEditorToolbar/index';
+import {
+    reducer as EditorToolbarReducer,
+    actionTypes as EditorToolbarActionTypes,
+    initialState as EditorToolbarInitialState,
+    actions as EditorToolbar
+} from './EditorToolbar/index';
 
 const reducers = {
     ...NodeToolbarReducer,
-    ...CKEditorToolbarReducer
+    ...CKEditorToolbarReducer,
+    ...EditorToolbarReducer
 };
 const rootReducer = handleActions(reducers);
 const devToolsStoreEnhancer = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
 const initialState = {
     nodeToolbar: NodeToolbarInitialState,
-    ckEditorToolbar: CKEditorToolbarInitialState
+    ckEditorToolbar: CKEditorToolbarInitialState,
+    editorToolbar: EditorToolbarInitialState
 };
 
 //
@@ -40,7 +48,8 @@ export function configureStore() {
 //
 export const actionTypes = {
     NodeToolbar: NodeToolbarActionTypes,
-    CKEditorToolbar: CKEditorToolbarActionTypes
+    CKEditorToolbar: CKEditorToolbarActionTypes,
+    EditorToolbar: EditorToolbarActionTypes
 };
 
 //
@@ -48,5 +57,6 @@ export const actionTypes = {
 //
 export const actions = {
     NodeToolbar,
-    CKEditorToolbar
+    CKEditorToolbar,
+    EditorToolbar
 };

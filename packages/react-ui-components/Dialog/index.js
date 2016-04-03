@@ -8,6 +8,7 @@ import style from './style.css';
 const Dialog = props => {
     const {
         className,
+        title,
         children,
         isOpen,
         onRequestClose,
@@ -30,6 +31,9 @@ const Dialog = props => {
                             id="neos__modal__closeModal"
                             onClick={e => executeCallback({e, cb: onRequestClose})}
                             />
+                        <div className={style.dialog__title}>
+                            {title}
+                        </div>
 
                         {children}
 
@@ -48,6 +52,9 @@ Dialog.propTypes = {
 
     // Will be called once the close icon in the top right corner gets clicked.
     onRequestClose: PropTypes.func.isRequired,
+
+    // Dialog's title
+    title: PropTypes.any,
 
     // Contents of the Dialog.
     children: PropTypes.node.isRequired,

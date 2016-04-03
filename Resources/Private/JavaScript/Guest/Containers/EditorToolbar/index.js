@@ -37,13 +37,12 @@ export default class Toolbar extends Component {
                 <div className={style.toolBar__btnGroup}>
                 {configuration && configuration.components.map(
                     (component, index) => {
-                        console.log(component);
                         if (component.type === 'Button') {
                             return <IconButton
                                 key={index}
                                 onClick={() => dispatchEditorSignal(component.options.onClick)}
                                 isActive={component.options.isActive}
-                                icon="bold"
+                                icon={component.options.icon}
                                 hoverStyle="brand"
                                 />
                         }

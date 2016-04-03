@@ -21,9 +21,7 @@ const processConfiguration = (configuration, oldConfiguration = null) => Object.
                 return processedConfiguration;
             }
 
-            processedConfiguration[key] = {
-                $__signal: process(item)
-            };
+            processedConfiguration[key] = process(item);
             return processedConfiguration;
         }
 

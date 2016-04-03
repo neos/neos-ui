@@ -22,7 +22,7 @@ const setPosition = createAction(SET_POSITION, (x, y) => ({x, y}));
 const show = createAction(SHOW, editorName => ({editorName}));
 const hide = createAction(HIDE);
 const setConfiguration = createAction(SET_CONFIGURATION, configuration => ({configuration}));
-const dispatchSignal = createAction(DISPATCH_SIGNAL, signal => console.log(signal) || signal);
+const dispatchSignal = createAction(DISPATCH_SIGNAL, signal => signal);
 
 //
 // Export the actions

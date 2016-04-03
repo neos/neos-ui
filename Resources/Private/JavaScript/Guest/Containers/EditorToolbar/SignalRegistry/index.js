@@ -7,32 +7,21 @@ export const isSignalDescription = maybeSignalDescription =>
     maybeSignalDescription && maybeSignalDescription.$__handle !== undefined;
 
 export const process = signalDescription => {
+    const id = uuid.v4();
     const {$__handle} = signalDescription;
-    const result = $__handle(registry);
 
-    registry = result.registry;
-    return result.id;
+    registry = registry.set(id, $__handle);
+    return {$__signal: id};
 };
 
-export const call = (id, payload) => {
-    const handler = registry.get(id);
+export const call = signal => {
+    const handler = registry.get(signal.$__signal);
 
     if (typeof handler === 'function') {
-        handler(payload);
+        handler(signal.payload);
     }
 };
 
 export const createSignal = handler => ({
-    $__handle: registry => {
-        const id = uuid.v4();
-
-        if (!registry instanceof Map) {
-            throw new Error(`Registry needs to be an instance of Immutable.Map. Found ${typeof registry} instead.`);
-        }
-
-        return {
-            registry: registry.set(id, handler),
-            id
-        };
-    }
+    $__handle: handler
 });

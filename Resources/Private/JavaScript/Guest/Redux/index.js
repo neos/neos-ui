@@ -1,7 +1,9 @@
-import {createStore} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import merge from 'lodash.merge';
 
 import {handleActions} from 'Shared/Utilities/index';
+import sagas from 'Guest/Sagas/index';
 
 import {
     reducer as NodeToolbarReducer,
@@ -27,6 +29,7 @@ const reducers = {
     ...CKEditorToolbarReducer,
     ...EditorToolbarReducer
 };
+const sagaMiddleWare = createSagaMiddleware(...sagas);
 const rootReducer = handleActions(reducers);
 const devToolsStoreEnhancer = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
 const initialState = {
@@ -40,7 +43,10 @@ const initialState = {
 //
 export function configureStore() {
     const mergedInitialState = merge({}, initialState);
-    return createStore(rootReducer, mergedInitialState, devToolsStoreEnhancer());
+    return createStore(rootReducer, mergedInitialState, compose(
+        applyMiddleware(sagaMiddleWare),
+        devToolsStoreEnhancer()
+    ));
 }
 
 //

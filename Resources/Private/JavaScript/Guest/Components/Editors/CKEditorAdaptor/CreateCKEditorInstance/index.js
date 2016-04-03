@@ -1,26 +1,46 @@
+import debounce from 'lodash.debounce';
+
 import {handleOutside} from 'Guest/Process/DOMUtils.js';
 import {createSignal} from 'Guest/Containers/EditorToolbar/SignalRegistry/index';
+
+const createButtonCreator = (ckApi, editor) => (icon, command) => ({
+    type: 'Button',
+    options: {
+        icon,
+        isActive: () => editor.getCommand(command) && editor.getCommand(command).state === ckApi.TRISTATE_ON,
+        isEnabled: () => true,
+        onClick: createSignal(
+            () => editor.execCommand(command)
+        )
+    }
+});
 
 export default (ckApi, editorApi, dom, getSelectionData) => {
     const editor = ckApi.inline(dom, {
         removePlugins: 'toolbar',
         allowedContent: true
     });
-    const updateToolbarConfiguration = editorApi.registerToolbar({
-        components: [
-            {
-                type: 'Button',
-                options: {
-                    icon: 'bold',
-                    isActive: () => false,
-                    isEnabled: () => true,
-                    onClick: createSignal(
-                        () => console.log('Hello World!')
-                    )
-                }
-            }
-        ]
-    });
+
+    const createButton = createButtonCreator(ckApi, editor);
+    const updateToolbarConfiguration = debounce(
+        editorApi.registerToolbar({
+            components: [
+                createButton('bold', 'bold'),
+                createButton('italic', 'italic'),
+                createButton('underline', 'underline'),
+                createButton('subscript', 'subscript'),
+                createButton('superscript', 'superscript'),
+                createButton('strikethrough', 'strike'),
+                createButton('list-ol', 'numberedlist'),
+                createButton('list-ul', 'bulletedlist'),
+                createButton('align-left', 'justifyleft'),
+                createButton('align-center', 'justifycenter'),
+                createButton('align-right', 'justifyright'),
+                createButton('align-justify', 'justifyblock')
+            ]
+        }),
+        100
+    );
     const handleUserInteraction = event => {
         if (event.name !== 'keyup' || event.data.$.keyCode !== 27) {
             const selectionData = getSelectionData(editor);
@@ -29,12 +49,12 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
                 const {left, top} = selectionData.region;
 
                 editorApi.setToolbarPosition(left, top);
+                updateToolbarConfiguration();
 
                 if (selectionData.isEmpty) {
                     editorApi.hideToolbar();
                 } else {
                     editorApi.showToolbar(editor.name);
-                    updateToolbarConfiguration();
                 }
             }
         }

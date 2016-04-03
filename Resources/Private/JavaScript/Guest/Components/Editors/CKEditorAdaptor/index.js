@@ -18,7 +18,7 @@ export const editor = ckApi => {
     return createEditor(
         (config, api, connection, dom) => {
             const ckInstance = createCKEditorInstance(ckApi, api, dom, getSelectionData(ckApi));
-            ckInstance.on('change', () => api.commit(ckInstance.getData()));
+            ckInstance.on('change', () => console.log('change :)') || api.commit(ckInstance.getData()));
         }
     );
 };

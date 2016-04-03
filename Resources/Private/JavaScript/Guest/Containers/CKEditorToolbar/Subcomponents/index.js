@@ -10,6 +10,7 @@ import AlignRight from './AlignRight/index';
 import AlignLeft from './AlignLeft/index';
 import AlignCenter from './AlignCenter/index';
 import AlignJustify from './AlignJustify/index';
+import FormatDropDown from './FormatDropDown/index';
 
 export {
     Bold,
@@ -23,5 +24,6 @@ export {
     AlignRight,
     AlignLeft,
     AlignCenter,
-    AlignJustify
+    AlignJustify,
+    FormatDropDown
 };

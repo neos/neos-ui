@@ -15,7 +15,8 @@ import {
     AlignRight,
     AlignLeft,
     AlignCenter,
-    AlignJustify
+    AlignJustify,
+    FormatDropDown
 } from './Subcomponents/index';
 import style from './style.css';
 
@@ -70,6 +71,7 @@ class CKEditorToolbar extends Component {
         return editor ? (
             <div className={classNames} style={{top: y - 49, left: x - 9}}>
                 <div className={style.toolBar__btnGroup}>
+                    <FormatDropDown editor={editor} ckApi={ckApi} />
                     <Bold editor={editor} ckApi={ckApi} {...props} />
                     <Italic editor={editor} ckApi={ckApi} {...props} />
                     <Underline editor={editor} ckApi={ckApi} {...props} />

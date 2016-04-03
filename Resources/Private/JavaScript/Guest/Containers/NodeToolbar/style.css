@@ -22,3 +22,7 @@
 .toolBar--isHidden {
     display: none;
 }
+
+.toolBar--isBlurred {
+    display: none;
+}

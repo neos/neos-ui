@@ -21,10 +21,11 @@ const Button = props => {
     const classNames = mergeClassNames({
         [styles.btn]: true,
         [styles['btn--clean']]: style === 'clean',
+        [styles['btn--lighter']]: style === 'lighter',
         [styles['btn--transparent']]: style === 'transparent',
         [styles['btn--cleanHover']]: hoverStyle === 'clean',
+        [styles['btn--lighterHover']]: hoverStyle === 'lighter',
         [styles['btn--brandHover']]: hoverStyle === 'brand',
-        [styles['btn--darkenHover']]: hoverStyle === 'darken',
         [className]: className && className.length
     });
     const attributes = {
@@ -65,7 +66,7 @@ Button.propTypes = {
     isDisabled: PropTypes.bool.isRequired,
 
     // Style related propTypes.
-    style: PropTypes.oneOf(['clean', 'transparent']).isRequired,
+    style: PropTypes.oneOf(['clean', 'lighter', 'transparent']).isRequired,
     hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']).isRequired,
     className: PropTypes.string,
 

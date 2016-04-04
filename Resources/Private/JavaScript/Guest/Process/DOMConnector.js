@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 
 import {nodeComponent} from 'Guest/Components/index';
-import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/index';
+import ckEditor from 'Guest/Components/Editors/CKEditor/index';
 import {InlineUI} from 'Guest/Containers/index';
 import {configureStore} from 'Guest/Redux/index';
 

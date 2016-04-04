@@ -44,7 +44,7 @@ export default class Toolbar extends Component {
         return (
             <Measure
                 whitelist={['width', 'left']}
-                shouldMeasure={mutations => mutations ? mutations[0].target : mutations[0].target}
+                shouldMeasure={mutations => mutations ? mutations[0].target : false}
                 onMeasure={dimensions => this.setState({dimensions})}
                 >
                 <div className={classNames} style={{top: y - 49, left: Math.min(x, window.innerWidth - this.state.dimensions.width - 20) - 9}}>
@@ -69,11 +69,19 @@ export default class Toolbar extends Component {
     }
 }
 
+let debounceToolbarUpdateTimeout = null;
 export const registerToolbar = ({dispatch}, configuration) => {
     const initialConfiguration = processConfiguration(configuration);
 
     return () => {
-        const processedConfiguration = processConfiguration(configuration, initialConfiguration);
-        dispatch(actions.EditorToolbar.setConfiguration(processedConfiguration));
+        clearTimeout(debounceToolbarUpdateTimeout);
+
+        debounceToolbarUpdateTimeout = setTimeout(
+            () => {
+                const processedConfiguration = processConfiguration(configuration, initialConfiguration);
+                dispatch(actions.EditorToolbar.setConfiguration(processedConfiguration));
+            },
+            100
+        );
     };
 };

@@ -1,6 +1,6 @@
 import createEditor from 'Guest/Components/Editors/CreateEditor/index';
 
-import createCKEditorInstance from './CreateCKEditorInstance/index';
+import createCKEditorInstance from './Factory/index';
 import getSelectionData from './Selection/index';
 
 export const editor = ckApi => {

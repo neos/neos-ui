@@ -1,4 +1,4 @@
-import ckEditor from './CKEditorAdaptor/index';
+import ckEditor from './CKEditor/index';
 
 export {
     ckEditor

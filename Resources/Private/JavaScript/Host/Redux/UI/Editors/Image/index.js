@@ -27,9 +27,12 @@ export const actionTypes = {
 //
 // Export the initial state
 //
-export const hydrate = () => new Map({
-    visibleDetailsScreen: null
-});
+export const hydrate = () => $set(
+    'ui.editors.image',
+    new Map({
+        visibleDetailsScreen: false
+    })
+);
 
 
 const IMAGE_DETAILS_SCREEN_PATH = 'ui.editors.image.visibleDetailsScreen';

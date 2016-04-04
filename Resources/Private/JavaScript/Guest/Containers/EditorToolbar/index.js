@@ -35,7 +35,7 @@ export default class Toolbar extends Component {
     };
 
     render() {
-        const {x, y, isVisible, configuration, dispatchEditorSignal} = this.props;
+        const {isVisible, configuration, dispatchEditorSignal} = this.props;
         const classNames = mergeClassNames({
             [style.toolBar]: true,
             [style['toolBar--isHidden']]: !isVisible
@@ -47,7 +47,7 @@ export default class Toolbar extends Component {
                 shouldMeasure={mutations => mutations ? mutations[0].target : false}
                 onMeasure={dimensions => this.setState({dimensions})}
                 >
-                <div className={classNames} style={{top: y - 49, left: Math.min(x, window.innerWidth - this.state.dimensions.width - 20) - 9}}>
+                <div className={classNames} style={this.getPosition()}>
                     <div className={style.toolBar__btnGroup}>
                     {configuration && configuration.components.map(
                         (component, index) => {
@@ -66,6 +66,16 @@ export default class Toolbar extends Component {
                 </div>
             </Measure>
         );
+    }
+
+    getPosition() {
+        const {x, y} = this.props;
+        const {width} = this.state.dimensions;
+
+        return {
+            top: y - 49,
+            left: Math.min(x, window.innerWidth - width - 20) - 9
+        };
     }
 }
 

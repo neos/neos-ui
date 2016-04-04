@@ -28,5 +28,5 @@ export default (ckApi, editor, editorApi) => {
             createButton('align-right', 'justifyright'),
             createButton('align-justify', 'justifyblock')
         )
-    )
+    );
 };

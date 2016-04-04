@@ -15,7 +15,7 @@ import style from './style.css';
 
 @connect($transform({
     toolbar: $get('nodeToolbar'),
-    isEditorToolbarVisible: $get('ckEditorToolbar.isVisible')
+    isEditorToolbarVisible: $get('editorToolbar.isVisible')
 }))
 export default class NodeToolbar extends Component {
     static propTypes = {

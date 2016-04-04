@@ -1,7 +1,7 @@
 import debounce from 'lodash.debounce';
 
 import {handleOutside} from 'Guest/Process/DOMUtils.js';
-import {createSignal} from 'Guest/Containers/EditorToolbar/SignalRegistry/index';
+import {createSignal} from 'Guest/Process/SignalRegistry/index';
 
 const createButtonCreator = (ckApi, editor) => (icon, command) => ({
     type: 'Button',

@@ -1,4 +1,4 @@
-import {isSignalDescription, process} from 'Guest/Containers/EditorToolbar/SignalRegistry/index';
+import {isSignalDescription, process} from 'Guest/Process/SignalRegistry/index';
 
 const processConfiguration = (configuration, oldConfiguration = null) => Object.keys(oldConfiguration || configuration).reduce(
     (processedConfiguration, key) => {

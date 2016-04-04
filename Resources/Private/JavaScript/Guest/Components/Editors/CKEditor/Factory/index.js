@@ -3,6 +3,7 @@ import {handleOutside} from 'Guest/Process/DOMUtils.js';
 import createToolbarConfiguration from '../Toolbar/index';
 
 export default (ckApi, editorApi, dom, getSelectionData) => {
+    let removeBlurEvent = null;
     const editor = ckApi.inline(dom, {
         removePlugins: 'toolbar',
         allowedContent: true
@@ -31,6 +32,7 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
 
         editable.removeListener('keyup', handleUserInteraction);
         editable.removeListener('mouseup', handleUserInteraction);
+        removeBlurEvent && removeBlurEvent();
 
         handleUserInteraction(event);
         editorApi.hideToolbar();
@@ -40,7 +42,7 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
 
         editable.attachListener(editable, 'keyup', handleUserInteraction);
         editable.attachListener(editable, 'mouseup', handleUserInteraction);
-
+        removeBlurEvent = handleOutside('click', handleEditorBlur)(editable);
         handleUserInteraction(event);
     };
 
@@ -48,7 +50,7 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
         const editable = editor.editable();
 
         editable.attachListener(editable, 'focus', handleEditorFocus);
-        handleOutside('click', handleEditorBlur)(editable);
+
         editor.on('change', () => updateToolbarConfiguration());
     });
 

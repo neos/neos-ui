@@ -18,12 +18,10 @@ export default (el, ui, connection) => {
     //
     // React on guest events
     //
-    compose(
-        handle('click', () => ui.focusNode(contextPath, typoscriptPath), stopPropagation, preventDefault),
-        handleOutside('click', () => ui.blurNode(contextPath, typoscriptPath)),
-        handle('mouseover', () => ui.hoverNode(contextPath, typoscriptPath), stopPropagation),
-        handle('mouseout', () => ui.unhoverNode(contextPath, typoscriptPath))
-    )(el);
+    handle('click', () => ui.focusNode(contextPath, typoscriptPath), stopPropagation, preventDefault)(el);
+    handleOutside('click', () => ui.blurNode(contextPath, typoscriptPath))(el);
+    handle('mouseover', () => ui.hoverNode(contextPath, typoscriptPath), stopPropagation)(el);
+    handle('mouseout', () => ui.unhoverNode(contextPath, typoscriptPath))(el);
 
     //
     // Observe host state

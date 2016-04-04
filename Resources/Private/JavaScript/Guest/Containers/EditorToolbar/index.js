@@ -44,17 +44,8 @@ export default class Toolbar extends Component {
         return (
             <Measure
                 whitelist={['width', 'left']}
-                shouldMeasure={(mutations) => {
-                      // don't update unless we have mutations available
-                    if(mutations) {
-                        return mutations[0].target
-                    } else {
-                        return false
-                    }
-                }}
-                onMeasure={(dimensions, mutations, target) => {
-                    this.setState({dimensions});
-                }}
+                shouldMeasure={mutations => mutations ? mutations[0].target : mutations[0].target}
+                onMeasure={dimensions => this.setState({dimensions})}
                 >
                 <div className={classNames} style={{top: y - 49, left: Math.min(x, window.innerWidth - this.state.dimensions.width - 20) - 9}}>
                     <div className={style.toolBar__btnGroup}>

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import Measure from 'react-measure';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$get} from 'plow-js';
@@ -29,10 +30,11 @@ export default class Toolbar extends Component {
         dispatchEditorSignal: PropTypes.func
     };
 
+    state = {
+        dimensions: {width: 0}
+    };
+
     render() {
-        const props = {
-            className: style.toolBar__btnGroup__btn
-        };
         const {x, y, isVisible, configuration, dispatchEditorSignal} = this.props;
         const classNames = mergeClassNames({
             [style.toolBar]: true,
@@ -40,23 +42,38 @@ export default class Toolbar extends Component {
         });
 
         return (
-            <div className={classNames} style={{top: y - 49, left: x - 9}}>
-                <div className={style.toolBar__btnGroup}>
-                {configuration && configuration.components.map(
-                    (component, index) => {
-                        const SubComponent = SubComponents[component.type];
-
-                        return (
-                            <SubComponent
-                                key={index}
-                                configuration={component.options}
-                                dispatchEditorSignal={dispatchEditorSignal}
-                                />
-                        );
+            <Measure
+                whitelist={['width', 'left']}
+                shouldMeasure={(mutations) => {
+                      // don't update unless we have mutations available
+                    if(mutations) {
+                        return mutations[0].target
+                    } else {
+                        return false
                     }
-                )}
+                }}
+                onMeasure={(dimensions, mutations, target) => {
+                    this.setState({dimensions});
+                }}
+                >
+                <div className={classNames} style={{top: y - 49, left: Math.min(x, window.innerWidth - this.state.dimensions.width - 20) - 9}}>
+                    <div className={style.toolBar__btnGroup}>
+                    {configuration && configuration.components.map(
+                        (component, index) => {
+                            const SubComponent = SubComponents[component.type];
+
+                            return (
+                                <SubComponent
+                                    key={index}
+                                    configuration={component.options}
+                                    dispatchEditorSignal={dispatchEditorSignal}
+                                    />
+                            );
+                        }
+                    )}
+                    </div>
                 </div>
-            </div>
+            </Measure>
         );
     }
 }

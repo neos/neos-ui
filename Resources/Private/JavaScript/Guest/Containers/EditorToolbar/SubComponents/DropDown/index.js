@@ -1,13 +1,22 @@
 import React, {Component, PropTypes} from 'react';
 
 import {DropDown, Icon} from 'Components/index';
+import {SignalPropType} from 'Guest/Process/SignalRegistry/index';
 
 import style from './style.css';
 
 export default class ToolbarDropDown extends Component {
     static propTypes = {
         configuration: PropTypes.shape({
-
+            items: PropTypes.arrayOf(
+                PropTypes.shape({
+                    icon: PropTypes.string.isRequired,
+                    label: PropTypes.string.isRequired,
+                    isActive: PropTypes.bool.isRequired,
+                    isEnabled: PropTypes.bool.isRequired,
+                    onSelect: SignalPropType.isRequired
+                })
+            ).isRequired
         }).isRequired,
 
         dispatchEditorSignal: PropTypes.func.isRequired

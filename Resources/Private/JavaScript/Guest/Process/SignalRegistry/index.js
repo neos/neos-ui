@@ -46,10 +46,10 @@ export const createSignal = handler => ({
 });
 
 const createChainablePropType = validate => {
-    const checkType = (isRequired, props, propName, componentName, location) =>{
+    const checkType = (isRequired, props, propName, componentName, location) => {
         componentName = componentName || 'ANONYMOUS';
 
-        if (props[propName] == null) {
+        if (props[propName] === null) {
             if (isRequired) {
                 return new Error(`Required \`${location}\` \`${propName}\` was not specified in \`${componentName}\``);
             }
@@ -61,9 +61,9 @@ const createChainablePropType = validate => {
     };
 
     const chainedCheckType = (...args) => checkType(false, ...args);
-    checkType.isRequired = (...args) => checkType(true, ...args);
+    chainedCheckType.isRequired = (...args) => checkType(true, ...args);
 
-    return checkType;
+    return chainedCheckType;
 };
 
 //

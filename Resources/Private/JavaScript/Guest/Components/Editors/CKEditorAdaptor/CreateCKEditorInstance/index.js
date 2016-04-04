@@ -15,6 +15,34 @@ const createButtonCreator = (ckApi, editor) => (icon, command) => ({
     }
 });
 
+const createDropDown = (...items) => ({
+    type: 'DropDown',
+    options: {
+        items
+    }
+});
+
+const createDropDownItemCreator = (ckApi, editor) => (icon, label, styleDefinition) => {
+    const Style = ckApi.style;
+    const style = new Style(styleDefinition);
+    const isActive = () => editor.elementPath() && style.checkActive(editor.elementPath(), editor);
+
+    return {
+        icon,
+        label,
+        isActive,
+        isEnabled: () => true,
+        onSelect: createSignal(
+            () => {
+                const op = isActive(editor) ? 'removeStyle' : 'applyStyle';
+
+                editor[op](style);
+                editor.fire('change');
+            }
+        )
+    };
+};
+
 export default (ckApi, editorApi, dom, getSelectionData) => {
     const editor = ckApi.inline(dom, {
         removePlugins: 'toolbar',
@@ -22,9 +50,20 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
     });
 
     const createButton = createButtonCreator(ckApi, editor);
+    const createDropDownItem = createDropDownItemCreator(ckApi, editor);
     const updateToolbarConfiguration = debounce(
         editorApi.registerToolbar({
             components: [
+                createDropDown(
+                    createDropDownItem('paragraph', 'Paragraph', {element: 'p'}),
+                    createDropDownItem('header', 'Headline 1', {element: 'h1'}),
+                    createDropDownItem('header', 'Headline 2', {element: 'h2'}),
+                    createDropDownItem('header', 'Headline 3', {element: 'h3'}),
+                    createDropDownItem('header', 'Headline 4', {element: 'h4'}),
+                    createDropDownItem('header', 'Headline 5', {element: 'h5'}),
+                    createDropDownItem('header', 'Headline 6', {element: 'h6'}),
+                    createDropDownItem('font', 'Preformatted Text', {element: 'pre'})
+                ),
                 createButton('bold', 'bold'),
                 createButton('italic', 'italic'),
                 createButton('underline', 'underline'),

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$get} from 'plow-js';
 
-import {IconButton} from 'Components/index';
+import {IconButton, DropDown, Icon} from 'Components/index';
 import {actions} from 'Guest/Redux/index';
 
 import processConfiguration from './ProcessConfiguration/index';
@@ -45,6 +45,35 @@ export default class Toolbar extends Component {
                                 icon={component.options.icon}
                                 hoverStyle="brand"
                                 />
+                        }
+
+                        if (component.type === 'DropDown') {
+                            return <DropDown>
+                                <DropDown.Header className={style.dropDown__btn}>
+                                    {component.options.items.filter(
+                                        item => item.isActive
+                                    ).map(item =>
+                                        [
+                                            <Icon icon={item.icon} />,
+                                            item.label
+                                        ]
+                                    )}
+                                </DropDown.Header>
+                                <DropDown.Contents>
+                                    {component.options.items.filter(
+                                        item => item.isEnabled
+                                    ).map(
+                                        item => (
+                                            <li>
+                                                <button type="button" onClick={() => dispatchEditorSignal(item.onSelect)}>
+                                                    <Icon icon={item.icon} />
+                                                    {item.label}
+                                                </button>
+                                            </li>
+                                        )
+                                    )}
+                                </DropDown.Contents>
+                            </DropDown>
                         }
                     }
                 )}

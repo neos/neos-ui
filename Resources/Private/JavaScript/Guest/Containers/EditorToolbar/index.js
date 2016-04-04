@@ -3,10 +3,10 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$get} from 'plow-js';
 
-import {IconButton, DropDown, Icon} from 'Components/index';
 import {actions} from 'Guest/Redux/index';
 
 import processConfiguration from './ProcessConfiguration/index';
+import * as SubComponents from './SubComponents/index';
 import style from './style.css';
 
 @connect($get('editorToolbar'), {
@@ -17,7 +17,14 @@ export default class Toolbar extends Component {
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired,
         isVisible: PropTypes.bool.isRequired,
-        configuration: PropTypes.object,
+        configuration: PropTypes.shape({
+            components: PropTypes.arrayOf(
+                PropTypes.shape({
+                    type: PropTypes.oneOf(Object.keys(SubComponents)),
+                    options: PropTypes.object
+                })
+            ).isRequired
+        }),
 
         dispatchEditorSignal: PropTypes.func
     };
@@ -37,44 +44,15 @@ export default class Toolbar extends Component {
                 <div className={style.toolBar__btnGroup}>
                 {configuration && configuration.components.map(
                     (component, index) => {
-                        if (component.type === 'Button') {
-                            return <IconButton
-                                key={index}
-                                onClick={() => dispatchEditorSignal(component.options.onClick)}
-                                isActive={component.options.isActive}
-                                icon={component.options.icon}
-                                hoverStyle="brand"
-                                />
-                        }
+                        const SubComponent = SubComponents[component.type];
 
-                        if (component.type === 'DropDown') {
-                            return <DropDown>
-                                <DropDown.Header className={style.dropDown__btn}>
-                                    {component.options.items.filter(
-                                        item => item.isActive
-                                    ).map(item =>
-                                        [
-                                            <Icon icon={item.icon} />,
-                                            item.label
-                                        ]
-                                    )}
-                                </DropDown.Header>
-                                <DropDown.Contents>
-                                    {component.options.items.filter(
-                                        item => item.isEnabled
-                                    ).map(
-                                        item => (
-                                            <li>
-                                                <button type="button" onClick={() => dispatchEditorSignal(item.onSelect)}>
-                                                    <Icon icon={item.icon} />
-                                                    {item.label}
-                                                </button>
-                                            </li>
-                                        )
-                                    )}
-                                </DropDown.Contents>
-                            </DropDown>
-                        }
+                        return (
+                            <SubComponent
+                                key={index}
+                                configuration={component.options}
+                                dispatchEditorSignal={dispatchEditorSignal}
+                                />
+                        );
                     }
                 )}
                 </div>

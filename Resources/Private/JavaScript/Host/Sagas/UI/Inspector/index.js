@@ -9,7 +9,7 @@ const getNode = CR.Nodes.byContextPathSelector;
 const currentDocumentNode = CR.Nodes.currentDocumentNode;
 const imageByUuid = CR.Images.imageByUuid;
 
-import {loadImageMetadata} from 'API/Endpoints/index';
+import {loadImageMetadata, createImageVariant} from 'API/Endpoints/index';
 
 
 function* loadImage(imageValue, state) {
@@ -61,5 +61,57 @@ export function* watchPropertyChangeInInspector(getState) {
                 yield fork(loadImage, action.payload.value, state);
             }
         };
+    });
+}
+
+
+const getTransientInspectorValues = $get(['ui', 'inspector', 'valuesByNodePath']);
+
+
+function* applyImageChange(value, nodeContextPath, state) {
+    const imageUuid = (value && $get('__identity', value));
+    if (!imageUuid) {
+        return value;
+    }
+
+    const transientValuesByNodePath = $get('ui.inspector.valuesByNodePath', state);
+    const transientImage = $get([nodeContextPath, 'images', imageUuid], transientValuesByNodePath);
+
+    if (!transientImage) {
+        return value;
+    }
+
+    const originalImageUuid = $get('object.originalAsset.__identity', transientImage);
+    const adjustments = $get('object.adjustments', transientImage).toJS();
+
+    return yield createImageVariant(originalImageUuid, adjustments);
+}
+
+export function* applyInspectorState(getState) {
+    yield* takeEvery(actionTypes.UI.Inspector.APPLY, function* applyAllChanges(action) {
+        const state = getState();
+        const {nodeContextPath} = action.payload;
+        const selectedNode = getNode(nodeContextPath)(state);
+
+        const transientNodeInspectorValues = $get([nodeContextPath, 'nodeProperties'], getTransientInspectorValues(state));
+
+        for (const key of Object.keys(transientNodeInspectorValues.toJS())) {
+            let value = $get([key], transientNodeInspectorValues);
+
+            // TODO: generalize!
+            if (selectedNode.nodeType.properties[key].type === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
+                value = yield applyImageChange(value, nodeContextPath, state);
+            }
+
+            yield put(actions.Changes.persistChange({
+                type: 'PackageFactory.Guevara:Property',
+                subject: nodeContextPath,
+                payload: {
+                    propertyName: key,
+                    value: value
+                }
+            }));
+        }
+        yield put(actions.UI.Inspector.applyFinished(nodeContextPath));
     });
 }

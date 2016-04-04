@@ -127,6 +127,8 @@ export default class Image extends Component {
 
         // TODO: we basically would need to create a new Image adjustment probably????
         this.props.updateImage($get('contextPath', this.props.focusedNode), imageIdentity, image);
+        // TODO: next line should maybe be included in above action?
+        this.props.onChange($set('__modified', true, this.props.value));
     }
 
     onResize(resizeAdjustment) {
@@ -142,6 +144,8 @@ export default class Image extends Component {
         } else {
             this.props.updateImage($get('contextPath', this.props.focusedNode), imageIdentity, $drop(RESIZE_IMAGE_ADJUSTMENT, image));
         }
+        // TODO: next line should maybe be included in above action?
+        this.props.onChange($set('__modified', true, this.props.value));
     }
 
     onToggleCropScreen() {

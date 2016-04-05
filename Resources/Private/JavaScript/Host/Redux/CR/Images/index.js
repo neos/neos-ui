@@ -1,6 +1,6 @@
-import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
-import {$set, $add, $get, $all} from 'plow-js';
+import {createAction} from 'redux-actions';
+import {$set, $all} from 'plow-js';
 
 const START_LOADING = '@packagefactory/guevara/CR/Images/START_LOADING';
 const FINISH_LOADING = '@packagefactory/guevara/CR/Images/FINISH_LOADING';

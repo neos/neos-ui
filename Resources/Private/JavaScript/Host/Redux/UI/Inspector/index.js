@@ -48,6 +48,5 @@ export const reducer = {
     // APPLY is handled by a saga.
     // APPLY_FINISHED is only triggered by the saga which listens on APPLY.
     [APPLY_FINISHED]: ({nodeContextPath}) => $drop(['ui', 'inspector', 'valuesByNodePath', nodeContextPath]),
-    // TODO: APPLY_FINISHED needs to UPDATE the Node properties on the client. Or should the "Changes" API do this? I guess yes.
     [CANCEL]: ({nodeContextPath}) => $drop(['ui', 'inspector', 'valuesByNodePath', nodeContextPath])
 };

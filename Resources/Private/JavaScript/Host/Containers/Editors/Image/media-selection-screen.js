@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {
     FullscreenContentOverlay
 } from 'Components/index';
@@ -13,6 +13,11 @@ const MediaSelectionScreen = (props) => {
     return (<FullscreenContentOverlay onClose={props.onClose}>
         <iframe src="/neos/content/images.html" className={style.mediaSelectionScreen__iframe} />
     </FullscreenContentOverlay>);
+};
+
+MediaSelectionScreen.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    onComplete: PropTypes.func.isRequired
 };
 
 export default MediaSelectionScreen;

@@ -1,12 +1,11 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import ReactCrop from 'react-image-crop';
 import {
     Icon,
     FullscreenContentOverlay
 } from 'Components/index';
-import style from './style.css';
 
-const AspectRatioControl = (props) => {
+const AspectRatioControl = () => {
     /* {{#if view.aspectRatioAllowCustom}}
      {{input valueBinding="view.aspectRatioWidth" type="number"}}
      <button {{action "exchangeAspectRatio" target="view"}}><i class="icon-exchange"></i></button>
@@ -18,14 +17,11 @@ const AspectRatioControl = (props) => {
      {{/unless}} */
 
     return (<div />);
-}
-
-
-
+};
 
 const ImageCropper = (props) => {
     const aspectRatioLocked = false;
-    const aspectRatioReduced = "5:3";
+    const aspectRatioReduced = '5:3';
 
     const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock" /> : null);
 
@@ -35,9 +31,21 @@ const ImageCropper = (props) => {
             {(aspectRatioReduced ? <span title={aspectRatioReduced}>{aspectRatioReduced}</span> : null)}
             {aspectRatioLockIcon}
         </span>
-        {(!aspectRatioLocked ? <AspectRatioControl /> : null)}
+        {aspectRatioLocked ? null : <AspectRatioControl />}
         <ReactCrop src={props.sourceImage} crop={props.crop} onComplete={props.onComplete}/>
     </FullscreenContentOverlay>);
+};
+
+ImageCropper.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    onComplete: PropTypes.func.isRequired,
+    crop: PropTypes.shape.isRequired({
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired,
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired
+    }),
+    sourceImage: PropTypes.string.isRequired
 };
 
 export default ImageCropper;

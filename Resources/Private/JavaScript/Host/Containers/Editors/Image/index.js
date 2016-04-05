@@ -72,14 +72,16 @@ const DEFAULT_FEATURES = {
     resize: false
 };
 
-const cropScreenIdentifier = value => value + '#crop';
-const mediaSelectionScreenIdentifier = value => value + '#mediaSelection';
-const mediaDetailsScreenIdentifier = value => value + '#mediaDetails';
+const cropScreenIdentifier = value => `${value}#crop`;
+const mediaSelectionScreenIdentifier = value => `${value}#mediaSelection`;
+const mediaDetailsScreenIdentifier = value => `${value}#mediaDetails`;
 
 const RESIZE_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'];
 
 @connect($transform({
-    // imageLookup: CR.Images.imageLookup // TODO: does not work
+    // TODO: the next line does not work
+    imageLookup: CR.Images.imageLookup,
+
     currentImageValue: UI.Inspector.currentImageValue,
     focusedNode: CR.Nodes.focusedSelector,
     visibleDetailsScreen: $get('ui.editors.image.visibleDetailsScreen')
@@ -90,24 +92,37 @@ const RESIZE_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\
 })
 export default class Image extends Component {
     static propTypes = {
-        //value: PropTypes.object.isRequired
-        //imagePreviewMaximumDimensions: {width: 288, height: 216},
-        // identifier
+
+        value: PropTypes.shape({
+            __identifier: PropTypes.string
+        }),
+        onChange: PropTypes.func.isRequired,
+        identifier: PropTypes.string.isRequired,
+        visibleDetailsScreen: PropTypes.string.isRequired,
+
+        currentImageValue: PropTypes.func.isRequired,
+        focusedNode: PropTypes.object.isRequired,
+        updateImage: PropTypes.func.isRequired,
+        uploadImage: PropTypes.func.isRequired,
+        toggleImageDetailsScreen: PropTypes.func.isRequired,
 
         // I18N key
-        fileChooserlabel: PropTypes.string
+        fileChooserLabel: PropTypes.string,
+
+        features: PropTypes.shape({
+            crop: PropTypes.bool,
+            resize: PropTypes.bool
+        })
     };
 
     isFeatureEnabled(featureName) {
         const features = Object.assign({}, DEFAULT_FEATURES, this.props.features);
-        return true;
         return features[featureName];
     }
 
     onChooseFile() {
         this.refs.dropzone.open();
     }
-
 
     onCrop(cropArea) {
         const imageIdentity = $get('__identity', this.props.value);
@@ -126,9 +141,7 @@ export default class Image extends Component {
         };
         image = $override(['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'], cropAdjustments, image);
 
-        // TODO: we basically would need to create a new Image adjustment probably????
         this.props.updateImage($get('contextPath', this.props.focusedNode), imageIdentity, image);
-        // TODO: next line should maybe be included in above action?
         this.props.onChange($set('__modified', true, this.props.value));
     }
 
@@ -150,11 +163,11 @@ export default class Image extends Component {
     }
 
     onToggleCropScreen() {
-        this.props.toggleImageDetailsScreen(cropScreenIdentifier(this.props.identifier))
+        this.props.toggleImageDetailsScreen(cropScreenIdentifier(this.props.identifier));
     }
 
     onToggleMediaSelectionScreen() {
-        this.props.toggleImageDetailsScreen(mediaSelectionScreenIdentifier(this.props.identifier))
+        this.props.toggleImageDetailsScreen(mediaSelectionScreenIdentifier(this.props.identifier));
     }
     onRemoveFile() {
         this.props.toggleImageDetailsScreen(false);
@@ -163,7 +176,7 @@ export default class Image extends Component {
 
     onMediaSelected(assetIdentifier) {
         this.props.onChange($set('__identity', assetIdentifier, this.props.value));
-        this.onToggleMediaSelectionScreen(); // Closes it again
+        this.onToggleMediaSelectionScreen(false);
     }
 
     onToggleMediaDetailsScreen() {
@@ -181,7 +194,6 @@ export default class Image extends Component {
         } else {
             this.onChooseFile();
         }
-
     }
 
     onDrop(files) {
@@ -197,13 +209,14 @@ export default class Image extends Component {
         }
         const isLoadingImage = ($get('status', image) === 'LOADING');
 
-        const imageLoaded = !!$get('previewImageResourceUri', image);
+        const imageLoaded = Boolean($get('previewImageResourceUri', image));
 
         const previewScalingFactor = calculatePreviewScalingFactor(image);
         const cropInformationRelativeToOriginalImage = extractCropInformationRelativeToOriginalDimensions(image);
         const cropInformationRelativeToPreviewImage = transformOriginalDimensionsToPreviewImageDimensions(cropInformationRelativeToOriginalImage, previewScalingFactor);
 
-        const previewImageResourceUri = $get('previewImageResourceUri', image) || '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg'; // TODO static path
+        // TODO: static path!
+        const previewImageResourceUri = $get('previewImageResourceUri', image) || '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg';
 
         const thumbnailScalingFactor = calculateThumbnailScalingFactor(cropInformationRelativeToPreviewImage, imagePreviewMaximumDimensions);
 
@@ -243,7 +256,6 @@ export default class Image extends Component {
         const isMediaSelectionScreenVisible = (mediaSelectionScreenIdentifier(this.props.identifier) === this.props.visibleDetailsScreen);
         const isMediaDetailsScreenVisible = (mediaDetailsScreenIdentifier(this.props.identifier) === this.props.visibleDetailsScreen);
 
-
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
@@ -264,9 +276,7 @@ export default class Image extends Component {
                     </Button> : null}
                 </div>
 
-                {imageLoaded && this.isFeatureEnabled('resize') ? <ResizeControls imageDimensions={cropInformationRelativeToOriginalImage} resizeAdjustment={extractResizeImageAdjustment(image)} onChange={this.onResize.bind(this)} />: null}
-
-                <div style={{"paddingBottom": "50px"}}>TODO remove this</div>
+                {imageLoaded && this.isFeatureEnabled('resize') ? <ResizeControls imageDimensions={cropInformationRelativeToOriginalImage} resizeAdjustment={extractResizeImageAdjustment(image)} onChange={this.onResize.bind(this)} /> : null}
 
                 {isMediaSelectionScreenVisible ?
                     <MediaSelectionScreen onClose={this.onToggleMediaSelectionScreen.bind(this)} onComplete={this.onMediaSelected.bind(this)} /> : null}

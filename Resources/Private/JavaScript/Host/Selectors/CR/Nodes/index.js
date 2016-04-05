@@ -24,7 +24,8 @@ const prepareStoredNodeForUsage = (storedNode, getStoredNodeType) => {
     return null;
 };
 
-const storedNodeLookupCache = {}; // Needed to ensure immutability
+// Needed to ensure immutability
+const storedNodeLookupCache = {};
 
 const resolveNodeFromContextPath = (contextPath, getStoredNodeByContextPath, getNodeType) => {
     if (!storedNodeLookupCache[contextPath]) {

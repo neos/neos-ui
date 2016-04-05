@@ -10,14 +10,14 @@ import style from './style.css';
 
 const buildResizeAdjustment = (width, height) => new Map({
     allowUpScaling: null,
-    height: height,
+    height,
     maximumHeight: null,
     maximumWidth: null,
     minimumHeight: null,
     minimumWidth: null,
     position: 20,
     ratioMode: null,
-    width: width
+    width
 });
 
 const toggleResizeAdjustment = (props) => () => {
@@ -36,7 +36,7 @@ const onChangeValue = (props, heightOrWidth) => (changedValue) => {
     if (heightOrWidth === 'height') {
         height = changedValue;
         width = height / aspectRatio;
-    } else { // width
+    } else {
         width = changedValue;
         height = width * aspectRatio;
     }

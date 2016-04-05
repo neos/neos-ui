@@ -1,6 +1,6 @@
-import {takeLatest, takeEvery} from 'redux-saga';
+import {takeEvery} from 'redux-saga';
 import {put, fork} from 'redux-saga/effects';
-import {$get, $transform} from 'plow-js';
+import {$get} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/index';
 import {CR} from 'Host/Selectors/index';
@@ -10,7 +10,6 @@ const currentDocumentNode = CR.Nodes.currentDocumentNode;
 const imageByUuid = CR.Images.imageByUuid;
 
 import {loadImageMetadata, createImageVariant, uploadAsset} from '../../../../API/Endpoints/index';
-
 
 function* loadImage(imageValue, state) {
     if (!imageValue || !imageValue.__identity) {
@@ -22,7 +21,6 @@ function* loadImage(imageValue, state) {
     } else {
         yield put(actions.CR.Images.startLoading(imageValue.__identity));
         const r = yield loadImageMetadata(imageValue.__identity);
-        console.log("LOADED IMAGE", imageValue.__identity);
         yield put(actions.CR.Images.finishLoading(imageValue.__identity, r));
     }
 }
@@ -35,7 +33,6 @@ export function* watchInspectorNodeChange(getState) {
         // TODO: the following is not really nice, as the current node can be "blurred". Maybe we should get rid of this "blur"??
         const focusedNodeContextPath = (action.type === actionTypes.CR.Nodes.FOCUS ? action.payload.contextPath : currentDocumentNode(state));
         const selectedNode = getNode(focusedNodeContextPath)(state);
-
 
         const propertyNames = Object.keys(selectedNode.nodeType.properties);
         for (const i in propertyNames) {
@@ -60,7 +57,7 @@ export function* watchPropertyChangeInInspector(getState) {
             if (selectedNode.nodeType.properties[propertyNames[i]].type === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
                 yield fork(loadImage, action.payload.value, state);
             }
-        };
+        }
     });
 }
 
@@ -68,32 +65,13 @@ function* uploadImage(uploadImageAction) {
     yield uploadAsset(uploadImageAction.payload.fileToUpload);
 }
 
-export function* watchUploadImage(getState) {
-    // TODO: needs to be triggered after init
+export function* watchUploadImage() {
     yield* takeEvery([actionTypes.UI.Editors.Image.UPLOAD_IMAGE], function* watchUploadImage(action) {
-        const state = getState();
-
         yield fork(uploadImage, action);
-        /*// TODO: the following is not really nice, as the current node can be "blurred". Maybe we should get rid of this "blur"??
-        const focusedNodeContextPath = (action.type === actionTypes.CR.Nodes.FOCUS ? action.payload.contextPath : currentDocumentNode(state));
-        const selectedNode = getNode(focusedNodeContextPath)(state);
-
-
-        const propertyNames = Object.keys(selectedNode.nodeType.properties);
-        for (const i in propertyNames) {
-            // TODO: generalize!
-            if (selectedNode.nodeType.properties[propertyNames[i]].type === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
-                yield fork(loadImage, selectedNode.properties[propertyNames[i]], state);
-            }
-        }*/
     });
 }
 
-
-
 const getTransientInspectorValues = $get(['ui', 'inspector', 'valuesByNodePath']);
-
-
 function* applyImageChange(value, nodeContextPath, state) {
     const imageUuid = (value && $get('__identity', value));
     if (!imageUuid) {
@@ -134,7 +112,7 @@ export function* applyInspectorState(getState) {
                 subject: nodeContextPath,
                 payload: {
                     propertyName: key,
-                    value: value
+                    value
                 }
             }));
         }

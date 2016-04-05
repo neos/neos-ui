@@ -101,7 +101,7 @@ export const hydrators = [
     PageTreeHydrator,
     ContentCanvasHydrator,
     InspectorHydrator,
-    ...EditorHydrators // This is a LIST of hydrators!
+    ...EditorHydrators
 ];
 
 //

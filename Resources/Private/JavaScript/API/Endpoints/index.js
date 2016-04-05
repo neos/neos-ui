@@ -35,7 +35,7 @@ export const discard = nodeContextPaths => fetch('/neos!/service/discard', {
     })
 }).then(response => response.json());
 
-export const loadImageMetadata = imageVariantUuid => fetch('neos/content/image-with-metadata?image=' + imageVariantUuid, {
+export const loadImageMetadata = imageVariantUuid => fetch(`neos/content/image-with-metadata?image=${imageVariantUuid}`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -67,11 +67,11 @@ export const createImageVariant = (originalAssetUuid, adjustments) => fetch('neo
     })
 }).then(response => response.json());
 
-
 export const uploadAsset = (file) => {
     const data = new FormData();
     data.append('name', 'name.png');
-    data.append('__siteNodeName', 'publicwebsite'); // TODO
+    // TODO: make site node name configurable here!!!
+    data.append('__siteNodeName', 'publicwebsite');
     data.append('asset[resource]', file);
     data.append('metadata', 'Image');
 
@@ -80,7 +80,7 @@ export const uploadAsset = (file) => {
         credentials: 'include',
         headers: {
             'X-Flow-Csrftoken': window.neos.csrfToken()
-},
+        },
         body: data
     }).then(response => response.json());
-}
+};

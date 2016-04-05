@@ -18,7 +18,8 @@ const FullscreenContentOverlay = props => {
 };
 FullscreenContentOverlay.propTypes = {
     // Interaction related propTypes.
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    children: PropTypes.element.isRequired
 };
 
 export default FullscreenContentOverlay;

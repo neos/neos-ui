@@ -1,14 +1,8 @@
-/*@import 'react-image-crop/dist/ReactCrop.css'; TODO FIX CROPPING */
-
-$maxImageWidth:   calc($sidebarWidth - $spacing * 2);
+$maxImageWidth: calc($sidebarWidth - $spacing * 2);
 $maxImageHeight: calc(($sidebarWidth - $spacing * 2) / 4 * 3);
 
 .imageEditor {
     min-width: calc($sidebarWidth - $spacing * 2);
-}
-
-.imageEditor--dropzone {
-
 }
 
 .imageEditor--thumbnail {

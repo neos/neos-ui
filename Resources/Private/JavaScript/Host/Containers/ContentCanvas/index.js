@@ -41,7 +41,7 @@ export default class ContentCanvas extends Component {
                         name={'neos-content-main'}
                         data-context-path={contextPath}
                         className={style.contentCanvas__contents}
-                    />
+                        />
                     <div className={style.contentView__item} id="neos__contentView__hook">
                     </div>
                 </div>

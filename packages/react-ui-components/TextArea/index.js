@@ -14,7 +14,6 @@ const onChangeHandler = (e, cb) => {
 
 const TextArea = props => {
     const {
-        type,
         placeholder,
         className,
         isValid,
@@ -32,7 +31,6 @@ const TextArea = props => {
     return (
         <TextareaAutoresize
             className={classNames}
-            type={type}
             role="textbox"
             placeholder={placeholder}
             onChange={e => onChangeHandler(e, onChange)}
@@ -54,7 +52,6 @@ TextArea.propTypes = {
     onBlur: PropTypes.func
 };
 TextArea.defaultProps = {
-    type: 'text',
     isValid: true
 };
 

@@ -46,6 +46,7 @@ TextInput.propTypes = {
     isValid: PropTypes.bool.isRequired,
     className: PropTypes.string,
     placeholder: PropTypes.string,
+    type: PropTypes.string,
 
     // Interaction related propTypes.
     onChange: PropTypes.func,

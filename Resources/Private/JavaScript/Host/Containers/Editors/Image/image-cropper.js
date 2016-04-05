@@ -39,7 +39,7 @@ const ImageCropper = (props) => {
 ImageCropper.propTypes = {
     onClose: PropTypes.func.isRequired,
     onComplete: PropTypes.func.isRequired,
-    crop: PropTypes.shape.isRequired({
+    crop: PropTypes.shape({
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired,
         width: PropTypes.number.isRequired,

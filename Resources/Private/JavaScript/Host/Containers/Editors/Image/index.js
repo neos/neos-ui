@@ -93,12 +93,18 @@ const RESIZE_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\
 export default class Image extends Component {
     static propTypes = {
 
-        value: PropTypes.shape({
-            __identifier: PropTypes.string
-        }),
+        value: PropTypes.oneOfType([
+            PropTypes.shape({
+                __identifier: PropTypes.string
+            }),
+            PropTypes.string
+        ]),
         onChange: PropTypes.func.isRequired,
         identifier: PropTypes.string.isRequired,
-        visibleDetailsScreen: PropTypes.string.isRequired,
+        visibleDetailsScreen: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.bool
+        ]),
 
         currentImageValue: PropTypes.func.isRequired,
         focusedNode: PropTypes.object.isRequired,

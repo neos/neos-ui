@@ -66,3 +66,21 @@ export const createImageVariant = (originalAssetUuid, adjustments) => fetch('neo
         }
     })
 }).then(response => response.json());
+
+
+export const uploadAsset = (file) => {
+    const data = new FormData();
+    data.append('name', 'name.png');
+    data.append('__siteNodeName', 'publicwebsite'); // TODO
+    data.append('asset[resource]', file);
+    data.append('metadata', 'Image');
+
+    return fetch('neos/content/upload-asset', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': window.neos.csrfToken()
+},
+        body: data
+    }).then(response => response.json());
+}

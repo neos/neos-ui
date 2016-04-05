@@ -85,7 +85,8 @@ const RESIZE_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\
     visibleDetailsScreen: $get('ui.editors.image.visibleDetailsScreen')
 }), {
     toggleImageDetailsScreen: actions.UI.Editors.Image.toggleImageDetailsScreen,
-    updateImage: actions.UI.Editors.Image.updateImage
+    updateImage: actions.UI.Editors.Image.updateImage,
+    uploadImage: actions.UI.Editors.Image.uploadImage
 })
 export default class Image extends Component {
     static propTypes = {
@@ -183,6 +184,11 @@ export default class Image extends Component {
 
     }
 
+    onDrop(files) {
+        const file = files[0];
+        this.props.uploadImage(file);
+    }
+
     render() {
         const imageIdentity = $get('__identity', this.props.value);
         let image;
@@ -241,7 +247,7 @@ export default class Image extends Component {
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
-                <Dropzone ref="dropzone" onDrop={this.onDrop} className={style['imageEditor--dropzone']} disableClick={true}>
+                <Dropzone ref="dropzone" onDrop={this.onDrop.bind(this)} className={style['imageEditor--dropzone']} disableClick={true} multiple={false}>
                     <div className={style['imageEditor--thumbnail']} onClick={this.onThumbnailClicked.bind(this)}>
                         <div className={style['imageEditor--thumbnailInner']} style={containerStyles}>
                             {isLoadingImage ? <Icon icon="spinner" spin={true} size="big" /> : <img src={previewImageResourceUri} style={imageStyles}/>}

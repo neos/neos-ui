@@ -72,7 +72,9 @@ class NodePropertyConversionService
                 }
 
                 if (is_string($rawValue) && $this->objectManager->isRegistered($innerType) && $rawValue !== '') {
-                    return $this->propertyMapper->convert(json_decode($rawValue, true), $propertyType, $configuration);
+                    return $this->propertyMapper->convert(json_decode($rawValue, true), $propertyType);
+                } else {
+                    return $rawValue;
                 }
         }
     }

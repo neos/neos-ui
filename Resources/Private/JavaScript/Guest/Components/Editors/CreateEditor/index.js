@@ -4,6 +4,7 @@ import {actions} from 'Guest/Redux/index';
 import {registerToolbar} from 'Guest/Containers/EditorToolbar/index';
 
 import style from './style.css';
+import {$get} from 'plow-js';
 
 export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => {
     let editor = null;

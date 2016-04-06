@@ -9,8 +9,9 @@ export const currentValue = createSelector(
         $get('ui.inspector.valuesByNodePath')
     ],
     (focusedNode, transientValuesByNodePath) => propertyId => {
-        const transientValue = $get([focusedNode.contextPath, 'nodeProperties', propertyId], transientValuesByNodePath);
-        const originalValue = focusedNode.properties[propertyId];
+        const focusedNodeContextPath = $get('contextPath', focusedNode);
+        const transientValue = $get([focusedNodeContextPath, 'nodeProperties', propertyId], transientValuesByNodePath);
+        const originalValue = $get(['properties', propertyId], focusedNode);
 
         return transientValue || originalValue;
     }
@@ -23,7 +24,8 @@ export const currentImageValue = createSelector(
         $get('cr.images.byUuid')
     ],
     (focusedNode, transientValuesByNodePath, imagesByUuid) => imageUuid => {
-        const transientValue = $get([focusedNode.contextPath, 'images', imageUuid], transientValuesByNodePath);
+        const focusedNodeContextPath = $get('contextPath', focusedNode);
+        const transientValue = $get([focusedNodeContextPath, 'images', imageUuid], transientValuesByNodePath);
         const originalValue = $get([imageUuid], imagesByUuid);
 
         return transientValue || originalValue;

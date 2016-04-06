@@ -34,11 +34,11 @@ export function* watchInspectorNodeChange(getState) {
         const focusedNodeContextPath = (action.type === actionTypes.CR.Nodes.FOCUS ? action.payload.contextPath : currentDocumentNode(state));
         const selectedNode = getNode(focusedNodeContextPath)(state);
 
-        const propertyNames = Object.keys(selectedNode.nodeType.properties);
+        const propertyNames = Object.keys($get('nodeType.properties', selectedNode));
         for (const i in propertyNames) {
             // TODO: generalize!
-            if (selectedNode.nodeType.properties[propertyNames[i]].type === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
-                yield fork(loadImage, selectedNode.properties[propertyNames[i]], state);
+            if ($get(['nodeType', 'properties', propertyNames[i], 'type'], selectedNode) === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
+                yield fork(loadImage, $get(['properties', propertyNames[i]], selectedNode), state);
             }
         }
     });
@@ -54,7 +54,7 @@ export function* watchPropertyChangeInInspector(getState) {
         const propertyNames = [action.payload.propertyId];
         for (const i in propertyNames) {
             // TODO: generalize!
-            if (selectedNode.nodeType.properties[propertyNames[i]].type === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
+            if ($get(['nodeType', 'properties', propertyNames[i], 'type'], selectedNode) === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
                 yield fork(loadImage, action.payload.value, state);
             }
         }
@@ -110,7 +110,7 @@ export function* applyInspectorState(getState) {
             let value = $get([key], transientNodeInspectorValues);
 
             // TODO: generalize!
-            if (selectedNode.nodeType.properties[key].type === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
+            if ($get(['nodeType', 'properties', key, 'type'], selectedNode) === 'TYPO3\\Media\\Domain\\Model\\ImageInterface') {
                 value = yield applyImageChange(value, nodeContextPath, state);
             }
 

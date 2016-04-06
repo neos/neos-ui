@@ -7,12 +7,12 @@ import {Label, I18n} from 'Components/index';
 import SingleInspectorEditor from '../SingleInspectorEditor/';
 
 const prepareListOfPropertiesToBeEdited = (inspectorGroup, focusedNode) => {
-    const nodeTypeProperties = focusedNode.nodeType.properties;
+    const nodeTypeProperties = $get('nodeType.properties', focusedNode);
     return Object.keys(nodeTypeProperties).map(propertyId => ({
         ...nodeTypeProperties[propertyId],
         id: propertyId
     }))
-    .filter((property) => $get('ui.inspector.group', property) === inspectorGroup.id)
+    .filter((property) => $get('ui.inspector.group', property) === $get('id', inspectorGroup))
     .sort((a, b) => (a.position - b.position) || (a.id - b.id));
 };
 

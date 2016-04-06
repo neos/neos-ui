@@ -11,12 +11,6 @@ chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
 describe('"host.components.textArea"', () => {
-    it('should render an "input" node.', () => {
-        const input = shallow(<TextArea />);
-
-        expect(input.type()).to.equal('textarea');
-    });
-
     it('should add the passed "className" prop to the rendered button if passed.', () => {
         const input = shallow(<TextArea className="test" />);
 

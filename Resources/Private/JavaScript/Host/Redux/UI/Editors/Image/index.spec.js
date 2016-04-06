@@ -1,21 +1,18 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map} from 'immutable';
+import {reducer, actions, hydrate} from './index.js';
 
-import {handleActions} from 'Host/Utilities/';
+import {handleActions} from 'Shared/Utilities/index';
 
-const {writeValue, cancel} = actions;
+const {toggleImageDetailsScreen, updateImage} = actions;
 
-describe('"host.redux.ui.inspector" ', () => {
+describe('"host.redux.ui.editors.image" ', () => {
     let store = null;
 
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    inspector: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -31,27 +28,42 @@ describe('"host.redux.ui.inspector" ', () => {
         it('should return an object as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.ui.inspector).to.be.an('object');
+            expect(state.get('ui').get('editors').get('image')).to.be.an.instanceOf(Map);
         });
     });
 
-    describe('"writeValue" action.', () => {
-        it('should store the last modification.', () => {
-            store.dispatch(writeValue('/my/path@user-foo', 'test', 'value'));
-            expect(store.getState().ui.inspector.valuesByNodePath['/my/path@user-foo'].test).to.equal('value');
+    describe('"toggleImageDetailsScreen" action.', () => {
+        it('should set the screen identifier.', () => {
+            store.dispatch(toggleImageDetailsScreen('screen-identifier'));
+            expect(store.getState().toJS().ui.editors.image.visibleDetailsScreen).to.equal('screen-identifier');
 
-            store.dispatch(writeValue('/my/path@user-foo', 'test', 'new value'));
-            expect(store.getState().ui.inspector.valuesByNodePath['/my/path@user-foo'].test).to.equal('new value');
+            store.dispatch(toggleImageDetailsScreen('screen-identifier-2'));
+            expect(store.getState().toJS().ui.editors.image.visibleDetailsScreen).to.equal('screen-identifier-2');
+        });
+
+        it('should remove the visible screen if called twice with the same identifier.', () => {
+            store.dispatch(toggleImageDetailsScreen('screen-identifier'));
+            store.dispatch(toggleImageDetailsScreen('screen-identifier'));
+            expect(store.getState().toJS().ui.editors.image.visibleDetailsScreen).to.equal(null);
         });
     });
 
-    describe('"cancel" action.', () => {
-        it('should cancel all modifications.', () => {
-            store.dispatch(writeValue('/my/path@user-foo', 'test', 'value'));
-            expect(store.getState().ui.inspector.valuesByNodePath['/my/path@user-foo'].test).to.equal('value');
+    describe('"updateImage" action.', () => {
+        it('should set the transient image.', () => {
+            store.dispatch(toggleImageDetailsScreen('screen-identifier'));
+            expect(store.getState().toJS().ui.editors.image.visibleDetailsScreen).to.equal('screen-identifier');
 
-            store.dispatch(cancel('/my/path@user-foo'));
-            expect(store.getState().ui.inspector.valuesByNodePath['/my/path@user-foo']).to.equal(undefined);
+            store.dispatch(toggleImageDetailsScreen('screen-identifier-2'));
+            expect(store.getState().toJS().ui.editors.image.visibleDetailsScreen).to.equal('screen-identifier-2');
+        });
+
+        it('should remove the visible screen if called twice with the same identifier.', () => {
+            const image = {
+                __this: 'is-an-image'
+            };
+
+            store.dispatch(updateImage('/node/contextpath', 'abc-def-uuid', image));
+            expect(store.getState().toJS().ui.inspector.valuesByNodePath['/node/contextpath'].images['abc-def-uuid']).to.equal(image);
         });
     });
 });

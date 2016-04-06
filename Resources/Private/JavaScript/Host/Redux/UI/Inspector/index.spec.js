@@ -1,7 +1,9 @@
 import {createStore} from 'redux';
-import {reducer, actions, initialState} from './index.js';
+import {Map} from 'immutable';
 
-import {handleActions} from 'Host/Utilities/';
+import {reducer, actions, hydrate} from './index.js';
+
+import {handleActions} from 'Shared/Utilities/index';
 
 const {writeValue, cancel} = actions;
 
@@ -11,11 +13,7 @@ describe('"host.redux.ui.inspector" ', () => {
     beforeEach(done => {
         store = createStore(
             handleActions(reducer),
-            {
-                ui: {
-                    inspector: initialState
-                }
-            }
+            hydrate({})(new Map())
         );
 
         done();
@@ -31,27 +29,27 @@ describe('"host.redux.ui.inspector" ', () => {
         it('should return an object as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.ui.inspector).to.be.an('object');
+            expect(state.get('ui').get('inspector')).to.be.an.instanceOf(Map);
         });
     });
 
     describe('"writeValue" action.', () => {
         it('should store the last modification.', () => {
             store.dispatch(writeValue('/my/path@user-foo', 'test', 'value'));
-            expect(store.getState().ui.inspector.valuesByNodePath['/my/path@user-foo'].test).to.equal('value');
+            expect(store.getState().toJS().ui.inspector.valuesByNodePath['/my/path@user-foo'].nodeProperties.test).to.equal('value');
 
             store.dispatch(writeValue('/my/path@user-foo', 'test', 'new value'));
-            expect(store.getState().ui.inspector.valuesByNodePath['/my/path@user-foo'].test).to.equal('new value');
+            expect(store.getState().toJS().ui.inspector.valuesByNodePath['/my/path@user-foo'].nodeProperties.test).to.equal('new value');
         });
     });
 
     describe('"cancel" action.', () => {
         it('should cancel all modifications.', () => {
             store.dispatch(writeValue('/my/path@user-foo', 'test', 'value'));
-            expect(store.getState().ui.inspector.valuesByNodePath['/my/path@user-foo'].test).to.equal('value');
+            expect(store.getState().toJS().ui.inspector.valuesByNodePath['/my/path@user-foo'].nodeProperties.test).to.equal('value');
 
             store.dispatch(cancel('/my/path@user-foo'));
-            expect(store.getState().ui.inspector.valuesByNodePath['/my/path@user-foo']).to.equal(undefined);
+            expect(store.getState().toJS().ui.inspector.valuesByNodePath['/my/path@user-foo']).to.equal(undefined);
         });
     });
 });

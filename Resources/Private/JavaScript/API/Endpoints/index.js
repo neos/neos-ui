@@ -67,13 +67,11 @@ export const createImageVariant = (originalAssetUuid, adjustments) => fetch('neo
     })
 }).then(response => response.json());
 
-export const uploadAsset = (file) => {
+export const uploadAsset = (file, siteNodeName, metadata = 'Image') => {
     const data = new FormData();
-    data.append('name', 'name.png');
-    // TODO: make site node name configurable here!!!
-    data.append('__siteNodeName', 'publicwebsite');
+    data.append('__siteNodeName', siteNodeName);
     data.append('asset[resource]', file);
-    data.append('metadata', 'Image');
+    data.append('metadata', metadata);
 
     return fetch('neos/content/upload-asset', {
         method: 'POST',

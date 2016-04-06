@@ -84,7 +84,8 @@ const RESIZE_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\
 
     currentImageValue: UI.Inspector.currentImageValue,
     focusedNode: CR.Nodes.focusedSelector,
-    visibleDetailsScreen: $get('ui.editors.image.visibleDetailsScreen')
+    visibleDetailsScreen: $get('ui.editors.image.visibleDetailsScreen'),
+    currentlyUploadingScreen: $get('ui.editors.image.currentlyUploadingScreen')
 }), {
     toggleImageDetailsScreen: actions.UI.Editors.Image.toggleImageDetailsScreen,
     updateImage: actions.UI.Editors.Image.updateImage,
@@ -105,6 +106,7 @@ export default class Image extends Component {
             PropTypes.string,
             PropTypes.bool
         ]),
+        currentlyUploadingScreen: PropTypes.string.isRequired,
 
         currentImageValue: PropTypes.func.isRequired,
         focusedNode: PropTypes.object.isRequired,
@@ -204,7 +206,7 @@ export default class Image extends Component {
 
     onDrop(files) {
         const file = files[0];
-        this.props.uploadImage(file);
+        this.props.uploadImage(file, this.props.onChange, this.props.identifier);
     }
 
     render() {
@@ -213,7 +215,7 @@ export default class Image extends Component {
         if (imageIdentity) {
             image = this.props.currentImageValue(imageIdentity);
         }
-        const isLoadingImage = ($get('status', image) === 'LOADING');
+        const isLoadingImage = ($get('status', image) === 'LOADING' || this.props.currentlyUploadingScreen === this.props.identifier);
 
         const imageLoaded = Boolean($get('previewImageResourceUri', image));
 

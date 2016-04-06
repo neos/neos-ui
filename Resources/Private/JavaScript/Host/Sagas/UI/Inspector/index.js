@@ -61,13 +61,20 @@ export function* watchPropertyChangeInInspector(getState) {
     });
 }
 
-function* uploadImage(uploadImageAction) {
-    yield uploadAsset(uploadImageAction.payload.fileToUpload);
-}
-
-export function* watchUploadImage() {
+export function* watchUploadImage(getState) {
     yield* takeEvery([actionTypes.UI.Editors.Image.UPLOAD_IMAGE], function* watchUploadImage(action) {
-        yield fork(uploadImage, action);
+        const state = getState();
+        const siteNodePath = $get('cr.nodes.siteNode', state);
+        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
+
+        yield fork(function* () {
+            const imageMetadata = yield uploadAsset(action.payload.fileToUpload, siteNodeName);
+            const imageUuid = $get('object.__identity', imageMetadata);
+
+            yield put(actions.CR.Images.finishLoading(imageUuid, imageMetadata));
+            yield put(actions.UI.Editors.Image.finishImageUpload());
+            action.payload.nodePropertyValueChangeFn({__identity: imageUuid});
+        }, action);
     });
 }
 

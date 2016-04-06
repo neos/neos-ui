@@ -19,7 +19,8 @@ import style from './style.css';
 import Inspector from './Inspector/index';
 
 const generateTabs = (nodeType) => {
-    const tabs = nodeType.ui.inspector.tabs;
+    let tabs = $get('ui.inspector.tabs', nodeType);
+    tabs = (tabs && tabs.toJS ? tabs.toJS() : tabs);
     return Object.keys(tabs).map(tabId => ({
         ...tabs[tabId],
         id: tabId
@@ -56,7 +57,7 @@ export default class RightSideBar extends Component {
 
     render() {
         const focusedNode = this.props.focusedNode;
-        const tabs = generateTabs(focusedNode.nodeType);
+        const tabs = generateTabs($get('nodeType', focusedNode));
         const {isHidden, isFullScreen} = this.props;
         const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({

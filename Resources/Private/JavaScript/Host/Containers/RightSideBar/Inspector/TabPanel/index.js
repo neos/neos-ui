@@ -16,7 +16,8 @@ import EditorContainer from '../EditorContainer/index';
 import style from '../../style.css';
 
 const generateInspectorGroups = (nodeType, tabIdentifier) => {
-    const groups = $get('ui.inspector.groups', nodeType);
+    let groups = $get('ui.inspector.groups', nodeType);
+    groups = (groups && groups.toJS ? groups.toJS() : groups);
 
     return Object.keys(groups).map(groupId => ({
         ...groups[groupId],

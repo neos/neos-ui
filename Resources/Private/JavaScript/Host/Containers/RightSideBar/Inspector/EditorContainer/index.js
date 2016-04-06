@@ -7,7 +7,9 @@ import {Label, I18n} from 'Components/index';
 import SingleInspectorEditor from '../SingleInspectorEditor/';
 
 const prepareListOfPropertiesToBeEdited = (inspectorGroup, focusedNode) => {
-    const nodeTypeProperties = $get('nodeType.properties', focusedNode);
+    let nodeTypeProperties = $get('nodeType.properties', focusedNode);
+    nodeTypeProperties = (nodeTypeProperties && nodeTypeProperties.toJS ? nodeTypeProperties.toJS() : nodeTypeProperties);
+
     return Object.keys(nodeTypeProperties).map(propertyId => ({
         ...nodeTypeProperties[propertyId],
         id: propertyId

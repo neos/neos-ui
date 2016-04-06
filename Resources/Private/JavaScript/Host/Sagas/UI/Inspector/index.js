@@ -92,7 +92,7 @@ function* applyImageChange(value, nodeContextPath, state) {
         return value;
     }
 
-    const originalImageUuid = $get('object.originalAsset.__identity', transientImage);
+    const originalImageUuid = $get('object.originalAsset.__identity', transientImage) || $get('object.__identity', transientImage);
     const adjustments = $get('object.adjustments', transientImage).toJS();
 
     return yield createImageVariant(originalImageUuid, adjustments);

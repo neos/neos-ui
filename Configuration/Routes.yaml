@@ -1,19 +1,4 @@
 ##
-# Authentication
-
--
-  name:  'Authentication'
-  uriPattern: 'che!/<AuthenticationSubRoutes>'
-  defaults:
-    '@package':    'PackageFactory.Guevara'
-    '@controller': 'Login'
-    '@action':     'index'
-  subRoutes:
-    'AuthenticationSubRoutes':
-      package: 'PackageFactory.Guevara'
-      suffix:  'Authentication'
-
-##
 # Backend
 
 -

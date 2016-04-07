@@ -127,7 +127,7 @@ class BackendController extends ActionController
             return;
         }
 
-        $this->redirectToUri($this->uriBuilder->uriFor('index', array(), 'Login', 'PackageFactory.Guevara'));
+        $this->redirectToUri($this->uriBuilder->uriFor('index', array(), 'Login', 'TYPO3.Neos'));
     }
 
     /**

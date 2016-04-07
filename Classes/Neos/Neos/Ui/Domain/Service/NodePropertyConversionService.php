@@ -2,6 +2,7 @@
 namespace Neos\Neos\Ui\Domain\Service;
 
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
 use TYPO3\Flow\Object\ObjectManagerInterface;
 use TYPO3\Flow\Property\PropertyMapper;
 use TYPO3\TYPO3CR\Domain\Service\Context;
@@ -71,8 +72,14 @@ class NodePropertyConversionService
                     }
                 }
 
-                if (is_string($rawValue) && $this->objectManager->isRegistered($innerType) && $rawValue !== '') {
-                    return $this->propertyMapper->convert(json_decode($rawValue, true), $propertyType);
+                if ((is_string($rawValue) || is_array($rawValue)) && $this->objectManager->isRegistered($innerType) && $rawValue !== '') {
+                    $propertyMappingConfiguration = new MvcPropertyMappingConfiguration();
+                    $propertyMappingConfiguration->allowOverrideTargetType();
+                    $propertyMappingConfiguration->allowAllProperties();
+                    $propertyMappingConfiguration->skipUnknownProperties();
+                    $propertyMappingConfiguration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
+                    $propertyMappingConfiguration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
+                    return $this->propertyMapper->convert($rawValue, $propertyType, $propertyMappingConfiguration);
                 } else {
                     return $rawValue;
                 }

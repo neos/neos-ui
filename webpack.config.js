@@ -28,6 +28,14 @@ const config = {
                 loader: 'babel'
             },
             {
+                test: /\.json$/,
+                loader: 'json',
+                include: [
+                    path.resolve(__dirname, './node_modules/mime-types/node_modules/mime-db/'),
+                    path.resolve(__dirname, './node_modules/mime-db/')
+                ]
+            },
+            {
                 test: /\.(woff|woff2)$/,
                 loader: 'url?limit=100000'
             },

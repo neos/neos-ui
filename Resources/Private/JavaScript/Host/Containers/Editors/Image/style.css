@@ -5,6 +5,18 @@ $maxImageHeight: calc(($sidebarWidth - $spacing * 2) / 4 * 3);
     min-width: calc($sidebarWidth - $spacing * 2);
 }
 
+.imageEditor--dropzone {
+    border: none;
+}
+
+.imageEditor--dropzone--isActive {
+    background-color: $success;
+}
+
+.imageEditor--dropzone--isRejecting {
+    background-color: $warn;
+}
+
 .imageEditor--thumbnail {
     position: relative;
     border: 1px dashed $neutral;

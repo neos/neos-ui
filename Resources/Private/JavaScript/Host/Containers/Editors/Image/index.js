@@ -5,6 +5,7 @@ import {UI, CR} from 'Host/Selectors/index';
 import style from './style.css';
 import Dropzone from 'react-dropzone';
 import {actions} from 'Host/Redux/index';
+import mime from 'mime-types';
 
 import {
     Icon,
@@ -114,13 +115,20 @@ export default class Image extends Component {
         uploadImage: PropTypes.func.isRequired,
         toggleImageDetailsScreen: PropTypes.func.isRequired,
 
+        // Public API:
         // I18N key
         fileChooserLabel: PropTypes.string,
 
         features: PropTypes.shape({
             crop: PropTypes.bool,
             resize: PropTypes.bool
-        })
+        }),
+
+        allowedFileTypes: PropTypes.string
+    };
+
+    static defaultProps = {
+        allowedFileTypes: 'jpg,jpeg,png,gif,svg'
     };
 
     isFeatureEnabled(featureName) {
@@ -264,10 +272,12 @@ export default class Image extends Component {
         const isMediaSelectionScreenVisible = (mediaSelectionScreenIdentifier(this.props.identifier) === this.props.visibleDetailsScreen);
         const isMediaDetailsScreenVisible = (mediaDetailsScreenIdentifier(this.props.identifier) === this.props.visibleDetailsScreen);
 
+        const allowedMimeTypes = this.props.allowedFileTypes.split(',').map(fileType => mime.lookup(fileType)).join(',');
+
         // Thumbnail-inner has style width and height
         return (
             <div className={style.imageEditor}>
-                <Dropzone ref="dropzone" onDrop={this.onDrop.bind(this)} className={style['imageEditor--dropzone']} disableClick={true} multiple={false}>
+                <Dropzone ref="dropzone" onDropAccepted={this.onDrop.bind(this)} className={style['imageEditor--dropzone']} activeClassName={style['imageEditor--dropzone--isActive']} rejectClassName={style['imageEditor--dropzone--isRejecting']} accept={allowedMimeTypes} disableClick={true} multiple={false}>
                     <div className={style['imageEditor--thumbnail']} onClick={this.onThumbnailClicked.bind(this)}>
                         <div className={style['imageEditor--thumbnailInner']} style={containerStyles}>
                             {isLoadingImage ? <Icon icon="spinner" spin={true} size="big" /> : <img src={previewImageResourceUri} style={imageStyles}/>}

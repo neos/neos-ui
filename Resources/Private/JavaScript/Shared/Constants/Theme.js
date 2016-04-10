@@ -24,5 +24,6 @@ module.exports = {
     // Spacings
     //
     spacing: '16px',
-    halfSpacing: '8px'
+    halfSpacing: '8px',
+    unit: '40px'
 };

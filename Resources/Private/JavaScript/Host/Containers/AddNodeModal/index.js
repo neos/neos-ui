@@ -113,6 +113,7 @@ export default class AddNodeModal extends Component {
             return (
                 <Dialog
                     isOpen={true}
+                    wide={true}
                     actions={actions}
                     title={<I18n fallback="Create new" id="createNew" />}
                     onRequestClose={this.props.close.bind(this)}

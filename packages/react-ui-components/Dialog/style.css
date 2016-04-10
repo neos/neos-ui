@@ -18,7 +18,7 @@
     position: relative;
     width: calc(100vw - $unit * 2);
     max-width: calc($unit * 16);
-    max-height: calc(100vh - ($unit * 2 + 52px + 72px));
+    max-height: calc(100vh - ($unit * 2));
     border: 1px solid $dark;
 }
 .dialog__title {
@@ -35,4 +35,11 @@
     text-align: right;
     border-top: 1px solid $dark;
     padding: $spacing;
+}
+
+.dialog--wide {
+    composes: dialog;
+}
+.dialog--wide .dialog__contents {
+    max-width: calc($unit * 24);
 }

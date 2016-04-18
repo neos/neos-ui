@@ -35,9 +35,14 @@ export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => 
             } else {
                 const handlers = editorFactory(
                     //
-                    // Get the configuration for RTE
+                    // Get the node
                     //
-                    node.nodeType.properties[nodeContext.propertyName].ui.aloha,
+                    node,
+
+                    //
+                    // Get the property
+                    //
+                    nodeContext.propertyName,
 
                     //
                     // Pass the API object to the editor
@@ -52,17 +57,7 @@ export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => 
                     //
                     // Pass the dom element
                     //
-                    dom,
-
-                    //
-                    // Pass the node object
-                    //
-                    node,
-
-                    //
-                    // Pass the property name
-                    //
-                    nodeContext.propertyName
+                    dom
                 );
 
                 editor = Object.assign({

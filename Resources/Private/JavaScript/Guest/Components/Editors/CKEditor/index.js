@@ -15,8 +15,8 @@ export const editor = ckApi => {
     ckApi.disableAutoInline = true;
 
     return createEditor(
-        (config, api, connection, dom) => {
-            const ckInstance = createCKEditorInstance(ckApi, api, dom);
+        (node, property, api, connection, dom) => {
+            const ckInstance = createCKEditorInstance(node, property, ckApi, api, dom);
             ckInstance.on('change', () => api.commit(ckInstance.getData()));
         }
     );

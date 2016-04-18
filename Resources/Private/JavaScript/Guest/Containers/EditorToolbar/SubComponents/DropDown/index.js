@@ -8,6 +8,7 @@ import style from './style.css';
 export default class ToolbarDropDown extends Component {
     static propTypes = {
         configuration: PropTypes.shape({
+            placeholder: PropTypes.string.isRequired,
             items: PropTypes.arrayOf(
                 PropTypes.shape({
                     icon: PropTypes.string.isRequired,
@@ -24,7 +25,7 @@ export default class ToolbarDropDown extends Component {
 
     render() {
         const {dispatchEditorSignal} = this.props;
-        const {items} = this.props.configuration;
+        const {items, placeholder} = this.props.configuration;
 
         return (
             <div className={style.wrapper}>
@@ -37,7 +38,7 @@ export default class ToolbarDropDown extends Component {
                                 <Icon icon={item.icon} className={style.dropDown__itemIcon} />,
                                 item.label
                             ]
-                        )}
+                        )[0] || placeholder}
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
                         {items.filter(

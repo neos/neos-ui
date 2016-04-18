@@ -35,6 +35,7 @@ export default (editor, editorApi, configuration) => {
     return editorApi.registerToolbar(
         createToolbar(
             createDropDown(
+                'Choose a format...',
                 createDropDownItem('paragraph', 'Paragraph', FORMAT_PARAGRAPH, formats.p),
                 createDropDownItem('header', 'Headline 1', FORMAT_HEADLINE1, formats.h1),
                 createDropDownItem('header', 'Headline 2', FORMAT_HEADLINE2, formats.h2),

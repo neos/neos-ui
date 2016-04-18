@@ -27,10 +27,11 @@ export default editor => {
     //
     // Creates a drop down configuration
     //
-    const createDropDown = (...items) => ({
+    const createDropDown = (placeholder, ...items) => ({
         type: 'DropDown',
         isEnabled: items.filter(item => item.isEnabled).length > 0,
         options: {
+            placeholder,
             items
         }
     });
@@ -42,7 +43,7 @@ export default editor => {
         icon,
         label,
         isEnabled,
-        isActive: ckApi.isFormatActive(editor, format),
+        isActive: () => ckApi.isFormatActive(editor, format),
         onSelect: createSignal(
             () => ckApi.toggleFormat(editor, format)
         )

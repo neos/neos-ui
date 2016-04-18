@@ -16,25 +16,45 @@
 
 
 ## Installation
-*Composer support coming soon...*
+*Full composer support coming soon...*
 
-Clone the repository into your Neos `Packages/Application/` folder and paste the following configuration into the head of your global `Routes.yaml` which is located in `Configuration/`.
-```yaml
+1. Since our package currently conflicts with the default FrontendLogin package, we need to
+   remove it.  
+   **Remove the following line** from your `composer.json` file:  
+   ```
+   "flowpack/neos-frontendlogin": "@dev"
+   ```
+
+2. Add the following lines to your `composer.json` (our package is not published to composer
+   repository yet, so we need to give composer hints where to find it):
+   ```
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/PackageFactory/PackageFactory.Guevara.git" }
+    ],
+   ```
+   Note: if you plan to contribute to the project, fork it and provide VCS url to your forked repository.
+
+3. Run the following commands:  
+   ```
+   rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin # remove the conflicting FrontendLogin
+   rm -rf Data/Temporary/* Configuration/PackageStates.php # clear the caches
+   composer require packagefactory/guevara:dev-master # install our package
+   cd Packages/Application/PackageFactory.Guevara
+   source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps
+   npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
+   ```
+
+4. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`  
+   ```yaml
 -
   name: 'PackageFactory Guevara'
   uriPattern: '<GuevaraSubroutes>'
   subRoutes:
     'GuevaraSubroutes':
       package: 'PackageFactory.Guevara'
-```
+   ```
 
-Since our package currently conflicts with the default FrontendLogin package, we need to remove it prior visiting the new backend interface.
-Execute the following command in your shell to delete the FrontendLogin and the NeosDemoTypo3Org package and to install all frontend dependencies as well as build the frontend application bundles.
-```
-composer remove flowpack/neos-frontendlogin typo3/neosdemotypo3org && rm -rf Data/Temporary/* && rm Configuration/PackageStates.php && rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin/ && cd Packages/Application/PackageFactory.Guevara && bash Build/init.sh
-```
-
-After the script has finished, you are all set up and can open the sub-route `/che!` to login to the new interface.
+Now you are all set up and can open the sub-route `/che!` to login to the new interface.
 
 __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
 If you've installed `nvm` make sure that the node LTS version `4.2.2` is correctly installed - You can do so by executing `nvm install v4.2.2`.
@@ -42,6 +62,8 @@ If you need help setting up `nvm`, `npm` or if you got any other problems, join 
 
 
 ## Contributing
+
+[Read developer documentation on our wiki](https://github.com/PackageFactory/PackageFactory.Guevara/wiki).
 
 #### Development commands
 | Command         | Description                    |

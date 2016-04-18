@@ -1,10 +1,13 @@
 {
     "name": "packagefactory/guevara",
     "type": "typo3-flow-package",
-    "description": "Add description here",
+    "description": "NEOS CMS UI rewritten in React",
     "require": {
         "typo3/flow": "*",
         "typo3/neos": "*"
+    },
+    "provide": {
+        "flowpack/neos-frontendlogin": "*"
     },
     "autoload": {
         "psr-0": {

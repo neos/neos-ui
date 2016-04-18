@@ -47,8 +47,6 @@ before_install:
 
   # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
   - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
-  - nvm install v4.2.2
-  - nvm use
 
   # Expose the commit message for SauceLabs.
   # The export cannot be placed in the `env` section since there are usecases where this isn't reliable.
@@ -86,11 +84,8 @@ install:
 
   # Change into the repository directory where the environment based shell script will be executed.
   - cd Packages/Application/PackageFactory.Guevara
-
-  # Since all environments depend on the node dependencies, install and
-  # afterwards prune them to remove extranous packages from previous/cached runs.
-  - npm install
-  - npm prune
+  - source Build/init.sh
+  - npm run build
 
   # Deactivate the previous enabled handling of hidden files with the `mv` command.
   - shopt -u dotglob

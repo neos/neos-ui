@@ -5,7 +5,8 @@ export default (node, property, ckApi, editor, editorApi) => {
         createToolbar,
         createButton,
         createDropDown,
-        createDropDownItem
+        createDropDownItem,
+        createCommandDropDownItem
     } = helperCreator(ckApi, editor);
     const configuration = node.nodeType.properties[property].ui.aloha || {};
     const format = configuration.format ?
@@ -37,7 +38,9 @@ export default (node, property, ckApi, editor, editorApi) => {
         createDropDownItem('header', 'Headline 6', {element: 'h6'}),
 
         format.indexOf('pre') !== -1 &&
-        createDropDownItem('font', 'Preformatted Text', {element: 'pre'})
+        createDropDownItem('font', 'Preformatted Text', {element: 'pre'}),
+
+        createCommandDropDownItem('eraser', 'Remove Format', 'removeFormat')
     ].filter(i => i);
     const toolbarItems = [
         dropDownItems.length &&

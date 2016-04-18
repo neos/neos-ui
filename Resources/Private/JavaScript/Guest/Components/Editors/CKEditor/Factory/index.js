@@ -4,14 +4,14 @@ import createToolbarConfiguration from './Toolbar/index';
 import getSelectionData from './Selection/index';
 
 export default (node, property, ckApi, editorApi, dom) => {
-    console.log(node, property);
     let removeBlurEvent = null;
-    const editor = ckApi.inline(dom, {
+    const editor = ckApi.inline(dom, Object.assign({
         removePlugins: 'toolbar,contextmenu,liststyle,tabletools',
-        allowedContent: true,
+        allowedContent: true
+    }, node.nodeType.properties[property].ui.aloha.placeholder ? {
         extraPlugins: 'confighelper',
         placeholder: 'Type here...'
-    });
+    } : {}));
     const updateToolbarConfiguration = createToolbarConfiguration(
         node,
         property,

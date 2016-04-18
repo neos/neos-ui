@@ -57,10 +57,29 @@ export default (ckApi, editor) => {
         };
     };
 
+    //
+    // Creates a command drop down item configuration
+    //
+    const createCommandDropDownItem = (icon, label, command) => {
+        return {
+            icon,
+            label,
+            isActive: () => editor.getCommand(command) && editor.getCommand(command).state === ckApi.TRISTATE_ON,
+            isEnabled: () => true,
+            onSelect: createSignal(
+                () => {
+                    editor.execCommand(command);
+                    editor.fire('change');
+                }
+            )
+        };
+    };
+
     return {
         createToolbar,
         createButton,
         createDropDown,
-        createDropDownItem
+        createDropDownItem,
+        createCommandDropDownItem
     };
 };

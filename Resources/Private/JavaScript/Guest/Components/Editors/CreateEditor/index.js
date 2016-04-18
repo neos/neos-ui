@@ -50,11 +50,6 @@ export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => 
                     editorApi,
 
                     //
-                    // Pass the host frame connection to the editor
-                    //
-                    connection,
-
-                    //
                     // Pass the dom element
                     //
                     dom

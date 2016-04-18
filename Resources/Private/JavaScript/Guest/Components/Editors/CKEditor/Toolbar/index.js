@@ -1,13 +1,13 @@
 import helperCreator from './Helper/index';
 
-export default (node, property, ckApi, editor, editorApi) => {
+export default (node, property, editor, editorApi) => {
     const {
         createToolbar,
         createButton,
         createDropDown,
         createDropDownItem,
         createCommandDropDownItem
-    } = helperCreator(ckApi, editor);
+    } = helperCreator(editor);
     const configuration = node.nodeType.properties[property].ui.aloha || {};
     const format = configuration.format ?
         Object.keys(configuration.format).map(k => configuration.format[k]) : [];

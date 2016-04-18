@@ -49,7 +49,9 @@ export default class Toolbar extends Component {
                 >
                 <div className={classNames} style={this.getPosition()}>
                     <div className={style.toolBar__btnGroup}>
-                    {configuration && configuration.components.map(
+                    {configuration && configuration.components.filter(
+                        component => component.isEnabled
+                    ).map(
                         (component, index) => {
                             const SubComponent = SubComponents[component.type];
 

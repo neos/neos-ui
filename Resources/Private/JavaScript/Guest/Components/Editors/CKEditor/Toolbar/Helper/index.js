@@ -12,14 +12,14 @@ export default editor => {
     //
     // Creates a button configuration
     //
-    const createButton = (icon, command) => ({
+    const createButton = (icon, format, isEnabled) => ({
         type: 'Button',
+        isEnabled,
         options: {
             icon,
-            isActive: () => ckApi.isFormatActive(editor, {command}),
-            isEnabled: () => true,
+            isActive: () => ckApi.isFormatActive(editor, format),
             onClick: createSignal(
-                () => ckApi.toggleFormat(editor, {command})
+                () => ckApi.toggleFormat(editor, format)
             )
         }
     });
@@ -29,6 +29,7 @@ export default editor => {
     //
     const createDropDown = (...items) => ({
         type: 'DropDown',
+        isEnabled: items.filter(item => item.isEnabled).length > 0,
         options: {
             items
         }
@@ -37,26 +38,13 @@ export default editor => {
     //
     // Creates a drop down item configuration
     //
-    const createDropDownItem = (icon, label, style) => ({
+    const createDropDownItem = (icon, label, format, isEnabled) => ({
         icon,
         label,
-        isActive: ckApi.isFormatActive(editor, {style}),
-        isEnabled: () => true,
+        isEnabled,
+        isActive: ckApi.isFormatActive(editor, format),
         onSelect: createSignal(
-            () => ckApi.toggleFormat(editor, {style})
-        )
-    });
-
-    //
-    // Creates a command drop down item configuration
-    //
-    const createCommandDropDownItem = (icon, label, command) => ({
-        icon,
-        label,
-        isActive: ckApi.isFormatActive(editor, {command}),
-        isEnabled: () => true,
-        onSelect: createSignal(
-            () => ckApi.toggleFormat(editor, {command})
+            () => ckApi.toggleFormat(editor, format)
         )
     });
 
@@ -64,7 +52,6 @@ export default editor => {
         createToolbar,
         createButton,
         createDropDown,
-        createDropDownItem,
-        createCommandDropDownItem
+        createDropDownItem
     };
 };

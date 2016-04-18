@@ -1,91 +1,64 @@
+import {
+    FORMAT_PARAGRAPH,
+    FORMAT_HEADLINE1,
+    FORMAT_HEADLINE2,
+    FORMAT_HEADLINE3,
+    FORMAT_HEADLINE4,
+    FORMAT_HEADLINE5,
+    FORMAT_HEADLINE6,
+    FORMAT_PREFORMATTED_TEXT,
+    FORMAT_REMOVE_FORMAT,
+    FORMAT_BOLD,
+    FORMAT_ITALIC,
+    FORMAT_UNDERLINE,
+    FORMAT_SUBSCRIPT,
+    FORMAT_SUPERSCRIPT,
+    FORMAT_STRIKETHROUGH,
+    FORMAT_ORDERED_LIST,
+    FORMAT_UNORDERED_LIST,
+    FORMAT_ALIGN_LEFT,
+    FORMAT_ALIGN_RIGHT,
+    FORMAT_ALIGN_CENTER,
+    FORMAT_ALIGN_JUSTIFY
+} from '../Constants/formats';
 import helperCreator from './Helper/index';
 
-export default (node, property, editor, editorApi) => {
+export default (editor, editorApi, configuration) => {
     const {
         createToolbar,
         createButton,
         createDropDown,
-        createDropDownItem,
-        createCommandDropDownItem
+        createDropDownItem
     } = helperCreator(editor);
-    const configuration = node.nodeType.properties[property].ui.aloha || {};
-    const format = configuration.format ?
-        Object.keys(configuration.format).map(k => configuration.format[k]) : [];
-    const list = configuration.list ?
-        Object.keys(configuration.list).map(k => configuration.list[k]) : [];
-    const alignment = configuration.alignment ?
-        Object.keys(configuration.alignment).map(k => configuration.alignment[k]) : [];
-    const dropDownItems = [
-        format.indexOf('p') !== -1 &&
-        createDropDownItem('paragraph', 'Paragraph', {element: 'p'}),
-
-        format.indexOf('h1') !== -1 &&
-        createDropDownItem('header', 'Headline 1', {element: 'h1'}),
-
-        format.indexOf('h2') !== -1 &&
-        createDropDownItem('header', 'Headline 2', {element: 'h2'}),
-
-        format.indexOf('h3') !== -1 &&
-        createDropDownItem('header', 'Headline 3', {element: 'h3'}),
-
-        format.indexOf('h4') !== -1 &&
-        createDropDownItem('header', 'Headline 4', {element: 'h4'}),
-
-        format.indexOf('h5') !== -1 &&
-        createDropDownItem('header', 'Headline 5', {element: 'h5'}),
-
-        format.indexOf('h6') !== -1 &&
-        createDropDownItem('header', 'Headline 6', {element: 'h6'}),
-
-        format.indexOf('pre') !== -1 &&
-        createDropDownItem('font', 'Preformatted Text', {element: 'pre'}),
-
-        createCommandDropDownItem('eraser', 'Remove Format', 'removeFormat')
-    ].filter(i => i);
-    const toolbarItems = [
-        dropDownItems.length &&
-        createDropDown(...dropDownItems),
-
-        (format.indexOf('strong') !== -1 || format.indexOf('b') !== -1) &&
-        createButton('bold', 'bold'),
-
-        (format.indexOf('em') !== -1 || format.indexOf('i') !== -1) &&
-        createButton('italic', 'italic'),
-
-        format.indexOf('u') !== -1 &&
-        createButton('underline', 'underline'),
-
-        format.indexOf('sub') !== -1 &&
-        createButton('subscript', 'subscript'),
-
-        format.indexOf('sup') !== -1 &&
-        createButton('superscript', 'superscript'),
-
-        format.indexOf('del') !== -1 &&
-        createButton('strikethrough', 'strike'),
-
-        list.indexOf('ol') !== -1 &&
-        createButton('list-ol', 'numberedlist'),
-
-        list.indexOf('ul') !== -1 &&
-        createButton('list-ul', 'bulletedlist'),
-
-        alignment.indexOf('left') !== -1 &&
-        createButton('align-left', 'justifyleft'),
-
-        alignment.indexOf('center') !== -1 &&
-        createButton('align-center', 'justifycenter'),
-
-        alignment.indexOf('right') !== -1 &&
-        createButton('align-right', 'justifyright'),
-
-        alignment.indexOf('justify') !== -1 &&
-        createButton('align-justify', 'justifyblock')
-    ].filter(i => i);
+    const {formats} = configuration;
 
     return editorApi.registerToolbar(
         createToolbar(
-            ...toolbarItems
+            createDropDown(
+                createDropDownItem('paragraph', 'Paragraph', FORMAT_PARAGRAPH, formats.p),
+                createDropDownItem('header', 'Headline 1', FORMAT_HEADLINE1, formats.h1),
+                createDropDownItem('header', 'Headline 2', FORMAT_HEADLINE2, formats.h2),
+                createDropDownItem('header', 'Headline 3', FORMAT_HEADLINE3, formats.h3),
+                createDropDownItem('header', 'Headline 4', FORMAT_HEADLINE4, formats.h4),
+                createDropDownItem('header', 'Headline 5', FORMAT_HEADLINE5, formats.h5),
+                createDropDownItem('header', 'Headline 6', FORMAT_HEADLINE6, formats.h6),
+                createDropDownItem('font', 'Preformatted Text',
+                    FORMAT_PREFORMATTED_TEXT, formats.pre),
+                createDropDownItem('eraser', 'Remove Format',
+                    FORMAT_REMOVE_FORMAT, formats.removeFormat)
+            ),
+            createButton('bold', FORMAT_BOLD, formats.bold),
+            createButton('italic', FORMAT_ITALIC, formats.italic),
+            createButton('underline', FORMAT_UNDERLINE, formats.underline),
+            createButton('subscript', FORMAT_SUBSCRIPT, formats.sub),
+            createButton('superscript', FORMAT_SUPERSCRIPT, formats.sup),
+            createButton('strikethrough', FORMAT_STRIKETHROUGH, formats.strikethrough),
+            createButton('list-ol', FORMAT_ORDERED_LIST, formats.ol),
+            createButton('list-ul', FORMAT_UNORDERED_LIST, formats.ul),
+            createButton('align-left', FORMAT_ALIGN_LEFT, formats.alignLeft),
+            createButton('align-center', FORMAT_ALIGN_RIGHT, formats.alignCenter),
+            createButton('align-right', FORMAT_ALIGN_CENTER, formats.alignRight),
+            createButton('align-justify', FORMAT_ALIGN_JUSTIFY, formats.alignJustify),
         )
     );
 };

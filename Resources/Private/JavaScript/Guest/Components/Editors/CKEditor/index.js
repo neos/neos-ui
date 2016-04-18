@@ -1,18 +1,19 @@
 import {handleOutside} from 'Guest/Process/DOMUtils.js';
 import createEditor from 'Guest/Components/Editors/CreateEditor/index';
 
+import getConfiguration from './Configuration/index';
 import createToolbarConfiguration from './Toolbar/index';
 import getSelectionData from './Selection/index';
 import ckApi from './API/index';
 
 const createCKEditorInstance = (node, property, editorApi, dom) => {
     let removeBlurEvent = null;
-    const editor = ckApi.create(dom, {}); // TODO: Re-apply aloha configuration here
+    const configuration = getConfiguration(node, property);
+    const editor = ckApi.create(dom, configuration);
     const updateToolbarConfiguration = createToolbarConfiguration(
-        node,
-        property,
         editor,
-        editorApi
+        editorApi,
+        configuration
     );
     const handleUserInteraction = event => {
         if (event.name !== 'keyup' || event.data.$.keyCode !== 27) {

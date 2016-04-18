@@ -122,7 +122,8 @@ export class Contents extends Component {
     };
 
     static contextTypes = {
-        isOpened: PropTypes.bool.isRequired
+        isOpened: PropTypes.bool.isRequired,
+        closeDropDown: PropTypes.func.isRequired
     };
 
     constructor(props, context) {
@@ -130,8 +131,8 @@ export class Contents extends Component {
     }
 
     render() {
-        const {className, ...directProps} = this.props;
-        const {isOpened} = this.context;
+        const {className, children, ...directProps} = this.props;
+        const {isOpened, closeDropDown} = this.context;
         const contentsClassName = mergeClassNames({
             [className]: className && className.length,
             [style.dropDown__contents]: true,
@@ -140,8 +141,14 @@ export class Contents extends Component {
         const ariaIsHiddenLabel = isOpened ? 'false' : 'true';
 
         return (
-            <ul className={contentsClassName} {...directProps} aria-hidden={ariaIsHiddenLabel} aria-label="dropdown">
-                {this.props.children}
+            <ul
+                className={contentsClassName}
+                aria-hidden={ariaIsHiddenLabel}
+                aria-label="dropdown"
+                {...directProps}
+                onClick={() => closeDropDown()}
+                >
+                {children}
             </ul>
         );
     }

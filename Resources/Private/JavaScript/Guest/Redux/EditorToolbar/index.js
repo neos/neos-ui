@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$set, $override} from 'plow-js';
+import {$get, $set, $override} from 'plow-js';
 
 const SET_POSITION = '@packagefactory/guevara/GUEST/EditorToolbar/SET_POSITION';
 const SHOW = '@packagefactory/guevara/GUEST/EditorToolbar/SHOW';
@@ -50,10 +50,12 @@ export const initialState = {
 //
 export const reducer = {
     [SET_POSITION]: ({x, y}) => $override('editorToolbar', {x, y}),
-    [SHOW]: ({editorName}) => $override('editorToolbar', {
-        isVisible: true,
+    [SHOW]: ({editorName}) => state => $override('editorToolbar', {
+        isVisible: $get('editorToolbar.configuration.components', state).some(
+            $get('isEnabled')
+        ),
         editorName
-    }),
+    }, state),
     [HIDE]: () => $override('editorToolbar', {
         isVisible: false,
         editorName: ''

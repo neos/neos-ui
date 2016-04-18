@@ -13,7 +13,7 @@ set -e
 nvm use
 
 #
-# First of, install all application depedencies.
+# First of, install all application dependencies.
 #
 npm install
 

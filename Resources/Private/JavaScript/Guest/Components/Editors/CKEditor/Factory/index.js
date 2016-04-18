@@ -5,8 +5,10 @@ import createToolbarConfiguration from '../Toolbar/index';
 export default (ckApi, editorApi, dom, getSelectionData) => {
     let removeBlurEvent = null;
     const editor = ckApi.inline(dom, {
-        removePlugins: 'toolbar',
-        allowedContent: true
+        removePlugins: 'toolbar,contextmenu,liststyle,tabletools',
+        allowedContent: true,
+        extraPlugins: 'confighelper',
+        placeholder: 'Type here...'
     });
     const updateToolbarConfiguration = createToolbarConfiguration(ckApi, editor, editorApi);
     const handleUserInteraction = event => {

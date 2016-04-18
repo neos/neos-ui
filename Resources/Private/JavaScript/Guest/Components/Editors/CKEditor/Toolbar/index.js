@@ -1,7 +1,12 @@
 import helperCreator from './Helper/index';
 
 export default (ckApi, editor, editorApi) => {
-    const {createToolbar, createButton, createDropDown, createDropDownItem} = helperCreator(ckApi, editor);
+    const {
+        createToolbar,
+        createButton,
+        createDropDown,
+        createDropDownItem
+    } = helperCreator(ckApi, editor);
 
     return editorApi.registerToolbar(
         createToolbar(

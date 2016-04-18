@@ -1,8 +1,9 @@
 import {handleOutside} from 'Guest/Process/DOMUtils.js';
 
-import createToolbarConfiguration from '../Toolbar/index';
+import createToolbarConfiguration from './Toolbar/index';
+import getSelectionData from './Selection/index';
 
-export default (ckApi, editorApi, dom, getSelectionData) => {
+export default (ckApi, editorApi, dom) => {
     let removeBlurEvent = null;
     const editor = ckApi.inline(dom, {
         removePlugins: 'toolbar,contextmenu,liststyle,tabletools',
@@ -13,7 +14,7 @@ export default (ckApi, editorApi, dom, getSelectionData) => {
     const updateToolbarConfiguration = createToolbarConfiguration(ckApi, editor, editorApi);
     const handleUserInteraction = event => {
         if (event.name !== 'keyup' || event.data.$.keyCode !== 27) {
-            const selectionData = getSelectionData(editor);
+            const selectionData = getSelectionData(ckApi)(editor);
 
             if (selectionData) {
                 const {left, top} = selectionData.region;

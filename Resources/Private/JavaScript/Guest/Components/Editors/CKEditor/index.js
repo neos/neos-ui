@@ -1,7 +1,6 @@
 import createEditor from 'Guest/Components/Editors/CreateEditor/index';
 
 import createCKEditorInstance from './Factory/index';
-import getSelectionData from './Selection/index';
 
 export const editor = ckApi => {
     if (!ckApi) {
@@ -17,7 +16,7 @@ export const editor = ckApi => {
 
     return createEditor(
         (config, api, connection, dom) => {
-            const ckInstance = createCKEditorInstance(ckApi, api, dom, getSelectionData(ckApi));
+            const ckInstance = createCKEditorInstance(ckApi, api, dom);
             ckInstance.on('change', () => api.commit(ckInstance.getData()));
         }
     );

@@ -10,6 +10,7 @@ set -e
 #
 # Make sure the node & npm version matches our required constraints.
 #
+nvm install
 nvm use
 
 #

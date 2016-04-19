@@ -6,6 +6,8 @@
     display: block;
     width: 100%;
     text-align: left;
+    color: white;
+    cursor: pointer;
     padding: 0 32px 0 $spacing;
 
     &:focus {

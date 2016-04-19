@@ -59,7 +59,7 @@
     "sinon-chai": "^2.8.0",
     "skin-deep": "^0.14.0",
     "style-loader": "^0.13.0",
-    "stylelint": "^4.4.0",
+    "stylelint": "^6.0.0",
     "url-loader": "^0.5.7",
     "wdio-dot-reporter": "^0.0.5",
     "wdio-mocha-framework": "^0.2.11",

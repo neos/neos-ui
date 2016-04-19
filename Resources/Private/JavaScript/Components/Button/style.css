@@ -8,6 +8,8 @@
     -webkit-font-smoothing: antialiased;
     vertical-align: middle;
     width: auto;
+    color: white;
+    cursor: pointer;
 
     &:focus {
         outline: 1px dotted $brightest;

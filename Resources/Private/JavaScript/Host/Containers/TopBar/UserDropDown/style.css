@@ -38,6 +38,7 @@
       padding: 0 $spacing;
       background: 0;
       color: #FFF;
+      cursor: pointer;
       text-decoration: none;
       line-height: 40px;
       text-align: left;

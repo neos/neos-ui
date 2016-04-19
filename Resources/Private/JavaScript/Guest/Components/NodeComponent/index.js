@@ -1,5 +1,3 @@
-import compose from 'lodash.compose';
-
 import {
     handle,
     handleOutside,

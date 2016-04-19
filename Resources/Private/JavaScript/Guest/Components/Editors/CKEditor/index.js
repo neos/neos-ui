@@ -38,7 +38,10 @@ const createCKEditorInstance = (node, property, editorApi, dom) => {
 
         editable.removeListener('keyup', handleUserInteraction);
         editable.removeListener('mouseup', handleUserInteraction);
-        removeBlurEvent && removeBlurEvent();
+
+        if (removeBlurEvent) {
+            removeBlurEvent();
+        }
 
         handleUserInteraction(event);
         editorApi.hideToolbar();
@@ -62,6 +65,6 @@ const createCKEditorInstance = (node, property, editorApi, dom) => {
             editorApi.commit(editor.getData());
         });
     });
-}
+};
 
 export default createEditor(createCKEditorInstance);

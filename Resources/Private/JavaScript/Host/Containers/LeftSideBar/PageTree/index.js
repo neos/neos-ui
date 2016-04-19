@@ -42,7 +42,7 @@ export default class PageTree extends Component {
         const siteNode = getTreeNode(siteNodeContextPath);
 
         if (siteNode) {
-            return (<Tree>
+            return (<Tree id="neos__leftSidebar__pageTree">
                 <Node
                     item={siteNode}
                     onNodeToggle={({contextPath}) => onNodeToggle(contextPath)}

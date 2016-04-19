@@ -16,8 +16,14 @@
 }
 .dialog__contents {
     position: relative;
-    width: 80vw;
-    min-height: 300px;
+    width: calc(100vw - $unit * 2);
+    max-width: calc($unit * 16);
+    max-height: calc(100vh - ($unit * 2));
+    border: 1px solid $dark;
+}
+.dialog__title {
+    font-size: 16px;
+    line-height: 1.2;
     padding: $spacing;
 }
 .dialog__closeBtn {
@@ -27,4 +33,13 @@
 }
 .dialog__actions {
     text-align: right;
+    border-top: 1px solid $dark;
+    padding: $spacing;
+}
+
+.dialog--wide {
+    composes: dialog;
+}
+.dialog--wide .dialog__contents {
+    max-width: calc($unit * 24);
 }

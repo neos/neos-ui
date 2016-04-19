@@ -8,14 +8,17 @@ import style from './style.css';
 const Dialog = props => {
     const {
         className,
+        title,
+        wide,
         children,
         isOpen,
         onRequestClose,
         actions,
         ...directProps
     } = props;
+    const dialogStyle = wide ? style['dialog--wide'] : style.dialog;
     const classNames = mergeClassNames({
-        [style.dialog]: true,
+        [dialogStyle]: true,
         [className]: className && className.length
     });
 
@@ -30,6 +33,9 @@ const Dialog = props => {
                             id="neos__modal__closeModal"
                             onClick={e => executeCallback({e, cb: onRequestClose})}
                             />
+                        <div className={style.dialog__title}>
+                            {title}
+                        </div>
 
                         {children}
 
@@ -48,6 +54,12 @@ Dialog.propTypes = {
 
     // Will be called once the close icon in the top right corner gets clicked.
     onRequestClose: PropTypes.func.isRequired,
+
+    // Dialog's title
+    title: PropTypes.any,
+
+    // Wider verision of the Dialog
+    wide: PropTypes.bool,
 
     // Contents of the Dialog.
     children: PropTypes.node.isRequired,

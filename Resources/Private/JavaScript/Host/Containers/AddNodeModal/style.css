@@ -9,3 +9,18 @@
         color: $brightest;
     }
 }
+
+/* TODO: refactor such typography things to Headline component */
+.groupTitle {
+    color: $brighter;
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: normal;
+    padding: 0 $spacing $halfSpacing $spacing;
+}
+.grid {
+    margin: 0;
+}
+.gridItem {
+    padding: 0;
+}

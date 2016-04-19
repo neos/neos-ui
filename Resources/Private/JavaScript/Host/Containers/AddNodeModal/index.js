@@ -7,7 +7,6 @@ import NeosPropTypes from 'Shared/PropTypes/index';
 import {
     Icon,
     Dialog,
-    Headline,
     Button,
     Grid,
     GridItem,
@@ -70,9 +69,10 @@ export default class AddNodeModal extends Component {
             this.props.close();
         };
         return (
-            <GridItem width="33%" key={key}>
+            <GridItem className={style.gridItem} width="33%" key={key}>
                 <Button
                     hoverStyle="brand"
+                    style="clean"
                     className={style.nodeType}
                     onClick={onClick}
                     >
@@ -86,10 +86,10 @@ export default class AddNodeModal extends Component {
     renderNodeTypeGroup(group, key) {
         return (
             <div key={key}>
-                <Headline type="h2">
+                <div className={style.groupTitle}>
                     <I18n fallback={group.label} id={group.label} />
-                </Headline>
-                <Grid>
+                </div>
+                <Grid className={style.grid} id="neos__addNodeModal__grid">
                     {group.nodeTypes.map(this.renderNodeTypeItem.bind(this))}
                 </Grid>
             </div>
@@ -100,10 +100,11 @@ export default class AddNodeModal extends Component {
         if (this.props.referenceNode) {
             const actions = [
                 <Button
-                    style="clean"
+                    style="lighter"
                     hoverStyle="brand"
                     onClick={this.props.close}
                     isFocused={true}
+                    id="neos__addNodeModal__cancel"
                     >
                     <I18n fallback="Cancel" />
                 </Button>
@@ -112,13 +113,12 @@ export default class AddNodeModal extends Component {
             return (
                 <Dialog
                     isOpen={true}
+                    wide={true}
                     actions={actions}
+                    title={<I18n fallback="Create new" id="createNew" />}
                     onRequestClose={this.props.close.bind(this)}
                     id="neos__addNodeModal"
                     >
-                    <Headline type="h1">
-                        <I18n fallback="Create new" id="createNew" />
-                    </Headline>
                     {this.props.groupedAllowedNodeTypes.map(this.renderNodeTypeGroup.bind(this))}
                 </Dialog>
             );

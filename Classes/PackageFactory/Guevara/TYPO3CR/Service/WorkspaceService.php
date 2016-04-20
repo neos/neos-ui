@@ -33,12 +33,12 @@ class WorkspaceService
     {
         $publishableNodes = $this->publishingService->getUnpublishedNodes($workspace);
 
-        $publishableNodes = array_map(function($node) {
+        $publishableNodes = array_map(function ($node) {
             $documentNode = $this->nodeService->getClosestDocument($node);
 
             return [
                 'contextPath' => $node->getContextPath(),
-                'documentContextPath' =>  $documentNode->getContextPath()
+                'documentContextPath' => $documentNode->getContextPath()
             ];
         }, $publishableNodes);
 

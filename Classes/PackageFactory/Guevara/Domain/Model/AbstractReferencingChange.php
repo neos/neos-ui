@@ -38,7 +38,8 @@ abstract class AbstractReferencingChange extends AbstractChange implements Refer
      *
      * @return void
      */
-    protected function updateWorkspaceInfo() {
+    protected function updateWorkspaceInfo()
+    {
         parent::updateWorkspaceInfo();
 
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();

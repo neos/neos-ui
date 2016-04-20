@@ -45,7 +45,8 @@ abstract class AbstractChange implements ChangeInterface
      *
      * @return void
      */
-    protected function updateWorkspaceInfo() {
+    protected function updateWorkspaceInfo()
+    {
         $nodeService = new NodeService();
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();
         $updateWorkspaceInfo->setDocument(

@@ -9,7 +9,6 @@ use TYPO3\Flow\Reflection\ObjectAccess;
 use TYPO3\Neos\Domain\Service\ContentContext;
 use TYPO3\Neos\Service\LinkingService;
 use TYPO3\Neos\TypeConverter\EntityToIdentityConverter;
-use TYPO3\TYPO3CR\Domain\Model\Node;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 
 class NodeInfoHelper implements ProtectedContextAwareInterface

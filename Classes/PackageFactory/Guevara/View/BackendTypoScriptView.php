@@ -8,7 +8,8 @@ namespace PackageFactory\Guevara\View;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TypoScript\View\TypoScriptView;
 
-class BackendTypoScriptView extends TypoScriptView {
+class BackendTypoScriptView extends TypoScriptView
+{
 
     public function __construct(array $options = array())
     {

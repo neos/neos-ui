@@ -164,7 +164,7 @@ abstract class AbstractCreate extends AbstractChange
         if ($nodeType->isOfType('TYPO3.Neos:Document') && !isset($initialProperties['uriPathSegment'])) {
             if (!isset($initialProperties['title'])) {
                 throw new \IllegalArgumentException(
-                  'You must either provide a title or a uriPathSegment in order to create a document.', 1452103891);
+                    'You must either provide a title or a uriPathSegment in order to create a document.', 1452103891);
             }
 
             $initialProperties['uriPathSegment'] = NodeUtility::renderValidNodeName($initialProperties['title']);

@@ -40,7 +40,8 @@ class NodeService
      * @param NodeInterface $node
      * @return NodeInterface
      */
-    public function getClosestDocument(NodeInterface $node) {
+    public function getClosestDocument(NodeInterface $node)
+    {
         if ($node->getNodeType()->isOfType('TYPO3.Neos:Document')) {
             return $node;
         }

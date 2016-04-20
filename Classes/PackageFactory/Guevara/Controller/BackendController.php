@@ -102,9 +102,9 @@ class BackendController extends ActionController
 
         $this->contentCache->flush();
         $this->session->start();
-        $this->session->putData('__cheEnabled__', TRUE);
+        $this->session->putData('__cheEnabled__', true);
 
-        if($user = $this->userService->getBackendUser()) {
+        if ($user = $this->userService->getBackendUser()) {
             $workspaceName = $this->userService->getPersonalWorkspaceName();
             $contentContext = $this->createContext($workspaceName);
 

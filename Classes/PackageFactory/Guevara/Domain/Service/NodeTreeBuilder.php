@@ -152,6 +152,7 @@ class NodeTreeBuilder
 
         $result = [];
 
+        /** @var NodeInterface $childNode */
         foreach ($root->getChildNodes($this->nodeTypeFilter) as $childNode) {
             $hasChildNodes = $childNode->hasChildNodes($this->nodeTypeFilter);
             $shouldLoadChildNodes = $hasChildNodes && ($depth > 1 || $this->isInRootLine($this->active, $childNode));
@@ -190,20 +191,20 @@ class NodeTreeBuilder
         }
 
         if ($includeRoot) {
-          return [
-              $root->getName() =>[
-                  'label' => $root->getNodeType()->isOfType('TYPO3.Neos:Document') ?
-                      $root->getProperty('title') : $root->getLabel(),
-                  'icon' => 'globe',
-                  'contextPath' => $root->getContextPath(),
-                  'nodeType' => $root->getNodeType()->getName(),
-                  'hasChildren' => count($result),
-                  'isCollapsed' => false,
-                  'isActive' => $this->active && ($root->getPath() === $this->active->getPath()),
-                  'isFocused' => $this->active && ($root->getPath() === $this->active->getPath()),
-                  'children' => $result
-              ]
-          ];
+            return [
+                $root->getName() => [
+                    'label' => $root->getNodeType()->isOfType('TYPO3.Neos:Document') ?
+                        $root->getProperty('title') : $root->getLabel(),
+                    'icon' => 'globe',
+                    'contextPath' => $root->getContextPath(),
+                    'nodeType' => $root->getNodeType()->getName(),
+                    'hasChildren' => count($result),
+                    'isCollapsed' => false,
+                    'isActive' => $this->active && ($root->getPath() === $this->active->getPath()),
+                    'isFocused' => $this->active && ($root->getPath() === $this->active->getPath()),
+                    'children' => $result
+                ]
+            ];
         }
 
         return $result;

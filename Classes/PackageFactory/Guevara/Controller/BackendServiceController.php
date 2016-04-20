@@ -71,7 +71,8 @@ class BackendServiceController extends ActionController
      * @param string $documentNodeContextPath
      * @return void
      */
-    protected function updateWorkspaceInfo($documentNodeContextPath) {
+    protected function updateWorkspaceInfo($documentNodeContextPath)
+    {
         $nodeService = new NodeService();
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();
         $documnetNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath);
@@ -99,7 +100,7 @@ class BackendServiceController extends ActionController
 
             $this->feedbackCollection->add($success);
             $this->persistenceManager->persistAll();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 
@@ -116,7 +117,8 @@ class BackendServiceController extends ActionController
      * @param string $targetWorkspaceName
      * @return void
      */
-    public function publishAction(array $nodeContextPaths, $targetWorkspaceName) {
+    public function publishAction(array $nodeContextPaths, $targetWorkspaceName)
+    {
         try {
             $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
 
@@ -131,13 +133,14 @@ class BackendServiceController extends ActionController
             }
 
             $success = new Success();
-            $success->setMessage(sprintf('Published %d change(s) to %s.', count($nodeContextPaths), $targetWorkspaceName));
+            $success->setMessage(sprintf('Published %d change(s) to %s.', count($nodeContextPaths),
+                $targetWorkspaceName));
 
             $this->updateWorkspaceInfo($nodeContextPaths[0]);
             $this->feedbackCollection->add($success);
 
             $this->persistenceManager->persistAll();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 
@@ -153,7 +156,8 @@ class BackendServiceController extends ActionController
      * @param array $nodeContextPaths
      * @return void
      */
-    public function discardAction(array $nodeContextPaths) {
+    public function discardAction(array $nodeContextPaths)
+    {
         try {
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath);
@@ -172,7 +176,7 @@ class BackendServiceController extends ActionController
             $this->feedbackCollection->add($success);
 
             $this->persistenceManager->persistAll();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 

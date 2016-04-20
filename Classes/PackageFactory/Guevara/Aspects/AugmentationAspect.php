@@ -67,7 +67,8 @@ class AugmentationAspect
      * @param JoinPointInterface $joinPoint the join point
      * @return mixed
      */
-    public function editableElementAugmentation(JoinPointInterface $joinPoint) {
+    public function editableElementAugmentation(JoinPointInterface $joinPoint)
+    {
         if (!$this->session->isStarted() || !$this->session->getData('__cheEnabled__')) {
             return $joinPoint->getAdviceChain()->proceed($joinPoint);
         }
@@ -82,7 +83,7 @@ class AugmentationAspect
             'data-__che-property' => $property
         ];
 
-        if ($node !== NULL) {
+        if ($node !== null) {
             $attributes += [
                 'data-__che-node-contextpath' => $node->getContextPath()
             ];

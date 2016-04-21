@@ -40,41 +40,40 @@ class NodePropertyConversionService
         $propertyType = $nodeType->getPropertyType($propertyName);
 
         switch ($propertyType) {
-          case 'string':
-              return $rawValue;
+            case 'string':
+                return $rawValue;
 
-          case 'reference':
-              return $this->convertReference($rawValue, $context);
+            case 'reference':
+                return $this->convertReference($rawValue, $context);
 
-          case 'references':
-              return $this->convertReferences($rawValue, $context);
+            case 'references':
+                return $this->convertReferences($rawValue, $context);
 
-          case 'DateTime':
-              return $this->convertDateTime($rawValue);
+            case 'DateTime':
+                return $this->convertDateTime($rawValue);
 
-          case 'integer':
-              return $this->convertInteger($rawValue);
+            case 'integer':
+                return $this->convertInteger($rawValue);
 
-          case 'boolean':
-              return $this->convertBoolean($rawValue);
+            case 'boolean':
+                return $this->convertBoolean($rawValue);
 
-          case 'array':
-              return $this->convertArray($rawValue);
+            case 'array':
+                return $this->convertArray($rawValue);
 
-          default:
+            default:
+                $innerType = $propertyType;
+                if ($propertyType !== null) {
+                    try {
+                        $parsedType = \TYPO3\Flow\Utility\TypeHandling::parseType($propertyType);
+                        $innerType = $parsedType['elementType'] ?: $parsedType['type'];
+                    } catch (\TYPO3\Flow\Utility\Exception\InvalidTypeException $exception) {
+                    }
+                }
 
-              $innerType = $propertyType;
-              if ($propertyType !== null) {
-                  try {
-                      $parsedType = \TYPO3\Flow\Utility\TypeHandling::parseType($propertyType);
-                      $innerType = $parsedType['elementType'] ?: $parsedType['type'];
-                  } catch (\TYPO3\Flow\Utility\Exception\InvalidTypeException $exception) {
-                  }
-              }
-
-              if (is_string($rawValue) && $this->objectManager->isRegistered($innerType) && $rawValue !== '') {
-                  return $this->propertyMapper->convert(json_decode($rawValue, true), $propertyType, $configuration);
-              }
+                if (is_string($rawValue) && $this->objectManager->isRegistered($innerType) && $rawValue !== '') {
+                    return $this->propertyMapper->convert(json_decode($rawValue, true), $propertyType, $configuration);
+                }
         }
     }
 
@@ -118,7 +117,7 @@ class NodePropertyConversionService
      * Convert raw value to \DateTime
      *
      * @param string $rawValue
-     * @return \DateTime
+     * @return \DateTime|null
      */
     protected function convertDateTime($rawValue)
     {

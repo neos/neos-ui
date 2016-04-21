@@ -3,10 +3,7 @@ namespace PackageFactory\Guevara\TypoScript\Helper;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Eel\ProtectedContextAwareInterface;
-use TYPO3\Neos\Service\LinkingService;
 use TYPO3\Neos\Service\NodeTypeSchemaBuilder;
-use TYPO3\TYPO3CR\Domain\Model\Node;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 
 class NodeTypesHelper implements ProtectedContextAwareInterface
 {
@@ -41,7 +38,6 @@ class NodeTypesHelper implements ProtectedContextAwareInterface
     {
         return $this->getNodeTypeSchema()['inheritanceMap'];
     }
-
 
 
     /**

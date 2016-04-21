@@ -58,7 +58,7 @@ abstract class AbstractMessageFeedback implements FeedbackInterface
             return false;
         }
 
-        return(
+        return (
             $this->getSeverity() === $feedback->getSeverity() &&
             $this->getMessage() === $feedback->getMessage()
         );

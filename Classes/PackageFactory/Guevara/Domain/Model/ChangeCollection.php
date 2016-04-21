@@ -33,7 +33,7 @@ class ChangeCollection
     {
         $compressedChangeCollection = new ChangeCollection();
 
-        while($change = array_shift($this->changes)) {
+        while ($change = array_shift($this->changes)) {
             if ($subsequentChange = array_shift($this->changes)) {
                 if ($change->canMerge($subsequentChange)) {
                     $change = $change->merge($subsequentChange);
@@ -55,7 +55,7 @@ class ChangeCollection
      */
     public function apply()
     {
-        while($change = array_shift($this->changes)) {
+        while ($change = array_shift($this->changes)) {
             if ($change->canApply()) {
                 $change->apply();
             }

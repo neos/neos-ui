@@ -16,7 +16,6 @@ use TYPO3\Flow\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
 use TYPO3\Flow\Object\ObjectManagerInterface;
 use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use PackageFactory\Guevara\Domain\Model\ChangeCollection;
 use PackageFactory\Guevara\Domain\Model\ChangeInterface;
 use PackageFactory\Guevara\TYPO3CR\Service\NodeService;

@@ -1,6 +1,6 @@
 <?php
 namespace PackageFactory\Guevara\TypoScript;
-          
+
 use PackageFactory\Guevara\Domain\Service\StateRenderingService;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Exception;
@@ -36,6 +36,7 @@ class RenderStateImplementation extends AbstractTypoScriptObject
      * Appends an item to the given collection
      *
      * @return string
+     * @throws Exception
      */
     public function evaluate()
     {

@@ -9,7 +9,8 @@ use TYPO3\TypoScript\Exception as TypoScriptException;
  */
 class AppendAllToCollectionImplementation extends ArrayCollectionImplementation
 {
-    public function getCollection() {
+    public function getCollection()
+    {
         return $this->tsValue('items');
     }
 

@@ -100,13 +100,15 @@ class Property extends AbstractChange
      * Merges this change with a subsequent change
      *
      * @param  ChangeInterface $subsequentChange
-     * @return void
+     * @return ChangeInterface|null
      */
     public function merge(ChangeInterface $subsequentChange)
     {
         if ($this->canMerge($subsequentChange)) {
             return $subsequentChange;
         }
+
+        return null;
     }
 
     /**

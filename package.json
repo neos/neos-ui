@@ -100,7 +100,7 @@
     "redux-saga": "^0.9.5",
     "reselect": "^2.4.0",
     "uuid": "^2.0.2",
-    "whatwg-fetch": "^0.11.0"
+    "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
     "build": "webpack --progress --colors",

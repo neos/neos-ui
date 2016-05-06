@@ -14,6 +14,11 @@ nvm install
 nvm use
 
 #
+# Install newest npm
+#
+npm install -g npm
+
+#
 # First of, install all application dependencies.
 #
 npm install

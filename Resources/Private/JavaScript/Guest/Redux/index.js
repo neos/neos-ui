@@ -29,7 +29,7 @@ const reducers = {
     ...CKEditorToolbarReducer,
     ...EditorToolbarReducer
 };
-const sagaMiddleWare = createSagaMiddleware(...sagas);
+const sagaMiddleWare = createSagaMiddleware();
 const rootReducer = handleActions(reducers);
 const devToolsStoreEnhancer = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
 const initialState = {
@@ -43,10 +43,20 @@ const initialState = {
 //
 export function configureStore() {
     const mergedInitialState = merge({}, initialState);
-    return createStore(rootReducer, mergedInitialState, compose(
+    const store = createStore(rootReducer, mergedInitialState, compose(
         applyMiddleware(sagaMiddleWare),
         devToolsStoreEnhancer()
     ));
+
+    //
+    // Run all sagas at once
+    //
+    // TODO: re-evaluate this, since this is a change due to redux-saga 0.10.2 update
+    //       which might cause some further conceptual changes to the sagas themselves
+    //
+    sagas.forEach(sagaMiddleWare.run);
+
+    return store;
 }
 
 //

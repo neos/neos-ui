@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$get} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 import {
     AddNode,
@@ -13,22 +13,30 @@ import {
 } from './Buttons/index';
 import style from './style.css';
 
-@connect($get('nodeToolbar'))
+@connect($transform({
+    toolbar: $get('nodeToolbar'),
+    isEditorToolbarVisible: $get('editorToolbar.isVisible')
+}))
 export default class NodeToolbar extends Component {
     static propTypes = {
-        x: PropTypes.number.isRequired,
-        y: PropTypes.number.isRequired,
-        isVisible: PropTypes.bool.isRequired
+        toolbar: PropTypes.shape({
+            x: PropTypes.number.isRequired,
+            y: PropTypes.number.isRequired,
+            isVisible: PropTypes.bool.isRequired
+        }).isRequired,
+        isEditorToolbarVisible: PropTypes.bool.isRequired
     };
 
     render() {
         const props = {
             className: style.toolBar__btnGroup__btn
         };
-        const {x, y, isVisible} = this.props;
+        const {x, y, isVisible} = this.props.toolbar;
+        const {isEditorToolbarVisible} = this.props;
         const classNames = mergeClassNames({
             [style.toolBar]: true,
-            [style['toolBar--isHidden']]: !isVisible
+            [style['toolBar--isHidden']]: !isVisible,
+            [style['toolBar--isBlurred']]: isEditorToolbarVisible
         });
 
         return (

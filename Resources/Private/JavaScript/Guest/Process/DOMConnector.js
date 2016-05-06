@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 
 import {nodeComponent} from 'Guest/Components/index';
-import ckEditor from 'Guest/Components/Editors/CKEditorAdaptor/index';
+import ckEditor from 'Guest/Components/Editors/CKEditor/index';
 import {InlineUI} from 'Guest/Containers/index';
 import {configureStore} from 'Guest/Redux/index';
 
@@ -31,16 +31,6 @@ export default (ui, connection) => {
     //
     [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]'))
         .forEach(dom => nodeComponent(dom, ui, connection));
-
-    //
-    // Initialize inline editors
-    //
-    [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(dom => {
-        const contextPath = closestContextPath(dom);
-        const propertyName = dom.dataset.__cheProperty;
-
-        ckEditor({contextPath, propertyName}, dom, ui, connection);
-    });
 
     //
     // Initialize Inline UI
@@ -106,4 +96,14 @@ export default (ui, connection) => {
     // Initialize central store synchronization
     //
     initializeStoreSynchronization(ui, connection, store.dispatch);
+
+    //
+    // Initialize inline editors
+    //
+    [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(dom => {
+        const contextPath = closestContextPath(dom);
+        const propertyName = dom.dataset.__cheProperty;
+
+        ckEditor({contextPath, propertyName}, dom, ui, connection, store.dispatch);
+    });
 };

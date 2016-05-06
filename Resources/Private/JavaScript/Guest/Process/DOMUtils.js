@@ -1,30 +1,42 @@
 export const handle = (events, handler, ...modifier) => dom => {
-    events.split(' ').forEach(
-        event => dom.addEventListener(event, e => {
-            handler(e);
-            modifier.forEach(m => m(e));
-        })
+    const removers = events.split(' ').map(
+        event => {
+            const listener = e => {
+                handler(e);
+                modifier.forEach(m => m(e));
+            };
+
+            dom.addEventListener(event, listener);
+
+            return () => dom.removeEventListener(event, listener);
+        }
     );
 
-    return dom;
+    return () => removers.forEach(remover => remover());
 };
 
 export const handleOutside = (events, handler, modifier = []) => dom => {
-    events.split(' ').forEach(
-        event => document.addEventListener(event, e => {
-            if (e['@neos/inline-ui-event']) {
-                return;
-            }
-            const check = el => el === dom || (el && check(el.parentNode));
+    const removers = events.split(' ').map(
+        event => {
+            const listener = e => {
+                if (e['@neos/inline-ui-event']) {
+                    return;
+                }
+                const check = el => el === dom || (el && check(el.parentNode));
 
-            if (!check(e.target)) {
-                handler(e);
-                modifier.forEach(m => m(e));
-            }
-        })
+                if (!check(e.target)) {
+                    handler(e);
+                    modifier.forEach(m => m(e));
+                }
+            };
+
+            document.addEventListener(event, listener);
+
+            return () => document.removeEventListener(event, listener);
+        }
     );
 
-    return dom;
+    return () => removers.forEach(remover => remover());
 };
 
 export const stopPropagation = e => e.stopPropagation();

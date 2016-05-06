@@ -2,6 +2,7 @@
     position: absolute;
     border-bottom: 1px solid $dark;
     background: #222;
+    white-space: nowrap;
 }
 .toolBar__btnGroup {
     border-bottom: 1px solid $dark;
@@ -20,9 +21,5 @@
 }
 
 .toolBar--isHidden {
-    display: none;
-}
-
-.toolBar--isBlurred {
     display: none;
 }

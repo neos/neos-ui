@@ -1,8 +1,11 @@
 import debounce from 'lodash.debounce';
 
+import {actions} from 'Guest/Redux/index';
+import {registerToolbar} from 'Guest/Containers/EditorToolbar/index';
+
 import style from './style.css';
 
-export default editorFactory => (nodeContext, dom, ui, connection) => {
+export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => {
     let editor = null;
 
     const editorApi = {
@@ -13,7 +16,13 @@ export default editorFactory => (nodeContext, dom, ui, connection) => {
                 propertyName: nodeContext.propertyName,
                 value
             }
-        }), 200)
+        }), 200),
+
+        setToolbarPosition: (x, y) => dispatch(actions.EditorToolbar.setPosition(x, y)),
+        showToolbar: editorName => dispatch(actions.EditorToolbar.show(editorName)),
+        hideToolbar: () => dispatch(actions.EditorToolbar.hide()),
+
+        registerToolbar: configuration => registerToolbar({dispatch}, configuration)
     };
 
     dom.setAttribute('contentEditable', true);
@@ -26,9 +35,14 @@ export default editorFactory => (nodeContext, dom, ui, connection) => {
             } else {
                 const handlers = editorFactory(
                     //
-                    // Get the configuration for RTE
+                    // Get the node
                     //
-                    node.nodeType.properties[nodeContext.propertyName].ui.aloha,
+                    node,
+
+                    //
+                    // Get the property
+                    //
+                    nodeContext.propertyName,
 
                     //
                     // Pass the API object to the editor
@@ -38,17 +52,7 @@ export default editorFactory => (nodeContext, dom, ui, connection) => {
                     //
                     // Pass the dom element
                     //
-                    dom,
-
-                    //
-                    // Pass the node object
-                    //
-                    node,
-
-                    //
-                    // Pass the property name
-                    //
-                    nodeContext.propertyName
+                    dom
                 );
 
                 editor = Object.assign({

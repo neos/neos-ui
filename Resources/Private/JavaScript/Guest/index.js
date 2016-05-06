@@ -11,6 +11,7 @@ const connection = ui.connect();
 window.onerror = function (err) {
     console.error(err);
     ui.addFlashMessage(`Whoops. Something went wrong in the guest frame. Error message states "${err}".`);
+    console.error(err);
 };
 
 //

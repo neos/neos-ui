@@ -20,14 +20,7 @@
 ## Installation
 *Full composer support coming soon...*
 
-1. Since our package currently conflicts with the default FrontendLogin package, we need to
-   remove it.  
-   **Remove the following line** from your `composer.json` file:  
-   ```
-   "flowpack/neos-frontendlogin": "@dev"
-   ```
-
-2. Add the following lines to your `composer.json` (our package is not published to composer
+1. Add the following lines to your `composer.json` (our package is not published to composer
    repository yet, so we need to give composer hints where to find it):
    ```
     "repositories": [
@@ -36,17 +29,15 @@
    ```
    Note: if you plan to contribute to the project, fork it and provide VCS url to your forked repository.
 
-3. Run the following commands:  
+2. Run the following commands:  
    ```
-   rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin # remove the conflicting FrontendLogin
-   rm -rf Data/Temporary/* Configuration/PackageStates.php # clear the caches
    composer require packagefactory/guevara:dev-master # install our package
    cd Packages/Application/PackageFactory.Guevara
    source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps
    npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
    ```
 
-4. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`  
+3. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`  
    ```yaml
 -
   name: 'PackageFactory Guevara'

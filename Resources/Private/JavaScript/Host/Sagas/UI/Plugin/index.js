@@ -1,4 +1,4 @@
-import {race, take, put} from 'redux-saga/effects';
+import {race, take, put, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/index';
@@ -10,14 +10,14 @@ const getNode = CR.Nodes.byContextPathSelector;
 const getFocusedNode = CR.Nodes.focusedSelector;
 const getHoveredNode = CR.Nodes.hoveredSelector;
 
-export function* watchNodes(getState) {
+export function* watchNodes() {
     while (true) { // eslint-disable-line no-constant-condition
         const racedActions = yield race([
             take(actionTypes.CR.Nodes.ADD)
         ]);
         const contextPath = Object.keys(racedActions).map(k => racedActions[k]).filter(action => action !== undefined)
             .map(action => action.payload.contextPath)[0];
-        const state = getState();
+        const state = yield select();
         const node = getNode(contextPath)(state);
         const observers = getObservers('nodes.byContextPath', contextPath);
 
@@ -31,14 +31,14 @@ export function* watchNodes(getState) {
     }
 }
 
-export function* watchFocusedNode(getState) {
+export function* watchFocusedNode() {
     while (true) { // eslint-disable-line no-constant-condition
         yield race([
             take(actionTypes.CR.Nodes.FOCUS),
             take(actionTypes.CR.Nodes.BLUR)
         ]);
 
-        const state = getState();
+        const state = yield select();
         const node = getFocusedNode(state);
         const typoscriptPath = $get('cr.nodes.focused.typoscriptPath', state);
         const observers = getObservers('nodes.focused');
@@ -53,14 +53,14 @@ export function* watchFocusedNode(getState) {
     }
 }
 
-export function* watchHoveredNode(getState) {
+export function* watchHoveredNode() {
     while (true) { // eslint-disable-line no-constant-condition
         yield race([
             take(actionTypes.CR.Nodes.HOVER),
             take(actionTypes.CR.Nodes.UNHOVER)
         ]);
 
-        const state = getState();
+        const state = yield select();
         const node = getHoveredNode(state);
         const typoscriptPath = $get('cr.nodes.hovered.typoscriptPath', state);
         const observers = getObservers('nodes.hovered');

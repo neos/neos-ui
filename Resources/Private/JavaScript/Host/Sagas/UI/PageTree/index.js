@@ -1,5 +1,5 @@
 import {takeLatest} from 'redux-saga';
-import {put} from 'redux-saga/effects';
+import {put, select} from 'redux-saga/effects';
 import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/index';
@@ -7,9 +7,9 @@ import {CR} from 'Host/Selectors/index';
 
 const isDocumentType = CR.NodeTypes.isOfTypeSelector('TYPO3.Neos:Document');
 
-export function* watchToggle(getState) {
+export function* watchToggle() {
     yield* takeLatest(actionTypes.UI.PageTree.TOGGLE, function* toggleTreeNode(action) {
-        const state = getState();
+        const state = yield select();
         const {contextPath} = action.payload;
         const isCollapsed = !$contains(contextPath, 'ui.pageTree.uncollapsed', state);
 
@@ -21,9 +21,9 @@ export function* watchToggle(getState) {
     });
 }
 
-export function* watchCommenceUncollapse(getState) {
+export function* watchCommenceUncollapse() {
     yield* takeLatest(actionTypes.UI.PageTree.COMMENCE_UNCOLLAPSE, function* uncollapseNode(action) {
-        const state = getState();
+        const state = yield select();
         const {contextPath} = action.payload;
         const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state).toJS()
             .filter(childEnvelope => isDocumentType(childEnvelope.nodeType)(state))

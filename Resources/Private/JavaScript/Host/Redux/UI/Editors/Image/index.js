@@ -12,7 +12,6 @@ const updateImage = createAction(UPDATE_IMAGE, (nodeContextPath, imageUuid, tran
 const uploadImage = createAction(UPLOAD_IMAGE, (fileToUpload, nodePropertyValueChangeFn, screenIdentifier) => ({fileToUpload, nodePropertyValueChangeFn, screenIdentifier}));
 const finishImageUpload = createAction(FINISH_IMAGE_UPLOAD, () => ({}));
 
-
 //
 // Export the actions
 //

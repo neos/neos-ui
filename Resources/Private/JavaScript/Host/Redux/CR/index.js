@@ -26,6 +26,7 @@ import {
 // Export the actionTypes
 //
 export const actionTypes = {
+    Images: ImagesActionTypes,
     Nodes: NodesActionTypes,
     Workspaces: WorkspacesActionTypes
 };

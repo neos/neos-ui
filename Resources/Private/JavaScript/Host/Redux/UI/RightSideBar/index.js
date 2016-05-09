@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$toggle} from 'plow-js';
+import {$toggle, $set} from 'plow-js';
 
 const TOGGLE = '@neos/neos-ui/UI/RightSidebar/TOGGLE';
 

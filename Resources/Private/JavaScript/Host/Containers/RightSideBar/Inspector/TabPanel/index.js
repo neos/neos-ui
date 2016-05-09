@@ -7,8 +7,6 @@ import NeosPropTypes from 'Shared/PropTypes/index';
 import {
     Tabs,
     ToggablePanel,
-    Label,
-    TextInput,
     I18n
 } from 'Components/index';
 
@@ -45,7 +43,7 @@ export default class TabPanel extends Component {
     static displayName = 'Inspector Tab Panel';
     static propTypes = {
         tab: PropTypes.object.isRequired,
-        focusedNode: PropTypes.object.isRequired
+        focusedNode: NeosPropTypes.node.isRequired
     };
 
     render() {

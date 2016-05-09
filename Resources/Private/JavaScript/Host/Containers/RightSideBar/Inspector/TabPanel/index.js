@@ -43,7 +43,7 @@ export default class TabPanel extends Component {
     static displayName = 'Inspector Tab Panel';
     static propTypes = {
         tab: PropTypes.object.isRequired,
-        focusedNode: NeosPropTypes.node.isRequired
+        focusedNode: NeosPropTypes.cr.node.isRequired
     };
 
     render() {

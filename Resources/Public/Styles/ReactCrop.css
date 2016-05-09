@@ -1,0 +1,116 @@
+.Cropper {
+  position: relative;
+  display: inline-block;
+}
+
+.box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.Cropper-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  cursor: move;
+  border: #fff solid 1px;
+}
+
+.Cropper-canvas {
+  visibility: hidden;
+  position: absolute;
+}
+
+.Cropper-image {
+  vertical-align: middle;
+  max-width: 100%;
+  position: relative;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  left: 50%;
+}
+
+.resize-handle {
+  position: absolute;
+  background-color: #ECEEEF;
+  border: #8295AB solid 1px;
+  width: 13px;
+  height: 13px;
+  z-index: 1;
+}
+
+.resize-handle-se {
+  bottom: 0;
+  right: 0;
+  cursor: nwse-resize;
+  -webkit-transform: translate(50%, 50%);
+          transform: translate(50%, 50%);
+}
+.resize-handle-ne {
+  right: 0;
+  top: 0;
+  cursor: nesw-resize;
+  -webkit-transform: translate(50%, -50%);
+          transform: translate(50%, -50%);
+}
+.resize-handle-sw {
+  bottom: 0;
+  left: 0;
+  cursor: nesw-resize;
+  -webkit-transform: translate(-50%, 50%);
+          transform: translate(-50%, 50%);
+}
+.resize-handle-nw {
+  top: 0;
+  bottom: 0;
+  cursor: nwse-resize;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.DraggableResizable {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.DraggableResizable-controls {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.DraggableResizable-top,
+.DraggableResizable-left,
+.DraggableResizable-bottom,
+.DraggableResizable-right {
+  position: absolute;
+  background-color: rgba(0,0,0,.7);
+}
+
+.DraggableResizable-top {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.DraggableResizable-bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.DraggableResizable-left {
+  left: 0;
+}
+.DraggableResizable-right {
+  right: 0;
+}

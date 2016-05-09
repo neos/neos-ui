@@ -26,14 +26,16 @@ const generateInspectorGroups = (nodeType, tabIdentifier) => {
 };
 
 const renderInspectorGroup = (inspectorGroup) => {
-    return (<ToggablePanel className={style.rightSideBar__section} key={inspectorGroup.id}>
-        <ToggablePanel.Header>
-            <I18n id={inspectorGroup.label}/>
-        </ToggablePanel.Header>
-        <ToggablePanel.Contents>
-            <EditorContainer inspectorGroup={inspectorGroup} />
-        </ToggablePanel.Contents>
-    </ToggablePanel>);
+    return (
+        <ToggablePanel className={style.rightSideBar__section} key={inspectorGroup.id}>
+            <ToggablePanel.Header>
+                <I18n id={inspectorGroup.label}/>
+            </ToggablePanel.Header>
+            <ToggablePanel.Contents>
+                <EditorContainer inspectorGroup={inspectorGroup} />
+            </ToggablePanel.Contents>
+        </ToggablePanel>
+    );
 };
 
 @connect($transform({
@@ -47,7 +49,10 @@ export default class TabPanel extends Component {
     };
 
     render() {
-        const inspectorGroups = generateInspectorGroups($get('nodeType', this.props.focusedNode), $get('id', this.props.tab));
+        const inspectorGroups = generateInspectorGroups(
+            $get('nodeType', this.props.focusedNode),
+            $get('id', this.props.tab)
+        );
 
         return (
             <Tabs.Panel>

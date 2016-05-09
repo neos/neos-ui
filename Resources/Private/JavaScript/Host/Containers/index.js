@@ -1,3 +1,4 @@
+import Neos from './Neos/index';
 import ContentView from './ContentView/index';
 import ContextBar from './ContextBar/index';
 import FlashMessageContainer from './FlashMessageContainer/index';
@@ -9,6 +10,7 @@ import RightSideBar from './RightSideBar/index';
 import AddNodeModal from './AddNodeModal/index';
 
 export {
+    Neos,
     ContentView,
     ContextBar,
     FlashMessageContainer,

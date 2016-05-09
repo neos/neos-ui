@@ -15,6 +15,7 @@ import {ui} from './Plugins/index';
 import * as feedbackHandler from './Service/FeedbackHandler/index';
 
 import {
+    Neos,
     ContentView,
     TopBar,
     LeftSideBar,
@@ -54,18 +55,20 @@ document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
         <div className={style.applicationWrapper}>
             <Provider store={store}>
-                <div>
-                    <div id="dialog" />
-                    <FlashMessageContainer />
-                    <FullScreen />
-                    <TopBar />
-                    <ContextBar />
-                    <OffCanvas />
-                    <AddNodeModal />
-                    <LeftSideBar />
-                    <ContentView />
-                    <RightSideBar />
-              </div>
+                <Neos configuration={{test: 'works'}}>
+                    <div>
+                        <div id="dialog" />
+                        <FlashMessageContainer />
+                        <FullScreen />
+                        <TopBar />
+                        <ContextBar />
+                        <OffCanvas />
+                        <AddNodeModal />
+                        <LeftSideBar />
+                        <ContentView />
+                        <RightSideBar />
+                    </div>
+                </Neos>
             </Provider>
         </div>,
         appContainer

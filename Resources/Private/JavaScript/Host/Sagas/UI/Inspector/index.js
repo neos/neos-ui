@@ -1,5 +1,5 @@
 import {takeEvery} from 'redux-saga';
-import {put, fork} from 'redux-saga/effects';
+import {put, fork, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/index';
@@ -25,10 +25,10 @@ function* loadImage(imageValue, state) {
     }
 }
 
-export function* watchInspectorNodeChange(getState) {
+export function* watchInspectorNodeChange() {
     // TODO: needs to be triggered after init
     yield* takeEvery([actionTypes.System.BOOT, actionTypes.CR.Nodes.FOCUS, actionTypes.CR.Nodes.BLUR], function* focusChanged(action) {
-        const state = getState();
+        const state = yield select();
 
         // TODO: the following is not really nice, as the current node can be "blurred". Maybe we should get rid of this "blur"??
         const focusedNodeContextPath = (action.type === actionTypes.CR.Nodes.FOCUS ? action.payload.contextPath : currentDocumentNode(state));
@@ -44,9 +44,9 @@ export function* watchInspectorNodeChange(getState) {
     });
 }
 
-export function* watchPropertyChangeInInspector(getState) {
+export function* watchPropertyChangeInInspector() {
     yield* takeEvery([actionTypes.UI.Inspector.WRITE_VALUE], function* watchPropertyChange(action) {
-        const state = getState();
+        const state = yield select();
 
         const focusedNodeContextPath = action.payload.nodeContextPath;
         const selectedNode = getNode(focusedNodeContextPath)(state);
@@ -61,9 +61,9 @@ export function* watchPropertyChangeInInspector(getState) {
     });
 }
 
-export function* watchUploadImage(getState) {
+export function* watchUploadImage() {
     yield* takeEvery([actionTypes.UI.Editors.Image.UPLOAD_IMAGE], function* watchUploadImage(action) {
-        const state = getState();
+        const state = yield select();
         const siteNodePath = $get('cr.nodes.siteNode', state);
         const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
 
@@ -98,9 +98,9 @@ function* applyImageChange(value, nodeContextPath, state) {
     return yield createImageVariant(originalImageUuid, adjustments);
 }
 
-export function* applyInspectorState(getState) {
+export function* applyInspectorState() {
     yield* takeEvery(actionTypes.UI.Inspector.APPLY, function* applyAllChanges(action) {
-        const state = getState();
+        const state = yield select();
         const {nodeContextPath} = action.payload;
         const selectedNode = getNode(nodeContextPath)(state);
 

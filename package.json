@@ -98,7 +98,7 @@
     "react-dom": "^15.0.2",
     "react-dropzone": "^3.3.2",
     "react-height": "^2.0.4",
-    "react-image-crop": "^0.1.5",
+    "react-image-crop": "^1.0.0-rc2",
     "react-immutable-proptypes": "^1.7.1",
     "react-measure": "^0.3.5",
     "react-motion": "^0.4.2",

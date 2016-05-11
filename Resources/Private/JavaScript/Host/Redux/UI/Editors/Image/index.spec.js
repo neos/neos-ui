@@ -44,7 +44,7 @@ describe('"host.redux.ui.editors.image" ', () => {
         it('should remove the visible screen if called twice with the same identifier.', () => {
             store.dispatch(toggleImageDetailsScreen('screen-identifier'));
             store.dispatch(toggleImageDetailsScreen('screen-identifier'));
-            expect(store.getState().toJS().ui.editors.image.visibleDetailsScreen).to.equal(null);
+            expect(store.getState().toJS().ui.editors.image.visibleDetailsScreen).to.equal('');
         });
     });
 

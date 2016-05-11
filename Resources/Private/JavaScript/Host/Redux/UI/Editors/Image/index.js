@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$get, $set} from 'plow-js';
+import {$set, $toggle} from 'plow-js';
 import {Map} from 'immutable';
 
 const TOGGLE_IMAGE_DETAILS_SCREEN = '@packagefactory/guevara/UI/Editors/Image/TOGGLE_IMAGE_DETAILS_SCREEN';
@@ -45,12 +45,7 @@ const IMAGE_DETAILS_SCREEN_PATH = 'ui.editors.image.visibleDetailsScreen';
 // Export the reducer
 //
 export const reducer = {
-    [TOGGLE_IMAGE_DETAILS_SCREEN]: ({screenIdentifier}) => state => {
-        if ($get(IMAGE_DETAILS_SCREEN_PATH, state) === screenIdentifier) {
-            return $set(IMAGE_DETAILS_SCREEN_PATH, null, state);
-        }
-        return $set(IMAGE_DETAILS_SCREEN_PATH, screenIdentifier, state);
-    },
+    [TOGGLE_IMAGE_DETAILS_SCREEN]: ({screenIdentifier}) => $toggle(IMAGE_DETAILS_SCREEN_PATH, screenIdentifier, null),
     [UPDATE_IMAGE]: ({nodeContextPath, imageUuid, transientImage}) => $set(['ui', 'inspector', 'valuesByNodePath', nodeContextPath, 'images', imageUuid], transientImage),
     // UPLOAD_IMAGE is generally handled by saga, we just set the "current upload screen" here; so that the loading indicator displays correctly.
     [UPLOAD_IMAGE]: ({screenIdentifier}) => $set('ui.editors.image.currentlyUploadingScreen', screenIdentifier),

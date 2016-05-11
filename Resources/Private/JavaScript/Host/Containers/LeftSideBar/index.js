@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
 
 import {SideBar} from 'Components/index';
-import neos from 'Host/Decorators/Neos/index';
 
 import NodeTreeToolBar from './NodeTreeToolBar/index';
 import PageTree from './PageTree/index';
@@ -16,10 +15,8 @@ import style from './style.css';
         $get('ui.fullScreen.isFullScreen')
     )
 }))
-@neos()
 export default class LeftSideBar extends Component {
     static propTypes = {
-        neos: PropTypes.object.isRequired,
         isHidden: PropTypes.bool.isRequired
     };
 
@@ -29,8 +26,6 @@ export default class LeftSideBar extends Component {
             [style.leftSideBar]: true,
             [style['leftSideBar--isHidden']]: isHidden
         });
-
-        console.log(this.props.neos);
 
         return (
             <SideBar

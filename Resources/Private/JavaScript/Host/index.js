@@ -39,6 +39,7 @@ import style from './style.css';
 document.addEventListener('DOMContentLoaded', () => {
     const appContainer = document.getElementById('appContainer');
     const csrfToken = appContainer.dataset.csrfToken;
+    const configuration = JSON.parse(appContainer.querySelector('[data-json="configuration"]').innerHTML);
     const serverState = JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
     const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
     const neos = initializeJSAPI(window, csrfToken);
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
         <div className={style.applicationWrapper}>
             <Provider store={store}>
-                <Neos configuration={{test: 'works'}}>
+                <Neos configuration={configuration}>
                     <div>
                         <div id="dialog" />
                         <FlashMessageContainer />

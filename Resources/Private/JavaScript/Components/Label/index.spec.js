@@ -11,13 +11,13 @@ chai.use(chaiEnzyme());
 
 describe('"host.components.label"', () => {
     it('should render a "label" node.', () => {
-        const label = shallow(<Label />);
+        const label = shallow(<Label htmlFor="test" />);
 
         expect(label.type()).to.equal('label');
     });
 
     it('should add the passed "className" prop to the rendered node if passed.', () => {
-        const label = shallow(<Label className="test" />);
+        const label = shallow(<Label htmlFor="test" className="test" />);
 
         expect(label).to.have.className('test');
     });

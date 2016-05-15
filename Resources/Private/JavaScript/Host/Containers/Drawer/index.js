@@ -89,7 +89,7 @@ export default class Drawer extends Component {
                 </ToggablePanel.Contents>
             </ToggablePanel>
         ) : (
-            <Button className={style.drawer__menuItemBtn} onClick={onClick} key={key}>
+            <Button className={style.drawer__menuItemBtn} role="button" onClick={onClick} key={key}>
                 <Icon icon={icon} padded="right" />
                 {title}
             </Button>

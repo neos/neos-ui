@@ -45,7 +45,7 @@ export default class SecondaryToolbar extends Component {
 
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     <a
-                        href={previewUrl ? previewUrl : '#'}
+                        href={previewUrl ? previewUrl : ''}
                         target="_blank"
                         className={previewButtonClassNames}
                         rel="noopener"

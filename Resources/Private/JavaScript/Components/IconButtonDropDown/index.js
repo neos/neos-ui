@@ -89,6 +89,7 @@ export default class IconButtonDropDown extends Component {
             .filter(child => child)
             .map((child, index) => (
                 <a
+                    role="button"
                     className={style.wrapper__dropDownItem}
                     onClick={this.onItemSelected.bind(this, child.props.dropDownId)}
                     key={index}

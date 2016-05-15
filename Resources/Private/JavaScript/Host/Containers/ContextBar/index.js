@@ -45,7 +45,7 @@ export default class ContextBar extends Component {
 
                 <div className={style.contextBar__rightHandedActions}>
                     <a
-                        href={previewUrl ? previewUrl : '#'}
+                        href={previewUrl ? previewUrl : ''}
                         target="_blank"
                         className={previewButtonClassNames}
                         rel="noopener"

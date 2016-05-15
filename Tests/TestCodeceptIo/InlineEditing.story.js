@@ -7,7 +7,7 @@ Scenario('should be able to type into a nodeType in the guest frame.', (I) => {
 
     I.amOnPage('/che!/');
 
-    I.waitForElement({css: '#neos__contentView iframe'}, 30);
+    I.waitForElement({css: '#neos__contentCanvas iframe'}, 30);
     I.focusAndEditInGuestFrame('Hello Worlds');
 });
 

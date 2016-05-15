@@ -10,7 +10,7 @@ import DimensionSwitcher from './DimensionSwitcher/index';
 import style from './style.css';
 
 @connect($transform({
-    previewUrl: $get('ui.contentView.previewUrl'),
+    previewUrl: $get('ui.contentCanvas.previewUrl'),
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen')

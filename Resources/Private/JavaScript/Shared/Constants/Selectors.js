@@ -6,9 +6,9 @@
 //
 
 module.exports = {
-    contentView: '#neos__contentView',
+    contentCanvas: '#neos__contentCanvas',
     guestFrame: {
-        iframe: '#neos__contentView iframe',
+        iframe: '#neos__contentCanvas iframe',
         inlineEditableNodeTypes: '[data-__che-property]'
     },
     contextBar: {},

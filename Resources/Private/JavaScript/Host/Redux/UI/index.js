@@ -40,18 +40,18 @@ import {
     actions as PageTree
 } from './PageTree/index';
 import {
-    reducer as ContentViewReducer,
-    hydrate as ContentViewHydrator,
-    actionTypes as ContentViewActionTypes,
-    actions as ContentView
-} from './ContentView/index';
+    reducer as ContentCanvasReducer,
+    hydrate as ContentCanvasHydrator,
+    actionTypes as ContentCanvasActionTypes,
+    actions as ContentCanvas
+} from './ContentCanvas/index';
 
 //
 // Export the action types
 //
 export const actionTypes = {
     PageTree: PageTreeActionTypes,
-    ContentView: ContentViewActionTypes
+    ContentCanvas: ContentCanvasActionTypes
 };
 
 //
@@ -66,7 +66,7 @@ export const actions = {
     RightSideBar,
     AddNodeModal,
     PageTree,
-    ContentView
+    ContentCanvas
 };
 
 //
@@ -81,7 +81,7 @@ export const hydrators = [
     RightSideBarHydrator,
     AddNodeModalHydrator,
     PageTreeHydrator,
-    ContentViewHydrator
+    ContentCanvasHydrator
 ];
 
 //
@@ -96,5 +96,5 @@ export const reducer = {
     ...RightSideBarReducer,
     ...AddNodeModalReducer,
     ...PageTreeReducer,
-    ...ContentViewReducer
+    ...ContentCanvasReducer
 };

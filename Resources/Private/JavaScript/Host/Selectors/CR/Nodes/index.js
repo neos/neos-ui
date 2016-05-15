@@ -8,7 +8,7 @@ import {
 
 const all = $get(['cr', 'nodes', 'byContextPath']);
 const focused = $get('cr.nodes.focused.contextPath');
-const currentDocumentNode = $get('ui.contentView.contextPath');
+const currentDocumentNode = $get('ui.contentCanvas.contextPath');
 const hovered = $get('cr.nodes.hovered.contextPath');
 
 export const storedNodeByContextPath = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath], state);

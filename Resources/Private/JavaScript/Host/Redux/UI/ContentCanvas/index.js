@@ -32,11 +32,11 @@ export const actions = {
 // Export the initial state hydrator
 //
 export const hydrate = state => $set(
-    'ui.contentView',
+    'ui.contentCanvas',
     new Map({
-        contextPath: $get('ui.contentView.contextPath', state) || '',
+        contextPath: $get('ui.contentCanvas.contextPath', state) || '',
         previewUrl: '',
-        src: $get('ui.contentView.src', state) || ''
+        src: $get('ui.contentCanvas.src', state) || ''
     })
 );
 
@@ -44,7 +44,7 @@ export const hydrate = state => $set(
 // Export the reducer
 //
 export const reducer = {
-    [SET_CONTEXT_PATH]: ({contextPath}) => $set('ui.contentView.contextPath', contextPath),
-    [SET_PREVIEW_URL]: ({previewUrl}) => $set('ui.contentView.previewUrl', previewUrl),
-    [SET_SRC]: ({src}) => src ? $set('ui.contentView.src', src) : state => state
+    [SET_CONTEXT_PATH]: ({contextPath}) => $set('ui.contentCanvas.contextPath', contextPath),
+    [SET_PREVIEW_URL]: ({previewUrl}) => $set('ui.contentCanvas.previewUrl', previewUrl),
+    [SET_SRC]: ({src}) => src ? $set('ui.contentCanvas.src', src) : state => state
 };

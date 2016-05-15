@@ -16,7 +16,7 @@ import * as feedbackHandler from './Service/FeedbackHandler/index';
 
 import {
     Neos,
-    ContentView,
+    ContentCanvas,
     TopBar,
     LeftSideBar,
     OffCanvas,
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <OffCanvas />
                         <AddNodeModal />
                         <LeftSideBar />
-                        <ContentView />
+                        <ContentCanvas />
                         <RightSideBar />
                     </div>
                 </Neos>

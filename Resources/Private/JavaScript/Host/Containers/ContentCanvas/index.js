@@ -9,10 +9,10 @@ import style from './style.css';
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
     isFringeRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    src: $get('ui.contentView.src'),
-    contextPath: $get('ui.contentView.contextPath')
+    src: $get('ui.contentCanvas.src'),
+    contextPath: $get('ui.contentCanvas.contextPath')
 }))
-export default class ContentView extends Component {
+export default class ContentCanvas extends Component {
     static propTypes = {
         isFringeLeft: PropTypes.bool.isRequired,
         isFringeRight: PropTypes.bool.isRequired,
@@ -25,20 +25,20 @@ export default class ContentView extends Component {
         const {isFringeLeft, isFringeRight, isFullScreen, src, contextPath} = this.props;
 
         const classNames = mergeClassNames({
-            [style.contentView]: true,
-            [style['contentView--isFringeLeft']]: isFringeLeft,
-            [style['contentView--isFringeRight']]: isFringeRight,
-            [style['contentView--isFullScreen']]: isFullScreen
+            [style.contentCanvas]: true,
+            [style['contentCanvas--isFringeLeft']]: isFringeLeft,
+            [style['contentCanvas--isFringeRight']]: isFringeRight,
+            [style['contentCanvas--isFullScreen']]: isFullScreen
         });
 
         return (
-            <div className={classNames} id="neos__contentView">
+            <div className={classNames} id="neos__contentCanvas">
                 <iframe
                     src={src}
                     frameBorder="0"
                     name={'neos-content-main'}
                     data-context-path={contextPath}
-                    className={style.contentView__item}
+                    className={style.contentCanvas_contents}
                     />
             </div>
         );

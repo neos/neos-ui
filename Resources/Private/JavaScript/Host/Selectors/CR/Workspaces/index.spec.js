@@ -23,7 +23,7 @@ describe('"host.selectors.workspaces" ', () => {
                 }
             },
             ui: {
-                contentView: {
+                contentCanvas: {
                     contextPath: '/sites/neosdemotypo3org@user-text;language=en_US'
                 }
             }

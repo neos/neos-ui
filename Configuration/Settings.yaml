@@ -53,7 +53,7 @@ PackageFactory:
             byName: ${Guevara.Workspace.initializeWorkspacesByName()}
             active: ${Guevara.Workspace.getPersonalWorkspaceName()}
         ui:
-          contentView:
+          contentCanvas:
             src: ${Guevara.NodeInfo.uri(documentNode, controllerContext)}
             contextPath: ${q(documentNode).property('_contextPath')}
           debugMode: false

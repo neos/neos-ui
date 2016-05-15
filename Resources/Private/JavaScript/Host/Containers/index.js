@@ -1,5 +1,5 @@
 import Neos from './Neos/index';
-import ContentView from './ContentView/index';
+import ContentCanvas from './ContentCanvas/index';
 import ContextBar from './ContextBar/index';
 import FlashMessageContainer from './FlashMessageContainer/index';
 import FullScreen from './FullScreen/index';
@@ -11,7 +11,7 @@ import AddNodeModal from './AddNodeModal/index';
 
 export {
     Neos,
-    ContentView,
+    ContentCanvas,
     ContextBar,
     FlashMessageContainer,
     FullScreen,

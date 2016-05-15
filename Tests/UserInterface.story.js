@@ -63,7 +63,7 @@ describe('User interface', () => {
 
     it('should hide the dropdown items if the user clicked outside of the dropdown.', () => {
         browser.click(selectors.topBar.userDropDown.btn)
-            .click(selectors.contentView);
+            .click(selectors.contentCanvas);
 
         return browser.isVisibleWithinViewport(selectors.topBar.userDropDown.contents).should.equal(false);
     });

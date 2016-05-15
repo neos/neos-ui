@@ -23,7 +23,7 @@ import {
     AddNodeModal,
     RightSideBar,
     SecondaryToolbar,
-    FlashMessageContainer,
+    FlashMessages,
     FullScreen
 } from './Containers/index';
 import {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <Neos configuration={configuration}>
                     <div>
                         <div id="dialog" />
-                        <FlashMessageContainer />
+                        <FlashMessages />
                         <FullScreen />
                         <PrimaryToolbar />
                         <SecondaryToolbar />

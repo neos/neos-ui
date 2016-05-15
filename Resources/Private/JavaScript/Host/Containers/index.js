@@ -1,7 +1,7 @@
 import Neos from './Neos/index';
 import ContentCanvas from './ContentCanvas/index';
 import SecondaryToolbar from './SecondaryToolbar/index';
-import FlashMessageContainer from './FlashMessageContainer/index';
+import FlashMessages from './FlashMessages/index';
 import FullScreen from './FullScreen/index';
 import PrimaryToolbar from './PrimaryToolbar/index';
 import LeftSideBar from './LeftSideBar/index';
@@ -13,7 +13,7 @@ export {
     Neos,
     ContentCanvas,
     SecondaryToolbar,
-    FlashMessageContainer,
+    FlashMessages,
     FullScreen,
     LeftSideBar,
     Drawer,

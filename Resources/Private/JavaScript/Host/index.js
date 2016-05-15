@@ -19,7 +19,7 @@ import {
     ContentCanvas,
     TopBar,
     LeftSideBar,
-    OffCanvas,
+    Drawer,
     AddNodeModal,
     RightSideBar,
     ContextBar,
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <FullScreen />
                         <TopBar />
                         <ContextBar />
-                        <OffCanvas />
+                        <Drawer />
                         <AddNodeModal />
                         <LeftSideBar />
                         <ContentCanvas />

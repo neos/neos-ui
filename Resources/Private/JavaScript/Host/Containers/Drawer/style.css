@@ -1,4 +1,4 @@
-.offCanvas {
+.drawer {
     position: fixed;
     top: 41px;
     left: 0;
@@ -8,17 +8,17 @@
     background: $darker;
     transition: .3s ease transform;
 }
-.offCanvas--isHidden {
+.drawer--isHidden {
     transform: translateX(-320px);
 }
-.offCanvas__menuItem {
+.drawer__menuItem {
     border-top: 1px solid $dark;
 
     &:first-child {
         border-top: 0;
     }
 }
-.offCanvas__menuItemBtn {
+.drawer__menuItemBtn {
     width: 100%;
     text-align: left;
 }

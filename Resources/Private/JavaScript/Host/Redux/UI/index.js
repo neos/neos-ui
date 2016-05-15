@@ -14,10 +14,10 @@ import {
     actions as LeftSideBar
 } from './LeftSideBar/index';
 import {
-    reducer as OffCanvasReducer,
-    hydrate as OffCanvasHydrator,
-    actions as OffCanvas
-} from './OffCanvas/index';
+    reducer as DrawerReducer,
+    hydrate as DrawerHydrator,
+    actions as Drawer
+} from './Drawer/index';
 import {
     reducer as RemoteReducer,
     hydrate as RemoteHydrator,
@@ -61,7 +61,7 @@ export const actions = {
     FlashMessages,
     FullScreen,
     LeftSideBar,
-    OffCanvas,
+    Drawer,
     Remote,
     RightSideBar,
     AddNodeModal,
@@ -76,7 +76,7 @@ export const hydrators = [
     FlashMessagesHydrator,
     FullScreenHydrator,
     LeftSideBarHydrator,
-    OffCanvasHydrator,
+    DrawerHydrator,
     RemoteHydrator,
     RightSideBarHydrator,
     AddNodeModalHydrator,
@@ -91,7 +91,7 @@ export const reducer = {
     ...FlashMessagesReducer,
     ...FullScreenReducer,
     ...LeftSideBarReducer,
-    ...OffCanvasReducer,
+    ...DrawerReducer,
     ...RemoteReducer,
     ...RightSideBarReducer,
     ...AddNodeModalReducer,

@@ -2,31 +2,31 @@ const {selectors} = __neosSelenium;
 
 describe('User interface', () => {
     //
-    // OffCanvas
+    // Drawer
     //
-    it('should display the offCanvas menu when clicking the `Navigation` button in the TopBar.', () => {
+    it('should display the drawer menu when clicking the `Navigation` button in the TopBar.', () => {
         browser.click(selectors.topBar.menuToggler)
             .pause(400);
 
-        return browser.isVisibleWithinViewport(selectors.offCanvas).should.equal(true);
+        return browser.isVisibleWithinViewport(selectors.drawer).should.equal(true);
     });
 
-    it('should hide the offCanvas menu when clicking the `Navigation` button in the TopBar a second time.', () => {
+    it('should hide the drawer menu when clicking the `Navigation` button in the TopBar a second time.', () => {
         browser.click(selectors.topBar.menuToggler)
             .pause(400);
 
-        return browser.isVisibleWithinViewport(selectors.offCanvas).should.equal(false);
+        return browser.isVisibleWithinViewport(selectors.drawer).should.equal(false);
     });
 
-    it('should hide the offCanvas menu when the UAs mouse is leaving its boundaries.', () => {
+    it('should hide the drawer menu when the UAs mouse is leaving its boundaries.', () => {
         browser.click(selectors.topBar.menuToggler)
             .pause(500);
 
-        browser.moveToObject(selectors.offCanvas)
+        browser.moveToObject(selectors.drawer)
             .moveTo(null, 999, 999)
             .pause(1000);
 
-        return browser.isVisibleWithinViewport(selectors.offCanvas).should.equal(false);
+        return browser.isVisibleWithinViewport(selectors.drawer).should.equal(false);
     });
 
     //

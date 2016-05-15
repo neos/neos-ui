@@ -2,8 +2,8 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$toggle, $set} from 'plow-js';
 
-const TOGGLE = '@packagefactory/guevara/UI/OffCanvas/TOGGLE';
-const HIDE = '@packagefactory/guevara/UI/OffCanvas/HIDE';
+const TOGGLE = '@packagefactory/guevara/UI/Drawer/TOGGLE';
+const HIDE = '@packagefactory/guevara/UI/Drawer/HIDE';
 
 /**
  * Toggles the off canvas menu out/in of the users viewport.
@@ -27,7 +27,7 @@ export const actions = {
 // Export the initial state hydrator
 //
 export const hydrate = () => $set(
-    'ui.offCanvas',
+    'ui.drawer',
     new Map({
         isHidden: true
     })
@@ -37,6 +37,6 @@ export const hydrate = () => $set(
 // Export the reducer
 //
 export const reducer = {
-    [TOGGLE]: () => $toggle('ui.offCanvas.isHidden'),
-    [HIDE]: () => $set('ui.offCanvas.isHidden', true)
+    [TOGGLE]: () => $toggle('ui.drawer.isHidden'),
+    [HIDE]: () => $set('ui.drawer.isHidden', true)
 };

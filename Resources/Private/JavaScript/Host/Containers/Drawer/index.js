@@ -17,28 +17,28 @@ const moduleLabel = (label, sourceName = 'Main') =>
     <I18n id={label} sourceName={sourceName} fallback={label} />;
 
 @connect($transform({
-    isHidden: $get('ui.offCanvas.isHidden')
+    isHidden: $get('ui.drawer.isHidden')
 }), {
-    hideOffCanvas: actions.UI.OffCanvas.hide
+    hideDrawer: actions.UI.drawer.hide
 })
-export default class OffCanvas extends Component {
+export default class Drawer extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
-        hideOffCanvas: PropTypes.func.isRequired
+        hideDrawer: PropTypes.func.isRequired
     };
 
     render() {
         const {isHidden} = this.props;
         const classNames = mergeClassNames({
-            [style.offCanvas]: true,
-            [style['offCanvas--isHidden']]: isHidden
+            [style.drawer]: true,
+            [style['drawer--isHidden']]: isHidden
         });
 
         return (
             <div
                 className={classNames}
-                onMouseLeave={() => this.props.hideOffCanvas()}
-                id="neos__offCanvas"
+                onMouseLeave={() => this.props.hideDrawer()}
+                id="neos__drawer"
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 {this.renderMenu()}
@@ -79,8 +79,8 @@ export default class OffCanvas extends Component {
         };
 
         return children && children.length ? (
-            <ToggablePanel isOpened={true} className={style.offCanvas__menuItem} key={key}>
-                <ToggablePanel.Header className={style.offCanvas__menuItem__header}>
+            <ToggablePanel isOpened={true} className={style.drawer__menuItem} key={key}>
+                <ToggablePanel.Header className={style.drawer__menuItem__header}>
                     <Icon icon={icon} padded="right" />
                     {title}
                 </ToggablePanel.Header>
@@ -89,7 +89,7 @@ export default class OffCanvas extends Component {
                 </ToggablePanel.Contents>
             </ToggablePanel>
         ) : (
-            <Button className={style.offCanvas__menuItemBtn} onClick={onClick} key={key}>
+            <Button className={style.drawer__menuItemBtn} onClick={onClick} key={key}>
                 <Icon icon={icon} padded="right" />
                 {title}
             </Button>

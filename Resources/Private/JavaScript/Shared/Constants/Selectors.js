@@ -19,7 +19,7 @@ module.exports = {
             addNode: '#neos__leftSidebar__nodeTreeToolBar__addNode'
         }
     },
-    offCanvas: '#neos__offCanvas',
+    drawer: '#neos__drawer',
     rightSideBar: {
         container: '#neos__rightSideBar',
         toggler: '#neos__rightSideBar__toggler'

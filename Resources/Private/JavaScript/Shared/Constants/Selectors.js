@@ -11,7 +11,6 @@ module.exports = {
         iframe: '#neos__contentCanvas iframe',
         inlineEditableNodeTypes: '[data-__che-property]'
     },
-    contextBar: {},
     fullScreen: {},
     leftSideBar: {
         container: '#neos__leftSidebar',
@@ -41,6 +40,7 @@ module.exports = {
             autoPublishingEnabledCheckbox: '#neos__primaryToolbar__publishDropDown__autoPublishingEnabledCheckbox'
         }
     },
+    secondaryToolbar: {},
     modals: {
         closeModal: '#neos__modal__closeModal',
         addNode: '#neos__addNodeModal'

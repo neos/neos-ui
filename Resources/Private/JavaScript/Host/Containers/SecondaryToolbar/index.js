@@ -17,7 +17,7 @@ import style from './style.css';
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })
-export default class ContextBar extends Component {
+export default class SecondaryToolbar extends Component {
     static propTypes = {
         previewUrl: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
@@ -29,21 +29,21 @@ export default class ContextBar extends Component {
     render() {
         const {previewUrl, isFringedLeft, isFringedRight, isFullScreen} = this.props;
         const classNames = mergeClassNames({
-            [style.contextBar]: true,
-            [style['contextBar--isFringeLeft']]: isFringedLeft,
-            [style['contextBar--isFringeRight']]: isFringedRight,
-            [style['contextBar--isHidden']]: isFullScreen
+            [style.secondaryToolbar]: true,
+            [style['secondaryToolbar--isFringeLeft']]: isFringedLeft,
+            [style['secondaryToolbar--isFringeRight']]: isFringedRight,
+            [style['secondaryToolbar--isHidden']]: isFullScreen
         });
         const previewButtonClassNames = mergeClassNames({
-            [style.contextBar__buttonLink]: true,
-            [style['contextBar__buttonLink--isDisabled']]: !previewUrl
+            [style.secondaryToolbar__buttonLink]: true,
+            [style['secondaryToolbar__buttonLink--isDisabled']]: !previewUrl
         });
 
         return (
             <div className={classNames}>
                 <DimensionSwitcher />
 
-                <div className={style.contextBar__rightHandedActions}>
+                <div className={style.secondaryToolbar__rightHandedActions}>
                     <a
                         href={previewUrl ? previewUrl : '#'}
                         target="_blank"

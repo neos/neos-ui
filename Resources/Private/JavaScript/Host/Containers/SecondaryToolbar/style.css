@@ -1,4 +1,4 @@
-.contextBar {
+.secondaryToolbar {
     position: absolute;
     top: 41px;
     left: 0;
@@ -18,16 +18,16 @@
         clear: both;
     }
 }
-.contextBar--isFringeLeft {
+.secondaryToolbar--isFringeLeft {
     padding-left: 0;
 }
-.contextBar--isFringeRight {
+.secondaryToolbar--isFringeRight {
     padding-right: 40px;
 }
-.contextBar--isHidden {
+.secondaryToolbar--isHidden {
     display: none;
 }
-.contextBar__rightHandedActions {
+.secondaryToolbar__rightHandedActions {
     float: right;
 }
 
@@ -35,7 +35,7 @@
     margin-right: .5em;
 }
 
-.contextBar__buttonLink {
+.secondaryToolbar__buttonLink {
     position: relative;
     display: inline-block;
     height: 40px;
@@ -54,10 +54,10 @@
     }
 }
 
-a.contextBar__buttonLink:hover {
+a.secondaryToolbar__buttonLink:hover {
     background: $brand;
 }
 
-.contextBar__buttonLink--isDisabled {
+.secondaryToolbar__buttonLink--isDisabled {
     opacity: .5;
 }

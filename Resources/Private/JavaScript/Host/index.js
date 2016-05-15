@@ -22,7 +22,7 @@ import {
     Drawer,
     AddNodeModal,
     RightSideBar,
-    ContextBar,
+    SecondaryToolbar,
     FlashMessageContainer,
     FullScreen
 } from './Containers/index';
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <FlashMessageContainer />
                         <FullScreen />
                         <PrimaryToolbar />
-                        <ContextBar />
+                        <SecondaryToolbar />
                         <Drawer />
                         <AddNodeModal />
                         <LeftSideBar />

@@ -14,11 +14,6 @@ nvm install
 nvm use
 
 #
-# Install npm 3.8.9
-#
-npm install -g npm@3.8.9
-
-#
 # First of, install all application dependencies.
 #
 npm install

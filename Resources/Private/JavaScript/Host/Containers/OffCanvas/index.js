@@ -89,7 +89,7 @@ export default class OffCanvas extends Component {
                 </ToggablePanel.Contents>
             </ToggablePanel>
         ) : (
-            <Button className={style.offCanvas__menuItemBtn} onClick={onClick} key={key}>
+            <Button className={style.offCanvas__menuItemBtn} role="button" onClick={onClick} key={key}>
                 <Icon icon={icon} padded="right" />
                 {title}
             </Button>

@@ -6,6 +6,7 @@ const Label = props => {
     const {
         children,
         className,
+        htmlFor,
         ...directProps
     } = props;
     const classNames = mergeClassNames({
@@ -14,12 +15,13 @@ const Label = props => {
     });
 
     return (
-        <label className={classNames} {...directProps}>
+        <label htmlFor={htmlFor} className={classNames} {...directProps}>
             {children}
         </label>
     );
 };
 Label.propTypes = {
+    htmlFor: PropTypes.string.isRequired,
     className: PropTypes.string,
     children: PropTypes.node
 };

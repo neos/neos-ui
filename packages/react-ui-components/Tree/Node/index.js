@@ -50,9 +50,9 @@ export class Header extends Component {
         return (
             <div className={style.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
-                <div onClick={() => onClick()} className={dataClassNames}>
+                <div role="button" onClick={() => onClick()} className={dataClassNames}>
                     <Icon icon={icon || 'question'} padded="right" />
-                    <span className={style.header__label} onClick={() => onLabelClick()} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                    <span className={style.header__label} role="button" onClick={() => onLabelClick()} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>
                 </div>
@@ -83,7 +83,7 @@ export class Header extends Component {
         }
 
         return (
-            <a onClick={() => onToggle()} className={classnames} data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle">
+            <a role="button" onClick={() => onToggle()} className={classnames} data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle">
                 {icon}
             </a>
         );

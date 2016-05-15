@@ -19,7 +19,7 @@ const moduleLabel = (label, sourceName = 'Main') =>
 @connect($transform({
     isHidden: $get('ui.drawer.isHidden')
 }), {
-    hideDrawer: actions.UI.drawer.hide
+    hideDrawer: actions.UI.Drawer.hide
 })
 export default class Drawer extends Component {
     static propTypes = {

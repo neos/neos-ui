@@ -7,7 +7,7 @@ import PrimaryToolbar from './PrimaryToolbar/index';
 import LeftSideBar from './LeftSideBar/index';
 import Drawer from './Drawer/index';
 import RightSideBar from './RightSideBar/index';
-import AddNodeModal from './AddNodeModal/index';
+import Modals from './Modals/index';
 
 export {
     Neos,
@@ -19,5 +19,5 @@ export {
     Drawer,
     RightSideBar,
     PrimaryToolbar,
-    AddNodeModal
+    Modals
 };

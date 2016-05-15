@@ -20,7 +20,7 @@ import {
     PrimaryToolbar,
     LeftSideBar,
     Drawer,
-    AddNodeModal,
+    Modals,
     RightSideBar,
     SecondaryToolbar,
     FlashMessages,
@@ -59,12 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <Neos configuration={configuration}>
                     <div>
                         <div id="dialog" />
+                        <Modals />
                         <FlashMessages />
                         <FullScreen />
                         <PrimaryToolbar />
                         <SecondaryToolbar />
                         <Drawer />
-                        <AddNodeModal />
                         <LeftSideBar />
                         <ContentCanvas />
                         <RightSideBar />

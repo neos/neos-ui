@@ -4,22 +4,22 @@ describe('User interface', () => {
     //
     // Drawer
     //
-    it('should display the drawer menu when clicking the `Navigation` button in the TopBar.', () => {
-        browser.click(selectors.topBar.menuToggler)
+    it('should display the drawer menu when clicking the `Navigation` button in the PrimaryToolbar.', () => {
+        browser.click(selectors.primaryToolbar.menuToggler)
             .pause(400);
 
         return browser.isVisibleWithinViewport(selectors.drawer).should.equal(true);
     });
 
-    it('should hide the drawer menu when clicking the `Navigation` button in the TopBar a second time.', () => {
-        browser.click(selectors.topBar.menuToggler)
+    it('should hide the drawer menu when clicking the `Navigation` button in the PrimaryToolbar a second time.', () => {
+        browser.click(selectors.primaryToolbar.menuToggler)
             .pause(400);
 
         return browser.isVisibleWithinViewport(selectors.drawer).should.equal(false);
     });
 
     it('should hide the drawer menu when the UAs mouse is leaving its boundaries.', () => {
-        browser.click(selectors.topBar.menuToggler)
+        browser.click(selectors.primaryToolbar.menuToggler)
             .pause(500);
 
         browser.moveToObject(selectors.drawer)
@@ -32,15 +32,15 @@ describe('User interface', () => {
     //
     // Left Sidebar (`Navigate`)
     //
-    it('should hide the left sidebar when clicking the `Navigate` button in the TopBar.', () => {
-        browser.click(selectors.topBar.leftSideBarToggler)
+    it('should hide the left sidebar when clicking the `Navigate` button in the PrimaryToolbar.', () => {
+        browser.click(selectors.primaryToolbar.leftSideBarToggler)
             .pause(400);
 
         return browser.isVisibleWithinViewport(selectors.leftSideBar.container).should.equal(false);
     });
 
     it('should display the left sidebar when clicked again.', () => {
-        browser.click(selectors.topBar.leftSideBarToggler)
+        browser.click(selectors.primaryToolbar.leftSideBarToggler)
             .pause(400);
 
         return browser.isVisibleWithinViewport(selectors.leftSideBar.container).should.equal(true);
@@ -50,22 +50,22 @@ describe('User interface', () => {
     // User dropdown
     //
     it('should display the user dropdown contents after the `User` button was clicked.', () => {
-        browser.click(selectors.topBar.userDropDown.btn);
+        browser.click(selectors.primaryToolbar.userDropDown.btn);
 
-        return browser.isVisibleWithinViewport(selectors.topBar.userDropDown.contents).should.equal(true);
+        return browser.isVisibleWithinViewport(selectors.primaryToolbar.userDropDown.contents).should.equal(true);
     });
 
     it('should hide the user dropdown contents after the `User` button was clicked again.', () => {
-        browser.click(selectors.topBar.userDropDown.btn);
+        browser.click(selectors.primaryToolbar.userDropDown.btn);
 
-        return browser.isVisibleWithinViewport(selectors.topBar.userDropDown.contents).should.equal(false);
+        return browser.isVisibleWithinViewport(selectors.primaryToolbar.userDropDown.contents).should.equal(false);
     });
 
     it('should hide the dropdown items if the user clicked outside of the dropdown.', () => {
-        browser.click(selectors.topBar.userDropDown.btn)
+        browser.click(selectors.primaryToolbar.userDropDown.btn)
             .click(selectors.contentCanvas);
 
-        return browser.isVisibleWithinViewport(selectors.topBar.userDropDown.contents).should.equal(false);
+        return browser.isVisibleWithinViewport(selectors.primaryToolbar.userDropDown.contents).should.equal(false);
     });
 
     //

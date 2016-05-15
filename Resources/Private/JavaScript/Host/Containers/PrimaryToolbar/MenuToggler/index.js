@@ -38,7 +38,7 @@ export default class MenuToggler extends Component {
                 hoverStyle="clean"
                 isFocused={isMenuVisible}
                 onClick={() => this.props.toggleDrawer()}
-                id="neos__topBar__menuToggler"
+                id="neos__primaryToolbar__menuToggler"
                 aria-label="Menu"
                 aria-controls="navigation"
                 aria-expanded={isMenuHidden ? 'false' : 'true'}

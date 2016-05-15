@@ -3,7 +3,7 @@ import ContentCanvas from './ContentCanvas/index';
 import ContextBar from './ContextBar/index';
 import FlashMessageContainer from './FlashMessageContainer/index';
 import FullScreen from './FullScreen/index';
-import TopBar from './TopBar/index';
+import PrimaryToolbar from './PrimaryToolbar/index';
 import LeftSideBar from './LeftSideBar/index';
 import Drawer from './Drawer/index';
 import RightSideBar from './RightSideBar/index';
@@ -18,6 +18,6 @@ export {
     LeftSideBar,
     Drawer,
     RightSideBar,
-    TopBar,
+    PrimaryToolbar,
     AddNodeModal
 };

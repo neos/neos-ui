@@ -17,7 +17,7 @@ import * as feedbackHandler from './Service/FeedbackHandler/index';
 import {
     Neos,
     ContentCanvas,
-    TopBar,
+    PrimaryToolbar,
     LeftSideBar,
     Drawer,
     AddNodeModal,
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div id="dialog" />
                         <FlashMessageContainer />
                         <FullScreen />
-                        <TopBar />
+                        <PrimaryToolbar />
                         <ContextBar />
                         <Drawer />
                         <AddNodeModal />

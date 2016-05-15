@@ -35,7 +35,7 @@ export default class LeftSideBarToggler extends Component {
                 hoverStyle="clean"
                 isFocused={isActive}
                 onClick={() => this.props.toggleSidebar()}
-                id="neos__topBar__leftSideBarToggler"
+                id="neos__primaryToolbar__leftSideBarToggler"
                 >
                 <I18n id="navigate" fallback="Navigate" />
             </Button>

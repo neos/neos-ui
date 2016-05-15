@@ -74,8 +74,7 @@ const config = {
         // since entry points are not allowed as dependencies in webpack?!?
         //
         Components: ['./Resources/Private/JavaScript/Components/index.js'],
-        Guest: './Resources/Private/JavaScript/Guest/index.js',
-        Login: './Resources/Private/JavaScript/Login/index.js'
+        Guest: './Resources/Private/JavaScript/Guest/index.js'
     },
 
     output: {

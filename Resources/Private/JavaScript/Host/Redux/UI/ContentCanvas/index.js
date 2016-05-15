@@ -2,9 +2,9 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set, $get} from 'plow-js';
 
-const SET_CONTEXT_PATH = '@packagefactory/guevara/UI/PageTree/SET_CONTEXT_PATH';
-const SET_PREVIEW_URL = '@packagefactory/guevara/UI/PageTree/SET_PREVIEW_URL';
-const SET_SRC = '@packagefactory/guevara/UI/PageTree/SET_SRC';
+const SET_CONTEXT_PATH = '@packagefactory/guevara/UI/ContentCanvas/SET_CONTEXT_PATH';
+const SET_PREVIEW_URL = '@packagefactory/guevara/UI/ContentCanvas/SET_PREVIEW_URL';
+const SET_SRC = '@packagefactory/guevara/UI/ContentCanvas/SET_SRC';
 
 //
 // Export the action types

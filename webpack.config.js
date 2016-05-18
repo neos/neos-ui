@@ -90,7 +90,7 @@ const config = {
 //
 // Adjust the config depending on the env.
 //
-if (!env.isCi && !env.isTesting) {
+if (!env.isCi && !env.isTesting && !env.isStorybook) {
     config.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
 }
 

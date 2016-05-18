@@ -5,6 +5,7 @@
   "main": "Resources/Public/JavaScript/Host.js",
   "private": true,
   "devDependencies": {
+    "@kadira/storybook": "^1.27.0",
     "autoprefixer": "^6.2.2",
     "babel-core": "^6.4.0",
     "babel-eslint": "^6.0.2",
@@ -117,7 +118,8 @@
     "watch:karma": "export TEST=true && karma start",
     "watch": "npm run watch:build & npm run watch:karma",
     "prewatch": "Build/check-dependencies",
-    "prebuild": "Build/check-dependencies"
+    "prebuild": "Build/check-dependencies",
+    "storybook": "export STORY=true && start-storybook -p 9001"
   },
   "contributors": [
     {

@@ -50,7 +50,7 @@
 Now you are all set up and can open the sub-route `/che!` to login to the new interface.
 
 __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
-If you've installed `nvm` make sure that the node LTS version `4.2.2` is correctly installed - You can do so by executing `nvm install v4.2.2`.
+If you've installed `nvm` make sure that the next node LTS version `6.1.0` is correctly installed - You can do so by executing `nvm install v6.1.0`.
 If you need help setting up `nvm`, `npm` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
 
 

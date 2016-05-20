@@ -1,4 +1,4 @@
-.topBar {
+.primaryToolbar {
     &:before,
     &:after {
         content: '';
@@ -8,15 +8,15 @@
         clear: both;
     }
 }
-.topBar--isHidden {
+.primaryToolbar--isHidden {
     display: none;
 }
-.topBar__rightSidedActions {
+.primaryToolbar__rightSidedActions {
     position: absolute;
     right: 0;
     top: 0;
 }
 
-.topBar__btn {
+.primaryToolbar__btn {
     border-right: 1px solid $dark;
 }

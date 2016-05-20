@@ -6,12 +6,11 @@
 //
 
 module.exports = {
-    contentView: '#neos__contentView',
+    contentCanvas: '#neos__contentCanvas',
     guestFrame: {
-        iframe: '#neos__contentView iframe',
+        iframe: '#neos__contentCanvas iframe',
         inlineEditableNodeTypes: '[data-__che-property]'
     },
-    contextBar: {},
     fullScreen: {},
     leftSideBar: {
         container: '#neos__leftSidebar',
@@ -19,28 +18,29 @@ module.exports = {
             addNode: '#neos__leftSidebar__nodeTreeToolBar__addNode'
         }
     },
-    offCanvas: '#neos__offCanvas',
+    drawer: '#neos__drawer',
     rightSideBar: {
         container: '#neos__rightSideBar',
         toggler: '#neos__rightSideBar__toggler'
     },
-    topBar: {
-        menuToggler: '#neos__topBar__menuToggler',
-        leftSideBarToggler: '#neos__topBar__leftSideBarToggler',
+    primaryToolbar: {
+        menuToggler: '#neos__primaryToolbar__menuToggler',
+        leftSideBarToggler: '#neos__primaryToolbar__leftSideBarToggler',
         userDropDown: {
-            contents: '#neos__topBar__userDropDown__contents',
-            btn: '#neos__topBar__userDropDown__btn'
+            contents: '#neos__primaryToolbar__userDropDown__contents',
+            btn: '#neos__primaryToolbar__userDropDown__btn'
         },
         publishDropDown: {
-            contents: '#neos__topBar__publishDropDown__contents',
-            btn: '#neos__topBar__publishDropDown__btn',
-            discardBtn: '#neos__topBar__publishDropDown__discardBtn',
-            discardAllBtn: '#neos__topBar__publishDropDown__discardAllBtn',
-            publishBtn: '#neos__topBar__publishDropDown__publishBtn',
-            publishAllBtn: '#neos__topBar__publishDropDown__publishAllBtn',
-            autoPublishingEnabledCheckbox: '#neos__topBar__publishDropDown__autoPublishingEnabledCheckbox'
+            contents: '#neos__primaryToolbar__publishDropDown__contents',
+            btn: '#neos__primaryToolbar__publishDropDown__btn',
+            discardBtn: '#neos__primaryToolbar__publishDropDown__discardBtn',
+            discardAllBtn: '#neos__primaryToolbar__publishDropDown__discardAllBtn',
+            publishBtn: '#neos__primaryToolbar__publishDropDown__publishBtn',
+            publishAllBtn: '#neos__primaryToolbar__publishDropDown__publishAllBtn',
+            autoPublishingEnabledCheckbox: '#neos__primaryToolbar__publishDropDown__autoPublishingEnabledCheckbox'
         }
     },
+    secondaryToolbar: {},
     modals: {
         closeModal: '#neos__modal__closeModal',
         addNode: '#neos__addNodeModal'

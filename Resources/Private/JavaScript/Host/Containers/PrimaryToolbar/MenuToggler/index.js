@@ -9,15 +9,15 @@ import {Button} from 'Components/index';
 import style from './style.css';
 
 @connect($transform({
-    isMenuHidden: $get('ui.offCanvas.isHidden')
+    isMenuHidden: $get('ui.drawer.isHidden')
 }), {
-    toggleOffCanvas: actions.UI.OffCanvas.toggle
+    toggleDrawer: actions.UI.Drawer.toggle
 })
 export default class MenuToggler extends Component {
     static propTypes = {
         className: PropTypes.string,
         isMenuHidden: PropTypes.bool.isRequired,
-        toggleOffCanvas: PropTypes.func.isRequired
+        toggleDrawer: PropTypes.func.isRequired
     };
 
     render() {
@@ -37,8 +37,8 @@ export default class MenuToggler extends Component {
                 style="clean"
                 hoverStyle="clean"
                 isFocused={isMenuVisible}
-                onClick={() => this.props.toggleOffCanvas()}
-                id="neos__topBar__menuToggler"
+                onClick={() => this.props.toggleDrawer()}
+                id="neos__primaryToolbar__menuToggler"
                 aria-label="Menu"
                 aria-controls="navigation"
                 aria-expanded={isMenuHidden ? 'false' : 'true'}

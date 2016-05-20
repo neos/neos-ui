@@ -4,7 +4,7 @@ import {createSelector} from 'reselect';
 import {byContextPathSelector} from '../../CR/Nodes/index';
 import {isOfTypeSelector} from '../../CR/NodeTypes/index';
 
-const getActive = $get('ui.contentView.contextPath');
+const getActive = $get('ui.contentCanvas.contextPath');
 const getFocused = $get('ui.pageTree.focused');
 const getUncollapsed = $get('ui.pageTree.uncollapsed');
 const getLoading = $get('ui.pageTree.loading');

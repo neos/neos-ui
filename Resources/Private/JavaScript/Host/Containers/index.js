@@ -1,23 +1,23 @@
 import Neos from './Neos/index';
-import ContentView from './ContentView/index';
-import ContextBar from './ContextBar/index';
-import FlashMessageContainer from './FlashMessageContainer/index';
+import ContentCanvas from './ContentCanvas/index';
+import SecondaryToolbar from './SecondaryToolbar/index';
+import FlashMessages from './FlashMessages/index';
 import FullScreen from './FullScreen/index';
-import TopBar from './TopBar/index';
+import PrimaryToolbar from './PrimaryToolbar/index';
 import LeftSideBar from './LeftSideBar/index';
-import OffCanvas from './OffCanvas/index';
+import Drawer from './Drawer/index';
 import RightSideBar from './RightSideBar/index';
-import AddNodeModal from './AddNodeModal/index';
+import Modals from './Modals/index';
 
 export {
     Neos,
-    ContentView,
-    ContextBar,
-    FlashMessageContainer,
+    ContentCanvas,
+    SecondaryToolbar,
+    FlashMessages,
     FullScreen,
     LeftSideBar,
-    OffCanvas,
+    Drawer,
     RightSideBar,
-    TopBar,
-    AddNodeModal
+    PrimaryToolbar,
+    Modals
 };

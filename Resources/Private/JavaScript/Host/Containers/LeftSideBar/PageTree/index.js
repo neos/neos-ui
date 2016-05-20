@@ -15,7 +15,7 @@ import Node from './Node/index';
     getTreeNode: UI.PageTree.getTreeNodeSelector
 }), {
     onNodeToggle: actions.UI.PageTree.toggle,
-    onNodeClick: actions.UI.ContentView.setSrc,
+    onNodeClick: actions.UI.ContentCanvas.setSrc,
     onNodeFocus: actions.UI.PageTree.focus
 })
 export default class PageTree extends Component {

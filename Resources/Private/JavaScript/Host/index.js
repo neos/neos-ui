@@ -16,14 +16,14 @@ import * as feedbackHandler from './Service/FeedbackHandler/index';
 
 import {
     Neos,
-    ContentView,
-    TopBar,
+    ContentCanvas,
+    PrimaryToolbar,
     LeftSideBar,
-    OffCanvas,
-    AddNodeModal,
+    Drawer,
+    Modals,
     RightSideBar,
-    ContextBar,
-    FlashMessageContainer,
+    SecondaryToolbar,
+    FlashMessages,
     FullScreen
 } from './Containers/index';
 import {
@@ -59,14 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <Neos configuration={configuration}>
                     <div>
                         <div id="dialog" />
-                        <FlashMessageContainer />
+                        <Modals />
+                        <FlashMessages />
                         <FullScreen />
-                        <TopBar />
-                        <ContextBar />
-                        <OffCanvas />
-                        <AddNodeModal />
+                        <PrimaryToolbar />
+                        <SecondaryToolbar />
+                        <Drawer />
                         <LeftSideBar />
-                        <ContentView />
+                        <ContentCanvas />
                         <RightSideBar />
                     </div>
                 </Neos>

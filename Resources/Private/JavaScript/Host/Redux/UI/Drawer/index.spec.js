@@ -7,7 +7,7 @@ import {reducer, actions, hydrate} from './index.js';
 
 const {toggle, hide} = actions;
 
-describe('"host.redux.ui.offCanvas" ', () => {
+describe('"host.redux.ui.drawer" ', () => {
     let store = null;
 
     beforeEach(done => {
@@ -29,13 +29,13 @@ describe('"host.redux.ui.offCanvas" ', () => {
         it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.get('ui').get('offCanvas')).to.be.an.instanceOf(Map);
+            expect(state.get('ui').get('drawer')).to.be.an.instanceOf(Map);
         });
 
-        it('should initially mark the offCanvas container as hidden.', () => {
+        it('should initially mark the drawer container as hidden.', () => {
             const state = store.getState();
 
-            expect(state.get('ui').get('offCanvas').get('isHidden')).to.equal(true);
+            expect(state.get('ui').get('drawer').get('isHidden')).to.equal(true);
         });
     });
 
@@ -43,11 +43,11 @@ describe('"host.redux.ui.offCanvas" ', () => {
         it('should be able to reverse the value of the "isHidden" key.', () => {
             store.dispatch(toggle());
 
-            expect(store.getState().get('ui').get('offCanvas').get('isHidden')).to.equal(false);
+            expect(store.getState().get('ui').get('drawer').get('isHidden')).to.equal(false);
 
             store.dispatch(toggle());
 
-            expect(store.getState().get('ui').get('offCanvas').get('isHidden')).to.equal(true);
+            expect(store.getState().get('ui').get('drawer').get('isHidden')).to.equal(true);
         });
     });
 
@@ -55,12 +55,12 @@ describe('"host.redux.ui.offCanvas" ', () => {
         it('should set the "isHidden" key to "false".', () => {
             store.dispatch(hide());
 
-            expect(store.getState().get('ui').get('offCanvas').get('isHidden')).to.equal(true);
+            expect(store.getState().get('ui').get('drawer').get('isHidden')).to.equal(true);
 
             store.dispatch(toggle());
             store.dispatch(hide());
 
-            expect(store.getState().get('ui').get('offCanvas').get('isHidden')).to.equal(true);
+            expect(store.getState().get('ui').get('drawer').get('isHidden')).to.equal(true);
         });
     });
 });

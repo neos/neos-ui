@@ -13,7 +13,7 @@ import style from './style.css';
 }), {
     removeMessage: actions.UI.FlashMessages.remove
 })
-export default class FlashMessageContainer extends Component {
+export default class FlashMessages extends Component {
     static propTypes = {
         flashMessages: ImmutablePropTypes.map,
         removeMessage: PropTypes.func.isRequired

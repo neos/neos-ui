@@ -2,7 +2,7 @@ import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
 
 export const activeWorkspaceNameSelector = $get('cr.workspaces.active');
-export const activeDocumentContextPathSelector = $get('ui.contentView.contextPath');
+export const activeDocumentContextPathSelector = $get('ui.contentCanvas.contextPath');
 
 export const publishableNodesSelector = createSelector(
     [

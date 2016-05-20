@@ -8,18 +8,18 @@ describe('Inline editing', () => {
     before(() => {
         // If the `Discard All` button is enabled, click and reset all local changes which where already synced to the server.
         // @todo: We should not rely on the functionality of the `Discard All` button.
-        if (browser.isEnabled(selectors.topBar.publishDropDown.discardAllBtn)) {
+        if (browser.isEnabled(selectors.primaryToolbar.publishDropDown.discardAllBtn)) {
             // Open the publish dropdown if it is not already opened.
-            if (!browser.isVisibleWithinViewport(selectors.topBar.publishDropDown.contents)) {
-                browser.click(selectors.topBar.publishDropDown.btn);
+            if (!browser.isVisibleWithinViewport(selectors.primaryToolbar.publishDropDown.contents)) {
+                browser.click(selectors.primaryToolbar.publishDropDown.btn);
             }
 
-            browser.click(selectors.topBar.publishDropDown.discardAllBtn);
+            browser.click(selectors.primaryToolbar.publishDropDown.discardAllBtn);
             browser.pause(2000);
 
             // Hide the publish dropdown if it was opened.
-            if (browser.isVisibleWithinViewport(selectors.topBar.publishDropDown.contents)) {
-                browser.click(selectors.topBar.publishDropDown.btn);
+            if (browser.isVisibleWithinViewport(selectors.primaryToolbar.publishDropDown.contents)) {
+                browser.click(selectors.primaryToolbar.publishDropDown.btn);
             }
         }
     });
@@ -50,12 +50,12 @@ describe('Inline editing', () => {
     });
 
     it('should be able to display the publish dropdown contents after the publish dropdown chevron was clicked.', () => {
-        return browser.click(selectors.topBar.publishDropDown.btn)
-            .isVisibleWithinViewport(selectors.topBar.publishDropDown.contents).should.equal(true);
+        return browser.click(selectors.primaryToolbar.publishDropDown.btn)
+            .isVisibleWithinViewport(selectors.primaryToolbar.publishDropDown.contents).should.equal(true);
     });
 
     it.skip('should reset all changes when clicking the discard button.', () => {
-        browser.click(selectors.topBar.publishDropDown.discardBtn)
+        browser.click(selectors.primaryToolbar.publishDropDown.discardBtn)
             .pause(2000);
 
         browser.refresh()

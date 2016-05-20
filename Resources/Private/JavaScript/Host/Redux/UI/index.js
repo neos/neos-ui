@@ -14,10 +14,10 @@ import {
     actions as LeftSideBar
 } from './LeftSideBar/index';
 import {
-    reducer as OffCanvasReducer,
-    hydrate as OffCanvasHydrator,
-    actions as OffCanvas
-} from './OffCanvas/index';
+    reducer as DrawerReducer,
+    hydrate as DrawerHydrator,
+    actions as Drawer
+} from './Drawer/index';
 import {
     reducer as RemoteReducer,
     hydrate as RemoteHydrator,
@@ -40,18 +40,18 @@ import {
     actions as PageTree
 } from './PageTree/index';
 import {
-    reducer as ContentViewReducer,
-    hydrate as ContentViewHydrator,
-    actionTypes as ContentViewActionTypes,
-    actions as ContentView
-} from './ContentView/index';
+    reducer as ContentCanvasReducer,
+    hydrate as ContentCanvasHydrator,
+    actionTypes as ContentCanvasActionTypes,
+    actions as ContentCanvas
+} from './ContentCanvas/index';
 
 //
 // Export the action types
 //
 export const actionTypes = {
     PageTree: PageTreeActionTypes,
-    ContentView: ContentViewActionTypes
+    ContentCanvas: ContentCanvasActionTypes
 };
 
 //
@@ -61,12 +61,12 @@ export const actions = {
     FlashMessages,
     FullScreen,
     LeftSideBar,
-    OffCanvas,
+    Drawer,
     Remote,
     RightSideBar,
     AddNodeModal,
     PageTree,
-    ContentView
+    ContentCanvas
 };
 
 //
@@ -76,12 +76,12 @@ export const hydrators = [
     FlashMessagesHydrator,
     FullScreenHydrator,
     LeftSideBarHydrator,
-    OffCanvasHydrator,
+    DrawerHydrator,
     RemoteHydrator,
     RightSideBarHydrator,
     AddNodeModalHydrator,
     PageTreeHydrator,
-    ContentViewHydrator
+    ContentCanvasHydrator
 ];
 
 //
@@ -91,10 +91,10 @@ export const reducer = {
     ...FlashMessagesReducer,
     ...FullScreenReducer,
     ...LeftSideBarReducer,
-    ...OffCanvasReducer,
+    ...DrawerReducer,
     ...RemoteReducer,
     ...RightSideBarReducer,
     ...AddNodeModalReducer,
     ...PageTreeReducer,
-    ...ContentViewReducer
+    ...ContentCanvasReducer
 };

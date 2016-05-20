@@ -1,4 +1,4 @@
-.contentView {
+.contentCanvas {
     float: left;
     height: 100%;
     width: 100%;
@@ -6,16 +6,16 @@
     transition: .2s ease padding;
     will-change: padding;
 }
-.contentView--isFringeLeft {
+.contentCanvas--isFringeLeft {
     padding-left: 0;
 }
-.contentView--isFringeRight {
+.contentCanvas--isFringeRight {
     padding-right: 0;
 }
-.contentView--isFullScreen {
+.contentCanvas--isFullScreen {
     padding: 0;
 }
-.contentView__item {
+.contentCanvas__contents {
     width: 100%;
     height: 100%;
 }

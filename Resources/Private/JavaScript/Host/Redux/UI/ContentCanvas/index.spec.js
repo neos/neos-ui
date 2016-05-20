@@ -10,7 +10,7 @@ const {
     setSrc
 } = actions;
 
-describe('"host.redux.ui.contentView" ', () => {
+describe('"host.redux.ui.contentCanvas" ', () => {
     let store = null;
 
     beforeEach(done => {
@@ -32,7 +32,7 @@ describe('"host.redux.ui.contentView" ', () => {
         it('should return an Immutable.Map as the initial state.', () => {
             const state = store.getState();
 
-            expect(state.get('ui').get('contentView')).to.be.an.instanceOf(Map);
+            expect(state.get('ui').get('contentCanvas')).to.be.an.instanceOf(Map);
         });
     });
 
@@ -42,7 +42,7 @@ describe('"host.redux.ui.contentView" ', () => {
 
             const state = store.getState();
 
-            expect(state.get('ui').get('contentView').get('contextPath')).to.equal('someContextPath');
+            expect(state.get('ui').get('contentCanvas').get('contextPath')).to.equal('someContextPath');
         });
     });
 
@@ -52,7 +52,7 @@ describe('"host.redux.ui.contentView" ', () => {
 
             const state = store.getState();
 
-            expect(state.get('ui').get('contentView').get('src')).to.equal('http://www.some-source.com/document.html');
+            expect(state.get('ui').get('contentCanvas').get('src')).to.equal('http://www.some-source.com/document.html');
         });
     });
 });

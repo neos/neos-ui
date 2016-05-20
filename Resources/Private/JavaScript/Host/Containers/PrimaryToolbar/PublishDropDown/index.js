@@ -70,7 +70,7 @@ export default class PublishDropDown extends Component {
                     isHighlighted={canPublishLocally || isSaving}
                     indicator={publishableNodesInDocument ? publishableNodesInDocument.count() : 0}
                     onClick={e => this.onPublishClick(e)}
-                    id="neos__topBar__publishDropDown__publishBtn"
+                    id="neos__primaryToolbar__publishDropDown__publishBtn"
                     >
                     <I18n fallback={mainButtonTarget} id={mainButtonLabel} />
                 </AbstractButton>
@@ -78,13 +78,13 @@ export default class PublishDropDown extends Component {
                 <DropDown className={style.dropDown}>
                     <DropDown.Header
                         className={dropDownBtnClassName}
-                        id="neos__topBar__publishDropDown__btn"
+                        id="neos__primaryToolbar__publishDropDown__btn"
                         >
                     </DropDown.Header>
 
                     <DropDown.Contents
                         className={style.dropDown__contents}
-                        id="neos__topBar__publishDropDown__contents"
+                        id="neos__primaryToolbar__publishDropDown__contents"
                         >
                         <li className={style.dropDown__item}>
                             <AbstractButton
@@ -92,7 +92,7 @@ export default class PublishDropDown extends Component {
                                 isHighlighted={false}
                                 indicator={publishableNodes ? publishableNodes.count() : 0}
                                 onClick={e => this.onPublishAllClick(e)}
-                                id="neos__topBar__publishDropDown__publishAllBtn"
+                                id="neos__primaryToolbar__publishDropDown__publishAllBtn"
                                 >
                                 <Icon icon="upload" />
                                 <I18n fallback="Publish All" id="publishAll" />
@@ -106,7 +106,7 @@ export default class PublishDropDown extends Component {
                                 label="Discard"
                                 icon="ban"
                                 onClick={e => this.onDiscardClick(e)}
-                                id="neos__topBar__publishDropDown__discardBtn"
+                                id="neos__primaryToolbar__publishDropDown__discardBtn"
                                 >
                                 <Icon icon="ban" />
                                 <I18n fallback="Discard" id="discard" />
@@ -118,16 +118,16 @@ export default class PublishDropDown extends Component {
                                 isHighlighted={false}
                                 indicator={publishableNodes ? publishableNodes.count() : 0}
                                 onClick={e => this.onDiscardAllClick(e)}
-                                id="neos__topBar__publishDropDown__discardAllBtn"
+                                id="neos__primaryToolbar__publishDropDown__discardAllBtn"
                                 >
                                 <Icon icon="ban" />
                                 <I18n fallback="Discard All" id="discardAll" />
                             </AbstractButton>
                         </li>
                         <li className={autoPublishWrapperClassNames}>
-                            <Label htmlFor="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox">
+                            <Label htmlFor="neos__primaryToolbar__publishDropDown__autoPublishingEnabledCheckbox">
                                 <CheckBox
-                                    id="neos__topBar__publishDropDown__autoPublishingEnabledCheckbox"
+                                    id="neos__primaryToolbar__publishDropDown__autoPublishingEnabledCheckbox"
                                     onChange={() => toggleAutoPublishing()}
                                     isChecked={isAutoPublishingEnabled}
                                     />
@@ -135,7 +135,7 @@ export default class PublishDropDown extends Component {
                             </Label>
                         </li>
                         <li className={style.dropDown__item}>
-                            <a href="/neos/management/workspaces" id="neos__topBar__publishDropDown__workspacesBtn">
+                            <a href="/neos/management/workspaces" id="neos__primaryToolbar__publishDropDown__workspacesBtn">
                                 <Icon icon="th-large" />
                                 <I18n fallback="Workspaces" id="workspaces" />
                             </a>

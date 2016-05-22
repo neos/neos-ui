@@ -3,11 +3,9 @@ import Button from './Button/index';
 import CheckBox from './CheckBox/index';
 import Dialog from './Dialog/index';
 import DropDown from './DropDown/index';
-import FullscreenContentOverlay from './FullscreenContentOverlay/index';
 import Grid from './Grid/index';
 import GridItem from './Grid/GridItem/index';
 import Headline from './Headline/index';
-import I18n from './I18n/index';
 import Icon from './Icon/index';
 import IconButton from './IconButton/index';
 import IconButtonDropDown from './IconButtonDropDown/index';
@@ -26,11 +24,9 @@ export {
     CheckBox,
     Dialog,
     DropDown,
-    FullscreenContentOverlay,
     Grid,
     GridItem,
     Headline,
-    I18n,
     Icon,
     IconButton,
     IconButtonDropDown,

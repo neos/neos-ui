@@ -8,7 +8,7 @@ import LeftSideBar from './LeftSideBar/index';
 import Drawer from './Drawer/index';
 import RightSideBar from './RightSideBar/index';
 import Modals from './Modals/index';
-import Editors from './Editors/index';
+import I18n from './I18n/index';
 
 export {
     Neos,
@@ -21,5 +21,5 @@ export {
     RightSideBar,
     PrimaryToolbar,
     Modals,
-    Editors
+    I18n
 };

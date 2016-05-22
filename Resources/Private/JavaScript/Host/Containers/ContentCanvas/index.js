@@ -34,7 +34,7 @@ export default class ContentCanvas extends Component {
         return (
             <div className={classNames} id="neos__contentCanvas">
                 <div id="centerArea" />
-                <div className={style.contentView__itemWrapper}>
+                <div className={style.contentCanvas__itemWrapper} data-__neos__hook="contentCanvas">
                     <iframe
                         src={src}
                         frameBorder="0"
@@ -42,8 +42,6 @@ export default class ContentCanvas extends Component {
                         data-context-path={contextPath}
                         className={style.contentCanvas__contents}
                         />
-                    <div className={style.contentView__item} id="neos__contentView__hook">
-                    </div>
                 </div>
             </div>
         );

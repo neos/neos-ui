@@ -17,7 +17,7 @@
     transform: translateX($sidebarWidth);
 }
 .rightSideBar__toggleBtn {
-    position: absolute;
+    position: absolute!important;
     right: 0;
     top: 41px;
     border-left: 1px solid $dark;

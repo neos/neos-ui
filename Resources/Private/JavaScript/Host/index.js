@@ -1,101 +1,26 @@
 import 'babel-polyfill';
 import 'Shared/Styles/style.css';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import assign from 'lodash.assign';
-import registry from '@reduct/registry';
+import {createStore, applyMiddleware, compose} from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import {Map} from 'immutable';
 
-import {configureStore, actions} from './Redux/index';
+import {reducer, actions} from 'Host/Redux/index';
+import {bootSaga} from 'Host/Sagas/System/index';
+import {applicationViewSaga} from 'Host/Sagas/View/index';
+import {inspectorSaga} from 'Host/Sagas/UI/Inspector/index';
 
-import initializeJSAPI from 'API/index';
-import {ui} from './Plugins/index';
+const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
+const devToolsStoreEnhancer = () =>  devToolsArePresent ? window.devToolsExtension() : f => f;
+const sagaMiddleWare = createSagaMiddleware();
+const store = createStore(reducer, new Map(), compose(
+    applyMiddleware(sagaMiddleWare),
+    devToolsStoreEnhancer()
+));
 
-import * as feedbackHandler from './Service/FeedbackHandler/index';
+sagaMiddleWare.run(bootSaga, store);
+sagaMiddleWare.run(applicationViewSaga, store);
+sagaMiddleWare.run(inspectorSaga);
 
-import {
-    Neos,
-    ContentCanvas,
-    PrimaryToolbar,
-    LeftSideBar,
-    Drawer,
-    Modals,
-    RightSideBar,
-    SecondaryToolbar,
-    FlashMessages,
-    FullScreen
-} from './Containers/index';
-import {
-    backend,
-    nodeTreeService,
-    feedbackManager,
-    i18n
-} from './Service/index';
-
-import style from './style.css';
-
-// Initialize the backend application on load.
-document.addEventListener('DOMContentLoaded', () => {
-    const appContainer = document.getElementById('appContainer');
-    const csrfToken = appContainer.dataset.csrfToken;
-    const configuration = JSON.parse(appContainer.querySelector('[data-json="configuration"]').innerHTML);
-    const serverState = JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
-    const translations = JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
-    const neos = initializeJSAPI(window, csrfToken);
-    const store = configureStore({serverState}, neos);
-
-    // Bootstrap the i18n service before the initial render.
-    assign(backend, {
-        i18n: i18n(translations)
-    });
-
-    // Initialize Neos JS API plugins
-    neos.use(ui(store));
-
-    ReactDOM.render(
-        <div className={style.applicationWrapper}>
-            <Provider store={store}>
-                <Neos configuration={configuration}>
-                    <div>
-                        <div id="dialog" />
-                        <Modals />
-                        <FlashMessages />
-                        <FullScreen />
-                        <PrimaryToolbar />
-                        <SecondaryToolbar />
-                        <Drawer />
-                        <LeftSideBar />
-                        <ContentCanvas />
-                        <RightSideBar />
-                    </div>
-                </Neos>
-            </Provider>
-        </div>,
-        appContainer
-    );
-
-    // Bootstrap the backend services
-    assign(backend, {
-        feedbackManager: feedbackManager(store),
-        nodeTreeService: nodeTreeService(store, csrfToken),
-
-        asyncComponents: {
-            feedbackHandlers: registry()
-        }
-    });
-
-    // Register FeedbackHandlers
-    backend.asyncComponents.feedbackHandlers.registerAll({
-        'Neos.Neos.Ui:Success': feedbackHandler.flashMessage,
-        'Neos.Neos.Ui:Error': feedbackHandler.flashMessage,
-        'Neos.Neos.Ui:Info': feedbackHandler.logToConsole,
-        'Neos.Neos.Ui:UpdateWorkspaceInfo': feedbackHandler.updateWorkspaceInfo,
-        'Neos.Neos.Ui:ReloadDocument': feedbackHandler.reloadDocument
-    });
-
-    //
-    // Inform everybody, that the UI has booted successfully
-    //
-    store.dispatch(actions.System.boot());
-});
+document.addEventListener('DOMContentLoaded', () => store.dispatch(actions.System.boot()));
+>>>>>>> WIP: Make inspector editors redux-unaware & extensible

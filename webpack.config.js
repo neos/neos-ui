@@ -12,7 +12,7 @@ const env = require('./Build/Utilities/').env;
 
 const config = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     module: {
         preLoaders: [
             {

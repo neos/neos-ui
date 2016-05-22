@@ -1,52 +1,82 @@
 import {createAction} from 'redux-actions';
-import {$set, $drop} from 'plow-js';
+import {$get, $all, $set, $drop} from 'plow-js';
 import {Map} from 'immutable';
 
-const WRITE_VALUE = '@packagefactory/guevara/UI/Inspector/WRITE_VALUE';
-const APPLY = '@packagefactory/guevara/UI/Inspector/APPLY';
-const APPLY_FINISHED = '@packagefactory/guevara/UI/Inspector/APPLY_FINISHED';
-const CANCEL = '@packagefactory/guevara/UI/Inspector/CANCEL';
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
 
-const writeValue = createAction(WRITE_VALUE, (nodeContextPath, propertyId, value) => ({nodeContextPath, propertyId, value}));
-const apply = createAction(APPLY, (nodeContextPath) => ({nodeContextPath}));
-const applyFinished = createAction(APPLY_FINISHED, (nodeContextPath) => ({nodeContextPath}));
-const cancel = createAction(CANCEL, (nodeContextPath) => ({nodeContextPath}));
+//
+// System actions
+//
+const RESET = '@packagefactory/guevara/UI/Inspector/RESET';
+const LOAD = '@packagefactory/guevara/UI/Inspector/LOAD';
+const COMMIT = '@packagefactory/guevara/UI/Inspector/COMMIT';
+const CLEAR = '@packagefactory/guevara/UI/Inspector/CLEAR';
+
+//
+// User actions, which are handled by a saga
+//
+const APPLY = '@packagefactory/guevara/UI/Inspector/APPLY';
+const DISCARD = '@packagefactory/guevara/UI/Inspector/DISCARD';
+
+const reset = createAction(RESET);
+const load = createAction(LOAD, (viewConfiguration, activeNodePath) => ({viewConfiguration, activeNodePath}));
+const commit = createAction(COMMIT, (propertyId, value, meta) => ({propertyId, value, meta}));
+const clear = createAction(CLEAR);
+
+const apply = createAction(APPLY, () => ({}));
+const discard = createAction(DISCARD, () => ({}));
 
 //
 // Export the actions
 //
 export const actions = {
-    writeValue,
+    reset,
+    load,
+    commit,
+    clear,
     apply,
-    applyFinished,
-    cancel
-
+    discard
 };
 
 export const actionTypes = {
-    WRITE_VALUE,
+    RESET,
+    LOAD,
+    COMMIT,
+    CLEAR,
     APPLY,
-    APPLY_FINISHED,
-    CANCEL
+    DISCARD
 };
-
-//
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'ui.inspector',
-    new Map({
-        valuesByNodePath: new Map()
-    })
-);
 
 //
 // Export the reducer
 //
-export const reducer = {
-    [WRITE_VALUE]: ({nodeContextPath, propertyId, value}) => $set(['ui', 'inspector', 'valuesByNodePath', nodeContextPath, 'nodeProperties', propertyId], value),
-    // APPLY is handled by a saga.
-    // APPLY_FINISHED is only triggered by the saga which listens on APPLY.
-    [APPLY_FINISHED]: ({nodeContextPath}) => $drop(['ui', 'inspector', 'valuesByNodePath', nodeContextPath]),
-    [CANCEL]: ({nodeContextPath}) => $drop(['ui', 'inspector', 'valuesByNodePath', nodeContextPath])
-};
+export const reducer = handleActions({
+    [system.INIT]: () => $set(
+        'ui.inspector',
+        new Map({
+            activeNodePath: '',
+            viewConfiguration: new Map(),
+            valuesByNodePath: new Map()
+        })
+    ),
+
+    [RESET]: () => $set('ui.inspector.activeNodePath', ''),
+    [LOAD]: ({viewConfiguration, activeNodePath}) => $all(
+        $set('ui.inspector.viewConfiguration', viewConfiguration),
+        $set('ui.inspector.activeNodePath', activeNodePath)
+    ),
+    [COMMIT]: ({propertyId, value, meta}) => state => {
+        const activeNodePath = $get('ui.inspector.activeNodePath', state);
+
+        if (value !== null) {
+            return $set(['ui', 'inspector', 'valuesByNodePath', activeNodePath, propertyId], new Map({value, meta}), state);
+        }
+
+        return $drop(['ui', 'inspector', 'valuesByNodePath', activeNodePath, propertyId], state);
+    },
+    [CLEAR]: () => state => {
+        const activeNodePath = $get('ui.inspector.activeNodePath', state);
+        return $drop(['ui', 'inspector', 'valuesByNodePath', activeNodePath], state);
+    }
+});

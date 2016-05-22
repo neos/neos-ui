@@ -1,63 +1,34 @@
 import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {Maybe} from 'monet';
 
-import {CR} from 'Host/Selectors/';
-import NeosPropTypes from 'Shared/PropTypes/index';
-import {
-    Tabs,
-    ToggablePanel,
-    I18n
-} from 'Components/index';
+import {Tabs, ToggablePanel} from 'Components/index';
+import {I18n} from 'Host/Containers/index';
 
-import EditorContainer from '../EditorContainer/index';
-import style from '../../style.css';
+import PropertyGroup from '../PropertyGroup/index';
 
-const generateInspectorGroups = (nodeType, tabIdentifier) => {
-    let groups = $get('ui.inspector.groups', nodeType);
-    groups = (groups && groups.toJS ? groups.toJS() : groups);
-
-    return Object.keys(groups).map(groupId => ({
-        ...groups[groupId],
-        id: groupId
-    }))
-    .filter((group) => group.tab === tabIdentifier || (tabIdentifier === 'default' && !group.tab))
-    .sort((a, b) => (a.position - b.position) || (a.id - b.id));
-};
-
-const renderInspectorGroup = (inspectorGroup) => {
-    return (
-        <ToggablePanel className={style.rightSideBar__section} key={inspectorGroup.id}>
-            <ToggablePanel.Header>
-                <I18n id={inspectorGroup.label}/>
-            </ToggablePanel.Header>
-            <ToggablePanel.Contents>
-                <EditorContainer inspectorGroup={inspectorGroup} />
-            </ToggablePanel.Contents>
-        </ToggablePanel>
-    );
-};
-
-@connect($transform({
-    focusedNode: CR.Nodes.focusedSelector
-}))
 export default class TabPanel extends Component {
     static displayName = 'Inspector Tab Panel';
     static propTypes = {
-        tab: PropTypes.object.isRequired,
-        focusedNode: NeosPropTypes.cr.node.isRequired
+        groups: PropTypes.array
     };
 
     render() {
-        const inspectorGroups = generateInspectorGroups(
-            $get('nodeType', this.props.focusedNode),
-            $get('id', this.props.tab)
-        );
-
-        return (
+        const {groups} = this.props;
+        const tabPanel = groups => (
             <Tabs.Panel>
-                {inspectorGroups.map(inspectorGroup => renderInspectorGroup(inspectorGroup))}
+                {
+                    groups.filter(g => g.properties).map(group => (
+                        <PropertyGroup
+                            key={group.id}
+                            label={group.label}
+                            properties={group.properties}
+                            />
+                    ))
+                }
             </Tabs.Panel>
         );
+        const fallback = () => (<div>...</div>);
+
+        return Maybe.fromNull(groups).map(tabPanel).orSome(fallback());
     }
 }

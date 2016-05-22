@@ -1,22 +1,22 @@
 import {Map} from 'immutable';
 import {$set} from 'plow-js';
 
-//
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'user.name',
-    new Map({
-        title: '',
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        otherName: '',
-        fullName: ''
-    })
-);
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
 
 //
 // Export the reducer
 //
-export const reducer = {};
+export const reducer = handleActions({
+    [system.INIT]: () => $set(
+        'user.name',
+        new Map({
+            title: '',
+            firstName: '',
+            middleName: '',
+            lastName: '',
+            otherName: '',
+            fullName: ''
+        })
+    )
+});

@@ -2,6 +2,9 @@ import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
 import {$set, $get} from 'plow-js';
 
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
+
 const ADD = '@neos/neos-ui/Transient/Nodes/ADD';
 const FOCUS = '@neos/neos-ui/Transient/Nodes/FOCUS';
 const BLUR = '@neos/neos-ui/Transient/Nodes/BLUR';
@@ -72,28 +75,24 @@ export const actions = {
 };
 
 //
-// Export the initial state hydrator
-//
-export const hydrate = state => $set(
-    'cr.nodes',
-    new Map({
-        byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)) || new Map(),
-        siteNode: $get('cr.nodes.siteNode', state) || '',
-        focused: new Map({
-            contextPath: '',
-            typoscriptPath: ''
-        }),
-        hovered: new Map({
-            contextPath: '',
-            typoscriptPath: ''
-        })
-    })
-);
-
-//
 // Export the reducer
 //
-export const reducer = {
+export const reducer = handleActions({
+    [system.INIT]: state => $set(
+        'cr.nodes',
+        new Map({
+            byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)) || new Map(),
+            siteNode: $get('cr.nodes.siteNode', state) || '',
+            focused: new Map({
+                contextPath: '',
+                typoscriptPath: ''
+            }),
+            hovered: new Map({
+                contextPath: '',
+                typoscriptPath: ''
+            })
+        })
+    ),
     [ADD]: ({contextPath, data}) => (state) => {
         // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
         // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
@@ -117,4 +116,4 @@ export const reducer = {
 
         return state;
     }
-};
+});

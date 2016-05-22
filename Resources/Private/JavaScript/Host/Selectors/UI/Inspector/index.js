@@ -3,6 +3,23 @@ import {createSelector} from 'reselect';
 
 import {Nodes} from '../../CR/index';
 
+export const activeNodeSelector = createSelector(
+    [
+        Nodes.storedNodeByContextPath,
+        $get('ui.inspector.activeNodePath')
+    ],
+    (getStoredNodeByContextPath, activeNodeContextPath) =>
+        getStoredNodeByContextPath(activeNodeContextPath)
+);
+
+export const transientValuesSelector = createSelector(
+    [
+        $get('ui.inspector.activeNodePath'),
+        $get('ui.inspector.valuesByNodePath')
+    ],
+    (activeNodeContextPath, valuesByNodePath) => $get([activeNodeContextPath], valuesByNodePath)
+)
+
 export const currentValue = createSelector(
     [
         Nodes.focusedSelector,

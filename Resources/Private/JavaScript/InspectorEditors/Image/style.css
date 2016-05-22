@@ -1,0 +1,7 @@
+.imageEditor {
+    min-width: calc($sidebarWidth - $spacing * 2);
+}
+
+.cropButton {
+    float: right;
+}

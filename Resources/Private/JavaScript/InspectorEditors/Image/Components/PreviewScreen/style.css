@@ -1,0 +1,32 @@
+$maxImageWidth: calc($sidebarWidth - $spacing * 2);
+$maxImageHeight: calc(($sidebarWidth - $spacing * 2) / 4 * 3);
+
+.dropzone {
+    border: none;
+}
+
+.dropzone--isActive {
+    background-color: $success;
+}
+
+.dropzone--isRejecting {
+    background-color: $warn;
+}
+
+.thumbnail {
+    position: relative;
+    border: 1px dashed $neutral;
+    margin-bottom: calc($spacing - $quarterSpacing);
+    width: $maxImageWidth;
+    height: $maxImageHeight;
+    overflow: hidden;
+    /* TODO: border-color: #fff; on hover */
+}
+
+.thumbnail > i,
+.thumbnail > img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

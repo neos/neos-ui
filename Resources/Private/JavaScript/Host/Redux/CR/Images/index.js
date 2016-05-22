@@ -2,6 +2,9 @@ import Immutable, {Map} from 'immutable';
 import {createAction} from 'redux-actions';
 import {$set, $all} from 'plow-js';
 
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
+
 const START_LOADING = '@packagefactory/guevara/CR/Images/START_LOADING';
 const FINISH_LOADING = '@packagefactory/guevara/CR/Images/FINISH_LOADING';
 //
@@ -35,22 +38,18 @@ export const actions = {
 };
 
 //
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'cr.images',
-    new Map({
-        byUuid: new Map()
-    })
-);
-
-//
 // Export the reducer
 //
-export const reducer = {
+export const reducer = handleActions({
+    [system.BOOT]: () => $set(
+        'cr.images',
+        new Map({
+            byUuid: new Map()
+        })
+    ),
     [START_LOADING]: ({imageUuid}) => $set(['cr', 'images', 'byUuid', imageUuid, 'status'], 'LOADING'),
     [FINISH_LOADING]: ({imageUuid, loadedData}) => $all(
         $set(['cr', 'images', 'byUuid', imageUuid], Immutable.fromJS(loadedData)),
         $set(['cr', 'images', 'byUuid', imageUuid, 'status'], 'LOADED')
     )
-};
+});

@@ -4,14 +4,6 @@ import {executeCallback} from 'Shared/Utilities/index';
 import style from './style.css';
 import TextareaAutoresize from 'react-textarea-autosize';
 
-const onChangeHandler = (e, cb) => {
-    const value = e.target.value.substr(0, 140);
-
-    if (cb) {
-        cb(value);
-    }
-};
-
 const TextArea = props => {
     const {
         placeholder,
@@ -33,7 +25,7 @@ const TextArea = props => {
             className={classNames}
             role="textbox"
             placeholder={placeholder}
-            onChange={e => onChangeHandler(e, onChange)}
+            onChange={e => onChange(e.target.value)}
             onFocus={() => executeCallback({cb: onFocus})}
             onBlur={() => executeCallback({cb: onBlur})}
             {...directProps}

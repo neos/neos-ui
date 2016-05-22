@@ -5,9 +5,9 @@ import shallowCompare from 'react/lib/shallowCompare';
 
 export default class Portal extends Component {
     static propTypes = {
-        // The target ID in which the children will be rendered into.
-        // If no `targetId` was specified, the children will be rendered into the <body> element.
-        targetId: PropTypes.string,
+        // The target identifier in which the children will be rendered into.
+        // If no `target` was specified, the children will be rendered into the <body> element.
+        target: PropTypes.string,
 
         // The children to render in the <Portal />.
         children: PropTypes.element.isRequired,
@@ -116,8 +116,8 @@ export default class Portal extends Component {
     }
 
     getPortalWrapper(props = this.props) {
-        const {targetId} = props;
+        const {target} = props;
 
-        return targetId ? document.getElementById(targetId) : document.body;
+        return target ? document.querySelector(`[data-__neos__hook="${target}"]`) : document.body;
     }
 }

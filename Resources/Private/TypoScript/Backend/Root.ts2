@@ -4,6 +4,7 @@ backend = TYPO3.TypoScript:Template {
     templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Index.html'
 
     configuration = TYPO3.TypoScript:RawArray {
+        test = 1
         @process.json = ${Json.stringify(value)}
     }
 

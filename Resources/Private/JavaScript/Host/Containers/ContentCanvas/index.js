@@ -38,7 +38,7 @@ export default class ContentCanvas extends Component {
                     frameBorder="0"
                     name={'neos-content-main'}
                     data-context-path={contextPath}
-                    className={style.contentCanvas_contents}
+                    className={style.contentCanvas__contents}
                     />
             </div>
         );

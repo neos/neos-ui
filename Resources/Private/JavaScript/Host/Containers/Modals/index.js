@@ -1,5 +1,5 @@
 import React from 'react';
-import {AddNodeModal} from './AddNode/index';
+import AddNodeModal from './AddNode/index';
 
 const Modals = () => (
     <div>

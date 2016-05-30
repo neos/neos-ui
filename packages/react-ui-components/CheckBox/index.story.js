@@ -6,7 +6,7 @@ storiesOf('CheckBox', module)
     .add('default', () => (
         <div>
             <p>Unchecked:</p>
-            <CheckBox onChange={action('onChange')}/>
+            <CheckBox onChange={action('onChange')} isChecked={false}/>
             <p>Checked:</p>
             <CheckBox onChange={action('onChange')} isChecked={true}/>
         </div>

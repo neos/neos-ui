@@ -1,22 +1,8 @@
 import React, {Component, PropTypes} from 'react';
-import {Components, SecondaryInspector} from '@host';
+import {Components, SecondaryInspector, api} from '@host';
 import ReactCrop from 'react-image-crop';
 
-const {Icon} = Components;
-
-const AspectRatioControl = () => {
-    /* {{#if view.aspectRatioAllowCustom}}
-     {{input valueBinding="view.aspectRatioWidth" type="number"}}
-     <button {{action "exchangeAspectRatio" target="view"}}><i class="icon-exchange"></i></button>
-     {{input valueBinding="view.aspectRatioHeight" type="number"}}
-     {{else}}
-     <input {{bindAttr value="view.aspectRatioWidth"}} type="number" readonly="readonly" />
-     <input {{bindAttr value="view.aspectRatioHeight"}} type="number" readonly="readonly" />
-     {{/if}}
-     {{/unless}} */
-
-    return (<div />);
-};
+const {Icon, SelectBox} = Components;
 
 const createCropInformationFromImage = image => image.cropAdjustment.map(c => ({
     x: c.x / image.dimensions.width * 100,
@@ -30,32 +16,44 @@ const createCropInformationFromImage = image => image.cropAdjustment.map(c => ({
     height: 100
 });
 
-// <ReactCrop src={src} crop={crop} onComplete={() => onComplete()} />
-
 export default class ImageCropper extends Component {
     static propTypes = {
         onClose: PropTypes.func.isRequired,
         onComplete: PropTypes.func.isRequired,
-        sourceImage: PropTypes.object.isRequired
+        sourceImage: PropTypes.object.isRequired,
+        options: PropTypes.object
     };
 
     render() {
         const aspectRatioLocked = false;
         const aspectRatioReduced = '5:3';
         const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock" /> : null);
-        const {sourceImage, onComplete, onClose} = this.props;
+        const {sourceImage, onComplete, options, onClose} = this.props;
         const src = sourceImage.previewUri.orSome('/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg');
         const crop = createCropInformationFromImage(sourceImage);
 
+        console.log(options);
+
         return (
             <SecondaryInspector onClose={() => onClose()}>
-                <span>
-                    <Icon icon="crop" />
-                    {(aspectRatioReduced ? <span title={aspectRatioReduced}>{aspectRatioReduced}</span> : null)}
-                    {aspectRatioLockIcon}
-                </span>
-                {aspectRatioLocked ? null : <AspectRatioControl />}
-                <ReactCrop src={src} crop={crop} onComplete={cropArea => onComplete(cropArea)} />
+                <div style={{textAlign: 'center'}}>
+                    <div>
+                        <span>
+                            <Icon icon="crop" />
+                            {(aspectRatioReduced ? <span title={aspectRatioReduced}>{aspectRatioReduced}</span> : null)}
+                            {aspectRatioLockIcon}
+                        </span>
+                        <SelectBox
+                            placeholder="Aspect Ratio"
+                            options={[
+                                {value: '4-3', label: '4:3'},
+                                {value: '16-9', label: '16:9'},
+                                {value: '1-1', label: '1:1'}
+                            ]}
+                            />
+                    </div>
+                    <ReactCrop src={src} crop={crop} onComplete={cropArea => onComplete(cropArea)} />
+                </div>
             </SecondaryInspector>
         );
     }

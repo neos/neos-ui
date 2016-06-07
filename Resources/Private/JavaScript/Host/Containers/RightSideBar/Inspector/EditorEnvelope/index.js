@@ -29,6 +29,7 @@ export default class EditorEnvelope extends Component {
         id: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
         editor: PropTypes.string.isRequired,
+        options: PropTypes.object,
 
         node: PropTypes.object.isRequired,
         inspectorEditorRegistry: PropTypes.object.isRequired,
@@ -105,7 +106,7 @@ export default class EditorEnvelope extends Component {
     }
 
     prepareEditorProperties() {
-        const {label, node, id, transient} = this.props;
+        const {label, node, id, transient, options} = this.props;
         const sourceValueRaw = $get(['properties', id], node);
         const sourceValue = sourceValueRaw && sourceValueRaw.toJS ?
             sourceValueRaw.toJS() : sourceValueRaw;
@@ -118,7 +119,8 @@ export default class EditorEnvelope extends Component {
             node: node.toJS(),
             value: transientValue ? transientValue.value : sourceValue,
             propertyName: id,
-            identifier: this.generateIdentifier()
+            identifier: this.generateIdentifier(),
+            options
         };
     }
 

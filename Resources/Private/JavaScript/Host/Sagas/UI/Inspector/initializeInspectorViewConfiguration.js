@@ -60,7 +60,8 @@ export default function initializeInspectorViewConfiguration(node) {
                             $transform({
                                 id: $get('id'),
                                 label: $get('ui.label'),
-                                editor: $get('ui.inspector.editor')
+                                editor: $get('ui.inspector.editor'),
+                                editorOptions: $get('ui.inspector.editorOptions')
                             }),
                             properties.filter(p => $get('ui.inspector.group', p) === group.id)
                         )

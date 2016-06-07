@@ -41,6 +41,8 @@ export default class ImageEditor extends Component {
         ]),
         commit: PropTypes.func.isRequired,
 
+        options: PropTypes.object,
+
         // Public API:
         // I18N key
         fileChooserLabel: PropTypes.string,
@@ -209,6 +211,7 @@ export default class ImageEditor extends Component {
 
     renderSecondaryScreen() {
         const {secondaryScreenMode, image} = this.state;
+        const {options} = this.props;
         const {__identity} = this.props.value;
 
         switch (secondaryScreenMode) {
@@ -232,6 +235,7 @@ export default class ImageEditor extends Component {
                 return (
                     <Secondary.ImageCropper
                         sourceImage={Image.fromImageData(image)}
+                        options={options}
                         onClose={() => this.toggleSecondaryScreen(SECONDARY_NONE)}
                         onComplete={cropArea => this.onCrop(cropArea)}
                         />

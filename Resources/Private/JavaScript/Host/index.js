@@ -9,6 +9,7 @@ import {reducer, actions} from 'Host/Redux/index';
 import {bootSaga} from 'Host/Sagas/System/index';
 import {applicationViewSaga} from 'Host/Sagas/View/index';
 import {inspectorSaga} from 'Host/Sagas/UI/Inspector/index';
+import {watchPersist} from 'Host/Sagas/Changes/index';
 
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () =>  devToolsArePresent ? window.devToolsExtension() : f => f;
@@ -21,6 +22,7 @@ const store = createStore(reducer, new Map(), compose(
 sagaMiddleWare.run(bootSaga, store);
 sagaMiddleWare.run(applicationViewSaga, store);
 sagaMiddleWare.run(inspectorSaga);
+sagaMiddleWare.run(watchPersist);
 
 document.addEventListener('DOMContentLoaded', () => store.dispatch(actions.System.boot()));
 >>>>>>> WIP: Make inspector editors redux-unaware & extensible

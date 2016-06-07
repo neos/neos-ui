@@ -54,9 +54,16 @@ createInspectorEditor(
 );
 
 createHook(
+    //
+    // This hook will create an image variant right before changes to an image
+    // are saved
+    //
     'Neos.UI:Hook.BeforeSave.CreateImageVariant',
     (value, options) => {
-        return Promise.resolve({test: 'It is working'});
+        const {createVariant} = api.media.image;
+        const {__identity, adjustments, originalAsset} = options.object;
+
+        return createVariant(originalAsset ? originalAsset.__identity : __identity, adjustments);
     }
 );
 

@@ -64,9 +64,15 @@ export default class ImageEditor extends Component {
 
     componentDidMount() {
         if (this.props.value && this.props.value.__identity) {
-            api.media.image.loadMetaData(this.props.value)
+            this.loadImage = api.media.image.loadMetaData(this.props.value)
                 .then(image => this.setState({image}));
         }
+
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -77,7 +83,7 @@ export default class ImageEditor extends Component {
         if (this.props.value && this.props.value.__identity &&
             nextProps.value.__identity !== this.props.value.__identity) {
             api.media.image.loadMetaData(nextProps.value)
-                .then(image => this.setState({image}));
+                .then(image => this._isMounted && this.setState({image}));
         }
     }
 

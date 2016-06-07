@@ -43,7 +43,7 @@ export default class ImageCropper extends Component {
         const aspectRatioLocked = false;
         const aspectRatioReduced = '5:3';
         const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock" /> : null);
-        const {sourceImage, onComplete} = this.props;
+        const {sourceImage, onComplete, onClose} = this.props;
         const src = sourceImage.previewUri.orSome('/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg');
         const crop = createCropInformationFromImage(sourceImage);
 

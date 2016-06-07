@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Components, I18n} from '@host';
-import {$get} from 'plow-js';
+import {$get, $transform} from 'plow-js';
 import Dropzone from 'react-dropzone';
 import {Maybe} from 'monet';
 
@@ -25,13 +25,18 @@ export default class PreviewScreen extends Component {
     render() {
         const {image, onDrop, onClick} = this.props;
         const thumbnail = Maybe.fromNull(image)
-            .map(image => Thumbnail.fromImageData(image, 288, 216));
-        const loader = () => <Icon icon="spinner" spin={true} size="big" />;
-        const preview = image => <img
-            src={thumbnail.bind(t => t.uri).orSome('/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg')}
-            style={thumbnail.map(t => t.styles).orSome({})}
-            role="presentation"
-            />;
+            .map(image => Thumbnail.fromImageData(image, 273, 216));
+        const loader = () => <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader} />;
+        const preview = image => (
+            <div className={style.cropArea} style={thumbnail.map(t => t.styles.cropArea).orSome({})}>
+                <img
+                    className={style.thumbnail__image}
+                    src={thumbnail.bind(t => t.uri).orSome('/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg')}
+                    style={thumbnail.map(t => t.styles.thumbnail).orSome({})}
+                    role="presentation"
+                    />
+            </div>
+        );
 
         return (
             <Dropzone

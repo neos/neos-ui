@@ -14,7 +14,7 @@ const MediaDetailsScreen = (props) => {
     const uri = `/neos/content/images/edit.html?asset[__identity]=${props.imageIdentity}`;
 
     return (
-        <SecondaryInspector onClose={() => onClose()}>
+        <SecondaryInspector onClose={() => props.onClose()}>
             <iframe src={uri} className={style.iframe} />
         </SecondaryInspector>
     );

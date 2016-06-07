@@ -109,7 +109,18 @@ export class Thumbnail {
     @memoize
     get dimensions() {
         const {image, scalingFactor} = this;
-        const {width, height} = image.previewCropAdjustment;
+        const {width, height} = image.previewDimensions;
+
+        return {
+            width: width * scalingFactor,
+            height: height * scalingFactor
+        };
+    }
+
+    @memoize
+    get cropDimensions() {
+        const {image, scalingFactor} = this;
+        const {width, height} = image.previewCropAdjustment.orSome(image.previewDimensions);
 
         return {
             width: width * scalingFactor,
@@ -119,15 +130,20 @@ export class Thumbnail {
 
     @memoize
     get styles() {
-        const {dimensions, scalingFactor} = this;
-        const {width, height} = dimensions;
+        const {dimensions, cropDimensions, scalingFactor} = this;
         const {x, y} = this.image.previewCropAdjustment.orSome(DEFAULT_OFFSET);
 
         return {
-            width: `${width}px`,
-            height: `${width}px`,
-            left: `-${x * scalingFactor}px`,
-            top: `-${y * scalingFactor}px`
+            thumbnail: {
+                width: `${dimensions.width}px`,
+                height: `${dimensions.height}px`,
+                left: `-${x * scalingFactor}px`,
+                top: `-${y * scalingFactor}px`
+            },
+            cropArea: {
+                width: `${cropDimensions.width}px`,
+                height: `${cropDimensions.height}px`
+            }
         };
     }
 }

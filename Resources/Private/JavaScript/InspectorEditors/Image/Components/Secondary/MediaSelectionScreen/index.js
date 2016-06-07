@@ -11,7 +11,7 @@ const MediaSelectionScreen = (props) => {
     };
     // TODO: hard-coded url
     return (
-        <SecondaryInspector onClose={() => onClose()}>
+        <SecondaryInspector onClose={() => props.onClose()}>
             <iframe src="/neos/content/images.html" className={style.iframe} />
         </SecondaryInspector>
     );

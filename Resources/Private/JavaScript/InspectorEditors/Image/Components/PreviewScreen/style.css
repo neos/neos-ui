@@ -1,5 +1,4 @@
-$maxImageWidth: calc($sidebarWidth - $spacing * 2);
-$maxImageHeight: calc(($sidebarWidth - $spacing * 2) / 4 * 3);
+$maxImageHeight: 216px;
 
 .dropzone {
     border: none;
@@ -17,16 +16,27 @@ $maxImageHeight: calc(($sidebarWidth - $spacing * 2) / 4 * 3);
     position: relative;
     border: 1px dashed $neutral;
     margin-bottom: calc($spacing - $quarterSpacing);
-    width: $maxImageWidth;
     height: $maxImageHeight;
     overflow: hidden;
+    cursor: pointer;
     /* TODO: border-color: #fff; on hover */
 }
 
-.thumbnail > i,
-.thumbnail > img {
+.cropArea {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.thumbnail__loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.thumbnail__image {
+    position: absolute;
 }

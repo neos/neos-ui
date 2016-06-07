@@ -11,6 +11,7 @@ import IconButton from './IconButton/index';
 import IconButtonDropDown from './IconButtonDropDown/index';
 import Label from './Label/index';
 import Portal from './Portal/index';
+import SelectBox from './SelectBox/index';
 import SideBar from './SideBar/index';
 import Tabs from './Tabs/index';
 import TextInput from './TextInput/index';
@@ -32,6 +33,7 @@ export {
     IconButtonDropDown,
     Label,
     Portal,
+    SelectBox,
     SideBar,
     Tabs,
     TextInput,

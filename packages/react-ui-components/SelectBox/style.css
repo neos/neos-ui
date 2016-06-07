@@ -1,0 +1,50 @@
+.wrapper {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+.dropDown {
+    position: static;
+    display: inline-block;
+}
+.dropDown__btn {
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    border: 0;
+    background-color: $darker;
+}
+.dropDown__btnIcon {
+    margin-right: .5em;
+}
+.dropDown__contents {
+    min-width: 160px;
+    box-shadow: 0 5px 10px rgba(#000, .2);
+    z-index: 10;
+}
+.dropDown__item {
+    height: 40px;
+    background: $neutral;
+    border-top: 1px solid $darker;
+
+    &:hover {
+        background: $brand;
+    }
+
+    > a,
+    button {
+        display: block;
+        width: 100%;
+        border: 0;
+        padding: 0 $spacing;
+        background: 0;
+        color: #FFF;
+        cursor: pointer;
+        text-decoration: none;
+        line-height: 40px;
+        text-align: left;
+    }
+}
+.dropDown__itemIcon {
+    padding-right: .5em;
+}

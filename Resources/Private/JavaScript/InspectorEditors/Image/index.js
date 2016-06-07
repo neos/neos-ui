@@ -23,10 +23,6 @@ const DEFAULT_FEATURES = {
     resize: false
 };
 
-const cropScreenIdentifier = value => `${value}#crop`;
-const mediaSelectionScreenIdentifier = value => `${value}#mediaSelection`;
-const mediaDetailsScreenIdentifier = value => `${value}#mediaDetails`;
-
 const RESIZE_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'];
 const CROP_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'];
 
@@ -91,7 +87,7 @@ export default class ImageEditor extends Component {
     }
 
     onCrop(cropArea) {
-        const {commit} = this.props;
+        const {commit, value} = this.props;
         const {image} = this.state;
 
         const imageWidth = $get('originalDimensions.width', image);
@@ -102,26 +98,26 @@ export default class ImageEditor extends Component {
             width: Math.round(cropArea.width / 100 * imageWidth),
             height: Math.round(cropArea.height / 100 * imageHeight)
         };
-        const nextimage = $override(CROP_IMAGE_ADJUSTMENT, cropAdjustments, image);
-
+        const nextimage = $set(CROP_IMAGE_ADJUSTMENT, cropAdjustments, image);
 
         this.setState({image: nextimage});
-        //api.media.image.createVariant($get('__identity', this.props.value), )
 
-        commit($set('__modified', true, this.props.value));
+        commit(value, {
+            'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
+        });
     }
 
     onResize(resizeAdjustment) {
-        const {commit} = this.props;
+        const {commit, value} = this.props;
         const {image} = this.state;
+        const nextimage = resizeAdjustment ?
+            $set(CROP_IMAGE_ADJUSTMENT, cropAdjustments, image) : $drop(RESIZE_IMAGE_ADJUSTMENT, image);
 
-        if (resizeAdjustment) {
-            this.props.updateImage($get('contextPath', this.props.focusedNode), imageIdentity, $set(RESIZE_IMAGE_ADJUSTMENT, resizeAdjustment, image));
-        } else {
-            this.props.updateImage($get('contextPath', this.props.focusedNode), imageIdentity, $drop(RESIZE_IMAGE_ADJUSTMENT, image));
-        }
-        // TODO: next line should maybe be included in above action?
-        commit($set('__modified', true, this.props.value));
+        this.setState({image: nextimage});
+
+        commit(value, {
+            'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
+        });
     }
 
     closeSecondaryScreen() {

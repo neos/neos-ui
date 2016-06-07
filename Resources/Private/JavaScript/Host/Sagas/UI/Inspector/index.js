@@ -4,6 +4,7 @@ import {$get} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/index';
 import {CR} from 'Host/Selectors/index';
+import {getHookRegistry} from 'Host/Sagas/System/index';
 
 import initializeInspectorViewConfiguration from './initializeInspectorViewConfiguration';
 
@@ -44,11 +45,12 @@ export function* inspectorSaga() {
         // changes or to apply his/her changes,
         //
         while(true) {
-            const nextAction = yield race([
-                actionTypes.CR.Nodes.FOCUS,
-                actionTypes.UI.Inspector.DISCARD,
-                actionTypes.UI.Inspector.APPLY
+            const waitForNextAction = yield race([
+                take(actionTypes.CR.Nodes.FOCUS),
+                take(actionTypes.UI.Inspector.DISCARD),
+                take(actionTypes.UI.Inspector.APPLY)
             ]);
+            const nextAction = Object.keys(waitForNextAction).map(k => waitForNextAction[k])[0];
 
             //
             // If the user focused a different node, just continue
@@ -68,6 +70,7 @@ export function* inspectorSaga() {
             // If the user wants to apply his/her changes, let's start that process
             //
             if (nextAction.type === actionTypes.UI.Inspector.APPLY) {
+                console.log('hooray, we made it!');
                 try {
                     //
                     // Persist the inspector changes
@@ -78,6 +81,7 @@ export function* inspectorSaga() {
                     // An error occured, we should not leave the loop until
                     // the user does something about it
                     //
+                    console.error(err);
                     continue;
                 }
 
@@ -91,23 +95,38 @@ function* flushInspector() {
     const state = yield select();
     const focusedNode = getFocusedNode(state);
     const transientInspectorValues = getTransientInspectorValues(state);
-    const registry = yield injectConfiguration(inspectorEditorRegistry);
+    const transientInspectorValuesForFocusedNodes = transientInspectorValues[
+        focusedNode.contextPath || focusedNode.get('contextPath')
+    ];
+    const hookRegistry = yield getHookRegistry;
 
-    for (const key of Object.keys(transientInspectorValues)) {
-        const getEditorNameFromNode = getEditorNamefromNodeProperty(key);
-        const editorName = getEditorNameFromNode(focusedNode);
-        const editor = yield registry.get(editorName);
-        const value = yield editor.postProcess ? editor.postProcess(value) : value;
+    for (const propertyName of Object.keys(transientInspectorValuesForFocusedNodes)) {
+        const transientValue = transientInspectorValuesForFocusedNodes[propertyName];
+        const value = yield transientValue.hooks ?
+            Object.keys(transientValue.hooks).reduce(
+                (promisedValue, hookIdentifier) =>
+                    hookRegistry.get(hookIdentifier).then(
+                        hook => promisedValue.then(
+                            value => hook(value, transientValue.hooks[hookIdentifier])
+                    )),
+                Promise.resolve(transientValue.value)
+            ) : transientValue.value;
 
-        yield put(actions.Changes.persistChange({
-            type: 'PackageFactory.Guevara:Property',
-            subject: focusedNode.contextPath,
-            payload: {
-                propertyName: key,
-                value
-            }
-        }));
+        console.log('result: ', value);
     }
+
+    // for (const key of Object.keys(transientInspectorValues)) {
+    //
+    //
+    //     yield put(actions.Changes.persistChange({
+    //         type: 'PackageFactory.Guevara:Property',
+    //         subject: focusedNode.contextPath,
+    //         payload: {
+    //             propertyName: key,
+    //             value
+    //         }
+    //     }));
+    // }
 }
 
 // function* loadImage(imageValue, state) {

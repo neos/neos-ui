@@ -8,7 +8,7 @@ import TextArea from './TextArea/index';
 import SelectBox from './SelectBox/index';
 import NodeType from './NodeType/index';
 
-const {createInspectorEditor} = api;
+const {createInspectorEditor, createHook} = api;
 
 /**
  * Every editor gets passed in:
@@ -51,6 +51,13 @@ createInspectorEditor(
     'Neos.UI:Inspector.Image',
     'TYPO3.Neos/Inspector/Editors/ImageEditor',
     ImageEditor
+);
+
+createHook(
+    'Neos.UI:Hook.BeforeSave.CreateImageVariant',
+    (value, options) => {
+        return Promise.resolve({test: 'It is working'});
+    }
 );
 
 //

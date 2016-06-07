@@ -9,10 +9,13 @@ const createReadOnlyValue = value => ({
     configurable: false
 });
 
-export default (api, inspectorEditorRegistry) => {
+export default (api, inspectorEditorRegistry, hookRegistry) => {
     const pluginApi = {
         createInspectorEditor: (moduleName, legacyName, factory) => {
             inspectorEditorRegistry.register(moduleName, legacyName, factory);
+        },
+        createHook: (moduleName, factory) => {
+            hookRegistry.register(moduleName, factory);
         },
         ...api
     };

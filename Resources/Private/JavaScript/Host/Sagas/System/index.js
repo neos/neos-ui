@@ -3,6 +3,7 @@ import {take, put, call} from 'redux-saga/effects';
 import {delay, discover} from 'Shared/Utilities/Promises';
 import {actionTypes, actions} from 'Host/Redux/index';
 import createInspectorEditorRegistry from 'Host/Process/InspectorEditorRegistry/index';
+import createHookRegistry from 'Host/Process/HookRegistry/index';
 import initializeJSAPI from 'API/index';
 import {ui} from 'Host/Plugins/index';
 import createApi from 'Host/Expose/API/index';
@@ -52,6 +53,11 @@ export const getInspectorEditorRegistry =  discover(function* () {
     return createInspectorEditorRegistry(asyncModuleMapping, legacyModuleMapping);
 });
 
+export const getHookRegistry =  discover(function* () {
+    const {asyncModuleMapping} = yield getConfiguration;
+    return createHookRegistry(asyncModuleMapping);
+});
+
 export const getApi = discover(function* () {
     const store = yield getStore;
     return createApi(store);
@@ -60,8 +66,9 @@ export const getApi = discover(function* () {
 export const getHostApi = discover(function* () {
     const api = yield getApi;
     const inspectorEditorRegistry = yield getInspectorEditorRegistry;
+    const hookRegistry = yield getHookRegistry;
 
-    return createHostApi(api, inspectorEditorRegistry);
+    return createHostApi(api, inspectorEditorRegistry, hookRegistry);
 });
 
 export const getNeos = discover(function* () {

@@ -140,15 +140,15 @@ export default class EditorEnvelope extends Component {
             return (
                 <EditorComponent
                     {...this.prepareEditorProperties()}
-                    commit={(value, meta = {}) => {
-                        if ($get([id], transient) === value) {
+                    commit={(value, hooks = null) => {
+                        if ($get([id], transient) === value && hooks === null) {
                             //
                             // Nothing has changed...
                             //
                             return commit(id, null, null);
                         }
 
-                        return commit(id, value, meta);
+                        return commit(id, value, hooks);
                     }}
                     />
             );

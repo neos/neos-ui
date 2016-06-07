@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {$get, $all, $set, $drop} from 'plow-js';
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
 import {actionTypes as system} from 'Host/Redux/System/index';
@@ -21,7 +21,7 @@ const DISCARD = '@packagefactory/guevara/UI/Inspector/DISCARD';
 
 const reset = createAction(RESET);
 const load = createAction(LOAD, (viewConfiguration, activeNodePath) => ({viewConfiguration, activeNodePath}));
-const commit = createAction(COMMIT, (propertyId, value, meta) => ({propertyId, value, meta}));
+const commit = createAction(COMMIT, (propertyId, value, hooks) => ({propertyId, value, hooks}));
 const clear = createAction(CLEAR);
 
 const apply = createAction(APPLY, () => ({}));
@@ -60,17 +60,16 @@ export const reducer = handleActions({
             valuesByNodePath: new Map()
         })
     ),
-
     [RESET]: () => $set('ui.inspector.activeNodePath', ''),
     [LOAD]: ({viewConfiguration, activeNodePath}) => $all(
         $set('ui.inspector.viewConfiguration', viewConfiguration),
         $set('ui.inspector.activeNodePath', activeNodePath)
     ),
-    [COMMIT]: ({propertyId, value, meta}) => state => {
+    [COMMIT]: ({propertyId, value, hooks}) => state => {
         const activeNodePath = $get('ui.inspector.activeNodePath', state);
 
         if (value !== null) {
-            return $set(['ui', 'inspector', 'valuesByNodePath', activeNodePath, propertyId], new Map({value, meta}), state);
+            return $set(['ui', 'inspector', 'valuesByNodePath', activeNodePath, propertyId], Immutable.fromJS({value, hooks}), state);
         }
 
         return $drop(['ui', 'inspector', 'valuesByNodePath', activeNodePath, propertyId], state);

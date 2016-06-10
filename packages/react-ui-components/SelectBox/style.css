@@ -11,8 +11,10 @@
     position: relative;
     display: inline-block;
     height: 40px;
+    line-height: 40px;
     border: 0;
-    background-color: $darker;
+    background: $neutral;
+    min-width: 160px;
 }
 .dropDown__btnIcon {
     margin-right: .5em;
@@ -24,8 +26,10 @@
 }
 .dropDown__item {
     height: 40px;
+    line-height: 40px;
     background: $neutral;
     border-top: 1px solid $darker;
+    cursor: pointer;
 
     &:hover {
         background: $brand;

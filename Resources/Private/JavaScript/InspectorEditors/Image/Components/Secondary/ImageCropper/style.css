@@ -1,0 +1,8 @@
+.dimensions {
+    display: inline-block;
+}
+
+.dimensionInput {
+    width: 6em;
+    display: inline-block;
+}

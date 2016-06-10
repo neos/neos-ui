@@ -52,6 +52,12 @@ export class Image {
     }
 
     @memoize
+    get aspectRatio() {
+        const {width, height} = this.dimensions;
+        return width/height;
+    }
+
+    @memoize
     get previewDimensions() {
         const {image} = this;
         return extractPreviewDimensions(image);
@@ -61,6 +67,11 @@ export class Image {
     get cropAdjustment() {
         const {image} = this;
         return Maybe.fromNull($get(CROP_IMAGE_ADJUSTMENT, image));
+    }
+
+    @memoize
+    get cropAspectRatio() {
+        return this.cropAdjustment.map(c => c.width/c.height);
     }
 
     @memoize

@@ -13,7 +13,10 @@ export default class SelectBox extends Component {
         options: PropTypes.arrayOf(
             PropTypes.shape({
                 icon: PropTypes.string,
-                value: PropTypes.string.isRequired,
+                value: PropTypes.oneOfType([
+                    PropTypes.string,
+                    PropTypes.object
+                ]).isRequired,
                 label: PropTypes.string.isRequired
             })
         ),
@@ -31,21 +34,20 @@ export default class SelectBox extends Component {
         this.select(value);
     }
 
-    select(value) {
+    select(incomingValue) {
         const {options, placeholder, placeholderIcon} = this.props;
+        const value = incomingValue || (placeholder ? '' : Maybe.fromNull(options[0]).map(o => o.value).orSome(''));
 
         this.setState({
+            value,
             icon: options.filter(o => o.value === value).map(o => o.icon)[0] || placeholderIcon,
-            label: options.filter(o => o.value === value).map(o => o.label)[0] || placeholder,
-            value: value || Maybe.fromNull(options[0]).map(o => o.value).orSome('')
+            label: options.filter(o => o.value === value).map(o => o.label)[0] || placeholder
         });
     }
 
     render() {
         const {options, placeholder, placeholderIcon, onSelect} = this.props;
         const {icon, value, label} = this.state;
-
-        console.log(icon, value, label);
 
         return (
             <div className={style.wrapper}>
@@ -66,7 +68,7 @@ export default class SelectBox extends Component {
                                     {placeholder}
                                 </li>
                             ))
-                            .orSome('TEST')}
+                            .orSome('')}
                         {options.map(({icon, label, value}) => (
                             <li
                                 className={style.dropDown__item} onClick={() => {

@@ -1,20 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import {Components, SecondaryInspector, api} from '@host';
 import ReactCrop from 'react-image-crop';
+import {Maybe} from 'monet';
 
-const {Icon, SelectBox} = Components;
+import style from './style.css';
+import CropConfiguration from './model.js';
+import AspectRatioDropDown from './AspectRatioDropDown/index';
 
-const createCropInformationFromImage = image => image.cropAdjustment.map(c => ({
-    x: c.x / image.dimensions.width * 100,
-    y: c.y / image.dimensions.height * 100,
-    width: c.width / image.dimensions.width * 100,
-    height: c.height / image.dimensions.height * 100
-})).orSome({
-    x: 0,
-    y: 0,
-    width: 100,
-    height: 100
-});
+const {Icon, IconButton, SelectBox, TextInput} = Components;
 
 export default class ImageCropper extends Component {
     static propTypes = {
@@ -24,15 +17,51 @@ export default class ImageCropper extends Component {
         options: PropTypes.object
     };
 
-    render() {
-        const aspectRatioLocked = false;
-        const aspectRatioReduced = '5:3';
-        const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock" /> : null);
-        const {sourceImage, onComplete, options, onClose} = this.props;
-        const src = sourceImage.previewUri.orSome('/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg');
-        const crop = createCropInformationFromImage(sourceImage);
+    state = {
+        cropConfiguration: CropConfiguration.fromNeosConfiguration(
+            this.props.sourceImage,
+            this.props.options.crop.aspectRatio
+        )
+    };
 
-        console.log(options);
+    componentWillReceiveProps(nextProps) {
+        const {cropConfiguration} = this.state;
+
+        this.setState({
+            cropConfiguration: cropConfiguration.updateImage(nextProps.sourceImage)
+        });
+    }
+
+    setAspectRatio(aspectRatioOption) {
+        const {cropConfiguration} = this.state;
+
+        this.setState({
+            cropConfiguration: cropConfiguration.selectAspectRatioOption(aspectRatioOption)
+        });
+    }
+
+    setCustomAspectRatioDimensions(width, height) {
+        const {cropConfiguration} = this.state;
+
+        this.setState({
+            cropConfiguration: cropConfiguration.updateAspectRatioDimensions(width || 1, height || 1)
+        });
+    }
+
+    flipAspectRatio() {
+        const {cropConfiguration} = this.state;
+
+        this.setState({
+            cropConfiguration: cropConfiguration.flipAspectRatio()
+        });
+    }
+
+    render() {
+        const {cropConfiguration} = this.state;
+        const aspectRatioLocked = false;
+        const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock" /> : null);
+        const {sourceImage, onClose, onComplete} = this.props;
+        const src = sourceImage.previewUri.orSome('/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg');
 
         return (
             <SecondaryInspector onClose={() => onClose()}>
@@ -40,19 +69,47 @@ export default class ImageCropper extends Component {
                     <div>
                         <span>
                             <Icon icon="crop" />
-                            {(aspectRatioReduced ? <span title={aspectRatioReduced}>{aspectRatioReduced}</span> : null)}
+
+                            {cropConfiguration.aspectRatioReducedLabel.map(
+                                label => <span title={label}>{label}</span>
+                            ).orSome('')}
+
                             {aspectRatioLockIcon}
                         </span>
-                        <SelectBox
-                            placeholder="Aspect Ratio"
-                            options={[
-                                {value: '4-3', label: '4:3'},
-                                {value: '16-9', label: '16:9'},
-                                {value: '1-1', label: '1:1'}
-                            ]}
+
+                        <AspectRatioDropDown
+                            current={cropConfiguration.aspectRatioStrategy}
+                            options={cropConfiguration.aspectRatioOptions}
+                            onSelect={::this.setAspectRatio}
                             />
+
+                        {cropConfiguration.aspectRatioDimensions.map(({width, height}) => (
+                            <div className={style.dimensions}>
+                                <TextInput
+                                    className={style.dimensionInput}
+                                    type="number"
+                                    value={width}
+                                    onChange={width => this.setCustomAspectRatioDimensions(width, height)}
+                                    />
+                                <IconButton
+                                    icon="exchange"
+                                    onClick={::this.flipAspectRatio}
+                                    />
+                                <TextInput
+                                    className={style.dimensionInput}
+                                    type="number"
+                                    value={height}
+                                    onChange={height => this.setCustomAspectRatioDimensions(width, height)}
+                                    />
+                            </div>
+                        )).orSome('')}
                     </div>
-                    <ReactCrop src={src} crop={crop} onComplete={cropArea => onComplete(cropArea)} />
+
+                    <ReactCrop
+                        src={src}
+                        crop={cropConfiguration.cropInformation}
+                        onComplete={cropArea => onComplete(cropArea)}
+                        />
                 </div>
             </SecondaryInspector>
         );

@@ -15,6 +15,13 @@
     border: 0;
     background: $neutral;
     min-width: 160px;
+    padding-right: 80px;
+}
+.dropDown__btn--isPlaceholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+.dropDown__btn--isPlaceholder i {
+    color: white;
 }
 .dropDown__btnIcon {
     margin-right: .5em;
@@ -51,4 +58,9 @@
 }
 .dropDown__itemIcon {
     padding-right: .5em;
+}
+.dropDown__clear {
+    position: absolute;
+    top: 0;
+    right: 40px;
 }

@@ -19,7 +19,7 @@ export class NullAspectRatioStrategy {
     }
 
     get aspectRatio () {
-        return Maybe.none();
+        return None();
     }
 
     get label () {
@@ -104,10 +104,16 @@ export class CustomAspectRatioOption extends AspectRatioOption {
     constructor() {
         super(
             'Custom',
-            cropConfiguration => new CustomAspectRatioStrategy(
-                cropConfiguration.aspectRatioStrategy.width,
-                cropConfiguration.aspectRatioStrategy.height
-            )
+            cropConfiguration => {
+                const {width, height} = cropConfiguration.aspectRatioDimensions
+                    .orElse(cropConfiguration.image.cropAdjustment)
+                    .orSome({
+                        width: 100,
+                        height: 100
+                    });
+
+                return new CustomAspectRatioStrategy(width, height);
+            }
         );
     }
 }
@@ -277,5 +283,13 @@ export default class CropConfiguration {
         return this.aspectRatioDimensions
             .map(({width, height}) => this.updateAspectRatioDimensions(height, width))
             .orSome(this);
+    }
+
+    clearAspectRatio() {
+        return new CropConfiguration(
+            this.__image,
+            this.__aspectRatioOptions,
+            new NullAspectRatioStrategy('')
+        )
     }
 }

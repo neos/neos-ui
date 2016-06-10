@@ -4,7 +4,7 @@ import ReactCrop from 'react-image-crop';
 import {Maybe} from 'monet';
 
 import style from './style.css';
-import CropConfiguration from './model.js';
+import CropConfiguration, {NullAspectRatioStrategy} from './model.js';
 import AspectRatioDropDown from './AspectRatioDropDown/index';
 
 const {Icon, IconButton, SelectBox, TextInput} = Components;
@@ -56,6 +56,14 @@ export default class ImageCropper extends Component {
         });
     }
 
+    clearAspectRatio() {
+        const {cropConfiguration} = this.state;
+
+        this.setState({
+            cropConfiguration: cropConfiguration.clearAspectRatio()
+        });
+    }
+
     render() {
         const {cropConfiguration} = this.state;
         const aspectRatioLocked = false;
@@ -66,43 +74,43 @@ export default class ImageCropper extends Component {
         return (
             <SecondaryInspector onClose={() => onClose()}>
                 <div style={{textAlign: 'center'}}>
-                    <div>
-                        <span>
-                            <Icon icon="crop" />
-
-                            {cropConfiguration.aspectRatioReducedLabel.map(
-                                label => <span title={label}>{label}</span>
-                            ).orSome('')}
-
-                            {aspectRatioLockIcon}
-                        </span>
+                    <div className={style.tools}>
+                        <div className={style.aspectRatioIndicator}>
+                            {cropConfiguration.aspectRatioReducedLabel.map(label => [
+                                <Icon icon="crop" />,
+                                <span title={label}>{label}</span>,
+                                <span>{aspectRatioLockIcon}</span>
+                            ]).orSome('')}
+                        </div>
 
                         <AspectRatioDropDown
+                            placeholder="Aspect Ratio"
                             current={cropConfiguration.aspectRatioStrategy}
                             options={cropConfiguration.aspectRatioOptions}
                             onSelect={::this.setAspectRatio}
+                            onClear={::this.clearAspectRatio}
                             />
 
-                        {cropConfiguration.aspectRatioDimensions.map(({width, height}) => (
-                            <div className={style.dimensions}>
+                        <div className={style.dimensions}>
+                            {cropConfiguration.aspectRatioDimensions.map(({width, height}) => [
                                 <TextInput
                                     className={style.dimensionInput}
                                     type="number"
                                     value={width}
                                     onChange={width => this.setCustomAspectRatioDimensions(width, height)}
-                                    />
+                                    />,
                                 <IconButton
                                     icon="exchange"
                                     onClick={::this.flipAspectRatio}
-                                    />
+                                    />,
                                 <TextInput
                                     className={style.dimensionInput}
                                     type="number"
                                     value={height}
                                     onChange={height => this.setCustomAspectRatioDimensions(width, height)}
-                                    />
-                            </div>
-                        )).orSome('')}
+                                        />
+                            ]).orSome('')}
+                        </div>
                     </div>
 
                     <ReactCrop

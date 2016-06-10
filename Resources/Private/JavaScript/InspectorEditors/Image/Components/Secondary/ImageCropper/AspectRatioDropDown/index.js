@@ -8,7 +8,7 @@ import {AspectRatioOption, NullAspectRatioStrategy} from '../model';
 
 import style from './style.css';
 
-const {Icon, DropDown} = Components;
+const {Icon, IconButton, DropDown} = Components;
 
 export default class AspectRatioDropDown extends Component {
     static propTypes = {
@@ -16,27 +16,35 @@ export default class AspectRatioDropDown extends Component {
         options: PropTypes.arrayOf(
             PropTypes.instanceOf(AspectRatioOption)
         ),
-        placeholder: PropTypes.string
+        placeholder: PropTypes.string,
+
+        onSelect: PropTypes.func.isRequired,
+        onClear: PropTypes.func.isRequired
     };
 
     render() {
-        const {options, current, placeholder, onSelect} = this.props;
+        const {options, current, placeholder, onSelect, onClear} = this.props;
 
         return (
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>
-                    {Maybe.fromNull(current).map(
+                    {Maybe.fromNull(current.label ? current : null).map(
                         current => (
-                            <DropDown.Header className={style.dropDown__btn}>
-                                {current.label}
-                            </DropDown.Header>
+                            <div stlye={{position: 'relative'}}>
+                                <DropDown.Header className={style.dropDown__btn}>
+                                    {current.label}
+                                </DropDown.Header>
+                                <IconButton icon="times" onClick={() => onClear()} className={style.dropDown__clear} />
+                            </div>
                         )
                     ).orSome(
-                        <DropDown.Header className={style.dropDown__btn}>
+                        <DropDown.Header className={[
+                                style.dropDown__btn,
+                                style['dropDown__btn--isPlaceholder']
+                            ].join(' ')}>
                             {placeholder}
                         </DropDown.Header>
                     )}
-
                     <DropDown.Contents className={style.dropDown__contents}>
                         {options.map(aspectRatioOption => (
                             <li

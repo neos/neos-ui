@@ -5,7 +5,6 @@ import style from './style.css';
 
 const onChangeHandler = (e, cb) => {
     const value = e.target.value.substr(0, 140);
-    console.log(e.target.value, value, 'tf');
 
     if (cb) {
         cb(value);

@@ -1,4 +1,4 @@
-import {filter, map, values, merge} from 'ramda';
+import {filter, map, values, merge, memoize} from 'ramda';
 import {Maybe, Some, None} from 'monet';
 
 //
@@ -135,31 +135,29 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
     const when = condition => o => condition ? Some(o) : None();
     const whenAllowOriginal = when(neosConfiguration.allowOriginal && image.aspectRatio);
     const whenIsOriginal = o => whenAllowOriginal(o)
-        .bind(image.cropAspectRatio)
-        .bind(aspectRatio => aspectRatio == image.aspectRatio ? Some(o) : None());
+        .bind(() => image.cropAspectRatio)
+        .bind(aspectRatio => aspectRatio.toFixed(2) == image.aspectRatio.toFixed(2) ? Some(o) : None());
     const whenAllowCustom = when(neosConfiguration.allowCustom);
 
-    return image.cropAspectRatio
+    //
+    // First, check if the image maybe is cropped with
+    // its original aspect ratio
+    //
+    return whenIsOriginal(new OriginalAspectRatioStrategy(image))
 
         //
-        // First, check if the aspect ratio of the currently edited image matches with one
+        // Check if the aspect ratio of the currently edited image matches with one
         // of the configured aspect ratios
         //
-        .bind(aspectRatio => Maybe.fromNull(
-            //
-            // Read out aspect ratio options and filter them
-            //
-            values(options).filter(o => (o.width/o.height).toFixed(2) == aspectRatio.toFixed(2))[0]
-        ))
-        .map(o => new ConfiguredAspectRatioStrategy(o.width, o.height, o.label))
-
-        //
-        // If no configured aspect ratio matches, check if the image maybe is cropped with
-        // its original aspect ratio
-        //
         .orElse(
-            whenIsOriginal(new OriginalAspectRatioStrategy(image))
-
+            image.cropAspectRatio
+            .bind(aspectRatio => Maybe.fromNull(
+                //
+                // Read out aspect ratio options and filter them
+                //
+                values(options).filter(o => (o.width/o.height).toFixed(2) == aspectRatio.toFixed(2))[0]
+            ))
+            .map(o => new ConfiguredAspectRatioStrategy(o.width, o.height, o.label))
         )
 
         //
@@ -180,6 +178,10 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
 //
 // CropConfiguration
 //
+
+const getGreatestCommonDivisor = memoize(
+    (a, b) => b ? getGreatestCommonDivisor(b, a%b) : a
+);
 
 export default class CropConfiguration {
     constructor(image, aspectRatioOptions, aspectRatioStrategy) {
@@ -208,6 +210,10 @@ export default class CropConfiguration {
         );
     };
 
+    get image () {
+        return this.__image;
+    }
+
     get aspectRatioOptions () {
         return this.__aspectRatioOptions;
     }
@@ -223,7 +229,10 @@ export default class CropConfiguration {
     }
 
     get aspectRatioReducedLabel () {
-        return this.aspectRatioDimensions.map(({width, height}) => `${width}:${height}`);
+        return this.aspectRatioDimensions.map(({width, height}) => {
+            const greatestCommonDivisor = getGreatestCommonDivisor(width, height);
+            return `${width/greatestCommonDivisor}:${height/greatestCommonDivisor}`;
+        });
     }
 
     get cropInformation () {

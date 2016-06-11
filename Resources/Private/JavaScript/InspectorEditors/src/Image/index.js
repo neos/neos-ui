@@ -1,30 +1,26 @@
 import React, {Component, PropTypes} from 'react';
-import {Components, I18n, SecondaryInspector, api} from '@host';
-import {$set, $drop, $get, $override} from 'plow-js';
-import Dropzone from 'react-dropzone';
+import {api} from '@host';
+import {$set, $drop, $get} from 'plow-js';
 import {Maybe} from 'monet';
-
-import style from './style.css';
-// import mime from 'mime-types';
 
 import {PreviewScreen, Controls, Secondary} from './Components/index';
 import {Image} from './Utils/index';
-
-const {Icon, Button} = Components;
-
-// TODO: make publicly configurable
-const imagePreviewMaximumDimensions = {
-    width: 288,
-    height: 216
-};
 
 const DEFAULT_FEATURES = {
     crop: true,
     resize: false
 };
 
-const RESIZE_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'];
-const CROP_IMAGE_ADJUSTMENT = ['object', 'adjustments', 'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'];
+const RESIZE_IMAGE_ADJUSTMENT = [
+    'object',
+    'adjustments',
+    'TYPO3\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'
+];
+const CROP_IMAGE_ADJUSTMENT = [
+    'object',
+    'adjustments',
+    'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'
+];
 
 const SECONDARY_NONE = 1;
 const SECONDARY_DETAILS = 2;
@@ -119,7 +115,7 @@ export default class ImageEditor extends Component {
         const {commit, value} = this.props;
         const {image} = this.state;
         const nextimage = resizeAdjustment ?
-            $set(CROP_IMAGE_ADJUSTMENT, cropAdjustments, image) : $drop(RESIZE_IMAGE_ADJUSTMENT, image);
+            $set(RESIZE_IMAGE_ADJUSTMENT, resizeAdjustment, image) : $drop(RESIZE_IMAGE_ADJUSTMENT, image);
 
         this.setState({image: nextimage});
 

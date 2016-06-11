@@ -10,7 +10,6 @@ const stylelint = require('stylelint');
 const env = require('../../../../Build/Utilities/').env;
 
 const config = {
-    // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
     module: {
         preLoaders: [
@@ -67,7 +66,7 @@ const config = {
     ],
 
     entry: {
-        InspectorEditors: './index.js'
+        InspectorEditors: './src/index.js'
     },
 
     output: {

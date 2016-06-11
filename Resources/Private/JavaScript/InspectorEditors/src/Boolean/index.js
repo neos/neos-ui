@@ -17,9 +17,9 @@ const toBoolean = val => {
     }
 
     return Boolean(val);
-}
+};
 
-const Boolean = props => {
+const BooleanEditor = props => {
     const {value, label, identifier, commit} = props;
 
     return (
@@ -32,11 +32,13 @@ const Boolean = props => {
     );
 };
 
-Boolean.propTypes = {
+BooleanEditor.propTypes = {
+    identifier: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
     commit: PropTypes.func.isRequired
 };
 
-Boolean.hasOwnLabel = true;
+BooleanEditor.hasOwnLabel = true;
 
-export default Boolean;
+export default BooleanEditor;

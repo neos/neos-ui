@@ -16,7 +16,6 @@ const {createInspectorEditor, createHook} = api;
  * - onChange: the callback if something changed.
  */
 
-
 //
 // TextField
 //

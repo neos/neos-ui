@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const defaultConfig = require('./webpack.config');
 const babelConfig = JSON.parse(fs.readFileSync('./.babelrc', 'utf8'));
 
@@ -45,6 +46,12 @@ module.exports = Object.assign({}, defaultConfig, {
             }
         )
     },
+
+    resolve: Object.assign({}, defaultConfig.resolve, {
+        alias: Object.assign({}, defaultConfig.resolve.alias, {
+            'react': path.resolve(__dirname, './node_modules/react/')
+        })
+    }),
 
     isparta: {
         embedSource: true,

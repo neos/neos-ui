@@ -24,14 +24,14 @@
    repository yet, so we need to give composer hints where to find it):
    ```
     "repositories": [
-        { "type": "vcs", "url": "https://github.com/PackageFactory/Neos.Neos.Ui.git" }
+        { "type": "vcs", "url": "https://github.com/neos/neos-ui.git" }
     ],
    ```
    Note: if you plan to contribute to the project, fork it and provide VCS url to your forked repository.
 
 2. Run the following commands:  
    ```
-   composer require packagefactory/guevara:dev-master # install our package
+   composer require neos/neos-ui:dev-master # install our package
    cd Packages/Application/Neos.Neos.Ui
    source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps
    npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)

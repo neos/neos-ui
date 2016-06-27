@@ -17,7 +17,7 @@ class Info extends AbstractMessageFeedback
      */
     public function getType()
     {
-        return 'PackageFactory.Guevara:Info';
+        return 'Neos.Neos.Ui:Info';
     }
 
     /**

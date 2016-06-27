@@ -39,7 +39,7 @@ class ReloadDocument implements FeedbackInterface
      */
     public function getType()
     {
-        return 'PackageFactory.Guevara:ReloadDocument';
+        return 'Neos.Neos.Ui:ReloadDocument';
     }
 
     /**

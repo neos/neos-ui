@@ -87,11 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Register FeedbackHandlers
     backend.asyncComponents.feedbackHandlers.registerAll({
-        'PackageFactory.Guevara:Success': feedbackHandler.flashMessage,
-        'PackageFactory.Guevara:Error': feedbackHandler.flashMessage,
-        'PackageFactory.Guevara:Info': feedbackHandler.logToConsole,
-        'PackageFactory.Guevara:UpdateWorkspaceInfo': feedbackHandler.updateWorkspaceInfo,
-        'PackageFactory.Guevara:ReloadDocument': feedbackHandler.reloadDocument
+        'Neos.Neos.Ui:Success': feedbackHandler.flashMessage,
+        'Neos.Neos.Ui:Error': feedbackHandler.flashMessage,
+        'Neos.Neos.Ui:Info': feedbackHandler.logToConsole,
+        'Neos.Neos.Ui:UpdateWorkspaceInfo': feedbackHandler.updateWorkspaceInfo,
+        'Neos.Neos.Ui:ReloadDocument': feedbackHandler.reloadDocument
     });
 
     //

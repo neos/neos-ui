@@ -1,16 +1,8 @@
-# DEPRECATED!
-
-Hooray! This prototype has been accepted officially as the way to go as the future of Neos UI, congrats to @grebaldi and @Inkdpixels! The project has been moved to under the hood of the official Neos Github organization: https://github.com/neos/neos-ui
-
-No Pull Requests to this project will be accepted, make sure to rebase based on the new repository.
-
-
-
-# @PackageFactory/PackageFactory.Guevara
-[![Build Status](https://travis-ci.org/PackageFactory/PackageFactory.Guevara.svg?branch=master)](https://travis-ci.org/PackageFactory/PackageFactory.Guevara) [![Dependency Status](https://david-dm.org/PackageFactory/PackageFactory.Guevara.svg)](https://david-dm.org/PackageFactory/PackageFactory.Guevara) [![devDependency Status](https://david-dm.org/PackageFactory/PackageFactory.Guevara/dev-status.svg)](https://david-dm.org/PackageFactory/PackageFactory.Guevara#info=devDependencies&view=table)
-[![Code Climate](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara/badges/gpa.svg)](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara)
-[![Test Coverage](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara/badges/coverage.svg)](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara/coverage)
-[![Stories in Ready](https://badge.waffle.io/PackageFactory/PackageFactory.Guevara.svg?label=ready&title=Issues+Ready)](http://waffle.io/PackageFactory/PackageFactory.Guevara)
+# @PackageFactory/Neos.Neos.Ui
+[![Build Status](https://travis-ci.org/PackageFactory/Neos.Neos.Ui.svg?branch=master)](https://travis-ci.org/PackageFactory/Neos.Neos.Ui) [![Dependency Status](https://david-dm.org/PackageFactory/Neos.Neos.Ui.svg)](https://david-dm.org/PackageFactory/Neos.Neos.Ui) [![devDependency Status](https://david-dm.org/PackageFactory/Neos.Neos.Ui/dev-status.svg)](https://david-dm.org/PackageFactory/Neos.Neos.Ui#info=devDependencies&view=table)
+[![Code Climate](https://codeclimate.com/github/PackageFactory/Neos.Neos.Ui/badges/gpa.svg)](https://codeclimate.com/github/PackageFactory/Neos.Neos.Ui)
+[![Test Coverage](https://codeclimate.com/github/PackageFactory/Neos.Neos.Ui/badges/coverage.svg)](https://codeclimate.com/github/PackageFactory/Neos.Neos.Ui/coverage)
+[![Stories in Ready](https://badge.waffle.io/PackageFactory/Neos.Neos.Ui.svg?label=ready&title=Issues+Ready)](http://waffle.io/PackageFactory/Neos.Neos.Ui)
 [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/inkdpixels.svg)](https://saucelabs.com/u/inkdpixels)
@@ -32,7 +24,7 @@ No Pull Requests to this project will be accepted, make sure to rebase based on 
    repository yet, so we need to give composer hints where to find it):
    ```
     "repositories": [
-        { "type": "vcs", "url": "https://github.com/PackageFactory/PackageFactory.Guevara.git" }
+        { "type": "vcs", "url": "https://github.com/PackageFactory/Neos.Neos.Ui.git" }
     ],
    ```
    Note: if you plan to contribute to the project, fork it and provide VCS url to your forked repository.
@@ -40,7 +32,7 @@ No Pull Requests to this project will be accepted, make sure to rebase based on 
 2. Run the following commands:  
    ```
    composer require packagefactory/guevara:dev-master # install our package
-   cd Packages/Application/PackageFactory.Guevara
+   cd Packages/Application/Neos.Neos.Ui
    source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps
    npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
    ```
@@ -52,7 +44,7 @@ No Pull Requests to this project will be accepted, make sure to rebase based on 
   uriPattern: '<GuevaraSubroutes>'
   subRoutes:
     'GuevaraSubroutes':
-      package: 'PackageFactory.Guevara'
+      package: 'Neos.Neos.Ui'
    ```
 
 Now you are all set up and can open the sub-route `/che!` to login to the new interface.
@@ -64,7 +56,7 @@ If you need help setting up `nvm`, `npm` or if you got any other problems, join 
 
 ## Contributing
 
-[Read developer documentation on our wiki](https://github.com/PackageFactory/PackageFactory.Guevara/wiki).
+[Read developer documentation on our wiki](https://github.com/PackageFactory/Neos.Neos.Ui/wiki).
 
 #### Development commands
 | Command         | Description                    |

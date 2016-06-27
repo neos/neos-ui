@@ -45,13 +45,13 @@ export default class AddNodeModal extends Component {
         let changeType;
         switch (this.props.mode) {
             case 'prepend':
-                changeType = 'PackageFactory.Guevara:CreateBefore';
+                changeType = 'Neos.Neos.Ui:CreateBefore';
                 break;
             case 'append':
-                changeType = 'PackageFactory.Guevara:CreateAfter';
+                changeType = 'Neos.Neos.Ui:CreateAfter';
                 break;
             default:
-                changeType = 'PackageFactory.Guevara:Create';
+                changeType = 'Neos.Neos.Ui:Create';
                 break;
         }
         const onClick = () => {

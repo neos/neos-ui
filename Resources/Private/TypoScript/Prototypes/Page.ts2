@@ -21,7 +21,7 @@ prototype(TYPO3.Neos:Page) {
         neosBackendHeader.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
         neosBackendEndpoints.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
 
-        javascriptBackendInformation = PackageFactory.Guevara:RenderState {
+        javascriptBackendInformation = Neos.Neos.Ui:RenderState {
             state = 'documentNode'
             context {
                 documentNode = ${documentNode}
@@ -30,14 +30,14 @@ prototype(TYPO3.Neos:Page) {
             @position = 'after javascripts'
 
             @process.json = ${Json.stringify(value)}
-            @process.wrapInJsObject = ${'<script>window[\'@PackageFactory.Guevara:DocumentInformation\']=' + value + '</script>'}
+            @process.wrapInJsObject = ${'<script>window[\'@Neos.Neos.Ui:DocumentInformation\']=' + value + '</script>'}
             @if.newBackend = ${Guevara.Activation.enableNewBackend()}
         }
 
         guestFrameApplication = TYPO3.TypoScript:Template {
             @position = 'after javascriptDocumentInformation'
 
-            templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Guest.html'
+            templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Guest.html'
             sectionName = 'guestFrameApplication'
             @if.newBackend = ${Guevara.Activation.enableNewBackend()}
         }

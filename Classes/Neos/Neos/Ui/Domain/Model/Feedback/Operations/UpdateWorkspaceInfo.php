@@ -47,7 +47,7 @@ class UpdateWorkspaceInfo implements FeedbackInterface
      */
     public function getType()
     {
-        return 'PackageFactory.Guevara:UpdateWorkspaceInfo';
+        return 'Neos.Neos.Ui:UpdateWorkspaceInfo';
     }
 
     /**

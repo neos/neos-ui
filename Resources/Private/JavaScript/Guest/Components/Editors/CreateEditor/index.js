@@ -10,7 +10,7 @@ export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => 
 
     const editorApi = {
         commit: debounce(value => ui.addChange({
-            type: 'PackageFactory.Guevara:Property',
+            type: 'Neos.Neos.Ui:Property',
             subject: nodeContext.contextPath,
             payload: {
                 propertyName: nodeContext.propertyName,

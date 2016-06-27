@@ -45,7 +45,7 @@ class RenderStateImplementation extends AbstractTypoScriptObject
         $context['controllerContext'] = $this->getTsRuntime()->getControllerContext();
 
         if (!isset($this->stateInSettings[$stateNameToRender])) {
-            throw new Exception('The state "PackageFactory.Guevara.state.' . $stateNameToRender . '" was not found in the settings.', 1458814468);
+            throw new Exception('The state "Neos.Neos.Ui.state.' . $stateNameToRender . '" was not found in the settings.', 1458814468);
         }
 
         return $this->stateRenderingService->computeState($this->stateInSettings[$stateNameToRender], $context);

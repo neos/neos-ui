@@ -5,12 +5,12 @@
   name:  'Backend'
   uriPattern: 'che!/<BackendSubRoutes>'
   defaults:
-    '@package':    'PackageFactory.Guevara'
+    '@package':    'Neos.Neos.Ui'
     '@action':     'index'
     '@format':     'html'
   subRoutes:
     'BackendSubRoutes':
-      package: 'PackageFactory.Guevara'
+      package: 'Neos.Neos.Ui'
       suffix:  'Backend'
 
 ##
@@ -20,10 +20,10 @@
   name:  'Backend'
   uriPattern: 'che!/service/<ServiceSubRoutes>'
   defaults:
-    '@package':    'PackageFactory.Guevara'
+    '@package':    'Neos.Neos.Ui'
     '@action':     'index'
     '@format':     'html'
   subRoutes:
     'ServiceSubRoutes':
-      package: 'PackageFactory.Guevara'
+      package: 'Neos.Neos.Ui'
       suffix:  'Service'

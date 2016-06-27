@@ -19,7 +19,7 @@ window.onerror = function (err) {
 //
 document.addEventListener('DOMContentLoaded', () => {
     domConnector(ui, connection);
-    ui.setDocumentInformation(window.name, window['@PackageFactory.Guevara:DocumentInformation']);
+    ui.setDocumentInformation(window.name, window['@Neos.Neos.Ui:DocumentInformation']);
 });
 
 //

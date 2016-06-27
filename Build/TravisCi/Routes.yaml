@@ -15,7 +15,7 @@
   uriPattern: '<GuevaraSubroutes>'
   subRoutes:
     'GuevaraSubroutes':
-      package: 'PackageFactory.Guevara'
+      package: 'Neos.Neos.Ui'
 
 -
   name: 'TYPO3 Neos'

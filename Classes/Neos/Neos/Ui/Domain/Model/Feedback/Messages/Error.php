@@ -17,7 +17,7 @@ class Error extends AbstractMessageFeedback
      */
     public function getType()
     {
-        return 'PackageFactory.Guevara:Error';
+        return 'Neos.Neos.Ui:Error';
     }
 
     /**

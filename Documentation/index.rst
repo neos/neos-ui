@@ -1,4 +1,4 @@
-PackageFactory.Guevara |version| Documentation
+Neos.Neos.Ui |version| Documentation
 ==================================================================================================
 
 This documentation covering version |release| has been rendered at: |today|

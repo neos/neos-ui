@@ -17,7 +17,7 @@ class Success extends AbstractMessageFeedback
      */
     public function getType()
     {
-        return 'PackageFactory.Guevara:Success';
+        return 'Neos.Neos.Ui:Success';
     }
 
     /**

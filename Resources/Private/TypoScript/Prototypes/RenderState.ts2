@@ -1,4 +1,4 @@
-prototype(PackageFactory.Guevara:RenderState) {
+prototype(Neos.Neos.Ui:RenderState) {
     @class = 'PackageFactory\\Guevara\\TypoScript\\RenderStateImplementation'
 
     context = TYPO3.TypoScript:RawArray

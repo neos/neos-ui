@@ -1,14 +1,14 @@
 include: resource://TYPO3.TypoScript/Private/TypoScript/Root.ts2
-include: resource://PackageFactory.Guevara/Private/TypoScript/Prototypes/RenderState.ts2
+include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/RenderState.ts2
 backend = TYPO3.TypoScript:Template {
-    templatePath = 'resource://PackageFactory.Guevara/Private/Templates/Backend/Index.html'
+    templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
 
     configuration = TYPO3.TypoScript:RawArray {
         test = 1
         @process.json = ${Json.stringify(value)}
     }
 
-    initialState = PackageFactory.Guevara:RenderState {
+    initialState = Neos.Neos.Ui:RenderState {
         state = 'backend'
         context {
             documentNode = ${documentNode}

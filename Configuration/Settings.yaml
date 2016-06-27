@@ -9,7 +9,7 @@ TYPO3:
   Neos:
     typoScript:
       autoInclude:
-        'PackageFactory.Guevara': TRUE
+        'Neos.Neos.Ui': TRUE
 
   TypoScript:
     defaultContext:
@@ -90,7 +90,7 @@ PackageFactory:
 
     changes:
       types:
-          'PackageFactory.Guevara:Property': 'Neos\Neos\Ui\Domain\Model\Changes\Property'
-          'PackageFactory.Guevara:Create': 'Neos\Neos\Ui\Domain\Model\Changes\Create'
-          'PackageFactory.Guevara:CreateBefore': 'Neos\Neos\Ui\Domain\Model\Changes\CreateBefore'
-          'PackageFactory.Guevara:CreateAfter': 'Neos\Neos\Ui\Domain\Model\Changes\CreateAfter'
+          'Neos.Neos.Ui:Property': 'Neos\Neos\Ui\Domain\Model\Changes\Property'
+          'Neos.Neos.Ui:Create': 'Neos\Neos\Ui\Domain\Model\Changes\Create'
+          'Neos.Neos.Ui:CreateBefore': 'Neos\Neos\Ui\Domain\Model\Changes\CreateBefore'
+          'Neos.Neos.Ui:CreateAfter': 'Neos\Neos\Ui\Domain\Model\Changes\CreateAfter'

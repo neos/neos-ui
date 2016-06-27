@@ -11,10 +11,10 @@
 # TYPO3 Neos subroutes
 
 -
-  name: 'PackageFactory Guevara'
-  uriPattern: '<GuevaraSubroutes>'
+  name: 'Neos UI'
+  uriPattern: '<NeosUiSubRoutes>'
   subRoutes:
-    'GuevaraSubroutes':
+    'NeosUiSubRoutes':
       package: 'Neos.Neos.Ui'
 
 -

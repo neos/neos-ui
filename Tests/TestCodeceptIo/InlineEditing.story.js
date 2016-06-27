@@ -5,7 +5,7 @@ Feature('Inline editing');
 Scenario('should be able to type into a nodeType in the guest frame.', (I) => {
     I.login();
 
-    I.amOnPage('/che!/');
+    I.amOnPage('/neos!/');
 
     I.waitForElement({css: '#neos__contentCanvas iframe'}, 30);
     I.focusAndEditInGuestFrame('Hello Worlds');

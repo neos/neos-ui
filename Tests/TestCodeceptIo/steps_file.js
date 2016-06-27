@@ -5,7 +5,7 @@
 module.exports = function() {
     return actor({
         login() {
-            this.amOnPage('/che!/');
+            this.amOnPage('/neos!/');
             this.fillField('#username', 'admin');
             this.fillField('#password', 'password');
             this.click('//*[@id="neos-login-box"]/div/form/fieldset/div[3]/button[1]');

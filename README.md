@@ -40,14 +40,14 @@
 3. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`  
    ```yaml
 -
-  name: 'PackageFactory Guevara'
-  uriPattern: '<GuevaraSubroutes>'
+  name: 'Neos UI'
+  uriPattern: '<NeosUiSubroutes>'
   subRoutes:
-    'GuevaraSubroutes':
+    'NeosUiSubroutes':
       package: 'Neos.Neos.Ui'
    ```
 
-Now you are all set up and can open the sub-route `/che!` to login to the new interface.
+Now you are all set up and can open the sub-route `/neos!` to login to the new interface.
 
 __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
 If you've installed `nvm` make sure that the next node LTS version `6.1.0` is correctly installed - You can do so by executing `nvm install v6.1.0`.

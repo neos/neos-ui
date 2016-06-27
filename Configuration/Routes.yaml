@@ -3,7 +3,7 @@
 
 -
   name:  'Backend'
-  uriPattern: 'che!/<BackendSubRoutes>'
+  uriPattern: 'neos!/<BackendSubRoutes>'
   defaults:
     '@package':    'Neos.Neos.Ui'
     '@action':     'index'
@@ -18,7 +18,7 @@
 
 -
   name:  'Backend'
-  uriPattern: 'che!/service/<ServiceSubRoutes>'
+  uriPattern: 'neos!/service/<ServiceSubRoutes>'
   defaults:
     '@package':    'Neos.Neos.Ui'
     '@action':     'index'

@@ -1,4 +1,4 @@
-export const change = changes => fetch('/che!/service/change', {
+export const change = changes => fetch('/neos!/service/change', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -10,7 +10,7 @@ export const change = changes => fetch('/che!/service/change', {
     })
 }).then(response => response.json());
 
-export const publish = (nodeContextPaths, targetWorkspaceName) => fetch('/che!/service/publish', {
+export const publish = (nodeContextPaths, targetWorkspaceName) => fetch('/neos!/service/publish', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -23,7 +23,7 @@ export const publish = (nodeContextPaths, targetWorkspaceName) => fetch('/che!/s
     })
 }).then(response => response.json());
 
-export const discard = nodeContextPaths => fetch('/che!/service/discard', {
+export const discard = nodeContextPaths => fetch('/neos!/service/discard', {
     method: 'POST',
     credentials: 'include',
     headers: {

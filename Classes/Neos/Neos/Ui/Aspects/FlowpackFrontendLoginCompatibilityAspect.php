@@ -19,7 +19,7 @@ use Flowpack\Neos\FrontendLogin\Security\NeosRequestPattern;
  * This request pattern tries to distinguish between frontend and backend routes, but only matches backend routes that
  * start with '/neos'.
  *
- * With this aspect the behavior is enhanced to consider routes starting with '/che!' as well.
+ * With this aspect the behavior is enhanced to consider routes starting with '/neos!' as well.
  *
  * It is important to find a better way to support Flowpack.Neos.FrontendLogin, since Neos.Neos.Ui should not
  * have a dependency to it. Therefore this aspect avoids a direct dependency, it is still implicit though.
@@ -41,7 +41,7 @@ class FlowpackFrontendLoginCompatibilityAspect
         $requestPath = $request->getHttpRequest()->getUri()->getPath();
 
         if ($joinPoint->getProxy()->getPattern() === NeosRequestPattern::PATTERN_BACKEND) {
-            if (strpos($requestPath, '/che!') === 0) {
+            if (strpos($requestPath, '/neos!') === 0) {
                 return true;
             }
         }

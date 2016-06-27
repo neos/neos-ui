@@ -15,7 +15,7 @@ set -e
 # Install all dependencies for the neos instance.
 composer install -q -n
 
-# Remove the default login package since our `che!` routes currenctly conflicts with the package.
+# Remove the default login package since our `neos!` routes currenctly conflicts with the package.
 composer remove flowpack/neos-frontendlogin -n
 rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
 rm -rf Data/Temporary/*

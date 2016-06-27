@@ -1,3 +1,11 @@
+# DEPRECATED!
+
+Hooray! This prototype has been accepted officially as the way to go as the future of Neos UI, congrats to @grebaldi and @Inkdpixels! The project has been moved to under the hood of the official Neos Github organization: https://github.com/neos/neos-ui
+
+No Pull Requests to this project will be accepted, make sure to rebase based on the new repository.
+
+
+
 # @PackageFactory/PackageFactory.Guevara
 [![Build Status](https://travis-ci.org/PackageFactory/PackageFactory.Guevara.svg?branch=master)](https://travis-ci.org/PackageFactory/PackageFactory.Guevara) [![Dependency Status](https://david-dm.org/PackageFactory/PackageFactory.Guevara.svg)](https://david-dm.org/PackageFactory/PackageFactory.Guevara) [![devDependency Status](https://david-dm.org/PackageFactory/PackageFactory.Guevara/dev-status.svg)](https://david-dm.org/PackageFactory/PackageFactory.Guevara#info=devDependencies&view=table)
 [![Code Climate](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara/badges/gpa.svg)](https://codeclimate.com/github/PackageFactory/PackageFactory.Guevara)

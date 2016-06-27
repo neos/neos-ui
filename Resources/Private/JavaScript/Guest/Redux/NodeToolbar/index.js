@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions';
 import {$set, $override} from 'plow-js';
 
-const SET_POSITION = '@packagefactory/guevara/GUEST/NodeToolbar/SET_POSITION';
-const SHOW = '@packagefactory/guevara/GUEST/NodeToolbar/SHOW';
-const HIDE = '@packagefactory/guevara/GUEST/NodeToolbar/HIDE';
+const SET_POSITION = '@neos/neos-ui/GUEST/NodeToolbar/SET_POSITION';
+const SHOW = '@neos/neos-ui/GUEST/NodeToolbar/SHOW';
+const HIDE = '@neos/neos-ui/GUEST/NodeToolbar/HIDE';
 
 //
 // Export the action types

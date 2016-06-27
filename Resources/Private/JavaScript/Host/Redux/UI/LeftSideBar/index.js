@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set, $toggle} from 'plow-js';
 
-const TOGGLE = '@packagefactory/guevara/UI/LeftSideBar/TOGGLE';
+const TOGGLE = '@neos/neos-ui/UI/LeftSideBar/TOGGLE';
 
 /**
  * Toggles the left sidebar out/in of the users viewport.

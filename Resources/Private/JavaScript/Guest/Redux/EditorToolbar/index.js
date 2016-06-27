@@ -1,11 +1,11 @@
 import {createAction} from 'redux-actions';
 import {$get, $set, $override} from 'plow-js';
 
-const SET_POSITION = '@packagefactory/guevara/GUEST/EditorToolbar/SET_POSITION';
-const SHOW = '@packagefactory/guevara/GUEST/EditorToolbar/SHOW';
-const HIDE = '@packagefactory/guevara/GUEST/EditorToolbar/HIDE';
-const SET_CONFIGURATION = '@packagefactory/guevara/GUEST/EditorToolbar/SET_CONFIGURATION';
-const DISPATCH_SIGNAL = '@packagefactory/guevara/GUEST/EditorToolbar/DISPATCH_SIGNAL';
+const SET_POSITION = '@neos/neos-ui/GUEST/EditorToolbar/SET_POSITION';
+const SHOW = '@neos/neos-ui/GUEST/EditorToolbar/SHOW';
+const HIDE = '@neos/neos-ui/GUEST/EditorToolbar/HIDE';
+const SET_CONFIGURATION = '@neos/neos-ui/GUEST/EditorToolbar/SET_CONFIGURATION';
+const DISPATCH_SIGNAL = '@neos/neos-ui/GUEST/EditorToolbar/DISPATCH_SIGNAL';
 
 //
 // Export the action types

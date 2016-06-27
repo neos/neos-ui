@@ -2,8 +2,8 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$all, $set} from 'plow-js';
 
-const OPEN = '@packagefactory/guevara/UI/AddNodeModal/OPEN';
-const CLOSE = '@packagefactory/guevara/UI/AddNodeModal/CLOSE';
+const OPEN = '@neos/neos-ui/UI/AddNodeModal/OPEN';
+const CLOSE = '@neos/neos-ui/UI/AddNodeModal/CLOSE';
 
 /**
  * Opens the add node modal.

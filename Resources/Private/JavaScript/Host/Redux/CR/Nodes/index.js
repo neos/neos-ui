@@ -2,11 +2,11 @@ import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
 import {$set, $get} from 'plow-js';
 
-const ADD = '@packagefactory/guevara/Transient/Nodes/ADD';
-const FOCUS = '@packagefactory/guevara/Transient/Nodes/FOCUS';
-const BLUR = '@packagefactory/guevara/Transient/Nodes/BLUR';
-const HOVER = '@packagefactory/guevara/Transient/Nodes/HOVER';
-const UNHOVER = '@packagefactory/guevara/Transient/Nodes/UNHOVER';
+const ADD = '@neos/neos-ui/Transient/Nodes/ADD';
+const FOCUS = '@neos/neos-ui/Transient/Nodes/FOCUS';
+const BLUR = '@neos/neos-ui/Transient/Nodes/BLUR';
+const HOVER = '@neos/neos-ui/Transient/Nodes/HOVER';
+const UNHOVER = '@neos/neos-ui/Transient/Nodes/UNHOVER';
 
 //
 // Export the action types

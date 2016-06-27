@@ -2,12 +2,12 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set} from 'plow-js';
 
-const START_SAVING = '@packagefactory/guevara/UI/Remote/START_SAVING';
-const FINISH_SAVING = '@packagefactory/guevara/UI/Remote/FINISH_SAVING';
-const START_PUBLISHING = '@packagefactory/guevara/UI/Remote/START_PUBLISHING';
-const FINISH_PUBLISHING = '@packagefactory/guevara/UI/Remote/FINISH_PUBLISHING';
-const START_DISCARDING = '@packagefactory/guevara/UI/Remote/START_DISCARDING';
-const FINISH_DISCARDING = '@packagefactory/guevara/UI/Remote/FINISH_DISCARDING';
+const START_SAVING = '@neos/neos-ui/UI/Remote/START_SAVING';
+const FINISH_SAVING = '@neos/neos-ui/UI/Remote/FINISH_SAVING';
+const START_PUBLISHING = '@neos/neos-ui/UI/Remote/START_PUBLISHING';
+const FINISH_PUBLISHING = '@neos/neos-ui/UI/Remote/FINISH_PUBLISHING';
+const START_DISCARDING = '@neos/neos-ui/UI/Remote/START_DISCARDING';
+const FINISH_DISCARDING = '@neos/neos-ui/UI/Remote/FINISH_DISCARDING';
 
 /**
  * Marks an ongoing saving process.

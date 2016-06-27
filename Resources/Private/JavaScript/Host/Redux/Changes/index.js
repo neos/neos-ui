@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 
-const PERSIST = '@packagefactory/guevara/Transient/Changes/PERSIST';
+const PERSIST = '@neos/neos-ui/Transient/Changes/PERSIST';
 
 //
 // Export the action types

@@ -2,8 +2,8 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$toggle, $set} from 'plow-js';
 
-const TOGGLE = '@packagefactory/guevara/UI/Drawer/TOGGLE';
-const HIDE = '@packagefactory/guevara/UI/Drawer/HIDE';
+const TOGGLE = '@neos/neos-ui/UI/Drawer/TOGGLE';
+const HIDE = '@neos/neos-ui/UI/Drawer/HIDE';
 
 /**
  * Toggles the off canvas menu out/in of the users viewport.

@@ -1,7 +1,7 @@
 {
-  "name": "@packagefactory/guevara",
+  "name": "neos/neos-ui",
   "version": "1.0.0",
-  "description": "Some example for inter-iframe communication",
+  "description": "Neos CMS UI written in ReactJS with Immutable data structures.",
   "main": "Resources/Public/JavaScript/Host.js",
   "private": true,
   "devDependencies": {

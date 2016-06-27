@@ -1,8 +1,8 @@
-# @PackageFactory/Neos.Neos.Ui
-[![Build Status](https://travis-ci.org/PackageFactory/Neos.Neos.Ui.svg?branch=master)](https://travis-ci.org/PackageFactory/Neos.Neos.Ui) [![Dependency Status](https://david-dm.org/PackageFactory/Neos.Neos.Ui.svg)](https://david-dm.org/PackageFactory/Neos.Neos.Ui) [![devDependency Status](https://david-dm.org/PackageFactory/Neos.Neos.Ui/dev-status.svg)](https://david-dm.org/PackageFactory/Neos.Neos.Ui#info=devDependencies&view=table)
-[![Code Climate](https://codeclimate.com/github/PackageFactory/Neos.Neos.Ui/badges/gpa.svg)](https://codeclimate.com/github/PackageFactory/Neos.Neos.Ui)
-[![Test Coverage](https://codeclimate.com/github/PackageFactory/Neos.Neos.Ui/badges/coverage.svg)](https://codeclimate.com/github/PackageFactory/Neos.Neos.Ui/coverage)
-[![Stories in Ready](https://badge.waffle.io/PackageFactory/Neos.Neos.Ui.svg?label=ready&title=Issues+Ready)](http://waffle.io/PackageFactory/Neos.Neos.Ui)
+# @neos/neos-ui
+[![Build Status](https://travis-ci.org/neos/neos-ui.svg?branch=master)](https://travis-ci.org/neos/neos-ui) [![Dependency Status](https://david-dm.org/neos/neos-ui.svg)](https://david-dm.org/neos/neos-ui) [![devDependency Status](https://david-dm.org/neos/neos-ui/dev-status.svg)](https://david-dm.org/neos/neos-ui#info=devDependencies&view=table)
+[![Code Climate](https://codeclimate.com/github/neos/neos-ui/badges/gpa.svg)](https://codeclimate.com/github/neos/neos-ui)
+[![Test Coverage](https://codeclimate.com/github/neos/neos-ui/badges/coverage.svg)](https://codeclimate.com/github/neos/neos-ui/coverage)
+[![Stories in Ready](https://badge.waffle.io/neos/neos-ui.svg?label=ready&title=Issues+Ready)](http://waffle.io/neos/neos-ui)
 [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/inkdpixels.svg)](https://saucelabs.com/u/inkdpixels)
@@ -56,7 +56,7 @@ If you need help setting up `nvm`, `npm` or if you got any other problems, join 
 
 ## Contributing
 
-[Read developer documentation on our wiki](https://github.com/PackageFactory/Neos.Neos.Ui/wiki).
+[Read developer documentation on our wiki](https://github.com/neos/neos-ui/wiki).
 
 #### Development commands
 | Command         | Description                    |

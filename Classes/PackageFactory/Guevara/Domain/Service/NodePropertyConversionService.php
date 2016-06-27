@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Service;
+namespace Neos\Neos\Ui\Domain\Service;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Object\ObjectManagerInterface;

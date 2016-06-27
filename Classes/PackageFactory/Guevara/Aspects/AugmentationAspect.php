@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\Aspects;
+namespace Neos\Neos\Ui\Aspects;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "PackageFactory.Guevara".*

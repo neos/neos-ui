@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\View;
+namespace Neos\Neos\Ui\View;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "PackageFactory.Guevara".*

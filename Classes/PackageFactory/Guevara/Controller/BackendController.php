@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\Controller;
+namespace Neos\Neos\Ui\Controller;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "PackageFactory.Guevara".*
@@ -29,7 +29,7 @@ class BackendController extends ActionController
     /**
      * @var string
      */
-    protected $defaultViewObjectName = 'PackageFactory\Guevara\View\BackendTypoScriptView';
+    protected $defaultViewObjectName = 'Neos\Neos\Ui\View\BackendTypoScriptView';
 
     /**
      * @var TypoScriptView

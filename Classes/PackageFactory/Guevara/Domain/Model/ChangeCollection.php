@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Model;
+namespace Neos\Neos\Ui\Domain\Model;
 
 /**
  * A collection of changes

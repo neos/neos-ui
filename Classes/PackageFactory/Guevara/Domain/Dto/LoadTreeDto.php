@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Dto;
+namespace Neos\Neos\Ui\Domain\Dto;
 
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Model\NodeType;

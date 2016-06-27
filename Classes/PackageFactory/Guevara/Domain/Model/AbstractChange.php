@@ -1,10 +1,10 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Model;
+namespace Neos\Neos\Ui\Domain\Model;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
-use PackageFactory\Guevara\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 
 abstract class AbstractChange implements ChangeInterface
 {

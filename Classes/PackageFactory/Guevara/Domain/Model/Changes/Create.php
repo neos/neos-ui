@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Model\Changes;
+namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class Create extends AbstractCreate
 {

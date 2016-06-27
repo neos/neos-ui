@@ -1,7 +1,7 @@
 <?php
-namespace PackageFactory\Guevara\TypoScript;
+namespace Neos\Neos\Ui\TypoScript;
 
-use PackageFactory\Guevara\Domain\Service\StateRenderingService;
+use Neos\Neos\Ui\Domain\Service\StateRenderingService;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Exception;
 use TYPO3\TypoScript\TypoScriptObjects\AbstractTypoScriptObject;

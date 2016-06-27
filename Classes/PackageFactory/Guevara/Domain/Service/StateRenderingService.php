@@ -1,6 +1,6 @@
 <?php
 
-namespace PackageFactory\Guevara\Domain\Service;
+namespace Neos\Neos\Ui\Domain\Service;
 
 use TYPO3\Eel\CompilingEvaluator;
 use TYPO3\Eel\Utility;

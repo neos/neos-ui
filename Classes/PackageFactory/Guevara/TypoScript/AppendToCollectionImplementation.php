@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\TypoScript;
+namespace Neos\Neos\Ui\TypoScript;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TypoScript\TypoScriptObjects\AbstractTypoScriptObject;

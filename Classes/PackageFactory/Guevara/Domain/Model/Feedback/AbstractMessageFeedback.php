@@ -1,7 +1,7 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Model\Feedback;
+namespace Neos\Neos\Ui\Domain\Model\Feedback;
 
-use PackageFactory\Guevara\Domain\Model\FeedbackInterface;
+use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
 abstract class AbstractMessageFeedback implements FeedbackInterface
 {

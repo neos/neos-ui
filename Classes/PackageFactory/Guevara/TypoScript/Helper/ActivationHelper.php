@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\TypoScript\Helper;
+namespace Neos\Neos\Ui\TypoScript\Helper;
 
 use TYPO3\Eel\ProtectedContextAwareInterface;
 use TYPO3\Flow\Annotations as Flow;

@@ -1,12 +1,12 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Service;
+namespace Neos\Neos\Ui\Domain\Service;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\ControllerContext;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Model\NodeType;
 use TYPO3\Neos\Service\LinkingService;
-use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
+use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 
 class NodeTreeBuilder
 {

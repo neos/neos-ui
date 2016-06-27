@@ -1,10 +1,10 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Model\Feedback\Operations;
+namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use PackageFactory\Guevara\Domain\Model\FeedbackInterface;
-use PackageFactory\Guevara\TYPO3CR\Service\WorkspaceService;
+use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
+use Neos\Neos\Ui\TYPO3CR\Service\WorkspaceService;
 
 class UpdateWorkspaceInfo implements FeedbackInterface
 {

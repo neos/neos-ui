@@ -1,8 +1,8 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Model\Changes;
+namespace Neos\Neos\Ui\Domain\Model\Changes;
 
-use PackageFactory\Guevara\Domain\Model\AbstractReferencingChange;
-use PackageFactory\Guevara\Domain\Model\ChangeInterface;
+use Neos\Neos\Ui\Domain\Model\AbstractReferencingChange;
+use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 
 abstract class AbstractMove extends AbstractReferencingChange
 {

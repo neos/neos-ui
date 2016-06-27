@@ -1,26 +1,26 @@
 <?php
-namespace PackageFactory\Guevara\Controller;
+namespace Neos\Neos\Ui\Controller;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "PackageFactory.Guevara".*
  *                                                                        *
  *                                                                        */
 
-use PackageFactory\Guevara\TypoScript\Helper\NodeInfoHelper;
+use Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\ActionController;
 use TYPO3\Flow\Persistence\PersistenceManagerInterface;
 use TYPO3\Neos\Service\PublishingService;
 use TYPO3\TYPO3CR\Domain\Repository\WorkspaceRepository;
-use PackageFactory\Guevara\Domain\Model\ChangeCollection;
-use PackageFactory\Guevara\Domain\Model\FeedbackCollection;
-use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Error;
-use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Info;
-use PackageFactory\Guevara\Domain\Model\Feedback\Messages\Success;
-use PackageFactory\Guevara\Domain\Model\Feedback\Operations\ReloadDocument;
-use PackageFactory\Guevara\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
-use PackageFactory\Guevara\Domain\Service\NodeTreeBuilder;
-use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
+use Neos\Neos\Ui\Domain\Model\ChangeCollection;
+use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
+use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
+use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
+use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
+use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 use TYPO3\Eel\FlowQuery\FlowQuery;
 
 class BackendServiceController extends ActionController

@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\TypeConverter;
+namespace Neos\Neos\Ui\TypeConverter;
 
 /*
  * This file is part of the TYPO3.TYPO3CR package.
@@ -16,9 +16,9 @@ use TYPO3\Flow\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
 use TYPO3\Flow\Object\ObjectManagerInterface;
 use TYPO3\Flow\Reflection\ObjectAccess;
-use PackageFactory\Guevara\Domain\Model\ChangeCollection;
-use PackageFactory\Guevara\Domain\Model\ChangeInterface;
-use PackageFactory\Guevara\TYPO3CR\Service\NodeService;
+use Neos\Neos\Ui\Domain\Model\ChangeCollection;
+use Neos\Neos\Ui\Domain\Model\ChangeInterface;
+use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 
 /**
  * An Object Converter for ChangeCollections.

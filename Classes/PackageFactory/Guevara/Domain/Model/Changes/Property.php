@@ -1,10 +1,10 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Model\Changes;
+namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use TYPO3\Flow\Annotations as Flow;
-use PackageFactory\Guevara\Domain\Model\AbstractChange;
-use PackageFactory\Guevara\Domain\Model\ChangeInterface;
-use PackageFactory\Guevara\Domain\Service\NodePropertyConversionService;
+use Neos\Neos\Ui\Domain\Model\AbstractChange;
+use Neos\Neos\Ui\Domain\Model\ChangeInterface;
+use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
 
 /**
  * Changes a property on a node

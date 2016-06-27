@@ -1,7 +1,7 @@
 <?php
-namespace PackageFactory\Guevara\Domain\Model\Feedback\Messages;
+namespace Neos\Neos\Ui\Domain\Model\Feedback\Messages;
 
-use PackageFactory\Guevara\Domain\Model\Feedback\AbstractMessageFeedback;
+use Neos\Neos\Ui\Domain\Model\Feedback\AbstractMessageFeedback;
 
 class Success extends AbstractMessageFeedback
 {

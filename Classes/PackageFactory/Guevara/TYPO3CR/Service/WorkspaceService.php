@@ -1,5 +1,5 @@
 <?php
-namespace PackageFactory\Guevara\TYPO3CR\Service;
+namespace Neos\Neos\Ui\TYPO3CR\Service;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\Workspace;

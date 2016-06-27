@@ -1,5 +1,5 @@
 {
-  "name": "neos/neos-ui",
+  "name": "@neos/neos-ui",
   "version": "1.0.0",
   "description": "Neos CMS UI written in ReactJS with Immutable data structures.",
   "main": "Resources/Public/JavaScript/Host.js",

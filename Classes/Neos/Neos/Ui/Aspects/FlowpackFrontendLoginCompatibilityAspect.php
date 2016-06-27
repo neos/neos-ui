@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\Aspects;
 
 /*                                                                        *
- * This script belongs to the TYPO3 Flow package "PackageFactory.Guevara".*
+ * This script belongs to the TYPO3 Flow package "Neos.Neos.Ui".          *
  *                                                                        *
  *                                                                        */
 
@@ -21,7 +21,7 @@ use Flowpack\Neos\FrontendLogin\Security\NeosRequestPattern;
  *
  * With this aspect the behavior is enhanced to consider routes starting with '/che!' as well.
  *
- * It is important to find a better way to support Flowpack.Neos.FrontendLogin, since PackageFactory.Guevara should not
+ * It is important to find a better way to support Flowpack.Neos.FrontendLogin, since Neos.Neos.Ui should not
  * have a dependency to it. Therefore this aspect avoids a direct dependency, it is still implicit though.
  *
  * @Flow\Scope("singleton")

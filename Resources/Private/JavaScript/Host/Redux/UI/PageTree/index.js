@@ -2,13 +2,13 @@ import {createAction} from 'redux-actions';
 import {Map, Set} from 'immutable';
 import {$all, $set, $remove, $add} from 'plow-js';
 
-const FOCUS = '@packagefactory/guevara/UI/PageTree/FOCUS';
-const COMMENCE_UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/COMMENCE_UNCOLLAPSE';
-const UNCOLLAPSE = '@packagefactory/guevara/UI/PageTree/UNCOLLAPSE';
-const COLLAPSE = '@packagefactory/guevara/UI/PageTree/COLLAPSE';
-const TOGGLE = '@packagefactory/guevara/UI/PageTree/TOGGLE';
-const INVALIDATE = '@packagefactory/guevara/UI/PageTree/INVALIDATE';
-const REQUEST_CHILDREN = '@packagefactory/guevara/UI/PageTree/REQUEST_CHILDREN';
+const FOCUS = '@neos/neos-ui/UI/PageTree/FOCUS';
+const COMMENCE_UNCOLLAPSE = '@neos/neos-ui/UI/PageTree/COMMENCE_UNCOLLAPSE';
+const UNCOLLAPSE = '@neos/neos-ui/UI/PageTree/UNCOLLAPSE';
+const COLLAPSE = '@neos/neos-ui/UI/PageTree/COLLAPSE';
+const TOGGLE = '@neos/neos-ui/UI/PageTree/TOGGLE';
+const INVALIDATE = '@neos/neos-ui/UI/PageTree/INVALIDATE';
+const REQUEST_CHILDREN = '@neos/neos-ui/UI/PageTree/REQUEST_CHILDREN';
 
 //
 // Export the action types

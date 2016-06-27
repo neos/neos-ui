@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set, $toggle} from 'plow-js';
 
-const TOGGLE = '@packagefactory/guevara/UI/FullScreen/TOGGLE';
+const TOGGLE = '@neos/neos-ui/UI/FullScreen/TOGGLE';
 
 /**
  * Toggles the fullscreen mode on/off.

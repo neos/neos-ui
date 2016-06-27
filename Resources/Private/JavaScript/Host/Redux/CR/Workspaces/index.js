@@ -2,10 +2,10 @@ import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
 import {$set, $head, $get} from 'plow-js';
 
-const UPDATE = '@packagefactory/guevara/CR/Workspaces/UPDATE';
-const SWITCH = '@packagefactory/guevara/CR/Workspaces/SWITCH';
-const PUBLISH = '@packagefactory/guevara/CR/Workspaces/PUBLISH';
-const DISCARD = '@packagefactory/guevara/CR/Workspaces/DISCARD';
+const UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE';
+const SWITCH = '@neos/neos-ui/CR/Workspaces/SWITCH';
+const PUBLISH = '@neos/neos-ui/CR/Workspaces/PUBLISH';
+const DISCARD = '@neos/neos-ui/CR/Workspaces/DISCARD';
 
 export const actionTypes = {
     UPDATE,

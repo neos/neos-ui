@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 
-const BOOT = '@packagefactory/guevara/System/BOOT';
+const BOOT = '@neos/neos-ui/System/BOOT';
 
 //
 // Export the action types

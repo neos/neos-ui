@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions';
 import {$override} from 'plow-js';
 
-const SET_POSITION = '@packagefactory/guevara/GUEST/CKEditorToolbar/SET_POSITION';
-const SHOW = '@packagefactory/guevara/GUEST/CKEditorToolbar/SHOW';
-const HIDE = '@packagefactory/guevara/GUEST/CKEditorToolbar/HIDE';
+const SET_POSITION = '@neos/neos-ui/GUEST/CKEditorToolbar/SET_POSITION';
+const SHOW = '@neos/neos-ui/GUEST/CKEditorToolbar/SHOW';
+const HIDE = '@neos/neos-ui/GUEST/CKEditorToolbar/HIDE';
 
 //
 // Export the action types

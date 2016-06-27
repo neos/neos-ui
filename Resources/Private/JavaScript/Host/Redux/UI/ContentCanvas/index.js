@@ -2,9 +2,9 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set, $get} from 'plow-js';
 
-const SET_CONTEXT_PATH = '@packagefactory/guevara/UI/ContentCanvas/SET_CONTEXT_PATH';
-const SET_PREVIEW_URL = '@packagefactory/guevara/UI/ContentCanvas/SET_PREVIEW_URL';
-const SET_SRC = '@packagefactory/guevara/UI/ContentCanvas/SET_SRC';
+const SET_CONTEXT_PATH = '@neos/neos-ui/UI/ContentCanvas/SET_CONTEXT_PATH';
+const SET_PREVIEW_URL = '@neos/neos-ui/UI/ContentCanvas/SET_PREVIEW_URL';
+const SET_SRC = '@neos/neos-ui/UI/ContentCanvas/SET_SRC';
 
 //
 // Export the action types

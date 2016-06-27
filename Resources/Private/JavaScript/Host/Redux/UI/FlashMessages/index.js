@@ -2,8 +2,8 @@ import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
 import {$set, $drop} from 'plow-js';
 
-const ADD = '@packagefactory/guevara/UI/FlashMessages/ADD';
-const REMOVE = '@packagefactory/guevara/UI/FlashMessages/REMOVE';
+const ADD = '@neos/neos-ui/UI/FlashMessages/ADD';
+const REMOVE = '@neos/neos-ui/UI/FlashMessages/REMOVE';
 
 /**
  * Adds a flash message

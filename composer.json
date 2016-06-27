@@ -1,5 +1,5 @@
 {
-    "name": "packagefactory/guevara",
+    "name": "neos/neos-ui",
     "type": "typo3-flow-package",
     "description": "NEOS CMS UI rewritten in React",
     "require": {

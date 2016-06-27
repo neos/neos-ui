@@ -15,15 +15,15 @@ set -e
 # Install all dependencies for the neos instance.
 composer install -q -n
 
-# Remove the default login package since our `che!` routes currenctly conflicts with the package.
+# Remove the default login package since our `neos!` routes currenctly conflicts with the package.
 composer remove flowpack/neos-frontendlogin -n
 rm -rf Packages/Plugins/Flowpack.Neos.FrontendLogin
 rm -rf Data/Temporary/*
 
 # Move the configuration files into place.
 rm Configuration/Routes.yaml
-cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Settings.yaml Configuration/Development/Settings.yaml
-cp Packages/Application/PackageFactory.Guevara/Build/TravisCi/Routes.yaml Configuration/Routes.yaml
+cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Development/Settings.yaml
+cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Routes.yaml Configuration/Routes.yaml
 
 # Setup the database and import the demo site package.
 mysql -e 'create database neos collate utf8_unicode_ci;'

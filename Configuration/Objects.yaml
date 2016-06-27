@@ -1,4 +1,4 @@
-PackageFactory\Guevara\View\BackendTypoScriptView:
+Neos\Neos\Ui\View\BackendTypoScriptView:
   properties:
     typoScriptParser:
       object: TYPO3\TypoScript\Core\Parser

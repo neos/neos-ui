@@ -1,5 +1,5 @@
-prototype(PackageFactory.Guevara:RenderState) {
-    @class = 'PackageFactory\\Guevara\\TypoScript\\RenderStateImplementation'
+prototype(Neos.Neos.Ui:RenderState) {
+    @class = 'Neos\\Neos\\Ui\\TypoScript\\RenderStateImplementation'
 
     context = TYPO3.TypoScript:RawArray
 }

@@ -1,33 +1,33 @@
 #                                                                        #
-# Security policy for the PackageFactory.Guevara package                 #
+# Security policy for the Neos.Neos.Ui package                           #
 #                                                                        #
 
 privilegeTargets:
 
   'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
 
-    'PackageFactory.Guevara:BackendLogin':
-      matcher: 'method(PackageFactory\Guevara\Controller\LoginController->(index|authenticate)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
+    'Neos.Neos.Ui:BackendLogin':
+      matcher: 'method(Neos\Neos\Ui\Controller\LoginController->(index|authenticate)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
 
-    'PackageFactory.Guevara:Backend.GeneralAccess':
-      matcher: 'method(PackageFactory\Guevara\Controller\BackendController->.*())'
+    'Neos.Neos.Ui:Backend.GeneralAccess':
+      matcher: 'method(Neos\Neos\Ui\Controller\BackendController->.*())'
 
-    'PackageFactory.Guevara:Backend.ServiceAccess':
-      matcher: 'method(PackageFactory\Guevara\Controller\BackendServiceController->.*())'
+    'Neos.Neos.Ui:Backend.ServiceAccess':
+      matcher: 'method(Neos\Neos\Ui\Controller\BackendServiceController->.*())'
 
 roles:
 
     'TYPO3.Flow:Everybody':
       privileges:
         -
-          privilegeTarget: 'PackageFactory.Guevara:BackendLogin'
+          privilegeTarget: 'Neos.Neos.Ui:BackendLogin'
           permission: GRANT
 
     'TYPO3.Neos:Editor':
       privileges:
         -
-          privilegeTarget: 'PackageFactory.Guevara:Backend.GeneralAccess'
+          privilegeTarget: 'Neos.Neos.Ui:Backend.GeneralAccess'
           permission: GRANT
         -
-          privilegeTarget: 'PackageFactory.Guevara:Backend.ServiceAccess'
+          privilegeTarget: 'Neos.Neos.Ui:Backend.ServiceAccess'
           permission: GRANT

@@ -27,7 +27,7 @@ export const createNodeEnvelope = (node = {}) => {
 };
 
 export const resolveChain = (chain, csrfToken) => {
-    return fetch('/che!/service/flow-query', {
+    return fetch('/neos!/service/flow-query', {
         method: 'POST',
         credentials: 'include',
         headers: {

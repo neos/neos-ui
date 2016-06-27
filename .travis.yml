@@ -22,7 +22,7 @@ services:
 #
 cache:
   directories:
-    - $HOME/build/PackageFactory/Neos/Packages/Application/PackageFactory.Guevara/node_modules
+    - $HOME/build/PackageFactory/Neos/Packages/Application/Neos.Neos.Ui/node_modules
     - $HOME/build/PackageFactory/Neos/Packages/Framework
     - $HOME/build/PackageFactory/Neos/Packages/Libraries
     - $HOME/build/PackageFactory/Neos/Packages/Sites
@@ -70,20 +70,20 @@ install:
   # Create a separate working directory in which the neos instance can be installed in.
   - cd ..
   - if [ ! -d "Neos" ]; then mkdir Neos; fi;
-  - cp PackageFactory.Guevara/Build/TravisCi/composer* Neos/
+  - cp neos-ui/Build/TravisCi/composer* Neos/
   - cd Neos
 
   # Move our repository and the configuration files into place.
   - if [ ! -d "Packages" ]; then mkdir Packages; fi;
   - if [ ! -d "Packages/Application" ]; then mkdir Packages/Application; fi;
-  - if [ ! -d "Packages/Application/PackageFactory.Guevara" ]; then mkdir Packages/Application/PackageFactory.Guevara; fi;
-  - mv ../PackageFactory.Guevara/** Packages/Application/PackageFactory.Guevara/
+  - if [ ! -d "Packages/Application/Neos.Neos.Ui" ]; then mkdir Packages/Application/Neos.Neos.Ui; fi;
+  - mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
 
   # Execute the optional install shell script for the environment.
-  - if [ -f "Packages/Application/PackageFactory.Guevara/Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Packages/Application/PackageFactory.Guevara/Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
+  - if [ -f "Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
 
   # Change into the repository directory where the environment based shell script will be executed.
-  - cd Packages/Application/PackageFactory.Guevara
+  - cd Packages/Application/Neos.Neos.Ui
   - source Build/init.sh
   - npm run build
 

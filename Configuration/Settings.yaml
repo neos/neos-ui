@@ -5,92 +5,94 @@ TYPO3:
         providers:
           Typo3BackendProvider:
             requestPatterns:
-              controllerObjectName: 'PackageFactory\Guevara\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|TYPO3\Media\Controller\.*'
+              controllerObjectName: 'Neos\Neos\Ui\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|TYPO3\Media\Controller\.*'
   Neos:
     typoScript:
       autoInclude:
-        'PackageFactory.Guevara': TRUE
+        'Neos.Neos.Ui': TRUE
 
   TypoScript:
     defaultContext:
-      'Guevara.Activation': 'PackageFactory\Guevara\TypoScript\Helper\ActivationHelper'
-PackageFactory:
-  Guevara:
-    # All PRIVATE, not meant for public extensibility.
-    state:
-      defaultEelContext:
-        String: 'TYPO3\Eel\Helper\StringHelper'
-        Array: 'TYPO3\Eel\Helper\ArrayHelper'
-        Date: 'TYPO3\Eel\Helper\DateHelper'
-        Configuration: 'TYPO3\Eel\Helper\ConfigurationHelper'
-        Math: 'TYPO3\Eel\Helper\MathHelper'
-        Json: 'TYPO3\Eel\Helper\JsonHelper'
-        I18n: 'TYPO3\Flow\I18n\EelHelper\TranslationHelper'
-        'Guevara.Workspace': 'PackageFactory\Guevara\TypoScript\Helper\WorkspaceHelper'
-        'Guevara.NodeInfo': 'PackageFactory\Guevara\TypoScript\Helper\NodeInfoHelper'
-        'Guevara.NodeTypes': 'PackageFactory\Guevara\TypoScript\Helper\NodeTypesHelper'
+      'Neos.Ui.Activation': 'Neos\Neos\Ui\TypoScript\Helper\ActivationHelper'
 
-      documentNode:
-        nodes: '${Guevara.NodeInfo.renderDocumentNodeAndChildContent(documentNode, controllerContext)}'
-        metaData:
-          contextPath: '${q(documentNode).property("_contextPath")}'
-          previewUrl: '${Guevara.NodeInfo.uri(q(documentNode).context({workspaceName: "live"}).get(0), controllerContext)}'
-      backend:
-        changes:
-          pending: []
-          processing: []
-          failed: []
-        cr:
-          nodeTypes:
-            byName: ${Guevara.NodeTypes.nodeTypesByName()}
-            constraints: ${Guevara.NodeTypes.nodeTypeConstraints()}
-            inheritanceMap: ${Guevara.NodeTypes.nodeTypeInheritanceMap()}
-            groups: ${Configuration.setting('TYPO3.Neos.nodeTypes.groups')}
-          nodes:
-            byContextPath: ${Guevara.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}
-            siteNode: ${q(site).property('_contextPath')}
-          workspaces:
-            byName: ${Guevara.Workspace.initializeWorkspacesByName()}
-            active: ${Guevara.Workspace.getPersonalWorkspaceName()}
-        ui:
-          contentCanvas:
-            src: ${Guevara.NodeInfo.uri(documentNode, controllerContext)}
-            contextPath: ${q(documentNode).property('_contextPath')}
-          debugMode: false
-          fullScreen:
-            isFullScreen: false
-          leftSideBar:
-            isHidden: false
-          rightSideBar:
-            isHidden: false
-          addNodeModal:
-            referenceNode: ''
-            mode: 'insert'
-          drawer:
-            isHidden: true
-          pageTree:
-            isLoading: false
-            hasError: false
-            focused: ${q(documentNode).property('_contextPath')}
-            active: ${q(documentNode).property('_contextPath')}
-          remote:
-            isSaving: FALSE
-            isPublishing: FALSE
-            isDiscarding: FALSE
-        user:
-          name:
-            title: ${q(user).property('name.title')}
-            firstName: ${q(user).property('name.firstName')}
-            middleName: ${q(user).property('name.middleName')}
-            lastName: ${q(user).property('name.lastName')}
-            otherName: ${q(user).property('name.otherName')}
-            fullName: ${q(user).property('name.fullName')}
-          settings:
-            isAutoPublishingEnabled: false
+Neos:
+  Neos:
+    Ui:
+      # All PRIVATE, not meant for public extensibility.
+      state:
+        defaultEelContext:
+          String: 'TYPO3\Eel\Helper\StringHelper'
+          Array: 'TYPO3\Eel\Helper\ArrayHelper'
+          Date: 'TYPO3\Eel\Helper\DateHelper'
+          Configuration: 'TYPO3\Eel\Helper\ConfigurationHelper'
+          Math: 'TYPO3\Eel\Helper\MathHelper'
+          Json: 'TYPO3\Eel\Helper\JsonHelper'
+          I18n: 'TYPO3\Flow\I18n\EelHelper\TranslationHelper'
+          'Neos.Ui.Workspace': 'Neos\Neos\Ui\TypoScript\Helper\WorkspaceHelper'
+          'Neos.Ui.NodeInfo': 'Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper'
+          'Neos.Ui.NodeTypes': 'Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper'
 
-    changes:
-      types:
-          'PackageFactory.Guevara:Property': 'PackageFactory\Guevara\Domain\Model\Changes\Property'
-          'PackageFactory.Guevara:Create': 'PackageFactory\Guevara\Domain\Model\Changes\Create'
-          'PackageFactory.Guevara:CreateBefore': 'PackageFactory\Guevara\Domain\Model\Changes\CreateBefore'
-          'PackageFactory.Guevara:CreateAfter': 'PackageFactory\Guevara\Domain\Model\Changes\CreateAfter'
+        documentNode:
+          nodes: '${Neos.Ui.NodeInfo.renderDocumentNodeAndChildContent(documentNode, controllerContext)}'
+          metaData:
+            contextPath: '${q(documentNode).property("_contextPath")}'
+            previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: "live"}).get(0), controllerContext)}'
+        backend:
+          changes:
+            pending: []
+            processing: []
+            failed: []
+          cr:
+            nodeTypes:
+              byName: ${Neos.Ui.NodeTypes.nodeTypesByName()}
+              constraints: ${Neos.Ui.NodeTypes.nodeTypeConstraints()}
+              inheritanceMap: ${Neos.Ui.NodeTypes.nodeTypeInheritanceMap()}
+              groups: ${Configuration.setting('TYPO3.Neos.nodeTypes.groups')}
+            nodes:
+              byContextPath: ${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}
+              siteNode: ${q(site).property('_contextPath')}
+            workspaces:
+              byName: ${Neos.Ui.Workspace.initializeWorkspacesByName()}
+              active: ${Neos.Ui.Workspace.getPersonalWorkspaceName()}
+          ui:
+            contentCanvas:
+              src: ${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}
+              contextPath: ${q(documentNode).property('_contextPath')}
+            debugMode: false
+            fullScreen:
+              isFullScreen: false
+            leftSideBar:
+              isHidden: false
+            rightSideBar:
+              isHidden: false
+            addNodeModal:
+              referenceNode: ''
+              mode: 'insert'
+            drawer:
+              isHidden: true
+            pageTree:
+              isLoading: false
+              hasError: false
+              focused: ${q(documentNode).property('_contextPath')}
+              active: ${q(documentNode).property('_contextPath')}
+            remote:
+              isSaving: FALSE
+              isPublishing: FALSE
+              isDiscarding: FALSE
+          user:
+            name:
+              title: ${q(user).property('name.title')}
+              firstName: ${q(user).property('name.firstName')}
+              middleName: ${q(user).property('name.middleName')}
+              lastName: ${q(user).property('name.lastName')}
+              otherName: ${q(user).property('name.otherName')}
+              fullName: ${q(user).property('name.fullName')}
+            settings:
+              isAutoPublishingEnabled: false
+
+      changes:
+        types:
+            'Neos.Neos.Ui:Property': 'Neos\Neos\Ui\Domain\Model\Changes\Property'
+            'Neos.Neos.Ui:Create': 'Neos\Neos\Ui\Domain\Model\Changes\Create'
+            'Neos.Neos.Ui:CreateBefore': 'Neos\Neos\Ui\Domain\Model\Changes\CreateBefore'
+            'Neos.Neos.Ui:CreateAfter': 'Neos\Neos\Ui\Domain\Model\Changes\CreateAfter'

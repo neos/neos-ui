@@ -31,7 +31,7 @@ class NodeTreeService {
         this.csrfToken = csrfToken;
 
         this.endpoints = {
-            loadTree: '/che!/service/load-tree'
+            loadTree: '/neos!/service/load-tree'
         };
     }
 

@@ -2,6 +2,7 @@
     "name": "neos/neos-ui",
     "type": "typo3-flow-package",
     "description": "NEOS CMS UI rewritten in React",
+    "license": "GPL-3.0+",
     "require": {
         "typo3/flow": "*",
         "typo3/neos": "*"

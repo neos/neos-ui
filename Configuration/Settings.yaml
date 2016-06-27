@@ -5,7 +5,7 @@ TYPO3:
         providers:
           Typo3BackendProvider:
             requestPatterns:
-              controllerObjectName: 'PackageFactory\Guevara\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|TYPO3\Media\Controller\.*'
+              controllerObjectName: 'Neos\Neos\Ui\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|TYPO3\Media\Controller\.*'
   Neos:
     typoScript:
       autoInclude:
@@ -13,7 +13,7 @@ TYPO3:
 
   TypoScript:
     defaultContext:
-      'Guevara.Activation': 'PackageFactory\Guevara\TypoScript\Helper\ActivationHelper'
+      'Guevara.Activation': 'Neos\Neos\Ui\TypoScript\Helper\ActivationHelper'
 PackageFactory:
   Guevara:
     # All PRIVATE, not meant for public extensibility.
@@ -26,9 +26,9 @@ PackageFactory:
         Math: 'TYPO3\Eel\Helper\MathHelper'
         Json: 'TYPO3\Eel\Helper\JsonHelper'
         I18n: 'TYPO3\Flow\I18n\EelHelper\TranslationHelper'
-        'Guevara.Workspace': 'PackageFactory\Guevara\TypoScript\Helper\WorkspaceHelper'
-        'Guevara.NodeInfo': 'PackageFactory\Guevara\TypoScript\Helper\NodeInfoHelper'
-        'Guevara.NodeTypes': 'PackageFactory\Guevara\TypoScript\Helper\NodeTypesHelper'
+        'Guevara.Workspace': 'Neos\Neos\Ui\TypoScript\Helper\WorkspaceHelper'
+        'Guevara.NodeInfo': 'Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper'
+        'Guevara.NodeTypes': 'Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper'
 
       documentNode:
         nodes: '${Guevara.NodeInfo.renderDocumentNodeAndChildContent(documentNode, controllerContext)}'
@@ -90,7 +90,7 @@ PackageFactory:
 
     changes:
       types:
-          'PackageFactory.Guevara:Property': 'PackageFactory\Guevara\Domain\Model\Changes\Property'
-          'PackageFactory.Guevara:Create': 'PackageFactory\Guevara\Domain\Model\Changes\Create'
-          'PackageFactory.Guevara:CreateBefore': 'PackageFactory\Guevara\Domain\Model\Changes\CreateBefore'
-          'PackageFactory.Guevara:CreateAfter': 'PackageFactory\Guevara\Domain\Model\Changes\CreateAfter'
+          'PackageFactory.Guevara:Property': 'Neos\Neos\Ui\Domain\Model\Changes\Property'
+          'PackageFactory.Guevara:Create': 'Neos\Neos\Ui\Domain\Model\Changes\Create'
+          'PackageFactory.Guevara:CreateBefore': 'Neos\Neos\Ui\Domain\Model\Changes\CreateBefore'
+          'PackageFactory.Guevara:CreateAfter': 'Neos\Neos\Ui\Domain\Model\Changes\CreateAfter'

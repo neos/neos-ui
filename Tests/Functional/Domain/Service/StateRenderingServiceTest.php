@@ -1,7 +1,7 @@
 <?php
-namespace PackageFactory\Guevara\Tests\Functional\Domain\Service;
+namespace Neos\Neos\Ui\Tests\Functional\Domain\Service;
 
-use PackageFactory\Guevara\Domain\Service\StateRenderingService;
+use Neos\Neos\Ui\Domain\Service\StateRenderingService;
 use TYPO3\Flow\Tests\FunctionalTestCase;
 
 
@@ -19,7 +19,7 @@ class StateRenderingServiceTest extends FunctionalTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->stateRenderingService = $this->objectManager->get('PackageFactory\Guevara\Domain\Service\StateRenderingService');
+        $this->stateRenderingService = $this->objectManager->get('Neos\Neos\Ui\Domain\Service\StateRenderingService');
     }
 
     /**

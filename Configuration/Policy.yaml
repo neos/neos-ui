@@ -7,13 +7,13 @@ privilegeTargets:
   'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
 
     'PackageFactory.Guevara:BackendLogin':
-      matcher: 'method(PackageFactory\Guevara\Controller\LoginController->(index|authenticate)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
+      matcher: 'method(Neos\Neos\Ui\Controller\LoginController->(index|authenticate)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
 
     'PackageFactory.Guevara:Backend.GeneralAccess':
-      matcher: 'method(PackageFactory\Guevara\Controller\BackendController->.*())'
+      matcher: 'method(Neos\Neos\Ui\Controller\BackendController->.*())'
 
     'PackageFactory.Guevara:Backend.ServiceAccess':
-      matcher: 'method(PackageFactory\Guevara\Controller\BackendServiceController->.*())'
+      matcher: 'method(Neos\Neos\Ui\Controller\BackendServiceController->.*())'
 
 roles:
 

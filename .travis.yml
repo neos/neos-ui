@@ -70,14 +70,14 @@ install:
   # Create a separate working directory in which the neos instance can be installed in.
   - cd ..
   - if [ ! -d "Neos" ]; then mkdir Neos; fi;
-  - cp Neos.Neos.Ui/Build/TravisCi/composer* Neos/
+  - cp neos-ui/Build/TravisCi/composer* Neos/
   - cd Neos
 
   # Move our repository and the configuration files into place.
   - if [ ! -d "Packages" ]; then mkdir Packages; fi;
   - if [ ! -d "Packages/Application" ]; then mkdir Packages/Application; fi;
   - if [ ! -d "Packages/Application/Neos.Neos.Ui" ]; then mkdir Packages/Application/Neos.Neos.Ui; fi;
-  - mv ../Neos.Neos.Ui/** Packages/Application/Neos.Neos.Ui/
+  - mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
 
   # Execute the optional install shell script for the environment.
   - if [ -f "Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi

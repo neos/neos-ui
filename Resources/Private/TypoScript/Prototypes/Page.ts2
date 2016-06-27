@@ -1,5 +1,5 @@
 //
-// Reset some rendering steps of the Neos backend, since Guevara
+// Reset some rendering steps of the Neos backend, since the package
 // augments the website itself
 //
 prototype(TYPO3.Neos:Page) {
@@ -8,18 +8,18 @@ prototype(TYPO3.Neos:Page) {
     // Disable all html attributes printed for the Neos backend
     //
     htmlTag.attributes {
-        version.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
-        xmlns.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
-        xmlns:typo3.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
-        xmlns:xsd.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
+        version.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
+        xmlns.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
+        xmlns:typo3.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
+        xmlns:xsd.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
     }
 
     //
     // Disable rendering of the Neos backend
     //
     head {
-        neosBackendHeader.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
-        neosBackendEndpoints.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
+        neosBackendHeader.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
+        neosBackendEndpoints.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
         javascriptBackendInformation = Neos.Neos.Ui:RenderState {
             state = 'documentNode'
@@ -31,7 +31,7 @@ prototype(TYPO3.Neos:Page) {
 
             @process.json = ${Json.stringify(value)}
             @process.wrapInJsObject = ${'<script>window[\'@Neos.Neos.Ui:DocumentInformation\']=' + value + '</script>'}
-            @if.newBackend = ${Guevara.Activation.enableNewBackend()}
+            @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
         }
 
         guestFrameApplication = TYPO3.TypoScript:Template {
@@ -39,32 +39,32 @@ prototype(TYPO3.Neos:Page) {
 
             templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Guest.html'
             sectionName = 'guestFrameApplication'
-            @if.newBackend = ${Guevara.Activation.enableNewBackend()}
+            @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
         }
     }
 
     //
     // Do not add Neos backend clas
     //
-    bodyTag.attributes.class.@process.addNeosBackendClass.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
+    bodyTag.attributes.class.@process.addNeosBackendClass.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
     //
     // Do not print document meta data
     //
-    neosBackendDocumentNodeData.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
+    neosBackendDocumentNodeData.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
     //
     // Do not render the Neos backend container
     //
-    neosBackendContainer.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
+    neosBackendContainer.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
     //
     // Disable memorizing last visited node
     //
-    lastVisitedNodeScript.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
+    lastVisitedNodeScript.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
     //
     // Do not render the Neos backend footer
     //
-    neosBackendFooter.@if.oldBackend = ${!Guevara.Activation.enableNewBackend()}
+    neosBackendFooter.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 }

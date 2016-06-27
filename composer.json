@@ -11,7 +11,7 @@
     },
     "autoload": {
         "psr-0": {
-            "PackageFactory\\Guevara": "Classes"
+            "Neos\\Neos\\Ui": "Classes"
         }
     }
 }

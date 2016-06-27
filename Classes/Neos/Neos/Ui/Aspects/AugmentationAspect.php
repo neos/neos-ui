@@ -35,7 +35,7 @@ class AugmentationAspect
     protected $session;
 
     /**
-     * Hooks into standard content element wrapping to render those attributes needed for Guevara to identify
+     * Hooks into standard content element wrapping to render those attributes needed for the package to identify
      * nodes and typoScript paths
      *
      * @Flow\Around("method(TYPO3\Neos\Service\ContentElementWrappingService->wrapContentObject())")
@@ -61,7 +61,7 @@ class AugmentationAspect
     }
 
     /**
-     * Hooks into the editable viewhelper to render those attributes needed for Guevara's inline editing
+     * Hooks into the editable viewhelper to render those attributes needed for the package's inline editing
      *
      * @Flow\Around("method(TYPO3\Neos\ViewHelpers\ContentElement\EditableViewHelper->render())")
      * @param JoinPointInterface $joinPoint the join point

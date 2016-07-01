@@ -11,15 +11,18 @@
 
 
 ## Features
+
 * Better editing experience for responsive websites.
 * Faster load times for the backend.
 * No reload constraint for the correct stylesheets on multi-site systems.
 * Updated Font-Awesome to v4.5.0 (old icon names are migrated on the fly).
 
 
-## Installation
+## Installation and usage
 
-1. Run the following commands:  
+1. You need to have latest Neos CMS up & running.
+
+2. Run the following commands:
    ```
    composer require neos/neos-ui:dev-master # install our package
    cd Packages/Application/Neos.Neos.Ui
@@ -27,7 +30,7 @@
    npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
    ```
 
-2. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`  
+3. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`
    ```yaml
 -
   name: 'Neos UI'
@@ -42,6 +45,17 @@ Now you are all set up and can open the sub-route `/neos!` to login to the new i
 __Note: We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
 If you've installed `nvm` make sure that the next node LTS version `6.1.0` is correctly installed - You can do so by executing `nvm install v6.1.0`.
 If you need help setting up `nvm`, `npm` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
+
+
+### Use Docker image
+
+__Alternatively__, instead of doing above setup steps manually, use Docker.
+The [million12/neos-react-ui](https://github.com/million12/docker-neos-react-ui)
+contains Neos CMS, correct version of NodeJS/nvm and `neos/neos-ui` package
+installed and built, working out of the box.
+
+Refer to [million12/neos-react-ui](https://github.com/million12/docker-neos-react-ui)
+documentation about how to use it.
 
 
 ## Contributing

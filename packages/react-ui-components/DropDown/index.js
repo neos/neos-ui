@@ -147,6 +147,7 @@ export class Contents extends Component {
                 aria-label="dropdown"
                 {...directProps}
                 onClick={() => closeDropDown()}
+                role="button"
                 >
                 {children}
             </ul>

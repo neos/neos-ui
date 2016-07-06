@@ -1,14 +1,14 @@
 .btn {
     position: relative;
     display: inline-block;
-    height: 40px;
-    min-width: 40px;
+    height: $unit;
+    min-width: $unit;
     padding: 0 $spacing;
     border: 0;
     -webkit-font-smoothing: antialiased;
     vertical-align: middle;
     width: auto;
-    color: white;
+    color: $brightest;
     cursor: pointer;
 
     &:focus {
@@ -20,26 +20,29 @@
         cursor: not-allowed;
 
         &:hover {
-            background: inherit;
-            color: inherit;
+            color: $brightest;
         }
     }
 }
-.btn--clean {
-    background: $darker;
+
+.btn--clean,
+.btn--clean[disabled]:hover {
+    background-color: $darker;
 }
-.btn--lighter {
+.btn--lighter,
+.btn--lighter[disabled]:hover {
     background-color: $dark;
 }
 .btn--transparent {
     background: 0;
 }
-.btn--brandActive {
-    background: $brand;
+.btn--brand,
+.btn--brand[disabled]:hover {
+    background-color: $brand;
 }
 .btn--brandHover {
     &:hover {
-        background: $brand;
+        background-color: $brand;
     }
 }
 .btn--cleanHover {

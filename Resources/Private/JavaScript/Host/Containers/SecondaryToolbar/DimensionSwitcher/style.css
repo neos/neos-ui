@@ -3,7 +3,7 @@
     min-width: 352px;
 }
 .dropDown__btn {
-    height: 40px;
+    height: $unit;
     border: 0;
     background: 0;
 }

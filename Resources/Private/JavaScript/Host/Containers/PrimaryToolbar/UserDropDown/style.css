@@ -10,7 +10,7 @@
 .dropDown__btn {
     position: relative;
     display: inline-block;
-    height: 40px;
+    height: $unit;
     border: 0;
     background-color: $darker;
 }
@@ -22,7 +22,7 @@
     box-shadow: 0 5px 10px rgba(#000, .2);
 }
 .dropDown__item {
-    height: 40px;
+    height: $unit;
     background: $neutral;
     border-top: 1px solid $darker;
 
@@ -40,7 +40,7 @@
       color: #FFF;
       cursor: pointer;
       text-decoration: none;
-      line-height: 40px;
+      line-height: $unit;
       text-align: left;
     }
 }

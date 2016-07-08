@@ -38,6 +38,7 @@ export class DropDown extends Component {
 
     render() {
         const {children, className, ...directProps} = this.props;
+        delete directProps.isOpened;
         const dropDownClassName = mergeClassNames({
             [className]: className && className.length,
             [style.dropDown]: true

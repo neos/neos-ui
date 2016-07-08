@@ -6,10 +6,10 @@
     }
 }
 .panel__headline {
-    height: 40px;
+    height: $unit;
     margin: 0;
     padding: 0 $spacing;
-    line-height: 40px;
+    line-height: $unit;
 }
 .panel__toggleBtn {
     position: absolute;

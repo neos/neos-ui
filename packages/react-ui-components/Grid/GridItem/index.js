@@ -9,7 +9,7 @@ const GridItem = props => {
         [className]: className && className.length
     });
     const inlineStyle = {
-        width
+        width: width === 'half' ? '50%' : '33.33%'
     };
 
     return (
@@ -21,7 +21,7 @@ const GridItem = props => {
 GridItem.propTypes = {
     // Since we don't want to get the grids get out of control,
     // we specify a set of allowed widths here.
-    width: PropTypes.oneOf(['33%', '50%']).isRequired,
+    width: PropTypes.oneOf(['half', 'third']).isRequired,
     children: PropTypes.node.isRequired,
     className: PropTypes.string
 };

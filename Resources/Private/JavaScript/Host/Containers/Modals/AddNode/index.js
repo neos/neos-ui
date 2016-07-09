@@ -110,12 +110,25 @@ export default class AddNodeModal extends Component {
                 </Button>
             ];
 
+            let insertModeText;
+            switch (this.props.mode) {
+                case 'prepend':
+                    insertModeText = <span><I18n fallback="Create new" id="createNew" /> <I18n fallback="before" id="before" /> <Icon icon="level-up" /></span>;
+                    break;
+                case 'append':
+                    insertModeText = <span><I18n fallback="Create new" id="createNew" /> <I18n fallback="after" id="after" /> <Icon icon="level-down" /></span>;
+                    break;
+                default:
+                    insertModeText = <span><I18n fallback="Create new" id="createNew" /> <I18n fallback="into" id="into" /> <Icon icon="long-arrow-right" /></span>;
+                    break;
+            }
+
             return (
                 <Dialog
                     isOpen={true}
                     wide={true}
                     actions={actions}
-                    title={<I18n fallback="Create new" id="createNew" />}
+                    title={insertModeText}
                     onRequestClose={this.props.close.bind(this)}
                     id="neos__addNodeModal"
                     >

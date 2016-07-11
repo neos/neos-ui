@@ -2,6 +2,7 @@ import {service} from 'Shared/index';
 import backend from './Backend.js';
 const {logger} = service;
 
+// TODO: looks as if this code is obsolete by now, as feedbackHandlers is nowhere to be found
 class FeedbackManager {
     constructor(store) {
         this.store = store;

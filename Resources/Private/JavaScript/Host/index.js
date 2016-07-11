@@ -4,7 +4,8 @@ import 'Shared/Styles/style.css';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {Map} from 'immutable';
-
+import backend from 'Host/Service/Backend';
+import feedbackManager from 'Host/Service/FeedbackManager';
 
 import {watchPersist} from 'Host/Sagas/Changes/index';
 import {watchPublish, watchDiscard} from 'Host/Sagas/Publish/index';
@@ -24,6 +25,10 @@ const store = createStore(reducer, new Map(), compose(
     applyMiddleware(sagaMiddleWare),
     devToolsStoreEnhancer()
 ));
+
+// Bootstrap the backend services
+backend.feedbackManager = feedbackManager(store);
+
 
 sagaMiddleWare.run(bootSaga, store);
 sagaMiddleWare.run(applicationViewSaga, store);

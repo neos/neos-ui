@@ -1,6 +1,18 @@
 import {service} from 'Shared/index';
-import backend from './Backend.js';
 const {logger} = service;
+import registry from '@reduct/registry';
+
+import * as feedbackHandler from './FeedbackHandler/index';
+
+const feedbackHandlers = registry();
+// Register FeedbackHandlers
+feedbackHandlers.registerAll({
+    'Neos.Neos.Ui:Success': feedbackHandler.flashMessage,
+    'Neos.Neos.Ui:Error': feedbackHandler.flashMessage,
+    'Neos.Neos.Ui:Info': feedbackHandler.logToConsole,
+    'Neos.Neos.Ui:UpdateWorkspaceInfo': feedbackHandler.updateWorkspaceInfo,
+    'Neos.Neos.Ui:ReloadDocument': feedbackHandler.reloadDocument
+});
 
 // TODO: looks as if this code is obsolete by now, as feedbackHandlers is nowhere to be found
 class FeedbackManager {
@@ -17,9 +29,6 @@ class FeedbackManager {
     }
 
     getFeedbackHandler(type) {
-        const {asyncComponents} = backend;
-        const {feedbackHandlers} = asyncComponents;
-
         try {
             return feedbackHandlers.get(type);
         } catch (err) {

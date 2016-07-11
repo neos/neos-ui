@@ -10,7 +10,8 @@ import {
     Button,
     Grid,
     GridItem,
-    I18n
+    I18n,
+    ToggablePanel
 } from 'Components/index';
 import {
     referenceNodeSelector,
@@ -69,7 +70,7 @@ export default class AddNodeModal extends Component {
             this.props.close();
         };
         return (
-            <GridItem className={style.gridItem} width="33%" key={key}>
+            <GridItem className={style.gridItem} width="third" key={key}>
                 <Button
                     hoverStyle="brand"
                     style="clean"
@@ -86,12 +87,16 @@ export default class AddNodeModal extends Component {
     renderNodeTypeGroup(group, key) {
         return (
             <div key={key}>
-                <div className={style.groupTitle}>
-                    <I18n fallback={group.label} id={group.label} />
-                </div>
-                <Grid className={style.grid} id="neos__addNodeModal__grid">
-                    {group.nodeTypes.map(this.renderNodeTypeItem.bind(this))}
-                </Grid>
+                <ToggablePanel isOpen={true}>
+                    <ToggablePanel.Header className={style.groupHeader}>
+                        <I18n className={style.groupTitle} fallback={group.label} id={group.label} />
+                    </ToggablePanel.Header>
+                    <ToggablePanel.Contents className={style.groupContents}>
+                        <Grid className={style.grid} id="neos__addNodeModal__grid">
+                            {group.nodeTypes.map(this.renderNodeTypeItem.bind(this))}
+                        </Grid>
+                    </ToggablePanel.Contents>
+                </ToggablePanel>
             </div>
         );
     }

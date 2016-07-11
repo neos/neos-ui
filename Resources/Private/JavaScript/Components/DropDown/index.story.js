@@ -4,7 +4,7 @@ import DropDown from './index.js';
 
 storiesOf('DropDown', module)
     .add('default', () => (
-        <DropDown isOpened={true}>
+        <DropDown isOpen={true}>
             <DropDown.Header>
                 Dropdown header
             </DropDown.Header>

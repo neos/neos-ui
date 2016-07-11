@@ -4,5 +4,5 @@ import Portal from './index.js';
 
 storiesOf('Portal', module)
     .add('default', () => (
-        <Portal isOpened={true}><div>Test portal</div></Portal>
+        <Portal isOpen={true}><div>Test portal</div></Portal>
     ));

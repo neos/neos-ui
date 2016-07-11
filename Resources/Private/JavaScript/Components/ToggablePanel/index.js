@@ -7,17 +7,17 @@ import style from './style.css';
 
 class ToggablePanel extends Component {
     static propTypes = {
-        isOpened: PropTypes.bool,
+        isOpen: PropTypes.bool,
         className: PropTypes.string,
         children: PropTypes.node.isRequired
     };
 
     static defaultProps = {
-        isOpened: false
+        isOpen: false
     };
 
     static childContextTypes = {
-        isOpened: PropTypes.bool.isRequired,
+        isOpen: PropTypes.bool.isRequired,
         togglePanel: PropTypes.func.isRequired,
         closePanel: PropTypes.func.isRequired
     };
@@ -26,23 +26,23 @@ class ToggablePanel extends Component {
         super(props, context);
 
         this.state = {
-            isOpened: props.isOpened
+            isOpen: props.isOpen
         };
     }
 
     getChildContext() {
         return {
-            isOpened: this.state.isOpened,
+            isOpen: this.state.isOpen,
             togglePanel: () => this.toggle(),
             closePanel: () => this.close()
         };
     }
 
     componentWillReceiveProps(newProps) {
-        const {isOpened} = newProps;
+        const {isOpen} = newProps;
 
-        if (isOpened !== this.state.isOpened) {
-            this.setState({isOpened});
+        if (isOpen !== this.state.isOpen) {
+            this.setState({isOpen});
         }
     }
 
@@ -51,7 +51,7 @@ class ToggablePanel extends Component {
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [style.panel]: true,
-            [style['panel--isOpen']]: this.state.isOpened
+            [style['panel--isOpen']]: this.state.isOpen
         });
 
         return (
@@ -62,11 +62,11 @@ class ToggablePanel extends Component {
     }
 
     close() {
-        this.setState({isOpened: false});
+        this.setState({isOpen: false});
     }
 
     toggle() {
-        this.setState({isOpened: !this.state.isOpened});
+        this.setState({isOpen: !this.state.isOpen});
     }
 }
 
@@ -77,7 +77,7 @@ class Header extends Component {
     };
 
     static contextTypes = {
-        isOpened: PropTypes.bool.isRequired,
+        isOpen: PropTypes.bool.isRequired,
         togglePanel: PropTypes.func.isRequired
     };
 
@@ -90,14 +90,14 @@ class Header extends Component {
             children,
             className
         } = this.props;
-        const {isOpened, togglePanel} = this.context;
-        const toggleIcon = isOpened ? 'chevron-up' : 'chevron-down';
+        const {isOpen, togglePanel} = this.context;
+        const toggleIcon = isOpen ? 'chevron-up' : 'chevron-down';
         const classNames = mergeClassNames({
             [className]: className && className.length
         });
 
         return (
-            <div className={classNames} aria-expanded={isOpened ? 'true' : 'false'}>
+            <div className={classNames} aria-expanded={isOpen ? 'true' : 'false'}>
                 <Headline
                     className={style.panel__headline}
                     type="h1"
@@ -122,7 +122,7 @@ class Contents extends Component {
     };
 
     static contextTypes = {
-        isOpened: PropTypes.bool.isRequired
+        isOpen: PropTypes.bool.isRequired
     };
 
     constructor(props, context) {
@@ -134,7 +134,7 @@ class Contents extends Component {
             children,
             className
         } = this.props;
-        const {isOpened} = this.context;
+        const {isOpen} = this.context;
         const classNames = mergeClassNames({
             [style.panel__contents]: true,
             [className]: className && className.length
@@ -142,8 +142,8 @@ class Contents extends Component {
 
         return (
             <div>
-                <Collapse isOpened={isOpened}>
-                    <div className={classNames} key="panelContents" aria-hidden={isOpened ? 'false' : 'true'}>
+                <Collapse isOpened={isOpen}>
+                    <div className={classNames} key="panelContents" aria-hidden={isOpen ? 'false' : 'true'}>
                         {children}
                     </div>
                 </Collapse>

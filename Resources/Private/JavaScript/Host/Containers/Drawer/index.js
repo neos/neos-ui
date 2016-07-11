@@ -79,7 +79,7 @@ export default class Drawer extends Component {
         };
 
         return children && children.length ? (
-            <ToggablePanel isOpened={true} className={style.drawer__menuItem} key={key}>
+            <ToggablePanel isOpen={true} className={style.drawer__menuItem} key={key}>
                 <ToggablePanel.Header className={style.drawer__menuItem__header}>
                     <Icon icon={icon} padded="right" />
                     {title}

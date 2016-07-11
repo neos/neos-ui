@@ -17,7 +17,7 @@ export default class Portal extends Component {
         style: PropTypes.object,
 
         // The boolean over which you can control the rendered state of the <Portal />.
-        isOpened: PropTypes.bool
+        isOpen: PropTypes.bool
     };
 
     constructor() {
@@ -31,28 +31,28 @@ export default class Portal extends Component {
     }
 
     componentDidMount() {
-        if (this.props.isOpened) {
+        if (this.props.isOpen) {
             this.openPortal();
         }
     }
 
     componentWillReceiveProps(newProps) {
-        // portal's 'is open' state is handled through the prop isOpened
-        if (typeof newProps.isOpened !== 'undefined') {
-            if (newProps.isOpened) {
+        // portal's 'is open' state is handled through the prop isOpen
+        if (typeof newProps.isOpen !== 'undefined') {
+            if (newProps.isOpen) {
                 if (this.state.active) {
                     this.renderPortal(newProps);
                 } else {
                     this.openPortal(newProps);
                 }
             }
-            if (!newProps.isOpened && this.state.active) {
+            if (!newProps.isOpen && this.state.active) {
                 this.closePortal();
             }
         }
 
         // portal handles its own 'is open' state
-        if (typeof newProps.isOpened === 'undefined' && this.state.active) {
+        if (typeof newProps.isOpen === 'undefined' && this.state.active) {
             this.renderPortal(newProps);
         }
     }

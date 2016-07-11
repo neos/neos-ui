@@ -58,6 +58,6 @@ export const hydrate = state => $set(
 // Export the reducer
 //
 export const reducer = {
-    [UPDATE]: ({name, data}) => $set(['cr', 'workspaces', 'byName', name, 'publishableNodes'], data),
+    [UPDATE]: ({name, data}) => $set(['cr', 'workspaces', 'byName', name, 'publishableNodes'], Immutable.fromJS(data)),
     [SWITCH]: name => $set('cr.workspaces.active', name)
 };

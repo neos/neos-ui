@@ -14,7 +14,7 @@ export function* watchPersist() {
         try {
             const feedback = yield call(change, changes);
             yield put(actions.UI.Remote.finishSaving());
-            yield put(feedbackManager.handleFeedback.bind(feedbackManager)(feedback));
+            feedbackManager.handleFeedback.bind(feedbackManager)(feedback);
         } catch (error) {
             console.error('Failed to persist changes', error);
         }

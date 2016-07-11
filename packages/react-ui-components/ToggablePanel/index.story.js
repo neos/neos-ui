@@ -4,7 +4,14 @@ import ToggablePanel from './index.js';
 
 storiesOf('ToggablePanel', module)
     .add('default', () => (
-        <div>
-            <ToggablePanel isOpened={true}>Panel contents</ToggablePanel>
+        <div style={{background: 'rebeccapurple'}}>
+            <ToggablePanel isOpen={true}>
+                <ToggablePanel.Header>
+                    Header
+                </ToggablePanel.Header>
+                <ToggablePanel.Contents>
+                    Contents
+                </ToggablePanel.Contents>
+            </ToggablePanel>
         </div>
     ));

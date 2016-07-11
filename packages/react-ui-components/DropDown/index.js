@@ -8,16 +8,16 @@ import style from './style.css';
 export class DropDown extends Component {
     static propTypes = {
         className: PropTypes.string,
-        isOpened: PropTypes.bool.isRequired,
+        isOpen: PropTypes.bool.isRequired,
         children: PropTypes.node.isRequired
     };
 
     static defaultProps = {
-        isOpened: false
+        isOpen: false
     };
 
     static childContextTypes = {
-        isOpened: PropTypes.bool.isRequired,
+        isOpen: PropTypes.bool.isRequired,
         toggleDropDown: PropTypes.func.isRequired,
         closeDropDown: PropTypes.func.isRequired
     };
@@ -25,12 +25,12 @@ export class DropDown extends Component {
     constructor(props, context) {
         super(props, context);
 
-        this.state = {isOpened: false};
+        this.state = {isOpen: false};
     }
 
     getChildContext() {
         return {
-            isOpened: this.state.isOpened,
+            isOpen: this.state.isOpen,
             toggleDropDown: () => this.toggle(),
             closeDropDown: () => this.close()
         };
@@ -56,11 +56,11 @@ export class DropDown extends Component {
     }
 
     close() {
-        this.setState({isOpened: false});
+        this.setState({isOpen: false});
     }
 
     toggle() {
-        this.setState({isOpened: !this.state.isOpened});
+        this.setState({isOpen: !this.state.isOpen});
     }
 }
 
@@ -70,7 +70,7 @@ export class Header extends Component {
         children: PropTypes.node
     };
     static contextTypes = {
-        isOpened: PropTypes.bool.isRequired,
+        isOpen: PropTypes.bool.isRequired,
         toggleDropDown: PropTypes.func.isRequired
     };
 
@@ -80,7 +80,7 @@ export class Header extends Component {
 
     render() {
         const {className, children, ...directProps} = this.props;
-        const {isOpened, toggleDropDown} = this.context;
+        const {isOpen, toggleDropDown} = this.context;
         const classNames = mergeClassNames({
             [style.dropDown__btn]: true,
             [className]: className && className.length
@@ -91,7 +91,7 @@ export class Header extends Component {
             <button
                 onClick={e => executeCallback({e, cb: () => toggleDropDown()})}
                 ref={btn => {
-                    const method = isOpened ? 'focus' : 'blur';
+                    const method = isOpen ? 'focus' : 'blur';
 
                     // Initially focus the btn if the propType was set.
                     if (btn !== null) {
@@ -109,8 +109,8 @@ export class Header extends Component {
     }
 
     renderChevronIcon() {
-        const {isOpened} = this.context;
-        const iconName = isOpened ? 'chevron-up' : 'chevron-down';
+        const {isOpen} = this.context;
+        const iconName = isOpen ? 'chevron-up' : 'chevron-down';
 
         return <Icon icon={iconName} className={style.dropDown__chevron} />;
     }
@@ -123,7 +123,7 @@ export class Contents extends Component {
     };
 
     static contextTypes = {
-        isOpened: PropTypes.bool.isRequired,
+        isOpen: PropTypes.bool.isRequired,
         closeDropDown: PropTypes.func.isRequired
     };
 
@@ -133,13 +133,13 @@ export class Contents extends Component {
 
     render() {
         const {className, children, ...directProps} = this.props;
-        const {isOpened, closeDropDown} = this.context;
+        const {isOpen, closeDropDown} = this.context;
         const contentsClassName = mergeClassNames({
             [className]: className && className.length,
             [style.dropDown__contents]: true,
-            [style['dropDown__contents--isOpen']]: isOpened
+            [style['dropDown__contents--isOpen']]: isOpen
         });
-        const ariaIsHiddenLabel = isOpened ? 'false' : 'true';
+        const ariaIsHiddenLabel = isOpen ? 'false' : 'true';
 
         return (
             <ul

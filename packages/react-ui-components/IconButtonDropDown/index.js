@@ -41,7 +41,7 @@ export default class IconButtonDropDown extends Component {
         super(props);
 
         this.mouseHoldTimeout = null;
-        this.state = {isOpened: false};
+        this.state = {isOpen: false};
     }
 
     render() {
@@ -57,9 +57,9 @@ export default class IconButtonDropDown extends Component {
         });
         const dropDownClassNames = mergeClassNames({
             [style.wrapper__dropDown]: true,
-            [style['wrapper__dropDown--isOpen']]: this.state.isOpened
+            [style['wrapper__dropDown--isOpen']]: this.state.isOpen
         });
-        const ariaIsHiddenLabel = this.state.isOpened ? 'false' : 'true';
+        const ariaIsHiddenLabel = this.state.isOpen ? 'false' : 'true';
         const directButtonProps = Object.assign({}, this.props.directButtonProps, {
             'aria-haspopup': 'true'
         });
@@ -110,11 +110,11 @@ export default class IconButtonDropDown extends Component {
     }
 
     onClick() {
-        const {isOpened} = this.state;
+        const {isOpen} = this.state;
 
         this.cancelHoldTimeout();
 
-        if (!isOpened) {
+        if (!isOpen) {
             this.props.onClick();
         }
     }
@@ -139,10 +139,10 @@ export default class IconButtonDropDown extends Component {
     }
 
     openDropDown() {
-        this.setState({isOpened: true});
+        this.setState({isOpen: true});
     }
 
     closeDropDown() {
-        this.setState({isOpened: false});
+        this.setState({isOpen: false});
     }
 }

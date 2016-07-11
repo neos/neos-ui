@@ -10,7 +10,8 @@ import {
     Button,
     Grid,
     GridItem,
-    I18n
+    I18n,
+    ToggablePanel
 } from 'Components/index';
 import {
     referenceNodeSelector,
@@ -69,7 +70,7 @@ export default class AddNodeModal extends Component {
             this.props.close();
         };
         return (
-            <GridItem className={style.gridItem} width="33%" key={key}>
+            <GridItem className={style.gridItem} width="third" key={key}>
                 <Button
                     hoverStyle="brand"
                     style="clean"
@@ -86,12 +87,16 @@ export default class AddNodeModal extends Component {
     renderNodeTypeGroup(group, key) {
         return (
             <div key={key}>
-                <div className={style.groupTitle}>
-                    <I18n fallback={group.label} id={group.label} />
-                </div>
-                <Grid className={style.grid} id="neos__addNodeModal__grid">
-                    {group.nodeTypes.map(this.renderNodeTypeItem.bind(this))}
-                </Grid>
+                <ToggablePanel isOpen={true}>
+                    <ToggablePanel.Header className={style.groupHeader}>
+                        <I18n className={style.groupTitle} fallback={group.label} id={group.label} />
+                    </ToggablePanel.Header>
+                    <ToggablePanel.Contents className={style.groupContents}>
+                        <Grid className={style.grid} id="neos__addNodeModal__grid">
+                            {group.nodeTypes.map(this.renderNodeTypeItem.bind(this))}
+                        </Grid>
+                    </ToggablePanel.Contents>
+                </ToggablePanel>
             </div>
         );
     }
@@ -110,12 +115,25 @@ export default class AddNodeModal extends Component {
                 </Button>
             ];
 
+            let insertModeText;
+            switch (this.props.mode) {
+                case 'prepend':
+                    insertModeText = <span><I18n fallback="Create new" id="createNew" /> <I18n fallback="before" id="before" /> <Icon icon="level-up" /></span>;
+                    break;
+                case 'append':
+                    insertModeText = <span><I18n fallback="Create new" id="createNew" /> <I18n fallback="after" id="after" /> <Icon icon="level-down" /></span>;
+                    break;
+                default:
+                    insertModeText = <span><I18n fallback="Create new" id="createNew" /> <I18n fallback="into" id="into" /> <Icon icon="long-arrow-right" /></span>;
+                    break;
+            }
+
             return (
                 <Dialog
                     isOpen={true}
                     wide={true}
                     actions={actions}
-                    title={<I18n fallback="Create new" id="createNew" />}
+                    title={insertModeText}
                     onRequestClose={this.props.close.bind(this)}
                     id="neos__addNodeModal"
                     >

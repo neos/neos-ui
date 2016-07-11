@@ -23,7 +23,7 @@ const Dialog = props => {
     });
 
     return (
-        <Portal targetId="dialog" isOpened={isOpen}>
+        <Portal targetId="dialog" isOpen={isOpen}>
             <section className={classNames} {...directProps} role="dialog" tabIndex="0">
                 <div className={style.dialog__contentsPosition}>
                     <div className={style.dialog__contents}>

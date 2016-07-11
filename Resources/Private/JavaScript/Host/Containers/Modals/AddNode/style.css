@@ -11,12 +11,16 @@
 }
 
 /* TODO: refactor such typography things to Headline component */
+.groupHeader {
+    border-bottom: 1px solid $dark;
+}
 .groupTitle {
     color: $brighter;
-    font-size: 14px;
     line-height: 1.2;
     font-weight: normal;
-    padding: 0 $spacing $halfSpacing $spacing;
+}
+.groupContents {
+    padding: 0 !important;
 }
 .grid {
     margin: 0;

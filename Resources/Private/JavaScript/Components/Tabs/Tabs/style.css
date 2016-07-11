@@ -26,9 +26,9 @@
 }
 .tabNavigation__itemBtn {
     display: inline-block;
-    height: 40px;
+    height: $unit;
     padding: 0 $spacing;
-    line-height: 40px;
+    line-height: $unit;
     cursor: pointer;
     color: white;
     border: 0;

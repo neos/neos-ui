@@ -43,9 +43,9 @@ export default class AddNode extends Component {
                     onItemSelect={this.onModeChanged.bind(this)}
                     directButtonProps={directButtonProps}
                     >
-                    <Icon dropDownId="prepend" icon="long-arrow-up" />
+                    <Icon dropDownId="prepend" icon="level-up" />
                     <Icon dropDownId="insert" icon="long-arrow-right" />
-                    <Icon dropDownId="append" icon="long-arrow-down" />
+                    <Icon dropDownId="append" icon="level-down" />
                 </IconButtonDropDown>
             </span>
         );
@@ -56,10 +56,10 @@ export default class AddNode extends Component {
 
         switch (this.state.currentMode) {
             case 'prepend':
-                modeIcon = 'long-arrow-up';
+                modeIcon = 'level-up';
                 break;
             case 'append':
-                modeIcon = 'long-arrow-down';
+                modeIcon = 'level-down';
                 break;
             default:
                 modeIcon = 'long-arrow-right';

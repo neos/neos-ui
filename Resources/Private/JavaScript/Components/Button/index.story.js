@@ -12,9 +12,10 @@ storiesOf('Button', module)
         </div>
     ))
     .add('background styles', () => (
-        <div style={{backgroundColor: 'gray'}}>
+        <div style={{backgroundColor: 'yellow'}}>
             <Button onClick={action('onClick')} style="clean">Clean button</Button>
             <Button onClick={action('onClick')} style="lighter">Lighter button</Button>
+            <Button onClick={action('onClick')} style="brand" hoverStyle="brand">Brand button</Button>
             <Button onClick={action('onClick')} style="transparent">Transparent button</Button>
         </div>
     ))

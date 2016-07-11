@@ -25,4 +25,3 @@ sagaMiddleWare.run(inspectorSaga);
 sagaMiddleWare.run(watchPersist);
 
 document.addEventListener('DOMContentLoaded', () => store.dispatch(actions.System.boot()));
->>>>>>> WIP: Make inspector editors redux-unaware & extensible

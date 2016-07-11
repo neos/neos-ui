@@ -14,7 +14,7 @@ export function* watchPublish() {
         try {
             const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
             yield put(actions.UI.Remote.finishPublishing());
-            yield put(feedbackManager.handleFeedback.bind(feedbackManager)(feedback));
+            feedbackManager.handleFeedback.bind(feedbackManager)(feedback);
         } catch (error) {
             console.error('Failed to publish', error);
         }
@@ -29,7 +29,7 @@ export function* watchDiscard() {
         try {
             const feedback = yield call(discard, action.payload);
             yield put(actions.UI.Remote.finishDiscarding());
-            yield put(feedbackManager.handleFeedback.bind(feedbackManager)(feedback));
+            feedbackManager.handleFeedback.bind(feedbackManager)(feedback);
         } catch (error) {
             console.error('Failed to discard', error);
         }

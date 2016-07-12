@@ -5,7 +5,7 @@ import {handleActions} from 'Shared/Utilities/index';
 
 import {reducer, actions, hydrate, errorMessages} from './index.js';
 
-const {open, close} = actions;
+const {open, close, toggleGroup} = actions;
 
 describe('"host.redux.ui.addNodeModal" ', () => {
     let store = null;
@@ -70,6 +70,26 @@ describe('"host.redux.ui.addNodeModal" ', () => {
             store.dispatch(close());
 
             expect(store.getState().get('ui').get('addNodeModal').get('referenceNode')).to.equal('');
+        });
+    });
+
+    describe('"toggleGroup" action.', () => {
+        it('should work with fresh state.', () => {
+            store.dispatch(toggleGroup('test'));
+
+            expect(store.getState().get('ui').get('addNodeModal').get('collapsedGroups')).to.have.members(['test']);
+        });
+        it('should toggle set group.', () => {
+            store.dispatch(toggleGroup('test'));
+            store.dispatch(toggleGroup('test'));
+
+            expect(store.getState().get('ui').get('addNodeModal').get('collapsedGroups')).to.not.have.members(['test']);
+        });
+        it('should work with multiple groups.', () => {
+            store.dispatch(toggleGroup('test1'));
+            store.dispatch(toggleGroup('test2'));
+
+            expect(store.getState().get('ui').get('addNodeModal').get('collapsedGroups')).to.have.members(['test1', 'test2']);
         });
     });
 });

@@ -23,9 +23,11 @@ import style from './style.css';
 @connect($transform({
     referenceNode: referenceNodeSelector,
     groupedAllowedNodeTypes: nodeTypesForAddNodeModalSelector,
-    mode: $get('ui.addNodeModal.mode')
+    mode: $get('ui.addNodeModal.mode'),
+    collapsedGroups: $get('ui.addNodeModal.collapsedGroups')
 }), {
     close: actions.UI.AddNodeModal.close,
+    toggleGroup: actions.UI.AddNodeModal.toggleGroup,
     persistChange: actions.Changes.persistChange
 })
 export default class AddNodeModal extends Component {
@@ -33,8 +35,10 @@ export default class AddNodeModal extends Component {
         referenceNode: NeosPropTypes.cr.node,
         groupedAllowedNodeTypes: PropTypes.array,
         mode: PropTypes.string.isRequired,
+        collapsedGroups: PropTypes.array.isRequired,
 
         close: PropTypes.func.isRequired,
+        toggleGroup: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired
     };
 
@@ -85,9 +89,13 @@ export default class AddNodeModal extends Component {
     }
 
     renderNodeTypeGroup(group, key) {
+        const groupName = group.name;
         return (
             <div key={key}>
-                <ToggablePanel isOpen={true}>
+                <ToggablePanel
+                    isOpen={this.props.collapsedGroups.indexOf(groupName) === -1}
+                    togglePanel={() => this.props.toggleGroup(groupName)}
+                    >
                     <ToggablePanel.Header className={style.groupHeader}>
                         <I18n className={style.groupTitle} fallback={group.label} id={group.label} />
                     </ToggablePanel.Header>

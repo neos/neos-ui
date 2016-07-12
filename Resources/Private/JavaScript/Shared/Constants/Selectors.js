@@ -9,7 +9,7 @@ module.exports = {
     contentCanvas: '#neos__contentCanvas',
     guestFrame: {
         iframe: '#neos__contentCanvas iframe',
-        inlineEditableNodeTypes: '[data-__che-property]'
+        inlineEditableNodeTypes: '[data-__neos-property]'
     },
     fullScreen: {},
     leftSideBar: {

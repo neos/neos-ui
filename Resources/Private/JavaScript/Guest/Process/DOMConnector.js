@@ -14,7 +14,7 @@ const closestContextPath = el => {
         return null;
     }
 
-    return el.dataset.__cheNodeContextpath || closestContextPath(el.parentNode);
+    return el.dataset.__neosNodeContextpath || closestContextPath(el.parentNode);
 };
 
 export default (ui, connection) => {
@@ -29,7 +29,7 @@ export default (ui, connection) => {
     //
     // Initialize node components
     //
-    [].slice.call(document.querySelectorAll('[data-__che-node-contextpath]'))
+    [].slice.call(document.querySelectorAll('[data-__neos-node-contextpath]'))
         .forEach(dom => nodeComponent(dom, ui, connection));
 
     //
@@ -100,9 +100,9 @@ export default (ui, connection) => {
     //
     // Initialize inline editors
     //
-    [].slice.call(document.querySelectorAll('[data-__che-property]')).forEach(dom => {
+    [].slice.call(document.querySelectorAll('[data-__neos-property]')).forEach(dom => {
         const contextPath = closestContextPath(dom);
-        const propertyName = dom.dataset.__cheProperty;
+        const propertyName = dom.dataset.__neosProperty;
 
         ckEditor({contextPath, propertyName}, dom, ui, connection, store.dispatch);
     });

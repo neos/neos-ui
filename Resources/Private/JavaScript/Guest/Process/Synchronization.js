@@ -8,7 +8,7 @@ export default (ui, connection, dispatch) => {
     connection.observe('nodes.focused').react(({node, typoscriptPath}) => {
         if (node && typoscriptPath) {
             const dom = document.querySelector(
-                `[data-__che-typoscript-path="${typoscriptPath}"][data-__che-node-contextpath="${node.contextPath}"]`
+                `[data-__neos-typoscript-path="${typoscriptPath}"][data-__neos-node-contextpath="${node.contextPath}"]`
             );
             const {x, y} = position(dom);
 

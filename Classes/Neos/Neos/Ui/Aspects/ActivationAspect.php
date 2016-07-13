@@ -39,6 +39,6 @@ class ActivationAspect
     {
         $this->contentCache->flush();
         $this->session->start();
-        $this->session->putData('__cheEnabled__', false);
+        $this->session->putData('__neosEnabled__', false);
     }
 }

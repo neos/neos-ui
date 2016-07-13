@@ -8,8 +8,8 @@ import {
 import style from './style.css';
 
 export default (el, ui, connection) => {
-    const contextPath = el.dataset.__cheNodeContextpath;
-    const typoscriptPath = el.dataset.__cheTyposcriptPath;
+    const contextPath = el.dataset.__neosNodeContextpath;
+    const typoscriptPath = el.dataset.__neosTyposcriptPath;
 
     el.classList.add(style.node);
 

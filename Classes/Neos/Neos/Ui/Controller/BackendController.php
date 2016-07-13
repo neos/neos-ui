@@ -102,7 +102,7 @@ class BackendController extends ActionController
 
         $this->contentCache->flush();
         $this->session->start();
-        $this->session->putData('__cheEnabled__', true);
+        $this->session->putData('__neosEnabled__', true);
 
         if ($user = $this->userService->getBackendUser()) {
             $workspaceName = $this->userService->getPersonalWorkspaceName();

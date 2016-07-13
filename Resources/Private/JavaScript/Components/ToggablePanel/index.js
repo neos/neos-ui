@@ -9,17 +9,12 @@ class ToggablePanel extends Component {
     static propTypes = {
         isOpen: PropTypes.bool,
         className: PropTypes.string,
-        children: PropTypes.node.isRequired
+        children: PropTypes.node.isRequired,
+        togglePanel: PropTypes.func
     };
 
     static defaultProps = {
         isOpen: false
-    };
-
-    static childContextTypes = {
-        isOpen: PropTypes.bool.isRequired,
-        togglePanel: PropTypes.func.isRequired,
-        closePanel: PropTypes.func.isRequired
     };
 
     constructor(props, context) {
@@ -30,20 +25,57 @@ class ToggablePanel extends Component {
         };
     }
 
-    getChildContext() {
-        return {
-            isOpen: this.state.isOpen,
-            togglePanel: () => this.toggle(),
-            closePanel: () => this.close()
-        };
-    }
-
     componentWillReceiveProps(newProps) {
         const {isOpen} = newProps;
 
-        if (isOpen !== this.state.isOpen) {
+        if (isOpen !== this.state.isOpen && !newProps.togglePanel) {
             this.setState({isOpen});
         }
+    }
+
+    render() {
+        // If togglePanel function is provided the component will not be using internal state,
+        // and would only depend on props.isOpen
+        const togglePanel = this.props.togglePanel ? this.props.togglePanel : this.toggle.bind(this);
+        const isOpen = this.props.togglePanel ? this.props.isOpen : this.state.isOpen;
+        return (
+            <StatelessToggablePanel
+                isOpen={isOpen}
+                togglePanel={togglePanel}
+                className={this.props.className}
+                >
+                {this.props.children}
+            </StatelessToggablePanel>
+        );
+    }
+
+    toggle() {
+        this.setState({isOpen: !this.state.isOpen});
+    }
+}
+
+class StatelessToggablePanel extends Component {
+    static propTypes = {
+        isOpen: PropTypes.bool,
+        className: PropTypes.string,
+        children: PropTypes.node.isRequired,
+        togglePanel: PropTypes.func.isRequired
+    };
+
+    static defaultProps = {
+        isOpen: false
+    };
+
+    static childContextTypes = {
+        isOpen: PropTypes.bool.isRequired,
+        togglePanel: PropTypes.func.isRequired
+    };
+
+    getChildContext() {
+        return {
+            isOpen: this.props.isOpen,
+            togglePanel: this.props.togglePanel
+        };
     }
 
     render() {
@@ -51,7 +83,7 @@ class ToggablePanel extends Component {
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [style.panel]: true,
-            [style['panel--isOpen']]: this.state.isOpen
+            [style['panel--isOpen']]: this.props.isOpen
         });
 
         return (
@@ -59,14 +91,6 @@ class ToggablePanel extends Component {
                 {children}
             </section>
         );
-    }
-
-    close() {
-        this.setState({isOpen: false});
-    }
-
-    toggle() {
-        this.setState({isOpen: !this.state.isOpen});
     }
 }
 

@@ -1,9 +1,10 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$all, $set} from 'plow-js';
+import {$all, $set, $toggle} from 'plow-js';
 
 const OPEN = '@neos/neos-ui/UI/AddNodeModal/OPEN';
 const CLOSE = '@neos/neos-ui/UI/AddNodeModal/CLOSE';
+const TOGGLE_GROUP = '@neos/neos-ui/UI/AddNodeModal/TOGGLE_GROUP';
 
 /**
  * Opens the add node modal.
@@ -15,12 +16,18 @@ const open = createAction(OPEN, (contextPath, mode) => ({contextPath, mode}));
  */
 const close = createAction(CLOSE);
 
+/**
+ * Toggles the nodetype group.
+ */
+const toggleGroup = createAction(TOGGLE_GROUP);
+
 //
 // Export the actions
 //
 export const actions = {
     open,
-    close
+    close,
+    toggleGroup
 };
 
 //
@@ -30,7 +37,8 @@ export const hydrate = () => $set(
     'ui.addNodeModal',
     new Map({
         referenceNode: '',
-        mode: 'insert'
+        mode: 'insert',
+        collapsedGroups: []
     })
 );
 
@@ -59,5 +67,6 @@ export const reducer = {
             $set('ui.addNodeModal.mode', mode)
         );
     },
-    [CLOSE]: () => $set('ui.addNodeModal.referenceNode', '')
+    [CLOSE]: () => $set('ui.addNodeModal.referenceNode', ''),
+    [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.collapsedGroups', groupId)
 };

@@ -22,14 +22,16 @@ export default class NodeToolbar extends Component {
         toolbar: PropTypes.shape({
             x: PropTypes.number.isRequired,
             y: PropTypes.number.isRequired,
-            isVisible: PropTypes.bool.isRequired
+            isVisible: PropTypes.bool.isRequired,
+            node: PropTypes.object
         }).isRequired,
         isEditorToolbarVisible: PropTypes.bool.isRequired
     };
 
     render() {
         const props = {
-            className: style.toolBar__btnGroup__btn
+            className: style.toolBar__btnGroup__btn,
+            node: this.props.toolbar.node
         };
         const {x, y, isVisible} = this.props.toolbar;
         const {isEditorToolbarVisible} = this.props;

@@ -13,7 +13,6 @@ import {
     I18n,
     ToggablePanel
 } from 'Components/index';
-import {I18n} from 'Host/Containers/index';
 import {
     referenceNodeSelector,
     nodeTypesForAddNodeModalSelector

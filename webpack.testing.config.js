@@ -1,5 +1,5 @@
 const fs = require('fs');
-const defaultConfig = require('./webpack.config');
+const defaultConfig = require('./webpack.base.config');
 const babelConfig = JSON.parse(fs.readFileSync('./.babelrc', 'utf8'));
 
 module.exports = Object.assign({}, defaultConfig, {

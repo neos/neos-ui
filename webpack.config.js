@@ -1,71 +1,9 @@
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
+const fs = require('fs');
+const defaultConfig = require('./webpack.base.config');
+const merge = require('lodash.merge');
 const path = require('path');
-const vars = require('postcss-simple-vars');
-const hexToRgba = require('postcss-hexrgba');
-const postCssImport = require('postcss-import');
-const nested = require('postcss-nested');
-const stylelint = require('stylelint');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
-const env = require('./Build/Utilities/').env;
 
-const config = {
-    // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
-    devtool: 'source-map',
-    module: {
-        preLoaders: [
-            {
-                test: /\.js$/,
-                loader: 'eslint-loader',
-                exclude: /node_modules/
-            }
-        ],
-        loaders: [
-            {
-                test: /\.js$/,
-                exclude: /(node_modules)/,
-                loader: 'babel'
-            },
-            {
-                test: /\.(woff|woff2)$/,
-                loader: 'url?limit=100000'
-            },
-            {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
-            }
-        ]
-    },
-
-    postcss: [
-        stylelint(),
-        autoprefixer({
-            browsers: ['last 2 versions']
-        }),
-        vars({
-            variables: require('./Resources/Private/JavaScript/Shared/Constants/Theme.js')
-        }),
-        postCssImport(),
-        nested(),
-        hexToRgba()
-    ],
-
-    resolve: {
-        root: [
-            path.resolve(__dirname, 'Resources/Private/JavaScript')
-        ],
-        modulesDirectories: [
-            'node_modules',
-            path.resolve(__dirname, './node_modules')
-        ]
-    },
-
-    plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
-    ],
-
+const HostConfig = merge({}, defaultConfig, {
     entry: {
         Host: './Resources/Private/JavaScript/Host/index.js',
 
@@ -75,23 +13,22 @@ const config = {
         //
         Components: ['./Resources/Private/JavaScript/Components/index.js'],
         Guest: './Resources/Private/JavaScript/Guest/index.js'
-    },
-
-    output: {
-        filename: 'JavaScript/[name].js',
-        path: path.resolve('./Resources/Public/')
-    },
-    stats: {
-        assets: false,
-        children: false
     }
-};
+});
 
-//
-// Adjust the config depending on the env.
-//
-if (!env.isCi && !env.isTesting && !env.isStorybook) {
-    config.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
-}
+const InspectorEditorConfig = merge({}, defaultConfig, {
+    resolve: {
+        alias: {
+            '@host': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/'),
+            'react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/react/')
+        }
+    },
+    entry: {
+        InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/src/index.js'
+    }
+});
 
-module.exports = config;
+module.exports = [
+    HostConfig,
+    InspectorEditorConfig
+];

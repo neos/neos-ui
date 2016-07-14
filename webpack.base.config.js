@@ -7,9 +7,11 @@ const hexToRgba = require('postcss-hexrgba');
 const postCssImport = require('postcss-import');
 const nested = require('postcss-nested');
 const stylelint = require('stylelint');
-const env = require('../../../../Build/Utilities/').env;
+const LiveReloadPlugin = require('webpack-livereload-plugin');
+const env = require('./Build/Utilities/').env;
 
 const config = {
+    // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
     module: {
         preLoaders: [
@@ -42,7 +44,7 @@ const config = {
             browsers: ['last 2 versions']
         }),
         vars({
-            variables: require('../Shared/Constants/Theme.js')
+            variables: require('./Resources/Private/JavaScript/Shared/Constants/Theme.js')
         }),
         postCssImport(),
         nested(),
@@ -50,10 +52,9 @@ const config = {
     ],
 
     resolve: {
-        alias: {
-            '@host': path.resolve(__dirname, '../Host/Extensibility/API/'),
-            'react': path.resolve(__dirname, '../Host/Extensibility/API/react/')
-        },
+        root: [
+            path.resolve(__dirname, 'Resources/Private/JavaScript')
+        ],
         modulesDirectories: [
             'node_modules',
             path.resolve(__dirname, './node_modules')
@@ -66,17 +67,24 @@ const config = {
     ],
 
     entry: {
-        InspectorEditors: './src/index.js'
+        // Hint: this part is filled dynamically inside webpack.config.js
     },
 
     output: {
         filename: 'JavaScript/[name].js',
-        path: path.resolve(__dirname, '../../../Public/')
+        path: path.resolve('./Resources/Public/')
     },
     stats: {
         assets: false,
         children: false
     }
 };
+
+//
+// Adjust the config depending on the env.
+//
+if (!env.isCi && !env.isTesting && !env.isStorybook) {
+    config.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
+}
 
 module.exports = config;

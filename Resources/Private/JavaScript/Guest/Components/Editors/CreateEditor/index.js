@@ -5,6 +5,7 @@ import {registerToolbar} from 'Guest/Containers/EditorToolbar/index';
 
 import style from './style.css';
 
+// TODO: move directly to CKEditor, so that it gets easier to understand.
 export default editorFactory => (nodeContext, dom, ui, connection, dispatch) => {
     let editor = null;
 

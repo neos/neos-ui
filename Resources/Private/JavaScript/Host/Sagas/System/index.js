@@ -6,8 +6,8 @@ import createInspectorEditorRegistry from 'Host/Process/InspectorEditorRegistry/
 import createHookRegistry from 'Host/Process/HookRegistry/index';
 import initializeJSAPI from 'API/index';
 import {ui} from 'Host/Plugins/index';
-import createApi from 'Host/Extensibility/API/index';
-import createHostApi from 'Host/Extensibility/index';
+import createApi from 'Host/Extensibility/ApiDefinitionForConsumers/API/index';
+import createHostApi from 'Host/Extensibility/ApiDefinitionForConsumers/index';
 
 let injectStore = null;
 export const getStore = discover(function* () {

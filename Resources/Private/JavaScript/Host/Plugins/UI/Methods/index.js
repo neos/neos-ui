@@ -3,6 +3,7 @@ import addFlashMessage from './AddFlashMessage/index';
 import blurNode from './BlurNode/index';
 import focusNode from './FocusNode/index';
 import hoverNode from './HoverNode/index';
+import openAddNodeModal from './OpenAddNodeModal/index';
 import unhoverNode from './UnhoverNode/index';
 import setDocumentInformation from './SetDocumentInformation/index';
 
@@ -22,6 +23,7 @@ export default initializeMethods({
     blurNode,
     focusNode,
     hoverNode,
+    openAddNodeModal,
     unhoverNode,
     setDocumentInformation
 });

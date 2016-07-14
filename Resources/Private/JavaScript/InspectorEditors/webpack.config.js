@@ -51,8 +51,8 @@ const config = {
 
     resolve: {
         alias: {
-            '@host': path.resolve(__dirname, '../Customization/Host/'),
-            'react': path.resolve(__dirname, '../Customization/Host/react/')
+            '@host': path.resolve(__dirname, '../Host/Extensibility/API/'),
+            'react': path.resolve(__dirname, '../Host/Extensibility/API/react/')
         },
         modulesDirectories: [
             'node_modules',

@@ -1,4 +1,4 @@
-import load from 'Customization/index';
+import load from 'Shared/Utilities/LoadScript';
 
 //
 // A simple registry for system hooks

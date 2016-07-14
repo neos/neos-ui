@@ -24,7 +24,7 @@ const InspectorEditorConfig = merge({}, defaultConfig, {
         }
     },
     entry: {
-        InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/src/index.js'
+        InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/index.js'
     }
 });
 

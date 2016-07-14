@@ -3,7 +3,7 @@ import {put, call} from 'redux-saga/effects';
 
 import {actionTypes, actions} from 'Host/Redux/index';
 import {publish, discard} from 'API/Endpoints/index';
-import backend from 'Host/Service/Backend.js';
+import backend from 'Host/Service/Backend';
 
 export function* watchPublish() {
     yield* takeEvery(actionTypes.CR.Workspaces.PUBLISH, function* publishNodes(action) {

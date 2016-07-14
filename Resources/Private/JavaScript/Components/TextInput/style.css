@@ -5,6 +5,7 @@
     margin-bottom: $spacing;
     border: 0;
     background: $neutral;
+    color: white;
 
     &:focus {
         outline: 0;

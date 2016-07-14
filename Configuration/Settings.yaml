@@ -18,6 +18,26 @@ TYPO3:
 Neos:
   Neos:
     Ui:
+      asyncModuleMapping:
+        'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
+          'Neos.UI:Inspector.TextField': true
+          'Neos.UI:Inspector.Boolean': true
+          'Neos.UI:Inspector.DateTime': true
+          'Neos.UI:Inspector.Image': true
+          'Neos.UI:Inspector.TextArea': true
+          'Neos.UI:Inspector.SelectBox': true
+          'Neos.UI:Inspector.NodeType': true
+      legacyModuleMapping:
+        'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
+          'TYPO3.Neos/Inspector/Editors/TextFieldEditor': 'Neos.UI:Inspector.TextField'
+          'TYPO3.Neos/Inspector/Editors/BooleanEditor': 'Neos.UI:Inspector.Boolean'
+          'TYPO3.Neos/Inspector/Editors/DateTimeEditor': 'Neos.UI:Inspector.DateTime'
+          'TYPO3.Neos/Inspector/Editors/ImageEditor': 'Neos.UI:Inspector.Image'
+          'TYPO3.Neos/Inspector/Editors/TextAreaEditor': 'Neos.UI:Inspector.TextArea'
+          'TYPO3.Neos/Inspector/Editors/SelectBoxEditor': 'Neos.UI:Inspector.SelectBox'
+          'TYPO3.Neos/Inspector/Editors/NodeTypeEditor': 'Neos.UI:Inspector.NodeType'
+          'Content/Inspector/Editors/NodeTypeEditor': 'Neos.UI:Inspector.NodeType'
+
       # All PRIVATE, not meant for public extensibility.
       state:
         defaultEelContext:

@@ -18,7 +18,7 @@ module.exports = Object.assign({}, defaultConfig, {
             // the test suite as well.
             //
             {
-                test: /\.sepc.js$/,
+                test: /\.spec.js$/,
                 loader: 'babel'
             },
             {

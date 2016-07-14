@@ -2,6 +2,9 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set, $toggle} from 'plow-js';
 
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
+
 const TOGGLE_AUTO_PUBLISHING = '@neos/neos-ui/User/Settings/TOGGLE_AUTO_PUBLISHING';
 
 /**
@@ -17,18 +20,14 @@ export const actions = {
 };
 
 //
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'user.settings',
-    new Map({
-        isAutoPublishingEnabled: false
-    })
-);
-
-//
 // Export the reducer
 //
-export const reducer = {
+export const reducer = handleActions({
+    [system.INIT]: () => $set(
+        'user.settings',
+        new Map({
+            isAutoPublishingEnabled: false
+        })
+    ),
     [TOGGLE_AUTO_PUBLISHING]: () => $toggle('user.settings.isAutoPublishingEnabled')
-};
+});

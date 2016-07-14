@@ -7,9 +7,9 @@ import {actions} from 'Host/Redux/index';
 import {
     Button,
     Icon,
-    I18n,
     ToggablePanel
 } from 'Components/index';
+import {I18n} from 'Host/Containers/index';
 
 import style from './style.css';
 
@@ -89,7 +89,7 @@ export default class Drawer extends Component {
                 </ToggablePanel.Contents>
             </ToggablePanel>
         ) : (
-            <Button className={style.drawer__menuItemBtn} role="button" onClick={onClick} key={key}>
+            <Button className={style.drawer__menuItemBtn} role="button" onClick={onClick} key={key} style="transparent">
                 <Icon icon={icon} padded="right" />
                 {title}
             </Button>

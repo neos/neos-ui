@@ -1,32 +1,22 @@
-import {
-    reducer as SettingsReducer,
-    hydrate as SettingsHydrator,
-    actions as Settings
-} from './Settings/index';
-import {
-    reducer as NameReducer,
-    hydrate as NameHydrator
-} from './Name/index';
+import {map, keys} from 'ramda';
+import {handleActions} from 'Shared/Utilities/index';
+
+import * as Settings from './Settings/index';
+import * as Name from './Name/index';
+
+const all = {Settings, Name};
+
+//
+// Export the actionTypes
+//
+export const actionTypes = map(a => a.actionTypes, all);
 
 //
 // Export the actions
 //
-export const actions = {
-    Settings
-};
-
-//
-// Export the initial state hydrators
-//
-export const hydrators = [
-    SettingsHydrator,
-    NameHydrator
-];
+export const actions = map(a => a.actions, all);
 
 //
 // Export the reducer
 //
-export const reducer = {
-    ...SettingsReducer,
-    ...NameReducer
-};
+export const reducer = handleActions(map(k => all[k].reducer, keys(all)));

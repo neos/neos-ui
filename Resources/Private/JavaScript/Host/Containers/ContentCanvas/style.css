@@ -2,7 +2,7 @@
     float: left;
     height: 100%;
     width: 100%;
-    padding: 82px 320px 0;
+    padding: 82px $sidebarWidth 0;
     transition: .2s ease padding;
     will-change: padding;
 }
@@ -15,7 +15,15 @@
 .contentCanvas--isFullScreen {
     padding: 0;
 }
+.contentCanvas__itemWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
 .contentCanvas__contents {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
 }

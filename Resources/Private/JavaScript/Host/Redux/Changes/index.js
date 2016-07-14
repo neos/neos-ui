@@ -1,4 +1,7 @@
 import {createAction} from 'redux-actions';
+import {$set} from 'plow-js';
+
+import {handleActions} from 'Shared/Utilities/index';
 
 const PERSIST = '@neos/neos-ui/Transient/Changes/PERSIST';
 
@@ -11,6 +14,15 @@ export const actionTypes = {
 
 /**
  * Perists the change.
+ * Example:
+ * change: {
+ *   type: 'PackageFactory.Guevara:Property',
+ *   subject: nodeContext.contextPath,
+ *   payload: {
+ *     propertyName: nodeContext.propertyName,
+ *     value
+ *   }
+ * }
  */
 const persistChange = createAction(PERSIST, change => ({change}));
 
@@ -24,4 +36,6 @@ export const actions = {
 //
 // Export the reducer
 //
-export const reducer = {};
+export const reducer = handleActions({
+    [PERSIST]: ({change}) => $set(['cr', 'nodes', 'byContextPath', change.subject, 'properties', change.payload.propertyName], change.payload.value)
+});

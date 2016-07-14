@@ -90,7 +90,7 @@ export default class Tabs extends Component {
         const {children} = this.props;
 
         return (
-            <div ref="tab-panel">
+            <div ref="tab-panel" className={style.tabs__content}>
                 {children.map((panel, index) => {
                     const isActive = this.state.activeTab === index;
                     const style = {

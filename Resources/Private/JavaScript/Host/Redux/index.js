@@ -1,94 +1,25 @@
-import {createStore, applyMiddleware, compose} from 'redux';
-import createSagaMiddleware from 'redux-saga';
-import {Map} from 'immutable';
-
+import {map, keys} from 'ramda';
 import {handleActions} from 'Shared/Utilities/index';
 
-import {
-    reducer as ChangesReducer,
-    actionTypes as ChangesActionTypes,
-    actions as Changes
-} from './Changes/index';
-import {
-    reducer as CRReducer,
-    hydrators as CRHydrators,
-    actionTypes as CRActionTypes,
-    actions as CR
-} from './CR/index';
-import {
-    reducer as SystemReducer,
-    actionTypes as SystemActionTypes,
-    actions as System
-} from './System/index';
-import {
-    reducer as UIReducer,
-    actionTypes as UIActionTypes,
-    hydrators as UIHydrators,
-    actions as UI
-} from './UI/index';
-import {
-    reducer as UserReducer,
-    hydrators as UserHydrators,
-    actions as User
-} from './User/index';
-import sagas from 'Host/Sagas/index';
+import * as Changes from './Changes/index';
+import * as CR from './CR/index';
+import * as System from './System/index';
+import * as UI from './UI/index';
+import * as User from './User/index';
 
-const reducers = {
-    ...ChangesReducer,
-    ...CRReducer,
-    ...SystemReducer,
-    ...UIReducer,
-    ...UserReducer
-};
-const rootReducer = handleActions(reducers);
-const devToolsStoreEnhancer = () => typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
-const sagaMiddleWare = createSagaMiddleware();
-const hydrators = [
-    ...CRHydrators,
-    ...UIHydrators,
-    ...UserHydrators
-];
+const all = {Changes, CR, System, UI, User};
 
 //
-// Export the store factory
+// Export the actionTypes
 //
-export function configureStore({serverState = {}} = {}) {
-    const mergedInitialState = hydrators.reduce((state, hydrator) => {
-        return hydrator(serverState)(state);
-    }, new Map());
-    const store = createStore(rootReducer, mergedInitialState, compose(
-        applyMiddleware(sagaMiddleWare),
-        devToolsStoreEnhancer()
-    ));
-
-    //
-    // Run all sagas at once
-    //
-    // TODO: re-evaluate this, since this is a change due to redux-saga 0.10.2 update
-    //       which might cause some further conceptual changes to the sagas themselves
-    //
-    sagas.forEach(sagaMiddleWare.run);
-
-    return store;
-}
-
-//
-// Export the action types
-//
-export const actionTypes = {
-    System: SystemActionTypes,
-    Changes: ChangesActionTypes,
-    UI: UIActionTypes,
-    CR: CRActionTypes
-};
+export const actionTypes = map(a => a.actionTypes, all);
 
 //
 // Export the actions
 //
-export const actions = {
-    Changes,
-    CR,
-    System,
-    UI,
-    User
-};
+export const actions = map(a => a.actions, all);
+
+//
+// Export the reducer
+//
+export const reducer = handleActions(map(k => all[k].reducer, keys(all)));

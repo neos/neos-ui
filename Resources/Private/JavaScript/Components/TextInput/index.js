@@ -13,6 +13,7 @@ const onChangeHandler = (e, cb) => {
 
 const TextInput = props => {
     const {
+        type,
         placeholder,
         className,
         isValid,
@@ -30,7 +31,7 @@ const TextInput = props => {
     return (
         <input
             className={classNames}
-            type="text"
+            type={type}
             role="textbox"
             placeholder={placeholder}
             onChange={e => onChangeHandler(e, onChange)}
@@ -45,6 +46,7 @@ TextInput.propTypes = {
     isValid: PropTypes.bool.isRequired,
     className: PropTypes.string,
     placeholder: PropTypes.string,
+    type: PropTypes.string,
 
     // Interaction related propTypes.
     onChange: PropTypes.func,
@@ -52,6 +54,7 @@ TextInput.propTypes = {
     onBlur: PropTypes.func
 };
 TextInput.defaultProps = {
+    type: 'text',
     isValid: true
 };
 

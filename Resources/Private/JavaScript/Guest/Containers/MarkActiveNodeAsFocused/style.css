@@ -1,3 +1,4 @@
 .markActiveNodeAsFocused--focusedNode {
-    outline: 2px solid red;
+    outline-offset: .5em;
+    outline: 2px solid $brand;
 }

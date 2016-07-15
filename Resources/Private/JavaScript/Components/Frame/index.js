@@ -1,4 +1,4 @@
-// 98997e98ea6d5ececc49db0de528151e40e272b7 from https://github.com/ryanseddon/react-frame-component/commit/98997e98ea6d5ececc49db0de528151e40e272b7
+// 98997e98ea6d5ececc49db0de528151e40e272b7 from https://github.com/ryanseddon/react-frame-component/commit/98997e98ea6d5ececc49db0de528151e40e272b7 - and then modified!
 var React = require('react');
 var ReactDOM = require('react-dom');
 var assign = require('object-assign');
@@ -56,9 +56,10 @@ var Frame = React.createClass({
         if (!this._isMounted) {
             return;
         }
-
         var doc = ReactDOM.findDOMNode(this).contentDocument;
-        if(doc && doc.readyState === 'complete') {
+        var win = ReactDOM.findDOMNode(this).contentWindow;
+        // TODO: doc.readyState seems to be *always* true in Chrome at least; so we check whether the querySelectors exist.
+        if(doc && doc.readyState === 'complete' && doc.querySelector(this.props.mountTarget)) {
             var contents = React.createElement('div',
                 undefined,
                 this.props.head,
@@ -67,10 +68,11 @@ var Frame = React.createClass({
 
             var initialRender = !this._setInitialContent;
             if (!this._setInitialContent) {
-                doc.open();
+                // HINT: we do not set the initial content anymore, as people should use a <src> tag for us.
+                /*doc.open();
                 doc.write(this.props.initialContent);
                 doc.close();
-                this._setInitialContent = true;
+                this._setInitialContent = true;*/
             }
 
             swallowInvalidHeadWarning();
@@ -86,11 +88,27 @@ var Frame = React.createClass({
                 mountTarget = doc.body.children[0];
             }
 
-            ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, callback);
+            // When the page unloads, unmount the component to clean up.
+            // TODO: this breaks quite often, so that it is not triggered on the next page!!!
+            win.addEventListener('beforeunload', () => {
+                ReactDOM.unmountComponentAtNode(mountTarget);
+                window.setTimeout(() => {
+                    // ... and trigger a rendering again (we use a timeout of 100 here as then the page might not be finished loading, but it has started to clear at least and might be empty.
+                    this.renderFrameContents();
+                }, 1000); // TODO: fix delay here
+            });
+
+            ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, () => {
+                callback(win, doc, mountTarget);
+            });
 
             resetWarnings();
         } else {
-            setTimeout(this.renderFrameContents, 0);
+            // If we cannot render yet, we re-try in 10 ms.
+            // Also, we need to ensure that we do not loose "this" along the way, that's why we use a closure.
+            setTimeout(() => {
+                this.renderFrameContents();
+            }, 10);
         }
     },
     componentDidUpdate: function() {

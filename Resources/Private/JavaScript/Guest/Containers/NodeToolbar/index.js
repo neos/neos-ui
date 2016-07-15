@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
+import {CR} from 'Host/Selectors/index';
 
 import {
     AddNode,
@@ -14,31 +15,47 @@ import {
 import style from './style.css';
 
 @connect($transform({
-    toolbar: $get('nodeToolbar'),
-    isEditorToolbarVisible: $get('editorToolbar.isVisible')
+    focusedNode: CR.Nodes.focusedSelector,
+    isEditorToolbarVisible: $get('guest.editorToolbar.isVisible')
 }))
 export default class NodeToolbar extends Component {
     static propTypes = {
-        toolbar: PropTypes.shape({
-            x: PropTypes.number.isRequired,
-            y: PropTypes.number.isRequired,
-            isVisible: PropTypes.bool.isRequired,
-            node: PropTypes.object
-        }).isRequired,
+        focusedNode: PropTypes.object.isRequired,
         isEditorToolbarVisible: PropTypes.bool.isRequired
     };
 
     render() {
         const props = {
             className: style.toolBar__btnGroup__btn,
-            node: this.props.toolbar.node
+            node: this.props.focusedNode
         };
-        const {x, y, isVisible} = this.props.toolbar;
+
+
+        const position = dom => {
+            if (dom && dom.getBoundingClientRect) {
+                const bodyBounds = document.getElementsByName('neos-content-main')[0].contentDocument.body.getBoundingClientRect(); // TODO: workaround to access the frame from outside...
+                const domBounds = dom.getBoundingClientRect();
+
+                return {
+                    x: domBounds.left - bodyBounds.left,
+                    y: domBounds.top - bodyBounds.top
+                };
+            }
+
+            return {x: 0, y: 0};
+        };
+
+
+
+        const nodeElement = document.getElementsByName('neos-content-main')[0].contentDocument.querySelector('[data-__neos-node-contextpath=\'' + this.props.focusedNode.contextPath + '\']'); // TODO: workaround to access the frame from outside...
+
+        const {x, y} = position(nodeElement);
+
         const {isEditorToolbarVisible} = this.props;
         const classNames = mergeClassNames({
             [style.toolBar]: true,
-            [style['toolBar--isHidden']]: !isVisible,
-            [style['toolBar--isBlurred']]: isEditorToolbarVisible
+            //[style['toolBar--isHidden']]: !isVisible,
+            //[style['toolBar--isBlurred']]: isEditorToolbarVisible
         });
 
         return (

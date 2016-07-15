@@ -1,24 +1,7 @@
-@import 'normalize.css';
-
-* {
-    box-sizing: border-box;
-}
-
 .applicationWrapper {
     height: 100vh;
 
     > div {
         height: 100%;
     }
-}
-body {
-    font-family: 'Noto Sans', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: normal;
-    color: $brightest;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
 }

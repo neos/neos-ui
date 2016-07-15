@@ -5,7 +5,6 @@ import focusNode from './FocusNode/index';
 import hoverNode from './HoverNode/index';
 import openAddNodeModal from './OpenAddNodeModal/index';
 import unhoverNode from './UnhoverNode/index';
-import setDocumentInformation from './SetDocumentInformation/index';
 
 const initializeMethods = methodMap => dispatch => {
     const api = {};
@@ -24,6 +23,5 @@ export default initializeMethods({
     focusNode,
     hoverNode,
     openAddNodeModal,
-    unhoverNode,
-    setDocumentInformation
+    unhoverNode
 });

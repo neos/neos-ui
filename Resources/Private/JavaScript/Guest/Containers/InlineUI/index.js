@@ -10,8 +10,10 @@ export default class InlineUI extends Component {
         return (
             <div className={style.inlineUi}>
                 <NodeToolbar />
-                <EditorToolbar />
+
             </div>
         );
+
+        // TODO: re-add EditorToolbar
     }
 }

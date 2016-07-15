@@ -3,7 +3,10 @@ import {
     IconButtonDropDown,
     Icon
 } from 'Components/index';
-import {api} from 'Shared/Utilities/';
+
+// TODO: hackish! What is the proper way to call `ui` methods?
+//const {ui} = window.neos;
+const ui = {}; // TODO!!!
 
 export default class AddNode extends Component {
     static propTypes = {

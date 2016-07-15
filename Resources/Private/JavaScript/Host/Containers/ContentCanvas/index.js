@@ -19,7 +19,9 @@ import InlineUI from 'Guest/Containers/InlineUI/index';
     setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
     setDocumentAndWindowReferences: actions.UI.ContentCanvas.setDocumentAndWindowReferences,
     addNode: actions.CR.Nodes.add,
-    focusNode: actions.CR.Nodes.focus
+    focusNode: actions.CR.Nodes.focus,
+    hoverNode: actions.CR.Nodes.hover,
+    unhoverNode: actions.CR.Nodes.unhover
 })
 export default class ContentCanvas extends Component {
     static propTypes = {
@@ -33,6 +35,8 @@ export default class ContentCanvas extends Component {
         addNodes: PropTypes.func.isRequired,
         setDocumentAndWindowReferences: PropTypes.func.isRequired,
         focusNode: PropTypes.func.isRequired,
+        hoverNode: PropTypes.func.isRequired,
+        unhoverNode: PropTypes.func.isRequired
     };
 
     render() {
@@ -65,16 +69,29 @@ export default class ContentCanvas extends Component {
             [].slice.call(iframeDocument.querySelectorAll('[data-__neos-node-contextpath]'))
                 .forEach(dom => {
                     dom.addEventListener('click', (e) => {
-    	                console.log("Click", e);
-                        console.log("Click on ", dom);
-                        const nodeContextPath = dom.attributes["data-__neos-node-contextpath"].value;
+    	                const nodeContextPath = dom.attributes["data-__neos-node-contextpath"].value;
                         const typoscriptPath = dom.attributes["data-__neos-typoscript-path"].value;
                     
                         this.props.focusNode(nodeContextPath, typoscriptPath);
 
                         e.stopPropagation();
                     });
-                    console.log("Init node component", dom);
+                    
+                    dom.addEventListener('mouseenter', (e) => {
+    	                const nodeContextPath = dom.attributes["data-__neos-node-contextpath"].value;
+                        const typoscriptPath = dom.attributes["data-__neos-typoscript-path"].value;
+                    
+                        this.props.hoverNode(nodeContextPath, typoscriptPath);
+
+                        e.stopPropagation();
+                    });
+                    dom.addEventListener('mouseleave', (e) => {
+    	                const nodeContextPath = dom.attributes["data-__neos-node-contextpath"].value;
+                    
+                        this.props.unhoverNode(nodeContextPath);
+
+                        e.stopPropagation();
+                    });
                     //nodeComponent(dom, ui, connection)
                 });
 

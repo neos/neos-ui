@@ -59,7 +59,7 @@ export default class NodeToolbar extends Component {
         });
 
         return (
-            <div className={classNames} style={{top: y, left: x}}>
+            <div className={classNames} style={{top: y-50, left: x}}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...props} />
                     <HideSelectedNode {...props} />

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
 import {executeCallback} from 'Shared/Utilities/index';
@@ -37,7 +38,8 @@ export class DropDown extends Component {
     }
 
     render() {
-        const {children, className, ...directProps} = this.props;
+        const {children, className, ...rest} = this.props;
+        const directProps = omit(rest, ['isOpen']);
         delete directProps.isOpened;
         const dropDownClassName = mergeClassNames({
             [className]: className && className.length,

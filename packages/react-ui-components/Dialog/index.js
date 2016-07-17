@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
+import omit from 'lodash.omit';
 import {executeCallback} from 'Shared/Utilities/index';
 import IconButton from 'Components/IconButton/index';
 import Portal from 'Components/Portal/index';
@@ -14,8 +15,9 @@ const Dialog = props => {
         isOpen,
         onRequestClose,
         actions,
-        ...directProps
+        ...rest
     } = props;
+    const directProps = omit(rest, ['isOpen']);
     const dialogStyle = wide ? style['dialog--wide'] : style.dialog;
     const classNames = mergeClassNames({
         [dialogStyle]: true,

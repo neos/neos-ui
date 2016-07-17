@@ -54,7 +54,7 @@ export class Image {
     @memoize
     get aspectRatio() {
         const {width, height} = this.dimensions;
-        return width/height;
+        return width / height;
     }
 
     @memoize
@@ -71,7 +71,7 @@ export class Image {
 
     @memoize
     get cropAspectRatio() {
-        return this.cropAdjustment.map(c => c.width/c.height);
+        return this.cropAdjustment.map(c => c.width / c.height);
     }
 
     @memoize

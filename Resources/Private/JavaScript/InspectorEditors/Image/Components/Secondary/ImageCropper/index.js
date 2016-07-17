@@ -1,13 +1,12 @@
 import React, {Component, PropTypes} from 'react';
-import {Components, SecondaryInspector, api} from '@host';
+import {Components, SecondaryInspector} from '@host';
 import ReactCrop from 'react-image-crop';
-import {Maybe} from 'monet';
 
 import style from './style.css';
-import CropConfiguration, {NullAspectRatioStrategy} from './model.js';
+import CropConfiguration from './model.js';
 import AspectRatioDropDown from './AspectRatioDropDown/index';
 
-const {Icon, IconButton, SelectBox, TextInput} = Components;
+const {Icon, IconButton, TextInput} = Components;
 
 export default class ImageCropper extends Component {
     static propTypes = {
@@ -108,7 +107,7 @@ export default class ImageCropper extends Component {
                                     type="number"
                                     value={height}
                                     onChange={height => this.setCustomAspectRatioDimensions(width, height)}
-                                        />
+                                    />
                             ]).orSome('')}
                         </div>
                     </div>

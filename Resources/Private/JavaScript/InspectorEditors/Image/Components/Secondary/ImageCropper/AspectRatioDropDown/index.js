@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import mergeClassNames from 'classnames';
 import {Maybe} from 'monet';
 
 import {Components} from '@host';
@@ -8,7 +7,7 @@ import {AspectRatioOption, NullAspectRatioStrategy} from '../model';
 
 import style from './style.css';
 
-const {Icon, IconButton, DropDown} = Components;
+const {IconButton, DropDown} = Components;
 
 export default class AspectRatioDropDown extends Component {
     static propTypes = {
@@ -39,17 +38,15 @@ export default class AspectRatioDropDown extends Component {
                         )
                     ).orSome(
                         <DropDown.Header className={[
-                                style.dropDown__btn,
-                                style['dropDown__btn--isPlaceholder']
-                            ].join(' ')}>
+                            style.dropDown__btn,
+                            style['dropDown__btn--isPlaceholder']
+                        ].join(' ')}>
                             {placeholder}
                         </DropDown.Header>
                     )}
                     <DropDown.Contents className={style.dropDown__contents}>
                         {options.map(aspectRatioOption => (
-                            <li
-                                className={style.dropDown__item} onClick={() => onSelect(aspectRatioOption)}
-                                >
+                            <li className={style.dropDown__item} onClick={() => onSelect(aspectRatioOption)}>
                                 {aspectRatioOption.label}
                             </li>
                         ))}

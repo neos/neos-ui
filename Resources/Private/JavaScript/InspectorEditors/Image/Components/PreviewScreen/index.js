@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Components, I18n} from '@host';
-import {$get, $transform} from 'plow-js';
+import {Components} from '@host';
 import Dropzone from 'react-dropzone';
 import {Maybe} from 'monet';
 
@@ -27,7 +26,7 @@ export default class PreviewScreen extends Component {
         const thumbnail = Maybe.fromNull(image)
             .map(image => Thumbnail.fromImageData(image, 273, 216));
         const loader = () => <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader} />;
-        const preview = image => (
+        const preview = () => (
             <div className={style.cropArea} style={thumbnail.map(t => t.styles.cropArea).orSome({})}>
                 <img
                     className={style.thumbnail__image}
@@ -55,6 +54,6 @@ export default class PreviewScreen extends Component {
                     {Maybe.fromNull(image).map(preview).orSome(loader())}
                 </div>
             </Dropzone>
-        )
+        );
     }
 }

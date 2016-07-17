@@ -1,4 +1,4 @@
-import {filter, map, values, merge, memoize} from 'ramda';
+import {values, merge, memoize} from 'ramda';
 import {Maybe, Some, None} from 'monet';
 
 //
@@ -10,24 +10,24 @@ export class NullAspectRatioStrategy {
         this.__label = label;
     }
 
-    get width () {
+    get width() {
         return null;
     }
 
-    get height () {
+    get height() {
         return null;
     }
 
-    get aspectRatio () {
-        return None();
+    get aspectRatio() {
+        return None();// eslint-disable-line new-cap
     }
 
-    get label () {
+    get label() {
         return this.__label;
     }
 
     setDimensions(width, height) {
-        return new CustomAspectRatioStrategy(width, height);
+        return new CustomAspectRatioStrategy(width, height);// eslint-disable-line no-use-before-define
     }
 }
 
@@ -38,19 +38,19 @@ export class ConfiguredAspectRatioStrategy extends NullAspectRatioStrategy {
         this.__height = height;
     }
 
-    get width () {
+    get width() {
         return this.__width;
     }
 
-    get height () {
+    get height() {
         return this.__height;
     }
 
-    get aspectRatio () {
-        return Some(this.width / this.height);
+    get aspectRatio() {
+        return Some(this.width / this.height);// eslint-disable-line new-cap
     }
 
-    get label () {
+    get label() {
         return this.__label || `${this.width}:${this.height}`;
     }
 }
@@ -67,16 +67,16 @@ export class OriginalAspectRatioStrategy extends NullAspectRatioStrategy {
         this.__image = image;
     }
 
-    get width () {
+    get width() {
         return this.__image.dimensions.width;
     }
 
-    get height () {
+    get height() {
         return this.__image.dimensions.height;
     }
 
-    get aspectRatio () {
-        return Some(this.width / this.height);
+    get aspectRatio() {
+        return Some(this.width / this.height);// eslint-disable-line new-cap
     }
 }
 
@@ -86,15 +86,15 @@ export class AspectRatioOption {
         this.__aspectRatioStrategyFactory = aspectRatioStrategyFactory;
     }
 
-    get label () {
+    get label() {
         return this.__label;
     }
 
-    get value () {
+    get value() {
         return this;
     }
 
-    getNextAspectRatioStrategy (currentAspectRatioStrategy) {
+    getNextAspectRatioStrategy(currentAspectRatioStrategy) {
         console.log(currentAspectRatioStrategy);
         return this.__aspectRatioStrategyFactory(currentAspectRatioStrategy);
     }
@@ -138,11 +138,11 @@ const DEFAULT_BOUNDARIES = {
 
 const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
     const {options} = neosConfiguration;
-    const when = condition => o => condition ? Some(o) : None();
+    const when = condition => o => condition ? Some(o) : None();// eslint-disable-line new-cap
     const whenAllowOriginal = when(neosConfiguration.allowOriginal && image.aspectRatio);
     const whenIsOriginal = o => whenAllowOriginal(o)
         .bind(() => image.cropAspectRatio)
-        .bind(aspectRatio => aspectRatio.toFixed(2) == image.aspectRatio.toFixed(2) ? Some(o) : None());
+        .bind(aspectRatio => aspectRatio.toFixed(2) === image.aspectRatio.toFixed(2) ? Some(o) : None());// eslint-disable-line new-cap
     const whenAllowCustom = when(neosConfiguration.allowCustom);
 
     //
@@ -161,7 +161,7 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
                 //
                 // Read out aspect ratio options and filter them
                 //
-                values(options).filter(o => (o.width/o.height).toFixed(2) == aspectRatio.toFixed(2))[0]
+                values(options).filter(o => (o.width / o.height).toFixed(2) === aspectRatio.toFixed(2))[0]
             ))
             .map(o => new ConfiguredAspectRatioStrategy(o.width, o.height, o.label))
         )
@@ -186,7 +186,7 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
 //
 
 const getGreatestCommonDivisor = memoize(
-    (a, b) => b ? getGreatestCommonDivisor(b, a%b) : a
+    (a, b) => b ? getGreatestCommonDivisor(b, a % b) : a
 );
 
 export default class CropConfiguration {
@@ -216,32 +216,33 @@ export default class CropConfiguration {
         );
     };
 
-    get image () {
+    get image() {
         return this.__image;
     }
 
-    get aspectRatioOptions () {
+    get aspectRatioOptions() {
         return this.__aspectRatioOptions;
     }
 
-    get aspectRatioStrategy () {
+    get aspectRatioStrategy() {
         return this.__aspectRatioStrategy;
     }
 
-    get aspectRatioDimensions () {
+    get aspectRatioDimensions() {
         const {width, height} = this.aspectRatioStrategy;
 
-        return width && height ? Some({width, height}) : None();
+        return width && height ? Some({width, height}) : None();// eslint-disable-line new-cap
     }
 
-    get aspectRatioReducedLabel () {
+    get aspectRatioReducedLabel() {
         return this.aspectRatioDimensions.map(({width, height}) => {
             const greatestCommonDivisor = getGreatestCommonDivisor(width, height);
-            return `${width/greatestCommonDivisor}:${height/greatestCommonDivisor}`;
+
+            return `${width / greatestCommonDivisor}:${height / greatestCommonDivisor}`;
         });
     }
 
-    get cropInformation () {
+    get cropInformation() {
         const boundaries = this.__image.cropAdjustment.map(c => ({
             x: c.x / this.__image.dimensions.width * 100,
             y: c.y / this.__image.dimensions.height * 100,
@@ -276,7 +277,7 @@ export default class CropConfiguration {
             this.__image,
             this.__aspectRatioOptions,
             this.aspectRatioStrategy.setDimensions(width, height)
-        )
+        );
     }
 
     flipAspectRatio() {
@@ -290,6 +291,6 @@ export default class CropConfiguration {
             this.__image,
             this.__aspectRatioOptions,
             new NullAspectRatioStrategy('')
-        )
+        );
     }
 }

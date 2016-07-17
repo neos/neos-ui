@@ -16,49 +16,58 @@ export default class Controls extends Component {
     };
 
     render() {
+        return (
+            <div>
+                {this.renderIsMediaSelectionScreenVisibleButtons()}
+                {this.renderisCropperVisibleButton()}
+            </div>
+        );
+    }
+
+    renderIsMediaSelectionScreenVisibleButtons() {
         const {
             chooseFromLocalFilesystemLabel,
             onChooseFromMedia,
             onChooseFromLocalFileSystem,
-            onRemove,
-            onCrop
+            onRemove
         } = this.props;
 
         return (
             <div>
-                   {/*isPressed={isMediaSelectionScreenVisible}*/}
                 <Button
-                   style="small"
-                   onClick={() => onChooseFromMedia()}
-                   >
+                    style="small"
+                    onClick={() => onChooseFromMedia()}
+                    >
                    <I18n id="TYPO3.Neos:Main:media" fallback="Media" />
                 </Button>
                 <Button
-                   style="small"
-                   onClick={() => onChooseFromLocalFileSystem()}
-                   >
+                    style="small"
+                    onClick={() => onChooseFromLocalFileSystem()}
+                    >
                    <I18n id={chooseFromLocalFilesystemLabel} fallback="Choose file" />
                 </Button>
                 <Button
-                   style="small"
-                   onClick={() => onRemove()}
-                   >
+                    style="small"
+                    onClick={() => onRemove()}
+                    >
                    <I18n id="TYPO3.Neos:Main:remove" fallback="Remove" />
                 </Button>
-                                {/*isPressed={isCropperVisible}*/}
-                {
-                    Maybe.fromNull(onCrop)
-                        .map(onCropImage => (
-                            <Button
-                                style="small"
-                                className={style.cropButton}
-                                onClick={() => onCrop()}
-                                >
-                                <I18n id="TYPO3.Neos:Main:crop" fallback="Crop" />
-                            </Button>
-                        )).orSome('')
-                }
             </div>
         );
+    }
+
+    renderisCropperVisibleButton() {
+        const {onCrop} = this.props;
+
+        return Maybe.fromNull(onCrop)
+            .map(() => (
+                <Button
+                    style="small"
+                    className={style.cropButton}
+                    onClick={() => onCrop()}
+                    >
+                    <I18n id="TYPO3.Neos:Main:crop" fallback="Crop" />
+                </Button>
+            )).orSome('');
     }
 }

@@ -1,4 +1,4 @@
-import * as api from './api.js';
+import * as api from './Api.js';
 
 describe('"shared.utilities.api"', () => {
     describe('"get"', () => {

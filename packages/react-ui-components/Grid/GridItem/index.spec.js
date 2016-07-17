@@ -23,7 +23,7 @@ describe('"host.components.gridItem"', () => {
     });
 
     it('should add the passed "width" prop to the inline-style of the rendered div.', () => {
-        const grid = shallow(<GridItem width="50%" />);
+        const grid = shallow(<GridItem width="half" />);
 
         expect(grid).to.have.attr('style', 'width:50%;');
     });

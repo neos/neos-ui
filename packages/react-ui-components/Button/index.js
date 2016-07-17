@@ -7,6 +7,7 @@ const Button = props => {
     const {
         children,
         className,
+        isPressed,
         isFocused,
         isDisabled,
         isActive,
@@ -15,19 +16,23 @@ const Button = props => {
         onMouseUp,
         onMouseEnter,
         onMouseLeave,
-        hoverStyle,
         style,
+        hoverStyle,
         ...directProps
     } = props;
+    const effectiveStyle = isActive ? 'brand' : style;
+    const effectiveHoverStyle = isActive ? 'brand' : hoverStyle;
     const classNames = mergeClassNames({
         [styles.btn]: true,
-        [styles['btn--clean']]: style === 'clean',
-        [styles['btn--lighter']]: style === 'lighter',
-        [styles['btn--transparent']]: style === 'transparent',
-        [styles['btn--cleanHover']]: hoverStyle === 'clean',
-        [styles['btn--brandHover']]: hoverStyle === 'brand',
-        [styles['btn--darkenHover']]: hoverStyle === 'darken',
+        [styles['btn--clean']]: effectiveStyle === 'clean',
+        [styles['btn--lighter']]: effectiveStyle === 'lighter',
+        [styles['btn--transparent']]: effectiveStyle === 'transparent',
+        [styles['btn--brand']]: effectiveStyle === 'brand',
+        [styles['btn--cleanHover']]: effectiveHoverStyle === 'clean',
+        [styles['btn--brandHover']]: effectiveHoverStyle === 'brand',
+        [styles['btn--darkenHover']]: effectiveHoverStyle === 'darken',
         [styles['btn--brandActive']]: isActive,
+        [styles['btn--isPressed']]: isPressed,
         [className]: className && className.length
     });
     const attributes = {
@@ -63,14 +68,15 @@ const Button = props => {
     );
 };
 Button.propTypes = {
+    isPressed: PropTypes.bool,
     // ARIA & UI related propTypes.
-    isFocused: PropTypes.bool.isRequired,
-    isDisabled: PropTypes.bool.isRequired,
-    isActive: PropTypes.bool.isRequired,
+    isFocused: PropTypes.bool,
+    isDisabled: PropTypes.bool,
+    isActive: PropTypes.bool,
 
     // Style related propTypes.
-    style: PropTypes.oneOf(['clean', 'lighter', 'transparent']).isRequired,
-    hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']).isRequired,
+    style: PropTypes.oneOf(['clean', 'brand', 'lighter', 'transparent']),
+    hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']),
     className: PropTypes.string,
 
     // Interaction related propTypes.
@@ -84,8 +90,8 @@ Button.propTypes = {
     children: PropTypes.node.isRequired
 };
 Button.defaultProps = {
-    style: 'clean',
-    hoverStyle: 'clean',
+    style: '',
+    hoverStyle: 'brand',
     isFocused: false,
     isDisabled: false,
     isActive: false

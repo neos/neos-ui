@@ -1,11 +1,10 @@
 .textInput {
     width: 100%;
-    height: $unit;
-    padding: 0 14px;
+    height: 40px;
+    padding: 10px 14px;
     margin-bottom: $spacing;
     border: 0;
     background: $neutral;
-    color: white;
 
     &:focus {
         outline: 0;

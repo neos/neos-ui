@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import mergeClassNames from 'classnames';
 import {Maybe} from 'monet';
 
 import Icon from 'Components/Icon/index';
@@ -21,7 +20,8 @@ export default class SelectBox extends Component {
             })
         ),
         placeholder: PropTypes.string,
-        placeholderIcon: PropTypes.string
+        placeholderIcon: PropTypes.string,
+        onSelect: PropTypes.func.isRequired
     };
 
     state = {
@@ -47,7 +47,7 @@ export default class SelectBox extends Component {
 
     render() {
         const {options, placeholder, placeholderIcon, onSelect} = this.props;
-        const {icon, value, label} = this.state;
+        const {icon, label} = this.state;
 
         return (
             <div className={style.wrapper}>
@@ -69,19 +69,24 @@ export default class SelectBox extends Component {
                                 </li>
                             ))
                             .orSome('')}
-                        {options.map(({icon, label, value}) => (
-                            <li
-                                className={style.dropDown__item} onClick={() => {
-                                    this.select(value);
-                                    onSelect(value);
-                                }}
-                                >
-                                {Maybe.fromNull(icon)
-                                    .map(icon => <Icon className={style.dropDown__itemIcon} icon={icon} />)
-                                    .orSome('')}
-                                {label}
-                            </li>
-                        ))}
+                        {options.map(({icon, label, value}) => {
+                            const onClick = () => {
+                                this.select(value);
+                                onSelect(value);
+                            };
+
+                            return (
+                                <li
+                                    className={style.dropDown__item}
+                                    onClick={onClick}
+                                    >
+                                    {Maybe.fromNull(icon)
+                                        .map(icon => <Icon className={style.dropDown__itemIcon} icon={icon} />)
+                                        .orSome('')}
+                                    {label}
+                                </li>
+                            );
+                        })}
                     </DropDown.Contents>
                 </DropDown>
             </div>

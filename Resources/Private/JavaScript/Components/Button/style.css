@@ -42,7 +42,8 @@
     background-color: $brand;
 }
 .btn--brandHover {
-    &:hover, &.btn--isPressed {
+    &:hover,
+    &.btn--isPressed {
         background-color: $brand;
     }
 }

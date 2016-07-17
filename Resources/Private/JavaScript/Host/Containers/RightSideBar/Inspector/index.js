@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {$get} from 'plow-js';
 import {Maybe} from 'monet';
 
 import {actions} from 'Host/Redux/index';

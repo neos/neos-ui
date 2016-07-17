@@ -1,13 +1,12 @@
-import {take, put, call} from 'redux-saga/effects';
-
+import {take, put} from 'redux-saga/effects';
 import {delay, discover} from 'Shared/Utilities/Promises';
-import {actionTypes, actions} from 'Host/Redux/index';
-import createInspectorEditorRegistry from 'Host/Process/InspectorEditorRegistry/index';
-import createHookRegistry from 'Host/Process/HookRegistry/index';
-import initializeJSAPI from 'API/index';
-import {ui} from 'Host/Plugins/index';
 import createApi from 'Host/Extensibility/ApiDefinitionForConsumers/API/index';
 import createHostApi from 'Host/Extensibility/ApiDefinitionForConsumers/index';
+import createInspectorEditorRegistry from 'Host/Process/InspectorEditorRegistry/index';
+import createHookRegistry from 'Host/Process/HookRegistry/index';
+import {actionTypes, actions} from 'Host/Redux/index';
+import initializeJSAPI from 'API/index';
+import {ui} from 'Host/Plugins/index';
 
 let injectStore = null;
 export const getStore = discover(function* () {
@@ -48,12 +47,12 @@ export const getTranslations = discover(function* () {
     return JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
 });
 
-export const getInspectorEditorRegistry =  discover(function* () {
+export const getInspectorEditorRegistry = discover(function* () {
     const {asyncModuleMapping, legacyModuleMapping} = yield getConfiguration;
     return createInspectorEditorRegistry(asyncModuleMapping, legacyModuleMapping);
 });
 
-export const getHookRegistry =  discover(function* () {
+export const getHookRegistry = discover(function* () {
     const {asyncModuleMapping} = yield getConfiguration;
     return createHookRegistry(asyncModuleMapping);
 });

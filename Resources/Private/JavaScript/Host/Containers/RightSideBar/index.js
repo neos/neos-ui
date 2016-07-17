@@ -2,17 +2,11 @@ import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-
-import {CR} from 'Host/Selectors/index';
 import {
-    Bar,
-    Button,
     SideBar,
-    Tabs,
     IconButton
 } from 'Components/index';
 import {actions} from 'Host/Redux/index';
-import NeosPropTypes from 'Shared/PropTypes/index';
 
 import style from './style.css';
 
@@ -50,8 +44,8 @@ export default class RightSideBar extends Component {
     };
 
     render() {
-        const focusedNode = this.props.focusedNode;
-        //const tabs = generateTabs($get('nodeType', focusedNode));
+        // const focusedNode = this.props.focusedNode;
+        // const tabs = generateTabs($get('nodeType', focusedNode));
         const {isHidden, isFullScreen} = this.props;
         const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
@@ -68,6 +62,7 @@ export default class RightSideBar extends Component {
               />
         );
 
+        /* eslint-disable no-inline-comments */
         return (
             <SideBar
                 position="right"
@@ -92,5 +87,6 @@ export default class RightSideBar extends Component {
                     */}
             </SideBar>
         );
+        /* eslint-enable no-inline-comments */
     }
 }

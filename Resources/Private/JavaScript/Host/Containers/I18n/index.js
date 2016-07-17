@@ -51,7 +51,7 @@ export default class I18n extends Component {
     }
 
     renderTranslation() {
-        const {fallback, params, translations} = this.props;
+        const {fallback, translations} = this.props;
         const [packageKey, sourceName, id] = this.getTranslationAddress();
         const translation = [packageKey, sourceName, id]
 

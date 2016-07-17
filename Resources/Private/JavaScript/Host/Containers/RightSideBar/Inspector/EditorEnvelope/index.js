@@ -33,7 +33,8 @@ export default class EditorEnvelope extends Component {
 
         node: PropTypes.object.isRequired,
         inspectorEditorRegistry: PropTypes.object.isRequired,
-        commit: PropTypes.func.isRequired
+        commit: PropTypes.func.isRequired,
+        transient: PropTypes.object
     };
 
     state = {
@@ -63,7 +64,7 @@ export default class EditorEnvelope extends Component {
             return true;
         }
 
-        if (!Boolean(transient) && !Boolean(this.props.transient)) {
+        if (Boolean(transient && this.props.transient) === false) {
             return false;
         }
 
@@ -71,8 +72,7 @@ export default class EditorEnvelope extends Component {
             return true;
         }
 
-
-        if (!Boolean(transient.get(id)) && !Boolean(this.props.transient.get(id))) {
+        if (Boolean(transient.get(id) && this.props.transient.get(id)) === false) {
             return false;
         }
 
@@ -81,10 +81,10 @@ export default class EditorEnvelope extends Component {
         }
 
         return (
-            node.contextPath != this.props.node.contextPath,
+            node.contextPath !== this.props.node.contextPath,
             transient
                 .get(id)
-                .get('value') !=
+                .get('value') !==
             this.props.transient
                 .get(id)
                 .get('value')
@@ -172,7 +172,7 @@ export default class EditorEnvelope extends Component {
             <Label htmlFor={this.generateIdentifier()}>
                 <I18n id={label} />
             </Label>
-        )
+        );
     }
 
     render() {

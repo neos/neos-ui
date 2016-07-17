@@ -1,9 +1,7 @@
 import {$get} from 'plow-js';
-
-import {actions} from 'Host/Redux/index';
 import {loadImageMetadata, createImageVariant, uploadAsset} from 'API/Endpoints/index';
 
-export default ({dispatch, getState}) => ({
+export default ({getState}) => ({
     media: {
         asset: {
             upload(file) {

@@ -18,7 +18,7 @@ export const transientValuesSelector = createSelector(
         $get('ui.inspector.valuesByNodePath')
     ],
     (activeNodeContextPath, valuesByNodePath) => $get([activeNodeContextPath], valuesByNodePath)
-)
+);
 
 export const currentValue = createSelector(
     [

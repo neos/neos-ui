@@ -17,19 +17,22 @@ import {inspectorSaga} from 'Host/Sagas/UI/Inspector/index';
 import {watchToggle, watchCommenceUncollapse} from './Sagas/UI/PageTree/index';
 import {watchNodes, watchFocusedNode, watchHoveredNode} from './Sagas/UI/Plugin/index';
 
-
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
-const devToolsStoreEnhancer = () =>  devToolsArePresent ? window.devToolsExtension() : f => f;
+const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
 const sagaMiddleWare = createSagaMiddleware();
 const store = createStore(reducer, new Map(), compose(
     applyMiddleware(sagaMiddleWare),
     devToolsStoreEnhancer()
 ));
 
+//
 // Bootstrap the backend services
+//
 backend.feedbackManager = feedbackManager(store);
 
-
+//
+// Bootstrap the saga middleware with initial sagas
+//
 sagaMiddleWare.run(bootSaga, store);
 sagaMiddleWare.run(applicationViewSaga, store);
 sagaMiddleWare.run(inspectorSaga);

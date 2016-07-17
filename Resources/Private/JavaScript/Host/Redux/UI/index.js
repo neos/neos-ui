@@ -27,7 +27,6 @@ const all = {
     Editors
 };
 
-
 //
 // Export the actionTypes
 //

@@ -1,9 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
-
-import {Tabs, ToggablePanel} from 'Components/index';
-import {I18n} from 'Host/Containers/index';
-
+import {Tabs} from 'Components/index';
 import PropertyGroup from '../PropertyGroup/index';
 
 export default class TabPanel extends Component {

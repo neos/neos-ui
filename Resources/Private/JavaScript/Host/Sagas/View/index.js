@@ -8,7 +8,6 @@ import {
     getAppContainer,
     getConfiguration,
     getInspectorEditorRegistry,
-    getHookRegistry,
     getTranslations
 } from 'Host/Sagas/System/index';
 
@@ -47,7 +46,6 @@ export function* applicationViewSaga(store) {
 
     const configuration = yield getConfiguration;
     const inspectorEditorRegistry = yield getInspectorEditorRegistry;
-    const hookRegistry = yield getHookRegistry;
     const translations = yield getTranslations;
 
     ReactDOM.render(

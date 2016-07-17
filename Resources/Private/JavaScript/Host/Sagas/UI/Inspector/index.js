@@ -1,4 +1,3 @@
-import {takeEvery} from 'redux-saga';
 import {take, race, put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
@@ -8,22 +7,17 @@ import {getHookRegistry} from 'Host/Sagas/System/index';
 
 import initializeInspectorViewConfiguration from './initializeInspectorViewConfiguration';
 
-const getNode = CR.Nodes.byContextPathSelector;
 const getFocusedNode = CR.Nodes.focusedSelector;
-const currentDocumentNode = CR.Nodes.currentDocumentNode;
-const imageByUuid = CR.Images.imageByUuid;
 const getTransientInspectorValues = state => {
     const values = $get(['ui', 'inspector', 'valuesByNodePath'], state);
 
     return values.toJS ? values.toJS() : values;
 };
 
-const getEditorNamefromNodeProperty = key => $get(['nodeType', 'properties', key, 'ui', 'inspector', 'editor']);
-
 export function* inspectorSaga() {
     yield take(actionTypes.System.READY);
 
-    while(true) {
+    while (true) { // eslint-disable-line no-constant-condition
         const state = yield select();
         const focusedNode = getFocusedNode(state);
 
@@ -42,7 +36,7 @@ export function* inspectorSaga() {
         // Wait for the user to focus another node, to discard all transient
         // changes or to apply his/her changes,
         //
-        while(true) {
+        while (true) { // eslint-disable-line no-constant-condition
             const waitForNextAction = yield race([
                 take(actionTypes.CR.Nodes.FOCUS),
                 take(actionTypes.UI.Inspector.DISCARD),

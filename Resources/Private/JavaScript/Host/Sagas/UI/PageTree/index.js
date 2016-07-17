@@ -4,6 +4,7 @@ import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/index';
 import {CR} from 'Host/Selectors/index';
+import {api} from 'Shared/Utilities/';
 
 const isDocumentType = CR.NodeTypes.isOfTypeSelector('TYPO3.Neos:Document');
 
@@ -36,7 +37,7 @@ export function* watchCommenceUncollapse() {
         } else {
             yield put(actions.UI.PageTree.requestChildren(contextPath));
             try {
-                const {q} = window.neos;
+                const {q} = api.get();
                 const childNodes = yield q(contextPath).children('[instanceof TYPO3.Neos:Document]').get();
 
                 yield childNodes.map(node => put(actions.CR.Nodes.add(node.contextPath, node)));

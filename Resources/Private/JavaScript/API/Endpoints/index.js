@@ -1,8 +1,10 @@
+import {api} from 'Shared/Utilities/';
+
 export const change = changes => fetch('/neos!/service/change', {
     method: 'POST',
     credentials: 'include',
     headers: {
-        'X-Flow-Csrftoken': window.neos.csrfToken(),
+        'X-Flow-Csrftoken': api.getCsrfToken(),
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -14,7 +16,7 @@ export const publish = (nodeContextPaths, targetWorkspaceName) => fetch('/neos!/
     method: 'POST',
     credentials: 'include',
     headers: {
-        'X-Flow-Csrftoken': window.neos.csrfToken(),
+        'X-Flow-Csrftoken': api.getCsrfToken(),
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -27,7 +29,7 @@ export const discard = nodeContextPaths => fetch('/neos!/service/discard', {
     method: 'POST',
     credentials: 'include',
     headers: {
-        'X-Flow-Csrftoken': window.neos.csrfToken(),
+        'X-Flow-Csrftoken': api.getCsrfToken(),
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -56,7 +58,7 @@ export const createImageVariant = (originalAssetUuid, adjustments) => fetch('neo
     method: 'POST',
     credentials: 'include',
     headers: {
-        'X-Flow-Csrftoken': window.neos.csrfToken(),
+        'X-Flow-Csrftoken': api.getCsrfToken(),
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -77,7 +79,7 @@ export const uploadAsset = (file, siteNodeName, metadata = 'Image') => {
         method: 'POST',
         credentials: 'include',
         headers: {
-            'X-Flow-Csrftoken': window.neos.csrfToken()
+            'X-Flow-Csrftoken': api.getCsrfToken()
         },
         body: data
     }).then(response => response.json());

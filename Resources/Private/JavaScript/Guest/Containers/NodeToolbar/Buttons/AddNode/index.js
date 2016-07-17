@@ -3,9 +3,7 @@ import {
     IconButtonDropDown,
     Icon
 } from 'Components/index';
-
-// TODO: hackish! What is the proper way to call `ui` methods?
-const {ui} = window.neos;
+import {api} from 'Shared/Utilities/';
 
 export default class AddNode extends Component {
     static propTypes = {
@@ -46,7 +44,14 @@ export default class AddNode extends Component {
     }
 
     openModal() {
-        ui.openAddNodeModal(this.props.node.contextPath, this.state.currentMode);
+        const {ui} = api.get();
+
+        //
+        // Fail-safe in case the API is not properly setup. (F.e. in unit tests or broken environments)
+        //
+        if (ui) {
+            ui.openAddNodeModal(this.props.node.contextPath, this.state.currentMode);
+        }
     }
 
     getCurrentModeIcon() {

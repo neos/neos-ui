@@ -2,7 +2,7 @@
     position: absolute;
     top: 41px;
     left: 0;
-    padding: 0 320px;
+    padding: 0 $sidebarWidth;
     width: 100%;
     height: 41px;
     background: $neutral;

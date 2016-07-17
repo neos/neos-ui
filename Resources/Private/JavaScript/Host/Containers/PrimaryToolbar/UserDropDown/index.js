@@ -2,7 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
-import {I18n, Icon, DropDown} from 'Components/index';
+import {Icon, DropDown} from 'Components/index';
+import {I18n} from 'Host/Containers/index';
 
 import style from './style.css';
 
@@ -27,14 +28,14 @@ export default class UserDropDown extends Component {
                             <form title="Logout" action="/neos/logout" method="post">
                                 <button type="submit" name="" value="logout" id="neos__primaryToolbar__userDropDown__logoutButton">
                                     <Icon icon="power-off" className={style.dropDown__itemIcon} />
-                                    <I18n fallback="Logout" />
+                                    <I18n id="logout" fallback="Logout" />
                                 </button>
                             </form>
                           </li>
                           <li className={style.dropDown__item}>
                               <a title="User Settings" href="/neos/user/usersettings" id="neos__primaryToolbar__userDropDown__userSettings">
                                   <Icon icon="wrench" className={style.dropDown__item__icon} />
-                                  <I18n fallback="User Settings" />
+                                  <I18n id="userSettings_label" sourceName="Modules" fallback="User Settings" />
                               </a>
                           </li>
                     </DropDown.Contents>

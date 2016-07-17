@@ -9,6 +9,7 @@ namespace Neos\Neos\Ui\Controller;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\ActionController;
 use TYPO3\Flow\Session\SessionInterface;
+use TYPO3\Flow\Resource\ResourceManager;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface;
 use TYPO3\Neos\Domain\Repository\DomainRepository;
@@ -79,12 +80,29 @@ class BackendController extends ActionController
      */
     protected $session;
 
+    /**
+     * @Flow\Inject
+     * @var ResourceManager
+     */
+    protected $resourceManager;
 
     /**
      * @Flow\Inject
      * @var ContentCache
      */
     protected $contentCache;
+
+    /**
+     * @Flow\InjectConfiguration(path="asyncModuleMapping")
+     * @var array
+     */
+    protected $asyncModuleMapping;
+
+    /**
+     * @Flow\InjectConfiguration(path="legacyModuleMapping")
+     * @var array
+     */
+    protected $legacyModuleMapping;
 
     public function initializeView(ViewInterface $view)
     {
@@ -120,6 +138,8 @@ class BackendController extends ActionController
             $this->view->assign('user', $user);
             $this->view->assign('documentNode', $node);
             $this->view->assign('site', $node);
+            $this->view->assign('asyncModuleMapping', $this->transformAsyncModuleMapping());
+            $this->view->assign('legacyModuleMapping', $this->transformLegacyModuleMapping());
 
             $this->view->assign('translations', $this->xliffService->getCachedJson(
                 new Locale($this->userService->getInterfaceLanguage())
@@ -154,5 +174,82 @@ class BackendController extends ActionController
         }
 
         return $this->contextFactory->create($contextProperties);
+    }
+
+    /**
+     * Creates a key-value list of JS modules and their sources files
+     * out of the given configuration
+     *
+     * @return array
+     */
+    protected function transformAsyncModuleMapping()
+    {
+        $finalMapping = [];
+
+        foreach ($this->asyncModuleMapping as $path => $modules) {
+            if (preg_match('#resource://([^/]+)/Public/(.*)#', $path, $matches) === 1) {
+                $packageKey = $matches[1];
+                $path = $matches[2];
+                $realPath = $this->resourceManager->getPublicPackageResourceUri($packageKey, $path);
+
+                foreach ($modules as $module => $activated) {
+                    if ($activated) {
+                        $finalMapping[$module] = $realPath;
+                    }
+                }
+
+                continue;
+            }
+
+            throw new \Exception(
+                sprintf(
+                    '"%s" is not a valid path to a public JavaScript. '.
+                    'Please provide a resource path ("resource://...")',
+                    $path
+                ),
+                1462703658
+            );
+        }
+
+        return $finalMapping;
+    }
+
+    /**
+     * Creates a key-value list of JS modules and their sources files
+     * out of the given configuration
+     *
+     * @return array
+     */
+    protected function transformLegacyModuleMapping()
+    {
+        $finalMapping = [];
+
+        foreach ($this->legacyModuleMapping as $path => $modules) {
+            if (preg_match('#resource://([^/]+)/Public/(.*)#', $path, $matches) === 1) {
+                $packageKey = $matches[1];
+                $path = $matches[2];
+                $realPath = $this->resourceManager->getPublicPackageResourceUri($packageKey, $path);
+
+                foreach ($modules as $module => $migratesTo) {
+                    $finalMapping[$module] = [
+                        'target' => $realPath,
+                        'migratesTo' => $migratesTo
+                    ];
+                }
+
+                continue;
+            }
+
+            throw new \Exception(
+                sprintf(
+                    '"%s" is not a valid path to a public JavaScript. '.
+                    'Please provide a resource path ("resource://...")',
+                    $path
+                ),
+                1463923183
+            );
+        }
+
+        return $finalMapping;
     }
 }

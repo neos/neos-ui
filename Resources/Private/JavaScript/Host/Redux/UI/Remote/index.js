@@ -2,6 +2,9 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set} from 'plow-js';
 
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
+
 const START_SAVING = '@neos/neos-ui/UI/Remote/START_SAVING';
 const FINISH_SAVING = '@neos/neos-ui/UI/Remote/FINISH_SAVING';
 const START_PUBLISHING = '@neos/neos-ui/UI/Remote/START_PUBLISHING';
@@ -52,25 +55,21 @@ export const actions = {
 };
 
 //
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'ui.remote',
-    new Map({
-        isSaving: false,
-        isPublishing: false,
-        isDiscarding: false
-    })
-);
-
-//
 // Export the reducer
 //
-export const reducer = {
+export const reducer = handleActions({
+    [system.INIT]: () => $set(
+        'ui.remote',
+        new Map({
+            isSaving: false,
+            isPublishing: false,
+            isDiscarding: false
+        })
+    ),
     [START_SAVING]: () => $set('ui.remote.isSaving', true),
     [FINISH_SAVING]: () => $set('ui.remote.isSaving', false),
     [START_PUBLISHING]: () => $set('ui.remote.isPublishing', true),
     [FINISH_PUBLISHING]: () => $set('ui.remote.isPublishing', false),
     [START_DISCARDING]: () => $set('ui.remote.isDiscarding', true),
     [FINISH_DISCARDING]: () => $set('ui.remote.isDiscarding', false)
-};
+});

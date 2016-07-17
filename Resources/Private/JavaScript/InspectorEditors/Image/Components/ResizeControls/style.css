@@ -1,0 +1,25 @@
+.resizeControls {
+    display: flex;
+}
+.resizeControls__before {
+    height: 40px;
+    width: 40px;
+    border-right: 1px solid $darker;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $neutral;
+}
+
+.resizeControls__main {
+    flex-grow: 1;
+}
+.resizeControls__after {
+    height: 40px;
+    width: 40px;
+    background: $neutral;
+    border-left: 1px solid $darker;
+    text-align: center;
+
+    line-height: 40px;
+}

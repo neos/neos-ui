@@ -5,12 +5,12 @@ import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
 import {
-    I18n,
     Icon,
     DropDown,
     CheckBox,
     Label
 } from 'Components/index';
+import {I18n} from 'Host/Containers/index';
 import {actions} from 'Host/Redux/index';
 import {publishableNodesSelector, publishableNodesInDocumentSelector} from 'Host/Selectors/CR/Workspaces/index';
 

@@ -19,9 +19,10 @@ export const allowedNodeTypesSelector = createSelector(
     [
         parentNodeSelector,
         allowedChildNodeTypesSelector,
+        allowedChildNodeTypesForAutocreatedNodeSelector,
         byNameSelector
     ],
-    (getParentNode, getAllowedChildNodeTypes, getNodeTypeByName) =>
+    (getParentNode, getAllowedChildNodeTypes, getAllowedChildNodeTypesForAutoCreatedNode, getNodeTypeByName) =>
         (referenceNode, mode) => {
             if (!referenceNode) {
                 throw new Error('Reference node not defined');
@@ -38,13 +39,12 @@ export const allowedNodeTypesSelector = createSelector(
                 throw new Error('Base node does not have the nodetype set');
             }
             const allowedNodeTypes = baseNode.isAutoCreated ?
-                allowedChildNodeTypesForAutocreatedNodeSelector(getParentNode(baseNode.nodeType.name), baseNode.name) :
+                getAllowedChildNodeTypesForAutoCreatedNode(getParentNode(baseNode).nodeType.name, baseNode.name) :
                 getAllowedChildNodeTypes(baseNode.nodeType.name);
 
             if (!allowedNodeTypes) {
                 return [];
             }
-
             return allowedNodeTypes.map(nodeTypeName => {
                 const nodeType = getNodeTypeByName(nodeTypeName);
                 return nodeType && {

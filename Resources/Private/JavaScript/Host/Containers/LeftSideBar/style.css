@@ -14,5 +14,5 @@
     }
 }
 .leftSideBar--isHidden {
-    transform: translateX(-320px);
+    transform: translateX(-$sidebarWidth);
 }

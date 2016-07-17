@@ -1,3 +1,4 @@
+// TODO: remove SignalRegistry, as it increases complexity tremendously.
 import uuid from 'uuid';
 import {Map} from 'immutable';
 

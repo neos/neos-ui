@@ -2,6 +2,9 @@ import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
 import {$set, $head, $get} from 'plow-js';
 
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
+
 const UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE';
 const SWITCH = '@neos/neos-ui/CR/Workspaces/SWITCH';
 const PUBLISH = '@neos/neos-ui/CR/Workspaces/PUBLISH';
@@ -44,20 +47,16 @@ export const actions = {
 };
 
 //
-// Export the initial state hydrator
-//
-export const hydrate = state => $set(
-    'cr.workspaces',
-    new Map({
-        byName: Immutable.fromJS($get('cr.workspaces.byName', state)),
-        active: $get('cr.workspaces.active', state) || $head('cr.workspaces.byName', state)
-    })
-);
-
-//
 // Export the reducer
 //
-export const reducer = {
+export const reducer = handleActions({
+    [system.INIT]: state => $set(
+        'cr.workspaces',
+        new Map({
+            byName: Immutable.fromJS($get('cr.workspaces.byName', state)),
+            active: $get('cr.workspaces.active', state) || $head('cr.workspaces.byName', state)
+        })
+    ),
     [UPDATE]: ({name, data}) => $set(['cr', 'workspaces', 'byName', name, 'publishableNodes'], Immutable.fromJS(data)),
     [SWITCH]: name => $set('cr.workspaces.active', name)
-};
+});

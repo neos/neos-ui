@@ -3,7 +3,7 @@ import {put, call} from 'redux-saga/effects';
 
 import {actionTypes, actions} from 'Host/Redux/index';
 import {change} from 'API/Endpoints/index';
-import backend from 'Host/Service/Backend.js';
+import backend from 'Host/Service/Backend';
 
 export function* watchPersist() {
     yield* takeEvery(actionTypes.Changes.PERSIST, function* persistChanges(action) {

@@ -5,6 +5,8 @@ backend = TYPO3.TypoScript:Template {
 
     configuration = TYPO3.TypoScript:RawArray {
         test = 1
+        asyncModuleMapping = ${asyncModuleMapping}
+        legacyModuleMapping = ${legacyModuleMapping}
         @process.json = ${Json.stringify(value)}
     }
 

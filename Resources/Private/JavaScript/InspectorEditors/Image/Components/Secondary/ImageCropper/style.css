@@ -1,0 +1,23 @@
+.tools {
+    height: 56px;
+    margin: 3em 0 1em 0;
+}
+.aspectRatioIndicator {
+    width: 100px;
+    margin-right: 1em;
+    display: inline-block;
+}
+.aspectRatioIndicator i {
+    margin-right: .3em;
+}
+.dimensions {
+    display: inline-block;
+    width: 208px;
+    max-width: 208px;
+    margin-left: 1em;
+}
+
+.dimensionInput {
+    width: 6em;
+    display: inline-block;
+}

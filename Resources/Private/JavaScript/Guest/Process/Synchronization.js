@@ -13,6 +13,7 @@ export default (ui, connection, dispatch) => {
             const {x, y} = position(dom);
 
             dispatch(actions.NodeToolbar.setPosition(x - 9, y - 49));
+            dispatch(actions.NodeToolbar.setNode(node));
             dispatch(actions.NodeToolbar.show());
         } else {
             dispatch(actions.NodeToolbar.hide());

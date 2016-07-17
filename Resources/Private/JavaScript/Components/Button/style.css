@@ -10,6 +10,7 @@
     width: auto;
     color: $brightest;
     cursor: pointer;
+    background: $neutral;
 
     &:focus {
         outline: 1px dotted $brightest;
@@ -41,17 +42,16 @@
     background-color: $brand;
 }
 .btn--brandHover {
-    &:hover {
+    &:hover, &.btn--isPressed {
         background-color: $brand;
     }
 }
-.btn--cleanHover {
-    &:hover {
-        color: $brand;
-    }
+
+.btn--cleanHover.btn--isPressed,
+.btn--cleanHover:hover {
+    color: $brand;
 }
-.btn--darkenHover {
-    &:hover {
-        background: rgba(0, 0, 0, .1);
-    }
+.btn--darkenHover.btn--isPressed,
+.btn--darkenHover:hover {
+    background: rgba(0, 0, 0, .1);
 }

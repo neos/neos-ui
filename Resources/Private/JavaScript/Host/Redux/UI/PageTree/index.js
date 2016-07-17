@@ -2,6 +2,9 @@ import {createAction} from 'redux-actions';
 import {Map, Set} from 'immutable';
 import {$all, $set, $remove, $add} from 'plow-js';
 
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
+
 const FOCUS = '@neos/neos-ui/UI/PageTree/FOCUS';
 const COMMENCE_UNCOLLAPSE = '@neos/neos-ui/UI/PageTree/COMMENCE_UNCOLLAPSE';
 const UNCOLLAPSE = '@neos/neos-ui/UI/PageTree/UNCOLLAPSE';
@@ -45,22 +48,18 @@ export const actions = {
 };
 
 //
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'ui.pageTree',
-    new Map({
-        focused: '',
-        uncollapsed: new Set(),
-        loading: new Set(),
-        errors: new Set()
-    })
-);
-
-//
 // Export the reducer
 //
-export const reducer = {
+export const reducer = handleActions({
+    [system.INIT]: () => $set(
+        'ui.pageTree',
+        new Map({
+            focused: '',
+            uncollapsed: new Set(),
+            loading: new Set(),
+            errors: new Set()
+        })
+    ),
     [FOCUS]: ({contextPath}) => $set('ui.pageTree.focused', contextPath),
     [UNCOLLAPSE]: ({contextPath}) => $all(
         $remove('ui.pageTree.errors', contextPath),
@@ -82,4 +81,4 @@ export const reducer = {
         $remove('ui.pageTree.errors', contextPath),
         $add('ui.pageTree.loading', contextPath)
     )
-};
+});

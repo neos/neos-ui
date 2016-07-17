@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {Button, I18n} from 'Components/index';
+import {Button} from 'Components/index';
+import {I18n} from 'Host/Containers/index';
 
 @connect()
 export default class EditModePanelToggler extends Component {

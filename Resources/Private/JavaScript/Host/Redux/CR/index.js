@@ -1,52 +1,25 @@
-import {
-    reducer as NodesReducer,
-    hydrate as NodesHydrator,
-    actionTypes as NodesActionTypes,
-    actions as Nodes
-} from './Nodes/index';
-import {
-    reducer as NodeTypesReducer,
-    hydrate as NodeTypesHydrator,
-    actions as NodeTypes
-} from './NodeTypes/index';
-import {
-    reducer as WorkspacesReducer,
-    hydrate as WorkspacesHydrator,
-    actionTypes as WorkspacesActionTypes,
-    actions as Workspaces
-} from './Workspaces/index';
+import {map, keys} from 'ramda';
+
+import {handleActions} from 'Shared/Utilities/index';
+
+import * as Images from './Images/index';
+import * as Nodes from './Nodes/index';
+import * as NodeTypes from './NodeTypes/index';
+import * as Workspaces from './Workspaces/index';
+
+const all = {Images, Nodes, NodeTypes, Workspaces};
 
 //
 // Export the actionTypes
 //
-export const actionTypes = {
-    Nodes: NodesActionTypes,
-    Workspaces: WorkspacesActionTypes
-};
+export const actionTypes = map(a => a.actionTypes, all);
 
 //
 // Export the actions
 //
-export const actions = {
-    Nodes,
-    NodeTypes,
-    Workspaces
-};
-
-//
-// Export the initial state hydrators
-//
-export const hydrators = [
-    NodesHydrator,
-    NodeTypesHydrator,
-    WorkspacesHydrator
-];
+export const actions = map(a => a.actions, all);
 
 //
 // Export the reducer
 //
-export const reducer = {
-    ...NodesReducer,
-    ...NodeTypesReducer,
-    ...WorkspacesReducer
-};
+export const reducer = handleActions(map(k => all[k].reducer, keys(all)));

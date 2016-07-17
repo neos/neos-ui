@@ -2,6 +2,7 @@ import {createAction} from 'redux-actions';
 import {$set, $override} from 'plow-js';
 
 const SET_POSITION = '@neos/neos-ui/GUEST/NodeToolbar/SET_POSITION';
+const SET_NODE = '@neos/neos-ui/GUEST/NodeToolbar/SET_NODE';
 const SHOW = '@neos/neos-ui/GUEST/NodeToolbar/SHOW';
 const HIDE = '@neos/neos-ui/GUEST/NodeToolbar/HIDE';
 
@@ -10,11 +11,13 @@ const HIDE = '@neos/neos-ui/GUEST/NodeToolbar/HIDE';
 //
 export const actionTypes = {
     SET_POSITION,
+    SET_NODE,
     SHOW,
     HIDE
 };
 
 const setPosition = createAction(SET_POSITION, (x, y) => ({x, y}));
+const setNode = createAction(SET_NODE, node => node);
 const show = createAction(SHOW);
 const hide = createAction(HIDE);
 
@@ -23,6 +26,7 @@ const hide = createAction(HIDE);
 //
 export const actions = {
     setPosition,
+    setNode,
     show,
     hide
 };
@@ -33,7 +37,8 @@ export const actions = {
 export const initialState = {
     x: 0,
     y: 0,
-    isVisible: false
+    isVisible: false,
+    node: null
 };
 
 //
@@ -41,6 +46,7 @@ export const initialState = {
 //
 export const reducer = {
     [SET_POSITION]: ({x, y}) => $override('nodeToolbar', {x, y}),
+    [SET_NODE]: node => $set('nodeToolbar.node', node),
     [SHOW]: () => $set('nodeToolbar.isVisible', true),
     [HIDE]: () => $set('nodeToolbar.isVisible', false)
 };

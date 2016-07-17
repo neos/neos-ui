@@ -35,7 +35,7 @@ export default class ToolbarDropDown extends Component {
                             item => item.isActive
                         ).map(item =>
                             [
-                                <Icon icon={item.icon} className={style.dropDown__itemIcon} />,
+                                <Icon icon={item.icon} className={style.dropDown__itemIcon} key={item.label} />,
                                 item.label
                             ]
                         )[0] || placeholder}
@@ -45,7 +45,7 @@ export default class ToolbarDropDown extends Component {
                             item => item.isEnabled
                         ).map(
                             item => (
-                                <li className={style.dropDown__item}>
+                                <li className={style.dropDown__item} key={item.label}>
                                     <button type="button" onClick={() => dispatchEditorSignal(item.onSelect)}>
                                         <Icon icon={item.icon} className={style.dropDown__itemIcon} />
                                         {item.label}

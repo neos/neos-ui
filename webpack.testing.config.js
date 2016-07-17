@@ -1,5 +1,5 @@
 const fs = require('fs');
-const defaultConfig = require('./webpack.config');
+const defaultConfig = require('./webpack.base.config');
 const babelConfig = JSON.parse(fs.readFileSync('./.babelrc', 'utf8'));
 
 module.exports = Object.assign({}, defaultConfig, {
@@ -18,7 +18,7 @@ module.exports = Object.assign({}, defaultConfig, {
             // the test suite as well.
             //
             {
-                test: /\.sepc.js$/,
+                test: /\.spec.js$/,
                 loader: 'babel'
             },
             {

@@ -10,7 +10,8 @@ import {
     Button,
     Grid,
     GridItem,
-    I18n
+    I18n,
+    ToggablePanel
 } from 'Components/index';
 import {
     referenceNodeSelector,
@@ -22,9 +23,11 @@ import style from './style.css';
 @connect($transform({
     referenceNode: referenceNodeSelector,
     groupedAllowedNodeTypes: nodeTypesForAddNodeModalSelector,
-    mode: $get('ui.addNodeModal.mode')
+    mode: $get('ui.addNodeModal.mode'),
+    collapsedGroups: $get('ui.addNodeModal.collapsedGroups')
 }), {
     close: actions.UI.AddNodeModal.close,
+    toggleGroup: actions.UI.AddNodeModal.toggleGroup,
     persistChange: actions.Changes.persistChange
 })
 export default class AddNodeModal extends Component {
@@ -32,8 +35,10 @@ export default class AddNodeModal extends Component {
         referenceNode: NeosPropTypes.cr.node,
         groupedAllowedNodeTypes: PropTypes.array,
         mode: PropTypes.string.isRequired,
+        collapsedGroups: PropTypes.array.isRequired,
 
         close: PropTypes.func.isRequired,
+        toggleGroup: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired
     };
 
@@ -69,7 +74,7 @@ export default class AddNodeModal extends Component {
             this.props.close();
         };
         return (
-            <GridItem className={style.gridItem} width="33%" key={key}>
+            <GridItem className={style.gridItem} width="third" key={key}>
                 <Button
                     hoverStyle="brand"
                     style="clean"
@@ -84,14 +89,22 @@ export default class AddNodeModal extends Component {
     }
 
     renderNodeTypeGroup(group, key) {
+        const groupName = group.name;
         return (
             <div key={key}>
-                <div className={style.groupTitle}>
-                    <I18n fallback={group.label} id={group.label} />
-                </div>
-                <Grid className={style.grid} id="neos__addNodeModal__grid">
-                    {group.nodeTypes.map(this.renderNodeTypeItem.bind(this))}
-                </Grid>
+                <ToggablePanel
+                    isOpen={this.props.collapsedGroups.indexOf(groupName) === -1}
+                    togglePanel={() => this.props.toggleGroup(groupName)}
+                    >
+                    <ToggablePanel.Header className={style.groupHeader}>
+                        <I18n className={style.groupTitle} fallback={group.label} id={group.label} />
+                    </ToggablePanel.Header>
+                    <ToggablePanel.Contents className={style.groupContents}>
+                        <Grid className={style.grid} id="neos__addNodeModal__grid">
+                            {group.nodeTypes.map(this.renderNodeTypeItem.bind(this))}
+                        </Grid>
+                    </ToggablePanel.Contents>
+                </ToggablePanel>
             </div>
         );
     }
@@ -110,12 +123,25 @@ export default class AddNodeModal extends Component {
                 </Button>
             ];
 
+            let insertModeText;
+            switch (this.props.mode) {
+                case 'prepend':
+                    insertModeText = <span><I18n fallback="Create new" id="createNew" /> <I18n fallback="before" id="before" /> <Icon icon="level-up" /></span>;
+                    break;
+                case 'append':
+                    insertModeText = <span><I18n fallback="Create new" id="createNew" /> <I18n fallback="after" id="after" /> <Icon icon="level-down" /></span>;
+                    break;
+                default:
+                    insertModeText = <span><I18n fallback="Create new" id="createNew" /> <I18n fallback="into" id="into" /> <Icon icon="long-arrow-right" /></span>;
+                    break;
+            }
+
             return (
                 <Dialog
                     isOpen={true}
                     wide={true}
                     actions={actions}
-                    title={<I18n fallback="Create new" id="createNew" />}
+                    title={insertModeText}
                     onRequestClose={this.props.close.bind(this)}
                     id="neos__addNodeModal"
                     >

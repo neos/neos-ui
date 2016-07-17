@@ -7,17 +7,21 @@ import React, {Component, PropTypes} from 'react';
 export default () => WrappedComponent => {
     return class NeosDecorator extends Component {
         static contextTypes = {
-            configuration: PropTypes.object.isRequired
+            configuration: PropTypes.object.isRequired,
+            inspectorEditorRegistry: PropTypes.object.isRequired,
+            translations: PropTypes.object.isRequired
         };
 
         static displayName = `Neos(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
         render() {
-            const {configuration} = this.context;
+            const {configuration, inspectorEditorRegistry, translations} = this.context;
 
             return (
                 <WrappedComponent
                     neos={{configuration}}
+                    inspectorEditorRegistry={inspectorEditorRegistry}
+                    translations={translations}
                     {...this.props}
                     />
             );

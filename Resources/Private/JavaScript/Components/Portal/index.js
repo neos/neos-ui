@@ -5,9 +5,9 @@ import shallowCompare from 'react/lib/shallowCompare';
 
 export default class Portal extends Component {
     static propTypes = {
-        // The target ID in which the children will be rendered into.
-        // If no `targetId` was specified, the children will be rendered into the <body> element.
-        targetId: PropTypes.string,
+        // The target identifier in which the children will be rendered into.
+        // If no `target` was specified, the children will be rendered into the <body> element.
+        target: PropTypes.string,
 
         // The children to render in the <Portal />.
         children: PropTypes.element.isRequired,
@@ -17,7 +17,7 @@ export default class Portal extends Component {
         style: PropTypes.object,
 
         // The boolean over which you can control the rendered state of the <Portal />.
-        isOpened: PropTypes.bool
+        isOpen: PropTypes.bool
     };
 
     constructor() {
@@ -31,28 +31,28 @@ export default class Portal extends Component {
     }
 
     componentDidMount() {
-        if (this.props.isOpened) {
+        if (this.props.isOpen) {
             this.openPortal();
         }
     }
 
     componentWillReceiveProps(newProps) {
-        // portal's 'is open' state is handled through the prop isOpened
-        if (typeof newProps.isOpened !== 'undefined') {
-            if (newProps.isOpened) {
+        // portal's 'is open' state is handled through the prop isOpen
+        if (typeof newProps.isOpen !== 'undefined') {
+            if (newProps.isOpen) {
                 if (this.state.active) {
                     this.renderPortal(newProps);
                 } else {
                     this.openPortal(newProps);
                 }
             }
-            if (!newProps.isOpened && this.state.active) {
+            if (!newProps.isOpen && this.state.active) {
                 this.closePortal();
             }
         }
 
         // portal handles its own 'is open' state
-        if (typeof newProps.isOpened === 'undefined' && this.state.active) {
+        if (typeof newProps.isOpen === 'undefined' && this.state.active) {
             this.renderPortal(newProps);
         }
     }
@@ -116,8 +116,8 @@ export default class Portal extends Component {
     }
 
     getPortalWrapper(props = this.props) {
-        const {targetId} = props;
+        const {target} = props;
 
-        return targetId ? document.getElementById(targetId) : document.body;
+        return target ? document.querySelector(`[data-__neos__hook="${target}"]`) : document.body;
     }
 }

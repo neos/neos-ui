@@ -2,6 +2,9 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$toggle, $set} from 'plow-js';
 
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
+
 const TOGGLE = '@neos/neos-ui/UI/Drawer/TOGGLE';
 const HIDE = '@neos/neos-ui/UI/Drawer/HIDE';
 
@@ -24,19 +27,15 @@ export const actions = {
 };
 
 //
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'ui.drawer',
-    new Map({
-        isHidden: true
-    })
-);
-
-//
 // Export the reducer
 //
-export const reducer = {
+export const reducer = handleActions({
+    [system.INIT]: () => $set(
+        'ui.drawer',
+        new Map({
+            isHidden: true
+        })
+    ),
     [TOGGLE]: () => $toggle('ui.drawer.isHidden'),
     [HIDE]: () => $set('ui.drawer.isHidden', true)
-};
+});

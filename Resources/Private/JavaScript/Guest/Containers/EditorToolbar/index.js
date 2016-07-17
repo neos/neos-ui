@@ -44,7 +44,6 @@ export default class Toolbar extends Component {
         return (
             <Measure
                 whitelist={['width', 'left']}
-                shouldMeasure={mutations => mutations ? mutations[0].target : false}
                 onMeasure={dimensions => this.setState({dimensions})}
                 >
                 <div className={classNames} style={this.getPosition()}>

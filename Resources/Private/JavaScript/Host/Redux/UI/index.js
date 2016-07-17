@@ -1,63 +1,19 @@
-import {
-    reducer as FlashMessagesReducer,
-    hydrate as FlashMessagesHydrator,
-    actions as FlashMessages
-} from './FlashMessages/index';
-import {
-    reducer as FullScreenReducer,
-    hydrate as FullScreenHydrator,
-    actions as FullScreen
-} from './FullScreen/index';
-import {
-    reducer as LeftSideBarReducer,
-    hydrate as LeftSideBarHydrator,
-    actions as LeftSideBar
-} from './LeftSideBar/index';
-import {
-    reducer as DrawerReducer,
-    hydrate as DrawerHydrator,
-    actions as Drawer
-} from './Drawer/index';
-import {
-    reducer as RemoteReducer,
-    hydrate as RemoteHydrator,
-    actions as Remote
-} from './Remote/index';
-import {
-    reducer as RightSideBarReducer,
-    hydrate as RightSideBarHydrator,
-    actions as RightSideBar
-} from './RightSideBar/index';
-import {
-    reducer as AddNodeModalReducer,
-    hydrate as AddNodeModalHydrator,
-    actions as AddNodeModal
-} from './AddNodeModal/index';
-import {
-    reducer as PageTreeReducer,
-    hydrate as PageTreeHydrator,
-    actionTypes as PageTreeActionTypes,
-    actions as PageTree
-} from './PageTree/index';
-import {
-    reducer as ContentCanvasReducer,
-    hydrate as ContentCanvasHydrator,
-    actionTypes as ContentCanvasActionTypes,
-    actions as ContentCanvas
-} from './ContentCanvas/index';
+import {map, keys} from 'ramda';
+import {handleActions} from 'Shared/Utilities/index';
 
-//
-// Export the action types
-//
-export const actionTypes = {
-    PageTree: PageTreeActionTypes,
-    ContentCanvas: ContentCanvasActionTypes
-};
+import * as FlashMessages from './FlashMessages/index';
+import * as FullScreen from './FullScreen/index';
+import * as LeftSideBar from './LeftSideBar/index';
+import * as Drawer from './Drawer/index';
+import * as Remote from './Remote/index';
+import * as RightSideBar from './RightSideBar/index';
+import * as AddNodeModal from './AddNodeModal/index';
+import * as PageTree from './PageTree/index';
+import * as ContentCanvas from './ContentCanvas/index';
+import * as Inspector from './Inspector/index';
+import * as Editors from './Editors/index';
 
-//
-// Export the actions
-//
-export const actions = {
+const all = {
     FlashMessages,
     FullScreen,
     LeftSideBar,
@@ -66,35 +22,22 @@ export const actions = {
     RightSideBar,
     AddNodeModal,
     PageTree,
-    ContentCanvas
+    ContentCanvas,
+    Inspector,
+    Editors
 };
 
 //
-// Export the initial state hydrators
+// Export the actionTypes
 //
-export const hydrators = [
-    FlashMessagesHydrator,
-    FullScreenHydrator,
-    LeftSideBarHydrator,
-    DrawerHydrator,
-    RemoteHydrator,
-    RightSideBarHydrator,
-    AddNodeModalHydrator,
-    PageTreeHydrator,
-    ContentCanvasHydrator
-];
+export const actionTypes = map(a => a.actionTypes, all);
+
+//
+// Export the actions
+//
+export const actions = map(a => a.actions, all);
 
 //
 // Export the reducer
 //
-export const reducer = {
-    ...FlashMessagesReducer,
-    ...FullScreenReducer,
-    ...LeftSideBarReducer,
-    ...DrawerReducer,
-    ...RemoteReducer,
-    ...RightSideBarReducer,
-    ...AddNodeModalReducer,
-    ...PageTreeReducer,
-    ...ContentCanvasReducer
-};
+export const reducer = handleActions(map(k => all[k].reducer, keys(all)));

@@ -44,7 +44,7 @@ class AugmentationAspect
      */
     public function contentElementAugmentation(JoinPointInterface $joinPoint)
     {
-        if (!$this->session->isStarted() || !$this->session->getData('__cheEnabled__')) {
+        if (!$this->session->isStarted() || !$this->session->getData('__neosEnabled__')) {
             return $joinPoint->getAdviceChain()->proceed($joinPoint);
         }
 
@@ -53,8 +53,8 @@ class AugmentationAspect
         $typoScriptPath = $joinPoint->getMethodArgument('typoScriptPath');
 
         $attributes = [
-            'data-__che-node-contextpath' => $node->getContextPath(),
-            'data-__che-typoscript-path' => $typoScriptPath
+            'data-__neos-node-contextpath' => $node->getContextPath(),
+            'data-__neos-typoscript-path' => $typoScriptPath
         ];
 
         return $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
@@ -69,7 +69,7 @@ class AugmentationAspect
      */
     public function editableElementAugmentation(JoinPointInterface $joinPoint)
     {
-        if (!$this->session->isStarted() || !$this->session->getData('__cheEnabled__')) {
+        if (!$this->session->isStarted() || !$this->session->getData('__neosEnabled__')) {
             return $joinPoint->getAdviceChain()->proceed($joinPoint);
         }
 
@@ -80,12 +80,12 @@ class AugmentationAspect
         $content = $joinPoint->getAdviceChain()->proceed($joinPoint);
 
         $attributes = [
-            'data-__che-property' => $property
+            'data-__neos-property' => $property
         ];
 
         if ($node !== null) {
             $attributes += [
-                'data-__che-node-contextpath' => $node->getContextPath()
+                'data-__neos-node-contextpath' => $node->getContextPath()
             ];
         }
 

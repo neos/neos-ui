@@ -17,10 +17,10 @@
     top: 0;
     display: inline-block;
     width: auto;
-    height: 40px;
+    height: $unit;
     padding: 0 30px 0 $spacing;
     border: 0;
-    line-height: 40px;
+    line-height: $unit;
     background: $success;
     text-align: center;
     vertical-align: top;
@@ -42,7 +42,7 @@
       background: 0;
       color: #FFF;
       text-decoration: none;
-      line-height: 40px;
+      line-height: $unit;
       text-align: left;
 
       > i,

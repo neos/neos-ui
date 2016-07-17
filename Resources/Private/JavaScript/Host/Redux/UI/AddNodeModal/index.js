@@ -1,9 +1,13 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$all, $set} from 'plow-js';
+import {$all, $set, $toggle} from 'plow-js';
+
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
 
 const OPEN = '@neos/neos-ui/UI/AddNodeModal/OPEN';
 const CLOSE = '@neos/neos-ui/UI/AddNodeModal/CLOSE';
+const TOGGLE_GROUP = '@neos/neos-ui/UI/AddNodeModal/TOGGLE_GROUP';
 
 /**
  * Opens the add node modal.
@@ -15,24 +19,19 @@ const open = createAction(OPEN, (contextPath, mode) => ({contextPath, mode}));
  */
 const close = createAction(CLOSE);
 
+/**
+ * Toggles the nodetype group.
+ */
+const toggleGroup = createAction(TOGGLE_GROUP);
+
 //
 // Export the actions
 //
 export const actions = {
     open,
-    close
+    close,
+    toggleGroup
 };
-
-//
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'ui.addNodeModal',
-    new Map({
-        referenceNode: '',
-        mode: 'insert'
-    })
-);
 
 //
 // Export error messages for testing
@@ -45,7 +44,15 @@ export const errorMessages = {
 //
 // Export the reducer
 //
-export const reducer = {
+export const reducer = handleActions({
+    [system.INIT]: () => $set(
+        'ui.addNodeModal',
+        new Map({
+            referenceNode: '',
+            mode: 'insert',
+            collapsedGroups: []
+        })
+    ),
     [OPEN]: ({contextPath, mode}) => {
         if (typeof contextPath !== 'string') {
             throw new Error(errorMessages.ERROR_INVALID_CONTEXTPATH);
@@ -59,5 +66,6 @@ export const reducer = {
             $set('ui.addNodeModal.mode', mode)
         );
     },
-    [CLOSE]: () => $set('ui.addNodeModal.referenceNode', '')
-};
+    [CLOSE]: () => $set('ui.addNodeModal.referenceNode', ''),
+    [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.collapsedGroups', groupId)
+});

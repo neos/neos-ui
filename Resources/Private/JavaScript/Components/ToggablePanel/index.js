@@ -7,43 +7,75 @@ import style from './style.css';
 
 class ToggablePanel extends Component {
     static propTypes = {
-        isOpened: PropTypes.bool,
+        isOpen: PropTypes.bool,
         className: PropTypes.string,
-        children: PropTypes.node.isRequired
+        children: PropTypes.node.isRequired,
+        togglePanel: PropTypes.func
     };
 
     static defaultProps = {
-        isOpened: false
-    };
-
-    static childContextTypes = {
-        isOpened: PropTypes.bool.isRequired,
-        togglePanel: PropTypes.func.isRequired,
-        closePanel: PropTypes.func.isRequired
+        isOpen: false
     };
 
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            isOpened: props.isOpened
-        };
-    }
-
-    getChildContext() {
-        return {
-            isOpened: this.state.isOpened,
-            togglePanel: () => this.toggle(),
-            closePanel: () => this.close()
+            isOpen: props.isOpen
         };
     }
 
     componentWillReceiveProps(newProps) {
-        const {isOpened} = newProps;
+        const {isOpen} = newProps;
 
-        if (isOpened !== this.state.isOpened) {
-            this.setState({isOpened});
+        if (isOpen !== this.state.isOpen && !newProps.togglePanel) {
+            this.setState({isOpen});
         }
+    }
+
+    render() {
+        // If togglePanel function is provided the component will not be using internal state,
+        // and would only depend on props.isOpen
+        const togglePanel = this.props.togglePanel ? this.props.togglePanel : this.toggle.bind(this);
+        const isOpen = this.props.togglePanel ? this.props.isOpen : this.state.isOpen;
+        return (
+            <StatelessToggablePanel
+                isOpen={isOpen}
+                togglePanel={togglePanel}
+                className={this.props.className}
+                >
+                {this.props.children}
+            </StatelessToggablePanel>
+        );
+    }
+
+    toggle() {
+        this.setState({isOpen: !this.state.isOpen});
+    }
+}
+
+class StatelessToggablePanel extends Component {
+    static propTypes = {
+        isOpen: PropTypes.bool,
+        className: PropTypes.string,
+        children: PropTypes.node.isRequired,
+        togglePanel: PropTypes.func.isRequired
+    };
+
+    static defaultProps = {
+        isOpen: false
+    };
+
+    static childContextTypes = {
+        isOpen: PropTypes.bool.isRequired,
+        togglePanel: PropTypes.func.isRequired
+    };
+
+    getChildContext() {
+        return {
+            isOpen: this.props.isOpen,
+            togglePanel: this.props.togglePanel
+        };
     }
 
     render() {
@@ -51,7 +83,7 @@ class ToggablePanel extends Component {
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [style.panel]: true,
-            [style['panel--isOpen']]: this.state.isOpened
+            [style['panel--isOpen']]: this.props.isOpen
         });
 
         return (
@@ -59,14 +91,6 @@ class ToggablePanel extends Component {
                 {children}
             </section>
         );
-    }
-
-    close() {
-        this.setState({isOpened: false});
-    }
-
-    toggle() {
-        this.setState({isOpened: !this.state.isOpened});
     }
 }
 
@@ -77,7 +101,7 @@ class Header extends Component {
     };
 
     static contextTypes = {
-        isOpened: PropTypes.bool.isRequired,
+        isOpen: PropTypes.bool.isRequired,
         togglePanel: PropTypes.func.isRequired
     };
 
@@ -90,14 +114,14 @@ class Header extends Component {
             children,
             className
         } = this.props;
-        const {isOpened, togglePanel} = this.context;
-        const toggleIcon = isOpened ? 'chevron-up' : 'chevron-down';
+        const {isOpen, togglePanel} = this.context;
+        const toggleIcon = isOpen ? 'chevron-up' : 'chevron-down';
         const classNames = mergeClassNames({
             [className]: className && className.length
         });
 
         return (
-            <div className={classNames} aria-expanded={isOpened ? 'true' : 'false'}>
+            <div className={classNames} aria-expanded={isOpen ? 'true' : 'false'}>
                 <Headline
                     className={style.panel__headline}
                     type="h1"
@@ -122,7 +146,7 @@ class Contents extends Component {
     };
 
     static contextTypes = {
-        isOpened: PropTypes.bool.isRequired
+        isOpen: PropTypes.bool.isRequired
     };
 
     constructor(props, context) {
@@ -134,7 +158,7 @@ class Contents extends Component {
             children,
             className
         } = this.props;
-        const {isOpened} = this.context;
+        const {isOpen} = this.context;
         const classNames = mergeClassNames({
             [style.panel__contents]: true,
             [className]: className && className.length
@@ -142,8 +166,8 @@ class Contents extends Component {
 
         return (
             <div>
-                <Collapse isOpened={isOpened}>
-                    <div className={classNames} key="panelContents" aria-hidden={isOpened ? 'false' : 'true'}>
+                <Collapse isOpened={isOpen}>
+                    <div className={classNames} key="panelContents" aria-hidden={isOpen ? 'false' : 'true'}>
                         {children}
                     </div>
                 </Collapse>

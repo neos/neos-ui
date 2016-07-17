@@ -2,6 +2,9 @@ import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
 import {$set, $drop} from 'plow-js';
 
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
+
 const ADD = '@neos/neos-ui/UI/FlashMessages/ADD';
 const REMOVE = '@neos/neos-ui/UI/FlashMessages/REMOVE';
 
@@ -39,18 +42,13 @@ export const actions = {
 };
 
 //
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'ui.flashMessages',
-    new Map()
-);
-
-//
 // Export the reducer
 //
-//
-export const reducer = {
+export const reducer = handleActions({
+    [system.INIT]: () => $set(
+        'ui.flashMessages',
+        new Map()
+    ),
     [ADD]: message => state => {
         const allowedSeverities = ['success', 'error', 'info'];
         const {id, severity} = message;
@@ -76,4 +74,4 @@ export const reducer = {
         return $set(['ui', 'flashMessages', message.id], Immutable.fromJS(message), state);
     },
     [REMOVE]: ({id}) => $drop(['ui', 'flashMessages', id])
-};
+});

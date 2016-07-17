@@ -4,12 +4,12 @@
     left: 0;
     z-index: 8000;
     height: 100%;
-    width: 320px;
+    width: $sidebarWidth;
     background: $darker;
     transition: .3s ease transform;
 }
 .drawer--isHidden {
-    transform: translateX(-320px);
+    transform: translateX(-$sidebarWidth);
 }
 .drawer__menuItem {
     border-top: 1px solid $dark;

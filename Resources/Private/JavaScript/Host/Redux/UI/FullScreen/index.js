@@ -2,6 +2,9 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set, $toggle} from 'plow-js';
 
+import {handleActions} from 'Shared/Utilities/index';
+import {actionTypes as system} from 'Host/Redux/System/index';
+
 const TOGGLE = '@neos/neos-ui/UI/FullScreen/TOGGLE';
 
 /**
@@ -17,18 +20,14 @@ export const actions = {
 };
 
 //
-// Export the initial state hydrator
-//
-export const hydrate = () => $set(
-    'ui.fullScreen',
-    new Map({
-        isFullScreen: false
-    })
-);
-
-//
 // Export the reducer
 //
-export const reducer = {
+export const reducer = handleActions({
+    [system.INIT]: () => $set(
+        'ui.fullScreen',
+        new Map({
+            isFullScreen: false
+        })
+    ),
     [TOGGLE]: () => $toggle('ui.fullScreen.isFullScreen')
-};
+});

@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
+import omit from 'lodash.omit';
 import {executeCallback} from 'Shared/Utilities/index';
 import IconButton from 'Components/IconButton/index';
 import Portal from 'Components/Portal/index';
@@ -14,8 +15,9 @@ const Dialog = props => {
         isOpen,
         onRequestClose,
         actions,
-        ...directProps
+        ...rest
     } = props;
+    const directProps = omit(rest, ['isOpen']);
     const dialogStyle = wide ? style['dialog--wide'] : style.dialog;
     const classNames = mergeClassNames({
         [dialogStyle]: true,
@@ -23,7 +25,7 @@ const Dialog = props => {
     });
 
     return (
-        <Portal targetId="dialog" isOpened={isOpen}>
+        <Portal targetId="dialog" isOpen={isOpen}>
             <section className={classNames} {...directProps} role="dialog" tabIndex="0">
                 <div className={style.dialog__contentsPosition}>
                     <div className={style.dialog__contents}>

@@ -5,12 +5,12 @@ import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
 import {
-    I18n,
     Icon,
     DropDown,
     CheckBox,
     Label
 } from 'Components/index';
+import {I18n} from 'Host/Containers/index';
 import {actions} from 'Host/Redux/index';
 import {publishableNodesSelector, publishableNodesInDocumentSelector} from 'Host/Selectors/CR/Workspaces/index';
 
@@ -200,23 +200,23 @@ export default class PublishDropDown extends Component {
     onPublishClick() {
         const {publishableNodesInDocument, publishAction} = this.props;
 
-        publishAction(publishableNodesInDocument.map(i => i.contextPath), 'live');
+        publishAction(publishableNodesInDocument.map($get('contextPath')), 'live');
     }
 
     onPublishAllClick() {
         const {publishableNodes, publishAction} = this.props;
-        publishAction(publishableNodes.map(i => i.contextPath), 'live');
+        publishAction(publishableNodes.map($get('contextPath')), 'live');
     }
 
     onDiscardClick() {
         const {publishableNodesInDocument, discardAction} = this.props;
 
-        discardAction(publishableNodesInDocument.map(i => i.contextPath));
+        discardAction(publishableNodesInDocument.map($get('contextPath')));
     }
 
     onDiscardAllClick() {
         const {publishableNodes, discardAction} = this.props;
 
-        discardAction(publishableNodes.map(i => i.contextPath));
+        discardAction(publishableNodes.map($get('contextPath')));
     }
 }

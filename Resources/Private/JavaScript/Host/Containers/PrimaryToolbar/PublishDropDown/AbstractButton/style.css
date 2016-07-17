@@ -1,8 +1,8 @@
 .btn {
     display: inline-block;
     padding: 0 $spacing;
-    height: 40px;
-    line-height: 40px;
+    height: $unit;
+    line-height: $unit;
     border: 0;
     background: $success;
     text-align: center;

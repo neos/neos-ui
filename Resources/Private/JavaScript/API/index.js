@@ -19,7 +19,7 @@ export const define = parent => (name, value) => {
 //
 // Initializes the Neos API
 //
-export default (parent, csrfToken, alias = 'neos') => {
+export default (parent, {csrfToken, alias = 'neos', systemEnv = 'Development'}) => {
     if (csrfToken === undefined) {
         throw new Error('You need to provide a valid csrf token for the Neos API');
     }
@@ -28,7 +28,7 @@ export default (parent, csrfToken, alias = 'neos') => {
         throw new Error(`Could not initialize Neos API, because ${alias} is already defined.`);
     }
 
-    const neos = {};
+    const neos = {systemEnv};
     const addLibrary = define(neos);
 
     addLibrary('use', initializeUse(addLibrary, neos));

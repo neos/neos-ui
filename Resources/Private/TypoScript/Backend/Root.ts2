@@ -23,4 +23,6 @@ backend = TYPO3.TypoScript:Template {
     initialState.@process.json = ${Json.stringify(value)}
 
     translations = ${translations}
+
+    env = ${Configuration.setting('TYPO3.Flow.core.context')}
 }

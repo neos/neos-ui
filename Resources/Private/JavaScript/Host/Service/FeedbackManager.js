@@ -1,5 +1,4 @@
-import {service} from 'Shared/index';
-const {logger} = service;
+import {logger} from 'Shared/Utilities/';
 import registry from '@reduct/registry';
 
 import * as feedbackHandler from './FeedbackHandler/index';
@@ -32,7 +31,7 @@ class FeedbackManager {
         try {
             return feedbackHandlers.get(type);
         } catch (err) {
-            console.error(err);
+            logger.error(err);
         }
 
         // Fallback: just log the feedback

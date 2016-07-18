@@ -1,5 +1,4 @@
-import {service} from 'Shared/index';
-const {logger} = service;
+import {logger} from 'Shared/Utilities/';
 
 export default (feedback, envelope) => {
     switch (feedback.payload.severity) {

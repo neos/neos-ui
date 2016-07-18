@@ -1,4 +1,5 @@
 import merge from 'lodash.merge';
+import {logger} from 'Shared/Utilities/';
 
 //
 // Fallback values for inline editor configuration
@@ -35,9 +36,13 @@ const DEFAULT_CONFIGURATION = {
 //
 let alohaWarning = false;
 const convertDeprecatedAlohaConfiguration = configuration => {
-    if (!alohaWarning) {
+    if (
+        !alohaWarning
+    ) {
+        //
         // TODO: Display url to migration info
-        console.warn(`
+        //
+        logger.deprecate(`
             You are using a deprecated configuration format.
             The key "aloha" will be removed in future versions of Neos. Please have
             a look at -- to learn how to migrate.
@@ -95,7 +100,7 @@ export default (node, property) => {
         !node.nodeType.properties[property] ||
         !node.nodeType.properties[property].ui
     ) {
-        console.warn(`
+        logger.warn(`
             Could not find inline editor configuration for "${property}" in
             "${node.contextPath}"
         `);

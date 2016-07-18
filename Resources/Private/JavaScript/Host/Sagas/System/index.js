@@ -31,6 +31,11 @@ export const getCsrfToken = discover(function* () {
     return appContainer.dataset.csrfToken;
 });
 
+export const getSystemEnv = discover(function* () {
+    const appContainer = yield getAppContainer;
+    return appContainer.dataset.env;
+});
+
 export const getServerState = discover(function* () {
     const appContainer = yield getAppContainer;
     return JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
@@ -71,8 +76,12 @@ export const getHostApi = discover(function* () {
 
 export const getNeos = discover(function* () {
     const csrfToken = yield getCsrfToken;
+    const systemEnv = yield getSystemEnv;
     const store = yield getStore;
-    const neos = initializeJSAPI(window, csrfToken);
+    const neos = initializeJSAPI(window, {
+        csrfToken,
+        systemEnv
+    });
 
     neos.use(ui(store));
 

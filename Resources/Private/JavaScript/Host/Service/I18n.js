@@ -1,3 +1,5 @@
+import {logger} from 'Shared/Utilities/';
+
 function formatIdentifier(identifier) {
     return identifier.replace(/\./g, '_');
 }
@@ -18,8 +20,7 @@ export default translations =>
             return translation;
         }
 
-        // ToDo: Use the neos logger util.
-        console.error(`No translation found for id "${packageKey}:${sourceName}:${transUnitId}" in:`, translations);
+        logger.error(`No translation found for id "${packageKey}:${sourceName}:${transUnitId}" in:`, translations);
 
         return '';
     };

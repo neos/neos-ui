@@ -1,9 +1,7 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {service} from 'Shared/index';
 import style from './style.css';
-import {fontAwesome} from 'Shared/Utilities/index';
-const {logger} = service;
+import {api, fontAwesome, logger} from 'Shared/Utilities/';
 
 const cachedWarnings = {};
 
@@ -35,7 +33,7 @@ Icon.propTypes = {
         if (!isValid) {
             if (isMigrationNeeded && iconName && !cachedWarnings[iconName]) {
                 cachedWarnings[iconName] = true;
-                logger.warn(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
+                logger.deprecate(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
 
 Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
 

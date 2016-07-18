@@ -1,4 +1,5 @@
 import load from 'Shared/Utilities/LoadScript';
+import {logger} from 'Shared/Utilities/';
 
 //
 // A simple registry for inspector editors
@@ -46,15 +47,19 @@ export default (moduleMapping, legacyMapping = {}) => {
             // Check if the editor is known to the system
             //
             if (moduleMapping[moduleName] === undefined && legacyMapping[moduleName] === undefined) {
-                console.warn('Host frame is asking for an unknown inspector editor.');
-                console.warn(`Cannot find: ${moduleName}. Do you have it correctly configured in your Settings.yaml?`);
+                logger.warn('Host frame is asking for an unknown inspector editor.');
+                logger.warn(`Cannot find: "${moduleName}". Is it correctly configured in your Settings.yaml?`);
             } else {
+
                 //
                 // Display a deprecation warning at this point, that instructs the developer to
                 // migrate to the new identifier convention for UI extensions
                 //
-                if (moduleMapping[moduleName] === undefined && legacyMapping[moduleName] !== undefined) {
-                    console.warn(`${moduleName} is a deprecated editor identifier. Make sure to change it to ${legacyMapping[moduleName].migratesTo}.`);
+                if (
+                    moduleMapping[moduleName] === undefined &&
+                    legacyMapping[moduleName] !== undefined
+                ) {
+                    logger.deprecate(`"${moduleName}" is a deprecated editor identifier. Change it to "${legacyMapping[moduleName].migratesTo}".`);
                 }
 
                 //

@@ -11,7 +11,6 @@ import {ui} from 'Host/Plugins/index';
 let injectStore = null;
 export const getStore = discover(function* () {
     const store = yield new Promise(resolve => {
-        console.log('say what?');
         injectStore = resolve;
     });
     return store;

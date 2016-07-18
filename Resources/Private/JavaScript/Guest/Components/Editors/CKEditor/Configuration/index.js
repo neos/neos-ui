@@ -1,4 +1,5 @@
 import merge from 'lodash.merge';
+import {api} from 'Shared/Utilities/';
 
 //
 // Fallback values for inline editor configuration
@@ -35,8 +36,15 @@ const DEFAULT_CONFIGURATION = {
 //
 let alohaWarning = false;
 const convertDeprecatedAlohaConfiguration = configuration => {
-    if (!alohaWarning) {
+    const {systemEnv} = api.get();
+
+    if (
+        !alohaWarning &&
+        systemEnv !== 'Development'
+    ) {
+        //
         // TODO: Display url to migration info
+        //
         console.warn(`
             You are using a deprecated configuration format.
             The key "aloha" will be removed in future versions of Neos. Please have

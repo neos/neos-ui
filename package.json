@@ -74,10 +74,10 @@
     "webpack-livereload-plugin": "^0.8.1"
   },
   "dependencies": {
-    "@reduct/logger": "^1.1.3",
     "@reduct/registry": "^1.0.1",
     "babel-polyfill": "^6.7.4",
     "classnames": "^2.2.3",
+    "debug": "^2.2.0",
     "immutable": "^3.8.0",
     "json-loader": "^0.5.4",
     "lodash.assign": "^4.0.8",
@@ -90,9 +90,9 @@
     "lodash.isstring": "^4.0.1",
     "lodash.memoize": "^4.0.3",
     "lodash.merge": "^4.3.5",
+    "lodash.omit": "^4.3.0",
     "mime-types": "^2.1.10",
     "monet": "^0.8.10",
-    "lodash.omit": "^4.3.0",
     "normalize.css": "^4.1.1",
     "plow-js": "^1.2.0",
     "ramda": "^0.21.0",

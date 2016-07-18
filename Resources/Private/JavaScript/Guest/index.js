@@ -1,7 +1,7 @@
 import 'Shared/Styles/style.css';
 import 'babel-polyfill';
 import {domConnector} from './Process/index';
-import {api} from 'Shared/Utilities/';
+import {api, logger} from 'Shared/Utilities/';
 
 const {ui} = api.get();
 
@@ -15,9 +15,8 @@ if (ui) {
     // Propagate errors of the Guest frame to the Host FlashMessages.
     //
     window.onerror = function (err) {
-        console.error(err);
         ui.addFlashMessage(`Whoops. Something went wrong in the guest frame. Error message states "${err}".`);
-        console.error(err);
+        logger.error(err);
     };
 
     //

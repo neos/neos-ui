@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
+import {logger} from 'Shared/Utilities/';
 import neos from 'Host/Decorators/Neos/index';
 
 const errorCache = {};
@@ -66,9 +67,8 @@ export default class I18n extends Component {
         }
 
         if (!errorCache[`${packageKey}:${sourceName}:${id}`]) {
-            // ToDo: Use the neos logger util.
-            console.error(`No translation found for id "${packageKey}:${sourceName}:${id}" in:`, translations);
-            console.info(`Using ${fallback} instead.`);
+            logger.error(`No translation found for id "${packageKey}:${sourceName}:${id}" in:`, translations, `Using ${fallback} instead.`);
+
             errorCache[`${packageKey}:${sourceName}:${id}`] = true;
         }
 

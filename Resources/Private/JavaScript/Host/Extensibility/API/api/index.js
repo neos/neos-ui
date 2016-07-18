@@ -1,3 +1,5 @@
+import {logger} from 'Shared/Utilities/';
+
 const API = window['@Neos:HostPluginAPI'];
 const RECOMMENDED_VERSION = '1.0.0';
 const isCompatibleVersion = () => true;
@@ -13,7 +15,7 @@ if (API === undefined) {
 // Check for version constraint
 //
 if (!isCompatibleVersion(API.version)) {
-    console.warn(`Detected incompatible Neos Host Plugin API ${API.version}, recommended: ${RECOMMENDED_VERSION}`);
+    logger.warn(`Detected incompatible Neos Host Plugin API "${API.version}", recommended: "${RECOMMENDED_VERSION}"`);
 }
 
 export default API;

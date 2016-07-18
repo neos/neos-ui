@@ -1,3 +1,5 @@
+import {logger} from 'Shared/Utilities/';
+
 //
 // Do not run initialization task twice
 //
@@ -115,7 +117,7 @@ const createCKEditorAPI = nativeApi => {
     }
 
     if (!nativeApi) {
-        console.error('CKEditor not found!');
+        logger.error('CKEditor not found!');
 
         //
         // Return noop to not break things

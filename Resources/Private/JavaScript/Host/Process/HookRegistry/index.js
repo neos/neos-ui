@@ -1,4 +1,4 @@
-import load from 'Shared/Utilities/LoadScript';
+import {logger, loadScript} from 'Shared/Utilities/';
 
 //
 // A simple registry for system hooks
@@ -28,13 +28,12 @@ export default (moduleMapping) => {
             // Check if the editor is known to the system
             //
             if (moduleMapping[moduleName] === undefined) {
-                console.warn('Host frame is asking for an unknown hook.');
-                console.warn(`Cannot find: ${moduleName}. Do you have it correctly configured in your Settings.yaml?`);
+                logger.warn(`Host frame is asking for an unknown hook. Cannot find: "${moduleName}". Is it correctly configured in your Settings.yaml?`);
             } else {
                 //
                 // Now load the script that contains the requested editor
                 //
-                load(moduleMapping[moduleName]);
+                loadScript(moduleMapping[moduleName]);
             }
 
             return new Promise(resolve => {

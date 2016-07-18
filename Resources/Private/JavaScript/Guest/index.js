@@ -1,5 +1,7 @@
+import 'core-js/shim';
+import 'regenerator-runtime/runtime';
 import 'Shared/Styles/style.css';
-import 'babel-polyfill';
+
 import {domConnector} from './Process/index';
 import {api} from 'Shared/Utilities/';
 

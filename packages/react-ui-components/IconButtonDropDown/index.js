@@ -1,11 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {service} from 'Shared/index';
+import {logger} from 'Shared/Utilities/';
 import Icon from 'Components/Icon/index';
 import Button from 'Components/Button/index';
 import style from './style.css';
-
-const {logger} = service;
 
 export default class IconButtonDropDown extends Component {
     static propTypes = {

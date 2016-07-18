@@ -1,9 +1,7 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {service} from 'Shared/index';
 import style from './style.css';
-import {api, fontAwesome} from 'Shared/Utilities/';
-const {logger} = service;
+import {api, fontAwesome, logger} from 'Shared/Utilities/';
 
 const cachedWarnings = {};
 
@@ -31,18 +29,11 @@ Icon.propTypes = {
     icon(props, propName) {//eslint-disable-line
         const id = props[propName];
         const {isValid, isMigrationNeeded, iconName} = fontAwesome.validateId(id);
-        const {systemEnv} = api.get();
 
-        //
-        // ToDo: In the future we need to adjust the `systemEnv`
-        // condition to throw warnings in Development, but not in Production.
-        // For now we disable these warnings in development since they
-        // make debugging a mess.
-        //
-        if (!isValid && systemEnv !== 'Development') {
+        if (!isValid) {
             if (isMigrationNeeded && iconName && !cachedWarnings[iconName]) {
                 cachedWarnings[iconName] = true;
-                logger.warn(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
+                logger.deprecate(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
 
 Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
 

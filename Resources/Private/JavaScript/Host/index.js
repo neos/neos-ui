@@ -1,4 +1,5 @@
-import 'babel-polyfill';
+import 'core-js/shim';
+import 'regenerator-runtime/runtime';
 import 'Shared/Styles/style.css';
 
 import {createStore, applyMiddleware, compose} from 'redux';

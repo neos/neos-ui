@@ -130,17 +130,5 @@
     "prebuild": "Build/check-dependencies",
     "storybook": "export STORY=true && start-storybook -p 9001"
   },
-  "contributors": [
-    {
-      "name": "Wilhelm Behncke",
-      "email": "wilhelm.behncke@googlemail.com",
-      "url": "https://github.com/grebaldi"
-    },
-    {
-      "name": "Tyll Weiß",
-      "email": "inkdpixels@googlemail.com",
-      "url": "https://github.com/Inkdpixels/"
-    }
-  ],
   "license": "GPL-3.0+"
 }

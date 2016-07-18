@@ -14,13 +14,6 @@ const config = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
     module: {
-        preLoaders: [
-            {
-                test: /\.js$/,
-                loader: 'eslint-loader',
-                exclude: /node_modules/
-            }
-        ],
         loaders: [
             {
                 test: /\.js$/,

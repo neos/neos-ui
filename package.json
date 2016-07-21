@@ -56,7 +56,7 @@
     "postcss-nested": "^1.0.0",
     "postcss-simple-vars": "^3.0.0",
     "react-addons-test-utils": "^15.0.2",
-    "react-measure": "^0.4.0",
+    "react-measure": "^0.4.1",
     "redux-devtools": "^3.2.0",
     "selenium-standalone": "^5.0.0",
     "sinon": "^1.17.2",

@@ -65,7 +65,7 @@
     "style-loader": "^0.13.0",
     "stylelint": "^7.0.3",
     "url-loader": "^0.5.7",
-    "wdio-dot-reporter": "^0.0.5",
+    "wdio-dot-reporter": "^0.0.6",
     "wdio-mocha-framework": "^0.3.5",
     "wdio-sauce-service": "^0.2.2",
     "webdriverio": "^4.0.8",

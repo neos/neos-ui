@@ -68,7 +68,7 @@
     "wdio-dot-reporter": "^0.0.5",
     "wdio-mocha-framework": "^0.3.5",
     "wdio-sauce-service": "^0.2.2",
-    "webdriverio": "^4.0.8",
+    "webdriverio": "^4.2.1",
     "webpack": "^1.12.9",
     "webpack-livereload-plugin": "^0.8.1"
   },

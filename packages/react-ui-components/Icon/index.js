@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
-import {api, fontAwesome, logger} from 'Shared/Utilities/';
+import {fontAwesome, logger} from 'Shared/Utilities/';
 
 const cachedWarnings = {};
 

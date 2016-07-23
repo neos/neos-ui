@@ -70,8 +70,6 @@ documentation about how to use it.
 | `npm run lint:css`  | Lints all `.css` files via StyleLint. |
 | `npm run lint`  | Runs the above stated watch commands sequentially. |
 | `npm run karma` | Executes a single run of all unit tests via karma. (This is pretty slow due to webpack's single-compilation speed, use the `watch:karma` task instead for development) |
-| `npm run selenium:init` | Installs and boots the selenium server. See [Writing integration tests](#integration-tests) for more info. |
-| `npm run selenium:run` | Executes all integration tests via WebdriverIO. See [Writing integration tests](#integration-tests) for more info. |
 | `npm run watch:build`  | Watches all source files and rebuilds the compiled files on file changes. |
 | `npm run watch:karma`  | Watches all source files and unit test specs and runs karma after the compilation has been completed. |
 | `npm run watch`  | Runs the above stated watch commands sequentially. |
@@ -88,28 +86,6 @@ Instead of relying on the default settings of Karma, we use [chai](http://chaijs
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 
 Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a specific test and not the whole test suite.
-
-#### <a name="integration-tests"></a> Writing integration tests
-The integration tests are running on a selenium grid which is installed & started by the `npm run selenium:init` command,
-and executed by [WebdriverIO](http://webdriver.io/). Assertions are written with [chai](http://chaijs.com/).
-To run the integration tests, execute `npm run selenium:init` first, and `npm run selenium:run` in a separate session afterwards.
-
-Adding user stories is as simple as creating unit tests, the only difference is that the file needs to be placed in the `Tests` root directory and should end with `*.story.js` instead of `*.spec.js`.
-
-Since acceptance testing can be relatively time-intensive, it’s important to plan how to organize your tests. It is possible to organize your tests by creating multiple configuration files: each file can define a different list of “specs” directories.
-Additionally, Mocha’s “grep” option is exposed to the --mochaOpts option, so you can use it to perform pattern matching on your test descriptions:
-
-    npm run selenium:run -- --mochaOpts.grep "should persist the changes"
-
-#### Libraries which are used by the application
-| Name          | Description/Usecase          |
-| ------------- | ---------------------------- |
-| [immutable](https://facebook.github.io/immutable-js/) | Transforms data into immutable structures. [Read more](http://jlongster.com/Using-Immutable-Data-Structures-in-JavaScript) |
-| [redux](https://github.com/rackt/redux) | Handles the state of the application in general. [Read more](http://www.jchapron.com/2015/08/14/getting-started-with-redux/) |
-| [react](https://facebook.github.io/react/) | The view layer on which the UI is based upon. |
-| [react-motion](https://github.com/chenglou/react-motion) / [react-motion-ui-pack](https://github.com/souporserious/react-motion-ui-pack) | Simple animations in react. |
-| [@reduct/component](https://github.com/reduct/component) | Used for low-level components which interact directly with server side rendered markup. |
-
 
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR

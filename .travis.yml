@@ -35,8 +35,6 @@ cache:
 env:
   - TEST_SUITE=CodeStyle
   - TEST_SUITE=UnitTests
-#  Disabled until stable.
-#  - TEST_SUITE=IntegrationTests
 
 #
 # Install nvm, the node depdencies and setup the some env variables.

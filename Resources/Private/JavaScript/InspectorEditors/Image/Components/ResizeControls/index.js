@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, {PropTypes} from '@host/react';
 import {Components} from '@host';
 import {$get} from 'plow-js';
 import {Map} from 'immutable';

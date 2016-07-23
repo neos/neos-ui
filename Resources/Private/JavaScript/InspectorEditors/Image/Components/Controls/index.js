@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from '@host/react';
 import {Components, I18n} from '@host';
 import {Maybe} from 'monet';
 

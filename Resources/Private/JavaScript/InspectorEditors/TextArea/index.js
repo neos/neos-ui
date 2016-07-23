@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, {PropTypes} from '@host/react';
 import {Components} from '@host';
 
 const {TextArea} = Components;

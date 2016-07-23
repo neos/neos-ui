@@ -1,4 +1,4 @@
-import React from 'react';
+import React from '@host/react';
 
 const NodeType = () => {
     return (<div>TODO NodeType</div>);

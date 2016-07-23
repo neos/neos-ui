@@ -1,8 +1,13 @@
 const fs = require('fs');
-const defaultConfig = require('./webpack.base.config');
+const merge = require('lodash.merge');
+const {
+    baseConfig,
+    hostConfig,
+    inspectorEditorConfig
+} = require('./webpack.base.config');
 const babelConfig = JSON.parse(fs.readFileSync('./.babelrc', 'utf8'));
 
-module.exports = Object.assign({}, defaultConfig, {
+const testConfig = {
     devtool: 'inline-source-map',
 
     module: {
@@ -28,7 +33,7 @@ module.exports = Object.assign({}, defaultConfig, {
             }
         ],
 
-        loaders: defaultConfig.module.loaders.concat(
+        loaders: baseConfig.module.loaders.concat(
             //
             // Workaround for sinon since it requires itself,
             // and webpack can't handle circular dependencies.
@@ -56,4 +61,9 @@ module.exports = Object.assign({}, defaultConfig, {
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true
     }
-});
+};
+
+module.exports = [
+    merge({}, baseConfig, hostConfig, testConfig),
+    merge({}, baseConfig, inspectorEditorConfig, testConfig)
+];

@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, {PropTypes} from '@host/react';
 import {Components, I18n} from '@host';
 
 const {CheckBox, Label} = Components;

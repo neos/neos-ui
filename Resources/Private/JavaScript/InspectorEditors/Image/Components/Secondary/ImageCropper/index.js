@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from '@host/react';
 import {Components, SecondaryInspector} from '@host';
 import ReactCrop from 'react-image-crop';
 

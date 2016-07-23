@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, {PropTypes} from '@host/react';
 import {SecondaryInspector} from '@host';
 
 import style from './style.css';

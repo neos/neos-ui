@@ -9,7 +9,7 @@ const nested = require('postcss-nested');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./Build/Utilities/').env;
 
-const config = {
+const baseConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
     module: {
@@ -57,9 +57,11 @@ const config = {
         new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
     ],
 
-    entry: {
-        // Hint: this part is filled dynamically inside webpack.config.js
-    },
+    //
+    // Hint: This part is filled dynamically inside webpack.config.js
+    // based on the individual configs of the builds.
+    //
+    entry: {},
 
     output: {
         filename: 'JavaScript/[name].js',
@@ -75,7 +77,39 @@ const config = {
 // Adjust the config depending on the env.
 //
 if (!env.isCi && !env.isTesting && !env.isStorybook) {
-    config.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
+    baseConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
 }
 
-module.exports = config;
+//
+// Additional config parts for different builds.
+//
+const hostConfig = {
+    entry: {
+        Host: './Resources/Private/JavaScript/Host/index.js',
+
+        //
+        // Workaround according to https://github.com/webpack/webpack/issues/300,
+        // since entry points are not allowed as dependencies in webpack?!?
+        //
+        Components: ['./Resources/Private/JavaScript/Components/index.js'],
+        Guest: './Resources/Private/JavaScript/Guest/index.js'
+    }
+};
+
+const inspectorEditorConfig = {
+    resolve: {
+        alias: {
+            '@host': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/'),
+            '@host/react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/react/')
+        }
+    },
+    entry: {
+        InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/index.js'
+    }
+};
+
+module.exports = {
+    baseConfig,
+    hostConfig,
+    inspectorEditorConfig
+};

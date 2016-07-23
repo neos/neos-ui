@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from '@host/react';
 import {api} from '@host';
 import {$set, $drop, $get} from 'plow-js';
 import {Maybe} from 'monet';

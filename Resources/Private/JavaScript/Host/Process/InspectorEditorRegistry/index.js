@@ -50,7 +50,6 @@ export default (moduleMapping, legacyMapping = {}) => {
                 logger.warn('Host frame is asking for an unknown inspector editor.');
                 logger.warn(`Cannot find: "${moduleName}". Is it correctly configured in your Settings.yaml?`);
             } else {
-
                 //
                 // Display a deprecation warning at this point, that instructs the developer to
                 // migrate to the new identifier convention for UI extensions

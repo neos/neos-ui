@@ -15,7 +15,7 @@ const deprecate = _debug('Neos:deprecated');
 //
 // ToDo: Find a more sophisticated way to enable/disable certain messages.
 //
-// The `debug` package does not swallow messages which are logged before 
+// The `debug` package does not swallow messages which are logged before
 // this enable step, but we cannot say for certain that the API has
 // booted up correctly at the end of the event-loop.
 //
@@ -27,7 +27,7 @@ setTimeout(() => {
     // since debugging would be a mess otherwise.
     //
     if (systemEnv === 'Development') {
-        _debug.enable("Neos.Ui:*");
+        _debug.enable('Neos.Ui:*');
     } else {
         _debug.enable('Neos*');
     }

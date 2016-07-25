@@ -7,6 +7,7 @@ import style from './style.css';
 import {actions} from 'Host/Redux/index';
 
 import InlineUI from 'Guest/Containers/InlineUI/index';
+import registry from 'Host/Extensibility/Registry/index';
 
 const closestContextPath = el => {
     if (!el) {
@@ -112,7 +113,11 @@ export default class ContentCanvas extends Component {
 
                 // TODO: from state, read node types & configure CKeditor based on node type!
 
-                iframeWindow.NeosCKEditorApi.createEditor(dom, {}, (contents) => {
+                const editorConfig = {
+                    formattingAndStyling: registry.ckEditor.formattingAndStyling.getAllAsObject()
+                };
+
+                iframeWindow.NeosCKEditorApi.createEditor(dom, editorConfig, (contents) => {
                     //console.log("Change of content:", contents);
                 }, (activeFormatting) => {
                     this.props.setActiveFormatting(activeFormatting);

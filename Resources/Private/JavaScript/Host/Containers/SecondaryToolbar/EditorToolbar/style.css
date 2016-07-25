@@ -1,9 +1,3 @@
-.toolBar {
-    position: absolute;
-    border-bottom: 1px solid $dark;
-    background: #222;
-    white-space: nowrap;
-}
 .toolBar__btnGroup {
     border-bottom: 1px solid $dark;
 
@@ -18,8 +12,4 @@
 }
 .toolBar__btnGroup__btn {
     float: left;
-}
-
-.toolBar--isHidden {
-    display: none;
 }

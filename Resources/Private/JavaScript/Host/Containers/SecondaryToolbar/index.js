@@ -6,6 +6,8 @@ import {$transform, $get} from 'plow-js';
 import {actions} from 'Host/Redux/index';
 import {IconButton, Icon} from 'Components/index';
 import DimensionSwitcher from './DimensionSwitcher/index';
+import EditorToolbar from './EditorToolbar/index';
+import {isDocumentNodeSelectedSelector} from 'Host/Selectors/CR/Nodes/index';
 
 import style from './style.css';
 
@@ -13,7 +15,8 @@ import style from './style.css';
     previewUrl: $get('ui.contentCanvas.previewUrl'),
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
-    isFullScreen: $get('ui.fullScreen.isFullScreen')
+    isFullScreen: $get('ui.fullScreen.isFullScreen'),
+    isDocumentNodeSelected: isDocumentNodeSelectedSelector
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })
@@ -41,7 +44,7 @@ export default class SecondaryToolbar extends Component {
 
         return (
             <div className={classNames}>
-                <DimensionSwitcher />
+                {this.props.isDocumentNodeSelected ? <DimensionSwitcher /> : <EditorToolbar />}
 
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     <a

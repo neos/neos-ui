@@ -1,27 +1,5 @@
 import getSelectionData from './CKUtility/SelectionHelpers';
 
-// TMP!!
-const styleConfig = {
-    h1: {
-        style: {element: 'h1'},
-    },
-    h2: {
-        style: {element: 'h2'},
-    },
-    h3: {
-        style: {element: 'h3'},
-    },
-    h4: {
-        style: {element: 'h4'},
-    },
-    h5: {
-        style: {element: 'h5'},
-    },
-    bold: {
-        command: 'bold'
-    }
-};
-
 const createCKEditorAPI = CKEDITOR => {
     if (!CKEDITOR) {
         console.error('CKEditor not found!');
@@ -33,12 +11,10 @@ const createCKEditorAPI = CKEDITOR => {
     }
 
 
-    const handleUserInteractionCallbackFactory = (editor, configuration, onActiveFormattingChange) => event => {
+    const handleUserInteractionCallbackFactory = (editor, editorConfig, onActiveFormattingChange) => event => {
         if (event.name !== 'keyup' || event.data.$.keyCode !== 27) {
 
             const selectionData = getSelectionData(editor);
-
-            console.log("HANDLE USER INT", selectionData);
 
             if (selectionData) {
                 const {left, top} = selectionData.region;
@@ -55,8 +31,8 @@ const createCKEditorAPI = CKEDITOR => {
         }
 
         let activeState = {};
-        Object.keys(styleConfig).forEach(key => {
-            const description = styleConfig[key];
+        Object.keys(editorConfig.formattingAndStyling).forEach(key => {
+            const description = editorConfig.formattingAndStyling[key];
 
             if (description.command !== undefined) {
                 if (!editor.getCommand(description.command)) {
@@ -100,24 +76,24 @@ const createCKEditorAPI = CKEDITOR => {
 
     // Public (singleton) API for CK editor
     return {
-        createEditor(dom, configuration, onChange, onActiveFormattingChange) {
+        createEditor(dom, editorConfig, onChange, onActiveFormattingChange) {
             const finalOptions = Object.assign(
                 {
                     removePlugins: 'toolbar,contextmenu,liststyle,tabletools',
                     allowedContent: true,
                     extraPlugins: 'removeformat'
-                },
+            });
 
-                configuration.placeholder ? {
+                /*configuration.placeholder ? {
                     extraPlugins: 'confighelper',
                     placeholder: configuration.placeholder
                 } : {}
-            );
+            );*/
 
-            dom.contentEditable = "true";
+            dom.contentEditable = 'true';
 
             const editor = CKEDITOR.inline(dom, finalOptions);
-            const handleUserInteraction = handleUserInteractionCallbackFactory(editor, configuration, onActiveFormattingChange);
+            const handleUserInteraction = handleUserInteractionCallbackFactory(editor, editorConfig, onActiveFormattingChange);
 
             editor.once('contentDom', () => {
                 const editable = editor.editable();

@@ -18,6 +18,9 @@ import {inspectorSaga} from 'Host/Sagas/UI/Inspector/index';
 import {watchToggle, watchCommenceUncollapse} from './Sagas/UI/PageTree/index';
 import {watchNodes, watchFocusedNode, watchHoveredNode} from './Sagas/UI/Plugin/index';
 
+// TODO: load the other manifests!
+import './manifest';
+
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
 const sagaMiddleWare = createSagaMiddleware();

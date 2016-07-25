@@ -14,6 +14,23 @@ import {
 } from './Buttons/index';
 import style from './style.css';
 
+export const position = nodeContextPath => {
+    const nodeElement = document.getElementsByName('neos-content-main')[0].contentDocument.querySelector('[data-__neos-node-contextpath=\'' + nodeContextPath + '\']'); // TODO: workaround to access the frame from outside...
+
+    if (nodeElement && nodeElement.getBoundingClientRect) {
+        const bodyBounds = document.getElementsByName('neos-content-main')[0].contentDocument.body.getBoundingClientRect(); // TODO: workaround to access the frame from outside...
+        const domBounds = nodeElement.getBoundingClientRect();
+
+        return {
+            x: domBounds.left - bodyBounds.left,
+            y: domBounds.top - bodyBounds.top
+        };
+    }
+
+    return {x: 0, y: 0};
+};
+
+
 @connect($transform({
     focusedNode: CR.Nodes.focusedSelector,
     isEditorToolbarVisible: $get('guest.editorToolbar.isVisible')
@@ -30,26 +47,7 @@ export default class NodeToolbar extends Component {
             node: this.props.focusedNode
         };
 
-
-        const position = dom => {
-            if (dom && dom.getBoundingClientRect) {
-                const bodyBounds = document.getElementsByName('neos-content-main')[0].contentDocument.body.getBoundingClientRect(); // TODO: workaround to access the frame from outside...
-                const domBounds = dom.getBoundingClientRect();
-
-                return {
-                    x: domBounds.left - bodyBounds.left,
-                    y: domBounds.top - bodyBounds.top
-                };
-            }
-
-            return {x: 0, y: 0};
-        };
-
-
-
-        const nodeElement = document.getElementsByName('neos-content-main')[0].contentDocument.querySelector('[data-__neos-node-contextpath=\'' + this.props.focusedNode.contextPath + '\']'); // TODO: workaround to access the frame from outside...
-
-        const {x, y} = position(nodeElement);
+        const {x, y} = position(this.props.focusedNode.contextPath);
 
         const {isEditorToolbarVisible} = this.props;
         const classNames = mergeClassNames({

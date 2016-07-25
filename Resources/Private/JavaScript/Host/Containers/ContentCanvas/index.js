@@ -8,6 +8,14 @@ import {actions} from 'Host/Redux/index';
 
 import InlineUI from 'Guest/Containers/InlineUI/index';
 
+const closestContextPath = el => {
+    if (!el) {
+        return null;
+    }
+
+    return el.dataset.__neosNodeContextpath || closestContextPath(el.parentNode);
+};
+
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
     isFringeRight: $get('ui.rightSideBar.isHidden'),
@@ -17,7 +25,7 @@ import InlineUI from 'Guest/Containers/InlineUI/index';
 }), {
     setContextPath: actions.UI.ContentCanvas.setContextPath,
     setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
-    setDocumentAndWindowReferences: actions.UI.ContentCanvas.setDocumentAndWindowReferences,
+    setActiveFormatting: actions.UI.ContentCanvas.setActiveFormatting,
     addNode: actions.CR.Nodes.add,
     focusNode: actions.CR.Nodes.focus,
     hoverNode: actions.CR.Nodes.hover,
@@ -33,7 +41,7 @@ export default class ContentCanvas extends Component {
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
         addNodes: PropTypes.func.isRequired,
-        setDocumentAndWindowReferences: PropTypes.func.isRequired,
+        setActiveFormatting: PropTypes.func.isRequired,
         focusNode: PropTypes.func.isRequired,
         hoverNode: PropTypes.func.isRequired,
         unhoverNode: PropTypes.func.isRequired
@@ -94,6 +102,24 @@ export default class ContentCanvas extends Component {
                     });
                     //nodeComponent(dom, ui, connection)
                 });
+            
+            //
+            // Initialize inline editors
+            //
+            [].slice.call(iframeDocument.querySelectorAll('.neos-inline-editable')).forEach(dom => {
+                const contextPath = closestContextPath(dom);
+                const propertyName = dom.dataset.__neosProperty;
+
+                // TODO: from state, read node types & configure CKeditor based on node type!
+
+                iframeWindow.NeosCKEditorApi.createEditor(dom, {}, (contents) => {
+                    //console.log("Change of content:", contents);
+                }, (activeFormatting) => {
+                    this.props.setActiveFormatting(activeFormatting);
+                });
+                //CKEditorApi.createEditor(dom, {});
+                //ckEditor({contextPath, propertyName}, dom, ui, connection, store.dispatch);
+            });
 
         };
 

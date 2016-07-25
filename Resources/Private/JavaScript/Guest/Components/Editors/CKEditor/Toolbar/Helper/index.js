@@ -1,4 +1,4 @@
-import {createSignal} from 'Guest/Process/SignalRegistry/index';
+const createSignal = () => {};
 import ckApi from '../../API/index';
 
 export default editor => {

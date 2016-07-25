@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 
 import {DropDown, Icon} from 'Components/index';
-import {SignalPropType} from 'Guest/Process/SignalRegistry/index';
+
 
 import style from './style.css';
 
@@ -15,7 +15,7 @@ export default class ToolbarDropDown extends Component {
                     label: PropTypes.string.isRequired,
                     isActive: PropTypes.bool.isRequired,
                     isEnabled: PropTypes.bool.isRequired,
-                    onSelect: SignalPropType.isRequired
+                    onSelect: PropTypes.func.isRequired
                 })
             ).isRequired
         }).isRequired,

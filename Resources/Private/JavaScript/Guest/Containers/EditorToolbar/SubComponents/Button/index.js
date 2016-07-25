@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
 import {IconButton} from 'Components/index';
-import {SignalPropType} from 'Guest/Process/SignalRegistry/index';
 
 export default class Button extends Component {
     static propTypes = {
@@ -9,7 +8,7 @@ export default class Button extends Component {
             icon: PropTypes.string.isRequired,
             isActive: PropTypes.bool.isRequired,
             isEnabled: PropTypes.bool.isRequired,
-            onClick: SignalPropType.isRequired
+            onClick: PropTypes.func.isRequired
         }).isRequired,
 
         dispatchEditorSignal: PropTypes.func.isRequired

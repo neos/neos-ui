@@ -4,14 +4,12 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$get} from 'plow-js';
 
-import {actions} from 'Guest/Redux/index';
 
-import processConfiguration from './ProcessConfiguration/index';
 import * as SubComponents from './SubComponents/index';
 import style from './style.css';
 
 @connect($get('editorToolbar'), {
-    dispatchEditorSignal: actions.EditorToolbar.dispatchSignal
+    //dispatchEditorSignal: actions.EditorToolbar.dispatchSignal
 })
 export default class Toolbar extends Component {
     static propTypes = {
@@ -82,15 +80,15 @@ export default class Toolbar extends Component {
 
 let debounceToolbarUpdateTimeout = null;
 export const registerToolbar = ({dispatch}, configuration) => {
-    const initialConfiguration = processConfiguration(configuration);
+    //const initialConfiguration = processConfiguration(configuration);
 
     return () => {
         clearTimeout(debounceToolbarUpdateTimeout);
 
         debounceToolbarUpdateTimeout = setTimeout(
             () => {
-                const processedConfiguration = processConfiguration(configuration, initialConfiguration);
-                dispatch(actions.EditorToolbar.setConfiguration(processedConfiguration));
+                //const processedConfiguration = processConfiguration(configuration, initialConfiguration);
+                //dispatch(actions.EditorToolbar.setConfiguration(processedConfiguration));
             },
             100
         );

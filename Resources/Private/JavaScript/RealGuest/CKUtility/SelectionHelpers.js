@@ -92,27 +92,27 @@ const getClientRectsRegion = (selection, nativeSelection) => {
 //
 // Get the direction of the current selection
 //
-const getSelectionDirection = (nativeSelection, ckApi) => {
+const getSelectionDirection = (nativeSelection) => {
     const {anchorNode, anchorOffset, focusNode, focusOffset} = nativeSelection;
 
     if (anchorNode && anchorNode.compareDocumentPosition) {
         const position = anchorNode.compareDocumentPosition(focusNode);
 
         if (!position && anchorOffset > focusOffset || position === Node.DOCUMENT_POSITION_PRECEDING) {
-            return ckApi.SELECTION_BOTTOM_TO_TOP;
+            return window.CKEDITOR.SELECTION_BOTTOM_TO_TOP;
         }
     }
 
-    return ckApi.SELECTION_TOP_TO_BOTTOM;
+    return window.CKEDITOR.SELECTION_TOP_TO_BOTTOM;
 };
 
 //
 // Get an object describing boundaries, client rectangles and direction
 // for the given selection
 //
-const getSelectionRegion = (selection, nativeSelection, ckApi) => {
+const getSelectionRegion = (selection, nativeSelection) => {
     const clientsRectRegion = getClientRectsRegion(selection, nativeSelection);
-    const direction = getSelectionDirection(nativeSelection, ckApi);
+    const direction = getSelectionDirection(nativeSelection);
 
     return {
         ...clientsRectRegion,
@@ -127,16 +127,16 @@ const getSelectionRegion = (selection, nativeSelection, ckApi) => {
 //
 // If the given selection is corrupt, return null
 //
-export default ckApi => editor => {
+export default editor => {
     const selection = editor.getSelection();
     const nativeSelection = selection.getNative();
 
     if (nativeSelection) {
         const element = selection.getSelectedElement();
         const text = selection.getSelectedText();
-        const region = getSelectionRegion(selection, nativeSelection, ckApi);
+        const region = getSelectionRegion(selection, nativeSelection);
         const ranges = selection.getRanges();
-        const isEmpty = (selection.getType() === ckApi.SELECTION_NONE) ||
+        const isEmpty = (selection.getType() === window.CKEDITOR.SELECTION_NONE) ||
             (ranges && ranges.length === 1 && ranges[0].collapsed);
 
         return {element, text, region, isEmpty};

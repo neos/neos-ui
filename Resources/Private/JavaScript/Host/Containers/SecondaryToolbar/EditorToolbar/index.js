@@ -5,7 +5,6 @@ import mergeClassNames from 'classnames';
 import {$get, $transform} from 'plow-js';
 import {CR} from 'Host/Selectors/index';
 
-import * as SubComponents from './SubComponents/index';
 import style from './style.css';
 
 import registry from 'Host/Extensibility/Registry/index';

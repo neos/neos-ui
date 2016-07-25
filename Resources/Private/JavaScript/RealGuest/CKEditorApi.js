@@ -10,24 +10,15 @@ const createCKEditorAPI = CKEDITOR => {
         return {};
     }
 
+    // an object with the following keys:
+    // - formattingAndStyling
+    // - onActiveFormattingChange
+    let editorConfig = null;
+    let currentEditor = null;
 
-    const handleUserInteractionCallbackFactory = (editor, editorConfig, onActiveFormattingChange) => event => {
-        if (event.name !== 'keyup' || event.data.$.keyCode !== 27) {
-
-            const selectionData = getSelectionData(editor);
-
-            if (selectionData) {
-                const {left, top} = selectionData.region;
-
-                //editorApi.setToolbarPosition(left, top);
-                //updateToolbarConfiguration();
-
-                if (selectionData.isEmpty) {
-                    //editorApi.hideToolbar();
-                } else {
-                    //editorApi.showToolbar();
-                }
-            }
+    const handleUserInteractionCallbackFactory = (editor) => event => {
+        if (!event || event.name !== 'keyup' || event.data.$.keyCode !== 27) {
+            // TODO: why was the previous code all inside here? weirdo...
         }
 
         let activeState = {};
@@ -63,7 +54,7 @@ const createCKEditorAPI = CKEDITOR => {
             `);
         });
 
-        onActiveFormattingChange(activeState);
+        editorConfig.onActiveFormattingChange(activeState);
     }
 
 
@@ -73,10 +64,59 @@ const createCKEditorAPI = CKEDITOR => {
     // Perform global initialization tasks
     //
     CKEDITOR.disableAutoInline = true;
+    
 
     // Public (singleton) API for CK editor
     return {
-        createEditor(dom, editorConfig, onChange, onActiveFormattingChange) {
+        initialize(_editorConfig) {
+            editorConfig = _editorConfig;
+        },
+
+        toggleFormat(formatting) {
+            const description = editorConfig.formattingAndStyling[formatting];
+            if (!description) {
+                console.warn(`Formatting instruction ${formatting} not found.`);
+                return;
+            }
+            if (!currentEditor) {
+                console.warn(`Current editor not found!`);
+                return;
+            }
+            if (description.command !== undefined) {
+                if (!currentEditor.getCommand(description.command)) {
+                    console.warn(`Command ${currentEditor} not found.`);
+                    return;
+                }
+
+                currentEditor.execCommand(description.command);
+                currentEditor.fire('change');
+                handleUserInteractionCallbackFactory(currentEditor)();
+                return;
+            }
+
+            if (description.style !== undefined) {
+                if (!currentEditor.elementPath()) {
+                    return;
+                }
+
+                const style = new CKEDITOR.style(description.style);
+                const operation = style.checkActive(currentEditor.elementPath(), currentEditor) ?
+                    'removeStyle' : 'applyStyle';
+
+                currentEditor[operation](style);
+                currentEditor.fire('change');
+                handleUserInteractionCallbackFactory(currentEditor)();
+                return;
+            }
+
+            throw new Error(`
+                An error occured while applying a format in CK Editor.
+                The description parameter needs to either have a key "command" or
+                a key "style" - none of which could be found.
+            `);
+        },
+
+        createEditor(dom, onChange, onActiveFormattingChange) {
             const finalOptions = Object.assign(
                 {
                     removePlugins: 'toolbar,contextmenu,liststyle,tabletools',
@@ -93,16 +133,19 @@ const createCKEditorAPI = CKEDITOR => {
             dom.contentEditable = 'true';
 
             const editor = CKEDITOR.inline(dom, finalOptions);
-            const handleUserInteraction = handleUserInteractionCallbackFactory(editor, editorConfig, onActiveFormattingChange);
+            const handleUserInteraction = handleUserInteractionCallbackFactory(editor, onActiveFormattingChange);
 
             editor.once('contentDom', () => {
                 const editable = editor.editable();
 
                 editable.attachListener(editable, 'focus', (event) => {
+                    currentEditor = editor;
+
                     editable.attachListener(editable, 'keyup', handleUserInteraction);
                     editable.attachListener(editable, 'mouseup', handleUserInteraction);
                     handleUserInteraction(event);
                 });
+
                 editor.on('change', () => {
                     onChange(editor.getData());
                 });
@@ -110,6 +153,5 @@ const createCKEditorAPI = CKEDITOR => {
         }
     };
 };
-
 
 export default createCKEditorAPI(window.CKEDITOR);

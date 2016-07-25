@@ -9,11 +9,20 @@ import * as SubComponents from './SubComponents/index';
 import style from './style.css';
 
 import registry from 'Host/Extensibility/Registry/index';
+import {iframeWindow} from 'Host/Containers/ContentCanvas/index'; // TODO: direct reference to iframeWindow seems to be dirty!!!!
 
+/**
+ * Render sub components for the toolbar, implementing the API as described in registry.ckEditor.toolbar.
+ */
 const renderToolbarComponents = (toolbarComponents, activeFormatting) => {
     return toolbarComponents.map(componentDefinition => {
-        const {component, formatting, ...props} = componentDefinition;
+        const {component, formatting, callbackPropName, ...props} = componentDefinition;
         const isActive = $get(formatting, activeFormatting);
+
+        props[callbackPropName] = (newValue) => {
+            // !!!! TODO: next line is extremely dirty!
+            iframeWindow.NeosCKEditorApi.toggleFormat(formatting)
+        }
         
         const Component = component;
 

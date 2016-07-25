@@ -12,6 +12,7 @@ registry.ckEditor.formattingAndStyling.add('bold', { command: 'bold' });
 registry.ckEditor.toolbar.add('bold', {
     formatting: 'bold',
     component: IconButton,
+    callbackPropName: 'onClick',
 
     icon: 'bold',
     hoverStyle: 'brand'

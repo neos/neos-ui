@@ -79,7 +79,7 @@
     "lodash.isobject": "^3.0.2",
     "lodash.isstring": "^4.0.1",
     "lodash.memoize": "^4.0.3",
-    "lodash.merge": "^4.3.5",
+    "lodash.merge": "^4.5.0",
     "lodash.omit": "^4.4.0",
     "mime-types": "^2.1.10",
     "monet": "^0.8.10",

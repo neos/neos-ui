@@ -1,29 +1,33 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import {connect} from 'react-redux';
 import {CR} from 'Host/Selectors/index';
-import {$transform, $get} from 'plow-js';
+import {$transform} from 'plow-js';
 import style from './style.css';
+import {node as NodePropType} from 'Shared/PropTypes/CR/Node/index';
 
 @connect($transform({
     hoveredNode: CR.Nodes.hoveredSelector,
     focusedNode: CR.Nodes.focusedSelector
 }))
 export default class MarkHoveredNodeAsHovered extends Component {
-    render() {
+    static propTypes = {
+        hoveredNode: NodePropType,
+        focusedNode: NodePropType
+    };
 
-        console.log("hover");
+    render() {
         const iframeDocument = document.getElementsByName('neos-content-main')[0].contentDocument;
-        
-        const oldNode = iframeDocument.querySelector('.' + style['markHoveredNodeAsHovered'])
+
+        const oldNode = iframeDocument.querySelector(`.${style.markHoveredNodeAsHovered}`);
         if (oldNode) {
-            oldNode.classList.remove(style['markHoveredNodeAsHovered']);
+            oldNode.classList.remove(style.markHoveredNodeAsHovered);
         }
 
-
         if (this.props.hoveredNode && this.props.hoveredNode !== this.props.focusedNode) {
-            const nodeElement = iframeDocument.querySelector('[data-__neos-node-contextpath=\'' + this.props.hoveredNode.contextPath + '\']'); // TODO: workaround to access the frame from outside...
+            // TODO: workaround to access the frame from outside...
+            const nodeElement = iframeDocument.querySelector(`[data-__neos-node-contextpath='${this.props.hoveredNode.contextPath}']`);
             if (nodeElement) {
-                nodeElement.classList.add(style['markHoveredNodeAsHovered']);
+                nodeElement.classList.add(style.markHoveredNodeAsHovered);
             }
         }
 

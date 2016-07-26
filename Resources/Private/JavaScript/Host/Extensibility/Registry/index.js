@@ -1,9 +1,7 @@
 /* Main Registry Implementation */
 
 class SynchronousRegistry {
-    
     constructor(description) {
-
         // The description of the registry, containing examples, what is in there.
         this.description = description;
 
@@ -11,7 +9,8 @@ class SynchronousRegistry {
         this._registry = {};
         this._keys = [];
     }
-    add(key, value, position = null) {
+
+    add(key, value) {
         // TODO: implement position in registry!
         // TODO: "key" must be string!
         this._registry[key] = value;
@@ -31,8 +30,6 @@ class SynchronousRegistry {
         return Object.keys(this._registry).map(key => this._registry[key]);
     }
 }
-
-
 
 const registry = {
     ckEditor: {
@@ -66,7 +63,7 @@ const registry = {
               referenced by "formatting" is currently active or not.  
 
             - Furthermore, the callback specified in "callbackPropName" is wired, which toggles the value.
-        `),
+        `)
     }
 };
 

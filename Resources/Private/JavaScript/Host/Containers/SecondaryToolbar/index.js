@@ -26,7 +26,8 @@ export default class SecondaryToolbar extends Component {
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
-        toggleFullScreen: PropTypes.func.isRequired
+        toggleFullScreen: PropTypes.func.isRequired,
+        isDocumentNodeSelected: PropTypes.bool.isRequired
     };
 
     render() {

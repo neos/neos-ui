@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
-import {Frame, Button} from 'Components/index';
+import {Frame} from 'Components/index';
 import style from './style.css';
 import {actions} from 'Host/Redux/index';
 
@@ -23,8 +23,7 @@ export let iframeWindow = null;
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
     isFringeRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    src: $get('ui.contentCanvas.src'),
-    contextPath: $get('ui.contentCanvas.contextPath')
+    src: $get('ui.contentCanvas.src')
 }), {
     setContextPath: actions.UI.ContentCanvas.setContextPath,
     setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
@@ -40,7 +39,6 @@ export default class ContentCanvas extends Component {
         isFringeRight: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         src: PropTypes.string.isRequired,
-        contextPath: PropTypes.string.isRequired,
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
         addNodes: PropTypes.func.isRequired,
@@ -51,7 +49,7 @@ export default class ContentCanvas extends Component {
     };
 
     render() {
-        const {isFringeLeft, isFringeRight, isFullScreen, src, contextPath} = this.props;
+        const {isFringeLeft, isFringeRight, isFullScreen, src} = this.props;
 
         const classNames = mergeClassNames({
             [style.contentCanvas]: true,
@@ -62,7 +60,7 @@ export default class ContentCanvas extends Component {
 
         const contentChange = (_iframeWindow, iframeDocument) => {
             iframeWindow = _iframeWindow;
-            const documentInformation = _iframeWindow["@Neos.Neos.Ui:DocumentInformation"];
+            const documentInformation = _iframeWindow['@Neos.Neos.Ui:DocumentInformation'];
 
             // TODO: convert to single action: "guestFrameChange"
 
@@ -74,39 +72,37 @@ export default class ContentCanvas extends Component {
                 this.props.addNode(contextPath, node);
             });
 
-
             //
             // Initialize node components
             //
             [].slice.call(iframeDocument.querySelectorAll('[data-__neos-node-contextpath]'))
                 .forEach(dom => {
                     dom.addEventListener('click', (e) => {
-    	                const nodeContextPath = dom.attributes["data-__neos-node-contextpath"].value;
-                        const typoscriptPath = dom.attributes["data-__neos-typoscript-path"].value;
-                    
+                        const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
+                        const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
+
                         this.props.focusNode(nodeContextPath, typoscriptPath);
 
                         e.stopPropagation();
                     });
-                    
+
                     dom.addEventListener('mouseenter', (e) => {
-    	                const nodeContextPath = dom.attributes["data-__neos-node-contextpath"].value;
-                        const typoscriptPath = dom.attributes["data-__neos-typoscript-path"].value;
-                    
+                        const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
+                        const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
+
                         this.props.hoverNode(nodeContextPath, typoscriptPath);
 
                         e.stopPropagation();
                     });
                     dom.addEventListener('mouseleave', (e) => {
-    	                const nodeContextPath = dom.attributes["data-__neos-node-contextpath"].value;
-                    
+                        const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
+
                         this.props.unhoverNode(nodeContextPath);
 
                         e.stopPropagation();
                     });
-                    //nodeComponent(dom, ui, connection)
                 });
-            
+
             const editorConfig = {
                 formattingAndStyling: registry.ckEditor.formattingAndStyling.getAllAsObject(),
                 onActiveFormattingChange: (activeFormatting) => {
@@ -125,14 +121,10 @@ export default class ContentCanvas extends Component {
 
                 // TODO: from state, read node types & configure CKeditor based on node type!
 
-                
                 _iframeWindow.NeosCKEditorApi.createEditor(dom, (contents) => {
-                    //console.log("Change of content:", contents);
+                    console.log('Change of content:', contents);
                 });
-                //CKEditorApi.createEditor(dom, {});
-                //ckEditor({contextPath, propertyName}, dom, ui, connection, store.dispatch);
             });
-
         };
 
         return (

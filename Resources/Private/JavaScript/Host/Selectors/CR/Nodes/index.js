@@ -13,7 +13,8 @@ const hovered = $get('cr.nodes.hovered.contextPath');
 
 export const currentDocumentNode = $get('ui.contentCanvas.contextPath');
 
-export const isDocumentNodeSelectedSelector = createSelector([
+export const isDocumentNodeSelectedSelector = createSelector(
+    [
         focused,
         currentDocumentNode
     ],

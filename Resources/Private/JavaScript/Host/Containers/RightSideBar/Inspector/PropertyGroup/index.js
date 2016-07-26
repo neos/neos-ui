@@ -22,7 +22,6 @@ export default class PropertyGroup extends Component {
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {properties.map(property => (
-                        console.log(property) ||
                         <EditorEnvelope
                             key={property.id}
                             id={property.id}

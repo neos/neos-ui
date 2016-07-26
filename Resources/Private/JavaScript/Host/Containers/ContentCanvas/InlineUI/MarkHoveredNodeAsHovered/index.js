@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {CR} from 'Host/Selectors/index';
 import {$transform} from 'plow-js';
 import style from './style.css';
-import {node as NodePropType} from 'Shared/PropTypes/CR/Node/index';
+import {storedNode as NodePropType} from 'Shared/PropTypes/CR/Node/index';
 
 @connect($transform({
     hoveredNode: CR.Nodes.hoveredSelector,

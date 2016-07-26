@@ -41,7 +41,7 @@ export default class ContentCanvas extends Component {
         src: PropTypes.string.isRequired,
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
-        addNodes: PropTypes.func.isRequired,
+        addNode: PropTypes.func.isRequired,
         setActiveFormatting: PropTypes.func.isRequired,
         focusNode: PropTypes.func.isRequired,
         hoverNode: PropTypes.func.isRequired,

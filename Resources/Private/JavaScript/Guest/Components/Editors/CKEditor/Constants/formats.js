@@ -1,36 +1,5 @@
-export const FORMAT_PARAGRAPH = {
-    style: {element: 'p'}
-};
-export const FORMAT_HEADLINE1 = {
-    style: {element: 'h1'}
-};
-export const FORMAT_HEADLINE2 = {
-    style: {element: 'h2'}
-};
-export const FORMAT_HEADLINE3 = {
-    style: {element: 'h3'}
-};
-export const FORMAT_HEADLINE4 = {
-    style: {element: 'h4'}
-};
-export const FORMAT_HEADLINE5 = {
-    style: {element: 'h5'}
-};
-export const FORMAT_HEADLINE6 = {
-    style: {element: 'h6'}
-};
-export const FORMAT_PREFORMATTED_TEXT = {
-    style: {element: 'pre'}
-};
-export const FORMAT_REMOVE_FORMAT = {
-    command: 'removeFormat'
-};
-export const FORMAT_BOLD = {
-    command: 'bold'
-};
-export const FORMAT_ITALIC = {
-    command: 'italic'
-};
+
+
 export const FORMAT_UNDERLINE = {
     command: 'underline'
 };

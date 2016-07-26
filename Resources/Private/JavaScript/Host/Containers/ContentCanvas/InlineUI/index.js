@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
-import NodeToolbar from '../NodeToolbar/index';
-import MarkActiveNodeAsFocused from '../MarkActiveNodeAsFocused/index';
-import MarkHoveredNodeAsHovered from '../MarkHoveredNodeAsHovered/index';
+import NodeToolbar from './NodeToolbar/index';
+import MarkActiveNodeAsFocused from './MarkActiveNodeAsFocused/index';
+import MarkHoveredNodeAsHovered from './MarkHoveredNodeAsHovered/index';
 
 import style from './style.css';
 

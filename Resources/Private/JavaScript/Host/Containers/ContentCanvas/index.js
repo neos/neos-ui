@@ -6,7 +6,7 @@ import {Frame, Button} from 'Components/index';
 import style from './style.css';
 import {actions} from 'Host/Redux/index';
 
-import InlineUI from 'Guest/Containers/InlineUI/index';
+import InlineUI from './InlineUI/index';
 import registry from 'Host/Extensibility/Registry/index';
 
 const closestContextPath = el => {

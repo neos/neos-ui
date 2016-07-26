@@ -8,7 +8,7 @@ const merge = require('lodash.merge');
 
 const GuestConfig = merge({}, defaultConfig, {
     entry: {
-        RealGuest: './Resources/Private/JavaScript/RealGuest/index.js'
+        Guest: './Resources/Private/JavaScript/Guest/index.js'
     }
 });
 

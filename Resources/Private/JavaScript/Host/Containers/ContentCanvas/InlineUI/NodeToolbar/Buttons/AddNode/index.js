@@ -1,17 +1,21 @@
 import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import {
     IconButtonDropDown,
     Icon
 } from 'Components/index';
+import {actions} from 'Host/Redux/index';
+import {$transform} from 'plow-js';
 
-// TODO: hackish! What is the proper way to call `ui` methods?
-//const {ui} = window.neos;
-const ui = {}; // TODO!!!
-
+@connect($transform({
+}), {
+    open: actions.UI.AddNodeModal.open
+})
 export default class AddNode extends Component {
     static propTypes = {
         node: PropTypes.object,
-        className: PropTypes.string
+        className: PropTypes.string,
+        open: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -47,14 +51,7 @@ export default class AddNode extends Component {
     }
 
     openModal() {
-        const {ui} = api.get();
-
-        //
-        // Fail-safe in case the API is not properly setup. (F.e. in unit tests or broken environments)
-        //
-        if (ui) {
-            ui.openAddNodeModal(this.props.node.contextPath, this.state.currentMode);
-        }
+        this.props.open(this.props.node.contextPath, this.state.currentMode);
     }
 
     getCurrentModeIcon() {

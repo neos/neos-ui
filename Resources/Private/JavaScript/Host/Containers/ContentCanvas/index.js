@@ -75,8 +75,8 @@ export default class ContentCanvas extends Component {
             //
             // Initialize node components
             //
-            [].slice.call(iframeDocument.querySelectorAll('[data-__neos-node-contextpath]'))
-                .forEach(dom => {
+            Array.prototype.forEach.call(iframeDocument.querySelectorAll('[data-__neos-node-contextpath]'),
+                dom => {
                     dom.addEventListener('click', (e) => {
                         const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
                         const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
@@ -101,7 +101,8 @@ export default class ContentCanvas extends Component {
 
                         e.stopPropagation();
                     });
-                });
+                }
+            );
 
             const editorConfig = {
                 formattingAndStyling: registry.ckEditor.formattingAndStyling.getAllAsObject(),
@@ -115,16 +116,18 @@ export default class ContentCanvas extends Component {
             //
             // Initialize inline editors
             //
-            [].slice.call(iframeDocument.querySelectorAll('.neos-inline-editable')).forEach(dom => {
-                const contextPath = closestContextPath(dom);
-                const propertyName = dom.dataset.__neosProperty;
+            Array.prototype.forEach.call(iframeDocument.querySelectorAll('.neos-inline-editable'),
+                dom => {
+                    const contextPath = closestContextPath(dom);
+                    const propertyName = dom.dataset.__neosProperty;
 
-                // TODO: from state, read node types & configure CKeditor based on node type!
+                    // TODO: from state, read node types & configure CKeditor based on node type!
 
-                _iframeWindow.NeosCKEditorApi.createEditor(dom, (contents) => {
-                    console.log('Change of content:', contents);
-                });
-            });
+                    _iframeWindow.NeosCKEditorApi.createEditor(dom, (contents) => {
+                        console.log('Change of content:', contents);
+                    });
+                }
+            );
         };
 
         return (

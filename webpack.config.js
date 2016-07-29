@@ -6,7 +6,7 @@ const {
 const merge = require('lodash.merge');
 
 
-const GuestConfig = merge({}, defaultConfig, {
+const GuestConfig = merge({}, baseConfig, {
     entry: {
         Guest: './Resources/Private/JavaScript/Guest/index.js'
     }
@@ -16,9 +16,5 @@ const GuestConfig = merge({}, defaultConfig, {
 module.exports = [
     merge({}, baseConfig, hostConfig),
     merge({}, baseConfig, inspectorEditorConfig),
-    merge({}, baseConfig, {
-        entry: {
-            RealGuest: './Resources/Private/JavaScript/RealGuest/index.js'
-        }
-    })
+    merge({}, baseConfig, GuestConfig)
 ];

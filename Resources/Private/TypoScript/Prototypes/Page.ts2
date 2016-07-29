@@ -58,6 +58,10 @@ prototype(TYPO3.Neos:Page) {
     //
     neosBackendContainer.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
+    newNeosBackendWrappingElement = '<div id="neos-new-backend-container"></div>'
+    newNeosBackendWrappingElement.@position = 'after neosBackendContainer'
+    newNeosBackendWrappingElement.@if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+
     //
     // Disable memorizing last visited node
     //

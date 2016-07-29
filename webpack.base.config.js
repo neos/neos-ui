@@ -86,13 +86,7 @@ if (!env.isCi && !env.isTesting && !env.isStorybook) {
 const hostConfig = {
     entry: {
         Host: './Resources/Private/JavaScript/Host/index.js',
-
-        //
-        // Workaround according to https://github.com/webpack/webpack/issues/300,
-        // since entry points are not allowed as dependencies in webpack?!?
-        //
-        Components: ['./Resources/Private/JavaScript/Components/index.js'],
-        Guest: './Resources/Private/JavaScript/Guest/index.js'
+        HostOnlyStyles: './Resources/Private/JavaScript/Host/styleHostOnly.css'
     }
 };
 
@@ -100,7 +94,7 @@ const inspectorEditorConfig = {
     resolve: {
         alias: {
             '@host': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/'),
-            '@host/react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/react/')
+            'react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/react/')
         }
     },
     entry: {

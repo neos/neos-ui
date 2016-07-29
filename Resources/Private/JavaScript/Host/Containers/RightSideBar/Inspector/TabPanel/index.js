@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
+
 import {Tabs} from 'Components/index';
 import PropertyGroup from '../PropertyGroup/index';
 

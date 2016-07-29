@@ -1,0 +1,15 @@
+.toolBar__btnGroup {
+    border-bottom: 1px solid $dark;
+
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+.toolBar__btnGroup__btn {
+    float: left;
+}

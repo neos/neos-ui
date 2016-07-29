@@ -13,6 +13,15 @@ const hovered = $get('cr.nodes.hovered.contextPath');
 
 export const currentDocumentNode = $get('ui.contentCanvas.contextPath');
 
+export const isDocumentNodeSelectedSelector = createSelector(
+    [
+        focused,
+        currentDocumentNode
+    ],
+    (focused, currentDocumentNode) =>
+        !focused || (focused === currentDocumentNode)
+);
+
 export const storedNodeByContextPath = state => contextPath => $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 
 // NOTE: in the longer run, it would be helpful to completely get rid of this method; and rather do it when ADDing nodes to the Redux store.

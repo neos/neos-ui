@@ -16,7 +16,9 @@ import {applicationViewSaga} from 'Host/Sagas/View/index';
 import {inspectorSaga} from 'Host/Sagas/UI/Inspector/index';
 
 import {watchToggle, watchCommenceUncollapse} from './Sagas/UI/PageTree/index';
-import {watchNodes, watchFocusedNode, watchHoveredNode} from './Sagas/UI/Plugin/index';
+
+// TODO: load the other manifests!
+import './manifest';
 
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
@@ -42,8 +44,5 @@ sagaMiddleWare.run(watchPublish);
 sagaMiddleWare.run(watchDiscard);
 sagaMiddleWare.run(watchToggle);
 sagaMiddleWare.run(watchCommenceUncollapse);
-sagaMiddleWare.run(watchNodes);
-sagaMiddleWare.run(watchFocusedNode);
-sagaMiddleWare.run(watchHoveredNode);
 
 document.addEventListener('DOMContentLoaded', () => store.dispatch(actions.System.boot()));

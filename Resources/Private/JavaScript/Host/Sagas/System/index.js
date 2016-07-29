@@ -6,7 +6,6 @@ import createInspectorEditorRegistry from 'Host/Process/InspectorEditorRegistry/
 import createHookRegistry from 'Host/Process/HookRegistry/index';
 import {actionTypes, actions} from 'Host/Redux/index';
 import initializeJSAPI from 'API/index';
-import {ui} from 'Host/Plugins/index';
 
 let injectStore = null;
 export const getStore = discover(function* () {
@@ -82,8 +81,6 @@ export const getNeos = discover(function* () {
         csrfToken,
         systemEnv
     });
-
-    neos.use(ui(store));
 
     return neos;
 });

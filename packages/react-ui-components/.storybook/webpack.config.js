@@ -11,7 +11,14 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader',
-                include: path.resolve(__dirname, '../src/')
+                include: [
+                    path.resolve(__dirname, '../src/'),
+                    path.resolve(__dirname, '../node_modules/font-awesome/')
+                ]
+            },
+            {
+                test: /\.(woff|woff2)$/,
+                loader: 'url?limit=100000'
             }
         ]
     },

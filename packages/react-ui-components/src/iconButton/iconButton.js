@@ -1,18 +1,21 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import Icon from './../icon/index';
-import Button from './../button/index';
 
 const IconButton = props => {
     // Since `this.props` isn't writable, we need to clone it
     // and add the component specific className to the passed props.
-    const {theme, ...rest} = props;
+    const {
+        IconComponent,
+        ButtonComponent,
+        theme,
+        ...rest
+    } = props;
     const finalClassName = mergeClassNames(props.className, theme.iconButton);
 
     return (
-        <Button {...rest} className={finalClassName}>
-          <Icon icon={props.icon} />
-        </Button>
+        <ButtonComponent {...rest} className={finalClassName}>
+          <IconComponent icon={props.icon} />
+        </ButtonComponent>
     );
 };
 IconButton.propTypes = {
@@ -23,7 +26,13 @@ IconButton.propTypes = {
     className: PropTypes.string,
     theme: PropTypes.shape({// eslint-disable-line quote-props
         'iconButton': PropTypes.string
-    }).isRequired
+    }).isRequired,
+
+    //
+    // Static component dependencies which are injected from the outside (index.js)
+    //
+    IconComponent: PropTypes.element.isRequired,
+    ButtonComponent: PropTypes.element.isRequired
 };
 IconButton.defaultProps = {
     style: 'transparent',

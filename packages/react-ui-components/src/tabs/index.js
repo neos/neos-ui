@@ -7,4 +7,12 @@ import Panel from './panel';
 const ThemedTabs = themr(identifiers.tabs, style)(Tabs);
 ThemedTabs.Panel = themr(identifiers.tabsPanel, style)(Panel);
 
-export default ThemedTabs;
+//
+// Dependency injection
+//
+import injectProps from './../_lib/injectProps.js';
+import Icon from './../icon/index';
+
+export default injectProps({
+    IconComponent: Icon
+})(ThemedTabs);

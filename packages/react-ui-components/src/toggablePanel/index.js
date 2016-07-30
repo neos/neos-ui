@@ -7,7 +7,20 @@ import ToggablePanel, {
 } from './toggablePanel.js';
 
 const ThemedToggablePanel = themr(identifiers.toggablePanel, style)(ToggablePanel);
-ThemedToggablePanel.Header = themr(identifiers.toggablePanelHeader, style)(Header);
-ThemedToggablePanel.Contents = themr(identifiers.toggablePanelContents, style)(Contents);
+const ThemedToggablePanelHeader = themr(identifiers.toggablePanelHeader, style)(Header);
+const ThemedToggablePanelContents = themr(identifiers.toggablePanelContents, style)(Contents);
+
+//
+// Dependency injection
+//
+import injectProps from './../_lib/injectProps.js';
+import Headline from './../headline/index';
+import IconButton from './../iconButton/index';
+
+ThemedToggablePanel.Header = injectProps({
+    HeadlineComponent: Headline,
+    IconButtonComponent: IconButton
+})(ThemedToggablePanelHeader);
+ThemedToggablePanel.Contents = ThemedToggablePanelContents;
 
 export default ThemedToggablePanel;

@@ -1,8 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
-import Headline from './../headline/index';
-import IconButton from './../iconButton/index';
 
 class ToggablePanel extends Component {
     static propTypes = {
@@ -104,7 +102,13 @@ export class Header extends Component {
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'panel__headline': PropTypes.string,
             'panel__toggleBtn': PropTypes.string
-        }).isRequired
+        }).isRequired,
+
+        //
+        // Static component dependencies which are injected from the outside (index.js)
+        //
+        HeadlineComponent: PropTypes.element.isRequired,
+        IconButtonComponent: PropTypes.element.isRequired
     };
 
     static contextTypes = {
@@ -118,6 +122,8 @@ export class Header extends Component {
 
     render() {
         const {
+            HeadlineComponent,
+            IconButtonComponent,
             children,
             className,
             theme
@@ -130,14 +136,14 @@ export class Header extends Component {
 
         return (
             <div className={classNames} aria-expanded={isOpen ? 'true' : 'false'}>
-                <Headline
+                <HeadlineComponent
                     className={theme.panel__headline}
                     type="h1"
                     theme="h4"
                     >
                     {children}
-                </Headline>
-                <IconButton
+                </HeadlineComponent>
+                <IconButtonComponent
                     className={theme.panel__toggleBtn}
                     icon={toggleIcon}
                     onClick={() => togglePanel()}

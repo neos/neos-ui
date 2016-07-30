@@ -1,7 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import Icon from './../icon/index';
-import Button from './../button/index';
 
 let logger;
 
@@ -38,7 +36,13 @@ export default class IconButtonDropDown extends Component {
             'wrapper__dropDown': PropTypes.string,
             'wrapper__dropDown--isOpen': PropTypes.string,
             'wrapper__dropDownItem': PropTypes.string
-        }).isRequired
+        }).isRequired,
+
+        //
+        // Static component dependencies which are injected from the outside (index.js)
+        //
+        IconComponent: PropTypes.element.isRequired,
+        ButtonComponent: PropTypes.element.isRequired
     };
 
     static defaultProps = {
@@ -56,6 +60,8 @@ export default class IconButtonDropDown extends Component {
 
     render() {
         const {
+            IconComponent,
+            ButtonComponent,
             className,
             isDisabled,
             icon,
@@ -77,16 +83,16 @@ export default class IconButtonDropDown extends Component {
 
         return (
             <div className={classNames} onMouseLeave={this.onMouseLeave.bind(this)}>
-                <Button
+                <ButtonComponent
                     {...directButtonProps}
                     isDisabled={isDisabled}
                     className={theme.wrapper__btn}
                     onMouseDown={this.createHoldTimeout.bind(this)}
                     onClick={this.onClick.bind(this)}
                     >
-                    <Icon icon={modeIcon} className={theme.wrapper__btnModeIcon} />
-                    <Icon icon={icon} />
-                </Button>
+                    <IconComponent icon={modeIcon} className={theme.wrapper__btnModeIcon} />
+                    <IconComponent icon={icon} />
+                </ButtonComponent>
                 <div className={dropDownClassNames} aria-hidden={ariaIsHiddenLabel}>
                     {this.renderChildren()}
                 </div>

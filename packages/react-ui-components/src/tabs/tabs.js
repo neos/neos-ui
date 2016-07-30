@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import executeCallback from './../_lib/executeCallback.js';
-import Icon from './../icon/index';
 import mergeClassNames from 'classnames';
 
 export default class Tabs extends Component {
@@ -17,7 +16,12 @@ export default class Tabs extends Component {
             'tabNavigation__item': PropTypes.string,
             'tabNavigation__item--isActive': PropTypes.string,
             'tabNavigation__itemBtn': PropTypes.string
-        }).isRequired
+        }).isRequired,
+
+        //
+        // Static component dependencies which are injected from the outside (index.js)
+        //
+        IconComponent: PropTypes.element.isRequired
     };
 
     static defaultProps = {
@@ -54,7 +58,11 @@ export default class Tabs extends Component {
     }
 
     renderMenuItems() {
-        const {theme, children} = this.props;
+        const {
+            IconComponent,
+            theme,
+            children
+        } = this.props;
 
         const menuItems = children
             .map(panel => typeof panel === 'function' ? panel() : panel)
@@ -78,7 +86,7 @@ export default class Tabs extends Component {
                             aria-selected={isActive ? 'true' : 'false'}
                             aria-controls={`section${index}`}
                             >
-                            {icon ? <Icon icon={icon} /> : null}
+                            {icon ? <IconComponent icon={icon} /> : null}
                             {title}
                         </button>
                     </li>

@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import Node from './Node/index';
 
 export class Tree extends Component {
     static propTypes = {
@@ -15,20 +14,25 @@ export class Tree extends Component {
         children: PropTypes.node.isRequired,
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'treeWrapper': PropTypes.string
-        }).isRequired
+        }).isRequired,
+
+        //
+        // Static component dependencies which are injected from the outside (index.js)
+        //
+        NodeComponent: PropTypes.element.isRequired
     };
 
     render() {
-        const {className, theme, ...rest} = this.props;
+        const {NodeComponent, className, theme, ...rest} = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.treeWrapper]: true
         });
 
         return (
-            <Node {...rest} className={classNames} tabIndex="0">
+            <NodeComponent {...rest} className={classNames} tabIndex="0">
                 {this.props.children}
-            </Node>
+            </NodeComponent>
         );
     }
 }

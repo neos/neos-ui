@@ -8,9 +8,24 @@ import Node, {
     Contents
 } from './tree.js';
 
-const themedTree = themr(identifiers.tree, treeStyle)(Tree);
-themedTree.Node = themr(identifiers.treeNode, nodeStyle)(Node);
-themedTree.Node.Header = themr(identifiers.treeNodeHeader, nodeStyle)(Header);
-themedTree.Node.Contents = themr(identifiers.treeNodeContents, nodeStyle)(Contents);
+const ThemedTree = themr(identifiers.tree, treeStyle)(Tree);
+const ThemedTreeNode = themr(identifiers.treeNode, nodeStyle)(Node);
+const ThemedTreeNodeHeader = themr(identifiers.treeNodeHeader, nodeStyle)(Header);
+const ThemedTreeNodeContents = themr(identifiers.treeNodeContents, nodeStyle)(Contents);
 
-export default themedTree;
+//
+// Dependency injection
+//
+import injectProps from './../_lib/injectProps.js';
+import Icon from './../icon/index';
+
+const FinalTreeComponent = injectProps({
+    NodeComponent: ThemedTreeNode
+})(ThemedTree);
+FinalTreeComponent.Node = ThemedTreeNode;
+FinalTreeComponent.Node.Header = injectProps({
+    IconComponent: Icon
+})(ThemedTreeNodeHeader);
+FinalTreeComponent.Node.Contents = ThemedTreeNodeContents;
+
+export default FinalTreeComponent;

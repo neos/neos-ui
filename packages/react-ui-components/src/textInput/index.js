@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Shared/Utilities/index';
-import style from './style.css';
+import executeCallback from './../_lib/executeCallback.js';
+// import style from './style.css';
 
 const onChangeHandler = (e, cb) => {
     const value = e.target.value.substr(0, 140);
@@ -20,7 +20,8 @@ const TextInput = props => {
         onChange,
         onFocus,
         onBlur,
-        ...directProps
+        style,
+        ...rest
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
@@ -30,6 +31,7 @@ const TextInput = props => {
 
     return (
         <input
+            {...rest}
             className={classNames}
             type={type}
             role="textbox"
@@ -37,7 +39,6 @@ const TextInput = props => {
             onChange={e => onChangeHandler(e, onChange)}
             onFocus={() => executeCallback({cb: onFocus})}
             onBlur={() => executeCallback({cb: onBlur})}
-            {...directProps}
             />
     );
 };
@@ -51,9 +52,11 @@ TextInput.propTypes = {
     // Interaction related propTypes.
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
-    onBlur: PropTypes.func
+    onBlur: PropTypes.func,
+    style: PropTypes.object
 };
 TextInput.defaultProps = {
+    style: {},
     type: 'text',
     isValid: true
 };

@@ -1,23 +1,22 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-
 import Icon from 'Components/Icon/index';
-
-import style from './style.css';
+// import style from './style.css';
 
 export class Node extends Component {
     static propTypes = {
         className: PropTypes.string,
-
         children: PropTypes.node
     };
 
     render() {
-        const {className, ...directProps} = this.props;
+        const {className, children, ...rest} = this.props;
 
-        return (<div className={className} {...directProps}>
-            {this.props.children}
-        </div>);
+        return (
+            <div {...rest} className={className}>
+                {children}
+            </div>
+        );
     }
 }
 
@@ -35,11 +34,16 @@ export class Header extends Component {
         }),
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
-        onLabelClick: PropTypes.func
+        onLabelClick: PropTypes.func,
+        style: PropTypes.object
+    };
+
+    static defaultProps = {
+        style: {}
     };
 
     render() {
-        const {item, onClick, onLabelClick} = this.props;
+        const {item, onClick, onLabelClick, style} = this.props;
         const {label, icon, hasChildren, isActive, isFocused} = item;
         const dataClassNames = mergeClassNames({
             [style.header__data]: true,
@@ -61,7 +65,7 @@ export class Header extends Component {
     }
 
     renderCollapseControl() {
-        const {item, onToggle} = this.props;
+        const {item, onToggle, style} = this.props;
         const {isLoading, isCollapsed, hasError} = item;
         const classnames = mergeClassNames({
             [style.header__chevron]: true,
@@ -92,12 +96,19 @@ export class Header extends Component {
 
 export class Contents extends Component {
     static propTypes = {
-        children: PropTypes.node
+        children: PropTypes.node,
+        style: PropTypes.object
+    };
+
+    static defaultProps = {
+        style: {}
     };
 
     render() {
+        const {style, children} = this.props;
+
         return (<div className={style.contents}>
-            {this.props.children}
+            {children}
         </div>);
     }
 }

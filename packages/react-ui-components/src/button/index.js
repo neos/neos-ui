@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Shared/Utilities/index';
-import styles from './style.css';
+import executeCallback from './../_lib/executeCallback.js';
+// import styles from './style.css';
 
 const Button = props => {
     const {
@@ -17,8 +17,9 @@ const Button = props => {
         onMouseEnter,
         onMouseLeave,
         style,
+        styles,
         hoverStyle,
-        ...directProps
+        ...rest
     } = props;
     const effectiveStyle = isActive ? 'brand' : style;
     const effectiveHoverStyle = isActive ? 'brand' : hoverStyle;
@@ -62,7 +63,7 @@ const Button = props => {
     }
 
     return (
-        <button role="button" {...attributes} {...directProps}>
+        <button {...rest} {...attributes} role="button">
             {children}
         </button>
     );
@@ -87,10 +88,12 @@ Button.propTypes = {
     onMouseLeave: PropTypes.func,
 
     // Contents of the Button.
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    styles: PropTypes.object
 };
 Button.defaultProps = {
     style: '',
+    styles: {},
     hoverStyle: 'brand',
     isFocused: false,
     isDisabled: false,

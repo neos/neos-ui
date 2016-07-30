@@ -3,7 +3,7 @@ import mergeClassNames from 'classnames';
 import {logger} from 'Shared/Utilities/';
 import Icon from 'Components/Icon/index';
 import Button from 'Components/Button/index';
-import style from './style.css';
+// import style from './style.css';
 
 export default class IconButtonDropDown extends Component {
     static propTypes = {
@@ -26,13 +26,15 @@ export default class IconButtonDropDown extends Component {
         onItemSelect: PropTypes.func.isRequired,
 
         // Props which are propagated to the <Button> component.
-        directButtonProps: PropTypes.object.isRequired
+        directButtonProps: PropTypes.object.isRequired,
+        style: PropTypes.object
     };
 
     static defaultProps = {
         modeIcon: 'long-arrow-right',
         isDisabled: false,
-        directButtonProps: {}
+        directButtonProps: {},
+        style: {}
     };
 
     constructor(props) {
@@ -47,7 +49,8 @@ export default class IconButtonDropDown extends Component {
             className,
             isDisabled,
             icon,
-            modeIcon
+            modeIcon,
+            style
         } = this.props;
         const classNames = mergeClassNames({
             [style.wrapper]: true,
@@ -65,11 +68,11 @@ export default class IconButtonDropDown extends Component {
         return (
             <div className={classNames} onMouseLeave={this.onMouseLeave.bind(this)}>
                 <Button
+                    {...directButtonProps}
                     isDisabled={isDisabled}
                     className={style.wrapper__btn}
                     onMouseDown={this.createHoldTimeout.bind(this)}
                     onClick={this.onClick.bind(this)}
-                    {...directButtonProps}
                     >
                     <Icon icon={modeIcon} className={style.wrapper__btnModeIcon} />
                     <Icon icon={icon} />
@@ -82,7 +85,9 @@ export default class IconButtonDropDown extends Component {
     }
 
     renderChildren() {
-        return this.props.children
+        const {style, children} = this.props;
+
+        return children
             .map(child => typeof child === 'function' ? child() : child)
             .filter(child => child)
             .map((child, index) => (

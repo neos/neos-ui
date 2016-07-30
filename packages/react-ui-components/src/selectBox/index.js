@@ -1,10 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
-
 import Icon from 'Components/Icon/index';
 import DropDown from 'Components/DropDown/index';
-
-import style from './style.css';
+// import style from './style.css';
 
 export default class SelectBox extends Component {
     static propTypes = {
@@ -21,7 +19,12 @@ export default class SelectBox extends Component {
         ),
         placeholder: PropTypes.string,
         placeholderIcon: PropTypes.string,
-        onSelect: PropTypes.func.isRequired
+        onSelect: PropTypes.func.isRequired,
+        style: PropTypes.object
+    };
+
+    static defaultProps = {
+        style: {}
     };
 
     state = {
@@ -46,7 +49,7 @@ export default class SelectBox extends Component {
     }
 
     render() {
-        const {options, placeholder, placeholderIcon, onSelect} = this.props;
+        const {options, placeholder, placeholderIcon, onSelect, style} = this.props;
         const {icon, label} = this.state;
 
         return (

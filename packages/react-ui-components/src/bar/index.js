@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Shared/Utilities/index';
-import style from './style.css';
+import executeCallback from './../_lib/executeCallback.js';
+// import style from './style.css';
 
 const Bar = props => {
-    const {position, className, onDrop} = props;
+    const {position, className, onDrop, style} = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
         [style.bar]: true,
@@ -25,6 +25,7 @@ const Bar = props => {
 Bar.propTypes = {
     // Style related propTypes.
     position: PropTypes.oneOf(['top', 'bottom']).isRequired,
+    style: PropTypes.object,
     className: PropTypes.string,
 
     // Contents of the Bar.
@@ -32,6 +33,9 @@ Bar.propTypes = {
 
     // Interaction related propTypes.
     onDrop: PropTypes.func
+};
+Bar.defaultProps = {
+    style: {}
 };
 
 export default Bar;

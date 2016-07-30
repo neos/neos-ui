@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
-import {executeCallback} from 'Shared/Utilities/index';
+import executeCallback from './../_lib/executeCallback.js';
 import IconButton from 'Components/IconButton/index';
 import Portal from 'Components/Portal/index';
-import style from './style.css';
+// import style from './style.css';
 
 const Dialog = props => {
     const {
@@ -15,9 +15,10 @@ const Dialog = props => {
         isOpen,
         onRequestClose,
         actions,
-        ...rest
+        style,
+        ...restProps
     } = props;
-    const directProps = omit(rest, ['isOpen']);
+    const rest = omit(restProps, ['isOpen']);
     const dialogStyle = wide ? style['dialog--wide'] : style.dialog;
     const classNames = mergeClassNames({
         [dialogStyle]: true,
@@ -26,7 +27,7 @@ const Dialog = props => {
 
     return (
         <Portal targetId="dialog" isOpen={isOpen}>
-            <section className={classNames} {...directProps} role="dialog" tabIndex="0">
+            <section {...rest} className={classNames} role="dialog" tabIndex="0">
                 <div className={style.dialog__contentsPosition}>
                     <div className={style.dialog__contents}>
                         <IconButton
@@ -70,7 +71,11 @@ Dialog.propTypes = {
     actions: PropTypes.node.isRequired,
 
     // Style related propTypes.
-    className: PropTypes.string
+    className: PropTypes.string,
+    style: PropTypes.object
+};
+Dialog.defaultProps = {
+    style: {}
 };
 
 export default Dialog;

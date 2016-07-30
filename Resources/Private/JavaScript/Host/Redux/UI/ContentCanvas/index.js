@@ -45,7 +45,8 @@ export const reducer = handleActions({
             contextPath: $get('ui.contentCanvas.contextPath', state) || '',
             previewUrl: '',
             src: $get('ui.contentCanvas.src', state) || '',
-            activeFormatting: new Map() // Formatting underneath cursor
+            // Formatting underneath cursor
+            activeFormatting: new Map()
         })
     ),
     [SET_CONTEXT_PATH]: ({contextPath}) => $set('ui.contentCanvas.contextPath', contextPath),

@@ -1,88 +1,84 @@
 // 98997e98ea6d5ececc49db0de528151e40e272b7 from https://github.com/ryanseddon/react-frame-component/commit/98997e98ea6d5ececc49db0de528151e40e272b7 - and then modified!
-var React = require('react');
-var ReactDOM = require('react-dom');
-var assign = require('object-assign');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import assign from 'object-assign';
 
-var hasConsole = typeof window !== 'undefined' && window.console;
-var noop = function() {}
-var swallowInvalidHeadWarning = noop;
-var resetWarnings = noop;
+const hasConsole = typeof window !== 'undefined' && window.console;
+const noop = function () {};
+let swallowInvalidHeadWarning = noop;
+let resetWarnings = noop;
 
-if(hasConsole) {
-    var originalError = console.error;
+if (hasConsole) {
+    const originalError = console.error;
     // Rendering a <head> into a body is technically invalid although it
     // works. We swallow React's validateDOMNesting warning if that is the
     // message to avoid confusion
-    swallowInvalidHeadWarning = function() {
-        console.error = function(msg) {
-            if (/<head>/.test(msg)) return;
+    swallowInvalidHeadWarning = () => {
+        console.error = (msg) => {
+            if (/<head>/.test(msg)) {
+                return;
+            }
             originalError.call(console, msg);
         };
     };
-    resetWarnings = function() {
+    resetWarnings = () => {
         console.error = originalError;
     };
 }
 
-var Frame = React.createClass({
+const Frame = React.createClass({
     // React warns when you render directly into the body since browser extensions
     // also inject into the body and can mess up React. For this reason
     // initialContent initialContent is expected to have a div inside of the body
     // element that we render react into.
     propTypes: {
         style: React.PropTypes.object,
-        head:  React.PropTypes.node,
-        initialContent:  React.PropTypes.string,
-        mountTarget:  React.PropTypes.string,
-        contentDidMount:  React.PropTypes.func,
-        contentDidUpdate:  React.PropTypes.func
+        head: React.PropTypes.node,
+        initialContent: React.PropTypes.string,
+        mountTarget: React.PropTypes.string,
+        contentDidMount: React.PropTypes.func,
+        contentDidUpdate: React.PropTypes.func,
+        children: React.PropTypes.node
     },
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             initialContent: '<!DOCTYPE html><html><head></head><body><div></div></body></html>',
-            contentDidMount: function() {},
-            contentDidUpdate: function() {}
+            contentDidMount: () => null,
+            contentDidUpdate: () => null
         };
     },
-    render: function() {
+    render() {
         // The iframe isn't ready so we drop children from props here. #12, #17
         return React.createElement('iframe', assign({}, this.props, {children: undefined}));
     },
-    componentDidMount: function() {
+    componentDidMount() {
         this._isMounted = true;
         this.renderFrameContents();
     },
-    renderFrameContents: function() {
+    renderFrameContents() {
         if (!this._isMounted) {
             return;
         }
-        var doc = ReactDOM.findDOMNode(this).contentDocument;
-        var win = ReactDOM.findDOMNode(this).contentWindow;
+        const doc = ReactDOM.findDOMNode(this).contentDocument;
+        const win = ReactDOM.findDOMNode(this).contentWindow;
         // TODO: doc.readyState seems to be *always* true in Chrome at least; so we check whether the querySelectors exist.
-        if(doc && doc.readyState === 'complete' && doc.querySelector(this.props.mountTarget)) {
-            var contents = React.createElement('div',
+        if (doc && doc.readyState === 'complete' && doc.querySelector(this.props.mountTarget)) {
+            const contents = React.createElement('div',
                 undefined,
                 this.props.head,
                 this.props.children
             );
 
-            var initialRender = !this._setInitialContent;
-            if (!this._setInitialContent) {
-                // HINT: we do not set the initial content anymore, as people should use a <src> tag for us.
-                /*doc.open();
-                doc.write(this.props.initialContent);
-                doc.close();
-                this._setInitialContent = true;*/
-            }
+            const initialRender = !this._setInitialContent;
 
             swallowInvalidHeadWarning();
 
             // unstable_renderSubtreeIntoContainer allows us to pass this component as
             // the parent, which exposes context to any child components.
-            var callback = initialRender ? this.props.contentDidMount : this.props.contentDidUpdate;
-            var mountTarget;
+            const callback = initialRender ? this.props.contentDidMount : this.props.contentDidUpdate;
+            let mountTarget;
 
-            if(this.props.mountTarget) {
+            if (this.props.mountTarget) {
                 mountTarget = doc.querySelector(this.props.mountTarget);
             } else {
                 mountTarget = doc.body.children[0];
@@ -95,7 +91,8 @@ var Frame = React.createClass({
                 window.setTimeout(() => {
                     // ... and trigger a rendering again (we use a timeout of 100 here as then the page might not be finished loading, but it has started to clear at least and might be empty.
                     this.renderFrameContents();
-                }, 1000); // TODO: fix delay here
+                // TODO: fix delay here
+                }, 1000);
             });
 
             ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, () => {
@@ -111,13 +108,13 @@ var Frame = React.createClass({
             }, 10);
         }
     },
-    componentDidUpdate: function() {
+    componentDidUpdate() {
         this.renderFrameContents();
     },
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         this._isMounted = false;
 
-        var doc = ReactDOM.findDOMNode(this).contentDocument;
+        const doc = ReactDOM.findDOMNode(this).contentDocument;
         if (doc) {
             ReactDOM.unmountComponentAtNode(doc.body);
         }

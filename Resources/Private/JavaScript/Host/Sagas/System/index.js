@@ -76,7 +76,7 @@ export const getHostApi = discover(function* () {
 export const getNeos = discover(function* () {
     const csrfToken = yield getCsrfToken;
     const systemEnv = yield getSystemEnv;
-    const store = yield getStore;
+
     const neos = initializeJSAPI(window, {
         csrfToken,
         systemEnv

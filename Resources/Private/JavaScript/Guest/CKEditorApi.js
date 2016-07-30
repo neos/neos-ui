@@ -1,5 +1,3 @@
-import getSelectionData from './CKUtility/SelectionHelpers';
-
 const createCKEditorAPI = CKEDITOR => {
     if (!CKEDITOR) {
         console.error('CKEditor not found!');
@@ -21,7 +19,7 @@ const createCKEditorAPI = CKEDITOR => {
             // TODO: why was the previous code all inside here? weirdo...
         }
 
-        let activeState = {};
+        const activeState = {};
         Object.keys(editorConfig.formattingAndStyling).forEach(key => {
             const description = editorConfig.formattingAndStyling[key];
 
@@ -41,6 +39,7 @@ const createCKEditorAPI = CKEDITOR => {
                     return;
                 }
 
+                // eslint-disable-next-line new-cap
                 const style = new CKEDITOR.style(description.style);
 
                 activeState[key] = style.checkActive(editor.elementPath(), editor);
@@ -55,16 +54,12 @@ const createCKEditorAPI = CKEDITOR => {
         });
 
         editorConfig.onActiveFormattingChange(activeState);
-    }
-
-
-
+    };
 
     //
     // Perform global initialization tasks
     //
     CKEDITOR.disableAutoInline = true;
-    
 
     // Public (singleton) API for CK editor
     return {
@@ -79,7 +74,7 @@ const createCKEditorAPI = CKEDITOR => {
                 return;
             }
             if (!currentEditor) {
-                console.warn(`Current editor not found!`);
+                console.warn('Current editor not found!');
                 return;
             }
             if (description.command !== undefined) {
@@ -99,6 +94,7 @@ const createCKEditorAPI = CKEDITOR => {
                     return;
                 }
 
+                // eslint-disable-next-line new-cap
                 const style = new CKEDITOR.style(description.style);
                 const operation = style.checkActive(currentEditor.elementPath(), currentEditor) ?
                     'removeStyle' : 'applyStyle';
@@ -122,13 +118,8 @@ const createCKEditorAPI = CKEDITOR => {
                     removePlugins: 'toolbar,contextmenu,liststyle,tabletools',
                     allowedContent: true,
                     extraPlugins: 'removeformat'
-            });
-
-                /*configuration.placeholder ? {
-                    extraPlugins: 'confighelper',
-                    placeholder: configuration.placeholder
-                } : {}
-            );*/
+                }
+            );
 
             dom.contentEditable = 'true';
 

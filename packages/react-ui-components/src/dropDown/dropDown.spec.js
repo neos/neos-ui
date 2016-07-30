@@ -2,7 +2,7 @@ import test from 'ava';
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import {DropDown} from './index.js';
+import {DropDown} from './dropDown.js';
 
 test('<DropDown/> should initially have a falsy "isOpen" state value.', t => {
     const dd = shallow(<DropDown />);

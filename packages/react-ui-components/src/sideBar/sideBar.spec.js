@@ -2,7 +2,7 @@ import test from 'ava';
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import SideBar from './index.js';
+import SideBar from './sideBar.js';
 
 test('<SideBar/> should render a "label" node.', t => {
     const bar = shallow(<SideBar/>);

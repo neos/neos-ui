@@ -9,12 +9,12 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(SideBar, defaultProps);
 
-test('<SideBar/> should render a "label" node.', t => {
+test('should render a "label" node.', t => {
     const bar = shallow();
 
     t.truthy(bar.type() === 'div');
 });
-test('<SideBar/> should add the passed "className" prop to the rendered node if passed.', t => {
+test('should add the passed "className" prop to the rendered node if passed.', t => {
     const bar = shallow({className: 'testClassName'});
 
     t.truthy(bar.hasClass('testClassName'));

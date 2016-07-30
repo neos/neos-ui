@@ -9,14 +9,14 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(Bar, defaultProps);
 
-test('<Bar/> should render the passed "className" prop to the rendered wrapper if passed.', t => {
+test('should render the passed "className" prop to the rendered wrapper if passed.', t => {
     const props = {className: 'test', position: 'top'};
     const bar = shallow(props);
 
     t.truthy(bar.hasClass('test'));
 });
 
-test('<Bar/> should call the passed "onDrop" prop when clicking the button.', t => {
+test('should call the passed "onDrop" prop when clicking the button.', t => {
     const props = {onDrop: sinon.spy(), position: 'top'};
     const bar = shallow(props);
 

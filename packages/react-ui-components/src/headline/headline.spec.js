@@ -8,17 +8,17 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(Headline, defaultProps);
 
-test('<Headline/> should render a "h1" node if no "type" prop was passed.', t => {
+test('should render a "h1" node if no "type" prop was passed.', t => {
     const headline = shallow();
 
     t.truthy(headline.type() === 'h1');
 });
-test('<Headline/> should add the passed "className" prop to the rendered node if passed.', t => {
+test('should add the passed "className" prop to the rendered node if passed.', t => {
     const headline = shallow({className: 'testClassName'});
 
     t.truthy(headline.hasClass('testClassName'));
 });
-test('<Headline/> should render a the appropriate node if a "type" prop was passed.', t => {
+test('should render a the appropriate node if a "type" prop was passed.', t => {
     t.truthy(shallow({type: 'h2'}).type() === 'h2');
     t.truthy(shallow({type: 'h3'}).type() === 'h3');
     t.truthy(shallow({type: 'h4'}).type() === 'h4');

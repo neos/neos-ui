@@ -8,17 +8,17 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(TextInput, defaultProps);
 
-test('<TextInput/> should render an "input" node.', t => {
+test('should render an "input" node.', t => {
     const input = shallow();
 
     t.truthy(input.type() === 'input');
 });
-test('<TextInput/> should add the passed "className" prop to the rendered button if passed.', t => {
+test('should add the passed "className" prop to the rendered button if passed.', t => {
     const input = shallow({className: 'testClassName'});
 
     t.truthy(input.hasClass('testClassName'));
 });
-test('<TextInput/> should call the passed "onFocus" prop when focusing the button.', t => {
+test('should call the passed "onFocus" prop when focusing the button.', t => {
     const onFocus = sinon.spy();
     const input = shallow({onFocus});
 
@@ -26,7 +26,7 @@ test('<TextInput/> should call the passed "onFocus" prop when focusing the butto
 
     t.truthy(onFocus.callCount === 1);
 });
-test('<TextInput/> should call the passed "onChange" prop with the value of the input when changing it.', t => {
+test('should call the passed "onChange" prop with the value of the input when changing it.', t => {
     const onChange = sinon.spy();
     const input = shallow({onChange});
 
@@ -39,7 +39,7 @@ test('<TextInput/> should call the passed "onChange" prop with the value of the 
     t.truthy(onChange.callCount === 1);
     t.truthy(onChange.args[0][0] === 'my value');
 });
-test('<TextInput/> should throw no error if no "onChange" prop was passed when changing the value of the input.', t => {
+test('should throw no error if no "onChange" prop was passed when changing the value of the input.', t => {
     const input = shallow();
     const fn = () => {
         input.simulate('change', {
@@ -51,7 +51,7 @@ test('<TextInput/> should throw no error if no "onChange" prop was passed when c
 
     t.notThrows(fn);
 });
-test('<TextInput/> should call the passed "onBlur" prop when leaving the focused state of the input.', t => {
+test('should call the passed "onBlur" prop when leaving the focused state of the input.', t => {
     const onBlur = sinon.spy();
     const input = shallow({onBlur});
 

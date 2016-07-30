@@ -111,6 +111,6 @@
   "license": "GPL-3.0+",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Inkdpixels/react-ui-components.git"
+    "url": "https://github.com/neos/react-ui-components.git"
   }
 }

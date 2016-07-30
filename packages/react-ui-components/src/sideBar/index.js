@@ -1,13 +1,14 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import style from './style.css';
+// import style from './style.css';
 
 const SideBar = props => {
     const {
         position,
         className,
         children,
-        ...directProps
+        style,
+        ...rest
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
@@ -17,7 +18,7 @@ const SideBar = props => {
     });
 
     return (
-        <div className={classNames} {...directProps}>
+        <div {...rest} className={classNames}>
           {children}
         </div>
     );
@@ -25,7 +26,11 @@ const SideBar = props => {
 SideBar.propTypes = {
     position: PropTypes.oneOf(['left', 'right']).isRequired,
     className: PropTypes.string,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    style: PropTypes.object
+};
+SideBar.defaultProps = {
+    style: {}
 };
 
 export default SideBar;

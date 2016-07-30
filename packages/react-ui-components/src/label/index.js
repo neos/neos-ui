@@ -1,13 +1,14 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import style from './style.css';
+// import style from './style.css';
 
 const Label = props => {
     const {
         children,
         className,
         htmlFor,
-        ...directProps
+        style,
+        ...rest
     } = props;
     const classNames = mergeClassNames({
         [style.label]: true,
@@ -15,7 +16,7 @@ const Label = props => {
     });
 
     return (
-        <label htmlFor={htmlFor} className={classNames} {...directProps}>
+        <label {...rest} htmlFor={htmlFor} className={classNames}>
             {children}
         </label>
     );
@@ -23,7 +24,11 @@ const Label = props => {
 Label.propTypes = {
     htmlFor: PropTypes.string.isRequired,
     className: PropTypes.string,
-    children: PropTypes.node
+    children: PropTypes.node,
+    style: PropTypes.object
+};
+Label.defaultProps = {
+    style: {}
 };
 
 export default Label;

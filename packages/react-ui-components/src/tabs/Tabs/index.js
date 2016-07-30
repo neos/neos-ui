@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
-import {executeCallback} from 'Shared/Utilities/index';
+import executeCallback from './../_lib/executeCallback.js';
 import Icon from 'Components/Icon/index';
 import mergeClassNames from 'classnames';
-import style from './style.css';
+// import style from './style.css';
 
 export default class Tabs extends Component {
     static propTypes = {
@@ -10,11 +10,13 @@ export default class Tabs extends Component {
         activeTab: PropTypes.number,
 
         className: PropTypes.string,
-        children: PropTypes.node.isRequired
+        children: PropTypes.node.isRequired,
+        style: PropTypes.object
     };
 
     static defaultProps = {
-        activeTab: 0
+        activeTab: 0,
+        style: {}
     };
 
     constructor(props) {
@@ -35,10 +37,11 @@ export default class Tabs extends Component {
     }
 
     render() {
-        const className = mergeClassNames(style.tabs, this.props.className);
+        const {style, className} = this.props;
+        const finalClassName = mergeClassNames(style.tabs, className);
 
         return (
-            <div className={className} role="tablist">
+            <div className={finalClassName} role="tablist">
                 {this.renderMenuItems()}
                 {this.renderPanels()}
             </div>
@@ -46,7 +49,9 @@ export default class Tabs extends Component {
     }
 
     renderMenuItems() {
-        const menuItems = this.props.children
+        const {style, children} = this.props;
+
+        const menuItems = children
             .map(panel => typeof panel === 'function' ? panel() : panel)
             .filter(panel => panel)
             .map((panel, index) => {
@@ -87,7 +92,7 @@ export default class Tabs extends Component {
     }
 
     renderPanels() {
-        const {children} = this.props;
+        const {style, children} = this.props;
 
         return (
             <div ref="tab-panel" className={style.tabs__content}>
@@ -103,7 +108,7 @@ export default class Tabs extends Component {
                     }
 
                     return (
-                        <div key={index} style={style} role="tabpanel" {...panelProps}>
+                        <div {...panelProps} key={index} style={style} role="tabpanel">
                             {panel}
                         </div>
                     );

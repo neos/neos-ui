@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import style from './style.css';
+// import style from './style.css';
 
 const onChangeHandler = (cb, isChecked) => {
     if (cb) {
@@ -13,7 +13,8 @@ const CheckBox = props => {
         isChecked,
         className,
         onChange,
-        ...directProps
+        style,
+        ...rest
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
@@ -27,13 +28,13 @@ const CheckBox = props => {
     return (
         <div className={classNames}>
             <input
+                {...rest}
                 className={style.checkbox__input}
                 type="checkbox"
                 role="checkbox"
                 checked={isChecked}
                 aria-checked={isChecked}
                 onChange={() => onChangeHandler(onChange, !isChecked)}
-                {...directProps}
                 />
             <div className={mirrorClassNames}></div>
         </div>
@@ -42,7 +43,11 @@ const CheckBox = props => {
 CheckBox.propTypes = {
     isChecked: PropTypes.bool.isRequired,
     className: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    style: PropTypes.object
+};
+CheckBox.defaultProps = {
+    style: {}
 };
 
 export default CheckBox;

@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {executeCallback} from 'Shared/Utilities/index';
-import style from './style.css';
 import TextareaAutoresize from 'react-textarea-autosize';
+import executeCallback from './../_lib/executeCallback.js';
+// import style from './style.css';
 
 const TextArea = props => {
     const {
@@ -12,7 +12,8 @@ const TextArea = props => {
         onChange,
         onFocus,
         onBlur,
-        ...directProps
+        style,
+        ...rest
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
@@ -22,13 +23,13 @@ const TextArea = props => {
 
     return (
         <TextareaAutoresize
+            {...rest}
             className={classNames}
             role="textbox"
             placeholder={placeholder}
             onChange={e => onChange(e.target.value)}
             onFocus={() => executeCallback({cb: onFocus})}
             onBlur={() => executeCallback({cb: onBlur})}
-            {...directProps}
             />
     );
 };
@@ -41,9 +42,11 @@ TextArea.propTypes = {
     // Interaction related propTypes.
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
-    onBlur: PropTypes.func
+    onBlur: PropTypes.func,
+    style: PropTypes.object
 };
 TextArea.defaultProps = {
+    style: {},
     isValid: true
 };
 

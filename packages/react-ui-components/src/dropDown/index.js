@@ -2,19 +2,21 @@ import React, {Component, PropTypes} from 'react';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
-import {executeCallback} from 'Shared/Utilities/index';
+import executeCallback from './../_lib/executeCallback.js';
 import Icon from 'Components/Icon/index';
-import style from './style.css';
+// import style from './style.css';
 
 export class DropDown extends Component {
     static propTypes = {
         className: PropTypes.string,
         isOpen: PropTypes.bool.isRequired,
-        children: PropTypes.node.isRequired
+        children: PropTypes.node.isRequired,
+        style: PropTypes.object
     };
 
     static defaultProps = {
-        isOpen: false
+        isOpen: false,
+        style: {}
     };
 
     static childContextTypes = {
@@ -38,16 +40,15 @@ export class DropDown extends Component {
     }
 
     render() {
-        const {children, className, ...rest} = this.props;
-        const directProps = omit(rest, ['isOpen']);
-        delete directProps.isOpened;
+        const {children, className, style, ...restProps} = this.props;
+        const rest = omit(restProps, ['isOpen']);
         const dropDownClassName = mergeClassNames({
             [className]: className && className.length,
             [style.dropDown]: true
         });
 
         return (
-            <div className={dropDownClassName} {...directProps}>
+            <div {...rest} className={dropDownClassName}>
                 {children}
             </div>
         );
@@ -69,8 +70,14 @@ export class DropDown extends Component {
 export class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
-        children: PropTypes.node
+        children: PropTypes.node,
+        style: PropTypes.object
     };
+
+    static defaultProps = {
+        style: {}
+    };
+
     static contextTypes = {
         isOpen: PropTypes.bool.isRequired,
         toggleDropDown: PropTypes.func.isRequired
@@ -81,7 +88,7 @@ export class Header extends Component {
     }
 
     render() {
-        const {className, children, ...directProps} = this.props;
+        const {className, children, style, ...rest} = this.props;
         const {isOpen, toggleDropDown} = this.context;
         const classNames = mergeClassNames({
             [style.dropDown__btn]: true,
@@ -91,6 +98,7 @@ export class Header extends Component {
 
         return (
             <button
+                {...rest}
                 onClick={e => executeCallback({e, cb: () => toggleDropDown()})}
                 ref={btn => {
                     const method = isOpen ? 'focus' : 'blur';
@@ -102,7 +110,6 @@ export class Header extends Component {
                 }}
                 className={classNames}
                 aria-haspopup="true"
-                {...directProps}
                 >
                 {children}
                 {chevron}
@@ -111,6 +118,7 @@ export class Header extends Component {
     }
 
     renderChevronIcon() {
+        const {style} = this.props;
         const {isOpen} = this.context;
         const iconName = isOpen ? 'chevron-up' : 'chevron-down';
 
@@ -121,7 +129,12 @@ export class Header extends Component {
 export class Contents extends Component {
     static propTypes = {
         className: PropTypes.string,
-        children: PropTypes.node.isRequired
+        children: PropTypes.node.isRequired,
+        style: PropTypes.object
+    };
+
+    static defaultProps = {
+        style: {}
     };
 
     static contextTypes = {
@@ -134,7 +147,7 @@ export class Contents extends Component {
     }
 
     render() {
-        const {className, children, ...directProps} = this.props;
+        const {className, children, style, ...rest} = this.props;
         const {isOpen, closeDropDown} = this.context;
         const contentsClassName = mergeClassNames({
             [className]: className && className.length,
@@ -145,10 +158,10 @@ export class Contents extends Component {
 
         return (
             <ul
+                {...rest}
                 className={contentsClassName}
                 aria-hidden={ariaIsHiddenLabel}
                 aria-label="dropdown"
-                {...directProps}
                 onClick={() => closeDropDown()}
                 role="button"
                 >

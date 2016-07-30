@@ -5,16 +5,39 @@
   "main": "./lib",
   "scripts": {
     "prepublish": "npm run build",
-    "prebuild": "check-dependencies && npm run clean",
-    "test": "npm run lint",
+    "prebuild": "check-dependencies && np0m run clean",
+    "test": "npm run lint && npm run ava",
+    "test:watch": "npm run ava -- --watch",
     "build": "cross-env NODE_ENV=production npm run babel && npm run css",
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src && stylelint 'src/**/*.css'"
+    "lint": "eslint src && stylelint 'src/**/*.css'",
+    "ava": "ava src/**/*.spec2.js",
+    "test-with-coverage": "nyc npm run ava",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "ava": {
+    "files": [
+      "src/**/__tests__/*.js"
+    ],
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "exclude": [
+      "**/__tests__/**"
+    ],
+    "include": [
+      "src/**"
+    ]
   },
   "devDependencies": {
-    "classnames": "^2.2.3",
+    "ava": "^0.15.2",
     "babel-cli": "^6.8.0",
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
@@ -24,14 +47,19 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "check-dependencies": "^0.12.0",
+    "classnames": "^2.2.3",
     "cpx": "^1.3.1",
     "cross-env": "^2.0.0",
+    "enzyme": "^2.4.1",
     "eslint": "^3.1.1",
     "eslint-plugin-babel": "^3.1.0",
     "eslint-plugin-jsx-a11y": "^2.0.0",
     "eslint-plugin-react": "^5.0.1",
+    "jsx-test-helpers": "^1.1.0",
+    "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
     "monet": "^0.8.10",
+    "nyc": "^7.1.0",
     "postcss-hexrgba": "^0.2.0",
     "postcss-import": "^8.0.2",
     "postcss-loader": "^0.9.1",
@@ -41,14 +69,16 @@
     "react-click-outside": "^2.1.0",
     "react-collapse": "^2.2.2",
     "react-dom": "^15.2.1",
-    "react-textarea-autosize": "^4.0.0",
     "react-height": "^2.0.4",
     "react-motion": "^0.4.2",
+    "react-textarea-autosize": "^4.0.0",
     "rimraf": "^2.5.4",
+    "sinon": "^1.17.5",
     "stylelint": "^7.0.3"
   },
   "peerDependencies": {
     "classnames": "^2.2.3",
+    "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
     "monet": "^0.8.10",
     "react": "^15.2.1",

@@ -3,7 +3,7 @@ import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
 import Headline from 'Components/Headline/index';
 import IconButton from 'Components/IconButton/index';
-import style from './style.css';
+// import style from './style.css';
 
 class ToggablePanel extends Component {
     static propTypes = {
@@ -59,11 +59,13 @@ class StatelessToggablePanel extends Component {
         isOpen: PropTypes.bool,
         className: PropTypes.string,
         children: PropTypes.node.isRequired,
-        togglePanel: PropTypes.func.isRequired
+        togglePanel: PropTypes.func.isRequired,
+        style: PropTypes.object
     };
 
     static defaultProps = {
-        isOpen: false
+        isOpen: false,
+        style: {}
     };
 
     static childContextTypes = {
@@ -79,7 +81,7 @@ class StatelessToggablePanel extends Component {
     }
 
     render() {
-        const {children, className} = this.props;
+        const {children, className, style} = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [style.panel]: true,
@@ -97,7 +99,12 @@ class StatelessToggablePanel extends Component {
 class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
-        children: PropTypes.node.isRequired
+        children: PropTypes.node.isRequired,
+        style: PropTypes.object
+    };
+
+    static defaultProps = {
+        style: {}
     };
 
     static contextTypes = {
@@ -112,7 +119,8 @@ class Header extends Component {
     render() {
         const {
             children,
-            className
+            className,
+            style
         } = this.props;
         const {isOpen, togglePanel} = this.context;
         const toggleIcon = isOpen ? 'chevron-up' : 'chevron-down';
@@ -142,7 +150,12 @@ class Header extends Component {
 class Contents extends Component {
     static propTypes = {
         className: PropTypes.string,
-        children: PropTypes.node.isRequired
+        children: PropTypes.node.isRequired,
+        style: PropTypes.object
+    };
+
+    static defaultProps = {
+        style: {}
     };
 
     static contextTypes = {
@@ -156,7 +169,8 @@ class Contents extends Component {
     render() {
         const {
             children,
-            className
+            className,
+            style
         } = this.props;
         const {isOpen} = this.context;
         const classNames = mergeClassNames({

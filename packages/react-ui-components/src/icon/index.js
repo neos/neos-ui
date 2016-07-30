@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import style from './style.css';
 import {fontAwesome, logger} from 'Shared/Utilities/';
+// import style from './style.css';
 
 const cachedWarnings = {};
 
 const Icon = props => {
-    const {size, padded} = props;
+    const {size, padded, style} = props;
     const iconClassName = fontAwesome.getClassName(props.icon);
     const classNames = mergeClassNames({
         [style.icon]: true,
@@ -51,7 +51,11 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
     size: PropTypes.oneOf(['big', 'small', 'tiny']),
     padded: PropTypes.oneOf(['none', 'left', 'right']),
     className: PropTypes.string,
-    spin: PropTypes.bool
+    spin: PropTypes.bool,
+    style: PropTypes.object
+};
+Icon.defaultProps = {
+    style: {}
 };
 
 export default Icon;

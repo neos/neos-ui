@@ -29,65 +29,6 @@ test('should render a "button" and respect the "className" prop if passed.', t =
 
     t.truthy(btn.html().includes('class="bar className"'));
 });
-test('should call the passed "onClick" prop when clicking the button.', t => {
-    const props = {
-        onClick: sinon.spy(),
-        style: 'clean'
-    };
-    const btn = shallow(props);
-
-    btn.simulate('click');
-
-    t.truthy(props.onClick.calledOnce);
-});
-test('should call the passed "onMouseDown" prop when clicking the button.', t => {
-    const props = {
-        onClick: sinon.spy(),
-        onMouseDown: sinon.spy(),
-        style: 'clean'
-    };
-    const btn = shallow(props);
-
-    btn.simulate('mouseDown');
-
-    t.truthy(props.onMouseDown.calledOnce);
-});
-test('should call the passed "onMouseUp" prop when clicking the button.', t => {
-    const props = {
-        onClick: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        style: 'clean'
-    };
-    const btn = shallow(props);
-
-    btn.simulate('mouseUp');
-
-    t.truthy(props.onMouseUp.calledOnce);
-});
-test('should call the passed "onMouseEnter" prop when clicking the button.', t => {
-    const props = {
-        onClick: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        style: 'clean'
-    };
-    const btn = shallow(props);
-
-    btn.simulate('mouseEnter');
-
-    t.truthy(props.onMouseEnter.calledOnce);
-});
-test('should call the passed "onMouseLeave" prop when clicking the button.', t => {
-    const props = {
-        onClick: sinon.spy(),
-        onMouseLeave: sinon.spy(),
-        style: 'clean'
-    };
-    const btn = shallow(props);
-
-    btn.simulate('mouseLeave');
-
-    t.truthy(props.onMouseLeave.calledOnce);
-});
 test('should render the disabled attribute when passing a truthy "isDisabled" prop.', t => {
     const props = {
         onClick: sinon.spy(),

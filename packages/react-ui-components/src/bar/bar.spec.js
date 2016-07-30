@@ -1,28 +1,24 @@
 import test from 'ava';
-import React from 'react';
 import sinon from 'sinon';
-import {shallow} from 'enzyme';
-
+import {createShallowRenderer} from './../_lib/testUtils.js';
 import Bar from './bar.js';
 
 const defaultProps = {
     theme: {},
     children: 'Foo children'
 };
+const shallow = createShallowRenderer(Bar, defaultProps);
+
 test('<Bar/> should render the passed "className" prop to the rendered wrapper if passed.', t => {
-    const props = {className: 'test'};
-    const bar = shallow(
-        <Bar {...defaultProps} {...props} position="top"/>
-    );
+    const props = {className: 'test', position: 'top'};
+    const bar = shallow(props);
 
     t.truthy(bar.hasClass('test'));
 });
 
 test('<Bar/> should call the passed "onDrop" prop when clicking the button.', t => {
-    const props = {onDrop: sinon.spy()};
-    const bar = shallow(
-        <Bar {...defaultProps} {...props} position="top"/>
-    );
+    const props = {onDrop: sinon.spy(), position: 'top'};
+    const bar = shallow(props);
 
     bar.simulate('drop');
 

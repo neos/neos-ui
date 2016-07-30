@@ -1,7 +1,5 @@
 import test from 'ava';
-import React from 'react';
-import {shallow} from 'enzyme';
-
+import {createShallowRenderer} from './../_lib/testUtils.js';
 import SideBar from './sideBar.js';
 
 const defaultProps = {
@@ -9,14 +7,15 @@ const defaultProps = {
     children: 'Foo children',
     theme: {}
 };
+const shallow = createShallowRenderer(SideBar, defaultProps);
 
 test('<SideBar/> should render a "label" node.', t => {
-    const bar = shallow(<SideBar {...defaultProps}/>);
+    const bar = shallow();
 
     t.truthy(bar.type() === 'div');
 });
 test('<SideBar/> should add the passed "className" prop to the rendered node if passed.', t => {
-    const bar = shallow(<SideBar {...defaultProps} className="test"/>);
+    const bar = shallow({className: 'testClassName'});
 
-    t.truthy(bar.hasClass('test'));
+    t.truthy(bar.hasClass('testClassName'));
 });

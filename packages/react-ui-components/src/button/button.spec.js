@@ -1,8 +1,6 @@
 import test from 'ava';
-import React from 'react';
 import sinon from 'sinon';
-import {shallow} from 'enzyme';
-
+import {createShallowRenderer} from './../_lib/testUtils.js';
 import Button from './button.js';
 
 const defaultProps = {
@@ -10,15 +8,14 @@ const defaultProps = {
     className: 'foo className',
     children: 'Foo children'
 };
+const shallow = createShallowRenderer(Button, defaultProps);
 
 test('<Button/> should render a "button" node with the role="button" attribute.', t => {
     const props = {
         onClick: sinon.spy(),
         style: 'clean'
     };
-    const btn = shallow(
-        <Button {...defaultProps} {...props}/>
-    );
+    const btn = shallow(props);
 
     t.truthy(btn.type() === 'button');
 });
@@ -28,9 +25,7 @@ test('<Button/> should render a "button" and respect the "className" prop if pas
         style: 'clean',
         className: 'bar className'
     };
-    const btn = shallow(
-        <Button {...defaultProps} {...props}/>
-    );
+    const btn = shallow(props);
 
     t.truthy(btn.html().includes('class="bar className"'));
 });
@@ -39,9 +34,7 @@ test('<Button/> should call the passed "onClick" prop when clicking the button.'
         onClick: sinon.spy(),
         style: 'clean'
     };
-    const btn = shallow(
-        <Button {...defaultProps} {...props}/>
-    );
+    const btn = shallow(props);
 
     btn.simulate('click');
 
@@ -53,9 +46,7 @@ test('<Button/> should call the passed "onMouseDown" prop when clicking the butt
         onMouseDown: sinon.spy(),
         style: 'clean'
     };
-    const btn = shallow(
-        <Button {...defaultProps} {...props}/>
-    );
+    const btn = shallow(props);
 
     btn.simulate('mouseDown');
 
@@ -67,9 +58,7 @@ test('<Button/> should call the passed "onMouseUp" prop when clicking the button
         onMouseUp: sinon.spy(),
         style: 'clean'
     };
-    const btn = shallow(
-        <Button {...defaultProps} {...props}/>
-    );
+    const btn = shallow(props);
 
     btn.simulate('mouseUp');
 
@@ -81,9 +70,7 @@ test('<Button/> should call the passed "onMouseEnter" prop when clicking the but
         onMouseEnter: sinon.spy(),
         style: 'clean'
     };
-    const btn = shallow(
-        <Button {...defaultProps} {...props}/>
-    );
+    const btn = shallow(props);
 
     btn.simulate('mouseEnter');
 
@@ -95,9 +82,7 @@ test('<Button/> should call the passed "onMouseLeave" prop when clicking the but
         onMouseLeave: sinon.spy(),
         style: 'clean'
     };
-    const btn = shallow(
-        <Button {...defaultProps} {...props}/>
-    );
+    const btn = shallow(props);
 
     btn.simulate('mouseLeave');
 
@@ -109,9 +94,7 @@ test('<Button/> should render the disabled attribute when passing a truthy "isDi
         isDisabled: true,
         style: 'clean'
     };
-    const btn = shallow(
-        <Button {...defaultProps} {...props}/>
-    );
+    const btn = shallow(props);
 
     t.truthy(btn.html().includes('disabled=""'));
 });

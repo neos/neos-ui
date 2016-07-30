@@ -1,20 +1,20 @@
 import test from 'ava';
-import React from 'react';
-import {shallow} from 'enzyme';
-
+import {createShallowRenderer} from './../_lib/testUtils.js';
 import Label from './label.js';
 
 const defaultProps = {
-    theme: {}
+    theme: {},
+    htmlFor: 'test for'
 };
+const shallow = createShallowRenderer(Label, defaultProps);
 
 test('<Label/> should render a "label" node.', t => {
-    const label = shallow(<Label {...defaultProps} htmlFor="test"/>);
+    const label = shallow();
 
     t.truthy(label.type() === 'label');
 });
 test('<Label/> should add the passed "className" prop to the rendered node if passed.', t => {
-    const label = shallow(<Label {...defaultProps} htmlFor="test" className="test"/>);
+    const label = shallow({className: 'testClassName'});
 
-    t.truthy(label.hasClass('test'));
+    t.truthy(label.hasClass('testClassName'));
 });

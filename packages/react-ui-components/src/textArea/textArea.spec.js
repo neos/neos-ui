@@ -1,30 +1,31 @@
 import test from 'ava';
-import React from 'react';
 import sinon from 'sinon';
-import {shallow} from 'enzyme';
+import TextareaAutoresize from 'react-textarea-autosize';
+import {createShallowRenderer} from './../_lib/testUtils.js';
 
 import TextArea from './textArea.js';
 
 const defaultProps = {
     theme: {}
 };
+const shallow = createShallowRenderer(TextArea, defaultProps);
 
-test('<TextArea/> should render a "button" node with the role="button" attribute.', t => {
-    const input = shallow(<TextArea {...defaultProps} className="test"/>);
+test('<TextArea/> should render a "TextareaAutoresize" component.', t => {
+    const input = shallow().find(TextareaAutoresize);
 
-    t.truthy(input.hasClass('test'));
+    t.truthy(input.length === 1);
 });
 test('<TextArea/> should call the passed "onFocus" prop when focusing the button.', t => {
-    const spy = sinon.spy();
-    const input = shallow(<TextArea {...defaultProps} onFocus={spy}/>);
+    const onFocus = sinon.spy();
+    const input = shallow({onFocus});
 
     input.simulate('focus');
 
-    t.truthy(spy.callCount === 1);
+    t.truthy(onFocus.callCount === 1);
 });
 test('<TextArea/> should call the passed "onChange" prop with the value of the input when changing it.', t => {
-    const spy = sinon.spy();
-    const input = shallow(<TextArea {...defaultProps} onChange={spy}/>);
+    const onChange = sinon.spy();
+    const input = shallow({onChange});
 
     input.simulate('change', {
         target: {
@@ -32,14 +33,14 @@ test('<TextArea/> should call the passed "onChange" prop with the value of the i
         }
     });
 
-    t.truthy(spy.callCount === 1);
-    t.truthy(spy.args[0][0] === 'my value');
+    t.truthy(onChange.callCount === 1);
+    t.truthy(onChange.args[0][0] === 'my value');
 });
 test('<TextArea/> should call the passed "onBlur" prop when leaving the focused state of the input.', t => {
-    const spy = sinon.spy();
-    const input = shallow(<TextArea {...defaultProps} onBlur={spy}/>);
+    const onBlur = sinon.spy();
+    const input = shallow({onBlur});
 
     input.simulate('blur');
 
-    t.truthy(spy.callCount === 1);
+    t.truthy(onBlur.callCount === 1);
 });

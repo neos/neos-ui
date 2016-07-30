@@ -1,20 +1,18 @@
-import {JSX} from 'jsx-test-helpers';
+import React from 'react';
+import {shallow} from 'enzyme';
 
 const err = (msg) => {
     throw new Error(msg);
 };
-const NO_JSX_FACTORY = 'Please pass a function as a first argument which returns some JSX fixture.';
+const NO_COMPONENT = 'Please specify a valid Reac.component constructor in the createRenderer call.';
 
 /**
- * The fixtureFactory is a small wrapper to create JSX fixtures for
- * reacts `ShallowRenderer` feature. The generated fixture can be used
- * within tests to compare the actual against the expected(fixture) markup.
+ * The createShallowRenderer function is used to write less repetitive
+ * tests setup.
  *
- * @param  {Function} The JSX factory which gets called with a merged props object which then can be spreaded on the fixture element.
- * @return {String} The shallow rendered markup.
+ * @param  {React.Element} A valid React constructor to be rendered as JSX.
+ * @return {Object} The shallow rendered output of `enzyme`,
  */
-export const fixtureFactory = (jsxFactory = err(NO_JSX_FACTORY), internalDefaultProps = {}) => (props = {}) => {
-    return JSX( // eslint-disable-line new-cap
-        jsxFactory(Object.assign({}, internalDefaultProps, props))
-    );
+export const createShallowRenderer = (Component = err(NO_COMPONENT), defaultProps = {}) => {
+    return (props = {}) => shallow(<Component {...defaultProps} {...props}/>);
 };

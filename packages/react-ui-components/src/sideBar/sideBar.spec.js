@@ -6,6 +6,7 @@ import SideBar from './sideBar.js';
 
 const defaultProps = {
     position: 'left',
+    children: 'Foo children',
     theme: {}
 };
 

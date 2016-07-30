@@ -5,7 +5,8 @@ import {shallow} from 'enzyme';
 import GridItem from './gridItem.js';
 
 const defaultProps = {
-    theme: {}
+    theme: {},
+    width: 'third'
 };
 
 test('<GridItem/> should render a "div" node.', t => {

@@ -10,10 +10,6 @@ try {
     }
 } catch (e) {
     api = {
-        fontAwesome: {
-            getClassName: () => 'fooIconClassName',
-            validateId: () => ({isValid: true, isMigrationNeeded: false, iconName: 'foo'})
-        },
         logger: {
             deprecate: () => null
         }
@@ -22,8 +18,8 @@ try {
 const cachedWarnings = {};
 
 const Icon = props => {
-    const {size, padded, theme} = props;
-    const iconClassName = api.fontAwesome.getClassName(props.icon);
+    const {size, padded, theme, getIconClassName} = props;
+    const iconClassName = getIconClassName(props.icon);
     const classNames = mergeClassNames({
         [theme.icon]: true,
         [iconClassName]: true,
@@ -42,13 +38,13 @@ Icon.propTypes = {
     // The icon key of Font-Awesome.
     icon(props, propName) {//eslint-disable-line
         const id = props[propName];
-        const {isValid, isMigrationNeeded, iconName} = api.fontAwesome.validateId(id);
+        const {isValid, isMigrationNeeded, iconName} = props.validateIconId(id);
 
         if (!isValid) {
             if (isMigrationNeeded && iconName && !cachedWarnings[iconName]) {
                 cachedWarnings[iconName] = true;
 
-                props.api.logger.deprecate(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
+                api.logger.deprecate(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
 
 Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
 
@@ -75,7 +71,9 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
         'icon--paddedLeft': PropTypes.string,
         'icon--paddedRight': PropTypes.string,
         'icon--spin': PropTypes.string
-    }).isRequired
+    }).isRequired,
+    validateIconId: PropTypes.func.isRequired,
+    getIconClassName: PropTypes.func.isRequired
 };
 
 export default Icon;

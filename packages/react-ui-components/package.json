@@ -15,7 +15,7 @@
     "lint": "eslint src && stylelint 'src/**/*.css'",
     "ava": "ava src/**/*.spec.js",
     "coverage:generate": "nyc report --reporter=text-lcov > lcov.info",
-    "start": "export STORY=true && start-storybook -p 9001"
+    "start": "cross-env STORY=true start-storybook -p 9001"
   },
   "ava": {
     "files": [
@@ -58,6 +58,7 @@
     "eslint-plugin-babel": "^3.1.0",
     "eslint-plugin-jsx-a11y": "^2.0.0",
     "eslint-plugin-react": "^5.0.1",
+    "file-loader": "^0.9.0",
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
     "monet": "^0.8.10",
@@ -80,7 +81,8 @@
     "rimraf": "^2.5.4",
     "sinon": "^1.17.5",
     "style-loader": "^0.13.1",
-    "stylelint": "^7.0.3"
+    "stylelint": "^7.0.3",
+    "url-loader": "^0.5.7"
   },
   "peerDependencies": {
     "classnames": "^2.2.3",

@@ -92,7 +92,8 @@ export class Header extends Component {
     }
 
     render() {
-        const {className, children, theme, ...rest} = this.props;
+        const {className, children, theme, ...restProps} = this.props;
+        const rest = omit(restProps, ['IconComponent']);
         const {isOpen, toggleDropDown} = this.context;
         const classNames = mergeClassNames({
             [theme.dropDown__btn]: true,

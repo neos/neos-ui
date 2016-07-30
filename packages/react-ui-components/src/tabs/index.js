@@ -5,7 +5,6 @@ import Tabs from './tabs';
 import Panel from './panel';
 
 const ThemedTabs = themr(identifiers.tabs, style)(Tabs);
-ThemedTabs.Panel = themr(identifiers.tabsPanel, style)(Panel);
 
 //
 // Dependency injection
@@ -13,6 +12,9 @@ ThemedTabs.Panel = themr(identifiers.tabsPanel, style)(Panel);
 import injectProps from './../_lib/injectProps.js';
 import Icon from './../icon/index';
 
-export default injectProps({
+const FinalTabsComponent = injectProps({
     IconComponent: Icon
 })(ThemedTabs);
+FinalTabsComponent.Panel = themr(identifiers.tabsPanel, style)(Panel);
+
+export default FinalTabsComponent;

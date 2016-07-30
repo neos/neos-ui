@@ -5,6 +5,8 @@ cache:
     - node_modules
 notifications:
   email: false
+before_install:
+  - npm i -g codeclimate-test-reporter
 before_script:
   - npm prune
 after_script:

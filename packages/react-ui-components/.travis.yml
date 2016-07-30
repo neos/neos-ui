@@ -7,6 +7,8 @@ notifications:
   email: false
 before_script:
   - npm prune
+after_script:
+- npm run coverage:generate && codeclimate-test-reporter < lcov.info
 after_success:
   - npm run semantic-release
 branches:

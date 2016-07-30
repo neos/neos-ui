@@ -6,8 +6,10 @@
 
 ## Dependencies
 * classnames `^2.2.3`
+* lodash.isfunction `^3.0.8`
 * lodash.omit `^4.3.0`
 * monet `^0.8.10`
+* object-assign `^4.1.0`
 * react `^15.2.1`
 * react-click-outside `^2.1.0`
 * react-collapse `^2.2.2`
@@ -15,7 +17,7 @@
 * react-textarea-autosize `^4.0.0`
 * react-height `^2.0.4`
 * react-motion `^0.4.2`
-
+* react-css-themr `^1.1.3`
 
 ## Installation
 ```

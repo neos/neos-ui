@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 
 export class Node extends Component {
@@ -7,7 +8,8 @@ export class Node extends Component {
     };
 
     render() {
-        const {children, ...rest} = this.props;
+        const {children, ...restProps} = this.props;
+        const rest = omit(restProps, ['theme']);
 
         return (
             <div {...rest}>

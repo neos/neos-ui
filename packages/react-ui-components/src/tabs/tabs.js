@@ -121,7 +121,7 @@ export default class Tabs extends Component {
                     }
 
                     return (
-                        <div {...panelProps} key={index} theme={theme} role="tabpanel">
+                        <div {...panelProps} key={index} style={theme} role="tabpanel">
                             {panel}
                         </div>
                     );

@@ -139,7 +139,7 @@ export class Header extends Component {
                 <HeadlineComponent
                     className={theme.panel__headline}
                     type="h1"
-                    theme="h4"
+                    style="h4"
                     >
                     {children}
                 </HeadlineComponent>

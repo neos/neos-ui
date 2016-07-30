@@ -1,13 +1,12 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {fontAwesome, logger} from 'Shared/Utilities/';
 // import style from './style.css';
 
 const cachedWarnings = {};
 
 const Icon = props => {
-    const {size, padded, style} = props;
-    const iconClassName = fontAwesome.getClassName(props.icon);
+    const {size, padded, style, api} = props;
+    const iconClassName = api.fontAwesome.getClassName(props.icon);
     const classNames = mergeClassNames({
         [style.icon]: true,
         [iconClassName]: true,
@@ -28,12 +27,13 @@ Icon.propTypes = {
     // The icon key of Font-Awesome.
     icon(props, propName) {//eslint-disable-line
         const id = props[propName];
-        const {isValid, isMigrationNeeded, iconName} = fontAwesome.validateId(id);
+        const {isValid, isMigrationNeeded, iconName} = props.api.fontAwesome.validateId(id);
 
         if (!isValid) {
             if (isMigrationNeeded && iconName && !cachedWarnings[iconName]) {
                 cachedWarnings[iconName] = true;
-                logger.deprecate(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
+
+                props.api.logger.deprecate(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
 
 Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
 
@@ -52,10 +52,24 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
     padded: PropTypes.oneOf(['none', 'left', 'right']),
     className: PropTypes.string,
     spin: PropTypes.bool,
-    style: PropTypes.object
+    style: PropTypes.object,
+    api: PropTypes.shape({
+        fontAwesome: PropTypes.shape({
+            getClassName: PropTypes.func.isRequired,
+            validateId: PropTypes.func.isRequired
+        }).isRequired,
+        logger: PropTypes.shape({
+            deprecate: PropTypes.func.isRequired
+        }).isRequired
+    })
 };
 Icon.defaultProps = {
-    style: {}
+    style: {},
+    api: {}
 };
+
+try {
+    Icon.defaultProps.api = window.neos;
+} catch (e) {}
 
 export default Icon;

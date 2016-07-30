@@ -3,7 +3,7 @@ import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
 import executeCallback from './../_lib/executeCallback.js';
-import Icon from 'Components/Icon/index';
+import Icon from './../icon/index';
 // import style from './style.css';
 
 export class DropDown extends Component {

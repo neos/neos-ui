@@ -5,17 +5,16 @@
   "main": "./lib",
   "scripts": {
     "prepublish": "npm run build",
-    "prebuild": "check-dependencies && np0m run clean",
-    "test": "npm run lint && npm run ava",
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run lint && nyc --lines 90 npm run ava",
     "test:watch": "npm run ava -- --watch",
     "build": "cross-env NODE_ENV=production npm run babel && npm run css",
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "ava": "ava src/**/*.spec2.js",
-    "test-with-coverage": "nyc npm run ava",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "ava": "ava src/**/*.spec.js",
+    "coverage:generate": "nyc report --reporter=text-lcov > lcov.info"
   },
   "ava": {
     "files": [
@@ -30,7 +29,7 @@
   },
   "nyc": {
     "exclude": [
-      "**/__tests__/**"
+      "src/**/*.spec.js"
     ],
     "include": [
       "src/**"
@@ -55,7 +54,6 @@
     "eslint-plugin-babel": "^3.1.0",
     "eslint-plugin-jsx-a11y": "^2.0.0",
     "eslint-plugin-react": "^5.0.1",
-    "jsx-test-helpers": "^1.1.0",
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
     "monet": "^0.8.10",

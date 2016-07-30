@@ -1,70 +1,58 @@
+import test from 'ava';
 import React from 'react';
-import chai, {expect} from 'chai';
-import sinon from 'sinon/pkg/sinon.js';
+import sinon from 'sinon';
 import {shallow} from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
+
 import TextInput from './index.js';
 
-chai.should();
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
+test('<TextInput/> should render an "input" node.', t => {
+    const input = shallow(<TextInput/>);
 
-describe('"host.components.textInput"', () => {
-    it('should render an "input" node.', () => {
-        const input = shallow(<TextInput />);
+    t.truthy(input.type() === 'input');
+});
+test('<TextInput/> should add the passed "className" prop to the rendered button if passed.', t => {
+    const input = shallow(<TextInput className="test"/>);
 
-        expect(input.type()).to.equal('input');
+    t.truthy(input.hasClass('test'));
+});
+test('<TextInput/> should call the passed "onFocus" prop when focusing the button.', t => {
+    const spy = sinon.spy();
+    const input = shallow(<TextInput onFocus={spy} />);
+
+    input.simulate('focus');
+
+    t.truthy(spy.callCount === 1);
+});
+test('<TextInput/> should call the passed "onChange" prop with the value of the input when changing it.', t => {
+    const spy = sinon.spy();
+    const input = shallow(<TextInput onChange={spy} />);
+
+    input.simulate('change', {
+        target: {
+            value: 'my value'
+        }
     });
 
-    it('should add the passed "className" prop to the rendered button if passed.', () => {
-        const input = shallow(<TextInput className="test" />);
-
-        expect(input).to.have.className('test');
-    });
-
-    it('should call the passed "onFocus" prop when focusing the button.', () => {
-        const spy = sinon.spy();
-        const input = shallow(<TextInput onFocus={spy} />);
-
-        input.simulate('focus');
-
-        expect(spy).to.have.callCount(1);
-    });
-
-    it('should call the passed "onChange" prop with the value of the input when changing it.', () => {
-        const spy = sinon.spy();
-        const input = shallow(<TextInput onChange={spy} />);
-
+    t.truthy(spy.callCount === 1);
+    t.truthy(spy.args[0][0] === 'my value');
+});
+test('<TextInput/> should throw no error if no "onChange" prop was passed when changing the value of the input.', t => {
+    const input = shallow(<TextInput />);
+    const fn = () => {
         input.simulate('change', {
             target: {
                 value: 'my value'
             }
         });
+    };
 
-        expect(spy).to.have.callCount(1);
-        expect(spy).to.have.been.calledWith('my value');
-    });
+    t.notThrows(fn);
+});
+test('<TextInput/> should call the passed "onBlur" prop when leaving the focused state of the input.', t => {
+    const spy = sinon.spy();
+    const input = shallow(<TextInput onBlur={spy} />);
 
-    it('should throw no error if no "onChange" prop was passed when changing the value of the input.', () => {
-        const input = shallow(<TextInput />);
-        const fn = () => {
-            input.simulate('change', {
-                target: {
-                    value: 'my value'
-                }
-            });
-        };
+    input.simulate('blur');
 
-        expect(fn).to.not.throw();
-    });
-
-    it('should call the passed "onBlur" prop when leaving the focused state of the input.', () => {
-        const spy = sinon.spy();
-        const input = shallow(<TextInput onBlur={spy} />);
-
-        input.simulate('blur');
-
-        expect(spy).to.have.callCount(1);
-    });
+    t.truthy(spy.callCount === 1);
 });

@@ -6,11 +6,11 @@ const Label = props => {
         children,
         className,
         htmlFor,
-        style,
+        theme,
         ...rest
     } = props;
     const classNames = mergeClassNames({
-        [style.label]: true,
+        [theme.label]: true,
         [className]: className && className.length
     });
 
@@ -24,10 +24,10 @@ Label.propTypes = {
     htmlFor: PropTypes.string.isRequired,
     className: PropTypes.string,
     children: PropTypes.node,
-    style: PropTypes.object
+    theme: PropTypes.object
 };
 Label.defaultProps = {
-    style: {}
+    theme: {}
 };
 
 export default Label;

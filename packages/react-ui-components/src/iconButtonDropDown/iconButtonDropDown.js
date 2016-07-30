@@ -21,7 +21,7 @@ export default class IconButtonDropDown extends Component {
         isDisabled: PropTypes.bool,
 
         // Child items of the DropDown.
-        children: PropTypes.node.isRequired,
+        children: PropTypes.any.isRequired,
 
         // Interaction related propTypes.
         onClick: PropTypes.func.isRequired,
@@ -41,8 +41,8 @@ export default class IconButtonDropDown extends Component {
         //
         // Static component dependencies which are injected from the outside (index.js)
         //
-        IconComponent: PropTypes.element.isRequired,
-        ButtonComponent: PropTypes.element.isRequired
+        IconComponent: PropTypes.any.isRequired,
+        ButtonComponent: PropTypes.any.isRequired
     };
 
     static defaultProps = {

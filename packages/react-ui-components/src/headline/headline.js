@@ -54,7 +54,7 @@ const Headline = props => {
 };
 Headline.propTypes = {
     // Contents of the Headline.
-    children: PropTypes.node.isRequired,
+    children: PropTypes.any.isRequired,
 
     // The semantic tag type of the headline.
     type: PropTypes.oneOf(types).isRequired,

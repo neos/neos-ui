@@ -6,7 +6,7 @@ import Tree from './tree.js';
 import Node, {
     Header,
     Contents
-} from './tree.js';
+} from './node.js';
 
 const ThemedTree = themr(identifiers.tree, treeStyle)(Tree);
 const ThemedTreeNode = themr(identifiers.treeNode, nodeStyle)(Node);

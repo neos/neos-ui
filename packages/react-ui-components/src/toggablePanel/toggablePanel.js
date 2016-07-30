@@ -5,7 +5,7 @@ import mergeClassNames from 'classnames';
 class ToggablePanel extends Component {
     static propTypes = {
         isOpen: PropTypes.bool,
-        children: PropTypes.node.isRequired,
+        children: PropTypes.any.isRequired,
         togglePanel: PropTypes.func
     };
 
@@ -55,7 +55,7 @@ class StatelessToggablePanel extends Component {
     static propTypes = {
         isOpen: PropTypes.bool,
         className: PropTypes.string,
-        children: PropTypes.node.isRequired,
+        children: PropTypes.any.isRequired,
         togglePanel: PropTypes.func.isRequired,
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'panel': PropTypes.string,
@@ -98,7 +98,7 @@ class StatelessToggablePanel extends Component {
 export class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
-        children: PropTypes.node.isRequired,
+        children: PropTypes.any.isRequired,
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'panel__headline': PropTypes.string,
             'panel__toggleBtn': PropTypes.string
@@ -107,8 +107,8 @@ export class Header extends Component {
         //
         // Static component dependencies which are injected from the outside (index.js)
         //
-        HeadlineComponent: PropTypes.element.isRequired,
-        IconButtonComponent: PropTypes.element.isRequired
+        HeadlineComponent: PropTypes.any.isRequired,
+        IconButtonComponent: PropTypes.any.isRequired
     };
 
     static contextTypes = {
@@ -156,7 +156,7 @@ export class Header extends Component {
 export class Contents extends Component {
     static propTypes = {
         className: PropTypes.string,
-        children: PropTypes.node.isRequired,
+        children: PropTypes.any.isRequired,
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'panel__contents': PropTypes.string
         }).isRequired

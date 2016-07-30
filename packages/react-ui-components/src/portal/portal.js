@@ -10,7 +10,7 @@ export default class Portal extends Component {
         target: PropTypes.string,
 
         // The children to render in the <Portal />.
-        children: PropTypes.element.isRequired,
+        children: PropTypes.any.isRequired,
 
         // The className of the <Portal />
         className: PropTypes.string,

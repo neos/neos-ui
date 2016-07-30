@@ -31,8 +31,8 @@ IconButton.propTypes = {
     //
     // Static component dependencies which are injected from the outside (index.js)
     //
-    IconComponent: PropTypes.element.isRequired,
-    ButtonComponent: PropTypes.element.isRequired
+    IconComponent: PropTypes.any.isRequired,
+    ButtonComponent: PropTypes.any.isRequired
 };
 IconButton.defaultProps = {
     style: 'transparent',

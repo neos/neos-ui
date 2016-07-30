@@ -30,8 +30,8 @@ export default class SelectBox extends Component {
         //
         // Static component dependencies which are injected from the outside (index.js)
         //
-        DropDownComponent: PropTypes.element.isRequired,
-        IconComponent: PropTypes.element.isRequired
+        DropDownComponent: PropTypes.any.isRequired,
+        IconComponent: PropTypes.any.isRequired
     };
 
     state = {

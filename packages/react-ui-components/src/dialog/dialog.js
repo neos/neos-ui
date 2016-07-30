@@ -64,10 +64,10 @@ Dialog.propTypes = {
     wide: PropTypes.bool,
 
     // Contents of the Dialog.
-    children: PropTypes.node.isRequired,
+    children: PropTypes.any.isRequired,
 
     // Optional Array of nodes(Action buttons f.e.) which are placed at the bottom of the Dialog.
-    actions: PropTypes.node.isRequired,
+    actions: PropTypes.any.isRequired,
 
     // Style related propTypes.
     className: PropTypes.string,
@@ -84,8 +84,8 @@ Dialog.propTypes = {
     //
     // Static component dependencies which are injected from the outside (index.js)
     //
-    PortalComponent: PropTypes.element.isRequired,
-    IconButtonComponent: PropTypes.element.isRequired
+    PortalComponent: PropTypes.any.isRequired,
+    IconButtonComponent: PropTypes.any.isRequired
 };
 
 export default Dialog;

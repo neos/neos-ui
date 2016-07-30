@@ -1,20 +1,20 @@
 import test from 'ava';
-import React from 'react';
-import {shallow} from 'enzyme';
-
+import {createShallowRenderer} from './../_lib/testUtils.js';
 import {DropDown} from './dropDown.js';
 
 const defaultProps = {
+    children: 'Foo children',
     theme: {}
 };
+const shallow = createShallowRenderer(DropDown, defaultProps);
 
 test('<DropDown/> should initially have a falsy "isOpen" state value.', t => {
-    const dd = shallow(<DropDown {...defaultProps}/>);
+    const dd = shallow();
 
     t.falsy(dd.state('isOpen'));
 });
 test('<DropDown/> should set the "isOpen" state value to opposite when calling the toggle method.', t => {
-    const dd = shallow(<DropDown {...defaultProps}/>);
+    const dd = shallow();
 
     dd.instance().toggle();
 
@@ -25,7 +25,7 @@ test('<DropDown/> should set the "isOpen" state value to opposite when calling t
     t.falsy(dd.state('isOpen'));
 });
 test('<DropDown/> should set the "isOpen" state value to false when calling the close method.', t => {
-    const dd = shallow(<DropDown {...defaultProps}/>);
+    const dd = shallow();
 
     dd.instance().close();
 

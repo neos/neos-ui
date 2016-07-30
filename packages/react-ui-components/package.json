@@ -16,7 +16,7 @@
     "coverage:generate": "nyc report --reporter=text-lcov > lcov.info",
     "start": "cross-env STORY=true start-storybook -p 9001",
     "postpublish": "greenkeeper-postpublish",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish --access public && semantic-release post"
   },
   "ava": {
     "files": [

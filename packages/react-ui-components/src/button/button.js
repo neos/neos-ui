@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import executeCallback from './../_lib/executeCallback.js';
 
 const Button = props => {
     const {
@@ -10,11 +9,6 @@ const Button = props => {
         isFocused,
         isDisabled,
         isActive,
-        onClick,
-        onMouseDown,
-        onMouseUp,
-        onMouseEnter,
-        onMouseLeave,
         style,
         theme,
         hoverStyle,
@@ -37,11 +31,6 @@ const Button = props => {
     });
     const attributes = {
         className: classNames,
-        onClick: e => executeCallback({e, cb: onClick}),
-        onMouseDown: e => executeCallback({e, cb: onMouseDown}),
-        onMouseUp: e => executeCallback({e, cb: onMouseUp}),
-        onMouseEnter: e => executeCallback({e, cb: onMouseEnter}),
-        onMouseLeave: e => executeCallback({e, cb: onMouseLeave}),
         ref: btn => {
             const method = isFocused ? 'focus' : 'blur';
 
@@ -68,26 +57,51 @@ const Button = props => {
     );
 };
 Button.propTypes = {
+    /**
+     * This prop controls the visual pressed state of the `Button`.
+     */
     isPressed: PropTypes.bool,
-    // ARIA & UI related propTypes.
+
+    /**
+     * This prop controls the visual focused state of the `Button`.
+     * When `true`, the node gets focused via the DOM API.
+     */
     isFocused: PropTypes.bool,
+
+    /**
+     * This prop controls the visual and interactive disabled state of the `Button`.
+     * When `true`, the node gets rendered with a truthy `disabled` prop.
+     */
     isDisabled: PropTypes.bool,
+
+    /**
+     * This prop controls the visual active state of the `Button`.
+     */
     isActive: PropTypes.bool,
 
-    // Style related propTypes.
+    /**
+     * The `style` prop defines the regular visual style of the `Button`.
+     */
     style: PropTypes.oneOf(['clean', 'brand', 'lighter', 'transparent']),
+
+    /**
+     * As the `style` prop, this prop controls the visual :hover style of the `Button`.
+     */
     hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']),
+
+    /**
+     * An optional `className` to attach to the wrapper.
+     */
     className: PropTypes.string,
 
-    // Interaction related propTypes.
-    onClick: PropTypes.func.isRequired,
-    onMouseDown: PropTypes.func,
-    onMouseUp: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-
-    // Contents of the Button.
+    /**
+     * The contents to be rendered within the `Bar`.
+     */
     children: PropTypes.any.isRequired,
+
+    /**
+     * An optional css theme to be injected.
+     */
     theme: PropTypes.shape({
         'btn': PropTypes.string,
         'btn--clean': PropTypes.string,

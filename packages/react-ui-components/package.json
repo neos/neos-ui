@@ -20,7 +20,7 @@
   },
   "ava": {
     "files": [
-      "src/**/__tests__/*.js"
+      "src/**/*.spec.js"
     ],
     "failFast": true,
     "verbose": true,

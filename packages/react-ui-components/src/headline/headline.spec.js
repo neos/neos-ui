@@ -2,7 +2,7 @@ import test from 'ava';
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import Headline from './index.js';
+import Headline from './headline.js';
 
 test('<Headline/> should render a "h1" node if no "type" prop was passed.', t => {
     const headline = shallow(<Headline/>);

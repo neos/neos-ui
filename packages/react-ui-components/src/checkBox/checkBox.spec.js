@@ -3,7 +3,7 @@ import React from 'react';
 import sinon from 'sinon';
 import {shallow} from 'enzyme';
 
-import CheckBox from './index.js';
+import CheckBox from './checkBox.js';
 
 test('<CheckBox/> should render a "input" node with the role="button" attribute.', t => {
     const input = shallow(<CheckBox />).find('[type="checkbox"]');

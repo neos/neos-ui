@@ -1,15 +1,14 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import executeCallback from './../_lib/executeCallback.js';
-// import style from './style.css';
 
 const Bar = props => {
-    const {position, className, onDrop, style} = props;
+    const {position, className, onDrop, theme} = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
-        [style.bar]: true,
-        [style['bar--top']]: position === 'top',
-        [style['bar--bottom']]: position === 'bottom'
+        [theme.bar]: true,
+        [theme['bar--top']]: position === 'top',
+        [theme['bar--bottom']]: position === 'bottom'
     });
 
     return (
@@ -25,7 +24,11 @@ const Bar = props => {
 Bar.propTypes = {
     // Style related propTypes.
     position: PropTypes.oneOf(['top', 'bottom']).isRequired,
-    style: PropTypes.object,
+    theme: PropTypes.shape({
+        'bar': PropTypes.string,
+        'bar--top': PropTypes.string,
+        'bar--bottom': PropTypes.string
+    }).isRequired,
     className: PropTypes.string,
 
     // Contents of the Bar.

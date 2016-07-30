@@ -3,7 +3,7 @@ import React from 'react';
 import sinon from 'sinon';
 import {shallow} from 'enzyme';
 
-import Icon from './index.js';
+import Icon from './icon.js';
 
 let apiFixture;
 

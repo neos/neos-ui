@@ -3,7 +3,7 @@ import React from 'react';
 import sinon from 'sinon';
 import {shallow} from 'enzyme';
 
-import Bar from './index.js';
+import Bar from './bar.js';
 
 const defaultProps = {
     children: 'Foo children'

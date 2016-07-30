@@ -3,7 +3,7 @@ import React from 'react';
 import sinon from 'sinon';
 import {shallow} from 'enzyme';
 
-import Button from './index.js';
+import Button from './button.js';
 
 const defaultProps = {
     className: 'foo className',

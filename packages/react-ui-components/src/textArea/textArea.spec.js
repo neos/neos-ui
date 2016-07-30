@@ -3,7 +3,7 @@ import React from 'react';
 import sinon from 'sinon';
 import {shallow} from 'enzyme';
 
-import TextArea from './index.js';
+import TextArea from './textArea.js';
 
 test('<TextArea/> should render a "button" node with the role="button" attribute.', t => {
     const input = shallow(<TextArea className="test"/>);

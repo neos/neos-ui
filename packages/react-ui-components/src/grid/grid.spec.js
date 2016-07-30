@@ -2,7 +2,7 @@ import test from 'ava';
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import Grid from './index.js';
+import Grid from './grid.js';
 
 test('<Grid/> should initially have a falsy "isOpen" state value.', t => {
     const grid = shallow(<Grid />);

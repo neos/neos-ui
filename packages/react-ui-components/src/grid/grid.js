@@ -1,11 +1,10 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-// import style from './style.css';
 
 const Grid = props => {
-    const {className, children, style, ...rest} = props;
+    const {className, children, theme, ...rest} = props;
     const finalClassName = mergeClassNames({
-        [style.grid]: true,
+        [theme.grid]: true,
         [className]: className && className.length
     });
 
@@ -18,10 +17,9 @@ const Grid = props => {
 Grid.propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
-    style: PropTypes.object
-};
-Grid.defaultProps = {
-    style: {}
+    theme: PropTypes.shape({
+        grid: PropTypes.string
+    }).isRequired
 };
 
 export default Grid;

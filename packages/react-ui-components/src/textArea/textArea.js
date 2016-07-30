@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import TextareaAutoresize from 'react-textarea-autosize';
 import executeCallback from './../_lib/executeCallback.js';
-// import style from './style.css';
 
 const TextArea = props => {
     const {
@@ -12,13 +11,13 @@ const TextArea = props => {
         onChange,
         onFocus,
         onBlur,
-        style,
+        theme,
         ...rest
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
-        [style.textInput]: true,
-        [style['textInput--invalid']]: !isValid
+        [theme.textArea]: true,
+        [theme['textArea--invalid']]: !isValid
     });
 
     return (
@@ -43,10 +42,13 @@ TextArea.propTypes = {
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
-    style: PropTypes.object
+    theme: PropTypes.shape({
+        'textArea': PropTypes.string,
+        'textArea--invalid': PropTypes.string
+    }).isRequired
 };
 TextArea.defaultProps = {
-    style: {},
+    theme: {},
     isValid: true
 };
 

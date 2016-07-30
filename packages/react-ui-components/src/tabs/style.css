@@ -47,3 +47,8 @@
         outline: 0;
     }
 }
+
+.panel {
+    padding: 11px 0;
+    overflow-y: auto;
+}

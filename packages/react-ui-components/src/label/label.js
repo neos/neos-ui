@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-// import style from './style.css';
 
 const Label = props => {
     const {

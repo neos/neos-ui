@@ -37,8 +37,5 @@ Bar.propTypes = {
     // Interaction related propTypes.
     onDrop: PropTypes.func
 };
-Bar.defaultProps = {
-    style: {}
-};
 
 export default Bar;

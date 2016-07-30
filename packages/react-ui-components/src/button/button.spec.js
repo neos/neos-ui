@@ -6,6 +6,7 @@ import {shallow} from 'enzyme';
 import Button from './button.js';
 
 const defaultProps = {
+    theme: {},
     className: 'foo className',
     children: 'Foo children'
 };

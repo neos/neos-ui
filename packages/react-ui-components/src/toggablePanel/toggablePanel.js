@@ -1,14 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
-import Headline from 'Components/Headline/index';
-import IconButton from 'Components/IconButton/index';
-// import style from './style.css';
+import Headline from './../headline/index';
+import IconButton from './../iconButton/index';
 
 class ToggablePanel extends Component {
     static propTypes = {
         isOpen: PropTypes.bool,
-        className: PropTypes.string,
         children: PropTypes.node.isRequired,
         togglePanel: PropTypes.func
     };
@@ -38,11 +36,12 @@ class ToggablePanel extends Component {
         // and would only depend on props.isOpen
         const togglePanel = this.props.togglePanel ? this.props.togglePanel : this.toggle.bind(this);
         const isOpen = this.props.togglePanel ? this.props.isOpen : this.state.isOpen;
+
         return (
             <StatelessToggablePanel
+                {...this.props}
                 isOpen={isOpen}
                 togglePanel={togglePanel}
-                className={this.props.className}
                 >
                 {this.props.children}
             </StatelessToggablePanel>
@@ -60,12 +59,14 @@ class StatelessToggablePanel extends Component {
         className: PropTypes.string,
         children: PropTypes.node.isRequired,
         togglePanel: PropTypes.func.isRequired,
-        style: PropTypes.object
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'panel': PropTypes.string,
+            'panel--isOpen': PropTypes.string
+        }).isRequired
     };
 
     static defaultProps = {
-        isOpen: false,
-        style: {}
+        isOpen: false
     };
 
     static childContextTypes = {
@@ -81,11 +82,11 @@ class StatelessToggablePanel extends Component {
     }
 
     render() {
-        const {children, className, style} = this.props;
+        const {children, className, theme} = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
-            [style.panel]: true,
-            [style['panel--isOpen']]: this.props.isOpen
+            [theme.panel]: true,
+            [theme['panel--isOpen']]: this.props.isOpen
         });
 
         return (
@@ -96,15 +97,14 @@ class StatelessToggablePanel extends Component {
     }
 }
 
-class Header extends Component {
+export class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node.isRequired,
-        style: PropTypes.object
-    };
-
-    static defaultProps = {
-        style: {}
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'panel__headline': PropTypes.string,
+            'panel__toggleBtn': PropTypes.string
+        }).isRequired
     };
 
     static contextTypes = {
@@ -120,7 +120,7 @@ class Header extends Component {
         const {
             children,
             className,
-            style
+            theme
         } = this.props;
         const {isOpen, togglePanel} = this.context;
         const toggleIcon = isOpen ? 'chevron-up' : 'chevron-down';
@@ -131,14 +131,14 @@ class Header extends Component {
         return (
             <div className={classNames} aria-expanded={isOpen ? 'true' : 'false'}>
                 <Headline
-                    className={style.panel__headline}
+                    className={theme.panel__headline}
                     type="h1"
-                    style="h4"
+                    theme="h4"
                     >
                     {children}
                 </Headline>
                 <IconButton
-                    className={style.panel__toggleBtn}
+                    className={theme.panel__toggleBtn}
                     icon={toggleIcon}
                     onClick={() => togglePanel()}
                     />
@@ -147,15 +147,17 @@ class Header extends Component {
     }
 }
 
-class Contents extends Component {
+export class Contents extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node.isRequired,
-        style: PropTypes.object
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'panel__contents': PropTypes.string
+        }).isRequired
     };
 
     static defaultProps = {
-        style: {}
+        theme: {}
     };
 
     static contextTypes = {
@@ -170,11 +172,11 @@ class Contents extends Component {
         const {
             children,
             className,
-            style
+            theme
         } = this.props;
         const {isOpen} = this.context;
         const classNames = mergeClassNames({
-            [style.panel__contents]: true,
+            [theme.panel__contents]: true,
             [className]: className && className.length
         });
 
@@ -189,12 +191,5 @@ class Contents extends Component {
         );
     }
 }
-
-//
-// Assign the Child Component to the parent,
-// to replicate the structure of a `DropDown` Component.
-//
-ToggablePanel.Header = Header;
-ToggablePanel.Contents = Contents;
 
 export default ToggablePanel;

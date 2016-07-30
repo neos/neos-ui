@@ -4,18 +4,22 @@ import {shallow} from 'enzyme';
 
 import GridItem from './gridItem.js';
 
+const defaultProps = {
+    theme: {}
+};
+
 test('<GridItem/> should render a "div" node.', t => {
-    const grid = shallow(<GridItem/>);
+    const grid = shallow(<GridItem {...defaultProps}/>);
 
     t.truthy(grid.type() === 'div');
 });
 test('<GridItem/> should add the passed "className" prop to the rendered div if passed.', t => {
-    const grid = shallow(<GridItem className="test"/>);
+    const grid = shallow(<GridItem {...defaultProps} className="test"/>);
 
     t.truthy(grid.hasClass('test'));
 });
-test('<GridItem/> should add the passed "width" prop to the inline-style of the rendered div.', t => {
-    const grid = shallow(<GridItem className="test"/>);
+test('<GridItem/> should render a inline style matching the passed "width" prop.', t => {
+    const grid = shallow(<GridItem {...defaultProps} width="half"/>);
 
     t.truthy(grid.html().includes('style="width:50%;"'));
 });

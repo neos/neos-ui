@@ -1,5 +1,6 @@
 # @neos-project/react-ui-components
-[![Build Status](https://travis-ci.org/neos/react-ui-components.svg?branch=master)](https://travis-ci.org/neos/react-ui-components)
+[![Build Status](https://travis-ci.org/Inkdpixels/react-ui-components.svg?branch=master)](https://travis-ci.org/Inkdpixels/react-ui-components) [![Dependency Status](https://david-dm.org/Inkdpixels/react-ui-components.svg)](https://david-dm.org/Inkdpixels/react-ui-components) [![devDependency Status](https://david-dm.org/Inkdpixels/react-ui-components/dev-status.svg)](https://david-dm.org/Inkdpixels/react-ui-components#info=devDependencies&view=table)
+[![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
 > The UI components which power the Neos backend application.
 

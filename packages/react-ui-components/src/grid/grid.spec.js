@@ -8,12 +8,12 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(Grid, defaultProps);
 
-test('<Grid/> should initially have a falsy "isOpen" state value.', t => {
+test('should initially have a falsy "isOpen" state value.', t => {
     const grid = shallow();
 
     t.truthy(grid.type() === 'div');
 });
-test('<Grid/> should add the passed "className" prop to the rendered div if passed.', t => {
+test('should add the passed "className" prop to the rendered div if passed.', t => {
     const grid = shallow({className: 'testClassName'});
 
     t.truthy(grid.hasClass('testClassName'));

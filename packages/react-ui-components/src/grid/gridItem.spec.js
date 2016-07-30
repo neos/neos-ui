@@ -8,17 +8,17 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(GridItem, defaultProps);
 
-test('<GridItem/> should render a "div" node.', t => {
+test('should render a "div" node.', t => {
     const grid = shallow();
 
     t.truthy(grid.type() === 'div');
 });
-test('<GridItem/> should add the passed "className" prop to the rendered div if passed.', t => {
+test('should add the passed "className" prop to the rendered div if passed.', t => {
     const grid = shallow({className: 'testClassName'});
 
     t.truthy(grid.hasClass('testClassName'));
 });
-test('<GridItem/> should render a inline style matching the passed "width" prop.', t => {
+test('should render a inline style matching the passed "width" prop.', t => {
     const grid = shallow({width: 'half'});
 
     t.truthy(grid.html().includes('style="width:50%;"'));

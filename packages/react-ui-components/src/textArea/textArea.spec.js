@@ -10,12 +10,12 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(TextArea, defaultProps);
 
-test('<TextArea/> should render a "TextareaAutoresize" component.', t => {
+test('should render a "TextareaAutoresize" component.', t => {
     const input = shallow().find(TextareaAutoresize);
 
     t.truthy(input.length === 1);
 });
-test('<TextArea/> should call the passed "onFocus" prop when focusing the button.', t => {
+test('should call the passed "onFocus" prop when focusing the button.', t => {
     const onFocus = sinon.spy();
     const input = shallow({onFocus});
 
@@ -23,7 +23,7 @@ test('<TextArea/> should call the passed "onFocus" prop when focusing the button
 
     t.truthy(onFocus.callCount === 1);
 });
-test('<TextArea/> should call the passed "onChange" prop with the value of the input when changing it.', t => {
+test('should call the passed "onChange" prop with the value of the input when changing it.', t => {
     const onChange = sinon.spy();
     const input = shallow({onChange});
 
@@ -36,7 +36,7 @@ test('<TextArea/> should call the passed "onChange" prop with the value of the i
     t.truthy(onChange.callCount === 1);
     t.truthy(onChange.args[0][0] === 'my value');
 });
-test('<TextArea/> should call the passed "onBlur" prop when leaving the focused state of the input.', t => {
+test('should call the passed "onBlur" prop when leaving the focused state of the input.', t => {
     const onBlur = sinon.spy();
     const input = shallow({onBlur});
 

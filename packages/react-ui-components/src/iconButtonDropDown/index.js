@@ -3,4 +3,16 @@ import identifiers from './../identifiers.js';
 import style from './style.css';
 import IconButtonDropDown from './iconButtonDropDown.js';
 
-export default themr(identifiers.iconButtonDropDown, style)(IconButtonDropDown);
+const ThemedIconButtonDropDown = themr(identifiers.iconButtonDropDown, style)(IconButtonDropDown);
+
+//
+// Dependency injection
+//
+import injectProps from './../_lib/injectProps.js';
+import Icon from './../icon/index';
+import Button from './../button/index';
+
+export default injectProps({
+    IconComponent: Icon,
+    ButtonComponent: Button
+})(ThemedIconButtonDropDown);

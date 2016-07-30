@@ -3,7 +3,6 @@ import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
 import executeCallback from './../_lib/executeCallback.js';
-import Icon from './../icon/index';
 
 export class DropDown extends Component {
     static propTypes = {
@@ -75,7 +74,12 @@ export class Header extends Component {
             'dropDown__btn': PropTypes.string,
             'dropDown__btnLabel': PropTypes.string,
             'dropDown__chevron': PropTypes.string
-        }).isRequired
+        }).isRequired,
+
+        //
+        // Static component dependencies which are injected from the outside (index.js)
+        //
+        IconComponent: PropTypes.element.isRequired
     };
 
     static contextTypes = {
@@ -118,11 +122,11 @@ export class Header extends Component {
     }
 
     renderChevronIcon() {
-        const {theme} = this.props;
+        const {IconComponent, theme} = this.props;
         const {isOpen} = this.context;
         const iconName = isOpen ? 'chevron-up' : 'chevron-down';
 
-        return <Icon icon={iconName} className={theme.dropDown__chevron} />;
+        return <IconComponent icon={iconName} className={theme.dropDown__chevron}/>;
     }
 }
 

@@ -2,8 +2,6 @@ import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
 import executeCallback from './../_lib/executeCallback.js';
-import IconButton from './../iconButton/index';
-import Portal from './../portal/index';
 
 const Dialog = props => {
     const {
@@ -15,6 +13,8 @@ const Dialog = props => {
         onRequestClose,
         actions,
         theme,
+        PortalComponent,
+        IconButtonComponent,
         ...restProps
     } = props;
     const rest = omit(restProps, ['isOpen']);
@@ -25,11 +25,11 @@ const Dialog = props => {
     });
 
     return (
-        <Portal targetId="dialog" isOpen={isOpen}>
+        <PortalComponent targetId="dialog" isOpen={isOpen}>
             <section {...rest} className={classNames} role="dialog" tabIndex="0">
                 <div className={theme.dialog__contentsPosition}>
                     <div className={theme.dialog__contents}>
-                        <IconButton
+                        <IconButtonComponent
                             icon="close"
                             className={theme.dialog__closeBtn}
                             id="neos__modal__closeModal"
@@ -47,7 +47,7 @@ const Dialog = props => {
                     </div>
                 </div>
             </section>
-        </Portal>
+        </PortalComponent>
     );
 };
 Dialog.propTypes = {
@@ -79,7 +79,13 @@ Dialog.propTypes = {
         'dialog__closeBtn': PropTypes.string,
         'dialog__actions': PropTypes.string,
         'dialog--wide': PropTypes.string
-    }).isRequired
+    }).isRequired,
+
+    //
+    // Static component dependencies which are injected from the outside (index.js)
+    //
+    PortalComponent: PropTypes.element.isRequired,
+    IconButtonComponent: PropTypes.element.isRequired
 };
 
 export default Dialog;

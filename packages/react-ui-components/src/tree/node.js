@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import Icon from './../icon/index';
 
 export class Node extends Component {
     static propTypes = {
@@ -42,12 +41,29 @@ export class Header extends Component {
             'header__chevron': PropTypes.string,
             'header__chevron--isCollapsed': PropTypes.string,
             'header__chevron--isLoading': PropTypes.string
-        }).isRequired
+        }).isRequired,
+
+        //
+        // Static component dependencies which are injected from the outside (index.js)
+        //
+        IconComponent: PropTypes.element.isRequired
     };
 
     render() {
-        const {item, onClick, onLabelClick, theme} = this.props;
-        const {label, icon, hasChildren, isActive, isFocused} = item;
+        const {
+            IconComponent,
+            item,
+            onClick,
+            onLabelClick,
+            theme
+        } = this.props;
+        const {
+            label,
+            icon,
+            hasChildren,
+            isActive,
+            isFocused
+        } = item;
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,
@@ -58,7 +74,7 @@ export class Header extends Component {
             <div className={theme.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
                 <div role="button" onClick={() => onClick()} className={dataClassNames}>
-                    <Icon icon={icon || 'question'} padded="right" />
+                    <IconComponent icon={icon || 'question'} padded="right" />
                     <span className={theme.header__label} role="button" onClick={() => onLabelClick()} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>
@@ -68,7 +84,12 @@ export class Header extends Component {
     }
 
     renderCollapseControl() {
-        const {item, onToggle, theme} = this.props;
+        const {
+            IconComponent,
+            item,
+            onToggle,
+            theme
+        } = this.props;
         const {isLoading, isCollapsed, hasError} = item;
         const classnames = mergeClassNames({
             [theme.header__chevron]: true,
@@ -79,13 +100,13 @@ export class Header extends Component {
 
         switch (true) {
             case hasError:
-                icon = <Icon icon="ban" />;
+                icon = <IconComponent icon="ban" />;
                 break;
             case isLoading:
-                icon = <Icon icon="spinner" spin={true} />;
+                icon = <IconComponent icon="spinner" spin={true} />;
                 break;
             default:
-                icon = <Icon icon="sort-desc" />;
+                icon = <IconComponent icon="sort-desc" />;
                 break;
         }
 
@@ -108,9 +129,11 @@ export class Contents extends Component {
     render() {
         const {theme, children} = this.props;
 
-        return (<div className={theme.contents}>
-            {children}
-        </div>);
+        return (
+            <div className={theme.contents}>
+                {children}
+            </div>
+        );
     }
 }
 

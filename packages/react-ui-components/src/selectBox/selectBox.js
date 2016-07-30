@@ -1,7 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
-import Icon from './../icon/index';
-import DropDown from './../dropDown/index';
 
 export default class SelectBox extends Component {
     static propTypes = {
@@ -27,7 +25,13 @@ export default class SelectBox extends Component {
             'dropDown__contents': PropTypes.string,
             'dropDown__item': PropTypes.string,
             'dropDown__itemIcon': PropTypes.string
-        }).isRequired
+        }).isRequired,
+
+        //
+        // Static component dependencies which are injected from the outside (index.js)
+        //
+        DropDownComponent: PropTypes.element.isRequired,
+        IconComponent: PropTypes.element.isRequired
     };
 
     state = {
@@ -52,24 +56,32 @@ export default class SelectBox extends Component {
     }
 
     render() {
-        const {options, placeholder, placeholderIcon, onSelect, theme} = this.props;
+        const {
+            DropDownComponent,
+            IconComponent,
+            options,
+            placeholder,
+            placeholderIcon,
+            onSelect,
+            theme
+        } = this.props;
         const {icon, label} = this.state;
 
         return (
             <div className={theme.wrapper}>
-                <DropDown className={theme.dropDown}>
-                    <DropDown.Header className={theme.dropDown__btn}>
+                <DropDownComponent className={theme.dropDown}>
+                    <DropDownComponent.Header className={theme.dropDown__btn}>
                         {Maybe.fromNull(icon)
-                            .map(icon => <Icon className={theme.dropDown__btnIcon} icon={icon} />)
+                            .map(icon => <IconComponent className={theme.dropDown__btnIcon} icon={icon} />)
                             .orSome('')}
                         {label}
-                    </DropDown.Header>
-                    <DropDown.Contents className={theme.dropDown__contents}>
+                    </DropDownComponent.Header>
+                    <DropDownComponent.Contents className={theme.dropDown__contents}>
                         {Maybe.fromNull(placeholder)
                             .map(placeholder => (
                                 <li className={theme.dropDown__item}>
                                     {Maybe.fromNull(placeholderIcon)
-                                        .map(icon => <Icon className={theme.dropDown__itemIcon} icon={icon} />)
+                                        .map(icon => <IconComponent className={theme.dropDown__itemIcon} icon={icon} />)
                                         .orSome('')}
                                     {placeholder}
                                 </li>
@@ -87,14 +99,14 @@ export default class SelectBox extends Component {
                                     onClick={onClick}
                                     >
                                     {Maybe.fromNull(icon)
-                                        .map(icon => <Icon className={theme.dropDown__itemIcon} icon={icon} />)
+                                        .map(icon => <IconComponent className={theme.dropDown__itemIcon} icon={icon} />)
                                         .orSome('')}
                                     {label}
                                 </li>
                             );
                         })}
-                    </DropDown.Contents>
-                </DropDown>
+                    </DropDownComponent.Contents>
+                </DropDownComponent>
             </div>
         );
     }

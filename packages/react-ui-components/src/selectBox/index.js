@@ -3,4 +3,16 @@ import identifiers from './../identifiers.js';
 import style from './style.css';
 import SelectBox from './selectBox.js';
 
-export default themr(identifiers.selectBox, style)(SelectBox);
+const ThemedSelectBox = themr(identifiers.selectBox, style)(SelectBox);
+
+//
+// Dependency injection
+//
+import injectProps from './../_lib/injectProps.js';
+import DropDown from './../dropDown/index';
+import Icon from './../icon/index';
+
+export default injectProps({
+    DropDownComponent: DropDown,
+    IconComponent: Icon
+})(ThemedSelectBox);

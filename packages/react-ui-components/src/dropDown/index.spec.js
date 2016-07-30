@@ -1,42 +1,29 @@
+import test from 'ava';
 import React from 'react';
-import chai, {expect} from 'chai';
 import {shallow} from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
+
 import {DropDown} from './index.js';
 
-chai.should();
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
+test('<DropDown/> should initially have a falsy "isOpen" state value.', t => {
+    const dd = shallow(<DropDown />);
 
-describe('"host.components.dropDown"', () => {
-    it('should initially have a falsy "isOpen" state value.', () => {
-        const dd = shallow(<DropDown />);
+    t.falsy(dd.state('isOpen'));
+});
+test('<DropDown/> should set the "isOpen" state value to opposite when calling the toggle method.', t => {
+    const dd = shallow(<DropDown />);
 
-        expect(dd.state('isOpen')).to.equal(false);
-    });
+    dd.instance().toggle();
 
-    it('should set the "isOpen" state value to opposite when calling the toggle method.', () => {
-        const dd = shallow(<DropDown />);
+    t.truthy(dd.state('isOpen'));
 
-        dd.instance().toggle();
+    dd.instance().toggle();
 
-        expect(dd.state('isOpen')).to.equal(true);
+    t.falsy(dd.state('isOpen'));
+});
+test('<DropDown/> should set the "isOpen" state value to false when calling the close method.', t => {
+    const dd = shallow(<DropDown />);
 
-        dd.instance().toggle();
+    dd.instance().close();
 
-        expect(dd.state('isOpen')).to.equal(false);
-    });
-
-    it('should set the "isOpen" state value to false when calling the close method.', () => {
-        const dd = shallow(<DropDown />);
-
-        dd.setState({
-            isOpen: true
-        });
-
-        dd.instance().close();
-
-        expect(dd.state('isOpen')).to.equal(false);
-    });
+    t.falsy(dd.state('isOpen'));
 });

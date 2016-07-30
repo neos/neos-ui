@@ -1,24 +1,16 @@
+import test from 'ava';
 import React from 'react';
-import chai, {expect} from 'chai';
 import {shallow} from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
+
 import Grid from './index.js';
 
-chai.should();
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
+test('<Grid/> should initially have a falsy "isOpen" state value.', t => {
+    const grid = shallow(<Grid />);
 
-describe('"host.components.grid"', () => {
-    it('should render a "div" node.', () => {
-        const grid = shallow(<Grid />);
+    t.truthy(grid.type() === 'div');
+});
+test('<Grid/> should add the passed "className" prop to the rendered div if passed.', t => {
+    const grid = shallow(<Grid className="test" />);
 
-        expect(grid.type()).to.equal('div');
-    });
-
-    it('should add the passed "className" prop to the rendered div if passed.', () => {
-        const grid = shallow(<Grid className="test" />);
-
-        expect(grid).to.have.className('test');
-    });
+    t.truthy(grid.hasClass('test'));
 });

@@ -1,64 +1,41 @@
+import test from 'ava';
 import React from 'react';
-import chai, {expect} from 'chai';
-import sinon from 'sinon/pkg/sinon.js';
+import sinon from 'sinon';
 import {shallow} from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
+
 import TextArea from './index.js';
 
-chai.should();
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
+test('<TextArea/> should render a "button" node with the role="button" attribute.', t => {
+    const input = shallow(<TextArea className="test"/>);
 
-describe('"host.components.textArea"', () => {
-    it('should add the passed "className" prop to the rendered button if passed.', () => {
-        const input = shallow(<TextArea className="test" />);
+    t.truthy(input.hasClass('test'));
+});
+test('<TextArea/> should call the passed "onFocus" prop when focusing the button.', t => {
+    const spy = sinon.spy();
+    const input = shallow(<TextArea onFocus={spy}/>);
 
-        expect(input).to.have.className('test');
+    input.simulate('focus');
+
+    t.truthy(spy.callCount === 1);
+});
+test('<TextArea/> should call the passed "onChange" prop with the value of the input when changing it.', t => {
+    const spy = sinon.spy();
+    const input = shallow(<TextArea onChange={spy}/>);
+
+    input.simulate('change', {
+        target: {
+            value: 'my value'
+        }
     });
 
-    it('should call the passed "onFocus" prop when focusing the button.', () => {
-        const spy = sinon.spy();
-        const input = shallow(<TextArea onFocus={spy} />);
+    t.truthy(spy.callCount === 1);
+    t.truthy(spy.args[0][0] === 'my value');
+});
+test('<TextArea/> should call the passed "onBlur" prop when leaving the focused state of the input.', t => {
+    const spy = sinon.spy();
+    const input = shallow(<TextArea onBlur={spy}/>);
 
-        input.simulate('focus');
+    input.simulate('blur');
 
-        expect(spy).to.have.callCount(1);
-    });
-
-    it('should call the passed "onChange" prop with the value of the input when changing it.', () => {
-        const spy = sinon.spy();
-        const input = shallow(<TextArea onChange={spy} />);
-
-        input.simulate('change', {
-            target: {
-                value: 'my value'
-            }
-        });
-
-        expect(spy).to.have.callCount(1);
-        expect(spy).to.have.been.calledWith('my value');
-    });
-
-    it('should throw no error if no "onChange" prop was passed when changing the value of the input.', () => {
-        const input = shallow(<TextArea />);
-        const fn = () => {
-            input.simulate('change', {
-                target: {
-                    value: 'my value'
-                }
-            });
-        };
-
-        expect(fn).to.not.throw();
-    });
-
-    it('should call the passed "onBlur" prop when leaving the focused state of the input.', () => {
-        const spy = sinon.spy();
-        const input = shallow(<TextArea onBlur={spy} />);
-
-        input.simulate('blur');
-
-        expect(spy).to.have.callCount(1);
-    });
+    t.truthy(spy.callCount === 1);
 });

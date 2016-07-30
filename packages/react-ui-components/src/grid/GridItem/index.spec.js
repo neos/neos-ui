@@ -1,30 +1,21 @@
+import test from 'ava';
 import React from 'react';
-import chai, {expect} from 'chai';
 import {shallow} from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
+
 import GridItem from './index.js';
 
-chai.should();
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
+test('<GridItem/> should render a "div" node.', t => {
+    const grid = shallow(<GridItem/>);
 
-describe('"host.components.gridItem"', () => {
-    it('should render a "div" node.', () => {
-        const grid = shallow(<GridItem />);
+    t.truthy(grid.type() === 'div');
+});
+test('<GridItem/> should add the passed "className" prop to the rendered div if passed.', t => {
+    const grid = shallow(<GridItem className="test"/>);
 
-        expect(grid.type()).to.equal('div');
-    });
+    t.truthy(grid.hasClass('test'));
+});
+test('<GridItem/> should add the passed "width" prop to the inline-style of the rendered div.', t => {
+    const grid = shallow(<GridItem className="test"/>);
 
-    it('should add the passed "className" prop to the rendered div if passed.', () => {
-        const grid = shallow(<GridItem className="test" />);
-
-        expect(grid).to.have.className('test');
-    });
-
-    it('should add the passed "width" prop to the inline-style of the rendered div.', () => {
-        const grid = shallow(<GridItem width="half" />);
-
-        expect(grid).to.have.attr('style', 'width:50%;');
-    });
+    t.truthy(grid.html().includes('style="width:50%;"'));
 });

@@ -1,24 +1,16 @@
+import test from 'ava';
 import React from 'react';
-import chai, {expect} from 'chai';
 import {shallow} from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
+
 import SideBar from './index.js';
 
-chai.should();
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
+test('<SideBar/> should render a "label" node.', t => {
+    const bar = shallow(<SideBar/>);
 
-describe('"host.components.sideBar"', () => {
-    it('should render a "div" node.', () => {
-        const bar = shallow(<SideBar />);
+    t.truthy(bar.type() === 'div');
+});
+test('<SideBar/> should add the passed "className" prop to the rendered node if passed.', t => {
+    const bar = shallow(<SideBar className="test"/>);
 
-        expect(bar.type()).to.equal('div');
-    });
-
-    it('should add the passed "className" prop to the rendered node if passed.', () => {
-        const bar = shallow(<SideBar className="test" />);
-
-        expect(bar).to.have.className('test');
-    });
+    t.truthy(bar.hasClass('test'));
 });

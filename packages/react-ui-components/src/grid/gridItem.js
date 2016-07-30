@@ -21,7 +21,7 @@ GridItem.propTypes = {
     // Since we don't want to get the grids get out of control,
     // we specify a set of allowed widths here.
     width: PropTypes.oneOf(['half', 'third']).isRequired,
-    children: PropTypes.node.isRequired,
+    children: PropTypes.any.isRequired,
     className: PropTypes.string,
     theme: PropTypes.shape({
         grid__item: PropTypes.string // eslint-disable-line camelcase

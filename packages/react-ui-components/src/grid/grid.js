@@ -15,7 +15,7 @@ const Grid = props => {
     );
 };
 Grid.propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.any.isRequired,
     className: PropTypes.string,
     theme: PropTypes.shape({
         grid: PropTypes.string

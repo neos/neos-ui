@@ -8,7 +8,7 @@ export class DropDown extends Component {
     static propTypes = {
         className: PropTypes.string,
         isOpen: PropTypes.bool.isRequired,
-        children: PropTypes.node.isRequired,
+        children: PropTypes.any.isRequired,
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'dropDown': PropTypes.string
         }).isRequired
@@ -79,7 +79,7 @@ export class Header extends Component {
         //
         // Static component dependencies which are injected from the outside (index.js)
         //
-        IconComponent: PropTypes.element.isRequired
+        IconComponent: PropTypes.any.isRequired
     };
 
     static contextTypes = {
@@ -133,7 +133,7 @@ export class Header extends Component {
 export class Contents extends Component {
     static propTypes = {
         className: PropTypes.string,
-        children: PropTypes.node.isRequired,
+        children: PropTypes.any.isRequired,
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'dropDown__contents': PropTypes.string,
             'dropDown__contents--isOpen': PropTypes.string

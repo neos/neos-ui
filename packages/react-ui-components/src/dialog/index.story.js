@@ -14,7 +14,7 @@ storiesOf('Dialog', module)
                     <div>Button</div>
                 ]}
                 >
-                H1ello world
+                Hello world
             </Dialog>
             <div id="dialog" />
         </div>

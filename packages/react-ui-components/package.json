@@ -14,7 +14,8 @@
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
     "ava": "ava src/**/*.spec.js",
-    "coverage:generate": "nyc report --reporter=text-lcov > lcov.info"
+    "coverage:generate": "nyc report --reporter=text-lcov > lcov.info",
+    "start": "export STORY=true && start-storybook -p 9001"
   },
   "ava": {
     "files": [
@@ -37,6 +38,7 @@
     ]
   },
   "devDependencies": {
+    "@kadira/storybook": "^1.27.0",
     "ava": "^0.15.2",
     "babel-cli": "^6.8.0",
     "babel-core": "^6.8.0",
@@ -50,6 +52,7 @@
     "classnames": "^2.2.3",
     "cpx": "^1.3.1",
     "cross-env": "^2.0.0",
+    "css-loader": "^0.23.1",
     "enzyme": "^2.4.1",
     "eslint": "^3.1.1",
     "eslint-plugin-babel": "^3.1.0",
@@ -76,6 +79,7 @@
     "react-textarea-autosize": "^4.0.0",
     "rimraf": "^2.5.4",
     "sinon": "^1.17.5",
+    "style-loader": "^0.13.1",
     "stylelint": "^7.0.3"
   },
   "peerDependencies": {

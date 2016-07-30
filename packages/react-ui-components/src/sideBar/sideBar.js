@@ -25,7 +25,7 @@ const SideBar = props => {
 SideBar.propTypes = {
     position: PropTypes.oneOf(['left', 'right']).isRequired,
     className: PropTypes.string,
-    children: PropTypes.node.isRequired,
+    children: PropTypes.any.isRequired,
     theme: PropTypes.shape({// eslint-disable-line quote-props
         'sideBar': PropTypes.string,
         'sideBar--left': PropTypes.string,

@@ -1,10 +1,28 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 
+let api;
+try {
+    if (window.neos) {
+        api = window.neos;
+    } else {
+        throw new Error('Unable to retrieve the global neos API.');
+    }
+} catch (e) {
+    api = {
+        fontAwesome: {
+            getClassName: () => 'fooIconClassName',
+            validateId: () => ({isValid: true, isMigrationNeeded: false, iconName: 'foo'})
+        },
+        logger: {
+            deprecate: () => null
+        }
+    };
+}
 const cachedWarnings = {};
 
 const Icon = props => {
-    const {size, padded, theme, api} = props;
+    const {size, padded, theme} = props;
     const iconClassName = api.fontAwesome.getClassName(props.icon);
     const classNames = mergeClassNames({
         [theme.icon]: true,
@@ -24,7 +42,7 @@ Icon.propTypes = {
     // The icon key of Font-Awesome.
     icon(props, propName) {//eslint-disable-line
         const id = props[propName];
-        const {isValid, isMigrationNeeded, iconName} = props.api.fontAwesome.validateId(id);
+        const {isValid, isMigrationNeeded, iconName} = api.fontAwesome.validateId(id);
 
         if (!isValid) {
             if (isMigrationNeeded && iconName && !cachedWarnings[iconName]) {
@@ -57,23 +75,7 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
         'icon--paddedLeft': PropTypes.string,
         'icon--paddedRight': PropTypes.string,
         'icon--spin': PropTypes.string
-    }).isRequired,
-    api: PropTypes.shape({
-        fontAwesome: PropTypes.shape({
-            getClassName: PropTypes.func.isRequired,
-            validateId: PropTypes.func.isRequired
-        }).isRequired,
-        logger: PropTypes.shape({
-            deprecate: PropTypes.func.isRequired
-        }).isRequired
-    })
+    }).isRequired
 };
-Icon.defaultProps = {
-    api: {}
-};
-
-try {
-    Icon.defaultProps.api = window.neos;
-} catch (e) {}
 
 export default Icon;

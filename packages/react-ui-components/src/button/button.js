@@ -87,7 +87,7 @@ Button.propTypes = {
     onMouseLeave: PropTypes.func,
 
     // Contents of the Button.
-    children: PropTypes.node.isRequired,
+    children: PropTypes.any.isRequired,
     theme: PropTypes.shape({
         'btn': PropTypes.string,
         'btn--clean': PropTypes.string,

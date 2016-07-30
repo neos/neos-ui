@@ -32,7 +32,7 @@ Bar.propTypes = {
     className: PropTypes.string,
 
     // Contents of the Bar.
-    children: PropTypes.node.isRequired,
+    children: PropTypes.any.isRequired,
 
     // Interaction related propTypes.
     onDrop: PropTypes.func

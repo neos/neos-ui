@@ -8,7 +8,7 @@ export default class Tabs extends Component {
         activeTab: PropTypes.number,
 
         className: PropTypes.string,
-        children: PropTypes.node.isRequired,
+        children: PropTypes.any.isRequired,
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'tabs': PropTypes.string,
             'tabs__content': PropTypes.string,
@@ -21,7 +21,7 @@ export default class Tabs extends Component {
         //
         // Static component dependencies which are injected from the outside (index.js)
         //
-        IconComponent: PropTypes.element.isRequired
+        IconComponent: PropTypes.any.isRequired
     };
 
     static defaultProps = {

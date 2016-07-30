@@ -46,7 +46,7 @@ export class Header extends Component {
         //
         // Static component dependencies which are injected from the outside (index.js)
         //
-        IconComponent: PropTypes.element.isRequired
+        IconComponent: PropTypes.any.isRequired
     };
 
     render() {

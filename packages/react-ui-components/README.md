@@ -36,6 +36,11 @@ import Button from '@neos-project/react-ui-components/lib/button/';
 * Node in version `^6.3.3`
 * NPM in version `^3.10.3`
 
+#### Setup
+Clone this repository, execute `nvm use` and afterwards `npm install` in the root directory of the project.
+After the installation succeeded, execute `npm start` to start the
+[development server of the styleguide](http://localhost:9001).
+
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

@@ -15,7 +15,8 @@
     "lint": "eslint src && stylelint 'src/**/*.css'",
     "ava": "ava src/**/*.spec.js",
     "coverage:generate": "nyc report --reporter=text-lcov > lcov.info",
-    "start": "cross-env STORY=true start-storybook -p 9001"
+    "start": "cross-env STORY=true start-storybook -p 9001",
+    "postpublish": "greenkeeper-postpublish"
   },
   "ava": {
     "files": [
@@ -59,6 +60,7 @@
     "eslint-plugin-jsx-a11y": "^2.0.0",
     "eslint-plugin-react": "^5.0.1",
     "file-loader": "^0.9.0",
+    "greenkeeper-postpublish": "^1.0.0",
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
     "monet": "^0.8.10",

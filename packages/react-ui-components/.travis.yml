@@ -11,4 +11,4 @@ before_script:
   - npm prune
 script: npm run lint && npm run build && npm run test
 after_script:
-  - codeclimate-test-reporter < lcov.info
+  - npm run coverage:generate && codeclimate-test-reporter < lcov.info

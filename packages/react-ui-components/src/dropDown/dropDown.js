@@ -4,19 +4,19 @@ import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
 import executeCallback from './../_lib/executeCallback.js';
 import Icon from './../icon/index';
-// import style from './style.css';
 
 export class DropDown extends Component {
     static propTypes = {
         className: PropTypes.string,
         isOpen: PropTypes.bool.isRequired,
         children: PropTypes.node.isRequired,
-        style: PropTypes.object
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'dropDown': PropTypes.string
+        }).isRequired
     };
 
     static defaultProps = {
-        isOpen: false,
-        style: {}
+        isOpen: false
     };
 
     static childContextTypes = {
@@ -40,11 +40,11 @@ export class DropDown extends Component {
     }
 
     render() {
-        const {children, className, style, ...restProps} = this.props;
+        const {children, className, theme, ...restProps} = this.props;
         const rest = omit(restProps, ['isOpen']);
         const dropDownClassName = mergeClassNames({
             [className]: className && className.length,
-            [style.dropDown]: true
+            [theme.dropDown]: true
         });
 
         return (
@@ -71,11 +71,11 @@ export class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node,
-        style: PropTypes.object
-    };
-
-    static defaultProps = {
-        style: {}
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'dropDown__btn': PropTypes.string,
+            'dropDown__btnLabel': PropTypes.string,
+            'dropDown__chevron': PropTypes.string
+        }).isRequired
     };
 
     static contextTypes = {
@@ -88,10 +88,10 @@ export class Header extends Component {
     }
 
     render() {
-        const {className, children, style, ...rest} = this.props;
+        const {className, children, theme, ...rest} = this.props;
         const {isOpen, toggleDropDown} = this.context;
         const classNames = mergeClassNames({
-            [style.dropDown__btn]: true,
+            [theme.dropDown__btn]: true,
             [className]: className && className.length
         });
         const chevron = this.renderChevronIcon();
@@ -118,11 +118,11 @@ export class Header extends Component {
     }
 
     renderChevronIcon() {
-        const {style} = this.props;
+        const {theme} = this.props;
         const {isOpen} = this.context;
         const iconName = isOpen ? 'chevron-up' : 'chevron-down';
 
-        return <Icon icon={iconName} className={style.dropDown__chevron} />;
+        return <Icon icon={iconName} className={theme.dropDown__chevron} />;
     }
 }
 
@@ -130,11 +130,10 @@ export class Contents extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node.isRequired,
-        style: PropTypes.object
-    };
-
-    static defaultProps = {
-        style: {}
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'dropDown__contents': PropTypes.string,
+            'dropDown__contents--isOpen': PropTypes.string
+        }).isRequired
     };
 
     static contextTypes = {
@@ -147,12 +146,12 @@ export class Contents extends Component {
     }
 
     render() {
-        const {className, children, style, ...rest} = this.props;
+        const {className, children, theme, ...rest} = this.props;
         const {isOpen, closeDropDown} = this.context;
         const contentsClassName = mergeClassNames({
             [className]: className && className.length,
-            [style.dropDown__contents]: true,
-            [style['dropDown__contents--isOpen']]: isOpen
+            [theme.dropDown__contents]: true,
+            [theme['dropDown__contents--isOpen']]: isOpen
         });
         const ariaIsHiddenLabel = isOpen ? 'false' : 'true';
 
@@ -175,12 +174,5 @@ export class Contents extends Component {
 // Add the click-outside functionality to the DropDown component.
 //
 const EnhancedDropDown = enhanceWithClickOutside(DropDown);
-
-//
-// Assign the Child Component to the parent,
-// to replicate the structure of a `DropDown` Component.
-//
-EnhancedDropDown.Header = Header;
-EnhancedDropDown.Contents = Contents;
 
 export default EnhancedDropDown;

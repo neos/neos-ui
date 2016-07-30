@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-// import style from './style.css';
 
 const onChangeHandler = (cb, isChecked) => {
     if (cb) {
@@ -13,23 +12,23 @@ const CheckBox = props => {
         isChecked,
         className,
         onChange,
-        style,
+        theme,
         ...rest
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
-        [style.checkbox]: true
+        [theme.checkbox]: true
     });
     const mirrorClassNames = mergeClassNames({
-        [style.checkbox__inputMirror]: true,
-        [style['checkbox__inputMirror--active']]: isChecked
+        [theme.checkbox__inputMirror]: true,
+        [theme['checkbox__inputMirror--active']]: isChecked
     });
 
     return (
         <div className={classNames}>
             <input
                 {...rest}
-                className={style.checkbox__input}
+                className={theme.checkbox__input}
                 type="checkbox"
                 role="checkbox"
                 checked={isChecked}
@@ -44,10 +43,12 @@ CheckBox.propTypes = {
     isChecked: PropTypes.bool.isRequired,
     className: PropTypes.string,
     onChange: PropTypes.func,
-    style: PropTypes.object
-};
-CheckBox.defaultProps = {
-    style: {}
+    theme: PropTypes.shape({
+        'checkbox': PropTypes.string,
+        'checkbox__input': PropTypes.string,
+        'checkbox__inputMirror': PropTypes.string,
+        'checkbox__inputMirror--active': PropTypes.string
+    }).isRequired
 };
 
 export default CheckBox;

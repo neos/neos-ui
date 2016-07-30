@@ -1,20 +1,19 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-// import style from './style.css';
 
 const SideBar = props => {
     const {
         position,
         className,
         children,
-        style,
+        theme,
         ...rest
     } = props;
     const classNames = mergeClassNames({
         [className]: className && className.length,
-        [style.sideBar]: true,
-        [style['sideBar--left']]: position === 'left',
-        [style['sideBar--right']]: position === 'right'
+        [theme.sideBar]: true,
+        [theme['sideBar--left']]: position === 'left',
+        [theme['sideBar--right']]: position === 'right'
     });
 
     return (
@@ -27,10 +26,11 @@ SideBar.propTypes = {
     position: PropTypes.oneOf(['left', 'right']).isRequired,
     className: PropTypes.string,
     children: PropTypes.node.isRequired,
-    style: PropTypes.object
-};
-SideBar.defaultProps = {
-    style: {}
+    theme: PropTypes.shape({// eslint-disable-line quote-props
+        'sideBar': PropTypes.string,
+        'sideBar--left': PropTypes.string,
+        'sideBar--right': PropTypes.string
+    }).isRequired
 };
 
 export default SideBar;

@@ -1,19 +1,17 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import Icon from 'Components/Icon/index';
-// import style from './style.css';
+import Icon from './../icon/index';
 
 export class Node extends Component {
     static propTypes = {
-        className: PropTypes.string,
         children: PropTypes.node
     };
 
     render() {
-        const {className, children, ...rest} = this.props;
+        const {children, ...rest} = this.props;
 
         return (
-            <div {...rest} className={className}>
+            <div {...rest}>
                 {children}
             </div>
         );
@@ -35,28 +33,33 @@ export class Header extends Component {
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
         onLabelClick: PropTypes.func,
-        style: PropTypes.object
-    };
-
-    static defaultProps = {
-        style: {}
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'header__data': PropTypes.string,
+            'header__data--isActive': PropTypes.string,
+            'header__data--isFocused': PropTypes.string,
+            'header': PropTypes.string,
+            'header__label': PropTypes.string,
+            'header__chevron': PropTypes.string,
+            'header__chevron--isCollapsed': PropTypes.string,
+            'header__chevron--isLoading': PropTypes.string
+        }).isRequired
     };
 
     render() {
-        const {item, onClick, onLabelClick, style} = this.props;
+        const {item, onClick, onLabelClick, theme} = this.props;
         const {label, icon, hasChildren, isActive, isFocused} = item;
         const dataClassNames = mergeClassNames({
-            [style.header__data]: true,
-            [style['header__data--isActive']]: isActive,
-            [style['header__data--isFocused']]: isFocused
+            [theme.header__data]: true,
+            [theme['header__data--isActive']]: isActive,
+            [theme['header__data--isFocused']]: isFocused
         });
 
         return (
-            <div className={style.header}>
+            <div className={theme.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
                 <div role="button" onClick={() => onClick()} className={dataClassNames}>
                     <Icon icon={icon || 'question'} padded="right" />
-                    <span className={style.header__label} role="button" onClick={() => onLabelClick()} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                    <span className={theme.header__label} role="button" onClick={() => onLabelClick()} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>
                 </div>
@@ -65,12 +68,12 @@ export class Header extends Component {
     }
 
     renderCollapseControl() {
-        const {item, onToggle, style} = this.props;
+        const {item, onToggle, theme} = this.props;
         const {isLoading, isCollapsed, hasError} = item;
         const classnames = mergeClassNames({
-            [style.header__chevron]: true,
-            [style['header__chevron--isCollapsed']]: isCollapsed,
-            [style['header__chevron--isLoading']]: isLoading
+            [theme.header__chevron]: true,
+            [theme['header__chevron--isCollapsed']]: isCollapsed,
+            [theme['header__chevron--isLoading']]: isLoading
         });
         let icon;
 
@@ -97,23 +100,18 @@ export class Header extends Component {
 export class Contents extends Component {
     static propTypes = {
         children: PropTypes.node,
-        style: PropTypes.object
-    };
-
-    static defaultProps = {
-        style: {}
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'contents': PropTypes.string
+        }).isRequired
     };
 
     render() {
-        const {style, children} = this.props;
+        const {theme, children} = this.props;
 
-        return (<div className={style.contents}>
+        return (<div className={theme.contents}>
             {children}
         </div>);
     }
 }
-
-Node.Header = Header;
-Node.Contents = Contents;
 
 export default Node;

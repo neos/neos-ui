@@ -1,27 +1,24 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-// import style from './style.css';
 
 const cachedWarnings = {};
 
 const Icon = props => {
-    const {size, padded, style, api} = props;
+    const {size, padded, theme, api} = props;
     const iconClassName = api.fontAwesome.getClassName(props.icon);
     const classNames = mergeClassNames({
-        [style.icon]: true,
+        [theme.icon]: true,
         [iconClassName]: true,
         [props.className]: props.className && props.className.length,
-        [style['icon--big']]: size === 'big',
-        [style['icon--small']]: size === 'small',
-        [style['icon--tiny']]: size === 'tiny',
-        [style['icon--paddedLeft']]: padded === 'left',
-        [style['icon--paddedRight']]: padded === 'right',
-        [style['icon--spin']]: props.spin
+        [theme['icon--big']]: size === 'big',
+        [theme['icon--small']]: size === 'small',
+        [theme['icon--tiny']]: size === 'tiny',
+        [theme['icon--paddedLeft']]: padded === 'left',
+        [theme['icon--paddedRight']]: padded === 'right',
+        [theme['icon--spin']]: props.spin
     });
 
-    return (
-        <i className={classNames}></i>
-    );
+    return <i className={classNames}/>;
 };
 Icon.propTypes = {
     // The icon key of Font-Awesome.
@@ -52,7 +49,15 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
     padded: PropTypes.oneOf(['none', 'left', 'right']),
     className: PropTypes.string,
     spin: PropTypes.bool,
-    style: PropTypes.object,
+    theme: PropTypes.shape({
+        'icon': PropTypes.string,
+        'icon--big': PropTypes.string,
+        'icon--small': PropTypes.string,
+        'icon--tiny': PropTypes.string,
+        'icon--paddedLeft': PropTypes.string,
+        'icon--paddedRight': PropTypes.string,
+        'icon--spin': PropTypes.string
+    }).isRequired,
     api: PropTypes.shape({
         fontAwesome: PropTypes.shape({
             getClassName: PropTypes.func.isRequired,
@@ -64,7 +69,6 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
     })
 };
 Icon.defaultProps = {
-    style: {},
     api: {}
 };
 

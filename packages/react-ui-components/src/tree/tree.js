@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import Node from './Node/index';
-// import style from './style.css';
 
 export class Tree extends Component {
     static propTypes = {
@@ -14,17 +13,16 @@ export class Tree extends Component {
         onNodeFocus: PropTypes.func,
 
         children: PropTypes.node.isRequired,
-        style: PropTypes.object
-    };
-    static defaultProps = {
-        style: {}
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'treeWrapper': PropTypes.string
+        }).isRequired
     };
 
     render() {
-        const {className, style, ...rest} = this.props;
+        const {className, theme, ...rest} = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
-            [style.treeWrapper]: true
+            [theme.treeWrapper]: true
         });
 
         return (
@@ -34,7 +32,5 @@ export class Tree extends Component {
         );
     }
 }
-
-Tree.Node = Node;
 
 export default Tree;

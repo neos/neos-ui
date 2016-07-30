@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-// import styles from './style.css';
 
 const types = [
     'h1',
@@ -16,12 +15,11 @@ const Headline = props => {
         type,
         className,
         children,
-        styles
+        theme
     } = props;
-    const headingStyle = props.style || type;
     const classNames = mergeClassNames({
-        [styles.heading]: true,
-        [styles[`heading--${headingStyle}`]]: true,
+        [theme.heading]: true,
+        [theme['heading--h1']]: true,
         [className]: className && className.length
     });
     let heading;
@@ -65,11 +63,13 @@ Headline.propTypes = {
     // this enables the possibility to diff the semantic value of the UI to the displayed style.
     style: PropTypes.oneOf(types),
     className: PropTypes.string,
-    styles: PropTypes.object
+    theme: PropTypes.shape({
+        'heading': PropTypes.string,
+        'heading--h1': PropTypes.string
+    }).isRequired
 };
 Headline.defaultProps = {
-    type: 'h1',
-    styles: {}
+    type: 'h1'
 };
 
 export default Headline;

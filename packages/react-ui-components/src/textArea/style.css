@@ -1,4 +1,4 @@
-.textInput {
+.textArea {
     width: 100%;
     height: 40px;
     padding: 10px 14px;
@@ -12,10 +12,10 @@
         color: $darkest;
     }
 }
-.textInput::-webkit-input-placeholder {
+.textArea::-webkit-input-placeholder {
     font-family: 'Noto Sans', sans-serif;
     color: $bright;
 }
-.textInput--invalid {
+.textArea--invalid {
     outline: 2px solid $error;
 }

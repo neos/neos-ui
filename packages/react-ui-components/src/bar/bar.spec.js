@@ -6,6 +6,7 @@ import {shallow} from 'enzyme';
 import Bar from './bar.js';
 
 const defaultProps = {
+    theme: {},
     children: 'Foo children'
 };
 test('<Bar/> should render the passed "className" prop to the rendered wrapper if passed.', t => {

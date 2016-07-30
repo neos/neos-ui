@@ -2,9 +2,8 @@ import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
 import executeCallback from './../_lib/executeCallback.js';
-import IconButton from 'Components/IconButton/index';
-import Portal from 'Components/Portal/index';
-// import style from './style.css';
+import IconButton from './../iconButton/index';
+import Portal from './../portal/index';
 
 const Dialog = props => {
     const {
@@ -15,11 +14,11 @@ const Dialog = props => {
         isOpen,
         onRequestClose,
         actions,
-        style,
+        theme,
         ...restProps
     } = props;
     const rest = omit(restProps, ['isOpen']);
-    const dialogStyle = wide ? style['dialog--wide'] : style.dialog;
+    const dialogStyle = wide ? theme['dialog--wide'] : theme.dialog;
     const classNames = mergeClassNames({
         [dialogStyle]: true,
         [className]: className && className.length
@@ -28,21 +27,21 @@ const Dialog = props => {
     return (
         <Portal targetId="dialog" isOpen={isOpen}>
             <section {...rest} className={classNames} role="dialog" tabIndex="0">
-                <div className={style.dialog__contentsPosition}>
-                    <div className={style.dialog__contents}>
+                <div className={theme.dialog__contentsPosition}>
+                    <div className={theme.dialog__contents}>
                         <IconButton
                             icon="close"
-                            className={style.dialog__closeBtn}
+                            className={theme.dialog__closeBtn}
                             id="neos__modal__closeModal"
                             onClick={e => executeCallback({e, cb: onRequestClose})}
                             />
-                        <div className={style.dialog__title}>
+                        <div className={theme.dialog__title}>
                             {title}
                         </div>
 
                         {children}
 
-                        <div className={style.dialog__actions}>
+                        <div className={theme.dialog__actions}>
                             {actions.map((action, index) => <span key={index}>{action}</span>)}
                         </div>
                     </div>
@@ -72,10 +71,15 @@ Dialog.propTypes = {
 
     // Style related propTypes.
     className: PropTypes.string,
-    style: PropTypes.object
-};
-Dialog.defaultProps = {
-    style: {}
+    theme: PropTypes.shape({
+        'dialog': PropTypes.string,
+        'dialog__contentsPosition': PropTypes.string,
+        'dialog__contents': PropTypes.string,
+        'dialog__title': PropTypes.string,
+        'dialog__closeBtn': PropTypes.string,
+        'dialog__actions': PropTypes.string,
+        'dialog--wide': PropTypes.string
+    }).isRequired
 };
 
 export default Dialog;

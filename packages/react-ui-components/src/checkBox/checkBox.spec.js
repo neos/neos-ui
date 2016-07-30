@@ -5,14 +5,19 @@ import {shallow} from 'enzyme';
 
 import CheckBox from './checkBox.js';
 
+const defaultProps = {
+    isChecked: false,
+    theme: {}
+};
+
 test('<CheckBox/> should render a "input" node with the role="button" attribute.', t => {
-    const input = shallow(<CheckBox />).find('[type="checkbox"]');
+    const input = shallow(<CheckBox {...defaultProps}/>).find('[type="checkbox"]');
 
     t.truthy(input.length === 1);
 });
 
 test('<CheckBox/> should throw no errors if no "onChange" prop was passed when clicking on the hidden checkbox.', t => {
-    const cb = shallow(<CheckBox />);
+    const cb = shallow(<CheckBox {...defaultProps}/>);
     const fn = () => cb.find('[type="checkbox"]').simulate('change');
 
     t.notThrows(fn);
@@ -20,7 +25,7 @@ test('<CheckBox/> should throw no errors if no "onChange" prop was passed when c
 
 test('<CheckBox/> should call the passed "onChange" prop when clicking on the hidden checkbox.', t => {
     const spy = sinon.spy();
-    const cb = shallow(<CheckBox onChange={spy} />);
+    const cb = shallow(<CheckBox {...defaultProps} onChange={spy} />);
 
     cb.find('[type="checkbox"]').simulate('change');
 
@@ -28,14 +33,14 @@ test('<CheckBox/> should call the passed "onChange" prop when clicking on the hi
 });
 
 test('<CheckBox/> should set truthy aria and checked attribute when passing a truthy "isChecked" prop.', t => {
-    const markup = shallow(<CheckBox isChecked={true} />).find('[type="checkbox"]').html();
+    const markup = shallow(<CheckBox {...defaultProps} isChecked={true} />).find('[type="checkbox"]').html();
 
     t.truthy(markup.includes('checked="true"'));
     t.truthy(markup.includes('aria-checked="true"'));
 });
 
 test('<CheckBox/> should set falsy aria and checked attribute when passing a falsy "isChecked" prop.', t => {
-    const markup = shallow(<CheckBox isChecked={false} />).find('[type="checkbox"]').html();
+    const markup = shallow(<CheckBox {...defaultProps} isChecked={false} />).find('[type="checkbox"]').html();
 
     t.truthy(markup.includes('checked="false"'));
     t.truthy(markup.includes('aria-checked="false"'));

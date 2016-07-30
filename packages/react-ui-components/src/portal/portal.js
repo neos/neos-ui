@@ -14,7 +14,7 @@ export default class Portal extends Component {
 
         // The className of the <Portal />
         className: PropTypes.string,
-        style: PropTypes.object,
+        theme: PropTypes.object,
 
         // The boolean over which you can control the rendered state of the <Portal />.
         isOpen: PropTypes.bool
@@ -75,8 +75,8 @@ export default class Portal extends Component {
                 this.node.className = props.className;
             }
 
-            if (props.style) {
-                CSSPropertyOperations.setValueForStyles(this.node, props.style);
+            if (props.theme) {
+                CSSPropertyOperations.setValueForStyles(this.node, props.theme);
             }
 
             portalWrapper.appendChild(this.node);

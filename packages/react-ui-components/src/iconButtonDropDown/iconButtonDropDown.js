@@ -1,9 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import {logger} from 'Shared/Utilities/';
-import Icon from 'Components/Icon/index';
-import Button from 'Components/Button/index';
-// import style from './style.css';
+import Icon from './../icon/index';
+import Button from './../button/index';
+
+let logger;
+
+try {
+    logger = window.neos.logger;
+} catch (e) {}
 
 export default class IconButtonDropDown extends Component {
     static propTypes = {
@@ -27,14 +31,20 @@ export default class IconButtonDropDown extends Component {
 
         // Props which are propagated to the <Button> component.
         directButtonProps: PropTypes.object.isRequired,
-        style: PropTypes.object
+        theme: PropTypes.shape({
+            'wrapper': PropTypes.string,
+            'wrapper__btn': PropTypes.string,
+            'wrapper__btnModeIcon': PropTypes.string,
+            'wrapper__dropDown': PropTypes.string,
+            'wrapper__dropDown--isOpen': PropTypes.string,
+            'wrapper__dropDownItem': PropTypes.string
+        }).isRequired
     };
 
     static defaultProps = {
         modeIcon: 'long-arrow-right',
         isDisabled: false,
-        directButtonProps: {},
-        style: {}
+        directButtonProps: {}
     };
 
     constructor(props) {
@@ -50,15 +60,15 @@ export default class IconButtonDropDown extends Component {
             isDisabled,
             icon,
             modeIcon,
-            style
+            theme
         } = this.props;
         const classNames = mergeClassNames({
-            [style.wrapper]: true,
+            [theme.wrapper]: true,
             [className]: className && className.length
         });
         const dropDownClassNames = mergeClassNames({
-            [style.wrapper__dropDown]: true,
-            [style['wrapper__dropDown--isOpen']]: this.state.isOpen
+            [theme.wrapper__dropDown]: true,
+            [theme['wrapper__dropDown--isOpen']]: this.state.isOpen
         });
         const ariaIsHiddenLabel = this.state.isOpen ? 'false' : 'true';
         const directButtonProps = Object.assign({}, this.props.directButtonProps, {
@@ -70,11 +80,11 @@ export default class IconButtonDropDown extends Component {
                 <Button
                     {...directButtonProps}
                     isDisabled={isDisabled}
-                    className={style.wrapper__btn}
+                    className={theme.wrapper__btn}
                     onMouseDown={this.createHoldTimeout.bind(this)}
                     onClick={this.onClick.bind(this)}
                     >
-                    <Icon icon={modeIcon} className={style.wrapper__btnModeIcon} />
+                    <Icon icon={modeIcon} className={theme.wrapper__btnModeIcon} />
                     <Icon icon={icon} />
                 </Button>
                 <div className={dropDownClassNames} aria-hidden={ariaIsHiddenLabel}>
@@ -85,7 +95,7 @@ export default class IconButtonDropDown extends Component {
     }
 
     renderChildren() {
-        const {style, children} = this.props;
+        const {theme, children} = this.props;
 
         return children
             .map(child => typeof child === 'function' ? child() : child)
@@ -93,7 +103,7 @@ export default class IconButtonDropDown extends Component {
             .map((child, index) => (
                 <a
                     role="button"
-                    className={style.wrapper__dropDownItem}
+                    className={theme.wrapper__dropDownItem}
                     onClick={this.onItemSelected.bind(this, child.props.dropDownId)}
                     key={index}
                     >

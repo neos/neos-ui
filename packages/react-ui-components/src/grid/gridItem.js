@@ -1,11 +1,10 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-// import style from './style.css';
 
 const GridItem = props => {
-    const {className, children, width, style} = props;
+    const {className, children, width, theme} = props;
     const classNames = mergeClassNames({
-        [style.grid__item]: true,
+        [theme.grid__item]: true,
         [className]: className && className.length
     });
     const inlineStyle = {
@@ -24,10 +23,9 @@ GridItem.propTypes = {
     width: PropTypes.oneOf(['half', 'third']).isRequired,
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
-    style: PropTypes.object
-};
-GridItem.defaultProps = {
-    style: {}
+    theme: PropTypes.shape({
+        grid__item: PropTypes.string // eslint-disable-line camelcase
+    }).isRequired
 };
 
 export default GridItem;

@@ -11,3 +11,13 @@
         clear: both;
     }
 }
+.grid__item {
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    /*
+     * Declared to maintain the grid width even if the gridItem has no children.
+     */
+    min-height: 1px;
+}

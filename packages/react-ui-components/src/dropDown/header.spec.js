@@ -1,10 +1,9 @@
-import React from 'react';
 import test from 'ava';
 import sinon from 'sinon';
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import ShallowDropDownHeader from './header.js';
 
-const Icon = props => <div {...props}/>;
+const Icon = createStubComponent();
 const defaultProps = {
     children: 'Foo children',
     IconComponent: Icon,

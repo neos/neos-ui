@@ -1,10 +1,9 @@
-import React from 'react';
 import test from 'ava';
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import Dialog from './dialog.js';
 
-const PortalComponent = props => <div {...props}/>;
-const IconButtonComponent = props => <div {...props}/>;
+const PortalComponent = createStubComponent();
+const IconButtonComponent = createStubComponent();
 const defaultProps = {
     isChecked: false,
     theme: {

@@ -45,7 +45,6 @@ test('should render the "dialog--wide" className from the "theme" prop if the "i
 });
 test('should all actions if passed.', t => {
     const portal = shallow({
-        className: 'barClassName',
         actions: ['Foo 1', 'Foo 2']
     }).find(PortalComponent);
     const section = portal.find('section');

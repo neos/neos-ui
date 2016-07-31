@@ -1,14 +1,14 @@
 import {themr} from 'react-css-themr';
 import identifiers from './../identifiers.js';
 import style from './style.css';
-import DropDown, {
-    Header,
-    Contents
-} from './dropDown.js';
+import ContextDropDownWrapper, {
+    ContextDropDownHeader,
+    ContextDropDownContents
+} from './wrapper.js';
 
-const ThemedDropDown = themr(identifiers.dropDown, style)(DropDown);
-const ThemedDropDownHeader = themr(identifiers.dropDownHeader, style)(Header);
-const ThemedDropDownContents = themr(identifiers.dropDownContents, style)(Contents);
+const DropDown = themr(identifiers.dropDown, style)(ContextDropDownWrapper);
+const DropDownHeader = themr(identifiers.dropDownHeader, style)(ContextDropDownHeader);
+const DropDownContents = themr(identifiers.dropDownContents, style)(ContextDropDownContents);
 
 //
 // Dependency injection
@@ -16,9 +16,9 @@ const ThemedDropDownContents = themr(identifiers.dropDownContents, style)(Conten
 import injectProps from './../_lib/injectProps.js';
 import Icon from './../icon/index';
 
-ThemedDropDown.Header = injectProps({
+DropDown.Header = injectProps({
     IconComponent: Icon
-})(ThemedDropDownHeader);
-ThemedDropDown.Contents = ThemedDropDownContents;
+})(DropDownHeader);
+DropDown.Contents = DropDownContents;
 
-export default ThemedDropDown;
+export default DropDown;

@@ -11,10 +11,17 @@ const shallow = createShallowRenderer(Grid, defaultProps);
 test('should initially have a falsy "isOpen" state value.', t => {
     const grid = shallow();
 
-    t.truthy(grid.type() === 'div');
+    t.is(grid.type(), 'div');
 });
 test('should add the passed "className" prop to the rendered div if passed.', t => {
     const grid = shallow({className: 'testClassName'});
 
     t.truthy(grid.hasClass('testClassName'));
+});
+test('should propagate the rest of the passed props to the wrapping node.', t => {
+    const grid = shallow({
+        id: 'fooId'
+    });
+
+    t.truthy(grid.html().includes('id="fooId"'));
 });

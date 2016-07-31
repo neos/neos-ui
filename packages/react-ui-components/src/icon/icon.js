@@ -3,8 +3,9 @@ import mergeClassNames from 'classnames';
 
 const cachedWarnings = [];
 export const iconPropValidator = (props, propName) => {// eslint-disable-line consistent-return
+    const {onDeprecate, _makeValidateId, iconMap} = props;
+    const validateId = _makeValidateId(iconMap);
     const id = props[propName];
-    const validateId = props._makeValidateId(props.iconMap);
     const {isValid, isMigrationNeeded, iconName} = validateId(id);
     const isInvalid = isValid === false;
     const isNotAlreadyThrown = cachedWarnings.includes(iconName) === false;
@@ -12,8 +13,8 @@ export const iconPropValidator = (props, propName) => {// eslint-disable-line co
     if (isInvalid && isNotAlreadyThrown) {
         cachedWarnings.push(iconName);
 
-        if (isMigrationNeeded && iconName) {
-            props.onDeprecate(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
+        if (isMigrationNeeded && iconName && onDeprecate) {
+            onDeprecate(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
 
 Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
 
@@ -92,7 +93,7 @@ Icon.propTypes = {
     /**
      * A function which gets called once a deprecation warning should be displayed.
      */
-    onDeprecate: PropTypes.func.isRequired,
+    onDeprecate: PropTypes.func,
     _makeValidateId: PropTypes.func.isRequired,
     _makeGetClassName: PropTypes.func.isRequired
 };

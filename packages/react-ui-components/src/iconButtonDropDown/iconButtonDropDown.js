@@ -1,34 +1,57 @@
 import React, {Component, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-
-let logger;
-
-try {
-    logger = window.neos.logger;
-} catch (e) {}
+import DropDownItem from './dropDownItem.js';
 
 export default class IconButtonDropDown extends Component {
     static propTypes = {
-        // The icon key which is always displayed.
+        /**
+         * The key of the Icon which is always displayed.
+         */
         icon: PropTypes.string.isRequired,
 
-        // You can pass an modeIcon which displays the current selected item in a leaner way.
-        // Modify this prop via listening to the `onItemSelect` propType.
-        modeIcon: PropTypes.string.isRequired,
-
-        // Style related propTypes.
+        /**
+         * An optional `className` to attach to the wrapper.
+         */
         className: PropTypes.string,
+
+        /**
+         * Controls the whole components disabled state.
+         */
         isDisabled: PropTypes.bool,
 
-        // Child items of the DropDown.
+        /**
+         * Children to be rendered inside the DropDown.
+         */
         children: PropTypes.any.isRequired,
 
-        // Interaction related propTypes.
+        /**
+         * You can pass an modeIcon which displays the current selected item in a leaner way.
+         * Modify this prop via listening to the `onItemSelect` propType.
+         */
+        modeIcon: PropTypes.string.isRequired,
+
+        /**
+         * Will be called once the user clicks on the wrapper if
+         * it is NOT opened right meow.
+         */
         onClick: PropTypes.func.isRequired,
+
+        /**
+         * Will be called once the user selects an item.
+         * You should specify an `dropDownId` prop on each child,
+         * which will then be propagated to this handler as the first
+         * and only argument.
+         */
         onItemSelect: PropTypes.func.isRequired,
 
-        // Props which are propagated to the <Button> component.
-        directButtonProps: PropTypes.object.isRequired,
+        /**
+         * Props which are propagated to the <Button> component.
+         */
+        directButtonProps: PropTypes.object,
+
+        /**
+        * An optional css theme to be injected.
+        */
         theme: PropTypes.shape({
             'wrapper': PropTypes.string,
             'wrapper__btn': PropTypes.string,
@@ -38,9 +61,9 @@ export default class IconButtonDropDown extends Component {
             'wrapper__dropDownItem': PropTypes.string
         }).isRequired,
 
-        //
-        // Static component dependencies which are injected from the outside (index.js)
-        //
+        /**
+        * Static component dependencies which are injected from the outside (index.js)
+        */
         IconComponent: PropTypes.any.isRequired,
         ButtonComponent: PropTypes.any.isRequired
     };
@@ -54,7 +77,11 @@ export default class IconButtonDropDown extends Component {
     constructor(props) {
         super(props);
 
-        this.mouseHoldTimeout = null;
+        this._mouseHoldTimeout = null;
+        this.handleClick = this.handleClick.bind(this);
+        this.handleMouseLeave = this.handleMouseLeave.bind(this);
+        this.handleHoldTimeout = this.createHoldTimeout.bind(this);
+        this.handleItemSelected = this.handleItemSelected.bind(this);
         this.state = {isOpen: false};
     }
 
@@ -66,69 +93,61 @@ export default class IconButtonDropDown extends Component {
             isDisabled,
             icon,
             modeIcon,
-            theme
+            theme,
+            directButtonProps,
+            children
         } = this.props;
-        const classNames = mergeClassNames({
+        const {isOpen} = this.state;
+        const finalClassName = mergeClassNames({
             [theme.wrapper]: true,
             [className]: className && className.length
         });
         const dropDownClassNames = mergeClassNames({
             [theme.wrapper__dropDown]: true,
-            [theme['wrapper__dropDown--isOpen']]: this.state.isOpen
-        });
-        const ariaIsHiddenLabel = this.state.isOpen ? 'false' : 'true';
-        const directButtonProps = Object.assign({}, this.props.directButtonProps, {
-            'aria-haspopup': 'true'
+            [theme['wrapper__dropDown--isOpen']]: isOpen
         });
 
         return (
-            <div className={classNames} onMouseLeave={this.onMouseLeave.bind(this)}>
+            <div className={finalClassName} onMouseLeave={this.handleMouseLeave}>
                 <ButtonComponent
                     {...directButtonProps}
+                    style="clean"
+                    aria-haspopup="true"
                     isDisabled={isDisabled}
                     className={theme.wrapper__btn}
-                    onMouseDown={this.createHoldTimeout.bind(this)}
-                    onClick={this.onClick.bind(this)}
+                    onMouseDown={this.handleHoldTimeout}
+                    onClick={this.handleClick}
                     >
                     <IconComponent icon={modeIcon} className={theme.wrapper__btnModeIcon} />
                     <IconComponent icon={icon} />
                 </ButtonComponent>
-                <div className={dropDownClassNames} aria-hidden={ariaIsHiddenLabel}>
-                    {this.renderChildren()}
+                <div className={dropDownClassNames} aria-hidden={isOpen ? 'false' : 'true'}>
+                    {React.Children.map(children, (child, index) => (
+                        <DropDownItem
+                            key={index}
+                            className={theme.wrapper__dropDownItem}
+                            onClick={this.handleItemSelected}
+                            id={child.props.dropDownId}
+                            >
+                            {child}
+                        </DropDownItem>
+                    ))}
                 </div>
             </div>
         );
     }
 
-    renderChildren() {
-        const {theme, children} = this.props;
-
-        return children
-            .map(child => typeof child === 'function' ? child() : child)
-            .filter(child => child)
-            .map((child, index) => (
-                <a
-                    role="button"
-                    className={theme.wrapper__dropDownItem}
-                    onClick={this.onItemSelected.bind(this, child.props.dropDownId)}
-                    key={index}
-                    >
-                    {child}
-                </a>
-            ));
-    }
-
     createHoldTimeout() {
-        this.mouseHoldTimeout = setTimeout(() => {
+        this._mouseHoldTimeout = setTimeout(() => {
             this.openDropDown();
         }, 200);
     }
 
     cancelHoldTimeout() {
-        clearTimeout(this.mouseHoldTimeout);
+        clearTimeout(this._mouseHoldTimeout);
     }
 
-    onClick() {
+    handleClick() {
         const {isOpen} = this.state;
 
         this.cancelHoldTimeout();
@@ -138,22 +157,13 @@ export default class IconButtonDropDown extends Component {
         }
     }
 
-    onMouseLeave() {
+    handleMouseLeave() {
         this.cancelHoldTimeout();
         this.closeDropDown();
     }
 
-    onItemSelected(ref) {
-        const {onItemSelect} = this.props;
-
-        if (!ref) {
-            logger.error('Please specify a ref="" prop on your "IconButtonDropDown" children.');
-        }
-
-        if (onItemSelect) {
-            onItemSelect(ref);
-        }
-
+    handleItemSelected(ref) {
+        this.props.onItemSelect(ref);
         this.closeDropDown();
     }
 

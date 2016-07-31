@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
-import executeCallback from './../_lib/executeCallback.js';
+import {makeFocusNode} from './../_lib/focusNode';
 
 export class DropDown extends Component {
     static propTypes = {
@@ -27,34 +27,33 @@ export class DropDown extends Component {
     constructor(props, context) {
         super(props, context);
 
-        this.state = {isOpen: false};
+        this.state = {isOpen: props.isOpen};
+        this.handleToggle = this.toggle.bind(this);
+        this.handleClose = this.close.bind(this);
+        this.handleClickOutside = this.close.bind(this);
     }
 
     getChildContext() {
         return {
             isOpen: this.state.isOpen,
-            toggleDropDown: () => this.toggle(),
-            closeDropDown: () => this.close()
+            toggleDropDown: this.handleToggle,
+            closeDropDown: this.handleClose
         };
     }
 
     render() {
         const {children, className, theme, ...restProps} = this.props;
         const rest = omit(restProps, ['isOpen']);
-        const dropDownClassName = mergeClassNames({
+        const finalClassName = mergeClassNames({
             [className]: className && className.length,
             [theme.dropDown]: true
         });
 
         return (
-            <div {...rest} className={dropDownClassName}>
+            <div {...rest} className={finalClassName}>
                 {children}
             </div>
         );
-    }
-
-    handleClickOutside() {
-        this.close();
     }
 
     close() {
@@ -92,39 +91,31 @@ export class Header extends Component {
     }
 
     render() {
+        const {isOpen, toggleDropDown} = this.context;
         const {className, children, theme, ...restProps} = this.props;
         const rest = omit(restProps, ['IconComponent']);
-        const {isOpen, toggleDropDown} = this.context;
-        const classNames = mergeClassNames({
+        const finalClassName = mergeClassNames({
             [theme.dropDown__btn]: true,
             [className]: className && className.length
         });
-        const chevron = this.renderChevronIcon();
 
         return (
             <button
                 {...rest}
-                onClick={e => executeCallback({e, cb: () => toggleDropDown()})}
-                ref={btn => {
-                    const method = isOpen ? 'focus' : 'blur';
-
-                    // Initially focus the btn if the propType was set.
-                    if (btn !== null) {
-                        btn[method]();
-                    }
-                }}
-                className={classNames}
+                onClick={toggleDropDown}
+                ref={makeFocusNode(isOpen)}
+                className={finalClassName}
                 aria-haspopup="true"
                 >
                 {children}
-                {chevron}
+                {this.renderChevronIcon()}
             </button>
         );
     }
 
     renderChevronIcon() {
-        const {IconComponent, theme} = this.props;
         const {isOpen} = this.context;
+        const {IconComponent, theme} = this.props;
         const iconName = isOpen ? 'chevron-up' : 'chevron-down';
 
         return <IconComponent icon={iconName} className={theme.dropDown__chevron}/>;
@@ -153,18 +144,17 @@ export class Contents extends Component {
     render() {
         const {className, children, theme, ...rest} = this.props;
         const {isOpen, closeDropDown} = this.context;
-        const contentsClassName = mergeClassNames({
+        const finalClassName = mergeClassNames({
             [className]: className && className.length,
             [theme.dropDown__contents]: true,
             [theme['dropDown__contents--isOpen']]: isOpen
         });
-        const ariaIsHiddenLabel = isOpen ? 'false' : 'true';
 
         return (
             <ul
                 {...rest}
-                className={contentsClassName}
-                aria-hidden={ariaIsHiddenLabel}
+                className={finalClassName}
+                aria-hidden={isOpen ? 'false' : 'true'}
                 aria-label="dropdown"
                 onClick={() => closeDropDown()}
                 role="button"

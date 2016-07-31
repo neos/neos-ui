@@ -1,10 +1,11 @@
 import React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
+import {StoryWrapper} from './../_lib/storyUtils.js';
 import ToggablePanel from './index.js';
 
 storiesOf('ToggablePanel', module)
     .add('stateful', () => (
-        <div style={{background: 'rebeccapurple'}}>
+        <StoryWrapper title="ToggablePanel - Stateful">
             <ToggablePanel isOpen={true}>
                 <ToggablePanel.Header>
                     Header
@@ -13,10 +14,10 @@ storiesOf('ToggablePanel', module)
                     Contents
                 </ToggablePanel.Contents>
             </ToggablePanel>
-        </div>
+        </StoryWrapper>
     ))
     .add('stateless', () => (
-        <div style={{background: 'rebeccapurple'}}>
+        <StoryWrapper title="ToggablePanel - Stateless">
             <ToggablePanel isOpen={true} togglePanel={action('toggle')}>
                 <ToggablePanel.Header>
                     Header
@@ -25,5 +26,5 @@ storiesOf('ToggablePanel', module)
                     Contents
                 </ToggablePanel.Contents>
             </ToggablePanel>
-        </div>
+        </StoryWrapper>
     ));

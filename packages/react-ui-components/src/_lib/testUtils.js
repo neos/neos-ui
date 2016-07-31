@@ -16,3 +16,9 @@ const NO_COMPONENT = 'Please specify a valid Reac.component constructor in the c
 export const createShallowRenderer = (Component = err(NO_COMPONENT), defaultProps = {}) => {
     return (props = {}) => shallow(<Component {...defaultProps} {...props}/>);
 };
+
+/**
+ * A function which returns a simple React element which can be
+ * used as a test stub for cross component dependencies.
+ */
+export const createStubComponent = () => props => <div {...props}/>;

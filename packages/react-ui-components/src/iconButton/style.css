@@ -1,6 +1,6 @@
 .iconButton {
     vertical-align: top;
-    width: $unit;
+    width: var(--goldenUnit);
     padding-left: 0;
     padding-right: 0;
 }

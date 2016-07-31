@@ -1,19 +1,19 @@
 .btn {
     position: relative;
     display: inline-block;
-    height: $unit;
-    min-width: $unit;
-    padding: 0 $spacing;
+    height: var(--goldenUnit);
+    min-width: var(--goldenUnit);
+    padding: 0 var(--spacing);
     border: 0;
     -webkit-font-smoothing: antialiased;
     vertical-align: middle;
     width: auto;
-    color: $brightest;
+    color: var(--brandColorsContrastBrightest);
     cursor: pointer;
-    background: $neutral;
+    background: var(--brandColorsContrastNeutral);
 
     &:focus {
-        outline: 1px dotted $brightest;
+        outline: 1px dotted var(--brandColorsContrastBrightest);
     }
 
     &[disabled] {
@@ -21,36 +21,36 @@
         cursor: not-allowed;
 
         &:hover {
-            color: $brightest;
+            color: var(--brandColorsContrastBrightest);
         }
     }
 }
 
 .btn--clean,
 .btn--clean[disabled]:hover {
-    background-color: $darker;
+    background-color: var(--brandColorsContrastDarker);
 }
 .btn--lighter,
 .btn--lighter[disabled]:hover {
-    background-color: $dark;
+    background-color: var(--brandColorsContrastDark);
 }
 .btn--transparent {
     background: 0;
 }
 .btn--brand,
 .btn--brand[disabled]:hover {
-    background-color: $brand;
+    background-color: var(--brandColorsPrimaryBlue);
 }
 .btn--brandHover {
     &:hover,
     &.btn--isPressed {
-        background-color: $brand;
+        background-color: var(--brandColorsPrimaryBlue);
     }
 }
 
 .btn--cleanHover.btn--isPressed,
 .btn--cleanHover:hover {
-    color: $brand;
+    color: var(--brandColorsPrimaryBlue);
 }
 .btn--darkenHover.btn--isPressed,
 .btn--darkenHover:hover {

@@ -1,9 +1,6 @@
-const autoprefixer = require('autoprefixer');
-const vars = require('postcss-simple-vars');
-const hexToRgba = require('postcss-hexrgba');
-const postCssImport = require('postcss-import');
-const nested = require('postcss-nested');
 const path = require('path');
+const brand = require('@neos-project/brand');
+const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
 
 module.exports = {
     module: {
@@ -24,40 +21,25 @@ module.exports = {
     },
 
     postcss: [
-        autoprefixer({
+        require('autoprefixer')({
             browsers: ['last 2 versions']
         }),
-        vars({
-            variables: {
-                //
-                // Colors
-                //
-                darkest: '#141414',
-                darker: '#222',
-                dark: '#3f3f3f',
-                neutral: '#323232',
-                bright: '#999',
-                brighter: '#adadad',
-                brightest: '#FFF',
-                brand: '#00b5ff',
-                success: '#00a338',
-                warn: '#ff8700',
-                error: '#ff460d',
-
+        require('postcss-css-variables')({
+            variables: Object.assign({
                 //
                 // Spacings
                 //
-                spacing: '16px',
-                halfSpacing: '8px',
-                unit: '40px',
-                quarterSpacing: '4px',
+                '--goldenUnit': '40px',
+                '--spacing': '16px',
 
+                //
                 // Sizes
-                sidebarWidth: '320px'
-            }
+                //
+                '--sidebarWidth': '320px'
+            }, brandVars)
         }),
-        postCssImport(),
-        nested(),
-        hexToRgba()
+        require('postcss-import')(),
+        require('postcss-nested')(),
+        require('postcss-hexrgba')()
     ]
 };

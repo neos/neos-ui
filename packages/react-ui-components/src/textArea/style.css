@@ -2,20 +2,20 @@
     width: 100%;
     height: 40px;
     padding: 10px 14px;
-    margin-bottom: $spacing;
+    margin-bottom: var(--spacing);
     border: 0;
-    background: $neutral;
+    background: var(--brandColorsContrastNeutral);
 
     &:focus {
         outline: 0;
-        background: $brightest;
-        color: $darkest;
+        background: var(--brandColorsContrastBrightest);
+        color: var(--brandColorsContrastDarkest);
     }
 }
 .textArea::-webkit-input-placeholder {
     font-family: 'Noto Sans', sans-serif;
-    color: $bright;
+    color: var(--brandColorsContrastBright);
 }
 .textArea--invalid {
-    outline: 2px solid $error;
+    outline: 2px solid var(--brandColorsError);
 }

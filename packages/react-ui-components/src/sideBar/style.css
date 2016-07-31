@@ -1,8 +1,8 @@
 .sideBar {
     position: absolute;
-    width: $sidebarWidth;
+    width: var(--sidebarWidth);
     height: 100%;
-    background: $darker;
+    background: var(--brandColorsContrastDarker);
 }
 .sideBar--left {
     left: 0;

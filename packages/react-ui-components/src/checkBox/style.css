@@ -19,18 +19,18 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 1px solid $brighter;
+    border: 1px solid var(--brandColorsContrastBrighter);
     vertical-align: text-bottom;
-    background: $dark;
-    color: $brightest;
+    background: var(--brandColorsContrastDark);
+    color: var(--brandColorsContrastBrightest);
 
     .label:hover & {
-        border-color: $brand;
+        border-color: var(--brandColorsPrimaryBlue);
     }
 }
 .checkbox__inputMirror--active {
-    background: $brand;
-    border-color: $brand;
+    background: var(--brandColorsPrimaryBlue);
+    border-color: var(--brandColorsPrimaryBlue);
 
     &:before {
         content: '\2713';

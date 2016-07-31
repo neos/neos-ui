@@ -75,7 +75,6 @@
     "object-assign": "^4.1.0",
     "postcss-css-variables": "^0.5.1",
     "postcss-hexrgba": "^0.2.0",
-    "postcss-import": "^8.0.2",
     "postcss-loader": "^0.9.1",
     "postcss-nested": "^1.0.0",
     "react": "^15.2.1",

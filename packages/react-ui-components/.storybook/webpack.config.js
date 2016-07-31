@@ -38,7 +38,6 @@ module.exports = {
                 '--sidebarWidth': '320px'
             }, brandVars)
         }),
-        require('postcss-import')(),
         require('postcss-nested')(),
         require('postcss-hexrgba')()
     ]

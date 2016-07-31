@@ -7,12 +7,10 @@ import {makeValidateId, makeGetClassName} from './../_lib/fontAwesome.js';
 import style from './style.css';
 import Icon from './icon.js';
 
-const validateId = makeValidateId(icons);
-const getClassName = makeGetClassName(icons);
-
 const ThemedIcon = themr(identifiers.icon, style)(Icon);
 
 export default injectProps({
-    validateIconId: validateId,
-    getIconClassName: getClassName
+    iconMap: icons,
+    _makeValidateId: makeValidateId,
+    _makeGetClassName: makeGetClassName
 })(ThemedIcon);

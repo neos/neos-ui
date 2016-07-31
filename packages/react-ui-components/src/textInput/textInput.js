@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import executeCallback from './../_lib/executeCallback.js';
 
 const onChangeHandler = (e, cb) => {
     const value = e.target.value.substr(0, 140);
@@ -16,8 +15,6 @@ const TextInput = props => {
         className,
         isValid,
         onChange,
-        onFocus,
-        onBlur,
         theme,
         ...rest
     } = props;
@@ -34,8 +31,6 @@ const TextInput = props => {
             role="textbox"
             placeholder={placeholder}
             onChange={e => onChangeHandler(e, onChange)}
-            onFocus={() => executeCallback({cb: onFocus})}
-            onBlur={() => executeCallback({cb: onBlur})}
             />
     );
 };

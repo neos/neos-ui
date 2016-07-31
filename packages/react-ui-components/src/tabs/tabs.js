@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import executeCallback from './../_lib/executeCallback.js';
 import mergeClassNames from 'classnames';
 
 export default class Tabs extends Component {
@@ -75,7 +74,7 @@ export default class Tabs extends Component {
                     [theme.tabNavigation__item]: true,
                     [theme['tabNavigation__item--isActive']]: isActive
                 });
-                const onClick = e => executeCallback({e, cb: () => this.activateTabForIndex(index)});
+                const onClick = () => this.activateTabForIndex(index);
 
                 return (
                     <li ref={ref} key={index} className={classes} role="presentation">

@@ -1,10 +1,11 @@
 import React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
+import {StoryWrapper} from './../_lib/storyUtils.js';
 import Dialog from './index.js';
 
 storiesOf('Dialog', module)
     .add('default', () => (
-        <div>
+        <StoryWrapper title="Dialog">
             <Dialog
                 isOpen={true}
                 wide={true}
@@ -17,5 +18,5 @@ storiesOf('Dialog', module)
                 Hello world
             </Dialog>
             <div id="dialog" />
-        </div>
+        </StoryWrapper>
     ));

@@ -27,7 +27,7 @@ class CheckBox extends Component {
             theme,
             ...rest
         } = this.props;
-        const classNames = mergeClassNames({
+        const finalClassName = mergeClassNames({
             [className]: className && className.length,
             [theme.checkbox]: true
         });
@@ -37,7 +37,7 @@ class CheckBox extends Component {
         });
 
         return (
-            <div className={classNames}>
+            <div className={finalClassName}>
                 <input
                     {...rest}
                     className={theme.checkbox__input}

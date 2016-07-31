@@ -11,10 +11,10 @@
     transform: translateY(-50%);
     margin-top: -3px;
     cursor: pointer;
-    color: $brighter;
+    color: var(--brandColorsContrastBrighter);
 
     &:hover {
-        color: $brand;
+        color: var(--brandColorsPrimaryBlue);
     }
 }
 .header__chevron--isCollapsed {
@@ -23,7 +23,7 @@
 
 .header__chevron--isLoading,
 .header__chevron--isLoading:hover {
-    color: $brighter !important;
+    color: var(--brandColorsContrastBrighter) !important;
 }
 
 .header__data {
@@ -31,14 +31,14 @@
     cursor: pointer;
 }
 .header__data--isFocused {
-    background: $neutral;
+    background: var(--brandColorsContrastNeutral);
 }
 .header__label {
     .header__data--isActive & {
-        color: $brand;
+        color: var(--brandColorsPrimaryBlue);
     }
 }
 
 .contents {
-    margin-left: $spacing;
+    margin-left: var(--spacing);
 }

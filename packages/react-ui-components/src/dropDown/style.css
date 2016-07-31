@@ -8,10 +8,10 @@
     text-align: left;
     color: white;
     cursor: pointer;
-    padding: 0 32px 0 $spacing;
+    padding: 0 32px 0 var(--spacing);
 
     &:focus {
-        outline: 1px dotted $brightest;
+        outline: 1px dotted var(--brandColorsContrastBrightest);
     }
 }
 .dropDown__btnLabel {
@@ -32,7 +32,7 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    background: $neutral;
+    background: var(--brandColorsContrastNeutral);
 }
 .dropDown__contents--isOpen {
     display: block;

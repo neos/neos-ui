@@ -4,13 +4,13 @@
 }
 .wrapper__btn {
     position: relative;
-    width: $unit;
+    width: var(--goldenUnit);
 }
 .wrapper__btnModeIcon {
     position: absolute;
     right: 4px;
     bottom: 4px;
-    color: $brand;
+    color: var(--brandColorsPrimaryBlue);
 
     [disabled] > & {
         opacity: 0;
@@ -22,8 +22,8 @@
     left: 0;
     z-index: 1;
     display: none;
-    background: $darker;
-    border: 1px solid $dark;
+    background: var(--brandColorsContrastDarker);
+    border: 1px solid var(--brandColorsContrastDark);
     border-top: 0;
 }
 .wrapper__dropDown--isOpen {
@@ -31,13 +31,13 @@
 }
 .wrapper__dropDownItem {
     display: block;
-    width: $unit;
-    height: $unit;
+    width: var(--goldenUnit);
+    height: var(--goldenUnit);
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
 
     &:hover {
-        color: $brand;
+        color: var(--brandColorsPrimaryBlue);
     }
 }

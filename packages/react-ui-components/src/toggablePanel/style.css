@@ -6,10 +6,10 @@
     }
 }
 .panel__headline {
-    height: $unit;
+    height: var(--goldenUnit);
     margin: 0;
-    padding: 0 $spacing;
-    line-height: $unit;
+    padding: 0 var(--spacing);
+    line-height: var(--goldenUnit);
 }
 .panel__toggleBtn {
     position: absolute;
@@ -17,7 +17,7 @@
     right: 0;
 }
 .panel__contents {
-    padding: 0 $spacing;
+    padding: 0 var(--spacing);
     transition: .5s ease padding;
 
     .panel--isOpen & {

@@ -12,8 +12,8 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    background: $darkest;
-    border-bottom: 1px solid $dark;
+    background: var(--brandColorsContrastDarkest);
+    border-bottom: 1px solid var(--brandColorsContrastDark);
 
     &:before,
     &:after {
@@ -26,18 +26,18 @@
 }
 .tabNavigation__item {
     float: left;
-    border-right: 1px solid $dark;
+    border-right: 1px solid var(--brandColorsContrastDark);
 }
 .tabNavigation__item--isActive {
-    color: $brand;
-    background-color: $darker;
+    color: var(--brandColorsPrimaryBlue);
+    background-color: var(--brandColorsContrastDarker);
     cursor: default;
 }
 .tabNavigation__itemBtn {
     display: inline-block;
-    height: $unit;
-    padding: 0 $spacing;
-    line-height: $unit;
+    height: var(--goldenUnit);
+    padding: 0 var(--spacing);
+    line-height: var(--goldenUnit);
     cursor: pointer;
     color: white;
     border: 0;

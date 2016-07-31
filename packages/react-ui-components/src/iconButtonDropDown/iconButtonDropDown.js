@@ -10,16 +10,6 @@ export default class IconButtonDropDown extends Component {
         icon: PropTypes.string.isRequired,
 
         /**
-         * An optional `className` to attach to the wrapper.
-         */
-        className: PropTypes.string,
-
-        /**
-         * Controls the whole components disabled state.
-         */
-        isDisabled: PropTypes.bool,
-
-        /**
          * Children to be rendered inside the DropDown.
          */
         children: PropTypes.any.isRequired,
@@ -45,11 +35,6 @@ export default class IconButtonDropDown extends Component {
         onItemSelect: PropTypes.func.isRequired,
 
         /**
-         * Props which are propagated to the <Button> component.
-         */
-        directButtonProps: PropTypes.object,
-
-        /**
         * An optional css theme to be injected.
         */
         theme: PropTypes.shape({
@@ -65,7 +50,22 @@ export default class IconButtonDropDown extends Component {
         * Static component dependencies which are injected from the outside (index.js)
         */
         IconComponent: PropTypes.any.isRequired,
-        ButtonComponent: PropTypes.any.isRequired
+        ButtonComponent: PropTypes.any.isRequired,
+
+        /**
+         * An optional `className` to attach to the wrapper.
+         */
+        className: PropTypes.string,
+
+        /**
+         * Controls the whole components disabled state.
+         */
+        isDisabled: PropTypes.bool,
+
+        /**
+         * Props which are propagated to the <Button> component.
+         */
+        directButtonProps: PropTypes.object
     };
 
     static defaultProps = {
@@ -113,8 +113,8 @@ export default class IconButtonDropDown extends Component {
                     {...directButtonProps}
                     style="clean"
                     aria-haspopup="true"
-                    isDisabled={isDisabled}
                     className={theme.wrapper__btn}
+                    isDisabled={isDisabled}
                     onMouseDown={this.handleHoldTimeout}
                     onClick={this.handleClick}
                     >
@@ -138,9 +138,7 @@ export default class IconButtonDropDown extends Component {
     }
 
     createHoldTimeout() {
-        this._mouseHoldTimeout = setTimeout(() => {
-            this.openDropDown();
-        }, 200);
+        this._mouseHoldTimeout = setTimeout(() => this.openDropDown(), 200);
     }
 
     cancelHoldTimeout() {

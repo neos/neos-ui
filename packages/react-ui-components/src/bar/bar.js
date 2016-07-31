@@ -1,10 +1,9 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import executeCallback from './../_lib/executeCallback.js';
 
 const Bar = props => {
-    const {position, className, onDrop, theme} = props;
-    const classNames = mergeClassNames({
+    const {position, className, theme, children, ...rest} = props;
+    const finalClassName = mergeClassNames({
         [className]: className && className.length,
         [theme.bar]: true,
         [theme['bar--top']]: position === 'top',
@@ -12,30 +11,35 @@ const Bar = props => {
     });
 
     return (
-        <div
-            className={classNames}
-            onDragOver={e => executeCallback({e, preventDefault: true})}
-            onDrop={e => executeCallback({e, cb: onDrop, preventDefault: true})}
-            >
-          {props.children}
+        <div className={finalClassName} {...rest}>
+          {children}
         </div>
     );
 };
 Bar.propTypes = {
-    // Style related propTypes.
+    /**
+     * This prop controls the vertical positioning of the Bar.
+     */
     position: PropTypes.oneOf(['top', 'bottom']).isRequired,
+
+    /**
+     * An optional css theme to be injected.
+     */
     theme: PropTypes.shape({
         'bar': PropTypes.string,
         'bar--top': PropTypes.string,
         'bar--bottom': PropTypes.string
     }).isRequired,
+
+    /**
+     * An optional `className` to attach to the wrapper.
+     */
     className: PropTypes.string,
 
-    // Contents of the Bar.
-    children: PropTypes.any.isRequired,
-
-    // Interaction related propTypes.
-    onDrop: PropTypes.func
+    /**
+     * The contents to be rendered within the `Bar`.
+     */
+    children: PropTypes.any.isRequired
 };
 
 export default Bar;

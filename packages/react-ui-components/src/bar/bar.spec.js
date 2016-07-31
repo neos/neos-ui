@@ -15,8 +15,13 @@ test('should render the passed "className" prop to the rendered wrapper if passe
 
     t.truthy(bar.hasClass('test'));
 });
+test('should render the passed "children".', t => {
+    const props = {className: 'test', position: 'top'};
+    const bar = shallow(props);
 
-test('should call the passed "onDrop" prop when clicking the button.', t => {
+    t.truthy(bar.html().includes('Foo children'));
+});
+test('should propagate the rest of the passed props to the wrapping node.', t => {
     const props = {onDrop: sinon.spy(), position: 'top'};
     const bar = shallow(props);
 

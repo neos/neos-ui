@@ -6,7 +6,7 @@ const Dialog = props => {
     const {
         className,
         title,
-        wide,
+        isWide,
         children,
         isOpen,
         onRequestClose,
@@ -19,7 +19,7 @@ const Dialog = props => {
     const rest = omit(restProps, ['isOpen']);
     const finalClassName = mergeClassNames({
         [theme.dialog]: true,
-        [theme['dialog--wide']]: wide,
+        [theme['dialog--wide']]: isWide,
         [className]: className && className.length
     });
 
@@ -66,10 +66,8 @@ Dialog.propTypes = {
 
     /**
      * When truthy, the Dialog gets rendered in bigger dimensions.
-     *
-     * @todo Rename this prop into `isWide` to make it more clear that it needs to be a bool.
      */
-    wide: PropTypes.bool,
+    isWide: PropTypes.bool,
 
     /**
      * The contents to be rendered within the Dialog.
@@ -96,7 +94,7 @@ Dialog.propTypes = {
         'dialog__title': PropTypes.string,
         'dialog__closeBtn': PropTypes.string,
         'dialog__actions': PropTypes.string,
-        'dialog--wide': PropTypes.string
+        'dialog--isWide': PropTypes.string
     }).isRequired,
 
     /**

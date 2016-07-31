@@ -1,5 +1,9 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
+import {makeFocusNode} from './../_lib/focusNode';
+
+const validStyleKeys = ['clean', 'brand', 'lighter', 'transparent'];
+const validHoverStyleKeys = ['clean', 'brand', 'darken'];
 
 const Button = props => {
     const {
@@ -10,48 +14,32 @@ const Button = props => {
         isDisabled,
         isActive,
         style,
-        theme,
         hoverStyle,
+        theme,
+        _refHandler,
         ...rest
     } = props;
     const effectiveStyle = isActive ? 'brand' : style;
     const effectiveHoverStyle = isActive ? 'brand' : hoverStyle;
-    const classNames = mergeClassNames({
+    const finalClassName = mergeClassNames({
         [theme.btn]: true,
-        [theme['btn--clean']]: effectiveStyle === 'clean',
-        [theme['btn--lighter']]: effectiveStyle === 'lighter',
-        [theme['btn--transparent']]: effectiveStyle === 'transparent',
-        [theme['btn--brand']]: effectiveStyle === 'brand',
-        [theme['btn--cleanHover']]: effectiveHoverStyle === 'clean',
-        [theme['btn--brandHover']]: effectiveHoverStyle === 'brand',
-        [theme['btn--darkenHover']]: effectiveHoverStyle === 'darken',
+        [theme[`btn--${effectiveStyle}`]]: validStyleKeys.includes(effectiveStyle),
+        [theme[`btn--${effectiveHoverStyle}Hover`]]: validStyleKeys.includes(effectiveHoverStyle),
         [theme['btn--brandActive']]: isActive,
         [theme['btn--isPressed']]: isPressed,
         [className]: className && className.length
     });
-    const attributes = {
-        className: classNames,
-        ref: btn => {
-            const method = isFocused ? 'focus' : 'blur';
-
-            //
-            // Initially focus the btn if the propType was set.
-            //
-            if (btn !== null) {
-                btn[method]();
-            }
-        }
-    };
+    const attributes = {};
 
     //
-    // Disable the btn if the prop was set.
+    // Disable the btn if `isDisabled` prop is truthy.
     //
     if (isDisabled) {
         attributes.disabled = 'disabled';
     }
 
     return (
-        <button {...rest} {...attributes} role="button">
+        <button {...rest} {...attributes} className={finalClassName} role="button" ref={_refHandler(isFocused)}>
             {children}
         </button>
     );
@@ -82,12 +70,12 @@ Button.propTypes = {
     /**
      * The `style` prop defines the regular visual style of the `Button`.
      */
-    style: PropTypes.oneOf(['clean', 'brand', 'lighter', 'transparent']),
+    style: PropTypes.oneOf(validStyleKeys),
 
     /**
      * As the `style` prop, this prop controls the visual :hover style of the `Button`.
      */
-    hoverStyle: PropTypes.oneOf(['clean', 'brand', 'darken']),
+    hoverStyle: PropTypes.oneOf(validHoverStyleKeys),
 
     /**
      * An optional `className` to attach to the wrapper.
@@ -112,14 +100,20 @@ Button.propTypes = {
         'btn--cleanHover': PropTypes.string,
         'btn--isPressed': PropTypes.string,
         'btn--darkenHover': PropTypes.string
-    }).isRequired
+    }).isRequired,
+
+    /**
+     * An interal prop for testing purposes, do not set this prop manually.
+     */
+    _refHandler: PropTypes.func
 };
 Button.defaultProps = {
     style: '',
     hoverStyle: 'brand',
     isFocused: false,
     isDisabled: false,
-    isActive: false
+    isActive: false,
+    _refHandler: makeFocusNode
 };
 
 export default Button;

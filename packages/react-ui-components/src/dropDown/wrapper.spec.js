@@ -1,17 +1,24 @@
 import test from 'ava';
 import {createShallowRenderer} from './../_lib/testUtils.js';
-import {DropDown} from './dropDown.js';
+import {DropDownWrapper} from './wrapper.js';
 
 const defaultProps = {
     children: 'Foo children',
     theme: {}
 };
-const shallow = createShallowRenderer(DropDown, defaultProps);
+const shallow = createShallowRenderer(DropDownWrapper, defaultProps);
 
 test('should initially have a falsy "isOpen" state value.', t => {
     const dd = shallow();
 
     t.falsy(dd.state('isOpen'));
+});
+test('should render the "className" prop if passed.', t => {
+    const dd = shallow({
+        className: 'barClassName'
+    });
+
+    t.truthy(dd.hasClass('barClassName'));
 });
 test('should set the "isOpen" state value to opposite when calling the toggle method.', t => {
     const dd = shallow();

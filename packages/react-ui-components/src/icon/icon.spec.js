@@ -15,7 +15,7 @@ const shallow = createShallowRenderer(Icon, defaultProps);
 test('should render a "i" node.', t => {
     const tag = shallow();
 
-    t.truthy(tag.type() === 'i');
+    t.is(tag.type(), 'i');
 });
 test('should add the passed "className" prop to the rendered node if passed.', t => {
     const tag = shallow({className: 'testClassName'});

@@ -53,16 +53,30 @@ const Headline = props => {
     return heading;
 };
 Headline.propTypes = {
-    // Contents of the Headline.
+    /**
+    * The contents to be rendered.
+    */
     children: PropTypes.any.isRequired,
 
-    // The semantic tag type of the headline.
+    /**
+     * The semantic tag type of the headline.
+     */
     type: PropTypes.oneOf(types).isRequired,
 
-    // Optional style identifier,
-    // this enables the possibility to diff the semantic value of the UI to the displayed style.
+    /**
+     * Optional style identifier, this enables the possibility to diff the
+     * semantic value of the UI to the displayed style.
+     */
     style: PropTypes.oneOf(types),
+
+    /**
+     * An optional `className` to attach to the wrapper.
+     */
     className: PropTypes.string,
+
+    /**
+    * An optional css theme to be injected.
+    */
     theme: PropTypes.shape({
         'heading': PropTypes.string,
         'heading--h1': PropTypes.string

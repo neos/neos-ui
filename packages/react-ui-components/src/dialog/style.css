@@ -20,6 +20,10 @@
     max-width: calc(var(--goldenUnit) * 16);
     max-height: calc(100vh - (var(--goldenUnit) * 2));
     border: 1px solid var(--brandColorsContrastDark);
+
+    .dialog--wide & {
+       max-width: calc(var(--goldenUnit) * 24);
+    }
 }
 .dialog__title {
     font-size: 16px;
@@ -35,11 +39,4 @@
     text-align: right;
     border-top: 1px solid var(--brandColorsContrastDark);
     padding: var(--spacing);
-}
-
-.dialog--wide {
-    composes: dialog;
-}
-.dialog--wide .dialog__contents {
-    max-width: calc(var(--goldenUnit) * 24);
 }

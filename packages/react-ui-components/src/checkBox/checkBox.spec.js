@@ -12,7 +12,7 @@ const shallow = createShallowRenderer(CheckBox, defaultProps);
 test('should render a "input" node with the role="button" attribute.', t => {
     const input = shallow().find('[type="checkbox"]');
 
-    t.truthy(input.length === 1);
+    t.is(input.length, 1);
 });
 test('should render the "className" prop if passed.', t => {
     const input = shallow({
@@ -33,7 +33,7 @@ test('should call the passed "onChange" prop when clicking on the hidden checkbo
 
     cb.find('[type="checkbox"]').simulate('change');
 
-    t.truthy(onChange.callCount === 1);
+    t.is(onChange.callCount, 1);
 });
 test('should set truthy aria and checked attribute when passing a truthy "isChecked" prop.', t => {
     const markup = shallow({isChecked: true}).find('[type="checkbox"]').html();

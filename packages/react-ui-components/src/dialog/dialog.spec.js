@@ -7,7 +7,9 @@ const PortalComponent = props => <div {...props}/>;
 const IconButtonComponent = props => <div {...props}/>;
 const defaultProps = {
     isChecked: false,
-    theme: {},
+    theme: {
+        'dialog--wide': 'wideClassName'
+    },
     PortalComponent,
     IconButtonComponent
 };
@@ -32,6 +34,14 @@ test('should render the "className" prop if passed.', t => {
     const section = portal.find('section');
 
     t.truthy(section.hasClass('barClassName'));
+});
+test('should render the "dialog--wide" className from the "theme" prop if the "isWide" prop is truthy.', t => {
+    const portal = shallow({
+        isWide: true
+    }).find(PortalComponent);
+    const section = portal.find('section');
+
+    t.truthy(section.hasClass('wideClassName'));
 });
 test('should all actions if passed.', t => {
     const portal = shallow({

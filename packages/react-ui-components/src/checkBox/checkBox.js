@@ -3,9 +3,24 @@ import mergeClassNames from 'classnames';
 
 class CheckBox extends Component {
     static propTypes = {
+        /**
+         * This prop controls the visual active state of the CheckBox.
+         */
         isChecked: PropTypes.bool.isRequired,
+
+        /**
+         * An optional `className` to attach to the wrapper.
+         */
         className: PropTypes.string,
+
+        /**
+         * An optional change handler which gets called once the user clicks on the CheckBox.
+         */
         onChange: PropTypes.func,
+
+        /**
+         * An optional css theme to be injected.
+         */
         theme: PropTypes.shape({
             'checkbox': PropTypes.string,
             'checkbox__input': PropTypes.string,

@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import TextareaAutoresize from 'react-textarea-autosize';
-import executeCallback from './../_lib/executeCallback.js';
 
 const TextArea = props => {
     const {
@@ -9,8 +8,6 @@ const TextArea = props => {
         className,
         isValid,
         onChange,
-        onFocus,
-        onBlur,
         theme,
         ...rest
     } = props;
@@ -27,8 +24,6 @@ const TextArea = props => {
             role="textbox"
             placeholder={placeholder}
             onChange={e => onChange(e.target.value)}
-            onFocus={() => executeCallback({cb: onFocus})}
-            onBlur={() => executeCallback({cb: onBlur})}
             />
     );
 };
@@ -40,8 +35,6 @@ TextArea.propTypes = {
 
     // Interaction related propTypes.
     onChange: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
     theme: PropTypes.shape({
         'textArea': PropTypes.string,
         'textArea--invalid': PropTypes.string

@@ -15,14 +15,6 @@ test('should render a "TextareaAutoresize" component.', t => {
 
     t.truthy(input.length === 1);
 });
-test('should call the passed "onFocus" prop when focusing the button.', t => {
-    const onFocus = sinon.spy();
-    const input = shallow({onFocus});
-
-    input.simulate('focus');
-
-    t.truthy(onFocus.callCount === 1);
-});
 test('should call the passed "onChange" prop with the value of the input when changing it.', t => {
     const onChange = sinon.spy();
     const input = shallow({onChange});
@@ -35,12 +27,4 @@ test('should call the passed "onChange" prop with the value of the input when ch
 
     t.truthy(onChange.callCount === 1);
     t.truthy(onChange.args[0][0] === 'my value');
-});
-test('should call the passed "onBlur" prop when leaving the focused state of the input.', t => {
-    const onBlur = sinon.spy();
-    const input = shallow({onBlur});
-
-    input.simulate('blur');
-
-    t.truthy(onBlur.callCount === 1);
 });

@@ -6,7 +6,7 @@
   "private": true,
   "devDependencies": {
     "@kadira/storybook": "^1.27.0",
-    "autoprefixer": "^6.2.2",
+    "autoprefixer": "^6.4.0",
     "babel-core": "^6.11.4",
     "babel-eslint": "^6.1.0",
     "babel-loader": "^6.2.4",

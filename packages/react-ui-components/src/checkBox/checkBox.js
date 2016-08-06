@@ -62,7 +62,7 @@ class CheckBox extends Component {
                     aria-checked={isChecked}
                     onChange={this.handleChange}
                     />
-                <div className={mirrorClassNames}></div>
+                <div className={mirrorClassNames}/>
             </div>
         );
     }

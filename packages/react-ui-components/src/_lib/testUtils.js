@@ -14,7 +14,7 @@ const NO_COMPONENT = 'Please specify a valid Reac.component constructor in the c
  * @return {Object} The shallow rendered output of `enzyme`,
  */
 export const createShallowRenderer = (Component = err(NO_COMPONENT), defaultProps = {}) => {
-    return (props = {}) => shallow(<Component {...defaultProps} {...props}/>);
+    return (props = {}, context) => shallow(<Component {...defaultProps} {...props}/>, context);
 };
 
 /**

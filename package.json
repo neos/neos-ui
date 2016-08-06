@@ -94,7 +94,7 @@
     "react-height": "^2.0.4",
     "react-image-crop": "^1.0.0-rc2",
     "react-immutable-proptypes": "^1.7.2",
-    "react-measure": "^0.4.2",
+    "react-measure": "^0.5.0",
     "react-motion": "^0.4.2",
     "react-redux": "^4.4.5",
     "react-textarea-autosize": "^4.0.0",

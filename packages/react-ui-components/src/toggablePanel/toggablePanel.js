@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
 
-class ToggablePanel extends Component {
+export default class ToggablePanel extends Component {
     static propTypes = {
         isOpen: PropTypes.bool,
         children: PropTypes.any.isRequired,
@@ -16,6 +16,7 @@ class ToggablePanel extends Component {
     constructor(props, context) {
         super(props, context);
 
+        this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: props.isOpen
         };
@@ -30,10 +31,13 @@ class ToggablePanel extends Component {
     }
 
     render() {
-        // If togglePanel function is provided the component will not be using internal state,
-        // and would only depend on props.isOpen
-        const togglePanel = this.props.togglePanel ? this.props.togglePanel : this.toggle.bind(this);
-        const isOpen = this.props.togglePanel ? this.props.isOpen : this.state.isOpen;
+        //
+        // If the `togglePanel` prop is provided, the component will not
+        // be using internal state, instead it will be controlled by the props.
+        //
+        const isStateLess = Boolean(this.props.togglePanel);
+        const togglePanel = isStateLess ? this.props.togglePanel : this.toggle;
+        const isOpen = isStateLess ? this.props.isOpen : this.state.isOpen;
 
         return (
             <StatelessToggablePanel
@@ -51,7 +55,7 @@ class ToggablePanel extends Component {
     }
 }
 
-class StatelessToggablePanel extends Component {
+export class StatelessToggablePanel extends Component {
     static propTypes = {
         isOpen: PropTypes.bool,
         className: PropTypes.string,
@@ -81,14 +85,14 @@ class StatelessToggablePanel extends Component {
 
     render() {
         const {children, className, theme} = this.props;
-        const classNames = mergeClassNames({
+        const finalClassName = mergeClassNames({
             [className]: className && className.length,
             [theme.panel]: true,
             [theme['panel--isOpen']]: this.props.isOpen
         });
 
         return (
-            <section className={classNames}>
+            <section className={finalClassName}>
                 {children}
             </section>
         );
@@ -130,12 +134,12 @@ export class Header extends Component {
         } = this.props;
         const {isOpen, togglePanel} = this.context;
         const toggleIcon = isOpen ? 'chevron-up' : 'chevron-down';
-        const classNames = mergeClassNames({
+        const finalClassName = mergeClassNames({
             [className]: className && className.length
         });
 
         return (
-            <div className={classNames} aria-expanded={isOpen ? 'true' : 'false'}>
+            <div className={finalClassName} aria-expanded={isOpen ? 'true' : 'false'}>
                 <HeadlineComponent
                     className={theme.panel__headline}
                     type="h1"
@@ -146,7 +150,7 @@ export class Header extends Component {
                 <IconButtonComponent
                     className={theme.panel__toggleBtn}
                     icon={toggleIcon}
-                    onClick={() => togglePanel()}
+                    onClick={togglePanel}
                     />
             </div>
         );
@@ -181,21 +185,19 @@ export class Contents extends Component {
             theme
         } = this.props;
         const {isOpen} = this.context;
-        const classNames = mergeClassNames({
+        const finalClassName = mergeClassNames({
             [theme.panel__contents]: true,
             [className]: className && className.length
         });
 
+        console.log(theme);
+
         return (
-            <div>
-                <Collapse isOpened={isOpen}>
-                    <div className={classNames} key="panelContents" aria-hidden={isOpen ? 'false' : 'true'}>
-                        {children}
-                    </div>
-                </Collapse>
-            </div>
+            <Collapse isOpened={isOpen}>
+                <div className={finalClassName} key="panelContents" aria-hidden={isOpen ? 'false' : 'true'}>
+                    {children}
+                </div>
+            </Collapse>
         );
     }
 }
-
-export default ToggablePanel;

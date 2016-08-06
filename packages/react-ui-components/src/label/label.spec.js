@@ -18,3 +18,8 @@ test('should add the passed "className" prop to the rendered node if passed.', t
 
     t.truthy(label.hasClass('testClassName'));
 });
+test('should render the passed "children".', t => {
+    const label = shallow({children: 'Foo children'});
+
+    t.truthy(label.html().includes('Foo children'));
+});

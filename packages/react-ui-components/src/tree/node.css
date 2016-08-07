@@ -1,10 +1,12 @@
 .header {
+    composes: reset from "./../reset.css";
     position: relative;
     height: 24px;
     line-height: 24px;
     padding-left: 15px;
 }
 .header__chevron {
+    composes: reset from "./../reset.css";
     position: absolute;
     top: 50%;
     left: 0;
@@ -27,6 +29,7 @@
 }
 
 .header__data {
+    composes: reset from "./../reset.css";
     display: block;
     cursor: pointer;
 }
@@ -34,11 +37,14 @@
     background: var(--brandColorsContrastNeutral);
 }
 .header__label {
+    composes: reset from "./../reset.css";
+
     .header__data--isActive & {
         color: var(--brandColorsPrimaryBlue);
     }
 }
 
 .contents {
+    composes: reset from "./../reset.css";
     margin-left: var(--spacing);
 }

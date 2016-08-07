@@ -28,7 +28,8 @@ export default class Tabs extends Component {
             'tabNavigation': PropTypes.string,
             'tabNavigation__item': PropTypes.string,
             'tabNavigation__item--isActive': PropTypes.string,
-            'tabNavigation__itemBtn': PropTypes.string
+            'tabNavigation__itemBtn': PropTypes.string,
+            'tabNavigation__itemBtnIcon': PropTypes.string
         }).isRequired,
 
         /**
@@ -169,7 +170,8 @@ export class TabMenuItem extends Component {
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'tabNavigation__item': PropTypes.string,
             'tabNavigation__item--isActive': PropTypes.string,
-            'tabNavigation__itemBtn': PropTypes.string
+            'tabNavigation__itemBtn': PropTypes.string,
+            'tabNavigation__itemBtnIcon': PropTypes.string
         }).isRequired,
 
         /**
@@ -213,7 +215,7 @@ export class TabMenuItem extends Component {
                     aria-selected={isActive ? 'true' : 'false'}
                     aria-controls={`section${index}`}
                     >
-                    {icon ? <IconComponent icon={icon} /> : null}
+                    {icon ? <IconComponent icon={icon} className={theme.tabNavigation__itemBtnIcon} /> : null}
                     {title}
                 </button>
             </li>

@@ -15,7 +15,7 @@ export default class DropDownItem extends Component {
         /**
          * The children to render within the anchor.
          */
-        children: PropTypes.any.isRequired
+        children: PropTypes.element.isRequired
     };
 
     constructor(props) {

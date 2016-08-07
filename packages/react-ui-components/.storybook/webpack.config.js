@@ -31,6 +31,7 @@ module.exports = {
                 //
                 '--goldenUnit': '40px',
                 '--spacing': '16px',
+                '--halfSpacing': '8px',
 
                 //
                 // Sizes

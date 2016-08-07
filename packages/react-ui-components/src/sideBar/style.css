@@ -1,5 +1,5 @@
 .sideBar {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: absolute;
     width: var(--sidebarWidth);
     height: 100%;

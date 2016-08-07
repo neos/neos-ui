@@ -1,15 +1,15 @@
 .wrapper {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: relative;
     display: inline-block;
 }
 .wrapper__btn {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: relative;
     width: var(--goldenUnit);
 }
 .wrapper__btnModeIcon {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: absolute;
     right: 4px;
     bottom: 4px;
@@ -20,7 +20,7 @@
     }
 }
 .wrapper__dropDown {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: absolute;
     top: 100%;
     left: 0;
@@ -34,7 +34,7 @@
     display: block;
 }
 .wrapper__dropDownItem {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: relative;
     display: block;
     width: calc(var(--goldenUnit) - 2px);

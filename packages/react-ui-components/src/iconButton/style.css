@@ -1,5 +1,5 @@
 .iconButton {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     vertical-align: top;
     width: var(--goldenUnit);
     padding-left: 0;

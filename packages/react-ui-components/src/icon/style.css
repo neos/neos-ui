@@ -1,5 +1,5 @@
 .icon {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;

@@ -12,6 +12,7 @@
     color: var(--brandColorsContrastBrightest);
     cursor: pointer;
     background: var(--brandColorsContrastNeutral);
+    font-size: var(--baseFontSize);
 
     &:focus {
         outline: 1px dotted var(--brandColorsContrastBrightest);

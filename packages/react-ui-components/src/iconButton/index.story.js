@@ -6,6 +6,6 @@ import IconButton from './index.js';
 storiesOf('IconButton', module)
     .add('default', () => (
         <StoryWrapper title="IconButton">
-            <IconButton icon="search" onClick={action('onClick')} style="lighter" />
+            <IconButton icon="close" onClick={action('onClick')} style="lighter" />
         </StoryWrapper>
     ));

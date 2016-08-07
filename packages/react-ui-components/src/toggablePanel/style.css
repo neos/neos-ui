@@ -13,7 +13,7 @@
     padding: 0 var(--spacing);
     line-height: var(--goldenUnit);
     font-weight: bold;
-    font-size: 14px;
+    font-size: var(--baseFontSize);
 }
 .panel__toggleBtn {
     composes: reset from './../reset.css';

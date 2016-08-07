@@ -11,7 +11,7 @@
     text-align: left;
     color: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: var(--baseFontSize);
     padding: 0 32px 0 var(--spacing);
     border: 0;
     background: 0;

@@ -36,7 +36,12 @@ module.exports = {
                 //
                 // Sizes
                 //
-                '--sidebarWidth': '320px'
+                '--sidebarWidth': '320px',
+
+                //
+                // Font sizes
+                //
+                '--baseFontSize': '14px'
             }, brandVars)
         }),
         require('postcss-nested')(),

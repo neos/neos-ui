@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 
 export default class Tabs extends Component {
@@ -30,6 +31,7 @@ export default class Tabs extends Component {
     constructor(props) {
         super(props);
 
+        this.handleTabNavItemClick = this.activateTabForIndex.bind(this);
         this.state = {activeTab: props.activeTab};
     }
 
@@ -62,33 +64,24 @@ export default class Tabs extends Component {
             theme,
             children
         } = this.props;
+        const {activeTab} = this.state;
 
         const menuItems = children
             .map(panel => typeof panel === 'function' ? panel() : panel)
             .filter(panel => panel)
             .map((panel, index) => {
-                const ref = `tab-${index}`;
-                const {title, icon} = panel.props;
-                const isActive = this.state.activeTab === index;
-                const classes = mergeClassNames({
-                    [theme.tabNavigation__item]: true,
-                    [theme['tabNavigation__item--isActive']]: isActive
-                });
-                const onClick = () => this.activateTabForIndex(index);
-
                 return (
-                    <li ref={ref} key={index} className={classes} role="presentation">
-                        <button
-                            className={theme.tabNavigation__itemBtn}
-                            onClick={onClick}
-                            role="tab"
-                            aria-selected={isActive ? 'true' : 'false'}
-                            aria-controls={`section${index}`}
-                            >
-                            {icon ? <IconComponent icon={icon} /> : null}
-                            {title}
-                        </button>
-                    </li>
+                    <TabMenuItem
+                        key={index}
+                        index={index}
+                        ref={`tab-${index}`}
+                        onClick={this.handleTabNavItemClick}
+                        isActive={activeTab === index}
+                        IconComponent={IconComponent}
+                        theme={theme}
+                        title={panel.props.title}
+                        icon={panel.props.icon}
+                        />
                 );
             });
 
@@ -110,22 +103,90 @@ export default class Tabs extends Component {
             <div ref="tab-panel" className={theme.tabs__content}>
                 {children.map((panel, index) => {
                     const isActive = this.state.activeTab === index;
-                    const theme = {
+                    const style = {
                         display: isActive ? 'block' : 'none'
                     };
-                    const panelProps = {};
-
-                    if (!isActive) {
-                        panelProps['aria-hidden'] = 'true';
-                    }
 
                     return (
-                        <div {...panelProps} key={index} style={theme} role="tabpanel">
+                        <div
+                            key={index}
+                            style={style}
+                            role="tabpanel"
+                            aria-hidden={isActive ? 'false' : 'true'}
+                            >
                             {panel}
                         </div>
                     );
                 })}
             </div>
         );
+    }
+}
+
+export class TabMenuItem extends Component {
+    static propTypes = {
+        index: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        onClick: PropTypes.func.isRequired,
+        children: PropTypes.any.isRequired,
+        isActive: PropTypes.bool,
+        icon: PropTypes.string,
+
+        theme: PropTypes.shape({// eslint-disable-line quote-props
+            'tabNavigation__item': PropTypes.string,
+            'tabNavigation__item--isActive': PropTypes.string,
+            'tabNavigation__itemBtn': PropTypes.string
+        }).isRequired,
+
+        //
+        // Static component dependencies which are injected from the outside.
+        //
+        IconComponent: PropTypes.any.isRequired
+    };
+
+    static defaultProps = {
+        isActive: false
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    render() {
+        const {
+            theme,
+            isActive,
+            index,
+            IconComponent,
+            icon,
+            title,
+            ...restProps
+        } = this.props;
+        const rest = omit(restProps, ['onClick']);
+        const finalClassName = mergeClassNames({
+            [theme.tabNavigation__item]: true,
+            [theme['tabNavigation__item--isActive']]: isActive
+        });
+
+        return (
+            <li className={finalClassName} role="presentation" {...rest}>
+                <button
+                    className={theme.tabNavigation__itemBtn}
+                    onClick={this.handleClick}
+                    role="tab"
+                    aria-selected={isActive ? 'true' : 'false'}
+                    aria-controls={`section${index}`}
+                    >
+                    {icon ? <IconComponent icon={icon} /> : null}
+                    {title}
+                </button>
+            </li>
+        );
+    }
+
+    handleClick() {
+        this.props.onClick(this.props.index);
     }
 }

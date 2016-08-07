@@ -13,7 +13,7 @@ const shallow = createShallowRenderer(TextArea, defaultProps);
 test('should render a "TextareaAutoresize" component.', t => {
     const input = shallow().find(TextareaAutoresize);
 
-    t.truthy(input.length === 1);
+    t.is(input.length, 1);
 });
 test('should call the passed "onChange" prop with the value of the input when changing it.', t => {
     const onChange = sinon.spy();
@@ -25,6 +25,6 @@ test('should call the passed "onChange" prop with the value of the input when ch
         }
     });
 
-    t.truthy(onChange.callCount === 1);
-    t.truthy(onChange.args[0][0] === 'my value');
+    t.is(onChange.callCount, 1);
+    t.is(onChange.args[0][0], 'my value');
 });

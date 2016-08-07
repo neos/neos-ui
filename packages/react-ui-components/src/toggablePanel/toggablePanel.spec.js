@@ -48,6 +48,20 @@ const contentsDefaultProps = {
 };
 const shallowContents = createShallowRenderer(Contents, contentsDefaultProps);
 
+test('<ToggablePanel/> should initialize with a state of {isOpen: props.isOpen}.', t => {
+    const node = shallow();
+
+    t.is(node.state('isOpen'), false);
+});
+test('<ToggablePanel/> should toggle the "isOpen" state when calling the instance "toggle" method.', t => {
+    const node = shallow();
+
+    t.is(node.state('isOpen'), false);
+
+    node.instance().toggle();
+
+    t.is(node.state('isOpen'), true);
+});
 test('<ToggablePanel/> should render a "StatelessToggablePanel" component.', t => {
     const node = shallow().find(StatelessToggablePanel);
 
@@ -93,6 +107,11 @@ test('<StatelessToggablePanel/> should render both the "panel" and "panel--isOpe
 
     t.truthy(wrapper.hasClass(stateLessDefaultProps.theme.panel));
     t.truthy(wrapper.hasClass(stateLessDefaultProps.theme['panel--isOpen']));
+});
+test('<StatelessToggablePanel/> should render the "className" prop if provided.', t => {
+    const wrapper = shallowStateLess({isOpen: true, className: 'FooClassName'});
+
+    t.truthy(wrapper.hasClass('FooClassName'));
 });
 test('<StatelessToggablePanel/> should render its propagated children.', t => {
     const wrapper = shallowStateLess();

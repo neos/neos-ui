@@ -17,7 +17,7 @@ export default class ToggablePanel extends Component {
         /**
          * The handler which will be called once the user toggles the contents.
          */
-        togglePanel: PropTypes.func
+        onPanelToggle: PropTypes.func
     };
 
     static defaultProps = {
@@ -35,26 +35,27 @@ export default class ToggablePanel extends Component {
 
     componentWillReceiveProps(newProps) {
         const {isOpen} = newProps;
+        const isStateLess = Boolean(newProps.onPanelToggle);
 
-        if (isOpen !== this.state.isOpen && !newProps.togglePanel) {
+        if (isOpen !== this.state.isOpen && !isStateLess) {
             this.setState({isOpen});
         }
     }
 
     render() {
         //
-        // If the `togglePanel` prop is provided, the component will not
+        // If the `onPanelToggle` prop is provided, the component will not
         // be using internal state, instead it will be controlled by the props.
         //
-        const isStateLess = Boolean(this.props.togglePanel);
-        const togglePanel = isStateLess ? this.props.togglePanel : this.toggle;
+        const isStateLess = Boolean(this.props.onPanelToggle);
+        const onPanelToggle = isStateLess ? this.props.onPanelToggle : this.toggle;
         const isOpen = isStateLess ? this.props.isOpen : this.state.isOpen;
 
         return (
             <StatelessToggablePanel
                 {...this.props}
                 isOpen={isOpen}
-                togglePanel={togglePanel}
+                onPanelToggle={onPanelToggle}
                 >
                 {this.props.children}
             </StatelessToggablePanel>
@@ -86,7 +87,7 @@ export class StatelessToggablePanel extends Component {
         /**
          * The handler which will be called once the user toggles the contents.
          */
-        togglePanel: PropTypes.func.isRequired,
+        onPanelToggle: PropTypes.func.isRequired,
 
         /**
          * An optional css theme to be injected.
@@ -103,13 +104,13 @@ export class StatelessToggablePanel extends Component {
 
     static childContextTypes = {
         isOpen: PropTypes.bool.isRequired,
-        togglePanel: PropTypes.func.isRequired
+        onPanelToggle: PropTypes.func.isRequired
     };
 
     getChildContext() {
         return {
             isOpen: this.props.isOpen,
-            togglePanel: this.props.togglePanel
+            onPanelToggle: this.props.onPanelToggle
         };
     }
 
@@ -153,7 +154,7 @@ export class Header extends Component {
 
     static contextTypes = {
         isOpen: PropTypes.bool.isRequired,
-        togglePanel: PropTypes.func.isRequired
+        onPanelToggle: PropTypes.func.isRequired
     };
 
     constructor(props, context) {
@@ -168,7 +169,7 @@ export class Header extends Component {
             theme,
             ...rest
         } = this.props;
-        const {isOpen, togglePanel} = this.context;
+        const {isOpen, onPanelToggle} = this.context;
         const toggleIcon = isOpen ? 'chevron-up' : 'chevron-down';
 
         return (
@@ -183,7 +184,7 @@ export class Header extends Component {
                 <IconButtonComponent
                     className={theme.panel__toggleBtn}
                     icon={toggleIcon}
-                    onClick={togglePanel}
+                    onClick={onPanelToggle}
                     />
             </div>
         );

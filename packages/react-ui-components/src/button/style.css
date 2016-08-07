@@ -1,4 +1,5 @@
 .btn {
+    composes: reset from "./../reset.css";
     position: relative;
     display: inline-block;
     height: var(--goldenUnit);

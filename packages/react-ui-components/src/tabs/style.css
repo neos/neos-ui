@@ -1,13 +1,16 @@
 .tabs {
+    composes: reset from "./../reset.css";
     height: 100%;
 }
 
 .tabs__content {
+    composes: reset from "./../reset.css";
     height: calc(100% - 41px);
     overflow-y: auto;
 }
 
 .tabNavigation {
+    composes: reset from "./../reset.css";
     display: block;
     margin: 0;
     padding: 0;
@@ -25,6 +28,7 @@
     }
 }
 .tabNavigation__item {
+    composes: reset from "./../reset.css";
     float: left;
     border-right: 1px solid var(--brandColorsContrastDark);
 }
@@ -34,6 +38,7 @@
     cursor: default;
 }
 .tabNavigation__itemBtn {
+    composes: reset from "./../reset.css";
     display: inline-block;
     height: var(--goldenUnit);
     padding: 0 var(--spacing);
@@ -47,8 +52,12 @@
         outline: 0;
     }
 }
+.tabNavigation__itemBtnIcon {
+    margin-right: var(--halfSpacing);
+}
 
 .panel {
+    composes: reset from "./../reset.css";
     padding: 11px 0;
     overflow-y: auto;
 }

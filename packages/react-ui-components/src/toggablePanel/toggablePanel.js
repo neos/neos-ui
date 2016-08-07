@@ -101,7 +101,6 @@ export class StatelessToggablePanel extends Component {
 
 export class Header extends Component {
     static propTypes = {
-        className: PropTypes.string,
         children: PropTypes.any.isRequired,
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'panel__headline': PropTypes.string,
@@ -129,17 +128,14 @@ export class Header extends Component {
             HeadlineComponent,
             IconButtonComponent,
             children,
-            className,
-            theme
+            theme,
+            ...rest
         } = this.props;
         const {isOpen, togglePanel} = this.context;
         const toggleIcon = isOpen ? 'chevron-up' : 'chevron-down';
-        const finalClassName = mergeClassNames({
-            [className]: className && className.length
-        });
 
         return (
-            <div className={finalClassName} aria-expanded={isOpen ? 'true' : 'false'}>
+            <div aria-expanded={isOpen} {...rest}>
                 <HeadlineComponent
                     className={theme.panel__headline}
                     type="h1"
@@ -190,11 +186,9 @@ export class Contents extends Component {
             [className]: className && className.length
         });
 
-        console.log(theme);
-
         return (
             <Collapse isOpened={isOpen}>
-                <div className={finalClassName} key="panelContents" aria-hidden={isOpen ? 'false' : 'true'}>
+                <div className={finalClassName} aria-hidden={isOpen ? 'false' : 'true'}>
                     {children}
                 </div>
             </Collapse>

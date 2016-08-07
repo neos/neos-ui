@@ -27,7 +27,7 @@ test('validateId() should return a falsy "isValid" value if the passed id was no
 test('validateId() should not return a "iconName" value if the passed id was not found in the Font-Awesome icon names.', t => {
     const results = validateId('bar');
 
-    t.truthy(results.iconName === null);
+    t.is(results.iconName, null);
 });
 test('validateId() should return truthy "isValid" value if the passed id was found in the Font-Awesome icon names.', t => {
     const results = validateId('fa-foo');

@@ -1,4 +1,6 @@
 import test from 'ava';
+import Collapse from 'react-collapse';
+import sinon from 'sinon';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import ToggablePanel, {
     StatelessToggablePanel,
@@ -41,7 +43,8 @@ const shallowHeader = createShallowRenderer(Header, headerDefaultProps);
 const contentsDefaultProps = {
     theme: {// eslint-disable-line quote-props
         'panel__contents': 'panelContentsClassName'
-    }
+    },
+    children: 'Foo children'
 };
 const shallowContents = createShallowRenderer(Contents, contentsDefaultProps);
 
@@ -97,25 +100,90 @@ test('<StatelessToggablePanel/> should render its propagated children.', t => {
     t.truthy(wrapper.html().includes('Foo children'));
 });
 
+test('<ToggablePanel.Header/> should render a wrapping node with an "aria-expanded" attribute of "false" if the "isOpen" context is falsy.', t => {
+    const togglePanel = () => null;
+    const header = shallowHeader(null, {isOpen: false, togglePanel});
+
+    t.falsy(header.node.props['aria-expanded']);
+});
+test('<ToggablePanel.Header/> should render a wrapping node with an "aria-expanded" attribute of "true" if the "isOpen" context is truthy.', t => {
+    const togglePanel = () => null;
+    const header = shallowHeader(null, {isOpen: true, togglePanel});
+
+    t.truthy(header.node.props['aria-expanded']);
+});
 test('<ToggablePanel.Header/> should render a "HeadlineComponent" and "IconButtonComponent" component.', t => {
-    const context = shallowStateLess({isOpen: true});
-    const header = shallowHeader(null, context);
+    const togglePanel = () => null;
+    const header = shallowHeader(null, {isOpen: true, togglePanel});
 
     t.is(header.find(HeadlineComponent).length, 1);
     t.is(header.find(IconButtonComponent).length, 1);
 });
+test('<ToggablePanel.Header/> should render a "HeadlineComponent" with the themes "panel__headline" className.', t => {
+    const togglePanel = () => null;
+    const header = shallowHeader(null, {isOpen: true, togglePanel});
+    const headline = header.find(HeadlineComponent);
 
+    t.is(headline.prop('className'), headerDefaultProps.theme.panel__headline);
+});
+test('<ToggablePanel.Header/> should render all children within the "HeadlineComponent".', t => {
+    const togglePanel = () => null;
+    const header = shallowHeader(null, {isOpen: true, togglePanel});
+    const headline = header.find(HeadlineComponent);
+
+    t.is(headline.prop('children'), headerDefaultProps.children);
+});
+test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-down" if the "isOpen" context is falsy.', t => {
+    const togglePanel = () => null;
+    const header = shallowHeader(null, {isOpen: false, togglePanel});
+    const iconBtn = header.find(IconButtonComponent);
+
+    t.is(iconBtn.prop('icon'), 'chevron-down');
+});
+test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-up" if the "isOpen" context is truthy.', t => {
+    const togglePanel = () => null;
+    const header = shallowHeader(null, {isOpen: true, togglePanel});
+    const iconBtn = header.find(IconButtonComponent);
+
+    t.is(iconBtn.prop('icon'), 'chevron-up');
+});
+test('<ToggablePanel.Header/> should call the "togglePanel" prop when clicking on the "IconButtonComponent".', t => {
+    const togglePanel = sinon.spy();
+    const header = shallowHeader(null, {isOpen: true, togglePanel});
+    const iconBtn = header.find(IconButtonComponent);
+
+    iconBtn.simulate('click');
+
+    t.truthy(togglePanel.calledOnce);
+});
+
+test('<ToggablePanel.Contents/> should render a "Collapse" component.', t => {
+    const contents = shallowContents(null, {isOpen: true});
+    const collapse = contents.find(Collapse);
+
+    t.is(collapse.length, 1);
+});
 test('<ToggablePanel.Contents/> should render the themes "panel__contents" className.', t => {
-    const context = shallowStateLess({isOpen: true});
-    const contents = shallowContents(null, context);
+    const contents = shallowContents(null, {isOpen: true});
     const div = contents.find('[aria-hidden]');
 
     t.truthy(div.hasClass(contentsDefaultProps.theme.panel__contents));
 });
 test('<ToggablePanel.Contents/> should render the props "className" if provided.', t => {
-    const context = shallowStateLess({isOpen: true});
-    const contents = shallowContents({className: 'FooClassName'}, context);
+    const contents = shallowContents({className: 'FooClassName'}, {isOpen: true});
     const div = contents.find('[aria-hidden]');
 
     t.truthy(div.hasClass('FooClassName'));
+});
+test('<ToggablePanel.Contents/> should render a falsy "aria-hidden" attribute if the "isOpen" context is truthy.', t => {
+    const contents = shallowContents({className: 'FooClassName'}, {isOpen: true});
+    const div = contents.find('[aria-hidden]');
+
+    t.is(div.node.props['aria-hidden'], 'false');
+});
+test('<ToggablePanel.Contents/> should render a truthy "aria-hidden" attribute if the "isOpen" context is falsy.', t => {
+    const contents = shallowContents({className: 'FooClassName'}, {isOpen: false});
+    const div = contents.find('[aria-hidden]');
+
+    t.is(div.node.props['aria-hidden'], 'true');
 });

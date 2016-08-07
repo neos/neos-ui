@@ -10,9 +10,7 @@ const ThemedDialog = themr(identifiers.dialog, style)(Dialog);
 //
 import injectProps from './../_lib/injectProps.js';
 import IconButton from './../iconButton/index';
-import Portal from './../portal/index';
 
 export default injectProps({
-    PortalComponent: Portal,
     IconButtonComponent: IconButton
 })(ThemedDialog);

@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
+import Portal from 'react-portal';
 
 const Dialog = props => {
     const {
@@ -12,7 +13,6 @@ const Dialog = props => {
         onRequestClose,
         actions,
         theme,
-        PortalComponent,
         IconButtonComponent,
         ...restProps
     } = props;
@@ -24,7 +24,7 @@ const Dialog = props => {
     });
 
     return (
-        <PortalComponent targetId="dialog" isOpen={isOpen}>
+        <Portal isOpened={isOpen}>
             <section {...rest} className={finalClassName} role="dialog" tabIndex="0">
                 <div className={theme.dialog__contentsPosition}>
                     <div className={theme.dialog__contents}>
@@ -45,7 +45,7 @@ const Dialog = props => {
                     </div>
                 </div>
             </section>
-        </PortalComponent>
+        </Portal>
     );
 };
 Dialog.propTypes = {
@@ -100,7 +100,6 @@ Dialog.propTypes = {
     /**
      * Static component dependencies which are injected from the outside (index.js)
      */
-    PortalComponent: PropTypes.any.isRequired,
     IconButtonComponent: PropTypes.any.isRequired
 };
 

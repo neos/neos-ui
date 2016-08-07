@@ -88,6 +88,7 @@
     "react-height": "^2.0.4",
     "react-motion": "^0.4.2",
     "react-textarea-autosize": "^4.0.0",
+    "react-portal": "^2.2.1",
     "rimraf": "^2.5.4",
     "semantic-release": "^4.3.5",
     "sinon": "^1.17.5",
@@ -109,7 +110,8 @@
     "react-textarea-autosize": "^4.0.0",
     "react-height": "^2.0.4",
     "react-motion": "^0.4.2",
-    "react-css-themr": "^1.2.0"
+    "react-css-themr": "^1.2.0",
+    "react-portal": "^2.2.1"
   },
   "license": "GPL-3.0+",
   "repository": {

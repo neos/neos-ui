@@ -8,12 +8,12 @@ storiesOf('Dialog', module)
         <StoryWrapper title="Dialog">
             <Dialog
                 isOpen={true}
-                wide={true}
                 title="Hello dialog!"
                 onRequestClose={action('onRequestClose')}
                 actions={[
                     <div>Button</div>
                 ]}
+                isWide
                 >
                 Hello world
             </Dialog>

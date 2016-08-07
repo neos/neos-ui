@@ -66,24 +66,19 @@ export default class Tabs extends Component {
         } = this.props;
         const {activeTab} = this.state;
 
-        const menuItems = children
-            .map(panel => typeof panel === 'function' ? panel() : panel)
-            .filter(panel => panel)
-            .map((panel, index) => {
-                return (
-                    <TabMenuItem
-                        key={index}
-                        index={index}
-                        ref={`tab-${index}`}
-                        onClick={this.handleTabNavItemClick}
-                        isActive={activeTab === index}
-                        IconComponent={IconComponent}
-                        theme={theme}
-                        title={panel.props.title}
-                        icon={panel.props.icon}
-                        />
-                );
-            });
+        const menuItems = React.Children.map(children, (panel, index) => (
+            <TabMenuItem
+                key={index}
+                index={index}
+                ref={`tab-${index}`}
+                onClick={this.handleTabNavItemClick}
+                isActive={activeTab === index}
+                IconComponent={IconComponent}
+                theme={theme}
+                title={panel.props.title}
+                icon={panel.props.icon}
+                />
+        ));
 
         return (
             <ul className={theme.tabNavigation}>
@@ -101,7 +96,7 @@ export default class Tabs extends Component {
 
         return (
             <div ref="tab-panel" className={theme.tabs__content}>
-                {children.map((panel, index) => {
+                {React.Children.map(children, (panel, index) => {
                     const isActive = this.state.activeTab === index;
                     const style = {
                         display: isActive ? 'block' : 'none'

@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-const err = (msg) => {
+const err = msg => {
     throw new Error(msg);
 };
 const NO_COMPONENT = 'Please specify a valid Reac.component constructor in the createRenderer call.';
@@ -14,5 +14,11 @@ const NO_COMPONENT = 'Please specify a valid Reac.component constructor in the c
  * @return {Object} The shallow rendered output of `enzyme`,
  */
 export const createShallowRenderer = (Component = err(NO_COMPONENT), defaultProps = {}) => {
-    return (props = {}) => shallow(<Component {...defaultProps} {...props}/>);
+    return (props = {}, context) => shallow(<Component {...defaultProps} {...props}/>, {context});
 };
+
+/**
+ * A function which returns a simple React element which can be
+ * used as a test stub for cross component dependencies.
+ */
+export const createStubComponent = () => props => <div {...props}/>;

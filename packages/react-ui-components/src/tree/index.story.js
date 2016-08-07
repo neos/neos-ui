@@ -1,10 +1,11 @@
 import React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
+import {StoryWrapper} from './../_lib/storyUtils.js';
 import Tree from './index.js';
 
 storiesOf('Tree', module)
     .add('default', () => (
-        <div>
+        <StoryWrapper title="Tree">
             adfasdfa
             <Tree>
                 <Tree.Node>
@@ -74,5 +75,5 @@ storiesOf('Tree', module)
                     </Tree.Node.Contents>
                 </Tree.Node>
             </Tree>
-        </div>
+        </StoryWrapper>
     ));

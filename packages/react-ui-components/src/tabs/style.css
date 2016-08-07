@@ -1,19 +1,22 @@
 .tabs {
+    composes: reset from './../reset.css';
     height: 100%;
 }
 
 .tabs__content {
+    composes: reset from './../reset.css';
     height: calc(100% - 41px);
     overflow-y: auto;
 }
 
 .tabNavigation {
+    composes: reset from './../reset.css';
     display: block;
     margin: 0;
     padding: 0;
     list-style: none;
-    background: $darkest;
-    border-bottom: 1px solid $dark;
+    background: var(--brandColorsContrastDarkest);
+    border-bottom: 1px solid var(--brandColorsContrastDark);
 
     &:before,
     &:after {
@@ -25,19 +28,21 @@
     }
 }
 .tabNavigation__item {
+    composes: reset from './../reset.css';
     float: left;
-    border-right: 1px solid $dark;
+    border-right: 1px solid var(--brandColorsContrastDark);
 }
 .tabNavigation__item--isActive {
-    color: $brand;
-    background-color: $darker;
+    color: var(--brandColorsPrimaryBlue);
+    background-color: var(--brandColorsContrastDarker);
     cursor: default;
 }
 .tabNavigation__itemBtn {
+    composes: reset from './../reset.css';
     display: inline-block;
-    height: $unit;
-    padding: 0 $spacing;
-    line-height: $unit;
+    height: var(--goldenUnit);
+    padding: 0 var(--spacing);
+    line-height: var(--goldenUnit);
     cursor: pointer;
     color: white;
     border: 0;
@@ -47,8 +52,12 @@
         outline: 0;
     }
 }
+.tabNavigation__itemBtnIcon {
+    margin-right: var(--halfSpacing);
+}
 
 .panel {
+    composes: reset from './../reset.css';
     padding: 11px 0;
     overflow-y: auto;
 }

@@ -75,9 +75,9 @@ export class Header extends Component {
         return (
             <div className={theme.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
-                <div role="button" onClick={() => onClick()} className={dataClassNames}>
-                    <IconComponent icon={icon || 'question'} padded="right" />
-                    <span className={theme.header__label} role="button" onClick={() => onLabelClick()} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                <div role="button" onClick={onClick} className={dataClassNames}>
+                    <IconComponent icon={icon || 'question'} padded="right"/>
+                    <span className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>
                 </div>
@@ -102,18 +102,18 @@ export class Header extends Component {
 
         switch (true) {
             case hasError:
-                icon = <IconComponent icon="ban" />;
+                icon = <IconComponent icon="ban"/>;
                 break;
             case isLoading:
-                icon = <IconComponent icon="spinner" spin={true} />;
+                icon = <IconComponent icon="spinner" spin={true}/>;
                 break;
             default:
-                icon = <IconComponent icon="sort-desc" />;
+                icon = <IconComponent icon="sort-desc"/>;
                 break;
         }
 
         return (
-            <a role="button" onClick={() => onToggle()} className={classnames} data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle">
+            <a role="button" onClick={onToggle} className={classnames} data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle">
                 {icon}
             </a>
         );

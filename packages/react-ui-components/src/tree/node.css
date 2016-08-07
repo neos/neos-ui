@@ -1,20 +1,22 @@
 .header {
+    composes: reset from './../reset.css';
     position: relative;
     height: 24px;
     line-height: 24px;
     padding-left: 15px;
 }
 .header__chevron {
+    composes: reset from './../reset.css';
     position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
     margin-top: -3px;
     cursor: pointer;
-    color: $brighter;
+    color: var(--brandColorsContrastBrighter);
 
     &:hover {
-        color: $brand;
+        color: var(--brandColorsPrimaryBlue);
     }
 }
 .header__chevron--isCollapsed {
@@ -23,22 +25,26 @@
 
 .header__chevron--isLoading,
 .header__chevron--isLoading:hover {
-    color: $brighter !important;
+    color: var(--brandColorsContrastBrighter) !important;
 }
 
 .header__data {
+    composes: reset from './../reset.css';
     display: block;
     cursor: pointer;
 }
 .header__data--isFocused {
-    background: $neutral;
+    background: var(--brandColorsContrastNeutral);
 }
 .header__label {
+    composes: reset from './../reset.css';
+
     .header__data--isActive & {
-        color: $brand;
+        color: var(--brandColorsPrimaryBlue);
     }
 }
 
 .contents {
-    margin-left: $spacing;
+    composes: reset from './../reset.css';
+    margin-left: var(--spacing);
 }

@@ -1,4 +1,5 @@
 .grid {
+    composes: reset from './../reset.css';
     margin-left: -10px;
     margin-right: -10px;
 
@@ -12,6 +13,7 @@
     }
 }
 .grid__item {
+    composes: reset from './../reset.css';
     float: left;
     padding-left: 10px;
     padding-right: 10px;

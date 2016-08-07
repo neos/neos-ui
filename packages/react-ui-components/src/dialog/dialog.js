@@ -1,39 +1,37 @@
 import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
-import executeCallback from './../_lib/executeCallback.js';
+import Portal from 'react-portal';
 
 const Dialog = props => {
     const {
         className,
         title,
-        wide,
+        isWide,
         children,
         isOpen,
         onRequestClose,
         actions,
         theme,
-        PortalComponent,
         IconButtonComponent,
         ...restProps
     } = props;
     const rest = omit(restProps, ['isOpen']);
-    const dialogStyle = wide ? theme['dialog--wide'] : theme.dialog;
-    const classNames = mergeClassNames({
-        [dialogStyle]: true,
+    const finalClassName = mergeClassNames({
+        [theme.dialog]: true,
+        [theme['dialog--wide']]: isWide,
         [className]: className && className.length
     });
 
     return (
-        <PortalComponent targetId="dialog" isOpen={isOpen}>
-            <section {...rest} className={classNames} role="dialog" tabIndex="0">
+        <Portal isOpened={isOpen}>
+            <section {...rest} className={finalClassName} role="dialog" tabIndex="0">
                 <div className={theme.dialog__contentsPosition}>
                     <div className={theme.dialog__contents}>
                         <IconButtonComponent
                             icon="close"
                             className={theme.dialog__closeBtn}
-                            id="neos__modal__closeModal"
-                            onClick={e => executeCallback({e, cb: onRequestClose})}
+                            onClick={onRequestClose}
                             />
                         <div className={theme.dialog__title}>
                             {title}
@@ -42,35 +40,53 @@ const Dialog = props => {
                         {children}
 
                         <div className={theme.dialog__actions}>
-                            {actions.map((action, index) => <span key={index}>{action}</span>)}
+                            {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}
                         </div>
                     </div>
                 </div>
             </section>
-        </PortalComponent>
+        </Portal>
     );
 };
 Dialog.propTypes = {
-    // State propTypes.
+    /**
+     * This prop controls the rendered state of the Dialog, when falsy, nothing gets rendered into the DOM.
+     */
     isOpen: PropTypes.bool.isRequired,
 
-    // Will be called once the close icon in the top right corner gets clicked.
+    /**
+     * The handler which gets called once the user clicks on the close symbol in the top right corner of the Dialog.
+     */
     onRequestClose: PropTypes.func.isRequired,
 
-    // Dialog's title
+    /**
+     * The title to be rendered on top of the Dialogs contents.
+     */
     title: PropTypes.any,
 
-    // Wider verision of the Dialog
-    wide: PropTypes.bool,
+    /**
+     * When truthy, the Dialog gets rendered in bigger dimensions.
+     */
+    isWide: PropTypes.bool,
 
-    // Contents of the Dialog.
+    /**
+     * The contents to be rendered within the Dialog.
+     */
     children: PropTypes.any.isRequired,
 
-    // Optional Array of nodes(Action buttons f.e.) which are placed at the bottom of the Dialog.
+    /**
+     * An Array of nodes(e.g. Action Buttons) which are placed at the bottom of the Dialog.
+     */
     actions: PropTypes.any.isRequired,
 
-    // Style related propTypes.
+    /**
+     * An optional `className` to attach to the wrapper.
+     */
     className: PropTypes.string,
+
+    /**
+     * An optional css theme to be injected.
+     */
     theme: PropTypes.shape({
         'dialog': PropTypes.string,
         'dialog__contentsPosition': PropTypes.string,
@@ -78,13 +94,12 @@ Dialog.propTypes = {
         'dialog__title': PropTypes.string,
         'dialog__closeBtn': PropTypes.string,
         'dialog__actions': PropTypes.string,
-        'dialog--wide': PropTypes.string
+        'dialog--isWide': PropTypes.string
     }).isRequired,
 
-    //
-    // Static component dependencies which are injected from the outside (index.js)
-    //
-    PortalComponent: PropTypes.any.isRequired,
+    /**
+     * Static component dependencies which are injected from the outside (index.js)
+     */
     IconButtonComponent: PropTypes.any.isRequired
 };
 

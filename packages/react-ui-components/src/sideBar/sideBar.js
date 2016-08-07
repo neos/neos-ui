@@ -23,9 +23,24 @@ const SideBar = props => {
     );
 };
 SideBar.propTypes = {
+    /**
+     * This prop controls the absolute positioning of the SideBar.
+     */
     position: PropTypes.oneOf(['left', 'right']).isRequired,
+
+    /**
+     * An optional className to render on the div node.
+     */
     className: PropTypes.string,
+
+    /**
+     * The children to render within the div node.
+     */
     children: PropTypes.any.isRequired,
+
+    /**
+     * An optional css theme to be injected.
+     */
     theme: PropTypes.shape({// eslint-disable-line quote-props
         'sideBar': PropTypes.string,
         'sideBar--left': PropTypes.string,

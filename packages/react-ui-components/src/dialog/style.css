@@ -1,4 +1,5 @@
 .dialog {
+    composes: reset from './../reset.css';
     position: fixed;
     top: 0;
     left: 0;
@@ -8,38 +9,40 @@
     background: rgba(#000, .35);
 }
 .dialog__contentsPosition {
+    composes: reset from './../reset.css';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    background: $darker;
+    background: var(--brandColorsContrastDarker);
 }
 .dialog__contents {
+    composes: reset from './../reset.css';
     position: relative;
-    width: calc(100vw - $unit * 2);
-    max-width: calc($unit * 16);
-    max-height: calc(100vh - ($unit * 2));
-    border: 1px solid $dark;
+    width: calc(100vw - var(--goldenUnit) * 2);
+    max-width: calc(var(--goldenUnit) * 16);
+    max-height: calc(100vh - (var(--goldenUnit) * 2));
+    border: 1px solid var(--brandColorsContrastDark);
+
+    .dialog--wide & {
+       max-width: calc(var(--goldenUnit) * 24);
+    }
 }
 .dialog__title {
+    composes: reset from './../reset.css';
     font-size: 16px;
     line-height: 1.2;
-    padding: $spacing;
+    padding: var(--spacing);
 }
 .dialog__closeBtn {
+    composes: reset from './../reset.css';
     position: absolute;
     top: 0;
     right: 0;
 }
 .dialog__actions {
+    composes: reset from './../reset.css';
     text-align: right;
-    border-top: 1px solid $dark;
-    padding: $spacing;
-}
-
-.dialog--wide {
-    composes: dialog;
-}
-.dialog--wide .dialog__contents {
-    max-width: calc($unit * 24);
+    border-top: 1px solid var(--brandColorsContrastDark);
+    padding: var(--spacing);
 }

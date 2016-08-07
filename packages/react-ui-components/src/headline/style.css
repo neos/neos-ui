@@ -1,5 +1,6 @@
 .heading {
-    font-size: 14px;
+    composes: reset from './../reset.css';
+    font-size: var(--baseFontSize);
     text-rendering: optimizelegibility;
 }
 .heading--h1 {

@@ -2,35 +2,43 @@ import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 
 const IconButton = props => {
-    // Since `this.props` isn't writable, we need to clone it
-    // and add the component specific className to the passed props.
     const {
         IconComponent,
         ButtonComponent,
+        className,
         theme,
+        icon,
         ...rest
     } = props;
-    const finalClassName = mergeClassNames(props.className, theme.iconButton);
+    const finalClassName = mergeClassNames(theme.iconButton, className);
 
     return (
         <ButtonComponent {...rest} className={finalClassName}>
-          <IconComponent icon={props.icon} />
+            <IconComponent icon={icon}/>
         </ButtonComponent>
     );
 };
 IconButton.propTypes = {
-    // The icon key which gets passed to the Icon Component.
+    /**
+     * The icon key which gets passed to the Icon Component.
+     */
     icon: PropTypes.string.isRequired,
 
-    // Additional className for the Button.
+    /**
+     * An optional `className` to attach to the wrapper.
+     */
     className: PropTypes.string,
+
+    /**
+    * An optional css theme to be injected.
+    */
     theme: PropTypes.shape({// eslint-disable-line quote-props
         'iconButton': PropTypes.string
     }).isRequired,
 
-    //
-    // Static component dependencies which are injected from the outside (index.js)
-    //
+    /**
+     * Static component dependencies which are injected from the outside (index.js)
+     */
     IconComponent: PropTypes.any.isRequired,
     ButtonComponent: PropTypes.any.isRequired
 };

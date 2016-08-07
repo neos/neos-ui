@@ -72,22 +72,22 @@ export default class SelectBox extends Component {
                 <DropDownComponent className={theme.dropDown}>
                     <DropDownComponent.Header className={theme.dropDown__btn}>
                         {Maybe.fromNull(icon)
-                            .map(icon => <IconComponent className={theme.dropDown__btnIcon} icon={icon} />)
+                            .map((icon, index) => <IconComponent key={index} className={theme.dropDown__btnIcon} icon={icon}/>)
                             .orSome('')}
                         {label}
                     </DropDownComponent.Header>
                     <DropDownComponent.Contents className={theme.dropDown__contents}>
                         {Maybe.fromNull(placeholder)
-                            .map(placeholder => (
-                                <li className={theme.dropDown__item}>
+                            .map((placeholder, index) => (
+                                <li key={index} className={theme.dropDown__item}>
                                     {Maybe.fromNull(placeholderIcon)
-                                        .map(icon => <IconComponent className={theme.dropDown__itemIcon} icon={icon} />)
+                                        .map((icon, index) => <IconComponent key={index} className={theme.dropDown__itemIcon} icon={icon}/>)
                                         .orSome('')}
                                     {placeholder}
                                 </li>
                             ))
                             .orSome('')}
-                        {options.map(({icon, label, value}) => {
+                        {options.map(({icon, label, value}, index) => {
                             const onClick = () => {
                                 this.select(value);
                                 onSelect(value);
@@ -95,11 +95,12 @@ export default class SelectBox extends Component {
 
                             return (
                                 <li
+                                    key={index}
                                     className={theme.dropDown__item}
                                     onClick={onClick}
                                     >
                                     {Maybe.fromNull(icon)
-                                        .map(icon => <IconComponent className={theme.dropDown__itemIcon} icon={icon} />)
+                                        .map((icon, index) => <IconComponent key={index} className={theme.dropDown__itemIcon} icon={icon}/>)
                                         .orSome('')}
                                     {label}
                                 </li>

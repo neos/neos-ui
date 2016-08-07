@@ -1,46 +1,53 @@
 .wrapper {
+    composes: reset from './../reset.css';
     display: inline-block;
     position: relative;
     vertical-align: top;
 }
 .dropDown {
+    composes: reset from './../reset.css';
     position: static;
     display: inline-block;
 }
 .dropDown__btn {
+    composes: reset from './../reset.css';
     position: relative;
     display: inline-block;
     height: 40px;
     line-height: 40px;
     border: 0;
-    background: $neutral;
+    background: var(--brandColorsContrastNeutral);
     min-width: 160px;
 }
 .dropDown__btnIcon {
+    composes: reset from './../reset.css';
     margin-right: .5em;
 }
 .dropDown__contents {
+    composes: reset from './../reset.css';
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
     z-index: 10;
 }
 .dropDown__item {
+    composes: reset from './../reset.css';
     height: 40px;
     line-height: 40px;
-    background: $neutral;
-    border-top: 1px solid $darker;
+    background: var(--brandColorsContrastNeutral);
+    border-top: 1px solid var(--brandColorsContrastDarker);
     cursor: pointer;
 
     &:hover {
-        background: $brand;
+        background: var(--brandColorsPrimaryBlue);
     }
 
     > a,
     button {
+        composes: reset from './../reset.css';
         display: block;
         width: 100%;
         border: 0;
-        padding: 0 $spacing;
+        padding: 0 var(--spacing);
         background: 0;
         color: #FFF;
         cursor: pointer;
@@ -50,5 +57,6 @@
     }
 }
 .dropDown__itemIcon {
+    composes: reset from './../reset.css';
     padding-right: .5em;
 }

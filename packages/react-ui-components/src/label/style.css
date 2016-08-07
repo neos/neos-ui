@@ -1,9 +1,14 @@
 .label {
+    composes: reset from './../reset.css';
     display: block;
-    margin-bottom: 4px;
-    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    font-size: var(--baseFontSize);
     cursor: pointer;
+    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    max-width: 288px;
+    padding: 0;
+    margin-bottom: 4px;
     user-select: none;
 }

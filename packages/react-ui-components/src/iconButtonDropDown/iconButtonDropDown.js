@@ -47,8 +47,8 @@ export default class IconButtonDropDown extends Component {
         }).isRequired,
 
         /**
-        * Static component dependencies which are injected from the outside (index.js)
-        */
+         * Static component dependencies which are injected from the outside (index.js)
+         */
         IconComponent: PropTypes.any.isRequired,
         ButtonComponent: PropTypes.any.isRequired,
 

@@ -28,20 +28,35 @@ const TextArea = props => {
     );
 };
 TextArea.propTypes = {
-    // Style related propTypes.
+    /**
+     * This prop controls if the TextArea is rendered as invalid or not.
+     */
     isValid: PropTypes.bool.isRequired,
+
+    /**
+     * An optional className to render on the textarea node.
+     */
     className: PropTypes.string,
+
+    /**
+     * An optional HTML5 placeholder.
+     */
     placeholder: PropTypes.string,
 
-    // Interaction related propTypes.
+    /**
+     * The handler which will be called once the user changes the value of the input.
+     */
     onChange: PropTypes.func,
+
+    /**
+     * An optional css theme to be injected.
+     */
     theme: PropTypes.shape({
         'textArea': PropTypes.string,
         'textArea--invalid': PropTypes.string
     }).isRequired
 };
 TextArea.defaultProps = {
-    theme: {},
     isValid: true
 };
 

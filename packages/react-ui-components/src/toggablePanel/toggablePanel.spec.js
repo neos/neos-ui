@@ -23,7 +23,7 @@ const stateLessDefaultProps = {
         'panel--isOpen': 'isOpenClassName'
     },
     children: 'Foo children',
-    togglePanel: () => null
+    onPanelToggle: () => null
 };
 const shallowStateLess = createShallowRenderer(StatelessToggablePanel, stateLessDefaultProps);
 
@@ -72,28 +72,28 @@ test('<ToggablePanel/> should propagate the rest of the passed props to the "Sta
 
     t.is(node.prop('className'), 'testClassName');
 });
-test('<ToggablePanel/> should propagate the "isOpen" prop to the the "StatelessToggablePanel" component in case a "togglePanel" prop was provided.', t => {
-    const node = shallow({isOpen: true, togglePanel: () => null}).find(StatelessToggablePanel);
+test('<ToggablePanel/> should propagate the "isOpen" prop to the the "StatelessToggablePanel" component in case a "onPanelToggle" prop was provided.', t => {
+    const node = shallow({isOpen: true, onPanelToggle: () => null}).find(StatelessToggablePanel);
 
     t.is(node.prop('isOpen'), true);
 });
-test('<ToggablePanel/> should propagate the "togglePanel" prop to the the "StatelessToggablePanel" component in case it was provided.', t => {
-    const togglePanel = () => null;
-    const node = shallow({isOpen: true, togglePanel}).find(StatelessToggablePanel);
+test('<ToggablePanel/> should propagate the "onPanelToggle" prop to the the "StatelessToggablePanel" component in case it was provided.', t => {
+    const onPanelToggle = () => null;
+    const node = shallow({isOpen: true, onPanelToggle}).find(StatelessToggablePanel);
 
-    t.is(node.prop('togglePanel'), togglePanel);
+    t.is(node.prop('onPanelToggle'), onPanelToggle);
 });
-test('<ToggablePanel/> should propagate the "isOpen" state to the the "StatelessToggablePanel" component in case no "togglePanel" prop was provided.', t => {
+test('<ToggablePanel/> should propagate the "isOpen" state to the the "StatelessToggablePanel" component in case no "onPanelToggle" prop was provided.', t => {
     const wrapper = shallow();
     const node = wrapper.find(StatelessToggablePanel);
 
     t.is(node.prop('isOpen'), wrapper.state('isOpen'));
 });
-test('<ToggablePanel/> should propagate the "toggle" instance method to the the "StatelessToggablePanel" component in case no "togglePanel" prop was provided.', t => {
+test('<ToggablePanel/> should propagate the "toggle" instance method to the the "StatelessToggablePanel" component in case no "onPanelToggle" prop was provided.', t => {
     const wrapper = shallow();
     const node = wrapper.find(StatelessToggablePanel);
 
-    t.is(node.prop('togglePanel'), wrapper.instance().toggle);
+    t.is(node.prop('onPanelToggle'), wrapper.instance().toggle);
 });
 
 test('<StatelessToggablePanel/> should render only the "panel" className of the theme in any case.', t => {
@@ -120,60 +120,60 @@ test('<StatelessToggablePanel/> should render its propagated children.', t => {
 });
 
 test('<ToggablePanel.Header/> should render a wrapping node with an "aria-expanded" attribute of "false" if the "isOpen" context is falsy.', t => {
-    const togglePanel = () => null;
-    const header = shallowHeader(null, {isOpen: false, togglePanel});
+    const onPanelToggle = () => null;
+    const header = shallowHeader(null, {isOpen: false, onPanelToggle});
 
     t.falsy(header.node.props['aria-expanded']);
 });
 test('<ToggablePanel.Header/> should render a wrapping node with an "aria-expanded" attribute of "true" if the "isOpen" context is truthy.', t => {
-    const togglePanel = () => null;
-    const header = shallowHeader(null, {isOpen: true, togglePanel});
+    const onPanelToggle = () => null;
+    const header = shallowHeader(null, {isOpen: true, onPanelToggle});
 
     t.truthy(header.node.props['aria-expanded']);
 });
 test('<ToggablePanel.Header/> should render a "HeadlineComponent" and "IconButtonComponent" component.', t => {
-    const togglePanel = () => null;
-    const header = shallowHeader(null, {isOpen: true, togglePanel});
+    const onPanelToggle = () => null;
+    const header = shallowHeader(null, {isOpen: true, onPanelToggle});
 
     t.is(header.find(HeadlineComponent).length, 1);
     t.is(header.find(IconButtonComponent).length, 1);
 });
 test('<ToggablePanel.Header/> should render a "HeadlineComponent" with the themes "panel__headline" className.', t => {
-    const togglePanel = () => null;
-    const header = shallowHeader(null, {isOpen: true, togglePanel});
+    const onPanelToggle = () => null;
+    const header = shallowHeader(null, {isOpen: true, onPanelToggle});
     const headline = header.find(HeadlineComponent);
 
     t.is(headline.prop('className'), headerDefaultProps.theme.panel__headline);
 });
 test('<ToggablePanel.Header/> should render all children within the "HeadlineComponent".', t => {
-    const togglePanel = () => null;
-    const header = shallowHeader(null, {isOpen: true, togglePanel});
+    const onPanelToggle = () => null;
+    const header = shallowHeader(null, {isOpen: true, onPanelToggle});
     const headline = header.find(HeadlineComponent);
 
     t.is(headline.prop('children'), headerDefaultProps.children);
 });
 test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-down" if the "isOpen" context is falsy.', t => {
-    const togglePanel = () => null;
-    const header = shallowHeader(null, {isOpen: false, togglePanel});
+    const onPanelToggle = () => null;
+    const header = shallowHeader(null, {isOpen: false, onPanelToggle});
     const iconBtn = header.find(IconButtonComponent);
 
     t.is(iconBtn.prop('icon'), 'chevron-down');
 });
 test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-up" if the "isOpen" context is truthy.', t => {
-    const togglePanel = () => null;
-    const header = shallowHeader(null, {isOpen: true, togglePanel});
+    const onPanelToggle = () => null;
+    const header = shallowHeader(null, {isOpen: true, onPanelToggle});
     const iconBtn = header.find(IconButtonComponent);
 
     t.is(iconBtn.prop('icon'), 'chevron-up');
 });
-test('<ToggablePanel.Header/> should call the "togglePanel" prop when clicking on the "IconButtonComponent".', t => {
-    const togglePanel = sinon.spy();
-    const header = shallowHeader(null, {isOpen: true, togglePanel});
+test('<ToggablePanel.Header/> should call the "onPanelToggle" prop when clicking on the "IconButtonComponent".', t => {
+    const onPanelToggle = sinon.spy();
+    const header = shallowHeader(null, {isOpen: true, onPanelToggle});
     const iconBtn = header.find(IconButtonComponent);
 
     iconBtn.simulate('click');
 
-    t.truthy(togglePanel.calledOnce);
+    t.truthy(onPanelToggle.calledOnce);
 });
 
 test('<ToggablePanel.Contents/> should render a "Collapse" component.', t => {

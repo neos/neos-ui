@@ -12,12 +12,11 @@ storiesOf('Dialog', module)
                 title="Hello dialog!"
                 onRequestClose={action('onRequestClose')}
                 actions={[
-                    <Button>An action button</Button>
+                    <Button key="foo">An action button</Button>
                 ]}
                 isWide
                 >
                 Hello world
             </Dialog>
-            <div id="dialog" />
         </StoryWrapper>
     ));

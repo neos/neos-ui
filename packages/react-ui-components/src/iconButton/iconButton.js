@@ -14,7 +14,7 @@ const IconButton = props => {
 
     return (
         <ButtonComponent {...rest} className={finalClassName}>
-          <IconComponent icon={icon} />
+            <IconComponent icon={icon}/>
         </ButtonComponent>
     );
 };

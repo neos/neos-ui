@@ -21,7 +21,7 @@ export default class DropDownItem extends Component {
     constructor(props) {
         super(props);
 
-        this.handlClick = this.handlClick.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     render() {
@@ -31,14 +31,14 @@ export default class DropDownItem extends Component {
             <a
                 {...rest}
                 role="button"
-                onClick={this.handlClick}
+                onClick={this.handleClick}
                 >
             {children}
             </a>
         );
     }
 
-    handlClick() {
+    handleClick() {
         const {onClick, id} = this.props;
 
         onClick(id);

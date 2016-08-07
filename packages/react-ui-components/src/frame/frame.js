@@ -14,7 +14,7 @@ if (hasConsole) {
     // works. We swallow React's validateDOMNesting warning if that is the
     // message to avoid confusion
     swallowInvalidHeadWarning = () => {
-        console.error = (msg) => {
+        console.error = msg => {
             if (/<head>/.test(msg)) {
                 return;
             }
@@ -59,8 +59,8 @@ const Frame = React.createClass({
         if (!this._isMounted) {
             return;
         }
-        const doc = ReactDOM.findDOMNode(this).contentDocument;
-        const win = ReactDOM.findDOMNode(this).contentWindow;
+        const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
+        const win = ReactDOM.findDOMNode(this).contentWindow; // eslint-disable-line react/no-find-dom-node
         // TODO: doc.readyState seems to be *always* true in Chrome at least; so we check whether the querySelectors exist.
         if (doc && doc.readyState === 'complete' && doc.querySelector(this.props.mountTarget)) {
             const contents = React.createElement('div',
@@ -114,7 +114,7 @@ const Frame = React.createClass({
     componentWillUnmount() {
         this._isMounted = false;
 
-        const doc = ReactDOM.findDOMNode(this).contentDocument;
+        const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
         if (doc) {
             ReactDOM.unmountComponentAtNode(doc.body);
         }

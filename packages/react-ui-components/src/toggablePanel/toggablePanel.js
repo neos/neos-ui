@@ -4,8 +4,19 @@ import mergeClassNames from 'classnames';
 
 export default class ToggablePanel extends Component {
     static propTypes = {
+        /**
+         * This prop controls if the contents are visible or not.
+         */
         isOpen: PropTypes.bool,
+
+        /**
+         * The children, ideally one Header and Contents component each.
+         */
         children: PropTypes.any.isRequired,
+
+        /**
+         * The handler which will be called once the user toggles the contents.
+         */
         togglePanel: PropTypes.func
     };
 
@@ -57,10 +68,29 @@ export default class ToggablePanel extends Component {
 
 export class StatelessToggablePanel extends Component {
     static propTypes = {
+        /**
+         * This prop controls if the contents are visible or not.
+         */
         isOpen: PropTypes.bool,
+
+        /**
+         * An optional className to render on the wrapper.
+         */
         className: PropTypes.string,
+
+        /**
+         * The children, ideally one Header and Contents component each.
+         */
         children: PropTypes.any.isRequired,
+
+        /**
+         * The handler which will be called once the user toggles the contents.
+         */
         togglePanel: PropTypes.func.isRequired,
+
+        /**
+         * An optional css theme to be injected.
+         */
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'panel': PropTypes.string,
             'panel--isOpen': PropTypes.string
@@ -101,15 +131,22 @@ export class StatelessToggablePanel extends Component {
 
 export class Header extends Component {
     static propTypes = {
+        /**
+         * The children which will be rendered within the header.
+         */
         children: PropTypes.any.isRequired,
+
+        /**
+         * An optional css theme to be injected.
+         */
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'panel__headline': PropTypes.string,
             'panel__toggleBtn': PropTypes.string
         }).isRequired,
 
-        //
-        // Static component dependencies which are injected from the outside (index.js)
-        //
+        /**
+         * Static component dependencies which are injected from the outside (index.js)
+         */
         HeadlineComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired
     };
@@ -155,8 +192,19 @@ export class Header extends Component {
 
 export class Contents extends Component {
     static propTypes = {
+        /**
+         * An optional className to be rendered on the wrapping node.
+         */
         className: PropTypes.string,
+
+        /**
+         * The rendered children which can be toggled.
+         */
         children: PropTypes.any.isRequired,
+
+        /**
+         * An optional css theme to be injected.
+         */
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'panel__contents': PropTypes.string
         }).isRequired

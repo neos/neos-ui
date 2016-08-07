@@ -109,7 +109,7 @@ export default class Tabs extends Component {
         const {theme, children} = this.props;
 
         return (
-            <div ref="tab-panel" className={theme.tabs__content}>
+            <div className={theme.tabs__content}>
                 {React.Children.map(children, (panel, index) => {
                     const isActive = this.state.activeTab === index;
                     const style = {
@@ -215,7 +215,7 @@ export class TabMenuItem extends Component {
                     aria-selected={isActive ? 'true' : 'false'}
                     aria-controls={`section${index}`}
                     >
-                    {icon ? <IconComponent icon={icon} className={theme.tabNavigation__itemBtnIcon} /> : null}
+                    {icon ? <IconComponent icon={icon} className={theme.tabNavigation__itemBtnIcon}/> : null}
                     {title}
                 </button>
             </li>

@@ -157,10 +157,6 @@ export class Header extends Component {
         onPanelToggle: PropTypes.func.isRequired
     };
 
-    constructor(props, context) {
-        super(props, context);
-    }
-
     render() {
         const {
             HeadlineComponent,
@@ -218,10 +214,6 @@ export class Contents extends Component {
     static contextTypes = {
         isOpen: PropTypes.bool.isRequired
     };
-
-    constructor(props, context) {
-        super(props, context);
-    }
 
     render() {
         const {

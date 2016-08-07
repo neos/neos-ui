@@ -87,10 +87,6 @@ export class ContextDropDownHeader extends Component {
         toggleDropDown: PropTypes.func.isRequired
     };
 
-    constructor(props, context) {
-        super(props, context);
-    }
-
     render() {
         return <ShallowDropDownHeader {...this.props} {...this.context}/>;
     }
@@ -100,10 +96,6 @@ export class ContextDropDownContents extends Component {
         isOpen: PropTypes.bool.isRequired,
         closeDropDown: PropTypes.func.isRequired
     };
-
-    constructor(props, context) {
-        super(props, context);
-    }
 
     render() {
         return <ShallowDropDownContents {...this.props} {...this.context}/>;

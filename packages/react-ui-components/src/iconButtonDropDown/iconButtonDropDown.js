@@ -118,8 +118,8 @@ export default class IconButtonDropDown extends Component {
                     onMouseDown={this.handleHoldTimeout}
                     onClick={this.handleClick}
                     >
-                    <IconComponent icon={modeIcon} className={theme.wrapper__btnModeIcon} />
-                    <IconComponent icon={icon} />
+                    <IconComponent icon={modeIcon} className={theme.wrapper__btnModeIcon}/>
+                    <IconComponent icon={icon}/>
                 </ButtonComponent>
                 <div className={dropDownClassNames} aria-hidden={isOpen ? 'false' : 'true'}>
                     {React.Children.map(children, (child, index) => (

@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-const err = (msg) => {
+const err = msg => {
     throw new Error(msg);
 };
 const NO_COMPONENT = 'Please specify a valid Reac.component constructor in the createRenderer call.';

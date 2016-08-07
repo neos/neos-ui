@@ -1,5 +1,5 @@
 .textInput {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     width: 100%;
     height: var(--goldenUnit);
     padding: 0 14px;

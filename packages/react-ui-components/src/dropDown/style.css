@@ -1,10 +1,10 @@
 .dropDown {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: relative;
     display: inline-block;
 }
 .dropDown__btn {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     display: block;
     width: 100%;
     height: var(--goldenUnit);
@@ -21,18 +21,18 @@
     }
 }
 .dropDown__btnLabel {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     margin-right: .5em;
 }
 .dropDown__chevron {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: absolute;
     right: 16px;
     top: 50%;
     transform: translateY(-50%);
 }
 .dropDown__contents {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: absolute;
     top: 100%;
     left: 0;

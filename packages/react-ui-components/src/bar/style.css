@@ -1,5 +1,5 @@
 .bar {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     position: absolute;
     left: 0;
     z-index: 1;

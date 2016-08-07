@@ -1,5 +1,5 @@
 .heading {
-    composes: reset from "./../reset.css";
+    composes: reset from './../reset.css';
     font-size: 14px;
     text-rendering: optimizelegibility;
 }

@@ -20,7 +20,6 @@ export default {
     iconButton: '@neos-project/react-ui-components/iconButton',
     iconButtonDropDown: '@neos-project/react-ui-components/iconButtonDropDown',
     label: '@neos-project/react-ui-components/label',
-    portal: '@neos-project/react-ui-components/portal',
     selectBox: '@neos-project/react-ui-components/selectBox',
     sideBar: '@neos-project/react-ui-components/sideBar',
     tabs: '@neos-project/react-ui-components/tabs',

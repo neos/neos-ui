@@ -64,6 +64,22 @@ const registry = {
 
             - Furthermore, the callback specified in "callbackPropName" is wired, which toggles the value.
         `)
+    },
+    inspector: {
+        editors: new SynchronousRegistry(`
+            Contain all registered editors.
+            
+            The key is an editor name (such as TYPO3.Neos/Inspector/Editors/SelectBoxEditor), and the values are objects of the following form:
+                {
+                    component: TextInput // the React editor component to use.
+                    
+                    hasOwnLabel: true|false // does the component render the label internally, or not?
+                }
+            
+            ## Component Wiring
+            
+            - TODO
+        `)
     }
 };
 

@@ -7,7 +7,6 @@ import SelectBox from './SelectBox/index';
 import NodeType from './NodeType/index';
 */
 
-console.log("iNspectorEditors console");
 import './manifest';
 //const {createInspectorEditor, createHook} = api;
 

@@ -78,7 +78,15 @@ const registry = {
             
             ## Component Wiring
             
-            - TODO
+            Every component gets the following properties (see EditorEnvelope/index.js)
+            
+            - label: the label
+            - node: the current node
+            - value: The value to display
+            - propertyName: Name of the property to edit (of the node)
+            - options: additional editor options
+            - commit: a callback function when the content changes 
+        };
         `)
     }
 };

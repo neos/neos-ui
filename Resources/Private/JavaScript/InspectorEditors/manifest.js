@@ -1,5 +1,9 @@
 import manifest from 'Host/Extensibility/API/Manifest/index';
-console.log("AA", manifest);
+
+import TextField from './TextField/index';
+
 manifest('inspectorEditors', (registry) => {
-    console.log("Manifest inspector editors");
+    registry.inspector.editors.add('TYPO3.Neos/Inspector/Editors/TextFieldEditor', {
+        component: TextField
+    })
 });

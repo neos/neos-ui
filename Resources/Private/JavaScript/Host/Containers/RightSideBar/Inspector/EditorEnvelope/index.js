@@ -16,7 +16,7 @@ const LOAD_ERROR = 3;
 /**
  * (Stateful) Editor envelope
  *
- * It will wait until the editor is loaded and render it afterwards
+ * For reference on how to use editors, check the docs inside the Registry.
  */
 @connect($transform({
     node: UI.Inspector.activeNodeSelector,

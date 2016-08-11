@@ -42,16 +42,6 @@ const baseConfig = {
         hexToRgba()
     ],
 
-    resolve: {
-        root: [
-            path.resolve(__dirname, 'Resources/Private/JavaScript')
-        ],
-        modulesDirectories: [
-            'node_modules',
-            path.resolve(__dirname, './node_modules')
-        ]
-    },
-
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
         new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
@@ -84,6 +74,16 @@ if (!env.isCi && !env.isTesting && !env.isStorybook) {
 // Additional config parts for different builds.
 //
 const hostConfig = {
+    resolve: {
+        root: [
+            path.resolve(__dirname, 'Resources/Private/JavaScript')
+        ],
+        modulesDirectories: [
+            'node_modules',
+            path.resolve(__dirname, './node_modules')
+        ]
+    },
+
     entry: {
         Host: './Resources/Private/JavaScript/Host/index.js',
         HostOnlyStyles: './Resources/Private/JavaScript/Host/styleHostOnly.css'
@@ -93,9 +93,11 @@ const hostConfig = {
 const inspectorEditorConfig = {
     resolve: {
         alias: {
-            '@host': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/'),
-            'react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/react/')
-        }
+            'react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/react/'),
+            'Components': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/components/'),
+            'Host/Extensibility/API': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/'),
+        },
+        modulesDirectories: ['notExisting']
     },
     entry: {
         InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/index.js'

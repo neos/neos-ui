@@ -1,7 +1,5 @@
-import React, {PropTypes} from '@host/react';
-import {Components, I18n} from '@host';
-
-const {CheckBox, Label} = Components;
+import React, {PropTypes} from 'react';
+import {CheckBox, Label} from 'Components';
 
 const toBoolean = val => {
     if (typeof val === 'string') {

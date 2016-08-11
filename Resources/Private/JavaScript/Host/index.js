@@ -1,7 +1,7 @@
 import 'core-js/shim';
 import 'regenerator-runtime/runtime';
 import 'Shared/Styles/style.css';
-
+import registry from 'Host/Extensibility/Registry/index';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {Map} from 'immutable';
@@ -14,11 +14,13 @@ import {reducer, actions} from 'Host/Redux/index';
 import {bootSaga} from 'Host/Sagas/System/index';
 import {applicationViewSaga} from 'Host/Sagas/View/index';
 import {inspectorSaga} from 'Host/Sagas/UI/Inspector/index';
-
+import apiDefinitionFactory from './Extensibility/ApiDefinitionForConsumers/index';
 import {watchToggle, watchCommenceUncollapse} from './Sagas/UI/PageTree/index';
+import {manifests} from './Extensibility/ApiDefinitionForConsumers/Manifest/index';
 
-// TODO: load the other manifests!
-import './manifest';
+apiDefinitionFactory();
+// Note: OUR manifest must be included *after* the apiDefinitionFactory has been applied.
+require('./manifest');
 
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
@@ -45,4 +47,8 @@ sagaMiddleWare.run(watchDiscard);
 sagaMiddleWare.run(watchToggle);
 sagaMiddleWare.run(watchCommenceUncollapse);
 
-document.addEventListener('DOMContentLoaded', () => store.dispatch(actions.System.boot()));
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("finished loading", manifests);
+    manifests.forEach((manifest) => manifest(registry));
+    store.dispatch(actions.System.boot());
+});

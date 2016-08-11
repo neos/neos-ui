@@ -1,6 +1,4 @@
-import API from '@host/api/index';
-
-const {React} = API['@Neos:RuntimeDependencies'];
+const {React} = window['@Neos:HostPluginAPI'];
 
 export default React;
 export const Component = React.Component;

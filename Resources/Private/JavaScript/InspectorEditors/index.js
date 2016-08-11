@@ -1,21 +1,22 @@
-import api from '@host';
-
-import TextField from './TextField/index';
+//import TextField from './TextField/index';
 import Boolean from './Boolean/index';
-import DateTime from './DateTime/index';
+/*import DateTime from './DateTime/index';
 import ImageEditor from './Image/index';
 import TextArea from './TextArea/index';
 import SelectBox from './SelectBox/index';
 import NodeType from './NodeType/index';
+*/
 
-const {createInspectorEditor, createHook} = api;
+console.log("iNspectorEditors console");
+import './manifest';
+//const {createInspectorEditor, createHook} = api;
 
 /**
  * Every editor gets passed in:
  * - value: the value to display
  * - onChange: the callback if something changed.
  */
-
+/*
 //
 // TextField
 //
@@ -98,3 +99,4 @@ createInspectorEditor(
     'Content/Inspector/Editors/NodeTypeEditor',
     NodeType
 );
+*/

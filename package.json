@@ -46,7 +46,7 @@
     "mocha": "^3.0.1",
     "object-assign": "^4.1.0",
     "phantomjs-polyfill": "0.0.2",
-    "phantomjs-prebuilt": "^2.1.8",
+    "phantomjs-prebuilt": "^2.1.12",
     "postcss-hexrgba": "^0.2.0",
     "postcss-import": "^8.0.2",
     "postcss-loader": "^0.9.1",

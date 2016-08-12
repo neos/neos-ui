@@ -110,7 +110,7 @@ function* flushInspector() {
         // Build a property change object
         //
         const change = {
-            type: 'PackageFactory.Guevara:Property',
+            type: 'Neos.Neos.Ui:Property',
             subject: focusedNode.contextPath,
             payload: {propertyName, value}
         };

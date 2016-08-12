@@ -16,7 +16,7 @@ export default class PropertyGroup extends Component {
     render() {
         const {properties, label} = this.props;
         const propertyGroup = properties => (
-            <ToggablePanel className={style.rightSideBar__section}>
+            <ToggablePanel isOpen={true} className={style.rightSideBar__section}>
                 <ToggablePanel.Header>
                     <I18n id={label} />
                 </ToggablePanel.Header>

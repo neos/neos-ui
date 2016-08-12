@@ -61,8 +61,7 @@
     "style-loader": "^0.13.0",
     "stylelint": "^7.1.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.9",
-    "webpack-livereload-plugin": "^0.8.1"
+    "webpack": "^1.12.9"
   },
   "dependencies": {
     "@reduct/registry": "^1.0.1",
@@ -107,7 +106,7 @@
     "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
-    "build": "webpack --progress --colors",
+    "build": "webpack --progress --colors --display-error-details --display-cached --display-cached-assets --display-reasons --display-chunks   ",
     "karma": "export TEST=true && karma start --single-run",
     "lint": "npm run lint:scripts && npm run lint:css",
     "lint:css": "stylelint 'Resources/Private/JavaScript/**/*.css'",

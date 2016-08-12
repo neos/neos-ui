@@ -67,7 +67,8 @@ const baseConfig = {
 // Adjust the config depending on the env.
 //
 if (!env.isCi && !env.isTesting && !env.isStorybook) {
-    baseConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
+    // TODO: LIVE RELOADING DOES NOT WORK WITH CODE SPLITTING
+    //baseConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
 }
 
 //
@@ -92,13 +93,19 @@ const hostConfig = {
 
 const inspectorEditorConfig = {
     resolve: {
+        root: [
+            path.resolve(__dirname, 'Resources/Private/JavaScript'),
+            path.resolve(__dirname, './inspector_node_modules')
+        ],
         alias: {
             'react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/react/'),
+            'plow-js': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/plow-js/index'),
+            'immutable': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/immutable/'),
             'Components': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/components/'),
             'I18n': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/I18n/'),
             'Host/Extensibility/API': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/'),
         },
-        modulesDirectories: ['notExisting']
+        modulesDirectories: ['nonExistant']
     },
     entry: {
         InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/index.js'

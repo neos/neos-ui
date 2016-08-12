@@ -1,12 +1,12 @@
-import React, {Component, PropTypes} from '@host/react';
-import {Components, SecondaryInspector} from '@host';
+import React, {Component, PropTypes} from 'react';
+//import {Components, SecondaryInspector} from '@host';
 import ReactCrop from 'react-image-crop';
 
 import style from './style.css';
 import CropConfiguration from './model.js';
 import AspectRatioDropDown from './AspectRatioDropDown/index';
 
-const {Icon, IconButton, TextInput} = Components;
+import {Icon, IconButton, TextInput} from 'Components';
 
 export default class ImageCropper extends Component {
     static propTypes = {

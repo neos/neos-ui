@@ -1,15 +1,16 @@
-import React, {Component, PropTypes} from '@host/react';
-import {api} from '@host';
+import React, {Component, PropTypes} from 'react';
 import {$set, $drop, $get} from 'plow-js';
-import {Maybe} from 'monet';
-
-import {PreviewScreen, Controls, Secondary} from './Components/index';
+import {PreviewScreen, Controls} from './Components/index';
 import {Image} from './Utils/index';
-
+import {loadImageMetaData} from 'Host/Extensibility/API/Endpoints/index';
 const DEFAULT_FEATURES = {
     crop: true,
     resize: false
 };
+
+console.log("HAAssXXA2 ", $get);
+
+
 
 const RESIZE_IMAGE_ADJUSTMENT = [
     'object',
@@ -62,7 +63,7 @@ export default class ImageEditor extends Component {
 
     componentDidMount() {
         if (this.props.value && this.props.value.__identity) {
-            this.loadImage = api.media.image.loadMetaData(this.props.value)
+            this.loadImage = loadImageMetaData(this.props.value)
                 .then(image => this.setState({image}));
         }
 
@@ -80,7 +81,7 @@ export default class ImageEditor extends Component {
 
         if (this.props.value && this.props.value.__identity &&
             nextProps.value.__identity !== this.props.value.__identity) {
-            api.media.image.loadMetaData(nextProps.value)
+            loadImageMetaData(nextProps.value)
                 .then(image => this._isMounted && this.setState({image}));
         }
     }
@@ -152,7 +153,7 @@ export default class ImageEditor extends Component {
         this.closeSecondaryScreen();
         this.setState({image: null});
         commit($set('__identity', assetIdentifier, value));
-        api.media.image.loadMetaData($set('__identity', assetIdentifier, value))
+        loadImageMetaData($set('__identity', assetIdentifier, value))
             .then(image => this.setState({image}));
     }
 
@@ -197,15 +198,13 @@ export default class ImageEditor extends Component {
                     onRemove={() => this.onRemoveFile()}
                     onCrop={this.isFeatureEnabled('crop') && (() => this.toggleSecondaryScreen(SECONDARY_CROPPER))}
                     />
-                {
-                    Maybe.fromNull(secondaryScreenMode !== SECONDARY_NONE || null)
-                        .map(() => this.renderSecondaryScreen()).orSome('')
-                }
+                {(secondaryScreenMode !== SECONDARY_NONE ? this.renderSecondaryScreen() : '')}
             </div>
         );
     }
 
     renderSecondaryScreen() {
+        return '';
         const {secondaryScreenMode, image} = this.state;
         const {options} = this.props;
         const {__identity} = this.props.value;

@@ -6,7 +6,6 @@ const vars = require('postcss-simple-vars');
 const hexToRgba = require('postcss-hexrgba');
 const postCssImport = require('postcss-import');
 const nested = require('postcss-nested');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./Build/Utilities/').env;
 
 const baseConfig = {

@@ -80,7 +80,7 @@
     "lodash.isstring": "^4.0.1",
     "lodash.memoize": "^4.1.1",
     "lodash.merge": "^4.5.1",
-    "lodash.omit": "^4.4.1",
+    "lodash.omit": "^4.5.0",
     "mime-types": "^2.1.10",
     "monet": "^0.8.10",
     "normalize.css": "^4.1.1",

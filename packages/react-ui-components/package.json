@@ -75,7 +75,7 @@
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
     "monet": "^0.8.10",
-    "nyc": "^7.1.0",
+    "nyc": "^8.1.0",
     "object-assign": "^4.1.0",
     "postcss-css-variables": "^0.5.1",
     "postcss-hexrgba": "^0.2.0",

@@ -70,7 +70,7 @@
     "core-js": "^2.4.1",
     "debug": "^2.2.0",
     "immutable": "^3.8.0",
-    "lodash.assign": "^4.1.0",
+    "lodash.assign": "^4.2.0",
     "lodash.compose": "^2.4.1",
     "lodash.debounce": "^4.0.7",
     "lodash.defer": "^4.1.0",

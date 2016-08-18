@@ -62,7 +62,7 @@
     "stylelint": "^7.1.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2",
-    "webpack-livereload-plugin": "^0.8.1"
+    "webpack-livereload-plugin": "^0.8.2"
   },
   "dependencies": {
     "@reduct/registry": "^1.0.1",

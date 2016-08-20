@@ -43,7 +43,6 @@
 
     > a,
     button {
-        composes: reset from './../reset.css';
         display: block;
         width: 100%;
         border: 0;

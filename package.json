@@ -85,7 +85,7 @@
     "monet": "^0.8.10",
     "normalize.css": "^4.1.1",
     "plow-js": "^1.2.0",
-    "ramda": "^0.21.0",
+    "ramda": "^0.22.1",
     "react": "^15.3.1",
     "react-click-outside": "^2.1.0",
     "react-collapse": "^2.3.3",

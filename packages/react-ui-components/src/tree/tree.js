@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 
 export class Tree extends Component {
@@ -21,6 +22,10 @@ export class Tree extends Component {
         //
         NodeComponent: PropTypes.any.isRequired
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     render() {
         const {NodeComponent, className, theme, ...rest} = this.props;

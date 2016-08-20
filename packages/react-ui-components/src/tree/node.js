@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 
@@ -6,6 +7,10 @@ export class Node extends Component {
     static propTypes = {
         children: PropTypes.node
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     render() {
         const {children, ...restProps} = this.props;
@@ -50,6 +55,10 @@ export class Header extends Component {
         //
         IconComponent: PropTypes.any.isRequired
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     render() {
         const {
@@ -127,6 +136,10 @@ export class Contents extends Component {
             'contents': PropTypes.string
         }).isRequired
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     render() {
         const {theme, children} = this.props;

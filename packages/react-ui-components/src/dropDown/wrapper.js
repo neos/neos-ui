@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
@@ -57,6 +58,10 @@ export class DropDownWrapper extends Component {
         };
     }
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const {children, className, theme, ...restProps} = this.props;
         const rest = omit(restProps, ['isOpen']);
@@ -90,6 +95,10 @@ export class ContextDropDownHeader extends Component {
     render() {
         return <ShallowDropDownHeader {...this.props} {...this.context}/>;
     }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 }
 export class ContextDropDownContents extends Component {
     static contextTypes = {
@@ -99,6 +108,10 @@ export class ContextDropDownContents extends Component {
 
     render() {
         return <ShallowDropDownContents {...this.props} {...this.context}/>;
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 }
 

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
 
@@ -40,6 +41,10 @@ export default class ToggablePanel extends Component {
         if (isOpen !== this.state.isOpen && !isStateLess) {
             this.setState({isOpen});
         }
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 
     render() {
@@ -114,6 +119,10 @@ export class StatelessToggablePanel extends Component {
         };
     }
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const {children, className, theme} = this.props;
         const finalClassName = mergeClassNames({
@@ -156,6 +165,10 @@ export class Header extends Component {
         isOpen: PropTypes.bool.isRequired,
         onPanelToggle: PropTypes.func.isRequired
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     render() {
         const {
@@ -214,6 +227,10 @@ export class Contents extends Component {
     static contextTypes = {
         isOpen: PropTypes.bool.isRequired
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     render() {
         const {

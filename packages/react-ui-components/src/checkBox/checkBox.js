@@ -1,4 +1,5 @@
 import React, {PropTypes, Component} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 
 class CheckBox extends Component {
@@ -33,6 +34,10 @@ class CheckBox extends Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 
     render() {

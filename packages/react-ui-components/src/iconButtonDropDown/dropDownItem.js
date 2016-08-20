@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 
 export default class DropDownItem extends Component {
     static propTypes = {
@@ -22,6 +23,10 @@ export default class DropDownItem extends Component {
         super(props);
 
         this.handleClick = this.handleClick.bind(this);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 
     render() {

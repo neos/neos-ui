@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import TextareaAutoresize from 'react-textarea-autosize';
 
@@ -41,6 +42,10 @@ class TextArea extends Component {
         super(props);
 
         this.handleValueChange = this.handleValueChange.bind(this);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 
     render() {

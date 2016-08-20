@@ -89,7 +89,7 @@
     "react": "^15.3.0",
     "react-click-outside": "^2.1.0",
     "react-collapse": "^2.3.3",
-    "react-dom": "^15.3.0",
+    "react-dom": "^15.3.1",
     "react-dropzone": "^3.3.2",
     "react-height": "^2.0.4",
     "react-image-crop": "^1.0.0-rc2",

@@ -8,9 +8,9 @@ const DimensionCategory = props => {
 
     return (
         <li key={key} className={style.dimensionCategory}>
-            <Icon icon="globe" padded="right" className={style.dimensionCategory__icon} />
+            <Icon icon="globe" padded="right" className={style.dimensionCategory__icon}/>
             {data.name}
-            <br />
+            <br/>
 
             ToDo: Render the select for all dimension items
         </li>
@@ -37,11 +37,11 @@ export default class DimensionSwitcher extends Component {
         return (
             <DropDown className={style.dropDown}>
                 <DropDown.Header className={style.dropDown__btn}>
-                    <Icon className={style.dropDown__btnIcon} icon="globe" />
+                    <Icon className={style.dropDown__btnIcon} icon="globe"/>
                     ToDo: Current dimension name
                 </DropDown.Header>
                 <DropDown.Contents className={style.dropDown__contents}>
-                    {dimensions.map((dimensionCategory, index) => <DimensionCategory data={dimensionCategory} key={index} />)}
+                    {dimensions.map((dimensionCategory, index) => <DimensionCategory data={dimensionCategory} key={index}/>)}
                 </DropDown.Contents>
             </DropDown>
         );

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
@@ -20,6 +21,10 @@ export default class LeftSideBar extends Component {
         isHidden: PropTypes.bool.isRequired
     };
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const {isHidden} = this.props;
         const classNames = mergeClassNames({
@@ -31,11 +36,10 @@ export default class LeftSideBar extends Component {
             <SideBar
                 position="left"
                 className={classNames}
-                id="neos__leftSidebar"
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
-                <NodeTreeToolBar />
-                <PageTree />
+                <NodeTreeToolBar/>
+                <PageTree/>
             </SideBar>
         );
     }

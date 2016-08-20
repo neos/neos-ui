@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     AddNode,
     CopySelectedNode,
@@ -11,25 +11,23 @@ import {
 } from './Buttons/index';
 import style from './style.css';
 
-export default class NodeTreeToolBar extends Component {
-    render() {
-        const props = {
-            className: style.toolBar__btnGroup__btn
-        };
+export default () => {
+    const childProps = {
+        className: style.toolBar__btnGroup__btn
+    };
 
-        return (
-            <div className={style.toolBar}>
-                <div className={style.toolBar__btnGroup}>
-                    <AddNode {...props} />
-                    <EditSelectedNode {...props} />
-                    <HideSelectedNode {...props} />
-                    <CopySelectedNode {...props} />
-                    <CutSelectedNode {...props} />
-                    <PasteClipBoardNode {...props} />
-                    <DeleteSelectedNode {...props} />
-                    <RefreshPageTree {...props} />
-                </div>
+    return (
+        <div className={style.toolBar}>
+            <div className={style.toolBar__btnGroup}>
+                <AddNode {...childProps}/>
+                <EditSelectedNode {...childProps}/>
+                <HideSelectedNode {...childProps}/>
+                <CopySelectedNode {...childProps}/>
+                <CutSelectedNode {...childProps}/>
+                <PasteClipBoardNode {...childProps}/>
+                <DeleteSelectedNode {...childProps}/>
+                <RefreshPageTree {...childProps}/>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};

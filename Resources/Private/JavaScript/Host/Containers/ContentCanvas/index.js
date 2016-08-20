@@ -77,7 +77,7 @@ export default class ContentCanvas extends Component {
             //
             Array.prototype.forEach.call(iframeDocument.querySelectorAll('[data-__neos-node-contextpath]'),
                 dom => {
-                    dom.addEventListener('click', (e) => {
+                    dom.addEventListener('click', e => {
                         const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
                         const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
 
@@ -86,7 +86,7 @@ export default class ContentCanvas extends Component {
                         e.stopPropagation();
                     });
 
-                    dom.addEventListener('mouseenter', (e) => {
+                    dom.addEventListener('mouseenter', e => {
                         const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
                         const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
 
@@ -94,7 +94,7 @@ export default class ContentCanvas extends Component {
 
                         e.stopPropagation();
                     });
-                    dom.addEventListener('mouseleave', (e) => {
+                    dom.addEventListener('mouseleave', e => {
                         const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
 
                         this.props.unhoverNode(nodeContextPath);
@@ -106,7 +106,7 @@ export default class ContentCanvas extends Component {
 
             const editorConfig = {
                 formattingAndStyling: registry.ckEditor.formattingAndStyling.getAllAsObject(),
-                onActiveFormattingChange: (activeFormatting) => {
+                onActiveFormattingChange: activeFormatting => {
                     this.props.setActiveFormatting(activeFormatting);
                 }
             };
@@ -123,7 +123,7 @@ export default class ContentCanvas extends Component {
 
                     // TODO: from state, read node types & configure CKeditor based on node type!
 
-                    _iframeWindow.NeosCKEditorApi.createEditor(dom, (contents) => {
+                    _iframeWindow.NeosCKEditorApi.createEditor(dom, contents => {
                         console.log('Change of content:', contents);
                     });
                 }
@@ -131,11 +131,11 @@ export default class ContentCanvas extends Component {
         };
 
         return (
-            <div className={classNames} id="neos__contentCanvas">
-                <div id="centerArea" />
+            <div className={classNames}>
+                <div id="centerArea"/>
                 <div className={style.contentCanvas__itemWrapper} data-__neos__hook="contentCanvas">
                     <Frame src={src} frameBorder="0" name="neos-content-main" className={style.contentCanvas__contents} mountTarget="#neos-new-backend-container" contentDidMount={contentChange} contentDidUpdate={contentChange}>
-                        <InlineUI />
+                        <InlineUI/>
                     </Frame>
                 </div>
             </div>

@@ -42,6 +42,12 @@ export default class EditorEnvelope extends Component {
         loadingState: LOAD_PENDING
     };
 
+    constructor(props) {
+        super(props);
+
+        this.onHandleCommit = this.onHandleCommit.bind(this);
+    }
+
     componentDidMount() {
         const {editor} = this.props;
 
@@ -125,7 +131,7 @@ export default class EditorEnvelope extends Component {
     }
 
     renderEditorComponent() {
-        const {loadingState} = this.state;
+        const {loadingState, EditorComponent} = this.state;
 
         if (loadingState === LOAD_ERROR) {
             return (<div>An error occurred</div>);
@@ -135,28 +141,29 @@ export default class EditorEnvelope extends Component {
             return (<div>Loading...</div>);
         }
 
-        const {EditorComponent} = this.state;
-        const {transient, id, commit} = this.props;
-
         if (EditorComponent) {
             return (
                 <EditorComponent
                     {...this.prepareEditorProperties()}
-                    commit={(value, hooks = null) => {
-                        if ($get([id], transient) === value && hooks === null) {
-                            //
-                            // Nothing has changed...
-                            //
-                            return commit(id, null, null);
-                        }
-
-                        return commit(id, value, hooks);
-                    }}
+                    commit={this.onHandleCommit}
                     />
             );
         }
 
-        return (<div>Missing Editor</div>);
+        return <div>Missing Editor</div>;
+    }
+
+    onHandleCommit(value, hooks = null) {
+        const {transient, id, commit} = this.props;
+
+        if ($get([id], transient) === value && hooks === null) {
+            //
+            // Nothing has changed...
+            //
+            return commit(id, null, null);
+        }
+
+        return commit(id, value, hooks);
     }
 
     renderLabel() {
@@ -170,7 +177,7 @@ export default class EditorEnvelope extends Component {
 
         return (
             <Label htmlFor={this.generateIdentifier()}>
-                <I18n id={label} />
+                <I18n id={label}/>
             </Label>
         );
     }

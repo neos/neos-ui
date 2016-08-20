@@ -190,13 +190,13 @@ export default class ImageEditor extends Component {
                     image={image}
                     onDrop={files => this.upload(files)}
                     onClick={() => this.onThumbnailClicked()}
-                    />
+                   />
                 <Controls
                     onChooseFromMedia={() => this.toggleSecondaryScreen(SECONDARY_MEDIA)}
                     onChooseFromLocalFileSystem={() => this.onChooseFile()}
                     onRemove={() => this.onRemoveFile()}
                     onCrop={this.isFeatureEnabled('crop') && (() => this.toggleSecondaryScreen(SECONDARY_CROPPER))}
-                    />
+                   />
                 {
                     Maybe.fromNull(secondaryScreenMode !== SECONDARY_NONE || null)
                         .map(() => this.renderSecondaryScreen()).orSome('')
@@ -216,7 +216,7 @@ export default class ImageEditor extends Component {
                     <Secondary.MediaSelectionScreen
                         onClose={() => this.toggleSecondaryScreen(SECONDARY_NONE)}
                         onComplete={assetIdentifier => this.onMediaSelected(assetIdentifier)}
-                        />
+                       />
                 );
 
             case SECONDARY_DETAILS:
@@ -224,7 +224,7 @@ export default class ImageEditor extends Component {
                     <Secondary.MediaDetailsScreen
                         onClose={() => this.toggleSecondaryScreen(SECONDARY_NONE)}
                         imageIdentity={__identity}
-                        />
+                       />
                 );
 
             case SECONDARY_CROPPER:
@@ -234,7 +234,7 @@ export default class ImageEditor extends Component {
                         options={options}
                         onClose={() => this.toggleSecondaryScreen(SECONDARY_NONE)}
                         onComplete={cropArea => this.onCrop(cropArea)}
-                        />
+                       />
                 );
 
             case SECONDARY_NONE:

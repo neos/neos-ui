@@ -12,20 +12,20 @@ chai.use(chaiEnzyme());
 
 describe('"host.components.button"', () => {
     it('should render a "button" node with the role="button" attribute.', () => {
-        const btn = shallow(<Button />);
+        const btn = shallow(<Button/>);
 
         expect(btn.type()).to.equal('button');
     });
 
     it('should add the passed "className" prop to the rendered button if passed.', () => {
-        const btn = shallow(<Button className="test" />);
+        const btn = shallow(<Button className="test"/>);
 
         expect(btn).to.have.className('test');
     });
 
     it('should call the passed "onClick" prop when clicking the button.', () => {
         const spy = sinon.spy();
-        const btn = shallow(<Button onClick={spy} />);
+        const btn = shallow(<Button onClick={spy}/>);
 
         btn.simulate('click');
 
@@ -34,7 +34,7 @@ describe('"host.components.button"', () => {
 
     it('should call the passed "onMouseDown" prop when clicking the button.', () => {
         const spy = sinon.spy();
-        const btn = shallow(<Button onMouseDown={spy} />);
+        const btn = shallow(<Button onMouseDown={spy}/>);
 
         btn.simulate('mouseDown');
 
@@ -43,7 +43,7 @@ describe('"host.components.button"', () => {
 
     it('should call the passed "onMouseUp" prop when clicking the button.', () => {
         const spy = sinon.spy();
-        const btn = shallow(<Button onMouseUp={spy} />);
+        const btn = shallow(<Button onMouseUp={spy}/>);
 
         btn.simulate('mouseUp');
 
@@ -52,7 +52,7 @@ describe('"host.components.button"', () => {
 
     it('should call the passed "onMouseEnter" prop when clicking the button.', () => {
         const spy = sinon.spy();
-        const btn = shallow(<Button onMouseEnter={spy} />);
+        const btn = shallow(<Button onMouseEnter={spy}/>);
 
         btn.simulate('mouseEnter');
 
@@ -61,7 +61,7 @@ describe('"host.components.button"', () => {
 
     it('should call the passed "onMouseLeave" prop when clicking the button.', () => {
         const spy = sinon.spy();
-        const btn = shallow(<Button onMouseLeave={spy} />);
+        const btn = shallow(<Button onMouseLeave={spy}/>);
 
         btn.simulate('mouseLeave');
 
@@ -69,7 +69,7 @@ describe('"host.components.button"', () => {
     });
 
     it('should add the disabled attribute when passing a truthy "isDisabled" prop.', () => {
-        const btn = shallow(<Button isDisabled={true} />);
+        const btn = shallow(<Button isDisabled={true}/>);
 
         expect(btn).to.have.attr('disabled');
     });

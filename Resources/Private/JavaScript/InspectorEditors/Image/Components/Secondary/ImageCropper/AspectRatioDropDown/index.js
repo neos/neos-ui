@@ -33,7 +33,7 @@ export default class AspectRatioDropDown extends Component {
                                 <DropDown.Header className={style.dropDown__btn}>
                                     {current.label}
                                 </DropDown.Header>
-                                <IconButton icon="times" onClick={() => onClear()} className={style.dropDown__clear} />
+                                <IconButton icon="times" onClick={() => onClear()} className={style.dropDown__clear}/>
                             </div>
                         )
                     ).orSome(

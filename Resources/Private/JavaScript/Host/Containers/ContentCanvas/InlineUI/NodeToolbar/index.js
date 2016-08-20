@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform} from 'plow-js';
@@ -40,6 +41,10 @@ export default class NodeToolbar extends Component {
         focusedNode: PropTypes.object.isRequired
     };
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const props = {
             className: style.toolBar__btnGroup__btn,
@@ -55,12 +60,12 @@ export default class NodeToolbar extends Component {
         return (
             <div className={classNames} style={{top: y - 50, left: x}}>
                 <div className={style.toolBar__btnGroup}>
-                    <AddNode {...props} />
-                    <HideSelectedNode {...props} />
-                    <CopySelectedNode {...props} />
-                    <CutSelectedNode {...props} />
-                    <PasteClipBoardNode {...props} />
-                    <DeleteSelectedNode {...props} />
+                    <AddNode {...props}/>
+                    <HideSelectedNode {...props}/>
+                    <CopySelectedNode {...props}/>
+                    <CutSelectedNode {...props}/>
+                    <PasteClipBoardNode {...props}/>
+                    <DeleteSelectedNode {...props}/>
                 </div>
             </div>
         );

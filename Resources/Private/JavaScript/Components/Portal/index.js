@@ -9,14 +9,14 @@ export default class Portal extends Component {
         // If no `target` was specified, the children will be rendered into the <body> element.
         target: PropTypes.string,
 
-        // The children to render in the <Portal />.
+        // The children to render in the <Portal/>.
         children: PropTypes.element.isRequired,
 
-        // The className of the <Portal />
+        // The className of the <Portal/>
         className: PropTypes.string,
         style: PropTypes.object,
 
-        // The boolean over which you can control the rendered state of the <Portal />.
+        // The boolean over which you can control the rendered state of the <Portal/>.
         isOpen: PropTypes.bool
     };
 

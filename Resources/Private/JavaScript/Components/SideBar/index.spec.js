@@ -11,13 +11,13 @@ chai.use(chaiEnzyme());
 
 describe('"host.components.sideBar"', () => {
     it('should render a "div" node.', () => {
-        const bar = shallow(<SideBar />);
+        const bar = shallow(<SideBar/>);
 
         expect(bar.type()).to.equal('div');
     });
 
     it('should add the passed "className" prop to the rendered node if passed.', () => {
-        const bar = shallow(<SideBar className="test" />);
+        const bar = shallow(<SideBar className="test"/>);
 
         expect(bar).to.have.className('test');
     });

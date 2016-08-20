@@ -114,7 +114,7 @@ export class Header extends Component {
         const {isOpen} = this.context;
         const iconName = isOpen ? 'chevron-up' : 'chevron-down';
 
-        return <Icon icon={iconName} className={style.dropDown__chevron} />;
+        return <Icon icon={iconName} className={style.dropDown__chevron}/>;
     }
 }
 

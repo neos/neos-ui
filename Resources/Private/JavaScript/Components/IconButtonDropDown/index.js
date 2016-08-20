@@ -71,8 +71,8 @@ export default class IconButtonDropDown extends Component {
                     onClick={this.onClick.bind(this)}
                     {...directButtonProps}
                     >
-                    <Icon icon={modeIcon} className={style.wrapper__btnModeIcon} />
-                    <Icon icon={icon} />
+                    <Icon icon={modeIcon} className={style.wrapper__btnModeIcon}/>
+                    <Icon icon={icon}/>
                 </Button>
                 <div className={dropDownClassNames} aria-hidden={ariaIsHiddenLabel}>
                     {this.renderChildren()}

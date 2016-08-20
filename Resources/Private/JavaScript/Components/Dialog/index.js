@@ -32,9 +32,8 @@ const Dialog = props => {
                         <IconButton
                             icon="close"
                             className={style.dialog__closeBtn}
-                            id="neos__modal__closeModal"
                             onClick={e => executeCallback({e, cb: onRequestClose})}
-                            />
+                           />
                         <div className={style.dialog__title}>
                             {title}
                         </div>

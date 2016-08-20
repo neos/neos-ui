@@ -11,13 +11,13 @@ storiesOf('TextInput', module)
                 onChange={action('onChange')}
                 onFocus={action('onFocus')}
                 onBlur={action('onBlur')}
-                />
+               />
             <TextInput
                 isValid={false}
                 placeholder="Invalid input"
                 onChange={action('onChange')}
                 onFocus={action('onFocus')}
                 onBlur={action('onBlur')}
-                />
+               />
         </div>
     ));

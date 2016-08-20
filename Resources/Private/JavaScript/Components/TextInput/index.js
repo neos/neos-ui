@@ -38,7 +38,7 @@ const TextInput = props => {
             onFocus={() => executeCallback({cb: onFocus})}
             onBlur={() => executeCallback({cb: onBlur})}
             {...directProps}
-            />
+           />
     );
 };
 TextInput.propTypes = {

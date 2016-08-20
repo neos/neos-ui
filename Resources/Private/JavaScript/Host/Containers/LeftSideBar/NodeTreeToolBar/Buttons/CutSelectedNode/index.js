@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {IconButton} from 'Components/index';
 
@@ -13,6 +14,16 @@ export default class CutSelectedNode extends Component {
         isDisabled: true
     };
 
+    constructor(props) {
+        super(props);
+
+        this.handleCutSelectedNodeClick = this.cutSelectedNode.bind(this);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const {
             isDisabled,
@@ -23,7 +34,7 @@ export default class CutSelectedNode extends Component {
             <IconButton
                 className={className}
                 isDisabled={isDisabled}
-                onClick={this.cutSelectedNode.bind(this)}
+                onClick={this.handleCutSelectedNodeClick}
                 icon="cut"
                 hoverStyle="clean"
                 />

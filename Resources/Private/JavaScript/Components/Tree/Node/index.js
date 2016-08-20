@@ -51,7 +51,7 @@ export class Header extends Component {
             <div className={style.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
                 <div role="button" onClick={() => onClick()} className={dataClassNames}>
-                    <Icon icon={icon || 'question'} padded="right" />
+                    <Icon icon={icon || 'question'} padded="right"/>
                     <span className={style.header__label} role="button" onClick={() => onLabelClick()} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>
@@ -72,13 +72,13 @@ export class Header extends Component {
 
         switch (true) {
             case hasError:
-                icon = <Icon icon="ban" />;
+                icon = <Icon icon="ban"/>;
                 break;
             case isLoading:
-                icon = <Icon icon="spinner" spin={true} />;
+                icon = <Icon icon="spinner" spin={true}/>;
                 break;
             default:
-                icon = <Icon icon="sort-desc" />;
+                icon = <Icon icon="sort-desc"/>;
                 break;
         }
 

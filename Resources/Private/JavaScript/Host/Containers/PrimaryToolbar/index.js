@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
@@ -19,6 +20,11 @@ export default class PrimaryToolbar extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const classNames = mergeClassNames({
             [style.primaryToolbar]: true,
@@ -26,13 +32,13 @@ export default class PrimaryToolbar extends Component {
         });
         return (
             <Bar position="top" className={classNames}>
-                <MenuToggler className={style.primaryToolbar__btn} />
-                <LeftSideBarToggler className={style.primaryToolbar__btn} />
-                <EditModePanelToggler className={style.primaryToolbar__btn} />
+                <MenuToggler className={style.primaryToolbar__btn}/>
+                <LeftSideBarToggler className={style.primaryToolbar__btn}/>
+                <EditModePanelToggler className={style.primaryToolbar__btn}/>
 
                 <div className={style.primaryToolbar__rightSidedActions}>
-                      <UserDropDown />
-                      <PublishDropDown />
+                    <UserDropDown/>
+                    <PublishDropDown/>
                 </div>
             </Bar>
         );

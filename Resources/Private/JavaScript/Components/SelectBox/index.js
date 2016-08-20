@@ -54,7 +54,7 @@ export default class SelectBox extends Component {
                 <DropDown className={style.dropDown}>
                     <DropDown.Header className={style.dropDown__btn}>
                         {Maybe.fromNull(icon)
-                            .map(icon => <Icon className={style.dropDown__btnIcon} icon={icon} />)
+                            .map(icon => <Icon className={style.dropDown__btnIcon} icon={icon}/>)
                             .orSome('')}
                         {label}
                     </DropDown.Header>
@@ -63,7 +63,7 @@ export default class SelectBox extends Component {
                             .map(placeholder => (
                                 <li className={style.dropDown__item}>
                                     {Maybe.fromNull(placeholderIcon)
-                                        .map(icon => <Icon className={style.dropDown__itemIcon} icon={icon} />)
+                                        .map(icon => <Icon className={style.dropDown__itemIcon} icon={icon}/>)
                                         .orSome('')}
                                     {placeholder}
                                 </li>
@@ -81,7 +81,7 @@ export default class SelectBox extends Component {
                                     onClick={onClick}
                                     >
                                     {Maybe.fromNull(icon)
-                                        .map(icon => <Icon className={style.dropDown__itemIcon} icon={icon} />)
+                                        .map(icon => <Icon className={style.dropDown__itemIcon} icon={icon}/>)
                                         .orSome('')}
                                     {label}
                                 </li>

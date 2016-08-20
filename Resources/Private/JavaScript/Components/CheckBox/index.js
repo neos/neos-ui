@@ -34,7 +34,7 @@ const CheckBox = props => {
                 aria-checked={isChecked}
                 onChange={() => onChangeHandler(onChange, !isChecked)}
                 {...directProps}
-                />
+               />
             <div className={mirrorClassNames}></div>
         </div>
     );

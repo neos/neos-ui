@@ -34,14 +34,14 @@ export default class Inspector extends Component {
                         //
                         // Render each tab as a TabPanel
                         //
-                        .map(tab => <TabPanel key={tab.id} icon={tab.icon} groups={tab.groups} />)
+                        .map(tab => <TabPanel key={tab.id} icon={tab.icon} groups={tab.groups}/>)
                     }
                 </Tabs>
                 <Bar position="bottom">
-                    <Button onClick={() => apply()}>
+                    <Button onClick={apply}>
                         Apply
                     </Button>
-                    <Button onClick={() => discard()}>
+                    <Button onClick={discard}>
                         Discard
                     </Button>
                 </Bar>

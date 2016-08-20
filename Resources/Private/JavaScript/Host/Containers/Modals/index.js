@@ -3,7 +3,7 @@ import AddNodeModal from './AddNode/index';
 
 const Modals = () => (
     <div>
-      <AddNodeModal/>
+        <AddNodeModal/>
     </div>
 );
 

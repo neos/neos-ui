@@ -66,7 +66,12 @@ export default function initializeInspectorViewConfiguration(node) {
                             properties.filter(p => $get('ui.inspector.group', p) === group.id)
                         )
                     }),
-                    groups.filter(g => g.tab === tab.id || !g.tab && tab.id === 'default')
+                    groups.filter(g => {
+                        const isMatch = g.tab === tab.id;
+                        const isDefaultTab = !g.tab && tab.id === 'default';
+
+                        return isMatch || isDefaultTab;
+                    })
                 )
             }),
             tabs

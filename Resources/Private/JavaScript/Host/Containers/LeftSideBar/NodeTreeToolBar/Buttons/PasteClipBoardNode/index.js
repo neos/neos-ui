@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {IconButtonDropDown, Icon} from 'Components/index';
 
@@ -17,7 +18,15 @@ export default class PasteClipBoardNode extends Component {
         super(props);
 
         this.mouseHoldTimeout = null;
-        this.state = {currentMode: 'insert'};
+        this.handlePasteButtonClick = this.pasteClipBoardNode.bind(this);
+        this.handlePasteButtonItemClick = this.onModeChanged.bind(this);
+        this.state = {
+            currentMode: 'insert'
+        };
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 
     render() {
@@ -42,12 +51,12 @@ export default class PasteClipBoardNode extends Component {
                 className={className}
                 icon="paste"
                 modeIcon={modeIcon}
-                onClick={this.pasteClipBoardNode.bind(this)}
-                onItemSelect={this.onModeChanged.bind(this)}
+                onClick={this.handlePasteButtonClick}
+                onItemSelect={this.handlePasteButtonItemClick}
                 >
-                <Icon dropDownId="prepend" icon="long-arrow-up" />
-                <Icon dropDownId="insert" icon="long-arrow-right" />
-                <Icon dropDownId="append" icon="long-arrow-down" />
+                <Icon dropDownId="prepend" icon="long-arrow-up"/>
+                <Icon dropDownId="insert" icon="long-arrow-right"/>
+                <Icon dropDownId="append" icon="long-arrow-down"/>
             </IconButtonDropDown>
         );
     }

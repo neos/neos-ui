@@ -5,6 +5,6 @@ import IconButton from './index.js';
 storiesOf('IconButton', module)
     .add('default', () => (
         <div>
-            <IconButton icon="search" onClick={action('onClick')} style="lighter" />
+            <IconButton icon="search" onClick={action('onClick')} style="lighter"/>
         </div>
     ));

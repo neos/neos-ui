@@ -18,7 +18,7 @@ export default class PropertyGroup extends Component {
         const propertyGroup = properties => (
             <ToggablePanel className={style.rightSideBar__section}>
                 <ToggablePanel.Header>
-                    <I18n id={label} />
+                    <I18n id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {properties.map(property => (

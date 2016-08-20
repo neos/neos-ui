@@ -8,8 +8,8 @@ import {api} from 'Shared/Utilities/';
 
 const isDocumentType = CR.NodeTypes.isOfTypeSelector('TYPO3.Neos:Document');
 
-export function* watchToggle() {
-    yield* takeLatest(actionTypes.UI.PageTree.TOGGLE, function* toggleTreeNode(action) {
+export function * watchToggle() {
+    yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
         const state = yield select();
         const {contextPath} = action.payload;
         const isCollapsed = !$contains(contextPath, 'ui.pageTree.uncollapsed', state);
@@ -22,8 +22,8 @@ export function* watchToggle() {
     });
 }
 
-export function* watchCommenceUncollapse() {
-    yield* takeLatest(actionTypes.UI.PageTree.COMMENCE_UNCOLLAPSE, function* uncollapseNode(action) {
+export function * watchCommenceUncollapse() {
+    yield * takeLatest(actionTypes.UI.PageTree.COMMENCE_UNCOLLAPSE, function * uncollapseNode(action) {
         const state = yield select();
         const {contextPath} = action.payload;
         const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state).toJS()

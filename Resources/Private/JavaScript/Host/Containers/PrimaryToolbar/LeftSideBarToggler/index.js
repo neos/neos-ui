@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
@@ -21,8 +22,12 @@ export default class LeftSideBarToggler extends Component {
         toggleSidebar: PropTypes.func.isRequired
     };
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
-        const {className, isSideBarHidden} = this.props;
+        const {className, isSideBarHidden, toggleSidebar} = this.props;
         const isActive = !isSideBarHidden;
         const classNames = mergeClassNames({
             [className]: true,
@@ -35,10 +40,9 @@ export default class LeftSideBarToggler extends Component {
                 style="clean"
                 hoverStyle="clean"
                 isFocused={isActive}
-                onClick={() => this.props.toggleSidebar()}
-                id="neos__primaryToolbar__leftSideBarToggler"
+                onClick={toggleSidebar}
                 >
-                <I18n id="navigate" fallback="Navigate" />
+                <I18n id="navigate" fallback="Navigate"/>
             </Button>
         );
     }

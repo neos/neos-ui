@@ -68,7 +68,7 @@ export default class Tabs extends Component {
                             aria-selected={isActive ? 'true' : 'false'}
                             aria-controls={`section${index}`}
                             >
-                            {icon ? <Icon icon={icon} /> : null}
+                            {icon ? <Icon icon={icon}/> : null}
                             {title}
                         </button>
                     </li>

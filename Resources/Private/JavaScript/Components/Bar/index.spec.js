@@ -12,14 +12,14 @@ chai.use(chaiEnzyme());
 
 describe('"host.components.bar"', () => {
     it('should add the passed "className" prop to the rendered button if passed.', () => {
-        const bar = shallow(<Bar className="test" />);
+        const bar = shallow(<Bar className="test"/>);
 
         expect(bar).to.have.className('test');
     });
 
     it('should call the passed "onDrop" prop when clicking the button.', () => {
         const spy = sinon.spy();
-        const btn = shallow(<Bar onDrop={spy} />);
+        const btn = shallow(<Bar onDrop={spy}/>);
 
         btn.simulate('drop');
 

@@ -14,7 +14,7 @@ const createCKEditorAPI = CKEDITOR => {
     let editorConfig = null;
     let currentEditor = null;
 
-    const handleUserInteractionCallbackFactory = (editor) => event => {
+    const handleUserInteractionCallbackFactory = editor => event => {
         if (!event || event.name !== 'keyup' || event.data.$.keyCode !== 27) {
             // TODO: why was the previous code all inside here? weirdo...
         }
@@ -39,8 +39,7 @@ const createCKEditorAPI = CKEDITOR => {
                     return;
                 }
 
-                // eslint-disable-next-line new-cap
-                const style = new CKEDITOR.style(description.style);
+                const style = new CKEDITOR.style(description.style); // eslint-disable-line babel/new-cap
 
                 activeState[key] = style.checkActive(editor.elementPath(), editor);
                 return;
@@ -94,8 +93,7 @@ const createCKEditorAPI = CKEDITOR => {
                     return;
                 }
 
-                // eslint-disable-next-line new-cap
-                const style = new CKEDITOR.style(description.style);
+                const style = new CKEDITOR.style(description.style); // eslint-disable-line babel/new-cap
                 const operation = style.checkActive(currentEditor.elementPath(), currentEditor) ?
                     'removeStyle' : 'applyStyle';
 
@@ -129,7 +127,7 @@ const createCKEditorAPI = CKEDITOR => {
             editor.once('contentDom', () => {
                 const editable = editor.editable();
 
-                editable.attachListener(editable, 'focus', (event) => {
+                editable.attachListener(editable, 'focus', event => {
                     currentEditor = editor;
 
                     editable.attachListener(editable, 'keyup', handleUserInteraction);

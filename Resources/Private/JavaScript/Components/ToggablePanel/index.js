@@ -133,7 +133,7 @@ class Header extends Component {
                     className={style.panel__toggleBtn}
                     icon={toggleIcon}
                     onClick={() => togglePanel()}
-                    />
+                   />
             </div>
         );
     }

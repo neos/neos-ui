@@ -25,7 +25,7 @@ export default class PreviewScreen extends Component {
         const {image, onDrop, onClick} = this.props;
         const thumbnail = Maybe.fromNull(image)
             .map(image => Thumbnail.fromImageData(image, 273, 216));
-        const loader = () => <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader} />;
+        const loader = () => <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader}/>;
         const preview = () => (
             <div className={style.cropArea} style={thumbnail.map(t => t.styles.cropArea).orSome({})}>
                 <img
@@ -33,7 +33,7 @@ export default class PreviewScreen extends Component {
                     src={thumbnail.bind(t => t.uri).orSome('/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg')}
                     style={thumbnail.map(t => t.styles.thumbnail).orSome({})}
                     role="presentation"
-                    />
+                   />
             </div>
         );
 

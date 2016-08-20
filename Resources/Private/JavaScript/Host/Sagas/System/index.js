@@ -8,14 +8,14 @@ import {actionTypes, actions} from 'Host/Redux/index';
 import initializeJSAPI from 'API/index';
 
 let injectStore = null;
-export const getStore = discover(function* () {
+export const getStore = discover(function * () {
     const store = yield new Promise(resolve => {
         injectStore = resolve;
     });
     return store;
 });
 
-export const getAppContainer = discover(function* () {
+export const getAppContainer = discover(function * () {
     const appContainer = yield new Promise(resolve => {
         document.addEventListener('DOMContentLoaded', () => {
             resolve(document.getElementById('appContainer'));
@@ -25,47 +25,47 @@ export const getAppContainer = discover(function* () {
     return appContainer;
 });
 
-export const getCsrfToken = discover(function* () {
+export const getCsrfToken = discover(function * () {
     const appContainer = yield getAppContainer;
     return appContainer.dataset.csrfToken;
 });
 
-export const getSystemEnv = discover(function* () {
+export const getSystemEnv = discover(function * () {
     const appContainer = yield getAppContainer;
     return appContainer.dataset.env;
 });
 
-export const getServerState = discover(function* () {
+export const getServerState = discover(function * () {
     const appContainer = yield getAppContainer;
     return JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
 });
 
-export const getConfiguration = discover(function* () {
+export const getConfiguration = discover(function * () {
     const appContainer = yield getAppContainer;
     return JSON.parse(appContainer.querySelector('[data-json="configuration"]').innerHTML);
 });
 
-export const getTranslations = discover(function* () {
+export const getTranslations = discover(function * () {
     const appContainer = yield getAppContainer;
     return JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
 });
 
-export const getInspectorEditorRegistry = discover(function* () {
+export const getInspectorEditorRegistry = discover(function * () {
     const {asyncModuleMapping, legacyModuleMapping} = yield getConfiguration;
     return createInspectorEditorRegistry(asyncModuleMapping, legacyModuleMapping);
 });
 
-export const getHookRegistry = discover(function* () {
+export const getHookRegistry = discover(function * () {
     const {asyncModuleMapping} = yield getConfiguration;
     return createHookRegistry(asyncModuleMapping);
 });
 
-export const getApi = discover(function* () {
+export const getApi = discover(function * () {
     const store = yield getStore;
     return createApi(store);
 });
 
-export const getHostApi = discover(function* () {
+export const getHostApi = discover(function * () {
     const api = yield getApi;
     const inspectorEditorRegistry = yield getInspectorEditorRegistry;
     const hookRegistry = yield getHookRegistry;
@@ -73,7 +73,7 @@ export const getHostApi = discover(function* () {
     return createHostApi(api, inspectorEditorRegistry, hookRegistry);
 });
 
-export const getNeos = discover(function* () {
+export const getNeos = discover(function * () {
     const csrfToken = yield getCsrfToken;
     const systemEnv = yield getSystemEnv;
 
@@ -85,7 +85,7 @@ export const getNeos = discover(function* () {
     return neos;
 });
 
-export function* bootSaga(store) {
+export function * bootSaga(store) {
     injectStore(store);
 
     yield take(actionTypes.System.BOOT);

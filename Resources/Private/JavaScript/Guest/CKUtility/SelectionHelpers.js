@@ -92,13 +92,16 @@ const getClientRectsRegion = (selection, nativeSelection) => {
 //
 // Get the direction of the current selection
 //
-const getSelectionDirection = (nativeSelection) => {
+const getSelectionDirection = nativeSelection => {
     const {anchorNode, anchorOffset, focusNode, focusOffset} = nativeSelection;
 
     if (anchorNode && anchorNode.compareDocumentPosition) {
         const position = anchorNode.compareDocumentPosition(focusNode);
+        const hasNoPosition = Boolean(position) === false;
+        const isInOffset = anchorOffset > focusOffset;
+        const isOutOfView = hasNoPosition && isInOffset;
 
-        if (!position && anchorOffset > focusOffset || position === Node.DOCUMENT_POSITION_PRECEDING) {
+        if (isOutOfView || position === Node.DOCUMENT_POSITION_PRECEDING) {
             return window.CKEDITOR.SELECTION_BOTTOM_TO_TOP;
         }
     }

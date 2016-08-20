@@ -11,13 +11,13 @@ chai.use(chaiEnzyme());
 
 describe('"host.components.dropDown"', () => {
     it('should initially have a falsy "isOpen" state value.', () => {
-        const dd = shallow(<DropDown />);
+        const dd = shallow(<DropDown/>);
 
         expect(dd.state('isOpen')).to.equal(false);
     });
 
     it('should set the "isOpen" state value to opposite when calling the toggle method.', () => {
-        const dd = shallow(<DropDown />);
+        const dd = shallow(<DropDown/>);
 
         dd.instance().toggle();
 
@@ -29,7 +29,7 @@ describe('"host.components.dropDown"', () => {
     });
 
     it('should set the "isOpen" state value to false when calling the close method.', () => {
-        const dd = shallow(<DropDown />);
+        const dd = shallow(<DropDown/>);
 
         dd.setState({
             isOpen: true

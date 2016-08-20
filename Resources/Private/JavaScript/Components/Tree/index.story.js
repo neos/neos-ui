@@ -21,7 +21,7 @@ storiesOf('Tree', module)
                         onNodeToggle={action('onNodeToggle')}
                         onNodeClick={action('onNodeClick')}
                         onNodeFocus={action('onNodeFocus')}
-                        />
+                       />
                     <Tree.Node.Contents>
                         <Tree.Node>
                             <Tree.Node.Header
@@ -37,7 +37,7 @@ storiesOf('Tree', module)
                                 onNodeToggle={action('onNodeToggle')}
                                 onNodeClick={action('onNodeClick')}
                                 onNodeFocus={action('onNodeFocus')}
-                                />
+                               />
                         </Tree.Node>
                         <Tree.Node>
                             <Tree.Node.Header
@@ -53,7 +53,7 @@ storiesOf('Tree', module)
                                 onNodeToggle={action('onNodeToggle')}
                                 onNodeClick={action('onNodeClick')}
                                 onNodeFocus={action('onNodeFocus')}
-                                />
+                               />
                         </Tree.Node>
                         <Tree.Node>
                             <Tree.Node.Header
@@ -69,7 +69,7 @@ storiesOf('Tree', module)
                                 onNodeToggle={action('onNodeToggle')}
                                 onNodeClick={action('onNodeClick')}
                                 onNodeFocus={action('onNodeFocus')}
-                                />
+                               />
                         </Tree.Node>
                     </Tree.Node.Contents>
                 </Tree.Node>

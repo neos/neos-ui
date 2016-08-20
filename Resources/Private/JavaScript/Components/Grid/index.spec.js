@@ -11,13 +11,13 @@ chai.use(chaiEnzyme());
 
 describe('"host.components.grid"', () => {
     it('should render a "div" node.', () => {
-        const grid = shallow(<Grid />);
+        const grid = shallow(<Grid/>);
 
         expect(grid.type()).to.equal('div');
     });
 
     it('should add the passed "className" prop to the rendered div if passed.', () => {
-        const grid = shallow(<Grid className="test" />);
+        const grid = shallow(<Grid className="test"/>);
 
         expect(grid).to.have.className('test');
     });

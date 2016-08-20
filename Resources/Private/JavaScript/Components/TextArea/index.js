@@ -29,7 +29,7 @@ const TextArea = props => {
             onFocus={() => executeCallback({cb: onFocus})}
             onBlur={() => executeCallback({cb: onBlur})}
             {...directProps}
-            />
+           />
     );
 };
 TextArea.propTypes = {

@@ -20,7 +20,7 @@ export const actionTypes = {
  *
  * @param {String} imageUuid The image's UUID for which to start loading
  */
-const startLoading = createAction(START_LOADING, (imageUuid) => ({
+const startLoading = createAction(START_LOADING, imageUuid => ({
     imageUuid
 }));
 

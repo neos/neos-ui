@@ -6,7 +6,7 @@ const {TextInput} = Components;
 const TextField = props => {
     const {value, commit} = props;
 
-    return (<TextInput value={value} onChange={value => commit(value)} />);
+    return (<TextInput value={value} onChange={value => commit(value)}/>);
 };
 
 TextField.propTypes = {

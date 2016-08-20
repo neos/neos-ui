@@ -12,7 +12,7 @@ const IconButton = props => {
 
     return (
         <Button {...buttonProps}>
-          <Icon icon={props.icon} />
+          <Icon icon={props.icon}/>
         </Button>
     );
 };

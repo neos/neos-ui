@@ -12,9 +12,9 @@ storiesOf('IconButtonDropDown', module)
                 onClick={action('onClick')}
                 onItemSelect={action('onItemSelect')}
                 >
-                <Icon dropDownId="prepend" icon="long-arrow-up" />
-                <Icon dropDownId="insert" icon="long-arrow-right" />
-                <Icon dropDownId="append" icon="long-arrow-down" />
+                <Icon dropDownId="prepend" icon="long-arrow-up"/>
+                <Icon dropDownId="insert" icon="long-arrow-right"/>
+                <Icon dropDownId="append" icon="long-arrow-down"/>
             </IconButtonDropDown>
         </div>
     ));

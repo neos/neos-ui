@@ -7,6 +7,8 @@ import {
 } from 'Components/index';
 
 const Secondary = props => {
+    const {onClose, children} = props;
+
     return (
         <Portal
             target="contentCanvas"
@@ -16,11 +18,11 @@ const Secondary = props => {
                 <Button
                     style="cleanWithBorder"
                     className={style.close}
-                    onClick={() => props.onClose()}
+                    onClick={onClose}
                     >
-                    <Icon icon="close" />
+                    <Icon icon="close"/>
                 </Button>
-                {props.children}
+                {children}
             </div>
         </Portal>
     );

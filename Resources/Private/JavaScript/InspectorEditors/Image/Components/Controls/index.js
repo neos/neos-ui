@@ -38,19 +38,19 @@ export default class Controls extends Component {
                     style="small"
                     onClick={() => onChooseFromMedia()}
                     >
-                   <I18n id="TYPO3.Neos:Main:media" fallback="Media" />
+                   <I18n id="TYPO3.Neos:Main:media" fallback="Media"/>
                 </Button>
                 <Button
                     style="small"
                     onClick={() => onChooseFromLocalFileSystem()}
                     >
-                   <I18n id={chooseFromLocalFilesystemLabel} fallback="Choose file" />
+                   <I18n id={chooseFromLocalFilesystemLabel} fallback="Choose file"/>
                 </Button>
                 <Button
                     style="small"
                     onClick={() => onRemove()}
                     >
-                   <I18n id="TYPO3.Neos:Main:remove" fallback="Remove" />
+                   <I18n id="TYPO3.Neos:Main:remove" fallback="Remove"/>
                 </Button>
             </div>
         );
@@ -66,7 +66,7 @@ export default class Controls extends Component {
                     className={style.cropButton}
                     onClick={() => onCrop()}
                     >
-                    <I18n id="TYPO3.Neos:Main:crop" fallback="Crop" />
+                    <I18n id="TYPO3.Neos:Main:crop" fallback="Crop"/>
                 </Button>
             )).orSome('');
     }

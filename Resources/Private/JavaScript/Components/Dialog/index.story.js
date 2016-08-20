@@ -16,6 +16,6 @@ storiesOf('Dialog', module)
                 >
                 H1ello world
             </Dialog>
-            <div id="dialog" />
+            <div id="dialog"/>
         </div>
     ));

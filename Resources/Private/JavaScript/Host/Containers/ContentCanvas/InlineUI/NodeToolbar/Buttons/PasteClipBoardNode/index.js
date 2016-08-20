@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {IconButtonDropDown, Icon} from 'Components/index';
 
 export default class PasteClipBoardNode extends Component {
@@ -15,7 +16,13 @@ export default class PasteClipBoardNode extends Component {
         super(props);
 
         this.mouseHoldTimeout = null;
+        this.handlePasteButtonClick = this.pasteClipBoardNode.bind(this);
+        this.handlePasteButtonModeChange = this.changePasteBoardMode.bind(this);
         this.state = {currentMode: 'insert'};
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 
     render() {
@@ -40,12 +47,12 @@ export default class PasteClipBoardNode extends Component {
                 className={className}
                 icon="paste"
                 modeIcon={modeIcon}
-                onClick={this.pasteClipBoardNode.bind(this)}
-                onItemSelect={this.onModeChanged.bind(this)}
+                onClick={this.handlePasteButtonClick}
+                onItemSelect={this.handlePasteButtonModeChange}
                 >
-                <Icon dropDownId="prepend" icon="long-arrow-up" />
-                <Icon dropDownId="insert" icon="long-arrow-right" />
-                <Icon dropDownId="append" icon="long-arrow-down" />
+                <Icon dropDownId="prepend" icon="long-arrow-up"/>
+                <Icon dropDownId="insert" icon="long-arrow-right"/>
+                <Icon dropDownId="append" icon="long-arrow-down"/>
             </IconButtonDropDown>
         );
     }
@@ -54,7 +61,7 @@ export default class PasteClipBoardNode extends Component {
         console.log('paste clipboard node');
     }
 
-    onModeChanged(currentMode) {
+    changePasteBoardMode(currentMode) {
         this.setState({
             currentMode
         });

@@ -155,11 +155,6 @@ export class TabMenuItem extends Component {
         onClick: PropTypes.func.isRequired,
 
         /**
-         * The children to render within the anchor.
-         */
-        children: PropTypes.any.isRequired,
-
-        /**
          * A boolean which controls if the rendered anchor is displayed as active or not.
          */
         isActive: PropTypes.bool,

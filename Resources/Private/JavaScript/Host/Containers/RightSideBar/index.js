@@ -3,10 +3,8 @@ import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import {
-    SideBar,
-    IconButton
-} from 'Components/index';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
 import {actions} from 'Host/Redux/index';
 
 import style from './style.css';

@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
+import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
 
-import {Tabs} from 'Components/index';
 import PropertyGroup from '../PropertyGroup/index';
 
 export default class TabPanel extends Component {

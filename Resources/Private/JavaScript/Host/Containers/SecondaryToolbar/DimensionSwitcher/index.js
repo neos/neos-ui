@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {DropDown, Icon} from 'Components/index';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
 import style from './style.css';
 
 const DimensionCategory = props => {

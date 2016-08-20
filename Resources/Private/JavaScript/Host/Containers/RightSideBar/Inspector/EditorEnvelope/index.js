@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import Label from '@neos-project/react-ui-components/lib/Label/';
 
-import {Label} from 'Components/index';
 import {I18n} from 'Host/Containers/index';
 import neos from 'Host/Decorators/Neos/index';
 import {UI} from 'Host/Selectors/index';

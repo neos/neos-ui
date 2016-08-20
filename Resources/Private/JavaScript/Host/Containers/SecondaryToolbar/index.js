@@ -3,9 +3,11 @@ import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 import {actions} from 'Host/Redux/index';
-import {IconButton, Icon} from 'Components/index';
+
 import DimensionSwitcher from './DimensionSwitcher/index';
 import EditorToolbar from './EditorToolbar/index';
 import {isDocumentNodeSelectedSelector} from 'Host/Selectors/CR/Nodes/index';

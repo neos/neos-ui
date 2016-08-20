@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
-import {IconButton} from 'Components/index';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 @connect()
 export default class RefreshPageTree extends Component {
@@ -12,7 +12,7 @@ export default class RefreshPageTree extends Component {
     constructor(props) {
         super(props);
 
-        this.handleRefreshClick = this.handleRefreshClick.bind(this);
+        this.handleRefreshClick = this.refreshPageTree.bind(this);
     }
 
     shouldComponentUpdate(...args) {

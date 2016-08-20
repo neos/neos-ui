@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
-import {IconButton} from 'Components/index';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 export default class DeleteSelectedNode extends Component {
     static propTypes = {

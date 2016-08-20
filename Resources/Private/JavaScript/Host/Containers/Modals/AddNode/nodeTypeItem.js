@@ -3,14 +3,12 @@ import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import omit from 'lodash.omit';
 import {$transform, $get} from 'plow-js';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import Button from '@neos-project/react-ui-components/lib/Button/';
+import Grid from '@neos-project/react-ui-components/lib/Grid/';
 
 import {actions} from 'Host/Redux/index';
 import NeosPropTypes from 'Shared/PropTypes/index';
-import {
-    Icon,
-    GridItem,
-    Button
-} from 'Components/index';
 
 import {I18n} from 'Host/Containers/index';
 
@@ -63,7 +61,7 @@ class NodeTypeItem extends Component {
         const {ui} = nodeType;
 
         return (
-            <GridItem className={style.gridItem} width="third" {...rest}>
+            <Grid.Col className={style.gridItem} width="third" {...rest}>
                 <Button
                     hoverStyle="brand"
                     style="clean"
@@ -73,7 +71,7 @@ class NodeTypeItem extends Component {
                     <Icon icon={ui.icon} className={style.nodeType__icon} padded="right"/>
                     <I18n id={ui.label} fallback={ui.label}/>
                 </Button>
-            </GridItem>
+            </Grid.Col>
         );
     }
 

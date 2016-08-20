@@ -45,6 +45,7 @@
     "object-assign": "^4.1.0",
     "phantomjs-polyfill": "0.0.2",
     "phantomjs-prebuilt": "^2.1.8",
+    "postcss-css-variables": "^0.5.1",
     "postcss-hexrgba": "^0.2.0",
     "postcss-import": "^8.0.2",
     "postcss-loader": "^0.10.0",
@@ -63,6 +64,8 @@
     "webpack-livereload-plugin": "^0.8.2"
   },
   "dependencies": {
+    "@neos-project/brand": "^1.1.0",
+    "@neos-project/react-ui-components": "^4.0.2",
     "@reduct/registry": "^1.0.1",
     "classnames": "^2.2.3",
     "core-js": "^2.4.1",
@@ -88,6 +91,7 @@
     "react-addons-shallow-compare": "^15.3.1",
     "react-click-outside": "^2.1.0",
     "react-collapse": "^2.3.3",
+    "react-css-themr": "^1.2.0",
     "react-dom": "^15.3.1",
     "react-dropzone": "^3.3.2",
     "react-height": "^2.0.4",
@@ -95,6 +99,7 @@
     "react-immutable-proptypes": "^1.7.2",
     "react-measure": "^0.5.0",
     "react-motion": "^0.4.2",
+    "react-portal": "^2.2.1",
     "react-redux": "^4.4.5",
     "react-textarea-autosize": "^4.0.0",
     "redux": "^3.4.0",

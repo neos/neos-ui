@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
-
-import {IconButton, Icon} from 'Components/index';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 import style from './style.css';
 

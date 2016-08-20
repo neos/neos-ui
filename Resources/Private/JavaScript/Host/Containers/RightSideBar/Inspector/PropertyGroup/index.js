@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
+import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 
-import {ToggablePanel} from 'Components/index';
 import {I18n} from 'Host/Containers/index';
 
 import EditorEnvelope from '../EditorEnvelope/index';

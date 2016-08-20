@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
-import {Frame} from 'Components/index';
+import Frame from '@neos-project/react-ui-components/lib/Frame/';
 import style from './style.css';
 import {actions} from 'Host/Redux/index';
 

@@ -3,10 +3,8 @@ import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {actions} from 'Host/Redux/index';
 import {$transform, $get} from 'plow-js';
-import {
-    IconButtonDropDown,
-    Icon
-} from 'Components/index';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import IconButtonDropDown from '@neos-project/react-ui-components/lib/IconButtonDropDown/';
 
 @connect($transform({
     focusedNode: $get('ui.pageTree.focused')

@@ -2,14 +2,12 @@ import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import Button from '@neos-project/react-ui-components/lib/Button/';
+import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
 
 import {actions} from 'Host/Redux/index';
 import NeosPropTypes from 'Shared/PropTypes/index';
-import {
-    Icon,
-    Dialog,
-    Button
-} from 'Components/index';
 
 import {I18n} from 'Host/Containers/index';
 
@@ -91,11 +89,11 @@ export default class AddNodeModal extends Component {
 
         return (
             <Dialog
-                isOpen={true}
-                wide={true}
                 actions={actions}
                 title={insertModeText}
                 onRequestClose={close}
+                isOpen
+                isWide
                 >
                 {groupedAllowedNodeTypes.map((group, key) => (
                     <div key={key}>

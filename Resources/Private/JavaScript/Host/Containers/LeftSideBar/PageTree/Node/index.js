@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
-import {Tree} from 'Components/index';
 import {UI} from 'Host/Selectors/index';
 
 @connect(state => ({

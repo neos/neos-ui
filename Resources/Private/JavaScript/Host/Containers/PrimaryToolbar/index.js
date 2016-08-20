@@ -3,8 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
-
-import {Bar} from 'Components/index';
+import Bar from '@neos-project/react-ui-components/lib/Bar/';
 
 import UserDropDown from './UserDropDown/index';
 import PublishDropDown from './PublishDropDown/index';

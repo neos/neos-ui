@@ -3,9 +3,9 @@ import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
+import Button from '@neos-project/react-ui-components/lib/Button/';
 
 import {actions} from 'Host/Redux/index';
-import {Button} from 'Components/index';
 
 import style from './style.css';
 

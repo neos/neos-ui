@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
-import {IconButtonDropDown, Icon} from 'Components/index';
+import IconButtonDropDown from '@neos-project/react-ui-components/lib/IconButtonDropDown/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 export default class PasteClipBoardNode extends Component {
     static propTypes = {

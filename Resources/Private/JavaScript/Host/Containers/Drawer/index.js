@@ -3,13 +3,11 @@ import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import Button from '@neos-project/react-ui-components/lib/Button/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 
 import {actions} from 'Host/Redux/index';
-import {
-    Button,
-    Icon,
-    ToggablePanel
-} from 'Components/index';
 import {I18n} from 'Host/Containers/index';
 
 import style from './style.css';
@@ -93,7 +91,7 @@ export default class Drawer extends Component {
                 </ToggablePanel.Contents>
             </ToggablePanel>
         ) : (
-            <Button className={style.drawer__menuItemBtn} role="button" onClick={onClick} key={key} style="transparent">
+            <Button className={style.drawer__menuItemBtn} onClick={onClick} key={key} style="transparent">
                 <Icon icon={icon} padded="right"/>
                 {title}
             </Button>

@@ -2,12 +2,10 @@ import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
+import Grid from '@neos-project/react-ui-components/lib/Grid/';
 
 import {actions} from 'Host/Redux/index';
-import {
-    ToggablePanel,
-    Grid
-} from 'Components/index';
 
 import {I18n} from 'Host/Containers/index';
 
@@ -33,7 +31,7 @@ class NodeTypeGroupPanel extends Component {
     constructor(props) {
         super(props);
 
-        this.onToggleGroup = this.onToggleGroup.bind(this);
+        this.handleToggleGroup = this.handleToggleGroup.bind(this);
         this.renderNodeTypeItem = this.renderNodeTypeItem.bind(this);
     }
 
@@ -54,7 +52,7 @@ class NodeTypeGroupPanel extends Component {
         return (
             <ToggablePanel
                 isOpen={collapsedGroups.includes(name) === false}
-                togglePanel={this.onToggleGroup}
+                onPanelToggle={this.handleToggleGroup}
                 >
                 <ToggablePanel.Header className={style.groupHeader}>
                     <I18n className={style.groupTitle} fallback={label} id={label}/>
@@ -68,7 +66,7 @@ class NodeTypeGroupPanel extends Component {
         );
     }
 
-    onToggleGroup() {
+    handleToggleGroup() {
         const {
             toggleNodeTypeGroup,
             group

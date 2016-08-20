@@ -2,9 +2,11 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 import {Maybe} from 'monet';
+import Bar from '@neos-project/react-ui-components/lib/Bar/';
+import Button from '@neos-project/react-ui-components/lib/Button/';
+import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
 
 import {actions} from 'Host/Redux/index';
-import {Tabs, Bar, Button} from 'Components/index';
 
 import TabPanel from './TabPanel/index';
 import style from './style.css';
@@ -34,7 +36,7 @@ export default class Inspector extends Component {
                         //
                         // Render each tab as a TabPanel
                         //
-                        .map(tab => <TabPanel key={tab.id} icon={tab.icon} groups={tab.groups}/>)
+                        .map(tab => <TabPanel key={tab.id} title={tab.id} icon={tab.icon} groups={tab.groups}/>)
                     }
                 </Tabs>
                 <Bar position="bottom">

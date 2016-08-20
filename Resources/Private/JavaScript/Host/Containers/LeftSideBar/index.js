@@ -3,8 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
-
-import {SideBar} from 'Components/index';
+import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
 
 import NodeTreeToolBar from './NodeTreeToolBar/index';
 import PageTree from './PageTree/index';

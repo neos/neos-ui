@@ -1,5 +1,5 @@
 import registry from 'Host/Extensibility/Registry/index';
-import {IconButton} from 'Components/index';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 registry.ckEditor.formattingAndStyling.add('p', {style: {element: 'p'}});
 

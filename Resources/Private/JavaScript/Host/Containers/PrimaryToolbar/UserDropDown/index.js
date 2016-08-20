@@ -2,8 +2,9 @@ import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
 
-import {Icon, DropDown} from 'Components/index';
 import {I18n} from 'Host/Containers/index';
 
 import style from './style.css';

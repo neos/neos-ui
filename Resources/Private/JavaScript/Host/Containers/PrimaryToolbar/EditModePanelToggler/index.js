@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
-import {Button} from 'Components/index';
+import Button from '@neos-project/react-ui-components/lib/Button/';
 import {I18n} from 'Host/Containers/index';
 
 export default class EditModePanelToggler extends Component {

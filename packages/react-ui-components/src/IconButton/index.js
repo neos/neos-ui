@@ -9,8 +9,8 @@ const ThemedIconButton = themr(identifiers.iconButton, style)(IconButton);
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps.js';
-import Icon from './../icon/index';
-import Button from './../button/index';
+import Icon from './../Icon/index';
+import Button from './../Button/index';
 
 export default injectProps({
     IconComponent: Icon,

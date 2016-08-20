@@ -14,7 +14,7 @@ const DropDownContents = themr(identifiers.dropDownContents, style)(ContextDropD
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps.js';
-import Icon from './../icon/index';
+import Icon from './../Icon/index';
 
 DropDown.Header = injectProps({
     IconComponent: Icon

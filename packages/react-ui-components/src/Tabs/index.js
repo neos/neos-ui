@@ -10,7 +10,7 @@ const ThemedTabs = themr(identifiers.tabs, style)(Tabs);
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps.js';
-import Icon from './../icon/index';
+import Icon from './../Icon/index';
 
 const FinalTabsComponent = injectProps({
     IconComponent: Icon

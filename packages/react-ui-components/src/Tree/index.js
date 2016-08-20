@@ -17,7 +17,7 @@ const ThemedTreeNodeContents = themr(identifiers.treeNodeContents, nodeStyle)(Co
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps.js';
-import Icon from './../icon/index';
+import Icon from './../Icon/index';
 
 const FinalTreeComponent = injectProps({
     NodeComponent: ThemedTreeNode

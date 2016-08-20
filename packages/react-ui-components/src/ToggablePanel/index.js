@@ -14,8 +14,8 @@ const ThemedToggablePanelContents = themr(identifiers.toggablePanelContents, sty
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps.js';
-import Headline from './../headline/index';
-import IconButton from './../iconButton/index';
+import Headline from './../Headline/index';
+import IconButton from './../IconButton/index';
 
 ThemedToggablePanel.Header = injectProps({
     HeadlineComponent: Headline,

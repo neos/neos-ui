@@ -9,7 +9,7 @@
     "test:watch": "npm run ava -- --watch",
     "build": "cross-env NODE_ENV=production npm run babel && npm run css",
     "babel": "babel ./src --out-dir ./lib",
-    "css": "cpx './src/**/*.css' ./lib",
+    "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
     "ava": "ava src/**/*.spec.js",

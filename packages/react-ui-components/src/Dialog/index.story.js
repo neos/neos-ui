@@ -2,7 +2,7 @@ import React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import Dialog from './index.js';
-import Button from './../button/index.js';
+import Button from './../Button/index.js';
 
 storiesOf('Dialog', module)
     .add('default', () => (

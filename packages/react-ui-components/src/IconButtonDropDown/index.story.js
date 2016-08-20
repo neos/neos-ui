@@ -2,7 +2,7 @@ import React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import IconButtonDropDown from './index.js';
-import Icon from './../icon/index.js';
+import Icon from './../Icon/index.js';
 
 storiesOf('IconButtonDropDown', module)
     .add('default', () => (

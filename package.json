@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
-    "@neos-project/react-ui-components": "^4.0.2",
+    "@neos-project/react-ui-components": "^4.0.3",
     "@reduct/registry": "^1.0.1",
     "classnames": "^2.2.3",
     "core-js": "^2.4.1",

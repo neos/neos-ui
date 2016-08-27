@@ -52,8 +52,8 @@ const Frame = React.createClass({
         // The iframe isn't ready so we drop children from props here. #12, #17
         const rest = omit(this.props, [
             'mountTarget',
-            'componentDidMount',
             'contentDidUpdate',
+            'contentDidMount',
             'theme',
             'initialContent'
         ]);

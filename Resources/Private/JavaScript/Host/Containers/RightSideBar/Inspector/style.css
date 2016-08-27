@@ -1,3 +1,7 @@
 .inspector {
     height: 100%;
 }
+.fullWidthBtn {
+    width: 100%;
+    text-align: center;
+}

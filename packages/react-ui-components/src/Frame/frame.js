@@ -1,5 +1,6 @@
 // 98997e98ea6d5ececc49db0de528151e40e272b7 from https://github.com/ryanseddon/react-frame-component/commit/98997e98ea6d5ececc49db0de528151e40e272b7 - and then modified!
 import React from 'react';
+import omit from 'lodash.omit';
 import ReactDOM from 'react-dom';
 import assign from 'object-assign';
 
@@ -49,7 +50,15 @@ const Frame = React.createClass({
     },
     render() {
         // The iframe isn't ready so we drop children from props here. #12, #17
-        return React.createElement('iframe', assign({}, this.props, {children: undefined}));
+        const rest = omit(this.props, [
+            'mountTarget',
+            'componentDidMount',
+            'contentDidUpdate',
+            'theme',
+            'initialContent'
+        ]);
+
+        return React.createElement('iframe', assign({}, rest, {children: undefined}));
     },
     componentDidMount() {
         this._isMounted = true;

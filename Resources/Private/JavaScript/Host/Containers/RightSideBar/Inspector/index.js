@@ -40,10 +40,10 @@ export default class Inspector extends Component {
                     }
                 </Tabs>
                 <Bar position="bottom">
-                    <Button onClick={apply}>
+                    <Button style="lighter" onClick={apply}>
                         Apply
                     </Button>
-                    <Button onClick={discard}>
+                    <Button style="lighter" onClick={discard}>
                         Discard
                     </Button>
                 </Bar>

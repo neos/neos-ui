@@ -3,19 +3,19 @@
     text-align: left;
 }
 .nodeType__icon {
-    color: $brand;
+    color: var(--brandColorsPrimaryBlue);
 
     .nodeType:hover & {
-        color: $brightest;
+        color: var(--brandColorsContrastBrightest);
     }
 }
 
 /* TODO: refactor such typography things to Headline component */
 .groupHeader {
-    border-bottom: 1px solid $dark;
+    border-bottom: 1px solid var(--brandColorsContrastDark);
 }
 .groupTitle {
-    color: $brighter;
+    color: var(--brandColorsContrastBrighter);
     line-height: 1.2;
     font-weight: normal;
 }

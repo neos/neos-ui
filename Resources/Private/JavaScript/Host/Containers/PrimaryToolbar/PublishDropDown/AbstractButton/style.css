@@ -1,10 +1,10 @@
 .btn {
     display: inline-block;
-    padding: 0 $spacing;
-    height: $unit;
-    line-height: $unit;
+    padding: 0 var(--spacing);
+    height: var(--goldenUnit);
+    line-height: var(--goldenUnit);
     border: 0;
-    background: $success;
+    background: var(--brandColorsSuccess);
     text-align: center;
     vertical-align: top;
     color: white;
@@ -19,5 +19,5 @@
     }
  }
 .btn--highlighted {
-    background: $warn;
+    background: var(--brandColorsWarn);
 }

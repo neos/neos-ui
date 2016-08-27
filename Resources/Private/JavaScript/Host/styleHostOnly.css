@@ -10,7 +10,7 @@ body {
     font-size: 14px;
     line-height: 20px;
     font-weight: normal;
-    color: $brightest;
+    color: var(--brandColorsContrastBrightest);
     margin: 0;
     padding: 0;
     overflow: hidden;

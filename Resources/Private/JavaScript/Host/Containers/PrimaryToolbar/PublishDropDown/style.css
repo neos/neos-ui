@@ -17,11 +17,11 @@
     top: 0;
     display: inline-block;
     width: auto;
-    height: $unit;
-    padding: 0 30px 0 $spacing;
+    height: var(--goldenUnit);
+    padding: 0 30px 0 var(--spacing);
     border: 0;
-    line-height: $unit;
-    background: $success;
+    line-height: var(--goldenUnit);
+    background: var(--brandColorsSuccess);
     text-align: center;
     vertical-align: top;
     cursor: pointer;
@@ -29,7 +29,7 @@
 
 .dropDown__item {
     &:hover {
-        background: $brand;
+        background: var(--brandColorsPrimaryBlue);
     }
 
     > a,
@@ -38,11 +38,11 @@
       display: block;
       width: 100%;
       border: 0;
-      padding: 0 $spacing;
+      padding: 0 var(--spacing);
       background: 0;
       color: #FFF;
       text-decoration: none;
-      line-height: $unit;
+      line-height: var(--goldenUnit);
       text-align: left;
 
       > i,
@@ -63,5 +63,5 @@
     }
 }
 .dropDown__item--canPublish {
-    background: $warn;
+    background: var(--brandColorsWarn);
 }

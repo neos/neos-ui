@@ -5,13 +5,11 @@ const {
 } = require('./webpack.base.config');
 const merge = require('lodash.merge');
 
-
 const GuestConfig = merge({}, baseConfig, {
     entry: {
         Guest: './Resources/Private/JavaScript/Guest/index.js'
     }
 });
-
 
 module.exports = [
     merge({}, baseConfig, hostConfig),

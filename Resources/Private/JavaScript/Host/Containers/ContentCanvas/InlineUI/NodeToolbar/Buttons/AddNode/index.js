@@ -33,9 +33,6 @@ export default class AddNode extends Component {
 
     render() {
         const modeIcon = this.getCurrentModeIcon();
-        const directButtonProps = {
-            id: 'neos__leftSidebar__nodeTreeToolBar__addNode'
-        };
 
         return (
             <span>
@@ -45,7 +42,6 @@ export default class AddNode extends Component {
                     modeIcon={modeIcon}
                     onClick={this.handleOpenModalBtnClick}
                     onItemSelect={this.handleInsertModeChanged}
-                    directButtonProps={directButtonProps}
                     >
                     <Icon dropDownId="prepend" icon="level-up"/>
                     <Icon dropDownId="insert" icon="long-arrow-right"/>

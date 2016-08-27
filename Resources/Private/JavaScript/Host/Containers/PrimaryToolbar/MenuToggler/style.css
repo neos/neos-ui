@@ -1,5 +1,5 @@
 .menuToggler--isActive {
-    color: $brand;
+    color: var(--brandColorsPrimaryBlue);
 }
 
 $lineHeight: 3px;
@@ -34,6 +34,6 @@ $lineHeight: 3px;
 
     &:hover {
         text-decoration: none;
-        color: $brand;
+        color: var(--brandColorsPrimaryBlue);
     }
 }

@@ -31,13 +31,6 @@ const baseConfig = {
         require('autoprefixer')({
             browsers: ['last 2 versions']
         }),
-
-        //
-        // ToDo: Remove and replace with `postcss-css-variables`
-        //
-        require('postcss-simple-vars')({
-            variables: require('./Resources/Private/JavaScript/Shared/Constants/Theme.js')
-        }),
         require('postcss-css-variables')({
             variables: Object.assign({
                 //
@@ -46,6 +39,7 @@ const baseConfig = {
                 '--goldenUnit': '40px',
                 '--spacing': '16px',
                 '--halfSpacing': '8px',
+                '--quarterSpacing': '4px',
 
                 //
                 // Sizes

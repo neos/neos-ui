@@ -2,10 +2,10 @@
     position: absolute;
     top: 41px;
     left: 0;
-    padding: 0 $sidebarWidth;
+    padding: 0 var(--sidebarWidth);
     width: 100%;
     height: 41px;
-    background: $neutral;
+    background: var(--brandColorsContrastNeutral);
     transition: .2s ease padding;
     will-change: padding;
 
@@ -22,7 +22,7 @@
     padding-left: 0;
 }
 .secondaryToolbar--isFringeRight {
-    padding-right: $unit;
+    padding-right: var(--goldenUnit);
 }
 .secondaryToolbar--isHidden {
     display: none;
@@ -38,24 +38,24 @@
 .secondaryToolbar__buttonLink {
     position: relative;
     display: inline-block;
-    height: $unit;
-    line-height: $unit;
-    min-width: $unit;
+    height: var(--goldenUnit);
+    line-height: var(--goldenUnit);
+    min-width: var(--goldenUnit);
     padding: 0;
     border: 0;
     -webkit-font-smoothing: antialiased;
     vertical-align: top;
-    width: $unit;
-    color: $brightest;
+    width: var(--goldenUnit);
+    color: var(--brandColorsContrastBrightest);
     text-align: center;
 
     &:focus {
-        outline: 1px dotted $brightest;
+        outline: 1px dotted var(--brandColorsContrastBrightest);
     }
 }
 
 a.secondaryToolbar__buttonLink:hover {
-    background: $brand;
+    background: var(--brandColorsPrimaryBlue);
 }
 
 .secondaryToolbar__buttonLink--isDisabled {

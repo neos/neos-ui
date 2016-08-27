@@ -14,21 +14,21 @@
     }
 }
 .rightSideBar--isHidden {
-    transform: translateX($sidebarWidth);
+    transform: translateX(var(--sidebarWidth));
 }
 .rightSideBar__toggleBtn {
     position: absolute!important;
     right: 0;
     top: 41px;
-    border-left: 1px solid $dark;
-    background: $darker;
+    border-left: 1px solid var(--brandColorsContrastDark);
+    background: var(--brandColorsContrastDarker);
     transition: .2s ease transform;
     will-change: transform;
 
     .rightSideBar--isHidden & {
-        transform: translateX(-$sidebarWidth);
+        transform: translateX(-var(--sidebarWidth));
     }
 }
 .rightSideBar__section {
-    border-bottom: 1px solid $dark;
+    border-bottom: 1px solid var(--brandColorsContrastDark);
 }

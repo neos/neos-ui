@@ -17,15 +17,15 @@
 }
 
 .flashMessage--success {
-    background-color: $success;
+    background-color: var(--brandColorsSuccess);
 }
 
 .flashMessage--error {
-    background-color: $error;
+    background-color: var(--brandColorsError);
 }
 
 .flashMessage--info {
-    background-color: $brand;
+    background-color: var(--brandColorsPrimaryBlue);
 }
 
 .flashMessage__icon {
@@ -33,8 +33,8 @@
     left: 0;
     top: 0;
 	height: 100%;
-    line-height: $unit;
-    width: $unit;
+    line-height: var(--goldenUnit);
+    width: var(--goldenUnit);
     text-align: center;
     font-size: 16px;
     padding: 0;

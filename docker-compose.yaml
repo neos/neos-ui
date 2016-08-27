@@ -1,9 +1,8 @@
 version: '2'
 
 services:
-
   app:
-    image: node:6.1
+    image: node:6.3
     command: Build/Docker/run.sh
     working_dir: /app
 

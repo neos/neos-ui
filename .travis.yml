@@ -3,31 +3,16 @@ notifications:
   email: false
 
 #
-# Make sure that the selenium driver can connect to the SauceLabs grid.
+# Describe the overall env.
 #
-addons:
-  sauce_connect: true
-
-#
-# Describe the overall PHP env.
-#
-language: php
-php:
-  - '5.6'
-services:
-  - mysql
+language: node_js
 
 #
 # Cache the composer and node_modules directory to speed up the the installation of dependencies.
 #
 cache:
   directories:
-    - $HOME/build/PackageFactory/Neos/Packages/Application/Neos.Neos.Ui/node_modules
-    - $HOME/build/PackageFactory/Neos/Packages/Framework
-    - $HOME/build/PackageFactory/Neos/Packages/Libraries
-    - $HOME/build/PackageFactory/Neos/Packages/Sites
-    - $HOME/.composer/cache
-    - $HOME/.nvm/versions/
+    - node_modules
 
 #
 # Parallel environments, the value represents the name of the shell script which needs to be placed in `Build/TravisCi/Scripts/[name].sh`.
@@ -35,58 +20,6 @@ cache:
 env:
   - TEST_SUITE=CodeStyle
   # - TEST_SUITE=UnitTests
-
-#
-# Install nvm, the node depdencies and setup the some env variables.
-#
-before_install:
-  # Add the oAuth token to git to avoid errors with composer because of https://github.com/composer/composer/issues/1314
-  - if [ -n "$GITHUB_OAUTH_TOKEN" ]; then composer config github-oauth.github.com ${GITHUB_OAUTH_TOKEN}; fi;
-
-  # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
-  - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
-
-  # Expose the commit message for SauceLabs.
-  # The export cannot be placed in the `env` section since there are usecases where this isn't reliable.
-  # @see https://github.com/mapbox/node-pre-gyp/issues/196
-  - "export COMMIT_MESSAGE=\"$(git log --format=%B --no-merges -n 1)\""
-  - export FLOW_CONTEXT=Development
-
-  # Disable xDebug
-  - phpenv config-rm xdebug.ini
-
-  # Update composer.
-  - composer self-update -q
-
-#
-# Install and setup the neos instance.
-#
-install:
-  # Handle hidden files with the `mv` command.
-  - shopt -s dotglob
-
-  # Create a separate working directory in which the neos instance can be installed in.
-  - cd ..
-  - if [ ! -d "Neos" ]; then mkdir Neos; fi;
-  - cp neos-ui/Build/TravisCi/composer* Neos/
-  - cd Neos
-
-  # Move our repository and the configuration files into place.
-  - if [ ! -d "Packages" ]; then mkdir Packages; fi;
-  - if [ ! -d "Packages/Application" ]; then mkdir Packages/Application; fi;
-  - if [ ! -d "Packages/Application/Neos.Neos.Ui" ]; then mkdir Packages/Application/Neos.Neos.Ui; fi;
-  - mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
-
-  # Execute the optional install shell script for the environment.
-  - if [ -f "Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
-
-  # Change into the repository directory where the environment based shell script will be executed.
-  - cd Packages/Application/Neos.Neos.Ui
-  - source Build/init.sh
-  - npm run build
-
-  # Deactivate the previous enabled handling of hidden files with the `mv` command.
-  - shopt -u dotglob
 
 #
 # Execute the test environment specific shell script.

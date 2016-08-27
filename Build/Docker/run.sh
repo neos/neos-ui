@@ -7,11 +7,6 @@
 #
 set -e
 
-#
-# First of, install all application depedencies.
-#
-
-npm prune && npm update
-
-
+npm prune
+npm update
 npm run watch:build

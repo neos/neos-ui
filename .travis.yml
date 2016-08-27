@@ -19,7 +19,7 @@ cache:
 #
 env:
   - TEST_SUITE=CodeStyle
-  # - TEST_SUITE=UnitTests
+  - TEST_SUITE=UnitTests
 
 #
 # Execute the test environment specific shell script.

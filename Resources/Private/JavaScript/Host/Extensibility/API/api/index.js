@@ -2,6 +2,10 @@ import {logger} from 'Shared/Utilities/';
 
 const API = window['@Neos:HostPluginAPI'];
 const RECOMMENDED_VERSION = '1.0.0';
+
+//
+// ToDo: Implement version range check.
+//
 const isCompatibleVersion = () => true;
 
 //

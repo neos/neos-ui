@@ -1,11 +1,6 @@
 import API from './api/index';
 
 //
-// Export API
-//
-export default API;
-
-//
 // Export runtime dependencies
 //
 const {
@@ -21,3 +16,8 @@ export {
     SecondaryInspector,
     api
 };
+
+//
+// Export API
+//
+export default API;

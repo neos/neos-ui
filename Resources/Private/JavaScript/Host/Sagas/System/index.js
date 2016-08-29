@@ -12,6 +12,7 @@ export const getStore = discover(function * () {
     const store = yield new Promise(resolve => {
         injectStore = resolve;
     });
+
     return store;
 });
 
@@ -27,41 +28,49 @@ export const getAppContainer = discover(function * () {
 
 export const getCsrfToken = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return appContainer.dataset.csrfToken;
 });
 
 export const getSystemEnv = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return appContainer.dataset.env;
 });
 
 export const getServerState = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
 });
 
 export const getConfiguration = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return JSON.parse(appContainer.querySelector('[data-json="configuration"]').innerHTML);
 });
 
 export const getTranslations = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
 });
 
 export const getInspectorEditorRegistry = discover(function * () {
     const {asyncModuleMapping, legacyModuleMapping} = yield getConfiguration;
+
     return createInspectorEditorRegistry(asyncModuleMapping, legacyModuleMapping);
 });
 
 export const getHookRegistry = discover(function * () {
     const {asyncModuleMapping} = yield getConfiguration;
+
     return createHookRegistry(asyncModuleMapping);
 });
 
 export const getApi = discover(function * () {
     const store = yield getStore;
+
     return createApi(store);
 });
 

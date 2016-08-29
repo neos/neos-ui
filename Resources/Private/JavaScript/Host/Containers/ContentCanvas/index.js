@@ -111,25 +111,26 @@ export default class ContentCanvas extends Component {
                 }
             };
 
+            // ToDo: Throws an err.
             _iframeWindow.NeosCKEditorApi.initialize(editorConfig);
 
             //
             // Initialize inline editors
             //
-            Array.prototype.forEach.call(iframeDocument.querySelectorAll('.neos-inline-editable'),
-                dom => {
-                    // const contextPath = closestContextPath(dom);
-                    // const propertyName = dom.dataset.__neosProperty;
+            const editors = iframeDocument.querySelectorAll('.neos-inline-editable');
+            Array.prototype.forEach.call(editors, node => {
+                // const contextPath = closestContextPath(dom);
+                // const propertyName = dom.dataset.__neosProperty;
 
-                    // TODO: from state, read node types & configure CKeditor based on node type!
+                // TODO: from state, read node types & configure CKeditor based on node type!
 
-                    _iframeWindow.NeosCKEditorApi.createEditor(dom, contents => {
-                        console.log('Change of content:', contents);
-                    });
-                }
-            );
+                _iframeWindow.NeosCKEditorApi.createEditor(node, contents => {
+                    console.log('Change of content:', contents);
+                });
+            });
         };
 
+        // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
             <div className={classNames}>
                 <div id="centerArea"/>

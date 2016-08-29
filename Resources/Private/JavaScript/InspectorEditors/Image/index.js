@@ -98,6 +98,7 @@ export default class ImageEditor extends Component {
         //
         if (
             this.props.value &&
+            nextProps.value &&
             nextProps.value.__identity &&
             nextProps.value.__identity !== this.props.value.__identity
         ) {

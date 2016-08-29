@@ -35,7 +35,6 @@ manifest('main', registry => {
         hoverStyle: 'brand'
     });
 
-
     /**
      * Feedback Handlers
      */
@@ -45,10 +44,10 @@ manifest('main', registry => {
         const id = uuid.v4();
 
         store.dispatch(actions.UI.FlashMessages.add(id, message, severity, timeout));
-    }
+    };
     registry.serverFeedbackHandlers.add('Neos.Neos.Ui:Success', flashMessageFeedbackHandler);
     registry.serverFeedbackHandlers.add('Neos.Neos.Ui:Error', flashMessageFeedbackHandler);
-    registry.serverFeedbackHandlers.add('Neos.Neos.Ui:Info', (feedbackPayload) => {
+    registry.serverFeedbackHandlers.add('Neos.Neos.Ui:Info', feedbackPayload => {
         switch (feedbackPayload.severity) {
             case 'ERROR':
                 console.error(feedbackPayload.message);

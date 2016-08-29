@@ -58,7 +58,7 @@ export default class EditorEnvelope extends Component {
 
         return {
             label,
-            node: node,
+            node,
             value: transientValue ? transientValue.value : sourceValue,
             propertyName: id,
             options

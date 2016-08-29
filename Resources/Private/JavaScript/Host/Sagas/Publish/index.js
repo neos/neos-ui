@@ -22,7 +22,6 @@ function * watchPublish() {
 
 function * watchDiscard() {
     yield * takeEvery(actionTypes.CR.Workspaces.DISCARD, function * discardNodes(action) {
-
         yield put(actions.UI.Remote.startDiscarding());
 
         try {

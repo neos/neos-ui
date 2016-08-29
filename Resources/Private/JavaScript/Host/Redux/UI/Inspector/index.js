@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$get, $all, $set, $drop, $transform} from 'plow-js';
+import {$get, $set, $drop, $transform} from 'plow-js';
 import Immutable, {Map} from 'immutable';
 import {map, mapObjIndexed, values, sort, compose} from 'ramda';
 
@@ -85,10 +85,6 @@ const transientValues = createSelector(
     (focusedNodeContextPath, valuesByNodePath) => $get([focusedNodeContextPath], valuesByNodePath)
 );
 
-
-
-
-
 /*
     Will create a configuration for the Inspector Component to render itself
     with the following shape:
@@ -132,13 +128,11 @@ const getTabs = getNormalizedDeepStructureFromNode('nodeType.ui.inspector.tabs')
 const getGroups = getNormalizedDeepStructureFromNode('nodeType.ui.inspector.groups');
 const getProperties = getNormalizedDeepStructureFromNode('nodeType.properties');
 
-
-
 const viewConfiguration = createSelector(
     [
         Nodes.focusedSelector
     ],
-    (node) => {
+    node => {
         if (!node) {
             return undefined;
         }

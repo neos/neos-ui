@@ -5,7 +5,6 @@ import registry from 'Host/Extensibility/Registry/index';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {Map} from 'immutable';
-import backend from 'Host/Service/Backend';
 
 import allSagas from 'Host/Sagas/index';
 import {reducer, actions} from 'Host/Redux/index';

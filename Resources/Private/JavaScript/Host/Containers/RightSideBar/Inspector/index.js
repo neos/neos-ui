@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
+import {$transform} from 'plow-js';
 import Bar from '@neos-project/react-ui-components/lib/Bar/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 import Button from '@neos-project/react-ui-components/lib/Button/';

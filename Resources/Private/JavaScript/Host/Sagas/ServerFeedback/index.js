@@ -1,11 +1,10 @@
 import {takeEvery} from 'redux-saga';
-import {put, call} from 'redux-saga/effects';
 
 import {actionTypes} from 'Host/Redux/index';
 import registry from 'Host/Extensibility/Registry/index';
 
 function * watchServerFeedback(store) {
-    yield * takeEvery(actionTypes.ServerFeedback.HANDLE_SERVER_FEEDBACK, function * handleServerFeedback(action) {
+    yield * takeEvery(actionTypes.ServerFeedback.HANDLE_SERVER_FEEDBACK, action => {
         const {feedbackEnvelope} = action.payload;
         const {feedbacks} = feedbackEnvelope;
 
@@ -17,7 +16,7 @@ function * watchServerFeedback(store) {
             } else {
                 console.warn(`Feedback Handler ${feedback.type} is not defined.`);
             }
-        })
+        });
     });
 }
 

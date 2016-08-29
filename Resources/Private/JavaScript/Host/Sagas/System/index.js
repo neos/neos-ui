@@ -91,4 +91,4 @@ function * bootSaga(store) {
 
 export const sagas = [
     bootSaga
-]
+];

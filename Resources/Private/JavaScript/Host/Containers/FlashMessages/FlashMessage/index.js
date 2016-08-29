@@ -1,13 +1,14 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
-
-import {IconButton, Icon} from 'Components/index';
-import {executeCallback} from 'Shared/Utilities/index';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 import style from './style.css';
 
 export default class FlashMessage extends Component {
     static propTypes = {
+        id: PropTypes.string.isRequired,
         message: PropTypes.string.isRequired,
         severity: PropTypes.string.isRequired,
         timeout: PropTypes.number,
@@ -18,6 +19,11 @@ export default class FlashMessage extends Component {
         super(props);
 
         this.state = {isVisible: false};
+        this.handleCloseClick = this.commenceClose.bind(this);
+    }
+
+    shouldComponentUpdate(newProps, newState) {
+        return shallowCompare(this, newProps, newState);
     }
 
     render() {
@@ -39,21 +45,17 @@ export default class FlashMessage extends Component {
             ban: isError,
             info: isInfo
         }) || 'info';
-        const onClick = e => executeCallback({
-            e,
-            cb: () => this.commenceClose()
-        });
 
         return (
             <div className={flashMessageClasses} role="alert">
-                <Icon icon={iconName} className={style.flashMessage__icon} />
+                <Icon icon={iconName} className={style.flashMessage__icon}/>
                 <div className={style.flashMessage__heading}>{message}</div>
                 <IconButton
                     icon="close"
                     className={style.flashMessage__btnClose}
                     style="transparent"
                     hoverStyle="darken"
-                    onClick={onClick}
+                    onClick={this.handleCloseClick}
                     />
             </div>
         );
@@ -69,9 +71,9 @@ export default class FlashMessage extends Component {
     }
 
     commenceClose() {
-        const {onClose} = this.props;
+        const {onClose, id} = this.props;
         this.setState({isVisible: false});
 
-        setTimeout(onClose, 100);
+        setTimeout(() => onClose(id), 100);
     }
 }

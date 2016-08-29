@@ -1,4 +1,5 @@
 import {Component, PropTypes, Children} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 
 export default class Neos extends Component {
     static propTypes = {
@@ -13,6 +14,13 @@ export default class Neos extends Component {
         configuration: PropTypes.object.isRequired,
         inspectorEditorRegistry: PropTypes.object.isRequired
     };
+
+    shouldComponentUpdate(...args) {
+        //
+        // ToDo: Revisit later, shallow compare may not be suitable for these nested objects
+        //
+        return shallowCompare(this, ...args);
+    }
 
     getChildContext() {
         const {configuration, inspectorEditorRegistry, translations} = this.props;

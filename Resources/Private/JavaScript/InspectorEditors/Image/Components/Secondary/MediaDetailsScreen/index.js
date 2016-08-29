@@ -14,7 +14,7 @@ const MediaDetailsScreen = (props) => {
 
     return (
         <SecondaryInspector onClose={() => props.onClose()}>
-            <iframe src={uri} className={style.iframe} />
+            <iframe src={uri} className={style.iframe}/>
         </SecondaryInspector>
     );
 };

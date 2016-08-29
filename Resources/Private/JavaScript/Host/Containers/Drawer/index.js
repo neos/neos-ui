@@ -1,20 +1,19 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import Button from '@neos-project/react-ui-components/lib/Button/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 
 import {actions} from 'Host/Redux/index';
-import {
-    Button,
-    Icon,
-    ToggablePanel
-} from 'Components/index';
 import {I18n} from 'Host/Containers/index';
 
 import style from './style.css';
 
 const moduleLabel = (label, sourceName = 'Main') =>
-    <I18n id={label} sourceName={sourceName} fallback={label} />;
+    <I18n id={label} sourceName={sourceName} fallback={label}/>;
 
 @connect($transform({
     isHidden: $get('ui.drawer.isHidden')
@@ -27,8 +26,12 @@ export default class Drawer extends Component {
         hideDrawer: PropTypes.func.isRequired
     };
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
-        const {isHidden} = this.props;
+        const {isHidden, hideDrawer} = this.props;
         const classNames = mergeClassNames({
             [style.drawer]: true,
             [style['drawer--isHidden']]: isHidden
@@ -37,8 +40,7 @@ export default class Drawer extends Component {
         return (
             <div
                 className={classNames}
-                onMouseLeave={() => this.props.hideDrawer()}
-                id="neos__drawer"
+                onMouseLeave={hideDrawer}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 {this.renderMenu()}
@@ -81,7 +83,7 @@ export default class Drawer extends Component {
         return children && children.length ? (
             <ToggablePanel isOpen={true} className={style.drawer__menuItem} key={key}>
                 <ToggablePanel.Header className={style.drawer__menuItem__header}>
-                    <Icon icon={icon} padded="right" />
+                    <Icon icon={icon} padded="right"/>
                     {title}
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
@@ -89,8 +91,8 @@ export default class Drawer extends Component {
                 </ToggablePanel.Contents>
             </ToggablePanel>
         ) : (
-            <Button className={style.drawer__menuItemBtn} role="button" onClick={onClick} key={key} style="transparent">
-                <Icon icon={icon} padded="right" />
+            <Button className={style.drawer__menuItemBtn} onClick={onClick} key={key} style="transparent">
+                <Icon icon={icon} padded="right"/>
                 {title}
             </Button>
         );

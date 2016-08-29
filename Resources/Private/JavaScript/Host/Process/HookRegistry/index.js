@@ -3,7 +3,7 @@ import {logger, loadScript} from 'Shared/Utilities/';
 //
 // A simple registry for system hooks
 //
-export default (moduleMapping) => {
+export default moduleMapping => {
     const loadedInlineEditorsByModuleName = {};
     const deferred = {};
 

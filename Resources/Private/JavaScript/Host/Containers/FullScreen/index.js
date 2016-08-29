@@ -1,9 +1,10 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 import {actions} from 'Host/Redux/index';
-import {IconButton} from 'Components/index';
 
 import style from './style.css';
 
@@ -18,13 +19,17 @@ export default class FullScreen extends Component {
         toggleFullScreen: PropTypes.func.isRequired
     };
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
-        return this.props.isFullScreen ?
-            (
-                <div className={style.fullScreenClose}>
-                    <IconButton icon="expand" onClick={() => this.props.toggleFullScreen()} />
-                </div>
-            ) :
+        const {isFullScreen, toggleFullScreen} = this.props;
+
+        return isFullScreen ?
+            <div className={style.fullScreenClose}>
+                <IconButton icon="expand" onClick={toggleFullScreen}/>
+            </div> :
             null;
     }
 }

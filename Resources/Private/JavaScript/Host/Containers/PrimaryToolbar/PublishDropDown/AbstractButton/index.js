@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 
@@ -13,13 +14,16 @@ export default class AbstractButton extends Component {
         onClick: PropTypes.func.isRequired
     };
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const {
             isEnabled,
             isHighlighted,
             indicator,
             className,
-            onClick,
             ...directProps
         } = this.props;
         const btnClassName = mergeClassNames({
@@ -34,7 +38,7 @@ export default class AbstractButton extends Component {
         };
 
         return (
-            <button className={btnClassName} onClick={() => onClick()} {...attributes} {...directProps}>
+            <button className={btnClassName} {...attributes} {...directProps}>
                 {this.props.children} {indicator > 0 ? `(${indicator})` : ''}
             </button>
         );

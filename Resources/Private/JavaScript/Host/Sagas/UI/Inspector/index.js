@@ -14,7 +14,7 @@ const getTransientInspectorValues = state => {
     return values.toJS ? values.toJS() : values;
 };
 
-export function* inspectorSaga() {
+export function * inspectorSaga() {
     yield take(actionTypes.System.READY);
 
     while (true) { // eslint-disable-line no-constant-condition
@@ -83,7 +83,7 @@ export function* inspectorSaga() {
     }
 }
 
-function* flushInspector() {
+function * flushInspector() {
     const state = yield select();
     const focusedNode = getFocusedNode(state);
     const transientInspectorValues = getTransientInspectorValues(state);

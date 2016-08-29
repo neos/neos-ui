@@ -5,8 +5,8 @@ import {actionTypes, actions} from 'Host/Redux/index';
 import {publish, discard} from 'API/Endpoints/index';
 import backend from 'Host/Service/Backend';
 
-export function* watchPublish() {
-    yield* takeEvery(actionTypes.CR.Workspaces.PUBLISH, function* publishNodes(action) {
+export function * watchPublish() {
+    yield * takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
         const {feedbackManager} = backend;
 
@@ -21,8 +21,8 @@ export function* watchPublish() {
     });
 }
 
-export function* watchDiscard() {
-    yield* takeEvery(actionTypes.CR.Workspaces.DISCARD, function* discardNodes(action) {
+export function * watchDiscard() {
+    yield * takeEvery(actionTypes.CR.Workspaces.DISCARD, function * discardNodes(action) {
         const {feedbackManager} = backend;
 
         yield put(actions.UI.Remote.startDiscarding());

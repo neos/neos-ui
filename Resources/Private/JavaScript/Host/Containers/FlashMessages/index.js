@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
@@ -23,8 +24,8 @@ export default class FlashMessages extends Component {
         flashMessages: {}
     };
 
-    shouldComponentUpdate({flashMessages}) {
-        return flashMessages !== this.props.flashMessages;
+    shouldComponentUpdate(newProps, newState) {
+        return shallowCompare(this, newProps, newState) && newProps.flashMessages !== this.props.flashMessages;
     }
 
     render() {
@@ -38,10 +39,11 @@ export default class FlashMessages extends Component {
                     return (
                         <FlashMessage
                             key={id}
+                            id={id}
                             message={message}
                             severity={severity}
                             timeout={timeout}
-                            onClose={() => removeMessage(id)}
+                            onClose={removeMessage}
                             />
                     );
                 }).toArray()}

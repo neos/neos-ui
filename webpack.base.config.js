@@ -1,12 +1,13 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 const path = require('path');
 const vars = require('postcss-simple-vars');
 const hexToRgba = require('postcss-hexrgba');
 const postCssImport = require('postcss-import');
 const nested = require('postcss-nested');
 const env = require('./Build/Utilities/').env;
+const brand = require('@neos-project/brand');
+const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
 
 const baseConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
@@ -30,15 +31,39 @@ const baseConfig = {
     },
 
     postcss: [
-        autoprefixer({
+        require('autoprefixer')({
             browsers: ['last 2 versions']
         }),
-        vars({
+
+        //
+        // ToDo: Remove and replace with `postcss-css-variables`
+        //
+        require('postcss-simple-vars')({
             variables: require('./Resources/Private/JavaScript/Shared/Constants/Theme.js')
         }),
-        postCssImport(),
-        nested(),
-        hexToRgba()
+        require('postcss-css-variables')({
+            variables: Object.assign({
+                //
+                // Spacings
+                //
+                '--goldenUnit': '40px',
+                '--spacing': '16px',
+                '--halfSpacing': '8px',
+
+                //
+                // Sizes
+                //
+                '--sidebarWidth': '320px',
+
+                //
+                // Font sizes
+                //
+                '--baseFontSize': '14px'
+            }, brandVars)
+        }),
+        require('postcss-import')(),
+        require('postcss-nested')(),
+        require('postcss-hexrgba')()
     ],
 
     plugins: [

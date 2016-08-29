@@ -1,10 +1,13 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 import {actions} from 'Host/Redux/index';
-import {IconButton, Icon} from 'Components/index';
+
 import DimensionSwitcher from './DimensionSwitcher/index';
 import EditorToolbar from './EditorToolbar/index';
 import {isDocumentNodeSelectedSelector} from 'Host/Selectors/CR/Nodes/index';
@@ -30,8 +33,18 @@ export default class SecondaryToolbar extends Component {
         isDocumentNodeSelected: PropTypes.bool.isRequired
     };
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
-        const {previewUrl, isFringedLeft, isFringedRight, isFullScreen} = this.props;
+        const {
+            previewUrl,
+            isFringedLeft,
+            isFringedRight,
+            isFullScreen,
+            toggleFullScreen
+        } = this.props;
         const classNames = mergeClassNames({
             [style.secondaryToolbar]: true,
             [style['secondaryToolbar--isFringeLeft']]: isFringedLeft,
@@ -45,18 +58,18 @@ export default class SecondaryToolbar extends Component {
 
         return (
             <div className={classNames}>
-                {this.props.isDocumentNodeSelected ? <DimensionSwitcher /> : <EditorToolbar />}
+                {this.props.isDocumentNodeSelected ? <DimensionSwitcher/> : <EditorToolbar/>}
 
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     <a
                         href={previewUrl ? previewUrl : ''}
                         target="_blank"
+                        rel="noopener noreferrer"
                         className={previewButtonClassNames}
-                        rel="noopener"
                         >
-                        <Icon icon="external-link" />
+                        <Icon icon="external-link"/>
                     </a>
-                    <IconButton icon="expand" onClick={() => this.props.toggleFullScreen()} />
+                    <IconButton icon="expand" onClick={toggleFullScreen}/>
                 </div>
             </div>
         );

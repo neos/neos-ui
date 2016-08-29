@@ -26,7 +26,7 @@ import {
     FullScreen
 } from 'Host/Containers/index';
 
-export function* applicationViewSaga(store) {
+export function * applicationViewSaga(store) {
     yield take(actionTypes.System.BOOT);
 
     const appContainer = yield getAppContainer;
@@ -57,16 +57,16 @@ export function* applicationViewSaga(store) {
                     translations={translations}
                     >
                     <div>
-                        <div id="dialog" />
-                        <Modals />
-                        <FlashMessages />
-                        <FullScreen />
-                        <PrimaryToolbar />
-                        <SecondaryToolbar />
-                        <Drawer />
-                        <LeftSideBar />
-                        <ContentCanvas />
-                        <RightSideBar />
+                        <div id="dialog"/>
+                        <Modals/>
+                        <FlashMessages/>
+                        <FullScreen/>
+                        <PrimaryToolbar/>
+                        <SecondaryToolbar/>
+                        <Drawer/>
+                        <LeftSideBar/>
+                        <ContentCanvas/>
+                        <RightSideBar/>
                     </div>
                 </Neos>
             </Provider>

@@ -1,21 +1,20 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
-import {
-    IconButtonDropDown,
-    Icon
-} from 'Components/index';
+import IconButtonDropDown from '@neos-project/react-ui-components/lib/IconButtonDropDown/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import {actions} from 'Host/Redux/index';
 import {$transform} from 'plow-js';
 
 @connect($transform({
 }), {
-    open: actions.UI.AddNodeModal.open
+    openAddNodeModal: actions.UI.AddNodeModal.open
 })
 export default class AddNode extends Component {
     static propTypes = {
         node: PropTypes.object,
         className: PropTypes.string,
-        open: PropTypes.func.isRequired
+        openAddNodeModal: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -24,6 +23,12 @@ export default class AddNode extends Component {
         this.state = {
             currentMode: 'insert'
         };
+        this.handleOpenModalBtnClick = this.openModal.bind(this);
+        this.handleInsertModeChanged = this.onModeChanged.bind(this);
+    }
+
+    shouldComponentUpdate(newProps, newState) {
+        return shallowCompare(this, newProps, newState);
     }
 
     render() {
@@ -38,20 +43,25 @@ export default class AddNode extends Component {
                     className={this.props.className}
                     icon="plus"
                     modeIcon={modeIcon}
-                    onClick={this.openModal.bind(this)}
-                    onItemSelect={this.onModeChanged.bind(this)}
+                    onClick={this.handleOpenModalBtnClick}
+                    onItemSelect={this.handleInsertModeChanged}
                     directButtonProps={directButtonProps}
                     >
-                    <Icon dropDownId="prepend" icon="level-up" />
-                    <Icon dropDownId="insert" icon="long-arrow-right" />
-                    <Icon dropDownId="append" icon="level-down" />
+                    <Icon dropDownId="prepend" icon="level-up"/>
+                    <Icon dropDownId="insert" icon="long-arrow-right"/>
+                    <Icon dropDownId="append" icon="level-down"/>
                 </IconButtonDropDown>
             </span>
         );
     }
 
     openModal() {
-        this.props.open(this.props.node.contextPath, this.state.currentMode);
+        const {
+            openAddNodeModal,
+            node
+        } = this.props;
+
+        openAddNodeModal(node.contextPath, this.state.currentMode);
     }
 
     getCurrentModeIcon() {

@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
-import {Tree} from 'Components/index';
 import {UI} from 'Host/Selectors/index';
 
 @connect(state => ({
@@ -29,6 +29,14 @@ export default class Node extends Component {
         onNodeFocus: PropTypes.func
     };
 
+    constructor(props) {
+        super(props);
+
+        this.handleNodeToggle = this.handleNodeToggle.bind(this);
+        this.handleNodeClick = this.handleNodeClick.bind(this);
+        this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
+    }
+
     shouldComponentUpdate({item}) {
         return (
             item.isCollapsed !== this.props.item.isCollapsed ||
@@ -47,9 +55,9 @@ export default class Node extends Component {
             <Tree.Node>
                 <Tree.Node.Header
                     item={item}
-                    onToggle={() => onNodeToggle(item)}
-                    onClick={() => onNodeFocus(item)}
-                    onLabelClick={() => onNodeClick(item)}
+                    onToggle={this.handleNodeToggle}
+                    onClick={this.handleNodeClick}
+                    onLabelClick={this.handleNodeLabelClick}
                     />
                 {item.isCollapsed ? null : (
                     <Tree.Node.Contents>
@@ -57,18 +65,36 @@ export default class Node extends Component {
                             .map(contextPath => getTreeNode(contextPath, 'TYPO3.Neos:Document'))
                             .filter(i => i)
                             .map(item =>
-                            <Node
-                                key={item.contextPath}
-                                item={item}
-                                getTreeNode={getTreeNode}
-                                onNodeToggle={onNodeToggle}
-                                onNodeClick={onNodeClick}
-                                onNodeFocus={onNodeFocus}
-                                />
+                                <Node
+                                    key={item.contextPath}
+                                    item={item}
+                                    getTreeNode={getTreeNode}
+                                    onNodeToggle={onNodeToggle}
+                                    onNodeClick={onNodeClick}
+                                    onNodeFocus={onNodeFocus}
+                                    />
                         )}
                     </Tree.Node.Contents>
                 )}
             </Tree.Node>
         ) : null;
+    }
+
+    handleNodeToggle() {
+        const {item, onNodeToggle} = this.props;
+
+        onNodeToggle(item.contextPath);
+    }
+
+    handleNodeClick() {
+        const {item, onNodeFocus} = this.props;
+
+        onNodeFocus(item.uri);
+    }
+
+    handleNodeLabelClick() {
+        const {item, onNodeClick} = this.props;
+
+        onNodeClick(item.contextPath);
     }
 }

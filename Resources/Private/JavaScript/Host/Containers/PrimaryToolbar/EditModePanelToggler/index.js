@@ -1,13 +1,22 @@
 import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {Button} from 'Components/index';
+import shallowCompare from 'react-addons-shallow-compare';
+import Button from '@neos-project/react-ui-components/lib/Button/';
 import {I18n} from 'Host/Containers/index';
 
-@connect()
 export default class EditModePanelToggler extends Component {
     static propTypes = {
         className: PropTypes.string
     };
+
+    constructor(props) {
+        super(props);
+
+        this.handleEditModeToggleClick = this.handleEditModeToggleClick.bind(this);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     render() {
         const isActive = false;
@@ -18,14 +27,14 @@ export default class EditModePanelToggler extends Component {
                 style="clean"
                 hoverStyle="clean"
                 isFocused={isActive}
-                onClick={this.onEditModeToggle.bind(this)}
+                onClick={this.handleEditModeToggleClick}
                 >
-                <I18n id="editPreview" fallback="Edit / Preview" />
+                <I18n id="editPreview" fallback="Edit / Preview"/>
             </Button>
         );
     }
 
-    onEditModeToggle() {
+    handleEditModeToggleClick() {
         console.log('toggle edit mode container...');
     }
 }

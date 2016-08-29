@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
-import {IconButton} from 'Components/index';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 @connect()
 export default class DeleteSelectedNode extends Component {
@@ -13,6 +14,16 @@ export default class DeleteSelectedNode extends Component {
         isDisabled: true
     };
 
+    constructor(props) {
+        super(props);
+
+        this.handleDeleteSelectedNodeClick = this.deleteSelectedNode.bind(this);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const {
             isDisabled,
@@ -23,7 +34,7 @@ export default class DeleteSelectedNode extends Component {
             <IconButton
                 className={className}
                 isDisabled={isDisabled}
-                onClick={this.deleteSelectedNode.bind(this)}
+                onClick={this.handleDeleteSelectedNodeClick}
                 icon="trash"
                 hoverStyle="clean"
                 />

@@ -1,4 +1,5 @@
 import {Component} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {CR} from 'Host/Selectors/index';
 import {$transform} from 'plow-js';
@@ -14,6 +15,10 @@ export default class MarkHoveredNodeAsHovered extends Component {
         hoveredNode: NodePropType,
         focusedNode: NodePropType
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     render() {
         const iframeDocument = document.getElementsByName('neos-content-main')[0].contentDocument;

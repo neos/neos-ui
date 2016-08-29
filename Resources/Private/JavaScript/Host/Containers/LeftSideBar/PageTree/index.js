@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
-import {Tree} from 'Components/index';
 import {UI} from 'Host/Selectors/index';
 import {actions} from 'Host/Redux/index';
 
@@ -42,14 +42,16 @@ export default class PageTree extends Component {
         const siteNode = getTreeNode(siteNodeContextPath);
 
         if (siteNode) {
-            return (<Tree id="neos__leftSidebar__pageTree">
-                <Node
-                    item={siteNode}
-                    onNodeToggle={({contextPath}) => onNodeToggle(contextPath)}
-                    onNodeClick={({uri}) => onNodeClick(uri)}
-                    onNodeFocus={({contextPath}) => onNodeFocus(contextPath)}
-                    />
-            </Tree>);
+            return (
+                <Tree>
+                    <Node
+                        item={siteNode}
+                        onNodeToggle={onNodeToggle}
+                        onNodeClick={onNodeClick}
+                        onNodeFocus={onNodeFocus}
+                        />
+                </Tree>
+            );
         }
 
         return null;

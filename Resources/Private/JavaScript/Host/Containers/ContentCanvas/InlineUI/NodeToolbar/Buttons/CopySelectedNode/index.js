@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-import {IconButton} from 'Components/index';
+import shallowCompare from 'react-addons-shallow-compare';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 export default class CopySelectedNode extends Component {
     static propTypes = {
@@ -11,6 +12,16 @@ export default class CopySelectedNode extends Component {
         isDisabled: true
     };
 
+    constructor(props) {
+        super(props);
+
+        this.handleCopySelectedNodeClick = this.copySelectedNode.bind(this);
+    }
+
+    shouldComponentUpdate(newProps, newState) {
+        return shallowCompare(this, newProps, newState);
+    }
+
     render() {
         const {
             isDisabled,
@@ -21,7 +32,7 @@ export default class CopySelectedNode extends Component {
             <IconButton
                 className={className}
                 isDisabled={isDisabled}
-                onClick={this.copySelectedNode.bind(this)}
+                onClick={this.handleCopySelectedNodeClick}
                 icon="copy"
                 hoverStyle="clean"
                 />

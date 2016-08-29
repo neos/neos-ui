@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$get, $transform} from 'plow-js';
@@ -12,7 +13,7 @@ import {iframeWindow} from 'Host/Containers/ContentCanvas/index';
  * Render sub components for the toolbar, implementing the API as described in registry.ckEditor.toolbar.
  */
 const renderToolbarComponents = (toolbarComponents, activeFormatting) => {
-    return toolbarComponents.map(componentDefinition => {
+    return toolbarComponents.map((componentDefinition, index) => {
         const {component, formatting, callbackPropName, ...props} = componentDefinition;
         const isActive = $get(formatting, activeFormatting);
 
@@ -22,7 +23,8 @@ const renderToolbarComponents = (toolbarComponents, activeFormatting) => {
         };
 
         const Component = component;
-        return <Component isActive={isActive} {...props} />;
+
+        return <Component key={index} isActive={isActive} {...props}/>;
     });
 };
 
@@ -33,6 +35,11 @@ export default class Toolbar extends Component {
     static propTypes = {
         activeFormatting: PropTypes.objectOf(React.PropTypes.bool)
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const classNames = mergeClassNames({
             [style.toolBar]: true

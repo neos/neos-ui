@@ -25,6 +25,7 @@ export default class PreviewScreen extends Component {
         const thumbnail = Thumbnail.fromImageData(image, 273, 216);
 
         const loader = () => <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader} />;
+
         const preview = () => (
             <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
                 <img
@@ -32,7 +33,7 @@ export default class PreviewScreen extends Component {
                     src={(thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg')}
                     style={(thumbnail ? thumbnail.styles.thumbnail : {})}
                     role="presentation"
-                    />
+                   />
             </div>
         );
 

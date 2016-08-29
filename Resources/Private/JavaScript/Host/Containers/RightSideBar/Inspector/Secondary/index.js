@@ -1,26 +1,23 @@
 import React, {PropTypes} from 'react';
 import style from './style.css';
-import {
-    Button,
-    Icon,
-    Portal
-} from 'Components/index';
+import Portal from 'react-portal';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import Button from '@neos-project/react-ui-components/lib/Button/';
 
 const Secondary = props => {
+    const {onClose, children} = props;
+
     return (
-        <Portal
-            target="contentCanvas"
-            isOpened={true}
-            >
+        <Portal isOpened={true}>
             <div className={style.secondaryInspector}>
                 <Button
                     style="cleanWithBorder"
                     className={style.close}
-                    onClick={() => props.onClose()}
+                    onClick={onClose}
                     >
-                    <Icon icon="close" />
+                    <Icon icon="close"/>
                 </Button>
-                {props.children}
+                {children}
             </div>
         </Portal>
     );

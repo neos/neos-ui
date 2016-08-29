@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import Label from '@neos-project/react-ui-components/lib/Label/';
 
-import {Label} from 'Components/index';
 import {I18n} from 'Host/Containers/index';
 import neos from 'Host/Decorators/Neos/index';
 import {UI} from 'Host/Selectors/index';
@@ -38,7 +38,6 @@ export default class EditorEnvelope extends Component {
         transient: PropTypes.object
     };
 
-
     generateIdentifier() {
         return `#__neos__inspector__property---${this.props.id}`;
     }
@@ -62,7 +61,6 @@ export default class EditorEnvelope extends Component {
     }
 
     renderEditorComponent() {
-
         const {transient, id, commit, editor} = this.props;
         const editorDefinition = registry.inspector.editors.get(editor);
 
@@ -71,21 +69,25 @@ export default class EditorEnvelope extends Component {
             return (
                 <EditorComponent
                     {...this.prepareEditorProperties()}
-                    commit={(value, hooks = null) => {
-                        if ($get([id], transient) === value && hooks === null) {
-                            //
-                            // Nothing has changed...
-                            //
-                            return commit(id, null, null);
-                        }
-
-                        return commit(id, value, hooks);
-                    }}
+                    commit={this.onHandleCommit}
                     />
             );
         }
 
         return (<div>Missing Editor {editor}</div>);
+    }
+
+    onHandleCommit(value, hooks = null) {
+        const {transient, id, commit} = this.props;
+
+        if ($get([id], transient) === value && hooks === null) {
+            //
+            // Nothing has changed...
+            //
+            return commit(id, null, null);
+        }
+
+        return commit(id, value, hooks);
     }
 
     renderLabel() {
@@ -99,7 +101,7 @@ export default class EditorEnvelope extends Component {
 
         return (
             <Label htmlFor={this.generateIdentifier()}>
-                <I18n id={label} />
+                <I18n id={label}/>
             </Label>
         );
     }

@@ -10,7 +10,7 @@ const UPDATE_IMAGE = '@packagefactory/guevara/UI/Editors/Image/UPDATE_IMAGE';
 const UPLOAD_IMAGE = '@packagefactory/guevara/UI/Editors/Image/UPLOAD_IMAGE';
 const FINISH_IMAGE_UPLOAD = '@packagefactory/guevara/UI/Editors/Image/FINISH_IMAGE_UPLOAD';
 
-const toggleImageDetailsScreen = createAction(TOGGLE_IMAGE_DETAILS_SCREEN, (screenIdentifier) => ({screenIdentifier}));
+const toggleImageDetailsScreen = createAction(TOGGLE_IMAGE_DETAILS_SCREEN, screenIdentifier => ({screenIdentifier}));
 const updateImage = createAction(UPDATE_IMAGE, (nodeContextPath, imageUuid, transientImage) => ({nodeContextPath, imageUuid, transientImage}));
 const uploadImage = createAction(UPLOAD_IMAGE, (fileToUpload, nodePropertyValueChangeFn, screenIdentifier) => ({fileToUpload, nodePropertyValueChangeFn, screenIdentifier}));
 const finishImageUpload = createAction(FINISH_IMAGE_UPLOAD, () => ({}));

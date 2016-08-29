@@ -1,11 +1,10 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import {
-    SideBar,
-    IconButton
-} from 'Components/index';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
 import {actions} from 'Host/Redux/index';
 
 import style from './style.css';
@@ -25,8 +24,12 @@ export default class RightSideBar extends Component {
         toggleSidebar: PropTypes.func.isRequired
     };
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
-        const {isHidden, isFullScreen} = this.props;
+        const {isHidden, isFullScreen, toggleSidebar} = this.props;
         const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
             [style.rightSideBar]: true,
@@ -34,26 +37,22 @@ export default class RightSideBar extends Component {
         });
         const toggleIcon = isHidden ? 'chevron-left' : 'chevron-right';
         const toggle = isFullScreen ? null : (
-          <IconButton
-              icon={toggleIcon}
-              className={style.rightSideBar__toggleBtn}
-              onClick={() => this.props.toggleSidebar()}
-              id="neos__rightSideBar__toggler"
-              />
+            <IconButton
+                icon={toggleIcon}
+                className={style.rightSideBar__toggleBtn}
+                onClick={toggleSidebar}
+                />
         );
 
-        /* eslint-disable no-inline-comments */
         return (
             <SideBar
                 position="right"
                 className={classNames}
-                id="neos__rightSideBar"
                 aria-hidden={isSideBarHidden ? 'true' : 'false'}
                 >
                 {toggle}
-                <Inspector />
+                <Inspector/>
             </SideBar>
         );
-        /* eslint-enable no-inline-comments */
     }
 }

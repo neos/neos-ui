@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
+import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 
-import {ToggablePanel} from 'Components/index';
 import {I18n} from 'Host/Containers/index';
 
 import EditorEnvelope from '../EditorEnvelope/index';
@@ -18,7 +18,7 @@ export default class PropertyGroup extends Component {
         const propertyGroup = properties => (
             <ToggablePanel isOpen={true} className={style.rightSideBar__section}>
                 <ToggablePanel.Header>
-                    <I18n id={label} />
+                    <I18n id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {properties.map(property => (

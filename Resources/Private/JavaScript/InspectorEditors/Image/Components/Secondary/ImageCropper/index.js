@@ -66,7 +66,7 @@ export default class ImageCropper extends Component {
     render() {
         const {cropConfiguration} = this.state;
         const aspectRatioLocked = false;
-        const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock" /> : null);
+        const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock"/> : null);
         const {sourceImage, onClose, onComplete} = this.props;
         const src = sourceImage.previewUri.orSome('/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg');
 
@@ -76,7 +76,7 @@ export default class ImageCropper extends Component {
                     <div className={style.tools}>
                         <div className={style.aspectRatioIndicator}>
                             {cropConfiguration.aspectRatioReducedLabel.map(label => [
-                                <Icon icon="crop" />,
+                                <Icon icon="crop"/>,
                                 <span title={label}>{label}</span>,
                                 <span>{aspectRatioLockIcon}</span>
                             ]).orSome('')}
@@ -88,7 +88,7 @@ export default class ImageCropper extends Component {
                             options={cropConfiguration.aspectRatioOptions}
                             onSelect={::this.setAspectRatio}
                             onClear={::this.clearAspectRatio}
-                            />
+                           />
 
                         <div className={style.dimensions}>
                             {cropConfiguration.aspectRatioDimensions.map(({width, height}) => [
@@ -97,17 +97,17 @@ export default class ImageCropper extends Component {
                                     type="number"
                                     value={width}
                                     onChange={width => this.setCustomAspectRatioDimensions(width, height)}
-                                    />,
+                                   />,
                                 <IconButton
                                     icon="exchange"
                                     onClick={::this.flipAspectRatio}
-                                    />,
+                                   />,
                                 <TextInput
                                     className={style.dimensionInput}
                                     type="number"
                                     value={height}
                                     onChange={height => this.setCustomAspectRatioDimensions(width, height)}
-                                    />
+                                   />
                             ]).orSome('')}
                         </div>
                     </div>
@@ -116,7 +116,7 @@ export default class ImageCropper extends Component {
                         src={src}
                         crop={cropConfiguration.cropInformation}
                         onComplete={cropArea => onComplete(cropArea)}
-                        />
+                       />
                 </div>
             </SecondaryInspector>
         );

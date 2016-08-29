@@ -1,7 +1,0 @@
-.treeWrapper {
-    padding: 5px;
-
-    &:focus {
-        outline: 0;
-    }
-}

@@ -1,8 +1,10 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
 
-import {Icon, DropDown} from 'Components/index';
 import {I18n} from 'Host/Containers/index';
 
 import style from './style.css';
@@ -15,29 +17,33 @@ export default class UserDropDown extends Component {
         userName: PropTypes.string.isRequired
     };
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         return (
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>
-                    <DropDown.Header className={style.dropDown__btn} id="neos__primaryToolbar__userDropDown__btn">
-                        <Icon className={style.dropDown__btnIcon} icon="user" />
+                    <DropDown.Header className={style.dropDown__btn}>
+                        <Icon className={style.dropDown__btnIcon} icon="user"/>
                         {this.props.userName}
                     </DropDown.Header>
-                    <DropDown.Contents className={style.dropDown__contents} id="neos__primaryToolbar__userDropDown__contents">
+                    <DropDown.Contents className={style.dropDown__contents}>
                         <li className={style.dropDown__item}>
                             <form title="Logout" action="/neos/logout" method="post">
-                                <button type="submit" name="" value="logout" id="neos__primaryToolbar__userDropDown__logoutButton">
-                                    <Icon icon="power-off" className={style.dropDown__itemIcon} />
-                                    <I18n id="logout" fallback="Logout" />
+                                <button type="submit" name="" value="logout">
+                                    <Icon icon="power-off" className={style.dropDown__itemIcon}/>
+                                    <I18n id="logout" fallback="Logout"/>
                                 </button>
                             </form>
-                          </li>
-                          <li className={style.dropDown__item}>
-                              <a title="User Settings" href="/neos/user/usersettings" id="neos__primaryToolbar__userDropDown__userSettings">
-                                  <Icon icon="wrench" className={style.dropDown__item__icon} />
-                                  <I18n id="userSettings_label" sourceName="Modules" fallback="User Settings" />
-                              </a>
-                          </li>
+                        </li>
+                        <li className={style.dropDown__item}>
+                            <a title="User Settings" href="/neos/user/usersettings">
+                                <Icon icon="wrench" className={style.dropDown__item__icon}/>
+                                <I18n id="userSettings_label" sourceName="Modules" fallback="User Settings"/>
+                            </a>
+                        </li>
                     </DropDown.Contents>
                 </DropDown>
             </div>

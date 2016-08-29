@@ -48,9 +48,14 @@ export default class ContentCanvas extends Component {
         unhoverNode: PropTypes.func.isRequired
     };
 
+    constructor(props) {
+        super(props);
+
+        this.onFrameChange = this.handleFrameChanges.bind(this);
+    }
+
     render() {
         const {isFringeLeft, isFringeRight, isFullScreen, src} = this.props;
-
         const classNames = mergeClassNames({
             [style.contentCanvas]: true,
             [style['contentCanvas--isFringeLeft']]: isFringeLeft,
@@ -58,88 +63,96 @@ export default class ContentCanvas extends Component {
             [style['contentCanvas--isFullScreen']]: isFullScreen
         });
 
-        const contentChange = (_iframeWindow, iframeDocument) => {
-            iframeWindow = _iframeWindow;
-            const documentInformation = _iframeWindow['@Neos.Neos.Ui:DocumentInformation'];
-
-            // TODO: convert to single action: "guestFrameChange"
-
-            this.props.setContextPath(documentInformation.metaData.contextPath);
-            this.props.setPreviewUrl(documentInformation.metaData.previewUrl);
-
-            Object.keys(documentInformation.nodes).forEach(contextPath => {
-                const node = documentInformation.nodes[contextPath];
-                this.props.addNode(contextPath, node);
-            });
-
-            //
-            // Initialize node components
-            //
-            Array.prototype.forEach.call(iframeDocument.querySelectorAll('[data-__neos-node-contextpath]'),
-                dom => {
-                    dom.addEventListener('click', e => {
-                        const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
-                        const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
-
-                        this.props.focusNode(nodeContextPath, typoscriptPath);
-
-                        e.stopPropagation();
-                    });
-
-                    dom.addEventListener('mouseenter', e => {
-                        const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
-                        const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
-
-                        this.props.hoverNode(nodeContextPath, typoscriptPath);
-
-                        e.stopPropagation();
-                    });
-                    dom.addEventListener('mouseleave', e => {
-                        const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
-
-                        this.props.unhoverNode(nodeContextPath);
-
-                        e.stopPropagation();
-                    });
-                }
-            );
-
-            const editorConfig = {
-                formattingAndStyling: registry.ckEditor.formattingAndStyling.getAllAsObject(),
-                onActiveFormattingChange: activeFormatting => {
-                    this.props.setActiveFormatting(activeFormatting);
-                }
-            };
-
-            // ToDo: Throws an err.
-            _iframeWindow.NeosCKEditorApi.initialize(editorConfig);
-
-            //
-            // Initialize inline editors
-            //
-            const editors = iframeDocument.querySelectorAll('.neos-inline-editable');
-            Array.prototype.forEach.call(editors, node => {
-                // const contextPath = closestContextPath(dom);
-                // const propertyName = dom.dataset.__neosProperty;
-
-                // TODO: from state, read node types & configure CKeditor based on node type!
-
-                _iframeWindow.NeosCKEditorApi.createEditor(node, contents => {
-                    console.log('Change of content:', contents);
-                });
-            });
-        };
-
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
             <div className={classNames}>
                 <div id="centerArea"/>
                 <div className={style.contentCanvas__itemWrapper} data-__neos__hook="contentCanvas">
-                    <Frame src={src} frameBorder="0" name="neos-content-main" className={style.contentCanvas__contents} mountTarget="#neos-new-backend-container" contentDidMount={contentChange} contentDidUpdate={contentChange}>
+                    <Frame
+                        src={src}
+                        frameBorder="0"
+                        name="neos-content-main"
+                        className={style.contentCanvas__contents}
+                        mountTarget="#neos-new-backend-container"
+                        contentDidMount={this.onFrameChange}
+                        contentDidUpdate={this.onFrameChange}
+                        >
                         <InlineUI/>
                     </Frame>
                 </div>
             </div>
         );
+    }
+
+    handleFrameChanges(_iframeWindow, iframeDocument) {
+        iframeWindow = _iframeWindow;
+        const documentInformation = _iframeWindow['@Neos.Neos.Ui:DocumentInformation'];
+
+        // TODO: convert to single action: "guestFrameChange"
+
+        this.props.setContextPath(documentInformation.metaData.contextPath);
+        this.props.setPreviewUrl(documentInformation.metaData.previewUrl);
+
+        Object.keys(documentInformation.nodes).forEach(contextPath => {
+            const node = documentInformation.nodes[contextPath];
+            this.props.addNode(contextPath, node);
+        });
+
+        //
+        // Initialize node components
+        //
+        Array.prototype.forEach.call(iframeDocument.querySelectorAll('[data-__neos-node-contextpath]'),
+            dom => {
+                dom.addEventListener('click', e => {
+                    const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
+                    const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
+
+                    this.props.focusNode(nodeContextPath, typoscriptPath);
+
+                    e.stopPropagation();
+                });
+
+                dom.addEventListener('mouseenter', e => {
+                    const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
+                    const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
+
+                    this.props.hoverNode(nodeContextPath, typoscriptPath);
+
+                    e.stopPropagation();
+                });
+                dom.addEventListener('mouseleave', e => {
+                    const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
+
+                    this.props.unhoverNode(nodeContextPath);
+
+                    e.stopPropagation();
+                });
+            }
+        );
+
+        const editorConfig = {
+            formattingAndStyling: registry.ckEditor.formattingAndStyling.getAllAsObject(),
+            onActiveFormattingChange: activeFormatting => {
+                this.props.setActiveFormatting(activeFormatting);
+            }
+        };
+
+        // ToDo: Throws an err.
+        _iframeWindow.NeosCKEditorApi.initialize(editorConfig);
+
+        //
+        // Initialize inline editors
+        //
+        const editors = iframeDocument.querySelectorAll('.neos-inline-editable');
+        Array.prototype.forEach.call(editors, node => {
+            // const contextPath = closestContextPath(dom);
+            // const propertyName = dom.dataset.__neosProperty;
+
+            // TODO: from state, read node types & configure CKeditor based on node type!
+
+            _iframeWindow.NeosCKEditorApi.createEditor(node, contents => {
+                console.log('Change of content:', contents);
+            });
+        });
     }
 }

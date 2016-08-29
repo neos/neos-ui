@@ -109,7 +109,7 @@
     "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
-    "build": "webpack --progress --colors --display-error-details --display-cached --display-cached-assets --display-reasons --display-chunks   ",
+    "build": "webpack --progress --colors",
     "karma": "export TEST=true && karma start --single-run",
     "lint": "npm run lint:scripts && npm run lint:css",
     "lint:css": "stylelint 'Resources/Private/JavaScript/**/*.css'",

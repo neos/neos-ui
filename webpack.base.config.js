@@ -1,10 +1,7 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
-const vars = require('postcss-simple-vars');
-const hexToRgba = require('postcss-hexrgba');
-const postCssImport = require('postcss-import');
-const nested = require('postcss-nested');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./Build/Utilities/').env;
 const brand = require('@neos-project/brand');
 const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
@@ -86,7 +83,7 @@ const baseConfig = {
 //
 if (!env.isCi && !env.isTesting && !env.isStorybook) {
     // TODO: LIVE RELOADING DOES NOT WORK WITH CODE SPLITTING
-    //baseConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
+    baseConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
 }
 
 //

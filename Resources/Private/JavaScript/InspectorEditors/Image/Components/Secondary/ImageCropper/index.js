@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-//import {Components, SecondaryInspector} from '@host';
+import SecondaryInspector from 'Host/Extensibility/API/SecondaryInspector';
 import ReactCrop from 'react-image-crop';
 
 import style from './style.css';
@@ -68,7 +68,7 @@ export default class ImageCropper extends Component {
         const aspectRatioLocked = false;
         const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock"/> : null);
         const {sourceImage, onClose, onComplete} = this.props;
-        const src = sourceImage.previewUri.orSome('/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg');
+        const src = sourceImage.previewUri || '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg';
 
         return (
             <SecondaryInspector onClose={() => onClose()}>

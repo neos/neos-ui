@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {$set, $drop, $get, $transform} from 'plow-js';
 import {connect} from 'react-redux';
-import {PreviewScreen, Controls} from './Components/index';
+import {PreviewScreen, Controls, Secondary} from './Components/index';
 import {Image} from './Utils/index';
 import {loadImageMetadata, uploadAsset} from 'Host/Extensibility/API/Endpoints/index';
 const DEFAULT_FEATURES = {
@@ -208,7 +208,6 @@ export default class ImageEditor extends Component {
     }
 
     renderSecondaryScreen() {
-        return '';
         const {secondaryScreenMode, image} = this.state;
         const {options} = this.props;
         const {__identity} = this.props.value;

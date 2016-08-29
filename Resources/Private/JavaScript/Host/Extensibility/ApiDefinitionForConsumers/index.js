@@ -5,6 +5,7 @@ import * as reactRedux from 'react-redux';
 import {I18n} from 'Host/Containers/index';
 import Manifest from './Manifest/index';
 import * as ApiEndpoints from 'API/Endpoints/index';
+import SecondaryInspector from 'Host/Containers/RightSideBar/Inspector/SecondaryInspector/index';
 
 import Bar from '@neos-project/react-ui-components/lib/Bar/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
@@ -61,7 +62,8 @@ export default function apiDefinitionFactory() {
         plow,
         Immutable,
         ApiEndpoints,
-        reactRedux
+        reactRedux,
+        SecondaryInspector
     };
 
     Object.defineProperty(window, '@Neos:HostPluginAPI', createReadOnlyValue(api));

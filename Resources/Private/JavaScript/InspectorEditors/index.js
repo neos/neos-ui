@@ -44,29 +44,6 @@ createInspectorEditor(
 );
 
 //
-// Image
-//
-createInspectorEditor(
-    'Neos.UI:Inspector.Image',
-    'TYPO3.Neos/Inspector/Editors/ImageEditor',
-    ImageEditor
-);
-
-createHook(
-    //
-    // This hook will create an image variant right before changes to an image
-    // are saved
-    //
-    'Neos.UI:Hook.BeforeSave.CreateImageVariant',
-    (value, options) => {
-        const {createVariant} = api.media.image;
-        const {__identity, adjustments, originalAsset} = options.object;
-
-        return createVariant(originalAsset ? originalAsset.__identity : __identity, adjustments);
-    }
-);
-
-//
 // TextArea
 //
 createInspectorEditor(

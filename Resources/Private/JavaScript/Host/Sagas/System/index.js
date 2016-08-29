@@ -1,7 +1,5 @@
 import {take, put} from 'redux-saga/effects';
 import {delay, discover} from 'Shared/Utilities/Promises';
-import createInspectorEditorRegistry from 'Host/Process/InspectorEditorRegistry/index';
-import createHookRegistry from 'Host/Process/HookRegistry/index';
 import {actionTypes, actions} from 'Host/Redux/index';
 import initializeJSAPI from 'API/index';
 
@@ -46,16 +44,6 @@ export const getConfiguration = discover(function * () {
 export const getTranslations = discover(function * () {
     const appContainer = yield getAppContainer;
     return JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
-});
-
-export const getInspectorEditorRegistry = discover(function * () {
-    const {asyncModuleMapping, legacyModuleMapping} = yield getConfiguration;
-    return createInspectorEditorRegistry(asyncModuleMapping, legacyModuleMapping);
-});
-
-export const getHookRegistry = discover(function * () {
-    const {asyncModuleMapping} = yield getConfiguration;
-    return createHookRegistry(asyncModuleMapping);
 });
 
 export const getNeos = discover(function* () {

@@ -4,6 +4,7 @@ import {$get} from 'plow-js';
 import {actionTypes, actions} from 'Host/Redux/index';
 import {CR} from 'Host/Selectors/index';
 import {getHookRegistry} from 'Host/Sagas/System/index';
+import registry from 'Host/Extensibility/Registry/index';
 
 import initializeInspectorViewConfiguration from './initializeInspectorViewConfiguration';
 
@@ -98,11 +99,18 @@ function * flushInspector() {
         //
         const value = yield transientValue.hooks ?
             Object.keys(transientValue.hooks).reduce(
-                (promisedValue, hookIdentifier) =>
-                    hookRegistry.get(hookIdentifier).then(
-                        hook => promisedValue.then(
-                            value => hook(value, transientValue.hooks[hookIdentifier])
-                    )),
+                (valueAsPromise, hookIdentifier) => {
+                    const hookFn = registry.inspector.saveHooks.get(hookIdentifier);
+
+                    return valueAsPromise.then( value => {
+                        try {
+                            return hookFn(value, transientValue.hooks[hookIdentifier]);
+                        } catch (e) {
+                            console.error(`There was an error executing ${hookIdentifier}`, e);
+                            throw e;
+                        }
+                    });
+                },
                 Promise.resolve(transientValue.value)
             ) : transientValue.value;
 

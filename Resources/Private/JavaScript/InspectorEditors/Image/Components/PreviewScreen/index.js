@@ -6,8 +6,6 @@ import {Thumbnail} from '../../Utils/index';
 
 import style from './style.css';
 
-console.log("DROPZONEXss", Dropzone);
-
 export default class PreviewScreen extends Component {
     static propTypes = {
         image: PropTypes.object,

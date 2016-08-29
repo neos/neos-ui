@@ -6,9 +6,8 @@ import shallowCompare from 'react-addons-shallow-compare';
 
 import {I18n} from 'Host/Containers/index';
 import neos from 'Host/Decorators/Neos/index';
-import {UI} from 'Host/Selectors/index';
 import registry from 'Host/Extensibility/Registry/index';
-import {actions} from 'Host/Redux/index';
+import {actions, selectors} from 'Host/Redux/index';
 
 /**
  * (Stateful) Editor envelope
@@ -16,8 +15,8 @@ import {actions} from 'Host/Redux/index';
  * For reference on how to use editors, check the docs inside the Registry.
  */
 @connect($transform({
-    node: UI.Inspector.activeNodeSelector,
-    transient: UI.Inspector.transientValuesSelector
+    node: selectors.UI.Inspector.activeNode,
+    transient: selectors.UI.Inspector.transientValues
 }), {
     commit: actions.UI.Inspector.commit
 })

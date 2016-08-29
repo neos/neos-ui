@@ -6,15 +6,14 @@ import Grid from '@neos-project/react-ui-components/lib/Grid/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
 
-import {actions} from 'Host/Redux/index';
-import * as selectors from 'Host/Selectors/index';
+import {actions, selectors} from 'Host/Redux/index';
 
 import TabPanel from './TabPanel/index';
 import style from './style.css';
 
 @connect($transform({
     viewConfiguration: $get('ui.inspector.viewConfiguration'),
-    transientValues: selectors.UI.Inspector.transientValuesSelector
+    transientValues: selectors.UI.Inspector.transientValues
 }), {
     apply: actions.UI.Inspector.apply,
     discard: actions.UI.Inspector.discard,

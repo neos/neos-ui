@@ -46,7 +46,7 @@ export default class Inspector extends Component {
                         //
                         // Render each tab as a TabPanel
                         //
-                        .map(tab => <TabPanel key={tab.id} title={tab.id} icon={tab.icon} groups={tab.groups}/>)
+                        .map(tab => <TabPanel key={tab.id} icon={tab.icon} groups={tab.groups}/>)
                     }
                 </Tabs>
                 <Bar position="bottom">

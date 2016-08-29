@@ -4,3 +4,4 @@ lib
 coverage
 .nyc_output/
 lcov.info
+.idea

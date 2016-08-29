@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$set, $toggle} from 'plow-js';
+import {$set, $toggle, $get} from 'plow-js';
 
 import {handleActions} from 'Shared/Utilities/index';
 import {actionTypes as system} from 'Host/Redux/System/index';
@@ -23,10 +23,10 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: () => $set(
+    [system.INIT]: state => $set(
         'user.settings',
         new Map({
-            isAutoPublishingEnabled: false
+            isAutoPublishingEnabled: Boolean($get('user.settings.isAutoPublishingEnabled', state))
         })
     ),
     [TOGGLE_AUTO_PUBLISHING]: () => $toggle('user.settings.isAutoPublishingEnabled')

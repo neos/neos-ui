@@ -11,7 +11,7 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'user.name',
         new Map({
-            title: '',
+            title: $get('user.name.title', state) || '',
             firstName: $get('user.name.firstName', state) || '',
             middleName: $get('user.name.middleName', state) || '',
             lastName: $get('user.name.lastName', state) || '',

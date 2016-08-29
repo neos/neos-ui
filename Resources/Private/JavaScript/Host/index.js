@@ -48,6 +48,6 @@ sagaMiddleWare.run(watchToggle);
 sagaMiddleWare.run(watchCommenceUncollapse);
 
 document.addEventListener('DOMContentLoaded', () => {
-    manifests.forEach((manifest) => manifest(registry));
+    manifests.forEach(manifest => manifest(registry));
     store.dispatch(actions.System.boot());
 });

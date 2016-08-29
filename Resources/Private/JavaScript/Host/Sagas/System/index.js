@@ -46,7 +46,7 @@ export const getTranslations = discover(function * () {
     return JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
 });
 
-export const getNeos = discover(function* () {
+export const getNeos = discover(function * () {
     const csrfToken = yield getCsrfToken;
     const systemEnv = yield getSystemEnv;
 

@@ -1,7 +1,7 @@
 import manifest from 'Host/Extensibility/API/Manifest/index';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
-manifest('main', (registry) => {
+manifest('main', registry => {
     registry.ckEditor.formattingAndStyling.add('p', {style: {element: 'p'}});
 
     registry.ckEditor.formattingAndStyling.add('h1', {style: {element: 'h1'}});

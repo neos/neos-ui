@@ -26,7 +26,6 @@ import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
 import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
-
 const createReadOnlyValue = value => ({
     value,
     writable: false,
@@ -67,4 +66,4 @@ export default function apiDefinitionFactory() {
     };
 
     Object.defineProperty(window, '@Neos:HostPluginAPI', createReadOnlyValue(api));
-};
+}

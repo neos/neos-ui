@@ -48,11 +48,11 @@ export const actionTypes = {
     DISCARD
 };
 
-
 const clearReducer = () => state => {
     const activeNodePath = $get('ui.inspector.activeNodePath', state);
     return $drop(['ui', 'inspector', 'valuesByNodePath', activeNodePath], state);
-}
+};
+
 //
 // Export the reducer
 //

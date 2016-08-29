@@ -9,10 +9,6 @@ import {UI} from 'Host/Selectors/index';
 import registry from 'Host/Extensibility/Registry/index';
 import {actions} from 'Host/Redux/index';
 
-const LOAD_PENDING = 1;
-const LOAD_SUCCESS = 2;
-const LOAD_ERROR = 3;
-
 /**
  * (Stateful) Editor envelope
  *
@@ -38,6 +34,11 @@ export default class EditorEnvelope extends Component {
         transient: PropTypes.object
     };
 
+    constructor(props) {
+        super(props);
+        this.onHandleCommit = this.onHandleCommit.bind(this);
+    }
+
     generateIdentifier() {
         return `#__neos__inspector__property---${this.props.id}`;
     }
@@ -61,7 +62,7 @@ export default class EditorEnvelope extends Component {
     }
 
     renderEditorComponent() {
-        const {transient, id, commit, editor} = this.props;
+        const {editor} = this.props;
         const editorDefinition = registry.inspector.editors.get(editor);
 
         if (editorDefinition && editorDefinition.component) {
@@ -69,7 +70,7 @@ export default class EditorEnvelope extends Component {
             return (
                 <EditorComponent
                     {...this.prepareEditorProperties()}
-                    commit={this.onHandleCommit.bind(this)}
+                    commit={this.onHandleCommit}
                     />
             );
         }

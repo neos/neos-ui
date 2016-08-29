@@ -151,39 +151,40 @@ const viewConfiguration = createSelector(
         if (!node) {
             return undefined;
         }
-    const tabs = getTabs(node);
-    const groups = getGroups(node);
-    const properties = getProperties(node);
+        const tabs = getTabs(node);
+        const groups = getGroups(node);
+        const properties = getProperties(node);
 
-    return {
-        tabs: map(
-            tab => ({
-                ...tab,
-                groups: map(
-                    group => ({
-                        ...group,
-                        properties: map(
-                            $transform({
-                                id: $get('id'),
-                                label: $get('ui.label'),
-                                editor: $get('ui.inspector.editor'),
-                                editorOptions: $get('ui.inspector.editorOptions')
-                            }),
-                            properties.filter(p => $get('ui.inspector.group', p) === group.id)
-                        )
-                    }),
-                    groups.filter(g => {
-                        const isMatch = g.tab === tab.id;
-                        const isDefaultTab = !g.tab && tab.id === 'default';
+        return {
+            tabs: map(
+                tab => ({
+                    ...tab,
+                    groups: map(
+                        group => ({
+                            ...group,
+                            properties: map(
+                                $transform({
+                                    id: $get('id'),
+                                    label: $get('ui.label'),
+                                    editor: $get('ui.inspector.editor'),
+                                    editorOptions: $get('ui.inspector.editorOptions')
+                                }),
+                                properties.filter(p => $get('ui.inspector.group', p) === group.id)
+                            )
+                        }),
+                        groups.filter(g => {
+                            const isMatch = g.tab === tab.id;
+                            const isDefaultTab = !g.tab && tab.id === 'default';
 
-                        return isMatch || isDefaultTab;
-                    })
-                )
-            }),
-            tabs
-        )
-    };
-});
+                            return isMatch || isDefaultTab;
+                        })
+                    )
+                }),
+                tabs
+            )
+        };
+    }
+);
 
 export const selectors = {
     activeNode,

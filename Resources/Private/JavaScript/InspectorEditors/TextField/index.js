@@ -1,7 +1,5 @@
-import React, {PropTypes} from '@host/react';
-import {Components} from '@host';
-
-const {TextInput} = Components;
+import React, {PropTypes} from 'react';
+import {TextInput} from 'Components';
 
 const TextField = props => {
     const {value, commit} = props;

@@ -5,14 +5,12 @@ export default class Neos extends Component {
     static propTypes = {
         translations: PropTypes.object.isRequired,
         configuration: PropTypes.object.isRequired,
-        inspectorEditorRegistry: PropTypes.object.isRequired,
         children: PropTypes.element.isRequired
     };
 
     static childContextTypes = {
         translations: PropTypes.object.isRequired,
-        configuration: PropTypes.object.isRequired,
-        inspectorEditorRegistry: PropTypes.object.isRequired
+        configuration: PropTypes.object.isRequired
     };
 
     shouldComponentUpdate(...args) {
@@ -23,8 +21,8 @@ export default class Neos extends Component {
     }
 
     getChildContext() {
-        const {configuration, inspectorEditorRegistry, translations} = this.props;
-        return {configuration, inspectorEditorRegistry, translations};
+        const {configuration, translations} = this.props;
+        return {configuration, translations};
     }
 
     render() {

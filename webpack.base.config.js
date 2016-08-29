@@ -57,16 +57,6 @@ const baseConfig = {
         require('postcss-hexrgba')()
     ],
 
-    resolve: {
-        root: [
-            path.resolve(__dirname, 'Resources/Private/JavaScript')
-        ],
-        modulesDirectories: [
-            'node_modules',
-            path.resolve(__dirname, './node_modules')
-        ]
-    },
-
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
         new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
@@ -92,6 +82,7 @@ const baseConfig = {
 // Adjust the config depending on the env.
 //
 if (!env.isCi && !env.isTesting && !env.isStorybook) {
+    // TODO: LIVE RELOADING DOES NOT WORK WITH CODE SPLITTING
     baseConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
 }
 
@@ -99,6 +90,16 @@ if (!env.isCi && !env.isTesting && !env.isStorybook) {
 // Additional config parts for different builds.
 //
 const hostConfig = {
+    resolve: {
+        root: [
+            path.resolve(__dirname, 'Resources/Private/JavaScript')
+        ],
+        modulesDirectories: [
+            'node_modules',
+            path.resolve(__dirname, './node_modules')
+        ]
+    },
+
     entry: {
         Host: './Resources/Private/JavaScript/Host/index.js',
         HostOnlyStyles: './Resources/Private/JavaScript/Host/styleHostOnly.css'
@@ -107,10 +108,20 @@ const hostConfig = {
 
 const inspectorEditorConfig = {
     resolve: {
+        root: [
+            path.resolve(__dirname, 'Resources/Private/JavaScript'),
+            path.resolve(__dirname, './inspector_node_modules')
+        ],
         alias: {
-            '@host': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/'),
-            'react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/react/')
-        }
+            'react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/react/'),
+            'react-redux': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/react-redux/'),
+            'plow-js': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/plow-js/index'),
+            'immutable': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/immutable/'),
+            'Components': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/components/'),
+            'I18n': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/I18n/'),
+            'Host/Extensibility/API': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/'),
+        },
+        modulesDirectories: ['nonExistant']
     },
     entry: {
         InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/index.js'

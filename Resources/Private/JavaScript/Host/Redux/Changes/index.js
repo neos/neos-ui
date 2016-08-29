@@ -16,7 +16,7 @@ export const actionTypes = {
  * Perists the change.
  * Example:
  * change: {
- *   type: 'PackageFactory.Guevara:Property',
+ *   type: 'Neos.Neos.Ui:Property',
  *   subject: nodeContext.contextPath,
  *   payload: {
  *     propertyName: nodeContext.propertyName,

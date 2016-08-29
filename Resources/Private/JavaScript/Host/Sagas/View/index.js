@@ -7,7 +7,6 @@ import {actionTypes} from 'Host/Redux/index';
 import {
     getAppContainer,
     getConfiguration,
-    getInspectorEditorRegistry,
     getTranslations
 } from 'Host/Sagas/System/index';
 
@@ -45,7 +44,6 @@ export function * applicationViewSaga(store) {
     yield take(actionTypes.System.READY);
 
     const configuration = yield getConfiguration;
-    const inspectorEditorRegistry = yield getInspectorEditorRegistry;
     const translations = yield getTranslations;
 
     //
@@ -56,7 +54,6 @@ export function * applicationViewSaga(store) {
             <Provider store={store}>
                 <Neos
                     configuration={configuration}
-                    inspectorEditorRegistry={inspectorEditorRegistry}
                     translations={translations}
                     >
                     <div>

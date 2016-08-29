@@ -48,6 +48,11 @@ export const actionTypes = {
     DISCARD
 };
 
+const clearReducer = () => state => {
+    const activeNodePath = $get('ui.inspector.activeNodePath', state);
+    return $drop(['ui', 'inspector', 'valuesByNodePath', activeNodePath], state);
+};
+
 //
 // Export the reducer
 //
@@ -74,8 +79,8 @@ export const reducer = handleActions({
 
         return $drop(['ui', 'inspector', 'valuesByNodePath', activeNodePath, propertyId], state);
     },
-    [CLEAR]: () => state => {
-        const activeNodePath = $get('ui.inspector.activeNodePath', state);
-        return $drop(['ui', 'inspector', 'valuesByNodePath', activeNodePath], state);
-    }
+
+    [DISCARD]: clearReducer,
+    [CLEAR]: clearReducer
 });
+

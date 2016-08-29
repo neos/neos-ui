@@ -1,18 +1,14 @@
-const {
-    baseConfig,
-    hostConfig,
-    inspectorEditorConfig
-} = require('./webpack.base.config');
+const config = require('./webpack.base.config');
 const merge = require('lodash.merge');
 
-const GuestConfig = merge({}, baseConfig, {
+const GuestConfig = {
     entry: {
         Guest: './Resources/Private/JavaScript/Guest/index.js'
     }
-});
+};
 
 module.exports = [
-    merge({}, baseConfig, hostConfig),
-    merge({}, baseConfig, inspectorEditorConfig),
-    merge({}, baseConfig, GuestConfig)
+    merge({}, config.baseConfig, config.hostConfig),
+    merge({}, config.baseConfig, config.inspectorEditorConfig),
+    merge({}, config.baseConfig, GuestConfig)
 ];

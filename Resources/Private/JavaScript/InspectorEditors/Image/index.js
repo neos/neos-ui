@@ -1,11 +1,9 @@
-import React, {Component, PropTypes} from '@host/react';
-import {api} from '@host';
-import {$set, $drop, $get} from 'plow-js';
-import {Maybe} from 'monet';
-
+import React, {Component, PropTypes} from 'react';
+import {$set, $drop, $get, $transform} from 'plow-js';
+import {connect} from 'react-redux';
 import {PreviewScreen, Controls, Secondary} from './Components/index';
 import {Image} from './Utils/index';
-
+import {loadImageMetadata, uploadAsset} from 'Host/Extensibility/API/Endpoints/index';
 const DEFAULT_FEATURES = {
     crop: true,
     resize: false
@@ -27,6 +25,9 @@ const SECONDARY_DETAILS = 2;
 const SECONDARY_MEDIA = 3;
 const SECONDARY_CROPPER = 4;
 
+@connect($transform({
+    siteNodePath: $get('cr.nodes.siteNode')
+}))
 export default class ImageEditor extends Component {
     static propTypes = {
         value: PropTypes.oneOfType([
@@ -48,7 +49,9 @@ export default class ImageEditor extends Component {
             resize: PropTypes.bool
         }),
 
-        allowedFileTypes: PropTypes.string
+        allowedFileTypes: PropTypes.string,
+
+        siteNode: PropTypes.string
     };
 
     static defaultProps = {
@@ -62,7 +65,7 @@ export default class ImageEditor extends Component {
 
     componentDidMount() {
         if (this.props.value && this.props.value.__identity) {
-            this.loadImage = api.media.image.loadMetaData(this.props.value)
+            this.loadImage = loadImageMetadata(this.props.value.__identity)
                 .then(image => this.setState({image}));
         }
 
@@ -80,7 +83,7 @@ export default class ImageEditor extends Component {
 
         if (this.props.value && this.props.value.__identity &&
             nextProps.value.__identity !== this.props.value.__identity) {
-            api.media.image.loadMetaData(nextProps.value)
+            loadImageMetadata(nextProps.value.__identity)
                 .then(image => this._isMounted && this.setState({image}));
         }
     }
@@ -152,7 +155,7 @@ export default class ImageEditor extends Component {
         this.closeSecondaryScreen();
         this.setState({image: null});
         commit($set('__identity', assetIdentifier, value));
-        api.media.image.loadMetaData($set('__identity', assetIdentifier, value))
+        loadImageMetadata($set('__identity', assetIdentifier, value))
             .then(image => this.setState({image}));
     }
 
@@ -172,9 +175,11 @@ export default class ImageEditor extends Component {
     }
 
     upload(files) {
-        const {commit} = this.props;
+        const {commit, siteNodePath} = this.props;
 
-        api.media.asset.upload(files[0]).then(res => {
+        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
+
+        return uploadAsset(files[0], siteNodeName).then(res => {
             this.setState({image: res});
             commit(res.object);
         });
@@ -196,11 +201,8 @@ export default class ImageEditor extends Component {
                     onChooseFromLocalFileSystem={() => this.onChooseFile()}
                     onRemove={() => this.onRemoveFile()}
                     onCrop={this.isFeatureEnabled('crop') && (() => this.toggleSecondaryScreen(SECONDARY_CROPPER))}
-                   />
-                {
-                    Maybe.fromNull(secondaryScreenMode !== SECONDARY_NONE || null)
-                        .map(() => this.renderSecondaryScreen()).orSome('')
-                }
+                    />
+                {(secondaryScreenMode !== SECONDARY_NONE ? this.renderSecondaryScreen() : '')}
             </div>
         );
     }

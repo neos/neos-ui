@@ -1,7 +1,6 @@
-import React, {PropTypes} from '@host/react';
-import {Components, I18n} from '@host';
-
-const {CheckBox, Label} = Components;
+import React, {PropTypes} from 'react';
+import {CheckBox, Label} from 'Components';
+import I18n from 'I18n';
 
 const toBoolean = val => {
     if (typeof val === 'string') {
@@ -38,7 +37,5 @@ BooleanEditor.propTypes = {
     value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
     commit: PropTypes.func.isRequired
 };
-
-BooleanEditor.hasOwnLabel = true;
 
 export default BooleanEditor;

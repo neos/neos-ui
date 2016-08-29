@@ -44,7 +44,7 @@ export default class SecondaryInspector extends Component {
             <Portal isOpened={true}>
                 <div className={finalClassName}>
                     <Button
-                        style="cleanWithBorder"
+                        style="clean"
                         className={style.close}
                         onClick={onClose}
                         >

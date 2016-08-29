@@ -28,6 +28,7 @@ const closestContextPath = el => {
     setActiveFormatting: actions.UI.ContentCanvas.setActiveFormatting,
     addNode: actions.CR.Nodes.add,
     focusNode: actions.CR.Nodes.focus,
+    unFocusNode: actions.CR.Nodes.unFocus,
     hoverNode: actions.CR.Nodes.hover,
     unhoverNode: actions.CR.Nodes.unhover
 })
@@ -42,6 +43,7 @@ export default class ContentCanvas extends Component {
         addNode: PropTypes.func.isRequired,
         setActiveFormatting: PropTypes.func.isRequired,
         focusNode: PropTypes.func.isRequired,
+        unFocusNode: PropTypes.func.isRequired,
         hoverNode: PropTypes.func.isRequired,
         unhoverNode: PropTypes.func.isRequired
     };
@@ -83,58 +85,82 @@ export default class ContentCanvas extends Component {
     }
 
     handleFrameChanges(iframeWindow, iframeDocument) {
+        const {
+            focusNode,
+            setContextPath,
+            setPreviewUrl,
+            addNode,
+            hoverNode,
+            unhoverNode,
+            setActiveFormatting,
+            unFocusNode
+        } = this.props;
         const documentInformation = iframeWindow['@Neos.Neos.Ui:DocumentInformation'];
 
         // TODO: convert to single action: "guestFrameChange"
-        this.props.setContextPath(documentInformation.metaData.contextPath);
-        this.props.setPreviewUrl(documentInformation.metaData.previewUrl);
+        setContextPath(documentInformation.metaData.contextPath);
+        setPreviewUrl(documentInformation.metaData.previewUrl);
 
         Object.keys(documentInformation.nodes).forEach(contextPath => {
             const node = documentInformation.nodes[contextPath];
-            this.props.addNode(contextPath, node);
+            addNode(contextPath, node);
         });
 
         //
         // Initialize node components
         //
-        Array.prototype.forEach.call(iframeDocument.querySelectorAll('[data-__neos-node-contextpath]'),
-            dom => {
-                dom.addEventListener('click', e => {
-                    const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
-                    const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
+        const components = iframeDocument.querySelectorAll('[data-__neos-node-contextpath]');
+        Array.prototype.forEach.call(components, node => {
+            node.addEventListener('click', e => {
+                const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
+                const typoscriptPath = node.getAttribute('data-__neos-typoscript-path');
 
-                    this.props.focusNode(nodeContextPath, typoscriptPath);
+                focusNode(nodeContextPath, typoscriptPath);
 
-                    e.stopPropagation();
-                });
+                e.stopPropagation();
+            });
 
-                dom.addEventListener('mouseenter', e => {
-                    const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
-                    const typoscriptPath = dom.attributes['data-__neos-typoscript-path'].value;
+            node.addEventListener('mouseenter', e => {
+                const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
+                const typoscriptPath = node.getAttribute('data-__neos-typoscript-path');
 
-                    this.props.hoverNode(nodeContextPath, typoscriptPath);
+                hoverNode(nodeContextPath, typoscriptPath);
 
-                    e.stopPropagation();
-                });
-                dom.addEventListener('mouseleave', e => {
-                    const nodeContextPath = dom.attributes['data-__neos-node-contextpath'].value;
+                e.stopPropagation();
+            });
+            node.addEventListener('mouseleave', e => {
+                const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
 
-                    this.props.unhoverNode(nodeContextPath);
+                unhoverNode(nodeContextPath);
 
-                    e.stopPropagation();
-                });
+                e.stopPropagation();
+            });
+        });
+
+        //
+        // Initialize click outside handler
+        //
+        iframeDocument.body.addEventListener('click', e => {
+            const clickPath = Array.prototype.slice.call(e.path);
+            const isNotInsideInlineUi = clickPath.filter(node =>
+                node &&
+                node.getAttribute &&
+                node.getAttribute('data-__neos__inlineUI')
+            ).length === 0;
+
+            if (isNotInsideInlineUi) {
+                unFocusNode();
             }
-        );
+        });
 
         const editorConfig = {
             formattingAndStyling: registry.ckEditor.formattingAndStyling.getAllAsObject(),
             onActiveFormattingChange: activeFormatting => {
-                this.props.setActiveFormatting(activeFormatting);
+                setActiveFormatting(activeFormatting);
             }
         };
 
         // ToDo: Throws an err.
-        console.log(iframeWindow.NeosCKEditorApi);
         iframeWindow.NeosCKEditorApi.initialize(editorConfig);
 
         //

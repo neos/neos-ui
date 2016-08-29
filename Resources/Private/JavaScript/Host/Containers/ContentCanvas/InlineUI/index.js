@@ -14,7 +14,7 @@ export default class InlineUI extends Component {
 
     render() {
         return (
-            <div className={style.inlineUi}>
+            <div className={style.inlineUi} data-__neos__inlineUI="TRUE">
                 <NodeToolbar/>
                 <MarkActiveNodeAsFocused/>
                 <MarkHoveredNodeAsHovered/>

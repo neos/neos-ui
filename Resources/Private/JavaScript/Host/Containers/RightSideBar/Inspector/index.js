@@ -1,29 +1,39 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
+import {$get, $transform} from 'plow-js';
 import Bar from '@neos-project/react-ui-components/lib/Bar/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
 
 import {actions} from 'Host/Redux/index';
+import * as selectors from 'Host/Selectors/index';
 
 import TabPanel from './TabPanel/index';
 import style from './style.css';
 
-@connect($get('ui.inspector.viewConfiguration'), {
+@connect($transform({
+    viewConfiguration: $get('ui.inspector.viewConfiguration'),
+    transientValues: selectors.UI.Inspector.transientValuesSelector
+}), {
     apply: actions.UI.Inspector.apply,
-    discard: actions.UI.Inspector.discard
+    discard: actions.UI.Inspector.discard,
 })
 export default class Inspector extends Component {
     static propTypes = {
-        tabs: PropTypes.array,
+        viewConfiguration: PropTypes.shape({
+            tabs: PropTypes.array,
+        }),
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired
     };
 
     render() {
-        const {tabs, apply, discard} = this.props;
+        const {viewConfiguration, apply, discard, transientValues} = this.props;
+        const {tabs} = viewConfiguration;
+
+        const isDisabled = transientValues === undefined;
+
         const inspector = tabs => (
             <div className={style.inspector}>
                 <Tabs>
@@ -42,12 +52,12 @@ export default class Inspector extends Component {
                 <Bar position="bottom">
                     <Grid gutter="micro">
                         <Grid.Col width="half">
-                            <Button style="lighter" disabled onClick={discard} className={style.discardBtn}>
+                            <Button style="lighter" disabled={isDisabled} onClick={discard} className={style.discardBtn}>
                                 Discard changes
                             </Button>
                         </Grid.Col>
                         <Grid.Col width="half">
-                            <Button style="lighter" disabled onClick={apply} className={style.publishBtn}>
+                            <Button style="lighter" disabled={isDisabled} onClick={apply} className={style.publishBtn}>
                                 Apply
                             </Button>
                         </Grid.Col>

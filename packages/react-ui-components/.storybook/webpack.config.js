@@ -5,14 +5,21 @@ const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
 module.exports = {
     module: {
         loaders: [
+            //
+            // The CSS modules compliant loader.
+            //
             {
                 test: /\.css$/,
                 loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader',
                 include: [
-                    path.resolve(__dirname, '../src/'),
-                    path.resolve(__dirname, '../node_modules/font-awesome/')
+                    path.resolve(__dirname, '../src/')
                 ]
             },
+
+            //
+            // If you want to use the <Icon/> component, this loader is
+            // required since the FA source will be included.
+            //
             {
                 test: /\.(woff|woff2)$/,
                 loader: 'url?limit=100000'
@@ -20,6 +27,9 @@ module.exports = {
         ]
     },
 
+    //
+    // Note these plugins if you want to use webpack with to compile your application.
+    //
     postcss: [
         require('autoprefixer')({
             browsers: ['last 2 versions']

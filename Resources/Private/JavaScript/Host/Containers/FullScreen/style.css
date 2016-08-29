@@ -1,7 +1,8 @@
 .fullScreenClose {
     position: fixed;
-    top: $spacing;
-    right: calc(2 * $spacing);
-    background-color: $brand;
+    top: var(--spacing);
+    right: calc(2 * var(--spacing));
+    z-index: 1;
+    background-color: var(--brandColorsPrimaryBlue);
     box-shadow: 0 0 8px rgba(#000, .25);
 }

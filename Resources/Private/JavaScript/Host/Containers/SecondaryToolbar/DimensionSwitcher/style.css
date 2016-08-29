@@ -3,7 +3,7 @@
     min-width: 352px;
 }
 .dropDown__btn {
-    height: $unit;
+    height: var(--goldenUnit);
     border: 0;
     background: 0;
 }
@@ -11,5 +11,5 @@
     margin-right: .5em;
 }
 .dropDown__contents {
-    padding: $spacing;
+    padding: var(--spacing);
 }

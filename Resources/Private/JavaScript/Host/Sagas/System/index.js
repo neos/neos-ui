@@ -8,6 +8,7 @@ export const getStore = discover(function * () {
     const store = yield new Promise(resolve => {
         injectStore = resolve;
     });
+
     return store;
 });
 
@@ -23,26 +24,31 @@ export const getAppContainer = discover(function * () {
 
 export const getCsrfToken = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return appContainer.dataset.csrfToken;
 });
 
 export const getSystemEnv = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return appContainer.dataset.env;
 });
 
 export const getServerState = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
 });
 
 export const getConfiguration = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return JSON.parse(appContainer.querySelector('[data-json="configuration"]').innerHTML);
 });
 
 export const getTranslations = discover(function * () {
     const appContainer = yield getAppContainer;
+
     return JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
 });
 

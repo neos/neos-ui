@@ -1,8 +1,7 @@
 .menuToggler--isActive {
-    color: $brand;
+    color: var(--brandColorsPrimaryBlue);
 }
 
-$lineHeight: 3px;
 .menuToggler__icon {
     position: relative;
     display: inline-block;
@@ -15,14 +14,14 @@ $lineHeight: 3px;
         left: 0;
         display: block;
         width: 100%;
-        height: $lineHeight;
+        height: 3px;
         border-color: currentColor;
     }
 
     &:before {
         top: 12px;
-        border-top: $lineHeight solid;
-        border-bottom: $lineHeight solid;
+        border-top: 3px solid;
+        border-bottom: 3px solid;
         content: '';
     }
 
@@ -34,6 +33,6 @@ $lineHeight: 3px;
 
     &:hover {
         text-decoration: none;
-        color: $brand;
+        color: var(--brandColorsPrimaryBlue);
     }
 }

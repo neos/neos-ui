@@ -13,7 +13,7 @@
     height: 40px;
     line-height: 40px;
     border: 0;
-    background: $neutral;
+    background: var(--brandColorsContrastNeutral);
     min-width: 160px;
     padding-right: 80px;
 }
@@ -34,12 +34,12 @@
 .dropDown__item {
     height: 40px;
     line-height: 40px;
-    background: $neutral;
-    border-top: 1px solid $darker;
+    background: var(--brandColorsContrastNeutral);
+    border-top: 1px solid var(--brandColorsContrastDarker);
     cursor: pointer;
 
     &:hover {
-        background: $brand;
+        background: var(--brandColorsPrimaryBlue);
     }
 
     > a,
@@ -47,7 +47,7 @@
         display: block;
         width: 100%;
         border: 0;
-        padding: 0 $spacing;
+        padding: 0 var(--spacing);
         background: 0;
         color: #FFF;
         cursor: pointer;

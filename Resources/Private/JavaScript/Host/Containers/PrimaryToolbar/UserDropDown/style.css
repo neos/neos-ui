@@ -10,9 +10,9 @@
 .dropDown__btn {
     position: relative;
     display: inline-block;
-    height: $unit;
+    height: var(--goldenUnit);
     border: 0;
-    background-color: $darker;
+    background-color: var(--brandColorsContrastDarker);
 }
 .dropDown__btnIcon {
     margin-right: .5em;
@@ -22,12 +22,12 @@
     box-shadow: 0 5px 10px rgba(#000, .2);
 }
 .dropDown__item {
-    height: $unit;
-    background: $neutral;
-    border-top: 1px solid $darker;
+    height: var(--goldenUnit);
+    background: var(--brandColorsContrastNeutral);
+    border-top: 1px solid var(--brandColorsContrastDarker);
 
     &:hover {
-        background: $brand;
+        background: var(--brandColorsPrimaryBlue);
     }
 
     > a,
@@ -35,12 +35,12 @@
       display: block;
       width: 100%;
       border: 0;
-      padding: 0 $spacing;
+      padding: 0 var(--spacing);
       background: 0;
       color: #FFF;
       cursor: pointer;
       text-decoration: none;
-      line-height: $unit;
+      line-height: var(--goldenUnit);
       text-align: left;
     }
 }

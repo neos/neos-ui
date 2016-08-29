@@ -11,6 +11,7 @@ export function * watchPersist() {
         const {feedbackManager} = backend;
 
         yield put(actions.UI.Remote.startSaving());
+
         try {
             const feedback = yield call(change, changes);
             yield put(actions.UI.Remote.finishSaving());

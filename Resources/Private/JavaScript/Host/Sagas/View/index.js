@@ -32,8 +32,8 @@ export function * applicationViewSaga(store) {
     const appContainer = yield getAppContainer;
 
     //
-    // We'll show just some loading screen, until we're
-    // good to go
+    // We'll show just some loading screen,
+    // until we're good to go
     //
     ReactDOM.render(
         <div style={{width: '100vw', height: '100vh', backgroundColor: 'black'}}>
@@ -48,6 +48,9 @@ export function * applicationViewSaga(store) {
     const inspectorEditorRegistry = yield getInspectorEditorRegistry;
     const translations = yield getTranslations;
 
+    //
+    // After everything was initilalized correctly, render the application itself.
+    //
     ReactDOM.render(
         <div className={style.applicationWrapper}>
             <Provider store={store}>

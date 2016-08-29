@@ -1,9 +1,12 @@
 const BACKEND_GLOBAL_IDENTIFIER = '@Neos.Neos.Ui:BackendServices';
 
-export default windowObject => {
-    if (!windowObject[BACKEND_GLOBAL_IDENTIFIER]) {
-        windowObject[BACKEND_GLOBAL_IDENTIFIER] = {};
+//
+// Creates/retrieves a singleton of the backend services on the given context.
+//
+export default context => {
+    if (!context[BACKEND_GLOBAL_IDENTIFIER]) {
+        context[BACKEND_GLOBAL_IDENTIFIER] = {};
     }
 
-    return windowObject[BACKEND_GLOBAL_IDENTIFIER];
+    return context[BACKEND_GLOBAL_IDENTIFIER];
 };

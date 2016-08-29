@@ -14,7 +14,7 @@ const nodeShape = {
 
 export const storedNode = PropTypes.shape({
     ...nodeShape,
-    nodeType: PropTypes.string.isRequired
+    nodeType: PropTypes.object.isRequired
 });
 
 export const node = PropTypes.shape({

@@ -5,17 +5,17 @@ $maxImageHeight: 216px;
 }
 
 .dropzone--isActive {
-    background-color: $success;
+    background-color: var(--brandColorsSuccess);
 }
 
 .dropzone--isRejecting {
-    background-color: $warn;
+    background-color: var(--brandColorsWarn);
 }
 
 .thumbnail {
     position: relative;
-    border: 1px dashed $neutral;
-    margin-bottom: calc($spacing - $quarterSpacing);
+    border: 1px dashed var(--brandColorsContrastNeutral);
+    margin-bottom: calc(var(--spacing) - var(--quarterSpacing));
     height: $maxImageHeight;
     overflow: hidden;
     cursor: pointer;

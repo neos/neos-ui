@@ -6,10 +6,6 @@ const error = _debug('Neos.Ui:error');
 const warning = _debug('Neos.Ui:warning');
 const deprecate = _debug('Neos.Ui:deprecated');
 
-setTimeout(() => {
-    console.log('Yeah');
-}, 0);
-
 export {
     info,
     log,

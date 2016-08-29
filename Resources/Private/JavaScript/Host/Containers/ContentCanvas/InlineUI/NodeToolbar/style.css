@@ -1,10 +1,10 @@
 .toolBar {
     position: absolute;
-    border-bottom: 1px solid $dark;
+    border-bottom: 1px solid var(--brandColorsContrastDark);
     background: #222;
 }
 .toolBar__btnGroup {
-    border-bottom: 1px solid $dark;
+    border-bottom: 1px solid var(--brandColorsContrastDark);
 
     &:before,
     &:after {

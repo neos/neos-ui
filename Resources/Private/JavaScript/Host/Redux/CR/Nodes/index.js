@@ -7,6 +7,7 @@ import {actionTypes as system} from 'Host/Redux/System/index';
 
 const ADD = '@neos/neos-ui/Transient/Nodes/ADD';
 const FOCUS = '@neos/neos-ui/Transient/Nodes/FOCUS';
+const UNFOCUS = '@neos/neos-ui/Transient/Nodes/UNFOCUS';
 const BLUR = '@neos/neos-ui/Transient/Nodes/BLUR';
 const HOVER = '@neos/neos-ui/Transient/Nodes/HOVER';
 const UNHOVER = '@neos/neos-ui/Transient/Nodes/UNHOVER';
@@ -17,6 +18,7 @@ const UNHOVER = '@neos/neos-ui/Transient/Nodes/UNHOVER';
 export const actionTypes = {
     ADD,
     FOCUS,
+    UNFOCUS,
     BLUR,
     HOVER,
     UNHOVER
@@ -40,6 +42,11 @@ const add = createAction(ADD, (contextPath, data) => ({
  * @param {String} typoscriptPath The typoscript path of the focused node
  */
 const focus = createAction(FOCUS, (contextPath, typoscriptPath) => ({contextPath, typoscriptPath}));
+
+/**
+ * Un-marks all nodes as not focused.
+ */
+const unFocus = createAction(UNFOCUS);
 
 /**
  * Marks a node as hovered
@@ -69,6 +76,7 @@ const unhover = createAction(UNHOVER, contextPath => ({contextPath}));
 export const actions = {
     add,
     focus,
+    unFocus,
     blur,
     hover,
     unhover
@@ -101,6 +109,10 @@ export const reducer = handleActions({
         return $set(['cr', 'nodes', 'byContextPath', contextPath], Immutable.fromJS(data), state);
     },
     [FOCUS]: ({contextPath, typoscriptPath}) => $set('cr.nodes.focused', new Map({contextPath, typoscriptPath})),
+    [UNFOCUS]: () => $set('cr.nodes.focused', new Map({
+        contextPath: '',
+        typoscriptPath: ''
+    })),
     [BLUR]: ({contextPath}) => state => {
         if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
             return $set('cr.nodes.focused', '', state);

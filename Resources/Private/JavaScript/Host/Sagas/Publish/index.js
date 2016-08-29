@@ -11,6 +11,7 @@ export function * watchPublish() {
         const {feedbackManager} = backend;
 
         yield put(actions.UI.Remote.startPublishing());
+
         try {
             const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
             yield put(actions.UI.Remote.finishPublishing());
@@ -26,6 +27,7 @@ export function * watchDiscard() {
         const {feedbackManager} = backend;
 
         yield put(actions.UI.Remote.startDiscarding());
+
         try {
             const feedback = yield call(discard, action.payload);
             yield put(actions.UI.Remote.finishDiscarding());

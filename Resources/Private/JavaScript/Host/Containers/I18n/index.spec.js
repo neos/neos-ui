@@ -2,13 +2,11 @@ import React from 'react';
 import chai, {expect} from 'chai';
 import sinon from 'sinon/pkg/sinon.js';
 import {shallow} from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import I18n from './index.js';
 
 chai.should();
 chai.use(sinonChai);
-chai.use(chaiEnzyme());
 
 describe('"host.components.i18n"', () => {
     it('should render a "span" node.', () => {

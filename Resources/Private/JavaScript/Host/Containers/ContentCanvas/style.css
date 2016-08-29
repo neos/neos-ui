@@ -2,7 +2,7 @@
     float: left;
     height: 100%;
     width: 100%;
-    padding: 82px $sidebarWidth 0;
+    padding: 82px var(--sidebarWidth) 0;
     transition: .2s ease padding;
     will-change: padding;
 }

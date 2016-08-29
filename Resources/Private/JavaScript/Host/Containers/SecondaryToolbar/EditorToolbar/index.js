@@ -7,19 +7,18 @@ import {$get, $transform} from 'plow-js';
 import style from './style.css';
 
 import registry from 'Host/Extensibility/Registry/index';
-import {iframeWindow} from 'Host/Containers/ContentCanvas/index';
 
 /**
  * Render sub components for the toolbar, implementing the API as described in registry.ckEditor.toolbar.
  */
-const renderToolbarComponents = (toolbarComponents, activeFormatting) => {
+const renderToolbarComponents = (context, toolbarComponents, activeFormatting) => {
     return toolbarComponents.map((componentDefinition, index) => {
         const {component, formatting, callbackPropName, ...props} = componentDefinition;
         const isActive = $get(formatting, activeFormatting);
 
         props[callbackPropName] = () => {
             // !!!! TODO: next line is extremely dirty!
-            iframeWindow.NeosCKEditorApi.toggleFormat(formatting);
+            context.NeosCKEditorApi.toggleFormat(formatting);
         };
 
         const Component = component;
@@ -29,11 +28,15 @@ const renderToolbarComponents = (toolbarComponents, activeFormatting) => {
 };
 
 @connect($transform({
-    activeFormatting: $get('ui.contentCanvas.activeFormatting')
+    activeFormatting: $get('ui.contentCanvas.activeFormatting'),
+    context: $get('guest.context')
 }))
 export default class Toolbar extends Component {
     static propTypes = {
-        activeFormatting: PropTypes.objectOf(React.PropTypes.bool)
+        activeFormatting: PropTypes.objectOf(React.PropTypes.bool),
+
+        // The current guest frames window object.
+        context: PropTypes.object
     };
 
     shouldComponentUpdate(...args) {
@@ -45,7 +48,11 @@ export default class Toolbar extends Component {
             [style.toolBar]: true
         });
 
-        const renderedToolbarComponents = renderToolbarComponents(registry.ckEditor.toolbar.getAllAsList(), this.props.activeFormatting);
+        const renderedToolbarComponents = renderToolbarComponents(
+            this.props.context,
+            registry.ckEditor.toolbar.getAllAsList(),
+            this.props.activeFormatting
+        );
 
         return (
             <div className={classNames}>

@@ -4,11 +4,11 @@
 .resizeControls__before {
     height: 40px;
     width: 40px;
-    border-right: 1px solid $darker;
+    border-right: 1px solid var(--brandColorsContrastDarker);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: $neutral;
+    background: var(--brandColorsContrastNeutral);
 }
 
 .resizeControls__main {
@@ -17,8 +17,8 @@
 .resizeControls__after {
     height: 40px;
     width: 40px;
-    background: $neutral;
-    border-left: 1px solid $darker;
+    background: var(--brandColorsContrastNeutral);
+    border-left: 1px solid var(--brandColorsContrastDarker);
     text-align: center;
 
     line-height: 40px;

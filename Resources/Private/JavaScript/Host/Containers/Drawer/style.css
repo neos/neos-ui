@@ -4,15 +4,15 @@
     left: 0;
     z-index: 8000;
     height: 100%;
-    width: $sidebarWidth;
-    background: $darker;
+    width: var(--sidebarWidth);
+    background: var(--brandColorsContrastDarker);
     transition: .3s ease transform;
 }
 .drawer--isHidden {
-    transform: translateX(-$sidebarWidth);
+    transform: translateX(-var(--sidebarWidth));
 }
 .drawer__menuItem {
-    border-top: 1px solid $dark;
+    border-top: 1px solid var(--brandColorsContrastDark);
 
     &:first-child {
         border-top: 0;

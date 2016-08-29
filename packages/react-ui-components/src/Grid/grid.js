@@ -2,9 +2,16 @@ import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 
 const Grid = props => {
-    const {className, children, theme, ...rest} = props;
+    const {
+        className,
+        children,
+        theme,
+        gutter,
+        ...rest
+    } = props;
     const finalClassName = mergeClassNames({
         [theme.grid]: true,
+        [theme[`gird--gutter-${gutter}`]]: true,
         [className]: className && className.length
     });
 
@@ -30,7 +37,15 @@ Grid.propTypes = {
      */
     theme: PropTypes.shape({
         grid: PropTypes.string
-    }).isRequired
+    }).isRequired,
+
+    /**
+     * The gutter to display between the columns.
+     */
+    gutter: PropTypes.oneOf(['none', 'micro', 'regular'])
+};
+Grid.defaultProps = {
+    gutter: 'regular'
 };
 
 export default Grid;

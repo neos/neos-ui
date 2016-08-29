@@ -1,7 +1,5 @@
 .grid {
     composes: reset from './../reset.css';
-    margin-left: -10px;
-    margin-right: -10px;
 
     &:before,
     &:after {
@@ -12,11 +10,27 @@
         clear: both;
     }
 }
+.gird--gutter-regular {
+    margin-left: -10px;
+    margin-right: -10px;
+
+    > .grid__item {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+.gird--gutter-micro {
+    margin-left: -1px;
+    margin-right: -1px;
+
+    > .grid__item {
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+}
 .grid__item {
     composes: reset from './../reset.css';
     float: left;
-    padding-left: 10px;
-    padding-right: 10px;
 
     /*
      * Declared to maintain the grid width even if the gridItem has no children.

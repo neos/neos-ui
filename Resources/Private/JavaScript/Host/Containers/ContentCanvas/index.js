@@ -17,8 +17,6 @@ const closestContextPath = el => {
     return el.dataset.__neosNodeContextpath || closestContextPath(el.parentNode);
 };
 
-export let iframeWindow = null;
-
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
     isFringeRight: $get('ui.rightSideBar.isHidden'),
@@ -84,12 +82,10 @@ export default class ContentCanvas extends Component {
         );
     }
 
-    handleFrameChanges(_iframeWindow, iframeDocument) {
-        iframeWindow = _iframeWindow;
-        const documentInformation = _iframeWindow['@Neos.Neos.Ui:DocumentInformation'];
+    handleFrameChanges(iframeWindow, iframeDocument) {
+        const documentInformation = iframeWindow['@Neos.Neos.Ui:DocumentInformation'];
 
         // TODO: convert to single action: "guestFrameChange"
-
         this.props.setContextPath(documentInformation.metaData.contextPath);
         this.props.setPreviewUrl(documentInformation.metaData.previewUrl);
 
@@ -138,7 +134,8 @@ export default class ContentCanvas extends Component {
         };
 
         // ToDo: Throws an err.
-        _iframeWindow.NeosCKEditorApi.initialize(editorConfig);
+        console.log(iframeWindow.NeosCKEditorApi);
+        iframeWindow.NeosCKEditorApi.initialize(editorConfig);
 
         //
         // Initialize inline editors
@@ -150,7 +147,7 @@ export default class ContentCanvas extends Component {
 
             // TODO: from state, read node types & configure CKeditor based on node type!
 
-            _iframeWindow.NeosCKEditorApi.createEditor(node, contents => {
+            iframeWindow.NeosCKEditorApi.createEditor(node, contents => {
                 console.log('Change of content:', contents);
             });
         });

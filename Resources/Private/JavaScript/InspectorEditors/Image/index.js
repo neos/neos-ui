@@ -8,10 +8,6 @@ const DEFAULT_FEATURES = {
     resize: false
 };
 
-console.log("HAAssXXA2 ", $get);
-
-
-
 const RESIZE_IMAGE_ADJUSTMENT = [
     'object',
     'adjustments',

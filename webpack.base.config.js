@@ -123,6 +123,7 @@ const inspectorEditorConfig = {
         ],
         alias: {
             'react': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/react/'),
+            'react-redux': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/react-redux/'),
             'plow-js': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/plow-js/index'),
             'immutable': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/immutable/'),
             'Components': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/components/'),

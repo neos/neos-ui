@@ -1,8 +1,9 @@
 import React, {Component, PropTypes} from 'react';
-import {$set, $drop, $get} from 'plow-js';
+import {$set, $drop, $get, $transform} from 'plow-js';
+import {connect} from 'react-redux';
 import {PreviewScreen, Controls} from './Components/index';
 import {Image} from './Utils/index';
-import {loadImageMetadata} from 'Host/Extensibility/API/Endpoints/index';
+import {loadImageMetadata, uploadAsset} from 'Host/Extensibility/API/Endpoints/index';
 const DEFAULT_FEATURES = {
     crop: true,
     resize: false
@@ -24,6 +25,9 @@ const SECONDARY_DETAILS = 2;
 const SECONDARY_MEDIA = 3;
 const SECONDARY_CROPPER = 4;
 
+@connect($transform({
+    siteNodePath: $get('cr.nodes.siteNode')
+}))
 export default class ImageEditor extends Component {
     static propTypes = {
         value: PropTypes.oneOfType([
@@ -45,7 +49,9 @@ export default class ImageEditor extends Component {
             resize: PropTypes.bool
         }),
 
-        allowedFileTypes: PropTypes.string
+        allowedFileTypes: PropTypes.string,
+
+        siteNode: PropTypes.string
     };
 
     static defaultProps = {
@@ -169,9 +175,11 @@ export default class ImageEditor extends Component {
     }
 
     upload(files) {
-        const {commit} = this.props;
+        const {commit, siteNodePath} = this.props;
 
-        api.media.asset.upload(files[0]).then(res => {
+        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
+
+        return uploadAsset(files[0], siteNodeName).then(res => {
             this.setState({image: res});
             commit(res.object);
         });

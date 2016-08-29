@@ -1,6 +1,7 @@
 import React from 'react';
 import * as plow from 'plow-js';
 import * as Immutable from 'immutable';
+import * as reactRedux from 'react-redux';
 import {I18n} from 'Host/Containers/index';
 import Manifest from './Manifest/index';
 import * as ApiEndpoints from 'API/Endpoints/index';
@@ -59,7 +60,8 @@ export default function apiDefinitionFactory() {
         Manifest,
         plow,
         Immutable,
-        ApiEndpoints
+        ApiEndpoints,
+        reactRedux
     };
 
     Object.defineProperty(window, '@Neos:HostPluginAPI', createReadOnlyValue(api));

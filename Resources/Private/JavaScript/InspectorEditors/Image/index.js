@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {$set, $drop, $get} from 'plow-js';
 import {PreviewScreen, Controls} from './Components/index';
 import {Image} from './Utils/index';
-import {loadImageMetaData} from 'Host/Extensibility/API/Endpoints/index';
+import {loadImageMetadata} from 'Host/Extensibility/API/Endpoints/index';
 const DEFAULT_FEATURES = {
     crop: true,
     resize: false
@@ -59,7 +59,7 @@ export default class ImageEditor extends Component {
 
     componentDidMount() {
         if (this.props.value && this.props.value.__identity) {
-            this.loadImage = loadImageMetaData(this.props.value)
+            this.loadImage = loadImageMetadata(this.props.value.__identity)
                 .then(image => this.setState({image}));
         }
 
@@ -77,7 +77,7 @@ export default class ImageEditor extends Component {
 
         if (this.props.value && this.props.value.__identity &&
             nextProps.value.__identity !== this.props.value.__identity) {
-            loadImageMetaData(nextProps.value)
+            loadImageMetadata(nextProps.value.__identity)
                 .then(image => this._isMounted && this.setState({image}));
         }
     }
@@ -149,7 +149,7 @@ export default class ImageEditor extends Component {
         this.closeSecondaryScreen();
         this.setState({image: null});
         commit($set('__identity', assetIdentifier, value));
-        loadImageMetaData($set('__identity', assetIdentifier, value))
+        loadImageMetadata($set('__identity', assetIdentifier, value))
             .then(image => this.setState({image}));
     }
 

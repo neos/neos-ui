@@ -1,4 +1,5 @@
 import {$get, $map, $transform} from 'plow-js';
+import {Maybe} from 'monet';
 
 export const CROP_IMAGE_ADJUSTMENT = [
     'object',

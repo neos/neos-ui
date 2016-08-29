@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import {PreviewScreen, Controls, Secondary} from './Components/index';
 import {Image} from './Utils/index';
 import {loadImageMetadata, uploadAsset} from 'Host/Extensibility/API/Endpoints/index';
+import style from './style.css';
+
 const DEFAULT_FEATURES = {
     crop: true,
     resize: false
@@ -222,7 +224,7 @@ export default class ImageEditor extends Component {
         } = this.state;
 
         return (
-            <div>
+            <div className={style.imageEditor}>
                 <PreviewScreen
                     ref="previewScreen"
                     image={image}
@@ -236,7 +238,7 @@ export default class ImageEditor extends Component {
                     onRemove={() => this.onRemoveFile()}
                     onCrop={this.isFeatureEnabled('crop') && (() => this.toggleSecondaryScreen(SECONDARY_CROPPER))}
                     />
-                {(secondaryScreenMode !== SECONDARY_NONE ? this.renderSecondaryScreen() : '')}
+                {secondaryScreenMode !== SECONDARY_NONE ? this.renderSecondaryScreen() : ''}
             </div>
         );
     }

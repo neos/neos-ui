@@ -60,13 +60,23 @@ export default class ImageEditor extends Component {
 
     state = {
         secondaryScreenMode: SECONDARY_NONE,
-        image: null
+        image: null,
+        isAssetLoading: false
     };
 
     componentDidMount() {
         if (this.props.value && this.props.value.__identity) {
-            this.loadImage = loadImageMetadata(this.props.value.__identity)
-                .then(image => this.setState({image}));
+            this.setState({
+                isAssetLoading: true
+            },() => {
+                this.loadImage = loadImageMetadata(this.props.value.__identity)
+                    .then(image => {
+                        this.setState({
+                            image,
+                            isAssetLoading: false
+                        });
+                    });
+            });
         }
 
         this._isMounted = true;
@@ -81,10 +91,19 @@ export default class ImageEditor extends Component {
             this.setState({image: null});
         }
 
-        if (this.props.value && this.props.value.__identity &&
-            nextProps.value.__identity !== this.props.value.__identity) {
+        if (
+            nextProps.value.__identity &&
+            nextProps.value.__identity !== this.props.value.__identity
+        ) {
             loadImageMetadata(nextProps.value.__identity)
-                .then(image => this._isMounted && this.setState({image}));
+                .then(image => {
+                    if (this._isMounted) {
+                        this.setState({
+                            image,
+                            isAssetLoading: false
+                        });
+                    }
+                });
         }
     }
 
@@ -145,18 +164,24 @@ export default class ImageEditor extends Component {
         const {commit, value} = this.props;
 
         this.closeSecondaryScreen();
-        this.setState({image: null});
-        commit($set('__identity', '', value));
+        this.setState({
+            image: null
+        }, () => {
+            commit($set('__identity', '', value));
+        });
     }
 
     onMediaSelected(assetIdentifier) {
         const {commit, value} = this.props;
+        const newAsset = $set('__identity', assetIdentifier, value);
 
-        this.closeSecondaryScreen();
-        this.setState({image: null});
-        commit($set('__identity', assetIdentifier, value));
-        loadImageMetadata($set('__identity', assetIdentifier, value))
-            .then(image => this.setState({image}));
+        this.setState({
+            image: null,
+            isAssetLoading: true
+        }, () => {
+            commit(newAsset);
+            this.closeSecondaryScreen();
+        });
     }
 
     onThumbnailClicked() {
@@ -186,13 +211,18 @@ export default class ImageEditor extends Component {
     }
 
     render() {
-        const {image, secondaryScreenMode} = this.state;
+        const {
+            image,
+            secondaryScreenMode,
+            isAssetLoading
+        } = this.state;
 
         return (
             <div>
                 <PreviewScreen
                     ref="previewScreen"
                     image={image}
+                    isLoading={isAssetLoading}
                     onDrop={files => this.upload(files)}
                     onClick={() => this.onThumbnailClicked()}
                    />

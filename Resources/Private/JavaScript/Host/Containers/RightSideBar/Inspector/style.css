@@ -1,7 +1,12 @@
 .inspector {
     height: 100%;
 }
-.fullWidthBtn {
+.discardBtn,
+.publishBtn {
     width: 100%;
     text-align: center;
+}
+.discardBtn {}
+.publishBtn {
+    background: var(--brandColorsSuccess);
 }

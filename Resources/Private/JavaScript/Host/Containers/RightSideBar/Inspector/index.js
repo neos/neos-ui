@@ -43,12 +43,12 @@ export default class Inspector extends Component {
                 <Bar position="bottom">
                     <Grid gutter="micro">
                         <Grid.Col width="half">
-                            <Button style="lighter" onClick={discard} className={style.fullWidthBtn}>
+                            <Button style="lighter" disabled onClick={discard} className={style.discardBtn}>
                                 Discard
                             </Button>
                         </Grid.Col>
                         <Grid.Col width="half">
-                            <Button style="lighter" onClick={apply} className={style.fullWidthBtn}>
+                            <Button style="lighter" disabled onClick={apply} className={style.publishBtn}>
                                 Apply
                             </Button>
                         </Grid.Col>

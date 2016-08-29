@@ -15,6 +15,7 @@ const Button = props => {
         isActive,
         style,
         hoverStyle,
+        size,
         theme,
         _refHandler,
         ...rest
@@ -23,6 +24,7 @@ const Button = props => {
     const effectiveHoverStyle = isActive ? 'brand' : hoverStyle;
     const finalClassName = mergeClassNames({
         [theme.btn]: true,
+        [theme[`btn--size-${size}`]]: true,
         [theme[`btn--${effectiveStyle}`]]: validStyleKeys.includes(effectiveStyle),
         [theme[`btn--${effectiveHoverStyle}Hover`]]: validStyleKeys.includes(effectiveHoverStyle),
         [theme['btn--brandActive']]: isActive,
@@ -78,6 +80,11 @@ Button.propTypes = {
     hoverStyle: PropTypes.oneOf(validHoverStyleKeys),
 
     /**
+     * Defines the size of the button.
+     */
+    size: PropTypes.oneOf(['small', 'regular']),
+
+    /**
      * An optional `className` to attach to the wrapper.
      */
     className: PropTypes.string,
@@ -110,6 +117,7 @@ Button.propTypes = {
 Button.defaultProps = {
     style: '',
     hoverStyle: 'brand',
+    size: 'regular',
     isFocused: false,
     isDisabled: false,
     isActive: false,

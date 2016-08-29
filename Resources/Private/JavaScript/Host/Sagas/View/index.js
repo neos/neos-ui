@@ -7,7 +7,6 @@ import {actionTypes} from 'Host/Redux/index';
 import {
     getAppContainer,
     getConfiguration,
-    getInspectorEditorRegistry,
     getTranslations
 } from 'Host/Sagas/System/index';
 

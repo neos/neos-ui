@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import Label from '@neos-project/react-ui-components/lib/Label/';
+import shallowCompare from 'react-addons-shallow-compare';
 
 import {I18n} from 'Host/Containers/index';
 import neos from 'Host/Decorators/Neos/index';
@@ -36,6 +37,10 @@ export default class EditorEnvelope extends Component {
     constructor(props) {
         super(props);
         this.onHandleCommit = this.onHandleCommit.bind(this);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 
     generateIdentifier() {

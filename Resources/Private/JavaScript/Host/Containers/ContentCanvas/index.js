@@ -23,6 +23,7 @@ const closestContextPath = el => {
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     src: $get('ui.contentCanvas.src')
 }), {
+    setGuestContext: actions.Guest.setContext,
     setContextPath: actions.UI.ContentCanvas.setContextPath,
     setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
     setActiveFormatting: actions.UI.ContentCanvas.setActiveFormatting,
@@ -30,7 +31,7 @@ const closestContextPath = el => {
     focusNode: actions.CR.Nodes.focus,
     unFocusNode: actions.CR.Nodes.unFocus,
     hoverNode: actions.CR.Nodes.hover,
-    unhoverNode: actions.CR.Nodes.unhover
+    unHoverNode: actions.CR.Nodes.unhover
 })
 export default class ContentCanvas extends Component {
     static propTypes = {
@@ -38,6 +39,7 @@ export default class ContentCanvas extends Component {
         isFringeRight: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         src: PropTypes.string.isRequired,
+        setGuestContext: PropTypes.func.isRequired,
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
         addNode: PropTypes.func.isRequired,
@@ -45,7 +47,7 @@ export default class ContentCanvas extends Component {
         focusNode: PropTypes.func.isRequired,
         unFocusNode: PropTypes.func.isRequired,
         hoverNode: PropTypes.func.isRequired,
-        unhoverNode: PropTypes.func.isRequired
+        unHoverNode: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -87,14 +89,21 @@ export default class ContentCanvas extends Component {
     handleFrameChanges(iframeWindow, iframeDocument) {
         const {
             focusNode,
+            setGuestContext,
             setContextPath,
             setPreviewUrl,
             addNode,
             hoverNode,
-            unhoverNode,
+            unHoverNode,
             setActiveFormatting,
             unFocusNode
         } = this.props;
+
+        //
+        // First of all, set the new version of the guest frame window object to the store.
+        //
+        setGuestContext(iframeWindow);
+
         const documentInformation = iframeWindow['@Neos.Neos.Ui:DocumentInformation'];
 
         // TODO: convert to single action: "guestFrameChange"
@@ -131,7 +140,7 @@ export default class ContentCanvas extends Component {
             node.addEventListener('mouseleave', e => {
                 const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
 
-                unhoverNode(nodeContextPath);
+                unHoverNode(nodeContextPath);
 
                 e.stopPropagation();
             });

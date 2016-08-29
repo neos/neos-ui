@@ -16,15 +16,16 @@ import style from './style.css';
     transientValues: selectors.UI.Inspector.transientValues
 }), {
     apply: actions.UI.Inspector.apply,
-    discard: actions.UI.Inspector.discard,
+    discard: actions.UI.Inspector.discard
 })
 export default class Inspector extends Component {
     static propTypes = {
         viewConfiguration: PropTypes.shape({
-            tabs: PropTypes.array,
+            tabs: PropTypes.array
         }),
         apply: PropTypes.func.isRequired,
-        discard: PropTypes.func.isRequired
+        discard: PropTypes.func.isRequired,
+        transientValues: PropTypes.any
     };
 
     render() {

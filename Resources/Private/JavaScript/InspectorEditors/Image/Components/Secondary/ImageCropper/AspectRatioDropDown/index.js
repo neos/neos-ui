@@ -1,13 +1,11 @@
-import React, {Component, PropTypes} from '@host/react';
+import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
-
-import {Components} from '@host';
 
 import {AspectRatioOption, NullAspectRatioStrategy} from '../model';
 
 import style from './style.css';
 
-const {IconButton, DropDown} = Components;
+import {IconButton, DropDown} from 'Components';
 
 export default class AspectRatioDropDown extends Component {
     static propTypes = {
@@ -29,7 +27,7 @@ export default class AspectRatioDropDown extends Component {
                 <DropDown className={style.dropDown}>
                     {Maybe.fromNull(current.label ? current : null).map(
                         current => (
-                            <div stlye={{position: 'relative'}}>
+                            <div style={{position: 'relative'}}>
                                 <DropDown.Header className={style.dropDown__btn}>
                                     {current.label}
                                 </DropDown.Header>

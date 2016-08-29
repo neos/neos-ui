@@ -1,11 +1,9 @@
-import React, {PropTypes} from '@host/react';
-import {Components} from '@host';
+import React, {PropTypes} from 'react';
+import {I18n, CheckBox, TextInput} from 'Components';
 import {$get} from 'plow-js';
 import {Map} from 'immutable';
 
 import style from './style.css';
-
-const {I18n, CheckBox, TextInput} = Components;
 
 const buildResizeAdjustment = (width, height) => new Map({
     allowUpScaling: null,

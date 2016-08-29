@@ -1,5 +1,5 @@
-import React, {PropTypes} from '@host/react';
-import {SecondaryInspector} from '@host';
+import React, {PropTypes} from 'react';
+import SecondaryInspector from 'Host/Extensibility/API/SecondaryInspector';
 import style from './style.css';
 
 const MediaSelectionScreen = (props) => {

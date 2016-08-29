@@ -4,7 +4,7 @@ import Portal from 'react-portal';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 
-const Secondary = props => {
+const SecondaryInspector = props => {
     const {onClose, children} = props;
 
     return (
@@ -22,10 +22,10 @@ const Secondary = props => {
         </Portal>
     );
 };
-Secondary.propTypes = {
+SecondaryInspector.propTypes = {
     // Interaction related propTypes.
     onClose: PropTypes.func.isRequired,
     children: PropTypes.element.isRequired
 };
 
-export default Secondary;
+export default SecondaryInspector;

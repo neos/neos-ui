@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
-import {Maybe} from 'monet';
 import Bar from '@neos-project/react-ui-components/lib/Bar/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
@@ -58,6 +57,6 @@ export default class Inspector extends Component {
         );
         const fallback = () => (<div>...</div>);
 
-        return Maybe.fromNull(tabs).map(inspector).orSome(fallback());
+        return (tabs ? inspector(tabs) : fallback());
     }
 }

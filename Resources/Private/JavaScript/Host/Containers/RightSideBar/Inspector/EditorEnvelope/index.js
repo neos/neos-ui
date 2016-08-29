@@ -2,20 +2,18 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import Label from '@neos-project/react-ui-components/lib/Label/';
+import shallowCompare from 'react-addons-shallow-compare';
 
 import {I18n} from 'Host/Containers/index';
 import neos from 'Host/Decorators/Neos/index';
 import {UI} from 'Host/Selectors/index';
+import registry from 'Host/Extensibility/Registry/index';
 import {actions} from 'Host/Redux/index';
-
-const LOAD_PENDING = 1;
-const LOAD_SUCCESS = 2;
-const LOAD_ERROR = 3;
 
 /**
  * (Stateful) Editor envelope
  *
- * It will wait until the editor is loaded and render it afterwards
+ * For reference on how to use editors, check the docs inside the Registry.
  */
 @connect($transform({
     node: UI.Inspector.activeNodeSelector,
@@ -32,83 +30,21 @@ export default class EditorEnvelope extends Component {
         options: PropTypes.object,
 
         node: PropTypes.object.isRequired,
-        inspectorEditorRegistry: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired,
         transient: PropTypes.object
     };
 
-    state = {
-        EditorComponent: null,
-        loadingState: LOAD_PENDING
-    };
-
     constructor(props) {
         super(props);
-
         this.onHandleCommit = this.onHandleCommit.bind(this);
     }
 
-    componentDidMount() {
-        const {editor} = this.props;
-
-        this.loadEditor(editor);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const {editor} = nextProps;
-
-        if (editor !== this.props.editor) {
-            this.loadEditor(editor);
-        }
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        const {node, transient, id} = nextProps;
-        const {loadingState} = nextState;
-
-        if (loadingState !== this.state.loadingState) {
-            return true;
-        }
-
-        if (Boolean(transient && this.props.transient) === false) {
-            return false;
-        }
-
-        if (Boolean(transient) !== Boolean(this.props.transient)) {
-            return true;
-        }
-
-        if (Boolean(transient.get(id) && this.props.transient.get(id)) === false) {
-            return false;
-        }
-
-        if (Boolean(transient.get(id)) !== Boolean(this.props.transient.get(id))) {
-            return true;
-        }
-
-        return (
-            node.contextPath !== this.props.node.contextPath,
-            transient
-                .get(id)
-                .get('value') !==
-            this.props.transient
-                .get(id)
-                .get('value')
-        );
-    }
-
-    loadEditor(identifier) {
-        const {inspectorEditorRegistry} = this.props;
-
-        this.setState({loadingState: LOAD_PENDING});
-        inspectorEditorRegistry.get(identifier)
-            .then(EditorComponent => this.setState({EditorComponent, loadingState: LOAD_SUCCESS}))
-            .catch(err => console.error(err) || this.setState({loadingState: LOAD_ERROR}));
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 
     generateIdentifier() {
-        const {id} = this.state;
-        return `#__neos__inspector__property---${id}`;
+        return `#__neos__inspector__property---${this.props.id}`;
     }
 
     prepareEditorProperties() {
@@ -125,23 +61,16 @@ export default class EditorEnvelope extends Component {
             node: node.toJS(),
             value: transientValue ? transientValue.value : sourceValue,
             propertyName: id,
-            identifier: this.generateIdentifier(),
             options
         };
     }
 
     renderEditorComponent() {
-        const {loadingState, EditorComponent} = this.state;
+        const {editor} = this.props;
+        const editorDefinition = registry.inspector.editors.get(editor);
 
-        if (loadingState === LOAD_ERROR) {
-            return (<div>An error occurred</div>);
-        }
-
-        if (loadingState === LOAD_PENDING) {
-            return (<div>Loading...</div>);
-        }
-
-        if (EditorComponent) {
+        if (editorDefinition && editorDefinition.component) {
+            const EditorComponent = editorDefinition && editorDefinition.component;
             return (
                 <EditorComponent
                     {...this.prepareEditorProperties()}
@@ -150,7 +79,7 @@ export default class EditorEnvelope extends Component {
             );
         }
 
-        return <div>Missing Editor</div>;
+        return (<div>Missing Editor {editor}</div>);
     }
 
     onHandleCommit(value, hooks = null) {
@@ -167,9 +96,9 @@ export default class EditorEnvelope extends Component {
     }
 
     renderLabel() {
-        const {EditorComponent} = this.state;
+        const editorDefinition = registry.inspector.editors.get(this.props.editor);
 
-        if (EditorComponent && EditorComponent.hasOwnLabel) {
+        if (editorDefinition && editorDefinition.hasOwnLabel) {
             return null;
         }
 

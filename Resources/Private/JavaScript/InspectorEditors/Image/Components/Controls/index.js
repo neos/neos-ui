@@ -1,10 +1,8 @@
-import React, {Component, PropTypes} from '@host/react';
-import {Components, I18n} from '@host';
-import {Maybe} from 'monet';
+import React, {Component, PropTypes} from 'react';
+import I18n from 'I18n';
+import {Button} from 'Components';
 
 import style from './style.css';
-
-const {Button} = Components;
 
 export default class Controls extends Component {
     static propTypes = {
@@ -62,8 +60,8 @@ export default class Controls extends Component {
     renderisCropperVisibleButton() {
         const {onCrop} = this.props;
 
-        return Maybe.fromNull(onCrop)
-            .map(() => (
+        if (onCrop) {
+            return (
                 <Button
                     size="small"
                     style="lighter"
@@ -72,6 +70,9 @@ export default class Controls extends Component {
                     >
                     <I18n id="TYPO3.Neos:Main:crop" fallback="Crop"/>
                 </Button>
-            )).orSome('');
+            )
+        } else {
+            return '';
+        }
     }
 }

@@ -10,35 +10,32 @@ export default class PreviewScreen extends Component {
     static propTypes = {
         image: PropTypes.object,
         onDrop: PropTypes.func.isRequired,
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
+        isLoading: PropTypes.bool.isRequired
     };
 
     chooseFromLocalFileSystem() {
         const {dropzone} = this.refs;
+
         dropzone.open();
     }
 
     render() {
-        const {image, onDrop, onClick} = this.props;
-        const thumbnail = Thumbnail.fromImageData(image, 273, 216);
+        const {image, onDrop, onClick, isLoading} = this.props;
 
-        const loader = () => <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader} />;
-
-        const preview = () => (
-            <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
-                <img
-                    className={style.thumbnail__image}
-                    src={(thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg')}
-                    style={(thumbnail ? thumbnail.styles.thumbnail : {})}
-                    role="presentation"
-                   />
-            </div>
-        );
+        if (isLoading) {
+            return (
+                <div className={style.thumbnail}>
+                    <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader} />
+                </div>
+            );
+        }
+        const thumbnail = image ? Thumbnail.fromImageData(image, 273, 216) : null;
 
         return (
             <Dropzone
                 ref="dropzone"
-                onDropAccepted={files => onDrop(files)}
+                onDropAccepted={onDrop}
                 className={style.dropzone}
                 activeClassName={style['dropzone--isActive']}
                 rejectClassName={style['dropzone--isRejecting']}
@@ -47,9 +44,15 @@ export default class PreviewScreen extends Component {
                 >
                 <div
                     className={style.thumbnail}
-                    onClick={() => onClick()}
+                    onClick={onClick}
                     >
-                    {image ? preview(image) : loader()}
+                    <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
+                        <img
+                            src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg'}
+                            style={thumbnail ? thumbnail.styles.thumbnail : {}}
+                            role="presentation"
+                           />
+                    </div>
                 </div>
             </Dropzone>
         );

@@ -5,7 +5,7 @@ import {actionTypes, actions} from 'Host/Redux/index';
 import {change} from 'API/Endpoints/index';
 import backend from 'Host/Service/Backend';
 
-export function * watchPersist() {
+function * watchPersist() {
     yield * takeEvery(actionTypes.Changes.PERSIST, function * persistChanges(action) {
         const changes = [action.payload.change];
         const {feedbackManager} = backend;
@@ -21,3 +21,7 @@ export function * watchPersist() {
         }
     });
 }
+
+export const sagas = [
+    watchPersist
+];

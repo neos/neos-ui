@@ -8,7 +8,7 @@ import {api} from 'Shared/Utilities/';
 
 const isDocumentType = CR.NodeTypes.isOfTypeSelector('TYPO3.Neos:Document');
 
-export function * watchToggle() {
+function * watchToggle() {
     yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
         const state = yield select();
         const {contextPath} = action.payload;
@@ -22,7 +22,7 @@ export function * watchToggle() {
     });
 }
 
-export function * watchCommenceUncollapse() {
+function * watchCommenceUncollapse() {
     yield * takeLatest(actionTypes.UI.PageTree.COMMENCE_UNCOLLAPSE, function * uncollapseNode(action) {
         const state = yield select();
         const {contextPath} = action.payload;
@@ -50,3 +50,8 @@ export function * watchCommenceUncollapse() {
         }
     });
 }
+
+export const sagas = [
+    watchToggle,
+    watchCommenceUncollapse
+];

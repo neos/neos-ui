@@ -25,7 +25,7 @@ import {
     FullScreen
 } from 'Host/Containers/index';
 
-export function * applicationViewSaga(store) {
+function * applicationViewSaga(store) {
     yield take(actionTypes.System.BOOT);
 
     const appContainer = yield getAppContainer;
@@ -74,3 +74,7 @@ export function * applicationViewSaga(store) {
         appContainer
     );
 }
+
+export const sagas = [
+    applicationViewSaga
+];

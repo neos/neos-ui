@@ -12,7 +12,7 @@ const getTransientInspectorValues = state => {
     return values.toJS ? values.toJS() : values;
 };
 
-export function * inspectorSaga() {
+function * inspectorSaga() {
     yield take(actionTypes.System.READY);
 
     while (true) { // eslint-disable-line no-constant-condition
@@ -116,3 +116,7 @@ function * flushInspector() {
     // TODO: Handle reloadPageIfChanged
     //
 }
+
+export const sagas = [
+    inspectorSaga
+];

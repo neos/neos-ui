@@ -1,7 +1,7 @@
-import * as PageTree from './PageTree/index';
-import * as Inspector from './Inspector/index';
+import {sagas as PageTreeSagas} from './PageTree/index';
+import {sagas as InspectorSagas} from './Inspector/index';
 
-export default [
-    ...Object.keys(PageTree).map(k => PageTree[k]),
-    ...Object.keys(Inspector).map(k => Inspector[k])
+export const sagas = [
+    ...PageTreeSagas,
+    ...InspectorSagas
 ];

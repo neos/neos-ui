@@ -64,7 +64,7 @@ export const getNeos = discover(function * () {
     return neos;
 });
 
-export function * bootSaga(store) {
+function * bootSaga(store) {
     injectStore(store);
 
     yield take(actionTypes.System.BOOT);
@@ -88,3 +88,7 @@ export function * bootSaga(store) {
     //
     yield put(actions.System.ready());
 }
+
+export const sagas = [
+    bootSaga
+]

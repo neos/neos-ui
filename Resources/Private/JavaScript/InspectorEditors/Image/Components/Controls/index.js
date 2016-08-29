@@ -35,19 +35,22 @@ export default class Controls extends Component {
         return (
             <div>
                 <Button
-                    style="small"
+                    size="small"
+                    style="lighter"
                     onClick={() => onChooseFromMedia()}
                     >
                    <I18n id="TYPO3.Neos:Main:media" fallback="Media"/>
                 </Button>
                 <Button
-                    style="small"
+                    size="small"
+                    style="lighter"
                     onClick={() => onChooseFromLocalFileSystem()}
                     >
                    <I18n id={chooseFromLocalFilesystemLabel} fallback="Choose file"/>
                 </Button>
                 <Button
-                    style="small"
+                    size="small"
+                    style="lighter"
                     onClick={() => onRemove()}
                     >
                    <I18n id="TYPO3.Neos:Main:remove" fallback="Remove"/>
@@ -62,7 +65,8 @@ export default class Controls extends Component {
         return Maybe.fromNull(onCrop)
             .map(() => (
                 <Button
-                    style="small"
+                    size="small"
+                    style="lighter"
                     className={style.cropButton}
                     onClick={() => onCrop()}
                     >

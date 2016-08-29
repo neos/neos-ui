@@ -44,7 +44,7 @@ export default class Inspector extends Component {
                     <Grid gutter="micro">
                         <Grid.Col width="half">
                             <Button style="lighter" disabled onClick={discard} className={style.discardBtn}>
-                                Discard
+                                Discard changes
                             </Button>
                         </Grid.Col>
                         <Grid.Col width="half">

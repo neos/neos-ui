@@ -82,3 +82,8 @@ export const reducer = handleActions({
         $add('ui.pageTree.loading', contextPath)
     )
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

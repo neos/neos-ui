@@ -54,3 +54,8 @@ export const reducer = handleActions({
     [SET_SRC]: ({src}) => src ? $set('ui.contentCanvas.src', src) : state => state,
     [SET_ACTIVE_FORMATTING]: ({formatting}) => $set('ui.contentCanvas.activeFormatting', new Map(formatting))
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

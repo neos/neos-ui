@@ -39,3 +39,8 @@ export const actions = {
 export const reducer = handleActions({
     [PERSIST]: ({change}) => $set(['cr', 'nodes', 'byContextPath', change.subject, 'properties', change.payload.propertyName], change.payload.value)
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

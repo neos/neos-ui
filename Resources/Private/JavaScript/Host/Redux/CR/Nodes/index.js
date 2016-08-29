@@ -129,3 +129,8 @@ export const reducer = handleActions({
         return state;
     }
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

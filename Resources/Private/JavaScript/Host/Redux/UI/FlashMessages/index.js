@@ -75,3 +75,8 @@ export const reducer = handleActions({
     },
     [REMOVE]: ({id}) => $drop(['ui', 'flashMessages', id])
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

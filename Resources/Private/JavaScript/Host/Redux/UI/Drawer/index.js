@@ -39,3 +39,8 @@ export const reducer = handleActions({
     [TOGGLE]: () => $toggle('ui.drawer.isHidden'),
     [HIDE]: () => $set('ui.drawer.isHidden', true)
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

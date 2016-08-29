@@ -50,3 +50,8 @@ export const reducer = handleActions({
     [UPLOAD_IMAGE]: ({screenIdentifier}) => $set('ui.editors.image.currentlyUploadingScreen', screenIdentifier),
     [FINISH_IMAGE_UPLOAD]: () => $set('ui.editors.image.currentlyUploadingScreen', '')
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

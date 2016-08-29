@@ -84,3 +84,7 @@ export const reducer = handleActions({
     [CLEAR]: clearReducer
 });
 
+//
+// Export the selectors
+//
+export const selectors = {};

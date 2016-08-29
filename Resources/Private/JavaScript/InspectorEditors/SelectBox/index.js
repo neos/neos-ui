@@ -1,7 +1,9 @@
-import React from '@host/react';
+import React from 'react';
+import {SelectBox} from 'Components';
 
-const SelectBox = () => {
-    return (<div>TODO SelectBox</div>);
+const SelectBoxEditor = (props) => {
+    const options = Object.keys(props.options.values).map(k => Object.assign({value: k}, props.options.values[k]))
+    return (<SelectBox options={options} value={props.value} />);
 };
 
-export default SelectBox;
+export default SelectBoxEditor;

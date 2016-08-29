@@ -5,6 +5,7 @@ import TextField from './TextField/index';
 import Boolean from './Boolean/index';
 import DateTime from './DateTime/index';
 import Image from './Image/index';
+import SelectBox from './SelectBox/index';
 
 manifest('inspectorEditors', (registry) => {
     registry.inspector.editors.add('TYPO3.Neos/Inspector/Editors/TextFieldEditor', {
@@ -22,6 +23,10 @@ manifest('inspectorEditors', (registry) => {
 
     registry.inspector.editors.add('TYPO3.Neos/Inspector/Editors/ImageEditor', {
         component: Image
+    });
+
+    registry.inspector.editors.add('TYPO3.Neos/Inspector/Editors/SelectBoxEditor', {
+        component: SelectBox
     });
 
     //

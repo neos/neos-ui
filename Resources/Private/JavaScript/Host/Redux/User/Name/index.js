@@ -1,5 +1,5 @@
 import {Map} from 'immutable';
-import {$set} from 'plow-js';
+import {$set, $get} from 'plow-js';
 
 import {handleActions} from 'Shared/Utilities/index';
 import {actionTypes as system} from 'Host/Redux/System/index';
@@ -8,15 +8,15 @@ import {actionTypes as system} from 'Host/Redux/System/index';
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: () => $set(
+    [system.INIT]: state => $set(
         'user.name',
         new Map({
             title: '',
-            firstName: '',
-            middleName: '',
-            lastName: '',
-            otherName: '',
-            fullName: ''
+            firstName: $get('user.name.firstName', state) || '',
+            middleName: $get('user.name.middleName', state) || '',
+            lastName: $get('user.name.lastName', state) || '',
+            otherName: $get('user.name.otherName', state) || '',
+            fullName: $get('user.name.fullName', state) || ''
         })
     )
 });

@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 import Frame from '@neos-project/react-ui-components/lib/Frame/';
@@ -56,6 +57,10 @@ export default class ContentCanvas extends Component {
         this.onFrameChange = this.handleFrameChanges.bind(this);
     }
 
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
     render() {
         const {isFringeLeft, isFringeRight, isFullScreen, src} = this.props;
         const classNames = mergeClassNames({
@@ -87,6 +92,12 @@ export default class ContentCanvas extends Component {
     }
 
     handleFrameChanges(iframeWindow, iframeDocument) {
+        if (iframeDocument.__isInitialized) {
+            return;
+        }
+
+        iframeDocument.__isInitialized = true;
+
         const {
             focusNode,
             setGuestContext,

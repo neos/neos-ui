@@ -82,7 +82,7 @@ export default class ImageEditor extends Component {
         }
 
         if (this.props.value && this.props.value.__identity &&
-            nextProps.value.__identity !== this.props.value.__identity) {
+            nextProps.value && nextProps.value.__identity !== this.props.value.__identity) {
             loadImageMetadata(nextProps.value.__identity)
                 .then(image => this._isMounted && this.setState({image}));
         }

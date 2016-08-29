@@ -1,5 +1,3 @@
-$maxImageHeight: 216px;
-
 .dropzone {
     border: none;
 }
@@ -16,7 +14,7 @@ $maxImageHeight: 216px;
     position: relative;
     border: 1px dashed var(--brandColorsContrastNeutral);
     margin-bottom: calc(var(--spacing) - var(--quarterSpacing));
-    height: $maxImageHeight;
+    height: 216px;
     overflow: hidden;
     cursor: pointer;
     /* TODO: border-color: #fff; on hover */

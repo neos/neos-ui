@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {makeFocusNode} from './../_lib/focusNode';
 
+const emptyFn = () => null;
+
 const ShallowDropDownHeader = props => {
     const {
         className,
@@ -11,6 +13,7 @@ const ShallowDropDownHeader = props => {
         toggleDropDown,
         IconComponent,
         _refHandler,
+        shouldKeepFocusState,
         ...rest
     } = props;
     const iconName = isOpen ? 'chevron-up' : 'chevron-down';
@@ -23,7 +26,7 @@ const ShallowDropDownHeader = props => {
         <button
             {...rest}
             onClick={toggleDropDown}
-            ref={_refHandler(isOpen)}
+            ref={shouldKeepFocusState ? _refHandler(isOpen) : emptyFn}
             className={finalClassName}
             aria-haspopup="true"
             >
@@ -67,10 +70,18 @@ ShallowDropDownHeader.propTypes = {
     /**
      * An interal prop for testing purposes, do not set this prop manually.
      */
-    _refHandler: PropTypes.func
+    _refHandler: PropTypes.func,
+
+    /**
+     * if TRUE, will keep the focussed state of the element when re-drawing.
+     * Must be set to FALSE when connected components want to manage the focus state themselves (e.g.
+     * when this component is used to build a select box)
+     */
+    shouldKeepFocusState: PropTypes.bool
 };
 ShallowDropDownHeader.defaultProps = {
-    _refHandler: makeFocusNode
+    _refHandler: makeFocusNode,
+    shouldKeepFocusState: true
 };
 
 export default ShallowDropDownHeader;

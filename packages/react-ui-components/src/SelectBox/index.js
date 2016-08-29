@@ -11,8 +11,10 @@ const ThemedSelectBox = themr(identifiers.selectBox, style)(SelectBox);
 import injectProps from './../_lib/injectProps.js';
 import DropDown from './../DropDown/index';
 import Icon from './../Icon/index';
+import TextInput from './../TextInput/index';
 
 export default injectProps({
     DropDownComponent: DropDown,
-    IconComponent: Icon
+    IconComponent: Icon,
+    InputComponent: TextInput
 })(ThemedSelectBox);

@@ -27,6 +27,12 @@
         }
     }
 }
+.btn--size-regular {}
+.btn--size-small {
+    height: 32px;
+    font-size: 13px;
+    padding: 0 8px;
+}
 
 .btn--clean,
 .btn--clean[disabled]:hover {

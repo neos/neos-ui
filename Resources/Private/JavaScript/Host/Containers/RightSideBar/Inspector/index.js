@@ -12,7 +12,7 @@ import TabPanel from './TabPanel/index';
 import style from './style.css';
 
 @connect($transform({
-    viewConfiguration: $get('ui.inspector.viewConfiguration'),
+    viewConfiguration: selectors.UI.Inspector.viewConfiguration,
     transientValues: selectors.UI.Inspector.transientValues
 }), {
     apply: actions.UI.Inspector.apply,

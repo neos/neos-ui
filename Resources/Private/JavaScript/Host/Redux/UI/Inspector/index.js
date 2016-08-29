@@ -1,6 +1,7 @@
 import {createAction} from 'redux-actions';
-import {$get, $all, $set, $drop} from 'plow-js';
+import {$get, $all, $set, $drop, $transform} from 'plow-js';
 import Immutable, {Map} from 'immutable';
+import {map, mapObjIndexed, values, sort, compose} from 'ramda';
 
 import {handleActions} from 'Shared/Utilities/index';
 import {actionTypes as system} from 'Host/Redux/System/index';
@@ -11,8 +12,6 @@ import {Nodes} from 'Host/Selectors/CR/index';
 //
 // System actions
 //
-const RESET = '@packagefactory/guevara/UI/Inspector/RESET';
-const LOAD = '@packagefactory/guevara/UI/Inspector/LOAD';
 const COMMIT = '@packagefactory/guevara/UI/Inspector/COMMIT';
 const CLEAR = '@packagefactory/guevara/UI/Inspector/CLEAR';
 
@@ -22,8 +21,6 @@ const CLEAR = '@packagefactory/guevara/UI/Inspector/CLEAR';
 const APPLY = '@packagefactory/guevara/UI/Inspector/APPLY';
 const DISCARD = '@packagefactory/guevara/UI/Inspector/DISCARD';
 
-const reset = createAction(RESET);
-const load = createAction(LOAD, (viewConfiguration, activeNodePath) => ({viewConfiguration, activeNodePath}));
 const commit = createAction(COMMIT, (propertyId, value, hooks) => ({propertyId, value, hooks}));
 const clear = createAction(CLEAR);
 
@@ -34,8 +31,6 @@ const discard = createAction(DISCARD, () => ({}));
 // Export the actions
 //
 export const actions = {
-    reset,
-    load,
     commit,
     clear,
     apply,
@@ -43,8 +38,6 @@ export const actions = {
 };
 
 export const actionTypes = {
-    RESET,
-    LOAD,
     COMMIT,
     CLEAR,
     APPLY,
@@ -52,8 +45,8 @@ export const actionTypes = {
 };
 
 const clearReducer = () => state => {
-    const activeNodePath = $get('ui.inspector.activeNodePath', state);
-    return $drop(['ui', 'inspector', 'valuesByNodePath', activeNodePath], state);
+    const focusedNodePath = Nodes.focusedNodePathSelector(state);
+    return $drop(['ui', 'inspector', 'valuesByNodePath', focusedNodePath], state);
 };
 
 //
@@ -63,24 +56,17 @@ export const reducer = handleActions({
     [system.INIT]: () => $set(
         'ui.inspector',
         new Map({
-            activeNodePath: '',
-            viewConfiguration: new Map(),
             valuesByNodePath: new Map()
         })
     ),
-    [RESET]: () => $set('ui.inspector.activeNodePath', ''),
-    [LOAD]: ({viewConfiguration, activeNodePath}) => $all(
-        $set('ui.inspector.viewConfiguration', viewConfiguration),
-        $set('ui.inspector.activeNodePath', activeNodePath)
-    ),
     [COMMIT]: ({propertyId, value, hooks}) => state => {
-        const activeNodePath = $get('ui.inspector.activeNodePath', state);
+        const focusedNodePath = Nodes.focusedNodePathSelector(state);
 
         if (value !== null) {
-            return $set(['ui', 'inspector', 'valuesByNodePath', activeNodePath, propertyId], Immutable.fromJS({value, hooks}), state);
+            return $set(['ui', 'inspector', 'valuesByNodePath', focusedNodePath, propertyId], Immutable.fromJS({value, hooks}), state);
         }
 
-        return $drop(['ui', 'inspector', 'valuesByNodePath', activeNodePath, propertyId], state);
+        return $drop(['ui', 'inspector', 'valuesByNodePath', focusedNodePath, propertyId], state);
     },
 
     [DISCARD]: clearReducer,
@@ -94,7 +80,7 @@ export const reducer = handleActions({
 const activeNode = createSelector(
     [
         Nodes.storedNodeByContextPath,
-        $get('ui.inspector.activeNodePath')
+        Nodes.focusedNodePathSelector
     ],
     (getStoredNodeByContextPath, activeNodeContextPath) =>
         getStoredNodeByContextPath(activeNodeContextPath)
@@ -102,13 +88,105 @@ const activeNode = createSelector(
 
 const transientValues = createSelector(
     [
-        $get('ui.inspector.activeNodePath'),
+        Nodes.focusedNodePathSelector,
         $get('ui.inspector.valuesByNodePath')
     ],
-    (activeNodeContextPath, valuesByNodePath) => $get([activeNodeContextPath], valuesByNodePath)
+    (focusedNodeContextPath, valuesByNodePath) => $get([focusedNodeContextPath], valuesByNodePath)
 );
+
+
+
+
+
+/*
+    Will create a configuration for the Inspector Component to render itself
+    with the following shape:
+
+    {
+        "tabs": [
+            {
+                "id": "my-tab-1",
+                "icon": "icon-cog",
+                "groups": [
+                    {
+                        "id": "my-group-1",
+                        "label": "MyGroup 1",
+                        "properties": {
+                            "id": "my-property-1",
+                            "label": "MyProperty 1",
+                            "editor": "MyAwesome.Package:MyEditor"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+*/
+const toJS = val => val && val.toJS ? val.toJS() : val;
+const withId = mapObjIndexed((subject, id) => ({
+    ...subject,
+    id
+}));
+const getPosition = subject => subject.ui ? subject.ui.position : subject.position;
+const positionalArraySorter = sort((a, b) => (getPosition(a) - getPosition(b)) || (a.id - b.id));
+const getNormalizedDeepStructureFromNode = path => compose(
+    positionalArraySorter,
+    values,
+    withId,
+    toJS,
+    $get(path)
+);
+
+const getTabs = getNormalizedDeepStructureFromNode('nodeType.ui.inspector.tabs');
+const getGroups = getNormalizedDeepStructureFromNode('nodeType.ui.inspector.groups');
+const getProperties = getNormalizedDeepStructureFromNode('nodeType.properties');
+
+
+
+const viewConfiguration = createSelector(
+    [
+        Nodes.focusedSelector
+    ],
+    (node) => {
+        if (!node) {
+            return undefined;
+        }
+    const tabs = getTabs(node);
+    const groups = getGroups(node);
+    const properties = getProperties(node);
+
+    return {
+        tabs: map(
+            tab => ({
+                ...tab,
+                groups: map(
+                    group => ({
+                        ...group,
+                        properties: map(
+                            $transform({
+                                id: $get('id'),
+                                label: $get('ui.label'),
+                                editor: $get('ui.inspector.editor'),
+                                editorOptions: $get('ui.inspector.editorOptions')
+                            }),
+                            properties.filter(p => $get('ui.inspector.group', p) === group.id)
+                        )
+                    }),
+                    groups.filter(g => {
+                        const isMatch = g.tab === tab.id;
+                        const isDefaultTab = !g.tab && tab.id === 'default';
+
+                        return isMatch || isDefaultTab;
+                    })
+                )
+            }),
+            tabs
+        )
+    };
+});
 
 export const selectors = {
     activeNode,
-    transientValues
+    transientValues,
+    viewConfiguration
 };

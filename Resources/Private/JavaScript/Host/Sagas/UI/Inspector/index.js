@@ -5,8 +5,6 @@ import {actionTypes, actions} from 'Host/Redux/index';
 import {CR} from 'Host/Selectors/index';
 import registry from 'Host/Extensibility/Registry/index';
 
-import initializeInspectorViewConfiguration from './initializeInspectorViewConfiguration';
-
 const getFocusedNode = CR.Nodes.focusedSelector;
 const getTransientInspectorValues = state => {
     const values = $get(['ui', 'inspector', 'valuesByNodePath'], state);
@@ -18,20 +16,6 @@ export function * inspectorSaga() {
     yield take(actionTypes.System.READY);
 
     while (true) { // eslint-disable-line no-constant-condition
-        const state = yield select();
-        const focusedNode = getFocusedNode(state);
-
-        //
-        // Read the configuration for editors from the ui configuration of the focused nodes
-        // node type and prepare it to be rendered through the Inspector Component
-        //
-        const viewConfiguration = yield call(initializeInspectorViewConfiguration, focusedNode);
-
-        //
-        // Inform the inspector of the loaded configuration
-        //
-        yield put(actions.UI.Inspector.load(viewConfiguration, focusedNode.contextPath));
-
         //
         // Wait for the user to focus another node, to discard all transient
         // changes or to apply his/her changes,

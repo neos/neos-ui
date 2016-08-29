@@ -2,16 +2,17 @@ import React, {PropTypes} from 'react';
 import SecondaryInspector from 'Host/Extensibility/API/SecondaryInspector';
 import style from './style.css';
 
-const MediaSelectionScreen = (props) => {
+const MediaSelectionScreen = props => {
     // TODO: Media package refactoring
     window.Typo3MediaBrowserCallbacks = {
         assetChosen: assetIdentifier => {
             props.onComplete(assetIdentifier);
         }
     };
+
     // TODO: hard-coded url
     return (
-        <SecondaryInspector onClose={() => props.onClose()}>
+        <SecondaryInspector onClose={props.onClose}>
             <iframe src="/neos/content/images.html" className={style.iframe}/>
         </SecondaryInspector>
     );

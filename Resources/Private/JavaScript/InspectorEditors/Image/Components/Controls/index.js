@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import I18n from 'I18n';
 import {Button} from 'Components';
 
@@ -12,6 +13,10 @@ export default class Controls extends Component {
         onRemove: PropTypes.func.isRequired,
         onCrop: PropTypes.func
     };
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     render() {
         return (
@@ -35,23 +40,23 @@ export default class Controls extends Component {
                 <Button
                     size="small"
                     style="lighter"
-                    onClick={() => onChooseFromMedia()}
+                    onClick={onChooseFromMedia}
                     >
-                   <I18n id="TYPO3.Neos:Main:media" fallback="Media"/>
+                    <I18n id="TYPO3.Neos:Main:media" fallback="Media"/>
                 </Button>
                 <Button
                     size="small"
                     style="lighter"
-                    onClick={() => onChooseFromLocalFileSystem()}
+                    onClick={onChooseFromLocalFileSystem}
                     >
-                   <I18n id={chooseFromLocalFilesystemLabel} fallback="Choose file"/>
+                    <I18n id={chooseFromLocalFilesystemLabel} fallback="Choose file"/>
                 </Button>
                 <Button
                     size="small"
                     style="lighter"
-                    onClick={() => onRemove()}
+                    onClick={onRemove}
                     >
-                   <I18n id="TYPO3.Neos:Main:remove" fallback="Remove"/>
+                    <I18n id="TYPO3.Neos:Main:remove" fallback="Remove"/>
                 </Button>
             </div>
         );
@@ -66,13 +71,13 @@ export default class Controls extends Component {
                     size="small"
                     style="lighter"
                     className={style.cropButton}
-                    onClick={() => onCrop()}
+                    onClick={onCrop}
                     >
                     <I18n id="TYPO3.Neos:Main:crop" fallback="Crop"/>
                 </Button>
-            )
-        } else {
-            return '';
+            );
         }
+
+        return '';
     }
 }

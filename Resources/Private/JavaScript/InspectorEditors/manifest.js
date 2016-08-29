@@ -6,7 +6,7 @@ import Boolean from './Boolean/index';
 import DateTime from './DateTime/index';
 import Image from './Image/index';
 
-manifest('inspectorEditors', (registry) => {
+manifest('inspectorEditors', registry => {
     registry.inspector.editors.add('TYPO3.Neos/Inspector/Editors/TextFieldEditor', {
         component: TextField
     });

@@ -53,24 +53,38 @@ export default class ImageEditor extends Component {
 
         allowedFileTypes: PropTypes.string,
 
-        siteNode: PropTypes.string
+        siteNode: PropTypes.string,
+        siteNodePath: PropTypes.string
     };
 
     static defaultProps = {
         allowedFileTypes: 'jpg,jpeg,png,gif,svg'
     };
 
-    state = {
-        secondaryScreenMode: SECONDARY_NONE,
-        image: null,
-        isAssetLoading: false
-    };
+    constructor(props) {
+        super(props);
+
+        this.setPreviewScreenRef = this.setPreviewScreenRef.bind(this);
+        this.handleThumbnailClicked = this.handleThumbnailClicked.bind(this);
+        this.handleFilesDrop = this.upload.bind(this);
+        this.handleChooseMedia = this.toggleSecondaryScreen.bind(this, SECONDARY_MEDIA);
+        this.handleChooseSecondaryNone = this.toggleSecondaryScreen.bind(this, SECONDARY_NONE);
+        this.handleChooseFile = this.onChooseFile.bind(this);
+        this.handleRemoveFile = this.onRemoveFile.bind(this);
+        this.handleMediaSelected = this.onMediaSelected.bind(this);
+        this.handleMediaCrop = this.onCrop.bind(this);
+        this.state = {
+            secondaryScreenMode: SECONDARY_NONE,
+            image: null,
+            isAssetLoading: false
+        };
+    }
 
     componentDidMount() {
         if (this.props.value && this.props.value.__identity) {
             this.setState({
                 isAssetLoading: true
-            },() => {
+            }, () => {
                 this.loadImage = loadImageMetadata(this.props.value.__identity)
                     .then(image => {
                         this.setState({
@@ -98,6 +112,7 @@ export default class ImageEditor extends Component {
         //
         if (
             this.props.value &&
+            nextProps.value &&
             nextProps.value.__identity &&
             nextProps.value.__identity !== this.props.value.__identity
         ) {
@@ -190,7 +205,7 @@ export default class ImageEditor extends Component {
         });
     }
 
-    onThumbnailClicked() {
+    handleThumbnailClicked() {
         const imageIdentity = $get('__identity', this.props.value);
 
         if (imageIdentity) {
@@ -201,8 +216,7 @@ export default class ImageEditor extends Component {
     }
 
     onChooseFile() {
-        const {previewScreen} = this.refs;
-        previewScreen.chooseFromLocalFileSystem();
+        this.previewScreen.chooseFromLocalFileSystem();
     }
 
     upload(files) {
@@ -226,19 +240,19 @@ export default class ImageEditor extends Component {
         return (
             <div className={style.imageEditor}>
                 <PreviewScreen
-                    ref="previewScreen"
+                    ref={this.setPreviewScreenRef}
                     image={image}
                     isLoading={isAssetLoading}
-                    onDrop={files => this.upload(files)}
-                    onClick={() => this.onThumbnailClicked()}
-                   />
+                    onDrop={this.handleFilesDrop}
+                    onClick={this.handleThumbnailClicked}
+                    />
                 <Controls
-                    onChooseFromMedia={() => this.toggleSecondaryScreen(SECONDARY_MEDIA)}
-                    onChooseFromLocalFileSystem={() => this.onChooseFile()}
-                    onRemove={() => this.onRemoveFile()}
+                    onChooseFromMedia={this.handleChooseMedia}
+                    onChooseFromLocalFileSystem={this.handleChooseFile}
+                    onRemove={this.handleRemoveFile}
                     onCrop={this.isFeatureEnabled('crop') && (() => this.toggleSecondaryScreen(SECONDARY_CROPPER))}
                     />
-                {secondaryScreenMode !== SECONDARY_NONE ? this.renderSecondaryScreen() : ''}
+                {secondaryScreenMode === SECONDARY_NONE ? '' : this.renderSecondaryScreen()}
             </div>
         );
     }
@@ -252,17 +266,17 @@ export default class ImageEditor extends Component {
             case SECONDARY_MEDIA:
                 return (
                     <Secondary.MediaSelectionScreen
-                        onClose={() => this.toggleSecondaryScreen(SECONDARY_NONE)}
-                        onComplete={assetIdentifier => this.onMediaSelected(assetIdentifier)}
-                       />
+                        onClose={this.handleChooseSecondaryNone}
+                        onComplete={this.handleMediaSelected}
+                        />
                 );
 
             case SECONDARY_DETAILS:
                 return (
                     <Secondary.MediaDetailsScreen
-                        onClose={() => this.toggleSecondaryScreen(SECONDARY_NONE)}
+                        onClose={this.handleChooseSecondaryNone}
                         imageIdentity={__identity}
-                       />
+                        />
                 );
 
             case SECONDARY_CROPPER:
@@ -270,9 +284,9 @@ export default class ImageEditor extends Component {
                     <Secondary.ImageCropper
                         sourceImage={Image.fromImageData(image)}
                         options={options}
-                        onClose={() => this.toggleSecondaryScreen(SECONDARY_NONE)}
-                        onComplete={cropArea => this.onCrop(cropArea)}
-                       />
+                        onClose={this.handleChooseSecondaryNone}
+                        onComplete={this.handleMediaCrop}
+                        />
                 );
 
             case SECONDARY_NONE:
@@ -280,4 +294,10 @@ export default class ImageEditor extends Component {
                 return '';
         }
     }
+
+    setPreviewScreenRef(ref) {
+        this.previewScreen = ref;
+    }
+
+    handleDrop
 }

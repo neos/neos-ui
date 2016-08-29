@@ -1,3 +1,3 @@
-const {React} = window['@Neos:HostPluginAPI'];
+const {shallowCompare} = window['@Neos:HostPluginAPI'];
 
-export default React.shallowCompare;
+export default shallowCompare;

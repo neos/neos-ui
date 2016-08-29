@@ -45,7 +45,7 @@ export default class SelectBox extends Component {
 
     select(incomingValue) {
         const {options, placeholder, placeholderIcon} = this.props;
-        const value = incomingValue || placeholder ? '' : options[0].map(o => o.value);
+        const value = incomingValue || placeholder;
 
         this.setState({
             value,
@@ -78,15 +78,14 @@ export default class SelectBox extends Component {
                     </DropDownComponent.Header>
                     <DropDownComponent.Contents className={theme.dropDown__contents}>
                         {placeholder ?
-                            placeholder.map((placeholder, index) => (
-                                <li key={index} className={theme.dropDown__item}>
-                                    {placeholderIcon ?
-                                        <IconComponent key={index} className={theme.dropDown__itemIcon} icon={icon}/> :
-                                        null
-                                    }
-                                    {placeholder}
-                                </li>
-                            )) :
+                            <li className={theme.dropDown__item}>
+                                {placeholderIcon ?
+                                    <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
+                                    null
+                                }
+                                {placeholder}
+                            </li>
+                            :
                             null
                         }
                         {options.map(({icon, label, value}, index) => {
@@ -103,7 +102,7 @@ export default class SelectBox extends Component {
                                     >
                                     {icon ?
                                         <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
-                                        null
+                                        label
                                     }
                                 </li>
                             );

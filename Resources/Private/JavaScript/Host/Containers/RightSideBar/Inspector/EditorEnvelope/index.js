@@ -29,7 +29,6 @@ export default class EditorEnvelope extends Component {
         options: PropTypes.object,
 
         node: PropTypes.object.isRequired,
-        inspectorEditorRegistry: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired,
         transient: PropTypes.object
     };

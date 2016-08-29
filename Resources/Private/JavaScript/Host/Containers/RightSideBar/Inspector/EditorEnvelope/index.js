@@ -69,7 +69,7 @@ export default class EditorEnvelope extends Component {
             return (
                 <EditorComponent
                     {...this.prepareEditorProperties()}
-                    commit={this.onHandleCommit}
+                    commit={this.onHandleCommit.bind(this)}
                     />
             );
         }

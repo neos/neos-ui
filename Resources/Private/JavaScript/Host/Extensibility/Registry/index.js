@@ -110,7 +110,16 @@ const registry = {
                 can also return a new Promise.
             }
         `)
-    }
+    },
+    serverFeedbackHandlers: new SynchronousRegistry(`
+        Contains all server feedback handlers.
+
+        The key is the server-feedback-handler-type, and the value is a function with the following signature:
+
+        (feedback, store) => {
+            // do whatever you like here :-)
+        }
+    `)
 };
 
 export default registry;

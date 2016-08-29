@@ -8,6 +8,7 @@ import {I18n} from 'Host/Containers/index';
 import neos from 'Host/Decorators/Neos/index';
 import registry from 'Host/Extensibility/Registry/index';
 import {actions, selectors} from 'Host/Redux/index';
+import {CR} from 'Host/Selectors/index';
 
 /**
  * (Stateful) Editor envelope
@@ -15,7 +16,7 @@ import {actions, selectors} from 'Host/Redux/index';
  * For reference on how to use editors, check the docs inside the Registry.
  */
 @connect($transform({
-    node: selectors.UI.Inspector.activeNode,
+    node: CR.Nodes.focusedSelector,
     transient: selectors.UI.Inspector.transientValues
 }), {
     commit: actions.UI.Inspector.commit
@@ -57,7 +58,7 @@ export default class EditorEnvelope extends Component {
 
         return {
             label,
-            node: node.toJS(),
+            node: node,
             value: transientValue ? transientValue.value : sourceValue,
             propertyName: id,
             options

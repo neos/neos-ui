@@ -77,15 +77,6 @@ export const reducer = handleActions({
 // Export the selectors
 //
 
-const activeNode = createSelector(
-    [
-        Nodes.storedNodeByContextPath,
-        Nodes.focusedNodePathSelector
-    ],
-    (getStoredNodeByContextPath, activeNodeContextPath) =>
-        getStoredNodeByContextPath(activeNodeContextPath)
-);
-
 const transientValues = createSelector(
     [
         Nodes.focusedNodePathSelector,
@@ -187,7 +178,6 @@ const viewConfiguration = createSelector(
 );
 
 export const selectors = {
-    activeNode,
     transientValues,
     viewConfiguration
 };

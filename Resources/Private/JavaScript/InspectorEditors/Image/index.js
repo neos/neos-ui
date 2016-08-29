@@ -91,7 +91,11 @@ export default class ImageEditor extends Component {
             this.setState({image: null});
         }
 
+        //
+        // Re-Load the image metadata in case a new image was selected.
+        //
         if (
+            this.props.value &&
             nextProps.value.__identity &&
             nextProps.value.__identity !== this.props.value.__identity
         ) {

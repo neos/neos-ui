@@ -31,3 +31,8 @@ export const reducer = handleActions({
     ),
     [TOGGLE]: () => $toggle('ui.fullScreen.isFullScreen')
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

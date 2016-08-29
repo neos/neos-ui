@@ -38,3 +38,8 @@ export const reducer = handleActions({
     ),
     [SET_CONTEXT]: ({node}) => $set('guest.context', node)
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

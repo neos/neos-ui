@@ -31,3 +31,8 @@ export const reducer = handleActions({
     ),
     [TOGGLE_AUTO_PUBLISHING]: () => $toggle('user.settings.isAutoPublishingEnabled')
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

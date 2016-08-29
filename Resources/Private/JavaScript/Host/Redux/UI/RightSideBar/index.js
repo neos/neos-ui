@@ -31,3 +31,8 @@ export const reducer = handleActions({
     ),
     [TOGGLE]: () => $toggle('ui.rightSideBar.isHidden')
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

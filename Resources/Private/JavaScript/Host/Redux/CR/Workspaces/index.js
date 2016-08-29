@@ -60,3 +60,8 @@ export const reducer = handleActions({
     [UPDATE]: ({name, data}) => $set(['cr', 'workspaces', 'byName', name, 'publishableNodes'], Immutable.fromJS(data)),
     [SWITCH]: name => $set('cr.workspaces.active', name)
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

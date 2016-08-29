@@ -4,6 +4,9 @@ import Immutable, {Map} from 'immutable';
 
 import {handleActions} from 'Shared/Utilities/index';
 import {actionTypes as system} from 'Host/Redux/System/index';
+import {createSelector} from 'reselect';
+
+import {Nodes} from 'Host/Selectors/CR/index';
 
 //
 // System actions
@@ -84,3 +87,28 @@ export const reducer = handleActions({
     [CLEAR]: clearReducer
 });
 
+//
+// Export the selectors
+//
+
+const activeNode = createSelector(
+    [
+        Nodes.storedNodeByContextPath,
+        $get('ui.inspector.activeNodePath')
+    ],
+    (getStoredNodeByContextPath, activeNodeContextPath) =>
+        getStoredNodeByContextPath(activeNodeContextPath)
+);
+
+const transientValues = createSelector(
+    [
+        $get('ui.inspector.activeNodePath'),
+        $get('ui.inspector.valuesByNodePath')
+    ],
+    (activeNodeContextPath, valuesByNodePath) => $get([activeNodeContextPath], valuesByNodePath)
+);
+
+export const selectors = {
+    activeNode,
+    transientValues
+};

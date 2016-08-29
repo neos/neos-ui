@@ -23,3 +23,8 @@ export const actions = map(a => a.actions, all);
 // Export the reducer
 //
 export const reducer = handleActions(map(k => all[k].reducer, keys(all)));
+
+//
+// Export the selectors
+//
+export const selectors = map(a => a.selectors, all);

@@ -73,3 +73,8 @@ export const reducer = handleActions({
     [START_DISCARDING]: () => $set('ui.remote.isDiscarding', true),
     [FINISH_DISCARDING]: () => $set('ui.remote.isDiscarding', false)
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

@@ -20,3 +20,8 @@ export const reducer = handleActions({
         })
     )
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

@@ -53,3 +53,8 @@ export const reducer = handleActions({
         $set(['cr', 'images', 'byUuid', imageUuid, 'status'], 'LOADED')
     )
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

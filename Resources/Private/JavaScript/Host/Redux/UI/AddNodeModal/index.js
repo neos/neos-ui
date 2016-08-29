@@ -69,3 +69,8 @@ export const reducer = handleActions({
     [CLOSE]: () => $set('ui.addNodeModal.referenceNode', ''),
     [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.collapsedGroups', groupId)
 });
+
+//
+// Export the selectors
+//
+export const selectors = {};

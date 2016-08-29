@@ -1,16 +1,22 @@
 .secondaryInspector {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 82px;
+    right: var(--sidebarWidth);
+    left: var(--sidebarWidth);
     background: var(--brandColorsContrastDarker);
-    width: 100%;
-    height: 100%;
+    height: calc(100% - 82px);
     border: 1px solid var(--brandColorsContrastDark);
     border-bottom-width: 0;
+    transition: .2s ease left, .2s ease right;
+    will-change: left, right;
 }
-
-.secondaryInspector
-.close {
+.secondaryInspector--isFringeLeft {
+    left: 0;
+}
+.secondaryInspector--isFringeRight {
+    right: 0;
+}
+.secondaryInspector .close {
     position: absolute;
     top: 0;
     right: 0;

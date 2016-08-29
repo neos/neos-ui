@@ -32,7 +32,8 @@ const closestContextPath = el => {
     focusNode: actions.CR.Nodes.focus,
     unFocusNode: actions.CR.Nodes.unFocus,
     hoverNode: actions.CR.Nodes.hover,
-    unHoverNode: actions.CR.Nodes.unhover
+    unHoverNode: actions.CR.Nodes.unhover,
+    persistChange: actions.Changes.persistChange
 })
 export default class ContentCanvas extends Component {
     static propTypes = {
@@ -48,7 +49,8 @@ export default class ContentCanvas extends Component {
         focusNode: PropTypes.func.isRequired,
         unFocusNode: PropTypes.func.isRequired,
         hoverNode: PropTypes.func.isRequired,
-        unHoverNode: PropTypes.func.isRequired
+        unHoverNode: PropTypes.func.isRequired,
+        persistChange: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -107,7 +109,8 @@ export default class ContentCanvas extends Component {
             hoverNode,
             unHoverNode,
             setActiveFormatting,
-            unFocusNode
+            unFocusNode,
+            persistChange
         } = this.props;
 
         //
@@ -188,13 +191,20 @@ export default class ContentCanvas extends Component {
         //
         const editors = iframeDocument.querySelectorAll('.neos-inline-editable');
         Array.prototype.forEach.call(editors, node => {
-            // const contextPath = closestContextPath(dom);
-            // const propertyName = dom.dataset.__neosProperty;
+            const contextPath = closestContextPath(node);
+            const propertyName = node.dataset.__neosProperty;
 
             // TODO: from state, read node types & configure CKeditor based on node type!
 
             iframeWindow.NeosCKEditorApi.createEditor(node, contents => {
-                console.log('Change of content:', contents);
+                persistChange({
+                    type: 'Neos.Neos.Ui:Property',
+                    subject: contextPath,
+                    payload: {
+                        propertyName: propertyName,
+                        value: contents
+                    }
+                });
             });
         });
     }

@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import {Maybe} from 'monet';
 
 export default class SelectBox extends Component {
     static propTypes = {
@@ -46,7 +45,7 @@ export default class SelectBox extends Component {
 
     select(incomingValue) {
         const {options, placeholder, placeholderIcon} = this.props;
-        const value = incomingValue || (placeholder ? '' : Maybe.fromNull(options[0]).map(o => o.value).orSome(''));
+        const value = incomingValue || placeholder ? '' : options[0].map(o => o.value);
 
         this.setState({
             value,
@@ -71,22 +70,25 @@ export default class SelectBox extends Component {
             <div className={theme.wrapper}>
                 <DropDownComponent className={theme.dropDown}>
                     <DropDownComponent.Header className={theme.dropDown__btn}>
-                        {Maybe.fromNull(icon)
-                            .map((icon, index) => <IconComponent key={index} className={theme.dropDown__btnIcon} icon={icon}/>)
-                            .orSome('')}
+                        {icon ?
+                            <IconComponent className={theme.dropDown__btnIcon} icon={icon}/> :
+                                null
+                        }
                         {label}
                     </DropDownComponent.Header>
                     <DropDownComponent.Contents className={theme.dropDown__contents}>
-                        {Maybe.fromNull(placeholder)
-                            .map((placeholder, index) => (
+                        {placeholder ?
+                            placeholder.map((placeholder, index) => (
                                 <li key={index} className={theme.dropDown__item}>
-                                    {Maybe.fromNull(placeholderIcon)
-                                        .map((icon, index) => <IconComponent key={index} className={theme.dropDown__itemIcon} icon={icon}/>)
-                                        .orSome('')}
+                                    {placeholderIcon ?
+                                        <IconComponent key={index} className={theme.dropDown__itemIcon} icon={icon}/> :
+                                        null
+                                    }
                                     {placeholder}
                                 </li>
-                            ))
-                            .orSome('')}
+                            )) :
+                            null
+                        }
                         {options.map(({icon, label, value}, index) => {
                             const onClick = () => {
                                 this.select(value);
@@ -99,10 +101,10 @@ export default class SelectBox extends Component {
                                     className={theme.dropDown__item}
                                     onClick={onClick}
                                     >
-                                    {Maybe.fromNull(icon)
-                                        .map((icon, index) => <IconComponent key={index} className={theme.dropDown__itemIcon} icon={icon}/>)
-                                        .orSome('')}
-                                    {label}
+                                    {icon ?
+                                        <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
+                                        null
+                                    }
                                 </li>
                             );
                         })}

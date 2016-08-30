@@ -84,6 +84,11 @@ run the watcher inside the Neos.Neos.Ui Package
  npm run watch:build
 ```
 
+#### Commit Guidelines
+
+Please folllow these commit guidlines. [commit-analyzer](https://github.com/Inkdpixels/commit-analyzer)
+
+
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

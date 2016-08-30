@@ -66,7 +66,8 @@ export class Header extends Component {
             item,
             onClick,
             onLabelClick,
-            theme
+            theme,
+            ...rest
         } = this.props;
         const {
             label,
@@ -82,15 +83,15 @@ export class Header extends Component {
         });
 
         return (
-            <div className={theme.header}>
+            <ul className={theme.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
-                <div role="button" onClick={onClick} className={dataClassNames}>
-                    <IconComponent icon={icon || 'question'} padded="right"/>
-                    <span className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                <li className={dataClassNames}>
+                    <IconComponent icon={icon || 'question'} padded="right" role="button" onClick={onClick}/>
+                    <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>
-                </div>
-            </div>
+                </li>
+            </ul>
         );
     }
 

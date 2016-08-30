@@ -1,8 +1,9 @@
-import manifest from 'Host/Extensibility/API/Manifest/index';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import StyleSelect from 'Host/Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
 import uuid from 'uuid';
 import {actions} from 'Host/Redux';
+
+const {manifest} = window['@Neos:HostPluginAPI'];
 
 manifest('main', registry => {
     registry.ckEditor.formattingAndStyling.add('p', {style: {element: 'p'}});

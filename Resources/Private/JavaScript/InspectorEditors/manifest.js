@@ -4,9 +4,9 @@ import DateTime from './DateTime/index';
 import Image from './Image/index';
 import SelectBox from './SelectBox/index';
 
-const {Manifest} = window['@Neos:HostPluginAPI'];
+const {manifest} = window['@Neos:HostPluginAPI'];
 
-Manifest('inspectorEditors', registry => {
+manifest('inspectorEditors', registry => {
     const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
     const {createImageVariant} = ApiEndpoints;
 

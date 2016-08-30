@@ -25,7 +25,7 @@ const toggleResizeAdjustment = props => () => {
     }
 };
 
-const onChangeValue = (props, heightOrWidth) => (changedValue) => {
+const onChangeValue = (props, heightOrWidth) => changedValue => {
     let height = 0;
     let width = 0;
     const aspectRatio = $get('height', props.imageDimensions) / $get('width', props.imageDimensions);

@@ -19,7 +19,7 @@ export class NullAspectRatioStrategy {
     }
 
     get aspectRatio() {
-        return None();// eslint-disable-line new-cap
+        return None();// eslint-disable-line babel/new-cap
     }
 
     get label() {
@@ -47,7 +47,7 @@ export class ConfiguredAspectRatioStrategy extends NullAspectRatioStrategy {
     }
 
     get aspectRatio() {
-        return Some(this.width / this.height);// eslint-disable-line new-cap
+        return Some(this.width / this.height);// eslint-disable-line babel/new-cap
     }
 
     get label() {
@@ -76,7 +76,7 @@ export class OriginalAspectRatioStrategy extends NullAspectRatioStrategy {
     }
 
     get aspectRatio() {
-        return Some(this.width / this.height);// eslint-disable-line new-cap
+        return Some(this.width / this.height);// eslint-disable-line babel/new-cap
     }
 }
 
@@ -138,11 +138,11 @@ const DEFAULT_BOUNDARIES = {
 
 const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
     const {options} = neosConfiguration;
-    const when = condition => o => condition ? Some(o) : None();// eslint-disable-line new-cap
+    const when = condition => o => condition ? Some(o) : None();// eslint-disable-line babel/new-cap
     const whenAllowOriginal = when(neosConfiguration.allowOriginal && image.aspectRatio);
     const whenIsOriginal = o => whenAllowOriginal(o)
         .bind(() => image.cropAspectRatio)
-        .bind(aspectRatio => aspectRatio.toFixed(2) === image.aspectRatio.toFixed(2) ? Some(o) : None());// eslint-disable-line new-cap
+        .bind(aspectRatio => aspectRatio.toFixed(2) === image.aspectRatio.toFixed(2) ? Some(o) : None());// eslint-disable-line babel/new-cap
     const whenAllowCustom = when(neosConfiguration.allowCustom);
 
     //
@@ -231,7 +231,7 @@ export default class CropConfiguration {
     get aspectRatioDimensions() {
         const {width, height} = this.aspectRatioStrategy;
 
-        return width && height ? Some({width, height}) : None();// eslint-disable-line new-cap
+        return width && height ? Some({width, height}) : None();// eslint-disable-line babel/new-cap
     }
 
     get aspectRatioReducedLabel() {

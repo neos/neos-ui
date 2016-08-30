@@ -21,7 +21,7 @@ export class DropDownWrapper extends Component {
         /**
          * This callback gets called when the opened state toggles
          */
-        onToggle : PropTypes.func,
+        onToggle: PropTypes.func,
 
         /**
          * The contents to be rendered, ideally `DropDown.Header` and `DropDown.Contents`.

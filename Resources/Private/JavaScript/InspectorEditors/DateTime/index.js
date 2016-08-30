@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react';
-import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
+import DateInput from '@neos-project/react-ui-components/lib/DateInput/';
 
 const DateTime = props => {
     const {value, commit} = props;
 
-    return (<TextInput value={value} onChange={commit}/>);
+    return <DateInput value={value} onChange={commit}/>;
 };
 DateTime.propTypes = {
     value: PropTypes.string.isRequired,

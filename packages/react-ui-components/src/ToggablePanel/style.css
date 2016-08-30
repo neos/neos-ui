@@ -1,10 +1,6 @@
 .panel {
     composes: reset from './../reset.css';
     position: relative;
-
-    > div {
-        overflow: hidden;
-    }
 }
 .panel__headline {
     composes: reset from './../reset.css';

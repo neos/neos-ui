@@ -14,6 +14,10 @@ manifest('inspectorEditors', registry => {
         component: TextField
     });
 
+    registry.inspector.editors.add('TYPO3.Neos/Inspector/Editors/TextAreaEditor', {
+        component: TextField
+    });
+
     registry.inspector.editors.add('TYPO3.Neos/Inspector/Editors/BooleanEditor', {
         component: Boolean,
         hasOwnLabel: true

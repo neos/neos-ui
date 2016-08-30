@@ -1,3 +1,4 @@
+npm-debug.log
 node_modules
 dist
 lib
@@ -5,3 +6,4 @@ coverage
 .nyc_output/
 .idea
 lcov.info
+.idea

@@ -19,6 +19,11 @@ export class DropDownWrapper extends Component {
         isOpen: PropTypes.bool.isRequired,
 
         /**
+         * This callback gets called when the opened state toggles
+         */
+        onToggle: PropTypes.func,
+
+        /**
          * The contents to be rendered, ideally `DropDown.Header` and `DropDown.Contents`.
          */
         children: PropTypes.any.isRequired,
@@ -64,7 +69,7 @@ export class DropDownWrapper extends Component {
 
     render() {
         const {children, className, theme, ...restProps} = this.props;
-        const rest = omit(restProps, ['isOpen']);
+        const rest = omit(restProps, ['isOpen', 'onToggle']);
         const finalClassName = mergeClassNames({
             [className]: className && className.length,
             [theme.dropDown]: true
@@ -82,6 +87,10 @@ export class DropDownWrapper extends Component {
     }
 
     toggle() {
+        if (this.props.onToggle) {
+            this.props.onToggle(!this.state.isOpen);
+        }
+
         this.setState({isOpen: !this.state.isOpen});
     }
 }

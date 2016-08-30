@@ -1,0 +1,378 @@
+.calendarInputWrapper {
+    display: table;
+    width: 100%;
+}
+.closeCalendarIconBtn,
+.calendarIconBtn {
+    composes: reset from './../reset.css';
+    position: relative;
+    display: table-cell;
+    vertical-align: top;
+    padding: 12px;
+    min-width: 41px;
+    border: none;
+    border-radius: 0;
+    background: var(--brandColorsContrastNeutral);
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+.closeCalendarIconBtn:hover,
+.calendarIconBtn:hover {
+    background: var(--brandColorsPrimaryBlue);
+}
+.closeCalendarIconBtn {
+    border-left: 1px solid var(--brandColorsContrastDarker);
+}
+.calendarIconBtn {
+    border-right: 1px solid var(--brandColorsContrastDarker);
+}
+
+.calendarFakeInputWrapper {
+    composes: reset from './../reset.css';
+    display: table-cell;
+    position: relative;
+}
+.calendarFakeInputMirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    cursor: pointer;
+}
+.calendarFakeInput {
+    composes: reset from './../reset.css';
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    height: 40px;
+    border: 2px solid var(--brandColorsContrastNeutral);
+    background: var(--brandColorsContrastNeutral);
+    font-size: 14px;
+    padding: 0 14px;
+    margin: 0;
+    box-shadow: none;
+    transition: none;
+
+    &:focus {
+        outline: 0;
+    }
+}
+.selectTodayBtn {
+    width: calc(100% - 2px);
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border: 1px solid var(--brandColorsContrastNeutral);
+    border-top: 0;
+    font-size: var(--baseFontSize);
+    cursor: pointer;
+    background: var(--brandColorsContrastDarkest);
+    color: var(--brandColorsContrastBrightest);
+
+    &:hover {
+        background: var(--brandColorsPrimaryBlue) !important;
+    }
+}
+.wrapper {
+    composes: reset from './../reset.css';
+    width: 288px;
+
+    tfoot,
+    input[type="text"] {
+        display: none;
+    }
+
+    /**
+     * Styles from the react-datetime package.
+     * Since we cannot import other packages css in css modules and
+     * putting them in a "global" scope at the same time, we had to
+     * copy the css directly.
+     *
+     * @todo: revisit if we can solve this in a better way.
+     */
+    :global {
+        /*!
+        * https://github.com/arqex/react-datetime
+        */
+
+        .rdt {
+            position: relative;
+        }
+        .rdtPicker {
+            display: none;
+            /*position: absolute;*/
+            width: 250px;
+            padding: 4px;
+            margin-top: 1px;
+            z-index: 99999 !important;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            border: 1px solid #f9f9f9;
+        }
+        .rdtOpen .rdtPicker {
+            display: block;
+        }
+        .rdtStatic .rdtPicker {
+            box-shadow: none;
+            position: static;
+        }
+
+        .rdtPicker .rdtTimeToggle {
+            text-align: center;
+        }
+
+        .rdtPicker table {
+            width: 100%;
+            margin: 0;
+        }
+        .rdtPicker td,
+        .rdtPicker th {
+            text-align: center;
+            height: 28px;
+        }
+        .rdtPicker td {
+            cursor: pointer;
+        }
+        .rdtPicker td.rdtToday:hover,
+        .rdtPicker td.rdtHour:hover,
+        .rdtPicker td.rdtMinute:hover,
+        .rdtPicker td.rdtSecond:hover,
+        .rdtPicker .rdtTimeToggle:hover {
+            background: #eeeeee;
+            cursor: pointer;
+        }
+        .rdtPicker td.rdtOld,
+        .rdtPicker td.rdtNew {
+            color: #999999;
+        }
+        .rdtPicker td.rdtToday {
+            position: relative;
+        }
+        .rdtPicker td.rdtToday:before {
+            content: '';
+            display: inline-block;
+            border-left: 7px solid transparent;
+            border-bottom: 7px solid #428bca;
+            border-top-color: rgba(0, 0, 0, 0.2);
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+        }
+        .rdtPicker td.rdtActive,
+        .rdtPicker td.rdtActive:hover {
+            background-color: #428bca;
+            color: #fff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        }
+        .rdtPicker td.rdtActive.rdtToday:before {
+            border-bottom-color: #fff;
+        }
+        .rdtPicker td.rdtDisabled,
+        .rdtPicker td.rdtDisabled:hover {
+            background: none;
+            color: #999999;
+            cursor: not-allowed;
+        }
+
+        .rdtPicker td span.rdtOld {
+            color: #999999;
+        }
+        .rdtPicker td span.rdtDisabled,
+        .rdtPicker td span.rdtDisabled:hover {
+            background: none;
+            color: #999999;
+            cursor: not-allowed;
+        }
+        .rdtPicker th {
+            border-bottom: 1px solid #f9f9f9;
+        }
+        .rdtPicker .dow {
+            width: 14.2857%;
+            border-bottom: none;
+        }
+        .rdtPicker th.rdtSwitch {
+            width: 100px;
+        }
+        .rdtPicker th.rdtNext,
+        .rdtPicker th.rdtPrev {
+            font-size: 21px;
+            vertical-align: top;
+        }
+
+        .rdtPrev span,
+        .rdtNext span {
+            display: block;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+        .rdtPicker th.rdtDisabled,
+        .rdtPicker th.rdtDisabled:hover {
+            background: none;
+            color: #999999;
+            cursor: not-allowed;
+        }
+        .rdtPicker thead tr:first-child th {
+            cursor: pointer;
+        }
+        .rdtPicker thead tr:first-child th:hover {
+            background: #eeeeee;
+        }
+
+        .rdtPicker tfoot {
+            border-top: 1px solid #f9f9f9;
+        }
+
+        .rdtPicker button {
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .rdtPicker button:hover {
+            background-color: #eee;
+        }
+
+        .rdtPicker thead button {
+            width: 100%;
+            height: 100%;
+        }
+
+        td.rdtMonth,
+        td.rdtYear {
+            height: 50px;
+            width: 25%;
+            cursor: pointer;
+        }
+        td.rdtMonth:hover,
+        td.rdtYear:hover {
+            background: #eee;
+        }
+
+        .rdtCounters {
+            display: inline-block;
+        }
+
+        .rdtCounters > div {
+            float: left;
+        }
+
+        .rdtCounter {
+            height: 100px;
+        }
+
+        .rdtCounter {
+            width: 40px;
+        }
+
+        .rdtCounterSeparator {
+            line-height: 100px;
+        }
+
+        .rdtCounter .rdtBtn {
+            height: 40%;
+            line-height: 40px;
+            cursor: pointer;
+            display: block;
+
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+        .rdtCounter .rdtBtn:hover {
+            background: #eee;
+        }
+        .rdtCounter .rdtCount {
+            height: 20%;
+            font-size: 1.2em;
+        }
+
+        .rdtMilli {
+            vertical-align: middle;
+            padding-left: 8px;
+            width: 48px;
+        }
+
+        .rdtMilli input {
+            width: 100%;
+            font-size: 1.2em;
+            margin-top: 37px;
+        }
+
+        .rdtDayPart {
+            margin-top: 43px;
+        }
+    }
+
+    /**
+     * Overwrites for the calendar
+     */
+    :global {
+        .rdtPicker {
+            position: relative;
+            width: calc(100% - 3px);
+            background: var(--brandColorsContrastDarkest);
+            padding: 0;
+            border: 1px solid var(--brandColorsContrastDarker);
+            border-top: 0;
+            margin: 0;
+            box-shadow: none;
+
+            table {
+                border-collapse: collapse;
+            }
+
+            th {
+                width: 37px;
+                height: 40px;
+                line-height: 40px;
+                font-weight: 400;
+                font-size: var(--baseFontSize);
+                border: 0;
+                border-right: 1px solid var(--brandColorsContrastNeutral);
+                border-left: 1px solid var(--brandColorsContrastNeutral);
+
+                &.rdtPrev:hover,
+                &.rdtNext:hover,
+                &.rdtSwitch:hover {
+                    background: var(--brandColorsPrimaryBlue) !important;
+                }
+
+                &.dow {
+                    width: 40px;
+                    background: var(--brandColorsContrastNeutral);
+                    text-align: center;
+                }
+            }
+        }
+
+        td {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid var(--brandColorsContrastNeutral);
+
+            &:hover {
+                background: var(--brandColorsPrimaryBlue) !important;
+            }
+
+            &.rdtOld,
+            &.rdtNew {
+                color: #5b5b5b;
+            }
+
+            &.rdtToday:before {
+                border-bottom-color: var(--brandColorsPrimaryBlue) !important;
+            }
+            &.rdtActive {
+                background: var(--brandColorsPrimaryBlue) !important;
+                color: var(--brandColorsContrastBrightest);
+
+                &:before {
+                    display: none !important;
+                }
+            }
+        }
+    }
+}

@@ -78,6 +78,18 @@ test('should pass the static props of the "Tabs" component to the "TabMenuItem" 
     t.is(items.at(0).prop('IconComponent'), defaultProps.IconComponent);
     t.is(items.at(0).prop('theme'), defaultProps.theme);
 });
+test('should not attach any className to the "TabMenuItem" if the Panels do not contain a titlte.', t => {
+    const wrapper = enzyme.shallow(
+        <Tabs {...defaultProps}>
+            <Panel icon="icon 1" {...defaultPanelProps}>Foo 1</Panel>
+            <Panel icon="icon 2" {...defaultPanelProps}>Foo 2</Panel>
+            <Panel icon="icon 3" {...defaultPanelProps}>Foo 3</Panel>
+        </Tabs>
+    );
+    const icons = wrapper.find(IconComponent);
+
+    t.is(icons.at(0).prop('className'), undefined);
+});
 test('should render each passed Panel wrapped in a div.', t => {
     const wrapper = shallow().find(`.${defaultProps.theme.tabs__content}`);
     const panels = wrapper.find(Panel);

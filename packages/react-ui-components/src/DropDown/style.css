@@ -2,6 +2,7 @@
     composes: reset from './../reset.css';
     position: relative;
     display: inline-block;
+    width: 100%;
 }
 .dropDown__btn {
     composes: reset from './../reset.css';

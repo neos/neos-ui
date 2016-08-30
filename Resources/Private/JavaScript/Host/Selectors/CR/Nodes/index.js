@@ -55,15 +55,24 @@ const resolveNodeFromContextPath = (contextPath, getStoredNodeByContextPath, get
     return resolveNodeFromContextPathCache.get(nodeForUsage);
 };
 
-export const focusedSelector = createSelector(
+export const focusedNodePathSelector = createSelector(
     [
         focused,
-        currentDocumentNode,
+        currentDocumentNode
+    ],
+    (focused, currentDocumentNode) => {
+        return focused || currentDocumentNode;
+    }
+);
+
+export const focusedSelector = createSelector(
+    [
+        focusedNodePathSelector,
         storedNodeByContextPath,
         nodeTypeByNameSelector
     ],
-    (focused, currentDocumentNode, storedNode, nodeType) =>
-        resolveNodeFromContextPath(focused || currentDocumentNode, storedNode, nodeType)
+    (focusedNodePath, storedNode, nodeType) =>
+        resolveNodeFromContextPath(focusedNodePath, storedNode, nodeType)
 );
 
 export const hoveredSelector = createSelector(

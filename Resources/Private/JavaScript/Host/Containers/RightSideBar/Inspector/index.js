@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
+import {$transform} from 'plow-js';
 import Bar from '@neos-project/react-ui-components/lib/Bar/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
@@ -12,7 +12,7 @@ import TabPanel from './TabPanel/index';
 import style from './style.css';
 
 @connect($transform({
-    viewConfiguration: $get('ui.inspector.viewConfiguration'),
+    viewConfiguration: selectors.UI.Inspector.viewConfiguration,
     transientValues: selectors.UI.Inspector.transientValues
 }), {
     apply: actions.UI.Inspector.apply,
@@ -46,7 +46,7 @@ export default class Inspector extends Component {
                         //
                         // Render each tab as a TabPanel
                         //
-                        .map(tab => <TabPanel key={tab.id} title={tab.id} icon={tab.icon} groups={tab.groups}/>)
+                        .map(tab => <TabPanel key={tab.id} icon={tab.icon} groups={tab.groups}/>)
                     }
                 </Tabs>
                 <Bar position="bottom">

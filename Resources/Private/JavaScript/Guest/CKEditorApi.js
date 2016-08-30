@@ -110,7 +110,7 @@ const createCKEditorAPI = CKEDITOR => {
             `);
         },
 
-        createEditor(dom, onChange, onActiveFormattingChange) {
+        createEditor(dom, onChange) {
             const finalOptions = Object.assign(
                 {
                     removePlugins: 'toolbar,contextmenu,liststyle,tabletools',
@@ -122,7 +122,7 @@ const createCKEditorAPI = CKEDITOR => {
             dom.contentEditable = 'true';
 
             const editor = CKEDITOR.inline(dom, finalOptions);
-            const handleUserInteraction = handleUserInteractionCallbackFactory(editor, onActiveFormattingChange);
+            const handleUserInteraction = handleUserInteractionCallbackFactory(editor);
 
             editor.once('contentDom', () => {
                 const editable = editor.editable();

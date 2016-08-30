@@ -3,5 +3,6 @@ dist
 lib
 coverage
 .nyc_output/
+.idea
 lcov.info
 .idea

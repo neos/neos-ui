@@ -1,11 +1,10 @@
 import React, {Component, PropTypes} from 'react';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
 import shallowCompare from 'react-addons-shallow-compare';
 
 import {AspectRatioOption, NullAspectRatioStrategy} from '../model';
-
 import style from './style.css';
-
-import {IconButton, DropDown} from 'Components';
 
 class AspectRatioDropDownitem extends Component {
     static propTypes = {

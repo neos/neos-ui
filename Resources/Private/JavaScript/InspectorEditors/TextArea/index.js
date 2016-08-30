@@ -1,14 +1,11 @@
 import React, {PropTypes} from '@host/react';
-import {Components} from '@host';
-
-const {TextArea} = Components;
+import TextArea from '@neos-project/react-ui-components/lib/TextArea/';
 
 const TextAreaEditor = props => {
     const {value, commit} = props;
 
     return <TextArea value={value} onChange={commit}/>;
 };
-
 TextAreaEditor.propTypes = {
     value: PropTypes.string.isRequired,
     commit: PropTypes.func.isRequired

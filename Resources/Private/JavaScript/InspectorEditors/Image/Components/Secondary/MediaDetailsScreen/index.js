@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react';
-import SecondaryInspector from 'Host/Extensibility/API/SecondaryInspector';
 import style from './style.css';
 
 const MediaDetailsScreen = props => {
+    const {SecondaryInspector} = window['@Neos:HostPluginAPI'];
+
     // TODO: Media package refactoring
     window.Typo3MediaBrowserCallbacks = {
         close() {
@@ -18,7 +19,6 @@ const MediaDetailsScreen = props => {
         </SecondaryInspector>
     );
 };
-
 MediaDetailsScreen.propTypes = {
     onClose: PropTypes.func.isRequired,
     imageIdentity: PropTypes.string.isRequired

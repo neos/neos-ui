@@ -71,6 +71,7 @@ export default class EditorEnvelope extends Component {
 
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;
+
             return (
                 <EditorComponent
                     {...this.prepareEditorProperties()}

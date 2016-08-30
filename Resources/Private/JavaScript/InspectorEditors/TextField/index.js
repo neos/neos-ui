@@ -1,12 +1,11 @@
 import React, {PropTypes} from 'react';
-import {TextInput} from 'Components';
+import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
 
 const TextField = props => {
     const {value, commit} = props;
 
     return <TextInput value={value} onChange={commit}/>;
 };
-
 TextField.propTypes = {
     value: PropTypes.string.isRequired,
     commit: PropTypes.func.isRequired

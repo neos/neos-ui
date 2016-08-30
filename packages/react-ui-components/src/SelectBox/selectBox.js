@@ -89,7 +89,7 @@ export default class SelectBox extends Component {
                             <IconComponent className={theme.dropDown__btnIcon} icon={icon || placeholderIcon}/> :
                             null
                         }
-                        {label || placeholder}
+                        <span>{label || placeholder}</span>
                     </DropDownComponent.Header>
                     <DropDownComponent.Contents className={theme.dropDown__contents}>
                         {
@@ -132,12 +132,10 @@ export default class SelectBox extends Component {
     // loads async options if options is a function
     loadOptions() {
         const options = this.props.options;
-        if (isFunction(options)) {
-            options({
-                value: '',
-                callback: this.handleOptionsLoad
-            });
-        }
+        return isFunction(options) && options({
+            value: '',
+            callback: this.handleOptionsLoad
+        });
     }
 
     handleOptionsLoad(data) {
@@ -190,7 +188,7 @@ export default class SelectBox extends Component {
                         <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
                         null
                 }
-                { label }
+                <span>{ label }</span>
             </li>
         );
     }

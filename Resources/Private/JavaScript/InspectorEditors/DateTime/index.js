@@ -3,8 +3,9 @@ import DateInput from '@neos-project/react-ui-components/lib/DateInput/';
 
 const DateTime = props => {
     const {value, commit} = props;
+    const mappedVal = value && value.length ? value : undefined;
 
-    return <DateInput value={value} onChange={commit}/>;
+    return <DateInput value={mappedVal} onChange={commit}/>;
 };
 DateTime.propTypes = {
     value: PropTypes.string.isRequired,

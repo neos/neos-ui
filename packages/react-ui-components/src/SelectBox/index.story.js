@@ -13,7 +13,7 @@ const onSelect = o => {
     return console.log(o);
 };
 
-const loadOptions = ({value, callback}) => {
+const loadOptions = ({callback}) => {
     setTimeout(() => (callback(options)), 1000);
 };
 

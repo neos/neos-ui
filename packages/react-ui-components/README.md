@@ -56,6 +56,34 @@ Clone this repository, execute `nvm use` and afterwards `npm install` in the roo
 After the installation succeeded, execute `npm start` to start the
 [development server of the styleguide](http://localhost:9001).
 
+
+#### Setup for developing inside the Neos.Neos.Ui Package
+
+[Neos.Neos.Ui](https://github.com/neos/neos-ui)
+
+Make a symbolic link inside your Neos installation to your cloned sources od this package. The following example assumes that both installations are in the same folder.
+
+```
+ cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui/node_modules/@neos-project
+ rm -rf react-ui-components
+ ln -s ./../../../../../../react-ui-components/ .
+```
+
+
+run the watcher inside the react-ui-components
+
+```
+ npm run watch:build
+```
+
+
+run the watcher inside the Neos.Neos.Ui Package
+
+```
+ cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui
+ npm run watch:build
+```
+
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

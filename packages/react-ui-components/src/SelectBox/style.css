@@ -29,8 +29,13 @@
     box-shadow: 0 5px 10px rgba(#000, .2);
     z-index: 10;
 }
-.dropDown__contents li {
-    padding-left: 1em;
+.dropDown__contents li *{
+    padding: 0 1em;
+}
+.dropDown__contents li input{
+    width: 100%;
+    height: 100%;
+    background: #FFF;
 }
 .dropDown__item {
     composes: reset from './../reset.css';

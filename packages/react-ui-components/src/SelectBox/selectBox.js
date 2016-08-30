@@ -4,7 +4,15 @@ import isFunction from 'lodash.isfunction';
 
 export default class SelectBox extends Component {
     static propTypes = {
+        /**
+         * This prop represents the current selected value.
+         */
         value: PropTypes.string,
+
+        /**
+         * This prop represents either a set of options or a function that returns those.
+         * Each option must have a value and can have a label and an icon.
+         */
         options: React.PropTypes.oneOfType([
             PropTypes.arrayOf(
                 PropTypes.shape({
@@ -18,9 +26,25 @@ export default class SelectBox extends Component {
             ),
             PropTypes.func
         ]),
+
+        /**
+         * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
+         */
         placeholder: PropTypes.string,
+
+        /**
+         * This prop is an icon for the placeholder.
+         */
         placeholderIcon: PropTypes.string,
+
+        /**
+         * This prop gets called when an option was selected. It returns the new value.
+         */
         onSelect: PropTypes.func.isRequired,
+
+        /**
+         * An optional css theme to be injected.
+         */
         theme: PropTypes.shape({// eslint-disable-line quote-props
             'wrapper': PropTypes.string,
             'dropDown': PropTypes.string,
@@ -30,6 +54,11 @@ export default class SelectBox extends Component {
             'dropDown__item': PropTypes.string,
             'dropDown__itemIcon': PropTypes.string
         }).isRequired,
+
+        /**
+         * The minimum amount of items in the select before showing a search box, if set to -1 the search box
+         * will never be shown.
+         */
         minimumResultsForSearch: PropTypes.number,
 
         //
@@ -113,23 +142,36 @@ export default class SelectBox extends Component {
         );
     }
 
+    /**
+     * returns the options
+     * @returns {Array}
+     */
     getOptions() {
         return this.state.options || this.props.options;
     }
 
-    // filter options by searchValue
+    /**
+     * iterator method for filtering by searchValue
+     * @param {object} o option
+     * @returns {boolean} TRUE if passed filter
+     */
     filterOption(o) {
         return !this.state.searchValue || o.label.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1;
     }
 
-    // returns TRUE if searchbox should be displayed
+    /**
+     * @returns {boolean} isSearchEnabled   TRUE if searchbox should be displayed
+     */
     isSearchEnabled() {
         return (this.props.minimumResultsForSearch !== -1 && this.getOptions().length >= this.props.minimumResultsForSearch) ||
             // the options prop has to be a function in order to assume that options are loaded async
             isFunction(this.props.options);
     }
 
-    // loads async options if options is a function
+    /**
+     * loads async options if options is a function
+     * @return {boolean} loadedOptions  TRUE, if options was called (async), otherwise FALSE
+     */
     loadOptions() {
         const options = this.props.options;
         return isFunction(options) && options({
@@ -138,23 +180,39 @@ export default class SelectBox extends Component {
         });
     }
 
+    /**
+     * Handler for the async options loading callback
+     * @param {object} data
+     */
     handleOptionsLoad(data) {
         this.setState({
             options: data
         });
     }
 
-    // prevent the dropdown from closing when you focus the text input
+    /**
+     * Handler for input click event
+     * prevents the dropdown from closing when you focus the text input
+     * @param {object} e    event
+     */
     handleOnInputClick(e) {
         e.stopPropagation();
     }
 
+    /**
+     * Handler for input change event
+     * @param input
+     */
     handleOnInputChange(input) {
         this.setState({
             searchValue: input
         });
     }
 
+    /**
+     * select callback for option selection
+     * @param {string} incomingValue
+     */
     select(incomingValue) {
         const {placeholder, placeholderIcon} = this.props;
         const value = incomingValue || placeholder;
@@ -166,15 +224,24 @@ export default class SelectBox extends Component {
             label: Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
                 this.getOptions().filter(o => o.value === value).map(o => o.label)[0] : placeholder
         });
+
+        this.props.onSelect(incomingValue);
     }
 
-    // renders a single option (<li/>) for the select box
+    /**
+     * renders a single option (<li/>) for the select box
+     * @param {object} option
+     * @param {string} option.icon
+     * @param {string} option.label
+     * @param {string} option.value
+     * @param {number} index
+     * @returns {JSX} option element
+     */
     renderOption({icon, label, value}, index) {
         const theme = this.props.theme;
         const IconComponent = this.props.IconComponent;
         const onClick = () => {
             this.select(value);
-            this.props.onSelect(value);
         };
 
         return (

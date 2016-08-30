@@ -14,7 +14,9 @@ const defaultProps = {
         'tabNavigation': 'baseTabsNavigationClassName',
         'tabNavigation__item': 'baseTabsNavigationItemClassName',
         'tabNavigation__item--isActive': 'activeTabsNavigationItemClassName',
-        'tabNavigation__itemBtn': 'baseTabsNavigationItemBtnClassName'
+        'tabNavigation__itemBtn': 'baseTabsNavigationItemBtnClassName',
+        'tabNavigation__itemBtnIcon': 'baseTabsNavigationItemBtnIconClassName',
+        'tabNavigation__itemBtnIcon--hasLabel': 'baseTabsNavigationItemBtnIconWithLabelClassName'
     },
     children: 'Foo children',
     IconComponent
@@ -78,17 +80,17 @@ test('should pass the static props of the "Tabs" component to the "TabMenuItem" 
     t.is(items.at(0).prop('IconComponent'), defaultProps.IconComponent);
     t.is(items.at(0).prop('theme'), defaultProps.theme);
 });
-test('should not attach any className to the "TabMenuItem" if the Panels do not contain a titlte.', t => {
+test('should not attach the "tabNavigation__itemBtnIcon--hasLabel" className to the "TabMenuItem" if the Panels do not contain a titlte.', t => {
     const wrapper = enzyme.shallow(
         <Tabs {...defaultProps}>
             <Panel icon="icon 1" {...defaultPanelProps}>Foo 1</Panel>
-            <Panel icon="icon 2" {...defaultPanelProps}>Foo 2</Panel>
+            <Panel icon="icon 2" title="foo title" {...defaultPanelProps}>Foo 2</Panel>
             <Panel icon="icon 3" {...defaultPanelProps}>Foo 3</Panel>
         </Tabs>
     );
-    const icons = wrapper.find(IconComponent);
+    const items = wrapper.find(TabMenuItem);
 
-    t.is(icons.at(0).prop('className'), undefined);
+    t.is(items.at(0).html().includes(defaultPanelProps.theme['tabNavigation__itemBtnIcon--hasLabel']), false);
 });
 test('should render each passed Panel wrapped in a div.', t => {
     const wrapper = shallow().find(`.${defaultProps.theme.tabs__content}`);

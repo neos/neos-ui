@@ -18,7 +18,6 @@ const MediaSelectionScreen = props => {
         </SecondaryInspector>
     );
 };
-
 MediaSelectionScreen.propTypes = {
     onClose: PropTypes.func.isRequired,
     onComplete: PropTypes.func.isRequired

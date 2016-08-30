@@ -19,7 +19,6 @@ const MediaDetailsScreen = props => {
         </SecondaryInspector>
     );
 };
-
 MediaDetailsScreen.propTypes = {
     onClose: PropTypes.func.isRequired,
     imageIdentity: PropTypes.string.isRequired

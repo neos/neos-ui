@@ -6,7 +6,6 @@ const TextAreaEditor = props => {
 
     return <TextArea value={value} onChange={commit}/>;
 };
-
 TextAreaEditor.propTypes = {
     value: PropTypes.string.isRequired,
     commit: PropTypes.func.isRequired

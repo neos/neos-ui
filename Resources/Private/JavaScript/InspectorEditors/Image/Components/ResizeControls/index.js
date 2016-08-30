@@ -69,7 +69,6 @@ const ResizeControls = props => {
         </div>
     );
 };
-
 ResizeControls.propTypes = {
     imageDimensions: PropTypes.shape({
         width: PropTypes.number,

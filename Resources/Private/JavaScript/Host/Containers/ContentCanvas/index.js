@@ -190,13 +190,13 @@ export default class ContentCanvas extends Component {
         // Initialize inline editors
         //
         const editors = iframeDocument.querySelectorAll('.neos-inline-editable');
-        Array.prototype.forEach.call(editors, node => {
-            const contextPath = closestContextPath(node);
-            const propertyName = node.dataset.__neosProperty;
+        Array.prototype.forEach.call(editors, domNode => {
+            const contextPath = closestContextPath(domNode);
+            const propertyName = domNode.dataset.__neosProperty;
 
             // TODO: from state, read node types & configure CKeditor based on node type!
 
-            iframeWindow.NeosCKEditorApi.createEditor(node, contents => {
+            iframeWindow.NeosCKEditorApi.createEditor(domNode, contents => {
                 persistChange({
                     type: 'Neos.Neos.Ui:Property',
                     subject: contextPath,

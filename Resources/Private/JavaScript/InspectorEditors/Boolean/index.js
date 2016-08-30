@@ -31,7 +31,6 @@ const BooleanEditor = props => {
         </div>
     );
 };
-
 BooleanEditor.propTypes = {
     identifier: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,

@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const fs = require('fs');
 const path = require('path');
-const merge = require('lodash.merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./Build/Utilities/').env;
@@ -25,9 +24,23 @@ const componentsLibDirs = fs.readdirSync(
     dir !== '_lib'
 ));
 
-const baseConfig = {
+const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
+    entry: {
+        Host: './Resources/Private/JavaScript/Host/index.js',
+        HostOnlyStyles: './Resources/Private/JavaScript/Host/styleHostOnly.css',
+        InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/manifest.js',
+        Guest: './Resources/Private/JavaScript/Guest/index.js',
+        Vendor: [
+            'react',
+            'react-redux',
+            'plow-js',
+            'immutable'
+        ].concat(
+            componentsLibDirs.map(dir => `@neos-project/react-ui-components/lib/${dir}`)
+        )
+    },
     module: {
         loaders: [
             {
@@ -82,20 +95,6 @@ const baseConfig = {
         new webpack.optimize.CommonsChunkPlugin({names: ['Vendor']})
     ],
 
-    //
-    // Hint: This part is filled dynamically inside webpack.config.js
-    // based on the individual configs of the builds.
-    //
-    entry: {
-        Vendor: [
-            'react',
-            'react-redux',
-            'plow-js',
-            'immutable'
-        ].concat(
-            componentsLibDirs.map(dir => `@neos-project/react-ui-components/lib/${dir}`)
-        )
-    },
     resolve: {
         root: [
             path.resolve(__dirname, 'Resources/Private/JavaScript')
@@ -125,33 +124,7 @@ const baseConfig = {
 //
 if (!env.isCi && !env.isTesting && !env.isStorybook) {
     // TODO: LIVE RELOADING DOES NOT WORK WITH CODE SPLITTING
-    baseConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
+    webpackConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
 }
 
-//
-// Additional config parts for different builds.
-//
-const hostConfig = {
-    entry: {
-        Host: './Resources/Private/JavaScript/Host/index.js',
-        HostOnlyStyles: './Resources/Private/JavaScript/Host/styleHostOnly.css'
-    }
-};
-
-const inspectorEditorConfig = {
-    entry: {
-        InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/manifest.js'
-    }
-};
-
-const guestConfig = {
-    entry: {
-        Guest: './Resources/Private/JavaScript/Guest/index.js'
-    }
-};
-
-module.exports = [
-    merge({}, baseConfig, hostConfig),
-    merge({}, baseConfig, inspectorEditorConfig),
-    merge({}, baseConfig, guestConfig)
-];
+module.exports = webpackConfig;

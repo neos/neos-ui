@@ -6,7 +6,6 @@ const DateTime = props => {
 
     return (<TextInput value={value} onChange={value => commit(value)}/>);
 };
-
 DateTime.propTypes = {
     value: PropTypes.string.isRequired,
     commit: PropTypes.func.isRequired

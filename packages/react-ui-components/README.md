@@ -65,6 +65,7 @@ Make a symbolic link inside your Neos installation to your cloned sources od thi
 
 ```
  cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui/node_modules/@neos-project
+ rm -rf react-ui-components
  ln -s ./../../../../../../react-ui-components/ .
 ```
 

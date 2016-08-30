@@ -3,7 +3,6 @@ import {$set, $drop, $get, $transform} from 'plow-js';
 import {connect} from 'react-redux';
 import {PreviewScreen, Controls, Secondary} from './Components/index';
 import {Image} from './Utils/index';
-import {loadImageMetadata, uploadAsset} from 'Host/Extensibility/API/Endpoints/index';
 import style from './style.css';
 
 const DEFAULT_FEATURES = {
@@ -67,6 +66,9 @@ export default class ImageEditor extends Component {
     };
 
     componentDidMount() {
+        const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
+        const {loadImageMetadata} = ApiEndpoints;
+
         if (this.props.value && this.props.value.__identity) {
             this.setState({
                 isAssetLoading: true
@@ -89,6 +91,9 @@ export default class ImageEditor extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
+        const {loadImageMetadata} = ApiEndpoints;
+
         if (!nextProps.value || !nextProps.value.__identity) {
             this.setState({image: null});
         }
@@ -207,6 +212,8 @@ export default class ImageEditor extends Component {
     }
 
     upload(files) {
+        const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
+        const {uploadAsset} = ApiEndpoints;
         const {commit, siteNodePath} = this.props;
 
         const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];

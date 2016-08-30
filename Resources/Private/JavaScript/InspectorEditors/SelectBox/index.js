@@ -1,5 +1,5 @@
 import React from 'react';
-import {SelectBox} from 'Components';
+import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 
 const SelectBoxEditor = (props) => {
     const options = Object.keys(props.options.values).map(k => Object.assign({value: k}, props.options.values[k]))

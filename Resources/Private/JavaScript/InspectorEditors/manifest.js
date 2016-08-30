@@ -1,13 +1,15 @@
-import manifest from 'Host/Extensibility/API/Manifest/index';
-import {createImageVariant} from 'Host/Extensibility/API/Endpoints/index';
-
 import TextField from './TextField/index';
 import Boolean from './Boolean/index';
 import DateTime from './DateTime/index';
 import Image from './Image/index';
 import SelectBox from './SelectBox/index';
 
-manifest('inspectorEditors', (registry) => {
+const {Manifest} = window['@Neos:HostPluginAPI'];
+
+Manifest('inspectorEditors', (registry) => {
+    const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
+    const {createImageVariant} = ApiEndpoints;
+
     registry.inspector.editors.add('TYPO3.Neos/Inspector/Editors/TextFieldEditor', {
         component: TextField
     });

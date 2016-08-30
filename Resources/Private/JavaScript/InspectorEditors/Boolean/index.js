@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
-import {CheckBox, Label} from 'Components';
-import I18n from 'I18n';
+import CheckBox from '@neos-project/react-ui-components/lib/CheckBox/';
+import Label from '@neos-project/react-ui-components/lib/Label/';
 
 const toBoolean = val => {
     if (typeof val === 'string') {
@@ -19,6 +19,7 @@ const toBoolean = val => {
 };
 
 const BooleanEditor = props => {
+    const {I18n} = window['@Neos:HostPluginAPI'];
     const {value, label, identifier, commit} = props;
 
     return (

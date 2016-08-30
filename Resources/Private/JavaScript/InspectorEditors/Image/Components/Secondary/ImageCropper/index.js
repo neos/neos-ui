@@ -1,12 +1,11 @@
 import React, {Component, PropTypes} from 'react';
-import SecondaryInspector from 'Host/Extensibility/API/SecondaryInspector';
 import ReactCrop from 'react-image-crop';
-
-import style from './style.css';
-import CropConfiguration from './model.js';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
 import AspectRatioDropDown from './AspectRatioDropDown/index';
-
-import {Icon, IconButton, TextInput} from 'Components';
+import CropConfiguration from './model.js';
+import style from './style.css';
 
 export default class ImageCropper extends Component {
     static propTypes = {
@@ -64,6 +63,7 @@ export default class ImageCropper extends Component {
     }
 
     render() {
+        const {SecondaryInspector} = window['@Neos:HostPluginAPI'];
         const {cropConfiguration} = this.state;
         const aspectRatioLocked = false;
         const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock"/> : null);

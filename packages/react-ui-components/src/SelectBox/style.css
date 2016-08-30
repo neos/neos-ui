@@ -1,7 +1,8 @@
 .wrapper {
     composes: reset from './../reset.css';
-    display: inline-block;
     position: relative;
+    display: inline-block;
+    width: 100%;
     vertical-align: top;
 }
 .dropDown {

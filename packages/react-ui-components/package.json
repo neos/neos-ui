@@ -117,7 +117,7 @@
     "react-css-themr": "^1.2.0",
     "react-portal": "^2.2.1"
   },
-  "license": "GPL-3.0+",
+  "license": "GNU GPLv3",
   "repository": {
     "type": "git",
     "url": "https://github.com/neos/react-ui-components.git"

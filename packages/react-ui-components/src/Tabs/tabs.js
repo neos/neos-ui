@@ -147,7 +147,7 @@ export class TabMenuItem extends Component {
         /**
          * The title to render for the given Panel.
          */
-        title: PropTypes.string.isRequired,
+        title: PropTypes.string,
 
         /**
          * The click handler which will be called with the passed index as it's only argument.
@@ -209,6 +209,7 @@ export class TabMenuItem extends Component {
             [theme.tabNavigation__item]: true,
             [theme['tabNavigation__item--isActive']]: isActive
         });
+        const iconClassName = title && title.length ? theme.tabNavigation__itemBtnIcon : '';
 
         return (
             <li className={finalClassName} role="presentation" {...rest}>
@@ -219,7 +220,7 @@ export class TabMenuItem extends Component {
                     aria-selected={isActive ? 'true' : 'false'}
                     aria-controls={`section${index}`}
                     >
-                    {icon ? <IconComponent icon={icon} className={theme.tabNavigation__itemBtnIcon}/> : null}
+                    {icon ? <IconComponent icon={icon} className={iconClassName}/> : null}
                     {title}
                 </button>
             </li>

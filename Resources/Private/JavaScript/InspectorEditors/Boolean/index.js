@@ -24,7 +24,7 @@ const BooleanEditor = props => {
     return (
         <div>
             <Label htmlFor={identifier}>
-                <CheckBox id={identifier} isChecked={toBoolean(value)} onChange={value => commit(value)}/>
+                <CheckBox id={identifier} isChecked={toBoolean(value)} onChange={commit}/>
                 <I18n id={label}/>
             </Label>
         </div>

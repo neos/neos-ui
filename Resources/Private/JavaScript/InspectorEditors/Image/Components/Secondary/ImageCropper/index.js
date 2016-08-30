@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import SecondaryInspector from 'Host/Extensibility/API/SecondaryInspector';
 import ReactCrop from 'react-image-crop';
 
@@ -8,6 +9,61 @@ import AspectRatioDropDown from './AspectRatioDropDown/index';
 
 import {Icon, IconButton, TextInput} from 'Components';
 
+class AspectRatioItem extends Component {
+    static propTypes = {
+        key: PropTypes.any,
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired,
+        changeHandler: PropTypes.func.isRequired
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.handleWidthInputChange = this.handleInputChange.bind(this, 'width');
+        this.handleHeightInputChange = this.handleInputChange.bind(this, 'height');
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
+    render() {
+        const {width, height, key} = this.props;
+
+        return (
+            <span key={key}>
+                <TextInput
+                    className={style.dimensionInput}
+                    type="number"
+                    value={width}
+                    onChange={this.handleWidthInputChange}
+                    />,
+                <IconButton
+                    icon="exchange"
+                    onClick={this.handleFlipAspectRatio}
+                    />,
+                <TextInput
+                    className={style.dimensionInput}
+                    type="number"
+                    value={height}
+                    onChange={this.handleHeightInputChange}
+                    />
+            </span>
+        );
+    }
+
+    handleInputChange(type, val) {
+        const {width, height, changeHandler} = this.props;
+
+        changeHandler({
+            width,
+            height,
+            [type]: val
+        });
+    }
+}
+
 export default class ImageCropper extends Component {
     static propTypes = {
         onClose: PropTypes.func.isRequired,
@@ -16,12 +72,23 @@ export default class ImageCropper extends Component {
         options: PropTypes.object
     };
 
-    state = {
-        cropConfiguration: CropConfiguration.fromNeosConfiguration(
-            this.props.sourceImage,
-            this.props.options.crop.aspectRatio
-        )
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            cropConfiguration: CropConfiguration.fromNeosConfiguration(
+                this.props.sourceImage,
+                this.props.options.crop.aspectRatio
+            )
+        };
+        this.handleSetAspectRatio = this.setAspectRatio.bind(this);
+        this.handleClearAspectRatio = this.clearAspectRatio.bind(this);
+        this.handleFlipAspectRatio = this.flipAspectRatio.bind(this);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
 
     componentWillReceiveProps(nextProps) {
         const {cropConfiguration} = this.state;
@@ -71,14 +138,14 @@ export default class ImageCropper extends Component {
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg';
 
         return (
-            <SecondaryInspector onClose={() => onClose()}>
+            <SecondaryInspector onClose={onClose}>
                 <div style={{textAlign: 'center'}}>
                     <div className={style.tools}>
                         <div className={style.aspectRatioIndicator}>
-                            {cropConfiguration.aspectRatioReducedLabel.map(label => [
-                                <Icon icon="crop"/>,
-                                <span title={label}>{label}</span>,
-                                <span>{aspectRatioLockIcon}</span>
+                            {cropConfiguration.aspectRatioReducedLabel.map((label, index) => [
+                                <Icon key={index} icon="crop"/>,
+                                <span key={index} title={label}>{label}</span>,
+                                <span key={index}>{aspectRatioLockIcon}</span>
                             ]).orSome('')}
                         </div>
 
@@ -86,37 +153,22 @@ export default class ImageCropper extends Component {
                             placeholder="Aspect Ratio"
                             current={cropConfiguration.aspectRatioStrategy}
                             options={cropConfiguration.aspectRatioOptions}
-                            onSelect={::this.setAspectRatio}
-                            onClear={::this.clearAspectRatio}
-                           />
+                            onSelect={this.handleSetAspectRatio}
+                            onClear={this.handleClearAspectRatio}
+                            />
 
                         <div className={style.dimensions}>
-                            {cropConfiguration.aspectRatioDimensions.map(({width, height}) => [
-                                <TextInput
-                                    className={style.dimensionInput}
-                                    type="number"
-                                    value={width}
-                                    onChange={width => this.setCustomAspectRatioDimensions(width, height)}
-                                   />,
-                                <IconButton
-                                    icon="exchange"
-                                    onClick={::this.flipAspectRatio}
-                                   />,
-                                <TextInput
-                                    className={style.dimensionInput}
-                                    type="number"
-                                    value={height}
-                                    onChange={height => this.setCustomAspectRatioDimensions(width, height)}
-                                   />
-                            ]).orSome('')}
+                            {cropConfiguration.aspectRatioDimensions.map((props, index) => (
+                                <AspectRatioItem {...props} key={index}/>
+                            )).orSome('')}
                         </div>
                     </div>
 
                     <ReactCrop
                         src={src}
                         crop={cropConfiguration.cropInformation}
-                        onComplete={cropArea => onComplete(cropArea)}
-                       />
+                        onComplete={onComplete}
+                        />
                 </div>
             </SecondaryInspector>
         );

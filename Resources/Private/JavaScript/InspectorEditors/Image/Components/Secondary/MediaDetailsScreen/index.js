@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import SecondaryInspector from 'Host/Extensibility/API/SecondaryInspector';
 import style from './style.css';
 
-const MediaDetailsScreen = (props) => {
+const MediaDetailsScreen = props => {
     // TODO: Media package refactoring
     window.Typo3MediaBrowserCallbacks = {
         close() {
@@ -13,7 +13,7 @@ const MediaDetailsScreen = (props) => {
     const uri = `/neos/content/images/edit.html?asset[__identity]=${props.imageIdentity}`;
 
     return (
-        <SecondaryInspector onClose={() => props.onClose()}>
+        <SecondaryInspector onClose={props.onClose}>
             <iframe src={uri} className={style.iframe}/>
         </SecondaryInspector>
     );

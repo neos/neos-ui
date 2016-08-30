@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {Icon} from 'Components';
 import Dropzone from 'react-dropzone';
 
@@ -14,10 +15,18 @@ export default class PreviewScreen extends Component {
         isLoading: PropTypes.bool.isRequired
     };
 
-    chooseFromLocalFileSystem() {
-        const {dropzone} = this.refs;
+    constructor(props) {
+        super(props);
 
-        dropzone.open();
+        this.setDropDownRef = this.setDropDownRef.bind(this);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
+    chooseFromLocalFileSystem() {
+        this.dropzone.open();
     }
 
     render() {
@@ -26,7 +35,7 @@ export default class PreviewScreen extends Component {
         if (isLoading) {
             return (
                 <div className={style.thumbnail}>
-                    <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader} />
+                    <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader}/>
                 </div>
             );
         }
@@ -34,7 +43,7 @@ export default class PreviewScreen extends Component {
 
         return (
             <Dropzone
-                ref="dropzone"
+                ref={this.setDropDownRef}
                 onDropAccepted={onDrop}
                 className={style.dropzone}
                 activeClassName={style['dropzone--isActive']}
@@ -51,10 +60,14 @@ export default class PreviewScreen extends Component {
                             src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg'}
                             style={thumbnail ? thumbnail.styles.thumbnail : {}}
                             role="presentation"
-                           />
+                            />
                     </div>
                 </div>
             </Dropzone>
         );
+    }
+
+    setDropDownRef(ref) {
+        this.dropzone = ref;
     }
 }

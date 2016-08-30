@@ -21,7 +21,7 @@ window['@Neos:HostPluginAPI'] = {
     //
     // Shim Neos runtime dependencies, React is shimmed via alias
     //
-    ['@Neos:RuntimeDependencies']: {
+    '@Neos:RuntimeDependencies': {
         Components: {},
         I18n: {},
         SecondaryInspector: {},

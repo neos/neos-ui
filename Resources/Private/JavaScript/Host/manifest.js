@@ -1,5 +1,6 @@
 import manifest from 'Host/Extensibility/API/Manifest/index';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import StyleSelect from 'Host/Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
 import uuid from 'uuid';
 import {actions} from 'Host/Redux';
 
@@ -33,6 +34,36 @@ manifest('main', registry => {
 
         icon: 'italic',
         hoverStyle: 'brand'
+    });
+
+    registry.ckEditor.toolbar.add('style', {
+        component: StyleSelect,
+        callbackPropName: 'onSelect'
+    });
+
+    registry.ckEditor.toolbar.add('style/h1', {
+        formatting: 'h1',
+        label: 'Headline 1'
+    });
+    registry.ckEditor.toolbar.add('style/h2', {
+        formatting: 'h2',
+        label: 'Headline 2'
+    });
+    registry.ckEditor.toolbar.add('style/h3', {
+        formatting: 'h3',
+        label: 'Headline 3'
+    });
+    registry.ckEditor.toolbar.add('style/h4', {
+        formatting: 'h4',
+        label: 'Headline 4'
+    });
+    registry.ckEditor.toolbar.add('style/h5', {
+        formatting: 'h5',
+        label: 'Headline 5'
+    });
+    registry.ckEditor.toolbar.add('style/h6', {
+        formatting: 'h6',
+        label: 'Headline 6'
     });
 
     /**

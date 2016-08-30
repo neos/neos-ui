@@ -134,15 +134,6 @@ export default class ContentCanvas extends Component {
         //
         const components = iframeDocument.querySelectorAll('[data-__neos-node-contextpath]');
         Array.prototype.forEach.call(components, node => {
-            node.addEventListener('click', e => {
-                const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
-                const typoscriptPath = node.getAttribute('data-__neos-typoscript-path');
-
-                focusNode(nodeContextPath, typoscriptPath);
-
-                e.stopPropagation();
-            });
-
             node.addEventListener('mouseenter', e => {
                 const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
                 const typoscriptPath = node.getAttribute('data-__neos-typoscript-path');
@@ -165,13 +156,22 @@ export default class ContentCanvas extends Component {
         //
         iframeDocument.body.addEventListener('click', e => {
             const clickPath = Array.prototype.slice.call(e.path);
-            const isNotInsideInlineUi = clickPath.filter(node =>
-                node &&
-                node.getAttribute &&
-                node.getAttribute('data-__neos__inlineUI')
-            ).length === 0;
+            const isInsideInlineUi = clickPath.filter(domNode =>
+                domNode &&
+                domNode.getAttribute &&
+                domNode.getAttribute('data-__neos__inlineUI')
+            ).length > 0;
 
-            if (isNotInsideInlineUi) {
+            const selectedDomNode = clickPath.find(domNode => domNode && domNode.getAttribute && domNode.getAttribute('data-__neos-node-contextpath'));
+
+            if (isInsideInlineUi) {
+                // Do nothing, everything OK!
+            } else if (selectedDomNode) {
+                const nodeContextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
+                const typoscriptPath = selectedDomNode.getAttribute('data-__neos-typoscript-path');
+
+                focusNode(nodeContextPath, typoscriptPath);
+            } else {
                 unFocusNode();
             }
         });
@@ -190,18 +190,18 @@ export default class ContentCanvas extends Component {
         // Initialize inline editors
         //
         const editors = iframeDocument.querySelectorAll('.neos-inline-editable');
-        Array.prototype.forEach.call(editors, node => {
-            const contextPath = closestContextPath(node);
-            const propertyName = node.dataset.__neosProperty;
+        Array.prototype.forEach.call(editors, domNode => {
+            const contextPath = closestContextPath(domNode);
+            const propertyName = domNode.dataset.__neosProperty;
 
             // TODO: from state, read node types & configure CKeditor based on node type!
 
-            iframeWindow.NeosCKEditorApi.createEditor(node, contents => {
+            iframeWindow.NeosCKEditorApi.createEditor(domNode, contents => {
                 persistChange({
                     type: 'Neos.Neos.Ui:Property',
                     subject: contextPath,
                     payload: {
-                        propertyName: propertyName,
+                        propertyName,
                         value: contents
                     }
                 });

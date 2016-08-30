@@ -1,4 +1,5 @@
 import React from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import * as plow from 'plow-js';
 import * as Immutable from 'immutable';
 import * as reactRedux from 'react-redux';
@@ -23,7 +24,8 @@ export default function apiDefinitionFactory() {
         Immutable,
         ApiEndpoints,
         reactRedux,
-        SecondaryInspector
+        SecondaryInspector,
+        shallowCompare
     };
 
     Object.defineProperty(window, '@Neos:HostPluginAPI', createReadOnlyValue(api));

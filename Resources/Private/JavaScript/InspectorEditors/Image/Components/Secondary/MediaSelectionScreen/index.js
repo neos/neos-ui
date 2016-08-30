@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import style from './style.css';
 
-const MediaSelectionScreen = (props) => {
+const MediaSelectionScreen = props => {
     const {SecondaryInspector} = window['@Neos:HostPluginAPI'];
 
     // TODO: Media package refactoring
@@ -10,9 +10,10 @@ const MediaSelectionScreen = (props) => {
             props.onComplete(assetIdentifier);
         }
     };
+
     // TODO: hard-coded url
     return (
-        <SecondaryInspector onClose={() => props.onClose()}>
+        <SecondaryInspector onClose={props.onClose}>
             <iframe src="/neos/content/images.html" className={style.iframe}/>
         </SecondaryInspector>
     );

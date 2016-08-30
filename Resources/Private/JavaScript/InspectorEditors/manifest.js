@@ -6,7 +6,7 @@ import SelectBox from './SelectBox/index';
 
 const {Manifest} = window['@Neos:HostPluginAPI'];
 
-Manifest('inspectorEditors', (registry) => {
+Manifest('inspectorEditors', registry => {
     const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
     const {createImageVariant} = ApiEndpoints;
 

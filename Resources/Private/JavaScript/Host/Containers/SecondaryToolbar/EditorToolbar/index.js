@@ -8,13 +8,17 @@ import style from './style.css';
 
 import registry from 'Host/Extensibility/Registry/index';
 
+// a component is top-level if it does not contain slashes in the name.
+const topLevelToolbarComponent = componentDefinition =>
+    componentDefinition.id.indexOf('/') === -1;
+
 /**
  * Render sub components for the toolbar, implementing the API as described in registry.ckEditor.toolbar.
  */
 const renderToolbarComponents = (context, toolbarComponents, activeFormatting) => {
-    return toolbarComponents.map((componentDefinition, index) => {
+    return toolbarComponents.filter(topLevelToolbarComponent).map((componentDefinition, index) => {
         const {component, formatting, callbackPropName, ...props} = componentDefinition;
-        const isActive = $get(formatting, activeFormatting);
+        const isActive = formatting && $get(formatting, activeFormatting);
 
         props[callbackPropName] = () => {
             // !!!! TODO: next line is extremely dirty!

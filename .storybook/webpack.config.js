@@ -1,9 +1,6 @@
-const {
-    baseConfig,
-    hostConfig
-} = require('./../webpack.base.config');
+const baseConfig = require('./../webpack.base.config');
 
-module.exports = Object.assign({}, baseConfig, hostConfig, {
+module.exports = Object.assign({}, baseConfig, {
     module: {
         loaders: [
             {

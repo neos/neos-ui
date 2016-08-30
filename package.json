@@ -4,6 +4,20 @@
   "description": "Neos CMS UI written in ReactJS with Immutable data structures.",
   "main": "Resources/Public/JavaScript/Host.js",
   "private": true,
+  "scripts": {
+    "build": "webpack --progress --colors",
+    "karma": "export TEST=true && karma start --single-run",
+    "lint": "npm run lint:scripts && npm run lint:css",
+    "lint:css": "stylelint 'Resources/Private/JavaScript/**/*.css'",
+    "lint:scripts": "eslint Resources/Private/JavaScript/**",
+    "test": "npm run lint && npm run karma",
+    "watch:build": "npm run build -- --watch",
+    "watch:karma": "export TEST=true && karma start",
+    "watch": "npm run watch:build & npm run watch:karma",
+    "prewatch": "Build/check-dependencies",
+    "prebuild": "Build/check-dependencies",
+    "storybook": "export STORY=true && start-storybook -p 9001"
+  },
   "devDependencies": {
     "@kadira/storybook": "^1.27.0",
     "@neos-project/eslint-config-neos": "^1.1.1",
@@ -107,20 +121,6 @@
     "reselect": "^2.4.0",
     "uuid": "^2.0.2",
     "whatwg-fetch": "^1.0.0"
-  },
-  "scripts": {
-    "build": "webpack --progress --colors",
-    "karma": "export TEST=true && karma start --single-run",
-    "lint": "npm run lint:scripts && npm run lint:css",
-    "lint:css": "stylelint 'Resources/Private/JavaScript/**/*.css'",
-    "lint:scripts": "eslint Resources/Private/JavaScript/**",
-    "test": "npm run lint && npm run karma",
-    "watch:build": "npm run build -- --watch",
-    "watch:karma": "export TEST=true && karma start",
-    "watch": "npm run watch:build & npm run watch:karma",
-    "prewatch": "Build/check-dependencies",
-    "prebuild": "Build/check-dependencies",
-    "storybook": "export STORY=true && start-storybook -p 9001"
   },
   "license": "GNU GPLv3"
 }

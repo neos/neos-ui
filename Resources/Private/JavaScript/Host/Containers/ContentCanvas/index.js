@@ -6,6 +6,8 @@ import {$transform, $get} from 'plow-js';
 import Frame from '@neos-project/react-ui-components/lib/Frame/';
 import style from './style.css';
 import {actions} from 'Host/Redux/index';
+import * as selectors from 'Host/Selectors/index';
+import {calculateEnabledFormattingRulesForNode} from 'Host/Redux/UI/ContentCanvas/index';
 
 import InlineUI from './InlineUI/index';
 import registry from 'Host/Extensibility/Registry/index';
@@ -22,12 +24,14 @@ const closestContextPath = el => {
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
     isFringeRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    src: $get('ui.contentCanvas.src')
+    src: $get('ui.contentCanvas.src'),
+    byContextPathDynamicAccess: state => contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(state)
 }), {
     setGuestContext: actions.Guest.setContext,
     setContextPath: actions.UI.ContentCanvas.setContextPath,
     setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
-    setActiveFormatting: actions.UI.ContentCanvas.setActiveFormatting,
+    formattingUnderCursor: actions.UI.ContentCanvas.formattingUnderCursor,
+    setCurrentlyEditedPropertyName: actions.UI.ContentCanvas.setCurrentlyEditedPropertyName,
     addNode: actions.CR.Nodes.add,
     focusNode: actions.CR.Nodes.focus,
     unFocusNode: actions.CR.Nodes.unFocus,
@@ -45,12 +49,14 @@ export default class ContentCanvas extends Component {
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
         addNode: PropTypes.func.isRequired,
-        setActiveFormatting: PropTypes.func.isRequired,
+        formattingUnderCursor: PropTypes.func.isRequired,
+        setCurrentlyEditedPropertyName: PropTypes.func.isRequired,
         focusNode: PropTypes.func.isRequired,
         unFocusNode: PropTypes.func.isRequired,
         hoverNode: PropTypes.func.isRequired,
         unHoverNode: PropTypes.func.isRequired,
-        persistChange: PropTypes.func.isRequired
+        persistChange: PropTypes.func.isRequired,
+        byContextPathDynamicAccess: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -108,7 +114,8 @@ export default class ContentCanvas extends Component {
             addNode,
             hoverNode,
             unHoverNode,
-            setActiveFormatting,
+            formattingUnderCursor,
+            setCurrentlyEditedPropertyName,
             unFocusNode,
             persistChange
         } = this.props;
@@ -177,10 +184,9 @@ export default class ContentCanvas extends Component {
         });
 
         const editorConfig = {
-            formattingAndStyling: registry.ckEditor.formattingAndStyling.getAllAsObject(),
-            onActiveFormattingChange: activeFormatting => {
-                setActiveFormatting(activeFormatting);
-            }
+            formattingRules: registry.ckEditor.formattingRules.getAllAsObject(),
+            setFormattingUnderCursor: formattingUnderCursor,
+            setCurrentlyEditedPropertyName
         };
 
         // ToDo: Throws an err.
@@ -194,9 +200,27 @@ export default class ContentCanvas extends Component {
             const contextPath = closestContextPath(domNode);
             const propertyName = domNode.dataset.__neosProperty;
 
-            // TODO: from state, read node types & configure CKeditor based on node type!
+            const node = this.props.byContextPathDynamicAccess(contextPath);
 
-            iframeWindow.NeosCKEditorApi.createEditor(domNode, contents => {
+            const nodeFormattingRules = calculateEnabledFormattingRulesForNode(node);
+
+            const enabledFormattingRuleIds = nodeFormattingRules[propertyName];
+
+            // Build up editor config for each enabled formatting
+            let editorOptions = Object.assign(
+                {
+                    removePlugins: 'floatingspace,maximize,resize,toolbar'
+                }
+            );
+            enabledFormattingRuleIds.forEach(formattingRuleId => {
+                const formattingDefinition = registry.ckEditor.formattingRules.get(formattingRuleId);
+
+                if (formattingDefinition.config) {
+                    editorOptions = formattingDefinition.config(editorOptions);
+                }
+            });
+
+            iframeWindow.NeosCKEditorApi.createEditor(domNode, editorOptions, propertyName, contents => {
                 persistChange({
                     type: 'Neos.Neos.Ui:Property',
                     subject: contextPath,

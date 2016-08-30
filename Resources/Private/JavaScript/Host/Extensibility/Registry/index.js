@@ -22,6 +22,11 @@ class SynchronousRegistry {
         return this._registry[key];
     }
 
+    has(key) {
+        // TODO: "key" must be string!
+        return this._registry.hasOwnProperty(key);
+    }
+
     getAllAsObject() {
         return Object.assign({}, this._registry);
     }
@@ -31,25 +36,116 @@ class SynchronousRegistry {
     }
 }
 
+class CkEditorToolbarRegistry extends SynchronousRegistry {
+    constructor(...args) {
+        super(...args);
+
+        this.TRISTATE_DISABLED = 0;
+        this.TRISTATE_ON = 1;
+        this.TRISTATE_OFF = 2;
+    }
+}
+
+class CkEditorFormattingRulesRegistry extends SynchronousRegistry {
+    constructor(...args) {
+        super(...args);
+
+        this.config = {
+
+            /**
+             * add a tag name to the CKEditor block-level formatting config "format_tags",
+             * and ensure the "Format" selector is visible
+             */
+            addToFormatTags: tagName =>
+                config => {
+                    if (config.format_tags) {
+                        config.format_tags += ';';
+                    } else {
+                        config.format_tags = '';
+                    }
+
+                    config.format_tags += tagName;
+
+                    config = this.config.add("Format")(config);
+
+                    return config;
+                },
+            /**
+             * adds the given "buttonName" to the list of enabled buttons, i.e. configuring ACF for them correctly
+             */
+            add: buttonName =>
+                config => {
+                    if (!config.buttons) {
+                        config.buttons = [];
+                    }
+                    if (config.buttons.indexOf(buttonName) === -1) {
+                        config.buttons.push(buttonName);
+                    }
+
+                    return config;
+                },
+        }
+    }
+}
+
 const registry = {
     ckEditor: {
-        formattingAndStyling: new SynchronousRegistry(`
-            Contains an object either of the form:
-                h1: { style: {element: 'h1'} }
-                which is compatible to CKEDITOR.style:
-                http://docs.ckeditor.com/#!/api/CKEDITOR.style
-            ... or of the form:
-                bold: { command: 'bold' }
-                where the command string is known by CKeditor in the "commands" section:
-                http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getCommand
+        formattingRules: new CkEditorFormattingRulesRegistry(`
+            Contains the possible styles for CKeditor.
+
+            ## Enabled Styles
+
+            The actual *enabled* styles are determined by the NodeTypes configuration of the property.
+            This means, that if the node is configured using NodeTypes \`properties.[propertyName].ui.aloha.formatting.strong=true\`,
+            then the "strong" key inside this registry is actually enabled for the editor.
+
+            For backwards compatibility reasons, the formatting-and-styling-registry *KEYS* must match the "pre-React" UI, if they
+            existed beforehand.
+
+
+            ## Configuration of CKeditor
+
+            With this config, CKeditor itself is controlled:
+            - the Advanced Content Filter (ACF) is configured, thus which markup is allowed in the editors
+            - which effect a button action actually has.
+
+            Currently, there exist three possible effects:
+            - *triggering a command*
+            - *setting a style*
+            - *executing arbitrary code*
+
+
+            ## Configuration Format:
+
+            NOTE: one of "command" or "style" must be specified in all cases.
+
+            - \`command\` (string, optional). If specified, this CKEditor command is triggered; so the command string is known by CKeditor
+              in the "commands" section: http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getCommand
+
+            - \`style\` (object, optional). If specified, this CKEditor style is applied. Expects a style description adhering to CKEDITOR.style(...),
+              so for example: \`{ style: {element: 'h1'}\`
+
+            - \`config\` (function, optional): This function needs to adjust the CKEditor config to e.g. configure ACF correctly.
+              The function gets passed in the config so-far, and needs to return the modified config.
+              See "CKEditor Configuration Helpers" below for helper functions.
+
+
+            ## CKEditor Configuration Helpers
+
+            - \`config: registry.ckEditor.formattingRules.config.addToFormatTags('h1')\`: adds the passed-in tag to the \`format_tags\` configuration
+              option of CKEditor.
+
+            - \`registry.ckEditor.formattingRules.config.add('Strong')\`: adds the passed-in *Button Definition Name* to the ACF configuration
+              (automatic mode). This means the button names are standard CKEditor config buttons, like "Cut,Copy,Paste,Undo,Redo,Anchor".
+
         `),
 
-        toolbar: new SynchronousRegistry(`
+        toolbar: new CkEditorToolbarRegistry(`
             Contains the CKeditor Editing Toolbar components.
 
             The values are objects of the following form:
                 {
-                    formatting: 'h1' // References a key inside "formattingAndStyling"
+                    formatting: 'h1' // References a key inside "formattingRules"
                     component: Button // the React component being used for rendering
                     callbackPropName: 'onClick' // Name of the callback prop of the Component which is fired when the component's value changes.
                     // all other properties are directly passed on to the component.
@@ -80,6 +176,7 @@ const registry = {
 
             Every component gets the following properties (see EditorEnvelope/index.js)
 
+            - identifier: an identifier which can be used for HTML ID generation
             - label: the label
             - node: the current node
             - value: The value to display

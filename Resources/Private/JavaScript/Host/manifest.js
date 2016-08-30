@@ -1,71 +1,12 @@
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
-import StyleSelect from 'Host/Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
 import uuid from 'uuid';
 import {actions} from 'Host/Redux';
 
 const {manifest} = window['@Neos:HostPluginAPI'];
 
+import {configureInlineEditing} from './manifest.inlineEditing';
+
 manifest('main', registry => {
-    registry.ckEditor.formattingAndStyling.add('p', {style: {element: 'p'}});
-
-    registry.ckEditor.formattingAndStyling.add('h1', {style: {element: 'h1'}});
-    registry.ckEditor.formattingAndStyling.add('h2', {style: {element: 'h2'}});
-    registry.ckEditor.formattingAndStyling.add('h3', {style: {element: 'h3'}});
-    registry.ckEditor.formattingAndStyling.add('h4', {style: {element: 'h4'}});
-    registry.ckEditor.formattingAndStyling.add('h5', {style: {element: 'h5'}});
-    registry.ckEditor.formattingAndStyling.add('h6', {style: {element: 'h6'}});
-    registry.ckEditor.formattingAndStyling.add('pre', {style: {element: 'pre'}});
-    registry.ckEditor.formattingAndStyling.add('removeFormat', {command: 'removeFormat'});
-
-    registry.ckEditor.formattingAndStyling.add('bold', {command: 'bold'});
-    registry.ckEditor.toolbar.add('bold', {
-        formatting: 'bold',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'bold',
-        hoverStyle: 'brand'
-    });
-
-    registry.ckEditor.formattingAndStyling.add('italic', {command: 'italic'});
-    registry.ckEditor.toolbar.add('italic', {
-        formatting: 'italic',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'italic',
-        hoverStyle: 'brand'
-    });
-
-    registry.ckEditor.toolbar.add('style', {
-        component: StyleSelect,
-        callbackPropName: 'onSelect'
-    });
-
-    registry.ckEditor.toolbar.add('style/h1', {
-        formatting: 'h1',
-        label: 'Headline 1'
-    });
-    registry.ckEditor.toolbar.add('style/h2', {
-        formatting: 'h2',
-        label: 'Headline 2'
-    });
-    registry.ckEditor.toolbar.add('style/h3', {
-        formatting: 'h3',
-        label: 'Headline 3'
-    });
-    registry.ckEditor.toolbar.add('style/h4', {
-        formatting: 'h4',
-        label: 'Headline 4'
-    });
-    registry.ckEditor.toolbar.add('style/h5', {
-        formatting: 'h5',
-        label: 'Headline 5'
-    });
-    registry.ckEditor.toolbar.add('style/h6', {
-        formatting: 'h6',
-        label: 'Headline 6'
-    });
+    configureInlineEditing(registry);
 
     /**
      * Feedback Handlers

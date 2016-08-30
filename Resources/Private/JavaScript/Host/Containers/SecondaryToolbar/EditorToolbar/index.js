@@ -10,35 +10,49 @@ import registry from 'Host/Extensibility/Registry/index';
 import {selectors} from 'Host/Redux/index';
 
 // a component is top-level if it does not contain slashes in the name.
-const topLevelToolbarComponent = componentDefinition =>
+const isTopLevelToolbarComponent = componentDefinition =>
     componentDefinition.id.indexOf('/') === -1;
 
+
+export const hideDisallowedToolbarComponents = (enabledFormattingRuleIds, formattingUnderCursor) => componentDefinition => {
+    if (componentDefinition.isVisibleWhen) {
+        return componentDefinition.isVisibleWhen(enabledFormattingRuleIds, formattingUnderCursor);
+    } else {
+        return enabledFormattingRuleIds.indexOf(componentDefinition.formattingRule) !== -1;
+    }
+};
 /**
  * Render sub components for the toolbar, implementing the API as described in registry.ckEditor.toolbar.
  */
-const renderToolbarComponents = (context, toolbarComponents, activeFormatting) => {
-    return toolbarComponents.filter(topLevelToolbarComponent).map((componentDefinition, index) => {
-        const {component, formatting, callbackPropName, ...props} = componentDefinition;
-        const isActive = formatting && $get(formatting, activeFormatting);
+const renderToolbarComponents = (context, toolbarComponents, enabledFormattingRuleIds, formattingUnderCursor) => {
+    return toolbarComponents
+        .filter(isTopLevelToolbarComponent)
+        .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds, formattingUnderCursor))
+        .map((componentDefinition, index) => {
+            const {component, formattingRule, callbackPropName, ...props} = componentDefinition;
+            const isActive = formattingRule && $get(formattingRule, formattingUnderCursor) == registry.ckEditor.toolbar.TRISTATE_ON;
 
-        props[callbackPropName] = () => {
-            // !!!! TODO: next line is extremely dirty!
-            context.NeosCKEditorApi.toggleFormat(formatting);
-        };
+            props[callbackPropName] = () => {
+                // !!!! TODO: next line is extremely dirty!
+                context.NeosCKEditorApi.toggleFormat(formattingRule);
+            };
 
-        const Component = component;
+            const Component = component;
 
-        return <Component key={index} isActive={isActive} {...props}/>;
-    });
+            return <Component key={index} isActive={isActive} {...props}/>;
+        });
 };
 
 @connect($transform({
-    activeFormatting: $get('ui.contentCanvas.activeFormatting'),
+    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor,
+    enabledFormattingRuleIds: selectors.UI.ContentCanvas.enabledFormattingRuleIds,
+
     context: selectors.Guest.context
 }))
 export default class Toolbar extends Component {
     static propTypes = {
-        activeFormatting: PropTypes.objectOf(React.PropTypes.bool),
+        formattingUnderCursor: PropTypes.objectOf(React.PropTypes.bool),
+        enabledFormattingRuleIds: PropTypes.arrayOf(PropTypes.string),
 
         // The current guest frames window object.
         context: PropTypes.object
@@ -56,7 +70,8 @@ export default class Toolbar extends Component {
         const renderedToolbarComponents = renderToolbarComponents(
             this.props.context,
             registry.ckEditor.toolbar.getAllAsList(),
-            this.props.activeFormatting
+            this.props.enabledFormattingRuleIds,
+            this.props.formattingUnderCursor
         );
 
         return (

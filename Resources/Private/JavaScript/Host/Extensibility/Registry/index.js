@@ -27,7 +27,7 @@ class SynchronousRegistry {
     }
 
     getAllAsList() {
-        return Object.keys(this._registry).map(key => this._registry[key]);
+        return Object.keys(this._registry).map(key => Object.assign({id: key}, this._registry[key]));
     }
 }
 

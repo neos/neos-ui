@@ -201,7 +201,7 @@ export default class ContentCanvas extends Component {
                     type: 'Neos.Neos.Ui:Property',
                     subject: contextPath,
                     payload: {
-                        propertyName: propertyName,
+                        propertyName,
                         value: contents
                     }
                 });

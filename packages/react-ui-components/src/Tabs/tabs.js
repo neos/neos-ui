@@ -209,7 +209,10 @@ export class TabMenuItem extends Component {
             [theme.tabNavigation__item]: true,
             [theme['tabNavigation__item--isActive']]: isActive
         });
-        const iconClassName = title && title.length ? theme.tabNavigation__itemBtnIcon : '';
+        const finalIconClassName = mergeClassNames({
+            [theme.tabNavigation__itemBtnIcon]: true,
+            [theme['tabNavigation__itemBtnIcon--hasLabel']]: title && title.length
+        });
 
         return (
             <li className={finalClassName} role="presentation" {...rest}>
@@ -220,7 +223,7 @@ export class TabMenuItem extends Component {
                     aria-selected={isActive ? 'true' : 'false'}
                     aria-controls={`section${index}`}
                     >
-                    {icon ? <IconComponent icon={icon} className={iconClassName}/> : null}
+                    {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
                     {title}
                 </button>
             </li>

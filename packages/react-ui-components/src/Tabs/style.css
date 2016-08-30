@@ -31,6 +31,7 @@
     composes: reset from './../reset.css';
     float: left;
     border-right: 1px solid var(--brandColorsContrastDark);
+    color: var(--brandColorsContrastBrightest);
 }
 .tabNavigation__item--isActive {
     color: var(--brandColorsPrimaryBlue);
@@ -44,7 +45,6 @@
     padding: 0 var(--spacing);
     line-height: var(--goldenUnit);
     cursor: pointer;
-    color: white;
     border: 0;
     background: 0;
 
@@ -53,6 +53,9 @@
     }
 }
 .tabNavigation__itemBtnIcon {
+    color: currentColor;
+}
+.tabNavigation__itemBtnIcon--hasLabel {
     margin-right: var(--halfSpacing);
 }
 

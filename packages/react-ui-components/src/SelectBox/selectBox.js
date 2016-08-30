@@ -1,4 +1,6 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
+import isFunction from 'lodash.isfunction';
 
 export default class SelectBox extends Component {
     static propTypes = {
@@ -48,11 +50,67 @@ export default class SelectBox extends Component {
         this.renderOption = this.renderOption.bind(this);
         this.handleOnInputClick = this.handleOnInputClick.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
+        this.handleOptionsLoad = this.handleOptionsLoad.bind(this);
     }
 
-    isFunction(functionToCheck) {
-        const getType = {};
-        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    componentDidMount() {
+        const {value} = this.props;
+        this.loadOptions(); // initially load options
+        this.select(value);
+    }
+
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        // if the search input changes, reload async options
+        if (prevState.searchValue !== this.state.seachValue) {
+            this.loadOptions();
+        }
+    }
+
+    render() {
+        const {
+            DropDownComponent,
+            IconComponent,
+            InputComponent,
+            placeholder,
+            placeholderIcon,
+            theme
+        } = this.props;
+        const {icon, label, searchValue = ''} = this.state;
+
+        return (
+            <div className={theme.wrapper}>
+                <DropDownComponent className={theme.dropDown}>
+                    <DropDownComponent.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
+                        {icon || placeholderIcon ?
+                            <IconComponent className={theme.dropDown__btnIcon} icon={icon || placeholderIcon}/> :
+                            null
+                        }
+                        {label || placeholder}
+                    </DropDownComponent.Header>
+                    <DropDownComponent.Contents className={theme.dropDown__contents}>
+                        {
+                            this.isSearchEnabled() ?
+                                <li className={theme.dropDown__item}>
+                                    <InputComponent
+                                        value={searchValue}
+                                        onClick={this.handleOnInputClick}
+                                        onChange={this.handleOnInputChange}
+                                        />
+                                </li> : null
+                        }
+
+                        {Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
+                            this.getOptions()
+                                .filter(this.filterOption)
+                                .map(this.renderOption) : null}
+                    </DropDownComponent.Contents>
+                </DropDownComponent>
+            </div>
+        );
     }
 
     getOptions() {
@@ -64,17 +122,28 @@ export default class SelectBox extends Component {
         return !this.state.searchValue || o.label.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1;
     }
 
-    // TRUE if searchbox should be displayed
+    // returns TRUE if searchbox should be displayed
     isSearchEnabled() {
         return (this.props.minimumResultsForSearch !== -1 && this.getOptions().length >= this.props.minimumResultsForSearch) ||
-            // the options prop () has to be a function in order to assume that options are loaded async
-            this.isFunction(this.props.options);
+            // the options prop has to be a function in order to assume that options are loaded async
+            isFunction(this.props.options);
     }
 
-    componentDidMount() {
-        const {value} = this.props;
+    // loads async options if options is a function
+    loadOptions() {
+        const options = this.props.options;
+        if (isFunction(options)) {
+            options({
+                value: '',
+                callback: this.handleOptionsLoad
+            });
+        }
+    }
 
-        this.select(value);
+    handleOptionsLoad(data) {
+        this.setState({
+            options: data
+        });
     }
 
     // prevent the dropdown from closing when you focus the text input
@@ -123,62 +192,6 @@ export default class SelectBox extends Component {
                 }
                 { label }
             </li>
-        );
-    }
-
-    render() {
-        const {
-            DropDownComponent,
-            IconComponent,
-            InputComponent,
-            placeholder,
-            placeholderIcon,
-            theme
-        } = this.props;
-        const {icon, label, searchValue, loadedAsync} = this.state;
-
-        // options is Function (load options asynchronously)
-        const options = this.getOptions();
-        if (this.isFunction(options)) {
-            options({
-                value: searchValue || '',
-                callback: _options => {
-                    this.setState({
-                        options: _options
-                    });
-                }
-            });
-        }
-
-        return (
-            <div className={theme.wrapper}>
-                <DropDownComponent className={theme.dropDown}>
-                    <DropDownComponent.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
-                        {icon || placeholderIcon ?
-                            <IconComponent className={theme.dropDown__btnIcon} icon={icon || placeholderIcon}/> :
-                            null
-                        }
-                        {label || placeholder}
-                    </DropDownComponent.Header>
-                    <DropDownComponent.Contents className={theme.dropDown__contents}>
-                        {
-                            this.isSearchEnabled() ?
-                                <li className={theme.dropDown__item}>
-                                    <InputComponent
-                                        value={searchValue || ''}
-                                        onClick={this.handleOnInputClick}
-                                        onChange={this.handleOnInputChange}
-                                        />
-                                </li> : null
-                        }
-
-                        {Object.prototype.toString.call(options) === '[object Array]' ?
-                            options
-                                .filter(this.filterOption)
-                                .map(this.renderOption) : null}
-                    </DropDownComponent.Contents>
-                </DropDownComponent>
-            </div>
         );
     }
 }

@@ -122,5 +122,5 @@
     "prebuild": "Build/check-dependencies",
     "storybook": "export STORY=true && start-storybook -p 9001"
   },
-  "license": "GPL-3.0+"
+  "license": "GNU GPLv3"
 }

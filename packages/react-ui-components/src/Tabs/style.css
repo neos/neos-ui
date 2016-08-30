@@ -34,9 +34,12 @@
     color: var(--brandColorsContrastBrightest);
 }
 .tabNavigation__item--isActive {
-    color: var(--brandColorsPrimaryBlue);
     background-color: var(--brandColorsContrastDarker);
     cursor: default;
+
+    > .tabNavigation__itemBtn {
+        color: var(--brandColorsPrimaryBlue);
+    }
 }
 .tabNavigation__itemBtn {
     composes: reset from './../reset.css';

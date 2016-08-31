@@ -5,10 +5,17 @@ import {byContextPathSelector} from '../../CR/Nodes/index';
 import {isOfTypeSelector} from '../../CR/NodeTypes/index';
 
 const getActive = $get('ui.contentCanvas.contextPath');
-const getFocused = $get('ui.pageTree.focused');
+const getFocused = $get('ui.pageTree.isFocused');
 const getUncollapsed = $get('ui.pageTree.uncollapsed');
 const getLoading = $get('ui.pageTree.loading');
 const getErrors = $get('ui.pageTree.errors');
+
+export const getFocusedNodeContextPathSelector = createSelector(
+    [
+        getFocused
+    ],
+    focusedNodeContextPath => focusedNodeContextPath
+);
 
 export const getTreeNodeSelector = createSelector(
     [

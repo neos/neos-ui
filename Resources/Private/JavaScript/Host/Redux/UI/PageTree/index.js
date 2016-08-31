@@ -54,13 +54,13 @@ export const reducer = handleActions({
     [system.INIT]: () => $set(
         'ui.pageTree',
         new Map({
-            focused: '',
+            isFocused: '',
             uncollapsed: new Set(),
             loading: new Set(),
             errors: new Set()
         })
     ),
-    [FOCUS]: ({contextPath}) => $set('ui.pageTree.focused', contextPath),
+    [FOCUS]: ({contextPath}) => $set('ui.pageTree.isFocused', contextPath),
     [UNCOLLAPSE]: ({contextPath}) => $all(
         $remove('ui.pageTree.errors', contextPath),
         $remove('ui.pageTree.loading', contextPath),

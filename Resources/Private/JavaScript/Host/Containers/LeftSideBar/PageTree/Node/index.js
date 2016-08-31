@@ -3,8 +3,6 @@ import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
-import {$transform, $get} from 'plow-js';
-
 import {UI} from 'Host/Selectors/index';
 import {actions} from 'Host/Redux/index';
 
@@ -37,7 +35,7 @@ export default class Node extends Component {
         getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
         onNodeClick: PropTypes.func,
-        onNodeFocus: PropTypes.func,
+        onNodeFocus: PropTypes.func
 
     };
 
@@ -47,17 +45,17 @@ export default class Node extends Component {
         this.handleNodeToggle = this.handleNodeToggle.bind(this);
         this.handleNodeClick = this.handleNodeClick.bind(this);
         this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
+        this.handleDoubleClick = this.handleDoubleClick.bind(this);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-
         return (
             (nextProps.hasChildren && !this.props.item.isCollapsed) ||
             shallowCompare(this, nextProps, nextState));
     }
 
     render() {
-        const {item, getTreeNode, onNodeToggle, onNodeClick, onNodeFocus, onDoubleClick} = this.props;
+        const {item, getTreeNode, onNodeToggle, onNodeClick, onNodeFocus} = this.props;
 
         return getTreeNode ? (
             <Tree.Node>
@@ -66,7 +64,7 @@ export default class Node extends Component {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     onLabelClick={this.handleNodeLabelClick}
-                    onDoubleClick={this.onDoubleClick}
+                    onDoubleClick={this.handleDoubleClick}
                     />
                 {item.isCollapsed ? null : (
                     <Tree.Node.Contents>
@@ -95,18 +93,20 @@ export default class Node extends Component {
         onNodeToggle(item.contextPath);
     }
 
-    onDoubleClick(event) {
+    handleDoubleClick() {
         console.log('onDoubleClick');
     }
 
-    handleNodeClick(event) {
-
+    handleNodeClick() {
         const {item, onNodeFocus} = this.props;
         onNodeFocus(item.uri);
     }
 
-    handleNodeLabelClick(event) {
-        this.props.onNodeFocus(this.props.item.contextPath);
+    handleNodeLabelClick() {
+        const {item, onNodeFocus, onNodeClick} = this.props;
+
+        onNodeFocus(item.contextPath);
+        onNodeClick(item.uri, item.contextPath);
 
         if (this.props.item.isFocused) {
             console.info('isFocused');
@@ -114,8 +114,10 @@ export default class Node extends Component {
             console.info('isFocused NOT');
         }
 
-        const {item, onNodeClick} = this.props;
-
-        onNodeClick(item.contextPath);
+        if (this.props.item.isActive) {
+            console.info('isActive');
+        } else {
+            console.info('isActive NOT');
+        }
     }
 }

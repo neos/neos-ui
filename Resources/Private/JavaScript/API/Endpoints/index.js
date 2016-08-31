@@ -1,6 +1,8 @@
 import {api} from 'Shared/Utilities/';
 
-export const change = changes => fetch('/neos!/service/change', {
+const fetchJson = (endpoint, options) => fetch(endpoint, options).then(res => res.json());
+
+export const change = changes => fetchJson('/neos!/service/change', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -10,9 +12,9 @@ export const change = changes => fetch('/neos!/service/change', {
     body: JSON.stringify({
         changes
     })
-}).then(response => response.json());
+});
 
-export const publish = (nodeContextPaths, targetWorkspaceName) => fetch('/neos!/service/publish', {
+export const publish = (nodeContextPaths, targetWorkspaceName) => fetchJson('/neos!/service/publish', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -23,9 +25,9 @@ export const publish = (nodeContextPaths, targetWorkspaceName) => fetch('/neos!/
         nodeContextPaths,
         targetWorkspaceName
     })
-}).then(response => response.json());
+});
 
-export const discard = nodeContextPaths => fetch('/neos!/service/discard', {
+export const discard = nodeContextPaths => fetchJson('/neos!/service/discard', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -35,15 +37,15 @@ export const discard = nodeContextPaths => fetch('/neos!/service/discard', {
     body: JSON.stringify({
         nodeContextPaths
     })
-}).then(response => response.json());
+});
 
-export const loadImageMetadata = imageVariantUuid => fetch(`neos/content/image-with-metadata?image=${imageVariantUuid}`, {
+export const loadImageMetadata = imageVariantUuid => fetchJson(`neos/content/image-with-metadata?image=${imageVariantUuid}`, {
     method: 'GET',
     credentials: 'include',
     headers: {
         'Content-Type': 'application/json'
     }
-}).then(response => response.json());
+});
 
 /**
  * asset[adjustments][TYPO3\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
@@ -54,7 +56,7 @@ export const loadImageMetadata = imageVariantUuid => fetch(`neos/content/image-w
  * asset[originalAsset]:56d183f2-ee66-c845-7e2d-40661fb27571
  * @param asset
  */
-export const createImageVariant = (originalAssetUuid, adjustments) => fetch('neos/content/create-image-variant', {
+export const createImageVariant = (originalAssetUuid, adjustments) => fetchJson('neos/content/create-image-variant', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -67,7 +69,7 @@ export const createImageVariant = (originalAssetUuid, adjustments) => fetch('neo
             adjustments
         }
     })
-}).then(response => response.json());
+});
 
 export const uploadAsset = (file, siteNodeName, metadata = 'Image') => {
     const data = new FormData();
@@ -75,12 +77,12 @@ export const uploadAsset = (file, siteNodeName, metadata = 'Image') => {
     data.append('asset[resource]', file);
     data.append('metadata', metadata);
 
-    return fetch('neos/content/upload-asset', {
+    return fetchJson('neos/content/upload-asset', {
         method: 'POST',
         credentials: 'include',
         headers: {
             'X-Flow-Csrftoken': api.getCsrfToken()
         },
         body: data
-    }).then(response => response.json());
+    });
 };

@@ -1,3 +1,9 @@
+const noop = {
+    initialize() {},
+    toggleFormat() {},
+    createEditor() {}
+};
+
 const createCKEditorAPI = CKEDITOR => {
     if (!CKEDITOR) {
         console.error('CKEditor not found!');
@@ -5,7 +11,7 @@ const createCKEditorAPI = CKEDITOR => {
         //
         // Return noop to not break things
         //
-        return {};
+        return noop;
     }
 
     // an object with the following keys:

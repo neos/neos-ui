@@ -1,8 +1,9 @@
 .wrapper {
-    display: inline-block;
     position: relative;
-    vertical-align: top;
+    display: inline-block;
     padding-right: 47px;
+    height: 41px;
+    vertical-align: top;
 }
 
 .publishBtn {

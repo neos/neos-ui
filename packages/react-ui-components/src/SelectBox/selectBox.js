@@ -85,7 +85,7 @@ export default class SelectBox extends Component {
     componentDidMount() {
         const {value} = this.props;
         this.loadOptions(); // initially load options
-        this.select(value);
+        this.select(value, false);
     }
 
     shouldComponentUpdate(...args) {
@@ -212,8 +212,9 @@ export default class SelectBox extends Component {
     /**
      * select callback for option selection
      * @param {string} incomingValue
+     * @param {boolean} shouldTriggerOnSelect
      */
-    select(incomingValue) {
+    select(incomingValue, shouldTriggerOnSelect = true) {
         const {placeholder, placeholderIcon} = this.props;
         const value = incomingValue || placeholder;
 
@@ -225,7 +226,9 @@ export default class SelectBox extends Component {
                 this.getOptions().filter(o => o.value === value).map(o => o.label)[0] : placeholder
         });
 
-        this.props.onSelect(incomingValue);
+        if (shouldTriggerOnSelect) {
+            this.props.onSelect(incomingValue);
+        }
     }
 
     /**

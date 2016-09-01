@@ -67,8 +67,9 @@ export class Header extends Component {
             onClick,
             onLabelClick,
             theme,
-            ...rest
+            ...restProps
         } = this.props;
+        const rest = omit(restProps, ['onToggle']);
         const {
             label,
             icon,

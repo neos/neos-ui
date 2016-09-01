@@ -58,6 +58,19 @@ test('should call "onSelect" when selecting a value', t => {
     t.truthy(props.onSelect.calledOnce);
 });
 
+test('should not call "onSelect" on initial render when having a value set', t => {
+    const props = {
+        options: [{value: 'foo', label: 'bar'}],
+        value: 'some value',
+        onSelect: sinon.spy()
+    };
+    const selectBox = shallow(props);
+
+    selectBox.instance().componentDidMount();
+
+    t.truthy(props.onSelect.notCalled);
+});
+
 test('should render a searchbox when explicitly enabled', t => {
     const props = {
         minimumResultsForSearch: 0

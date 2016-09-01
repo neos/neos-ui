@@ -71,7 +71,7 @@ export default class SelectBox extends Component {
 
     state = {
         value: ''
-    }
+    };
 
     constructor(...args) {
         super(...args);
@@ -94,7 +94,7 @@ export default class SelectBox extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         // if the search input changes, reload async options
-        if (prevState.searchValue !== this.state.seachValue) {
+        if (prevState.searchValue !== this.state.searchValue) {
             this.loadOptions();
         }
     }

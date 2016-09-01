@@ -117,7 +117,7 @@
     "react-redux": "^4.4.5",
     "react-textarea-autosize": "^4.0.5",
     "redux": "^3.4.0",
-    "redux-actions": "^0.11.0",
+    "redux-actions": "^0.12.0",
     "redux-saga": "^0.11.0",
     "regenerator": "^0.8.46",
     "reselect": "^2.4.0",

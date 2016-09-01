@@ -97,6 +97,10 @@ export default class SelectBox extends Component {
         if (prevState.searchValue !== this.state.searchValue) {
             this.loadOptions();
         }
+
+        if (prevProps.value !== this.props.value) {
+            this.select(this.props.value, false);
+        }
     }
 
     render() {

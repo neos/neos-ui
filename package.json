@@ -34,7 +34,7 @@
     "chai-as-promised": "^5.2.0",
     "check-dependencies": "^1.0.1",
     "cheerio": "^0.22.0",
-    "css-loader": "^0.24.0",
+    "css-loader": "^0.25.0",
     "diff": "^3.0.0",
     "enzyme": "^2.4.1",
     "eslint": "^3.1.1",

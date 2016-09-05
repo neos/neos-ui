@@ -4,6 +4,7 @@ import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
+import {selectors} from 'Host/Redux/index';
 
 // Predicate matching all "element.id"s starting with "prefix".
 const startsWith = prefix => element =>
@@ -14,7 +15,7 @@ const startsWith = prefix => element =>
  */
 @connect($transform({
     activeFormatting: $get('ui.contentCanvas.activeFormatting'),
-    context: $get('guest.context')
+    context: selectors.Guest.context
 }))
 export default class StyleSelect extends Component {
 

@@ -7,6 +7,7 @@ import {$get, $transform} from 'plow-js';
 import style from './style.css';
 
 import registry from 'Host/Extensibility/Registry/index';
+import {selectors} from 'Host/Redux/index';
 
 // a component is top-level if it does not contain slashes in the name.
 const topLevelToolbarComponent = componentDefinition =>
@@ -33,7 +34,7 @@ const renderToolbarComponents = (context, toolbarComponents, activeFormatting) =
 
 @connect($transform({
     activeFormatting: $get('ui.contentCanvas.activeFormatting'),
-    context: $get('guest.context')
+    context: selectors.Guest.context
 }))
 export default class Toolbar extends Component {
     static propTypes = {

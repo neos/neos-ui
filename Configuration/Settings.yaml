@@ -51,6 +51,7 @@ Neos:
           'Neos.Ui.Workspace': 'Neos\Neos\Ui\TypoScript\Helper\WorkspaceHelper'
           'Neos.Ui.NodeInfo': 'Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper'
           'Neos.Ui.NodeTypes': 'Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper'
+          'Neos.Ui.ContentDimensions': 'Neos\Neos\Ui\TypoScript\Helper\ContentDimensionsHelper'
 
         documentNode:
           nodes: '${Neos.Ui.NodeInfo.renderDocumentNodeAndChildContent(documentNode, controllerContext)}'
@@ -74,6 +75,10 @@ Neos:
             workspaces:
               byName: ${Neos.Ui.Workspace.initializeWorkspacesByName()}
               active: ${Neos.Ui.Workspace.getPersonalWorkspaceName()}
+            contentDimensions:
+              byName: ${Neos.Ui.ContentDimensions.contentDimensionsByName()}
+              active: ${documentNode.context.dimensions}
+              # TODO Target dimensions
           ui:
             contentCanvas:
               src: ${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}

@@ -2,47 +2,98 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
+import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 import style from './style.css';
+import {$get, $transform} from 'plow-js';
+import {Map} from 'immutable';
+import {selectors} from 'Host/Redux/index';
+import I18n from 'Host/Containers/I18n/';
 
-const DimensionCategory = props => {
-    const {data, key} = props;
+// TODO Add title prop  to Icon component
+const SelectedPreset = props => {
+    const {icon, dimensionLabel, presetLabel, dimensionName} = props;
 
     return (
-        <li key={key} className={style.dimensionCategory}>
-            <Icon icon="globe" padded="right" className={style.dimensionCategory__icon}/>
-            {data.name}
-            <br/>
+        <span key={dimensionName}>
+            <Icon className={style.dropDown__btnIcon} icon={icon} title={dimensionLabel}/>
+            {presetLabel}
+        </span>
+    );
+}
+SelectedPreset.propTypes = {
+    icon: PropTypes.string.isRequired,
+    dimensionLabel: PropTypes.string.isRequired,
+    presetLabel: PropTypes.string.isRequired,
+    dimensionName: PropTypes.string
+};
 
-            ToDo: Render the select for all dimension items
+const DimensionSelector = props => {
+    const {icon, dimensionLabel, presets, dimensionName, activePreset} = props;
+
+    const presetOptions = presets.map((presetConfiguration, presetName) => ({
+        label: presetConfiguration.get('label'),
+        value: presetName
+    })).toArray();
+
+    const onSelect = args => {
+        console.log('Selected preset', args);
+    };
+
+    return (
+        <li key={dimensionName} className={style.dimensionCategory}>
+            <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
+            <I18n id={dimensionLabel} />
+            <br/>
+            <SelectBox options={presetOptions} onSelect={onSelect} value={activePreset} />
         </li>
     );
 };
-DimensionCategory.propTypes = {
-    data: PropTypes.object.isRequired,
-    key: PropTypes.number
+DimensionSelector.propTypes = {
+    icon: PropTypes.string.isRequired,
+    dimensionLabel: PropTypes.string.isRequired,
+    presets: PropTypes.object.isRequired,
+    activePreset: PropTypes.string.isRequired,
+    dimensionName: PropTypes.string
 };
 
-@connect()
+@connect($transform({
+    contentDimensions: $get('cr.contentDimensions.byName'),
+    activePresets: selectors.CR.ContentDimensions.activePresets
+}))
 export default class DimensionSwitcher extends Component {
     static propTypes = {
-        dimensions: PropTypes.array.isRequired
+        contentDimensions: PropTypes.object.isRequired,
+        activePresets: PropTypes.object.isRequired
     };
 
     static defaultProps = {
-        dimensions: []
+        contentDimensions: new Map(),
+        activePresets: new Map()
     };
 
     render() {
-        const {dimensions} = this.props;
+        const {contentDimensions, activePresets} = this.props;
 
         return (
             <DropDown className={style.dropDown}>
                 <DropDown.Header className={style.dropDown__btn}>
-                    <Icon className={style.dropDown__btnIcon} icon="globe"/>
-                    ToDo: Current dimension name
+                    {contentDimensions.map((dimensionConfiguration, dimensionName) =>
+                        <SelectedPreset
+                            dimensionName={dimensionName}
+                            icon={dimensionConfiguration.get('icon')}
+                            dimensionLabel={dimensionConfiguration.get('label')}
+                            presetLabel={activePresets.get(dimensionName).get('label')} />
+                    )}
                 </DropDown.Header>
                 <DropDown.Contents className={style.dropDown__contents}>
-                    {dimensions.map((dimensionCategory, index) => <DimensionCategory data={dimensionCategory} key={index}/>)}
+                    {contentDimensions.map((dimensionConfiguration, dimensionName) =>
+                        <DimensionSelector
+                            dimensionName={dimensionName}
+                            icon={dimensionConfiguration.get('icon')}
+                            dimensionLabel={dimensionConfiguration.get('label')}
+                            presets={dimensionConfiguration.get('presets')}
+                            activePreset={activePresets.get(dimensionName).get('name')} />
+                    )}
                 </DropDown.Contents>
             </DropDown>
         );

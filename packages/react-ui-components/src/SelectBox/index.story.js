@@ -2,6 +2,7 @@ import React from 'react';
 import {storiesOf} from '@kadira/storybook';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import SelectBox from './index.js';
+import DropDown from './../DropDown/index.js';
 
 const options = [
     {value: 'opt1', label: 'Option 1'},
@@ -36,5 +37,22 @@ storiesOf('SelectBox', module)
                 placeholderIcon="search"
                 onSelect={onSelect}
                 />
+        </StoryWrapper>
+    ))
+    .add('inside dropdown', () => (
+        <StoryWrapper title="SelectBox">
+            <DropDown isOpen={true}>
+                <DropDown.Header>
+                    Dropdown header
+                </DropDown.Header>
+                <DropDown.Contents>
+                    <SelectBox
+                        options={options}
+                        placeholder="Select"
+                        placeholderIcon="search"
+                        onSelect={onSelect}
+                        />
+                </DropDown.Contents>
+            </DropDown>
         </StoryWrapper>
     ));

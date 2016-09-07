@@ -15,8 +15,7 @@
     "watch:karma": "export TEST=true && karma start",
     "watch": "npm run watch:build & npm run watch:karma",
     "prewatch": "Build/check-dependencies",
-    "prebuild": "Build/check-dependencies",
-    "storybook": "export STORY=true && start-storybook -p 9001"
+    "prebuild": "Build/check-dependencies"
   },
   "devDependencies": {
     "@kadira/storybook": "^1.27.0",

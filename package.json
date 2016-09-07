@@ -18,7 +18,7 @@
     "prebuild": "Build/check-dependencies"
   },
   "devDependencies": {
-    "@kadira/storybook": "^1.27.0",
+    "@kadira/storybook": "^2.11.0",
     "@neos-project/eslint-config-neos": "^1.1.1",
     "autoprefixer": "^6.4.0",
     "babel-core": "^6.13.2",

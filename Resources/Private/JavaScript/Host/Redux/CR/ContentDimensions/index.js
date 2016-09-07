@@ -15,7 +15,7 @@ export const actionTypes = {
 /**
  * Selects a preset for the given content dimension
  */
-const selectPreset = createAction(SELECT_PRESET, (name, presetName) => {name, presetName});
+const selectPreset = createAction(SELECT_PRESET, (name, presetName) => ({name, presetName}));
 
 //
 // Export the actions
@@ -35,7 +35,10 @@ export const reducer = handleActions({
             active: Immutable.fromJS($get('cr.contentDimensions.active', state))
         })
     ),
-    [SELECT_PRESET]: ({name, presetName}) => $set(['cr', 'contentDimensions', 'active', name], Immutable.fromJS($get('cr', 'contentDimensions', 'byName', name, 'presets', presetName, 'values')))
+    [SELECT_PRESET]: ({name, presetName}) => state => {
+        const dimensionValues = Immutable.fromJS($get(['cr', 'contentDimensions', 'byName', name, 'presets', presetName, 'values'], state));
+        return $set(['cr', 'contentDimensions', 'active', name], dimensionValues, state);
+    }
 });
 
 const active = $get('cr.contentDimensions.active');

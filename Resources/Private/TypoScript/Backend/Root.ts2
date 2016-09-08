@@ -20,7 +20,6 @@ backend = TYPO3.TypoScript:Template {
 
         @process.json = ${Json.stringify(value)}
     }
-    initialState.@process.json = ${Json.stringify(value)}
 
     translations = ${translations}
 

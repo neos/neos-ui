@@ -1,5 +1,7 @@
 include: resource://TYPO3.TypoScript/Private/TypoScript/Root.ts2
+include: resource://TYPO3.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
 include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/RenderState.ts2
+include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/ArrayCollection.ts2
 backend = TYPO3.TypoScript:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
 
@@ -7,6 +9,27 @@ backend = TYPO3.TypoScript:Template {
         test = 1
         asyncModuleMapping = ${asyncModuleMapping}
         legacyModuleMapping = ${legacyModuleMapping}
+        @process.json = ${Json.stringify(value)}
+    }
+
+    menu = TYPO3.TypoScript:RawArray {
+        content = Neos.Neos.Ui:ArrayCollection {
+            collection = ${q(site).parent().children().get()}
+            itemName = 'siteNode'
+            itemRenderer = TYPO3.TypoScript:RawArray {
+                icon = 'globe'
+                label = ${q(siteNode).property('title')}
+                //
+                // TODO: Once Routing is solved, this needs to be an accurate backend route
+                // for the site
+                //
+                uri = TYPO3.Neos:NodeUri {
+                    node = ${siteNode}
+                }
+                isActive = ${Neos.Ui.Sites.isActive(siteNode)}
+            }
+        }
+
         @process.json = ${Json.stringify(value)}
     }
 

@@ -13,20 +13,26 @@ backend = TYPO3.TypoScript:Template {
     }
 
     menu = TYPO3.TypoScript:RawArray {
-        content = Neos.Neos.Ui:ArrayCollection {
-            collection = ${q(site).parent().children().get()}
-            itemName = 'siteNode'
-            itemRenderer = TYPO3.TypoScript:RawArray {
-                icon = 'globe'
-                label = ${q(siteNode).property('title')}
-                //
-                // TODO: Once Routing is solved, this needs to be an accurate backend route
-                // for the site
-                //
-                uri = TYPO3.Neos:NodeUri {
-                    node = ${siteNode}
+        content = TYPO3.TypoScript:RawArray {
+            //
+            // TODO: I18n
+            //
+            label = 'Content'
+            children = Neos.Neos.Ui:ArrayCollection {
+                collection = ${q(site).parent().children().get()}
+                itemName = 'siteNode'
+                itemRenderer = TYPO3.TypoScript:RawArray {
+                    icon = 'globe'
+                    label = ${q(siteNode).property('title')}
+                    //
+                    // TODO: Once Routing is solved, this needs to be an accurate backend route
+                    // for the site
+                    //
+                    uri = TYPO3.Neos:NodeUri {
+                        node = ${siteNode}
+                    }
+                    isActive = ${Neos.Ui.Sites.isActive(siteNode)}
                 }
-                isActive = ${Neos.Ui.Sites.isActive(siteNode)}
             }
         }
 

@@ -2,6 +2,8 @@ include: resource://TYPO3.TypoScript/Private/TypoScript/Root.ts2
 include: resource://TYPO3.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
 include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/RenderState.ts2
 include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/ArrayCollection.ts2
+include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/AppendAllToCollection.ts2
+
 backend = TYPO3.TypoScript:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
 
@@ -18,6 +20,7 @@ backend = TYPO3.TypoScript:Template {
             // TODO: I18n
             //
             label = 'Content'
+            icon = 'page'
             children = Neos.Neos.Ui:ArrayCollection {
                 collection = ${q(site).parent().children().get()}
                 itemName = 'siteNode'
@@ -33,6 +36,31 @@ backend = TYPO3.TypoScript:Template {
                     }
                     isActive = ${Neos.Ui.Sites.isActive(siteNode)}
                 }
+            }
+        }
+
+        @process.modules = Neos.Neos.Ui:AppendAllToCollection {
+            appendTo = ${value}
+            collection = ${Configuration.setting('TYPO3.Neos.modules')}
+            itemName = 'module'
+            itemKey = 'moduleName'
+
+            itemKeyRenderer = ${moduleName}
+            itemRenderer = TYPO3.TypoScript:RawArray {
+                label = ${module.label}
+                icon = ${module.icon}
+                children = Neos.Neos.Ui:ArrayCollection {
+                    collection = ${module.submodules}
+                    itemName = 'submodule'
+                    itemRenderer = TYPO3.TypoScript:RawArray {
+                        icon = ${submodule.icon}
+                        label = ${submodule.label}
+                        uri = ''
+                        isActive = true
+                    }
+                }
+
+                @if.isAvailable = ${Neos.Neos.Ui.Modules.isAvailable(moduleName)}
             }
         }
 

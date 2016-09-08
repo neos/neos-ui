@@ -50,11 +50,11 @@ export class DropDownWrapper extends Component {
         super(props, context);
 
         this.state = {isOpen: Boolean(props.isOpen)};
-        this.handleToggle = (event) => {
+        this.handleToggle = event => {
             this.toggle();
             event.stopPropagation();
         };
-        this.handleClose = (event) => {
+        this.handleClose = event => {
             this.close();
             event.stopPropagation();
         };

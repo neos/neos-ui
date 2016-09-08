@@ -8,7 +8,6 @@ namespace Neos\Neos\Ui\TypoScript\Helper;
 
 use TYPO3\Eel\ProtectedContextAwareInterface;
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Session\SessionInterface;
 use TYPO3\Neos\Domain\Repository\SiteRepository;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 

@@ -15,6 +15,7 @@ TYPO3:
     defaultContext:
       'Neos.Ui.Activation': 'Neos\Neos\Ui\TypoScript\Helper\ActivationHelper'
       'Neos.Ui.Sites': 'Neos\Neos\Ui\TypoScript\Helper\SitesHelper'
+      'Neos.Ui.Modules': 'Neos\Neos\Ui\TypoScript\Helper\ModulesHelper'
 
 Neos:
   Neos:

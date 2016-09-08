@@ -28,6 +28,7 @@ const closestContextPath = el => {
     setContextPath: actions.UI.ContentCanvas.setContextPath,
     setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
     setActiveFormatting: actions.UI.ContentCanvas.setActiveFormatting,
+    setActiveDimensions: actions.CR.ContentDimensions.setActive,
     addNode: actions.CR.Nodes.add,
     focusNode: actions.CR.Nodes.focus,
     unFocusNode: actions.CR.Nodes.unFocus,
@@ -46,6 +47,7 @@ export default class ContentCanvas extends Component {
         setPreviewUrl: PropTypes.func.isRequired,
         addNode: PropTypes.func.isRequired,
         setActiveFormatting: PropTypes.func.isRequired,
+        setActiveDimensions: PropTypes.func.isRequired,
         focusNode: PropTypes.func.isRequired,
         unFocusNode: PropTypes.func.isRequired,
         hoverNode: PropTypes.func.isRequired,
@@ -109,6 +111,7 @@ export default class ContentCanvas extends Component {
             hoverNode,
             unHoverNode,
             setActiveFormatting,
+            setActiveDimensions,
             unFocusNode,
             persistChange
         } = this.props;
@@ -130,6 +133,7 @@ export default class ContentCanvas extends Component {
 
         setContextPath(documentInformation.metaData.contextPath);
         setPreviewUrl(documentInformation.metaData.previewUrl);
+        setActiveDimensions(documentInformation.metaData.contentDimensions.active);
 
         //
         // Initialize node components

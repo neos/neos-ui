@@ -21,6 +21,26 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
     }
 
     /**
+     * @param array $dimensions Dimension values indexed by dimension name
+     * @return array Allowed preset names for the given dimension combination indexed by dimension name
+     */
+    public function allowedPresetsByName(array $dimensions) {
+        $allowedPresets = array();
+        $preselectedDimensionPresets = array();
+        foreach ($dimensions as $dimensionName => $dimensionValues) {
+            $preset = $this->contentDimensionsPresetSource->findPresetByDimensionValues($dimensionName, $dimensionValues);
+            if ($preset !== null) {
+                $preselectedDimensionPresets[$dimensionName] = $preset['identifier'];
+            }
+        }
+        foreach ($preselectedDimensionPresets as $dimensionName => $presetName) {
+            $presets = $this->contentDimensionsPresetSource->getAllowedDimensionPresetsAccordingToPreselection($dimensionName, $preselectedDimensionPresets);
+            $allowedPresets[$dimensionName] = array_keys($presets[$dimensionName]['presets']);
+        }
+        return $allowedPresets;
+    }
+
+    /**
      * @param string $methodName
      * @return boolean
      */

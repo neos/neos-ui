@@ -58,6 +58,9 @@ Neos:
           metaData:
             contextPath: '${q(documentNode).property("_contextPath")}'
             previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: "live"}).get(0), controllerContext)}'
+            contentDimensions:
+              active: '${documentNode.context.dimensions}'
+              allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
         backend:
           changes:
             pending: []
@@ -78,6 +81,7 @@ Neos:
             contentDimensions:
               byName: ${Neos.Ui.ContentDimensions.contentDimensionsByName()}
               active: ${documentNode.context.dimensions}
+              allowedPresets: ${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}
               # TODO Target dimensions
           ui:
             contentCanvas:

@@ -60,6 +60,7 @@ DimensionSelector.propTypes = {
 
 @connect($transform({
     contentDimensions: $get('cr.contentDimensions.byName'),
+    allowedPresets: $get('cr.contentDimensions.allowedPresets'),
     activePresets: selectors.CR.ContentDimensions.activePresets
 }), {
     selectPreset: actions.CR.ContentDimensions.selectPreset
@@ -67,11 +68,13 @@ DimensionSelector.propTypes = {
 export default class DimensionSwitcher extends Component {
     static propTypes = {
         contentDimensions: PropTypes.object.isRequired,
-        activePresets: PropTypes.object.isRequired
+        activePresets: PropTypes.object.isRequired,
+        allowedPresets: PropTypes.object.isRequired
     };
 
     static defaultProps = {
         contentDimensions: new Map(),
+        allowedPresets: new Map(),
         activePresets: new Map()
     };
 
@@ -80,7 +83,7 @@ export default class DimensionSwitcher extends Component {
     }
 
     render() {
-        const {contentDimensions, activePresets, selectPreset} = this.props;
+        const {contentDimensions, activePresets, allowedPresets, selectPreset} = this.props;
 
         return (
             <DropDown className={style.dropDown}>
@@ -99,7 +102,7 @@ export default class DimensionSwitcher extends Component {
                             dimensionName={dimensionName}
                             icon={dimensionConfiguration.get('icon')}
                             dimensionLabel={dimensionConfiguration.get('label')}
-                            presets={dimensionConfiguration.get('presets')}
+                            presets={dimensionConfiguration.get('presets').filter((presetConfiguration, presetName) => allowedPresets.get(dimensionName).contains(presetName))}
                             activePreset={activePresets.get(dimensionName).get('name')}
                             onSelect={selectPreset} />
                     )}

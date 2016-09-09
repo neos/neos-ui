@@ -121,13 +121,15 @@ export default class ContentCanvas extends Component {
         const documentInformation = iframeWindow['@Neos.Neos.Ui:DocumentInformation'];
 
         // TODO: convert to single action: "guestFrameChange"
-        setContextPath(documentInformation.metaData.contextPath);
-        setPreviewUrl(documentInformation.metaData.previewUrl);
 
+        // Add nodes before setting the new context path to prevent action ordering issues
         Object.keys(documentInformation.nodes).forEach(contextPath => {
             const node = documentInformation.nodes[contextPath];
             addNode(contextPath, node);
         });
+
+        setContextPath(documentInformation.metaData.contextPath);
+        setPreviewUrl(documentInformation.metaData.previewUrl);
 
         //
         // Initialize node components

@@ -105,7 +105,6 @@ export const uploadAsset = (file, siteNodeName, metadata = 'Image') => {
     });
 };
 
-
 /**
  * searchTerm:se
  * workspaceName:user-admin
@@ -114,15 +113,6 @@ export const uploadAsset = (file, siteNodeName, metadata = 'Image') => {
  * nodeTypes[]:TYPO3.Neos.NodeTypes:Page
  */
 export const searchNodes = options => fetch(urlWithParams('/neos/service/nodes', options), {
-    method: 'GET',
-    credentials: 'include'
-});
-
-/**
- * workspaceName:user-admin
-dimensions[language][]:en_US
- */
-export const getNode = (nodeIdentifier, options) => fetch(urlWithParams('/neos/service/nodes/', options), {
     method: 'GET',
     credentials: 'include'
 });

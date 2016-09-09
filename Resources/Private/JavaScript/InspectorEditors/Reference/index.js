@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
 const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
-const {searchNodes, getNode} = ApiEndpoints;
+const {searchNodes} = ApiEndpoints;
 
 @connect($transform({
     activeWorkspace: $get('cr.workspaces.active'),
@@ -52,7 +52,7 @@ export default class ReferenceEditor extends Component {
 
                 return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => ({
                     label: node.querySelector('.node-label').innerText,
-                    value: node.querySelector('.node-identifier').innerText,
+                    value: node.querySelector('.node-identifier').innerText
                 }));
             })
             .then(optionsForForm => {
@@ -62,4 +62,4 @@ export default class ReferenceEditor extends Component {
 
         return <SelectBox options={options} value={this.props.value} onSelect={commit}/>;
     }
-};
+}

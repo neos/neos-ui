@@ -179,7 +179,7 @@ export default class SelectBox extends Component {
     loadOptions() {
         const options = this.props.options;
         return isFunction(options) && options({
-            value: '',
+            value: this.state.searchValue,
             callback: this.handleOptionsLoad
         });
     }

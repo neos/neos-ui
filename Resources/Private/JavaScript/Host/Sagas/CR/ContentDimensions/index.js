@@ -1,24 +1,34 @@
 import {takeLatest} from 'redux-saga';
-import {select} from 'redux-saga/effects';
+import {put, select} from 'redux-saga/effects';
 
-import {actionTypes} from 'Host/Redux/index';
+import {actions, actionTypes} from 'Host/Redux/index';
+import {currentDocumentNode} from 'Host/Selectors/CR/Nodes/index';
+import {api} from 'Shared/Utilities/';
 
 import {$get} from 'plow-js';
 
-function * updateContentCanvasSrc(action) {
-    const {name, presetName} = action.payload;
-
-    console.debug('🍅 selected preset', name, presetName);
-
+function * updateContentCanvasSrc() {
     const activeDimensions = yield select($get('cr.contentDimensions.active'));
+    const contextPath = yield select(currentDocumentNode);
 
-    console.debug('🌠 active dimensions', activeDimensions.toJS());
+    const {q} = api.get();
+    const nodes = yield q(contextPath).context(
+        {
+            dimensions: activeDimensions.toJS(),
+            targetDimensions: activeDimensions.map(dimensionValues => dimensionValues[0]).toJS()
+        }
+    ).get(0);
 
-    // TODO Get src for current node in active dimension
+    if (nodes.length > 0) {
+        const [node] = nodes;
+        yield put(actions.UI.ContentCanvas.setSrc(node.uri));
+    } else {
+        console.log('TODO Show modal dialog with translation options');
+    }
 }
 
 function * watchSelectPreset() {
-    // It is okay to cancel previous preset selections
+    // Only process the latest selection and cancel previous ones
     yield * takeLatest(actionTypes.CR.ContentDimensions.SELECT_PRESET, updateContentCanvasSrc);
 }
 

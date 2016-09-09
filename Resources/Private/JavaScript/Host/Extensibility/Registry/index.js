@@ -24,7 +24,7 @@ class SynchronousRegistry {
 
     has(key) {
         // TODO: "key" must be string!
-        return this._registry.hasOwnProperty(key);
+        return {}.hasOwnProperty.call(this._registry, key);
     }
 
     getAllAsObject() {
@@ -58,15 +58,15 @@ class CkEditorFormattingRulesRegistry extends SynchronousRegistry {
              */
             addToFormatTags: tagName =>
                 config => {
-                    if (config.format_tags) {
-                        config.format_tags += ';';
+                    if (config.format_tags) { // eslint-disable-line camelcase
+                        config.format_tags += ';'; // eslint-disable-line camelcase
                     } else {
-                        config.format_tags = '';
+                        config.format_tags = ''; // eslint-disable-line camelcase
                     }
 
-                    config.format_tags += tagName;
+                    config.format_tags += tagName; // eslint-disable-line camelcase
 
-                    config = this.config.add("Format")(config);
+                    config = this.config.add('Format')(config);
 
                     return config;
                 },
@@ -83,8 +83,8 @@ class CkEditorFormattingRulesRegistry extends SynchronousRegistry {
                     }
 
                     return config;
-                },
-        }
+                }
+        };
     }
 }
 
@@ -128,7 +128,6 @@ const registry = {
             - \`config\` (function, optional): This function needs to adjust the CKEditor config to e.g. configure ACF correctly.
               The function gets passed in the config so-far, and needs to return the modified config.
               See "CKEditor Configuration Helpers" below for helper functions.
-
 
             ## CKEditor Configuration Helpers
 

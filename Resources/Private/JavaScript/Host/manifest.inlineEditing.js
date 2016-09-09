@@ -223,8 +223,8 @@ export const configureInlineEditing = registry => {
         icon: 'indent',
         hoverStyle: 'brand',
         isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
-            return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1)
-                && formattingUnderCursor['indent'] !== registry.ckEditor.toolbar.TRISTATE_DISABLED
+            return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
+                formattingUnderCursor.indent !== registry.ckEditor.toolbar.TRISTATE_DISABLED;
         }
     });
 
@@ -232,7 +232,7 @@ export const configureInlineEditing = registry => {
     registry.ckEditor.formattingRules.add('outdent', {
         command: 'outdent'
     });
-      registry.ckEditor.toolbar.add('outdent', {
+    registry.ckEditor.toolbar.add('outdent', {
         formattingRule: 'outdent',
         component: IconButton,
         callbackPropName: 'onClick',
@@ -240,11 +240,10 @@ export const configureInlineEditing = registry => {
         icon: 'outdent',
         hoverStyle: 'brand',
         isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
-            return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1)
-                && formattingUnderCursor['outdent'] !== registry.ckEditor.toolbar.TRISTATE_DISABLED
+            return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
+                formattingUnderCursor.outdent !== registry.ckEditor.toolbar.TRISTATE_DISABLED;
         }
     });
-
 
     /**
      * Tables
@@ -259,7 +258,7 @@ export const configureInlineEditing = registry => {
         callbackPropName: 'onClick',
 
         icon: 'table',
-        hoverStyle: 'brand',
+        hoverStyle: 'brand'
     });
 
     /**
@@ -274,6 +273,6 @@ export const configureInlineEditing = registry => {
         callbackPropName: 'onClick',
 
         icon: 'table',
-        hoverStyle: 'brand',
+        hoverStyle: 'brand'
     });
 };

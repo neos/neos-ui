@@ -13,13 +13,12 @@ import {selectors} from 'Host/Redux/index';
 const isTopLevelToolbarComponent = componentDefinition =>
     componentDefinition.id.indexOf('/') === -1;
 
-
 export const hideDisallowedToolbarComponents = (enabledFormattingRuleIds, formattingUnderCursor) => componentDefinition => {
     if (componentDefinition.isVisibleWhen) {
         return componentDefinition.isVisibleWhen(enabledFormattingRuleIds, formattingUnderCursor);
-    } else {
-        return enabledFormattingRuleIds.indexOf(componentDefinition.formattingRule) !== -1;
     }
+
+    return enabledFormattingRuleIds.indexOf(componentDefinition.formattingRule) !== -1;
 };
 /**
  * Render sub components for the toolbar, implementing the API as described in registry.ckEditor.toolbar.
@@ -30,7 +29,7 @@ const renderToolbarComponents = (context, toolbarComponents, enabledFormattingRu
         .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds, formattingUnderCursor))
         .map((componentDefinition, index) => {
             const {component, formattingRule, callbackPropName, ...props} = componentDefinition;
-            const isActive = formattingRule && $get(formattingRule, formattingUnderCursor) == registry.ckEditor.toolbar.TRISTATE_ON;
+            const isActive = formattingRule && $get(formattingRule, formattingUnderCursor) === registry.ckEditor.toolbar.TRISTATE_ON;
 
             props[callbackPropName] = () => {
                 // !!!! TODO: next line is extremely dirty!

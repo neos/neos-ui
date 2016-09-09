@@ -112,7 +112,7 @@ const currentlyEditedPropertyName = $get('ui.contentCanvas.currentlyEditedProper
 const enabledFormattingRuleIds = createSelector(
     [
         Nodes.focusedSelector,
-        currentlyEditedPropertyName,
+        currentlyEditedPropertyName
     ],
     (focusedNode, currentlyEditedPropertyName) =>
         calculateEnabledFormattingRulesForNode(focusedNode)[currentlyEditedPropertyName] || []

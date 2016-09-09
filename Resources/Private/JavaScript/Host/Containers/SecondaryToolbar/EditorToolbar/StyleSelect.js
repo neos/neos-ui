@@ -42,9 +42,8 @@ export default class StyleSelect extends Component {
         if (style && style.formattingRule) {
             this.props.context.NeosCKEditorApi.toggleFormat(style.formattingRule);
         } else {
-            console.warn("Style formatting not set: ", selectedStyleId, style);
+            console.warn('Style formatting not set: ', selectedStyleId, style);
         }
-
     }
 
     render() {

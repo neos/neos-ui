@@ -118,7 +118,6 @@ const createCKEditorAPI = CKEDITOR => {
         },
 
         createEditor(dom, finalOptions, propertyName, onChange) {
-
             dom.contentEditable = 'true';
 
             const editor = CKEDITOR.inline(dom, finalOptions);
@@ -129,7 +128,7 @@ const createCKEditorAPI = CKEDITOR => {
                         // The next two lines actually do the ACF auto-configuration
                         const editorFeature = editor.ui.create(button);
                         editor.addFeature(editorFeature);
-                    })
+                    });
                 }
             });
 

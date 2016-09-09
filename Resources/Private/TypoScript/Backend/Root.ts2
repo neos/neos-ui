@@ -21,6 +21,11 @@ backend = TYPO3.TypoScript:Template {
             //
             label = 'Content'
             icon = 'file'
+            uri = TYPO3.Neos:NodeUri {
+                node = ${q(site).parent().children().get(0)}
+            }
+            target = 'ContentCanvas'
+            
             children = Neos.Neos.Ui:ArrayCollection {
                 collection = ${q(site).parent().children().get()}
                 itemName = 'siteNode'
@@ -34,6 +39,7 @@ backend = TYPO3.TypoScript:Template {
                     uri = TYPO3.Neos:NodeUri {
                         node = ${siteNode}
                     }
+                    target = 'ContentCanvas'
                     isActive = ${Neos.Ui.Sites.isActive(siteNode)}
                 }
             }
@@ -45,12 +51,21 @@ backend = TYPO3.TypoScript:Template {
             itemName = 'module'
             itemKey = 'moduleName'
             
-            // ->uriFor('index', array('module' => $modulePath), 'Backend\Module', 'TYPO3.Neos');
-            
             itemKeyRenderer = ${moduleName}
             itemRenderer = TYPO3.TypoScript:RawArray {
                 label = ${module.label}
                 icon = ${module.icon}
+                uri = TYPO3.TypoScript:UriBuilder {
+                    package = 'TYPO3.Neos'
+                    controller = 'Backend\\Module'
+                    action = 'index'
+                    absolute = true
+                    arguments {
+                        module = ${moduleName}
+                    }
+                }
+                target = 'Window'
+                
                 children = Neos.Neos.Ui:ArrayCollection {
                     collection = ${module.submodules}
                     itemName = 'submodule'
@@ -69,6 +84,7 @@ backend = TYPO3.TypoScript:Template {
                             }
                         }
                         isActive = true
+                        target = 'Window'
                     }
                 }
 

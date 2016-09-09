@@ -76,8 +76,8 @@ export default class Drawer extends Component {
 
         return children && children.length ? (
             <ToggablePanel isOpen={true} className={style.drawer__menuItem} key={key}>
-                <ToggablePanel.Header className={style.drawer__menuItem__header}>
-					{icon && <Icon icon={icon} padded="right"/>}
+                <ToggablePanel.Header className={style.drawer__menuItem__header} onClick={onClick}>
+                    {icon && <Icon icon={icon} padded="right"/>}
 
                     {moduleLabel(label)}
                 </ToggablePanel.Header>

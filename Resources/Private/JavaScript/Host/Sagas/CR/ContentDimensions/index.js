@@ -1,8 +1,7 @@
 import {takeLatest} from 'redux-saga';
-import {call, put, select} from 'redux-saga/effects';
+import {select} from 'redux-saga/effects';
 
-import {actionTypes, actions} from 'Host/Redux/index';
-import {publish, discard} from 'API/Endpoints/index';
+import {actionTypes} from 'Host/Redux/index';
 
 import {$get} from 'plow-js';
 
@@ -11,13 +10,15 @@ function * updateContentCanvasSrc(action) {
 
     console.debug('🍅 selected preset', name, presetName);
 
-    // Get src for node in selected dimension
     const activeDimensions = yield select($get('cr.contentDimensions.active'));
 
     console.debug('🌠 active dimensions', activeDimensions.toJS());
+
+    // TODO Get src for current node in active dimension
 }
 
 function * watchSelectPreset() {
+    // It is okay to cancel previous preset selections
     yield * takeLatest(actionTypes.CR.ContentDimensions.SELECT_PRESET, updateContentCanvasSrc);
 }
 

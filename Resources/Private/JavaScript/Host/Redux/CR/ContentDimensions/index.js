@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import Immutable, {List, Map} from 'immutable';
-import {$set, $head, $get} from 'plow-js';
+import {$set, $get} from 'plow-js';
 
 import {handleActions} from 'Shared/Utilities/index';
 import {actionTypes as system} from 'Host/Redux/System/index';
@@ -22,7 +22,7 @@ const selectPreset = createAction(SELECT_PRESET, (name, presetName) => ({name, p
 /**
  * Sets the currently active content dimensions
  */
-const setActive = createAction(SET_ACTIVE, (dimensionValues) => ({dimensionValues}));
+const setActive = createAction(SET_ACTIVE, dimensionValues => ({dimensionValues}));
 
 //
 // Export the actions

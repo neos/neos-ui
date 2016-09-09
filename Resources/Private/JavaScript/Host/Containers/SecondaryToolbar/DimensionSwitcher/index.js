@@ -20,7 +20,7 @@ const SelectedPreset = props => {
             {presetLabel}
         </span>
     );
-}
+};
 SelectedPreset.propTypes = {
     icon: PropTypes.string.isRequired,
     dimensionLabel: PropTypes.string.isRequired,
@@ -43,9 +43,9 @@ const DimensionSelector = props => {
     return (
         <li key={dimensionName} className={style.dimensionCategory}>
             <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
-            <I18n id={dimensionLabel} />
+            <I18n id={dimensionLabel}/>
             <br/>
-            <SelectBox options={presetOptions} onSelect={onPresetSelect} value={activePreset} />
+            <SelectBox options={presetOptions} onSelect={onPresetSelect} value={activePreset}/>
         </li>
     );
 };
@@ -69,7 +69,8 @@ export default class DimensionSwitcher extends Component {
     static propTypes = {
         contentDimensions: PropTypes.object.isRequired,
         activePresets: PropTypes.object.isRequired,
-        allowedPresets: PropTypes.object.isRequired
+        allowedPresets: PropTypes.object.isRequired,
+        selectPreset: PropTypes.func.isRequired
     };
 
     static defaultProps = {
@@ -90,21 +91,25 @@ export default class DimensionSwitcher extends Component {
                 <DropDown.Header className={style.dropDown__btn}>
                     {contentDimensions.map((dimensionConfiguration, dimensionName) =>
                         <SelectedPreset
+                            key={dimensionName}
                             dimensionName={dimensionName}
                             icon={dimensionConfiguration.get('icon')}
                             dimensionLabel={dimensionConfiguration.get('label')}
-                            presetLabel={activePresets.get(dimensionName).get('label')} />
+                            presetLabel={activePresets.get(dimensionName).get('label')}
+                            />
                     )}
                 </DropDown.Header>
                 <DropDown.Contents className={style.dropDown__contents}>
                     {contentDimensions.map((dimensionConfiguration, dimensionName) =>
                         <DimensionSelector
+                            key={dimensionName}
                             dimensionName={dimensionName}
                             icon={dimensionConfiguration.get('icon')}
                             dimensionLabel={dimensionConfiguration.get('label')}
                             presets={dimensionConfiguration.get('presets').filter((presetConfiguration, presetName) => allowedPresets.get(dimensionName).contains(presetName))}
                             activePreset={activePresets.get(dimensionName).get('name')}
-                            onSelect={selectPreset} />
+                            onSelect={selectPreset}
+                            />
                     )}
                 </DropDown.Contents>
             </DropDown>

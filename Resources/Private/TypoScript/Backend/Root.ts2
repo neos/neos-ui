@@ -44,7 +44,9 @@ backend = TYPO3.TypoScript:Template {
             collection = ${Configuration.setting('TYPO3.Neos.modules')}
             itemName = 'module'
             itemKey = 'moduleName'
-
+            
+            // ->uriFor('index', array('module' => $modulePath), 'Backend\Module', 'TYPO3.Neos');
+            
             itemKeyRenderer = ${moduleName}
             itemRenderer = TYPO3.TypoScript:RawArray {
                 label = ${module.label}
@@ -52,10 +54,20 @@ backend = TYPO3.TypoScript:Template {
                 children = Neos.Neos.Ui:ArrayCollection {
                     collection = ${module.submodules}
                     itemName = 'submodule'
+                    itemKey = 'submoduleName'
+                    
                     itemRenderer = TYPO3.TypoScript:RawArray {
                         icon = ${submodule.icon}
                         label = ${submodule.label}
-                        uri = ''
+                        uri = TYPO3.TypoScript:UriBuilder {
+                            package = 'TYPO3.Neos'
+                            controller = 'Backend\\Module'
+                            action = 'index'
+                            absolute = true
+                            arguments {
+                                module = ${moduleName + '/' + submoduleName}
+                            }
+                        }
                         isActive = true
                     }
                 }

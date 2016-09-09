@@ -2,6 +2,24 @@ import {api} from 'Shared/Utilities/';
 
 const fetchJson = (endpoint, options) => fetch(endpoint, options).then(res => res.json());
 
+const urlWithParams = (urlString, params = {}) => {
+    const url = new URL(window.location.origin + urlString);
+    const searchParams = new URLSearchParams();
+    Object.keys(params).forEach(key => {
+        const value = params[key];
+        if (Array.isArray(value)) {
+            value.forEach(v =>
+                searchParams.append(`${key}[]`, v)
+            );
+        } else {
+            searchParams.append(key, value);
+        }
+    });
+    url.search = searchParams.toString();
+
+    return url.toString();
+};
+
 export const change = changes => fetchJson('/neos!/service/change', {
     method: 'POST',
     credentials: 'include',
@@ -86,3 +104,25 @@ export const uploadAsset = (file, siteNodeName, metadata = 'Image') => {
         body: data
     });
 };
+
+
+/**
+ * searchTerm:se
+ * workspaceName:user-admin
+ * dimensions[language][]:en_US
+ * contextNode:/sites/neosdemo@user-admin;language=en_US
+ * nodeTypes[]:TYPO3.Neos.NodeTypes:Page
+ */
+export const searchNodes = options => fetch(urlWithParams('/neos/service/nodes', options), {
+    method: 'GET',
+    credentials: 'include'
+});
+
+/**
+ * workspaceName:user-admin
+dimensions[language][]:en_US
+ */
+export const getNode = (nodeIdentifier, options) => fetch(urlWithParams('/neos/service/nodes/', options), {
+    method: 'GET',
+    credentials: 'include'
+});

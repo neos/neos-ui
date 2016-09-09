@@ -3,6 +3,7 @@ import Boolean from './Boolean/index';
 import DateTime from './DateTime/index';
 import Image from './Image/index';
 import SelectBox from './SelectBox/index';
+import Reference from './Reference/index';
 
 const {manifest} = window['@Neos:HostPluginAPI'];
 
@@ -52,5 +53,9 @@ manifest('inspectorEditors', registry => {
         }
 
         return createImageVariant(uuidOfImage, adjustments);
+    });
+
+    registry.inspector.editors.add('TYPO3.Neos/Inspector/Editors/ReferenceEditor', {
+        component: Reference
     });
 });

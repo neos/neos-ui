@@ -192,6 +192,9 @@ export default class SelectBox extends Component {
         this.setState({
             options: data
         });
+
+        // After options loaded, re-try to select the current element!
+        this.select(this.props.value, false);
     }
 
     /**

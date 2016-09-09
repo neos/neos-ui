@@ -65,10 +65,10 @@ const activePresets = createSelector([
 ], (active, byName) => {
     // TODO We might want to use the selected preset values (pass from host frame or content canvas) instead of individual dimension values
     return active.map((dimensionValues, name) => {
-        const dimensionConfiguration = byName.get(name);
-        const presets = dimensionConfiguration.get('presets');
+        const dimensionConfiguration = $get(name, byName);
+        const presets = $get('presets', dimensionConfiguration);
         const activePreset = presets.findKey(preset => preset.get('values').equals(dimensionValues));
-        const presetName = activePreset || dimensionConfiguration.get('defaultPreset');
+        const presetName = activePreset || $get('defaultPreset', dimensionConfiguration);
         return presets.get(presetName).set('name', presetName);
     });
 });

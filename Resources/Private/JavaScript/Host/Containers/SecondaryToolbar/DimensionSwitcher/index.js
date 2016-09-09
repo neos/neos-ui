@@ -5,12 +5,12 @@ import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
 import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 import style from './style.css';
-import {$get, $transform} from 'plow-js';
+import {$map, $get, $transform} from 'plow-js';
 import {Map} from 'immutable';
 import {selectors, actions} from 'Host/Redux/index';
 import I18n from 'Host/Containers/I18n/';
 
-// TODO Add title prop  to Icon component
+// TODO Add title prop to Icon component
 const SelectedPreset = props => {
     const {icon, dimensionLabel, presetLabel, dimensionName} = props;
 
@@ -31,10 +31,11 @@ SelectedPreset.propTypes = {
 const DimensionSelector = props => {
     const {icon, dimensionLabel, presets, dimensionName, activePreset, onSelect} = props;
 
-    const presetOptions = presets.map((presetConfiguration, presetName) => ({
-        label: presetConfiguration.get('label'),
-        value: presetName
-    })).toArray();
+    const presetOptions = $map(
+        (presetConfiguration, presetName) => $transform({label: $get('label'), value: presetName}, presetConfiguration),
+        [],
+        presets
+    ).toArray();
 
     const onPresetSelect = presetName => {
         onSelect(dimensionName, presetName);
@@ -84,7 +85,7 @@ export default class DimensionSwitcher extends Component {
     }
 
     render() {
-        const {contentDimensions, activePresets, allowedPresets, selectPreset} = this.props;
+        const {contentDimensions, activePresets, selectPreset} = this.props;
 
         return (
             <DropDown className={style.dropDown}>
@@ -93,9 +94,9 @@ export default class DimensionSwitcher extends Component {
                         <SelectedPreset
                             key={dimensionName}
                             dimensionName={dimensionName}
-                            icon={dimensionConfiguration.get('icon')}
-                            dimensionLabel={dimensionConfiguration.get('label')}
-                            presetLabel={activePresets.get(dimensionName).get('label')}
+                            icon={$get('icon', dimensionConfiguration)}
+                            dimensionLabel={$get('label', dimensionConfiguration)}
+                            presetLabel={$get([dimensionName, 'label'], activePresets)}
                             />
                     )}
                 </DropDown.Header>
@@ -104,15 +105,24 @@ export default class DimensionSwitcher extends Component {
                         <DimensionSelector
                             key={dimensionName}
                             dimensionName={dimensionName}
-                            icon={dimensionConfiguration.get('icon')}
-                            dimensionLabel={dimensionConfiguration.get('label')}
-                            presets={dimensionConfiguration.get('presets').filter((presetConfiguration, presetName) => allowedPresets.get(dimensionName).contains(presetName))}
-                            activePreset={activePresets.get(dimensionName).get('name')}
+                            icon={$get('icon', dimensionConfiguration)}
+                            dimensionLabel={$get('label', dimensionConfiguration)}
+                            presets={this.presetsForDimension(dimensionName)}
+                            activePreset={$get([dimensionName, 'name'], activePresets)}
                             onSelect={selectPreset}
                             />
                     )}
                 </DropDown.Contents>
             </DropDown>
+        );
+    }
+
+    presetsForDimension(dimensionName) {
+        const {contentDimensions, allowedPresets} = this.props;
+        const dimensionConfiguration = $get(dimensionName, contentDimensions);
+
+        return dimensionConfiguration.get('presets').filter(
+            (presetConfiguration, presetName) => allowedPresets.get(dimensionName).contains(presetName)
         );
     }
 }

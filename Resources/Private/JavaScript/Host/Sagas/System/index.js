@@ -46,6 +46,12 @@ export const getConfiguration = discover(function * () {
     return JSON.parse(appContainer.querySelector('[data-json="configuration"]').innerHTML);
 });
 
+export const getMenu = discover(function * () {
+	const appContainer = yield getAppContainer;
+
+    return JSON.parse(appContainer.querySelector('[data-json="menu"]').innerHTML);
+});
+
 export const getTranslations = discover(function * () {
     const appContainer = yield getAppContainer;
 

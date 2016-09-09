@@ -23,7 +23,21 @@ const moduleLabel = (label, sourceName = 'Main') =>
 export default class Drawer extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
-        hideDrawer: PropTypes.func.isRequired
+        hideDrawer: PropTypes.func.isRequired,
+		menuData: PropTypes.objectOf(
+			PropTypes.shape({
+				icon: PropTypes.string,
+				label: PropTypes.string.isRequired,
+				children: PropTypes.arrayOf(
+					PropTypes.shape({
+						icon: PropTypes.string,
+						label: PropTypes.string.isRequired,
+						uri: PropTypes.string.isRequired,
+						isActive: PropTypes.bool.isReqired
+					})
+				)
+			})
+		).isRequired
     };
 
     shouldComponentUpdate(...args) {
@@ -49,42 +63,21 @@ export default class Drawer extends Component {
     }
 
     renderMenu() {
-        const staticMenuData = [{
-            icon: 'file',
-            title: moduleLabel('content_menu_menuPanel_content'),
-            children: [{
-                icon: 'globe',
-                title: 'test'
-            }]
-        }, {
-            icon: 'briefcase',
-            title: moduleLabel('management_label', 'Modules'),
-            children: [{
-                icon: 'th-large',
-                title: 'Workspaces'
-            }, {
-                icon: 'camera',
-                title: 'Media'
-            }, {
-                icon: 'calendar',
-                title: 'History'
-            }]
-        }];
+        const {menuData} = this.props;
 
-        return staticMenuData.map((item, index) => this.renderMenuItem(item, index));
+        return Object.keys(menuData).map(k => menuData[k]).map((item, index) => this.renderMenuItem(item, index));
     }
 
     renderMenuItem(item, key) {
-        const {title, icon, children} = item;
-        const onClick = () => {
-            console.log(`change to menu page "${title}"`);
-        };
+        const {label, icon, children, uri} = item;
+        const onClick = () => window.location.href = uri;
 
         return children && children.length ? (
             <ToggablePanel isOpen={true} className={style.drawer__menuItem} key={key}>
                 <ToggablePanel.Header className={style.drawer__menuItem__header}>
-                    <Icon icon={icon} padded="right"/>
-                    {title}
+					{icon && <Icon icon={icon} padded="right"/>}
+
+                    {moduleLabel(label)}
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {children.map((item, index) => this.renderMenuItem(item, index))}
@@ -92,8 +85,9 @@ export default class Drawer extends Component {
             </ToggablePanel>
         ) : (
             <Button className={style.drawer__menuItemBtn} onClick={onClick} key={key} style="transparent">
-                <Icon icon={icon} padded="right"/>
-                {title}
+				{icon && <Icon icon={icon} padded="right"/>}
+
+                {moduleLabel(label)}
             </Button>
         );
     }

@@ -20,7 +20,7 @@ backend = TYPO3.TypoScript:Template {
             // TODO: I18n
             //
             label = 'Content'
-            icon = 'page'
+            icon = 'file'
             children = Neos.Neos.Ui:ArrayCollection {
                 collection = ${q(site).parent().children().get()}
                 itemName = 'siteNode'

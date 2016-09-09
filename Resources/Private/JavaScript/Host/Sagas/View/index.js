@@ -48,8 +48,6 @@ function * applicationViewSaga(store) {
     const configuration = yield getConfiguration;
     const translations = yield getTranslations;
 
-	console.log(menu);
-
     //
     // After everything was initilalized correctly, render the application itself.
     //

@@ -47,7 +47,7 @@ export const getConfiguration = discover(function * () {
 });
 
 export const getMenu = discover(function * () {
-	const appContainer = yield getAppContainer;
+    const appContainer = yield getAppContainer;
 
     return JSON.parse(appContainer.querySelector('[data-json="menu"]').innerHTML);
 });

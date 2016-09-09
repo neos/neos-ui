@@ -24,20 +24,20 @@ export default class Drawer extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         hideDrawer: PropTypes.func.isRequired,
-		menuData: PropTypes.objectOf(
-			PropTypes.shape({
-				icon: PropTypes.string,
-				label: PropTypes.string.isRequired,
-				children: PropTypes.arrayOf(
-					PropTypes.shape({
-						icon: PropTypes.string,
-						label: PropTypes.string.isRequired,
-						uri: PropTypes.string.isRequired,
-						isActive: PropTypes.bool.isReqired
-					})
-				)
-			})
-		).isRequired
+        menuData: PropTypes.objectOf(
+            PropTypes.shape({
+                icon: PropTypes.string,
+                label: PropTypes.string.isRequired,
+                children: PropTypes.arrayOf(
+                    PropTypes.shape({
+                        icon: PropTypes.string,
+                        label: PropTypes.string.isRequired,
+                        uri: PropTypes.string.isRequired,
+                        isActive: PropTypes.bool.isReqired
+                    })
+                )
+            })
+        ).isRequired
     };
 
     shouldComponentUpdate(...args) {
@@ -70,7 +70,9 @@ export default class Drawer extends Component {
 
     renderMenuItem(item, key) {
         const {label, icon, children, uri} = item;
-        const onClick = () => window.location.href = uri;
+        const onClick = () => {
+            window.location.href = uri;
+        };
 
         return children && children.length ? (
             <ToggablePanel isOpen={true} className={style.drawer__menuItem} key={key}>

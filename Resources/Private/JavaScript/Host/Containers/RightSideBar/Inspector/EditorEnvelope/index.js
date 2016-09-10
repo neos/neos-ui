@@ -57,6 +57,7 @@ export default class EditorEnvelope extends Component {
             transientValueRaw.toJS() : transientValueRaw;
 
         return {
+            identifier: id,
             label,
             node,
             value: transientValue ? transientValue.value : sourceValue,

@@ -30,6 +30,7 @@ const closestContextPath = el => {
     setGuestContext: actions.Guest.setContext,
     setContextPath: actions.UI.ContentCanvas.setContextPath,
     setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
+    setActiveDimensions: actions.CR.ContentDimensions.setActive,
     formattingUnderCursor: actions.UI.ContentCanvas.formattingUnderCursor,
     setCurrentlyEditedPropertyName: actions.UI.ContentCanvas.setCurrentlyEditedPropertyName,
     addNode: actions.CR.Nodes.add,
@@ -48,6 +49,7 @@ export default class ContentCanvas extends Component {
         setGuestContext: PropTypes.func.isRequired,
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
+        setActiveDimensions: PropTypes.func.isRequired,
         addNode: PropTypes.func.isRequired,
         formattingUnderCursor: PropTypes.func.isRequired,
         setCurrentlyEditedPropertyName: PropTypes.func.isRequired,
@@ -111,6 +113,7 @@ export default class ContentCanvas extends Component {
             setGuestContext,
             setContextPath,
             setPreviewUrl,
+            setActiveDimensions,
             addNode,
             hoverNode,
             unHoverNode,
@@ -137,6 +140,7 @@ export default class ContentCanvas extends Component {
 
         setContextPath(documentInformation.metaData.contextPath);
         setPreviewUrl(documentInformation.metaData.previewUrl);
+        setActiveDimensions(documentInformation.metaData.contentDimensions.active);
 
         //
         // Initialize node components

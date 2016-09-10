@@ -132,5 +132,8 @@ const activePresets = createSelector([
 // Export the selectors
 //
 export const selectors = {
-    activePresets
+    active,
+    activePresets,
+    allowedPresets,
+    byName
 };

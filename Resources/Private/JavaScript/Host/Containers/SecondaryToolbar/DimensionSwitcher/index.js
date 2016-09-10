@@ -60,8 +60,8 @@ DimensionSelector.propTypes = {
 };
 
 @connect($transform({
-    contentDimensions: $get('cr.contentDimensions.byName'),
-    allowedPresets: $get('cr.contentDimensions.allowedPresets'),
+    contentDimensions: selectors.CR.ContentDimensions.byName,
+    allowedPresets: selectors.CR.ContentDimensions.allowedPresets,
     activePresets: selectors.CR.ContentDimensions.activePresets
 }), {
     selectPreset: actions.CR.ContentDimensions.selectPreset

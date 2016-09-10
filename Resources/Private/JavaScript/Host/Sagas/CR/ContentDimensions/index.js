@@ -1,14 +1,12 @@
 import {takeLatest} from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
 
-import {actions, actionTypes} from 'Host/Redux/index';
+import {actions, actionTypes, selectors} from 'Host/Redux/index';
 import {currentDocumentNode} from 'Host/Selectors/CR/Nodes/index';
 import {api} from 'Shared/Utilities/';
 
-import {$get} from 'plow-js';
-
 function * updateContentCanvasSrc() {
-    const activeDimensions = yield select($get('cr.contentDimensions.active'));
+    const activeDimensions = yield select(selectors.CR.ContentDimensions.active);
     const contextPath = yield select(currentDocumentNode);
 
     const {q} = api.get();

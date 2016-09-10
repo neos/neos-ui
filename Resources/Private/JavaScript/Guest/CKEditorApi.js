@@ -15,8 +15,9 @@ const createCKEditorAPI = CKEDITOR => {
     }
 
     // an object with the following keys:
-    // - formattingAndStyling
-    // - onActiveFormattingChange
+    // - formattingRules (from registry)
+    // - setFormattingUnderCursor
+    // - setCurrentlyEditedPropertyName
     let editorConfig = null;
     let currentEditor = null;
 
@@ -25,29 +26,29 @@ const createCKEditorAPI = CKEDITOR => {
             // TODO: why was the previous code all inside here? weirdo...
         }
 
-        const activeState = {};
-        Object.keys(editorConfig.formattingAndStyling).forEach(key => {
-            const description = editorConfig.formattingAndStyling[key];
+        const formattingUnderCursor = {};
+        Object.keys(editorConfig.formattingRules).forEach(key => {
+            const formattingRule = editorConfig.formattingRules[key];
 
-            if (description.command !== undefined) {
-                if (!editor.getCommand(description.command)) {
-                    activeState[key] = false;
+            if (formattingRule.command !== undefined) {
+                if (!editor.getCommand(formattingRule.command)) {
+                    formattingUnderCursor[key] = false;
                     return;
                 }
 
-                activeState[key] = editor.getCommand(description.command).state === CKEDITOR.TRISTATE_ON;
+                formattingUnderCursor[key] = editor.getCommand(formattingRule.command).state;
                 return;
             }
 
-            if (description.style !== undefined) {
+            if (formattingRule.style !== undefined) {
                 if (!editor.elementPath()) {
-                    activeState[key] = false;
+                    formattingUnderCursor[key] = false;
                     return;
                 }
 
-                const style = new CKEDITOR.style(description.style); // eslint-disable-line babel/new-cap
+                const style = new CKEDITOR.style(formattingRule.style); // eslint-disable-line babel/new-cap
 
-                activeState[key] = style.checkActive(editor.elementPath(), editor);
+                formattingUnderCursor[key] = style.checkActive(editor.elementPath(), editor);
                 return;
             }
 
@@ -58,7 +59,7 @@ const createCKEditorAPI = CKEDITOR => {
             `);
         });
 
-        editorConfig.onActiveFormattingChange(activeState);
+        editorConfig.setFormattingUnderCursor(formattingUnderCursor);
     };
 
     //
@@ -73,8 +74,8 @@ const createCKEditorAPI = CKEDITOR => {
         },
 
         toggleFormat(formatting) {
-            const description = editorConfig.formattingAndStyling[formatting];
-            if (!description) {
+            const formattingRule = editorConfig.formattingRules[formatting];
+            if (!formattingRule) {
                 console.warn(`Formatting instruction ${formatting} not found.`);
                 return;
             }
@@ -82,24 +83,24 @@ const createCKEditorAPI = CKEDITOR => {
                 console.warn('Current editor not found!');
                 return;
             }
-            if (description.command !== undefined) {
-                if (!currentEditor.getCommand(description.command)) {
+            if (formattingRule.command !== undefined) {
+                if (!currentEditor.getCommand(formattingRule.command)) {
                     console.warn(`Command ${currentEditor} not found.`);
                     return;
                 }
 
-                currentEditor.execCommand(description.command);
+                currentEditor.execCommand(formattingRule.command);
                 currentEditor.fire('change');
                 handleUserInteractionCallbackFactory(currentEditor)();
                 return;
             }
 
-            if (description.style !== undefined) {
+            if (formattingRule.style !== undefined) {
                 if (!currentEditor.elementPath()) {
                     return;
                 }
 
-                const style = new CKEDITOR.style(description.style); // eslint-disable-line babel/new-cap
+                const style = new CKEDITOR.style(formattingRule.style); // eslint-disable-line babel/new-cap
                 const operation = style.checkActive(currentEditor.elementPath(), currentEditor) ?
                     'removeStyle' : 'applyStyle';
 
@@ -111,23 +112,26 @@ const createCKEditorAPI = CKEDITOR => {
 
             throw new Error(`
                 An error occured while applying a format in CK Editor.
-                The description parameter needs to either have a key "command" or
-                a key "style" - none of which could be found.
+                The description parameter needs to either have a key "command",
+                or "style" - none of which could be found.
             `);
         },
 
-        createEditor(dom, onChange) {
-            const finalOptions = Object.assign(
-                {
-                    removePlugins: 'toolbar,contextmenu,liststyle,tabletools',
-                    allowedContent: true,
-                    extraPlugins: 'removeformat'
-                }
-            );
-
+        createEditor(dom, finalOptions, propertyName, onChange) {
             dom.contentEditable = 'true';
 
             const editor = CKEDITOR.inline(dom, finalOptions);
+
+            editor.on('loaded', () => {
+                if (editor.config.buttons) {
+                    editor.config.buttons.forEach(button => {
+                        // The next two lines actually do the ACF auto-configuration
+                        const editorFeature = editor.ui.create(button);
+                        editor.addFeature(editorFeature);
+                    });
+                }
+            });
+
             const handleUserInteraction = handleUserInteractionCallbackFactory(editor);
 
             editor.once('contentDom', () => {
@@ -135,6 +139,7 @@ const createCKEditorAPI = CKEDITOR => {
 
                 editable.attachListener(editable, 'focus', event => {
                     currentEditor = editor;
+                    editorConfig.setCurrentlyEditedPropertyName(propertyName);
 
                     editable.attachListener(editable, 'keyup', handleUserInteraction);
                     editable.attachListener(editable, 'mouseup', handleUserInteraction);

@@ -32,9 +32,51 @@ export const actions = {
     setActive
 };
 
+/**
+ * Get the currently active dimension values by dimension name
+ *
+ * Structure:
+ *
+ *   {
+ *     language: ["fr"]
+ *   }
+ */
 const active = $get('cr.contentDimensions.active');
-const byName = $get('cr.contentDimensions.byName');
+
+/**
+ * Get the allowed presets for the currently active dimension values by dimension name
+ *
+ * Structure:
+ *
+ *   {
+ *     language: ["en_US", "en_UK", "de", "fr", ...]
+ *   }
+ */
 const allowedPresets = $get('cr.contentDimensions.allowedPresets');
+
+/**
+ * Get dimension configurations by dimension name
+ *
+ * Structure:
+ *
+ *   {
+ *     language: {
+ *       label: "Language",
+ *       icon: "fa-language",
+ *       default: "en_US",
+ *       defaultPreset: "en_US",
+ *       presets: {
+ *         en_US: {
+ *           label: "English (US)",
+ *           values: ["en_US"],
+ *           uriSegment: "en"
+ *         },
+ *         ...
+ *       }
+ *     }
+ *   }
+ */
+const byName = $get('cr.contentDimensions.byName');
 
 //
 // Export the reducer
@@ -59,6 +101,19 @@ export const reducer = handleActions({
     }
 });
 
+/**
+ * Get the currently active dimension presets by dimension name
+ *
+ * Structure:
+ *
+ *   {
+ *     language: {
+ *       name: "da",
+ *       label: "Danish",
+ *       values: ["da"]
+ *     }
+ *   }
+ */
 const activePresets = createSelector([
     active,
     byName

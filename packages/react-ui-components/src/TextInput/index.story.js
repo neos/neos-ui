@@ -1,6 +1,6 @@
 import React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
-import {withKnobs, text, boolean, select} from '@kadira/storybook-addon-knobs';
+import {withKnobs, boolean} from '@kadira/storybook-addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import TextInput from './index.js';
 

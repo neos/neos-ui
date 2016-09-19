@@ -1,23 +1,21 @@
 import React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
+import {withKnobs, text} from '@kadira/storybook-addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import DateInput from './index.js';
 
 storiesOf('DateInput', module)
-    .add('default', () => (
-        <StoryWrapper title="DateInput">
-            <DateInput
-                placeholder="No date set"
-                onChange={action('onChange')}
-                />
-        </StoryWrapper>
-    ))
-    .add('with value', () => (
-        <StoryWrapper title="DateInput">
-            <DateInput
-                placeholder="No date set"
-                value={new Date()}
-                onChange={action('onChange')}
-                />
-        </StoryWrapper>
-    ));
+    .addDecorator(withKnobs)
+    .addWithInfo(
+        'default',
+        'The DateInput selector. Allows to set a placeholder text.',
+        () => (
+            <StoryWrapper>
+                <DateInput
+                    placeholder={text('Placeholder', 'No date set')}
+                    onChange={action('onChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true, source: false}
+    );

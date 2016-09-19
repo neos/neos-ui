@@ -4,16 +4,14 @@ import React, {PropTypes} from 'react';
  * The StoryWrapper is a simple component which can be used to wrap stories
  * of the react-storybook lib.
  */
-export const StoryWrapper = ({title, children, ...rest}) => (
+export const StoryWrapper = ({children, ...rest}) => (
     <div
-        style={{background: '#000', padding: '1rem'}}
+        style={{background: '#000', padding: '1rem', position: 'relative'}}
         {...rest}
         >
-        <h1 style={{fontFamily: 'sans-serif', margin: '0 0 0.5rem'}}>{title}</h1>
-        <div style={{position: 'relative', height: '90vh'}}>{children}</div>
+        {children}
     </div>
 );
 StoryWrapper.propTypes = {
-    title: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired
 };

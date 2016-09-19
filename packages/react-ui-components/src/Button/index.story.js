@@ -1,40 +1,34 @@
 import React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
+import {withKnobs, text, boolean, select} from '@kadira/storybook-addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import Button from './index.js';
 
+const validStyleKeys = ['clean', 'brand', 'lighter', 'transparent'];
+const validHoverStyleKeys = ['clean', 'brand', 'darken'];
+
 storiesOf('Button', module)
-    .add('states', () => (
-        <StoryWrapper title="Button - States">
-            <Button onClick={action('onClick')}>Normal state</Button>
-            <Button onClick={action('onClick')} isActive={true}>Active</Button>
-            <Button onClick={action('onClick')} isDisabled={true}>Disabled</Button>
-            <Button onClick={action('onClick')} isFocused={true}>Focused</Button>
-        </StoryWrapper>
-    ))
-    .add('styles', () => (
-        <StoryWrapper title="Button - Styles">
-            <div style={{backgroundColor: 'yellow'}}>
-                <Button onClick={action('onClick')} style="clean">Clean button</Button>
-                <Button onClick={action('onClick')} style="lighter">Lighter button</Button>
-                <Button onClick={action('onClick')} style="brand" hoverStyle="brand">Brand button</Button>
-                <Button onClick={action('onClick')} style="transparent">Transparent button</Button>
-            </div>
-        </StoryWrapper>
-    ))
-    .add('mouseover styles', () => (
-        <StoryWrapper title="Button - Mouseover-Styles">
-            <Button onClick={action('onClick')} hoverStyle="clean">Hover clean</Button>
-            <Button onClick={action('onClick')} hoverStyle="darken">Hover darken</Button>
-            <Button onClick={action('onClick')} hoverStyle="brand">Hover brand</Button>
-        </StoryWrapper>
-    ))
-    .add('events', () => (
-        <StoryWrapper title="Button - Events">
-            <Button onClick={action('onClick')}>onClick</Button>
-            <Button onClick={action('onClick')} onMouseEnter={action('onMouseEnter')}>onMouseEnter</Button>
-            <Button onClick={action('onClick')} onMouseLeave={action('onMouseLeave')}>onMouseLeave</Button>
-            <Button onClick={action('onClick')} onMouseDown={action('onMouseDown')}>onMouseDown</Button>
-            <Button onClick={action('onClick')} onMouseUp={action('onMouseUp')}>onMouseUp</Button>
-        </StoryWrapper>
-    ));
+    .addDecorator(withKnobs)
+    .addWithInfo(
+        'default',
+        `The Button component.`,
+        () => (
+            <StoryWrapper>
+                <Button
+                    isActive={boolean('Active', false)}
+                    isDisabled={boolean('Disabled', false)}
+                    isFocused={boolean('Focused', false)}
+                    style={select('Style', validStyleKeys, 'clean')}
+                    hoverStyle={select('Hover style', validHoverStyleKeys, 'clean')}
+                    onClick={action('onClick')}
+                    onMouseEnter={action('onMouseEnter')}
+                    onMouseLeave={action('onMouseLeave')}
+                    onMouseDown={action('onMouseDown')}
+                    onMouseUp={action('onMouseUp')}
+                    >
+                    {text('Label', 'The Button')}
+                </Button>
+            </StoryWrapper>
+        ),
+        {inline: true}
+    );

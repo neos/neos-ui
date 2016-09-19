@@ -1,16 +1,20 @@
 import React from 'react';
 import {storiesOf} from '@kadira/storybook';
+import {withKnobs, select} from '@kadira/storybook-addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import Headline from './index.js';
 
 storiesOf('Headline', module)
-    .add('default', () => (
-        <StoryWrapper title="Headline">
-            <Headline type="h1">Heading 1</Headline>
-            <Headline type="h2">Heading 2</Headline>
-            <Headline type="h3">Heading 3</Headline>
-            <Headline type="h4">Heading 4</Headline>
-            <Headline type="h5">Heading 5</Headline>
-            <Headline type="h6">Heading 6</Headline>
-        </StoryWrapper>
-    ));
+    .addDecorator(withKnobs)
+    .addWithInfo(
+        'default',
+        () => {
+            const type = select('Headline type', ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 'h1');
+            return (
+                <StoryWrapper>
+                    <Headline type={type}>Heading level: {type}</Headline>
+                </StoryWrapper>
+            );
+        },
+        {inline: true}
+    );

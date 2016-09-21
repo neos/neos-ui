@@ -15,4 +15,5 @@
 }
 .toolBar__btnGroup__btn {
     float: left;
+    width: 40px;
 }

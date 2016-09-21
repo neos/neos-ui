@@ -15,24 +15,34 @@ import style from './style.css';
 const moduleLabel = (label, sourceName = 'Main') =>
     <I18n id={label} sourceName={sourceName} fallback={label}/>;
 
+const TARGET_WINDOW = 'Window';
+const TARGET_CONTENT_CANVAS = 'ContentCanvas';
+
 @connect($transform({
     isHidden: $get('ui.drawer.isHidden')
 }), {
-    hideDrawer: actions.UI.Drawer.hide
+    hideDrawer: actions.UI.Drawer.hide,
+    setContentCanvasSrc: actions.UI.ContentCanvas.setSrc
 })
 export default class Drawer extends Component {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         hideDrawer: PropTypes.func.isRequired,
+        setContentCanvasSrc: PropTypes.func.isRequired,
+
         menuData: PropTypes.objectOf(
             PropTypes.shape({
                 icon: PropTypes.string,
                 label: PropTypes.string.isRequired,
+                uri: PropTypes.string.isRequired,
+                target: PropTypes.string,
+
                 children: PropTypes.arrayOf(
                     PropTypes.shape({
                         icon: PropTypes.string,
                         label: PropTypes.string.isRequired,
                         uri: PropTypes.string.isRequired,
+                        target: PropTypes.string,
                         isActive: PropTypes.bool.isReqired
                     })
                 )
@@ -69,9 +79,20 @@ export default class Drawer extends Component {
     }
 
     renderMenuItem(item, key) {
-        const {label, icon, children, uri} = item;
+        const {setContentCanvasSrc, hideDrawer} = this.props;
+        const {label, icon, children, uri, target} = item;
         const onClick = () => {
-            window.location.href = uri;
+            switch (target) {
+                case TARGET_CONTENT_CANVAS:
+                    setContentCanvasSrc(uri);
+                    hideDrawer();
+                    break;
+
+                case TARGET_WINDOW:
+                default:
+                    window.location.href = uri;
+                    break;
+            }
         };
 
         return children && children.length ? (

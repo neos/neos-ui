@@ -17,6 +17,7 @@ const moduleLabel = (label, sourceName = 'Main') =>
 
 const TARGET_WINDOW = 'Window';
 const TARGET_CONTENT_CANVAS = 'ContentCanvas';
+const THRESHOLD_MOUSE_LEAVE = 500;
 
 @connect($transform({
     isHidden: $get('ui.drawer.isHidden')
@@ -50,12 +51,47 @@ export default class Drawer extends Component {
         ).isRequired
     };
 
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
+    state = {
+        mouseLeaveTimeout: null
+    };
+
+    shouldComponentUpdate(nextProps) {
+        return shallowCompare(this.props, nextProps);
+    }
+
+    hideDrawer() {
+        const {hideDrawer} = this.props;
+        const {mouseLeaveTimeout} = this.state;
+
+        if (!mouseLeaveTimeout) {
+            const timeout = setTimeout(() => {
+                hideDrawer();
+                this.setState({
+                    mouseLeaveTimeout: null
+                });
+            }, THRESHOLD_MOUSE_LEAVE);
+
+            this.setState({
+                mouseLeaveTimeout: timeout
+            });
+        }
+    }
+
+    clearMouseLeaveTimeout() {
+        const {mouseLeaveTimeout} = this.state;
+
+        if (mouseLeaveTimeout) {
+            clearTimeout(mouseLeaveTimeout);
+            this.setState({
+                mouseLeaveTimeout: null
+            });
+        }
     }
 
     render() {
-        const {isHidden, hideDrawer} = this.props;
+        const {isHidden} = this.props;
+        const clearMouseLeaveTimeout = ::this.clearMouseLeaveTimeout;
+        const hideDrawer = ::this.hideDrawer;
         const classNames = mergeClassNames({
             [style.drawer]: true,
             [style['drawer--isHidden']]: isHidden
@@ -64,6 +100,7 @@ export default class Drawer extends Component {
         return (
             <div
                 className={classNames}
+                onMouseEnter={clearMouseLeaveTimeout}
                 onMouseLeave={hideDrawer}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >

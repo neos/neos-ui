@@ -3,17 +3,11 @@ import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import Button from '@neos-project/react-ui-components/lib/Button/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 
 import {actions} from 'Host/Redux/index';
-import {I18n} from 'Host/Containers/index';
 
+import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.css';
-
-const moduleLabel = (label, sourceName = 'Main') =>
-    <I18n id={label} sourceName={sourceName} fallback={label}/>;
 
 const TARGET_WINDOW = 'Window';
 const TARGET_CONTENT_CANVAS = 'ContentCanvas';
@@ -55,11 +49,18 @@ export default class Drawer extends Component {
         mouseLeaveTimeout: null
     };
 
+    constructor() {
+        super();
+        this.handleMouseEnter = ::this.handleMouseEnter;
+        this.handleMouseLeave = ::this.handleMouseLeave;
+        this.handleMenuItemClick = ::this.handleMenuItemClick;
+    }
+
     shouldComponentUpdate(nextProps) {
         return shallowCompare(this.props, nextProps);
     }
 
-    hideDrawer() {
+    handleMouseLeave() {
         const {hideDrawer} = this.props;
         const {mouseLeaveTimeout} = this.state;
 
@@ -77,7 +78,7 @@ export default class Drawer extends Component {
         }
     }
 
-    clearMouseLeaveTimeout() {
+    handleMouseEnter() {
         const {mouseLeaveTimeout} = this.state;
 
         if (mouseLeaveTimeout) {
@@ -88,10 +89,24 @@ export default class Drawer extends Component {
         }
     }
 
+    handleMenuItemClick(target, uri) {
+        const {setContentCanvasSrc, hideDrawer} = this.props;
+
+        switch (target) {
+            case TARGET_CONTENT_CANVAS:
+                setContentCanvasSrc(uri);
+                hideDrawer();
+                break;
+
+            case TARGET_WINDOW:
+            default:
+                window.location.href = uri;
+                break;
+        }
+    }
+
     render() {
         const {isHidden} = this.props;
-        const clearMouseLeaveTimeout = ::this.clearMouseLeaveTimeout;
-        const hideDrawer = ::this.hideDrawer;
         const classNames = mergeClassNames({
             [style.drawer]: true,
             [style['drawer--isHidden']]: isHidden
@@ -100,8 +115,8 @@ export default class Drawer extends Component {
         return (
             <div
                 className={classNames}
-                onMouseEnter={clearMouseLeaveTimeout}
-                onMouseLeave={hideDrawer}
+                onMouseEnter={this.handleMouseEnter}
+                onMouseLeave={this.handleMouseLeave}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 {this.renderMenu()}
@@ -116,41 +131,13 @@ export default class Drawer extends Component {
     }
 
     renderMenuItem(item, key) {
-        const {setContentCanvasSrc, hideDrawer} = this.props;
-        const {label, icon, children, uri, target} = item;
-        const onClick = () => {
-            switch (target) {
-                case TARGET_CONTENT_CANVAS:
-                    setContentCanvasSrc(uri);
-                    hideDrawer();
-                    break;
-
-                case TARGET_WINDOW:
-                default:
-                    window.location.href = uri;
-                    break;
-            }
-        };
-
-        return children && children.length ? (
-            <ToggablePanel isOpen={true} className={style.drawer__menuItem} key={key}>
-                <ToggablePanel.Header className={style.drawer__menuItem__header}>
-                    <span onClick={onClick}>
-                        {icon && <Icon icon={icon} padded="right"/>}
-
-                        {moduleLabel(label)}
-                    </span>
-                </ToggablePanel.Header>
-                <ToggablePanel.Contents>
-                    {children.map((item, index) => this.renderMenuItem(item, index))}
-                </ToggablePanel.Contents>
-            </ToggablePanel>
-        ) : (
-            <Button className={style.drawer__menuItemBtn} onClick={onClick} key={key} style="transparent">
-				{icon && <Icon icon={icon} padded="right"/>}
-
-                {moduleLabel(label)}
-            </Button>
+        return (
+            <MenuItemGroup
+                key={key}
+                onClick={this.handleMenuItemClick}
+                onChildClick={this.handleMenuItemClick}
+                {...item}
+                />
         );
     }
 }

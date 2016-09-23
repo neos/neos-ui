@@ -51,7 +51,7 @@ export default class MenuItemGroup extends Component {
         return (
             <ToggablePanel isOpen={true} className={style.drawer__menuItem}>
                 <ToggablePanel.Header className={style.drawer__menuItem__header}>
-                    <span onClick={this.handleClick}>
+                    <span onClick={this.handleClick} role="button">
                         {icon && <Icon icon={icon} padded="right"/>}
 
                         <I18n id={label} fallback={label}/>

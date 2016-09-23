@@ -106,7 +106,7 @@ export default class Drawer extends Component {
     }
 
     render() {
-        const {isHidden} = this.props;
+        const {isHidden, menuData} = this.props;
         const classNames = mergeClassNames({
             [style.drawer]: true,
             [style['drawer--isHidden']]: isHidden
@@ -119,25 +119,15 @@ export default class Drawer extends Component {
                 onMouseLeave={this.handleMouseLeave}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
-                {this.renderMenu()}
+                {Object.values(menuData).map((item, index) => (
+                    <MenuItemGroup
+                        key={index}
+                        onClick={this.handleMenuItemClick}
+                        onChildClick={this.handleMenuItemClick}
+                        {...item}
+                        />
+                ))}
             </div>
-        );
-    }
-
-    renderMenu() {
-        const {menuData} = this.props;
-
-        return Object.keys(menuData).map(k => menuData[k]).map((item, index) => this.renderMenuItem(item, index));
-    }
-
-    renderMenuItem(item, key) {
-        return (
-            <MenuItemGroup
-                key={key}
-                onClick={this.handleMenuItemClick}
-                onChildClick={this.handleMenuItemClick}
-                {...item}
-                />
         );
     }
 }

@@ -3,6 +3,8 @@ import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform} from 'plow-js';
+import debounce from 'lodash.debounce';
+
 import {CR} from 'Host/Selectors/index';
 
 import {
@@ -40,6 +42,12 @@ export default class NodeToolbar extends Component {
     static propTypes = {
         focusedNode: PropTypes.object.isRequired
     };
+
+    componentDidMount() {
+        const iframeWindow = document.getElementsByName('neos-content-main')[0].contentWindow;
+
+        iframeWindow.addEventListener('resize', debounce(::this.forceUpdate, 20));
+    }
 
     shouldComponentUpdate(...args) {
         return shallowCompare(this, ...args);

@@ -52,7 +52,8 @@ export default class I18n extends Component {
     }
 
     renderTranslation() {
-        const {fallback, translations} = this.props;
+        const {translations} = this.props;
+        const fallback = this.props.fallback || this.props.id;
         const [packageKey, sourceName, id] = this.getTranslationAddress();
         const translation = [packageKey, sourceName, id]
 
@@ -72,6 +73,6 @@ export default class I18n extends Component {
             errorCache[`${packageKey}:${sourceName}:${id}`] = true;
         }
 
-        return fallback || '';
+        return fallback;
     }
 }

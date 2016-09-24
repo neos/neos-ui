@@ -1,30 +1,27 @@
 import React from 'react';
 import {storiesOf} from '@kadira/storybook';
+import {withKnobs, select} from '@kadira/storybook-addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import Grid from './index.js';
 
 storiesOf('Grid', module)
-    .add('third', () => (
-        <StoryWrapper title="Grid - Thirds">
-            <Grid>
-                <Grid.Col width="third">Item 1</Grid.Col>
-                <Grid.Col width="third">Item 2</Grid.Col>
-                <Grid.Col width="third">Item 3</Grid.Col>
-                <Grid.Col width="third">Item 4</Grid.Col>
-                <Grid.Col width="third">Item 5</Grid.Col>
-                <Grid.Col width="third">Item 6</Grid.Col>
-            </Grid>
-        </StoryWrapper>
-    ))
-    .add('half', () => (
-        <StoryWrapper title="Grid - Halves">
-            <Grid>
-                <Grid.Col width="half">Item 1</Grid.Col>
-                <Grid.Col width="half">Item 2</Grid.Col>
-                <Grid.Col width="half">Item 3</Grid.Col>
-                <Grid.Col width="half">Item 4</Grid.Col>
-                <Grid.Col width="half">Item 5</Grid.Col>
-                <Grid.Col width="half">Item 6</Grid.Col>
-            </Grid>
-        </StoryWrapper>
-    ));
+    .addDecorator(withKnobs)
+    .addWithInfo(
+        'default',
+        () => {
+            const width = select('Width', ['half', 'third'], 'third');
+            return (
+                <StoryWrapper>
+                    <Grid>
+                        <Grid.Col width={width}>Item 1</Grid.Col>
+                        <Grid.Col width={width}>Item 2</Grid.Col>
+                        <Grid.Col width={width}>Item 3</Grid.Col>
+                        <Grid.Col width={width}>Item 4</Grid.Col>
+                        <Grid.Col width={width}>Item 5</Grid.Col>
+                        <Grid.Col width={width}>Item 6</Grid.Col>
+                    </Grid>
+                </StoryWrapper>
+            );
+        },
+        {inline: 'true'}
+    );

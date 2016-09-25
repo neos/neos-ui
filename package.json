@@ -56,7 +56,7 @@
     "object-assign": "^4.1.0",
     "phantomjs-polyfill": "0.0.2",
     "phantomjs-prebuilt": "^2.1.8",
-    "postcss-css-variables": "^0.5.1",
+    "postcss-css-variables": "^0.6.0",
     "postcss-hexrgba": "^0.2.0",
     "postcss-import": "^8.0.2",
     "postcss-loader": "^0.13.0",

@@ -38,11 +38,11 @@ class AspectRatioItem extends Component {
                     type="number"
                     value={width}
                     onChange={this.handleWidthInputChange}
-                    />,
+                    />
                 <IconButton
                     icon="exchange"
                     onClick={this.handleFlipAspectRatio}
-                    />,
+                    />
                 <TextInput
                     className={style.dimensionInput}
                     type="number"

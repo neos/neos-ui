@@ -6,6 +6,7 @@ import {take} from 'redux-saga/effects';
 import {actionTypes} from 'Host/Redux/index';
 import {
     getAppContainer,
+    getMenu,
     getConfiguration,
     getTranslations
 } from 'Host/Sagas/System/index';
@@ -43,6 +44,7 @@ function * applicationViewSaga(store) {
 
     yield take(actionTypes.System.READY);
 
+    const menu = yield getMenu;
     const configuration = yield getConfiguration;
     const translations = yield getTranslations;
 
@@ -63,7 +65,7 @@ function * applicationViewSaga(store) {
                         <FullScreen/>
                         <PrimaryToolbar/>
                         <SecondaryToolbar/>
-                        <Drawer/>
+                        <Drawer menuData={menu}/>
                         <LeftSideBar/>
                         <ContentCanvas/>
                         <RightSideBar/>

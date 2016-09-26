@@ -1,6 +1,6 @@
 .dropDown {
     display: inline-block;
-    min-width: 352px;
+    max-width: 352px;
 }
 .dropDown__btn {
     height: var(--goldenUnit);

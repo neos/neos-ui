@@ -14,6 +14,8 @@ TYPO3:
   TypoScript:
     defaultContext:
       'Neos.Ui.Activation': 'Neos\Neos\Ui\TypoScript\Helper\ActivationHelper'
+      'Neos.Ui.Sites': 'Neos\Neos\Ui\TypoScript\Helper\SitesHelper'
+      'Neos.Ui.Modules': 'Neos\Neos\Ui\TypoScript\Helper\ModulesHelper'
 
 Neos:
   Neos:
@@ -51,12 +53,16 @@ Neos:
           'Neos.Ui.Workspace': 'Neos\Neos\Ui\TypoScript\Helper\WorkspaceHelper'
           'Neos.Ui.NodeInfo': 'Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper'
           'Neos.Ui.NodeTypes': 'Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper'
+          'Neos.Ui.ContentDimensions': 'Neos\Neos\Ui\TypoScript\Helper\ContentDimensionsHelper'
 
         documentNode:
           nodes: '${Neos.Ui.NodeInfo.renderDocumentNodeAndChildContent(documentNode, controllerContext)}'
           metaData:
             contextPath: '${q(documentNode).property("_contextPath")}'
             previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: "live"}).get(0), controllerContext)}'
+            contentDimensions:
+              active: '${documentNode.context.dimensions}'
+              allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
         backend:
           changes:
             pending: []
@@ -74,6 +80,11 @@ Neos:
             workspaces:
               byName: ${Neos.Ui.Workspace.initializeWorkspacesByName()}
               active: ${Neos.Ui.Workspace.getPersonalWorkspaceName()}
+            contentDimensions:
+              byName: ${Neos.Ui.ContentDimensions.contentDimensionsByName()}
+              active: ${documentNode.context.dimensions}
+              allowedPresets: ${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}
+              # TODO Target dimensions
           ui:
             contentCanvas:
               src: ${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}

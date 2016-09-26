@@ -36,7 +36,6 @@ export default class Node extends Component {
         onNodeToggle: PropTypes.func,
         onNodeClick: PropTypes.func,
         onNodeFocus: PropTypes.func
-
     };
 
     constructor(props) {

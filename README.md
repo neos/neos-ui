@@ -30,12 +30,12 @@
 
 3. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`
    ```yaml
--
-  name: 'Neos UI'
-  uriPattern: '<NeosUiSubroutes>'
-  subRoutes:
-    'NeosUiSubroutes':
-      package: 'Neos.Neos.Ui'
+  -
+    name: 'Neos UI'
+    uriPattern: '<NeosUiSubroutes>'
+    subRoutes:
+      'NeosUiSubroutes':
+        package: 'Neos.Neos.Ui'
    ```
 
 Now you are all set up and can open the sub-route `/neos!` to login to the new interface.

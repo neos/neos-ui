@@ -86,23 +86,28 @@ export default class DimensionSwitcher extends Component {
 
     render() {
         const {contentDimensions, activePresets, selectPreset} = this.props;
-
+        const contentDimensionsObject = contentDimensions.toObject();
+        const contentDimensionsObjectKeys = Object.keys(contentDimensionsObject);
+ 
         return (
             <DropDown className={style.dropDown}>
                 <DropDown.Header className={style.dropDown__btn}>
-                    {contentDimensions.map((dimensionConfiguration, dimensionName) =>
-                        <SelectedPreset
+                    {contentDimensionsObjectKeys.map(dimensionName => {
+                        const dimensionConfiguration = contentDimensionsObject[dimensionName];
+                        return (<SelectedPreset
                             key={dimensionName}
                             dimensionName={dimensionName}
                             icon={$get('icon', dimensionConfiguration)}
                             dimensionLabel={$get('label', dimensionConfiguration)}
                             presetLabel={$get([dimensionName, 'label'], activePresets)}
                             />
-                    )}
+                        );
+                    })}
                 </DropDown.Header>
                 <DropDown.Contents className={style.dropDown__contents}>
-                    {contentDimensions.map((dimensionConfiguration, dimensionName) =>
-                        <DimensionSelector
+                    {contentDimensionsObjectKeys.map(dimensionName => {
+                        const dimensionConfiguration = contentDimensionsObject[dimensionName];
+                        return (<DimensionSelector
                             key={dimensionName}
                             dimensionName={dimensionName}
                             icon={$get('icon', dimensionConfiguration)}
@@ -111,7 +116,8 @@ export default class DimensionSwitcher extends Component {
                             activePreset={$get([dimensionName, 'name'], activePresets)}
                             onSelect={selectPreset}
                             />
-                    )}
+                        );
+                    })}
                 </DropDown.Contents>
             </DropDown>
         );

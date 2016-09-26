@@ -1,0 +1,3 @@
+prototype(Neos.Neos.Ui:AppendAllToCollection) {
+    @class = 'Neos\\Neos\\Ui\\TypoScript\\AppendAllToCollectionImplementation'
+}

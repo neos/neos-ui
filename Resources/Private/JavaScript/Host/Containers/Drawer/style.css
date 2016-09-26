@@ -13,7 +13,8 @@
 }
 .drawer__menuItem {
     border-top: 1px solid var(--brandColorsContrastDark);
-
+    cursor: pointer;
+    
     &:first-child {
         border-top: 0;
     }

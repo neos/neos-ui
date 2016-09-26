@@ -32,7 +32,6 @@ class NodeTypeGroupPanel extends Component {
         super(props);
 
         this.handleToggleGroup = this.handleToggleGroup.bind(this);
-        this.renderNodeTypeItem = this.renderNodeTypeItem.bind(this);
     }
 
     shouldComponentUpdate(...args) {

@@ -12,7 +12,7 @@ const Bar = props => {
 
     return (
         <div className={finalClassName} {...rest}>
-          {children}
+            {children}
         </div>
     );
 };

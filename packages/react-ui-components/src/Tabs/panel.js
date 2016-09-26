@@ -21,9 +21,9 @@ Panel.propTypes = {
     /**
      * An optional css theme to be injected.
      */
-    theme: PropTypes.shape({// eslint-disable-line quote-props
+    theme: PropTypes.shape({/* eslint-disable quote-props */
         'panel': PropTypes.string
-    }).isRequired
+    }).isRequired/* eslint-enable quote-props */
 };
 
 export default Panel;

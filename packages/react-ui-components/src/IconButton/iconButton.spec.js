@@ -8,9 +8,9 @@ const defaultProps = {
     IconComponent: Icon,
     ButtonComponent: Button,
     icon: 'fooIconName',
-    theme: {// eslint-disable-line quote-props
+    theme: {/* eslint-disable quote-props */
         'iconButton': 'iconButtonClassName'
-    }
+    }/* eslint-enable quote-props */
 };
 const shallow = createShallowRenderer(IconButton, defaultProps);
 

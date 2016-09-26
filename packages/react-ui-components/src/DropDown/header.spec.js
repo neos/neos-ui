@@ -9,10 +9,10 @@ const defaultProps = {
     IconComponent: Icon,
     isOpen: false,
     toggleDropDown: () => null,
-    theme: {// eslint-disable-line quote-props
+    theme: {/* eslint-disable quote-props */
         'dropDown__btn': 'baseDropDownHeaderClassName',
         'dropDown__chevron': 'baseDropDownHeaderChevronClassName'
-    }
+    }/* eslint-enable quote-props */
 };
 const shallow = createShallowRenderer(ShallowDropDownHeader, defaultProps);
 

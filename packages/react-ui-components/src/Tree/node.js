@@ -39,7 +39,7 @@ export class Header extends Component {
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
         onLabelClick: PropTypes.func,
-        theme: PropTypes.shape({// eslint-disable-line quote-props
+        theme: PropTypes.shape({/* eslint-disable quote-props */
             'header__data': PropTypes.string,
             'header__data--isActive': PropTypes.string,
             'header__data--isFocused': PropTypes.string,
@@ -48,7 +48,7 @@ export class Header extends Component {
             'header__chevron': PropTypes.string,
             'header__chevron--isCollapsed': PropTypes.string,
             'header__chevron--isLoading': PropTypes.string
-        }).isRequired,
+        }).isRequired, /* eslint-enable quote-props */
 
         //
         // Static component dependencies which are injected from the outside (index.js)
@@ -134,9 +134,9 @@ export class Header extends Component {
 export class Contents extends Component {
     static propTypes = {
         children: PropTypes.node,
-        theme: PropTypes.shape({// eslint-disable-line quote-props
+        theme: PropTypes.shape({/* eslint-disable quote-props */
             'contents': PropTypes.string
-        }).isRequired
+        }).isRequired/* eslint-enable quote-props */
     };
 
     shouldComponentUpdate(...args) {

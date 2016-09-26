@@ -18,7 +18,7 @@ const SideBar = props => {
 
     return (
         <div {...rest} className={classNames}>
-          {children}
+            {children}
         </div>
     );
 };

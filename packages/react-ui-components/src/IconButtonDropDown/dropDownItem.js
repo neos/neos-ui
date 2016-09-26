@@ -38,7 +38,7 @@ export default class DropDownItem extends Component {
                 role="button"
                 onClick={this.handleClick}
                 >
-            {children}
+                {children}
             </a>
         );
     }

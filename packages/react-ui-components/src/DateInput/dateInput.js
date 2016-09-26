@@ -29,7 +29,7 @@ export class DateInput extends Component {
          * The changehandler to call when the date changes.
          */
         onChange: PropTypes.func.isRequired,
-        theme: PropTypes.shape({// eslint-disable-line quote-props
+        theme: PropTypes.shape({/* eslint-disable quote-props */
             'wrapper': PropTypes.string,
             'calendarInputWrapper': PropTypes.string,
             'calendarIconBtn': PropTypes.string,
@@ -38,7 +38,7 @@ export class DateInput extends Component {
             'calendarFakeInput': PropTypes.string,
             'closeCalendarIconBtn': PropTypes.string,
             'selectTodayBtn': PropTypes.string
-        }).isRequired,
+        }).isRequired, /* eslint-enable quote-props */
 
         //
         // Static component dependencies which are injected from the outside (index.js)

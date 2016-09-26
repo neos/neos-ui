@@ -97,10 +97,10 @@ export class StatelessToggablePanel extends Component {
         /**
          * An optional css theme to be injected.
          */
-        theme: PropTypes.shape({// eslint-disable-line quote-props
+        theme: PropTypes.shape({/* eslint-disable quote-props */
             'panel': PropTypes.string,
             'panel--isOpen': PropTypes.string
-        }).isRequired
+        }).isRequired/* eslint-enable quote-props */
     };
 
     static defaultProps = {
@@ -149,10 +149,10 @@ export class Header extends Component {
         /**
          * An optional css theme to be injected.
          */
-        theme: PropTypes.shape({// eslint-disable-line quote-props
+        theme: PropTypes.shape({/* eslint-disable quote-props */
             'panel__headline': PropTypes.string,
             'panel__toggleBtn': PropTypes.string
-        }).isRequired,
+        }).isRequired, /* eslint-enable quote-props */
 
         /**
          * Static component dependencies which are injected from the outside (index.js)
@@ -215,9 +215,9 @@ export class Contents extends Component {
         /**
          * An optional css theme to be injected.
          */
-        theme: PropTypes.shape({// eslint-disable-line quote-props
+        theme: PropTypes.shape({/* eslint-disable quote-props */
             'panel__contents': PropTypes.string
-        }).isRequired
+        }).isRequired/* eslint-enable quote-props */
     };
 
     static defaultProps = {

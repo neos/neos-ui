@@ -49,11 +49,11 @@ ShallowDropDownHeader.propTypes = {
     /**
      * An optional css theme to be injected.
      */
-    theme: PropTypes.shape({// eslint-disable-line quote-props
+    theme: PropTypes.shape({/* eslint-disable quote-props */
         'dropDown__btn': PropTypes.string,
         'dropDown__btnLabel': PropTypes.string,
         'dropDown__chevron': PropTypes.string
-    }).isRequired,
+    }).isRequired, /* eslint-enable quote-props */
 
     /**
      * Static component dependencies which are injected from the outside (index.js)

@@ -13,9 +13,9 @@ export class Tree extends Component {
         onNodeFocus: PropTypes.func,
 
         children: PropTypes.any.isRequired,
-        theme: PropTypes.shape({// eslint-disable-line quote-props
+        theme: PropTypes.shape({/* eslint-disable quote-props */
             'treeWrapper': PropTypes.string
-        }).isRequired,
+        }).isRequired, /* eslint-enable quote-props */
 
         //
         // Static component dependencies which are injected from the outside (index.js)

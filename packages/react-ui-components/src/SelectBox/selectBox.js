@@ -45,7 +45,7 @@ export default class SelectBox extends Component {
         /**
          * An optional css theme to be injected.
          */
-        theme: PropTypes.shape({// eslint-disable-line quote-props
+        theme: PropTypes.shape({/* eslint-disable quote-props */
             'wrapper': PropTypes.string,
             'dropDown': PropTypes.string,
             'dropDown__btn': PropTypes.string,
@@ -53,7 +53,7 @@ export default class SelectBox extends Component {
             'dropDown__contents': PropTypes.string,
             'dropDown__item': PropTypes.string,
             'dropDown__itemIcon': PropTypes.string
-        }).isRequired,
+        }).isRequired, /* eslint-enable quote-props */
 
         /**
          * The minimum amount of items in the select before showing a search box, if set to -1 the search box

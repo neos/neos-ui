@@ -137,7 +137,7 @@ class BackendController extends ActionController
 
             $this->view->assign('user', $user);
             $this->view->assign('documentNode', $node);
-            $this->view->assign('site', $node);
+            $this->view->assign('site', $siteNode);
             $this->view->assign('asyncModuleMapping', $this->transformAsyncModuleMapping());
             $this->view->assign('legacyModuleMapping', $this->transformLegacyModuleMapping());
 

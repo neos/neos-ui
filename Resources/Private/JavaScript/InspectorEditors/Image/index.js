@@ -2,24 +2,13 @@ import React, {Component, PropTypes} from 'react';
 import {$set, $drop, $get, $transform} from 'plow-js';
 import {connect} from 'react-redux';
 import {PreviewScreen, Controls, Secondary} from './Components/index';
-import {Image} from './Utils/index';
+import {Image, CROP_IMAGE_ADJUSTMENT, RESIZE_IMAGE_ADJUSTMENT} from './Utils/index';
 import style from './style.css';
 
 const DEFAULT_FEATURES = {
     crop: true,
     resize: false
 };
-
-const RESIZE_IMAGE_ADJUSTMENT = [
-    'object',
-    'adjustments',
-    'TYPO3\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'
-];
-const CROP_IMAGE_ADJUSTMENT = [
-    'object',
-    'adjustments',
-    'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'
-];
 
 const SECONDARY_NONE = 1;
 const SECONDARY_DETAILS = 2;

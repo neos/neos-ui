@@ -46,7 +46,7 @@ export default class NodeToolbar extends Component {
     componentDidMount() {
         const iframeWindow = document.getElementsByName('neos-content-main')[0].contentWindow;
 
-        iframeWindow.addEventListener('resize', debounce(::this.forceUpdate, 20));
+        iframeWindow.addEventListener('resize', debounce(() => this.forceUpdate(), 20));
     }
 
     shouldComponentUpdate(...args) {

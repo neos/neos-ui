@@ -34,3 +34,7 @@
     transform: translate(-50%, -50%);
     overflow: hidden;
 }
+
+.cropArea__image {
+    position: absolute;
+}

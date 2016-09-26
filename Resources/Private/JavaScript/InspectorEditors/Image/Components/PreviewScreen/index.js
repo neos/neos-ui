@@ -56,6 +56,7 @@ export default class PreviewScreen extends Component {
                     >
                     <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
                         <img
+                            className={style.cropArea__image}
                             src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg'}
                             style={thumbnail ? thumbnail.styles.thumbnail : {}}
                             role="presentation"

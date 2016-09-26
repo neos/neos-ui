@@ -88,7 +88,7 @@ export default class DimensionSwitcher extends Component {
         const {contentDimensions, activePresets, selectPreset} = this.props;
         const contentDimensionsObject = contentDimensions.toObject();
         const contentDimensionsObjectKeys = Object.keys(contentDimensionsObject);
- 
+
         return (
             <DropDown className={style.dropDown}>
                 <DropDown.Header className={style.dropDown__btn}>

@@ -31,9 +31,9 @@ export class DropDownWrapper extends Component {
         /**
          * An optional css theme to be injected.
          */
-        theme: PropTypes.shape({// eslint-disable-line quote-props
+        theme: PropTypes.shape({/* eslint-disable quote-props */
             'dropDown': PropTypes.string
-        }).isRequired
+        }).isRequired/* eslint-enable quote-props */
     };
 
     static defaultProps = {

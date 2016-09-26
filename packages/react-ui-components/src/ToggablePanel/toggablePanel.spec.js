@@ -30,10 +30,10 @@ const shallowStateLess = createShallowRenderer(StatelessToggablePanel, stateLess
 const HeadlineComponent = createStubComponent();
 const IconButtonComponent = createStubComponent();
 const headerDefaultProps = {
-    theme: {// eslint-disable-line quote-props
+    theme: {/* eslint-disable quote-props */
         'panel__headline': 'panelHeadlineClassName',
         'panel__toggleBtn': 'panelToggleBtnClassName'
-    },
+    }, /* eslint-enable quote-props */
     children: 'Foo children',
     HeadlineComponent,
     IconButtonComponent
@@ -41,9 +41,9 @@ const headerDefaultProps = {
 const shallowHeader = createShallowRenderer(Header, headerDefaultProps);
 
 const contentsDefaultProps = {
-    theme: {// eslint-disable-line quote-props
+    theme: {/* eslint-disable quote-props */
         'panel__contents': 'panelContentsClassName'
-    },
+    }, /* eslint-enable quote-props */
     children: 'Foo children'
 };
 const shallowContents = createShallowRenderer(Contents, contentsDefaultProps);

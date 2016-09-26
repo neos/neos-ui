@@ -210,7 +210,7 @@ export default class ContentCanvas extends Component {
 
             const nodeFormattingRules = calculateEnabledFormattingRulesForNode(node);
 
-            const enabledFormattingRuleIds = nodeFormattingRules[propertyName];
+            const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];
 
             // Build up editor config for each enabled formatting
             let editorOptions = Object.assign(

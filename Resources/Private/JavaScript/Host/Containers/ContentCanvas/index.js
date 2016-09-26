@@ -208,6 +208,11 @@ export default class ContentCanvas extends Component {
 
             const node = this.props.byContextPathDynamicAccess(contextPath);
 
+            if (!node) {
+                console.warn('No node found at path: ' + contextPath);
+                return;
+            }
+
             const nodeFormattingRules = calculateEnabledFormattingRulesForNode(node);
 
             const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];

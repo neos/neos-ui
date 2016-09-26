@@ -93,8 +93,9 @@ export default class Node extends Component {
     }
 
     handleNodeLabelClick() {
-        const {item, onNodeClick} = this.props;
+        const {item, onNodeClick, onNodeFocus} = this.props;
 
+        onNodeFocus(item.contextPath);
         onNodeClick(item.uri);
     }
 }

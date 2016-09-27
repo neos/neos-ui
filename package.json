@@ -29,7 +29,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "chai": "^3.4.1",
-    "chai-as-promised": "^5.2.0",
+    "chai-as-promised": "^6.0.0",
     "check-dependencies": "^1.0.1",
     "cheerio": "^0.22.0",
     "css-loader": "^0.25.0",

@@ -78,9 +78,11 @@ export default class IconButtonDropDown extends Component {
         super(props);
 
         this._mouseHoldTimeout = null;
+        this._mouseHoverTimeout = null;
         this.handleClick = this.handleClick.bind(this);
         this.handleMouseLeave = this.handleMouseLeave.bind(this);
         this.handleHoldTimeout = this.createHoldTimeout.bind(this);
+        this.handleHoverTimeout = this.createHoverTimeout.bind(this);
         this.handleItemSelected = this.handleItemSelected.bind(this);
         this.state = {isOpen: false};
     }
@@ -117,6 +119,8 @@ export default class IconButtonDropDown extends Component {
                     className={theme.wrapper__btn}
                     isDisabled={isDisabled}
                     onMouseDown={this.handleHoldTimeout}
+                    onMouseEnter={this.handleHoverTimeout}
+                    onFocus={this.handleHoverTimeout}
                     onClick={this.handleClick}
                     >
                     <IconComponent icon={modeIcon} className={theme.wrapper__btnModeIcon}/>
@@ -146,10 +150,19 @@ export default class IconButtonDropDown extends Component {
         clearTimeout(this._mouseHoldTimeout);
     }
 
+    createHoverTimeout() {
+        this._mouseHoverTimeout = setTimeout(() => this.openDropDown(), 700);
+    }
+
+    cancelHoverTimeout() {
+        clearTimeout(this._mouseHoverTimeout);
+    }
+
     handleClick() {
         const {isOpen} = this.state;
 
         this.cancelHoldTimeout();
+        this.cancelHoverTimeout();
 
         if (!isOpen) {
             this.props.onClick();
@@ -158,6 +171,7 @@ export default class IconButtonDropDown extends Component {
 
     handleMouseLeave() {
         this.cancelHoldTimeout();
+        this.cancelHoverTimeout();
         this.closeDropDown();
     }
 

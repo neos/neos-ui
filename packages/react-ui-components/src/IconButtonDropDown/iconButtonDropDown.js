@@ -112,6 +112,7 @@ export default class IconButtonDropDown extends Component {
                 <ButtonComponent
                     {...directButtonProps}
                     style="clean"
+                    hoverStyle="clean"
                     aria-haspopup="true"
                     className={theme.wrapper__btn}
                     isDisabled={isDisabled}
@@ -119,7 +120,7 @@ export default class IconButtonDropDown extends Component {
                     onClick={this.handleClick}
                     >
                     <IconComponent icon={modeIcon} className={theme.wrapper__btnModeIcon}/>
-                    <IconComponent icon={icon}/>
+                    <IconComponent icon={icon} className={theme.wrapper__btnIcon}/>
                 </ButtonComponent>
                 <div className={dropDownClassNames} aria-hidden={isOpen ? 'false' : 'true'}>
                     {React.Children.map(children, (child, index) => (

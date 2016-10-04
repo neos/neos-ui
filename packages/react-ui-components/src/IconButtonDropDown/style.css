@@ -19,6 +19,9 @@
         opacity: 0;
     }
 }
+.wrapper:hover .wrapper__btnIcon {
+    color: var(--brandColorsPrimaryBlue) !important;
+}
 .wrapper__dropDown {
     composes: reset from './../reset.css';
     position: absolute;
@@ -43,7 +46,7 @@
     vertical-align: middle;
     cursor: pointer;
 
-    &:hover {
+    &:hover, &:hover > * {
         color: var(--brandColorsPrimaryBlue);
     }
 

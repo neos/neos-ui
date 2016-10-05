@@ -20,7 +20,7 @@
     }
 }
 .wrapper:hover .wrapper__btnIcon {
-    color: var(--brandColorsPrimaryBlue) !important;
+    color: var(--brandColorsPrimaryBlue);
 }
 .wrapper__dropDown {
     composes: reset from './../reset.css';

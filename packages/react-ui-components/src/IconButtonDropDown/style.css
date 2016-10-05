@@ -46,7 +46,8 @@
     vertical-align: middle;
     cursor: pointer;
 
-    &:hover, &:hover > * {
+    &:hover,
+    &:hover > * {
         color: var(--brandColorsPrimaryBlue);
     }
 

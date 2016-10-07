@@ -1,0 +1,50 @@
+.dropDown {
+    composes: reset from './../reset.css';
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+.dropDown__btn {
+    composes: reset from './../reset.css';
+    display: block;
+    width: 100%;
+    height: var(--goldenUnit);
+    text-align: left;
+    color: white;
+    cursor: pointer;
+    font-size: var(--baseFontSize);
+    padding: 0 38px 0 var(--spacing);
+    border: 0;
+    background: 0;
+
+    &:focus {
+        outline: 1px dotted var(--brandColorsContrastBrightest);
+    }
+}
+.dropDown__btnLabel {
+    composes: reset from './../reset.css';
+    margin-right: .5em;
+}
+.dropDown__chevron {
+    composes: reset from './../reset.css';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.dropDown__contents {
+    composes: reset from './../reset.css';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    display: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background: var(--brandColorsContrastNeutral);
+}
+.dropDown__contents--isOpen {
+    display: block;
+}

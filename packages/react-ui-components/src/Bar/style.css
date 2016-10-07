@@ -1,0 +1,16 @@
+.bar {
+    composes: reset from './../reset.css';
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    background-color: var(--brandColorsContrastDarker);
+    height: 41px;
+    border-bottom: 1px solid var(--brandColorsContrastDark);
+}
+.bar--top {
+    top: 0;
+}
+.bar--bottom {
+    bottom: 0;
+}

@@ -1,0 +1,29 @@
+.panel {
+    composes: reset from './../reset.css';
+    position: relative;
+}
+.panel__headline {
+    composes: reset from './../reset.css';
+    height: var(--goldenUnit);
+    margin: 0;
+    padding: 0 var(--spacing);
+    line-height: var(--goldenUnit);
+    font-weight: bold;
+    font-size: var(--baseFontSize);
+}
+.panel__toggleBtn {
+    composes: reset from './../reset.css';
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.panel__contents {
+    composes: reset from './../reset.css';
+    padding: 0 var(--spacing);
+    transition: .5s ease padding;
+
+    .panel--isOpen & {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}

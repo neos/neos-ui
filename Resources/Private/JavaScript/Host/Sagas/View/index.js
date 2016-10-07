@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
 import {take} from 'redux-saga/effects';
 
 import {actionTypes} from 'Host/Redux/index';
@@ -11,20 +10,7 @@ import {
     getTranslations
 } from 'Host/Sagas/System/index';
 
-import style from 'Host/style.css';
-
-import {
-    Neos,
-    ContentCanvas,
-    PrimaryToolbar,
-    LeftSideBar,
-    Drawer,
-    Modals,
-    RightSideBar,
-    SecondaryToolbar,
-    FlashMessages,
-    FullScreen
-} from 'Host/Containers/index';
+import Root from 'Host/Containers/Root.js';
 
 function * applicationViewSaga(store) {
     yield take(actionTypes.System.BOOT);
@@ -52,27 +38,12 @@ function * applicationViewSaga(store) {
     // After everything was initilalized correctly, render the application itself.
     //
     ReactDOM.render(
-        <div className={style.applicationWrapper}>
-            <Provider store={store}>
-                <Neos
-                    configuration={configuration}
-                    translations={translations}
-                    >
-                    <div>
-                        <div id="dialog"/>
-                        <Modals/>
-                        <FlashMessages/>
-                        <FullScreen/>
-                        <PrimaryToolbar/>
-                        <SecondaryToolbar/>
-                        <Drawer menuData={menu}/>
-                        <LeftSideBar/>
-                        <ContentCanvas/>
-                        <RightSideBar/>
-                    </div>
-                </Neos>
-            </Provider>
-        </div>,
+        <Root
+            menu={menu}
+            configuration={configuration}
+            translations={translations}
+            store={store}
+            />,
         appContainer
     );
 }

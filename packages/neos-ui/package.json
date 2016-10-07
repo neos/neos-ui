@@ -1,5 +1,5 @@
 {
-  "name": "@neos/neos-ui",
+  "name": "@neos-project/neos-ui",
   "version": "1.0.0",
   "description": "Neos CMS UI written in ReactJS with Immutable data structures.",
   "main": "Resources/Public/JavaScript/Host.js",
@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
-    "@neos-project/react-ui-components": "^4.3.0",
+    "@neos-project/react-ui-components": "^4.4.0",
     "@reduct/registry": "^1.0.1",
     "classnames": "^2.2.3",
     "core-js": "^2.4.1",

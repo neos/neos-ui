@@ -12,18 +12,6 @@ const brand = require('@neos-project/brand');
 //
 const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
 
-//
-// Read all sub-directories of the `@neos-project/react-ui-components` package
-// which will all be bundlded into the Vendor bundle.
-//
-const componentsLibDirs = fs.readdirSync(
-    path.join(__dirname, './packages/neos-ui/node_modules/@neos-project/react-ui-components/lib/')
-).filter(dir => (
-    // Filter top level files and the `_lib` dir since they shall not be imported.
-    dir.indexOf('.') === -1 &&
-    dir !== '_lib'
-));
-
 const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
@@ -37,9 +25,7 @@ const webpackConfig = {
             'react-redux',
             'plow-js',
             'immutable'
-        ].concat(
-            componentsLibDirs.map(dir => `packages/neos-ui/node_modules/@neos-project/react-ui-components/lib/${dir}`)
-        )
+        ]
     },
     module: {
         loaders: [

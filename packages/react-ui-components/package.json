@@ -1,5 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
+  "version": "4.4.8",
   "description": "The UI components which power the Neos backend application.",
   "main": "./lib",
   "scripts": {

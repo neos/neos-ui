@@ -10,14 +10,16 @@ function * watchPublish() {
     yield * takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
 
-        yield put(actions.UI.Remote.startPublishing());
+        if (nodeContextPaths.count() > 0) {
+            yield put(actions.UI.Remote.startPublishing());
 
-        try {
-            const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
-            yield put(actions.UI.Remote.finishPublishing());
-            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-        } catch (error) {
-            console.error('Failed to publish', error);
+            try {
+                const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
+                yield put(actions.UI.Remote.finishPublishing());
+                yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+            } catch (error) {
+                console.error('Failed to publish', error);
+            }
         }
     });
 }

@@ -1,0 +1,70 @@
+.wrapper {
+    composes: reset from './../reset.css';
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+}
+.dropDown {
+    composes: reset from './../reset.css';
+    position: static;
+    display: inline-block;
+}
+.dropDown__btn {
+    composes: reset from './../reset.css';
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    border: 0;
+    background: var(--brandColorsContrastNeutral);
+    min-width: 160px;
+}
+.dropDown__btnIcon {
+    composes: reset from './../reset.css';
+    margin-right: .5em;
+}
+.dropDown__contents {
+    composes: reset from './../reset.css';
+    min-width: 160px;
+    box-shadow: 0 5px 10px rgba(#000, .2);
+    z-index: 10;
+}
+.dropDown__contents li *{
+    padding: 0 1em;
+}
+.dropDown__contents li input{
+    width: 100%;
+    height: 100%;
+    background: #FFF;
+}
+.dropDown__item {
+    composes: reset from './../reset.css';
+    height: 40px;
+    line-height: 40px;
+    background: var(--brandColorsContrastNeutral);
+    border-top: 1px solid var(--brandColorsContrastDarker);
+    cursor: pointer;
+
+    &:hover {
+        background: var(--brandColorsPrimaryBlue);
+    }
+
+    > a,
+    button {
+        display: block;
+        width: 100%;
+        border: 0;
+        padding: 0 var(--spacing);
+        background: 0;
+        color: #FFF;
+        cursor: pointer;
+        text-decoration: none;
+        line-height: 40px;
+        text-align: left;
+    }
+}
+.dropDown__itemIcon {
+    composes: reset from './../reset.css';
+    padding-right: .5em;
+}

@@ -9,6 +9,6 @@
 // Instead, this way of requiring all spec files results in one big test bundle webpack
 // needs to compile, which is a lot faster than the default configuration.
 //
-const context = require.context('./Resources/Private/JavaScript', true, /(?!.*story.js$)^.*js$/);
+const context = require.context('./packages/neos-ui/src', true, /(?!.*story.js$)^.*js$/);
 
 context.keys().forEach(context);

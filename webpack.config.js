@@ -17,7 +17,7 @@ const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
 // which will all be bundlded into the Vendor bundle.
 //
 const componentsLibDirs = fs.readdirSync(
-    path.join(__dirname, './node_modules/@neos-project/react-ui-components/lib/')
+    path.join(__dirname, './packages/neos-ui/node_modules/@neos-project/react-ui-components/lib/')
 ).filter(dir => (
     // Filter top level files and the `_lib` dir since they shall not be imported.
     dir.indexOf('.') === -1 &&
@@ -28,17 +28,17 @@ const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
     entry: {
-        Host: './Resources/Private/JavaScript/Host/index.js',
-        HostOnlyStyles: './Resources/Private/JavaScript/Host/styleHostOnly.css',
-        InspectorEditors: './Resources/Private/JavaScript/InspectorEditors/manifest.js',
-        Guest: './Resources/Private/JavaScript/Guest/index.js',
+        Host: './packages/neos-ui/src/Host/index.js',
+        HostOnlyStyles: './packages/neos-ui/src/Host/styleHostOnly.css',
+        InspectorEditors: './packages/neos-ui/src/InspectorEditors/manifest.js',
+        Guest: './packages/neos-ui/src/Guest/index.js',
         Vendor: [
             'react',
             'react-redux',
             'plow-js',
             'immutable'
         ].concat(
-            componentsLibDirs.map(dir => `@neos-project/react-ui-components/lib/${dir}`)
+            componentsLibDirs.map(dir => `packages/neos-ui/node_modules/@neos-project/react-ui-components/lib/${dir}`)
         )
     },
     module: {
@@ -97,15 +97,14 @@ const webpackConfig = {
 
     resolve: {
         root: [
-            path.resolve(__dirname, 'Resources/Private/JavaScript')
+            path.resolve(__dirname, 'packages/neos-ui/src')
         ],
         modulesDirectories: [
-            'node_modules',
-            path.resolve(__dirname, './node_modules')
+            path.resolve(__dirname, './packages/neos-ui/node_modules')
         ],
         alias: {
-            'I18n': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/_internal/I18n/'),
-            'Host/Extensibility/API': path.resolve(__dirname, 'Resources/Private/JavaScript/Host/Extensibility/API/')
+            'I18n': path.resolve(__dirname, 'packages/neos-ui/src/Host/Extensibility/API/_internal/I18n/'),
+            'Host/Extensibility/API': path.resolve(__dirname, 'packages/neos-ui/src/Host/Extensibility/API/')
         }
     },
 

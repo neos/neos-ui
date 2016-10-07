@@ -4,6 +4,8 @@ import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
 
+import style from './style.css';
+
 export default class TabPanel extends Component {
     static displayName = 'Inspector Tab Panel';
     static propTypes = {
@@ -13,7 +15,7 @@ export default class TabPanel extends Component {
     render() {
         const {groups} = this.props;
         const tabPanel = groups => (
-            <Tabs.Panel>
+            <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 {
                     groups.filter(g => g.properties).map(group => (
                         <PropertyGroup

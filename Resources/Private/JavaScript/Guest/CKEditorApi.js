@@ -67,6 +67,37 @@ const createCKEditorAPI = CKEDITOR => {
     //
     CKEDITOR.disableAutoInline = true;
 
+	//
+	// Workaround as per http://stackoverflow.com/questions/14575036/enable-ckeditor4-inline-on-span-and-other-inline-tags
+	// The issue won't be fixed, we have to live with this...
+	//
+    Object.assign(CKEDITOR.dtd.$editable, {
+        b: true,
+        big: true,
+        i: true,
+        small: true,
+        tt: true,
+        abbr: true,
+        acronym: true,
+        cite: true,
+        code: true,
+        dfn: true,
+        em: true,
+        kbd: true,
+        strong: true,
+        samp: true,
+        var: true,
+        a: true,
+        bdo: true,
+        img: true,
+        q: true,
+        span: true,
+        sub: true,
+        sup: true,
+        button: true,
+        label: true
+    });
+
     // Public (singleton) API for CK editor
     return {
         initialize(_editorConfig) {

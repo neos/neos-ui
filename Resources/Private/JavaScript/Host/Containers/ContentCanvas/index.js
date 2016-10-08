@@ -220,7 +220,7 @@ export default class ContentCanvas extends Component {
             // Build up editor config for each enabled formatting
             let editorOptions = Object.assign(
                 {
-                    removePlugins: 'floatingspace,maximize,resize,toolbar'
+                    removePlugins: 'floatingspace,maximize,resize,toolbar,contextmenu,liststyle,tabletools'
                 }
             );
             enabledFormattingRuleIds.forEach(formattingRuleId => {

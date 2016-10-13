@@ -1,7 +1,9 @@
 import {takeEvery} from 'redux-saga';
-import {put, call} from 'redux-saga/effects';
+import {put, call, select} from 'redux-saga/effects';
+import {$get} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/index';
+import {publishableNodesInDocumentSelector} from 'Host/Selectors/CR/Workspaces/index';
 import {change} from 'API/Endpoints/index';
 
 function * watchPersist() {
@@ -14,6 +16,14 @@ function * watchPersist() {
             const feedback = yield call(change, changes);
             yield put(actions.UI.Remote.finishSaving());
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+
+            const state = yield select();
+            const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
+
+            if (isAutoPublishingEnabled) {
+                const publishableNodesInDocument = publishableNodesInDocumentSelector(state);
+                yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map($get('contextPath')), 'live'));
+            }
         } catch (error) {
             console.error('Failed to persist changes', error);
         }

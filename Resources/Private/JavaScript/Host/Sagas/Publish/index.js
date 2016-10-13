@@ -1,21 +1,37 @@
 import {takeEvery} from 'redux-saga';
-import {put, call} from 'redux-saga/effects';
+import {put, call, select} from 'redux-saga/effects';
+import {$get} from 'plow-js';
 
 import {actionTypes, actions} from 'Host/Redux/index';
+import {publishableNodesInDocumentSelector} from 'Host/Selectors/CR/Workspaces/index';
 import {publish, discard} from 'API/Endpoints/index';
 
 function * watchPublish() {
     yield * takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
 
-        yield put(actions.UI.Remote.startPublishing());
+        if (nodeContextPaths.count() > 0) {
+            yield put(actions.UI.Remote.startPublishing());
 
-        try {
-            const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
-            yield put(actions.UI.Remote.finishPublishing());
-            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-        } catch (error) {
-            console.error('Failed to publish', error);
+            try {
+                const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
+                yield put(actions.UI.Remote.finishPublishing());
+                yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+            } catch (error) {
+                console.error('Failed to publish', error);
+            }
+        }
+    });
+}
+
+function * watchToggleAutoPublish() {
+    yield * takeEvery(actionTypes.User.Settings.TOGGLE_AUTO_PUBLISHING, function * publishInitially() {
+        const state = yield select();
+        const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
+
+        if (isAutoPublishingEnabled) {
+            const publishableNodesInDocument = publishableNodesInDocumentSelector(state);
+            yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map($get('contextPath')), 'live'));
         }
     });
 }
@@ -36,5 +52,6 @@ function * watchDiscard() {
 
 export const sagas = [
     watchPublish,
+    watchToggleAutoPublish,
     watchDiscard
 ];

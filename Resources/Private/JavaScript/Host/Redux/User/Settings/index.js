@@ -7,6 +7,10 @@ import {actionTypes as system} from 'Host/Redux/System/index';
 
 const TOGGLE_AUTO_PUBLISHING = '@neos/neos-ui/User/Settings/TOGGLE_AUTO_PUBLISHING';
 
+export const actionTypes = {
+    TOGGLE_AUTO_PUBLISHING
+};
+
 /**
  * Toggles the auto publishing mode for the current logged in user.
  */

@@ -15,3 +15,12 @@ npm install
 # Prune the node directory in case npm did something unexpected.
 #
 npm prune
+
+
+#
+# Copy githooks
+#
+
+# get the directory of this script no matter where it is called from
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cp -f $DIR/GitHooks/* $DIR/../.git/hooks/

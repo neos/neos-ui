@@ -24,7 +24,7 @@
    ```
    composer require neos/neos-ui:dev-master # install our package
    cd Packages/Application/Neos.Neos.Ui
-   source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps
+   source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps, copy githooks
    npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
    ```
 

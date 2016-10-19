@@ -10,56 +10,49 @@ import factory, {
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a falsy boolean
-    if no operation object was passed.`, t=> {
-
+    if no operation object was passed.`, t => {
     t.false(isStartingOperation());
 });
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a falsy boolean
-    if the given operation is not a type of "CREATE_CONTEXT".`, t=> {
-
+    if the given operation is not a type of "CREATE_CONTEXT".`, t => {
     t.false(isStartingOperation({type: 'FOO'}));
 });
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a truthy boolean
-    if the given operation is a type of "CREATE_CONTEXT".`, t=> {
-
+    if the given operation is a type of "CREATE_CONTEXT".`, t => {
     t.true(isStartingOperation({type: 'CREATE_CONTEXT'}));
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a falsy boolean
-    if no operation object was passed.`, t=> {
-
+    if no operation object was passed.`, t => {
     t.false(isFinishingOperation());
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a falsy boolean
-    if the given operation is not a type of "GET" or "COUNT".`, t=> {
-
+    if the given operation is not a type of "GET" or "COUNT".`, t => {
     t.false(isFinishingOperation({type: 'CREATE_CONTEXT'}));
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
-    if the given operation is a type of "GET".`, t=> {
-
+    if the given operation is a type of "GET".`, t => {
     t.true(isFinishingOperation({type: 'GET'}));
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
-    if the given operation is a type of "COUNT".`, t=> {
-
+    if the given operation is a type of "COUNT".`, t => {
     t.true(isFinishingOperation({type: 'COUNT'}));
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should throw an error if no
-    argument was passed.`, t=> {
+    argument was passed.`, t => {
     const fn = () => createNodeEnvelope();
 
     t.throws(fn);
@@ -67,7 +60,7 @@ test(`
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should throw an error if an array
-    was passed as the argument.`, t=> {
+    was passed as the argument.`, t => {
     const fn = () => createNodeEnvelope([]);
 
     t.throws(fn);
@@ -75,7 +68,7 @@ test(`
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return an object containing
-    the contextPath of the passed node if the passed argument is a string.`, t=> {
+    the contextPath of the passed node if the passed argument is a string.`, t => {
     const result = createNodeEnvelope('my.contextPath');
 
     t.not(result.$node, undefined);
@@ -84,7 +77,7 @@ test(`
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should throw an error if the passed
-    object has no "$node" or "contextPath" key/value pair.`, t=> {
+    object has no "$node" or "contextPath" key/value pair.`, t => {
     const fn = () => createNodeEnvelope({foo: 'bar'});
 
     t.throws(fn);
@@ -93,7 +86,7 @@ test(`
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return an object containing
     the contextPath of the passed node if the passed argument is a object containing a
-    "contextPath" key/value pair.`, t=> {
+    "contextPath" key/value pair.`, t => {
     const result = createNodeEnvelope({contextPath: 'another.contextPath'});
 
     t.not(result.$node, undefined);
@@ -103,7 +96,7 @@ test(`
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return an object containing the
     contextPath of the passed node if the passed argument is a object containing a
-    "$node" key/value pair.`, t=> {
+    "$node" key/value pair.`, t => {
     const result = createNodeEnvelope({$node: 'yet.another.contextPath'});
 
     t.not(result.$node, undefined);

@@ -42,7 +42,7 @@ export const resolveChain = (chain, csrfToken) => {
 //
 // The core FlowQuery plugin
 //
-export default (csrfToken) => {
+export default csrfToken => {
     const middlewares = [];
 
     if (!csrfToken || csrfToken.length === 0) {

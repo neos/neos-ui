@@ -86,7 +86,7 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: state => $set(
+    [system.INIT]: () => state => $set(
         'cr.nodes',
         new Map({
             byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)) || new Map(),
@@ -99,7 +99,8 @@ export const reducer = handleActions({
                 contextPath: '',
                 typoscriptPath: ''
             })
-        })
+        }),
+        state
     ),
     [ADD]: ({contextPath, data}) => state => {
         // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;

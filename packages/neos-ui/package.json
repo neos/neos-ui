@@ -25,7 +25,8 @@
     "failFast": true,
     "verbose": true,
     "require": [
-      "babel-register"
+      "babel-register",
+      "./test/helpers/setup-browser-env.js"
     ],
     "babel": "inherit"
   },
@@ -50,6 +51,7 @@
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
+    "browser-env": "^2.0.12",
     "check-dependencies": "^1.0.1",
     "css-loader": "^0.25.0",
     "enzyme": "^2.4.1",
@@ -75,7 +77,8 @@
     "stylelint": "^7.1.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2",
-    "webpack-livereload-plugin": "^0.9.0"
+    "webpack-livereload-plugin": "^0.9.0",
+    "whatwg-fetch": "^1.0.0"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",

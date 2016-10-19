@@ -27,7 +27,7 @@ export const createNodeEnvelope = (node = {}) => {
 };
 
 export const resolveChain = (chain, csrfToken) => {
-    return fetch('/neos!/service/flow-query', {
+    return window.fetch('/neos!/service/flow-query', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -36,13 +36,13 @@ export const resolveChain = (chain, csrfToken) => {
         },
         body: JSON.stringify({chain})
     })
-    .then(response => response.json());
+    .then(response => response && response.json());
 };
 
 //
 // The core FlowQuery plugin
 //
-export default csrfToken => {
+export default (csrfToken) => {
     const middlewares = [];
 
     if (!csrfToken || csrfToken.length === 0) {

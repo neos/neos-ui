@@ -2,6 +2,7 @@
 # Test suite & generated coverage.
 #
 Coverage/
+packages/*/.nyc_output/
 Build/Selenium/Screenshots/*.png
 lcov.info
 

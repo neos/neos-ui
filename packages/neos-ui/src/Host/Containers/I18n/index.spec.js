@@ -1,55 +1,78 @@
+import test from 'ava';
 import React from 'react';
-import chai, {expect} from 'chai';
-import sinon from 'sinon/pkg/sinon.js';
-import {shallow} from 'enzyme';
-import sinonChai from 'sinon-chai';
+import sinon from 'sinon';
+import {mount} from 'enzyme';
 import I18n from './index.js';
 
-chai.should();
-chai.use(sinonChai);
 
-describe('"host.components.i18n"', () => {
-    it('should render a "span" node.', () => {
-        const tag = shallow(<I18n/>);
-
-        expect(tag.type()).to.equal('span');
+test(`Host > Containers > I18n: should be decoreated with @neos.`, t => {
+    const tag = mount(<I18n/>, {
+        context: {
+            configuration: {},
+            translations: {}
+        }
     });
+    const original = mount(<I18n.Original translations={{}} />);
 
-    it('should initially have a loading label state.', () => {
-        const tag = shallow(<I18n/>);
+    t.is(tag.name(), 'Neos(I18n)');
+    t.is(original.name(), 'I18n');
+});
 
-        expect(tag.state('label')).to.equal('Translation loading...');
-    });
+test(`Host > Containers > I18n: should render a <span> node.`, t => {
+    const original = mount(<I18n.Original translations={{}} />);
 
-    it('should not call the "loadTranslation" method if the new "id" matches the old "id" prop.', () => {
-        const tag = shallow(<I18n id="oldId"/>);
-        const spy = sinon.spy(tag.instance(), 'loadTranslation');
+    t.is(original.html(), '<span></span>');
+});
 
-        tag.setProps({
-            id: 'oldId'
-        });
+test(`
+    Host > Containers > I18n: should display configured fallback, if no translation
+    was found.`, t => {
+    const original = mount(<I18n.Original fallback="The Fallback" translations={{}} />);
 
-        expect(spy).to.have.callCount(0);
-    });
+    t.is(original.html(), '<span>The Fallback</span>');
+});
 
-    it('should call the "loadTranslation" method if a new "id" was passed as a prop.', () => {
-        const tag = shallow(<I18n id="oldId"/>);
-        const spy = sinon.spy(tag.instance(), 'loadTranslation');
+test(`
+    Host > Containers > I18n: should display the trans unit id, if no translation
+    was found and no fallback was configured.`, t => {
+    const original = mount(<I18n.Original id="The Trans Unit Id" translations={{}} />);
 
-        tag.setProps({
-            id: 'newId'
-        });
+    t.is(original.html(), '<span>The Trans Unit Id</span>');
+});
 
-        expect(spy).to.have.callCount(1);
-    });
+test(`
+    Host > Containers > I18n: should display the translated string, if a translation
+    was found via short-string.`, t => {
+    const translations = {
+        'Neos_Neos': {
+            'Main': {
+                'someLabel': 'The Translation'
+            }
+        }
+    };
+    const original = mount(<I18n.Original id="Neos.Neos:Main:someLabel" translations={translations} />);
 
-    it('should set the "fallback" prop as the label state if no i18n service can be called.', () => {
-        const tag = shallow(<I18n id="oldId" fallback="My fallback"/>);
+    t.is(original.html(), '<span>The Translation</span>');
+});
 
-        tag.setProps({
-            id: 'newId'
-        });
+test(`
+    Host > Containers > I18n: should display the translated string, if a translation
+    was found via full-length prop description.`, t => {
+    const translations = {
+        'Neos_Neos': {
+            'Main': {
+                'someLabel': 'The Translation'
+            }
+        }
+    };
+    const original = mount(
+        <I18n.Original
+            id="someLabel"
+            packageKey="Neos.Neos"
+            sourceName="Main"
+            translations={translations}
+            />
+    );
 
-        expect(tag.state('label')).to.equal('My fallback');
-    });
+    t.is(original.html(), '<span>The Translation</span>');
 });

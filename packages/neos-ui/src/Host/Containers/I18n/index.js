@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-import {logger} from 'Shared/Utilities/';
+import {logger} from 'Shared/Utilities/index';
 import neos from 'Host/Decorators/Neos/index';
 
 const errorCache = {};
@@ -61,7 +61,7 @@ export default class I18n extends Component {
             .map(s => s ? s.replace(/\./g, '_') : '')
 
             // traverse through translations and find us a fitting one
-            .reduce((prev, cur) => prev ? prev[cur] || '' : '', translations);
+            .reduce((prev, cur) => (prev ? prev[cur] || '' : ''), translations);
 
         if (translation && translation.length) {
             return translation;

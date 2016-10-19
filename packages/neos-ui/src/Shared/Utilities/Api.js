@@ -6,7 +6,7 @@
  */
 export const get = (ctx = window) => {
     try {
-        return ctx.neos;
+        return ctx.neos || {};
     } catch (e) {}
 
     return {};

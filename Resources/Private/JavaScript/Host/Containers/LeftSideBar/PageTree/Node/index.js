@@ -1,12 +1,17 @@
 import React, {Component, PropTypes} from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
 import {UI} from 'Host/Selectors/index';
+import {actions} from 'Host/Redux/index';
 
 @connect(state => ({
-    getTreeNode: UI.PageTree.getTreeNodeSelector(state)
-}))
+    getTreeNode: UI.PageTree.getTreeNodeSelector(state),
+    isFocused: UI.PageTree.getFocusedNodeContextPathSelector(state)
+}), {
+    onNodeFocus: actions.UI.PageTree.focus
+})
 export default class Node extends Component {
     static propTypes = {
         item: PropTypes.shape({
@@ -21,7 +26,11 @@ export default class Node extends Component {
             uri: PropTypes.string.isRequired,
             children: PropTypes.arrayOf(
                 PropTypes.string
-            )
+            ),
+            isDblClick: PropTypes.bool.isRequired
+
+            // @todo treeBind
+            // @todo inputActive
         }),
         getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
@@ -35,17 +44,13 @@ export default class Node extends Component {
         this.handleNodeToggle = this.handleNodeToggle.bind(this);
         this.handleNodeClick = this.handleNodeClick.bind(this);
         this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
+        this.handleDoubleClick = this.handleDoubleClick.bind(this);
     }
 
-    shouldComponentUpdate({item}) {
+    shouldComponentUpdate(nextProps, nextState) {
         return (
-            item.isCollapsed !== this.props.item.isCollapsed ||
-            (item.hasChildren && !this.props.item.isCollapsed) ||
-            item.isActive !== this.props.item.isActive ||
-            item.isFocused !== this.props.item.isFocused ||
-            item.isLoading !== this.props.item.isLoading ||
-            item.hasError !== this.props.item.hasError
-        );
+            (nextProps.hasChildren && !this.props.item.isCollapsed) ||
+            shallowCompare(this, nextProps, nextState));
     }
 
     render() {
@@ -58,6 +63,7 @@ export default class Node extends Component {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     onLabelClick={this.handleNodeLabelClick}
+                    onDoubleClick={this.handleDoubleClick}
                     />
                 {item.isCollapsed ? null : (
                     <Tree.Node.Contents>
@@ -86,16 +92,31 @@ export default class Node extends Component {
         onNodeToggle(item.contextPath);
     }
 
+    handleDoubleClick() {
+        console.log('onDoubleClick');
+    }
+
     handleNodeClick() {
         const {item, onNodeFocus} = this.props;
-
-        onNodeFocus(item.contextPath);
+        onNodeFocus(item.uri);
     }
 
     handleNodeLabelClick() {
-        const {item, onNodeClick, onNodeFocus} = this.props;
+        const {item, onNodeFocus, onNodeClick} = this.props;
 
         onNodeFocus(item.contextPath);
-        onNodeClick(item.uri);
+        onNodeClick(item.uri, item.contextPath);
+
+        if (this.props.item.isFocused) {
+            console.info('isFocused');
+        } else {
+            console.info('isFocused NOT');
+        }
+
+        if (this.props.item.isActive) {
+            console.info('isActive');
+        } else {
+            console.info('isActive NOT');
+        }
     }
 }

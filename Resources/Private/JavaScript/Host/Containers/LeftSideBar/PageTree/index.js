@@ -15,8 +15,9 @@ import Node from './Node/index';
     getTreeNode: UI.PageTree.getTreeNodeSelector
 }), {
     onNodeToggle: actions.UI.PageTree.toggle,
-    onNodeClick: actions.UI.ContentCanvas.setSrc,
-    onNodeFocus: actions.UI.PageTree.focus
+    onNodeFocus: actions.UI.PageTree.focus,
+    setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
+    setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath
 })
 export default class PageTree extends Component {
     static propTypes = {
@@ -26,9 +27,16 @@ export default class PageTree extends Component {
 
         getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
-        onNodeClick: PropTypes.func,
-        onNodeFocus: PropTypes.func
+        onNodeFocus: PropTypes.func,
+        setActiveContentCanvasSrc: PropTypes.func,
+        setActiveContentCanvasContextPath: PropTypes.func
     };
+
+    constructor(props) {
+        super(props);
+
+        this.handleNodeClick = this.handleNodeClick.bind(this);
+    }
 
     shouldComponentUpdate({allNodes, pageTreeState}) {
         return (
@@ -38,7 +46,7 @@ export default class PageTree extends Component {
     }
 
     render() {
-        const {siteNodeContextPath, getTreeNode, onNodeToggle, onNodeClick, onNodeFocus} = this.props;
+        const {siteNodeContextPath, getTreeNode, onNodeToggle, onNodeFocus} = this.props;
         const siteNode = getTreeNode(siteNodeContextPath);
 
         if (siteNode) {
@@ -47,7 +55,7 @@ export default class PageTree extends Component {
                     <Node
                         item={siteNode}
                         onNodeToggle={onNodeToggle}
-                        onNodeClick={onNodeClick}
+                        onNodeClick={this.handleNodeClick}
                         onNodeFocus={onNodeFocus}
                         />
                 </Tree>
@@ -55,5 +63,12 @@ export default class PageTree extends Component {
         }
 
         return null;
+    }
+
+    handleNodeClick(src, contextPath) {
+        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath} = this.props;
+
+        setActiveContentCanvasSrc(src);
+        setActiveContentCanvasContextPath(contextPath);
     }
 }

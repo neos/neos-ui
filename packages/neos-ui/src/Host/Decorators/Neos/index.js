@@ -7,7 +7,7 @@ import React, {Component, PropTypes} from 'react';
 export default () => WrappedComponent => {
     return class NeosDecorator extends Component {
         static Original = WrappedComponent;
-        
+
         static contextTypes = {
             configuration: PropTypes.object.isRequired,
             translations: PropTypes.object.isRequired

@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
 import {$set, $head, $get} from 'plow-js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 
 const UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE';

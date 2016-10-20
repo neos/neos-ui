@@ -1,6 +1,6 @@
 import {map, keys} from 'ramda';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 
 import * as ContentDimensions from './ContentDimensions/index';
 import * as Images from './Images/index';

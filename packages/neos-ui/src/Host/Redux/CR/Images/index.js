@@ -2,7 +2,7 @@ import Immutable, {Map} from 'immutable';
 import {createAction} from 'redux-actions';
 import {$set, $all} from 'plow-js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 
 const START_LOADING = '@packagefactory/guevara/CR/Images/START_LOADING';

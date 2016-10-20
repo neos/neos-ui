@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set} from 'plow-js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 
 const START_SAVING = '@neos/neos-ui/UI/Remote/START_SAVING';

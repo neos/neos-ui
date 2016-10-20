@@ -3,7 +3,7 @@ import {Map} from 'immutable';
 import {$set, $get} from 'plow-js';
 import {createSelector} from 'reselect';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 import {Nodes} from 'Host/Selectors/CR/index';
 import registry from 'Host/Extensibility/Registry/index';

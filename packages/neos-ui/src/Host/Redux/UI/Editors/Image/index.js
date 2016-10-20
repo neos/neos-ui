@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import {$set, $toggle} from 'plow-js';
 import {Map} from 'immutable';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 
 const TOGGLE_IMAGE_DETAILS_SCREEN = '@packagefactory/guevara/UI/Editors/Image/TOGGLE_IMAGE_DETAILS_SCREEN';

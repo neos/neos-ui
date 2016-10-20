@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 
 const BOOT = '@neos/neos-ui/System/BOOT';
 const INIT = '@neos/neos-ui/System/INIT';

@@ -1,5 +1,5 @@
 import {map, keys} from 'ramda';
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 
 import * as Changes from './Changes/index';
 import * as CR from './CR/index';

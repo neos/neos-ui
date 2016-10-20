@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import Immutable, {List, Map} from 'immutable';
 import {$set, $get} from 'plow-js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 import {createSelector} from 'reselect';
 

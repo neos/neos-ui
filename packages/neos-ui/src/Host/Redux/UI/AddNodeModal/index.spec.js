@@ -1,7 +1,7 @@
 import {createStore} from 'redux';
 import {Map} from 'immutable';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 
 import {reducer, actions, hydrate, errorMessages} from './index.js';
 

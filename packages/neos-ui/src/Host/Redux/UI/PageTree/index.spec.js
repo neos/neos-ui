@@ -2,7 +2,7 @@ import {createStore} from 'redux';
 import {Map, Set} from 'immutable';
 import {$set} from 'plow-js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 
 import {reducer, actions, hydrate} from './index.js';
 

@@ -2,7 +2,7 @@ import {createStore} from 'redux';
 import {Map} from 'immutable';
 import {reducer, actions, hydrate} from './index.js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 
 const {toggleImageDetailsScreen, updateImage} = actions;
 

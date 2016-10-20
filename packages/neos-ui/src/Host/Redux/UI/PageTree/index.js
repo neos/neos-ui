@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import {Map, Set} from 'immutable';
 import {$all, $set, $remove, $add} from 'plow-js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 
 const FOCUS = '@neos/neos-ui/UI/PageTree/FOCUS';

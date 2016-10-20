@@ -1,7 +1,7 @@
 import Immutable, {Map, List} from 'immutable';
 import {$set, $get} from 'plow-js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 
 //

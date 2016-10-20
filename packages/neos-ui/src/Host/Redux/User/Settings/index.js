@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
 import {$set, $toggle, $get} from 'plow-js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 
 const TOGGLE_AUTO_PUBLISHING = '@neos/neos-ui/User/Settings/TOGGLE_AUTO_PUBLISHING';

@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 
 const HANDLE_SERVER_FEEDBACK = '@neos/neos-ui/ServerFeedback/HANDLE_SERVER_FEEDBACK';
 

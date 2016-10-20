@@ -1,7 +1,7 @@
 import {createAction} from 'redux-actions';
 import {$set} from 'plow-js';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 
 const PERSIST = '@neos/neos-ui/Transient/Changes/PERSIST';
 

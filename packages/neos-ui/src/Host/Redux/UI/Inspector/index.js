@@ -3,7 +3,7 @@ import {$get, $set, $drop, $transform} from 'plow-js';
 import Immutable, {Map} from 'immutable';
 import {map, mapObjIndexed, values, sort, compose} from 'ramda';
 
-import {handleActions} from 'Shared/Utilities/index';
+import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from 'Host/Redux/System/index';
 import {createSelector} from 'reselect';
 

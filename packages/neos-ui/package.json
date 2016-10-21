@@ -45,10 +45,10 @@
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
+    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-ckeditor-bindings": "^4.4.8",
     "@neos-project/neos-ui-redux-store": "^4.4.8",
     "@neos-project/react-ui-components": "^4.4.8",
-    "@neos-project/utils-redux": "^4.4.8",
-    "@reduct/registry": "^1.0.1",
     "classnames": "^2.2.3",
     "core-js": "^2.4.1",
     "debug": "^2.2.0",

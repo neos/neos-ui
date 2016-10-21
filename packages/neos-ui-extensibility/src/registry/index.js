@@ -1,5 +1,7 @@
 import SynchronousRegistry from './SynchronousRegistry';
+import SynchronousMetaRegistry from './SynchronousMetaRegistry';
 
 export {
-    SynchronousRegistry
+    SynchronousRegistry,
+    SynchronousMetaRegistry
 };

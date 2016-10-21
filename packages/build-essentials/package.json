@@ -3,6 +3,7 @@
   "version": "4.4.8",
   "description": "Dependencies for building @neos-project packages",
   "private": true,
+  "main": "./src",
   "bin": {
     "ava": "./node_modules/.bin/ava",
     "babel": "./node_modules/.bin/babel",

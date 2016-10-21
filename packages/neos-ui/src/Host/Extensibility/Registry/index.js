@@ -96,11 +96,12 @@ const registry = {
             ## Enabled Styles
 
             The actual *enabled* styles are determined by the NodeTypes configuration of the property.
-            This means, that if the node is configured using NodeTypes \`properties.[propertyName].ui.aloha.formatting.strong=true\`,
-            then the "strong" key inside this registry is actually enabled for the editor.
+            This means, that if the node is configured using NodeTypes
+            \`properties.[propertyName].ui.aloha.formatting.strong=true\`, then the "strong" key inside this registry
+            is actually enabled for the editor.
 
-            For backwards compatibility reasons, the formatting-and-styling-registry *KEYS* must match the "pre-React" UI, if they
-            existed beforehand.
+            For backwards compatibility reasons, the formatting-and-styling-registry *KEYS* must match the "pre-React"
+            UI, if they existed beforehand.
 
 
             ## Configuration of CKeditor
@@ -119,23 +120,25 @@ const registry = {
 
             NOTE: one of "command" or "style" must be specified in all cases.
 
-            - \`command\` (string, optional). If specified, this CKEditor command is triggered; so the command string is known by CKeditor
-              in the "commands" section: http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getCommand
+            - \`command\` (string, optional). If specified, this CKEditor command is triggered; so the command string
+              is known by CKeditor in the "commands" section:
+              http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getCommand
 
-            - \`style\` (object, optional). If specified, this CKEditor style is applied. Expects a style description adhering to CKEDITOR.style(...),
-              so for example: \`{ style: {element: 'h1'}\`
+            - \`style\` (object, optional). If specified, this CKEditor style is applied. Expects a style description
+              adhering to CKEDITOR.style(...), so for example: \`{ style: {element: 'h1'}\`
 
-            - \`config\` (function, optional): This function needs to adjust the CKEditor config to e.g. configure ACF correctly.
-              The function gets passed in the config so-far, and needs to return the modified config.
-              See "CKEditor Configuration Helpers" below for helper functions.
+            - \`config\` (function, optional): This function needs to adjust the CKEditor config to e.g. configure ACF
+              correctly. The function gets passed in the config so-far, and needs to return the modified config. See
+              "CKEditor Configuration Helpers" below for helper functions.
 
             ## CKEditor Configuration Helpers
 
-            - \`config: registry.ckEditor.formattingRules.config.addToFormatTags('h1')\`: adds the passed-in tag to the \`format_tags\` configuration
-              option of CKEditor.
+            - \`config: registry.ckEditor.formattingRules.config.addToFormatTags('h1')\`: adds the passed-in tag to the
+              \`format_tags\` configuration option of CKEditor.
 
-            - \`registry.ckEditor.formattingRules.config.add('Strong')\`: adds the passed-in *Button Definition Name* to the ACF configuration
-              (automatic mode). This means the button names are standard CKEditor config buttons, like "Cut,Copy,Paste,Undo,Redo,Anchor".
+            - \`registry.ckEditor.formattingRules.config.add('Strong')\`: adds the passed-in *Button Definition Name*
+              to the ACF configuration (automatic mode). This means the button names are standard CKEditor config
+              buttons, like "Cut,Copy,Paste,Undo,Redo,Anchor".
 
         `),
 
@@ -146,7 +149,8 @@ const registry = {
                 {
                     formatting: 'h1' // References a key inside "formattingRules"
                     component: Button // the React component being used for rendering
-                    callbackPropName: 'onClick' // Name of the callback prop of the Component which is fired when the component's value changes.
+                    callbackPropName: 'onClick' // Name of the callback prop of the Component which is fired when the
+                                      component's value changes.
                     // all other properties are directly passed on to the component.
                 }
 

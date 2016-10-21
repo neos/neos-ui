@@ -1,4 +1,6 @@
-export default class SynchronousRegistry {
+import AbstractRegistry from './AbstractRegistry';
+
+export default class SynchronousRegistry extends AbstractRegistry {
     constructor(description) {
         // The description of the registry, containing examples, what is in there.
         this.description = description;
@@ -13,6 +15,8 @@ export default class SynchronousRegistry {
         // TODO: "key" must be string!
         this._registry[key] = value;
         this._keys.push(key);
+
+        return this._registry[key];
     }
 
     get(key) {

@@ -1,15 +1,15 @@
 {
-  "name": "@neos-project/neos-ui-extensibility",
+  "name": "@neos-project/neos-ui-ckeditor-bindings",
   "version": "4.4.8",
-  "description": "Extensibility mechanisms for the Neos CMS UI",
+  "description": "Prepare CKEditor for the Neos CMS UI",
   "private": true,
   "main": "./src/index.js",
   "scripts": {
     "prebuild": "check-dependencies && npm run clean",
     "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
     "test:watch": "npm run ava -- --watch",
-    "build": "exit 0",
-    "build:watch": "exit 0",
+    "build": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
+    "build:watch": "npm run build -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
     "ava": "PWD=$(pwd) NODE_ENV=test ava",
@@ -39,6 +39,9 @@
   },
   "devDependencies": {
     "@neos-project/build-essentials": "^4.4.8"
+  },
+  "dependencies": {
+    "@neos-project/neos-ui-extensibility": "^4.4.8"
   },
   "license": "GNU GPLv3"
 }

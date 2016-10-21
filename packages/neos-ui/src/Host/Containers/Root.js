@@ -15,11 +15,12 @@ import {
     FullScreen
 } from 'Host/Containers/index';
 
-const Root = ({store, configuration, translations, menu}) => {
+const Root = ({store, globalRegistry, configuration, translations, menu}) => {
     return (
         <div className={style.applicationWrapper}>
             <Provider store={store}>
                 <Neos
+                    globalRegistry={globalRegistry}
                     configuration={configuration}
                     translations={translations}
                     >
@@ -42,6 +43,7 @@ const Root = ({store, configuration, translations, menu}) => {
 };
 Root.propTypes = {
     store: PropTypes.object.isRequired,
+    globalRegistry: PropTypes.object.isRequired,
     configuration: PropTypes.object.isRequired,
     translations: PropTypes.object.isRequired,
     menu: PropTypes.object.isRequired

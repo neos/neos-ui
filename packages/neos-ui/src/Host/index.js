@@ -1,7 +1,6 @@
 import 'core-js/shim';
 import 'regenerator-runtime/runtime';
 import 'Shared/Styles/style.css';
-import registry from 'Host/Extensibility/Registry/index';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {Map} from 'immutable';
@@ -12,7 +11,7 @@ import allSagas from 'Host/Sagas/index';
 import apiDefinitionFactory from './Extensibility/ApiDefinitionForConsumers/index';
 import {manifests} from './Extensibility/ApiDefinitionForConsumers/Manifest/index';
 
-apiDefinitionFactory();
+const {globalRegistry} = apiDefinitionFactory();
 // Note: OUR manifest must be included *after* the apiDefinitionFactory has been applied.
 require('./manifest');
 
@@ -30,6 +29,6 @@ const store = createStore(reducer, new Map(), compose(
 allSagas.forEach(saga => sagaMiddleWare.run(saga, store));
 
 document.addEventListener('DOMContentLoaded', () => {
-    manifests.forEach(manifest => manifest(registry));
+    manifests.forEach(manifest => manifest(globalRegistry));
     store.dispatch(actions.System.boot());
 });

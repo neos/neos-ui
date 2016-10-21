@@ -9,6 +9,7 @@ export default () => WrappedComponent => {
         static Original = WrappedComponent;
 
         static contextTypes = {
+            globalRegistry: PropTypes.object.isRequired,
             configuration: PropTypes.object.isRequired,
             translations: PropTypes.object.isRequired
         };
@@ -16,11 +17,11 @@ export default () => WrappedComponent => {
         static displayName = `Neos(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
         render() {
-            const {configuration, translations} = this.context;
+            const {configuration, translations, globalRegistry} = this.context;
 
             return (
                 <WrappedComponent
-                    neos={{configuration}}
+                    neos={{configuration, globalRegistry}}
                     translations={translations}
                     {...this.props}
                     />

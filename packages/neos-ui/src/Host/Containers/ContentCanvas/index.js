@@ -3,14 +3,14 @@ import {connect} from 'react-redux';
 import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
-import Frame from '@neos-project/react-ui-components/lib/Frame/';
-import style from './style.css';
 import {actions} from 'Host/Redux/index';
 import * as selectors from 'Host/Selectors/index';
 import {calculateEnabledFormattingRulesForNode} from 'Host/Redux/UI/ContentCanvas/index';
 
+import Frame from '@neos-project/react-ui-components/lib/Frame/';
+
+import style from './style.css';
 import InlineUI from './InlineUI/index';
-import registry from 'Host/Extensibility/Registry/index';
 
 const closestContextPath = el => {
     if (!el) {
@@ -190,7 +190,7 @@ export default class ContentCanvas extends Component {
         });
 
         const editorConfig = {
-            formattingRules: registry.ckEditor.formattingRules.getAllAsObject(),
+            formattingRules: globalRegistry.ckEditor.formattingRules.getAllAsObject(),
             setFormattingUnderCursor: formattingUnderCursor,
             setCurrentlyEditedPropertyName
         };
@@ -224,7 +224,7 @@ export default class ContentCanvas extends Component {
                 }
             );
             enabledFormattingRuleIds.forEach(formattingRuleId => {
-                const formattingDefinition = registry.ckEditor.formattingRules.get(formattingRuleId);
+                const formattingDefinition = globalRegistry.ckEditor.formattingRules.get(formattingRuleId);
 
                 if (formattingDefinition.config) {
                     editorOptions = formattingDefinition.config(editorOptions);

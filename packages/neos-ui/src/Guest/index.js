@@ -1,3 +1,3 @@
-import ckEditorApi from './CKEditorApi';
+import guestFrameApi from './guestFrameApi';
 
-window.NeosCKEditorApi = ckEditorApi;
+window['@Neos.Neos.Ui:CKEditorApi'] = guestFrameApi;

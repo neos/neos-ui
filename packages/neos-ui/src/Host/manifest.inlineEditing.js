@@ -1,5 +1,5 @@
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
-import StyleSelect from 'Host/Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
+import StyleSelect from './Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
 
 export const configureInlineEditing = registry => {
     /**

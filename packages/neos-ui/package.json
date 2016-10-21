@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
+    "@neos-project/neos-ui-redux-store": "^4.4.8",
     "@neos-project/react-ui-components": "^4.4.8",
     "@neos-project/utils-redux": "^4.4.8",
     "@reduct/registry": "^1.0.1",

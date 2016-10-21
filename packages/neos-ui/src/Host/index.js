@@ -6,8 +6,9 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {Map} from 'immutable';
 
+import {reducer, actions} from '@neos-project/neos-ui-redux-store';
+
 import allSagas from 'Host/Sagas/index';
-import {reducer, actions} from 'Host/Redux/index';
 import apiDefinitionFactory from './Extensibility/ApiDefinitionForConsumers/index';
 import {manifests} from './Extensibility/ApiDefinitionForConsumers/Manifest/index';
 

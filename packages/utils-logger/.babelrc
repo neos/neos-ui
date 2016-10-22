@@ -1,16 +1,4 @@
 {
     "presets": ["react", "es2015", "stage-0"],
-    "plugins": ["transform-decorators-legacy", "transform-object-rest-spread"],
-    "env": {
-        "test": {
-            "plugins": [
-                [
-                    "babel-plugin-webpack-alias",
-                    {
-                        "config": "${PWD}/webpack.config.js"
-                    }
-                ]
-            ]
-        }
-    }
+    "plugins": ["transform-decorators-legacy", "transform-object-rest-spread"]
 }

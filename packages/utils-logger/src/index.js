@@ -1,5 +1,5 @@
 import _debug from 'debug';
-import {api} from 'Shared/Utilities/';
+import {get as getNeosApi} from '@neos-project/neos-ui-backend-connector/src/Utilities/get';
 
 const info = _debug('Neos.Ui:info');
 const log = _debug('Neos.Ui:log');
@@ -19,9 +19,7 @@ const deprecate = _debug('Neos:deprecated');
 // this enable step, but we cannot say for certain that the API has
 // booted up correctly at the end of the event-loop.
 //
-setTimeout(() => {
-    const {systemEnv} = api.get();
-
+const initialize = systemEnv => {
     //
     // Disable deprecation warnings for now while in `Development`,
     // since debugging would be a mess otherwise.
@@ -31,12 +29,13 @@ setTimeout(() => {
     } else {
         _debug.enable('Neos*');
     }
-}, 0);
+};
 
 export {
     info,
     log,
     error,
     warning,
-    deprecate
+    deprecate,
+    initialize
 };

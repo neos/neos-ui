@@ -40,5 +40,8 @@
   "devDependencies": {
     "@neos-project/build-essentials": "^4.4.8"
   },
+  "dependencies": {
+    "debug": "^2.2.0"
+  },
   "license": "GNU GPLv3"
 }

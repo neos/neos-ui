@@ -1,0 +1,98 @@
+{
+  "name": "@neos-project/neos-ui-editors",
+  "version": "4.4.8",
+  "description": "Neos CMS UI Editors for use in the inspector.",
+  "main": "Resources/Public/JavaScript/Host.js",
+  "private": true,
+  "scripts": {
+    "prepublish": "npm run build",
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
+    "test:watch": "npm run ava -- --watch",
+    "build": "webpack --progress --colors",
+    "build:watch": "npm run build -- --watch",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src && stylelint 'src/**/*.css'",
+    "ava": "PWD=$(pwd) NODE_ENV=test ava",
+    "precoverage:generate": "rimraf ./coverage",
+    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
+    "postpublish": "greenkeeper-postpublish"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ],
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register",
+      "./test/helpers/setup-browser-env.js"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/**/*.story.js",
+      "src/**/index.js"
+    ],
+    "include": [
+      "src/**"
+    ]
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "^4.4.8"
+  },
+  "dependencies": {
+    "@neos-project/brand": "^1.1.0",
+    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-ckeditor-bindings": "^4.4.8",
+    "@neos-project/neos-ui-redux-store": "^4.4.8",
+    "@neos-project/react-ui-components": "^4.4.8",
+    "classnames": "^2.2.3",
+    "core-js": "^2.4.1",
+    "debug": "^2.2.0",
+    "immutable": "^3.8.0",
+    "lodash.assign": "^4.2.0",
+    "lodash.compose": "^2.4.1",
+    "lodash.debounce": "^4.0.8",
+    "lodash.defer": "^4.1.0",
+    "lodash.isarray": "^4.0.0",
+    "lodash.isfunction": "^3.0.8",
+    "lodash.isobject": "^3.0.2",
+    "lodash.isstring": "^4.0.1",
+    "lodash.memoize": "^4.1.2",
+    "lodash.merge": "^4.6.0",
+    "lodash.omit": "^4.5.0",
+    "mime-types": "^2.1.10",
+    "moment": "^2.14.1",
+    "monet": "^0.8.10",
+    "normalize.css": "^5.0.0",
+    "plow-js": "^1.2.0",
+    "ramda": "^0.22.1",
+    "react": "^15.3.1",
+    "react-addons-shallow-compare": "^15.3.1",
+    "react-click-outside": "^2.1.0",
+    "react-collapse": "^2.3.3",
+    "react-css-themr": "^1.2.0",
+    "react-datetime": "^2.5.0",
+    "react-dom": "^15.3.1",
+    "react-dropzone": "^3.3.2",
+    "react-height": "^2.0.4",
+    "react-image-crop": "^1.0.0-rc2",
+    "react-immutable-proptypes": "^2.0.0",
+    "react-measure": "^1.2.0",
+    "react-motion": "^0.4.2",
+    "react-portal": "^2.2.1",
+    "react-redux": "^4.4.5",
+    "react-textarea-autosize": "^4.0.5",
+    "redux": "^3.4.0",
+    "redux-actions": "^0.12.0",
+    "redux-saga": "^0.12.0",
+    "regenerator": "^0.8.46",
+    "reselect": "^2.4.0",
+    "uuid": "^2.0.2",
+    "whatwg-fetch": "^1.0.0"
+  },
+  "license": "GNU GPLv3"
+}

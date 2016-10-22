@@ -17,7 +17,6 @@ export default function createConsumerApi (exposureMap) {
     });
 
     Object.defineProperty(api, '@manifests', createReadOnlyValue(manifests));
-    Object.defineProperty(api, '@globalRegistry', createReadOnlyValue(globalRegistry));
 
     Object.defineProperty(window, '@Neos:HostPluginAPI', createReadOnlyValue(api));
     Object.defineProperty(window['@Neos:HostPluginAPI'], 'VERSION', createReadOnlyValue(version));

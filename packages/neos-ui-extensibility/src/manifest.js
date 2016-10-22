@@ -1,4 +1,4 @@
-import {readFromConsumerApi} from './consumerApi';
+import readFromConsumerApi from './readFromConsumerApi';
 
 export const manifests = readFromConsumerApi('manifests', () => []);
 

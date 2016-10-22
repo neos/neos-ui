@@ -2,8 +2,7 @@ import AbstractRegistry from './AbstractRegistry';
 
 export default class SynchronousRegistry extends AbstractRegistry {
     constructor(description) {
-        // The description of the registry, containing examples, what is in there.
-        this.description = description;
+        super(description);
 
         // internal registry, containing the keys as object keys, and the values being the values in the registry.
         this._registry = {};

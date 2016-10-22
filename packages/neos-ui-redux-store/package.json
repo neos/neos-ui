@@ -23,7 +23,8 @@
     "failFast": true,
     "verbose": true,
     "require": [
-      "babel-register"
+      "babel-register",
+      "@neos-project/build-essentials/src/setup-browser-env"
     ],
     "babel": "inherit"
   },

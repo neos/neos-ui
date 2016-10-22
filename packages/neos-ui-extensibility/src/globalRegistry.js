@@ -1,7 +1,7 @@
 import {SynchronousMetaRegistry} from './registry';
-import {readFromConsumerApi} from './consumerApi';
+import readFromConsumerApi from './readFromConsumerApi';
 
-export const globalRegistry = readFromConsumerApi('globalRegistry',
+export default readFromConsumerApi('globalRegistry',
     () => new SynchronousMetaRegistry(`
         # A registry containing other registries that are added at runtime
     `)

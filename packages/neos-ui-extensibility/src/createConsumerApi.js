@@ -1,6 +1,6 @@
 import {version} from '../package.json';
 import {manifests} from './manifest';
-import {globalRegistry} from './register';
+import {globalRegistry} from './globalRegistry';
 
 const createReadOnlyValue = value => ({
     value,
@@ -8,14 +8,6 @@ const createReadOnlyValue = value => ({
     enumerable: false,
     configurable: true
 });
-
-export function readFromConsumerApi (key, fallback) {
-    if (window['@Neos:HostPluginAPI'] && window['@Neos:HostPluginAPI'][`@${key}`]) {
-        return window['@Neos:HostPluginAPI'][`@${key}`];
-    }
-
-    return fallback();
-}
 
 export default function createConsumerApi (exposureMap) {
     const api = {};

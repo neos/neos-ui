@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import createConsumerApi, {readFromConsumerApi} from './consumerApi';
+import createConsumerApi, {readFromConsumerApi} from './createConsumerApi';
 
 test(`"readFromConsumerApi" should run fallback, if there's no plugin api present`, t => {
     const fallback = () => ('Hello Neos!');

@@ -1,0 +1,47 @@
+{
+  "name": "@neos-project/neos-ui-decorators",
+  "version": "4.4.8",
+  "description": "Decorators for Neos CMS UI.",
+  "private": true,
+  "main": "./src/index.js",
+  "scripts": {
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
+    "test:watch": "npm run ava -- --watch",
+    "build": "exit 0",
+    "build:watch": "exit 0",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src",
+    "ava": "PWD=$(pwd) NODE_ENV=test ava",
+    "precoverage:generate": "rimraf ./coverage",
+    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ],
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/**/*.story.js",
+      "src/**/index.js"
+    ],
+    "include": [
+      "src/**"
+    ]
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "^4.4.8"
+  },
+  "peerDependencies": {
+    "react": "^15.2.1"
+  },
+  "license": "GNU GPLv3"
+}

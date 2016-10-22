@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-import {logger} from 'Shared/Utilities/index';
+import logger from '@neos-project/utils-logger';
 import neos from 'Host/Decorators/Neos/index';
 
 const errorCache = {};

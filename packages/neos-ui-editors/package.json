@@ -26,7 +26,7 @@
     "verbose": true,
     "require": [
       "babel-register",
-      "./test/helpers/setup-browser-env.js"
+      "@neos-project/build-essentials/src/setup-browser-env"
     ],
     "babel": "inherit"
   },

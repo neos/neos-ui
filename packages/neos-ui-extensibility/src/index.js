@@ -1,9 +1,9 @@
 import createConsumerApi from './createConsumerApi';
 import globalRegistry from './globalRegistry';
-import registry from './registry';
+import manifest from './manifest';
 
 export {
     createConsumerApi,
     globalRegistry,
-    registry
+    manifest
 };

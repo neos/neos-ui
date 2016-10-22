@@ -1,9 +1,9 @@
 import {manifest} from '@neos-project/neos-ui-extensibility';
-import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/registry';
+import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 import CkEditorFormattingRulesRegistry from './registry/CkEditorFormattingRulesRegistry';
 
-manifest('@neos-project/neos-ui-ckeditor-bindings', globalRegistry => {
+manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
     const ckEditorRegistry = globalRegistry.add(
         '@neos-project/neos-ui-ckeditor-bindings',
         new SynchronousMetaRegistry(`

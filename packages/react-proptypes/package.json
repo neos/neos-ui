@@ -39,15 +39,8 @@
   "devDependencies": {
     "@neos-project/build-essentials": "^4.4.8"
   },
-  "dependencies": {
-    "@neos-project/utils-redux": "^4.4.8",
-    "@neos-project/neos-ui-extensibility": "^4.4.8",
-    "immutable": "^3.8.0",
-    "plow-js": "^1.2.0",
-    "ramda": "^0.22.1",
-    "redux": "^3.4.0",
-    "redux-actions": "^0.12.0",
-    "reselect": "^2.4.0"
+  "peerDependencies": {
+    "react": "^15.2.1"
   },
   "license": "GNU GPLv3"
 }

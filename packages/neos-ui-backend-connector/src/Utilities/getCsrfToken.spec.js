@@ -1,27 +1,19 @@
-describe('"getCsrfToken"', () => {
-    it('should be exposed as a function.', () => {
-        expect(api.getCsrfToken).to.be.a('function');
-    });
+import test from 'ava';
 
-    it('should call and return value of the `csrfToken` within the given `neos` context.', () => {
-        const token = 'foo';
-        const neos = {csrfToken: () => token};
-        const context = {neos};
+import getCsrfToken, {ERROR_UNABLE_RETRIEVE_CSRF} from './getCsrfToken';
 
-        expect(api.getCsrfToken(context)).to.equal(token);
-    });
+test(`should be exposed as a function.`, t => {
+    t.is(typeof (getCsrfToken), 'function');
+});
 
-    it('should call and return value of the `csrfToken` within the given `neos` context.', () => {
-        const token = 'foo';
-        const neos = {csrfToken: () => token};
-        const context = {neos};
+test(`should call and return value of the 'csrfToken' within the given 'neos' context.`, t => {
+    const token = 'foo';
+    const neos = {csrfToken: () => token};
+    const context = {neos};
 
-        expect(api.getCsrfToken(context)).to.equal(token);
-    });
+    t.is(getCsrfToken(context), 'foo');
+});
 
-    it('should throw an error in case the CSRF token cannot be returned.', () => {
-        const fn = () => api.getCsrfToken();
-
-        expect(fn).to.throw(api.ERROR_UNABLE_RETRIEVE_CSRF);
-    });
+test(`should throw an error in case the CSRF token cannot be returned.`, t => {
+    t.throws(getCsrfToken, ERROR_UNABLE_RETRIEVE_CSRF);
 });

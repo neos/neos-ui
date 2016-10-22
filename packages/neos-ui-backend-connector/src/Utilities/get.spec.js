@@ -1,18 +1,24 @@
-describe('"get"', () => {
-    it('should be exposed as a function.', () => {
-        expect(api.get).to.be.a('function');
-    });
+import test from 'ava';
 
-    it('should return the `neos` property of the given context.', () => {
-        const neos = {};
-        const context = {neos};
+import get from './get';
 
-        expect(api.get(context)).to.equal(neos);
-    });
+test(`should be a function.`, t => {
+    t.is(typeof (get), 'function');
+});
 
-    it('should return an empty object in case no `neos` property was found within the given context.', () => {
-        const context = {};
+test(`should return the 'neos' property of the given context.`, t => {
+    const neos = {};
+    const context = {neos};
 
-        expect(api.get(context)).to.be.an('object');
-    });
+    t.is(get(context), neos);
+});
+
+test(`should return an empty object in case no 'neos' property was found within the given context.`, t => {
+    const context = {};
+
+    const result = get(context);
+
+    t.not(result, undefined);
+    t.not(result, null);
+    t.is(typeof (result), 'object');
 });

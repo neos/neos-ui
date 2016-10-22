@@ -3,6 +3,7 @@
 #
 Coverage/
 packages/*/.nyc_output/
+packages/*/coverage/
 Build/Selenium/Screenshots/*.png
 lcov.info
 

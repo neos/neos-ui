@@ -5,8 +5,11 @@
   "scripts": {
     "clear": "rm -rf packages/*/node_modules",
     "postinstall": "lerna bootstrap",
-    "build": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
-    "build:watch": "npm run build -- --watch",
+    "build:ui": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
+    "build:ui:watch": "npm run build:ui -- --watch",
+    "build:components": "lerna run --scope @neos-project/react-ui-components build",
+    "build:components:watch": "lerna run --scope @neos-project/react-ui-components build:watch",
+    "build": "npm run build:components && npm run build:ui",
     "test": "lerna run test --concurrency 1"
   },
   "devDependencies": {

@@ -30,5 +30,5 @@ script:
 #
 # Execute the test environment specific after_script shell script.
 #
-after_script:
-  - npm run coverage:generate && npm run coverage:publish
+#after_script:
+  #- npm run coverage:generate && npm run coverage:publish

@@ -1,19 +1,20 @@
 import {Component} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
-import {CR} from 'Host/Selectors/index';
 import {$transform} from 'plow-js';
 import style from './style.css';
-import {storedNode as NodePropType} from 'Shared/PropTypes/CR/Node/index';
+
+import {selectors} from '@neos-project/neos-ui-redux-store';
+import * as NeosPropTypes from '@neos-project/react-proptypes';
 
 @connect($transform({
-    hoveredNode: CR.Nodes.hoveredSelector,
-    focusedNode: CR.Nodes.focusedSelector
+    hoveredNode: selectors.CR.Nodes.hoveredSelector,
+    focusedNode: selectors.CR.Nodes.focusedSelector
 }))
 export default class MarkHoveredNodeAsHovered extends Component {
     static propTypes = {
-        hoveredNode: NodePropType,
-        focusedNode: NodePropType
+        hoveredNode: NeosPropTypes.node,
+        focusedNode: NeosPropTypes.node
     };
 
     shouldComponentUpdate(...args) {

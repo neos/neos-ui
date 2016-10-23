@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
-import {UI} from 'Host/Selectors/index';
-import {actions} from 'Host/Redux/index';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+
+const {UI} = selectors;
 
 import Node from './Node/index';
 
@@ -12,7 +13,7 @@ import Node from './Node/index';
     allNodes: $get('cr.nodes.byContextPath'),
     pageTreeState: $get('ui.pageTree'),
     siteNodeContextPath: $get('cr.nodes.siteNode'),
-    getTreeNode: UI.PageTree.getTreeNodeSelector
+    getTreeNode: selectors.UI.PageTree.getTreeNodeSelector
 }), {
     onNodeToggle: actions.UI.PageTree.toggle,
     onNodeFocus: actions.UI.PageTree.focus,

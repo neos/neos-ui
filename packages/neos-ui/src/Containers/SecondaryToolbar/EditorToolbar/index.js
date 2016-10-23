@@ -4,10 +4,10 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$get, $transform} from 'plow-js';
 
-import style from './style.css';
+import {neos} from '@neos-project/neos-ui-decorators';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
-import registry from 'Host/Extensibility/Registry/index';
-import {selectors} from 'Host/Redux/index';
+import style from './style.css';
 
 // a component is top-level if it does not contain slashes in the name.
 const isTopLevelToolbarComponent = componentDefinition =>
@@ -48,10 +48,14 @@ const renderToolbarComponents = (context, toolbarComponents, enabledFormattingRu
 
     context: selectors.Guest.context
 }))
+@neos(globalRegistry => {
+    toolbarRegistry: globalRegistry.get('richtexttoolbar')
+})
 export default class Toolbar extends Component {
     static propTypes = {
         formattingUnderCursor: PropTypes.objectOf(React.PropTypes.bool),
         enabledFormattingRuleIds: PropTypes.arrayOf(PropTypes.string),
+        toolbarRegistry: PropTypes.object,
 
         // The current guest frames window object.
         context: PropTypes.object
@@ -68,7 +72,7 @@ export default class Toolbar extends Component {
 
         const renderedToolbarComponents = renderToolbarComponents(
             this.props.context,
-            registry.ckEditor.toolbar.getAllAsList(),
+            this.props.toolbarRegistry.getAllAsList(),
             this.props.enabledFormattingRuleIds,
             this.props.formattingUnderCursor
         );

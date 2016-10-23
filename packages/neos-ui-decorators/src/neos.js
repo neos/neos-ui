@@ -4,7 +4,7 @@ import React, {Component, PropTypes} from 'react';
 // A higher order component to easily spread global
 // configuration
 //
-export default () => WrappedComponent => {
+export default mapRegistriesToProps => WrappedComponent => {
     return class NeosDecorator extends Component {
         static Original = WrappedComponent;
 
@@ -18,12 +18,14 @@ export default () => WrappedComponent => {
 
         render() {
             const {configuration, translations, globalRegistry} = this.context;
+            const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(globalRegistry) : {};
 
             return (
                 <WrappedComponent
                     neos={{configuration, globalRegistry}}
                     translations={translations}
                     {...this.props}
+                    {...registriesToPropsMap}
                     />
             );
         }

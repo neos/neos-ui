@@ -1,9 +1,8 @@
 import createConsumerApi from './createConsumerApi';
-import globalRegistry from './globalRegistry';
-import manifest from './manifest';
+import readFromConsumerApi from './readFromConsumerApi';
+
+export default readFromConsumerApi('manifest');
 
 export {
-    createConsumerApi,
-    globalRegistry,
-    manifest
+    createConsumerApi
 };

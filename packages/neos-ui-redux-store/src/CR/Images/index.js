@@ -5,6 +5,8 @@ import {$set, $all} from 'plow-js';
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
+import * as selectors from './selectors';
+
 const START_LOADING = '@packagefactory/guevara/CR/Images/START_LOADING';
 const FINISH_LOADING = '@packagefactory/guevara/CR/Images/FINISH_LOADING';
 //
@@ -57,4 +59,4 @@ export const reducer = handleActions({
 //
 // Export the selectors
 //
-export const selectors = {};
+export {selectors};

@@ -1,5 +1,13 @@
-import * as cr from './CR/index';
+import alohaConfiguration from './alohaConfiguration';
+import documentNode from './documentNode';
+import node from './node';
+import nodeType from './nodeType';
+import propertyDefinition from './propertyDefinition';
 
-export default {
-    cr
+export {
+    alohaConfiguration,
+    documentNode,
+    node,
+    nodeType,
+    propertyDefinition
 };

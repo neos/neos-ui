@@ -24,7 +24,8 @@
     "verbose": true,
     "require": [
       "babel-register",
-      "@neos-project/build-essentials/src/setup-browser-env"
+      "@neos-project/build-essentials/src/setup-browser-env",
+      "@neos-project/build-essentials/src/setup-neos-ui-host-env"
     ],
     "babel": "inherit"
   },

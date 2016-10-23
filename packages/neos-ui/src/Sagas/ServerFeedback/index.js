@@ -1,15 +1,16 @@
 import {takeEvery} from 'redux-saga';
 
-import {actionTypes} from 'Host/Redux/index';
-import registry from 'Host/Extensibility/Registry/index';
+import {actionTypes} from '@neos-project/neos-ui-redux-store';
 
-function * watchServerFeedback(store) {
+function * watchServerFeedback({store, globalRegistry}) {
+    const serverFeedbackHandlers = globalRegistry.get('serverFeedbackHandlers');
+
     yield * takeEvery(actionTypes.ServerFeedback.HANDLE_SERVER_FEEDBACK, action => {
         const {feedbackEnvelope} = action.payload;
         const {feedbacks} = feedbackEnvelope;
 
         feedbacks.forEach(feedback => {
-            const feedbackHandler = registry.serverFeedbackHandlers.get(feedback.type);
+            const feedbackHandler = serverFeedbackHandlers.get(feedback.type);
 
             if (feedbackHandler) {
                 feedbackHandler(feedback.payload, store);

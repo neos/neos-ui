@@ -5,7 +5,7 @@ import createConsumerApi from './createConsumerApi';
 test(`"createConsumerApi" should create a global, read-only object`, t => {
     t.is(window['@Neos:HostPluginAPI'], undefined);
 
-    createConsumerApi({});
+    createConsumerApi([], {});
 
     t.deepEqual(window['@Neos:HostPluginAPI'], {});
 
@@ -21,7 +21,7 @@ test(`"createConsumerApi" should create a global, read-only object`, t => {
 test(`"createConsumerApi" should expose the passed api, with each key being read-only`, t => {
     t.is(window['@Neos:HostPluginAPI'], undefined);
 
-    createConsumerApi({
+    createConsumerApi([], {
         something: 'else',
         andNow: 'to something completely different'
     });
@@ -42,12 +42,13 @@ test(`"createConsumerApi" should expose the passed api, with each key being read
     delete window['@Neos:HostPluginAPI'];
 });
 
-test(`"createConsumerApi" should expose the global manifests array`, t => {
+test(`"createConsumerApi" should expose the initialized manifest function`, t => {
     t.is(window['@Neos:HostPluginAPI'], undefined);
 
-    createConsumerApi({});
+    createConsumerApi([], {});
 
-    t.truthy(window['@Neos:HostPluginAPI']['@manifests']);
+    t.not(window['@Neos:HostPluginAPI']['@manifest'], undefined);
+    t.is(typeof (window['@Neos:HostPluginAPI']['@manifest']), 'function');
 
     delete window['@Neos:HostPluginAPI'];
 });

@@ -2,18 +2,18 @@ import test from 'ava';
 
 import readFromConsumerApi from './readFromConsumerApi';
 
-test(`"readFromConsumerApi" should run fallback, if there's no plugin api present`, t => {
-    const fallback = () => ('Hello Neos!');
+test(`"readFromConsumerApi" should complain, if there's no plugin api present`, t => {
+    const fn = () => readFromConsumerApi('test');
 
-    t.is(readFromConsumerApi('test', fallback), 'Hello Neos!');
+    t.throws(fn);
 });
 
-test(`"readFromConsumerApi" should run fallback, if the given key is not present in plugin api`, t => {
+test(`"readFromConsumerApi" should complain, if the given key is not present in plugin api`, t => {
     window['@Neos:HostPluginAPI'] = {};
 
-    const fallback = () => ('Hello Neos!');
+    const fn = () => readFromConsumerApi('test');
 
-    t.is(readFromConsumerApi('test', fallback), 'Hello Neos!');
+    t.throws(fn);
 
     delete window['@Neos:HostPluginAPI'];
 });

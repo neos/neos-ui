@@ -6,7 +6,7 @@ import Grid from '@neos-project/react-ui-components/lib/Grid/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
 
-import {actions, selectors} from 'Host/Redux/index';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 import TabPanel from './TabPanel/index';
 import style from './style.css';
@@ -28,16 +28,22 @@ export default class Inspector extends Component {
         transientValues: PropTypes.any
     };
 
+    renderFallback() {
+        return (<div>...</div>);
+    }
+
     render() {
         const {viewConfiguration, apply, discard, transientValues} = this.props;
-        const {tabs} = viewConfiguration;
-
         const isDisabled = transientValues === undefined;
 
-        const inspector = tabs => (
+        if (!viewConfiguration || !viewConfiguration.tabs) {
+            return this.renderFallback();
+        }
+
+        return (
             <div className={style.inspector}>
                 <Tabs>
-                    {tabs
+                    {viewConfiguration.tabs
                         //
                         // Only display tabs, that have groups
                         //
@@ -65,8 +71,5 @@ export default class Inspector extends Component {
                 </Bar>
             </div>
         );
-        const fallback = () => (<div>...</div>);
-
-        return (tabs ? inspector(tabs) : fallback());
     }
 }

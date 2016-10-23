@@ -16,10 +16,8 @@ const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
     entry: {
-        Host: './src/Host/index.js',
-        HostOnlyStyles: './src/Host/styleHostOnly.css',
-        InspectorEditors: './src/InspectorEditors/manifest.js',
-        Guest: './src/Guest/index.js',
+        Host: './src/index.js',
+        HostOnlyStyles: './src/styleHostOnly.css',
         Vendor: [
             'react',
             'react-redux',
@@ -33,6 +31,11 @@ const webpackConfig = {
                 test: /\.js$/,
                 exclude: /(node_modules)/,
                 loader: 'babel'
+            },
+            {
+                test: /\.json$/,
+                exclude: /(node_modules)/,
+                loader: 'json-loader'
             },
             {
                 test: /\.(woff|woff2)$/,
@@ -84,21 +87,12 @@ const webpackConfig = {
     resolve: {
         modulesDirectories: [
             path.resolve(__dirname, './node_modules')
-        ],
-        alias: {
-            'I18n': path.resolve(__dirname, 'src/Host/Extensibility/API/_internal/I18n/'),
-            'Host/Extensibility/API': path.resolve(__dirname, 'src/Host/Extensibility/API/'),
-            'API': path.resolve(__dirname, 'src/API/'),
-            'Host': path.resolve(__dirname, 'src/Host/'),
-            'Shared': path.resolve(__dirname, 'src/Shared/'),
-            'Guest': path.resolve(__dirname, 'src/Guest/'),
-            'InspectorEditors': path.resolve(__dirname, 'src/InspectorEditors/')
-        }
+        ]
     },
 
     output: {
         filename: 'JavaScript/[name].js',
-        path: path.resolve('./Resources/Public/')
+        path: path.resolve('../../Resources/Public/')
     },
     stats: {
         assets: false,

@@ -5,8 +5,8 @@ import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 
-import {actions} from 'Host/Redux/index';
-import {I18n} from 'Host/Containers/index';
+import {actions} from '@neos-project/neos-ui-redux-store';
+import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';
 

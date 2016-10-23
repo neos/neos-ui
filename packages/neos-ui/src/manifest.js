@@ -1,11 +1,11 @@
 import uuid from 'uuid';
 import {actions} from '@neos-project/neos-ui-redux-store';
-import {manifest} from '@neos-project/neos-ui-extensibility';
-import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/registry';
+import manifest from '@neos-project/neos-ui-extensibility';
+import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 import {configureInlineEditing} from './manifest.inlineEditing';
 
-manifest('main', globalRegistry => {
+manifest('main', {}, globalRegistry => {
     //
     // Create Neos UI core registries
     //
@@ -21,8 +21,8 @@ manifest('main', globalRegistry => {
     const inspector = globalRegistry.add('inspector', new SynchronousMetaRegistry(`
         # Inspector specific registries
 
-        - editors for inspector editors
-        - saveHooks for configured side-effects after apply
+        - 'editors' for inspector editors
+        - 'saveHooks' for configured side-effects after apply
     `));
 
     inspector.add('editors', new SynchronousRegistry(`
@@ -73,7 +73,7 @@ manifest('main', globalRegistry => {
         }
     `));
 
-    configureInlineEditing(registry);
+    //configureInlineEditing(globalRegistry);
 
     //
     // Register server feedback handlers

@@ -1,12 +1,10 @@
-import {api} from 'Shared/Utilities/';
-
 const fetchJson = (endpoint, options) => fetch(endpoint, options).then(res => res.json());
 
-export const change = changes => fetchJson('/neos!/service/change', {
+const change = csrfToken => changes => fetchJson('/neos!/service/change', {
     method: 'POST',
     credentials: 'include',
     headers: {
-        'X-Flow-Csrftoken': api.getCsrfToken(),
+        'X-Flow-Csrftoken': csrfToken,
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -14,11 +12,11 @@ export const change = changes => fetchJson('/neos!/service/change', {
     })
 });
 
-export const publish = (nodeContextPaths, targetWorkspaceName) => fetchJson('/neos!/service/publish', {
+const publish = csrfToken => (nodeContextPaths, targetWorkspaceName) => fetchJson('/neos!/service/publish', {
     method: 'POST',
     credentials: 'include',
     headers: {
-        'X-Flow-Csrftoken': api.getCsrfToken(),
+        'X-Flow-Csrftoken': csrfToken,
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -27,11 +25,11 @@ export const publish = (nodeContextPaths, targetWorkspaceName) => fetchJson('/ne
     })
 });
 
-export const discard = nodeContextPaths => fetchJson('/neos!/service/discard', {
+const discard = csrfToken => nodeContextPaths => fetchJson('/neos!/service/discard', {
     method: 'POST',
     credentials: 'include',
     headers: {
-        'X-Flow-Csrftoken': api.getCsrfToken(),
+        'X-Flow-Csrftoken': csrfToken,
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -39,7 +37,7 @@ export const discard = nodeContextPaths => fetchJson('/neos!/service/discard', {
     })
 });
 
-export const loadImageMetadata = imageVariantUuid => fetchJson(`neos/content/image-with-metadata?image=${imageVariantUuid}`, {
+const loadImageMetadata = imageVariantUuid => fetchJson(`neos/content/image-with-metadata?image=${imageVariantUuid}`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -56,11 +54,11 @@ export const loadImageMetadata = imageVariantUuid => fetchJson(`neos/content/ima
  * asset[originalAsset]:56d183f2-ee66-c845-7e2d-40661fb27571
  * @param asset
  */
-export const createImageVariant = (originalAssetUuid, adjustments) => fetchJson('neos/content/create-image-variant', {
+const createImageVariant = csrfToken => (originalAssetUuid, adjustments) => fetchJson('neos/content/create-image-variant', {
     method: 'POST',
     credentials: 'include',
     headers: {
-        'X-Flow-Csrftoken': api.getCsrfToken(),
+        'X-Flow-Csrftoken': csrfToken,
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -71,7 +69,7 @@ export const createImageVariant = (originalAssetUuid, adjustments) => fetchJson(
     })
 });
 
-export const uploadAsset = (file, siteNodeName, metadata = 'Image') => {
+const uploadAsset = csrfToken => (file, siteNodeName, metadata = 'Image') => {
     const data = new FormData();
     data.append('__siteNodeName', siteNodeName);
     data.append('asset[resource]', file);
@@ -81,8 +79,17 @@ export const uploadAsset = (file, siteNodeName, metadata = 'Image') => {
         method: 'POST',
         credentials: 'include',
         headers: {
-            'X-Flow-Csrftoken': api.getCsrfToken()
+            'X-Flow-Csrftoken': csrfToken
         },
         body: data
     });
 };
+
+export default csrfToken => ({
+    loadImageMetadata,
+    change: change(csrfToken),
+    publish: publish(csrfToken),
+    discard: discard(csrfToken),
+    createImageVariant: createImageVariant(csrfToken),
+    uploadAsset: uploadAsset(csrfToken)
+});

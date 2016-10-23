@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
-import {actions} from 'Host/Redux/index';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
 import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.css';

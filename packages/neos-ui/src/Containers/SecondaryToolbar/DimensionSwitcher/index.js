@@ -7,8 +7,8 @@ import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 import style from './style.css';
 import {$map, $get, $transform} from 'plow-js';
 import {Map} from 'immutable';
-import {selectors, actions} from 'Host/Redux/index';
-import I18n from 'Host/Containers/I18n/';
+import {selectors, actions} from '@neos-project/neos-ui-redux-store';
+import I18n from '@neos-project/neos-ui-i18n';
 
 // TODO Add title prop to Icon component
 const SelectedPreset = props => {

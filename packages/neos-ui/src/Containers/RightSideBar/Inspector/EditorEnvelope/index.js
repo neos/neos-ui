@@ -4,11 +4,9 @@ import {$transform, $get} from 'plow-js';
 import Label from '@neos-project/react-ui-components/lib/Label/';
 import shallowCompare from 'react-addons-shallow-compare';
 
-import {I18n} from 'Host/Containers/index';
-import neos from 'Host/Decorators/Neos/index';
-import registry from 'Host/Extensibility/Registry/index';
-import {actions, selectors} from 'Host/Redux/index';
-import {CR} from 'Host/Selectors/index';
+import I18n from '@neos-project/neos-ui-i18n';
+import {neos} from '@neos-project/neos-ui-decorators';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 /**
  * (Stateful) Editor envelope
@@ -16,18 +14,21 @@ import {CR} from 'Host/Selectors/index';
  * For reference on how to use editors, check the docs inside the Registry.
  */
 @connect($transform({
-    node: CR.Nodes.focusedSelector,
+    node: selectors.CR.Nodes.focusedSelector,
     transient: selectors.UI.Inspector.transientValues
 }), {
     commit: actions.UI.Inspector.commit
 })
-@neos()
+@neos(globalRegistry => {
+    editorRegistry: globalRegistry.get('editors')
+})
 export default class EditorEnvelope extends Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
         editor: PropTypes.string.isRequired,
         options: PropTypes.object,
+        editorRegistry: PropTypes.object.isRequired,
 
         node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired,
@@ -67,8 +68,8 @@ export default class EditorEnvelope extends Component {
     }
 
     renderEditorComponent() {
-        const {editor} = this.props;
-        const editorDefinition = registry.inspector.editors.get(editor);
+        const {editor, editorRegistry} = this.props;
+        const editorDefinition = editorRegistry.get(editor);
 
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;

@@ -5,6 +5,8 @@ import {$set, $head, $get} from 'plow-js';
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
+import * as selectors from './selectors';
+
 const UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE';
 const SWITCH = '@neos/neos-ui/CR/Workspaces/SWITCH';
 const PUBLISH = '@neos/neos-ui/CR/Workspaces/PUBLISH';
@@ -64,4 +66,4 @@ export const reducer = handleActions({
 //
 // Export the selectors
 //
-export const selectors = {};
+export {selectors};

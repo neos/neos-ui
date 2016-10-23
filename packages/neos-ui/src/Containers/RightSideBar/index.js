@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
-import {actions} from 'Host/Redux/index';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
 

@@ -4,7 +4,7 @@ import {$set, $get} from 'plow-js';
 import {createSelector} from 'reselect';
 
 import {handleActions} from '@neos-project/utils-redux';
-import {actionTypes as system} from '../../System/index';
+import {actionTypes as system} from '../System/index';
 
 const SET_CONTEXT = '@neos/neos-ui/Guest/SET_CONTEXT';
 

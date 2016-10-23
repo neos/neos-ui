@@ -1,6 +1,18 @@
 import test from 'ava';
 
-import './index';
+//
+// Mock CKEditor API
+//
+window.CKEDITOR = {
+    dtd: {
+        $editable: {}
+    }
+};
+
+//
+// Index needs to be required, so the above mock will be respected
+//
+require('./index');
 
 test(`should create a global, read-only object`, t => {
     t.not(window['@Neos.Neos.Ui:CKEditorApi'], undefined);

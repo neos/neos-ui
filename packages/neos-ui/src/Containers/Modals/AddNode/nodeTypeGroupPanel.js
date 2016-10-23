@@ -5,9 +5,9 @@ import {$transform, $get} from 'plow-js';
 import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 
-import {actions} from 'Host/Redux/index';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
-import {I18n} from 'Host/Containers/index';
+import I18n from '@neos-project/neos-ui-i18n';
 
 import NodeTypeItem from './nodeTypeItem';
 import style from './style.css';

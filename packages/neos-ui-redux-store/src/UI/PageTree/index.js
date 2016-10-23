@@ -5,6 +5,8 @@ import {$all, $set, $remove, $add} from 'plow-js';
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
+import * as selectors from './selectors';
+
 const FOCUS = '@neos/neos-ui/UI/PageTree/FOCUS';
 const COMMENCE_UNCOLLAPSE = '@neos/neos-ui/UI/PageTree/COMMENCE_UNCOLLAPSE';
 const UNCOLLAPSE = '@neos/neos-ui/UI/PageTree/UNCOLLAPSE';
@@ -86,4 +88,4 @@ export const reducer = handleActions({
 //
 // Export the selectors
 //
-export const selectors = {};
+export {selectors};

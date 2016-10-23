@@ -1,13 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
-import {actions} from 'Host/Redux/index';
+import {actions} from '@neos-project/neos-ui-redux-store';
 import {$transform, $get} from 'plow-js';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import IconButtonDropDown from '@neos-project/react-ui-components/lib/IconButtonDropDown/';
 
 @connect($transform({
-    focusedNode: $get('ui.pageTree.focused')
+    focusedNode: $get('ui.pageTree.isFocused')
 }), {
     openAddNodeModal: actions.UI.AddNodeModal.open
 })

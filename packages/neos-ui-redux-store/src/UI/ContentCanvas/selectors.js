@@ -1,13 +1,14 @@
 import {createSelector} from 'reselect';
 import {$get} from 'plow-js';
 
-import {globalRegistry} from '@neos-project/neos-ui-extensibility';
-
 import {selectors as nodes} from '../../CR/Nodes/index';
 
 const inlineEditable = properties => propertyName =>
     $get([propertyName, 'ui', 'inlineEditable'], properties);
 
+//
+// TODO: REFACTOR THIS TO FIT WITH THE REGISTY IMPLEMENTATION
+//
 const postProcessAlohaConfig = alohaConfiguration => {
     const keysToParse = ['format', 'link', 'list', 'table'];
 
@@ -16,7 +17,8 @@ const postProcessAlohaConfig = alohaConfiguration => {
         keysToParse.forEach(key => {
             if (alohaConfiguration[key] && alohaConfiguration[key].filter) { // TODO: support object-based aloha configuration
                 alohaConfiguration[key]
-                    .filter(formattingRuleId => globalRegistry.get('ckEditor').get('formattingRules').has(formattingRuleId))
+                    // This doesn't work anymore:
+                    //.filter(formattingRuleId => globalRegistry.get('ckEditor').get('formattingRules').has(formattingRuleId))
                     .forEach(formattingRuleId =>
                         enabledFormattingRuleIds.push(formattingRuleId)
                     );

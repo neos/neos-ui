@@ -55,9 +55,10 @@ const resolveNodeFromContextPath = (contextPath, getStoredNodeByContextPath, get
 export const focusedNodePathSelector = createSelector(
     [
         focused,
-        currentDocumentNode
+        currentDocumentNode,
+        state => state
     ],
-    (focused, currentDocumentNode) => {
+    (focused, currentDocumentNode, state) => {
         return focused || currentDocumentNode;
     }
 );

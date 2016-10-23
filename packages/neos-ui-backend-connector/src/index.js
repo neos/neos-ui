@@ -1,5 +1,6 @@
 import initializeUse from './Use/index';
 import initializeFlowQuery from './FlowQuery/index';
+import initializeEndpoints from './Endpoints/index';
 
 const createReadOnlyValue = value => ({
     value,
@@ -19,7 +20,7 @@ export const define = parent => (name, value) => {
 //
 // Initializes the Neos API
 //
-export default (parent, {csrfToken, alias = 'neos', systemEnv = 'Development'}) => {
+export const initializeJsAPI = (parent, {csrfToken, alias = 'neos', systemEnv = 'Development'}) => {
     if (csrfToken === undefined) {
         throw new Error('You need to provide a valid csrf token for the Neos API');
     }
@@ -34,6 +35,7 @@ export default (parent, {csrfToken, alias = 'neos', systemEnv = 'Development'}) 
     addLibrary('use', initializeUse(addLibrary, neos));
     addLibrary('q', initializeFlowQuery(csrfToken));
     addLibrary('csrfToken', () => csrfToken);
+    addLibrary('endpoints', initializeEndpoints(csrfToken));
 
     //
     // Attach Neos API to the parent object
@@ -41,6 +43,15 @@ export default (parent, {csrfToken, alias = 'neos', systemEnv = 'Development'}) 
     define(parent)(alias, neos);
 
     return parent[alias];
+};
+
+//
+// Expose methods to access the initialized api
+//
+export default {
+    get(alias = 'neos', ctx = window) {
+        return ctx[alias];
+    }
 };
 
 //

@@ -5,7 +5,7 @@ import mergeClassNames from 'classnames';
 import {$transform} from 'plow-js';
 import debounce from 'lodash.debounce';
 
-import {CR} from 'Host/Selectors/index';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import {
     AddNode,
@@ -36,7 +36,7 @@ export const position = nodeContextPath => {
 };
 
 @connect($transform({
-    focusedNode: CR.Nodes.focusedSelector
+    focusedNode: selectors.CR.Nodes.focusedSelector
 }))
 export default class NodeToolbar extends Component {
     static propTypes = {

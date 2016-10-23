@@ -3,9 +3,10 @@ import {connect} from 'react-redux';
 import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
-import {actions} from 'Host/Redux/index';
-import * as selectors from 'Host/Selectors/index';
-import {calculateEnabledFormattingRulesForNode} from 'Host/Redux/UI/ContentCanvas/index';
+
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+
+const {calculateEnabledFormattingRulesForNode} = selectors.UI.ContentCanvas;
 
 import Frame from '@neos-project/react-ui-components/lib/Frame/';
 

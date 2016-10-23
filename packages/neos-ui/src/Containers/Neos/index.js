@@ -23,8 +23,8 @@ export default class Neos extends Component {
     }
 
     getChildContext() {
-        const {configuration, translations} = this.props;
-        return {configuration, translations};
+        const {configuration, translations, globalRegistry} = this.props;
+        return {configuration, translations, globalRegistry};
     }
 
     render() {

@@ -4,14 +4,16 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
+
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import CheckBox from '@neos-project/react-ui-components/lib/CheckBox/';
 import Label from '@neos-project/react-ui-components/lib/Label/';
 import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
 
-import {I18n} from 'Host/Containers/index';
-import {actions} from 'Host/Redux/index';
-import {publishableNodesSelector, publishableNodesInDocumentSelector} from 'Host/Selectors/CR/Workspaces/index';
+import I18n from '@neos-project/neos-ui-i18n';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+
+const {publishableNodesSelector, publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 import AbstractButton from './AbstractButton/index';
 import style from './style.css';

@@ -4,7 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 
-import {I18n} from 'Host/Containers/index';
+import I18n from '@neos-project/neos-ui-i18n';
 
 import style from '../style.css';
 

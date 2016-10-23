@@ -1,10 +1,12 @@
 import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
-import registry from 'Host/Extensibility/Registry/index';
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
-import {selectors} from 'Host/Redux/index';
+
+import {selectors} from '@neos-project/neos-ui-redux-store';
+import {neos} from '@neos-project/neos-ui-decorators';
+
 import {hideDisallowedToolbarComponents} from './index';
 
 // Predicate matching all "element.id"s starting with "prefix".
@@ -19,6 +21,9 @@ const startsWith = prefix => element =>
     enabledFormattingRuleIds: selectors.UI.ContentCanvas.enabledFormattingRuleIds,
     context: selectors.Guest.context
 }))
+@neos(globalRegistry => ({
+    toolbarRegistry: globalRegistry.get('richtexttoolbar')
+}))
 export default class StyleSelect extends Component {
 
     static propTypes = {
@@ -27,6 +32,8 @@ export default class StyleSelect extends Component {
 
         formattingUnderCursor: PropTypes.objectOf(React.PropTypes.bool),
         enabledFormattingRuleIds: PropTypes.arrayOf(PropTypes.string),
+
+        toolbarRegistry: PropTypes.object.isRequired,
 
         // The current guest frames window object.
         context: PropTypes.object

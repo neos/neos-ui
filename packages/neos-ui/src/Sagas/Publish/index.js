@@ -2,9 +2,10 @@ import {takeEvery} from 'redux-saga';
 import {put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
-import {actionTypes, actions} from 'Host/Redux/index';
-import {publishableNodesInDocumentSelector} from 'Host/Selectors/CR/Workspaces/index';
-import {publish, discard} from 'API/Endpoints/index';
+import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {publish, discard} from '@neos-project/neos-ui-backend-connector';
+
+const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 function * watchPublish() {
     yield * takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {

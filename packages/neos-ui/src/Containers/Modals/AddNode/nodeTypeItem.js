@@ -7,14 +7,12 @@ import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 
-import {actions} from 'Host/Redux/index';
-import NeosPropTypes from 'Shared/PropTypes/index';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import * as NeosPropTypes from '@neos-project/react-proptypes';
 
-import {I18n} from 'Host/Containers/index';
+import I18n from '@neos-project/neos-ui-i18n';
 
-import {
-    referenceNodeSelector
-} from 'Host/Selectors/UI/AddNodeModal/index';
+const {referenceNodeSelector} = selectors.UI.AddNodeModal;
 
 import style from './style.css';
 
@@ -27,7 +25,7 @@ import style from './style.css';
 })
 class NodeTypeItem extends Component {
     static propTypes = {
-        referenceNode: NeosPropTypes.cr.node,
+        referenceNode: NeosPropTypes.node,
         mode: PropTypes.string.isRequired,
 
         closeModal: PropTypes.func.isRequired,

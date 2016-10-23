@@ -1,17 +1,18 @@
 import {Component} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
-import {CR} from 'Host/Selectors/index';
 import {$transform} from 'plow-js';
 import style from './style.css';
-import {node as NodePropType} from 'Shared/PropTypes/CR/Node/index';
+
+import {selectors} from '@neos-project/neos-ui-redux-store';
+import * as NeosPropTypes from '@neos-project/react-proptypes';
 
 @connect($transform({
-    focusedNode: CR.Nodes.focusedSelector
+    focusedNode: selectors.CR.Nodes.focusedSelector
 }))
 export default class MarkActiveNodeAsFocused extends Component {
     static propTypes = {
-        focusedNode: NodePropType
+        focusedNode: NeosPropTypes.node
     };
 
     shouldComponentUpdate(...args) {

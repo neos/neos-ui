@@ -2,11 +2,10 @@ import {takeLatest} from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
 import {$get, $contains} from 'plow-js';
 
-import {actionTypes, actions} from 'Host/Redux/index';
-import {CR} from 'Host/Selectors/index';
-import {api} from 'Shared/Utilities/';
+import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {api} from '@neos-project/neos-ui-backend-connector';
 
-const isDocumentType = CR.NodeTypes.isOfTypeSelector('TYPO3.Neos:Document');
+const isDocumentType = selectors.CR.NodeTypes.isOfTypeSelector('TYPO3.Neos:Document');
 
 function * watchToggle() {
     yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {

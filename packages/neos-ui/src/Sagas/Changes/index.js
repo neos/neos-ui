@@ -2,9 +2,10 @@ import {takeEvery} from 'redux-saga';
 import {put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
-import {actionTypes, actions} from 'Host/Redux/index';
-import {publishableNodesInDocumentSelector} from 'Host/Selectors/CR/Workspaces/index';
-import {change} from 'API/Endpoints/index';
+import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {change} from '@neos-project/neos-ui-backend-connector';
+
+const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 function * watchPersist() {
     yield * takeEvery(actionTypes.Changes.PERSIST, function * persistChanges(action) {

@@ -5,7 +5,7 @@ import {$transform, $get} from 'plow-js';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
 
-import {I18n} from 'Host/Containers/index';
+import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';
 

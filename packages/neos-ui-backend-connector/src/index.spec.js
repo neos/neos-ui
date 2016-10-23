@@ -1,5 +1,5 @@
 import test from 'ava';
-import api, {createPlugin, define} from './index.js';
+import backend, {initializeJsAPI, createPlugin, define} from './index.js';
 
 test(`
     "createPlugin" utility should expose a method to create plugins which will
@@ -35,7 +35,7 @@ test(`
 });
 
 test('should throw an error if no csrfToken was passed.', t => {
-    const fn = () => api({});
+    const fn = () => initializeJsAPI({});
 
     t.throws(fn);
 });
@@ -45,7 +45,7 @@ test('should place itself inside the specified parent object with the specified 
     const csrfToken = 'csrfToken';
     const alias = 'test';
 
-    api(win, {csrfToken, alias});
+    initializeJsAPI(win, {csrfToken, alias});
 
     t.not(win.test, undefined);
 });
@@ -53,9 +53,9 @@ test('should place itself inside the specified parent object with the specified 
 test('should throw an error if a value already exists under the given alias in parent.', t => {
     const win = {};
     const csrfToken = 'csrfToken';
-    const fn = () => api(win, 'csrfToken');
+    const fn = () => initializeJsAPI(win, 'csrfToken');
 
-    api(win, {csrfToken});
+    initializeJsAPI(win, {csrfToken});
 
     t.throws(fn);
 });
@@ -64,7 +64,7 @@ test('should have a fallback alias "neos" if none was specified.', t => {
     const win = {};
     const csrfToken = 'csrfToken';
 
-    api(win, {csrfToken});
+    initializeJsAPI(win, {csrfToken});
 
     t.not(win.neos, undefined);
 });
@@ -76,7 +76,7 @@ test('should not be writable.', t => {
         win.neos = 'test';
     };
 
-    api(win, {csrfToken});
+    initializeJsAPI(win, {csrfToken});
 
     const oldApi = win.neos;
 
@@ -88,7 +88,7 @@ test('should expose the use method by default.', t => {
     const win = {};
     const csrfToken = 'csrfToken';
 
-    api(win, {csrfToken});
+    initializeJsAPI(win, {csrfToken});
 
     t.not(win.neos.use, undefined);
     t.is(typeof (win.neos.use), 'function');

@@ -2,34 +2,41 @@ import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
 
-import {actions} from 'Host/Redux/index';
-import NeosPropTypes from 'Shared/PropTypes/index';
+import {neos} from '@neos-project/neos-ui-decorators';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import * as NeosPropTypes from '@neos-project/react-proptypes';
 
-import {I18n} from 'Host/Containers/index';
+import I18n from '@neos-project/neos-ui-i18n';
 
-import {
+const {
     referenceNodeSelector,
     nodeTypesForAddNodeModalSelector
-} from 'Host/Selectors/UI/AddNodeModal/index';
+} = selectors.UI.AddNodeModal;
 
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 
+
 @connect($transform({
-    referenceNode: referenceNodeSelector,
-    groupedAllowedNodeTypes: nodeTypesForAddNodeModalSelector,
+    referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
+    // groupedAllowedNodeTypes: nodeTypesForAddNodeModalSelector,
     mode: $get('ui.addNodeModal.mode')
 }), {
     close: actions.UI.AddNodeModal.close
 })
+@neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+}))
 export default class AddNodeModal extends Component {
     static propTypes = {
-        referenceNode: NeosPropTypes.cr.node,
+        referenceNode: NeosPropTypes.node,
         groupedAllowedNodeTypes: PropTypes.array,
         mode: PropTypes.string.isRequired,
+        nodeTypesRegistry: PropTypes.object.isRequired,
 
         close: PropTypes.func.isRequired
     };
@@ -40,16 +47,20 @@ export default class AddNodeModal extends Component {
 
     render() {
         const {
+            nodeTypesRegistry,
             referenceNode,
             mode,
-            close,
-            groupedAllowedNodeTypes
+            close
         } = this.props;
         const actions = [];
 
         if (!referenceNode) {
             return null;
         }
+
+        const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(
+            nodeTypesRegistry.getAllowedNodeTypes(referenceNode.nodeType)
+        );
 
         actions.push(
             <Button

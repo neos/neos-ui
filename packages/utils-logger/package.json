@@ -41,6 +41,7 @@
     "@neos-project/build-essentials": "^4.4.8"
   },
   "dependencies": {
+    "@neos-project/neos-ui-backend-connector": "^4.4.8",
     "debug": "^2.2.0"
   },
   "license": "GNU GPLv3"

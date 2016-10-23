@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
 import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 
-import {I18n} from 'Host/Containers/index';
+import I18n from '@neos-project/neos-ui-i18n';
 
 import EditorEnvelope from '../EditorEnvelope/index';
 import sidebarStyle from '../../style.css';

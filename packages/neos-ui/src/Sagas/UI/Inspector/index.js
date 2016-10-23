@@ -1,19 +1,19 @@
 import {take, race, put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
-import {actionTypes, actions} from 'Host/Redux/index';
-import {CR} from 'Host/Selectors/index';
-import registry from 'Host/Extensibility/Registry/index';
+import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-const getFocusedNode = CR.Nodes.focusedSelector;
+const getFocusedNode = selectors.CR.Nodes.focusedSelector;
 const getTransientInspectorValues = state => {
     const values = $get(['ui', 'inspector', 'valuesByNodePath'], state);
 
     return values.toJS ? values.toJS() : values;
 };
 
-function * inspectorSaga() {
+function * inspectorSaga({globalRegistry}) {
     yield take(actionTypes.System.READY);
+
+    const inspectorRegistry = globalRegistry.get('inspector');
 
     while (true) { // eslint-disable-line no-constant-condition
         //
@@ -50,7 +50,7 @@ function * inspectorSaga() {
                     //
                     // Persist the inspector changes
                     //
-                    yield call(flushInspector);
+                    yield call(flushInspector, inspectorRegistry);
                     yield put(actions.UI.Inspector.clear());
                 } catch (err) {
                     //
@@ -67,7 +67,7 @@ function * inspectorSaga() {
     }
 }
 
-function * flushInspector() {
+function * flushInspector(inspectorRegistry) {
     const state = yield select();
     const focusedNode = getFocusedNode(state);
     const transientInspectorValues = getTransientInspectorValues(state);
@@ -82,7 +82,7 @@ function * flushInspector() {
         const value = yield transientValue.hooks ?
             Object.keys(transientValue.hooks).reduce(
                 (valueAsPromise, hookIdentifier) => {
-                    const hookFn = registry.inspector.saveHooks.get(hookIdentifier);
+                    const hookFn = inspectorRegistry.get('saveHooks').get(hookIdentifier);
 
                     return valueAsPromise.then(value => {
                         try {

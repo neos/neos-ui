@@ -1,13 +1,12 @@
 import {takeLatest} from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
 
-import {actions, actionTypes, selectors} from 'Host/Redux/index';
-import {currentDocumentNode} from 'Host/Selectors/CR/Nodes/index';
-import {api} from 'Shared/Utilities/';
+import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
+import {api} from '@neos-project/neos-ui-backend-connector';
 
 function * updateContentCanvasSrc() {
     const activeDimensions = yield select(selectors.CR.ContentDimensions.active);
-    const contextPath = yield select(currentDocumentNode);
+    const contextPath = yield select(selectors.CR.Nodes.currentDocumentNode);
 
     const {q} = api.get();
     const nodes = yield q(contextPath).context(

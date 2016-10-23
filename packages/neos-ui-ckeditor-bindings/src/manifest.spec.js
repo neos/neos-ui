@@ -1,22 +1,16 @@
 import test from 'ava';
 
-import {createConsumerApi} from '@neos-project/neos-ui-extensibility/';
-import {manifests} from '@neos-project/neos-ui-extensibility/src/manifest';
-
-
-//
-// Mock the host plugin api, to test the manifest
-//
-createConsumerApi({});
+import {isManifestLoaded, getManifest} from '@neos-project/build-essentials/src/neos-ui';
 
 import './manifest';
 
 test(`should create manifest entry with no options.`, t => {
-    const manifestEntry = manifests.filter(entry => entry['@neos-project/neos-ui-ckeditor-bindings'])[0];
+    t.true(isManifestLoaded('@neos-project/neos-ui-ckeditor-bindings'));
 
-    t.not(manifestEntry, undefined);
-    t.deepEqual(manifestEntry['@neos-project/neos-ui-ckeditor-bindings'].options, {});
-    t.is(typeof (manifestEntry['@neos-project/neos-ui-ckeditor-bindings'].bootstrap), 'function');
+    const manifestEntry = getManifest('@neos-project/neos-ui-ckeditor-bindings')
+
+    t.deepEqual(manifestEntry.options, {});
+    t.is(typeof (manifestEntry.bootstrap), 'function');
 });
 
 test.todo(`Add tests for the bootstrap function.`);

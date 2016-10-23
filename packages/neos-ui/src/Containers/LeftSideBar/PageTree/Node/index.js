@@ -1,14 +1,14 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
+
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
-import {UI} from 'Host/Selectors/index';
-import {actions} from 'Host/Redux/index';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 @connect(state => ({
-    getTreeNode: UI.PageTree.getTreeNodeSelector(state),
-    isFocused: UI.PageTree.getFocusedNodeContextPathSelector(state)
+    getTreeNode: selectors.UI.PageTree.getTreeNodeSelector(state),
+    isFocused: selectors.UI.PageTree.getFocusedNodeContextPathSelector(state)
 }), {
     onNodeFocus: actions.UI.PageTree.focus
 })

@@ -31,7 +31,7 @@ const initialize = systemEnv => {
     }
 };
 
-export {
+export default {
     info,
     log,
     error,

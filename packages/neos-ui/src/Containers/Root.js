@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Provider} from 'react-redux';
-import style from 'Host/style.css';
+import style from './style.css';
 
 import {
     Neos,
@@ -13,7 +13,7 @@ import {
     SecondaryToolbar,
     FlashMessages,
     FullScreen
-} from 'Host/Containers/index';
+} from './index';
 
 const Root = ({store, globalRegistry, configuration, translations, menu}) => {
     return (

@@ -3,7 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
 import IconButtonDropDown from '@neos-project/react-ui-components/lib/IconButtonDropDown/';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import {actions} from 'Host/Redux/index';
+import {actions} from '@neos-project/neos-ui-redux-store';
 import {$transform} from 'plow-js';
 
 @connect($transform({

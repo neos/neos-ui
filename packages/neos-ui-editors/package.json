@@ -2,7 +2,7 @@
   "name": "@neos-project/neos-ui-editors",
   "version": "4.4.8",
   "description": "Neos CMS UI Editors for use in the inspector.",
-  "main": "Resources/Public/JavaScript/Host.js",
+  "main": "src/manifest.js",
   "private": true,
   "scripts": {
     "prepublish": "npm run build",

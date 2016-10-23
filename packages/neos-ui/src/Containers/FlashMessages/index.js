@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
-import {actions} from 'Host/Redux/index';
+import {actions} from '@neos-project/neos-ui-redux-store';
 import FlashMessage from './FlashMessage/index';
 
 import style from './style.css';

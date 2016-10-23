@@ -1,15 +1,15 @@
 import test from 'ava';
 
-import {info, log, error, warning, deprecate, initialize} from './index';
+import logger from './index';
 
 test(`should export logger methods`, t => {
-    t.is(typeof (info), 'function');
-    t.is(typeof (log), 'function');
-    t.is(typeof (error), 'function');
-    t.is(typeof (warning), 'function');
-    t.is(typeof (deprecate), 'function');
+    t.is(typeof (logger.info), 'function');
+    t.is(typeof (logger.log), 'function');
+    t.is(typeof (logger.error), 'function');
+    t.is(typeof (logger.warning), 'function');
+    t.is(typeof (logger.deprecate), 'function');
 });
 
 test(`should export initialize method`, t => {
-    t.is(typeof (initialize), 'function');
+    t.is(typeof (logger.initialize), 'function');
 });

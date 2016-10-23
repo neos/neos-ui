@@ -29,9 +29,7 @@
   },
   "nyc": {
     "exclude": [
-      "src/**/*.spec.js",
-      "src/**/*.story.js",
-      "src/**/index.js"
+      "src/**/*.spec.js"
     ],
     "include": [
       "src/**"

@@ -1,5 +1,5 @@
 import test from 'ava';
-import backend, {initializeJsAPI, createPlugin, define} from './index.js';
+import {initializeJsAPI, createPlugin, define} from './index.js';
 
 test(`
     "createPlugin" utility should expose a method to create plugins which will

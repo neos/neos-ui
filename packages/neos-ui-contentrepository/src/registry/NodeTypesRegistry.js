@@ -1,10 +1,13 @@
-import {$get} from 'plow-js';
+import {map, mapObjIndexed, values, sort, compose} from 'ramda';
+import {$get, $transform} from 'plow-js';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 export default class NodeTypesRegistry extends SynchronousRegistry {
     _constraints = [];
     _inheritanceMap = [];
     _groups = [];
+
+    _inspectorViewConfigurationCache = {};
 
     setConstraints(constraints) {
         this._constraints = constraints;
@@ -67,6 +70,67 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return true;
         }
 
-        return this.inheritanceMap.subTypes[referenceNodeTypeName].indexOf(nodeTypeName) !== -1;
+        return this._inheritanceMap.subTypes[referenceNodeTypeName].indexOf(nodeTypeName) !== -1;
+    }
+
+    getInspectorViewConfigurationFor(nodeTypeName) {
+        const nodeType = this._registry[nodeTypeName];
+
+        if (!nodeType) {
+            return undefined;
+        }
+
+        if (this._inspectorViewConfigurationCache[nodeTypeName]) {
+            return this._inspectorViewConfigurationCache[nodeTypeName];
+        }
+
+        const withId = mapObjIndexed((subject, id) => ({
+            ...subject,
+            id
+        }));
+        const getPosition = subject => subject.ui ? subject.ui.position : subject.position;
+        const positionalArraySorter = sort((a, b) => (getPosition(a) - getPosition(b)) || (a.id - b.id));
+        const getNormalizedDeepStructureFromNodeType = path => compose(
+            positionalArraySorter,
+            values,
+            withId,
+            $get(path)
+        );
+        const tabs = getNormalizedDeepStructureFromNodeType('ui.inspector.tabs')(nodeType);
+        const groups = getNormalizedDeepStructureFromNodeType('ui.inspector.groups')(nodeType);
+        const properties = getNormalizedDeepStructureFromNodeType('properties')(nodeType);
+
+        const viewConfiguration = {
+            tabs: map(
+                tab => ({
+                    ...tab,
+                    groups: map(
+                        group => ({
+                            ...group,
+                            properties: map(
+                                $transform({
+                                    id: $get('id'),
+                                    label: $get('ui.label'),
+                                    editor: $get('ui.inspector.editor'),
+                                    editorOptions: $get('ui.inspector.editorOptions')
+                                }),
+                                properties.filter(p => $get('ui.inspector.group', p) === group.id)
+                            )
+                        }),
+                        groups.filter(g => {
+                            const isMatch = g.tab === tab.id;
+                            const isDefaultTab = !g.tab && tab.id === 'default';
+
+                            return isMatch || isDefaultTab;
+                        })
+                    )
+                }),
+                tabs
+            )
+        };
+
+        this._inspectorViewConfigurationCache[nodeTypeName] = viewConfiguration;
+
+        return viewConfiguration;
     }
 }

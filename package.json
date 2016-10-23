@@ -7,7 +7,7 @@
     "postinstall": "lerna bootstrap",
     "build": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
     "build:watch": "npm run build -- --watch",
-    "test": "lerna run test"
+    "test": "lerna run test --concurrency 1"
   },
   "devDependencies": {
     "@inkdpixels/commit-analyzer": "^1.0.0",

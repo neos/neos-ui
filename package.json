@@ -10,7 +10,8 @@
     "build:components": "lerna run --scope @neos-project/react-ui-components build",
     "build:components:watch": "lerna run --scope @neos-project/react-ui-components build:watch",
     "build": "npm run build:components && npm run build:ui",
-    "test": "lerna run test --concurrency 1"
+    "test": "lerna run test --concurrency 1",
+    "lint": "lerna run lint --concurrency 1"
   },
   "devDependencies": {
     "@inkdpixels/commit-analyzer": "^1.0.0",

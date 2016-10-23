@@ -1,8 +1,6 @@
 import test from 'ava';
 import Immutable, {Map} from 'immutable';
 
-import {handleActions} from '@neos-project/utils-redux';
-
 import {actionTypes, actions, reducer, selectors} from './index.js';
 
 import {actionTypes as system} from '../../System/index';
@@ -33,7 +31,6 @@ test(`should export a reducer`, t => {
 test(`should export selectors`, t => {
     t.not(selectors, undefined);
     t.is(typeof (selectors.currentlyEditedPropertyName), 'function');
-    t.is(typeof (selectors.enabledFormattingRuleIds), 'function');
     t.is(typeof (selectors.formattingUnderCursor), 'function');
 });
 

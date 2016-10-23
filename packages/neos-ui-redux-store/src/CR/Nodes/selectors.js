@@ -1,8 +1,6 @@
-import {$get, $set} from 'plow-js';
+import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
-import {Map} from 'immutable';
 
-const all = $get(['cr', 'nodes', 'byContextPath']);
 const focused = $get('cr.nodes.focused.contextPath');
 const hovered = $get('cr.nodes.hovered.contextPath');
 
@@ -25,7 +23,7 @@ export const nodeByContextPath = state => contextPath => {
     }
 
     return node;
-}
+};
 
 export const focusedNodePathSelector = createSelector(
     [

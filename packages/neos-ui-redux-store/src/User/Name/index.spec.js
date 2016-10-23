@@ -1,5 +1,5 @@
 import test from 'ava';
-import Immutable, {Map} from 'immutable';
+import {Map} from 'immutable';
 
 import {reducer} from './index.js';
 

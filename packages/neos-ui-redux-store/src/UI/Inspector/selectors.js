@@ -1,6 +1,6 @@
 import {map, mapObjIndexed, values, sort, compose} from 'ramda';
 import {createSelector} from 'reselect';
-import {$get, $set, $drop, $transform} from 'plow-js';
+import {$get, $transform} from 'plow-js';
 
 import {selectors as nodes} from '../../CR/Nodes/index';
 

@@ -83,7 +83,7 @@ test(`The "close" action should set "isOpen" key to false.`, t => {
                 referenceNode: 'someReferenceNode'
             }
         }
-    })
+    });
     const nextState = reducer(state, actions.close());
 
     t.is(nextState.get('ui').get('addNodeModal').get('referenceNode'), '');

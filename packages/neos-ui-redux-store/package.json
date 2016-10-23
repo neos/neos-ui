@@ -12,7 +12,7 @@
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "ava": "PWD=$(pwd) NODE_ENV=test ava",
+    "ava": "PWD=$(pwd) NODE_ENV=test ava -c 6",
     "precoverage:generate": "rimraf ./coverage",
     "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info"
   },
@@ -30,8 +30,7 @@
   },
   "nyc": {
     "exclude": [
-      "src/**/*.spec.js",
-      "src/**/index.js"
+      "src/**/*.spec.js"
     ],
     "include": [
       "src/**"

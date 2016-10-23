@@ -2,8 +2,6 @@ import test from 'ava';
 import Immutable, {Map} from 'immutable';
 import {actionTypes, actions, reducer} from './index.js';
 
-import {handleActions} from '@neos-project/utils-redux';
-
 import {actionTypes as system} from '../../../System/index';
 
 test(`should export actionTypes`, t => {

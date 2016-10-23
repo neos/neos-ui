@@ -1,7 +1,5 @@
 import test from 'ava';
-import Immutable, {Map, Set} from 'immutable';
-
-import {handleActions} from '@neos-project/utils-redux';
+import Immutable, {Map} from 'immutable';
 
 import {actionTypes, actions, reducer} from './index.js';
 

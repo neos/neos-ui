@@ -52,7 +52,8 @@ test(`The reducer should create a valid initial state`, t => {
 });
 
 test(`The reducer should take initially existing nodes into account`, t => {
-    const state = Immutable.fromJS({
+    const state = new Map({});
+    const serverState = Immutable.fromJS({
         cr: {
             nodes: {
                 byContextPath: {
@@ -64,7 +65,8 @@ test(`The reducer should take initially existing nodes into account`, t => {
         }
     });
     const nextState = reducer(state, {
-        type: system.INIT
+        type: system.INIT,
+        payload: serverState
     });
 
     t.true(nextState.get('cr').get('nodes').get('byContextPath') instanceof Map);
@@ -77,7 +79,8 @@ test(`The reducer should take initially existing nodes into account`, t => {
 });
 
 test(`The reducer should take an initially configured siteNode into account`, t => {
-    const state = Immutable.fromJS({
+    const state = new Map({});
+    const serverState = Immutable.fromJS({
         cr: {
             nodes: {
                 siteNode: 'theSiteNode'
@@ -85,7 +88,8 @@ test(`The reducer should take an initially configured siteNode into account`, t 
         }
     });
     const nextState = reducer(state, {
-        type: system.INIT
+        type: system.INIT,
+        payload: serverState
     });
 
     t.is(nextState.get('cr').get('nodes').get('siteNode'), 'theSiteNode');

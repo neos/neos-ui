@@ -5,4 +5,4 @@ export default class AbstractRegistry {
         // The description of the registry, containing examples, what is in there.
         this.description = description;
     }
-};
+}

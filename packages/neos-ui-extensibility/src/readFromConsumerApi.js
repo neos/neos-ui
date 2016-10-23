@@ -5,5 +5,5 @@ export default function readFromConsumerApi(key) {
         }
 
         throw new Error(`You are trying to read from a consumer api that hasn't been initialized yet!`);
-    }
+    };
 }

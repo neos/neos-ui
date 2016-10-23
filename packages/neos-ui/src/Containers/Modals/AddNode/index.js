@@ -20,6 +20,8 @@ import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 
 @connect($transform({
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
+    referenceNodeParent: selectors.UI.AddNodeModal.referenceNodeParentSelector,
+    referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
     mode: $get('ui.addNodeModal.mode')
 }), {
     close: actions.UI.AddNodeModal.close
@@ -30,6 +32,7 @@ import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 export default class AddNodeModal extends Component {
     static propTypes = {
         referenceNode: NeosPropTypes.node,
+        referenceNodeParent: NeosPropTypes.node,
         groupedAllowedNodeTypes: PropTypes.array,
         mode: PropTypes.string.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
@@ -45,18 +48,24 @@ export default class AddNodeModal extends Component {
         const {
             nodeTypesRegistry,
             referenceNode,
+            referenceNodeParent,
+            referenceNodeGrandParent,
             mode,
             close
         } = this.props;
         const actions = [];
+        const baseNode = mode === 'insert' ? referenceNode : referenceNodeParent;
+        const parentNode = mode === 'insert' ? referenceNodeParent : referenceNodeGrandParent;
 
-        if (!referenceNode) {
+        if (!baseNode || (baseNode.isAutoCreated && !parentNode)) {
             return null;
         }
 
-        const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(
-            nodeTypesRegistry.getAllowedChildNodeTypes(referenceNode.nodeType)
-        );
+        const allowedNodeTypes = baseNode.isAutoCreated ?
+            nodeTypesRegistry.getAllowedGrandChildNodeTypes(parentNode.nodeType, baseNode.name) :
+            nodeTypesRegistry.getAllowedChildNodeTypes(baseNode.nodeType);
+
+        const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypes);
 
         actions.push(
             <Button

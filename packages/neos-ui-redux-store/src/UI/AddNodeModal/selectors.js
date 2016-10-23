@@ -12,15 +12,31 @@ export const referenceNodeSelector = createSelector(
     (referenceNodeContextPath, state) =>
         nodes.byContextPathSelector(referenceNodeContextPath)(state)
 );
-// 
-// const modeSelector = state => $get('ui.addNodeModal.mode', state);
-//
-// export const nodeTypesForAddNodeModalSelector = createSelector(
-//     [
-//         referenceNodeSelector,
-//         modeSelector,
-//         groupedAllowedNodeTypesSelector
-//     ],
-//     (referenceNode, mode, getGroupedAllowedNodeTypes) =>
-//         referenceNode && mode && getGroupedAllowedNodeTypes(referenceNode, mode)
-// );
+
+export const referenceNodeParentSelector = createSelector(
+    [
+        referenceNodeSelector,
+        state => state
+    ],
+    (referenceNode, state) => {
+        if (!referenceNode) {
+            return undefined;
+        }
+
+        return nodes.parentNodeSelector(state)(referenceNode);
+    }
+);
+
+export const referenceNodeGrandParentSelector = createSelector(
+    [
+        referenceNodeParentSelector,
+        state => state
+    ],
+    (referenceNodeParent, state) => {
+        if (!referenceNodeParent) {
+            return undefined;
+        }
+
+        return nodes.parentNodeSelector(state)(referenceNodeParent);
+    }
+);

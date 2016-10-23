@@ -17,6 +17,9 @@
     "watch": "./node_modules/.bin/watch",
     "webpack": "./node_modules/.bin/webpack"
   },
+  "scripts": {
+    "lint": "eslint src"
+  },
   "dependencies": {
     "ava": "^0.16.0",
     "babel-cli": "^6.8.0",

@@ -11,9 +11,17 @@
 //      ]
 //   }
 // }
+
+window.__neosTestManifests = [];
+
 Object.defineProperty(window, '@Neos:HostPluginAPI', {
     value: {
-        '@manifests': []
+        '@manifest': (identifier, options, bootstrap) => window.__neosTestManifests.push({
+            [identifier]: {
+                options,
+                bootstrap
+            }
+        })
     },
     writable: false,
     enumerable: false,

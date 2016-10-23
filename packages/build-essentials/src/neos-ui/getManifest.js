@@ -10,12 +10,12 @@ export default function getManifest(manifestIdentifier) {
         console.warn('Cannot retrieve manifests, because neos environment is missing!');
         return false;
     }
-    if (!window['@Neos:HostPluginAPI']['@manifests']) {
+    if (!window['@Neos:HostPluginAPI']['@manifest']) {
         console.warn('Cannot retrieve manifests, because neos environment is not set up properly (missing manifests)!');
         return false;
     }
 
-    const manifests = window['@Neos:HostPluginAPI']['@manifests'];
+    const manifests = window.__neosTestManifests;
 
     return manifests.filter(entry => entry[manifestIdentifier])[0][manifestIdentifier];
 }

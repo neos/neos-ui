@@ -5,7 +5,7 @@
   "main": "src/manifest.js",
   "private": true,
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": "exit 0",
     "prebuild": "check-dependencies && npm run clean",
     "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
     "test:watch": "npm run ava -- --watch",

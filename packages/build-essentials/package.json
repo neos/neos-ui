@@ -15,7 +15,8 @@
     "nyc": "./node_modules/.bin/nyc",
     "rimraf": "./node_modules/.bin/rimraf",
     "watch": "./node_modules/.bin/watch",
-    "webpack": "./node_modules/.bin/webpack"
+    "webpack": "./node_modules/.bin/webpack",
+    "stylelint": "./node_modules/.bin/stylelint"
   },
   "scripts": {
     "lint": "eslint src"
@@ -27,6 +28,7 @@
     "cpx": "^1.3.1",
     "cross-env": "^3.0.0",
     "eslint": "^3.1.1",
+    "stylelint": "^7.5.0",
     "greenkeeper-postpublish": "^1.0.0",
     "nyc": "^8.3.1",
     "rimraf": "^2.5.4",

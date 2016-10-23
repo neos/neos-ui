@@ -16,6 +16,7 @@
     "ava": "PWD=$(pwd) NODE_ENV=test ava -c 6",
     "precoverage:generate": "rimraf ./coverage",
     "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
+    "coverage:publish": "codeclimate-test-reporter < lcov.info",
     "postpublish": "greenkeeper-postpublish"
   },
   "ava": {

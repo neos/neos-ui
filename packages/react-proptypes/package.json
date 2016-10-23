@@ -14,7 +14,8 @@
     "lint": "eslint src",
     "ava": "PWD=$(pwd) NODE_ENV=test ava",
     "precoverage:generate": "rimraf ./coverage",
-    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info"
+    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
+    "coverage:publish": "codeclimate-test-reporter < lcov.info"
   },
   "ava": {
     "files": [

@@ -10,6 +10,8 @@
     "build:components": "lerna run --scope @neos-project/react-ui-components build",
     "build:components:watch": "lerna run --scope @neos-project/react-ui-components build:watch",
     "build": "npm run build:components && npm run build:ui",
+    "coverage:generate": "lerna run coverage:generate --concurrency 1",
+    "coverage:publish": "lerna run coverage:publish --concurrency 1",
     "test": "lerna run test --concurrency 1",
     "lint": "lerna run lint --concurrency 1"
   },
@@ -35,6 +37,7 @@
     "browser-env": "^2.0.12",
     "check-dependencies": "^1.0.1",
     "classnames": "^2.2.3",
+    "codeclimate-test-reporter": "^0.4.0",
     "cpx": "^1.3.1",
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",

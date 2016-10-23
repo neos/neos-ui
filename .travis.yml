@@ -31,4 +31,4 @@ script:
 # Execute the test environment specific after_script shell script.
 #
 after_script:
-  - if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi
+  - npm run coverage:generate && npm run coverage:publish

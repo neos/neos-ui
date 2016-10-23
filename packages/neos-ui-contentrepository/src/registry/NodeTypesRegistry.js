@@ -24,8 +24,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     getAllowedChildNodeTypes(nodeTypeName) {
         const result = $get([nodeTypeName, 'nodeTypes'], this._constraints);
 
-        console.log(nodeTypeName, result);
-
         return Object.keys(result || []).filter(key => result[key]);
     }
 

@@ -3,7 +3,7 @@ import {put, select} from 'redux-saga/effects';
 import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
-import {api} from '@neos-project/neos-ui-backend-connector';
+import backend from '@neos-project/neos-ui-backend-connector';
 
 function * watchToggle() {
     yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
@@ -36,7 +36,7 @@ function * watchCommenceUncollapse({globalRegistry}) {
         } else {
             yield put(actions.UI.PageTree.requestChildren(contextPath));
             try {
-                const {q} = api.get();
+                const {q} = backend.get();
                 const childNodes = yield q(contextPath).children('[instanceof TYPO3.Neos:Document]').get();
 
                 yield childNodes.map(node => put(actions.CR.Nodes.add(node.contextPath, node)));

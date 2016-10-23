@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
+import {$get} from 'plow-js';
 import {connect} from 'react-redux';
 
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
@@ -39,7 +40,8 @@ export default class Node extends Component {
         getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
         onNodeClick: PropTypes.func,
-        onNodeFocus: PropTypes.func
+        onNodeFocus: PropTypes.func,
+        nodeTypesRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -58,7 +60,7 @@ export default class Node extends Component {
     }
 
     render() {
-        const {item, getTreeNode, onNodeToggle, onNodeClick, onNodeFocus} = this.props;
+        const {item, nodeTypesRegistry, getTreeNode, onNodeToggle, onNodeClick, onNodeFocus} = this.props;
 
         return getTreeNode ? (
             <Tree.Node>
@@ -77,6 +79,11 @@ export default class Node extends Component {
                                     contextPath,
                                     nodeTypesRegistry.getSubTypesOf('TYPO3.Neos:Document')
                                 );
+
+                                if (!node) {
+                                    return null;
+                                }
+
                                 const nodeIcon = $get('ui.icon', nodeTypesRegistry.get(node.nodeType));
 
                                 return {
@@ -93,6 +100,7 @@ export default class Node extends Component {
                                     onNodeToggle={onNodeToggle}
                                     onNodeClick={onNodeClick}
                                     onNodeFocus={onNodeFocus}
+                                    nodeTypesRegistry={nodeTypesRegistry}
                                     />
                         )}
                     </Tree.Node.Contents>

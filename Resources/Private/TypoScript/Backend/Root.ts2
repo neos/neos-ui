@@ -19,7 +19,7 @@ backend = TYPO3.TypoScript:Template {
         constraints = ${Neos.Ui.NodeTypes.nodeTypeConstraints()}
         inheritanceMap = ${Neos.Ui.NodeTypes.nodeTypeInheritanceMap()}
         groups = ${Configuration.setting('TYPO3.Neos.nodeTypes.groups')}
-        
+
         @process.json = ${Json.stringify(value)}
     }
 

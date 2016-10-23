@@ -44,12 +44,12 @@ export const getTreeNodeSelector = createSelector(
         //
         // Check if the requested node is existent and has the correct node type
         //
-        if (node && (!nodeTypeFilter.length || nodeTypefilter.indexOf(node.nodeType) !== -1)) {
+        if (node && (!nodeTypeFilter.length || nodeTypeFilter.indexOf(node.nodeType) !== -1)) {
             //
             // Check for valid child nodes
             //
             const validChildren = $get('children', node).filter(({nodeType}) =>
-                !nodeTypeFilter.length || nodeTypefilter.indexOf(nodeType) !== -1
+                !nodeTypeFilter.length || nodeTypeFilter.indexOf(nodeType) !== -1
             );
 
             const contextPath = $get('contextPath', node);

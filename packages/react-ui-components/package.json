@@ -14,7 +14,7 @@
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "ava": "ava src/**/*.spec.js",
+    "ava": "ava src/**/*.spec.js -c 6",
     "precoverage:generate": "rimraf ./coverage",
     "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
     "start": "cross-env STORY=true start-storybook -p 9001",

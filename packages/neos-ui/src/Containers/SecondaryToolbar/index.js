@@ -14,7 +14,6 @@ const {isDocumentNodeSelectedSelector} = selectors.CR.Nodes;
 import DimensionSwitcher from './DimensionSwitcher/index';
 import EditorToolbar from './EditorToolbar/index';
 
-
 import style from './style.css';
 
 @connect($transform({

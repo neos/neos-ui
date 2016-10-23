@@ -136,8 +136,7 @@ export default class ContentCanvas extends Component {
             setCurrentlyEditedPropertyName,
             unFocusNode,
             persistChange,
-            formattingRulesRegistry,
-            nodeTypesRegistry
+            formattingRulesRegistry
         } = this.props;
 
         //
@@ -241,7 +240,7 @@ export default class ContentCanvas extends Component {
                 }
             );
             enabledFormattingRuleIds.forEach(formattingRuleId => {
-                const formattingDefinition = formattingRulesRegistrys.get(formattingRuleId);
+                const formattingDefinition = formattingRulesRegistry.get(formattingRuleId);
 
                 if (formattingDefinition.config) {
                     editorOptions = formattingDefinition.config(editorOptions);

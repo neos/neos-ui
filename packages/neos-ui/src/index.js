@@ -4,13 +4,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import {take, put} from 'redux-saga/effects';
+import {put} from 'redux-saga/effects';
 import {Map} from 'immutable';
 
 import {reducer, actions} from '@neos-project/neos-ui-redux-store';
 import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
-import {delay, discover} from '@neos-project/utils-helpers';
+import {delay} from '@neos-project/utils-helpers';
 
 import allSagas from './Sagas/index';
 import * as system from './System';

@@ -13,10 +13,7 @@ import * as NeosPropTypes from '@neos-project/react-proptypes';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
-const {referenceNodeSelector} = selectors.UI.AddNodeModal;
-
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
-
 
 @connect($transform({
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
@@ -33,6 +30,7 @@ export default class AddNodeModal extends Component {
     static propTypes = {
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
+        referenceNodeGrandParent: NeosPropTypes.node,
         groupedAllowedNodeTypes: PropTypes.array,
         mode: PropTypes.string.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,

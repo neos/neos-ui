@@ -9,7 +9,7 @@ const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 function * watchPersist() {
     const {change} = backend.get().endpoints;
-    
+
     yield * takeEvery(actionTypes.Changes.PERSIST, function * persistChanges(action) {
         const changes = [action.payload.change];
 

@@ -34,6 +34,7 @@ export default class StyleSelect extends Component {
         // the Registry ID/Key of the Style-Select component itself.
         id: PropTypes.string.isRequired,
 
+        focusedNode: PropTypes.object,
         currentlyEditedPropertyName: PropTypes.string,
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,

@@ -13,7 +13,7 @@
     "build:watch": "npm run build -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "ava": "PWD=$(pwd) NODE_ENV=test ava",
+    "ava": "PWD=$(pwd) NODE_ENV=test ava -c 6",
     "precoverage:generate": "rimraf ./coverage",
     "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
     "postpublish": "greenkeeper-postpublish"

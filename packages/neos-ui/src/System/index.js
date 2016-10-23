@@ -1,7 +1,4 @@
-import {take, put} from 'redux-saga/effects';
-
-import {delay, discover} from '@neos-project/utils-helpers';
-import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
+import {discover} from '@neos-project/utils-helpers';
 import {initializeJsAPI} from '@neos-project/neos-ui-backend-connector';
 
 export const getAppContainer = discover(function * () {

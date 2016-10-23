@@ -1,9 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import ReactCrop from 'react-image-crop';
+
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
+import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 
 import AspectRatioDropDown from './AspectRatioDropDown/index';
 import CropConfiguration from './model.js';
@@ -131,7 +133,6 @@ export default class ImageCropper extends Component {
     }
 
     render() {
-        const {SecondaryInspector} = window['@Neos:HostPluginAPI'];
         const {cropConfiguration} = this.state;
         const aspectRatioLocked = false;
         const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock"/> : null);

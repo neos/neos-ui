@@ -1,6 +1,6 @@
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
-class CkEditorFormattingRulesRegistry extends SynchronousRegistry {
+export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry {
     constructor(...args) {
         super(...args);
 

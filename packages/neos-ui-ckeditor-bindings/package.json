@@ -3,7 +3,7 @@
   "version": "4.4.8",
   "description": "Prepare CKEditor for the Neos CMS UI",
   "private": true,
-  "main": "./src/index.js",
+  "main": "./src/manifest.js",
   "scripts": {
     "prebuild": "check-dependencies && npm run clean",
     "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",

@@ -1,11 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-
-const {UI} = selectors;
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import Node from './Node/index';
 
@@ -20,10 +20,14 @@ import Node from './Node/index';
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
     setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath
 })
+@neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+}))
 export default class PageTree extends Component {
     static propTypes = {
         allNodes: PropTypes.object.isRequired,
         pageTreeState: PropTypes.object.isRequired,
+        nodeTypesRegistry: PropTypes.object.isRequired,
         siteNodeContextPath: PropTypes.string,
 
         getTreeNode: PropTypes.func,
@@ -47,14 +51,23 @@ export default class PageTree extends Component {
     }
 
     render() {
-        const {siteNodeContextPath, getTreeNode, onNodeToggle, onNodeFocus} = this.props;
+        const {siteNodeContextPath, nodeTypesRegistry, getTreeNode, onNodeToggle, onNodeFocus} = this.props;
+
+        if (!siteNodeContextPath) {
+            return (<div>...</div>);
+        }
+
         const siteNode = getTreeNode(siteNodeContextPath);
+        const siteNodeIcon = $get('ui.icon', nodeTypesRegistry.get(siteNode.nodeType));
 
         if (siteNode) {
             return (
                 <Tree>
                     <Node
-                        item={siteNode}
+                        item={{
+                            ...siteNode,
+                            icon: siteNodeIcon
+                        }}
                         onNodeToggle={onNodeToggle}
                         onNodeClick={this.handleNodeClick}
                         onNodeFocus={onNodeFocus}

@@ -1,8 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {$set, $drop, $get, $transform} from 'plow-js';
 import {connect} from 'react-redux';
+
+import backend from '@neos-project/neos-ui-backend-connector';
+
 import {PreviewScreen, Controls, Secondary} from './Components/index';
 import {Image, CROP_IMAGE_ADJUSTMENT, RESIZE_IMAGE_ADJUSTMENT} from './Utils/index';
+
 import style from './style.css';
 
 const DEFAULT_FEATURES = {
@@ -69,8 +73,7 @@ export default class ImageEditor extends Component {
     }
 
     componentDidMount() {
-        const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
-        const {loadImageMetadata} = ApiEndpoints;
+        const {loadImageMetadata} = backend.get().endpoints;
 
         if (this.props.value && this.props.value.__identity) {
             this.setState({
@@ -94,8 +97,7 @@ export default class ImageEditor extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
-        const {loadImageMetadata} = ApiEndpoints;
+        const {loadImageMetadata} = backend.get().endpoints;
 
         if (!nextProps.value || !nextProps.value.__identity) {
             this.setState({image: null});
@@ -214,8 +216,7 @@ export default class ImageEditor extends Component {
     }
 
     upload(files) {
-        const {ApiEndpoints} = window['@Neos:HostPluginAPI'];
-        const {uploadAsset} = ApiEndpoints;
+        const {uploadAsset} = backend.get().endpoints;
         const {commit, siteNodePath} = this.props;
 
         const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];

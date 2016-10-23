@@ -1,11 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
-import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform} from 'plow-js';
 import debounce from 'lodash.debounce';
-
-import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import {
     AddNode,
@@ -35,12 +31,9 @@ export const position = nodeContextPath => {
     return {x: 0, y: 0};
 };
 
-@connect($transform({
-    focusedNode: selectors.CR.Nodes.focusedSelector
-}))
 export default class NodeToolbar extends Component {
     static propTypes = {
-        focusedNode: PropTypes.object.isRequired
+        focusedNode: PropTypes.object
     };
 
     componentDidMount() {
@@ -54,6 +47,10 @@ export default class NodeToolbar extends Component {
     }
 
     render() {
+        if (!this.props.focusedNode) {
+            return null;
+        }
+
         const props = {
             className: style.toolBar__btnGroup__btn,
             node: this.props.focusedNode

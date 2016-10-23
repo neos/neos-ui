@@ -23,6 +23,11 @@ const webpackConfig = {
                 loader: 'babel'
             },
             {
+                test: /\.json$/,
+                exclude: /(node_modules)/,
+                loader: 'json-loader'
+            },
+            {
                 test: /\.(woff|woff2)$/,
                 loader: 'url?limit=100000'
             },

@@ -59,7 +59,7 @@ export default class AddNodeModal extends Component {
         }
 
         const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(
-            nodeTypesRegistry.getAllowedNodeTypes(referenceNode.nodeType)
+            nodeTypesRegistry.getAllowedChildNodeTypes(referenceNode.nodeType)
         );
 
         actions.push(

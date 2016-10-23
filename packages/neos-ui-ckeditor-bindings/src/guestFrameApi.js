@@ -27,9 +27,8 @@ const createCKEditorAPI = CKEDITOR => {
         }
 
         const formattingUnderCursor = {};
-        const formattingRules = globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules');
         Object.keys(editorConfig.formattingRules).forEach(key => {
-            const formattingRule = formattingRules.get(key);
+            const formattingRule = editorConfig.formattingRules[key];
 
             if (formattingRule.command !== undefined) {
                 if (!editor.getCommand(formattingRule.command)) {
@@ -178,6 +177,9 @@ const createCKEditorAPI = CKEDITOR => {
                     handleUserInteraction(event);
                 });
 
+                //
+                // TODO: This should be debounced!
+                //
                 editor.on('change', () => {
                     onChange(editor.getData());
                 });

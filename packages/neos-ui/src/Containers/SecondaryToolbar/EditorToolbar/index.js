@@ -8,73 +8,70 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
-
-// a component is top-level if it does not contain slashes in the name.
-const isTopLevelToolbarComponent = componentDefinition =>
-    componentDefinition.id.indexOf('/') === -1;
-
-export const hideDisallowedToolbarComponents = (enabledFormattingRuleIds, formattingUnderCursor) => componentDefinition => {
-    if (componentDefinition.isVisibleWhen) {
-        return componentDefinition.isVisibleWhen(enabledFormattingRuleIds, formattingUnderCursor);
-    }
-
-    return enabledFormattingRuleIds.indexOf(componentDefinition.formattingRule) !== -1;
-};
-/**
- * Render sub components for the toolbar, implementing the API as described in registry.ckEditor.toolbar.
- */
-const renderToolbarComponents = (context, toolbarComponents, enabledFormattingRuleIds, formattingUnderCursor) => {
-    return toolbarComponents
-        .filter(isTopLevelToolbarComponent)
-        .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds, formattingUnderCursor))
-        .map((componentDefinition, index) => {
-            const {component, formattingRule, callbackPropName, ...props} = componentDefinition;
-            const isActive = formattingRule && $get(formattingRule, formattingUnderCursor) === registry.ckEditor.toolbar.TRISTATE_ON;
-
-            props[callbackPropName] = () => {
-                // !!!! TODO: next line is extremely dirty!
-                context.NeosCKEditorApi.toggleFormat(formattingRule);
-            };
-
-            const Component = component;
-
-            return <Component key={index} isActive={isActive} {...props}/>;
-        });
-};
+import {renderToolbarComponents} from './Helpers';
+import {calculateEnabledFormattingRulesForNodeType} from '../../ContentCanvas/Helpers';
 
 @connect($transform({
+    focusedNode: selectors.CR.Nodes.focusedSelector,
+    currentlyEditedPropertyName: selectors.UI.ContentCanvas.currentlyEditedPropertyName,
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor,
-    enabledFormattingRuleIds: selectors.UI.ContentCanvas.enabledFormattingRuleIds,
-
     context: selectors.Guest.context
 }))
-@neos(globalRegistry => {
-    toolbarRegistry: globalRegistry.get('richtexttoolbar')
-})
+@neos(globalRegistry => ({
+    toolbarRegistry: globalRegistry.get('richtextToolbar'),
+    formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules'),
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+}))
 export default class Toolbar extends Component {
     static propTypes = {
-        formattingUnderCursor: PropTypes.objectOf(React.PropTypes.bool),
-        enabledFormattingRuleIds: PropTypes.arrayOf(PropTypes.string),
+        focusedNode: PropTypes.object,
+        currentlyEditedPropertyName: PropTypes.string,
+        formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.bool
+        ])),
         toolbarRegistry: PropTypes.object,
+        formattingRulesRegistry: PropTypes.object,
+        nodeTypesRegistry: PropTypes.object,
 
         // The current guest frames window object.
         context: PropTypes.object
     };
 
+    constructor(...args) {
+        super(...args);
+        this.onToggleFormat = this.onToggleFormat.bind(this);
+    }
+
+    componentWillMount() {
+        const {nodeTypesRegistry, formattingRulesRegistry, toolbarRegistry} = this.props;
+        this.renderToolbarComponents = renderToolbarComponents(toolbarRegistry);
+        this.calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeType({
+            nodeTypesRegistry,
+            formattingRulesRegistry
+        });
+    }
+
     shouldComponentUpdate(...args) {
         return shallowCompare(this, ...args);
     }
 
+    onToggleFormat(formattingRule) {
+        const {context} = this.props;
+
+        context.NeosCKEditorApi.toggleFormat(formattingRule);
+    }
+
     render() {
+        const {focusedNode, currentlyEditedPropertyName, formattingUnderCursor} = this.props;
+        const enabledFormattingRuleIds = this.calculateEnabledFormattingRulesForNodeType(focusedNode.nodeType);
         const classNames = mergeClassNames({
             [style.toolBar]: true
         });
-
-        const renderedToolbarComponents = renderToolbarComponents(
-            this.props.context,
-            this.props.toolbarRegistry.getAllAsList(),
-            this.props.enabledFormattingRuleIds,
-            this.props.formattingUnderCursor
+        const renderedToolbarComponents = this.renderToolbarComponents(
+            this.onToggleFormat,
+            enabledFormattingRuleIds[currentlyEditedPropertyName] || [],
+            formattingUnderCursor
         );
 
         return (

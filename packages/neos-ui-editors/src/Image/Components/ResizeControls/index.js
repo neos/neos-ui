@@ -1,8 +1,11 @@
 import React, {PropTypes} from 'react';
-import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
-import CheckBox from '@neos-project/react-ui-components/lib/CheckBox/';
 import {$get} from 'plow-js';
 import {Map} from 'immutable';
+
+import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
+import CheckBox from '@neos-project/react-ui-components/lib/CheckBox/';
+import I18n from '@neos-project/neos-ui-i18n';
+
 import style from './style.css';
 
 const buildResizeAdjustment = (width, height) => new Map({
@@ -42,8 +45,6 @@ const onChangeValue = (props, heightOrWidth) => changedValue => {
 };
 
 const ResizeControls = props => {
-    const {I18n} = window['@Neos:HostPluginAPI'];
-
     return (
         <div>
             <div>

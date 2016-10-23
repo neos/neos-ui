@@ -1,7 +1,7 @@
 {
-  "name": "@neos-project/utils-logger",
+  "name": "@neos-project/neos-ui-inspector",
   "version": "4.4.8",
-  "description": "Logger implementation for Neos CMS UI.",
+  "description": "Components for integrating views and editors into the Neos CMS UI inspector.",
   "private": true,
   "main": "./src/index.js",
   "scripts": {
@@ -23,7 +23,9 @@
     "failFast": true,
     "verbose": true,
     "require": [
-      "babel-register"
+      "babel-register",
+      "@neos-project/build-essentials/src/setup-browser-env",
+      "@neos-project/build-essentials/src/setup-neos-ui-host-env"
     ],
     "babel": "inherit"
   },
@@ -40,8 +42,14 @@
   "devDependencies": {
     "@neos-project/build-essentials": "^4.4.8"
   },
-  "dependencies": {
-    "debug": "^2.2.0"
+  "peerDependencies": {
+    "@neos-project/react-ui-components": "^4.4.8",
+    "react": "^15.2.1",
+    "react-addons-shallow-compare": "^15.3.1",
+    "react-redux": "^4.4.5",
+    "react-portal": "^2.2.1",
+    "classnames": "^2.2.3",
+    "plow-js": "^1.2.0"
   },
   "license": "GNU GPLv3"
 }

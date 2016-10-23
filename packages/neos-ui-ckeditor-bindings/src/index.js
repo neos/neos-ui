@@ -1,6 +1,6 @@
 import guestFrameApi from './guestFrameApi';
 
-Object.defineProperty(window, '@Neos.Neos.Ui:CKEditorApi', {
+Object.defineProperty(window, 'NeosCKEditorApi', {
     value: guestFrameApi,
     enumerable: false,
     writable: false,

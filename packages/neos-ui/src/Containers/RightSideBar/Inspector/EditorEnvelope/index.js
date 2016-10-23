@@ -19,9 +19,9 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 }), {
     commit: actions.UI.Inspector.commit
 })
-@neos(globalRegistry => {
-    editorRegistry: globalRegistry.get('editors')
-})
+@neos(globalRegistry => ({
+    editorRegistry: globalRegistry.get('inspector').get('editors')
+}))
 export default class EditorEnvelope extends Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
@@ -99,7 +99,8 @@ export default class EditorEnvelope extends Component {
     }
 
     renderLabel() {
-        const editorDefinition = registry.inspector.editors.get(this.props.editor);
+        const {editor, editorRegistry} = this.props;
+        const editorDefinition = editorRegistry.get(editor);
 
         if (editorDefinition && editorDefinition.hasOwnLabel) {
             return null;

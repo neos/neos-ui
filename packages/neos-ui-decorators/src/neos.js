@@ -19,7 +19,7 @@ export default mapRegistriesToProps => WrappedComponent => {
         render() {
             const {configuration, translations, globalRegistry} = this.context;
             const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(globalRegistry) : {};
-
+            
             return (
                 <WrappedComponent
                     neos={{configuration, globalRegistry}}

@@ -3,11 +3,13 @@ import {put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {change} from '@neos-project/neos-ui-backend-connector';
+import backend from '@neos-project/neos-ui-backend-connector';
 
 const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 function * watchPersist() {
+    const {change} = backend.get().endpoints;
+    
     yield * takeEvery(actionTypes.Changes.PERSIST, function * persistChanges(action) {
         const changes = [action.payload.change];
 

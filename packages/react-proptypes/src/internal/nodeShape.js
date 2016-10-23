@@ -1,7 +1,7 @@
 import {PropTypes} from 'react';
 
 export default {
-    nodeType: PropTypes.object.isRequired,
+    nodeType: PropTypes.string.isRequired,
     contextPath: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
     isAutoCreated: PropTypes.bool.isRequired,

@@ -34,8 +34,8 @@ export const initializeJsAPI = (parent, {csrfToken, alias = 'neos', systemEnv = 
 
     addLibrary('use', initializeUse(addLibrary, neos));
     addLibrary('q', initializeFlowQuery(csrfToken));
-    addLibrary('csrfToken', () => csrfToken);
     addLibrary('endpoints', initializeEndpoints(csrfToken));
+    addLibrary('csrfToken', csrfToken);
 
     //
     // Attach Neos API to the parent object

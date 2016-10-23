@@ -1,4 +1,4 @@
-import {manifest} from '@neos-project/neos-ui-extensibility';
+import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 import CkEditorFormattingRulesRegistry from './registry/CkEditorFormattingRulesRegistry';

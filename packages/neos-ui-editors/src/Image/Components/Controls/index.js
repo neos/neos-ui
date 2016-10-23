@@ -1,7 +1,9 @@
 import React, {Component, PropTypes} from 'react';
-import Button from '@neos-project/react-ui-components/lib/Button/';
 import shallowCompare from 'react-addons-shallow-compare';
 import style from './style.css';
+
+import Button from '@neos-project/react-ui-components/lib/Button/';
+import I18n from '@neos-project/neos-ui-i18n';
 
 export default class Controls extends Component {
     static propTypes = {
@@ -26,7 +28,6 @@ export default class Controls extends Component {
     }
 
     renderIsMediaSelectionScreenVisibleButtons() {
-        const {I18n} = window['@Neos:HostPluginAPI'];
         const {
             chooseFromLocalFilesystemLabel,
             onChooseFromMedia,
@@ -62,7 +63,6 @@ export default class Controls extends Component {
     }
 
     renderisCropperVisibleButton() {
-        const {I18n} = window['@Neos:HostPluginAPI'];
         const {onCrop} = this.props;
 
         if (onCrop) {

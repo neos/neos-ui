@@ -61,4 +61,12 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return groups[i];
         }).filter(i => i.nodeTypes).sort((a, b) => a.position > b.position ? 1 : -1);
     }
+
+    isOfType(nodeTypeName, referenceNodeTypeName) {
+        if (nodeTypeName === referenceNodeTypeName) {
+            return true;
+        }
+
+        return this.inheritanceMap.subTypes[referenceNodeTypeName].indexOf(nodeTypeName) !== -1;
+    }
 }

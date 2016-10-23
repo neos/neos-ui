@@ -5,10 +5,9 @@ import {handleActions} from '@neos-project/utils-redux';
 import * as ContentDimensions from './ContentDimensions/index';
 import * as Images from './Images/index';
 import * as Nodes from './Nodes/index';
-import * as NodeTypes from './NodeTypes/index';
 import * as Workspaces from './Workspaces/index';
 
-const all = {ContentDimensions, Images, Nodes, NodeTypes, Workspaces};
+const all = {ContentDimensions, Images, Nodes, Workspaces};
 
 //
 // Export the actionTypes

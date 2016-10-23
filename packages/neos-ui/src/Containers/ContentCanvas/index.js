@@ -5,13 +5,13 @@ import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-
-const {calculateEnabledFormattingRulesForNode} = selectors.UI.ContentCanvas;
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import Frame from '@neos-project/react-ui-components/lib/Frame/';
 
 import style from './style.css';
 import InlineUI from './InlineUI/index';
+import {calculateEnabledFormattingRulesForNodeType} from './Helpers';
 
 const closestContextPath = el => {
     if (!el) {
@@ -41,6 +41,10 @@ const closestContextPath = el => {
     unHoverNode: actions.CR.Nodes.unhover,
     persistChange: actions.Changes.persistChange
 })
+@neos(globalRegistry => ({
+    formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules'),
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+}))
 export default class ContentCanvas extends Component {
     static propTypes = {
         isFringeLeft: PropTypes.bool.isRequired,
@@ -59,7 +63,9 @@ export default class ContentCanvas extends Component {
         hoverNode: PropTypes.func.isRequired,
         unHoverNode: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired,
-        byContextPathDynamicAccess: PropTypes.func.isRequired
+        byContextPathDynamicAccess: PropTypes.func.isRequired,
+        formattingRulesRegistry: PropTypes.object.isRequired,
+        nodeTypesRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -70,6 +76,14 @@ export default class ContentCanvas extends Component {
 
     shouldComponentUpdate(...args) {
         return shallowCompare(this, ...args);
+    }
+
+    componentWillMount() {
+        const {nodeTypesRegistry, formattingRulesRegistry} = this.props;
+        this.calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeType({
+            nodeTypesRegistry,
+            formattingRulesRegistry
+        });
     }
 
     render() {
@@ -121,7 +135,9 @@ export default class ContentCanvas extends Component {
             formattingUnderCursor,
             setCurrentlyEditedPropertyName,
             unFocusNode,
-            persistChange
+            persistChange,
+            formattingRulesRegistry,
+            nodeTypesRegistry
         } = this.props;
 
         //
@@ -191,7 +207,7 @@ export default class ContentCanvas extends Component {
         });
 
         const editorConfig = {
-            formattingRules: globalRegistry.ckEditor.formattingRules.getAllAsObject(),
+            formattingRules: formattingRulesRegistry.getAllAsObject(),
             setFormattingUnderCursor: formattingUnderCursor,
             setCurrentlyEditedPropertyName
         };
@@ -214,7 +230,7 @@ export default class ContentCanvas extends Component {
                 return;
             }
 
-            const nodeFormattingRules = calculateEnabledFormattingRulesForNode(node);
+            const nodeFormattingRules = calculateEnabledFormattingRulesForNodeType(node.nodeType);
 
             const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];
 
@@ -225,7 +241,7 @@ export default class ContentCanvas extends Component {
                 }
             );
             enabledFormattingRuleIds.forEach(formattingRuleId => {
-                const formattingDefinition = globalRegistry.ckEditor.formattingRules.get(formattingRuleId);
+                const formattingDefinition = formattingRulesRegistrys.get(formattingRuleId);
 
                 if (formattingDefinition.config) {
                     editorOptions = formattingDefinition.config(editorOptions);

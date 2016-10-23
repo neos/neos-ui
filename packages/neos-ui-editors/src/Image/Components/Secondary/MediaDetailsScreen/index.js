@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react';
+
+import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
+
 import style from './style.css';
 
 const MediaDetailsScreen = props => {
-    const {SecondaryInspector} = window['@Neos:HostPluginAPI'];
-
     // TODO: Media package refactoring
     window.Typo3MediaBrowserCallbacks = {
         close() {

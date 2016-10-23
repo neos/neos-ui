@@ -2,10 +2,8 @@ import {takeLatest} from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
 import {$get, $contains} from 'plow-js';
 
-import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 import {api} from '@neos-project/neos-ui-backend-connector';
-
-const isDocumentType = selectors.CR.NodeTypes.isOfTypeSelector('TYPO3.Neos:Document');
 
 function * watchToggle() {
     yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
@@ -21,12 +19,14 @@ function * watchToggle() {
     });
 }
 
-function * watchCommenceUncollapse() {
+function * watchCommenceUncollapse({globalRegistry}) {
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+
     yield * takeLatest(actionTypes.UI.PageTree.COMMENCE_UNCOLLAPSE, function * uncollapseNode(action) {
         const state = yield select();
         const {contextPath} = action.payload;
         const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state).toJS()
-            .filter(childEnvelope => isDocumentType(childEnvelope.nodeType)(state))
+            .filter(childEnvelope => nodeTypesRegistry.isOfType(childEnvelope.nodeType, 'TYPO3.Neos:Document'))
             .every(
                 childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', childEnvelope.contextPath], state))
             );

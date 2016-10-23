@@ -46,6 +46,8 @@
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-i18n": "^4.4.8",
+    "@neos-project/neos-ui-inspector": "^4.4.8",
     "@neos-project/neos-ui-ckeditor-bindings": "^4.4.8",
     "@neos-project/neos-ui-redux-store": "^4.4.8",
     "@neos-project/react-ui-components": "^4.4.8",

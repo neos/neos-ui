@@ -1,5 +1,4 @@
 import _debug from 'debug';
-import {get as getNeosApi} from '@neos-project/neos-ui-backend-connector/src/Utilities/get';
 
 const info = _debug('Neos.Ui:info');
 const log = _debug('Neos.Ui:log');

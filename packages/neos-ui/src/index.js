@@ -34,6 +34,7 @@ createConsumerApi(manifests, {});
 require('./manifest');
 require('@neos-project/neos-ui-contentrepository');
 require('@neos-project/neos-ui-editors');
+require('@neos-project/neos-ui-ckeditor-bindings');
 
 //
 // The main application
@@ -73,6 +74,22 @@ function * application() {
     // Tell everybody, that we're booting now
     //
     store.dispatch(actions.System.boot());
+
+    //
+    // Load node types
+    //
+    const nodeTypes = yield system.getNodeTypes;
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+
+    Object.keys(nodeTypes.byName).forEach(nodeTypeName => {
+        nodeTypesRegistry.add(nodeTypeName, {
+            ...nodeTypes.byName[nodeTypeName],
+            name: nodeTypeName
+        });
+    });
+    nodeTypesRegistry.setConstraints(nodeTypes.constraints);
+    nodeTypesRegistry.setInheritanceMap(nodeTypes.inheritanceMap);
+    nodeTypesRegistry.setGroups(nodeTypes.groups);
 
     //
     // Hydrate server state

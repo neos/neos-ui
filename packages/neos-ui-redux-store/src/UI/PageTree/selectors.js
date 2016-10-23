@@ -2,7 +2,6 @@ import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
 
 import {selectors as nodes} from '../../CR/Nodes/index';
-import {selectors as nodeTypes} from '../../CR/NodeTypes/index';
 
 const getActive = $get('ui.contentCanvas.contextPath');
 const getFocused = $get('ui.pageTree.isFocused');
@@ -17,6 +16,9 @@ export const getFocusedNodeContextPathSelector = createSelector(
     focusedNodeContextPath => focusedNodeContextPath
 );
 
+//
+// TODO: NODETYPE REFACTORING - Fix calls of this
+//
 export const getTreeNodeSelector = createSelector(
     [
         getActive,
@@ -33,7 +35,7 @@ export const getTreeNodeSelector = createSelector(
         loadingNodeContextPaths,
         errorNodeContextPaths,
         state
-    ) => (contextPath, nodeTypeFilter = '') => {
+    ) => (contextPath, nodeTypeFilter = []) => {
         //
         // Try to grab the node
         //
@@ -42,12 +44,12 @@ export const getTreeNodeSelector = createSelector(
         //
         // Check if the requested node is existent and has the correct node type
         //
-        if (node && (!nodeTypeFilter || nodeTypes.isOfTypeSelector(nodeTypeFilter)(node.nodeType.name)(state))) {
+        if (node && (!nodeTypeFilter.length || nodeTypefilter.indexOf(node.nodeType) !== -1)) {
             //
             // Check for valid child nodes
             //
             const validChildren = $get('children', node).filter(({nodeType}) =>
-                !nodeTypeFilter || nodeTypes.isOfTypeSelector(nodeTypeFilter)(nodeType)(state)
+                !nodeTypeFilter.length || nodeTypefilter.indexOf(nodeType) !== -1
             );
 
             const contextPath = $get('contextPath', node);
@@ -58,7 +60,6 @@ export const getTreeNodeSelector = createSelector(
                 contextPath,
                 label: $get('label', node),
                 uri: $get('uri', node),
-                icon: $get('nodeType.ui.icon', node),
                 isActive: contextPath === activeNodeContextPath,
                 isFocused: contextPath === focusedNodeContextPath,
                 isCollapsed: !uncollapsedNodeContextPaths.contains(contextPath),

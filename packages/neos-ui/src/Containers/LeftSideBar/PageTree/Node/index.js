@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 @connect(state => ({
     getTreeNode: selectors.UI.PageTree.getTreeNodeSelector(state),
@@ -12,6 +13,9 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 }), {
     onNodeFocus: actions.UI.PageTree.focus
 })
+@neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+}))
 export default class Node extends Component {
     static propTypes = {
         item: PropTypes.shape({
@@ -68,7 +72,18 @@ export default class Node extends Component {
                 {item.isCollapsed ? null : (
                     <Tree.Node.Contents>
                         {item.children
-                            .map(contextPath => getTreeNode(contextPath, 'TYPO3.Neos:Document'))
+                            .map(contextPath => {
+                                const node = getTreeNode(
+                                    contextPath,
+                                    nodeTypesRegistry.getSubTypesOf('TYPO3.Neos:Document')
+                                );
+                                const nodeIcon = $get('ui.icon', nodeTypesRegistry.get(node.nodeType));
+
+                                return {
+                                    ...node,
+                                    icon: nodeIcon
+                                };
+                            })
                             .filter(i => i)
                             .map(item =>
                                 <Node

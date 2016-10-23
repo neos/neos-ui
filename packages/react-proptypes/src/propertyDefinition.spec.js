@@ -2,7 +2,6 @@ import test from 'ava';
 
 import propertyDefinition from './propertyDefinition';
 
-
 test(`should export a function.`, t => {
     t.is(typeof (propertyDefinition), 'function');
 });

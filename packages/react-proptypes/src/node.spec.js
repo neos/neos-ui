@@ -2,7 +2,6 @@ import test from 'ava';
 
 import node from './node';
 
-
 test(`should export a function.`, t => {
     t.is(typeof (node), 'function');
 });

@@ -3,11 +3,13 @@ import {put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {publish, discard} from '@neos-project/neos-ui-backend-connector';
+import backend from '@neos-project/neos-ui-backend-connector';
 
 const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 function * watchPublish() {
+    const {publish} = backend.get().endpoints;
+
     yield * takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
 
@@ -38,6 +40,8 @@ function * watchToggleAutoPublish() {
 }
 
 function * watchDiscard() {
+    const {discard} = backend.get().endpoints;
+
     yield * takeEvery(actionTypes.CR.Workspaces.DISCARD, function * discardNodes(action) {
         yield put(actions.UI.Remote.startDiscarding());
 

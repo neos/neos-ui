@@ -13,17 +13,13 @@ import * as NeosPropTypes from '@neos-project/react-proptypes';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
-const {
-    referenceNodeSelector,
-    nodeTypesForAddNodeModalSelector
-} = selectors.UI.AddNodeModal;
+const {referenceNodeSelector} = selectors.UI.AddNodeModal;
 
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 
 
 @connect($transform({
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
-    // groupedAllowedNodeTypes: nodeTypesForAddNodeModalSelector,
     mode: $get('ui.addNodeModal.mode')
 }), {
     close: actions.UI.AddNodeModal.close

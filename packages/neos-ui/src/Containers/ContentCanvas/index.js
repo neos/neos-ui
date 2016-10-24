@@ -11,7 +11,7 @@ import Frame from '@neos-project/react-ui-components/lib/Frame/';
 
 import style from './style.css';
 import InlineUI from './InlineUI/index';
-import {calculateEnabledFormattingRulesForNodeType} from './Helpers';
+import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattingRulesForNodeType} from './Helpers';
 
 const closestContextPath = el => {
     if (!el) {
@@ -80,7 +80,7 @@ export default class ContentCanvas extends Component {
 
     componentWillMount() {
         const {nodeTypesRegistry, formattingRulesRegistry} = this.props;
-        this.calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeType({
+        this.calculateEnabledFormattingRulesForNodeType = _calculateEnabledFormattingRulesForNodeType({
             nodeTypesRegistry,
             formattingRulesRegistry
         });
@@ -229,7 +229,7 @@ export default class ContentCanvas extends Component {
                 return;
             }
 
-            const nodeFormattingRules = calculateEnabledFormattingRulesForNodeType(node.nodeType);
+            const nodeFormattingRules = this.calculateEnabledFormattingRulesForNodeType(node.nodeType);
 
             const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];
 

@@ -1,0 +1,78 @@
+{
+  "name": "@neos-project/react-ui-components",
+  "version": "4.4.8",
+  "description": "The UI components which power the Neos backend application.",
+  "main": "./lib",
+  "scripts": {
+    "prepublish": "npm run build",
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
+    "test:watch": "npm run ava -- --watch",
+    "build": "cross-env NODE_ENV=production npm run babel && npm run css",
+    "build:watch": "./node_modules/.bin/watch 'npm run build' src/",
+    "babel": "babel ./src --out-dir ./lib",
+    "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src && stylelint 'src/**/*.css'",
+    "ava": "ava src/**/*.spec.js -c 6",
+    "precoverage:generate": "rimraf ./coverage",
+    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
+    "coverage:publish": "codeclimate-test-reporter < lcov.info",
+    "start": "cross-env STORY=true start-storybook -p 9001",
+    "postpublish": "greenkeeper-postpublish",
+    "semantic-release": "semantic-release pre && npm publish --access public && semantic-release post"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ],
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/**/*.story.js",
+      "src/**/index.js"
+    ],
+    "include": [
+      "src/**"
+    ]
+  },
+  "release": {
+    "analyzeCommits": "@inkdpixels/commit-analyzer",
+    "generateNotes": "@inkdpixels/release-notes-generator"
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "^4.4.8"
+  },
+  "peerDependencies": {
+    "@neos-project/brand": "^1.1.0",
+    "@neos-project/utils-redux": "^4.4.8",
+    "classnames": "^2.2.3",
+    "lodash.isfunction": "^3.0.8",
+    "lodash.omit": "^4.3.0",
+    "object-assign": "^4.1.0",
+    "moment": "^2.14.1",
+    "react": "^15.2.1",
+    "react-addons-shallow-compare": "^15.3.1",
+    "react-click-outside": "^2.1.0",
+    "react-collapse": "^2.2.2",
+    "react-datetime": "^2.5.0",
+    "react-dom": "^15.2.1",
+    "react-textarea-autosize": "^4.0.0",
+    "react-height": "^2.0.4",
+    "react-motion": "^0.4.2",
+    "react-css-themr": "^1.2.0",
+    "react-portal": "^2.2.1"
+  },
+  "license": "GNU GPLv3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neos/react-ui-components.git"
+  }
+}

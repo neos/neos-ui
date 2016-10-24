@@ -1,0 +1,12 @@
+engines:
+  eslint:
+    enabled: true
+ratings:
+  paths:
+    - "src/**"
+exclude_paths:
+ - "src/**/*.story.js"
+ - "src/**/*.spec.js"
+ - "CHANGELOG.md"
+ - "package.json"
+ - "README.md"

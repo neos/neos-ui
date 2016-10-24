@@ -1,0 +1,45 @@
+.checkbox {
+    composes: reset from './../reset.css';
+    position: relative;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+.checkbox__input {
+    composes: reset from './../reset.css';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 1;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    cursor: pointer;
+}
+.checkbox__inputMirror {
+    composes: reset from './../reset.css';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--brandColorsContrastBrighter);
+    vertical-align: text-bottom;
+    background: var(--brandColorsContrastDark);
+    color: var(--brandColorsContrastBrightest);
+
+    .label:hover & {
+        border-color: var(--brandColorsPrimaryBlue);
+    }
+}
+.checkbox__inputMirror--active {
+    background: var(--brandColorsPrimaryBlue);
+    border-color: var(--brandColorsPrimaryBlue);
+
+    &:before {
+        content: '\2713';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
+}

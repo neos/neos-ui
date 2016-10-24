@@ -1,0 +1,54 @@
+{
+  "name": "@neos-project/neos-ui-redux-store",
+  "version": "4.4.8",
+  "description": "Redux store implementation for the Neos CMS UI",
+  "private": true,
+  "main": "./src/index.js",
+  "scripts": {
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
+    "test:watch": "npm run ava -- --watch",
+    "build": "exit 0",
+    "build:watch": "exit 0",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src",
+    "ava": "PWD=$(pwd) NODE_ENV=test ava -c 6",
+    "precoverage:generate": "rimraf ./coverage",
+    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
+    "coverage:publish": "codeclimate-test-reporter < lcov.info"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ],
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register",
+      "@neos-project/build-essentials/src/setup-browser-env"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "exclude": [
+      "src/**/*.spec.js"
+    ],
+    "include": [
+      "src/**"
+    ]
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "^4.4.8"
+  },
+  "dependencies": {
+    "@neos-project/utils-redux": "^4.4.8",
+    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "immutable": "^3.8.0",
+    "plow-js": "^1.2.0",
+    "ramda": "^0.22.1",
+    "redux": "^3.4.0",
+    "redux-actions": "^0.12.0",
+    "reselect": "^2.4.0"
+  },
+  "license": "GNU GPLv3"
+}

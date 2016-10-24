@@ -1,0 +1,51 @@
+{
+  "name": "@neos-project/neos-ui-contentrepository",
+  "version": "4.4.8",
+  "description": "Bindings for the Neos ContentRepository",
+  "private": true,
+  "main": "./src/manifest.js",
+  "scripts": {
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
+    "test:watch": "npm run ava -- --watch",
+    "build": "exit 0",
+    "build:watch": "exit 0",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src",
+    "ava": "PWD=$(pwd) NODE_ENV=test ava",
+    "precoverage:generate": "rimraf ./coverage",
+    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
+    "coverage:publish": "codeclimate-test-reporter < lcov.info"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ],
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register",
+      "@neos-project/build-essentials/src/setup-browser-env",
+      "@neos-project/build-essentials/src/setup-neos-ui-host-env"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/**/index.js"
+    ],
+    "include": [
+      "src/**"
+    ]
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "^4.4.8"
+  },
+  "dependencies": {
+    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "plow-js": "^1.2.1",
+    "ramda": "^0.22.1"
+  },
+  "license": "GNU GPLv3"
+}

@@ -12,11 +12,6 @@ set -e
 # The script will be executed in the package working directory.
 #
 
-#
-# Until the test stack works again, do a build of the application instead to
-# have at least some kind of testing in regards to webpack and the dependency tree.
-#
-npm run build
-
 # Execute the unit tests.
-# npm run karma
+npm run test
+npm run build

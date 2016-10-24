@@ -1,0 +1,46 @@
+{
+  "name": "@neos-project/utils-logger",
+  "version": "4.4.8",
+  "description": "Logger implementation for Neos CMS UI.",
+  "private": true,
+  "main": "./src/index.js",
+  "scripts": {
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
+    "test:watch": "npm run ava -- --watch",
+    "build": "exit 0",
+    "build:watch": "exit 0",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src",
+    "ava": "PWD=$(pwd) NODE_ENV=test ava",
+    "precoverage:generate": "rimraf ./coverage",
+    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
+    "coverage:publish": "codeclimate-test-reporter < lcov.info"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ],
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "exclude": [
+      "src/**/*.spec.js"
+    ],
+    "include": [
+      "src/**"
+    ]
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "^4.4.8"
+  },
+  "dependencies": {
+    "debug": "^2.2.0"
+  },
+  "license": "GNU GPLv3"
+}

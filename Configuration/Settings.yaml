@@ -16,6 +16,7 @@ TYPO3:
       'Neos.Ui.Activation': 'Neos\Neos\Ui\TypoScript\Helper\ActivationHelper'
       'Neos.Ui.Sites': 'Neos\Neos\Ui\TypoScript\Helper\SitesHelper'
       'Neos.Ui.Modules': 'Neos\Neos\Ui\TypoScript\Helper\ModulesHelper'
+      'Neos.Ui.NodeTypes': 'Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper'
 
 Neos:
   Neos:
@@ -69,11 +70,6 @@ Neos:
             processing: []
             failed: []
           cr:
-            nodeTypes:
-              byName: ${Neos.Ui.NodeTypes.nodeTypesByName()}
-              constraints: ${Neos.Ui.NodeTypes.nodeTypeConstraints()}
-              inheritanceMap: ${Neos.Ui.NodeTypes.nodeTypeInheritanceMap()}
-              groups: ${Configuration.setting('TYPO3.Neos.nodeTypes.groups')}
             nodes:
               byContextPath: ${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}
               siteNode: ${q(site).property('_contextPath')}

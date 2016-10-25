@@ -1,7 +1,5 @@
 import React, {PropTypes} from 'react';
 
-import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
-
 import style from './style.css';
 
 const MediaDetailsScreen = props => {
@@ -15,9 +13,7 @@ const MediaDetailsScreen = props => {
     const uri = `/neos/content/images/edit.html?asset[__identity]=${props.imageIdentity}`;
 
     return (
-        <SecondaryInspector onClose={props.onClose}>
-            <iframe src={uri} className={style.iframe}/>
-        </SecondaryInspector>
+        <iframe src={uri} className={style.iframe}/>
     );
 };
 MediaDetailsScreen.propTypes = {

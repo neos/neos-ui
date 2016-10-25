@@ -5,7 +5,6 @@ import ReactCrop from 'react-image-crop';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
-import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 
 import AspectRatioDropDown from './AspectRatioDropDown/index';
 import CropConfiguration from './model.js';
@@ -68,7 +67,6 @@ class AspectRatioItem extends Component {
 
 export default class ImageCropper extends Component {
     static propTypes = {
-        onClose: PropTypes.func.isRequired,
         onComplete: PropTypes.func.isRequired,
         sourceImage: PropTypes.object.isRequired,
         options: PropTypes.object
@@ -136,43 +134,41 @@ export default class ImageCropper extends Component {
         const {cropConfiguration} = this.state;
         const aspectRatioLocked = false;
         const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock"/> : null);
-        const {sourceImage, onClose, onComplete} = this.props;
+        const {sourceImage, onComplete} = this.props;
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg';
 
         return (
-            <SecondaryInspector onClose={onClose}>
-                <div style={{textAlign: 'center'}}>
-                    <div className={style.tools}>
-                        <div className={style.aspectRatioIndicator}>
-                            {cropConfiguration.aspectRatioReducedLabel.map((label, index) => [
-                                <Icon key={index} icon="crop"/>,
-                                <span key={index} title={label}>{label}</span>,
-                                <span key={index}>{aspectRatioLockIcon}</span>
-                            ]).orSome('')}
-                        </div>
-
-                        <AspectRatioDropDown
-                            placeholder="Aspect Ratio"
-                            current={cropConfiguration.aspectRatioStrategy}
-                            options={cropConfiguration.aspectRatioOptions}
-                            onSelect={this.handleSetAspectRatio}
-                            onClear={this.handleClearAspectRatio}
-                            />
-
-                        <div className={style.dimensions}>
-                            {cropConfiguration.aspectRatioDimensions.map((props, index) => (
-                                <AspectRatioItem {...props} key={index}/>
-                            )).orSome('')}
-                        </div>
+            <div style={{textAlign: 'center'}}>
+                <div className={style.tools}>
+                    <div className={style.aspectRatioIndicator}>
+                        {cropConfiguration.aspectRatioReducedLabel.map((label, index) => [
+                            <Icon key={index} icon="crop"/>,
+                            <span key={index} title={label}>{label}</span>,
+                            <span key={index}>{aspectRatioLockIcon}</span>
+                        ]).orSome('')}
                     </div>
 
-                    <ReactCrop
-                        src={src}
-                        crop={cropConfiguration.cropInformation}
-                        onComplete={onComplete}
+                    <AspectRatioDropDown
+                        placeholder="Aspect Ratio"
+                        current={cropConfiguration.aspectRatioStrategy}
+                        options={cropConfiguration.aspectRatioOptions}
+                        onSelect={this.handleSetAspectRatio}
+                        onClear={this.handleClearAspectRatio}
                         />
+
+                    <div className={style.dimensions}>
+                        {cropConfiguration.aspectRatioDimensions.map((props, index) => (
+                            <AspectRatioItem {...props} key={index}/>
+                        )).orSome('')}
+                    </div>
                 </div>
-            </SecondaryInspector>
+
+                <ReactCrop
+                    src={src}
+                    crop={cropConfiguration.cropInformation}
+                    onComplete={onComplete}
+                    />
+            </div>
         );
     }
 }

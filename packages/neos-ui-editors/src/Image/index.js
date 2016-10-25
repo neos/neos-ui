@@ -14,11 +14,6 @@ const DEFAULT_FEATURES = {
     resize: false
 };
 
-const SECONDARY_NONE = 1;
-const SECONDARY_DETAILS = 2;
-const SECONDARY_MEDIA = 3;
-const SECONDARY_CROPPER = 4;
-
 @connect($transform({
     siteNodePath: $get('cr.nodes.siteNode')
 }))
@@ -31,6 +26,7 @@ export default class ImageEditor extends Component {
             PropTypes.string
         ]),
         commit: PropTypes.func.isRequired,
+        renderSecondaryInspector: PropTypes.func.isRequired,
 
         options: PropTypes.object,
 
@@ -59,18 +55,17 @@ export default class ImageEditor extends Component {
         this.setPreviewScreenRef = this.setPreviewScreenRef.bind(this);
         this.handleThumbnailClicked = this.handleThumbnailClicked.bind(this);
         this.handleFilesDrop = this.upload.bind(this);
-        this.handleChooseMedia = this.toggleSecondaryScreen.bind(this, SECONDARY_MEDIA);
-        this.handleChooseSecondaryNone = this.toggleSecondaryScreen.bind(this, SECONDARY_NONE);
         this.handleChooseFile = this.onChooseFile.bind(this);
         this.handleRemoveFile = this.onRemoveFile.bind(this);
         this.handleMediaSelected = this.onMediaSelected.bind(this);
         this.handleMediaCrop = this.onCrop.bind(this);
+        this.closeSecondaryScreen = this.closeSecondaryScreen.bind(this);
         this.state = {
-            secondaryScreenMode: SECONDARY_NONE,
             image: null,
             isAssetLoading: false
         };
     }
+
 
     componentDidMount() {
         const {loadImageMetadata} = backend.get().endpoints;
@@ -164,17 +159,7 @@ export default class ImageEditor extends Component {
     }
 
     closeSecondaryScreen() {
-        this.setState({secondaryScreenMode: SECONDARY_NONE});
-    }
-
-    toggleSecondaryScreen(mode) {
-        const {secondaryScreenMode} = this.state;
-
-        if (secondaryScreenMode === mode) {
-            this.closeSecondaryScreen();
-        } else {
-            this.setState({secondaryScreenMode: mode});
-        }
+        this.props.renderSecondaryInspector(undefined, undefined);
     }
 
     onRemoveFile() {
@@ -205,7 +190,12 @@ export default class ImageEditor extends Component {
         const imageIdentity = $get('__identity', this.props.value);
 
         if (imageIdentity) {
-            this.toggleSecondaryScreen(SECONDARY_DETAILS);
+            this.props.renderSecondaryInspector('IMAGE_MEDIA_DETAILS', () =>
+                <Secondary.MediaDetailsScreen
+                    onClose={this.closeSecondaryScreen}
+                    imageIdentity={imageIdentity}
+                />
+            );
         } else {
             this.onChooseFile();
         }
@@ -234,6 +224,11 @@ export default class ImageEditor extends Component {
             isAssetLoading
         } = this.state;
 
+        const {
+            renderSecondaryInspector,
+            options
+        } = this.props;
+
         return (
             <div className={style.imageEditor}>
                 <PreviewScreen
@@ -244,52 +239,21 @@ export default class ImageEditor extends Component {
                     onClick={this.handleThumbnailClicked}
                     />
                 <Controls
-                    onChooseFromMedia={this.handleChooseMedia}
+                    onChooseFromMedia={() => renderSecondaryInspector('IMAGE_SELECT_MEDIA', () =>
+                        <Secondary.MediaSelectionScreen
+                            onComplete={this.handleMediaSelected}
+                        />
+                    )}
                     onChooseFromLocalFileSystem={this.handleChooseFile}
                     onRemove={this.handleRemoveFile}
-                    onCrop={this.isFeatureEnabled('crop') && (() => this.toggleSecondaryScreen(SECONDARY_CROPPER))}
-                    />
-                {secondaryScreenMode === SECONDARY_NONE ? '' : this.renderSecondaryScreen()}
-            </div>
-        );
-    }
-
-    renderSecondaryScreen() {
-        const {secondaryScreenMode, image} = this.state;
-        const {options} = this.props;
-        const {__identity} = this.props.value;
-
-        switch (secondaryScreenMode) {
-            case SECONDARY_MEDIA:
-                return (
-                    <Secondary.MediaSelectionScreen
-                        onClose={this.handleChooseSecondaryNone}
-                        onComplete={this.handleMediaSelected}
-                        />
-                );
-
-            case SECONDARY_DETAILS:
-                return (
-                    <Secondary.MediaDetailsScreen
-                        onClose={this.handleChooseSecondaryNone}
-                        imageIdentity={__identity}
-                        />
-                );
-
-            case SECONDARY_CROPPER:
-                return (
-                    <Secondary.ImageCropper
+                    onCrop={this.isFeatureEnabled('crop') && (() => renderSecondaryInspector('IMAGE_CROP', () => <Secondary.ImageCropper
                         sourceImage={Image.fromImageData(image)}
                         options={options}
-                        onClose={this.handleChooseSecondaryNone}
                         onComplete={this.handleMediaCrop}
-                        />
-                );
-
-            case SECONDARY_NONE:
-            default:
-                return '';
-        }
+                        />))}
+                    />
+            </div>
+        );
     }
 
     setPreviewScreenRef(ref) {

@@ -9,11 +9,12 @@ import style from './style.css';
 export default class TabPanel extends Component {
     static displayName = 'Inspector Tab Panel';
     static propTypes = {
-        groups: PropTypes.array
+        groups: PropTypes.array,
+        renderSecondaryInspector: PropTypes.func.isRequired
     };
 
     render() {
-        const {groups} = this.props;
+        const {groups, renderSecondaryInspector} = this.props;
         const tabPanel = groups => (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 {
@@ -22,6 +23,7 @@ export default class TabPanel extends Component {
                             key={group.id}
                             label={group.label}
                             properties={group.properties}
+                            renderSecondaryInspector={renderSecondaryInspector}
                             />
                     ))
                 }

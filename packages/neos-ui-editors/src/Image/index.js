@@ -14,11 +14,6 @@ const DEFAULT_FEATURES = {
     resize: false
 };
 
-const SECONDARY_NONE = 1;
-const SECONDARY_DETAILS = 2;
-const SECONDARY_MEDIA = 3;
-const SECONDARY_CROPPER = 4;
-
 @connect($transform({
     siteNodePath: $get('cr.nodes.siteNode')
 }))
@@ -30,7 +25,11 @@ export default class ImageEditor extends Component {
             }),
             PropTypes.string
         ]),
+        // "hooks" are the hooks specified by commit()
+        hooks: PropTypes.object,
+
         commit: PropTypes.func.isRequired,
+        renderSecondaryInspector: PropTypes.func.isRequired,
 
         options: PropTypes.object,
 
@@ -59,14 +58,14 @@ export default class ImageEditor extends Component {
         this.setPreviewScreenRef = this.setPreviewScreenRef.bind(this);
         this.handleThumbnailClicked = this.handleThumbnailClicked.bind(this);
         this.handleFilesDrop = this.upload.bind(this);
-        this.handleChooseMedia = this.toggleSecondaryScreen.bind(this, SECONDARY_MEDIA);
-        this.handleChooseSecondaryNone = this.toggleSecondaryScreen.bind(this, SECONDARY_NONE);
         this.handleChooseFile = this.onChooseFile.bind(this);
         this.handleRemoveFile = this.onRemoveFile.bind(this);
         this.handleMediaSelected = this.onMediaSelected.bind(this);
         this.handleMediaCrop = this.onCrop.bind(this);
+        this.handleCloseSecondaryScreen = this.handleCloseSecondaryScreen.bind(this);
+        this.handleChooseFromMedia = this.handleChooseFromMedia.bind(this);
+        this.handleOpenImageCropper = this.handleOpenImageCropper.bind(this);
         this.state = {
-            secondaryScreenMode: SECONDARY_NONE,
             image: null,
             isAssetLoading: false
         };
@@ -143,8 +142,6 @@ export default class ImageEditor extends Component {
         };
         const nextimage = $set(CROP_IMAGE_ADJUSTMENT, cropAdjustments, image);
 
-        this.setState({image: nextimage});
-
         commit(value, {
             'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
         });
@@ -156,31 +153,19 @@ export default class ImageEditor extends Component {
         const nextimage = resizeAdjustment ?
             $set(RESIZE_IMAGE_ADJUSTMENT, resizeAdjustment, image) : $drop(RESIZE_IMAGE_ADJUSTMENT, image);
 
-        this.setState({image: nextimage});
-
         commit(value, {
             'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
         });
     }
 
-    closeSecondaryScreen() {
-        this.setState({secondaryScreenMode: SECONDARY_NONE});
-    }
-
-    toggleSecondaryScreen(mode) {
-        const {secondaryScreenMode} = this.state;
-
-        if (secondaryScreenMode === mode) {
-            this.closeSecondaryScreen();
-        } else {
-            this.setState({secondaryScreenMode: mode});
-        }
+    handleCloseSecondaryScreen() {
+        this.props.renderSecondaryInspector(undefined, undefined);
     }
 
     onRemoveFile() {
         const {commit, value} = this.props;
 
-        this.closeSecondaryScreen();
+        this.handleCloseSecondaryScreen();
         this.setState({
             image: null
         }, () => {
@@ -197,7 +182,7 @@ export default class ImageEditor extends Component {
             isAssetLoading: true
         }, () => {
             commit(newAsset);
-            this.closeSecondaryScreen();
+            this.handleCloseSecondaryScreen();
         });
     }
 
@@ -205,7 +190,12 @@ export default class ImageEditor extends Component {
         const imageIdentity = $get('__identity', this.props.value);
 
         if (imageIdentity) {
-            this.toggleSecondaryScreen(SECONDARY_DETAILS);
+            this.props.renderSecondaryInspector('IMAGE_MEDIA_DETAILS', () =>
+                <Secondary.MediaDetailsScreen
+                    onClose={this.handleCloseSecondaryScreen}
+                    imageIdentity={imageIdentity}
+                    />
+            );
         } else {
             this.onChooseFile();
         }
@@ -227,10 +217,22 @@ export default class ImageEditor extends Component {
         });
     }
 
+    handleChooseFromMedia() {
+        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () =>
+            <Secondary.MediaSelectionScreen onComplete={this.handleMediaSelected}/>
+        );
+    }
+
+    handleOpenImageCropper() {
+        this.props.renderSecondaryInspector('IMAGE_CROP', () => <Secondary.ImageCropper
+            sourceImage={Image.fromImageData(this.getUsedImage())}
+            options={this.props.options}
+            onComplete={this.handleMediaCrop}
+            />);
+    }
+
     render() {
         const {
-            image,
-            secondaryScreenMode,
             isAssetLoading
         } = this.state;
 
@@ -238,58 +240,23 @@ export default class ImageEditor extends Component {
             <div className={style.imageEditor}>
                 <PreviewScreen
                     ref={this.setPreviewScreenRef}
-                    image={image}
+                    image={this.getUsedImage()}
                     isLoading={isAssetLoading}
                     onDrop={this.handleFilesDrop}
                     onClick={this.handleThumbnailClicked}
                     />
                 <Controls
-                    onChooseFromMedia={this.handleChooseMedia}
+                    onChooseFromMedia={this.handleChooseFromMedia}
                     onChooseFromLocalFileSystem={this.handleChooseFile}
                     onRemove={this.handleRemoveFile}
-                    onCrop={this.isFeatureEnabled('crop') && (() => this.toggleSecondaryScreen(SECONDARY_CROPPER))}
+                    onCrop={this.isFeatureEnabled('crop') && this.handleOpenImageCropper}
                     />
-                {secondaryScreenMode === SECONDARY_NONE ? '' : this.renderSecondaryScreen()}
             </div>
         );
     }
 
-    renderSecondaryScreen() {
-        const {secondaryScreenMode, image} = this.state;
-        const {options} = this.props;
-        const {__identity} = this.props.value;
-
-        switch (secondaryScreenMode) {
-            case SECONDARY_MEDIA:
-                return (
-                    <Secondary.MediaSelectionScreen
-                        onClose={this.handleChooseSecondaryNone}
-                        onComplete={this.handleMediaSelected}
-                        />
-                );
-
-            case SECONDARY_DETAILS:
-                return (
-                    <Secondary.MediaDetailsScreen
-                        onClose={this.handleChooseSecondaryNone}
-                        imageIdentity={__identity}
-                        />
-                );
-
-            case SECONDARY_CROPPER:
-                return (
-                    <Secondary.ImageCropper
-                        sourceImage={Image.fromImageData(image)}
-                        options={options}
-                        onClose={this.handleChooseSecondaryNone}
-                        onComplete={this.handleMediaCrop}
-                        />
-                );
-
-            case SECONDARY_NONE:
-            default:
-                return '';
-        }
+    getUsedImage() {
+        return this.props.hooks ? this.props.hooks['Neos.UI:Hook.BeforeSave.CreateImageVariant'] : this.state.image;
     }
 
     setPreviewScreenRef(ref) {

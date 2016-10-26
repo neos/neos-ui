@@ -11,11 +11,12 @@ import style from './style.css';
 export default class PropertyGroup extends Component {
     static propTypes = {
         label: PropTypes.string.isRequired,
-        properties: PropTypes.array
+        properties: PropTypes.array,
+        renderSecondaryInspector: PropTypes.func.isRequired
     };
 
     render() {
-        const {properties, label} = this.props;
+        const {properties, label, renderSecondaryInspector} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
@@ -32,6 +33,7 @@ export default class PropertyGroup extends Component {
                             label={property.label}
                             editor={property.editor}
                             options={property.editorOptions}
+                            renderSecondaryInspector={renderSecondaryInspector}
                             />
                     ))}
                 </ToggablePanel.Contents>

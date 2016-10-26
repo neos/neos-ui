@@ -1,7 +1,5 @@
 import React, {PropTypes} from 'react';
 
-import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
-
 import style from './style.css';
 
 const MediaSelectionScreen = props => {
@@ -14,13 +12,10 @@ const MediaSelectionScreen = props => {
 
     // TODO: hard-coded url
     return (
-        <SecondaryInspector onClose={props.onClose}>
-            <iframe src="/neos/content/images.html" className={style.iframe}/>
-        </SecondaryInspector>
+        <iframe src="/neos/content/images.html" className={style.iframe}/>
     );
 };
 MediaSelectionScreen.propTypes = {
-    onClose: PropTypes.func.isRequired,
     onComplete: PropTypes.func.isRequired
 };
 

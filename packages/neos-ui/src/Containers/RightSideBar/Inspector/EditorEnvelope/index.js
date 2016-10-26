@@ -28,6 +28,7 @@ export default class EditorEnvelope extends Component {
         label: PropTypes.string.isRequired,
         editor: PropTypes.string.isRequired,
         options: PropTypes.object,
+        renderSecondaryInspector: PropTypes.func.isRequired,
         editorRegistry: PropTypes.object.isRequired,
 
         node: PropTypes.object.isRequired,
@@ -62,13 +63,14 @@ export default class EditorEnvelope extends Component {
             label,
             node,
             value: transientValue ? transientValue.value : sourceValue,
+            hooks: transientValue ? transientValue.hooks : null,
             propertyName: id,
             options
         };
     }
 
     renderEditorComponent() {
-        const {editor, editorRegistry} = this.props;
+        const {editor, editorRegistry, renderSecondaryInspector} = this.props;
         const editorDefinition = editorRegistry.get(editor);
 
         if (editorDefinition && editorDefinition.component) {
@@ -78,6 +80,7 @@ export default class EditorEnvelope extends Component {
                 <EditorComponent
                     {...this.prepareEditorProperties()}
                     commit={this.onHandleCommit}
+                    renderSecondaryInspector={renderSecondaryInspector}
                     />
             );
         }

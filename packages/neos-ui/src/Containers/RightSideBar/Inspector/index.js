@@ -96,7 +96,7 @@ export default class Inspector extends Component {
     }
 
     render() {
-        const {focusedNode, nodeTypesRegistry, apply, discard, transientValues} = this.props;
+        const {focusedNode, nodeTypesRegistry, transientValues} = this.props;
 
         if (!focusedNode) {
             return this.renderFallback();
@@ -121,7 +121,7 @@ export default class Inspector extends Component {
                         //
                         // Render each tab as a TabPanel
                         //
-                        .map(tab => <TabPanel key={tab.id} icon={tab.icon} groups={tab.groups} renderSecondaryInspector={this.renderSecondaryInspector} />)
+                        .map(tab => <TabPanel key={tab.id} icon={tab.icon} groups={tab.groups} renderSecondaryInspector={this.renderSecondaryInspector}/>)
                     }
                 </Tabs>
                 <Bar position="bottom">
@@ -138,7 +138,7 @@ export default class Inspector extends Component {
                         </Grid.Col>
                     </Grid>
                 </Bar>
-                {this.state.secondaryInspectorComponent ? <SecondaryInspector onClose={this.handleCloseSecondaryInspector}>{this.state.secondaryInspectorComponent}</SecondaryInspector>: null}
+                {this.state.secondaryInspectorComponent ? <SecondaryInspector onClose={this.handleCloseSecondaryInspector}>{this.state.secondaryInspectorComponent}</SecondaryInspector> : null}
             </div>
         );
     }

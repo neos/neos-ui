@@ -60,10 +60,10 @@ fi
 
 case "$returnValue" in
     1)
-        echo commit message is to large
+        echo commit message is too large
         ;;
     2)
-        echo commit message is to short
+        echo commit message is too short
         ;;
     3)
         echo not a valid commit prefix

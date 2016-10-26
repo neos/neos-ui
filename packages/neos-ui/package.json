@@ -103,7 +103,8 @@
     "regenerator": "^0.8.46",
     "reselect": "^2.4.0",
     "uuid": "^2.0.2",
-    "whatwg-fetch": "^1.0.0"
+    "whatwg-fetch": "^1.0.0",
+    "react-broadcast": "^0.1.2"
   },
   "license": "GNU GPLv3"
 }

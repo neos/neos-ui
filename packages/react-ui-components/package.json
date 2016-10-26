@@ -71,7 +71,8 @@
     "react-height": "^2.0.4",
     "react-motion": "^0.4.2",
     "react-css-themr": "^1.2.0",
-    "react-portal": "^2.2.1"
+    "react-portal": "^2.2.1",
+    "react-broadcast": "^0.1.2"
   },
   "license": "GNU GPLv3",
   "repository": {

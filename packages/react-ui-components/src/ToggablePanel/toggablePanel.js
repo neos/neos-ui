@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
+import {Broadcast, Subscriber} from 'react-broadcast';
 
 export default class ToggablePanel extends Component {
     static propTypes = {
@@ -108,13 +109,11 @@ export class StatelessToggablePanel extends Component {
     };
 
     static childContextTypes = {
-        isOpen: PropTypes.bool.isRequired,
         onPanelToggle: PropTypes.func.isRequired
     };
 
     getChildContext() {
         return {
-            isOpen: this.props.isOpen,
             onPanelToggle: this.props.onPanelToggle
         };
     }
@@ -132,9 +131,11 @@ export class StatelessToggablePanel extends Component {
         });
 
         return (
-            <section className={finalClassName}>
-                {children}
-            </section>
+            <Broadcast channel="isPanelOpen" value={this.props.isOpen}>
+                <section className={finalClassName}>
+                    {children}
+                </section>
+            </Broadcast>
         );
     }
 }
@@ -162,7 +163,6 @@ export class Header extends Component {
     };
 
     static contextTypes = {
-        isOpen: PropTypes.bool.isRequired,
         onPanelToggle: PropTypes.func.isRequired
     };
 
@@ -178,24 +178,25 @@ export class Header extends Component {
             theme,
             ...rest
         } = this.props;
-        const {isOpen, onPanelToggle} = this.context;
-        const toggleIcon = isOpen ? 'chevron-up' : 'chevron-down';
+        const {onPanelToggle} = this.context;
 
         return (
-            <div aria-expanded={isOpen} {...rest}>
-                <HeadlineComponent
-                    className={theme.panel__headline}
-                    type="h1"
-                    style="h4"
-                    >
-                    {children}
-                </HeadlineComponent>
-                <IconButtonComponent
-                    className={theme.panel__toggleBtn}
-                    icon={toggleIcon}
-                    onClick={onPanelToggle}
-                    />
-            </div>
+            <Subscriber channel="isPanelOpen">{ isOpen =>
+                <div aria-expanded={isOpen} {...rest}>
+                    <HeadlineComponent
+                        className={theme.panel__headline}
+                        type="h1"
+                        style="h4"
+                        >
+                        {children}
+                    </HeadlineComponent>
+                    <IconButtonComponent
+                        className={theme.panel__toggleBtn}
+                        icon={isOpen ? 'chevron-up' : 'chevron-down'}
+                        onClick={onPanelToggle}
+                        />
+                </div>
+            }</Subscriber>
         );
     }
 }
@@ -224,10 +225,6 @@ export class Contents extends Component {
         theme: {}
     };
 
-    static contextTypes = {
-        isOpen: PropTypes.bool.isRequired
-    };
-
     shouldComponentUpdate(...args) {
         return shallowCompare(this, ...args);
     }
@@ -238,18 +235,19 @@ export class Contents extends Component {
             className,
             theme
         } = this.props;
-        const {isOpen} = this.context;
         const finalClassName = mergeClassNames({
             [theme.panel__contents]: true,
             [className]: className && className.length
         });
 
         return (
-            <Collapse isOpened={isOpen}>
-                <div className={finalClassName} aria-hidden={isOpen ? 'false' : 'true'}>
-                    {children}
-                </div>
-            </Collapse>
+            <Subscriber channel="isPanelOpen">{ isOpen =>
+                <Collapse isOpened={isOpen}>
+                    <div className={finalClassName} aria-hidden={isOpen ? 'false' : 'true'}>
+                        {children}
+                    </div>
+                </Collapse>
+            }</Subscriber>
         );
     }
 }

@@ -37,7 +37,7 @@ export default class InlineUI extends Component {
                 <NodeToolbar focusedNode={focusedNode}/>
                 <MarkActiveNodeAsFocused focusedNode={focusedNode}/>
                 <MarkHoveredNodeAsHovered focusedNode={focusedNode} hoveredNode={hoveredNode}/>
-                <AddEmptyContentCollectionOverlays />
+                <AddEmptyContentCollectionOverlays/>
             </div>
         );
 

@@ -10,6 +10,7 @@
     "build:components": "lerna run --scope @neos-project/react-ui-components build",
     "build:components:watch": "lerna run --scope @neos-project/react-ui-components build:watch",
     "build": "npm run build:components && npm run build:ui",
+    "start-storybook": "lerna run --scope @neos-project/react-ui-components start",
     "coverage:generate": "lerna run coverage:generate --concurrency 1",
     "coverage:publish": "lerna run coverage:publish --concurrency 1",
     "test": "lerna run test --concurrency 1",
@@ -18,9 +19,6 @@
   "devDependencies": {
     "@inkdpixels/commit-analyzer": "^1.0.0",
     "@inkdpixels/release-notes-generator": "^1.0.0",
-    "@kadira/react-storybook-addon-info": "^3.2.1",
-    "@kadira/storybook": "^2.11.0",
-    "@kadira/storybook-addon-knobs": "^1.2.0",
     "@neos-project/brand": "^1.1.0",
     "@neos-project/eslint-config-neos": "^1.1.1",
     "ava": "^0.16.0",

@@ -62,13 +62,14 @@ export default class ImageEditor extends Component {
         this.handleRemoveFile = this.onRemoveFile.bind(this);
         this.handleMediaSelected = this.onMediaSelected.bind(this);
         this.handleMediaCrop = this.onCrop.bind(this);
-        this.closeSecondaryScreen = this.closeSecondaryScreen.bind(this);
+        this.handleCloseSecondaryScreen = this.handleCloseSecondaryScreen.bind(this);
+        this.handleChooseFromMedia = this.handleChooseFromMedia.bind(this);
+        this.handleOpenImageCropper = this.handleOpenImageCropper.bind(this);
         this.state = {
             image: null,
             isAssetLoading: false
         };
     }
-
 
     componentDidMount() {
         const {loadImageMetadata} = backend.get().endpoints;
@@ -157,14 +158,14 @@ export default class ImageEditor extends Component {
         });
     }
 
-    closeSecondaryScreen() {
+    handleCloseSecondaryScreen() {
         this.props.renderSecondaryInspector(undefined, undefined);
     }
 
     onRemoveFile() {
         const {commit, value} = this.props;
 
-        this.closeSecondaryScreen();
+        this.handleCloseSecondaryScreen();
         this.setState({
             image: null
         }, () => {
@@ -181,7 +182,7 @@ export default class ImageEditor extends Component {
             isAssetLoading: true
         }, () => {
             commit(newAsset);
-            this.closeSecondaryScreen();
+            this.handleCloseSecondaryScreen();
         });
     }
 
@@ -191,9 +192,9 @@ export default class ImageEditor extends Component {
         if (imageIdentity) {
             this.props.renderSecondaryInspector('IMAGE_MEDIA_DETAILS', () =>
                 <Secondary.MediaDetailsScreen
-                    onClose={this.closeSecondaryScreen}
+                    onClose={this.handleCloseSecondaryScreen}
                     imageIdentity={imageIdentity}
-                />
+                    />
             );
         } else {
             this.onChooseFile();
@@ -216,46 +217,46 @@ export default class ImageEditor extends Component {
         });
     }
 
+    handleChooseFromMedia() {
+        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () =>
+            <Secondary.MediaSelectionScreen onComplete={this.handleMediaSelected}/>
+        );
+    }
+
+    handleOpenImageCropper() {
+        this.props.renderSecondaryInspector('IMAGE_CROP', () => <Secondary.ImageCropper
+            sourceImage={Image.fromImageData(this.getUsedImage())}
+            options={this.props.options}
+            onComplete={this.handleMediaCrop}
+            />);
+    }
+
     render() {
         const {
-            image,
-            secondaryScreenMode,
             isAssetLoading
         } = this.state;
-
-        const {
-            renderSecondaryInspector,
-            options,
-            hooks
-        } = this.props;
-
-        const usedImage = (this.props.hooks ? this.props.hooks['Neos.UI:Hook.BeforeSave.CreateImageVariant'] : this.state.image);
 
         return (
             <div className={style.imageEditor}>
                 <PreviewScreen
                     ref={this.setPreviewScreenRef}
-                    image={usedImage}
+                    image={this.getUsedImage()}
                     isLoading={isAssetLoading}
                     onDrop={this.handleFilesDrop}
                     onClick={this.handleThumbnailClicked}
                     />
                 <Controls
-                    onChooseFromMedia={() => renderSecondaryInspector('IMAGE_SELECT_MEDIA', () =>
-                        <Secondary.MediaSelectionScreen
-                            onComplete={this.handleMediaSelected}
-                        />
-                    )}
+                    onChooseFromMedia={this.handleChooseFromMedia}
                     onChooseFromLocalFileSystem={this.handleChooseFile}
                     onRemove={this.handleRemoveFile}
-                    onCrop={this.isFeatureEnabled('crop') && (() => renderSecondaryInspector('IMAGE_CROP', () => <Secondary.ImageCropper
-                        sourceImage={Image.fromImageData(usedImage)}
-                        options={options}
-                        onComplete={this.handleMediaCrop}
-                        />))}
+                    onCrop={this.isFeatureEnabled('crop') && this.handleOpenImageCropper}
                     />
             </div>
         );
+    }
+
+    getUsedImage() {
+        return this.props.hooks ? this.props.hooks['Neos.UI:Hook.BeforeSave.CreateImageVariant'] : this.state.image;
     }
 
     setPreviewScreenRef(ref) {

@@ -25,6 +25,9 @@ export default class ImageEditor extends Component {
             }),
             PropTypes.string
         ]),
+        // "hooks" are the hooks specified by commit()
+        hooks: PropTypes.object,
+
         commit: PropTypes.func.isRequired,
         renderSecondaryInspector: PropTypes.func.isRequired,
 
@@ -138,8 +141,6 @@ export default class ImageEditor extends Component {
         };
         const nextimage = $set(CROP_IMAGE_ADJUSTMENT, cropAdjustments, image);
 
-        this.setState({image: nextimage});
-
         commit(value, {
             'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
         });
@@ -150,8 +151,6 @@ export default class ImageEditor extends Component {
         const {image} = this.state;
         const nextimage = resizeAdjustment ?
             $set(RESIZE_IMAGE_ADJUSTMENT, resizeAdjustment, image) : $drop(RESIZE_IMAGE_ADJUSTMENT, image);
-
-        this.setState({image: nextimage});
 
         commit(value, {
             'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
@@ -226,14 +225,17 @@ export default class ImageEditor extends Component {
 
         const {
             renderSecondaryInspector,
-            options
+            options,
+            hooks
         } = this.props;
+
+        const usedImage = (this.props.hooks ? this.props.hooks['Neos.UI:Hook.BeforeSave.CreateImageVariant'] : this.state.image);
 
         return (
             <div className={style.imageEditor}>
                 <PreviewScreen
                     ref={this.setPreviewScreenRef}
-                    image={image}
+                    image={usedImage}
                     isLoading={isAssetLoading}
                     onDrop={this.handleFilesDrop}
                     onClick={this.handleThumbnailClicked}
@@ -247,7 +249,7 @@ export default class ImageEditor extends Component {
                     onChooseFromLocalFileSystem={this.handleChooseFile}
                     onRemove={this.handleRemoveFile}
                     onCrop={this.isFeatureEnabled('crop') && (() => renderSecondaryInspector('IMAGE_CROP', () => <Secondary.ImageCropper
-                        sourceImage={Image.fromImageData(image)}
+                        sourceImage={Image.fromImageData(usedImage)}
                         options={options}
                         onComplete={this.handleMediaCrop}
                         />))}

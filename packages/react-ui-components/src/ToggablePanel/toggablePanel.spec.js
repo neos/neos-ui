@@ -99,19 +99,19 @@ test('<ToggablePanel/> should propagate the "toggle" instance method to the the 
 test('<StatelessToggablePanel/> should render only the "panel" className of the theme in any case.', t => {
     const wrapper = shallowStateLess(null);
 
-    t.truthy(wrapper.hasClass(stateLessDefaultProps.theme.panel));
-    t.falsy(wrapper.hasClass(stateLessDefaultProps.theme['panel--isOpen']));
+    t.truthy(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme.panel));
+    t.falsy(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme['panel--isOpen']));
 });
 test('<StatelessToggablePanel/> should render both the "panel" and "panel--isOpen" className of the theme in case the "isOpen" prop is truthy.', t => {
     const wrapper = shallowStateLess({isOpen: true});
 
-    t.truthy(wrapper.hasClass(stateLessDefaultProps.theme.panel));
-    t.truthy(wrapper.hasClass(stateLessDefaultProps.theme['panel--isOpen']));
+    t.truthy(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme.panel));
+    t.truthy(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme['panel--isOpen']));
 });
 test('<StatelessToggablePanel/> should render the "className" prop if provided.', t => {
     const wrapper = shallowStateLess({isOpen: true, className: 'FooClassName'});
 
-    t.truthy(wrapper.hasClass('FooClassName'));
+    t.truthy(wrapper.childAt(0).hasClass('FooClassName'));
 });
 test('<StatelessToggablePanel/> should render its propagated children.', t => {
     const wrapper = shallowStateLess();
@@ -127,7 +127,12 @@ test('<ToggablePanel.Header/> should render a wrapping node with an "aria-expand
 });
 test('<ToggablePanel.Header/> should render a wrapping node with an "aria-expanded" attribute of "true" if the "isOpen" context is truthy.', t => {
     const onPanelToggle = () => null;
-    const header = shallowHeader(null, {isOpen: true, onPanelToggle});
+    const broadcasts = {
+        'isPanelOpen': listener => listener(true)
+    };
+    const header = shallowHeader(null, {broadcasts, isOpen: true, onPanelToggle});
+
+    console.log("HEADER", header.get(0);
 
     t.truthy(header.node.props['aria-expanded']);
 });

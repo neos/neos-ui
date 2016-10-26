@@ -6,6 +6,12 @@ const env = require('./environment');
 const brand = require('@neos-project/brand');
 
 //
+// Prevent from failing, when NEOS_BUILD_ROOT env variable isn't set
+// (e.g. when extending this config from storybook)
+//
+const rootPath = env.rootPath || __dirname;
+
+//
 // Create the vars object for brand vars like colors and font settings
 // for the `postcss-css-variables` plugin.
 //
@@ -75,7 +81,7 @@ const webpackConfig = {
 
     resolve: {
         modulesDirectories: [
-            path.resolve(env.rootPath, './node_modules')
+            path.resolve(rootPath, './node_modules')
         ]
     },
 

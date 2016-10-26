@@ -7,6 +7,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 import NodeToolbar from './NodeToolbar/index';
 import MarkActiveNodeAsFocused from './MarkActiveNodeAsFocused/index';
 import MarkHoveredNodeAsHovered from './MarkHoveredNodeAsHovered/index';
+import AddEmptyContentCollectionOverlays from './AddEmptyContentCollectionOverlays/index';
 
 import style from './style.css';
 
@@ -36,6 +37,7 @@ export default class InlineUI extends Component {
                 <NodeToolbar focusedNode={focusedNode}/>
                 <MarkActiveNodeAsFocused focusedNode={focusedNode}/>
                 <MarkHoveredNodeAsHovered focusedNode={focusedNode} hoveredNode={hoveredNode}/>
+                <AddEmptyContentCollectionOverlays/>
             </div>
         );
 

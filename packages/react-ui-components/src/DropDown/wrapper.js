@@ -3,6 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
+import {Broadcast, Subscriber} from 'react-broadcast';
 import ShallowDropDownHeader from './header.js';
 import ShallowDropDownContents from './contents.js';
 
@@ -63,7 +64,6 @@ export class DropDownWrapper extends Component {
 
     getChildContext() {
         return {
-            isOpen: this.state.isOpen,
             toggleDropDown: this.handleToggle,
             closeDropDown: this.handleClose
         };
@@ -82,9 +82,11 @@ export class DropDownWrapper extends Component {
         });
 
         return (
-            <div {...rest} className={finalClassName}>
-                {children}
-            </div>
+            <Broadcast channel="isDropdownOpen" value={this.state.isOpen}>
+                <div {...rest} className={finalClassName}>
+                    {children}
+                </div>
+            </Broadcast>
         );
     }
 
@@ -103,12 +105,13 @@ export class DropDownWrapper extends Component {
 
 export class ContextDropDownHeader extends Component {
     static contextTypes = {
-        isOpen: PropTypes.bool.isRequired,
         toggleDropDown: PropTypes.func.isRequired
     };
 
     render() {
-        return <ShallowDropDownHeader {...this.props} {...this.context}/>;
+        return (<Subscriber channel="isDropdownOpen">{ isOpen =>
+            <ShallowDropDownHeader isOpen={isOpen} {...this.props} {...this.context}/>
+        }</Subscriber>);
     }
 
     shouldComponentUpdate(...args) {
@@ -117,12 +120,13 @@ export class ContextDropDownHeader extends Component {
 }
 export class ContextDropDownContents extends Component {
     static contextTypes = {
-        isOpen: PropTypes.bool.isRequired,
         closeDropDown: PropTypes.func.isRequired
     };
 
     render() {
-        return <ShallowDropDownContents {...this.props} {...this.context}/>;
+        return (<Subscriber channel="isDropdownOpen">{ isOpen =>
+            <ShallowDropDownContents isOpen={isOpen} {...this.props} {...this.context}/>
+        }</Subscriber>);
     }
 
     shouldComponentUpdate(...args) {

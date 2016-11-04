@@ -1,10 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import {connect} from 'react-redux';
-import IconButtonDropDown from '@neos-project/react-ui-components/lib/IconButtonDropDown/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {$transform} from 'plow-js';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 @connect($transform({
 }), {
@@ -20,67 +19,32 @@ export default class AddNode extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            currentMode: 'insert'
-        };
-        this.handleOpenModalBtnClick = this.openModal.bind(this);
-        this.handleInsertModeChanged = this.onModeChanged.bind(this);
+        this.handleOpenModalBtnClick = this.handleOpenModalBtnClick.bind(this);
     }
 
-    shouldComponentUpdate(newProps, newState) {
-        return shallowCompare(this, newProps, newState);
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
     }
 
     render() {
-        const modeIcon = this.getCurrentModeIcon();
-
         return (
             <span>
-                <IconButtonDropDown
+                <IconButton
                     className={this.props.className}
                     icon="plus"
-                    modeIcon={modeIcon}
                     onClick={this.handleOpenModalBtnClick}
                     onItemSelect={this.handleInsertModeChanged}
-                    >
-                    <Icon dropDownId="prepend" icon="level-up"/>
-                    <Icon dropDownId="insert" icon="long-arrow-right"/>
-                    <Icon dropDownId="append" icon="level-down"/>
-                </IconButtonDropDown>
+                    />
             </span>
         );
     }
 
-    openModal() {
+    handleOpenModalBtnClick() {
         const {
             openAddNodeModal,
             node
         } = this.props;
 
-        openAddNodeModal(node.contextPath, this.state.currentMode);
-    }
-
-    getCurrentModeIcon() {
-        let modeIcon;
-
-        switch (this.state.currentMode) {
-            case 'prepend':
-                modeIcon = 'level-up';
-                break;
-            case 'append':
-                modeIcon = 'level-down';
-                break;
-            default:
-                modeIcon = 'long-arrow-right';
-                break;
-        }
-
-        return modeIcon;
-    }
-
-    onModeChanged(currentMode) {
-        this.setState({
-            currentMode
-        });
+        openAddNodeModal(node.contextPath, 'append');
     }
 }

@@ -15,11 +15,20 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 
+//
+// Export error messages for testing
+//
+export const errorMessages = {
+    ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
+};
+
+
+
 @connect($transform({
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
     referenceNodeParent: selectors.UI.AddNodeModal.referenceNodeParentSelector,
-    referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
-    mode: $get('ui.addNodeModal.mode')
+    referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector
+    //mode: $get('ui.addNodeModal.mode')
 }), {
     close: actions.UI.AddNodeModal.close
 })
@@ -32,7 +41,7 @@ export default class AddNodeModal extends Component {
         referenceNodeParent: NeosPropTypes.node,
         referenceNodeGrandParent: NeosPropTypes.node,
         groupedAllowedNodeTypes: PropTypes.array,
-        mode: PropTypes.string.isRequired,
+        //mode: PropTypes.string.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
 
         close: PropTypes.func.isRequired
@@ -42,26 +51,57 @@ export default class AddNodeModal extends Component {
         return shallowCompare(this, newProps, newState) && newProps.referenceNode !== this.props.referenceNode;
     }
 
+    constructor(...props) {
+        super(...props);
+
+        this.handleSelectNodeType = this.handleSelectNodeType.bind(this);
+    }
+
+    calculateAllowedNodeTypesForMode(mode) {
+        const allowedModes = ['insert', 'append', 'prepend'];
+        if (allowedModes.indexOf(mode) === -1) {
+            throw new Error(errorMessages.ERROR_INVALID_MODE);
+        }
+
+        const {
+            nodeTypesRegistry,
+            referenceNode,
+            referenceNodeParent,
+            referenceNodeGrandParent
+        } = this.props;
+
+        const baseNode = mode === 'insert' ? referenceNode : referenceNodeParent;
+        const parentNode = mode === 'insert' ? referenceNodeParent : referenceNodeGrandParent;
+
+
+        if (!baseNode || (baseNode.isAutoCreated && !parentNode)) {
+            return [];
+        }
+
+        const allowedNodeTypes = baseNode.isAutoCreated ?
+            nodeTypesRegistry.getAllowedGrandChildNodeTypes(parentNode.nodeType, baseNode.name) :
+            nodeTypesRegistry.getAllowedChildNodeTypes(baseNode.nodeType);
+
+        return allowedNodeTypes;
+
+    }
+
     render() {
         const {
             nodeTypesRegistry,
             referenceNode,
             referenceNodeParent,
             referenceNodeGrandParent,
-            mode,
+            //mode,
             close
         } = this.props;
         const actions = [];
         const baseNode = mode === 'insert' ? referenceNode : referenceNodeParent;
         const parentNode = mode === 'insert' ? referenceNodeParent : referenceNodeGrandParent;
 
-        if (!baseNode || (baseNode.isAutoCreated && !parentNode)) {
-            return null;
-        }
 
-        const allowedNodeTypes = baseNode.isAutoCreated ?
-            nodeTypesRegistry.getAllowedGrandChildNodeTypes(parentNode.nodeType, baseNode.name) :
-            nodeTypesRegistry.getAllowedChildNodeTypes(baseNode.nodeType);
+
+
 
         const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypes);
 
@@ -113,10 +153,16 @@ export default class AddNodeModal extends Component {
                     <div key={key}>
                         <NodeTypeGroupPanel
                             group={group}
+                            onSelect={this.handleSelectNodeType}
                             />
                     </div>
                 ))}
             </Dialog>
         );
     }
+
+    handleSelectNodeType(nodeType) {
+
+    }
+
 }

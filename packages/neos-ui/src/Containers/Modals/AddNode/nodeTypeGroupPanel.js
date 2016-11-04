@@ -21,11 +21,13 @@ class NodeTypeGroupPanel extends Component {
     static propTypes = {
         toggleNodeTypeGroup: PropTypes.func.isRequired,
         collapsedGroups: PropTypes.array.isRequired,
+
         group: PropTypes.shape({
             name: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
             nodeTypes: PropTypes.array.isRequired
-        }).isRequired
+        }).isRequired,
+        onSelect: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -44,7 +46,8 @@ class NodeTypeGroupPanel extends Component {
     render() {
         const {
             group,
-            collapsedGroups
+            collapsedGroups,
+            onSelect
         } = this.props;
         const {name, label, nodeTypes} = group;
 
@@ -58,7 +61,7 @@ class NodeTypeGroupPanel extends Component {
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
                     <Grid className={style.grid}>
-                        {nodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key}/>)}
+                        {nodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onClick={onSelect}/>)}
                     </Grid>
                 </ToggablePanel.Contents>
             </ToggablePanel>

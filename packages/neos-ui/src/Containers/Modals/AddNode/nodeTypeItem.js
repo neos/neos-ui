@@ -17,19 +17,22 @@ const {referenceNodeSelector} = selectors.UI.AddNodeModal;
 import style from './style.css';
 
 @connect($transform({
-    referenceNode: referenceNodeSelector,
-    mode: $get('ui.addNodeModal.mode')
+    //referenceNode: referenceNodeSelector,
+    //mode: $get('ui.addNodeModal.mode')
 }), {
-    closeModal: actions.UI.AddNodeModal.close,
-    persistChange: actions.Changes.persistChange
+    //closeModal: actions.UI.AddNodeModal.close,
+    //persistChange: actions.Changes.persistChange
 })
 class NodeTypeItem extends Component {
     static propTypes = {
-        referenceNode: NeosPropTypes.node,
-        mode: PropTypes.string.isRequired,
+        //referenceNode: NeosPropTypes.node,
+        //mode: PropTypes.string.isRequired,
 
-        closeModal: PropTypes.func.isRequired,
-        persistChange: PropTypes.func.isRequired,
+        //closeModal: PropTypes.func.isRequired,
+        //persistChange: PropTypes.func.isRequired,
+
+        // parameter: the given node type
+        onClick: PropTypes.func.isRequired,
 
         nodeType: PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -55,7 +58,7 @@ class NodeTypeItem extends Component {
             nodeType,
             ...restProps
         } = this.props;
-        const rest = omit(restProps, ['referenceNode', 'mode', 'closeModal', 'persistChange', 'nodeType']);
+        const rest = omit(restProps, ['nodeType']);
         const {ui} = nodeType;
 
         return (
@@ -74,7 +77,8 @@ class NodeTypeItem extends Component {
     }
 
     handleNodeTypeClick() {
-        const {
+        this.props.onClick(this.props.nodeType);
+        /*const {
             nodeType,
             mode,
             referenceNode,
@@ -107,7 +111,7 @@ class NodeTypeItem extends Component {
             }
         };
         persistChange(change);
-        closeModal();
+        closeModal();*/
     }
 }
 

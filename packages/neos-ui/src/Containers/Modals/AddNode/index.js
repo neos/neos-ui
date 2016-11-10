@@ -6,6 +6,7 @@ import {$transform, $get} from 'plow-js';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
+import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -27,8 +28,8 @@ export const errorMessages = {
 @connect($transform({
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
     referenceNodeParent: selectors.UI.AddNodeModal.referenceNodeParentSelector,
-    referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector
-    //mode: $get('ui.addNodeModal.mode')
+    referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
+    allowedNodeTypesByModeGeneratorFn: selectors.UI.AddNodeModal.allowedNodeTypesByModeSelector
 }), {
     close: actions.UI.AddNodeModal.close
 })
@@ -41,69 +42,68 @@ export default class AddNodeModal extends Component {
         referenceNodeParent: NeosPropTypes.node,
         referenceNodeGrandParent: NeosPropTypes.node,
         groupedAllowedNodeTypes: PropTypes.array,
-        //mode: PropTypes.string.isRequired,
+        allowedNodeTypesByModeGeneratorFn: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
 
         close: PropTypes.func.isRequired
     };
 
-    shouldComponentUpdate(newProps, newState) {
-        return shallowCompare(this, newProps, newState) && newProps.referenceNode !== this.props.referenceNode;
+    shouldComponentUpdate(...args) {
+        return shallowCompare(this, ...args);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.referenceNode !== nextProps.referenceNode) {
+            this.setState({step: 1});
+        }
     }
 
     constructor(...props) {
         super(...props);
 
+        this.state = {
+            mode: 'insert',
+            step: 1
+        };
+
         this.handleSelectNodeType = this.handleSelectNodeType.bind(this);
+        this.handleModeChange = this.handleModeChange.bind(this);
     }
-
-    calculateAllowedNodeTypesForMode(mode) {
-        const allowedModes = ['insert', 'append', 'prepend'];
-        if (allowedModes.indexOf(mode) === -1) {
-            throw new Error(errorMessages.ERROR_INVALID_MODE);
+    calculateVisibleMode(allowedNodeTypesByMode) {
+        if (allowedNodeTypesByMode[this.state.mode].length) {
+            return this.state.mode;
         }
 
-        const {
-            nodeTypesRegistry,
-            referenceNode,
-            referenceNodeParent,
-            referenceNodeGrandParent
-        } = this.props;
+        const fallbackOrder = ['insert', 'append', 'prepend'];
 
-        const baseNode = mode === 'insert' ? referenceNode : referenceNodeParent;
-        const parentNode = mode === 'insert' ? referenceNodeParent : referenceNodeGrandParent;
-
-
-        if (!baseNode || (baseNode.isAutoCreated && !parentNode)) {
-            return [];
+        for (let i = 0; i < fallbackOrder.length; i++) {
+            if (allowedNodeTypesByMode[fallbackOrder[i]].length) {
+                return fallbackOrder[i];
+            }
         }
 
-        const allowedNodeTypes = baseNode.isAutoCreated ?
-            nodeTypesRegistry.getAllowedGrandChildNodeTypes(parentNode.nodeType, baseNode.name) :
-            nodeTypesRegistry.getAllowedChildNodeTypes(baseNode.nodeType);
-
-        return allowedNodeTypes;
-
+        return '';
     }
 
     render() {
         const {
             nodeTypesRegistry,
             referenceNode,
-            referenceNodeParent,
-            referenceNodeGrandParent,
-            //mode,
+            allowedNodeTypesByModeGeneratorFn,
             close
         } = this.props;
+
+        if (!referenceNode) {
+            return null;
+        }
+
+        const allowedNodeTypesByMode = allowedNodeTypesByModeGeneratorFn(nodeTypesRegistry);
+        const mode = this.calculateVisibleMode(allowedNodeTypesByMode);
+
         const actions = [];
-        const baseNode = mode === 'insert' ? referenceNode : referenceNodeParent;
-        const parentNode = mode === 'insert' ? referenceNodeParent : referenceNodeGrandParent;
 
 
-
-
-
-        const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypes);
+        const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypesByMode[mode]);
 
         actions.push(
             <Button
@@ -116,30 +116,41 @@ export default class AddNodeModal extends Component {
             </Button>
         );
 
-        let insertModeText;
-        switch (mode) {
-            case 'prepend':
-                insertModeText = (
-                    <span>
-                        <I18n fallback="Create new" id="createNew"/> <I18n fallback="before" id="before"/> <Icon icon="level-up"/>
-                    </span>
-                );
-                break;
-            case 'append':
-                insertModeText = (
-                    <span>
-                        <I18n fallback="Create new" id="createNew"/> <I18n fallback="after" id="after"/> <Icon icon="level-down"/>
-                    </span>
-                );
-                break;
-            default:
-                insertModeText = (
-                    <span>
-                        <I18n fallback="Create new" id="createNew"/> <I18n fallback="into" id="into"/> <Icon icon="long-arrow-right"/>
-                    </span>
-                );
-                break;
+        const options = [];
+
+        if (allowedNodeTypesByMode.prepend.length) {
+            options.push({
+                value: 'prepend',
+                label: (<span>
+                    <I18n fallback="Create new" id="createNew"/> <I18n fallback="before" id="before"/> <Icon icon="level-up"/>
+                </span>)
+            });
         }
+
+        if (allowedNodeTypesByMode.append.length) {
+            options.push({
+                value: 'append',
+                label: (<span>
+                    <I18n fallback="Create new" id="createNew"/> <I18n fallback="after" id="after"/> <Icon icon="level-down"/>
+                </span>)
+            });
+        }
+
+        if (allowedNodeTypesByMode.insert.length) {
+            options.push({
+                value: 'insert',
+                label: (<span>
+                    <I18n fallback="Create new" id="createNew"/> <I18n fallback="into" id="into"/> <Icon icon="long-arrow-right"/>
+                </span>)
+            });
+        }
+
+        const insertModeText = (<SelectBox
+            options={options}
+            value={mode}
+            onSelect={this.handleModeChange}
+            />);
+
 
         return (
             <Dialog
@@ -161,8 +172,12 @@ export default class AddNodeModal extends Component {
         );
     }
 
-    handleSelectNodeType(nodeType) {
+    handleModeChange(mode) {
+        this.setState({mode});
+    }
 
+    handleSelectNodeType(nodeType) {
+        console.log("HANDLE SELECT", nodeType);
     }
 
 }

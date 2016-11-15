@@ -32,7 +32,7 @@ class NodeTypeItem extends Component {
         //persistChange: PropTypes.func.isRequired,
 
         // parameter: the given node type
-        onClick: PropTypes.func.isRequired,
+        onSelect: PropTypes.func.isRequired,
 
         nodeType: PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -77,7 +77,7 @@ class NodeTypeItem extends Component {
     }
 
     handleNodeTypeClick() {
-        this.props.onClick(this.props.nodeType);
+        this.props.onSelect(this.props.nodeType);
         /*const {
             nodeType,
             mode,

@@ -23,7 +23,30 @@ export const errorMessages = {
     ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
 };
 
+const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
+    if (currentMode && allowedNodeTypesByMode[currentMode].length) {
+        return currentMode;
+    }
 
+    const fallbackOrder = ['insert', 'append', 'prepend'];
+
+    for (let i = 0; i < fallbackOrder.length; i++) {
+        if (allowedNodeTypesByMode[fallbackOrder[i]].length) {
+            return fallbackOrder[i];
+        }
+    }
+
+    return '';
+};
+
+const getRequiredPropertiesForNodeType = nodeType => {
+    const nodePropertyNames = Object.keys(nodeType.properties);
+    const requiredNodeProperties = nodePropertyNames.filter(nodePropertyName =>
+        $get(['properties', nodePropertyName, 'validation', 'TYPO3.Neos/Validation/NotEmptyValidator'], nodeType)
+    );
+
+    return requiredNodeProperties;
+};
 
 @connect($transform({
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
@@ -31,7 +54,8 @@ export const errorMessages = {
     referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
     allowedNodeTypesByModeGeneratorFn: selectors.UI.AddNodeModal.allowedNodeTypesByModeSelector
 }), {
-    close: actions.UI.AddNodeModal.close
+    handleClose: actions.UI.AddNodeModal.close,
+    persistChange: actions.Changes.persistChange
 })
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
@@ -45,7 +69,8 @@ export default class AddNodeModal extends Component {
         allowedNodeTypesByModeGeneratorFn: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
 
-        close: PropTypes.func.isRequired
+        handleClose: PropTypes.func.isRequired,
+        persistChange: PropTypes.func.isRequired
     };
 
     shouldComponentUpdate(...args) {
@@ -63,59 +88,76 @@ export default class AddNodeModal extends Component {
 
         this.state = {
             mode: 'insert',
-            step: 1
+            step: 1,
+            selectedNodeType: null
         };
 
         this.handleSelectNodeType = this.handleSelectNodeType.bind(this);
         this.handleModeChange = this.handleModeChange.bind(this);
     }
-    calculateVisibleMode(allowedNodeTypesByMode) {
-        if (allowedNodeTypesByMode[this.state.mode].length) {
-            return this.state.mode;
-        }
 
-        const fallbackOrder = ['insert', 'append', 'prepend'];
-
-        for (let i = 0; i < fallbackOrder.length; i++) {
-            if (allowedNodeTypesByMode[fallbackOrder[i]].length) {
-                return fallbackOrder[i];
-            }
-        }
-
-        return '';
-    }
 
     render() {
-        const {
-            nodeTypesRegistry,
-            referenceNode,
-            allowedNodeTypesByModeGeneratorFn,
-            close
-        } = this.props;
-
-        if (!referenceNode) {
+        if (!this.props.referenceNode) {
             return null;
         }
 
+        if (this.state.step === 1) {
+            return this.renderStep1();
+        } else if (this.state.step === 2) {
+            return this.renderStep2();
+        }
+
+        return null; // basically never called.
+    }
+
+    renderStep1() {
+        const {
+            nodeTypesRegistry,
+            allowedNodeTypesByModeGeneratorFn
+        } = this.props;
+
         const allowedNodeTypesByMode = allowedNodeTypesByModeGeneratorFn(nodeTypesRegistry);
-        const mode = this.calculateVisibleMode(allowedNodeTypesByMode);
+        const activeMode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
 
-        const actions = [];
+        const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypesByMode[activeMode]);
 
-
-        const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypesByMode[mode]);
-
-        actions.push(
-            <Button
-                style="lighter"
-                hoverStyle="brand"
-                onClick={close}
-                isFocused={true}
+        return (
+            <Dialog
+                actions={this.renderCancelAction()}
+                title={this.renderInsertModeSelector(activeMode, allowedNodeTypesByMode)}
+                onRequestClose={close}
+                isOpen
+                isWide
                 >
-                <I18n fallback="Cancel"/>
-            </Button>
+                {groupedAllowedNodeTypes.map((group, key) => (
+                    <div key={key}>
+                        <NodeTypeGroupPanel
+                            group={group}
+                            onSelect={this.handleSelectNodeType}
+                            />
+                    </div>
+                ))}
+            </Dialog>
         );
+    }
 
+    renderStep2() {
+        const requiredProperties = getRequiredPropertiesForNodeType(this.state.selectedNodeType);
+        return (
+            <Dialog
+                actions={this.renderCancelAction()}
+                title={'... TODO ...'}
+                onRequestClose={close}
+                isOpen
+                isWide
+                >
+                Render required props as form: {requiredProperties}
+            </Dialog>
+        );
+    }
+
+    renderInsertModeSelector(activeMode, allowedNodeTypesByMode) {
         const options = [];
 
         if (allowedNodeTypesByMode.prepend.length) {
@@ -145,31 +187,25 @@ export default class AddNodeModal extends Component {
             });
         }
 
-        const insertModeText = (<SelectBox
+        return (<SelectBox
             options={options}
-            value={mode}
+            value={activeMode}
             onSelect={this.handleModeChange}
             />);
+    }
 
-
-        return (
-            <Dialog
-                actions={actions}
-                title={insertModeText}
-                onRequestClose={close}
-                isOpen
-                isWide
+    renderCancelAction() {
+        return [
+            <Button
+                key="cancel"
+                style="lighter"
+                hoverStyle="brand"
+                onClick={this.props.handleClose}
+                isFocused={true}
                 >
-                {groupedAllowedNodeTypes.map((group, key) => (
-                    <div key={key}>
-                        <NodeTypeGroupPanel
-                            group={group}
-                            onSelect={this.handleSelectNodeType}
-                            />
-                    </div>
-                ))}
-            </Dialog>
-        );
+                <I18n fallback="Cancel"/>
+            </Button>
+        ];
     }
 
     handleModeChange(mode) {
@@ -177,7 +213,45 @@ export default class AddNodeModal extends Component {
     }
 
     handleSelectNodeType(nodeType) {
-        console.log("HANDLE SELECT", nodeType);
+        if (getRequiredPropertiesForNodeType(nodeType).length) {
+            this.setState({step: 2, selectedNodeType: nodeType});
+        } else {
+            // no required node properties; let's directly create the node!
+            this.createNode(nodeType);
+        }
+    }
+
+    createNode(nodeType) {
+        // TODO: check that createNode works!
+        const {
+            referenceNode,
+            persistChange,
+            handleClose
+        } = this.props;
+
+        let changeType;
+
+        switch (this.state.mode) {
+            case 'prepend':
+                changeType = 'Neos.Neos.Ui:CreateBefore';
+                break;
+            case 'append':
+                changeType = 'Neos.Neos.Ui:CreateAfter';
+                break;
+            default:
+                changeType = 'Neos.Neos.Ui:Create';
+                break;
+        }
+
+        const change = {
+            type: changeType,
+            subject: referenceNode.contextPath,
+            payload: {
+                nodeType: nodeType.name
+            }
+        };
+        persistChange(change);
+        handleClose();
     }
 
 }

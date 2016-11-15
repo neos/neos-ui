@@ -61,7 +61,7 @@ class NodeTypeGroupPanel extends Component {
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
                     <Grid className={style.grid}>
-                        {nodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onClick={onSelect}/>)}
+                        {nodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect}/>)}
                     </Grid>
                 </ToggablePanel.Contents>
             </ToggablePanel>

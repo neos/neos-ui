@@ -8,21 +8,11 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-/**
- * (Stateful) Editor envelope
- *
- * For reference on how to use editors, check the docs inside the Registry.
- */
-@connect($transform({
-    node: selectors.CR.Nodes.focusedSelector,
-    transient: selectors.UI.Inspector.transientValues
-}), {
-    commit: actions.UI.Inspector.commit
-})
+
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors')
 }))
-export default class EditorEnvelope extends Component {
+export class InternalEditorEnvelope extends Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
@@ -127,3 +117,17 @@ export default class EditorEnvelope extends Component {
         );
     }
 }
+
+/**
+ * (Stateful) Editor envelope
+ *
+ * For reference on how to use editors, check the docs inside the Registry.
+ */
+const EditorEnvelope = connect($transform({
+    node: selectors.CR.Nodes.focusedSelector,
+    transient: selectors.UI.Inspector.transientValues
+}), {
+    commit: actions.UI.Inspector.commit
+})(InternalEditorEnvelope);
+
+export default EditorEnvelope;

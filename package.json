@@ -79,6 +79,6 @@
     "watch": "^0.19.2",
     "webpack": "^1.13.2",
     "webpack-livereload-plugin": "^0.9.0",
-    "whatwg-fetch": "^1.0.0"
+    "whatwg-fetch": "^2.0.0"
   }
 }

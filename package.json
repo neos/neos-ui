@@ -21,7 +21,7 @@
     "@inkdpixels/release-notes-generator": "^1.0.0",
     "@neos-project/brand": "^1.1.0",
     "@neos-project/eslint-config-neos": "^1.1.1",
-    "ava": "^0.16.0",
+    "ava": "^0.17.0",
     "babel-cli": "^6.8.0",
     "babel-core": "^6.13.2",
     "babel-eslint": "^7.0.0",

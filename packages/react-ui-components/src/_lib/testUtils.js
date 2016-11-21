@@ -21,4 +21,4 @@ export const createShallowRenderer = (Component = err(NO_COMPONENT), defaultProp
  * A function which returns a simple React element which can be
  * used as a test stub for cross component dependencies.
  */
-export const createStubComponent = () => props => <div {...props}/>;
+export const createStubComponent = componentName => props => <div data-component-name={componentName} {...props} style={{}}/>;

@@ -18,7 +18,7 @@ test('should render the "className" prop if passed.', t => {
         className: 'barClassName'
     });
 
-    t.truthy(dd.hasClass('barClassName'));
+    t.truthy(dd.childAt(0).hasClass('barClassName'));
 });
 test('should set the "isOpen" state value to opposite when calling the toggle method.', t => {
     const dd = shallow();

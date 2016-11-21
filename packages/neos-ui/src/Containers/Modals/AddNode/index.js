@@ -17,7 +17,6 @@ import I18n from '@neos-project/neos-ui-i18n';
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 import {InternalEditorEnvelope} from '../../RightSideBar/Inspector/EditorEnvelope/index';
 
-
 //
 // Export error messages for testing
 //
@@ -101,7 +100,6 @@ export default class AddNodeModal extends Component {
         this.handleSave = this.handleSave.bind(this);
     }
 
-
     render() {
         if (!this.props.referenceNode) {
             return null;
@@ -172,7 +170,7 @@ export default class AddNodeModal extends Component {
                         editor={$get('ui.inspector.editor', property)}
                         options={$get('ui.inspector.editorOptions', property)}
                         node={vNode}
-                        commit={this.handleDialogEditorValueChange}
+                        onValueChange={this.handleDialogEditorValueChange}
                         />);
                 })}
             </Dialog>

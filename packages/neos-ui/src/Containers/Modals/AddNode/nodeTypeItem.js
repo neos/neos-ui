@@ -1,37 +1,16 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
-import {connect} from 'react-redux';
 import omit from 'lodash.omit';
-import {$transform, $get} from 'plow-js';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import * as NeosPropTypes from '@neos-project/react-proptypes';
-
 import I18n from '@neos-project/neos-ui-i18n';
-
-const {referenceNodeSelector} = selectors.UI.AddNodeModal;
 
 import style from './style.css';
 
-@connect($transform({
-    //referenceNode: referenceNodeSelector,
-    //mode: $get('ui.addNodeModal.mode')
-}), {
-    //closeModal: actions.UI.AddNodeModal.close,
-    //persistChange: actions.Changes.persistChange
-})
 class NodeTypeItem extends Component {
     static propTypes = {
-        //referenceNode: NeosPropTypes.node,
-        //mode: PropTypes.string.isRequired,
-
-        //closeModal: PropTypes.func.isRequired,
-        //persistChange: PropTypes.func.isRequired,
-
-        // parameter: the given node type
         onSelect: PropTypes.func.isRequired,
 
         nodeType: PropTypes.shape({
@@ -78,40 +57,6 @@ class NodeTypeItem extends Component {
 
     handleNodeTypeClick() {
         this.props.onSelect(this.props.nodeType);
-        /*const {
-            nodeType,
-            mode,
-            referenceNode,
-            persistChange,
-            closeModal
-        } = this.props;
-        const {name} = nodeType;
-        let changeType;
-
-        switch (mode) {
-            case 'prepend':
-                changeType = 'Neos.Neos.Ui:CreateBefore';
-                break;
-            case 'append':
-                changeType = 'Neos.Neos.Ui:CreateAfter';
-                break;
-            default:
-                changeType = 'Neos.Neos.Ui:Create';
-                break;
-        }
-
-        const change = {
-            type: changeType,
-            subject: referenceNode.contextPath,
-            payload: {
-                nodeType: name,
-                initialProperties: {
-                    title: 'test'
-                }
-            }
-        };
-        persistChange(change);
-        closeModal();*/
     }
 }
 

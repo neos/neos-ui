@@ -8,7 +8,6 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors')
 }))
@@ -22,7 +21,7 @@ export class InternalEditorEnvelope extends Component {
         editorRegistry: PropTypes.object.isRequired,
 
         node: PropTypes.object.isRequired,
-        commit: PropTypes.func.isRequired,
+        onValueChange: PropTypes.func.isRequired,
         transient: PropTypes.object
     };
 
@@ -79,16 +78,16 @@ export class InternalEditorEnvelope extends Component {
     }
 
     onHandleCommit(value, hooks = null) {
-        const {transient, id, commit} = this.props;
+        const {transient, id, onValueChange} = this.props;
 
         if ($get([id], transient) === value && hooks === null) {
             //
             // Nothing has changed...
             //
-            return commit(id, null, null);
+            return onValueChange(id, null, null);
         }
 
-        return commit(id, value, hooks);
+        return onValueChange(id, value, hooks);
     }
 
     renderLabel() {
@@ -127,7 +126,7 @@ const EditorEnvelope = connect($transform({
     node: selectors.CR.Nodes.focusedSelector,
     transient: selectors.UI.Inspector.transientValues
 }), {
-    commit: actions.UI.Inspector.commit
+    onValueChange: actions.UI.Inspector.commit
 })(InternalEditorEnvelope);
 
 export default EditorEnvelope;

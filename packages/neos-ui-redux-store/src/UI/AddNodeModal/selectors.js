@@ -79,7 +79,6 @@ export const allowedNodeTypesByModeSelector = createSelector(
 
             const allowedNodeTypesByMode = {};
 
-
             // INSERT
             allowedNodeTypesByMode.insert = getAllowedNodeTypesTakingAutoCreatedIntoAccount(referenceNode, referenceNodeParent, nodeTypesRegistry);
 

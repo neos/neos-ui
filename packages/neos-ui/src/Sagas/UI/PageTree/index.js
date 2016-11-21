@@ -19,6 +19,45 @@ function * watchToggle() {
     });
 }
 
+function * requestChildrenForContextPath(action) {
+    const {contextPath} = action.payload;
+    const {q} = backend.get();
+    let parentNodes;
+    let childNodes;
+
+    try {
+        parentNodes = yield q(contextPath).get();
+        childNodes = yield q(contextPath).children('[instanceof TYPO3.Neos:Document]').get();
+    } catch (err) {
+        yield put(actions.UI.PageTree.invalidate(contextPath));
+        yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));
+    }
+
+    if (childNodes) {
+        const nodes = parentNodes.concat(childNodes);
+
+        yield nodes.map(node => put(actions.CR.Nodes.add(node.contextPath, node)));
+
+        yield put(actions.UI.PageTree.uncollapse(contextPath));
+    }
+}
+
+function * watchRequestChildrenForContextPath() {
+    yield * takeLatest(actionTypes.UI.PageTree.REQUEST_CHILDREN, requestChildrenForContextPath);
+}
+
+function * watchNodeCreated() {
+    yield * takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
+        const {contextPath} = action.payload;
+
+        // ToDo: Needs to load the parent contextPath children, not the created node contextPath.
+        yield requestChildrenForContextPath(actions.UI.PageTree.requestChildren(contextPath));
+
+        // ToDo: Set the context path as the current selected node and open it in the content canvas.
+        yield put(actions.UI.PageTree.focus(contextPath));
+    });
+}
+
 function * watchCommenceUncollapse({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
 
@@ -35,22 +74,13 @@ function * watchCommenceUncollapse({globalRegistry}) {
             yield put(actions.UI.PageTree.uncollapse(contextPath));
         } else {
             yield put(actions.UI.PageTree.requestChildren(contextPath));
-            try {
-                const {q} = backend.get();
-                const childNodes = yield q(contextPath).children('[instanceof TYPO3.Neos:Document]').get();
-
-                yield childNodes.map(node => put(actions.CR.Nodes.add(node.contextPath, node)));
-
-                yield put(actions.UI.PageTree.uncollapse(contextPath));
-            } catch (err) {
-                yield put(actions.UI.PageTree.invalidate(contextPath));
-                yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));
-            }
         }
     });
 }
 
 export const sagas = [
     watchToggle,
-    watchCommenceUncollapse
+    watchCommenceUncollapse,
+    watchRequestChildrenForContextPath,
+    watchNodeCreated
 ];

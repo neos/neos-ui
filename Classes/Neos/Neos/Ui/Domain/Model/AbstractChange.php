@@ -6,6 +6,7 @@ use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\DocumentNodeCreated;
 
 abstract class AbstractChange implements ChangeInterface
 {
@@ -73,5 +74,23 @@ abstract class AbstractChange implements ChangeInterface
         );
 
         $this->feedbackCollection->add($reloadDocument);
+    }
+
+    /**
+     * Inform the client that a node has been created, the client decides if and which tree should react to this change.
+     *
+     * @return void
+     */
+    protected function addDocumentNodeCreatedFeedback()
+    {
+        $nodeService = new NodeService();
+        $node = $nodeService->getClosestDocument($this->getSubject());
+
+        if ($nodeService->isDocument($node)) {
+            $documentNodeCreated = new DocumentNodeCreated();
+            $documentNodeCreated->setDocumentNode($node);
+
+            $this->feedbackCollection->add($documentNodeCreated);
+        }
     }
 }

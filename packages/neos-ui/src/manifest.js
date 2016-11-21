@@ -352,6 +352,13 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
+    // When the server advices to reload the children of a document node, dispatch the action to do so.
+    //
+    serverFeedbackHandlers.add('Neos.Neos.Ui:DocumentNodeCreated', (feedbackPayload, store) => {
+        store.dispatch(actions.UI.Remote.documentNodeCreated(feedbackPayload.contextPath));
+    });
+
+    //
     // When the server advices to reload the document, just reload it
     //
     serverFeedbackHandlers.add('Neos.Neos.Ui:ReloadDocument', () => {

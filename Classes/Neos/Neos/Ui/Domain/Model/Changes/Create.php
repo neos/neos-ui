@@ -27,6 +27,7 @@ class Create extends AbstractCreate
             $subject = $this->getSubject();
             $this->createNode($subject);
             $this->updateWorkspaceInfo();
+            $this->addDocumentNodeCreatedFeedback();
         }
     }
 }

@@ -3,4 +3,4 @@ Neos\Neos\Ui\View\BackendTypoScriptView:
     typoScriptParser:
       object: TYPO3\TypoScript\Core\Parser
     fallbackView:
-      object: TYPO3\Fluid\View\TemplateView
+      object: Neos\FluidAdaptor\View\TemplateView

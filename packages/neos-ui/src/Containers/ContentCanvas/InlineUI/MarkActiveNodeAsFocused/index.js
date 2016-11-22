@@ -20,7 +20,7 @@ export default class MarkActiveNodeAsFocused extends PureComponent {
         if (oldNode) {
             oldNode.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
             oldNode.childNodes.forEach(childNode => {
-                if (childNode.getAttribute('contenteditable')) {
+                if (childNode.classList && childNode.classList.contains('neos-inline-editable')) {
                     if (childNode.childNodes[0].innerHTML.trim() === '' || childNode.childNodes[0].innerHTML.trim() === '<br>') {
                         childNode.childNodes[0].innerHTML = 'placeholder';
                     }
@@ -31,7 +31,7 @@ export default class MarkActiveNodeAsFocused extends PureComponent {
         if (nodeElement) {
             nodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);
             nodeElement.childNodes.forEach(childNode => {
-                if (childNode.getAttribute('contenteditable')) {
+                if (childNode.classList && childNode.classList.contains('neos-inline-editable')) {
                     if (childNode.childNodes[0].innerHTML.trim() === 'placeholder') {
                         childNode.childNodes[0].innerHTML = '<br>';
                     }

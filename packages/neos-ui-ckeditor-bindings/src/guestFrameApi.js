@@ -21,11 +21,7 @@ const createCKEditorAPI = CKEDITOR => {
     let editorConfig = null;
     let currentEditor = null;
 
-    const handleUserInteractionCallbackFactory = editor => event => {
-        if (!event || event.name !== 'keyup' || event.data.$.keyCode !== 27) {
-            // TODO: why was the previous code all inside here? weirdo...
-        }
-
+    const handleUserInteractionCallbackFactory = editor => () => {
         const formattingUnderCursor = {};
         Object.keys(editorConfig.formattingRules).forEach(key => {
             const formattingRule = editorConfig.formattingRules[key];
@@ -166,15 +162,15 @@ const createCKEditorAPI = CKEDITOR => {
             const handleUserInteraction = handleUserInteractionCallbackFactory(editor);
 
             editor.once('contentDom', () => {
-                const editable = editor.editable();
-
-                editable.attachListener(editable, 'focus', event => {
+                editor.on('focus', () => {
                     currentEditor = editor;
                     editorConfig.setCurrentlyEditedPropertyName(propertyName);
 
-                    editable.attachListener(editable, 'keyup', handleUserInteraction);
-                    editable.attachListener(editable, 'mouseup', handleUserInteraction);
-                    handleUserInteraction(event);
+                    handleUserInteraction();
+                });
+
+                editor.on('selectionChange', () => {
+                    handleUserInteraction();
                 });
 
                 //

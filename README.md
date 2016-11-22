@@ -20,10 +20,63 @@
 
 1. You need to have latest Neos CMS up & running.
 
+You can use this composer.json for that.
+   ```
+   {
+    "name": "neos/neos-development-distribution",
+    "description" : "Neos Development Distribution",
+    "license": "GPL-3.0+",
+    "support": {
+        "email": "hello@neos.io",
+        "slack": "http://slack.neos.io/",
+        "forum": "https://discuss.neos.io/",
+        "wiki": "https://discuss.neos.io/c/the-neos-project/project-documentation",
+        "issues": "https://jira.neos.io/browse/NEOS",
+        "docs": "http://neos.readthedocs.io/",
+        "source": "https://github.com/neos/neos-development-distribution"
+    },
+    "config": {
+        "vendor-dir": "Packages/Libraries",
+        "bin-dir": "bin"
+    },
+    "require": {
+        "neos/neos-development-collection": "dev-master",
+        "neos/flow-development-collection": "dev-master",
+        "neos/demo": "dev-master",
+
+        "typo3/party": "dev-master",
+        "typo3/neos-seo": "dev-master",
+        "typo3/imagine": "dev-master",
+        "typo3/twitter-bootstrap": "dev-master",
+        "typo3/form": "dev-master",
+        "typo3/setup": "dev-master",
+        "flowpack/neos-frontendlogin": "dev-master",
+        "typo3/buildessentials": "dev-master",
+        "mikey179/vfsstream": "~1.6",
+        "phpunit/phpunit": "~4.8 || ~5.4.0",
+        "symfony/css-selector": "~2.0",
+        "flowpack/behat": "dev-master",
+        "neos/neos-ui": "dev-master"
+    },
+    "suggest": {
+        "ext-pdo_sqlite": "For running functional tests out-of-the-box this is required"
+    },
+    "scripts": {
+        "post-update-cmd": "TYPO3\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-install-cmd": "TYPO3\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-package-update": "TYPO3\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall",
+        "post-package-install": "TYPO3\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall"
+    }
+}
+
+   ```
+
+
 2. Run the following commands:
    ```
-   composer require neos/neos-ui:dev-master # install our package
+   composer require neos/neos-ui:dev-master # install our package (you only need this, if you are NOT using the composer.json from above)
    cd Packages/Application/Neos.Neos.Ui
+   to be sure that you are having the latest version do please a git pull origin master
    source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps, copy githooks
    npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
    ```

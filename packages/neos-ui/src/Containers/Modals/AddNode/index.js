@@ -53,7 +53,7 @@ const getRequiredPropertiesForNodeType = nodeType => {
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
     referenceNodeParent: selectors.UI.AddNodeModal.referenceNodeParentSelector,
     referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
-    allowedNodeTypesByModeGeneratorFn: selectors.UI.AddNodeModal.allowedNodeTypesByModeSelector
+    getAllowedNodeTypesByModeGenerator: selectors.UI.AddNodeModal.getAllowedNodeTypesByModeSelector
 }), {
     handleClose: actions.UI.AddNodeModal.close,
     persistChange: actions.Changes.persistChange
@@ -67,7 +67,7 @@ export default class AddNodeModal extends Component {
         referenceNodeParent: NeosPropTypes.node,
         referenceNodeGrandParent: NeosPropTypes.node,
         groupedAllowedNodeTypes: PropTypes.array,
-        allowedNodeTypesByModeGeneratorFn: PropTypes.func.isRequired,
+        getAllowedNodeTypesByModeGenerator: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
 
         handleClose: PropTypes.func.isRequired,
@@ -117,10 +117,10 @@ export default class AddNodeModal extends Component {
     renderStep1() {
         const {
             nodeTypesRegistry,
-            allowedNodeTypesByModeGeneratorFn
+            getAllowedNodeTypesByModeGenerator
         } = this.props;
 
-        const allowedNodeTypesByMode = allowedNodeTypesByModeGeneratorFn(nodeTypesRegistry);
+        const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const activeMode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
 
         const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypesByMode[activeMode]);

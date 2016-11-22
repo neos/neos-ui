@@ -41,7 +41,7 @@ export const referenceNodeGrandParentSelector = createSelector(
     }
 );
 
-// Helper function for allowedNodeTypesByModeSelector
+// Helper function for getAllowedNodeTypesByModeSelector
 const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode, parentOfBaseNode, nodeTypesRegistry) => {
     if (!baseNode) {
         return [];
@@ -61,7 +61,7 @@ const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode, parentOfBaseN
  * This selector returns a function which you need to pass in the node-Type-Registry, to
  * get back an object with keys "insert", "append" and "prepend".
  */
-export const allowedNodeTypesByModeSelector = createSelector(
+export const getAllowedNodeTypesByModeSelector = createSelector(
     [
         referenceNodeSelector,
         referenceNodeParentSelector,

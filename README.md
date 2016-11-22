@@ -76,7 +76,6 @@ You can use this composer.json for that.
    ```
    composer require neos/neos-ui:dev-master # install our package (you only need this, if you are NOT using the composer.json from above)
    cd Packages/Application/Neos.Neos.Ui
-   to be sure that you are having the latest version do please a git pull origin master
    source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps, copy githooks
    npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
    ```

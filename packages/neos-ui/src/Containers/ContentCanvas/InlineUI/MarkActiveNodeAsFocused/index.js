@@ -19,10 +19,24 @@ export default class MarkActiveNodeAsFocused extends PureComponent {
         const oldNode = iframeDocument.querySelector(`.${style['markActiveNodeAsFocused--focusedNode']}`);
         if (oldNode) {
             oldNode.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
+            oldNode.childNodes.forEach(childNode => {
+                if (childNode.classList && childNode.classList.contains('neos-inline-editable')) {
+                    if (childNode.childNodes[0].innerHTML.trim() === '' || childNode.childNodes[0].innerHTML.trim() === '<br>') {
+                        childNode.childNodes[0].innerHTML = 'placeholder';
+                    }
+                }
+            });
         }
 
         if (nodeElement) {
             nodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);
+            nodeElement.childNodes.forEach(childNode => {
+                if (childNode.classList && childNode.classList.contains('neos-inline-editable')) {
+                    if (childNode.childNodes[0].innerHTML.trim() === 'placeholder') {
+                        childNode.childNodes[0].innerHTML = '<br>';
+                    }
+                }
+            });
         }
 
         return null;

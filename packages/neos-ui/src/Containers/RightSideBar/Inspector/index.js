@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform} from 'plow-js';
 import Bar from '@neos-project/react-ui-components/lib/Bar/';
@@ -23,7 +23,7 @@ import style from './style.css';
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class Inspector extends Component {
+export default class Inspector extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object,
         nodeTypesRegistry: PropTypes.object,

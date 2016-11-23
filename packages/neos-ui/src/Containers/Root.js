@@ -7,6 +7,7 @@ import {
     ContentCanvas,
     PrimaryToolbar,
     LeftSideBar,
+    EditModePanel,
     Drawer,
     Modals,
     RightSideBar,
@@ -30,6 +31,7 @@ const Root = ({store, globalRegistry, configuration, translations, menu}) => {
                         <FlashMessages/>
                         <FullScreen/>
                         <PrimaryToolbar/>
+                        <EditModePanel/>
                         <SecondaryToolbar/>
                         <Drawer menuData={menu}/>
                         <LeftSideBar/>

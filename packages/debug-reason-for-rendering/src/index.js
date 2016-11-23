@@ -34,8 +34,19 @@ const findDifferences = (type, oldStatePropsOrContext, newStatePropsOrContext) =
             const valueNew = newStatePropsOrContext[key];
 
             if (valueOld !== valueNew) {
-                result.push([`%cthis.${type}.${key}%c:`, BOLD, RESET, valueOld]);
-                result.push([`%cnew${capitalizeFirstLetter(type)}.${key}%c:`, BOLD, RESET, valueNew]);
+                if (valueOld && valueOld.toJS) {
+                    result.push([`%cthis.${type}.${key}%c (Immutable.js):`, BOLD, RESET, valueOld.toJS()]);
+                } else {
+                    result.push([`%cthis.${type}.${key}%c:`, BOLD, RESET, valueOld]);
+                }
+
+                if (valueNew && valueNew.toJS) {
+                    result.push([`%cnew${capitalizeFirstLetter(type)}.${key}%c (Immutable.js):`, BOLD, RESET, valueNew.toJS()]);
+                } else {
+                    result.push([`%cnew${capitalizeFirstLetter(type)}.${key}%c:`, BOLD, RESET, valueNew]);
+                }
+
+
             }
         } else {
             result.push([`new${capitalizeFirstLetter(type)} does not have the property %c${key}%c defined, but this.${type} has.`, BOLD, RESET]);

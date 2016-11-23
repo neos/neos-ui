@@ -1,16 +1,22 @@
 import React, {Component, PropTypes} from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
+import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import {actions} from '@neos-project/neos-ui-redux-store';
+import omit from 'lodash.omit';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import style from './style.css';
 
-@connect(null, {
+@connect(state => ({
+    isLoading: selectors.UI.PageTree.getIsLoading(state)
+}), {
     onClick: actions.UI.PageTree.reloadTree
 })
 export default class RefreshPageTree extends Component {
     static propTypes = {
         nodeTypesRegistry: PropTypes.object.isRequired,
         onClick: PropTypes.func.isRequired,
+        isLoading: PropTypes.bool.isRequired,
         className: PropTypes.string
     };
 
@@ -25,9 +31,18 @@ export default class RefreshPageTree extends Component {
     }
 
     render() {
+        const {isLoading, className, ...restProps} = this.props;
+        const finalClassName = mergeClassNames({
+            [style.spinning]: isLoading,
+            [className]: className && className.length
+        });
+        const rest = omit(restProps, ['nodeTypesRegistry']);
+
         return (
             <IconButton
-                className={this.props.className}
+                {...rest}
+                className={finalClassName}
+                isDisabled={isLoading}
                 onClick={this.handleClick}
                 icon="refresh"
                 hoverStyle="clean"

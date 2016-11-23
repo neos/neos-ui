@@ -23,6 +23,13 @@ export const getUncollapsedContextPaths = createSelector(
     list => list.toJS()
 );
 
+export const getIsLoading = createSelector(
+    [
+        getLoading
+    ],
+    list => Boolean(list.toJS().length)
+);
+
 //
 // TODO: NODETYPE REFACTORING - Fix calls of this
 //

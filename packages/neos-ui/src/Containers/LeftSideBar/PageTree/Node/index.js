@@ -32,7 +32,7 @@ export default class Node extends Component {
             children: PropTypes.arrayOf(
                 PropTypes.string
             ),
-            isDblClick: PropTypes.bool.isRequired
+            isDblClick: PropTypes.bool
 
             // @todo treeBind
             // @todo inputActive

@@ -4,7 +4,7 @@ import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/'
 
 import I18n from '@neos-project/neos-ui-i18n';
 
-import EditorEnvelope from '../InspectorEditorEnvelope/index';
+import InspectorEditorEnvelope from '../InspectorEditorEnvelope/index';
 import sidebarStyle from '../../style.css';
 import style from './style.css';
 
@@ -27,7 +27,7 @@ export default class PropertyGroup extends Component {
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {properties.map(property => (
-                        <EditorEnvelope
+                        <InspectorEditorEnvelope
                             key={property.id}
                             id={property.id}
                             label={property.label}

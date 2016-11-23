@@ -1,7 +1,6 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import shallowCompare from 'react-addons-shallow-compare';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 
@@ -16,7 +15,7 @@ import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/ind
 }), {
     commit: actions.UI.Inspector.commit
 })
-export default class InspectorEditorEnvelope extends Component {
+export default class InspectorEditorEnvelope extends PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
@@ -32,10 +31,6 @@ export default class InspectorEditorEnvelope extends Component {
     constructor(props) {
         super(props);
         this.onHandleCommit = this.onHandleCommit.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     onHandleCommit(value, hooks = null) {

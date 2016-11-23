@@ -1,28 +1,23 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import Label from '@neos-project/react-ui-components/lib/Label/';
-import shallowCompare from 'react-addons-shallow-compare';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors')
 }))
-export default class EditorEnvelope extends Component {
+export default class EditorEnvelope extends PureComponent {
     static propTypes = {
         identifier: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
         editor: PropTypes.string.isRequired,
         options: PropTypes.object,
+        value: PropTypes.any,
         renderSecondaryInspector: PropTypes.func,
         editorRegistry: PropTypes.object.isRequired,
 
-        commit: PropTypes.func.isRequired,
-        transient: PropTypes.object
+        commit: PropTypes.func.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     generateIdentifier() {
         return `#__neos__editor__property---${this.props.identifier}`;

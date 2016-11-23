@@ -15,17 +15,34 @@ export const isDocumentNodeSelectedSelector = createSelector(
         !focused || (focused === currentDocumentNode)
 );
 
-export const nodeByContextPath = state => contextPath => {
-    const node = $get(['cr', 'nodes', 'byContextPath', contextPath], state);
+// PERFORMANCE: This helper method is NOT allowed to post-process the retrieved node in any way;
+// as we need to ensure the output is deterministic and can be cached for upstream selectors to
+// work correctly.
+//
+// Instead of calling "node.toJS()" here (which totally breaks performance), we need to
+// use the immutableNodeToJs() at the USAGE POINT of "nodeByContextPath", i.e.:
+//
+// nodeByContextPath (re-calculated at all times)
+//    ---> focusedSelector (also re-calculated at all times, because nodeByContextPath changes for all invocations); but
+//                         the RESULT of focusedSelector is "stable" again.
+//    ---> immutableNodeToJs(focusedSelector): converts the focusedSelector result to plain JS; properly using memoization here.
+const nodeByContextPath = state => contextPath =>
+    $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 
-    if (node && node.toJS) {
-        return node.toJS();
-    }
+const immutableNodeToJs = selectorWhichEmitsNode =>
+    createSelector(
+        [
+            selectorWhichEmitsNode
+        ],
+        node => {
+            if (node && node.toJS) {
+                node = node.toJS();
+            }
+            return node;
+        }
+    );
 
-    return node;
-};
-
-export const focusedNodePathSelector = createSelector(
+export const focusedNodePathSelector = immutableNodeToJs(createSelector(
     [
         focused,
         currentDocumentNode
@@ -33,33 +50,33 @@ export const focusedNodePathSelector = createSelector(
     (focused, currentDocumentNode) => {
         return focused || currentDocumentNode;
     }
-);
+));
 
-export const focusedSelector = createSelector(
+export const focusedSelector = immutableNodeToJs(createSelector(
     [
         focusedNodePathSelector,
         nodeByContextPath
     ],
     (focusedNodePath, getNodeByContextPath) =>
         getNodeByContextPath(focusedNodePath)
-);
+));
 
-export const hoveredSelector = createSelector(
+export const hoveredSelector = immutableNodeToJs(createSelector(
     [
         hovered,
         nodeByContextPath
     ],
     (hoveredNodePath, getNodeByContextPath) =>
         getNodeByContextPath(hoveredNodePath)
-);
+));
 
 export const byContextPathSelector = defaultMemoize(
-    contextPath => createSelector(
+    contextPath => immutableNodeToJs(createSelector(
         [
             nodeByContextPath
         ],
         getNodeByContextPath => getNodeByContextPath(contextPath)
-    )
+    ))
 );
 
 const parentNodeContextPath = contextPath => {

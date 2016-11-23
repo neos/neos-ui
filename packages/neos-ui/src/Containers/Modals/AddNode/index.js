@@ -301,9 +301,9 @@ export default class AddNodeModal extends PureComponent {
 
         const change = {
             type: changeType,
-            subject: reference.subject.contextPath,
+            subject: $get('subject.contextPath', reference),
             payload: {
-                reference,
+                reference: reference.toJS(),
                 nodeType: nodeType.name,
                 data
             }

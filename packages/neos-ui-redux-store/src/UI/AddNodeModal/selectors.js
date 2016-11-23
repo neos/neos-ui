@@ -3,7 +3,7 @@ import {createSelector, defaultMemoize} from 'reselect';
 import {selectors as nodes} from '../../CR/Nodes/index';
 import {getAllowedNodeTypesTakingAutoCreatedIntoAccount} from '../../CR/Nodes/helpers';
 
-const referenceNodeContextPathSelector = state => $get('ui.addNodeModal.reference.subject.contextPath', state);
+const referenceNodeContextPathSelector = state => console.log($get('ui.addNodeModal.reference.subject.contextPath', state)) || $get('ui.addNodeModal.reference.subject.contextPath', state);
 
 export const referenceNodeSelector = createSelector(
     [

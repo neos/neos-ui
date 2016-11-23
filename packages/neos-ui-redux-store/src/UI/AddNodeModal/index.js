@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 import {$all, $get, $set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -76,8 +76,9 @@ export const reducer = handleActions({
         if (allowedModes.indexOf(mode) === -1) {
             throw new Error(errorMessages.ERROR_INVALID_MODE);
         }
+
         return $all(
-            $set('ui.addNodeModal.reference', reference),
+            $set('ui.addNodeModal.reference', Immutable.fromJS(reference)),
             $set('ui.addNodeModal.mode', mode)
         );
     },

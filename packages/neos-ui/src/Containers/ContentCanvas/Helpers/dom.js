@@ -12,11 +12,13 @@ export const find = selector => {
     return iframeDocument.querySelector(selector);
 };
 
+export const body = () => document.getElementsByName('neos-content-main')[0].contentDocument.body;
+
 export const findNode = (contextPath, fusionPath) => find(
     `[data-__neos-node-contextpath="${contextPath}"][data-__neos-typoscript-path="${fusionPath}"]`
 );
 
-export const closestNode = el => () => {
+export const closestNode = el => {
     if (!el) {
         return null;
     }
@@ -24,22 +26,12 @@ export const closestNode = el => () => {
     return el.dataset.__neosNodeContextpath ? el : closestNode(el.parentNode);
 }
 
-export const closestContextPath = el => () => {
-    const dom = closestNode(el)();
+export const closestContextPath = el => {
+    const dom = closestNode(el);
 
     if (!dom) {
         return null;
     }
 
     return dom.dataset.__neosNodeContextpath;
-};
-
-export const closestCollectionFusionPath = el => () => {
-    const dom = closestNode(el.parentNode)();
-
-    if (!dom) {
-        return null;
-    }
-
-    return dom.dataset.__neosTyposcriptPath;
 };

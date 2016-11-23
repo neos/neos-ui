@@ -115,23 +115,23 @@ documentation about how to use it.
 #### Development commands
 | Command         | Description                    |
 | --------------- | ------------------------------ |
-| `npm run build` | Builds all assets via webpack. |
-| `npm run lint:scripts`  | Lints all `.js` files via ESLint. |
-| `npm run lint:css`  | Lints all `.css` files via StyleLint. |
-| `npm run lint`  | Runs the above stated watch commands sequentially. |
-| `npm run karma` | Executes a single run of all unit tests via karma. (This is pretty slow due to webpack's single-compilation speed, use the `watch:karma` task instead for development) |
-| `npm run watch:build`  | Watches all source files and rebuilds the compiled files on file changes. |
-| `npm run watch:karma`  | Watches all source files and unit test specs and runs karma after the compilation has been completed. |
-| `npm run watch`  | Runs the above stated watch commands sequentially. |
-| `npm test`  | Executes both `npm run lint` and `npm run karma` sequentially. |
+| `npm run clear` | delete all node_modules in every subdirectory. |
+| `npm run build:ui`  | Builds the ui via webpack. |
+| `npm run build:components` | Builds the components. |
+| `npm run build` |  Runs the both build commands above sequentially. |
+| `npm run build:ui:watch` | Watches the source files for changes and runs a build:ui in case. |
+| `npm run build:components:watch` | Watches the source files for changes and runs a build:components in case. |
+| `npm run build:components:watch` | Watches the source files for changes and runs a build:components in case. |
+| `npm start-storybook` | Starts the storybook server. |
+| `npm run lint`  | Lints all source files. |
+| `npm run test`  | Executes `npm run lint` to trigger tests via ava. |
 
 #### Code style
 Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `npm run lint` in your shell.
 
 #### Writing unit tests
-The unit tests are executed with Karma and PhantomJS.
-Instead of relying on the default settings of Karma, we use [chai](http://chaijs.com/) as our assertion library and
-[sinon](http://sinonjs.org/) for spies. To run the unit tests, execute `npm run karma` in your shell.
+The unit tests are executed with [ava](https://github.com/avajs/ava).
+To run the unit tests, execute `npm run test` in your shell.
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 

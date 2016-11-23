@@ -21,8 +21,8 @@ export const isDocumentNodeSelectedSelector = createSelector(
         focused,
         getCurrentContentCanvasContextPath
     ],
-    (focused, getCurrentContentCanvasContextPath) => {
-        return !focused || (focused === getCurrentContentCanvasContextPath);
+    (focused, currentContentCanvasContextPath) => {
+        return !focused || (focused === currentContentCanvasContextPath);
     }
 );
 

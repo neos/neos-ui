@@ -67,7 +67,6 @@ export default class AddNodeModal extends PureComponent {
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
         referenceNodeGrandParent: NeosPropTypes.node,
-        fusionPath: PropTypes.string,
         groupedAllowedNodeTypes: PropTypes.array,
         getAllowedNodeTypesByModeGenerator: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,

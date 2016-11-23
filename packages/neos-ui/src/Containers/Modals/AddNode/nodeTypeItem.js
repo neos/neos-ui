@@ -5,11 +5,9 @@ import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
 import I18n from '@neos-project/neos-ui-i18n';
-
-const {referenceNodeSelector} = selectors.UI.AddNodeModal;
 
 import style from './style.css';
 

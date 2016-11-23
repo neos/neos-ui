@@ -389,7 +389,7 @@ manifest('main', {}, globalRegistry => {
         const {subject, collection} = feedbackPayload.reference;
         const reference = mode === 'into' ? collection : subject;
         const referenceElement = dom.findNode(reference.contextPath, reference.fusionPath);
-        const contentElement = (new DOMParser()).parseFromString(renderedContent, "text/html").body.firstChild;
+        const contentElement = (new DOMParser()).parseFromString(renderedContent, 'text/html').body.firstChild;
 
         switch (mode) {
             case 'before':
@@ -397,7 +397,6 @@ manifest('main', {}, globalRegistry => {
                 break;
 
             case 'after':
-
                 referenceElement.parentNode.insertBefore(contentElement, referenceElement.nextSibling);
                 break;
 
@@ -406,6 +405,5 @@ manifest('main', {}, globalRegistry => {
                 referenceElement.appendChild(contentElement);
                 break;
         }
-
     });
 });

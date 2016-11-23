@@ -10,7 +10,7 @@ import Frame from '@neos-project/react-ui-components/lib/Frame/';
 
 import style from './style.css';
 import InlineUI from './InlineUI/index';
-import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattingRulesForNodeType} from './Helpers';
+import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattingRulesForNodeType, dom} from './Helpers';
 
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
@@ -198,7 +198,7 @@ export default class ContentCanvas extends PureComponent {
         //
         const editors = iframeDocument.querySelectorAll('.neos-inline-editable');
         Array.prototype.forEach.call(editors, domNode => {
-            const contextPath = closestContextPath(domNode);
+            const contextPath = dom.closestContextPath(domNode);
             const propertyName = domNode.dataset.__neosProperty;
 
             const node = this.props.byContextPathDynamicAccess(contextPath);

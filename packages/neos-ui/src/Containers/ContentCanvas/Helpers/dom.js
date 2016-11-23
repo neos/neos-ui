@@ -24,7 +24,7 @@ export const closestNode = el => {
     }
 
     return el.dataset.__neosNodeContextpath ? el : closestNode(el.parentNode);
-}
+};
 
 export const closestContextPath = el => {
     const dom = closestNode(el);

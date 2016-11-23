@@ -11,6 +11,7 @@ use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderNode;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 abstract class AbstractCreate extends AbstractChange
 {
@@ -206,6 +207,11 @@ abstract class AbstractCreate extends AbstractChange
 
             $this->feedbackCollection->add($renderNode);
         }
+
+        $updateNodeInfo = new UpdateNodeInfo();
+        $updateNodeInfo->setNode($node);
+
+        $this->feedbackCollection->add($updateNodeInfo);
 
         return $node;
     }

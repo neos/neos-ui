@@ -11,6 +11,9 @@ use TYPO3\Neos\Service\LinkingService;
 use TYPO3\Neos\TypeConverter\EntityToIdentityConverter;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 
+/**
+ * @Flow\Scope("singleton")
+ */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {
 
@@ -32,7 +35,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected $persistenceManager;
 
-    private function renderNode(NodeInterface $node, ControllerContext $controllerContext)
+    public function renderNode(NodeInterface $node, ControllerContext $controllerContext)
     {
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
@@ -126,6 +129,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     private function buildNodeProperties(NodeInterface $node)
     {
         $encodedProperties = [];
+
         foreach ($node->getNodeType()->getProperties() as $propertyName => $propertyConfiguration) {
             if (substr($propertyName, 0, 2) === '__') {
                 // skip fully-private properties
@@ -135,6 +139,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $contentContext = $node->getContext();
             if ($propertyName === '_name' && $node === $contentContext->getCurrentSiteNode()) {
                 // skip the node name of the site node
+                continue;
+            }
+            if ($propertyName === '_nodeType') {
+                // skip the node type as it is handled separately
                 continue;
             }
             // Serialize objects to JSON strings

@@ -42,7 +42,6 @@ export class DropDownWrapper extends Component {
     };
 
     static childContextTypes = {
-        isOpen: PropTypes.bool.isRequired,
         toggleDropDown: PropTypes.func.isRequired,
         closeDropDown: PropTypes.func.isRequired
     };

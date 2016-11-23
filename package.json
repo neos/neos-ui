@@ -6,7 +6,7 @@
     "clear": "rm -rf packages/*/node_modules",
     "postinstall": "lerna bootstrap",
     "build:ui": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
-    "build:ui:watch": "npm run build:ui -- --watch",
+    "build:ui:watch": "onchange 'packages/**/*.js' -v -- npm run build:ui",
     "build:components": "lerna run --scope @neos-project/react-ui-components build",
     "build:components:watch": "lerna run --scope @neos-project/react-ui-components build:watch",
     "build": "npm run build:components && npm run build:ui",
@@ -53,6 +53,7 @@
     "moment": "^2.14.1",
     "nyc": "^10.0.0",
     "object-assign": "^4.1.0",
+    "onchange": "^3.0.2",
     "postcss-css-variables": "^0.6.0",
     "postcss-hexrgba": "^0.2.0",
     "postcss-import": "^8.0.2",
@@ -61,6 +62,7 @@
     "react": "^15.4.0",
     "react-addons-shallow-compare": "^15.4.0",
     "react-addons-test-utils": "^15.4.0",
+    "react-broadcast": "^0.1.2",
     "react-click-outside": "^2.1.0",
     "react-collapse": "^2.2.2",
     "react-css-themr": "^1.2.0",
@@ -75,12 +77,11 @@
     "semantic-release": "^6.3.2",
     "sinon": "^1.17.6",
     "skin-deep": "^0.16.0",
-    "stylelint": "^7.5.0",
     "style-loader": "^0.13.1",
+    "stylelint": "^7.5.0",
     "watch": "^0.19.2",
     "webpack": "^1.13.2",
     "webpack-livereload-plugin": "^0.9.0",
-    "whatwg-fetch": "^2.0.0",
-    "react-broadcast": "^0.1.2"
+    "whatwg-fetch": "^2.0.0"
   }
 }

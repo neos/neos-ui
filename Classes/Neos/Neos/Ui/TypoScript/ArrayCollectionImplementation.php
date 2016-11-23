@@ -18,7 +18,7 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
      */
     public function evaluate()
     {
-        $collection = $this->getCollection();
+        $collection = $this->tsValue('collection');
 
         $output = [];
         if ($collection === null) {
@@ -26,13 +26,15 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
         }
         $this->numberOfRenderedNodes = 0;
         $itemName = $this->getItemName();
+        $itemKey = $this->tsValue('itemKey');
         if ($itemName === null) {
             throw new \TYPO3\TypoScript\Exception('The Collection needs an itemName to be set.', 1344325771);
         }
         $iterationName = $this->getIterationName();
         $collectionTotalCount = count($collection);
-        foreach ($collection as $collectionElement) {
+        foreach ($collection as $collectionElementKey => $collectionElement) {
             $context = $this->tsRuntime->getCurrentContext();
+            $context[$itemKey] = $collectionElementKey;
             $context[$itemName] = $collectionElement;
             if ($iterationName !== null) {
                 $context[$iterationName] = $this->prepareIterationInformation($collectionTotalCount);
@@ -40,8 +42,8 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
 
             $this->tsRuntime->pushContextArray($context);
             if ($value = $this->tsRuntime->render($this->path . '/itemRenderer')) {
-                if ($this->tsRuntime->canRender($this->path . '/itemKey')) {
-                    $key = $this->tsRuntime->render($this->path . '/itemKey');
+                if ($this->tsRuntime->canRender($this->path . '/itemKeyRenderer')) {
+                    $key = $this->tsRuntime->render($this->path . '/itemKeyRenderer');
                     $output[$key] = $value;
                 } else {
                     $output[] = $value;

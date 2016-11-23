@@ -2,6 +2,8 @@
 # Test suite & generated coverage.
 #
 Coverage/
+packages/*/.nyc_output/
+packages/*/coverage/
 Build/Selenium/Screenshots/*.png
 lcov.info
 
@@ -23,3 +25,5 @@ Resources/Public/JavaScript/**/*.map
 Resources/Public/Styles/**/*.css
 !Resources/Public/Styles/ReactCrop.css
 Resources/Public/Styles/**/*.map
+lerna-debug.log
+npm-debug.log

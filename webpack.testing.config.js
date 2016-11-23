@@ -1,10 +1,6 @@
 const fs = require('fs');
 const merge = require('lodash.merge');
-const {
-    baseConfig,
-    hostConfig,
-    inspectorEditorConfig
-} = require('./webpack.base.config');
+const baseConfig = require('./webpack.config.js');
 const babelConfig = JSON.parse(fs.readFileSync('./.babelrc', 'utf8'));
 
 const testConfig = {
@@ -63,7 +59,4 @@ const testConfig = {
     }
 };
 
-module.exports = [
-    merge({}, baseConfig, hostConfig, testConfig),
-    merge({}, baseConfig, inspectorEditorConfig, testConfig)
-];
+module.exports = merge({}, baseConfig, testConfig);

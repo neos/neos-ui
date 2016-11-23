@@ -125,11 +125,6 @@ class BackendServiceController extends ActionController
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath);
                 $this->publishingService->publishNode($node, $targetWorkspace);
-
-                $reloadDocument = new ReloadDocument();
-                $reloadDocument->setDocument($this->nodeService->getClosestDocument($node));
-
-                $this->feedbackCollection->add($reloadDocument);
             }
 
             $success = new Success();

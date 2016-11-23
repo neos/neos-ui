@@ -1,0 +1,25 @@
+.drawer {
+    position: fixed;
+    top: 41px;
+    left: 0;
+    z-index: 8000;
+    height: 100%;
+    width: var(--sidebarWidth);
+    background: var(--brandColorsContrastDarker);
+    transition: .3s ease transform;
+}
+.drawer--isHidden {
+    transform: translateX(-var(--sidebarWidth));
+}
+.drawer__menuItem {
+    border-top: 1px solid var(--brandColorsContrastDark);
+    cursor: pointer;
+    
+    &:first-child {
+        border-top: 0;
+    }
+}
+.drawer__menuItemBtn {
+    width: 100%;
+    text-align: left;
+}

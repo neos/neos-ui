@@ -63,7 +63,7 @@ class AugmentationAspect
     /**
      * Hooks into the editable viewhelper to render those attributes needed for the package's inline editing
      *
-     * @Flow\Around("method(TYPO3\Neos\ViewHelpers\ContentElement\EditableViewHelper->render())")
+     * @Flow\Around("method(TYPO3\Neos\Service\ContentElementEditableService->wrapContentProperty())")
      * @param JoinPointInterface $joinPoint the join point
      * @return mixed
      */
@@ -74,7 +74,6 @@ class AugmentationAspect
         }
 
         $property = $joinPoint->getMethodArgument('property');
-        $tag = $joinPoint->getMethodArgument('tag');
         $node = $joinPoint->getMethodArgument('node');
 
         $content = $joinPoint->getAdviceChain()->proceed($joinPoint);
@@ -85,11 +84,11 @@ class AugmentationAspect
 
         if ($node !== null) {
             $attributes += [
-                'data-__neos-node-contextpath' => $node->getContextPath()
+                'data-__neos-editable-node-contextpath' => $node->getContextPath()
             ];
         }
 
-        return $this->htmlAugmenter->addAttributes($content, $attributes, $tag);
+        return $this->htmlAugmenter->addAttributes($content, $attributes, 'span');
     }
 
 }

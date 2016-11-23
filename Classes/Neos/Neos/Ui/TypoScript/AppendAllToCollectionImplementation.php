@@ -23,7 +23,7 @@ class AppendAllToCollectionImplementation extends ArrayCollectionImplementation
     public function evaluate()
     {
         $items = parent::evaluate();
-        $collection = $this->tsValue('collection');
+        $collection = $this->tsValue('appendTo');
 
         return array_merge($collection, $items);
     }

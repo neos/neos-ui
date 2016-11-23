@@ -1,0 +1,67 @@
+.wrapper {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    padding-right: 47px;
+}
+
+.publishBtn {
+    min-width: 165px;
+}
+.dropDown {
+    position: static;
+}
+.dropDown__btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: inline-block;
+    width: auto;
+    height: var(--goldenUnit);
+    padding: 0 30px 0 var(--spacing);
+    border: 0;
+    line-height: var(--goldenUnit);
+    background: var(--brandColorsSuccess);
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.dropDown__item {
+    &:hover {
+        background: var(--brandColorsPrimaryBlue);
+    }
+
+    > a,
+    > label,
+    > button {
+      display: block;
+      width: 100%;
+      border: 0;
+      padding: 0 var(--spacing);
+      background: 0;
+      color: #FFF;
+      text-decoration: none;
+      line-height: var(--goldenUnit);
+      text-align: left;
+
+      > i,
+      > input {
+          margin-right: .5em;
+      }
+    }
+}
+.dropDown__item--noHover:hover {
+    background: 0;
+}
+.dropDown__item--disabled {
+    opacity: .5;
+
+    &,
+    > button[disabled] {
+        cursor: not-allowed;
+    }
+}
+.dropDown__item--canPublish {
+    background: var(--brandColorsWarn);
+}

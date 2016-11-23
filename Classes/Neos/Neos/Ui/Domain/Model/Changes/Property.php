@@ -140,6 +140,9 @@ class Property extends AbstractChange
             $node->setProperty($this->getPropertyName(), $value);
 
             $this->updateWorkspaceInfo();
+            if ($node->getNodeType()->getConfiguration('properties.' . $this->getPropertyName() . '.ui.reloadIfChanged')) {
+                $this->reloadDocument();
+            }
         }
     }
 }

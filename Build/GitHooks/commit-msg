@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+PREFIXES=("TASK" "BUGFIX" "FEATURE" "SECURITY" "MERGE")
+BREAKING="!!!"
+MAX_LENGTH=50
+commitMessage=$(head -1 "$1")
+returnValue=0
+
+
+getMessageLength() {
+    local length=$(echo $commitMessage | sed 's/^.*: //g' | wc -c)
+    echo $length
+}
+
+checkCommitPrefix() {
+
+    local failed=0
+    local returnValue=0
+
+    if [ "$1" -eq 1 ]
+    then
+        breaking="!!! "
+    else
+        breaking=""
+    fi
+
+    for i in "${PREFIXES[@]}"
+    do
+        echo $commitMessage | grep -E "^$breaking$i: " &>/dev/null
+        failed=$((failed + $?))
+    done
+
+    if [ $failed -eq ${#PREFIXES[@]} ]
+    then
+        returnValue=3
+    fi
+
+    echo $returnValue
+}
+
+if [ $MAX_LENGTH -le $(getMessageLength) ]
+then
+    returnValue=1
+fi
+
+if [ 1 -gt $(getMessageLength) ]
+then
+    returnValue=2
+fi
+
+isBreaking=$(echo $commitMessage | grep -E '^!!! ')
+if [ -n "$isBreaking" ]
+then
+    #IT IS BREAKING
+    returnValue=$(checkCommitPrefix 1)
+else
+    #NOT BREAKING
+    returnValue=$(checkCommitPrefix 0)
+fi
+
+case "$returnValue" in
+    1)
+        echo commit message is too large
+        ;;
+    2)
+        echo commit message is too short
+        ;;
+    3)
+        echo not a valid commit prefix
+        ;;
+esac
+
+exit $returnValue

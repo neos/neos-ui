@@ -1,5 +1,9 @@
 include: resource://TYPO3.TypoScript/Private/TypoScript/Root.ts2
+include: resource://TYPO3.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
 include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/RenderState.ts2
+include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/ArrayCollection.ts2
+include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/AppendAllToCollection.ts2
+
 backend = TYPO3.TypoScript:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
 
@@ -7,6 +11,89 @@ backend = TYPO3.TypoScript:Template {
         test = 1
         asyncModuleMapping = ${asyncModuleMapping}
         legacyModuleMapping = ${legacyModuleMapping}
+        @process.json = ${Json.stringify(value)}
+    }
+
+    nodeTypes = TYPO3.TypoScript:RawArray {
+        byName = ${Neos.Ui.NodeTypes.nodeTypesByName()}
+        constraints = ${Neos.Ui.NodeTypes.nodeTypeConstraints()}
+        inheritanceMap = ${Neos.Ui.NodeTypes.nodeTypeInheritanceMap()}
+        groups = ${Configuration.setting('TYPO3.Neos.nodeTypes.groups')}
+
+        @process.json = ${Json.stringify(value)}
+    }
+
+    menu = TYPO3.TypoScript:RawArray {
+        content = TYPO3.TypoScript:RawArray {
+            label = 'TYPO3.Neos:Main:content'
+            icon = 'file'
+            uri = TYPO3.Neos:NodeUri {
+                node = ${q(site).parent().children().get(0)}
+            }
+            target = 'ContentCanvas'
+
+            children = Neos.Neos.Ui:ArrayCollection {
+                collection = ${q(site).parent().children().get()}
+                itemName = 'siteNode'
+                itemRenderer = TYPO3.TypoScript:RawArray {
+                    icon = 'globe'
+                    label = ${q(siteNode).property('title')}
+                    uri = TYPO3.Neos:NodeUri {
+                        node = ${siteNode}
+                    }
+                    target = 'ContentCanvas'
+                    isActive = ${Neos.Ui.Sites.isActive(siteNode)}
+                }
+            }
+        }
+
+        @process.modules = Neos.Neos.Ui:AppendAllToCollection {
+            appendTo = ${value}
+            collection = ${Configuration.setting('TYPO3.Neos.modules')}
+            itemName = 'module'
+            itemKey = 'moduleName'
+
+            itemKeyRenderer = ${moduleName}
+            itemRenderer = TYPO3.TypoScript:RawArray {
+                label = ${module.label}
+                icon = ${module.icon}
+                uri = TYPO3.TypoScript:UriBuilder {
+                    package = 'TYPO3.Neos'
+                    controller = 'Backend\\Module'
+                    action = 'index'
+                    absolute = true
+                    arguments {
+                        module = ${moduleName}
+                    }
+                }
+                target = 'Window'
+
+                children = Neos.Neos.Ui:ArrayCollection {
+                    collection = ${module.submodules}
+                    itemName = 'submodule'
+                    itemKey = 'submoduleName'
+
+                    itemRenderer = TYPO3.TypoScript:RawArray {
+                        icon = ${submodule.icon}
+                        label = ${submodule.label}
+                        uri = TYPO3.TypoScript:UriBuilder {
+                            package = 'TYPO3.Neos'
+                            controller = 'Backend\\Module'
+                            action = 'index'
+                            absolute = true
+                            arguments {
+                                module = ${moduleName + '/' + submoduleName}
+                            }
+                        }
+                        isActive = true
+                        target = 'Window'
+                    }
+                }
+
+                @if.isAvailable = ${Neos.Neos.Ui.Modules.isAvailable(moduleName)}
+            }
+        }
+
         @process.json = ${Json.stringify(value)}
     }
 
@@ -20,7 +107,6 @@ backend = TYPO3.TypoScript:Template {
 
         @process.json = ${Json.stringify(value)}
     }
-    initialState.@process.json = ${Json.stringify(value)}
 
     translations = ${translations}
 

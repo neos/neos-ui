@@ -371,6 +371,16 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
+    // When the server has updated node info, apply it to the store
+    //
+    serverFeedbackHandlers.add('Neos.Neos.Ui:UpdateNodeInfo', (feedbackPayload, store) => {
+        Object.keys(feedbackPayload.byContextPath).forEach(contextPath => {
+            const node = feedbackPayload.byContextPath[contextPath];
+            store.dispatch(actions.CR.Nodes.add(contextPath, node));
+        });
+    });
+
+    //
     // When the server advices to render a new node, put the delivered html to the
     // corrent place inside the DOM
     //

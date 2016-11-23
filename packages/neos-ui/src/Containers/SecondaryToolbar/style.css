@@ -18,6 +18,9 @@
         clear: both;
     }
 }
+.secondaryToolbar--isMovedDown {
+    top: 151px; /* height of EditModePanel added */
+}
 .secondaryToolbar--isFringeLeft {
     padding-left: 0;
 }

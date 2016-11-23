@@ -8,6 +8,7 @@ import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 import {RichTextToolbarRegistry} from './Registry';
+import {dom} from './Containers/ContentCanvas/Helpers/index';
 
 manifest('main', {}, globalRegistry => {
     //
@@ -367,5 +368,34 @@ manifest('main', {}, globalRegistry => {
 
             iframeWindow.location.href = iframeWindow.location.href;
         });
+    });
+
+    //
+    // When the server advices to render a new node, put the delivered html to the
+    // corrent place inside the DOM
+    //
+    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderNode', feedbackPayload => {
+        const {renderedContent, mode} = feedbackPayload;
+        const {subject, collection} = feedbackPayload.reference;
+        const reference = mode === 'into' ? collection : subject;
+        const referenceElement = dom.findNode(reference.contextPath, reference.fusionPath);
+        const contentElement = (new DOMParser()).parseFromString(renderedContent, "text/html").body.firstChild;
+
+        switch (mode) {
+            case 'before':
+                referenceElement.parentNode.insertBefore(contentElement, referenceElement);
+                break;
+
+            case 'after':
+
+                referenceElement.parentNode.insertBefore(contentElement, referenceElement.nextSibling);
+                break;
+
+            case 'into':
+            default:
+                referenceElement.appendChild(contentElement);
+                break;
+        }
+
     });
 });

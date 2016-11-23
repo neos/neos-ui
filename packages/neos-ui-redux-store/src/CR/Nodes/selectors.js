@@ -53,8 +53,8 @@ export const focusedNodePathSelector = createSelector(
         focused,
         getCurrentContentCanvasContextPath
     ],
-    (focused, getCurrentContentCanvasContextPath) => {
-        return focused || getCurrentContentCanvasContextPath;
+    (focused, currentContentCanvasContextPath) => {
+        return focused || currentContentCanvasContextPath;
     }
 );
 

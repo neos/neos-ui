@@ -10,6 +10,7 @@ use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderNode;
 
 abstract class AbstractCreate extends AbstractChange
 {
@@ -19,6 +20,13 @@ abstract class AbstractCreate extends AbstractChange
      * @var NodeType
      */
     protected $nodeType;
+
+    /**
+     * The referenceData for the rendered node
+     *
+     * @var array
+     */
+    protected $referenceData = [];
 
     /**
      * @var NodeTypeManager
@@ -47,6 +55,13 @@ abstract class AbstractCreate extends AbstractChange
     protected $nodeService;
 
     /**
+     * Get the insertion mode (before|after|into) that is represented by this change
+     *
+     * @return string
+     */
+    abstract public function getMode();
+
+    /**
      * Set the node type
      *
      * @param string|NodeType $nodeType
@@ -72,6 +87,28 @@ abstract class AbstractCreate extends AbstractChange
     public function getNodeType()
     {
         return $this->nodeType;
+    }
+
+
+    /**
+     * Set the referenceData
+     *
+     * @param array $referenceData
+     * @return void
+     */
+    public function setReferenceData(array $referenceData)
+    {
+        $this->referenceData = $referenceData;
+    }
+
+    /**
+     * Get the referenceData
+     *
+     * @return array
+     */
+    public function getReferenceData()
+    {
+        return $this->referenceData;
     }
 
     /**
@@ -160,6 +197,15 @@ abstract class AbstractCreate extends AbstractChange
         $node = $parent->createNode($name, $nodeType);
 
         $this->applyNodeCreationHandlers($node);
+
+        if ($nodeType->isOfType('TYPO3.Neos:Content') && $this->getReferenceData()['subject']['fusionPath']) {
+            $renderNode = new RenderNode();
+            $renderNode->setNode($node);
+            $renderNode->setReferenceData($this->getReferenceData());
+            $renderNode->setMode($this->getMode());
+
+            $this->feedbackCollection->add($renderNode);
+        }
 
         return $node;
     }

@@ -100,10 +100,11 @@ function * watchReloadTree() {
         const {nodeTypesRegistry} = action.payload;
         const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
         const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsedContextPaths);
-        const nodesToReload = documentNodes.filter(node => uncollapsedContextPaths.includes(node.contextPath));
+        const nodesToReload = documentNodes.toArray().filter(node => uncollapsedContextPaths.includes(node.get('contextPath')));
 
         for (let i = 0; i < nodesToReload.length; i++) {
-            const {contextPath} = nodesToReload[i];
+            const node = nodesToReload[i];
+            const contextPath = node.get('contextPath');
 
             yield put(actions.UI.PageTree.requestChildren(contextPath, {unCollapse: false}));
         }

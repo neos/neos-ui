@@ -37,14 +37,10 @@ class NodeTypeItem extends PureComponent {
     }
 
     render() {
-        const {
-            nodeType,
-            ...restProps
-        } = this.props;
-        const {ui} = nodeType;
+        const {ui} = this.props.nodeType;
 
         return (
-            <Grid.Col className={style.gridItem} width="third" {...restProps}>
+            <Grid.Col className={style.gridItem} width="third">
                 <Button
                     hoverStyle="brand"
                     style="clean"

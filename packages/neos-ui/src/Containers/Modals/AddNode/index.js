@@ -40,6 +40,7 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
 };
 
 @connect($transform({
+    reference: $get('ui.addNodeModal.reference'),
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
     referenceNodeParent: selectors.UI.AddNodeModal.referenceNodeParentSelector,
     referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
@@ -53,9 +54,20 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
 }))
 export default class AddNodeModal extends PureComponent {
     static propTypes = {
+        reference: PropTypes.shape({
+            subject: PropTypes.shape({
+                contextPath: PropTypes.string.isRequired,
+                fusionPath: PropTypes.string
+            }).isRequired,
+            collection: PropTypes.shape({
+                contextPath: PropTypes.string.isRequired,
+                fusionPath: PropTypes.string
+            })
+        }),
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
         referenceNodeGrandParent: NeosPropTypes.node,
+        fusionPath: PropTypes.string,
         groupedAllowedNodeTypes: PropTypes.array,
         getAllowedNodeTypesByModeGenerator: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
@@ -104,7 +116,8 @@ export default class AddNodeModal extends PureComponent {
     renderStep1() {
         const {
             nodeTypesRegistry,
-            getAllowedNodeTypesByModeGenerator
+            getAllowedNodeTypesByModeGenerator,
+            close
         } = this.props;
 
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
@@ -267,7 +280,7 @@ export default class AddNodeModal extends PureComponent {
 
     createNode(nodeType, data = {}) {
         const {
-            referenceNode,
+            reference,
             persistChange,
             handleClose
         } = this.props;
@@ -288,8 +301,9 @@ export default class AddNodeModal extends PureComponent {
 
         const change = {
             type: changeType,
-            subject: referenceNode.contextPath,
+            subject: reference.subject.contextPath,
             payload: {
+                reference,
                 nodeType: nodeType.name,
                 data
             }

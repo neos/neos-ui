@@ -12,14 +12,6 @@ import style from './style.css';
 import InlineUI from './InlineUI/index';
 import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattingRulesForNodeType} from './Helpers';
 
-const closestContextPath = el => {
-    if (!el) {
-        return null;
-    }
-
-    return el.dataset.__neosNodeContextpath || closestContextPath(el.parentNode);
-};
-
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
     isFringeRight: $get('ui.rightSideBar.isHidden'),
@@ -183,10 +175,10 @@ export default class ContentCanvas extends PureComponent {
             if (isInsideInlineUi) {
                 // Do nothing, everything OK!
             } else if (selectedDomNode) {
-                const nodeContextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
-                const typoscriptPath = selectedDomNode.getAttribute('data-__neos-typoscript-path');
+                const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
+                const fusionPath = selectedDomNode.getAttribute('data-__neos-typoscript-path');
 
-                focusNode(nodeContextPath, typoscriptPath);
+                focusNode(contextPath, fusionPath);
             } else {
                 unFocusNode();
             }

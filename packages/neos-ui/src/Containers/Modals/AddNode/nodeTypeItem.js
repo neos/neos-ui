@@ -14,7 +14,6 @@ const {referenceNodeSelector} = selectors.UI.AddNodeModal;
 import style from './style.css';
 
 @connect($transform({
-    referenceNode: referenceNodeSelector,
     mode: $get('ui.addNodeModal.mode')
 }), {
     closeModal: actions.UI.AddNodeModal.close,

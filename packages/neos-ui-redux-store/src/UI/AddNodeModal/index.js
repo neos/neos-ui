@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$all, $set, $toggle} from 'plow-js';
+import {$all, $get, $set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -23,7 +23,7 @@ export const actionTypes = {
 /**
  * Opens the add node modal.
  */
-const open = createAction(OPEN, (contextPath, mode) => ({contextPath, mode}));
+const open = createAction(OPEN, (reference, mode) => ({reference, mode}));
 
 /**
  * Closes the add node modal.
@@ -48,7 +48,8 @@ export const actions = {
 // Export error messages for testing
 //
 export const errorMessages = {
-    ERROR_INVALID_CONTEXTPATH: 'contextPath of reference node must be of type string.',
+    ERROR_INVALID_REFERENCE: 'Received malformed reference: A key `subject` was expected but not found.',
+    ERROR_INVALID_CONTEXTPATH: 'Context of subject reference node must be of type string.',
     ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
 };
 
@@ -59,25 +60,31 @@ export const reducer = handleActions({
     [system.INIT]: () => $set(
         'ui.addNodeModal',
         new Map({
-            referenceNode: '',
+            reference: null,
             mode: 'insert',
             collapsedGroups: []
         })
     ),
-    [OPEN]: ({contextPath, mode}) => {
-        if (typeof contextPath !== 'string') {
-            throw new Error(errorMessages.ERROR_INVALID_CONTEXTPATH);
+    [OPEN]: ({reference, mode}) => {
+        if (typeof $get('subject', reference) === undefined) {
+            throw new Error(errorMessages.ERROR_INVALID_CONTEXT);
+        }
+        if (typeof $get('subject.contextPath', reference) !== 'string') {
+            throw new Error(errorMessages.ERROR_INVALID_CONTEXT);
         }
         const allowedModes = ['insert', 'append', 'prepend'];
         if (allowedModes.indexOf(mode) === -1) {
             throw new Error(errorMessages.ERROR_INVALID_MODE);
         }
         return $all(
-            $set('ui.addNodeModal.referenceNode', contextPath),
+            $set('ui.addNodeModal.reference', reference),
             $set('ui.addNodeModal.mode', mode)
         );
     },
-    [CLOSE]: () => $set('ui.addNodeModal.referenceNode', ''),
+    [CLOSE]: () => $all(
+        $set('ui.addNodeModal.reference', null),
+        $set('ui.addNodeModal.fusionPath', '')
+    ),
     [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.collapsedGroups', groupId)
 });
 

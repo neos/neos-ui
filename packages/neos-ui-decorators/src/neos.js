@@ -1,4 +1,9 @@
 import React, {Component, PropTypes} from 'react';
+import {defaultMemoize} from 'reselect';
+
+// We need to memoize configuration and global registry; otherwise a new object is created at every render; leading to
+// LOADS of unnecessary re-draws.
+const buildConfigurationAndGlobalRegistry = defaultMemoize((configuration, globalRegistry) => ({configuration, globalRegistry}));
 
 //
 // A higher order component to easily spread global
@@ -22,7 +27,7 @@ export default mapRegistriesToProps => WrappedComponent => {
 
             return (
                 <WrappedComponent
-                    neos={{configuration, globalRegistry}}
+                    neos={buildConfigurationAndGlobalRegistry(configuration, globalRegistry)}
                     translations={translations}
                     {...this.props}
                     {...registriesToPropsMap}

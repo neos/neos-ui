@@ -42,7 +42,8 @@
     ]
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "^4.4.8"
+    "@neos-project/build-essentials": "^4.4.8",
+    "@neos-project/debug-reason-for-rendering": "^1.0.0"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",

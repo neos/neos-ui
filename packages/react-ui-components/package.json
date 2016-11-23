@@ -51,7 +51,8 @@
     "@neos-project/build-essentials": "^4.4.8",
     "@kadira/react-storybook-addon-info": "^3.2.1",
     "@kadira/storybook": "^2.11.0",
-    "@kadira/storybook-addon-knobs": "^1.2.0"
+    "@kadira/storybook-addon-knobs": "^1.2.0",
+    "@neos-project/debug-reason-for-rendering": "^1.0.0"
   },
   "peerDependencies": {
     "@neos-project/brand": "^1.1.0",

@@ -3,13 +3,18 @@
 // Functions are curried, to enable lazy execution.
 //
 
-export const findNode = (contextPath, fusionPath) => {
+export const find = selector => {
+    //
+    // TODO: workaround to access the frame from outside...
+    //
     const iframeDocument = document.getElementsByName('neos-content-main')[0].contentDocument;
 
-    return iframeDocument.querySelector(
-        `[data-__neos-node-contextpath="${contextPath}"][data-__neos-typoscript-path="${fusionPath}"]`
-    );
+    return iframeDocument.querySelector(selector);
 };
+
+export const findNode = (contextPath, fusionPath) => find(
+    `[data-__neos-node-contextpath="${contextPath}"][data-__neos-typoscript-path="${fusionPath}"]`
+);
 
 export const closestNode = el => () => {
     if (!el) {

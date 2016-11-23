@@ -1,5 +1,5 @@
 import calculateEnabledFormattingRulesForNodeType from './calculateEnabledFormattingRulesForNodeType';
-import dom from './dom';
+import * as dom from './dom';
 
 export {
     calculateEnabledFormattingRulesForNodeType,

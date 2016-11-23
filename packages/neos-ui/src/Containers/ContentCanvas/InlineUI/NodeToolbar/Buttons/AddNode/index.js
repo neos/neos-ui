@@ -22,11 +22,14 @@ export default class AddNode extends PureComponent {
     }
 
     render() {
+        const modeIcon = this.getCurrentModeIcon();
+
         return (
             <span>
                 <IconButton
                     className={this.props.className}
                     icon="plus"
+                    modeIcon={modeIcon}
                     onClick={this.handleOpenModalBtnClick}
                     onItemSelect={this.handleInsertModeChanged}
                     />

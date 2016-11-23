@@ -106,6 +106,9 @@ export default class AddNodeModal extends PureComponent {
             nodeTypesRegistry,
             getAllowedNodeTypesByModeGenerator
         } = this.props;
+        const actions = [];
+        const baseNode = mode === 'insert' ? referenceNode : referenceNodeParent;
+        const parentNode = mode === 'insert' ? referenceNodeParent : referenceNodeGrandParent;
 
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const activeMode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);

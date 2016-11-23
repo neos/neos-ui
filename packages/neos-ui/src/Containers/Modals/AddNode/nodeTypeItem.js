@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import omit from 'lodash.omit';
 import {$transform, $get} from 'plow-js';
@@ -23,7 +22,7 @@ import style from './style.css';
     closeModal: actions.UI.AddNodeModal.close,
     persistChange: actions.Changes.persistChange
 })
-class NodeTypeItem extends Component {
+class NodeTypeItem extends PureComponent {
     static propTypes = {
         referenceNode: NeosPropTypes.node,
         mode: PropTypes.string.isRequired,
@@ -41,13 +40,6 @@ class NodeTypeItem extends Component {
         super(props);
 
         this.handleNodeTypeClick = this.handleNodeTypeClick.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        //
-        // ToDo: Revisit later, shallow compare may not be suitable for these nested objects
-        //
-        return shallowCompare(this, ...args);
     }
 
     render() {

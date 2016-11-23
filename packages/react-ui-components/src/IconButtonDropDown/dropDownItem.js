@@ -1,7 +1,6 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 
-export default class DropDownItem extends Component {
+export default class DropDownItem extends PureComponent {
     static propTypes = {
         /**
          * The handler to call when clicking on the item of the DropDown.
@@ -23,10 +22,6 @@ export default class DropDownItem extends Component {
         super(props);
 
         this.handleClick = this.handleClick.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

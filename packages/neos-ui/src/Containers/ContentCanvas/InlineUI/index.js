@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform} from 'plow-js';
 
@@ -15,15 +14,11 @@ import style from './style.css';
     hoveredNode: selectors.CR.Nodes.hoveredSelector,
     focusedNode: selectors.CR.Nodes.focusedSelector
 }))
-export default class InlineUI extends Component {
+export default class InlineUI extends PureComponent {
     static propTypes = {
         hoveredNode: PropTypes.object,
         focusedNode: PropTypes.object
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {focusedNode, hoveredNode} = this.props;

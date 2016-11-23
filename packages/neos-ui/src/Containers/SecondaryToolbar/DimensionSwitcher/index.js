@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
@@ -66,7 +65,7 @@ DimensionSelector.propTypes = {
 }), {
     selectPreset: actions.CR.ContentDimensions.selectPreset
 })
-export default class DimensionSwitcher extends Component {
+export default class DimensionSwitcher extends PureComponent {
     static propTypes = {
         contentDimensions: PropTypes.object.isRequired,
         activePresets: PropTypes.object.isRequired,
@@ -79,10 +78,6 @@ export default class DimensionSwitcher extends Component {
         allowedPresets: new Map(),
         activePresets: new Map()
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {contentDimensions, activePresets, selectPreset} = this.props;

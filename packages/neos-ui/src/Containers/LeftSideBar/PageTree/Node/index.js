@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {$get} from 'plow-js';
 import {connect} from 'react-redux';
 
@@ -17,7 +16,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class Node extends Component {
+export default class Node extends PureComponent {
     static propTypes = {
         item: PropTypes.shape({
             hasChildren: PropTypes.bool.isRequired,
@@ -51,12 +50,6 @@ export default class Node extends Component {
         this.handleNodeClick = this.handleNodeClick.bind(this);
         this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
         this.handleDoubleClick = this.handleDoubleClick.bind(this);
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return (
-            (nextProps.hasChildren && !this.props.item.isCollapsed) ||
-            shallowCompare(this, nextProps, nextState));
     }
 
     render() {

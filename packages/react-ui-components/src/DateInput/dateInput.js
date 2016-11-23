@@ -1,9 +1,8 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import enhanceWithClickOutside from 'react-click-outside';
 import moment from 'moment';
 
-export class DateInput extends Component {
+export class DateInput extends PureComponent {
     static propTypes = {
         /**
          * The Date instance which represents the selected value.
@@ -65,10 +64,6 @@ export class DateInput extends Component {
         this.handleCalendarIconClick = this.open.bind(this);
         this.handleClickOutside = this.close.bind(this);
         this.handleSelectTodayBtnClick = () => this.handleChange(moment());
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
@@ -26,7 +25,7 @@ import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class AddNodeModal extends Component {
+export default class AddNodeModal extends PureComponent {
     static propTypes = {
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
@@ -37,10 +36,6 @@ export default class AddNodeModal extends Component {
 
         close: PropTypes.func.isRequired
     };
-
-    shouldComponentUpdate(newProps, newState) {
-        return shallowCompare(this, newProps, newState) && newProps.referenceNode !== this.props.referenceNode;
-    }
 
     render() {
         const {

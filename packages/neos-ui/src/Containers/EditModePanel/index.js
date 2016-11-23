@@ -53,15 +53,15 @@ export default class EditModePanel extends Component {
 
         return (
             <div className={classNames}>
-                <div className="editModePanel__editingModes">
+                <div className={style.editModePanel__editingModes}>
                     <p>Editing Modes</p>
                     <button>foo</button>
                 </div>
-                <div className="editModePanel__previewCentral">
+                <div className={style.editModePanel__previewCentral}>
                     <p>Preview Central</p>
                     <button>foo</button>
                 </div>
-                
+
             </div>
         );
     }

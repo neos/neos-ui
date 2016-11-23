@@ -33,4 +33,5 @@
 .editModePanel__editingModes,
 .editModePanel__previewCentral {
     flex: 0 0 50%;
+    padding: 0 1rem;
 }

@@ -92,6 +92,8 @@ Neos:
             editPreviewMode: ${Configuration.setting('TYPO3.Neos.userInterface.defaultEditPreviewMode')}
             fullScreen:
               isFullScreen: false
+            editModePanel:
+              isHidden: true
             leftSideBar:
               isHidden: false
             rightSideBar:

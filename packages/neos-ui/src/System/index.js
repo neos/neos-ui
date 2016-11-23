@@ -41,6 +41,12 @@ export const getNodeTypes = discover(function * () {
     return JSON.parse(appContainer.querySelector('[data-json="nodeTypes"]').innerHTML);
 });
 
+export const getFrontendConfiguration = discover(function * () {
+    const appContainer = yield getAppContainer;
+
+    return JSON.parse(appContainer.querySelector('[data-json="frontendConfiguration"]').innerHTML);
+});
+
 export const getMenu = discover(function * () {
     const appContainer = yield getAppContainer;
 

@@ -11,6 +11,13 @@ import {RichTextToolbarRegistry} from './Registry';
 
 manifest('main', {}, globalRegistry => {
     //
+    // Create edit preview mode registry
+    //
+    const frontendConfiguration = globalRegistry.add('frontendConfiguration', new SynchronousRegistry(`
+        # Edit/Preview Mode specific registry
+    `));
+
+    //
     // Create Inspector meta registry
     //
     const inspector = globalRegistry.add('inspector', new SynchronousMetaRegistry(`

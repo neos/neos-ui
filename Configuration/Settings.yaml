@@ -56,6 +56,9 @@ Neos:
           'Neos.Ui.NodeTypes': 'Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper'
           'Neos.Ui.ContentDimensions': 'Neos\Neos\Ui\TypoScript\Helper\ContentDimensionsHelper'
 
+        frontendConfiguration:
+          editPreviewModes: ${Configuration.setting('TYPO3.Neos.userInterface.editPreviewModes')}
+
         documentNode:
           nodes: '${Neos.Ui.NodeInfo.renderDocumentNodeAndChildContent(documentNode, controllerContext)}'
           metaData:
@@ -86,6 +89,7 @@ Neos:
               src: ${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}
               contextPath: ${q(documentNode).property('_contextPath')}
             debugMode: false
+            editPreviewMode: ${Configuration.setting('TYPO3.Neos.userInterface.defaultEditPreviewMode')}
             fullScreen:
               isFullScreen: false
             leftSideBar:

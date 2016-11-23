@@ -92,6 +92,19 @@ function * application() {
     nodeTypesRegistry.setGroups(nodeTypes.groups);
 
     //
+    // Load frontend configuration (edit/preview modes)
+    //
+    const frontendConfiguration = yield system.getFrontendConfiguration;
+    const frontendConfigurationRegistry = globalRegistry.get('frontendConfiguration');
+
+    Object.keys(frontendConfiguration).forEach(editPreviewModeName => {
+        console.log(editPreviewModeName);
+        frontendConfigurationRegistry.add(editPreviewModeName, {
+            ...frontendConfiguration[editPreviewModeName]
+        });
+    });
+
+    //
     // Hydrate server state
     //
     const serverState = yield system.getServerState;

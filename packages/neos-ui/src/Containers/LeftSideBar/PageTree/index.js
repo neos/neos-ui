@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
@@ -23,7 +23,7 @@ import Node from './Node/index';
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class PageTree extends Component {
+export default class PageTree extends PureComponent {
     static propTypes = {
         allNodes: PropTypes.object.isRequired,
         pageTreeState: PropTypes.object.isRequired,
@@ -41,13 +41,6 @@ export default class PageTree extends Component {
         super(props);
 
         this.handleNodeClick = this.handleNodeClick.bind(this);
-    }
-
-    shouldComponentUpdate({allNodes, pageTreeState}) {
-        return (
-            allNodes !== this.props.allNodes ||
-            pageTreeState !== this.props.pageTreeState
-        );
     }
 
     render() {

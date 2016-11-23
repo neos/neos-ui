@@ -1,3 +1,5 @@
+import shallowCompare from 'react-addons-shallow-compare';
+
 const BOLD = 'font-weight: bold;';
 const RESET = 'font-weight: normal;';
 
@@ -53,46 +55,72 @@ const findDifferences = (type, oldStatePropsOrContext, newStatePropsOrContext) =
 };
 
 
-const debugReasonForRendering = (targetReactComponent, key, descriptor) => {
-    if (key !== 'shouldComponentUpdate') {
-        console.warn(`${targetReactComponent.constructor.name}: The debugger "debugReasonForRendering" should only be applied to shouldComponentUpdate(), but you applied it to %c${key}()`, BOLD);
-        return descriptor;
-    }
+const internalDebug = (targetReactComponent, oldProps, nextProps, oldState, nextState, oldContext, nextContext) => {
+    const differencesInProps = findDifferences('props', oldProps, nextProps);
+    const differencesInState = findDifferences('state', oldState, nextState);
+    const differencesInContext = findDifferences('context', oldContext, nextContext);
 
-    const originalShouldComponentUpdate = descriptor.value;
+    if (differencesInProps.length || differencesInState.length || differencesInContext.length) {
+        // Some changes occured; so let's render them.
 
-    descriptor.value = function (nextProps, nextState, nextContext) {
-        const differencesInProps = findDifferences('props', this.props, nextProps);
-        const differencesInState = findDifferences('state', this.state, nextState);
-        const differencesInContext = findDifferences('context', this.context, nextContext);
-
-        if (differencesInProps.length || differencesInState.length || differencesInContext.length) {
-            // Some changes occured; so let's render them.
-
-            const changeMessageParts = [];
-            if (differencesInProps.length) {
-                changeMessageParts.push('props changed');
-            }
-
-            if (differencesInState.length) {
-                changeMessageParts.push('state changed');
-            }
-
-            if (differencesInContext.length) {
-                changeMessageParts.push('context changed');
-            }
-
-            console.group(`%c${targetReactComponent.constructor.name}: component will re-render because %c${changeMessageParts.join(', ')}%c.`, RESET, BOLD, RESET);
-            differencesInProps.forEach(logString => console.log.apply(console, logString));
-            differencesInState.forEach(logString => console.log.apply(console, logString));
-            differencesInContext.forEach(logString => console.log.apply(console, logString));
-            console.groupEnd();
+        const changeMessageParts = [];
+        if (differencesInProps.length) {
+            changeMessageParts.push('props changed');
         }
 
-        return originalShouldComponentUpdate.apply(this, arguments);
-    };
+        if (differencesInState.length) {
+            changeMessageParts.push('state changed');
+        }
 
-    return descriptor;
+        if (differencesInContext.length) {
+            changeMessageParts.push('context changed');
+        }
+
+        console.group(`%c${targetReactComponent.constructor.name}: component will re-render because %c${changeMessageParts.join(', ')}%c.`, RESET, BOLD, RESET);
+        differencesInProps.forEach(logString => console.log.apply(console, logString));
+        differencesInState.forEach(logString => console.log.apply(console, logString));
+        differencesInContext.forEach(logString => console.log.apply(console, logString));
+        console.groupEnd();
+    }
+};
+
+
+const debugReasonForRendering = (targetReactComponent, key, descriptor) => {
+    if (!key && !descriptor) {
+        // @debugReasonForRendering applied on classes
+
+        class DebuggableComponent extends targetReactComponent {
+            constructor(...args) {
+                super(...args);
+            }
+            shouldComponentUpdate(nextProps, nextState, nextContext) {
+                internalDebug(targetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
+
+                if (this.isPureReactComponent) {
+                    return shallowCompare(this, ...arguments);
+                }
+                return super.shouldComponentUpdate(...arguments);
+            }
+        }
+
+        return DebuggableComponent;
+    } else {
+        // @debugReasonForRendering applied on shouldComponentUpdate
+        if (key !== 'shouldComponentUpdate') {
+            console.warn(`${targetReactComponent.constructor.name}: The debugger "debugReasonForRendering" should only be applied to shouldComponentUpdate(), but you applied it to %c${key}()`, BOLD);
+            return descriptor;
+        }
+
+        const originalShouldComponentUpdate = descriptor.value;
+
+        descriptor.value = function (nextProps, nextState, nextContext) {
+            internalDebug(targetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
+
+            return originalShouldComponentUpdate.apply(this, arguments);
+        };
+
+        return descriptor;
+    }
 };
 
 export default debugReasonForRendering;

@@ -14,12 +14,21 @@
 import debugReasonForRendering from '@neos-project/debug-reason-for-rendering';
 ```
 
-4. Annotate your `shouldComponentUpdate` method with `@debugReasonForRendering`:
+4. (Option 1) Annotate your `shouldComponentUpdate` method with `@debugReasonForRendering`:
 
 ```
 @debugReasonForRendering
 shouldComponentUpdate(...args) {
     return shallowCompare(this, ...args);
+}
+```
+
+4. (Option 2) Annotate your `PureComponent` class with `@debugReasonForRendering`:
+
+```
+@debugReasonForRendering
+class MyComponent extends PureComponent {
+   ...
 }
 ```
 

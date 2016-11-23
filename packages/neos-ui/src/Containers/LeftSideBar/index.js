@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
@@ -15,14 +14,10 @@ import style from './style.css';
         $get('ui.fullScreen.isFullScreen')
     )
 }))
-export default class LeftSideBar extends Component {
+export default class LeftSideBar extends PureComponent {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {isHidden} = this.props;

@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
@@ -19,7 +18,7 @@ const THRESHOLD_MOUSE_LEAVE = 500;
     hideDrawer: actions.UI.Drawer.hide,
     setContentCanvasSrc: actions.UI.ContentCanvas.setSrc
 })
-export default class Drawer extends Component {
+export default class Drawer extends PureComponent {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
         hideDrawer: PropTypes.func.isRequired,
@@ -54,10 +53,6 @@ export default class Drawer extends Component {
         this.handleMouseEnter = ::this.handleMouseEnter;
         this.handleMouseLeave = ::this.handleMouseLeave;
         this.handleMenuItemClick = ::this.handleMenuItemClick;
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return shallowCompare(this.props, nextProps);
     }
 
     handleMouseLeave() {

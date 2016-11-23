@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform} from 'plow-js';
@@ -22,7 +21,7 @@ import {calculateEnabledFormattingRulesForNodeType} from '../../ContentCanvas/He
     formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class Toolbar extends Component {
+export default class Toolbar extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object,
         currentlyEditedPropertyName: PropTypes.string,
@@ -50,10 +49,6 @@ export default class Toolbar extends Component {
             nodeTypesRegistry,
             formattingRulesRegistry
         });
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     onToggleFormat(formattingRule) {

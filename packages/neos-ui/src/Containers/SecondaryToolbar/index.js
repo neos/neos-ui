@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
@@ -25,7 +24,7 @@ import style from './style.css';
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })
-export default class SecondaryToolbar extends Component {
+export default class SecondaryToolbar extends PureComponent {
     static propTypes = {
         previewUrl: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
@@ -34,10 +33,6 @@ export default class SecondaryToolbar extends Component {
         toggleFullScreen: PropTypes.func.isRequired,
         isDocumentNodeSelected: PropTypes.bool.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {

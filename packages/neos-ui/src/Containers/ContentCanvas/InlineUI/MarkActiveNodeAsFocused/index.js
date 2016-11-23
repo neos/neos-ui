@@ -1,16 +1,11 @@
-import {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import {PureComponent, PropTypes} from 'react';
 
 import style from './style.css';
 
-export default class MarkActiveNodeAsFocused extends Component {
+export default class MarkActiveNodeAsFocused extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         if (!this.props.focusedNode) {

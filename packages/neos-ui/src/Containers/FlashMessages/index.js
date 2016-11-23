@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
@@ -14,7 +13,7 @@ import style from './style.css';
 }), {
     removeMessage: actions.UI.FlashMessages.remove
 })
-export default class FlashMessages extends Component {
+export default class FlashMessages extends PureComponent {
     static propTypes = {
         flashMessages: ImmutablePropTypes.map,
         removeMessage: PropTypes.func.isRequired
@@ -23,10 +22,6 @@ export default class FlashMessages extends Component {
     static defaultProps = {
         flashMessages: {}
     };
-
-    shouldComponentUpdate(newProps, newState) {
-        return shallowCompare(this, newProps, newState) && newProps.flashMessages !== this.props.flashMessages;
-    }
 
     render() {
         const {flashMessages, removeMessage} = this.props;

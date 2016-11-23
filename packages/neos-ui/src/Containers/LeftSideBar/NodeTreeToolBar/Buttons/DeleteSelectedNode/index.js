@@ -1,10 +1,9 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 @connect()
-export default class DeleteSelectedNode extends Component {
+export default class DeleteSelectedNode extends PureComponent {
     static propTypes = {
         isDisabled: PropTypes.bool,
         className: PropTypes.string
@@ -18,10 +17,6 @@ export default class DeleteSelectedNode extends Component {
         super(props);
 
         this.handleDeleteSelectedNodeClick = this.deleteSelectedNode.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

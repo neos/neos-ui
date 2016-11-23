@@ -1,9 +1,8 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 
-export default class AbstractButton extends Component {
+export default class AbstractButton extends PureComponent {
     static propTypes = {
         isEnabled: PropTypes.bool,
         isHighlighted: PropTypes.bool,
@@ -13,10 +12,6 @@ export default class AbstractButton extends Component {
         children: PropTypes.node.isRequired,
         onClick: PropTypes.func.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {

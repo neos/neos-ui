@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
@@ -15,16 +14,12 @@ import style from './style.css';
 }), {
     toggleSidebar: actions.UI.LeftSideBar.toggle
 })
-export default class LeftSideBarToggler extends Component {
+export default class LeftSideBarToggler extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
         isSideBarHidden: PropTypes.bool.isRequired,
         toggleSidebar: PropTypes.func.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {className, isSideBarHidden, toggleSidebar} = this.props;

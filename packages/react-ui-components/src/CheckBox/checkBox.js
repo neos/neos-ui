@@ -1,8 +1,7 @@
-import React, {PropTypes, Component} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PropTypes, PureComponent} from 'react';
 import mergeClassNames from 'classnames';
 
-class CheckBox extends Component {
+class CheckBox extends PureComponent {
     static propTypes = {
         /**
          * This prop controls the visual active state of the CheckBox.
@@ -34,10 +33,6 @@ class CheckBox extends Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

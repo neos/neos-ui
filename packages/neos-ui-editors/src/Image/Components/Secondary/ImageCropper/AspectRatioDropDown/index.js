@@ -1,12 +1,11 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
-import shallowCompare from 'react-addons-shallow-compare';
 
 import {AspectRatioOption, NullAspectRatioStrategy} from '../model';
 import style from './style.css';
 
-class AspectRatioDropDownitem extends Component {
+class AspectRatioDropDownitem extends PureComponent {
     static propTypes = {
         value: PropTypes.object.isRequired,
         label: PropTypes.string.isRequired,
@@ -17,10 +16,6 @@ class AspectRatioDropDownitem extends Component {
         super(props);
 
         this.handleClick = this.handleClick.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {
@@ -40,7 +35,7 @@ class AspectRatioDropDownitem extends Component {
     }
 }
 
-export default class AspectRatioDropDown extends Component {
+export default class AspectRatioDropDown extends PureComponent {
     static propTypes = {
         current: PropTypes.instanceOf(NullAspectRatioStrategy),
         options: PropTypes.arrayOf(
@@ -51,10 +46,6 @@ export default class AspectRatioDropDown extends Component {
         onSelect: PropTypes.func.isRequired,
         onClear: PropTypes.func.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {options, current, placeholder, onSelect, onClear} = this.props;

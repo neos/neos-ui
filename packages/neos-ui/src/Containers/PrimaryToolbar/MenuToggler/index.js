@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
@@ -14,16 +13,12 @@ import style from './style.css';
 }), {
     toggleDrawer: actions.UI.Drawer.toggle
 })
-export default class MenuToggler extends Component {
+export default class MenuToggler extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
         isMenuHidden: PropTypes.bool.isRequired,
         toggleDrawer: PropTypes.func.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {className, isMenuHidden, toggleDrawer} = this.props;

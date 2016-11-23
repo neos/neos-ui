@@ -15,7 +15,7 @@ import * as NeosPropTypes from '@neos-project/react-proptypes';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
-import {InternalEditorEnvelope} from '../../RightSideBar/Inspector/EditorEnvelope/index';
+import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 
 //
 // Export error messages for testing
@@ -38,15 +38,6 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
     }
 
     return '';
-};
-
-const getRequiredPropertiesForNodeType = nodeType => {
-    const nodePropertyNames = Object.keys(nodeType.properties);
-    const requiredNodeProperties = nodePropertyNames.filter(nodePropertyName =>
-        $get(['properties', nodePropertyName, 'validation', 'TYPO3.Neos/Validation/NotEmptyValidator'], nodeType)
-    );
-
-    return requiredNodeProperties;
 };
 
 @connect($transform({
@@ -78,11 +69,11 @@ export default class AddNodeModal extends Component {
         return shallowCompare(this, ...args);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.referenceNode !== nextProps.referenceNode) {
-            this.setState({step: 1});
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     if (this.props.referenceNode !== nextProps.referenceNode) {
+    //         this.setState({step: 1});
+    //     }
+    // }
 
     constructor(...props) {
         super(...props);
@@ -91,7 +82,7 @@ export default class AddNodeModal extends Component {
             mode: 'insert',
             step: 1,
             selectedNodeType: null,
-            propertiesOfToBeCreatedNode: {}
+            elementValues: {}
         };
 
         this.handleSelectNodeType = this.handleSelectNodeType.bind(this);
@@ -146,10 +137,9 @@ export default class AddNodeModal extends Component {
     }
 
     renderStep2() {
-        const requiredProperties = getRequiredPropertiesForNodeType(this.state.selectedNodeType);
-
+        const creationDialogElements = [];
         const vNode = {
-            properties: this.state.propertiesOfToBeCreatedNode
+            properties: this.state.elementValues
         };
 
         return (
@@ -160,12 +150,12 @@ export default class AddNodeModal extends Component {
                 isOpen
                 isWide
                 >
-                {requiredProperties.map(propertyName => {
-                    const property = this.state.selectedNodeType.properties[propertyName];
+                {creationDialogElements.map(elementName => {
+                    const property = this.state.selectedNodeType.properties[elementName];
 
-                    return (<InternalEditorEnvelope
-                        key={propertyName}
-                        id={propertyName}
+                    return (<EditorEnvelope
+                        key={elementName}
+                        id={elementName}
                         label={$get('ui.label', property)}
                         editor={$get('ui.inspector.editor', property)}
                         options={$get('ui.inspector.editorOptions', property)}
@@ -177,10 +167,10 @@ export default class AddNodeModal extends Component {
         );
     }
 
-    handleDialogEditorValueChange(propertyName, value) {
-        const newProperties = Object.assign({}, this.state.propertiesOfToBeCreatedNode);
-        newProperties[propertyName] = value;
-        this.setState({propertiesOfToBeCreatedNode: newProperties});
+    handleDialogEditorValueChange(elementName, value) {
+        const newValues = Object.assign({}, this.state.elementValues);
+        newValues[elementName] = value;
+        this.setState({elementValues: newValues});
     }
 
     renderInsertModeSelector(activeMode, allowedNodeTypesByMode) {
@@ -253,15 +243,15 @@ export default class AddNodeModal extends Component {
     }
 
     handleSelectNodeType(nodeType) {
-        if (getRequiredPropertiesForNodeType(nodeType).length) {
-            this.setState({step: 2, selectedNodeType: nodeType, propertiesOfToBeCreatedNode: {}});
+        if (nodeType.ui.creationDialog) {
+            this.setState({step: 2, selectedNodeType: nodeType, elementValues: {}});
         } else {
             // no required node properties; let's directly create the node!
             this.createNode(nodeType);
         }
     }
     handleSave() {
-        this.createNode(this.state.selectedNodeType, this.state.propertiesOfToBeCreatedNode);
+        this.createNode(this.state.selectedNodeType, this.state.elementValues);
     }
 
     createNode(nodeType, initialProperties = {}) {

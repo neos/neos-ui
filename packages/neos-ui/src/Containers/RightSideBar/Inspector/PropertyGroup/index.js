@@ -4,7 +4,7 @@ import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/'
 
 import I18n from '@neos-project/neos-ui-i18n';
 
-import EditorEnvelope from '../EditorEnvelope/index';
+import EditorEnvelope from '../InspectorEditorEnvelope/index';
 import sidebarStyle from '../../style.css';
 import style from './style.css';
 

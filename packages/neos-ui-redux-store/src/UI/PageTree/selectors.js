@@ -40,26 +40,28 @@ export const getTreeNodeSelector = createSelector(
         // Try to grab the node
         //
         const node = nodes.byContextPathSelector(contextPath)(state);
+        const isNodeTypeValid = nodeType => Boolean(
+            nodeTypeFilter.length === 0 ||
+            nodeTypeFilter.indexOf(nodeType) > -1
+        );
 
         //
         // Check if the requested node is existent and has the correct node type
         //
-        if (node && (!nodeTypeFilter.length || nodeTypeFilter.indexOf(node.nodeType) !== -1)) {
+        if (node && isNodeTypeValid(node.nodeType)) {
             //
             // Check for valid child nodes
             //
-            const validChildren = $get('children', node).filter(({nodeType}) =>
-                !nodeTypeFilter.length || nodeTypeFilter.indexOf(nodeType) !== -1
-            );
+            const validChildren = node.children.filter(node => isNodeTypeValid(node.nodeType));
+            const {contextPath, label, uri} = node;
 
-            const contextPath = $get('contextPath', node);
             //
             // Turn the node into a data structure, that can be consumed by a tree view
             //
             return {
                 contextPath,
-                label: $get('label', node),
-                uri: $get('uri', node),
+                label,
+                uri,
                 isActive: contextPath === activeNodeContextPath,
                 isFocused: contextPath === focusedNodeContextPath,
                 isCollapsed: !uncollapsedNodeContextPaths.contains(contextPath),

@@ -11,6 +11,7 @@ const START_PUBLISHING = '@neos/neos-ui/UI/Remote/START_PUBLISHING';
 const FINISH_PUBLISHING = '@neos/neos-ui/UI/Remote/FINISH_PUBLISHING';
 const START_DISCARDING = '@neos/neos-ui/UI/Remote/START_DISCARDING';
 const FINISH_DISCARDING = '@neos/neos-ui/UI/Remote/FINISH_DISCARDING';
+const DOCUMENT_NODE_CREATED = '@neos/neos-ui/UI/Remote/DOCUMENT_NODE_CREATED';
 
 //
 // Export the action types
@@ -21,7 +22,8 @@ export const actionTypes = {
     START_PUBLISHING,
     FINISH_PUBLISHING,
     START_DISCARDING,
-    FINISH_DISCARDING
+    FINISH_DISCARDING,
+    DOCUMENT_NODE_CREATED
 };
 
 /**
@@ -54,6 +56,11 @@ const startDiscarding = createAction(START_DISCARDING);
  */
 const finishDiscarding = createAction(FINISH_DISCARDING);
 
+/**
+ * Should be called once the server informs the client that a node has been created.
+ */
+const documentNodeCreated = createAction(DOCUMENT_NODE_CREATED, contextPath => ({contextPath}));
+
 //
 // Export the actions
 //
@@ -63,7 +70,8 @@ export const actions = {
     startPublishing,
     finishPublishing,
     startDiscarding,
-    finishDiscarding
+    finishDiscarding,
+    documentNodeCreated
 };
 
 //

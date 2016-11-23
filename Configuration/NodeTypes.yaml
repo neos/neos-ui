@@ -1,0 +1,9 @@
+'TYPO3.Neos:Document':
+  ui:
+    creationDialog:
+      elements:
+        title:
+          type: string
+          ui:
+            label: 'Node title'
+            editor: 'TYPO3.Neos/Inspector/Editors/TextFieldEditor'

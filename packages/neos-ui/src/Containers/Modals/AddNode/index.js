@@ -64,10 +64,6 @@ export default class AddNodeModal extends PureComponent {
         persistChange: PropTypes.func.isRequired
     };
 
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
-
     componentWillReceiveProps(nextProps) {
         if (this.props.referenceNode !== nextProps.referenceNode) {
             this.setState({step: 1});
@@ -110,9 +106,6 @@ export default class AddNodeModal extends PureComponent {
             nodeTypesRegistry,
             getAllowedNodeTypesByModeGenerator
         } = this.props;
-        const actions = [];
-        const baseNode = mode === 'insert' ? referenceNode : referenceNodeParent;
-        const parentNode = mode === 'insert' ? referenceNodeParent : referenceNodeGrandParent;
 
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const activeMode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
@@ -152,7 +145,7 @@ export default class AddNodeModal extends PureComponent {
                 >
                 {Object.keys(creationDialogElements).map(elementName => {
                     const element = this.state.selectedNodeType.ui.creationDialog.elements[elementName];
-
+                    const onCommit = value => this.handleDialogEditorValueChange(elementName, value);
                     return (<EditorEnvelope
                         key={elementName}
                         identifier={elementName}
@@ -160,7 +153,7 @@ export default class AddNodeModal extends PureComponent {
                         editor={$get('ui.editor', element)}
                         options={$get('ui.editorOptions', element)}
                         value={this.state.elementValues[elementName] ? this.state.elementValues[elementName] : ''}
-                        commit={value => this.handleDialogEditorValueChange(elementName, value)}
+                        commit={onCommit}
                         />);
                 })}
             </Dialog>
@@ -274,7 +267,6 @@ export default class AddNodeModal extends PureComponent {
     }
 
     createNode(nodeType, initialProperties = {}) {
-        // TODO: check that createNode works!
         const {
             referenceNode,
             persistChange,

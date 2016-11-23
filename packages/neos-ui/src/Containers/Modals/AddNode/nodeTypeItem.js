@@ -1,13 +1,11 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import omit from 'lodash.omit';
 import {$transform, $get} from 'plow-js';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import * as NeosPropTypes from '@neos-project/react-proptypes';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
@@ -22,7 +20,7 @@ import style from './style.css';
     closeModal: actions.UI.AddNodeModal.close,
     persistChange: actions.Changes.persistChange
 })
-class NodeTypeItem extends Component {
+class NodeTypeItem extends PureComponent {
     static propTypes = {
         onSelect: PropTypes.func.isRequired,
 

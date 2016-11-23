@@ -65,9 +65,7 @@ export default class InspectorEditorEnvelope extends Component {
                 value={transientValue ? transientValue.value : sourceValue}
                 hooks={transientValue ? transientValue.hooks : null}
                 commit={this.onHandleCommit}
-            />
+                />
         );
-
     }
-
 }

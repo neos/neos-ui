@@ -38,7 +38,7 @@ export default class EditorEnvelope extends Component {
             return (
                 <EditorComponent
                     {...this.props}
-                />
+                    />
             );
         }
 

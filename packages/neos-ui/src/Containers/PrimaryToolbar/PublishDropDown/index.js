@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
@@ -30,7 +29,7 @@ import style from './style.css';
     publishAction: actions.CR.Workspaces.publish,
     discardAction: actions.CR.Workspaces.discard
 })
-export default class PublishDropDown extends Component {
+export default class PublishDropDown extends PureComponent {
     static propTypes = {
         isSaving: PropTypes.bool,
         isPublishing: PropTypes.bool,
@@ -50,10 +49,6 @@ export default class PublishDropDown extends Component {
         this.handlePublishAllClick = this.handlePublishClick.bind(this);
         this.handleDiscardClick = this.handleDiscardClick.bind(this);
         this.handleDiscardAllClick = this.handleDiscardAllClick.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

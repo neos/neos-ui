@@ -226,26 +226,7 @@ test(`The "invalidate" action should add the given node to error state`, t => {
     t.deepEqual(nextState3.get('ui').get('pageTree').get('errors').toJS(), ['someContextPath', 'someOtherContextPath']);
 });
 
-test(`The "requestChildren" action should remove the given node from uncollapsed state`, t => {
-    const state = Immutable.fromJS({
-        ui: {
-            pageTree: {
-                loading: [],
-                errors: [],
-                uncollapsed: ['someContextPath', 'someOtherContextPath']
-            }
-        }
-    });
-    const nextState1 = reducer(state, actions.requestChildren('someContextPath'));
-    const nextState2 = reducer(state, actions.requestChildren('someOtherContextPath'));
-    const nextState3 = reducer(nextState1, actions.requestChildren('someOtherContextPath'));
-
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('uncollapsed').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('uncollapsed').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('uncollapsed').toJS(), []);
-});
-
-test(`The "requestChildren" action should remove the given node from error state`, t => {
+test(`The "setAsLoading" action should remove the given node from error state`, t => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -255,16 +236,16 @@ test(`The "requestChildren" action should remove the given node from error state
             }
         }
     });
-    const nextState1 = reducer(state, actions.requestChildren('someContextPath'));
-    const nextState2 = reducer(state, actions.requestChildren('someOtherContextPath'));
-    const nextState3 = reducer(nextState1, actions.requestChildren('someOtherContextPath'));
+    const nextState1 = reducer(state, actions.setAsLoading('someContextPath'));
+    const nextState2 = reducer(state, actions.setAsLoading('someOtherContextPath'));
+    const nextState3 = reducer(nextState1, actions.setAsLoading('someOtherContextPath'));
 
     t.deepEqual(nextState1.get('ui').get('pageTree').get('errors').toJS(), ['someOtherContextPath']);
     t.deepEqual(nextState2.get('ui').get('pageTree').get('errors').toJS(), ['someContextPath']);
     t.deepEqual(nextState3.get('ui').get('pageTree').get('errors').toJS(), []);
 });
 
-test(`The "requestChildren" action should add the given node to loading state`, t => {
+test(`The "setAsLoading" action should add the given node to loading state`, t => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -274,11 +255,30 @@ test(`The "requestChildren" action should add the given node to loading state`, 
             }
         }
     });
-    const nextState1 = reducer(state, actions.requestChildren('someContextPath'));
-    const nextState2 = reducer(state, actions.requestChildren('someOtherContextPath'));
-    const nextState3 = reducer(nextState1, actions.requestChildren('someOtherContextPath'));
+    const nextState1 = reducer(state, actions.setAsLoading('someContextPath'));
+    const nextState2 = reducer(state, actions.setAsLoading('someOtherContextPath'));
+    const nextState3 = reducer(nextState1, actions.setAsLoading('someOtherContextPath'));
 
     t.deepEqual(nextState1.get('ui').get('pageTree').get('loading').toJS(), ['someContextPath']);
     t.deepEqual(nextState2.get('ui').get('pageTree').get('loading').toJS(), ['someOtherContextPath']);
     t.deepEqual(nextState3.get('ui').get('pageTree').get('loading').toJS(), ['someContextPath', 'someOtherContextPath']);
+});
+
+test(`The "setAsLoaded" action should remove the given node to loading state`, t => {
+    const state = Immutable.fromJS({
+        ui: {
+            pageTree: {
+                uncollapsed: [],
+                errors: [],
+                loading: ['someContextPath', 'someOtherContextPath']
+            }
+        }
+    });
+    const nextState1 = reducer(state, actions.setAsLoaded('someContextPath'));
+    const nextState2 = reducer(state, actions.setAsLoaded('someOtherContextPath'));
+    const nextState3 = reducer(nextState1, actions.setAsLoaded('someOtherContextPath'));
+
+    t.deepEqual(nextState1.get('ui').get('pageTree').get('loading').toJS(), ['someOtherContextPath']);
+    t.deepEqual(nextState2.get('ui').get('pageTree').get('loading').toJS(), ['someContextPath']);
+    t.deepEqual(nextState3.get('ui').get('pageTree').get('loading').toJS(), []);
 });

@@ -1,5 +1,4 @@
-import React, {PropTypes, Component} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PropTypes, PureComponent} from 'react';
 import {connect} from 'react-redux';
 import Portal from 'react-portal';
 import mergeClassNames from 'classnames';
@@ -15,7 +14,7 @@ import style from './style.css';
     isFringeRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen')
 }))
-export default class SecondaryInspector extends Component {
+export default class SecondaryInspector extends PureComponent {
     static propTypes = {
         isFringeLeft: PropTypes.bool.isRequired,
         isFringeRight: PropTypes.bool.isRequired,
@@ -24,10 +23,6 @@ export default class SecondaryInspector extends Component {
         onClose: PropTypes.func.isRequired,
         children: PropTypes.element.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {

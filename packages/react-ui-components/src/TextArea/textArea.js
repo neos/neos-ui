@@ -1,9 +1,8 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import TextareaAutoresize from 'react-textarea-autosize';
 
-class TextArea extends Component {
+class TextArea extends PureComponent {
     static propTypes = {
         /**
          * This prop controls if the TextArea is rendered as invalid or not.
@@ -42,10 +41,6 @@ class TextArea extends Component {
         super(props);
 
         this.handleValueChange = this.handleValueChange.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

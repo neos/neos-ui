@@ -1,12 +1,11 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import shallowCompare from 'react-addons-shallow-compare';
 import Dropzone from 'react-dropzone';
 
 import {Thumbnail} from '../../Utils/index';
 import style from './style.css';
 
-export default class PreviewScreen extends Component {
+export default class PreviewScreen extends PureComponent {
     static propTypes = {
         image: PropTypes.object,
         onDrop: PropTypes.func.isRequired,
@@ -18,10 +17,6 @@ export default class PreviewScreen extends Component {
         super(props);
 
         this.setDropDownRef = this.setDropDownRef.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     chooseFromLocalFileSystem() {

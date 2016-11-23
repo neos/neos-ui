@@ -1,8 +1,7 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import Label from '@neos-project/react-ui-components/lib/Label/';
-import shallowCompare from 'react-addons-shallow-compare';
 
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -22,7 +21,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors')
 }))
-export default class EditorEnvelope extends Component {
+export default class EditorEnvelope extends PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
@@ -39,10 +38,6 @@ export default class EditorEnvelope extends Component {
     constructor(props) {
         super(props);
         this.onHandleCommit = this.onHandleCommit.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     generateIdentifier() {

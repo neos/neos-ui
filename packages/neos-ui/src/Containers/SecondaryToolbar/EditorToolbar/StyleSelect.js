@@ -1,6 +1,5 @@
 import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
@@ -28,7 +27,7 @@ const startsWith = prefix => element =>
     formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class StyleSelect extends Component {
+export default class StyleSelect extends PureComponent {
 
     static propTypes = {
         // the Registry ID/Key of the Style-Select component itself.
@@ -99,10 +98,6 @@ export default class StyleSelect extends Component {
                 onSelect={this.handleOnSelect}
                 />
         );
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
 }

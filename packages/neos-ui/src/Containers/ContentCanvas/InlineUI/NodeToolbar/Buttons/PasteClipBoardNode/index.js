@@ -1,9 +1,8 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import IconButtonDropDown from '@neos-project/react-ui-components/lib/IconButtonDropDown/';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
-export default class PasteClipBoardNode extends Component {
+export default class PasteClipBoardNode extends PureComponent {
     static propTypes = {
         isDisabled: PropTypes.bool,
         className: PropTypes.string
@@ -20,10 +19,6 @@ export default class PasteClipBoardNode extends Component {
         this.handlePasteButtonClick = this.pasteClipBoardNode.bind(this);
         this.handlePasteButtonModeChange = this.changePasteBoardMode.bind(this);
         this.state = {currentMode: 'insert'};
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

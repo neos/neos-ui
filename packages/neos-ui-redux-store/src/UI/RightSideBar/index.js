@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$toggle, $set} from 'plow-js';
+import {$toggle, $set, $get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -42,4 +42,6 @@ export const reducer = handleActions({
 //
 // Export the selectors
 //
-export const selectors = {};
+export const selectors = {
+    isHidden: $get('ui.rightSideBar.isHidden')
+};

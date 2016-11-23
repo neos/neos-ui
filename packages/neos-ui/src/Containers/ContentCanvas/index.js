@@ -1,6 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import shallowCompare from 'react-addons-shallow-compare';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
@@ -45,7 +44,7 @@ const closestContextPath = el => {
     formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class ContentCanvas extends Component {
+export default class ContentCanvas extends PureComponent {
     static propTypes = {
         isFringeLeft: PropTypes.bool.isRequired,
         isFringeRight: PropTypes.bool.isRequired,
@@ -72,10 +71,6 @@ export default class ContentCanvas extends Component {
         super(props);
 
         this.onFrameChange = this.handleFrameChanges.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     componentWillMount() {

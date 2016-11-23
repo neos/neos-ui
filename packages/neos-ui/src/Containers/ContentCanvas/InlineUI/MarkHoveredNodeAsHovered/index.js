@@ -1,17 +1,12 @@
-import {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import {PureComponent, PropTypes} from 'react';
 
 import style from './style.css';
 
-export default class MarkHoveredNodeAsHovered extends Component {
+export default class MarkHoveredNodeAsHovered extends PureComponent {
     static propTypes = {
         hoveredNode: PropTypes.object,
         focusedNode: PropTypes.object
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const iframeDocument = document.getElementsByName('neos-content-main')[0].contentDocument;

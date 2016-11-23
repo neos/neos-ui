@@ -1,10 +1,9 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
 import {Broadcast, Subscriber} from 'react-broadcast';
 
-export default class ToggablePanel extends Component {
+export default class ToggablePanel extends PureComponent {
     static propTypes = {
         /**
          * This prop controls if the contents are visible or not.
@@ -44,10 +43,6 @@ export default class ToggablePanel extends Component {
         }
     }
 
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
-
     render() {
         //
         // If the `onPanelToggle` prop is provided, the component will not
@@ -73,7 +68,7 @@ export default class ToggablePanel extends Component {
     }
 }
 
-export class StatelessToggablePanel extends Component {
+export class StatelessToggablePanel extends PureComponent {
     static propTypes = {
         /**
          * This prop controls if the contents are visible or not.
@@ -118,10 +113,6 @@ export class StatelessToggablePanel extends Component {
         };
     }
 
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
-
     render() {
         const {children, className, theme} = this.props;
         const finalClassName = mergeClassNames({
@@ -140,7 +131,7 @@ export class StatelessToggablePanel extends Component {
     }
 }
 
-export class Header extends Component {
+export class Header extends PureComponent {
     static propTypes = {
         /**
          * The children which will be rendered within the header.
@@ -165,10 +156,6 @@ export class Header extends Component {
     static contextTypes = {
         onPanelToggle: PropTypes.func.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {
@@ -201,7 +188,7 @@ export class Header extends Component {
     }
 }
 
-export class Contents extends Component {
+export class Contents extends PureComponent {
     static propTypes = {
         /**
          * An optional className to be rendered on the wrapping node.
@@ -224,10 +211,6 @@ export class Contents extends Component {
     static defaultProps = {
         theme: {}
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {

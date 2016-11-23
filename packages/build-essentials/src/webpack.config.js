@@ -24,12 +24,12 @@ const webpackConfig = {
         loaders: [
             {
                 test: /\.js$/,
-                exclude: /(node_modules)/,
+                exclude: /node_modules\/((?!@neos-project).)*$/,
                 loader: 'babel'
             },
             {
                 test: /\.json$/,
-                exclude: /(node_modules)/,
+                exclude: /node_modules/,
                 loader: 'json-loader'
             },
             {

@@ -2,6 +2,7 @@
 namespace Neos\Neos\Ui\Domain\Model\Feedback;
 
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
+use TYPO3\Flow\Mvc\Controller\ControllerContext;
 
 abstract class AbstractMessageFeedback implements FeedbackInterface
 {
@@ -69,7 +70,7 @@ abstract class AbstractMessageFeedback implements FeedbackInterface
      *
      * @return mixed
      */
-    public function serializePayload()
+    public function serializePayload(ControllerContext $controllerContext)
     {
         return [
             'message' => $this->getMessage(),

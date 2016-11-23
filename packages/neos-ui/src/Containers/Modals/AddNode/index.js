@@ -69,11 +69,11 @@ export default class AddNodeModal extends Component {
         return shallowCompare(this, ...args);
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (this.props.referenceNode !== nextProps.referenceNode) {
-    //         this.setState({step: 1});
-    //     }
-    // }
+    componentWillReceiveProps(nextProps) {
+        if (this.props.referenceNode !== nextProps.referenceNode) {
+            this.setState({step: 1});
+        }
+    }
 
     constructor(...props) {
         super(...props);
@@ -89,6 +89,7 @@ export default class AddNodeModal extends Component {
         this.handleModeChange = this.handleModeChange.bind(this);
         this.handleDialogEditorValueChange = this.handleDialogEditorValueChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleBack = this.handleBack.bind(this);
     }
 
     render() {
@@ -137,30 +138,27 @@ export default class AddNodeModal extends Component {
     }
 
     renderStep2() {
-        const creationDialogElements = [];
-        const vNode = {
-            properties: this.state.elementValues
-        };
+        const creationDialogElements = this.state.selectedNodeType.ui.creationDialog.elements;
 
         return (
             <Dialog
-                actions={[this.renderCancelAction(), this.renderSaveAction()]}
-                title={'... TODO ...'}
+                actions={[this.renderBackAction(), this.renderSaveAction()]}
+                title={(<span><I18n fallback="Create new" id="createNew"/> <I18n id={this.state.selectedNodeType.ui.label} fallback={this.state.selectedNodeType.ui.label}/></span>)}
                 onRequestClose={close}
                 isOpen
                 isWide
                 >
-                {creationDialogElements.map(elementName => {
-                    const property = this.state.selectedNodeType.properties[elementName];
+                {Object.keys(creationDialogElements).map(elementName => {
+                    const element = this.state.selectedNodeType.ui.creationDialog.elements[elementName];
 
                     return (<EditorEnvelope
                         key={elementName}
-                        id={elementName}
-                        label={$get('ui.label', property)}
-                        editor={$get('ui.inspector.editor', property)}
-                        options={$get('ui.inspector.editorOptions', property)}
-                        node={vNode}
-                        onValueChange={this.handleDialogEditorValueChange}
+                        identifier={elementName}
+                        label={$get('ui.label', element)}
+                        editor={$get('ui.editor', element)}
+                        options={$get('ui.editorOptions', element)}
+                        value={this.state.elementValues[elementName] ? this.state.elementValues[elementName] : ''}
+                        commit={value => this.handleDialogEditorValueChange(elementName, value)}
                         />);
                 })}
             </Dialog>
@@ -210,6 +208,20 @@ export default class AddNodeModal extends Component {
             />);
     }
 
+    renderBackAction() {
+        return (
+            <Button
+                key="back"
+                style="lighter"
+                hoverStyle="brand"
+                onClick={this.handleBack}
+                isFocused={true}
+                >
+                <I18n fallback="Back"/>
+            </Button>
+        );
+    }
+
     renderCancelAction() {
         return (
             <Button
@@ -233,7 +245,7 @@ export default class AddNodeModal extends Component {
                 onClick={this.handleSave}
                 isFocused={true}
                 >
-                <I18n fallback="Save"/>
+                <I18n fallback="Create"/>
             </Button>
         );
     }
@@ -250,8 +262,13 @@ export default class AddNodeModal extends Component {
             this.createNode(nodeType);
         }
     }
+
     handleSave() {
         this.createNode(this.state.selectedNodeType, this.state.elementValues);
+    }
+
+    handleBack() {
+        this.setState({step: 1});
     }
 
     createNode(nodeType, initialProperties = {}) {

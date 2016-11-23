@@ -13,7 +13,7 @@ export default class EditorEnvelope extends Component {
         label: PropTypes.string.isRequired,
         editor: PropTypes.string.isRequired,
         options: PropTypes.object,
-        renderSecondaryInspector: PropTypes.func.isRequired,
+        renderSecondaryInspector: PropTypes.func,
         editorRegistry: PropTypes.object.isRequired,
 
         commit: PropTypes.func.isRequired,

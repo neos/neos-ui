@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
@@ -17,7 +16,7 @@ import style from './style.css';
 }), {
     toggleNodeTypeGroup: actions.UI.AddNodeModal.toggleGroup
 })
-class NodeTypeGroupPanel extends Component {
+class NodeTypeGroupPanel extends PureComponent {
     static propTypes = {
         toggleNodeTypeGroup: PropTypes.func.isRequired,
         collapsedGroups: PropTypes.array.isRequired,
@@ -34,13 +33,6 @@ class NodeTypeGroupPanel extends Component {
         super(props);
 
         this.handleToggleGroup = this.handleToggleGroup.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        //
-        // ToDo: Revisit later, shallow compare may not be suitable for these nested objects
-        //
-        return shallowCompare(this, ...args);
     }
 
     render() {

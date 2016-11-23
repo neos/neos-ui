@@ -1,12 +1,11 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 import style from './style.css';
 
-export default class FlashMessage extends Component {
+export default class FlashMessage extends PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
         message: PropTypes.string.isRequired,
@@ -20,10 +19,6 @@ export default class FlashMessage extends Component {
 
         this.state = {isVisible: false};
         this.handleCloseClick = this.commenceClose.bind(this);
-    }
-
-    shouldComponentUpdate(newProps, newState) {
-        return shallowCompare(this, newProps, newState);
     }
 
     render() {

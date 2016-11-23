@@ -51,6 +51,16 @@ class NodeService
     }
 
     /**
+     * Helper method to check if a given node is a document node.
+     *
+     * @param  NodeInterface $node The node to check
+     * @return boolean             A boolean which indicates if the given node is a document node.
+     */
+    public function isDocument(NodeInterface $node) {
+        return ($this->getClosestDocument($node) === $node);
+    }
+
+    /**
      * Converts a given context path to a node object
      *
      * @param string $contextPath

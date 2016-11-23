@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
@@ -52,7 +51,7 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class AddNodeModal extends Component {
+export default class AddNodeModal extends PureComponent {
     static propTypes = {
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
@@ -111,6 +110,9 @@ export default class AddNodeModal extends Component {
             nodeTypesRegistry,
             getAllowedNodeTypesByModeGenerator
         } = this.props;
+        const actions = [];
+        const baseNode = mode === 'insert' ? referenceNode : referenceNodeParent;
+        const parentNode = mode === 'insert' ? referenceNodeParent : referenceNodeGrandParent;
 
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const activeMode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
@@ -304,5 +306,4 @@ export default class AddNodeModal extends Component {
         persistChange(change);
         handleClose();
     }
-
 }

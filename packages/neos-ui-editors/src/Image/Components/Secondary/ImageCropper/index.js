@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import ReactCrop from 'react-image-crop';
 
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
@@ -10,7 +9,7 @@ import AspectRatioDropDown from './AspectRatioDropDown/index';
 import CropConfiguration from './model.js';
 import style from './style.css';
 
-class AspectRatioItem extends Component {
+class AspectRatioItem extends PureComponent {
     static propTypes = {
         key: PropTypes.any,
         width: PropTypes.number.isRequired,
@@ -23,10 +22,6 @@ class AspectRatioItem extends Component {
 
         this.handleWidthInputChange = this.handleInputChange.bind(this, 'width');
         this.handleHeightInputChange = this.handleInputChange.bind(this, 'height');
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {
@@ -65,7 +60,7 @@ class AspectRatioItem extends Component {
     }
 }
 
-export default class ImageCropper extends Component {
+export default class ImageCropper extends PureComponent {
     static propTypes = {
         onComplete: PropTypes.func.isRequired,
         sourceImage: PropTypes.object.isRequired,
@@ -84,10 +79,6 @@ export default class ImageCropper extends Component {
         this.handleSetAspectRatio = this.setAspectRatio.bind(this);
         this.handleClearAspectRatio = this.clearAspectRatio.bind(this);
         this.handleFlipAspectRatio = this.flipAspectRatio.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     componentWillReceiveProps(nextProps) {

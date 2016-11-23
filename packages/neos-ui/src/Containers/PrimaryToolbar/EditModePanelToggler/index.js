@@ -1,9 +1,8 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import I18n from '@neos-project/neos-ui-i18n';
 
-export default class EditModePanelToggler extends Component {
+export default class EditModePanelToggler extends PureComponent {
     static propTypes = {
         className: PropTypes.string
     };
@@ -12,10 +11,6 @@ export default class EditModePanelToggler extends Component {
         super(props);
 
         this.handleEditModeToggleClick = this.handleEditModeToggleClick.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

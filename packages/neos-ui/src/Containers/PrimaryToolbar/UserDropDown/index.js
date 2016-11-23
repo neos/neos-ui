@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
@@ -12,14 +11,10 @@ import style from './style.css';
 @connect($transform({
     userName: $get('user.name.fullName')
 }))
-export default class UserDropDown extends Component {
+export default class UserDropDown extends PureComponent {
     static propTypes = {
         userName: PropTypes.string.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         return (

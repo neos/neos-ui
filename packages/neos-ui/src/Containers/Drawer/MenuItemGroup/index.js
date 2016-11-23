@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
@@ -9,7 +8,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 import MenuItem from '../MenuItem/index';
 import style from '../style.css';
 
-export default class MenuItemGroup extends Component {
+export default class MenuItemGroup extends PureComponent {
     static propTypes = {
         icon: PropTypes.string,
         label: PropTypes.string.isRequired,
@@ -33,10 +32,6 @@ export default class MenuItemGroup extends Component {
     constructor() {
         super();
         this.handleClick = ::this.handleClick;
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return shallowCompare(this.props, nextProps);
     }
 
     handleClick() {

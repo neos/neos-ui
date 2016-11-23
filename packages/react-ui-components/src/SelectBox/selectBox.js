@@ -1,8 +1,7 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import isFunction from 'lodash.isfunction';
 
-export default class SelectBox extends Component {
+export default class SelectBox extends PureComponent {
     static propTypes = {
         /**
          * This prop represents the current selected value.
@@ -86,10 +85,6 @@ export default class SelectBox extends Component {
         const {value} = this.props;
         this.loadOptions(); // initially load options
         this.select(value, false);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     componentDidUpdate(prevProps, prevState) {

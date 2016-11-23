@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
@@ -7,7 +6,7 @@ import {Broadcast, Subscriber} from 'react-broadcast';
 import ShallowDropDownHeader from './header.js';
 import ShallowDropDownContents from './contents.js';
 
-export class DropDownWrapper extends Component {
+export class DropDownWrapper extends PureComponent {
     static propTypes = {
         /**
          * An optional `className` to attach to the wrapper.
@@ -42,7 +41,6 @@ export class DropDownWrapper extends Component {
     };
 
     static childContextTypes = {
-        isOpen: PropTypes.bool.isRequired,
         toggleDropDown: PropTypes.func.isRequired,
         closeDropDown: PropTypes.func.isRequired
     };
@@ -67,10 +65,6 @@ export class DropDownWrapper extends Component {
             toggleDropDown: this.handleToggle,
             closeDropDown: this.handleClose
         };
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {
@@ -103,7 +97,7 @@ export class DropDownWrapper extends Component {
     }
 }
 
-export class ContextDropDownHeader extends Component {
+export class ContextDropDownHeader extends PureComponent {
     static contextTypes = {
         toggleDropDown: PropTypes.func.isRequired
     };
@@ -113,12 +107,8 @@ export class ContextDropDownHeader extends Component {
             <ShallowDropDownHeader isOpen={isOpen} {...this.props} {...this.context}/>
         }</Subscriber>);
     }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 }
-export class ContextDropDownContents extends Component {
+export class ContextDropDownContents extends PureComponent {
     static contextTypes = {
         closeDropDown: PropTypes.func.isRequired
     };
@@ -127,10 +117,6 @@ export class ContextDropDownContents extends Component {
         return (<Subscriber channel="isDropdownOpen">{ isOpen =>
             <ShallowDropDownContents isOpen={isOpen} {...this.props} {...this.context}/>
         }</Subscriber>);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 }
 

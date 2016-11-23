@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {$transform} from 'plow-js';
@@ -9,7 +8,7 @@ import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 }), {
     openAddNodeModal: actions.UI.AddNodeModal.open
 })
-export default class AddNode extends Component {
+export default class AddNode extends PureComponent {
     static propTypes = {
         node: PropTypes.object,
         className: PropTypes.string,
@@ -20,10 +19,6 @@ export default class AddNode extends Component {
         super(props);
 
         this.handleOpenModalBtnClick = this.handleOpenModalBtnClick.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

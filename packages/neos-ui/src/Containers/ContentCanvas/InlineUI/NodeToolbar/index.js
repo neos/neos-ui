@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import debounce from 'lodash.debounce';
 
@@ -31,7 +30,7 @@ export const position = nodeContextPath => {
     return {x: 0, y: 0};
 };
 
-export default class NodeToolbar extends Component {
+export default class NodeToolbar extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object
     };
@@ -40,10 +39,6 @@ export default class NodeToolbar extends Component {
         const iframeWindow = document.getElementsByName('neos-content-main')[0].contentWindow;
 
         iframeWindow.addEventListener('resize', debounce(() => this.forceUpdate(), 20));
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

@@ -1,11 +1,10 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import style from './style.css';
 
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import I18n from '@neos-project/neos-ui-i18n';
 
-export default class Controls extends Component {
+export default class Controls extends PureComponent {
     static propTypes = {
         chooseFromLocalFilesystemLabel: PropTypes.string,
         onChooseFromMedia: PropTypes.func.isRequired,
@@ -13,10 +12,6 @@ export default class Controls extends Component {
         onRemove: PropTypes.func.isRequired,
         onCrop: PropTypes.func
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         return (

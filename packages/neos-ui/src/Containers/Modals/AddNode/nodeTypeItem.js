@@ -1,14 +1,27 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import omit from 'lodash.omit';
+import {$transform, $get} from 'plow-js';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import * as NeosPropTypes from '@neos-project/react-proptypes';
+
 import I18n from '@neos-project/neos-ui-i18n';
+
+const {referenceNodeSelector} = selectors.UI.AddNodeModal;
 
 import style from './style.css';
 
+@connect($transform({
+    referenceNode: referenceNodeSelector,
+    mode: $get('ui.addNodeModal.mode')
+}), {
+    closeModal: actions.UI.AddNodeModal.close,
+    persistChange: actions.Changes.persistChange
+})
 class NodeTypeItem extends Component {
     static propTypes = {
         onSelect: PropTypes.func.isRequired,
@@ -25,23 +38,15 @@ class NodeTypeItem extends Component {
         this.handleNodeTypeClick = this.handleNodeTypeClick.bind(this);
     }
 
-    shouldComponentUpdate(...args) {
-        //
-        // ToDo: Revisit later, shallow compare may not be suitable for these nested objects
-        //
-        return shallowCompare(this, ...args);
-    }
-
     render() {
         const {
             nodeType,
             ...restProps
         } = this.props;
-        const rest = omit(restProps, ['nodeType']);
         const {ui} = nodeType;
 
         return (
-            <Grid.Col className={style.gridItem} width="third" {...rest}>
+            <Grid.Col className={style.gridItem} width="third" {...restProps}>
                 <Button
                     hoverStyle="brand"
                     style="clean"

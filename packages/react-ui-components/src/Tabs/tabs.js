@@ -1,9 +1,8 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 
-export default class Tabs extends Component {
+export default class Tabs extends PureComponent {
     static propTypes = {
         /**
          * The index of the active tab, defaults to 0.
@@ -59,10 +58,6 @@ export default class Tabs extends Component {
                 activeTab: newActiveTab
             });
         }
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {
@@ -137,7 +132,7 @@ export default class Tabs extends Component {
     }
 }
 
-export class TabMenuItem extends Component {
+export class TabMenuItem extends PureComponent {
     static propTypes = {
         /**
          * The index which will be handed over to the onClick handler.
@@ -188,10 +183,6 @@ export class TabMenuItem extends Component {
         super(props);
 
         this.handleClick = this.handleClick.bind(this);
-    }
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
     }
 
     render() {

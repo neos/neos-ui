@@ -1,16 +1,11 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 
-export class Node extends Component {
+export class Node extends PureComponent {
     static propTypes = {
         children: PropTypes.node
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {children, ...restProps} = this.props;
@@ -24,7 +19,7 @@ export class Node extends Component {
     }
 }
 
-export class Header extends Component {
+export class Header extends PureComponent {
     static propTypes = {
         item: PropTypes.shape({
             hasChildren: PropTypes.bool.isRequired,
@@ -55,10 +50,6 @@ export class Header extends Component {
         //
         IconComponent: PropTypes.any.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {
@@ -131,17 +122,13 @@ export class Header extends Component {
     }
 }
 
-export class Contents extends Component {
+export class Contents extends PureComponent {
     static propTypes = {
         children: PropTypes.node,
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'contents': PropTypes.string
         }).isRequired/* eslint-enable quote-props */
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     render() {
         const {theme, children} = this.props;

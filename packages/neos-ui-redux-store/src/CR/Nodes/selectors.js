@@ -1,18 +1,29 @@
 import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
+import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
 
+const nodes = $get(['cr', 'nodes', 'byContextPath']);
 const focused = $get('cr.nodes.focused.contextPath');
 const hovered = $get('cr.nodes.hovered.contextPath');
 
-export const currentDocumentNode = $get('ui.contentCanvas.contextPath');
+const parentNodeContextPath = contextPath => {
+    if (typeof contextPath !== 'string') {
+        return null;
+    }
+
+    const [path, context] = contextPath.split('@');
+
+    return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
+};
 
 export const isDocumentNodeSelectedSelector = createSelector(
     [
         focused,
-        currentDocumentNode
+        getCurrentContentCanvasContextPath
     ],
-    (focused, currentDocumentNode) =>
-        !focused || (focused === currentDocumentNode)
+    (focused, getCurrentContentCanvasContextPath) => {
+        return !focused || (focused === getCurrentContentCanvasContextPath);
+    }
 );
 
 export const nodeByContextPath = state => contextPath => {
@@ -25,13 +36,25 @@ export const nodeByContextPath = state => contextPath => {
     return node;
 };
 
+export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
+    [
+        nodes
+    ],
+    nodesMap => {
+        const documentSubNodeTypes = nodeTypesRegistry.getSubTypesOf('TYPO3.Neos:Document');
+        const nodes = nodesMap.toJS();
+
+        return Object.values(nodes).filter(node => documentSubNodeTypes.includes(node.nodeType));
+    }
+);
+
 export const focusedNodePathSelector = createSelector(
     [
         focused,
-        currentDocumentNode
+        getCurrentContentCanvasContextPath
     ],
-    (focused, currentDocumentNode) => {
-        return focused || currentDocumentNode;
+    (focused, getCurrentContentCanvasContextPath) => {
+        return focused || getCurrentContentCanvasContextPath;
     }
 );
 
@@ -61,14 +84,6 @@ export const byContextPathSelector = defaultMemoize(
         getNodeByContextPath => getNodeByContextPath(contextPath)
     )
 );
-
-const parentNodeContextPath = contextPath => {
-    if (typeof contextPath !== 'string') {
-        return null;
-    }
-    const [path, context] = contextPath.split('@');
-    return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
-};
 
 export const parentNodeSelector = state => baseNode =>
     byContextPathSelector(parentNodeContextPath(baseNode.contextPath))(state);

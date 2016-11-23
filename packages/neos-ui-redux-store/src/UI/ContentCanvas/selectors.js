@@ -1,6 +1,7 @@
 import {createSelector} from 'reselect';
 import {$get} from 'plow-js';
 
+export const getCurrentContentCanvasContextPath = $get('ui.contentCanvas.contextPath');
 export const currentlyEditedPropertyName = $get('ui.contentCanvas.currentlyEditedPropertyName');
 
 export const formattingUnderCursor = createSelector(

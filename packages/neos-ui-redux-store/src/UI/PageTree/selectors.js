@@ -2,12 +2,12 @@ import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
 
 import {selectors as nodes} from '../../CR/Nodes/index';
+import {getCurrentContentCanvasContextPath} from './../ContentCanvas/selectors';
 
-const getActive = $get('ui.contentCanvas.contextPath');
-const getFocused = $get('ui.pageTree.isFocused');
-const getUncollapsed = $get('ui.pageTree.uncollapsed');
-const getLoading = $get('ui.pageTree.loading');
-const getErrors = $get('ui.pageTree.errors');
+export const getFocused = $get('ui.pageTree.isFocused');
+export const getUncollapsed = $get('ui.pageTree.uncollapsed');
+export const getLoading = $get('ui.pageTree.loading');
+export const getErrors = $get('ui.pageTree.errors');
 
 export const getFocusedNodeContextPathSelector = createSelector(
     [
@@ -16,12 +16,19 @@ export const getFocusedNodeContextPathSelector = createSelector(
     focusedNodeContextPath => focusedNodeContextPath
 );
 
+export const getUncollapsedContextPaths = createSelector(
+    [
+        getUncollapsed
+    ],
+    list => list.toJS()
+);
+
 //
 // TODO: NODETYPE REFACTORING - Fix calls of this
 //
 export const getTreeNodeSelector = createSelector(
     [
-        getActive,
+        getCurrentContentCanvasContextPath,
         getFocused,
         getUncollapsed,
         getLoading,

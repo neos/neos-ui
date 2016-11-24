@@ -4,11 +4,11 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get, $or} from 'plow-js';
 
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
-
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+
+import Button from '@neos-project/react-ui-components/lib/Button/index';
+import buttonStyles from '@neos-project/react-ui-components/lib/Button/style.css';
 
 
 const {isDocumentNodeSelectedSelector} = selectors.CR.Nodes;
@@ -63,19 +63,16 @@ export default class EditModePanel extends Component {
 
         const editModes = editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isEditingMode);
         const previewModes = editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isPreviewMode);
-        console.log(editModes);
-        console.log(previewModes);
-
 
         return (
             <div className={classNames}>
                 <div className={style.editModePanel__editingModes}>
                     <p>Editing Modes</p>
-                    {editModes.map((editMode) => <button>{editMode.id}</button>)}
+                    {editModes.map((editMode) => <Button style="lighter" className={editMode.id === editPreviewMode ? buttonStyles['btn--brand'] : ''} /*onClick={this.handleDiscard}*/>{editMode.id}</Button>)}
                 </div>
                 <div className={style.editModePanel__previewCentral}>
                     <p>Preview Central</p>
-                    {previewModes.map((previewMode) => <button>{previewMode.id}</button>)}
+                    {previewModes.map((previewMode) => <Button style="lighter" className={previewMode.id === editPreviewMode ? buttonStyles['btn--brand'] : ''} /*onClick={this.handleDiscard}*/>{previewMode.id}</Button>)}
                 </div>
 
             </div>

@@ -49,7 +49,6 @@ export default class Node extends PureComponent {
         this.handleNodeToggle = this.handleNodeToggle.bind(this);
         this.handleNodeClick = this.handleNodeClick.bind(this);
         this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
-        this.handleDoubleClick = this.handleDoubleClick.bind(this);
     }
 
     render() {
@@ -62,7 +61,6 @@ export default class Node extends PureComponent {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     onLabelClick={this.handleNodeLabelClick}
-                    onDoubleClick={this.handleDoubleClick}
                     />
                 {item.isCollapsed ? null : (
                     <Tree.Node.Contents>
@@ -106,10 +104,6 @@ export default class Node extends PureComponent {
         const {item, onNodeToggle} = this.props;
 
         onNodeToggle(item.contextPath);
-    }
-
-    handleDoubleClick() {
-        console.log('onDoubleClick');
     }
 
     handleNodeClick() {

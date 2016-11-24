@@ -11,7 +11,7 @@ use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderNode;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 abstract class AbstractCreate extends AbstractChange
@@ -232,7 +232,7 @@ abstract class AbstractCreate extends AbstractChange
 
 
         if ($nodeType->isOfType('TYPO3.Neos:Content')) {
-            $renderNode = new RenderNode();
+            $renderNode = new RenderContentOutOfBand();
             $renderNode->setNode($node);
             $renderNode->setParentDomAddress($this->getParentDomAddress());
             $renderNode->setSiblingDomAddress($this->getSiblingDomAddress());

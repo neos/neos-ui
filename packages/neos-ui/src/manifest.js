@@ -384,7 +384,7 @@ manifest('main', {}, globalRegistry => {
     // When the server advices to render a new node, put the delivered html to the
     // corrent place inside the DOM
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderNode', feedbackPayload => {
+    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderContentOutOfBand', feedbackPayload => {
         const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
         const parentElement = parentDomAddress && dom.findNode(
             parentDomAddress.contextPath,

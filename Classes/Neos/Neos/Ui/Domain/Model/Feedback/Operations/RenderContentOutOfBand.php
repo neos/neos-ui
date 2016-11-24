@@ -9,7 +9,7 @@ use TYPO3\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use TYPO3\TypoScript\Core\Cache\ContentCache;
 
-class RenderNode implements FeedbackInterface
+class RenderContentOutOfBand implements FeedbackInterface
 {
     /**
      * @var NodeInterface
@@ -132,7 +132,7 @@ class RenderNode implements FeedbackInterface
      */
     public function getType()
     {
-        return 'Neos.Neos.Ui:RenderNode';
+        return 'Neos.Neos.Ui:RenderContentOutOfBand';
     }
 
     /**
@@ -153,7 +153,7 @@ class RenderNode implements FeedbackInterface
      */
     public function isSimilarTo(FeedbackInterface $feedback)
     {
-        if (!$feedback instanceof RenderNode) {
+        if (!$feedback instanceof RenderContentOutOfBand) {
             return false;
         }
 

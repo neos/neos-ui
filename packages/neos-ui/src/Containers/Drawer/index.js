@@ -37,7 +37,8 @@ export default class Drawer extends PureComponent {
                         label: PropTypes.string.isRequired,
                         uri: PropTypes.string.isRequired,
                         target: PropTypes.string,
-                        isActive: PropTypes.bool.isReqired
+                        isActive: PropTypes.bool.isReqired,
+                        skipI18n: PropTypes.bool.isReqired
                     })
                 )
             })

@@ -31,7 +31,8 @@ const add = createAction(ADD, nodeMap => ({nodeMap}));
  * Marks a node as focused
  *
  * @param {String} contextPath The context path of the focused node
- * @param {String} fusionPath The fusion path of the focused node
+ * @param {String} fusionPath The fusion path of the focused node, needed for out-of-band-rendering, e.g. when
+ *                            adding new nodes
  */
 const focus = createAction(FOCUS, (contextPath, fusionPath) => ({contextPath, fusionPath}));
 

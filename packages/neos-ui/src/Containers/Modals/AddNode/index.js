@@ -265,7 +265,7 @@ export default class AddNodeModal extends PureComponent {
         this.setState({step: 1});
     }
 
-    createNode(nodeType, initialProperties = {}) {
+    createNode(nodeType, data = {}) {
         const {
             referenceNode,
             persistChange,
@@ -291,7 +291,7 @@ export default class AddNodeModal extends PureComponent {
             subject: referenceNode.contextPath,
             payload: {
                 nodeType: nodeType.name,
-                initialProperties
+                data
             }
         };
         persistChange(change);

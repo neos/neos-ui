@@ -1,12 +1,13 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeType;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Utility as NodeUtility;
 use TYPO3\TYPO3CR\Domain\Service\NodeServiceInterface;
 use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
+use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 
@@ -26,11 +27,11 @@ abstract class AbstractCreate extends AbstractChange
     protected $nodeTypeManager;
 
     /**
-     * A set of properties, that will be saved with the new node
+     * Incoming data from creationDialog
      *
      * @var array
      */
-    protected $initialProperties = [];
+    protected $data = [];
 
     /**
      * An (optional) name that will be used for the new node path
@@ -74,23 +75,23 @@ abstract class AbstractCreate extends AbstractChange
     }
 
     /**
-     * Set the initial properties
+     * Set the data
      *
-     * @param array $initialProperties
+     * @param array $data
      */
-    public function setInitialProperties(array $initialProperties)
+    public function setData(array $data)
     {
-        $this->initialProperties = $initialProperties;
+        $this->data = $data;
     }
 
     /**
-     * Get the initial properties
+     * Get the data
      *
      * @return array
      */
-    public function getInitialProperties()
+    public function getData()
     {
-        return $this->initialProperties;
+        return $this->data;
     }
 
     /**
@@ -154,28 +155,36 @@ abstract class AbstractCreate extends AbstractChange
     protected function createNode(NodeInterface $parent)
     {
         $nodeType = $this->getNodeType();
-        $initialProperties = $this->getInitialProperties();
         $name = $this->getName() ?: $this->nodeService->generateUniqueNodeName($parent->getPath());
-
-        //
-        // If we're about to create a document, check for the presence of the uriPathSegment property first
-        // and create it, if it's missing
-        //
-        if ($nodeType->isOfType('TYPO3.Neos:Document') && !isset($initialProperties['uriPathSegment'])) {
-            if (!isset($initialProperties['title'])) {
-                throw new \IllegalArgumentException(
-                    'You must either provide a title or a uriPathSegment in order to create a document.', 1452103891);
-            }
-
-            $initialProperties['uriPathSegment'] = NodeUtility::renderValidNodeName($initialProperties['title']);
-        }
 
         $node = $parent->createNode($name, $nodeType);
 
-        foreach ($initialProperties as $key => $value) {
-            $node->setProperty($key, $value);
-        }
+        $this->applyNodeCreationHandlers($node);
 
         return $node;
+    }
+
+    /**
+     * Apply nodeCreationHandlers
+     *
+     * @param NodeInterface $node
+     * @throws InvalidNodeCreationHandlerException
+     * @return void
+     */
+    protected function applyNodeCreationHandlers(NodeInterface $node) {
+        $data = $this->getData() ?: [];
+        $nodeType = $node->getNodeType();
+        if (isset($nodeType->getOptions()['nodeCreationHandlers'])) {
+            $nodeCreationHandlers = $nodeType->getOptions()['nodeCreationHandlers'];
+            if (is_array($nodeCreationHandlers)) {
+                foreach($nodeCreationHandlers as $nodeCreationHandlerConfiguration) {
+                    $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
+                    if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
+                        throw new InvalidNodeCreationHandlerException(sprintf('Expected NodeCreationHandlerInterface but got "%s"', get_class($nodeCreationHandler)), 1364759956);
+                    }
+                    $nodeCreationHandler->handle($node, $data);
+                }
+            }
+        }
     }
 }

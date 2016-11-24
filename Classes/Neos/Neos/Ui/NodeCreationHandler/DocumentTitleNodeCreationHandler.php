@@ -12,11 +12,10 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
      * Set the node title for the newly created Document node
      *
      * @param NodeInterface $node The newly created node
-     * @param array $configuration NodeType configuration
      * @param array $data incoming data from the creationDialog
      * @return void
      */
-    public function handle(NodeInterface $node, array $configuration, array $data)
+    public function handle(NodeInterface $node, array $data)
     {
         if(isset($data['title']) && $node->getNodeType()->isOfType('TYPO3.Neos:Document')) {
             $node->setProperty('title', $data['title']);

@@ -172,17 +172,18 @@ abstract class AbstractCreate extends AbstractChange
      * @return void
      */
     protected function applyNodeCreationHandlers(NodeInterface $node) {
-        $data = $this->getData() || [];
+        $data = $this->getData() ?: [];
         $nodeType = $node->getNodeType();
-        $configuration = $nodeType->getFullConfiguration();
-        $nodeCreationHandlers = $configuration['options']['nodeCreationHandlers'];
-        if (is_array($nodeCreationHandlers)) {
-            foreach($nodeCreationHandlers as $nodeCreationHandlerConfiguration) {
-                $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
-                if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
-                    throw new InvalidNodeCreationHandlerException(sprintf('Expected NodeCreationHandlerInterface but got "%s"', get_class($nodeCreationHandler)), 1364759956);
+        if (isset($nodeType->getOptions()['nodeCreationHandlers'])) {
+            $nodeCreationHandlers = $nodeType->getOptions()['nodeCreationHandlers'];
+            if (is_array($nodeCreationHandlers)) {
+                foreach($nodeCreationHandlers as $nodeCreationHandlerConfiguration) {
+                    $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
+                    if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
+                        throw new InvalidNodeCreationHandlerException(sprintf('Expected NodeCreationHandlerInterface but got "%s"', get_class($nodeCreationHandler)), 1364759956);
+                    }
+                    $nodeCreationHandler->handle($node, $data);
                 }
-                $nodeCreationHandler->handle($node, $configuration, $data);
             }
         }
     }

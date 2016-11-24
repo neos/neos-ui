@@ -1,5 +1,6 @@
 import React from 'react';
 import {$get} from 'plow-js';
+import omit from 'lodash.omit';
 
 import hideDisallowedToolbarComponents from './hideDisallowedToolbarComponents';
 
@@ -22,10 +23,10 @@ export default richtextToolbarRegistry => {
             .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds, formattingUnderCursor))
             .map((componentDefinition, index) => {
                 const {component, formattingRule, callbackPropName, ...props} = componentDefinition;
+                const restProps = omit(props, ['isVisibleWhen']);
                 const isActive = formattingRule && $get(formattingRule, formattingUnderCursor) === richtextToolbarRegistry.TRISTATE_ON;
                 const finalProps = {
-                    ...props,
-                    formattingRule,
+                    ...restProps,
                     [callbackPropName]: () => onToggleFormat(formattingRule)
                 };
 

@@ -24,7 +24,7 @@ import style from './style.css';
         $get('ui.fullScreen.isFullScreen')
     )
 }), {
-    //toggleFullScreen: actions.UI.FullScreen.toggle
+    setEditPreviewMode: actions.UI.EditPreviewMode.set
 })
 @neos(globalRegistry => ({
     editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
@@ -42,6 +42,10 @@ export default class EditModePanel extends Component {
         return shallowCompare(this, ...args);
     }
 
+    handleEditPreviewModeClick(mode) {
+        return () => this.props.setEditPreviewMode(mode);
+    }
+
     render() {
         const {
             isFringedLeft,
@@ -56,10 +60,6 @@ export default class EditModePanel extends Component {
             [style['editModePanel--isFringeRight']]: isFringedRight,
             [style['editModePanel--isHidden']]: isHidden
         });
-        // const previewButtonClassNames = mergeClassNames({
-        //     [style.secondaryToolbar__buttonLink]: true,
-        //     [style['secondaryToolbar__buttonLink--isDisabled']]: !previewUrl
-        // });
 
         const editModes = editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isEditingMode);
         const previewModes = editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isPreviewMode);
@@ -68,13 +68,12 @@ export default class EditModePanel extends Component {
             <div className={classNames}>
                 <div className={style.editModePanel__editingModes}>
                     <p>Editing Modes</p>
-                    {editModes.map((editMode) => <Button style="lighter" className={editMode.id === editPreviewMode ? buttonStyles['btn--brand'] : ''} /*onClick={this.handleDiscard}*/>{editMode.id}</Button>)}
+                    {editModes.map((editMode) => <Button style="lighter" className={editMode.id === editPreviewMode ? buttonStyles['btn--brand'] : ''} onClick={this.handleEditPreviewModeClick(editMode.id)}>{editMode.id}</Button>)}
                 </div>
                 <div className={style.editModePanel__previewCentral}>
                     <p>Preview Central</p>
-                    {previewModes.map((previewMode) => <Button style="lighter" className={previewMode.id === editPreviewMode ? buttonStyles['btn--brand'] : ''} /*onClick={this.handleDiscard}*/>{previewMode.id}</Button>)}
+                    {previewModes.map((previewMode) => <Button style="lighter" className={previewMode.id === editPreviewMode ? buttonStyles['btn--brand'] : ''} onClick={this.handleEditPreviewModeClick(previewMode.id)}>{previewMode.id}</Button>)}
                 </div>
-
             </div>
         );
     }

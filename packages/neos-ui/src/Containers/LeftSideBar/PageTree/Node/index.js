@@ -31,10 +31,6 @@ export default class Node extends PureComponent {
             children: PropTypes.arrayOf(
                 PropTypes.string
             ),
-            isDblClick: PropTypes.bool
-
-            // @todo treeBind
-            // @todo inputActive
         }),
         getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
@@ -102,31 +98,17 @@ export default class Node extends PureComponent {
 
     handleNodeToggle() {
         const {item, onNodeToggle} = this.props;
-
         onNodeToggle(item.contextPath);
     }
 
     handleNodeClick() {
         const {item, onNodeFocus} = this.props;
-        onNodeFocus(item.uri);
+        onNodeFocus(item.contextPath);
     }
 
     handleNodeLabelClick() {
         const {item, onNodeFocus, onNodeClick} = this.props;
-
         onNodeFocus(item.contextPath);
         onNodeClick(item.uri, item.contextPath);
-
-        if (this.props.item.isFocused) {
-            console.info('isFocused');
-        } else {
-            console.info('isFocused NOT');
-        }
-
-        if (this.props.item.isActive) {
-            console.info('isActive');
-        } else {
-            console.info('isActive NOT');
-        }
     }
 }

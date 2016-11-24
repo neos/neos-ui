@@ -6,7 +6,7 @@
     "require": {
         "typo3/flow": "*",
         "typo3/neos": "*",
-        "neos/neos-ui-compiled": "*"
+        "neos/neos-ui-compiled": "dev-master"
     },
     "provide": {
         "flowpack/neos-frontendlogin": "*"

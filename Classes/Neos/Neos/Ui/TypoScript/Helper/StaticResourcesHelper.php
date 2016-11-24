@@ -19,9 +19,9 @@ class StaticResourcesHelper implements ProtectedContextAwareInterface
     public function compiledResourcePackage()
     {
         if ($this->frontendDevelopmentMode) {
-            return 'Neos.Neos.UI';
+            return 'Neos.Neos.Ui';
         } else {
-            return 'Neos.Neos.UI.Compiled';
+            return 'Neos.Neos.Ui.Compiled';
         }
     }
 

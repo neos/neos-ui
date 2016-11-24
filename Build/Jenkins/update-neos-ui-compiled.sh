@@ -14,14 +14,8 @@ set -e
 nvm install
 nvm use
 
-CURRENT_BRANCH_TAG_NAME=`git symbolic-ref -q --short HEAD`
 GIT_SHA1=`git rev-parse HEAD`
 
-
-if [ "$CURRENT_BRANCH_TAG_NAME" != "master" ]; then
-    echo "Current branch name is $CURRENT_BRANCH_TAG_NAME; the script only runs on master so far."
-    exit 1
-fi
 
 npm install
 npm run build
@@ -36,5 +30,5 @@ cp -Rf Resources/Public/Styles/* tmp_compiled_pkg/Resources/Public/Styles
 
 cd tmp_compiled_pkg
 git add Resources/Public/
-git commit -m "Compile Neos UI - $CURRENT_BRANCH_TAG_NAME / $GIT_SHA1"
+git commit -m "Compile Neos UI - $GIT_SHA1"
 git push

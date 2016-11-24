@@ -40,7 +40,7 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
 };
 
 @connect($transform({
-    reference: $get('ui.addNodeModal.reference'),
+    domContext: $get('ui.addNodeModal.domContext'),
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
     referenceNodeParent: selectors.UI.AddNodeModal.referenceNodeParentSelector,
     referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
@@ -54,15 +54,10 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
 }))
 export default class AddNodeModal extends PureComponent {
     static propTypes = {
-        reference: PropTypes.shape({
-            subject: PropTypes.shape({
-                contextPath: PropTypes.string.isRequired,
-                fusionPath: PropTypes.string
-            }).isRequired,
-            collection: PropTypes.shape({
-                contextPath: PropTypes.string.isRequired,
-                fusionPath: PropTypes.string
-            })
+        domContext: PropTypes.shape({
+            parentDomAddress: NeosPropTypes.renderedNodeDomAddress.isRequired,
+            nextSiblingDomAddress: NeosPropTypes.renderedNodeDomAddress,
+            previousSiblingDomAddress: NeosPropTypes.renderedNodeDomAddress
         }),
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
@@ -121,7 +116,6 @@ export default class AddNodeModal extends PureComponent {
 
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const activeMode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
-
         const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypesByMode[activeMode]);
 
         return (
@@ -282,7 +276,8 @@ export default class AddNodeModal extends PureComponent {
         const {
             nodeTypesRegistry,
             getAllowedNodeTypesByModeGenerator,
-            reference,
+            referenceNode,
+            domContext,
             persistChange,
             handleClose
         } = this.props;
@@ -306,10 +301,12 @@ export default class AddNodeModal extends PureComponent {
 
         const change = {
             type: changeType,
-            subject: $get('subject.contextPath', reference),
+            subject: $get('contextPath', referenceNode),
             payload: {
-                referenceData: reference.toJS(),
-                nodeType: nodeType.name,
+                parentDomAddress: $get('parentDomAddress', domContext),
+                previousSiblingDomAddress: $get('previousSiblingDomAddress', domContext),
+                nextSiblingDomAddress: $get('nextSiblingDomAddress', domContext),
+                nodeType: $get('name', nodeType),
                 data
             }
         };

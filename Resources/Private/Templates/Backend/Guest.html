@@ -1,7 +1,7 @@
 <f:section name="guestFrameApplication">
     <script>window.neos = window.parent.neos;</script>
-    <script src="{f:uri.resource(path: 'resource://Neos.Neos.Ui/Public/JavaScript/Vendor.js')}"></script>
+    <script src="{f:uri.resource(path: 'JavaScript/Vendor.js', package: compiledResourcePackage, localize: false)}"></script>
     <script src="{f:uri.resource(path: 'resource://Neos.Neos.Ui/Public/Plugins/ckeditor/ckeditor.js')}"></script>
-    <script src="{f:uri.resource(path: 'resource://Neos.Neos.Ui/Public/JavaScript/Guest.js')}"></script>
-    <link rel="stylesheet" href="{f:uri.resource(path: 'resource://Neos.Neos.Ui/Public/Styles/Host.css')}">
+    <script src="{f:uri.resource(path: 'JavaScript/Guest.js', package: compiledResourcePackage, localize: false)}"></script>
+    <link rel="stylesheet" href="{f:uri.resource(path: 'Styles/Host.css', package: compiledResourcePackage, localize: false)}">
 </f:section>

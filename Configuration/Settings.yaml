@@ -14,6 +14,7 @@ TYPO3:
   TypoScript:
     defaultContext:
       'Neos.Ui.Activation': 'Neos\Neos\Ui\TypoScript\Helper\ActivationHelper'
+      'Neos.Ui.StaticResources': 'Neos\Neos\Ui\TypoScript\Helper\StaticResourcesHelper'
       'Neos.Ui.Sites': 'Neos\Neos\Ui\TypoScript\Helper\SitesHelper'
       'Neos.Ui.Modules': 'Neos\Neos\Ui\TypoScript\Helper\ModulesHelper'
       'Neos.Ui.NodeTypes': 'Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper'
@@ -21,6 +22,8 @@ TYPO3:
 Neos:
   Neos:
     Ui:
+      # if you set this to "TRUE", the system won't load pre-compiled JS/CSS files, but instead your locally compiled files.
+      frontendDevelopmentMode: false
       asyncModuleMapping:
         'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
           'Neos.UI:Inspector.TextField': true

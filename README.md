@@ -75,9 +75,6 @@ You can use this composer.json for that.
 2. Run the following commands:
    ```
    composer require neos/neos-ui:dev-master # install our package (you only need this, if you are NOT using the composer.json from above)
-   cd Packages/Application/Neos.Neos.Ui
-   source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps, copy githooks
-   npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
    ```
 
 3. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`
@@ -92,10 +89,6 @@ You can use this composer.json for that.
 
 Now you are all set up and can open the sub-route `/neos!` to login to the new interface.
 
-__Note: We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
-If you've installed `nvm` make sure that the next node LTS version `6.3.0` is correctly installed - You can do so by executing `nvm install v6.3.0`.
-If you need help setting up `nvm`, `npm` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
-
 
 ### Use Docker image
 
@@ -109,6 +102,30 @@ documentation about how to use it.
 
 
 ## Contributing
+
+In order to start contributing, follow the following steps:
+
+1) We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
+
+   If you've installed `nvm` make sure that the next node LTS version `6.3.0` is correctly installed - You can do so by executing `nvm install v6.3.0`.
+   If you need help setting up `nvm`, `npm` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
+
+2) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
+
+   ```
+   Neos:
+     Neos:
+       Ui:
+         frontendDevelopmentMode: true
+   ```
+
+2) Run the initialization script:
+
+   ```
+   cd Packages/Application/Neos.Neos.Ui
+   source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps, copy githooks
+   npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
+   ```
 
 [Read developer documentation on our wiki](https://github.com/neos/neos-ui/wiki).
 

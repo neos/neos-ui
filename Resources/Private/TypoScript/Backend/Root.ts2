@@ -6,6 +6,7 @@ include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/AppendAllToCollec
 
 backend = TYPO3.TypoScript:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
+    compiledResourcePackage = ${Neos.Ui.StaticResources.compiledResourcePackage()}
 
     configuration = TYPO3.TypoScript:RawArray {
         test = 1

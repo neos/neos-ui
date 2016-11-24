@@ -38,6 +38,8 @@ prototype(TYPO3.Neos:Page) {
             @position = 'after javascriptDocumentInformation'
 
             templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Guest.html'
+            compiledResourcePackage = ${Neos.Ui.StaticResources.compiledResourcePackage()}
+
             sectionName = 'guestFrameApplication'
             @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
         }

@@ -45,59 +45,61 @@ test(`The reducer should initially indicate a closed modal`, t => {
         type: system.INIT
     });
 
-    t.is(nextState.get('ui').get('addNodeModal').get('reference'), null);
+    t.is(nextState.get('ui').get('addNodeModal').get('contextPath'), '');
+    t.is(nextState.get('ui').get('addNodeModal').get('domContext'), null);
 });
 
-test(`The "open" action should set "reference" key.`, t => {
+test(`The "open" action should set "contextPath" key.`, t => {
     const state = new Map({});
-    const nextState = reducer(state, actions.open({
-        subject: {
-            contextPath: 'comeContextPath'
+    const nextState = reducer(state, actions.open('someContextPath', 'append', {
+        parentDomAddress: {
+            contextPath: 'someOtherContextPath'
         }
-    }, 'append'));
+    }));
 
-    t.deepEqual(nextState.get('ui').get('addNodeModal').get('reference').toJS(), {
-        subject: {
-            contextPath: 'comeContextPath'
+    t.is(nextState.get('ui').get('addNodeModal').get('contextPath'), 'someContextPath');
+});
+
+test(`The "open" action should set "domContext" key.`, t => {
+    const state = new Map({});
+    const nextState = reducer(state, actions.open('someContextPath', 'append', {
+        parentDomAddress: {
+            contextPath: 'someOtherContextPath'
+        }
+    }));
+
+    t.deepEqual(nextState.get('ui').get('addNodeModal').get('domContext').toJS(), {
+        parentDomAddress: {
+            contextPath: 'someOtherContextPath'
         }
     });
 });
 
 test(`The "open" action should set "mode" key.`, t => {
     const state = new Map({});
-    const nextState = reducer(state, actions.open({
-        subject: {
-            contextPath: 'comeContextPath'
+    const nextState = reducer(state, actions.open('someContextPath', 'append', {
+        parentDomAddress: {
+            contextPath: 'someOtherContextPath'
         }
-    }, 'append'));
+    }));
 
     t.is(nextState.get('ui').get('addNodeModal').get('mode'), 'append');
 });
 
 test(`The "open" action should throw on incorrect mode.`, t => {
     const state = new Map({});
-    const fn = () => reducer(state, actions.open({
-        subject: {
-            contextPath: 'comeContextPath'
+    const fn = () => reducer(state, actions.open('someContextPath', 'appendBlahBlah', {
+        parentDomAddress: {
+            contextPath: 'someOtherContextPath'
         }
-    }, 'appendBlahBlah'));
+    }));
 
     t.throws(fn, errorMessages.ERROR_INVALID_MODE);
 });
 
-test(`The "open" action should throw on missing subject.`, t => {
-    const state = new Map({});
-    const fn = () => reducer(state, actions.open());
-
-    t.throws(fn, errorMessages.ERROR_INVALID_REFERENCE);
-});
-
 test(`The "open" action should throw on invalid contextPath.`, t => {
     const state = new Map({});
-    const fn = () => reducer(state, actions.open({
-        subject: {
-        }
-    }));
+    const fn = () => reducer(state, actions.open(null));
 
     t.throws(fn, errorMessages.ERROR_INVALID_CONTEXTPATH);
 });
@@ -106,9 +108,11 @@ test(`The "close" action should set "isOpen" key to false.`, t => {
     const state = Immutable.fromJS({
         ui: {
             addNodeModal: {
-                reference: {
-                    subject: {
-                        contextPath: 'comeContextPath'
+                contextPath: 'someContextPath',
+                domContext: {
+                    parentDomAddress: {
+                        contextPath: 'someOtherContextPath',
+                        fusionPath: 'someFusionPath'
                     }
                 }
             }
@@ -116,7 +120,8 @@ test(`The "close" action should set "isOpen" key to false.`, t => {
     });
     const nextState = reducer(state, actions.close());
 
-    t.is(nextState.get('ui').get('addNodeModal').get('reference'), null);
+    t.is(nextState.get('ui').get('addNodeModal').get('contextPath'), '');
+    t.is(nextState.get('ui').get('addNodeModal').get('domContext'), null);
 });
 
 test(`The "toggleGroup" action should work with fresh state.`, t => {

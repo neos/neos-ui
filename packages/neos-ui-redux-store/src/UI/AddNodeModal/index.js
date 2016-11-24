@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
-import {$all, $get, $set, $toggle} from 'plow-js';
+import {$all, $set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -22,8 +22,23 @@ export const actionTypes = {
 
 /**
  * Opens the add node modal.
+ *
+ * @param {String} contextPath ContextPath of the node relative to which the new node ought to be created
+ * @param {String} mode The insertion mode (append|prepend|insert)
+ * @param {Object} domContext A map of dom addresses (contextPath, fusionPath), needed to place the resulting node
+ *                            into the correct place in the DOM. Example:
+ *                            {
+ *                                parentDomAddress: {
+ *                                    contextPath: '/sites/...',
+ *                                    fusionPath: '/root/...'
+ *                                },
+ *                                nextSiblingDomAddress: {
+ *                                    contextPath: '/sites/...',
+ *                                    fusionPath: '/root/...'
+ *                                }
+ *                            }
  */
-const open = createAction(OPEN, (reference, mode) => ({reference, mode}));
+const open = createAction(OPEN, (contextPath, mode, domContext) => ({contextPath, mode, domContext}));
 
 /**
  * Closes the add node modal.
@@ -48,7 +63,7 @@ export const actions = {
 // Export error messages for testing
 //
 export const errorMessages = {
-    ERROR_INVALID_REFERENCE: 'Received malformed reference: A key `subject` was expected but not found.',
+    ERROR_INVALID_DOMCONTEXT: 'Received malformed reference: A key `subject` was expected but not found.',
     ERROR_INVALID_CONTEXTPATH: 'Context path of subject reference node must be of type string.',
     ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
 };
@@ -60,16 +75,14 @@ export const reducer = handleActions({
     [system.INIT]: () => $set(
         'ui.addNodeModal',
         new Map({
-            reference: null,
+            contextPath: '',
             mode: 'insert',
+            domContext: null,
             collapsedGroups: []
         })
     ),
-    [OPEN]: ({reference, mode}) => {
-        if (typeof $get('subject', reference) === 'undefined') {
-            throw new Error(errorMessages.ERROR_INVALID_REFERENCE);
-        }
-        if (typeof $get('subject.contextPath', reference) !== 'string') {
+    [OPEN]: ({contextPath, mode, domContext}) => {
+        if (typeof contextPath !== 'string') {
             throw new Error(errorMessages.ERROR_INVALID_CONTEXTPATH);
         }
         const allowedModes = ['insert', 'append', 'prepend'];
@@ -78,13 +91,14 @@ export const reducer = handleActions({
         }
 
         return $all(
-            $set('ui.addNodeModal.reference', Immutable.fromJS(reference)),
-            $set('ui.addNodeModal.mode', mode)
+            $set('ui.addNodeModal.contextPath', contextPath),
+            $set('ui.addNodeModal.mode', mode),
+            $set('ui.addNodeModal.domContext', Immutable.fromJS(domContext))
         );
     },
     [CLOSE]: () => $all(
-        $set('ui.addNodeModal.reference', null),
-        $set('ui.addNodeModal.fusionPath', '')
+        $set('ui.addNodeModal.contextPath', ''),
+        $set('ui.addNodeModal.domContext', null)
     ),
     [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.collapsedGroups', groupId)
 });

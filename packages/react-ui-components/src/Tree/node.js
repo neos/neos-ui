@@ -77,8 +77,8 @@ export class Header extends PureComponent {
         return (
             <ul className={theme.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
-                <li className={dataClassNames}>
-                    <IconComponent icon={icon || 'question'} padded="right" role="button" onClick={onClick}/>
+                <li className={dataClassNames} onClick={onClick}>
+                    <IconComponent icon={icon || 'question'} padded="right" role="button"/>
                     <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>

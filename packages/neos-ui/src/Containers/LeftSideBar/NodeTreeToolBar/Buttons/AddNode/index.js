@@ -29,7 +29,6 @@ export default class AddNode extends PureComponent {
                     className={this.props.className}
                     icon="plus"
                     onClick={this.handleOpenModalBtnClick}
-                    onItemSelect={this.handleInsertModeChanged}
                     />
             </span>
         );

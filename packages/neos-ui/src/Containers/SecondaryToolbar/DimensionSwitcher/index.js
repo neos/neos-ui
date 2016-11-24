@@ -12,7 +12,6 @@ import I18n from '@neos-project/neos-ui-i18n';
 // TODO Add title prop to Icon component
 const SelectedPreset = props => {
     const {icon, dimensionLabel, presetLabel, dimensionName} = props;
-
     return (
         <span key={dimensionName}>
             <Icon className={style.dropDown__btnIcon} icon={icon} title={dimensionLabel}/>
@@ -89,10 +88,11 @@ export default class DimensionSwitcher extends PureComponent {
                 <DropDown.Header className={style.dropDown__btn}>
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
+                        const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration).replace('icon-', '');
                         return (<SelectedPreset
                             key={dimensionName}
                             dimensionName={dimensionName}
-                            icon={$get('icon', dimensionConfiguration)}
+                            icon={icon}
                             dimensionLabel={$get('label', dimensionConfiguration)}
                             presetLabel={$get([dimensionName, 'label'], activePresets)}
                             />
@@ -102,10 +102,11 @@ export default class DimensionSwitcher extends PureComponent {
                 <DropDown.Contents className={style.dropDown__contents}>
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
+                        const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration).replace('icon-', '');
                         return (<DimensionSelector
                             key={dimensionName}
                             dimensionName={dimensionName}
-                            icon={$get('icon', dimensionConfiguration)}
+                            icon={icon}
                             dimensionLabel={$get('label', dimensionConfiguration)}
                             presets={this.presetsForDimension(dimensionName)}
                             activePreset={$get([dimensionName, 'name'], activePresets)}

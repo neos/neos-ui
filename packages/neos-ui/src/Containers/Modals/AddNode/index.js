@@ -161,7 +161,7 @@ export default class AddNodeModal extends PureComponent {
     }
 
     handleDialogEditorValueChange(elementName, value) {
-        const newValues = Object.assign({}, this.state.elementValues);
+        const newValues = this.state.elementValues;
         newValues[elementName] = value;
         this.setState({elementValues: newValues});
     }

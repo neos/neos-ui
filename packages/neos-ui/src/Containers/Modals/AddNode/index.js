@@ -85,7 +85,7 @@ export default class AddNodeModal extends PureComponent {
         super(...props);
 
         this.state = {
-            mode: 'insert',
+            mode: '',
             step: 1,
             selectedNodeType: null,
             elementValues: {}
@@ -116,7 +116,7 @@ export default class AddNodeModal extends PureComponent {
         const {
             nodeTypesRegistry,
             getAllowedNodeTypesByModeGenerator,
-            close
+            handleClose
         } = this.props;
 
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
@@ -128,7 +128,7 @@ export default class AddNodeModal extends PureComponent {
             <Dialog
                 actions={[this.renderCancelAction()]}
                 title={this.renderInsertModeSelector(activeMode, allowedNodeTypesByMode)}
-                onRequestClose={close}
+                onRequestClose={handleClose}
                 isOpen
                 isWide
                 >
@@ -145,13 +145,14 @@ export default class AddNodeModal extends PureComponent {
     }
 
     renderStep2() {
+        const {handleClose} = this.props;
         const creationDialogElements = this.state.selectedNodeType.ui.creationDialog.elements;
 
         return (
             <Dialog
                 actions={[this.renderBackAction(), this.renderSaveAction()]}
                 title={(<span><I18n fallback="Create new" id="createNew"/> <I18n id={this.state.selectedNodeType.ui.label} fallback={this.state.selectedNodeType.ui.label}/></span>)}
-                onRequestClose={close}
+                onRequestClose={handleClose}
                 isOpen
                 isWide
                 >
@@ -279,14 +280,19 @@ export default class AddNodeModal extends PureComponent {
 
     createNode(nodeType, data = {}) {
         const {
+            nodeTypesRegistry,
+            getAllowedNodeTypesByModeGenerator,
             reference,
             persistChange,
             handleClose
         } = this.props;
 
+        const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
+        const mode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
+
         let changeType;
 
-        switch (this.state.mode) {
+        switch (mode) {
             case 'prepend':
                 changeType = 'Neos.Neos.Ui:CreateBefore';
                 break;
@@ -302,7 +308,7 @@ export default class AddNodeModal extends PureComponent {
             type: changeType,
             subject: $get('subject.contextPath', reference),
             payload: {
-                reference: reference.toJS(),
+                referenceData: reference.toJS(),
                 nodeType: nodeType.name,
                 data
             }

@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {$transform, $get} from 'plow-js';
 
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 @connect($transform({
@@ -49,12 +48,6 @@ export default class AddNode extends PureComponent {
             subject: {
                 contextPath: focusedNode
             }
-        }, this.state.currentMode);
-    }
-
-    changeInsertMode(newMode) {
-        this.setState({
-            currentMode: newMode
-        });
+        }, 'append');
     }
 }

@@ -8,6 +8,7 @@ use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\NodeServiceInterface;
 use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
+use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderNode;
@@ -23,11 +24,25 @@ abstract class AbstractCreate extends AbstractChange
     protected $nodeType;
 
     /**
-     * The referenceData for the rendered node
+     * The node dom address for the parent node of the created node
      *
-     * @var array
+     * @var RenderedNodeDomAddress
      */
-    protected $referenceData = [];
+    protected $parentDomAddress;
+
+    /**
+     * The node dom address for the previous sibling node of the created node
+     *
+     * @var RenderedNodeDomAddress
+     */
+    protected $previousSiblingDomAddress;
+
+    /**
+     * The node dom address for the next sibling node of the created node
+     *
+     * @var RenderedNodeDomAddress
+     */
+    protected $nextSiblingDomAddress;
 
     /**
      * @var NodeTypeManager
@@ -92,24 +107,66 @@ abstract class AbstractCreate extends AbstractChange
 
 
     /**
-     * Set the referenceData
+     * Set the parent node dom address
      *
-     * @param array $referenceData
+     * @param RenderedNodeDomAddress $parentDomAddress
      * @return void
      */
-    public function setReferenceData(array $referenceData)
+    public function setParentDomAddress(RenderedNodeDomAddress $parentDomAddress = null)
     {
-        $this->referenceData = $referenceData;
+        $this->parentDomAddress = $parentDomAddress;
     }
 
     /**
-     * Get the referenceData
+     * Get the parent node dom address
      *
-     * @return array
+     * @return RenderedNodeDomAddress
      */
-    public function getReferenceData()
+    public function getParentDomAddress()
     {
-        return $this->referenceData;
+        return $this->parentDomAddress;
+    }
+
+    /**
+     * Set the previousSibling node dom address
+     *
+     * @param RenderedNodeDomAddress $previousSiblingDomAddress
+     * @return void
+     */
+    public function setPreviousSiblingDomAddress(RenderedNodeDomAddress $previousSiblingDomAddress = null)
+    {
+        $this->previousSiblingDomAddress = $previousSiblingDomAddress;
+    }
+
+    /**
+     * Get the previousSibling node dom address
+     *
+     * @return RenderedNodeDomAddress
+     */
+    public function getPreviousSiblingDomAddress()
+    {
+        return $this->previousSiblingDomAddress;
+    }
+
+    /**
+     * Set the nextSibling node dom address
+     *
+     * @param RenderedNodeDomAddress $nextSiblingDomAddress
+     * @return void
+     */
+    public function setNextSiblingDomAddress(RenderedNodeDomAddress $nextSiblingDomAddress = null)
+    {
+        $this->nextSiblingDomAddress = $nextSiblingDomAddress;
+    }
+
+    /**
+     * Get the nextSibling node dom address
+     *
+     * @return RenderedNodeDomAddress
+     */
+    public function getNextSiblingDomAddress()
+    {
+        return $this->nextSiblingDomAddress;
     }
 
     /**
@@ -202,7 +259,9 @@ abstract class AbstractCreate extends AbstractChange
         if ($nodeType->isOfType('TYPO3.Neos:Content') && $this->getReferenceData()['subject']['fusionPath']) {
             $renderNode = new RenderNode();
             $renderNode->setNode($node);
-            $renderNode->setReferenceData($this->getReferenceData());
+            $renderNode->setParentDomAddress($this->getParentDomAddress());
+            $renderNode->setPreviousSiblingDomAddress($this->getPreviousSiblingDomAddress());
+            $renderNode->setNextSiblingDomAddress($this->getNextSiblingDomAddress());
             $renderNode->setMode($this->getMode());
 
             $this->feedbackCollection->add($renderNode);

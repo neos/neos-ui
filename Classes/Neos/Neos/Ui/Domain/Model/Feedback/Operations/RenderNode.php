@@ -45,24 +45,66 @@ class RenderNode implements FeedbackInterface
     }
 
     /**
-     * Set the referenceData
+     * Set the parent node dom address
      *
-     * @param string $referenceData
+     * @param RenderedNodeDomAddress $parentDomAddress
      * @return void
      */
-    public function setReferenceData(array $referenceData)
+    public function setParentDomAddress(RenderedNodeDomAddress $parentDomAddress)
     {
-        $this->referenceData = $referenceData;
+        $this->parentDomAddress = $parentDomAddress;
     }
 
     /**
-     * Get the referenceData
+     * Get the parent node dom address
      *
-     * @return string
+     * @return RenderedNodeDomAddress
      */
-    public function getReferenceData()
+    public function getParentDomAddress()
     {
-        return $this->referenceData;
+        return $this->parentDomAddress;
+    }
+
+    /**
+     * Set the previousSibling node dom address
+     *
+     * @param RenderedNodeDomAddress $previousSiblingDomAddress
+     * @return void
+     */
+    public function setPreviousSiblingDomAddress(RenderedNodeDomAddress $previousSiblingDomAddress = null)
+    {
+        $this->previousSiblingDomAddress = $previousSiblingDomAddress;
+    }
+
+    /**
+     * Get the previousSibling node dom address
+     *
+     * @return RenderedNodeDomAddress
+     */
+    public function getPreviousSiblingDomAddress()
+    {
+        return $this->previousSiblingDomAddress;
+    }
+
+    /**
+     * Set the nextSibling node dom address
+     *
+     * @param RenderedNodeDomAddress $nextSiblingDomAddress
+     * @return void
+     */
+    public function setNextSiblingDomAddress(RenderedNodeDomAddress $nextSiblingDomAddress = null)
+    {
+        $this->nextSiblingDomAddress = $nextSiblingDomAddress;
+    }
+
+    /**
+     * Get the nextSibling node dom address
+     *
+     * @return RenderedNodeDomAddress
+     */
+    public function getNextSiblingDomAddress()
+    {
+        return $this->nextSiblingDomAddress;
     }
 
     /**
@@ -132,7 +174,9 @@ class RenderNode implements FeedbackInterface
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
-            'reference' => $this->getReferenceData(),
+            'parentDomAddress' => $this->getParentDomAddress(),
+            'previousSiblingDomAddress' => $this->getPreviousSiblingDomAddress(),
+            'nextSiblingDomAddress' => $this->getNextSiblingDomAddress(),
             'mode' => $this->getMode(),
             'renderedContent' => $this->renderContent($controllerContext)
         ];
@@ -145,12 +189,13 @@ class RenderNode implements FeedbackInterface
      */
     protected function renderContent(ControllerContext $controllerContext)
     {
-        $referenceData = $this->getReferenceData();
+        $parentDomAddress = $this->getParentDomAddress();
+
         $fusionView = new FusionView();
         $fusionView->setControllerContext($controllerContext);
 
         $fusionView->assign('value', $this->getNode());
-        $fusionView->setTypoScriptPath($referenceData['subject']['fusionPath']);
+        $fusionView->setTypoScriptPath($parentDomAddress->getFusionPath());
 
         return $fusionView->render();
     }

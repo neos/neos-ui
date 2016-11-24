@@ -14,16 +14,13 @@ import style from './style.css';
 }))
 export default class InlineUI extends PureComponent {
     static propTypes = {
-        focused: PropTypes.shape({
-            contextPath: PropTypes.string,
-            fusionPath: PropTypes.string
-        })
+        focused: PropTypes.object
     };
 
     render() {
         const {focused} = this.props;
 
-        if (!focused.get('contextPath')) {
+        if (!$get('contextPath', focused)) {
             return null;
         }
 

@@ -43,6 +43,7 @@ backend = TYPO3.TypoScript:Template {
                     }
                     target = 'ContentCanvas'
                     isActive = ${Neos.Ui.Sites.isActive(siteNode)}
+                    skipI18n = ${true}
                 }
             }
         }

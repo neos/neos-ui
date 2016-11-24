@@ -6,7 +6,6 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 export default class Controls extends PureComponent {
     static propTypes = {
-        chooseFromLocalFilesystemLabel: PropTypes.string,
         onChooseFromMedia: PropTypes.func.isRequired,
         onChooseFromLocalFileSystem: PropTypes.func.isRequired,
         onRemove: PropTypes.func.isRequired,
@@ -24,7 +23,6 @@ export default class Controls extends PureComponent {
 
     renderIsMediaSelectionScreenVisibleButtons() {
         const {
-            chooseFromLocalFilesystemLabel,
             onChooseFromMedia,
             onChooseFromLocalFileSystem,
             onRemove
@@ -44,7 +42,7 @@ export default class Controls extends PureComponent {
                     style="lighter"
                     onClick={onChooseFromLocalFileSystem}
                     >
-                    <I18n id={chooseFromLocalFilesystemLabel} fallback="Choose file"/>
+                    <I18n id="TYPO3.Neos:Modules:media.chooseFile" fallback="Choose file"/>
                 </Button>
                 <Button
                     size="small"

@@ -4,8 +4,6 @@ import {actions} from '@neos-project/neos-ui-redux-store';
 import {$transform} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
-import {dom} from '../../../../Helpers/index';
-
 @connect($transform({
 }), {
     openAddNodeModal: actions.UI.AddNodeModal.open
@@ -39,23 +37,10 @@ export default class AddNode extends PureComponent {
     handleOpenModalBtnClick() {
         const {
             openAddNodeModal,
-            fusionPath,
-            contextPath
+            contextPath,
+            fusionPath
         } = this.props;
-        const closestCollectionElement = dom.closestNode(
-            dom.findNode(contextPath, fusionPath)
-        );
-        const collection = {
-            contextPath: closestCollectionElement.getAttribute('data-__neos-node-contextpath'),
-            fusionPath: closestCollectionElement.getAttribute('data-__neos-typoscript-path')
-        };
 
-        openAddNodeModal({
-            subject: {
-                contextPath,
-                fusionPath
-            },
-            collection
-        }, 'append');
+        openAddNodeModal(contextPath, fusionPath);
     }
 }

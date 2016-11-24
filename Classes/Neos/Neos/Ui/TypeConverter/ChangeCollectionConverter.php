@@ -14,8 +14,11 @@ namespace Neos\Neos\Ui\TypeConverter;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
+use TYPO3\Flow\Property\PropertyMapper;
 use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
 use TYPO3\Flow\Reflection\ObjectAccess;
+use TYPO3\Flow\Reflection\ReflectionService;
+use TYPO3\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
@@ -42,6 +45,12 @@ class ChangeCollectionConverter extends AbstractTypeConverter
      */
     protected $priority = 1;
 
+    /**
+     * @Flow\Inject
+     * @var PersistenceManagerInterface
+     */
+    protected $persistenceManager;
+
     protected $disallowedPayloadProperties = [
         'subject',
         'reference'
@@ -64,6 +73,18 @@ class ChangeCollectionConverter extends AbstractTypeConverter
      * @var NodeService
      */
     protected $nodeService;
+
+    /**
+     * @Flow\Inject
+     * @var PropertyMapper
+     */
+    protected $propertyMapper;
+
+    /**
+     * @Flow\Inject
+     * @var ReflectionService
+     */
+    protected $reflectionService;
 
     /**
      * Converts a accordingly formatted, associative array to a change collection
@@ -114,6 +135,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
 
         $changeClass = $this->typeMap[$type];
         $changeClassInstance = $this->objectManager->get($changeClass);
+        $changeClassInstance->injectPersistenceManager($this->persistenceManager);
 
         $subjectContextPath = $changeData['subject'];
         $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath);
@@ -136,9 +158,15 @@ class ChangeCollectionConverter extends AbstractTypeConverter
         }
 
         if (isset($changeData['payload'])) {
-            foreach ($changeData['payload'] as $key => $value) {
-                if (!in_array($key, $this->disallowedPayloadProperties)) {
-                    ObjectAccess::setProperty($changeClassInstance, $key, $value);
+            foreach ($changeData['payload'] as $propertyName => $value) {
+                if (!in_array($propertyName, $this->disallowedPayloadProperties)) {
+                    $methodParameters = $this->reflectionService->getMethodParameters($changeClass, ObjectAccess::buildSetterMethodName($propertyName));
+                    $methodParameter = current($methodParameters);
+                    $targetType = $methodParameter['type'];
+
+                    $value = $this->propertyMapper->convert($value, $targetType);
+
+                    ObjectAccess::setProperty($changeClassInstance, $propertyName, $value);
                 }
             }
         }

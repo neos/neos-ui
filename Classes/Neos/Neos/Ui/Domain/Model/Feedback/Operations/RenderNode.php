@@ -1,10 +1,13 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
+use TYPO3\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\Neos\View\TypoScriptView as FusionView;
 use TYPO3\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
+use TYPO3\TypoScript\Core\Cache\ContentCache;
 
 class RenderNode implements FeedbackInterface
 {
@@ -14,14 +17,29 @@ class RenderNode implements FeedbackInterface
     protected $node;
 
     /**
-     * @var array
+     * The node dom address for the parent node of the created node
+     *
+     * @var RenderedNodeDomAddress
      */
-    protected $referenceData;
+    protected $parentDomAddress;
+
+    /**
+     * The node dom address for the referenced sibling node of the created node
+     *
+     * @var RenderedNodeDomAddress
+     */
+    protected $siblingDomAddress;
 
     /**
      * @var string
      */
     protected $mode;
+
+    /**
+     * @Flow\Inject
+     * @var ContentCache
+     */
+    protected $contentCache;
 
     /**
      * Set the node
@@ -50,7 +68,7 @@ class RenderNode implements FeedbackInterface
      * @param RenderedNodeDomAddress $parentDomAddress
      * @return void
      */
-    public function setParentDomAddress(RenderedNodeDomAddress $parentDomAddress)
+    public function setParentDomAddress(RenderedNodeDomAddress $parentDomAddress = null)
     {
         $this->parentDomAddress = $parentDomAddress;
     }
@@ -66,45 +84,24 @@ class RenderNode implements FeedbackInterface
     }
 
     /**
-     * Set the previousSibling node dom address
+     * Set the sibling node dom address
      *
-     * @param RenderedNodeDomAddress $previousSiblingDomAddress
+     * @param RenderedNodeDomAddress $siblingDomAddress
      * @return void
      */
-    public function setPreviousSiblingDomAddress(RenderedNodeDomAddress $previousSiblingDomAddress = null)
+    public function setSiblingDomAddress(RenderedNodeDomAddress $siblingDomAddress = null)
     {
-        $this->previousSiblingDomAddress = $previousSiblingDomAddress;
+        $this->siblingDomAddress = $siblingDomAddress;
     }
 
     /**
-     * Get the previousSibling node dom address
+     * Get the sibling node dom address
      *
      * @return RenderedNodeDomAddress
      */
-    public function getPreviousSiblingDomAddress()
+    public function getSiblingDomAddress()
     {
-        return $this->previousSiblingDomAddress;
-    }
-
-    /**
-     * Set the nextSibling node dom address
-     *
-     * @param RenderedNodeDomAddress $nextSiblingDomAddress
-     * @return void
-     */
-    public function setNextSiblingDomAddress(RenderedNodeDomAddress $nextSiblingDomAddress = null)
-    {
-        $this->nextSiblingDomAddress = $nextSiblingDomAddress;
-    }
-
-    /**
-     * Get the nextSibling node dom address
-     *
-     * @return RenderedNodeDomAddress
-     */
-    public function getNextSiblingDomAddress()
-    {
-        return $this->nextSiblingDomAddress;
+        return $this->siblingDomAddress;
     }
 
     /**
@@ -174,9 +171,9 @@ class RenderNode implements FeedbackInterface
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
+            'contextPath' => $this->getNode()->getContextPath(),
             'parentDomAddress' => $this->getParentDomAddress(),
-            'previousSiblingDomAddress' => $this->getPreviousSiblingDomAddress(),
-            'nextSiblingDomAddress' => $this->getNextSiblingDomAddress(),
+            'siblingDomAddress' => $this->getSiblingDomAddress(),
             'mode' => $this->getMode(),
             'renderedContent' => $this->renderContent($controllerContext)
         ];
@@ -189,12 +186,14 @@ class RenderNode implements FeedbackInterface
      */
     protected function renderContent(ControllerContext $controllerContext)
     {
+        $this->contentCache->flushByTag(sprintf('Node_%s', $this->getNode()->getParent()->getIdentifier()));
+
         $parentDomAddress = $this->getParentDomAddress();
 
         $fusionView = new FusionView();
         $fusionView->setControllerContext($controllerContext);
 
-        $fusionView->assign('value', $this->getNode());
+        $fusionView->assign('value', $this->getNode()->getParent());
         $fusionView->setTypoScriptPath($parentDomAddress->getFusionPath());
 
         return $fusionView->render();

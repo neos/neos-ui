@@ -16,6 +16,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 
+import {dom} from '../../ContentCanvas/Helpers/index';
+
 //
 // Export error messages for testing
 //
@@ -39,8 +41,59 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
     return '';
 };
 
+const calculateChangeTypeFromMode = mode => {
+    switch (mode) {
+        case 'prepend':
+            return 'Neos.Neos.Ui:CreateBefore';
+
+        case 'append':
+            return 'Neos.Neos.Ui:CreateAfter';
+
+        default:
+            return 'Neos.Neos.Ui:Create';
+    }
+};
+
+const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
+    if (!fusionPath) {
+        //
+        // We're obviously creating a node in the tree. This operation needs
+        // no further addressing.
+        //
+        return {};
+    }
+
+    switch (mode) {
+        case 'prepend':
+        case 'append': {
+            const parentElement = dom.closestNode(
+                dom.findNode(contextPath, fusionPath).parentNode
+            );
+
+            return {
+                siblingDomAddress: {
+                    contextPath,
+                    fusionPath
+                },
+                parentDomAddress: {
+                    contextPath: parentElement.getAttribute('data-__neos-node-contextpath'),
+                    fusionPath: parentElement.getAttribute('data-__neos-typoscript-path')
+                }
+            };
+        }
+
+        default:
+            return {
+                parentDomAddress: {
+                    contextPath,
+                    fusionPath
+                }
+            };
+    }
+};
+
 @connect($transform({
-    domContext: $get('ui.addNodeModal.domContext'),
+    fusionPath: $get('ui.addNodeModal.fusionPath'),
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
     referenceNodeParent: selectors.UI.AddNodeModal.referenceNodeParentSelector,
     referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
@@ -54,11 +107,7 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
 }))
 export default class AddNodeModal extends PureComponent {
     static propTypes = {
-        domContext: PropTypes.shape({
-            parentDomAddress: NeosPropTypes.renderedNodeDomAddress.isRequired,
-            nextSiblingDomAddress: NeosPropTypes.renderedNodeDomAddress,
-            previousSiblingDomAddress: NeosPropTypes.renderedNodeDomAddress
-        }),
+        fusionPath: PropTypes.string,
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
         referenceNodeGrandParent: NeosPropTypes.node,
@@ -277,35 +326,24 @@ export default class AddNodeModal extends PureComponent {
             nodeTypesRegistry,
             getAllowedNodeTypesByModeGenerator,
             referenceNode,
-            domContext,
+            fusionPath,
             persistChange,
             handleClose
         } = this.props;
 
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const mode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
-
-        let changeType;
-
-        switch (mode) {
-            case 'prepend':
-                changeType = 'Neos.Neos.Ui:CreateBefore';
-                break;
-            case 'append':
-                changeType = 'Neos.Neos.Ui:CreateAfter';
-                break;
-            default:
-                changeType = 'Neos.Neos.Ui:Create';
-                break;
-        }
+        const changeType = calculateChangeTypeFromMode(mode);
 
         const change = {
             type: changeType,
             subject: $get('contextPath', referenceNode),
             payload: {
-                parentDomAddress: $get('parentDomAddress', domContext),
-                previousSiblingDomAddress: $get('previousSiblingDomAddress', domContext),
-                nextSiblingDomAddress: $get('nextSiblingDomAddress', domContext),
+                ...calculateDomAddressesFromMode(
+                    mode,
+                    $get('contextPath', referenceNode),
+                    fusionPath
+                ),
                 nodeType: $get('name', nodeType),
                 data
             }

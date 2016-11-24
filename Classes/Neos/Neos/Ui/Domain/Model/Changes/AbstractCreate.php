@@ -31,18 +31,11 @@ abstract class AbstractCreate extends AbstractChange
     protected $parentDomAddress;
 
     /**
-     * The node dom address for the previous sibling node of the created node
+     * The node dom address for the referenced sibling node of the created node
      *
      * @var RenderedNodeDomAddress
      */
-    protected $previousSiblingDomAddress;
-
-    /**
-     * The node dom address for the next sibling node of the created node
-     *
-     * @var RenderedNodeDomAddress
-     */
-    protected $nextSiblingDomAddress;
+    protected $siblingDomAddress;
 
     /**
      * @var NodeTypeManager
@@ -80,7 +73,7 @@ abstract class AbstractCreate extends AbstractChange
     /**
      * Set the node type
      *
-     * @param string|NodeType $nodeType
+     * @param string $nodeType
      */
     public function setNodeType($nodeType)
     {
@@ -128,45 +121,24 @@ abstract class AbstractCreate extends AbstractChange
     }
 
     /**
-     * Set the previousSibling node dom address
+     * Set the sibling node dom address
      *
-     * @param RenderedNodeDomAddress $previousSiblingDomAddress
+     * @param RenderedNodeDomAddress $siblingDomAddress
      * @return void
      */
-    public function setPreviousSiblingDomAddress(RenderedNodeDomAddress $previousSiblingDomAddress = null)
+    public function setSiblingDomAddress(RenderedNodeDomAddress $siblingDomAddress = null)
     {
-        $this->previousSiblingDomAddress = $previousSiblingDomAddress;
+        $this->siblingDomAddress = $siblingDomAddress;
     }
 
     /**
-     * Get the previousSibling node dom address
+     * Get the sibling node dom address
      *
      * @return RenderedNodeDomAddress
      */
-    public function getPreviousSiblingDomAddress()
+    public function getSiblingDomAddress()
     {
-        return $this->previousSiblingDomAddress;
-    }
-
-    /**
-     * Set the nextSibling node dom address
-     *
-     * @param RenderedNodeDomAddress $nextSiblingDomAddress
-     * @return void
-     */
-    public function setNextSiblingDomAddress(RenderedNodeDomAddress $nextSiblingDomAddress = null)
-    {
-        $this->nextSiblingDomAddress = $nextSiblingDomAddress;
-    }
-
-    /**
-     * Get the nextSibling node dom address
-     *
-     * @return RenderedNodeDomAddress
-     */
-    public function getNextSiblingDomAddress()
-    {
-        return $this->nextSiblingDomAddress;
+        return $this->siblingDomAddress;
     }
 
     /**
@@ -256,12 +228,14 @@ abstract class AbstractCreate extends AbstractChange
 
         $this->applyNodeCreationHandlers($node);
 
-        if ($nodeType->isOfType('TYPO3.Neos:Content') && $this->getReferenceData()['subject']['fusionPath']) {
+        $this->persistenceManager->persistAll();
+
+
+        if ($nodeType->isOfType('TYPO3.Neos:Content')) {
             $renderNode = new RenderNode();
             $renderNode->setNode($node);
             $renderNode->setParentDomAddress($this->getParentDomAddress());
-            $renderNode->setPreviousSiblingDomAddress($this->getPreviousSiblingDomAddress());
-            $renderNode->setNextSiblingDomAddress($this->getNextSiblingDomAddress());
+            $renderNode->setSiblingDomAddress($this->getSiblingDomAddress());
             $renderNode->setMode($this->getMode());
 
             $this->feedbackCollection->add($renderNode);

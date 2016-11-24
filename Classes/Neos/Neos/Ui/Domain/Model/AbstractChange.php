@@ -4,6 +4,7 @@ namespace Neos\Neos\Ui\Domain\Model;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use TYPO3\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\DocumentNodeCreated;
@@ -20,6 +21,22 @@ abstract class AbstractChange implements ChangeInterface
      * @var FeedbackCollection
      */
     protected $feedbackCollection;
+
+    /**
+     * @var PersistenceManagerInterface
+     */
+    protected $persistenceManager;
+
+    /**
+     * Inject the persistence manager
+     *
+     * @param PersistenceManagerInterface $persistenceManager
+     * @return void
+     */
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
+    {
+        $this->persistenceManager = $persistenceManager;
+    }
 
     /**
      * Set the subject

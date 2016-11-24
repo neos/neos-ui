@@ -385,24 +385,31 @@ manifest('main', {}, globalRegistry => {
     // corrent place inside the DOM
     //
     serverFeedbackHandlers.add('Neos.Neos.Ui:RenderNode', feedbackPayload => {
-        const {renderedContent, mode} = feedbackPayload;
-        const {subject, collection} = feedbackPayload.reference;
-        const reference = mode === 'into' ? collection : subject;
-        const referenceElement = dom.findNode(reference.contextPath, reference.fusionPath);
-        const contentElement = (new DOMParser()).parseFromString(renderedContent, 'text/html').body.firstChild;
+        const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
+        const parentElement = parentDomAddress && dom.findNode(
+            parentDomAddress.contextPath,
+            parentDomAddress.fusionPath
+        );
+        const siblingElement = siblingDomAddress && dom.findNode(
+            siblingDomAddress.contextPath,
+            siblingDomAddress.fusionPath
+        );
+        const contentElement = (new DOMParser())
+            .parseFromString(renderedContent, 'text/html')
+            .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
 
         switch (mode) {
             case 'before':
-                referenceElement.parentNode.insertBefore(contentElement, referenceElement);
+                siblingElement.parentNode.insertBefore(contentElement, siblingElement);
                 break;
 
             case 'after':
-                referenceElement.parentNode.insertBefore(contentElement, referenceElement.nextSibling);
+                siblingElement.parentNode.insertBefore(contentElement, siblingElement.nextSibling);
                 break;
 
             case 'into':
             default:
-                referenceElement.appendChild(contentElement);
+                parentElement.appendChild(contentElement);
                 break;
         }
     });

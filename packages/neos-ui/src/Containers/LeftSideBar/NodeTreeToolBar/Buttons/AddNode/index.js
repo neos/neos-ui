@@ -44,6 +44,6 @@ export default class AddNode extends PureComponent {
             focusedNode
         } = this.props;
 
-        openAddNodeModal(focusedNode, 'append');
+        openAddNodeModal(focusedNode);
     }
 }

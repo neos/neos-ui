@@ -211,7 +211,7 @@ export default class AddNodeModal extends PureComponent {
                 onClick={this.handleBack}
                 isFocused={true}
                 >
-                <I18n fallback="Back"/>
+                <I18n id="TYPO3.Neos:Main:cancel" fallback="Back"/>
             </Button>
         );
     }
@@ -225,7 +225,7 @@ export default class AddNodeModal extends PureComponent {
                 onClick={this.props.handleClose}
                 isFocused={true}
                 >
-                <I18n fallback="Cancel"/>
+                <I18n id="TYPO3.Neos:Main:cancel" fallback="Cancel"/>
             </Button>
         );
     }
@@ -239,7 +239,7 @@ export default class AddNodeModal extends PureComponent {
                 onClick={this.handleSave}
                 isFocused={true}
                 >
-                <I18n fallback="Create"/>
+                <I18n id="TYPO3.Neos:Main:createNew" fallback="Create"/>
             </Button>
         );
     }

@@ -44,10 +44,6 @@ export default class AddNode extends PureComponent {
             focusedNode
         } = this.props;
 
-        openAddNodeModal({
-            subject: {
-                contextPath: focusedNode
-            }
-        }, 'append');
+        openAddNodeModal(focusedNode, 'append');
     }
 }

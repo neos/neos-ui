@@ -34,7 +34,7 @@ export const reducer = handleActions({
         'ui.editPreviewMode',
         $get('ui.editPreviewMode', state)
     ),
-    [SET]: ({editPreviewMode}) => state => $set('ui.editPreviewMode', editPreviewMode)
+    [SET]: ({editPreviewMode}) => $set('ui.editPreviewMode', editPreviewMode)
 });
 
 //

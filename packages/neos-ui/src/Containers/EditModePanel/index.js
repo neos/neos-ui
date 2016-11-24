@@ -8,8 +8,6 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import Button from '@neos-project/react-ui-components/lib/Button/index';
-import buttonStyles from '@neos-project/react-ui-components/lib/Button/style.css';
-
 
 const {isDocumentNodeSelectedSelector} = selectors.CR.Nodes;
 
@@ -68,11 +66,11 @@ export default class EditModePanel extends Component {
             <div className={classNames}>
                 <div className={style.editModePanel__editingModes}>
                     <p>Editing Modes</p>
-                    {editModes.map((editMode) => <Button style="lighter" className={editMode.id === editPreviewMode ? buttonStyles['btn--brand'] : ''} onClick={this.handleEditPreviewModeClick(editMode.id)}>{editMode.id}</Button>)}
+                    {editModes.map((editMode) => <Button key={editMode.id} style={editMode.id === editPreviewMode ? 'brand' : ''} onClick={this.handleEditPreviewModeClick(editMode.id)}>{editMode.id}</Button>)}
                 </div>
                 <div className={style.editModePanel__previewCentral}>
                     <p>Preview Central</p>
-                    {previewModes.map((previewMode) => <Button style="lighter" className={previewMode.id === editPreviewMode ? buttonStyles['btn--brand'] : ''} onClick={this.handleEditPreviewModeClick(previewMode.id)}>{previewMode.id}</Button>)}
+                    {previewModes.map((previewMode) => <Button key={previewMode.id} style={previewMode.id === editPreviewMode ? 'brand' : ''} onClick={this.handleEditPreviewModeClick(previewMode.id)}>{previewMode.id}</Button>)}
                 </div>
             </div>
         );

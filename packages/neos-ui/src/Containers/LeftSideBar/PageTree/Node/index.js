@@ -30,7 +30,7 @@ export default class Node extends PureComponent {
             uri: PropTypes.string.isRequired,
             children: PropTypes.arrayOf(
                 PropTypes.string
-            ),
+            )
         }),
         getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,

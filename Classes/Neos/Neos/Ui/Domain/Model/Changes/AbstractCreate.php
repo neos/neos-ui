@@ -3,6 +3,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Eel\FlowQuery\FlowQuery;
 use TYPO3\TYPO3CR\Domain\Model\NodeType;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\NodeServiceInterface;
@@ -12,6 +13,7 @@ use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 abstract class AbstractCreate extends AbstractChange
@@ -230,15 +232,24 @@ abstract class AbstractCreate extends AbstractChange
 
         $this->persistenceManager->persistAll();
 
+        if ($nodeType->isOfType('TYPO3.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
+            if ($parent->getNodeType()->isOfType('TYPO3.Neos:ContentCollection')) {
+                $renderContentOutOfBand = new RenderContentOutOfBand();
+                $renderContentOutOfBand->setNode($node);
+                $renderContentOutOfBand->setParentDomAddress($this->getParentDomAddress());
+                $renderContentOutOfBand->setSiblingDomAddress($this->getSiblingDomAddress());
+                $renderContentOutOfBand->setMode($this->getMode());
 
-        if ($nodeType->isOfType('TYPO3.Neos:Content')) {
-            $renderNode = new RenderContentOutOfBand();
-            $renderNode->setNode($node);
-            $renderNode->setParentDomAddress($this->getParentDomAddress());
-            $renderNode->setSiblingDomAddress($this->getSiblingDomAddress());
-            $renderNode->setMode($this->getMode());
+                $this->feedbackCollection->add($renderContentOutOfBand);
+            } else {
+                $flowQuery = new FlowQuery(array($node));
+                $closestDocument = $flowQuery->closest('[instanceof TYPO3.Neos:Document]')->get(0);
 
-            $this->feedbackCollection->add($renderNode);
+                $reloadDocument = new ReloadDocument();
+                $reloadDocument->setDocument($closestDocument);
+
+                $this->feedbackCollection->add($reloadDocument);
+            }
         }
 
         $updateNodeInfo = new UpdateNodeInfo();

@@ -14,7 +14,7 @@ const SelectBoxEditor = props => {
 };
 SelectBoxEditor.propTypes = {
     commit: PropTypes.func.isRequired,
-    value: PropTypes.any.isRequired,
+    value: PropTypes.any,
     options: PropTypes.any.isRequired
 };
 

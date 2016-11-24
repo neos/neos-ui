@@ -8,7 +8,7 @@ const DateTime = props => {
     return <DateInput value={mappedVal} onChange={commit}/>;
 };
 DateTime.propTypes = {
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     commit: PropTypes.func.isRequired
 };
 

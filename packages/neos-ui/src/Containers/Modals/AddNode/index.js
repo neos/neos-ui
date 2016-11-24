@@ -152,7 +152,6 @@ export default class AddNodeModal extends PureComponent {
                         label={$get('ui.label', element)}
                         editor={$get('ui.editor', element)}
                         options={$get('ui.editorOptions', element)}
-                        value={this.state.elementValues[elementName] ? this.state.elementValues[elementName] : ''}
                         commit={onCommit}
                         />);
                 })}

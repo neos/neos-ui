@@ -7,7 +7,7 @@ const TextField = props => {
     return <TextInput value={value} onChange={commit}/>;
 };
 TextField.propTypes = {
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     commit: PropTypes.func.isRequired
 };
 

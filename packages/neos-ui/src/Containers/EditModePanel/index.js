@@ -4,12 +4,9 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get, $or} from 'plow-js';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-
 import Button from '@neos-project/react-ui-components/lib/Button/index';
-
-const {isDocumentNodeSelectedSelector} = selectors.CR.Nodes;
 
 import style from './style.css';
 
@@ -33,7 +30,8 @@ export default class EditModePanel extends Component {
         isFringedRight: PropTypes.bool.isRequired,
         editPreviewMode: PropTypes.string.isRequired,
         isHidden: PropTypes.bool.isRequired,
-        editPreviewModesRegistry: PropTypes.object.isRequired
+        editPreviewModesRegistry: PropTypes.object.isRequired,
+        setEditPreviewMode: PropTypes.function.isRequired
     };
 
     shouldComponentUpdate(...args) {
@@ -66,11 +64,11 @@ export default class EditModePanel extends Component {
             <div className={classNames}>
                 <div className={style.editModePanel__editingModes}>
                     <p>Editing Modes</p>
-                    {editModes.map((editMode) => <Button key={editMode.id} style={editMode.id === editPreviewMode ? 'brand' : ''} onClick={this.handleEditPreviewModeClick(editMode.id)}>{editMode.id}</Button>)}
+                    {editModes.map(editMode => <Button key={editMode.id} style={editMode.id === editPreviewMode ? 'brand' : ''} onClick={this.handleEditPreviewModeClick(editMode.id)}>{editMode.id}</Button>)}
                 </div>
                 <div className={style.editModePanel__previewCentral}>
                     <p>Preview Central</p>
-                    {previewModes.map((previewMode) => <Button key={previewMode.id} style={previewMode.id === editPreviewMode ? 'brand' : ''} onClick={this.handleEditPreviewModeClick(previewMode.id)}>{previewMode.id}</Button>)}
+                    {previewModes.map(previewMode => <Button key={previewMode.id} style={previewMode.id === editPreviewMode ? 'brand' : ''} onClick={this.handleEditPreviewModeClick(previewMode.id)}>{previewMode.id}</Button>)}
                 </div>
             </div>
         );

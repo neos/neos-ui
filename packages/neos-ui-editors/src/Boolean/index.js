@@ -35,7 +35,7 @@ const BooleanEditor = props => {
 BooleanEditor.propTypes = {
     identifier: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
+    value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     commit: PropTypes.func.isRequired
 };
 

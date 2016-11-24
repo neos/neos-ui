@@ -20,7 +20,10 @@ export default class SelectBox extends PureComponent {
                         PropTypes.string,
                         PropTypes.object
                     ]).isRequired,
-                    label: PropTypes.string.isRequired
+                    label: PropTypes.oneOfType([
+                        PropTypes.string,
+                        PropTypes.object
+                    ]).isRequired
                 })
             ),
             PropTypes.func

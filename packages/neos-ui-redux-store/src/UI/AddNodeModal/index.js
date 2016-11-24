@@ -49,7 +49,7 @@ export const actions = {
 //
 export const errorMessages = {
     ERROR_INVALID_REFERENCE: 'Received malformed reference: A key `subject` was expected but not found.',
-    ERROR_INVALID_CONTEXTPATH: 'Context of subject reference node must be of type string.',
+    ERROR_INVALID_CONTEXTPATH: 'Context path of subject reference node must be of type string.',
     ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
 };
 
@@ -66,11 +66,11 @@ export const reducer = handleActions({
         })
     ),
     [OPEN]: ({reference, mode}) => {
-        if (typeof $get('subject', reference) === undefined) {
-            throw new Error(errorMessages.ERROR_INVALID_CONTEXT);
+        if (typeof $get('subject', reference) === 'undefined') {
+            throw new Error(errorMessages.ERROR_INVALID_REFERENCE);
         }
         if (typeof $get('subject.contextPath', reference) !== 'string') {
-            throw new Error(errorMessages.ERROR_INVALID_CONTEXT);
+            throw new Error(errorMessages.ERROR_INVALID_CONTEXTPATH);
         }
         const allowedModes = ['insert', 'append', 'prepend'];
         if (allowedModes.indexOf(mode) === -1) {

@@ -95,12 +95,11 @@ function * application() {
     // Load frontend configuration (edit/preview modes)
     //
     const frontendConfiguration = yield system.getFrontendConfiguration;
-    const frontendConfigurationRegistry = globalRegistry.get('frontendConfiguration');
+    const editPreviewModesRegistry = globalRegistry.get('editPreviewModes');
 
-    Object.keys(frontendConfiguration).forEach(editPreviewModeName => {
-        console.log(editPreviewModeName);
-        frontendConfigurationRegistry.add(editPreviewModeName, {
-            ...frontendConfiguration[editPreviewModeName]
+    Object.keys(frontendConfiguration.editPreviewModes).forEach(editPreviewModeName => {
+        editPreviewModesRegistry.add(editPreviewModeName, {
+            ...frontendConfiguration.editPreviewModes[editPreviewModeName]
         });
     });
 

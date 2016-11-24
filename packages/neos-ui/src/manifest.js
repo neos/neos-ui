@@ -13,7 +13,7 @@ manifest('main', {}, globalRegistry => {
     //
     // Create edit preview mode registry
     //
-    const frontendConfiguration = globalRegistry.add('frontendConfiguration', new SynchronousRegistry(`
+    const editPreviewModes = globalRegistry.add('editPreviewModes', new SynchronousRegistry(`
         # Edit/Preview Mode specific registry
     `));
 

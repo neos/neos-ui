@@ -14,7 +14,7 @@ set -e
 nvm install
 nvm use
 
-CURRENT_BRANCH_TAG_NAME=`git symbolic-ref -q --short HEAD || git describe --tags --exact-match`
+CURRENT_BRANCH_TAG_NAME=`git symbolic-ref -q --short HEAD`
 GIT_SHA1=`git rev-parse HEAD`
 
 

@@ -9,5 +9,5 @@
             editor: 'TYPO3.Neos/Inspector/Editors/TextFieldEditor'
   options:
     nodeCreationHandlers:
-      pageTitle:
+      documentTitle:
         nodeCreationHandler: 'Neos\Neos\Ui\NodeCreationHandler\DocumentTitleNodeCreationHandler'

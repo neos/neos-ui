@@ -19,7 +19,6 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
     public function handle(NodeInterface $node, array $configuration, array $data)
     {
         if(isset($data['title']) && $node->getNodeType()->isOfType('TYPO3.Neos:Document')) {
-
             $node->setProperty('title', $data['title']);
             $node->setProperty('uriPathSegment', NodeUtility::renderValidNodeName($data['title']));
         }

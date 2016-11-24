@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
-import {$set, $get} from 'plow-js';
+import {$all, $set, $get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -23,13 +23,9 @@ export const actionTypes = {
 /**
  * Adds a node to the application state
  *
- * @param {String} contextPath The context path of the ndoe
- * @param {Object} data        The node's data
+ * @param {Object} nodeMap A map of nodes, with contextPaths as key
  */
-const add = createAction(ADD, (contextPath, data) => ({
-    contextPath,
-    data
-}));
+const add = createAction(ADD, nodeMap => ({nodeMap}));
 
 /**
  * Marks a node as focused
@@ -68,13 +64,19 @@ export const reducer = handleActions({
             })
         })
     ),
-    [ADD]: ({contextPath, data}) => state => {
-        // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
-        // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
-        // the data, to scope it relative to *this* frame.
-        data = JSON.parse(JSON.stringify(data));
-        return $set(['cr', 'nodes', 'byContextPath', contextPath], Immutable.fromJS(data), state);
-    },
+    [ADD]: ({nodeMap}) => $all(
+        ...Object.keys(nodeMap).map(contextPath => $set(
+            ['cr', 'nodes', 'byContextPath', contextPath],
+            Immutable.fromJS(
+                //
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
+                // the data, to scope it relative to *this* frame.
+                //
+                JSON.parse(JSON.stringify(nodeMap[contextPath]))
+            )
+        ))
+    ),
     [FOCUS]: ({contextPath, typoscriptPath}) => $set('cr.nodes.focused', new Map({contextPath, typoscriptPath})),
     [UNFOCUS]: () => $set('cr.nodes.focused', new Map({
         contextPath: '',

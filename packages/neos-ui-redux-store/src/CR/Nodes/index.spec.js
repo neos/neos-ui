@@ -95,8 +95,10 @@ test(`The reducer should add nodes to the store`, t => {
         }
     });
     const contextPath = '/path/top/my/node@user-username;language=en_US';
-    const nextState = reducer(state, actions.add(contextPath, {
-        foo: 'bar'
+    const nextState = reducer(state, actions.add({
+        [contextPath]: {
+            foo: 'bar'
+        }
     }));
 
     const addedItem = nextState.get('cr').get('nodes').get('byContextPath').get(contextPath);

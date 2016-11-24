@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# break on failures
-set -e
-
 # go to root directory of Neos.Neos.Ui
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/../../
@@ -10,6 +7,11 @@ cd $DIR/../../
 # load NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# break on failures can only be applied AFTER nvm was loaded.
+set -e
+
+nvm install
 nvm use
 
 CURRENT_BRANCH_TAG_NAME=`git symbolic-ref -q --short HEAD || git describe --tags --exact-match`

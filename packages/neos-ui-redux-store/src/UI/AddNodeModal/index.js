@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import Immutable, {Map} from 'immutable';
+import {Map} from 'immutable';
 import {$all, $set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -24,21 +24,10 @@ export const actionTypes = {
  * Opens the add node modal.
  *
  * @param {String} contextPath ContextPath of the node relative to which the new node ought to be created
- * @param {String} mode The insertion mode (append|prepend|insert)
- * @param {Object} domContext A map of dom addresses (contextPath, fusionPath), needed to place the resulting node
- *                            into the correct place in the DOM. Example:
- *                            {
- *                                parentDomAddress: {
- *                                    contextPath: '/sites/...',
- *                                    fusionPath: '/root/...'
- *                                },
- *                                nextSiblingDomAddress: {
- *                                    contextPath: '/sites/...',
- *                                    fusionPath: '/root/...'
- *                                }
- *                            }
+ * @param {Object} fusionPath (optional) fusion path of the rendered node relative to which the new node ought to be
+ *                            positioned.
  */
-const open = createAction(OPEN, (contextPath, mode, domContext) => ({contextPath, mode, domContext}));
+const open = createAction(OPEN, (contextPath, fusionPath = '') => ({contextPath, fusionPath}));
 
 /**
  * Closes the add node modal.
@@ -63,9 +52,8 @@ export const actions = {
 // Export error messages for testing
 //
 export const errorMessages = {
-    ERROR_INVALID_DOMCONTEXT: 'Received malformed reference: A key `subject` was expected but not found.',
-    ERROR_INVALID_CONTEXTPATH: 'Context path of subject reference node must be of type string.',
-    ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
+    ERROR_INVALID_CONTEXTPATH: 'Context path of reference node must be of type string.',
+    ERROR_INVALID_FUSIONPATH: 'Fusion path of reference node must be of type string.'
 };
 
 //
@@ -76,29 +64,26 @@ export const reducer = handleActions({
         'ui.addNodeModal',
         new Map({
             contextPath: '',
-            mode: 'insert',
-            domContext: null,
+            fusionPath: '',
             collapsedGroups: []
         })
     ),
-    [OPEN]: ({contextPath, mode, domContext}) => {
+    [OPEN]: ({contextPath, fusionPath}) => {
         if (typeof contextPath !== 'string') {
             throw new Error(errorMessages.ERROR_INVALID_CONTEXTPATH);
         }
-        const allowedModes = ['insert', 'append', 'prepend'];
-        if (allowedModes.indexOf(mode) === -1) {
-            throw new Error(errorMessages.ERROR_INVALID_MODE);
+        if (typeof fusionPath !== 'string') {
+            throw new Error(errorMessages.ERROR_INVALID_FUSIONPATH);
         }
 
         return $all(
             $set('ui.addNodeModal.contextPath', contextPath),
-            $set('ui.addNodeModal.mode', mode),
-            $set('ui.addNodeModal.domContext', Immutable.fromJS(domContext))
+            $set('ui.addNodeModal.fusionPath', fusionPath)
         );
     },
     [CLOSE]: () => $all(
         $set('ui.addNodeModal.contextPath', ''),
-        $set('ui.addNodeModal.domContext', null)
+        $set('ui.addNodeModal.fusionPath', '')
     ),
     [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.collapsedGroups', groupId)
 });

@@ -131,7 +131,8 @@ export default class ContentCanvas extends PureComponent {
             setCurrentlyEditedPropertyName,
             unFocusNode,
             persistChange,
-            formattingRulesRegistry
+            formattingRulesRegistry,
+            nodeTypesRegistry
         } = this.props;
 
         //
@@ -225,15 +226,18 @@ export default class ContentCanvas extends PureComponent {
             }
 
             const nodeFormattingRules = this.calculateEnabledFormattingRulesForNodeType(node.nodeType);
-
+            const placeholder = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get(node.nodeType));
             const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];
 
             // Build up editor config for each enabled formatting
             let editorOptions = Object.assign(
                 {
+                    extraPlugins: 'confighelper',
                     removePlugins: 'floatingspace,maximize,resize,toolbar,contextmenu,liststyle,tabletools'
-                }
+                },
+                placeholder ? {placeholder} : {}
             );
+
             enabledFormattingRuleIds.forEach(formattingRuleId => {
                 const formattingDefinition = formattingRulesRegistry.get(formattingRuleId);
 

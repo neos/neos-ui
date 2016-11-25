@@ -4,7 +4,6 @@ import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selec
 
 const nodes = $get(['cr', 'nodes', 'byContextPath']);
 const focused = $get('cr.nodes.focused.contextPath');
-const hovered = $get('cr.nodes.hovered.contextPath');
 
 const parentNodeContextPath = contextPath => {
     if (typeof contextPath !== 'string') {
@@ -81,15 +80,6 @@ export const focusedSelector = immutableNodeToJs(createSelector(
     ],
     (focusedNodePath, getNodeByContextPath) =>
         getNodeByContextPath(focusedNodePath)
-));
-
-export const hoveredSelector = immutableNodeToJs(createSelector(
-    [
-        hovered,
-        nodeByContextPath
-    ],
-    (hoveredNodePath, getNodeByContextPath) =>
-        getNodeByContextPath(hoveredNodePath)
 ));
 
 export const byContextPathSelector = defaultMemoize(

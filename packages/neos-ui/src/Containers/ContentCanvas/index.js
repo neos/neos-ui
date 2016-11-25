@@ -36,8 +36,6 @@ const closestContextPath = el => {
     addNode: actions.CR.Nodes.add,
     focusNode: actions.CR.Nodes.focus,
     unFocusNode: actions.CR.Nodes.unFocus,
-    hoverNode: actions.CR.Nodes.hover,
-    unHoverNode: actions.CR.Nodes.unhover,
     persistChange: actions.Changes.persistChange
 })
 @neos(globalRegistry => ({
@@ -59,8 +57,6 @@ export default class ContentCanvas extends PureComponent {
         setCurrentlyEditedPropertyName: PropTypes.func.isRequired,
         focusNode: PropTypes.func.isRequired,
         unFocusNode: PropTypes.func.isRequired,
-        hoverNode: PropTypes.func.isRequired,
-        unHoverNode: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired,
         byContextPathDynamicAccess: PropTypes.func.isRequired,
         formattingRulesRegistry: PropTypes.object.isRequired,
@@ -125,8 +121,6 @@ export default class ContentCanvas extends PureComponent {
             setPreviewUrl,
             setActiveDimensions,
             addNode,
-            hoverNode,
-            unHoverNode,
             formattingUnderCursor,
             setCurrentlyEditedPropertyName,
             unFocusNode,
@@ -160,17 +154,17 @@ export default class ContentCanvas extends PureComponent {
         const components = iframeDocument.querySelectorAll('[data-__neos-node-contextpath]');
         Array.prototype.forEach.call(components, node => {
             node.addEventListener('mouseenter', e => {
-                const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
-                const typoscriptPath = node.getAttribute('data-__neos-typoscript-path');
+                const oldNode = iframeDocument.querySelector(`.${style.markHoveredNodeAsHovered}`);
+                if (oldNode) {
+                    oldNode.classList.remove(style.markHoveredNodeAsHovered);
+                }
 
-                hoverNode(nodeContextPath, typoscriptPath);
+                node.classList.add(style.markHoveredNodeAsHovered);
 
                 e.stopPropagation();
             });
             node.addEventListener('mouseleave', e => {
-                const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
-
-                unHoverNode(nodeContextPath);
+                node.classList.remove(style.markHoveredNodeAsHovered);
 
                 e.stopPropagation();
             });

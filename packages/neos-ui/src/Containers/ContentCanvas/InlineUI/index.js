@@ -2,7 +2,6 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
-import {selectors} from '@neos-project/neos-ui-redux-store';
 import NodeToolbar from './NodeToolbar/index';
 import MarkActiveNodeAsFocused from './MarkActiveNodeAsFocused/index';
 import AddEmptyContentCollectionOverlays from './AddEmptyContentCollectionOverlays/index';

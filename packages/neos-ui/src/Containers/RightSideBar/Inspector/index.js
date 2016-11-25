@@ -111,7 +111,7 @@ export default class Inspector extends PureComponent {
 
         return (
             <div className={style.inspector}>
-                <Tabs>
+                <Tabs theme={{tabs__content: style.tabs}}>
                     {viewConfiguration.tabs
                         //
                         // Only display tabs, that have groups

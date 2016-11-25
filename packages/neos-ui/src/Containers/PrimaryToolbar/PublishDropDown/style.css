@@ -3,6 +3,7 @@
     position: relative;
     vertical-align: top;
     padding-right: 47px;
+    height: var(--goldenUnit);
 }
 
 .publishBtn {

@@ -63,6 +63,9 @@
     background: var(--brandColorsContrastNeutral);
     border-top: 1px solid var(--brandColorsContrastDarker);
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:hover {
         background: var(--brandColorsPrimaryBlue);

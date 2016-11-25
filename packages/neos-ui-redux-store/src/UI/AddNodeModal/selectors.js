@@ -1,6 +1,7 @@
 import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
 import {selectors as nodes} from '../../CR/Nodes/index';
+import {getAllowedNodeTypesTakingAutoCreatedIntoAccount} from '../../CR/Nodes/helpers';
 
 const referenceNodeContextPathSelector = state => $get('ui.addNodeModal.referenceNode', state);
 
@@ -40,22 +41,6 @@ export const referenceNodeGrandParentSelector = createSelector(
         return nodes.parentNodeSelector(state)(referenceNodeParent);
     }
 );
-
-// Helper function for getAllowedNodeTypesByModeSelector
-const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode, parentOfBaseNode, nodeTypesRegistry) => {
-    if (!baseNode) {
-        return [];
-    }
-    if (baseNode.isAutoCreated) {
-        if (!parentOfBaseNode) {
-            return [];
-        }
-        return nodeTypesRegistry.getAllowedGrandChildNodeTypes(parentOfBaseNode.nodeType, baseNode.name);
-    }
-
-    // not auto created
-    return nodeTypesRegistry.getAllowedChildNodeTypes(baseNode.nodeType);
-};
 
 /**
  * This selector returns a function which you need to pass in the node-Type-Registry, to

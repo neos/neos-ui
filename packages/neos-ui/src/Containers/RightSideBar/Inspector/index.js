@@ -111,7 +111,11 @@ export default class Inspector extends PureComponent {
 
         return (
             <div className={style.inspector}>
-                <Tabs theme={{tabs__content: style.tabs}}>
+                <Tabs
+                    theme={{
+                        tabs__content: style.tabs // eslint-disable-line camelcase
+                    }}
+                    >
                     {viewConfiguration.tabs
                         //
                         // Only display tabs, that have groups

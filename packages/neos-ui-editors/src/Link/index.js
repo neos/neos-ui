@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
 
-const LinkEditor = props => {
+const Link = props => {
     const {value, commit} = props;
 
     return <TextInput value={value} onChange={commit}/>;

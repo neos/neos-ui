@@ -42,7 +42,6 @@ manifest('inspectorEditors', {}, globalRegistry => {
         component: Link
     });
 
-
     //
     // This hook will create an image variant right before changes to an image
     // are saved

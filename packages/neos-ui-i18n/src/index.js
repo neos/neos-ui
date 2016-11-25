@@ -51,8 +51,44 @@ export default class I18n extends Component {
         return [packageKey, sourceName, id];
     }
 
+    substitutePlaceholders(textWithPlaceholders, parameters) {
+        let startOfPlaceholder;
+        while ((startOfPlaceholder = textWithPlaceholders.indexOf('{')) !== -1) {
+            const endOfPlaceholder = textWithPlaceholders.indexOf('}');
+            const startOfNextPlaceholder = textWithPlaceholders.indexOf('{', startOfPlaceholder + 1);
+
+            if (endOfPlaceholder === -1 || (startOfPlaceholder + 1) >= endOfPlaceholder || (startOfNextPlaceholder !== -1 && startOfNextPlaceholder < endOfPlaceholder)) {
+                // There is no closing bracket, or it is placed before the opening bracket, or there is nothing between brackets
+                logger.error('Text provided contains incorrectly formatted placeholders. Please make sure you conform the placeholder\'s syntax.');
+                break;
+            }
+
+            const contentBetweenBrackets = textWithPlaceholders.substr(startOfPlaceholder + 1, endOfPlaceholder - startOfPlaceholder - 1);
+            const placeholderElements = contentBetweenBrackets.replace(' ', '').split(',');
+
+            const valueIndex = placeholderElements[0];
+            if (typeof parameters[valueIndex] === undefined) {
+                logger.error('Placeholder "' + valueIndex + '" was not provided, make sure you provide values for every placeholder.');
+                break;
+            }
+
+            let formattedPlaceholder;
+            if (typeof placeholderElements[1] === 'undefined') {
+                // No formatter defined, just string-cast the value
+                formattedPlaceholder = parameters[valueIndex];
+            } else {
+                logger.error('Placeholder formatter not supported.');
+                break;
+            }
+
+            textWithPlaceholders = textWithPlaceholders.replace('{' + contentBetweenBrackets + '}', formattedPlaceholder);
+        }
+
+        return textWithPlaceholders;
+    }
+
     renderTranslation() {
-        const {translations} = this.props;
+        const {translations, params} = this.props;
         const fallback = this.props.fallback || this.props.id;
         const [packageKey, sourceName, id] = this.getTranslationAddress();
         const translation = [packageKey, sourceName, id]
@@ -64,6 +100,9 @@ export default class I18n extends Component {
             .reduce((prev, cur) => (prev ? prev[cur] || '' : ''), translations);
 
         if (translation && translation.length) {
+            if (params) {
+                return this.substitutePlaceholders(translation, params);
+            }
             return translation;
         }
 

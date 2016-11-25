@@ -23,10 +23,13 @@ export default class AddNode extends PureComponent {
     }
 
     render() {
+        const {focusedNode, className} = this.props;
+
         return (
             <span>
                 <IconButton
-                    className={this.props.className}
+                    isDisabled={Boolean(focusedNode) === false}
+                    className={className}
                     icon="plus"
                     onClick={this.handleOpenModalBtnClick}
                     />

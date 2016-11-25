@@ -147,7 +147,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     private function buildNodeProperty(NodeInterface $node, $propertyName, $dataType)
     {
-        if (substr($propertyName, 0, 1) === '_') {
+        if ($propertyName === '_nodeType') {
+            $propertyValue = $node->getNodeType()->getName();
+        } else if (substr($propertyName, 0, 1) === '_') {
             $propertyValue = ObjectAccess::getProperty($node, substr($propertyName, 1));
         } else {
             $propertyValue = $node->getProperty($propertyName);

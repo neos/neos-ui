@@ -65,4 +65,18 @@ storiesOf('SelectBox', module)
             </StoryWrapper>
         ),
         {inline: true}
+    )
+    .addWithInfo(
+        'deleteable',
+        () => (
+            <StoryWrapper title="SelectBox">
+                <SelectBox
+                    options={loadOptions}
+                    placeholder={text('Placeholder', 'Select')}
+                    onSelect={action('onSelect')}
+                    onDelete={action('onDelete')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
     );

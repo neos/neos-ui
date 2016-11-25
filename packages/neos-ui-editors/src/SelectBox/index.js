@@ -1,21 +1,31 @@
-import React, {PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 
-const SelectBoxEditor = props => {
-    const {commit} = props;
-    const options = Object.keys(props.options.values)
-        .map(k => Object.assign(
-            {value: k},
-            props.options.values[k]
-        )
-    );
+class SelectBoxEditor extends PureComponent {
+    static propTypes = {
+        commit: PropTypes.func.isRequired,
+        value: PropTypes.any,
+        options: PropTypes.any.isRequired
+    };
 
-    return <SelectBox options={options} value={props.value} onSelect={commit}/>;
-};
-SelectBoxEditor.propTypes = {
-    commit: PropTypes.func.isRequired,
-    value: PropTypes.any,
-    options: PropTypes.any.isRequired
-};
+    constructor(props) {
+        super(props);
+
+        this.handleDelete = () => this.props.commit('');
+    }
+
+    render() {
+        const {commit, value} = this.props;
+        const options = Object.keys(this.props.options.values)
+            .map(k => Object.assign(
+                {value: k},
+                this.props.options.values[k]
+            )
+        );
+        const onDelete = value ? this.handleDelete : null;
+
+        return <SelectBox options={options} value={value} onSelect={commit} onDelete={onDelete}/>;
+    }
+}
 
 export default SelectBoxEditor;

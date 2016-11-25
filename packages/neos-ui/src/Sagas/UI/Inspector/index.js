@@ -78,7 +78,7 @@ function * flushInspector(inspectorRegistry) {
 
         //
         // Try to run all hooks on the transient value
-        //
+        const initialValue = Promise.resolve(transientValue.value);
         const value = yield transientValue.hooks ?
             Object.keys(transientValue.hooks).reduce(
                 (valueAsPromise, hookIdentifier) => {
@@ -93,8 +93,8 @@ function * flushInspector(inspectorRegistry) {
                         }
                     });
                 },
-                Promise.resolve(transientValue.value)
-            ) : transientValue.value;
+                initialValue
+            ) : initialValue;
 
         //
         // Build a property change object

@@ -12,7 +12,6 @@ function * watchPersist() {
 
     yield * takeEvery(actionTypes.Changes.PERSIST, function * persistChanges(action) {
         const changes = [action.payload.change];
-        console.log('persist', changes);
 
         yield put(actions.UI.Remote.startSaving());
 

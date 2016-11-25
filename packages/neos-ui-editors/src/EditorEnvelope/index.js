@@ -15,6 +15,7 @@ export default class EditorEnvelope extends PureComponent {
         value: PropTypes.any,
         renderSecondaryInspector: PropTypes.func,
         editorRegistry: PropTypes.object.isRequired,
+        validationErrors: PropTypes.array,
 
         commit: PropTypes.func.isRequired
     };
@@ -48,11 +49,15 @@ export default class EditorEnvelope extends PureComponent {
             return null;
         }
 
-        const {label} = this.props;
+        const {label, validationErrors} = this.props;
+        const renderedErrors = validationErrors && validationErrors.map((validationError, key) => {
+            return (<I18n key={key} id={validationError} fallback={validationError}/>);
+        });
 
         return (
             <Label htmlFor={this.generateIdentifier()}>
                 <I18n id={label}/>
+                {renderedErrors}
             </Label>
         );
     }

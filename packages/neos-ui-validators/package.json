@@ -1,0 +1,11 @@
+{
+  "name": "@neos-project/neos-ui-validators",
+  "version": "4.4.8",
+  "description": "Validators for Neos CMS UI.",
+  "private": true,
+  "main": "./src/manifest.js",
+  "dependencies": {
+    "@neos-project/neos-ui-extensibility": "^4.4.8"
+  },
+  "license": "GNU GPLv3"
+}

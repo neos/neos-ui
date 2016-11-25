@@ -1,4 +1,4 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
@@ -15,6 +15,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
+import validate from '@neos-project/neos-ui-validators/src/index';
 
 //
 // Export error messages for testing
@@ -49,9 +50,10 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
     persistChange: actions.Changes.persistChange
 })
 @neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    validatorRegistry: globalRegistry.get('validators')
 }))
-export default class AddNodeModal extends PureComponent {
+export default class AddNodeModal extends Component {
     static propTypes = {
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
@@ -59,6 +61,7 @@ export default class AddNodeModal extends PureComponent {
         groupedAllowedNodeTypes: PropTypes.array,
         getAllowedNodeTypesByModeGenerator: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
+        validatorRegistry: PropTypes.object.isRequired,
 
         handleClose: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired
@@ -134,6 +137,7 @@ export default class AddNodeModal extends PureComponent {
 
     renderStep2() {
         const creationDialogElements = this.state.selectedNodeType.ui.creationDialog.elements;
+        const validationErrors = validate(this.state.elementValues, this.state.selectedNodeType.ui.creationDialog.elements, this.props.validatorRegistry);
 
         return (
             <Dialog
@@ -146,6 +150,7 @@ export default class AddNodeModal extends PureComponent {
                 {Object.keys(creationDialogElements).map(elementName => {
                     const element = this.state.selectedNodeType.ui.creationDialog.elements[elementName];
                     const onCommit = value => this.handleDialogEditorValueChange(elementName, value);
+                    const validationErrorsForElement = validationErrors[elementName];
                     return (<EditorEnvelope
                         key={elementName}
                         identifier={elementName}
@@ -153,6 +158,7 @@ export default class AddNodeModal extends PureComponent {
                         editor={$get('ui.editor', element)}
                         options={$get('ui.editorOptions', element)}
                         commit={onCommit}
+                        validationErrors={validationErrorsForElement}
                         />);
                 })}
             </Dialog>
@@ -211,7 +217,7 @@ export default class AddNodeModal extends PureComponent {
                 onClick={this.handleBack}
                 isFocused={true}
                 >
-                <I18n id="TYPO3.Neos:Main:cancel" fallback="Back"/>
+                <I18n id="TYPO3.Neos:Main:back" fallback="Back"/>
             </Button>
         );
     }

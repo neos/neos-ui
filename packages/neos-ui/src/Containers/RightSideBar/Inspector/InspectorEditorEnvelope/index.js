@@ -1,7 +1,5 @@
 import React, {PureComponent, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {$get} from 'plow-js';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 
 /**
@@ -9,12 +7,6 @@ import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/ind
  *
  * For reference on how to use editors, check the docs inside the Registry.
  */
-@connect($transform({
-    node: selectors.CR.Nodes.focusedSelector,
-    transient: selectors.UI.Inspector.transientValues
-}), {
-    commit: actions.UI.Inspector.commit
-})
 export default class InspectorEditorEnvelope extends PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
@@ -22,6 +14,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
         editor: PropTypes.string.isRequired,
         options: PropTypes.object,
         renderSecondaryInspector: PropTypes.func.isRequired,
+        validationErrors: PropTypes.array,
 
         node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired,

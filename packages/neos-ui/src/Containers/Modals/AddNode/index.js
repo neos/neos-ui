@@ -137,7 +137,7 @@ export default class AddNodeModal extends Component {
 
     renderStep2() {
         const creationDialogElements = this.state.selectedNodeType.ui.creationDialog.elements;
-        const validationErrors = validate(this.state.elementValues, this.state.selectedNodeType.ui.creationDialog.elements, this.props.validatorRegistry);
+        const validationErrors = validate(this.state.elementValues, creationDialogElements, this.props.validatorRegistry);
 
         return (
             <Dialog
@@ -215,7 +215,6 @@ export default class AddNodeModal extends Component {
                 style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleBack}
-                isFocused={true}
                 >
                 <I18n id="TYPO3.Neos:Main:back" fallback="Back"/>
             </Button>
@@ -229,7 +228,6 @@ export default class AddNodeModal extends Component {
                 style="lighter"
                 hoverStyle="brand"
                 onClick={this.props.handleClose}
-                isFocused={true}
                 >
                 <I18n id="TYPO3.Neos:Main:cancel" fallback="Cancel"/>
             </Button>
@@ -243,7 +241,6 @@ export default class AddNodeModal extends Component {
                 style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleSave}
-                isFocused={true}
                 >
                 <I18n id="TYPO3.Neos:Main:createNew" fallback="Create"/>
             </Button>

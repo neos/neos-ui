@@ -19,5 +19,6 @@
     color: var(--brandColorsContrastBright);
 }
 .textInput--invalid {
-    outline: 2px solid var(--brandColorsError);
+    outline: 2px solid var(--brandColorsError) !important;
+    color: var(--brandColorsError) !important;
 }

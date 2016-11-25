@@ -49,15 +49,11 @@ export default class EditorEnvelope extends PureComponent {
             return null;
         }
 
-        const {label, validationErrors} = this.props;
-        const renderedErrors = validationErrors && validationErrors.map((validationError, key) => {
-            return (<I18n key={key} id={validationError} fallback={validationError}/>);
-        });
+        const {label} = this.props;
 
         return (
             <Label htmlFor={this.generateIdentifier()}>
                 <I18n id={label}/>
-                {renderedErrors}
             </Label>
         );
     }

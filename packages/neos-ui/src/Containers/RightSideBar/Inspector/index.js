@@ -1,6 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 import Bar from '@neos-project/react-ui-components/lib/Bar/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
@@ -9,27 +9,35 @@ import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import validate from '@neos-project/neos-ui-validators/src/index';
 
 import TabPanel from './TabPanel/index';
 import style from './style.css';
 
 @connect($transform({
     focusedNode: selectors.CR.Nodes.focusedSelector,
-    transientValues: selectors.UI.Inspector.transientValues
+    transientValues: selectors.UI.Inspector.transientValues,
+    node: selectors.CR.Nodes.focusedSelector
 }), {
     apply: actions.UI.Inspector.apply,
-    discard: actions.UI.Inspector.discard
+    discard: actions.UI.Inspector.discard,
+    commit: actions.UI.Inspector.commit
 })
 @neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    validatorRegistry: globalRegistry.get('validators')
 }))
 export default class Inspector extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object,
         nodeTypesRegistry: PropTypes.object,
+        validatorRegistry: PropTypes.object.isRequired,
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
-        transientValues: PropTypes.any
+        transientValues: PropTypes.any,
+
+        node: PropTypes.object.isRequired,
+        commit: PropTypes.func.isRequired
     };
 
     constructor(...args) {
@@ -96,10 +104,23 @@ export default class Inspector extends PureComponent {
     }
 
     render() {
-        const {focusedNode, nodeTypesRegistry, transientValues} = this.props;
+        const {focusedNode, nodeTypesRegistry, transientValues, node, validatorRegistry, commit} = this.props;
 
         if (!focusedNode) {
             return this.renderFallback();
+        }
+
+        const nodeType = nodeTypesRegistry.get(node.nodeType);
+        if (!nodeType.properties) {
+            console.error(`No properties configured in ${node.nodeType} nodetype`);
+        }
+        let validationErrors;
+        if (transientValues) {
+            const transientProps = {};
+            Object.keys(transientValues.toJS()).forEach(key => {
+                transientProps[key] = $get([key, 'value'], transientValues);
+            });
+            validationErrors = validate(transientProps, nodeType.properties, validatorRegistry);
         }
 
         const viewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor(focusedNode.nodeType);
@@ -121,7 +142,19 @@ export default class Inspector extends PureComponent {
                         //
                         // Render each tab as a TabPanel
                         //
-                        .map(tab => <TabPanel key={tab.id} icon={tab.icon} groups={tab.groups} renderSecondaryInspector={this.renderSecondaryInspector}/>)
+                        .map(tab => {
+                            return (
+                                <TabPanel
+                                    key={tab.id}
+                                    icon={tab.icon}
+                                    groups={tab.groups}
+                                    renderSecondaryInspector={this.renderSecondaryInspector}
+                                    validationErrors={validationErrors}
+                                    node={node}
+                                    commit={commit}
+                                    transientValues={transientValues}
+                                    />);
+                        })
                     }
                 </Tabs>
                 <Bar position="bottom">

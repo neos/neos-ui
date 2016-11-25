@@ -21,9 +21,11 @@ const validate = (values, elementConfigurations, validatorRegistry) => {
 
     const errors = {};
     Object.keys(values).forEach(elementName => {
-        const elementValue = values[elementName];
-        const elementConfiguration = elementConfigurations[elementName];
-        errors[elementName] = validateElement(elementValue, elementConfiguration);
+        if ((elementName in values) && (elementName in elementConfigurations)) {
+            const elementValue = values[elementName];
+            const elementConfiguration = elementConfigurations[elementName];
+            errors[elementName] = validateElement(elementValue, elementConfiguration);
+        }
     });
     return errors;
 };

@@ -10,11 +10,15 @@ export default class TabPanel extends Component {
     static displayName = 'Inspector Tab Panel';
     static propTypes = {
         groups: PropTypes.array,
-        renderSecondaryInspector: PropTypes.func.isRequired
+        renderSecondaryInspector: PropTypes.func.isRequired,
+        node: PropTypes.object.isRequired,
+        commit: PropTypes.func.isRequired,
+        transientValues: PropTypes.object,
+        validationErrors: PropTypes.object
     };
 
     render() {
-        const {groups, renderSecondaryInspector} = this.props;
+        const {groups, renderSecondaryInspector, validationErrors, node, commit, transientValues} = this.props;
         const tabPanel = groups => (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 {
@@ -24,6 +28,10 @@ export default class TabPanel extends Component {
                             label={group.label}
                             properties={group.properties}
                             renderSecondaryInspector={renderSecondaryInspector}
+                            node={node}
+                            commit={commit}
+                            transient={transientValues}
+                            validationErrors={validationErrors}
                             />
                     ))
                 }

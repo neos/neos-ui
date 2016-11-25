@@ -19,7 +19,7 @@ export default class I18n extends Component {
         sourceName: PropTypes.string.isRequired,
 
         // Additional parameters which are passed to the i18n service.
-        params: PropTypes.array.isRequired,
+        params: PropTypes.object.isRequired,
 
         // Optional className which gets added to the translation span.
         className: PropTypes.string,
@@ -30,7 +30,7 @@ export default class I18n extends Component {
     static defaultProps = {
         packageKey: 'TYPO3.Neos',
         sourceName: 'Main',
-        params: []
+        params: {}
     };
 
     render() {

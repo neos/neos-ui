@@ -8,11 +8,6 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(TextInput, defaultProps);
 
-test('should render an "input" node.', t => {
-    const input = shallow();
-
-    t.is(input.type(), 'input');
-});
 test('should add the passed "className" prop to the rendered button if passed.', t => {
     const input = shallow({className: 'testClassName'});
 

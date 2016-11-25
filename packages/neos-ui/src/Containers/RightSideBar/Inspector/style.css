@@ -12,3 +12,6 @@
 .publishBtn:hover {
     background: var(--brandColorsSuccess) !important;
 }
+.tabs > div {
+    height: 100%;
+}

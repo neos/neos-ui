@@ -30,6 +30,7 @@ export default {
     toggablePanel: '@neos-project/react-ui-components/toggablePanel',
     toggablePanelHeader: '@neos-project/react-ui-components/toggablePanelHeader',
     toggablePanelContents: '@neos-project/react-ui-components/toggablePanelContents',
+    tooltip: '@neos-project/react-ui-components/tooltip',
     tree: '@neos-project/react-ui-components/tree',
     treeNode: '@neos-project/react-ui-components/treeNode',
     treeNodeHeader: '@neos-project/react-ui-components/treeNodeHeader',

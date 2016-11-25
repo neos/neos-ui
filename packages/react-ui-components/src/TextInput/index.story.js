@@ -13,7 +13,7 @@ storiesOf('TextInput', module)
             return (
                 <StoryWrapper>
                     <TextInput
-                        validationErrors={['This input is invalid']}
+                        validationErrors={isValid ? null : ['This input is invalid']}
                         placeholder={isValid ? 'Valid input' : 'Invalid input'}
                         onChange={action('onChange')}
                         onFocus={action('onFocus')}

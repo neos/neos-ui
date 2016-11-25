@@ -1,9 +1,11 @@
+.wrap {
+    margin-bottom: var(--spacing);
+}
 .textInput {
     composes: reset from './../reset.css';
     width: 100%;
     height: var(--goldenUnit);
     padding: 0 14px;
-    margin-bottom: var(--spacing);
     border: 0;
     background: var(--brandColorsContrastNeutral);
     color: white;

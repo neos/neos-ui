@@ -1,5 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
+import Tooltip from '../Tooltip/index';
 
 class TextInput extends PureComponent {
     static propTypes = {
@@ -67,7 +68,7 @@ class TextInput extends PureComponent {
         });
 
         return (
-            <div>
+            <div className={theme.wrap}>
                 <input
                     {...rest}
                     className={classNames}
@@ -75,7 +76,7 @@ class TextInput extends PureComponent {
                     placeholder={placeholder}
                     onChange={this.handleValueChange}
                     />
-                {renderedErrors}
+                {renderedErrors && renderedErrors.length > 0 && <Tooltip>{renderedErrors}</Tooltip>}
             </div>
         );
     }

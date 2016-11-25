@@ -1,6 +1,9 @@
 import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
+
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
+
+import {getAllowedNodeTypesTakingAutoCreatedIntoAccount} from './helpers';
 
 const nodes = $get(['cr', 'nodes', 'byContextPath']);
 const focused = $get('cr.nodes.focused.contextPath');
@@ -123,4 +126,27 @@ export const focusedGrandParentSelector = createSelector(
 
         return parentNodeSelector(state)(focusedParentNode);
     }
+);
+
+/**
+ * This selector returns a function which you need to pass in the node-Type-Registry
+ */
+export const getAllowedSiblingNodeTypesForFocusedNodeSelector = createSelector(
+    [
+        focusedSelector,
+        focusedParentSelector,
+        focusedGrandParentSelector
+    ],
+    (focusedNode, focusedNodeParent, focusedNodeGrandParent) =>
+        defaultMemoize(nodeTypesRegistry => {
+            if (!focusedNode) {
+                return [];
+            }
+
+            return getAllowedNodeTypesTakingAutoCreatedIntoAccount(
+                focusedNodeParent,
+                focusedNodeGrandParent,
+                nodeTypesRegistry
+            );
+        })
 );

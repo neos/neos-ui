@@ -8,14 +8,19 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(TextInput, defaultProps);
 
+test('should render an "input" node.', t => {
+    const input = shallow().find('input');
+
+    t.is(input.type(), 'input');
+});
 test('should add the passed "className" prop to the rendered button if passed.', t => {
-    const input = shallow({className: 'testClassName'});
+    const input = shallow({className: 'testClassName'}).find('input');
 
     t.truthy(input.hasClass('testClassName'));
 });
 test('should call the passed "onChange" prop with the value of the input when changing it.', t => {
     const onChange = sinon.spy();
-    const input = shallow({onChange});
+    const input = shallow({onChange}).find('input');
 
     input.simulate('change', {
         target: {
@@ -27,7 +32,7 @@ test('should call the passed "onChange" prop with the value of the input when ch
     t.is(onChange.args[0][0], 'my value');
 });
 test('should throw no error if no "onChange" prop was passed when changing the value of the input.', t => {
-    const input = shallow();
+    const input = shallow().find('input');
     const fn = () => {
         input.simulate('change', {
             target: {

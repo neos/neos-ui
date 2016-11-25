@@ -10,7 +10,8 @@ import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 })
 export default class AddNode extends PureComponent {
     static propTypes = {
-        node: PropTypes.object,
+        contextPath: PropTypes.string,
+        fusionPath: PropTypes.string,
         className: PropTypes.string,
         openAddNodeModal: PropTypes.func.isRequired
     };
@@ -36,9 +37,10 @@ export default class AddNode extends PureComponent {
     handleOpenModalBtnClick() {
         const {
             openAddNodeModal,
-            node
+            contextPath,
+            fusionPath
         } = this.props;
 
-        openAddNodeModal(node.contextPath, 'append');
+        openAddNodeModal(contextPath, fusionPath);
     }
 }

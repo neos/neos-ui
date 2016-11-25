@@ -2,6 +2,7 @@
 namespace Neos\Neos\Ui\Domain\Model;
 
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Mvc\Controller\ControllerContext;
 
 /**
  * @Flow\Scope("singleton")
@@ -12,6 +13,22 @@ class FeedbackCollection implements \JsonSerializable
      * @var array<FeedbackInterface>
      */
     protected $feedbacks = [];
+
+    /**
+     * @var ControllerContext
+     */
+    protected $controllerContext;
+
+    /**
+     * Set the controller context
+     *
+     * @param ControllerContext $controllerContext
+     * @return void
+     */
+    public function setControllerContext(ControllerContext $controllerContext)
+    {
+        $this->controllerContext = $controllerContext;
+    }
 
     /**
      * Add feedback
@@ -43,7 +60,7 @@ class FeedbackCollection implements \JsonSerializable
             $feedbacks[] = [
                 'type' => $feedback->getType(),
                 'description' => $feedback->getDescription(),
-                'payload' => $feedback->serializePayload()
+                'payload' => $feedback->serializePayload($this->controllerContext)
             ];
         }
 

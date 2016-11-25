@@ -4,6 +4,16 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 class CreateBefore extends AbstractCreate
 {
     /**
+     * Get the insertion mode (before|after|into) that is represented by this change
+     *
+     * @return string
+     */
+    public function getMode()
+    {
+        return 'before';
+    }
+
+    /**
      * Check if the new node's node type is allowed in the requested position
      *
      * @return boolean

@@ -16,6 +16,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 
+import {dom} from '../../ContentCanvas/Helpers/index';
+
 //
 // Export error messages for testing
 //
@@ -39,7 +41,59 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
     return '';
 };
 
+const calculateChangeTypeFromMode = mode => {
+    switch (mode) {
+        case 'prepend':
+            return 'Neos.Neos.Ui:CreateBefore';
+
+        case 'append':
+            return 'Neos.Neos.Ui:CreateAfter';
+
+        default:
+            return 'Neos.Neos.Ui:Create';
+    }
+};
+
+const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
+    if (!fusionPath) {
+        //
+        // We're obviously creating a node in the tree. This operation needs
+        // no further addressing.
+        //
+        return {};
+    }
+
+    switch (mode) {
+        case 'prepend':
+        case 'append': {
+            const parentElement = dom.closestNode(
+                dom.findNode(contextPath, fusionPath).parentNode
+            );
+
+            return {
+                siblingDomAddress: {
+                    contextPath,
+                    fusionPath
+                },
+                parentDomAddress: {
+                    contextPath: parentElement.getAttribute('data-__neos-node-contextpath'),
+                    fusionPath: parentElement.getAttribute('data-__neos-typoscript-path')
+                }
+            };
+        }
+
+        default:
+            return {
+                parentDomAddress: {
+                    contextPath,
+                    fusionPath
+                }
+            };
+    }
+};
+
 @connect($transform({
+    fusionPath: $get('ui.addNodeModal.fusionPath'),
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
     referenceNodeParent: selectors.UI.AddNodeModal.referenceNodeParentSelector,
     referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
@@ -53,6 +107,7 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
 }))
 export default class AddNodeModal extends PureComponent {
     static propTypes = {
+        fusionPath: PropTypes.string,
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
         referenceNodeGrandParent: NeosPropTypes.node,
@@ -74,7 +129,7 @@ export default class AddNodeModal extends PureComponent {
         super(...props);
 
         this.state = {
-            mode: 'insert',
+            mode: '',
             step: 1,
             selectedNodeType: null,
             elementValues: {}
@@ -104,19 +159,19 @@ export default class AddNodeModal extends PureComponent {
     renderStep1() {
         const {
             nodeTypesRegistry,
-            getAllowedNodeTypesByModeGenerator
+            getAllowedNodeTypesByModeGenerator,
+            handleClose
         } = this.props;
 
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const activeMode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
-
         const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypesByMode[activeMode]);
 
         return (
             <Dialog
                 actions={[this.renderCancelAction()]}
                 title={this.renderInsertModeSelector(activeMode, allowedNodeTypesByMode)}
-                onRequestClose={close}
+                onRequestClose={handleClose}
                 isOpen
                 isWide
                 >
@@ -133,13 +188,14 @@ export default class AddNodeModal extends PureComponent {
     }
 
     renderStep2() {
+        const {handleClose} = this.props;
         const creationDialogElements = this.state.selectedNodeType.ui.creationDialog.elements;
 
         return (
             <Dialog
                 actions={[this.renderBackAction(), this.renderSaveAction()]}
                 title={(<span><I18n fallback="Create new" id="createNew"/> <I18n id={this.state.selectedNodeType.ui.label} fallback={this.state.selectedNodeType.ui.label}/></span>)}
-                onRequestClose={close}
+                onRequestClose={handleClose}
                 isOpen
                 isWide
                 >
@@ -267,30 +323,28 @@ export default class AddNodeModal extends PureComponent {
 
     createNode(nodeType, data = {}) {
         const {
+            nodeTypesRegistry,
+            getAllowedNodeTypesByModeGenerator,
             referenceNode,
+            fusionPath,
             persistChange,
             handleClose
         } = this.props;
 
-        let changeType;
-
-        switch (this.state.mode) {
-            case 'prepend':
-                changeType = 'Neos.Neos.Ui:CreateBefore';
-                break;
-            case 'append':
-                changeType = 'Neos.Neos.Ui:CreateAfter';
-                break;
-            default:
-                changeType = 'Neos.Neos.Ui:Create';
-                break;
-        }
+        const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
+        const mode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
+        const changeType = calculateChangeTypeFromMode(mode);
 
         const change = {
             type: changeType,
-            subject: referenceNode.contextPath,
+            subject: $get('contextPath', referenceNode),
             payload: {
-                nodeType: nodeType.name,
+                ...calculateDomAddressesFromMode(
+                    mode,
+                    $get('contextPath', referenceNode),
+                    fusionPath
+                ),
+                nodeType: $get('name', nodeType),
                 data
             }
         };

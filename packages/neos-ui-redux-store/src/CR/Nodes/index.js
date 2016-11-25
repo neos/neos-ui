@@ -31,9 +31,10 @@ const add = createAction(ADD, nodeMap => ({nodeMap}));
  * Marks a node as focused
  *
  * @param {String} contextPath The context path of the focused node
- * @param {String} typoscriptPath The typoscript path of the focused node
+ * @param {String} fusionPath The fusion path of the focused node, needed for out-of-band-rendering, e.g. when
+ *                            adding new nodes
  */
-const focus = createAction(FOCUS, (contextPath, typoscriptPath) => ({contextPath, typoscriptPath}));
+const focus = createAction(FOCUS, (contextPath, fusionPath) => ({contextPath, fusionPath}));
 
 /**
  * Un-marks all nodes as not focused.
@@ -60,7 +61,7 @@ export const reducer = handleActions({
             siteNode: $get('cr.nodes.siteNode', state) || '',
             focused: new Map({
                 contextPath: '',
-                typoscriptPath: ''
+                fusionPath: ''
             })
         })
     ),
@@ -77,10 +78,10 @@ export const reducer = handleActions({
             )
         ))
     ),
-    [FOCUS]: ({contextPath, typoscriptPath}) => $set('cr.nodes.focused', new Map({contextPath, typoscriptPath})),
+    [FOCUS]: ({contextPath, fusionPath}) => $set('cr.nodes.focused', new Map({contextPath, fusionPath})),
     [UNFOCUS]: () => $set('cr.nodes.focused', new Map({
         contextPath: '',
-        typoscriptPath: ''
+        fusionPath: ''
     }))
 });
 

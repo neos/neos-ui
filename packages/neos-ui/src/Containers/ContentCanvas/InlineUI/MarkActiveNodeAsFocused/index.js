@@ -1,22 +1,25 @@
 import {PureComponent, PropTypes} from 'react';
 
+import {dom} from '../../Helpers/index';
+
 import style from './style.css';
 
 export default class MarkActiveNodeAsFocused extends PureComponent {
     static propTypes = {
-        focusedNode: PropTypes.object
+        contextPath: PropTypes.string,
+        fusionPath: PropTypes.string
     };
 
     render() {
-        if (!this.props.focusedNode) {
+        const {contextPath, fusionPath} = this.props;
+
+        if (!contextPath || !fusionPath) {
             return null;
         }
 
-        const iframeDocument = document.getElementsByName('neos-content-main')[0].contentDocument;
-        // TODO: workaround to access the frame from outside...
-        const nodeElement = iframeDocument.querySelector(`[data-__neos-node-contextpath='${this.props.focusedNode.contextPath}']`);
+        const nodeElement = dom.findNode(contextPath, fusionPath);
+        const oldNode = dom.find(`.${style['markActiveNodeAsFocused--focusedNode']}`);
 
-        const oldNode = iframeDocument.querySelector(`.${style['markActiveNodeAsFocused--focusedNode']}`);
         if (oldNode) {
             oldNode.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
         }

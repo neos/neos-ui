@@ -39,7 +39,7 @@ test(`The reducer should create a valid initial state`, t => {
     t.is(typeof (nextState.get('cr').get('nodes').get('siteNode')), 'string');
     t.true(nextState.get('cr').get('nodes').get('focused') instanceof Map);
     t.is(typeof (nextState.get('cr').get('nodes').get('focused').get('contextPath')), 'string');
-    t.is(typeof (nextState.get('cr').get('nodes').get('focused').get('typoscriptPath')), 'string');
+    t.is(typeof (nextState.get('cr').get('nodes').get('focused').get('fusionPath')), 'string');
 });
 
 test(`The reducer should take initially existing nodes into account`, t => {

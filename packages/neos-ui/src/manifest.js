@@ -8,6 +8,7 @@ import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 import {RichTextToolbarRegistry} from './Registry';
+import {dom} from './Containers/ContentCanvas/Helpers/index';
 
 manifest('main', {}, globalRegistry => {
     //
@@ -367,5 +368,46 @@ manifest('main', {}, globalRegistry => {
 
             iframeWindow.location.href = iframeWindow.location.href;
         });
+    });
+
+    //
+    // When the server has updated node info, apply it to the store
+    //
+    serverFeedbackHandlers.add('Neos.Neos.Ui:UpdateNodeInfo', (feedbackPayload, store) => {
+        store.dispatch(actions.CR.Nodes.add(feedbackPayload.byContextPath));
+    });
+
+    //
+    // When the server advices to render a new node, put the delivered html to the
+    // corrent place inside the DOM
+    //
+    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderContentOutOfBand', feedbackPayload => {
+        const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
+        const parentElement = parentDomAddress && dom.findNode(
+            parentDomAddress.contextPath,
+            parentDomAddress.fusionPath
+        );
+        const siblingElement = siblingDomAddress && dom.findNode(
+            siblingDomAddress.contextPath,
+            siblingDomAddress.fusionPath
+        );
+        const contentElement = (new DOMParser())
+            .parseFromString(renderedContent, 'text/html')
+            .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
+
+        switch (mode) {
+            case 'before':
+                siblingElement.parentNode.insertBefore(contentElement, siblingElement);
+                break;
+
+            case 'after':
+                siblingElement.parentNode.insertBefore(contentElement, siblingElement.nextSibling);
+                break;
+
+            case 'into':
+            default:
+                parentElement.appendChild(contentElement);
+                break;
+        }
     });
 });

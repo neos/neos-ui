@@ -33,7 +33,7 @@ const closestContextPath = el => {
     setActiveDimensions: actions.CR.ContentDimensions.setActive,
     formattingUnderCursor: actions.UI.ContentCanvas.formattingUnderCursor,
     setCurrentlyEditedPropertyName: actions.UI.ContentCanvas.setCurrentlyEditedPropertyName,
-    addNode: actions.CR.Nodes.add,
+    addNodes: actions.CR.Nodes.add,
     focusNode: actions.CR.Nodes.focus,
     unFocusNode: actions.CR.Nodes.unFocus,
     persistChange: actions.Changes.persistChange
@@ -52,7 +52,7 @@ export default class ContentCanvas extends PureComponent {
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
         setActiveDimensions: PropTypes.func.isRequired,
-        addNode: PropTypes.func.isRequired,
+        addNodes: PropTypes.func.isRequired,
         formattingUnderCursor: PropTypes.func.isRequired,
         setCurrentlyEditedPropertyName: PropTypes.func.isRequired,
         focusNode: PropTypes.func.isRequired,
@@ -120,7 +120,7 @@ export default class ContentCanvas extends PureComponent {
             setContextPath,
             setPreviewUrl,
             setActiveDimensions,
-            addNode,
+            addNodes,
             formattingUnderCursor,
             setCurrentlyEditedPropertyName,
             unFocusNode,
@@ -139,10 +139,7 @@ export default class ContentCanvas extends PureComponent {
         // TODO: convert to single action: "guestFrameChange"
 
         // Add nodes before setting the new context path to prevent action ordering issues
-        Object.keys(documentInformation.nodes).forEach(contextPath => {
-            const node = documentInformation.nodes[contextPath];
-            addNode(contextPath, node);
-        });
+        addNodes(documentInformation.nodes);
 
         setContextPath(documentInformation.metaData.contextPath);
         setPreviewUrl(documentInformation.metaData.previewUrl);

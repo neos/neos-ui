@@ -95,7 +95,7 @@ class NodePropertyConversionService
      */
     protected function convertReference($rawValue, Context $context)
     {
-        return $context->getNodeByIdentifier($nodePropertyValue);
+        return $context->getNodeByIdentifier($rawValue);
     }
 
     /**

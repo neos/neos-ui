@@ -12,6 +12,36 @@ const change = csrfToken => changes => fetchJson('/neos!/service/change', {
     })
 });
 
+const urlWithParams = (urlString, params = {}) => {
+    const url = new URL(window.location.origin + urlString);
+    const searchParams = new URLSearchParams();
+    Object.keys(params).forEach(key => {
+        const value = params[key];
+        if (Array.isArray(value)) {
+            value.forEach(v =>
+                searchParams.append(`${key}[]`, v)
+            );
+        } else {
+            searchParams.append(key, value);
+        }
+    });
+    url.search = searchParams.toString();
+
+    return url.toString();
+};
+
+/**
+ * searchTerm:se
+ * workspaceName:user-admin
+ * dimensions[language][]:en_US
+ * contextNode:/sites/neosdemo@user-admin;language=en_US
+ * nodeTypes[]:TYPO3.Neos.NodeTypes:Page
+ */
+const searchNodes = options => fetch(urlWithParams('/neos/service/nodes', options), {
+    method: 'GET',
+    credentials: 'include'
+});
+
 const publish = csrfToken => (nodeContextPaths, targetWorkspaceName) => fetchJson('/neos!/service/publish', {
     method: 'POST',
     credentials: 'include',
@@ -91,5 +121,6 @@ export default csrfToken => ({
     publish: publish(csrfToken),
     discard: discard(csrfToken),
     createImageVariant: createImageVariant(csrfToken),
-    uploadAsset: uploadAsset(csrfToken)
+    uploadAsset: uploadAsset(csrfToken),
+    searchNodes
 });

@@ -45,6 +45,12 @@ export default class SelectBox extends PureComponent {
         onSelect: PropTypes.func.isRequired,
 
         /**
+         * If passed, a `delete` icon will be rendered instead of a chevron,
+         * this prop will be called when clicking on the icon.
+         */
+        onDelete: PropTypes.func,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
@@ -77,15 +83,23 @@ export default class SelectBox extends PureComponent {
 
     constructor(...args) {
         super(...args);
+
         this.filterOption = this.filterOption.bind(this);
         this.renderOption = this.renderOption.bind(this);
         this.handleOnInputClick = this.handleOnInputClick.bind(this);
+        this.handleDeleteClick = e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            this.props.onDelete();
+        };
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.handleOptionsLoad = this.handleOptionsLoad.bind(this);
     }
 
     componentDidMount() {
         const {value} = this.props;
+
         this.loadOptions(); // initially load options
         this.select(value, false);
     }
@@ -108,7 +122,8 @@ export default class SelectBox extends PureComponent {
             InputComponent,
             placeholder,
             placeholderIcon,
-            theme
+            theme,
+            onDelete
         } = this.props;
         const {icon, label, searchValue = ''} = this.state;
 
@@ -121,6 +136,10 @@ export default class SelectBox extends PureComponent {
                             null
                         }
                         <span>{label || placeholder}</span>
+                        {onDelete ?
+                            <a href="" onClick={this.handleDeleteClick} className={theme.dropDown__btnDelete}><IconComponent icon="close"/></a> :
+                            null
+                        }
                     </DropDownComponent.Header>
                     <DropDownComponent.Contents className={theme.dropDown__contents}>
                         {

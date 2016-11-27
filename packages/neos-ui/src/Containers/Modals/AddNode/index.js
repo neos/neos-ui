@@ -1,44 +1,13 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {$transform} from 'plow-js';
 
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import Button from '@neos-project/react-ui-components/lib/Button/';
-import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
-import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
+import Step1 from './step1.js';
+import Step2 from './step2.js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import * as NeosPropTypes from '@neos-project/react-proptypes';
-
-import I18n from '@neos-project/neos-ui-i18n';
-
-import NodeTypeGroupPanel from './nodeTypeGroupPanel';
-import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
-import validate from '@neos-project/neos-ui-validators/src/index';
-
-//
-// Export error messages for testing
-//
-export const errorMessages = {
-    ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
-};
-
-const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
-    if (currentMode && allowedNodeTypesByMode[currentMode].length) {
-        return currentMode;
-    }
-
-    const fallbackOrder = ['insert', 'append', 'prepend'];
-
-    for (let i = 0; i < fallbackOrder.length; i++) {
-        if (allowedNodeTypesByMode[fallbackOrder[i]].length) {
-            return fallbackOrder[i];
-        }
-    }
-
-    return '';
-};
 
 @connect($transform({
     referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
@@ -53,7 +22,7 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
     validatorRegistry: globalRegistry.get('validators')
 }))
-export default class AddNodeModal extends Component {
+export default class AddNodeModal extends PureComponent {
     static propTypes = {
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
@@ -91,160 +60,35 @@ export default class AddNodeModal extends Component {
     }
 
     render() {
-        if (!this.props.referenceNode) {
+        const {validatorRegistry, referenceNode, handleClose, nodeTypesRegistry, getAllowedNodeTypesByModeGenerator} = this.props;
+        if (!referenceNode) {
             return null;
         }
 
         if (this.state.step === 1) {
-            return this.renderStep1();
+            return (
+                <Step1
+                    mode={this.state.mode}
+                    nodeTypesRegistry={nodeTypesRegistry}
+                    getAllowedNodeTypesByModeGenerator={getAllowedNodeTypesByModeGenerator}
+                    onHandleClose={handleClose}
+                    onHandleModeChange={this.handleModeChange}
+                    onHandleSelectNodeType={this.handleSelectNodeType}
+                    />
+            );
         } else if (this.state.step === 2) {
-            return this.renderStep2();
+            return (
+                <Step2
+                    selectedNodeType={this.state.selectedNodeType}
+                    elementValues={this.state.elementValues}
+                    validatorRegistry={validatorRegistry}
+                    onHandleDialogEditorValueChange={this.handleDialogEditorValueChange}
+                    onHandleSave={this.handleSave}
+                    onHandleBack={this.handleBack}
+                    />);
         }
 
         return null; // basically never called.
-    }
-
-    renderStep1() {
-        const {
-            nodeTypesRegistry,
-            getAllowedNodeTypesByModeGenerator
-        } = this.props;
-
-        const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
-        const activeMode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
-
-        const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypesByMode[activeMode]);
-
-        return (
-            <Dialog
-                actions={[this.renderCancelAction()]}
-                title={this.renderInsertModeSelector(activeMode, allowedNodeTypesByMode)}
-                onRequestClose={close}
-                isOpen
-                isWide
-                >
-                {groupedAllowedNodeTypes.map((group, key) => (
-                    <div key={key}>
-                        <NodeTypeGroupPanel
-                            group={group}
-                            onSelect={this.handleSelectNodeType}
-                            />
-                    </div>
-                ))}
-            </Dialog>
-        );
-    }
-
-    renderStep2() {
-        const creationDialogElements = this.state.selectedNodeType.ui.creationDialog.elements;
-        const validationErrors = validate(this.state.elementValues, creationDialogElements, this.props.validatorRegistry);
-
-        return (
-            <Dialog
-                actions={[this.renderBackAction(), this.renderSaveAction()]}
-                title={(<span><I18n fallback="Create new" id="createNew"/> <I18n id={this.state.selectedNodeType.ui.label} fallback={this.state.selectedNodeType.ui.label}/></span>)}
-                onRequestClose={close}
-                isOpen
-                isWide
-                >
-                {Object.keys(creationDialogElements).map(elementName => {
-                    const element = this.state.selectedNodeType.ui.creationDialog.elements[elementName];
-                    const onCommit = value => this.handleDialogEditorValueChange(elementName, value);
-                    const validationErrorsForElement = validationErrors[elementName];
-                    return (<EditorEnvelope
-                        key={elementName}
-                        identifier={elementName}
-                        label={$get('ui.label', element)}
-                        editor={$get('ui.editor', element)}
-                        options={$get('ui.editorOptions', element)}
-                        commit={onCommit}
-                        validationErrors={validationErrorsForElement}
-                        />);
-                })}
-            </Dialog>
-        );
-    }
-
-    handleDialogEditorValueChange(elementName, value) {
-        const newValues = this.state.elementValues;
-        newValues[elementName] = value;
-        this.setState({elementValues: newValues});
-    }
-
-    renderInsertModeSelector(activeMode, allowedNodeTypesByMode) {
-        const options = [];
-
-        if (allowedNodeTypesByMode.prepend.length) {
-            options.push({
-                value: 'prepend',
-                label: (<span>
-                    <I18n fallback="Create new" id="createNew"/> <I18n fallback="before" id="before"/> <Icon icon="level-up"/>
-                </span>)
-            });
-        }
-
-        if (allowedNodeTypesByMode.append.length) {
-            options.push({
-                value: 'append',
-                label: (<span>
-                    <I18n fallback="Create new" id="createNew"/> <I18n fallback="after" id="after"/> <Icon icon="level-down"/>
-                </span>)
-            });
-        }
-
-        if (allowedNodeTypesByMode.insert.length) {
-            options.push({
-                value: 'insert',
-                label: (<span>
-                    <I18n fallback="Create new" id="createNew"/> <I18n fallback="into" id="into"/> <Icon icon="long-arrow-right"/>
-                </span>)
-            });
-        }
-
-        return (<SelectBox
-            options={options}
-            value={activeMode}
-            onSelect={this.handleModeChange}
-            />);
-    }
-
-    renderBackAction() {
-        return (
-            <Button
-                key="back"
-                style="lighter"
-                hoverStyle="brand"
-                onClick={this.handleBack}
-                >
-                <I18n id="TYPO3.Neos:Main:back" fallback="Back"/>
-            </Button>
-        );
-    }
-
-    renderCancelAction() {
-        return (
-            <Button
-                key="cancel"
-                style="lighter"
-                hoverStyle="brand"
-                onClick={this.props.handleClose}
-                >
-                <I18n id="TYPO3.Neos:Main:cancel" fallback="Cancel"/>
-            </Button>
-        );
-    }
-
-    renderSaveAction() {
-        return (
-            <Button
-                key="save"
-                style="lighter"
-                hoverStyle="brand"
-                onClick={this.handleSave}
-                >
-                <I18n id="TYPO3.Neos:Main:createNew" fallback="Create"/>
-            </Button>
-        );
     }
 
     handleModeChange(mode) {
@@ -266,6 +110,12 @@ export default class AddNodeModal extends Component {
 
     handleBack() {
         this.setState({step: 1});
+    }
+
+    handleDialogEditorValueChange(elementName, value) {
+        const newValues = Object.assign({}, this.state.elementValues);
+        newValues[elementName] = value;
+        this.setState({elementValues: newValues});
     }
 
     createNode(nodeType, data = {}) {

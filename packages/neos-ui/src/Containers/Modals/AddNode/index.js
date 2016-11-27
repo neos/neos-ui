@@ -2,6 +2,7 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {dom} from '../../ContentCanvas/Helpers/index';
 import {$transform, $get} from 'plow-js';
+import validate from '@neos-project/neos-ui-validators/src/index';
 
 import Step1 from './step1.js';
 import Step2 from './step2.js';
@@ -126,7 +127,8 @@ export default class AddNodeModal extends PureComponent {
             mode: '',
             step: 1,
             selectedNodeType: null,
-            elementValues: {}
+            elementValues: {},
+            validationErrors: null
         };
 
         this.handleSelectNodeType = this.handleSelectNodeType.bind(this);
@@ -134,10 +136,11 @@ export default class AddNodeModal extends PureComponent {
         this.handleDialogEditorValueChange = this.handleDialogEditorValueChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleBack = this.handleBack.bind(this);
+        this.getValidationErrors = this.getValidationErrors.bind(this);
     }
 
     render() {
-        const {validatorRegistry, referenceNode, handleClose, nodeTypesRegistry, getAllowedNodeTypesByModeGenerator} = this.props;
+        const {referenceNode, handleClose, nodeTypesRegistry, getAllowedNodeTypesByModeGenerator} = this.props;
         if (!referenceNode) {
             return null;
         }
@@ -158,8 +161,7 @@ export default class AddNodeModal extends PureComponent {
             return (
                 <Step2
                     selectedNodeType={this.state.selectedNodeType}
-                    elementValues={this.state.elementValues}
-                    validatorRegistry={validatorRegistry}
+                    validationErrors={this.getValidationErrors()}
                     onHandleDialogEditorValueChange={this.handleDialogEditorValueChange}
                     onHandleSave={this.handleSave}
                     onHandleBack={this.handleBack}
@@ -175,9 +177,14 @@ export default class AddNodeModal extends PureComponent {
 
     handleSelectNodeType(nodeType) {
         if (nodeType.ui.creationDialog) {
-            this.setState({step: 2, selectedNodeType: nodeType, elementValues: {}});
+            // Prefill elementValues with empty values for each key (needed for validation).
+            const elementValues = {};
+            Object.keys(nodeType.ui.creationDialog.elements).forEach(elementKey => {
+                elementValues[elementKey] = '';
+            });
+            this.setState({step: 2, selectedNodeType: nodeType, elementValues});
         } else {
-            // no required node properties; let's directly create the node!
+            // no dialog elements; let's directly create the node!
             this.createNode(nodeType);
         }
     }
@@ -194,6 +201,10 @@ export default class AddNodeModal extends PureComponent {
         const newValues = Object.assign({}, this.state.elementValues);
         newValues[elementName] = value;
         this.setState({elementValues: newValues});
+    }
+
+    getValidationErrors() {
+        return validate(this.state.elementValues, this.state.selectedNodeType.ui.creationDialog.elements, this.props.validatorRegistry);
     }
 
     createNode(nodeType, data = {}) {

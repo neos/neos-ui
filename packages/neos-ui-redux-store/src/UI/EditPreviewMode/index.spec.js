@@ -21,14 +21,7 @@ test(`should export a reducer`, t => {
 });
 
 test(`The reducer should initialize from the init action payload.`, t => {
-
-
-console.log(system);
-console.log(system.init);
-console.log(system.init());
-
-
-    const state = Immutable.fromJS({'ui': {'editPreviewMode': void 0}});
+    const state = Immutable.fromJS({ui: {editPreviewMode: undefined}});
     const nextState = reducer(state, system.init({ui: {editPreviewMode: 'bar'}}));
 
     t.is(nextState.get('ui').get('editPreviewMode'), 'bar');

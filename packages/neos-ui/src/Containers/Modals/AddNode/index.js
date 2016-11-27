@@ -10,6 +10,13 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import * as NeosPropTypes from '@neos-project/react-proptypes';
 
+//
+// Export error messages for testing
+//
+export const errorMessages = {
+    ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
+};
+
 const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
     if (currentMode && allowedNodeTypesByMode[currentMode].length) {
         return currentMode;
@@ -139,6 +146,7 @@ export default class AddNodeModal extends PureComponent {
             return (
                 <Step1
                     mode={this.state.mode}
+                    calculateActiveMode={calculateActiveMode}
                     nodeTypesRegistry={nodeTypesRegistry}
                     getAllowedNodeTypesByModeGenerator={getAllowedNodeTypesByModeGenerator}
                     onHandleClose={handleClose}

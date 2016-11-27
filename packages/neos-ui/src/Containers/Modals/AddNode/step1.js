@@ -6,34 +6,12 @@ import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 import I18n from '@neos-project/neos-ui-i18n';
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 
-//
-// Export error messages for testing
-//
-export const errorMessages = {
-    ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
-};
-
-const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
-    if (currentMode && allowedNodeTypesByMode[currentMode].length) {
-        return currentMode;
-    }
-
-    const fallbackOrder = ['insert', 'append', 'prepend'];
-
-    for (let i = 0; i < fallbackOrder.length; i++) {
-        if (allowedNodeTypesByMode[fallbackOrder[i]].length) {
-            return fallbackOrder[i];
-        }
-    }
-
-    return '';
-};
-
 class Step1 extends PureComponent {
     static propTypes = {
         nodeTypesRegistry: PropTypes.object.isRequired,
         mode: PropTypes.string.isRequired,
         getAllowedNodeTypesByModeGenerator: PropTypes.func.isRequired,
+        calculateActiveMode: PropTypes.func.isRequired,
         onHandleModeChange: PropTypes.func.isRequired,
         onHandleClose: PropTypes.func.isRequired,
         onHandleSelectNodeType: PropTypes.func.isRequired
@@ -90,7 +68,7 @@ class Step1 extends PureComponent {
     }
 
     render() {
-        const {mode, nodeTypesRegistry, getAllowedNodeTypesByModeGenerator, onHandleSelectNodeType} = this.props;
+        const {mode, calculateActiveMode, nodeTypesRegistry, getAllowedNodeTypesByModeGenerator, onHandleSelectNodeType} = this.props;
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const activeMode = calculateActiveMode(mode, allowedNodeTypesByMode);
 

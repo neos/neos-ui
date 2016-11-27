@@ -1,13 +1,14 @@
 import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import TextareaAutoresize from 'react-textarea-autosize';
+import Tooltip from '../Tooltip/index';
 
 class TextArea extends PureComponent {
     static propTypes = {
         /**
-         * This prop controls if the TextArea is rendered as invalid or not.
+         * Array of validation errors
          */
-        isValid: PropTypes.bool.isRequired,
+        validationErrors: PropTypes.array,
 
         /**
          * An optional className to render on the textarea node.
@@ -33,10 +34,6 @@ class TextArea extends PureComponent {
         }).isRequired
     };
 
-    static defaultProps = {
-        isValid: true
-    };
-
     constructor(props) {
         super(props);
 
@@ -47,24 +44,30 @@ class TextArea extends PureComponent {
         const {
             placeholder,
             className,
-            isValid,
+            validationErrors,
             theme,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textArea]: true,
-            [theme['textArea--invalid']]: !isValid
+            [theme['textArea--invalid']]: validationErrors && validationErrors.length > 0
+        });
+        const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
+            return <div key={key}>{validationError}</div>;
         });
 
         return (
-            <TextareaAutoresize
-                {...rest}
-                className={classNames}
-                role="textbox"
-                placeholder={placeholder}
-                onChange={this.handleValueChange}
-                />
+            <div className={theme.wrap}>
+                <TextareaAutoresize
+                    {...rest}
+                    className={classNames}
+                    role="textbox"
+                    placeholder={placeholder}
+                    onChange={this.handleValueChange}
+                    />
+                {renderedErrors && <Tooltip>{renderedErrors}</Tooltip>}
+            </div>
         );
     }
 

@@ -63,8 +63,8 @@ class TextInput extends PureComponent {
             [theme['textInput--invalid']]: validationErrors && validationErrors.length > 0
         });
 
-        const renderedErrors = validationErrors && validationErrors.map((validationError, key) => {
-            return <span key={key}>{validationError}</span>;
+        const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
+            return <div key={key}>{validationError}</div>;
         });
 
         return (
@@ -76,7 +76,7 @@ class TextInput extends PureComponent {
                     placeholder={placeholder}
                     onChange={this.handleValueChange}
                     />
-                {renderedErrors && renderedErrors.length > 0 && <Tooltip>{renderedErrors}</Tooltip>}
+                {renderedErrors && <Tooltip>{renderedErrors}</Tooltip>}
             </div>
         );
     }

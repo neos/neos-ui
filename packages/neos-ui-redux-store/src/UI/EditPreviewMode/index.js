@@ -29,9 +29,9 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: state => $set(
+    [system.INIT]: payload => $set(
         'ui.editPreviewMode',
-        $get('ui.editPreviewMode', state)
+        $get('ui.editPreviewMode', payload)
     ),
     [SET]: ({editPreviewMode}) => $set('ui.editPreviewMode', editPreviewMode)
 });

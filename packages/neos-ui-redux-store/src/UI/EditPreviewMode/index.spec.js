@@ -1,18 +1,18 @@
 import test from 'ava';
-import Immutable, {Map} from 'immutable';
+import Immutable from 'immutable';
 
 import {actionTypes, actions, reducer} from './index.js';
 
-import {actionTypes as system} from '../../System/index';
+import {actions as system} from '../../System/index';
 
 test(`should export actionTypes`, t => {
     t.not(actionTypes, undefined);
-    t.is(typeof (actionTypes.TOGGLE), 'string');
+    t.is(typeof (actionTypes.SET), 'string');
 });
 
 test(`should export action creators`, t => {
     t.not(actions, undefined);
-    t.is(typeof (actions.toggle), 'function');
+    t.is(typeof (actions.set), 'function');
 });
 
 test(`should export a reducer`, t => {
@@ -20,37 +20,28 @@ test(`should export a reducer`, t => {
     t.is(typeof (reducer), 'function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, t => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
-    });
+test(`The reducer should initialize from the init action payload.`, t => {
 
-    t.true(nextState.get('ui').get('editModePanel') instanceof Map);
-});
 
-test(`The reducer should initially mark the editmode panel as invisible.`, t => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
-    });
+console.log(system);
+console.log(system.init);
+console.log(system.init());
 
-    t.true(nextState.get('ui').get('editModePanel').get('isHidden'));
+
+    const state = Immutable.fromJS({'ui': {'editPreviewMode': void 0}});
+    const nextState = reducer(state, system.init({ui: {editPreviewMode: 'bar'}}));
+
+    t.is(nextState.get('ui').get('editPreviewMode'), 'bar');
 });
 
 test(`
-    The "toggle" action should be able to reverse the value of the
-    "isHidden" key.`, t => {
+    The "set" action should set the edit preview mode`, t => {
     const state = Immutable.fromJS({
         ui: {
-            editModePanel: {
-                isHidden: true
-            }
+            editPreviewMode: 'bar'
         }
     });
-    const nextState1 = reducer(state, actions.toggle());
-    const nextState2 = reducer(nextState1, actions.toggle());
+    const nextState = reducer(state, actions.set('baz'));
 
-    t.false(nextState1.get('ui').get('editModePanel').get('isHidden'));
-    t.true(nextState2.get('ui').get('editModePanel').get('isHidden'));
+    t.is(nextState.get('ui').get('editPreviewMode'), 'baz');
 });

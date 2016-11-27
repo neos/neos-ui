@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$get, $set, $toggle} from 'plow-js';
+import {$set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -30,10 +30,10 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: state => $set(
+    [system.INIT]: () => $set(
         'ui.leftSideBar',
         new Map({
-            isHidden: $get('ui.leftSideBar.isHidden', state)
+            isHidden: false
         })
     ),
     [TOGGLE]: () => $toggle('ui.leftSideBar.isHidden')

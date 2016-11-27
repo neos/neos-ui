@@ -31,7 +31,7 @@ export default class EditModePanel extends Component {
         editPreviewMode: PropTypes.string.isRequired,
         isHidden: PropTypes.bool.isRequired,
         editPreviewModesRegistry: PropTypes.object.isRequired,
-        setEditPreviewMode: PropTypes.function.isRequired
+        setEditPreviewMode: PropTypes.func.isRequired
     };
 
     shouldComponentUpdate(...args) {

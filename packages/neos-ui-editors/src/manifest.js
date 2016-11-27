@@ -3,6 +3,8 @@ import Boolean from './Boolean/index';
 import DateTime from './DateTime/index';
 import Image from './Image/index';
 import SelectBox from './SelectBox/index';
+import Link from './Link/index';
+import NodeType from './NodeType/index';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 import backend from '@neos-project/neos-ui-backend-connector';
@@ -35,6 +37,14 @@ manifest('inspectorEditors', {}, globalRegistry => {
 
     editorsRegistry.add('TYPO3.Neos/Inspector/Editors/SelectBoxEditor', {
         component: SelectBox
+    });
+
+    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/LinkEditor', {
+        component: Link
+    });
+
+    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/NodeTypeEditor', {
+        component: NodeType
     });
 
     //

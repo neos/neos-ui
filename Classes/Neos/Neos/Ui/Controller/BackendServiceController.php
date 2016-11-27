@@ -9,6 +9,8 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\ActionController;
+use TYPO3\Flow\Mvc\RequestInterface;
+use TYPO3\Flow\Mvc\ResponseInterface;
 use TYPO3\Flow\Persistence\PersistenceManagerInterface;
 use TYPO3\Neos\Service\PublishingService;
 use TYPO3\TYPO3CR\Domain\Repository\WorkspaceRepository;
@@ -65,6 +67,20 @@ class BackendServiceController extends ActionController
      * @var WorkspaceRepository
      */
     protected $workspaceRepository;
+
+    /**
+     * Set the controller context on the feedback collection after the controller
+     * has been initialized
+     *
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return void
+     */
+    public function initializeController(RequestInterface $request, ResponseInterface $response)
+    {
+        parent::initializeController($request, $response);
+        $this->feedbackCollection->setControllerContext($this->getControllerContext());
+    }
 
     /**
      * Helper method to inform the client, that new workspace information is available

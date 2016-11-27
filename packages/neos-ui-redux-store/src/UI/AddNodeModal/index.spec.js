@@ -22,7 +22,7 @@ test(`should export action creators`, t => {
 test(`should export errorMessages`, t => {
     t.not(errorMessages, undefined);
     t.is(typeof (errorMessages.ERROR_INVALID_CONTEXTPATH), 'string');
-    t.is(typeof (errorMessages.ERROR_INVALID_MODE), 'string');
+    t.is(typeof (errorMessages.ERROR_INVALID_FUSIONPATH), 'string');
 });
 
 test(`should export a reducer`, t => {
@@ -45,48 +45,51 @@ test(`The reducer should initially indicate a closed modal`, t => {
         type: system.INIT
     });
 
-    t.is(nextState.get('ui').get('addNodeModal').get('referenceNode'), '');
+    t.is(nextState.get('ui').get('addNodeModal').get('contextPath'), '');
+    t.is(nextState.get('ui').get('addNodeModal').get('fusionPath'), '');
 });
 
-test(`The "open" action should set "referenceNode" key.`, t => {
+test(`The "open" action should set "contextPath" key.`, t => {
     const state = new Map({});
-    const nextState = reducer(state, actions.open('someContextPath', 'append'));
+    const nextState = reducer(state, actions.open('someContextPath'));
 
-    t.is(nextState.get('ui').get('addNodeModal').get('referenceNode'), 'someContextPath');
+    t.is(nextState.get('ui').get('addNodeModal').get('contextPath'), 'someContextPath');
 });
 
-test(`The "open" action should set "mode" key.`, t => {
+test(`The "open" action should set "fusionPath" key.`, t => {
     const state = new Map({});
-    const nextState = reducer(state, actions.open('someContextPath', 'append'));
+    const nextState = reducer(state, actions.open('someContextPath', 'someFusionPath'));
 
-    t.is(nextState.get('ui').get('addNodeModal').get('mode'), 'append');
+    t.is(nextState.get('ui').get('addNodeModal').get('fusionPath'), 'someFusionPath');
 });
 
-test(`The "open" action should throw on incorrect mode.`, t => {
+test(`The "open" action should throw on invalid contextPath.`, t => {
     const state = new Map({});
-    const fn = () => reducer(state, actions.open('someContextPath', 'appendBlahBlah'));
-
-    t.throws(fn, errorMessages.ERROR_INVALID_MODE);
-});
-
-test(`The "open" action should throw on missing referenceNode.`, t => {
-    const state = new Map({});
-    const fn = () => reducer(state, actions.open());
+    const fn = () => reducer(state, actions.open(null));
 
     t.throws(fn, errorMessages.ERROR_INVALID_CONTEXTPATH);
+});
+
+test(`The "open" action should throw on invalid fusionPath.`, t => {
+    const state = new Map({});
+    const fn = () => reducer(state, actions.open('someContextPath', null));
+
+    t.throws(fn, errorMessages.ERROR_INVALID_FUSIONPATH);
 });
 
 test(`The "close" action should set "isOpen" key to false.`, t => {
     const state = Immutable.fromJS({
         ui: {
             addNodeModal: {
-                referenceNode: 'someReferenceNode'
+                contextPath: 'someContextPath',
+                fusionPath: 'someFusionPath'
             }
         }
     });
     const nextState = reducer(state, actions.close());
 
-    t.is(nextState.get('ui').get('addNodeModal').get('referenceNode'), '');
+    t.is(nextState.get('ui').get('addNodeModal').get('contextPath'), '');
+    t.is(nextState.get('ui').get('addNodeModal').get('fusionPath'), '');
 });
 
 test(`The "toggleGroup" action should work with fresh state.`, t => {

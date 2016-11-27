@@ -1,10 +1,12 @@
 import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
+
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
+
+import {getAllowedNodeTypesTakingAutoCreatedIntoAccount} from './helpers';
 
 const nodes = $get(['cr', 'nodes', 'byContextPath']);
 const focused = $get('cr.nodes.focused.contextPath');
-const hovered = $get('cr.nodes.hovered.contextPath');
 
 const parentNodeContextPath = contextPath => {
     if (typeof contextPath !== 'string') {
@@ -64,6 +66,21 @@ export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
     }
 );
 
+export const byContextPathSelector = defaultMemoize(
+    contextPath => immutableNodeToJs(createSelector(
+        [
+            nodeByContextPath
+        ],
+        getNodeByContextPath => getNodeByContextPath(contextPath)
+    ))
+);
+
+export const parentNodeSelector = state => baseNode =>
+    byContextPathSelector(parentNodeContextPath(baseNode.contextPath))(state);
+
+export const grandParentNodeSelector = state => baseNode =>
+    byContextPathSelector(parentNodeContextPath(parentNodeContextPath(baseNode.contextPath)))(state);
+
 export const focusedNodePathSelector = immutableNodeToJs(createSelector(
     [
         focused,
@@ -83,26 +100,53 @@ export const focusedSelector = immutableNodeToJs(createSelector(
         getNodeByContextPath(focusedNodePath)
 ));
 
-export const hoveredSelector = immutableNodeToJs(createSelector(
+export const focusedParentSelector = createSelector(
     [
-        hovered,
-        nodeByContextPath
+        focusedSelector,
+        state => state
     ],
-    (hoveredNodePath, getNodeByContextPath) =>
-        getNodeByContextPath(hoveredNodePath)
-));
+    (focusedNode, state) => {
+        if (!focusedNode) {
+            return undefined;
+        }
 
-export const byContextPathSelector = defaultMemoize(
-    contextPath => immutableNodeToJs(createSelector(
-        [
-            nodeByContextPath
-        ],
-        getNodeByContextPath => getNodeByContextPath(contextPath)
-    ))
+        return parentNodeSelector(state)(focusedNode);
+    }
 );
 
-export const parentNodeSelector = state => baseNode =>
-    byContextPathSelector(parentNodeContextPath(baseNode.contextPath))(state);
+export const focusedGrandParentSelector = createSelector(
+    [
+        focusedParentSelector,
+        state => state
+    ],
+    (focusedParentNode, state) => {
+        if (!focusedParentNode) {
+            return undefined;
+        }
 
-export const grandParentNodeSelector = state => baseNode =>
-    byContextPathSelector(parentNodeContextPath(parentNodeContextPath(baseNode.contextPath)))(state);
+        return parentNodeSelector(state)(focusedParentNode);
+    }
+);
+
+/**
+ * This selector returns a function which you need to pass in the node-Type-Registry
+ */
+export const getAllowedSiblingNodeTypesForFocusedNodeSelector = createSelector(
+    [
+        focusedSelector,
+        focusedParentSelector,
+        focusedGrandParentSelector
+    ],
+    (focusedNode, focusedNodeParent, focusedNodeGrandParent) =>
+        defaultMemoize(nodeTypesRegistry => {
+            if (!focusedNode) {
+                return [];
+            }
+
+            return getAllowedNodeTypesTakingAutoCreatedIntoAccount(
+                focusedNodeParent,
+                focusedNodeGrandParent,
+                nodeTypesRegistry
+            );
+        })
+);

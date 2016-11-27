@@ -10,9 +10,6 @@ test(`should export actionTypes`, t => {
     t.is(typeof (actionTypes.ADD), 'string');
     t.is(typeof (actionTypes.FOCUS), 'string');
     t.is(typeof (actionTypes.UNFOCUS), 'string');
-    t.is(typeof (actionTypes.BLUR), 'string');
-    t.is(typeof (actionTypes.HOVER), 'string');
-    t.is(typeof (actionTypes.UNHOVER), 'string');
 });
 
 test(`should export action creators`, t => {
@@ -20,9 +17,6 @@ test(`should export action creators`, t => {
     t.is(typeof (actions.add), 'function');
     t.is(typeof (actions.focus), 'function');
     t.is(typeof (actions.unFocus), 'function');
-    t.is(typeof (actions.blur), 'function');
-    t.is(typeof (actions.hover), 'function');
-    t.is(typeof (actions.unhover), 'function');
 });
 
 test(`should export a reducer`, t => {
@@ -45,10 +39,7 @@ test(`The reducer should create a valid initial state`, t => {
     t.is(typeof (nextState.get('cr').get('nodes').get('siteNode')), 'string');
     t.true(nextState.get('cr').get('nodes').get('focused') instanceof Map);
     t.is(typeof (nextState.get('cr').get('nodes').get('focused').get('contextPath')), 'string');
-    t.is(typeof (nextState.get('cr').get('nodes').get('focused').get('typoscriptPath')), 'string');
-    t.true(nextState.get('cr').get('nodes').get('hovered') instanceof Map);
-    t.is(typeof (nextState.get('cr').get('nodes').get('hovered').get('contextPath')), 'string');
-    t.is(typeof (nextState.get('cr').get('nodes').get('hovered').get('typoscriptPath')), 'string');
+    t.is(typeof (nextState.get('cr').get('nodes').get('focused').get('fusionPath')), 'string');
 });
 
 test(`The reducer should take initially existing nodes into account`, t => {
@@ -104,8 +95,10 @@ test(`The reducer should add nodes to the store`, t => {
         }
     });
     const contextPath = '/path/top/my/node@user-username;language=en_US';
-    const nextState = reducer(state, actions.add(contextPath, {
-        foo: 'bar'
+    const nextState = reducer(state, actions.add({
+        [contextPath]: {
+            foo: 'bar'
+        }
     }));
 
     const addedItem = nextState.get('cr').get('nodes').get('byContextPath').get(contextPath);

@@ -42,9 +42,12 @@ function * requestChildrenForContextPath(action) {
     yield put(actions.UI.PageTree.setAsLoaded(contextPath));
 
     if (childNodes && parentNodes) {
-        const nodes = parentNodes.concat(childNodes);
+        const nodes = parentNodes.concat(childNodes).reduce((nodeMap, node) => {
+            nodeMap[node.contextPath] = node;
+            return nodeMap;
+        }, {});
 
-        yield nodes.map(node => put(actions.CR.Nodes.add(node.contextPath, node)));
+        yield put(actions.CR.Nodes.add(nodes));
 
         if (unCollapse) {
             yield put(actions.UI.PageTree.uncollapse(contextPath));

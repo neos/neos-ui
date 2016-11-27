@@ -1,0 +1,10 @@
+.noOptionsAvailable {
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 1em;
+    border: 0;
+    background: var(--brandColorsContrastNeutral);
+    width: 100%;
+}

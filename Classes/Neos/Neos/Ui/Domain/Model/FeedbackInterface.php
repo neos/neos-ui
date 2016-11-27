@@ -1,6 +1,8 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model;
 
+use TYPO3\Flow\Mvc\Controller\ControllerContext;
+
 interface FeedbackInterface
 {
     /**
@@ -28,7 +30,8 @@ interface FeedbackInterface
     /**
      * Serialize the payload for this feedback
      *
+     * @param ControllerContext $controllerContext
      * @return mixed
      */
-    public function serializePayload();
+    public function serializePayload(ControllerContext $controllerContext);
 }

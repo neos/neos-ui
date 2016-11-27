@@ -10,15 +10,7 @@ import Frame from '@neos-project/react-ui-components/lib/Frame/';
 
 import style from './style.css';
 import InlineUI from './InlineUI/index';
-import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattingRulesForNodeType} from './Helpers';
-
-const closestContextPath = el => {
-    if (!el) {
-        return null;
-    }
-
-    return el.dataset.__neosNodeContextpath || closestContextPath(el.parentNode);
-};
+import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattingRulesForNodeType, dom} from './Helpers';
 
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
@@ -33,11 +25,9 @@ const closestContextPath = el => {
     setActiveDimensions: actions.CR.ContentDimensions.setActive,
     formattingUnderCursor: actions.UI.ContentCanvas.formattingUnderCursor,
     setCurrentlyEditedPropertyName: actions.UI.ContentCanvas.setCurrentlyEditedPropertyName,
-    addNode: actions.CR.Nodes.add,
+    addNodes: actions.CR.Nodes.add,
     focusNode: actions.CR.Nodes.focus,
     unFocusNode: actions.CR.Nodes.unFocus,
-    hoverNode: actions.CR.Nodes.hover,
-    unHoverNode: actions.CR.Nodes.unhover,
     persistChange: actions.Changes.persistChange
 })
 @neos(globalRegistry => ({
@@ -54,13 +44,11 @@ export default class ContentCanvas extends PureComponent {
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
         setActiveDimensions: PropTypes.func.isRequired,
-        addNode: PropTypes.func.isRequired,
+        addNodes: PropTypes.func.isRequired,
         formattingUnderCursor: PropTypes.func.isRequired,
         setCurrentlyEditedPropertyName: PropTypes.func.isRequired,
         focusNode: PropTypes.func.isRequired,
         unFocusNode: PropTypes.func.isRequired,
-        hoverNode: PropTypes.func.isRequired,
-        unHoverNode: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired,
         byContextPathDynamicAccess: PropTypes.func.isRequired,
         formattingRulesRegistry: PropTypes.object.isRequired,
@@ -124,9 +112,7 @@ export default class ContentCanvas extends PureComponent {
             setContextPath,
             setPreviewUrl,
             setActiveDimensions,
-            addNode,
-            hoverNode,
-            unHoverNode,
+            addNodes,
             formattingUnderCursor,
             setCurrentlyEditedPropertyName,
             unFocusNode,
@@ -145,10 +131,7 @@ export default class ContentCanvas extends PureComponent {
         // TODO: convert to single action: "guestFrameChange"
 
         // Add nodes before setting the new context path to prevent action ordering issues
-        Object.keys(documentInformation.nodes).forEach(contextPath => {
-            const node = documentInformation.nodes[contextPath];
-            addNode(contextPath, node);
-        });
+        addNodes(documentInformation.nodes);
 
         setContextPath(documentInformation.metaData.contextPath);
         setPreviewUrl(documentInformation.metaData.previewUrl);
@@ -160,17 +143,17 @@ export default class ContentCanvas extends PureComponent {
         const components = iframeDocument.querySelectorAll('[data-__neos-node-contextpath]');
         Array.prototype.forEach.call(components, node => {
             node.addEventListener('mouseenter', e => {
-                const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
-                const typoscriptPath = node.getAttribute('data-__neos-typoscript-path');
+                const oldNode = iframeDocument.querySelector(`.${style.markHoveredNodeAsHovered}`);
+                if (oldNode) {
+                    oldNode.classList.remove(style.markHoveredNodeAsHovered);
+                }
 
-                hoverNode(nodeContextPath, typoscriptPath);
+                node.classList.add(style.markHoveredNodeAsHovered);
 
                 e.stopPropagation();
             });
             node.addEventListener('mouseleave', e => {
-                const nodeContextPath = node.getAttribute('data-__neos-node-contextpath');
-
-                unHoverNode(nodeContextPath);
+                node.classList.remove(style.markHoveredNodeAsHovered);
 
                 e.stopPropagation();
             });
@@ -192,10 +175,10 @@ export default class ContentCanvas extends PureComponent {
             if (isInsideInlineUi) {
                 // Do nothing, everything OK!
             } else if (selectedDomNode) {
-                const nodeContextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
-                const typoscriptPath = selectedDomNode.getAttribute('data-__neos-typoscript-path');
+                const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
+                const fusionPath = selectedDomNode.getAttribute('data-__neos-typoscript-path');
 
-                focusNode(nodeContextPath, typoscriptPath);
+                focusNode(contextPath, fusionPath);
             } else {
                 unFocusNode();
             }
@@ -215,7 +198,7 @@ export default class ContentCanvas extends PureComponent {
         //
         const editors = iframeDocument.querySelectorAll('.neos-inline-editable');
         Array.prototype.forEach.call(editors, domNode => {
-            const contextPath = closestContextPath(domNode);
+            const contextPath = dom.closestContextPath(domNode);
             const propertyName = domNode.dataset.__neosProperty;
 
             const node = this.props.byContextPathDynamicAccess(contextPath);

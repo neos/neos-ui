@@ -2,6 +2,8 @@ import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import debounce from 'lodash.debounce';
 
+import {dom} from '../../Helpers/index';
+
 import {
     AddNode,
     CopySelectedNode,
@@ -12,13 +14,12 @@ import {
 } from './Buttons/index';
 import style from './style.css';
 
-export const position = nodeContextPath => {
-    // TODO: workaround to access the frame from outside...
-    const nodeElement = document.getElementsByName('neos-content-main')[0].contentDocument.querySelector(`[data-__neos-node-contextpath='${nodeContextPath}']`);
+export const position = (contextPath, fusionPath) => {
+    const nodeElement = dom.findNode(contextPath, fusionPath);
 
     if (nodeElement && nodeElement.getBoundingClientRect) {
         // TODO: workaround to access the frame from outside...
-        const bodyBounds = document.getElementsByName('neos-content-main')[0].contentDocument.body.getBoundingClientRect();
+        const bodyBounds = dom.body().getBoundingClientRect();
         const domBounds = nodeElement.getBoundingClientRect();
 
         return {
@@ -32,7 +33,8 @@ export const position = nodeContextPath => {
 
 export default class NodeToolbar extends PureComponent {
     static propTypes = {
-        focusedNode: PropTypes.object
+        contextPath: PropTypes.string,
+        fusionPath: PropTypes.string
     };
 
     componentDidMount() {
@@ -42,16 +44,19 @@ export default class NodeToolbar extends PureComponent {
     }
 
     render() {
-        if (!this.props.focusedNode) {
+        const {contextPath, fusionPath} = this.props;
+
+        if (!contextPath || !fusionPath) {
             return null;
         }
 
         const props = {
-            className: style.toolBar__btnGroup__btn,
-            node: this.props.focusedNode
+            contextPath,
+            fusionPath,
+            className: style.toolBar__btnGroup__btn
         };
 
-        const {x, y} = position(this.props.focusedNode.contextPath);
+        const {x, y} = position(contextPath, fusionPath);
 
         const classNames = mergeClassNames({
             [style.toolBar]: true

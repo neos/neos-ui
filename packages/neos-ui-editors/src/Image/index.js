@@ -162,19 +162,26 @@ export default class ImageEditor extends Component {
         this.props.renderSecondaryInspector(undefined, undefined);
     }
 
+    getValue() {
+        return this.props.value ? this.props.value : {};
+    }
+
     onRemoveFile() {
-        const {commit, value} = this.props;
+        const {commit} = this.props;
+        const value = this.getValue();
+        const newAsset = $set('__identity', '', value);
 
         this.handleCloseSecondaryScreen();
         this.setState({
             image: null
         }, () => {
-            commit($set('__identity', '', value));
+            commit(newAsset);
         });
     }
 
     onMediaSelected(assetIdentifier) {
-        const {commit, value} = this.props;
+        const {commit} = this.props;
+        const value = this.getValue();
         const newAsset = $set('__identity', assetIdentifier, value);
 
         this.setState({

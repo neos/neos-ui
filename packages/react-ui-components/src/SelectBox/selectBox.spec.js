@@ -88,3 +88,23 @@ test('should not render a searchbox when explicitly disabled', t => {
 
     t.falsy(selectBox.instance().isSearchEnabled());
 });
+
+test('should render a delete icon if a `onDelete` prop was passed', t => {
+    const props = {
+        minimumResultsForSearch: -1,
+        onDelete: sinon.spy()
+    };
+    const selectBox = shallow(props);
+    const deleteAnchor = selectBox.find(DropDownComponent.Header).find('a');
+
+    t.is(deleteAnchor.length, 1);
+    t.is(deleteAnchor.find(defaultProps.IconComponent).length, 1);
+    t.is(deleteAnchor.find(defaultProps.IconComponent).prop('icon'), 'close');
+
+    deleteAnchor.simulate('click', {
+        preventDefault: () => null,
+        stopPropagation: () => null
+    });
+
+    t.is(props.onDelete.callCount, 1);
+});

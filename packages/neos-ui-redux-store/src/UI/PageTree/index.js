@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map, Set} from 'immutable';
-import {$all, $set, $remove, $add} from 'plow-js';
+import {$all, $get, $set, $remove, $add} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -65,10 +65,10 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: () => $set(
+    [system.INIT]: state => $set(
         'ui.pageTree',
         new Map({
-            isFocused: '',
+            isFocused: $get('ui.contentCanvas.contextPath', state) || $get('cr.nodes.siteNode', state),
             uncollapsed: new Set(),
             loading: new Set(),
             errors: new Set()

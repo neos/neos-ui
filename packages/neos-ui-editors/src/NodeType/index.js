@@ -1,7 +1,46 @@
-import React from '@host/react';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {$transform, $get} from 'plow-js';
 
-const NodeType = () => {
-    return <div>TODO NodeType</div>;
-};
+import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
+import {neos} from '@neos-project/neos-ui-decorators';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
-export default NodeType;
+import style from './style.css';
+
+@connect($transform({
+    getAllowedSiblingNodeTypesForFocusedNode: selectors.CR.Nodes.getAllowedSiblingNodeTypesForFocusedNodeSelector
+}))
+@neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+}))
+export default class NodeType extends Component {
+    static propTypes = {
+        value: PropTypes.string.isRequired,
+        commit: PropTypes.func.isRequired,
+
+        getAllowedSiblingNodeTypesForFocusedNode: PropTypes.func,
+        nodeTypesRegistry: PropTypes.object
+    }
+
+    render() {
+        const {value, commit, nodeTypesRegistry, getAllowedSiblingNodeTypesForFocusedNode} = this.props;
+        const options = getAllowedSiblingNodeTypesForFocusedNode(nodeTypesRegistry)
+            .filter(nodeType => nodeTypesRegistry.get(nodeType))
+            .map(nodeType => ({
+                icon: $get('ui.icon', nodeTypesRegistry.get(nodeType)),
+                label: $get('ui.label', nodeTypesRegistry.get(nodeType)) || nodeType,
+                value: nodeType
+            }));
+
+        if (options.length) {
+            return <SelectBox options={options} value={value} onSelect={commit}/>;
+        }
+
+        return (
+            <div className={style.noOptionsAvailable}>
+                {$get('ui.label', nodeTypesRegistry.get(value))}
+            </div>
+        );
+    }
+}

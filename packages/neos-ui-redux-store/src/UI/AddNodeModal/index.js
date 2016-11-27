@@ -22,8 +22,12 @@ export const actionTypes = {
 
 /**
  * Opens the add node modal.
+ *
+ * @param {String} contextPath ContextPath of the node relative to which the new node ought to be created
+ * @param {Object} fusionPath (optional) fusion path of the rendered node relative to which the new node ought to be
+ *                            positioned.
  */
-const open = createAction(OPEN, (contextPath, mode) => ({contextPath, mode}));
+const open = createAction(OPEN, (contextPath, fusionPath = '') => ({contextPath, fusionPath}));
 
 /**
  * Closes the add node modal.
@@ -48,8 +52,8 @@ export const actions = {
 // Export error messages for testing
 //
 export const errorMessages = {
-    ERROR_INVALID_CONTEXTPATH: 'contextPath of reference node must be of type string.',
-    ERROR_INVALID_MODE: 'Provided mode is not within allowed modes list in AddNodeModal.'
+    ERROR_INVALID_CONTEXTPATH: 'Context path of reference node must be of type string.',
+    ERROR_INVALID_FUSIONPATH: 'Fusion path of reference node must be of type string.'
 };
 
 //
@@ -59,25 +63,28 @@ export const reducer = handleActions({
     [system.INIT]: () => $set(
         'ui.addNodeModal',
         new Map({
-            referenceNode: '',
-            mode: 'insert',
+            contextPath: '',
+            fusionPath: '',
             collapsedGroups: []
         })
     ),
-    [OPEN]: ({contextPath, mode}) => {
+    [OPEN]: ({contextPath, fusionPath}) => {
         if (typeof contextPath !== 'string') {
             throw new Error(errorMessages.ERROR_INVALID_CONTEXTPATH);
         }
-        const allowedModes = ['insert', 'append', 'prepend'];
-        if (allowedModes.indexOf(mode) === -1) {
-            throw new Error(errorMessages.ERROR_INVALID_MODE);
+        if (typeof fusionPath !== 'string') {
+            throw new Error(errorMessages.ERROR_INVALID_FUSIONPATH);
         }
+
         return $all(
-            $set('ui.addNodeModal.referenceNode', contextPath),
-            $set('ui.addNodeModal.mode', mode)
+            $set('ui.addNodeModal.contextPath', contextPath),
+            $set('ui.addNodeModal.fusionPath', fusionPath)
         );
     },
-    [CLOSE]: () => $set('ui.addNodeModal.referenceNode', ''),
+    [CLOSE]: () => $all(
+        $set('ui.addNodeModal.contextPath', ''),
+        $set('ui.addNodeModal.fusionPath', '')
+    ),
     [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.collapsedGroups', groupId)
 });
 

@@ -24,6 +24,24 @@
     composes: reset from './../reset.css';
     margin-right: .5em;
 }
+.dropDown__btnDelete {
+    composes: reset from './../reset.css';
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    display: block;
+    width: var(--goldenUnit);
+    height: var(--goldenUnit);
+    text-align: center;
+    background: var(--brandColorsContrastNeutral);
+    border-left: 1px solid var(--brandColorsContrastDarker);
+
+    &:hover {
+        background: var(--brandColorsPrimaryBlue);
+        color: var(--brandColorsContrastBrightest);
+    }
+}
 .dropDown__contents {
     composes: reset from './../reset.css';
     min-width: 160px;
@@ -45,6 +63,9 @@
     background: var(--brandColorsContrastNeutral);
     border-top: 1px solid var(--brandColorsContrastDarker);
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:hover {
         background: var(--brandColorsPrimaryBlue);

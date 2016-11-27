@@ -5,6 +5,7 @@ use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\TYPO3CR\Service\WorkspaceService;
+use TYPO3\Flow\Mvc\Controller\ControllerContext;
 
 class UpdateWorkspaceInfo implements FeedbackInterface
 {
@@ -80,7 +81,7 @@ class UpdateWorkspaceInfo implements FeedbackInterface
      *
      * @return mixed
      */
-    public function serializePayload()
+    public function serializePayload(ControllerContext $controllerContext)
     {
         return [
             'documentContextPath' => $this->getDocument()->getContextPath(),

@@ -17,7 +17,7 @@ test('should render a "TextareaAutoresize" component.', t => {
 });
 test('should call the passed "onChange" prop with the value of the input when changing it.', t => {
     const onChange = sinon.spy();
-    const input = shallow({onChange});
+    const input = shallow({onChange}).find(TextareaAutoresize);
 
     input.simulate('change', {
         target: {

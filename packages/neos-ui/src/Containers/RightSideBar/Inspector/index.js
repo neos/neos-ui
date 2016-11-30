@@ -114,7 +114,7 @@ export default class Inspector extends PureComponent {
         if (!nodeType.properties) {
             console.error(`No properties configured in ${node.nodeType} nodetype`);
         }
-        let validationErrors;
+        let validationErrors = null;
         if (transientValues) {
             const transientProps = {};
             Object.keys(transientValues.toJS()).forEach(key => {
@@ -124,7 +124,8 @@ export default class Inspector extends PureComponent {
         }
 
         const viewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor(focusedNode.nodeType);
-        const isDisabled = transientValues === undefined;
+        const isDiscardDisabled = transientValues === undefined;
+        const isApplyDisabled = transientValues === undefined || validationErrors !== null;
 
         if (!viewConfiguration || !viewConfiguration.tabs) {
             return this.renderFallback();
@@ -164,12 +165,12 @@ export default class Inspector extends PureComponent {
                 <Bar position="bottom">
                     <Grid gutter="micro">
                         <Grid.Col width="half">
-                            <Button style="lighter" disabled={isDisabled} onClick={this.handleDiscard} className={style.discardBtn}>
+                            <Button style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={style.discardBtn}>
                                 Discard changes
                             </Button>
                         </Grid.Col>
                         <Grid.Col width="half">
-                            <Button style="lighter" disabled={isDisabled} onClick={this.handleApply} className={style.publishBtn}>
+                            <Button style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={style.publishBtn}>
                                 Apply
                             </Button>
                         </Grid.Col>

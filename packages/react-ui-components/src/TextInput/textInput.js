@@ -1,6 +1,5 @@
 import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
-import Tooltip from '../Tooltip/index';
 
 class TextInput extends PureComponent {
     static propTypes = {
@@ -40,7 +39,12 @@ class TextInput extends PureComponent {
         theme: PropTypes.shape({
             'textInput': PropTypes.string,
             'textInput--invalid': PropTypes.string
-        }).isRequired
+        }).isRequired,
+
+        /**
+         * Static component dependencies which are injected from the outside (index.js)
+         */
+        TooltipComponent: PropTypes.any.isRequired
     };
 
     constructor(props) {
@@ -51,6 +55,7 @@ class TextInput extends PureComponent {
 
     render() {
         const {
+            TooltipComponent,
             placeholder,
             className,
             validationErrors,
@@ -76,7 +81,7 @@ class TextInput extends PureComponent {
                     placeholder={placeholder}
                     onChange={this.handleValueChange}
                     />
-                {renderedErrors && <Tooltip>{renderedErrors}</Tooltip>}
+                {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>
         );
     }

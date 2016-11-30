@@ -3,4 +3,14 @@ import identifiers from './../identifiers.js';
 import style from './style.css';
 import TextArea from './textArea.js';
 
-export default themr(identifiers.textArea, style)(TextArea);
+const ThemedTextArea = themr(identifiers.textArea, style)(TextArea);
+
+//
+// Dependency injection
+//
+import injectProps from './../_lib/injectProps.js';
+import Tooltip from '../Tooltip/index';
+
+export default injectProps({
+    TooltipComponent: Tooltip
+})(ThemedTextArea);

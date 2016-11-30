@@ -1,7 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import TextareaAutoresize from 'react-textarea-autosize';
-import Tooltip from '../Tooltip/index';
 
 class TextArea extends PureComponent {
     static propTypes = {
@@ -31,7 +30,12 @@ class TextArea extends PureComponent {
         theme: PropTypes.shape({
             'textArea': PropTypes.string,
             'textArea--invalid': PropTypes.string
-        }).isRequired
+        }).isRequired,
+
+        /**
+         * Static component dependencies which are injected from the outside (index.js)
+         */
+        TooltipComponent: PropTypes.any.isRequired
     };
 
     constructor(props) {
@@ -42,6 +46,7 @@ class TextArea extends PureComponent {
 
     render() {
         const {
+            TooltipComponent,
             placeholder,
             className,
             validationErrors,
@@ -66,7 +71,7 @@ class TextArea extends PureComponent {
                     placeholder={placeholder}
                     onChange={this.handleValueChange}
                     />
-                {renderedErrors && <Tooltip>{renderedErrors}</Tooltip>}
+                {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>
         );
     }

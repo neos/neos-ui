@@ -1,7 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\TypoScript\Helper;
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 use TYPO3\Eel\ProtectedContextAwareInterface;
 use TYPO3\Neos\Service\NodeTypeSchemaBuilder;
 

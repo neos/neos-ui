@@ -1,7 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\TypoScript;
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 use TYPO3\TypoScript\Exception as TypoScriptException;
 use TYPO3\TypoScript\TypoScriptObjects\AbstractCollectionImplementation;
 

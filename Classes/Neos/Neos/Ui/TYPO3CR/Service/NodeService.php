@@ -1,7 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\TYPO3CR\Service;
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 use TYPO3\Eel\FlowQuery\FlowQuery;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Utility\NodePaths;
@@ -93,7 +93,7 @@ class NodeService
 
         $workspace = $context->getWorkspace(false);
         if (!$workspace) {
-            return new \TYPO3\Flow\Error\Error(
+            return new \Neos\Flow\Error\Error(
                 sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName), 1451392329);
         }
 

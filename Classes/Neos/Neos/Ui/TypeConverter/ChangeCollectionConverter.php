@@ -11,14 +11,14 @@ namespace Neos\Neos\Ui\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Property\TypeConverter\AbstractTypeConverter;
-use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Property\TypeConverter\AbstractTypeConverter;
+use Neos\Flow\Property\PropertyMappingConfigurationInterface;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Reflection\ObjectAccess;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
@@ -92,14 +92,14 @@ class ChangeCollectionConverter extends AbstractTypeConverter
      * @param array $source
      * @param string $targetType not used
      * @param array $subProperties not used
-     * @param \TYPO3\Flow\Property\PropertyMappingConfigurationInterface $configuration not used
-     * @return mixed An object or \TYPO3\Flow\Error\Error if the input format is not supported or could not be converted for other reasons
+     * @param \Neos\Flow\Property\PropertyMappingConfigurationInterface $configuration not used
+     * @return mixed An object or \Neos\Flow\Error\Error if the input format is not supported or could not be converted for other reasons
      * @throws \Exception
      */
     public function convertFrom($source, $targetType, array $subProperties = array(), PropertyMappingConfigurationInterface $configuration = null)
     {
         if (!is_array($source)) {
-            return new \TYPO3\Flow\Error\Error(sprintf('Cannot convert %s to ChangeCollection.',
+            return new \Neos\Flow\Error\Error(sprintf('Cannot convert %s to ChangeCollection.',
                 gettype($source)));
         }
 
@@ -108,7 +108,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
         foreach ($source as $changeData) {
             $convertedData = $this->convertChangeData($changeData);
 
-            if ($convertedData instanceof \TYPO3\Flow\Error\Error) {
+            if ($convertedData instanceof \Neos\Flow\Error\Error) {
                 return $convertedData;
             }
 
@@ -129,7 +129,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
         $type = $changeData['type'];
 
         if (!isset($this->typeMap[$type])) {
-            return new \TYPO3\Flow\Error\Error(
+            return new \Neos\Flow\Error\Error(
               sprintf('Could not convert change type %s, it is unknown to the system', $type));
         }
 
@@ -140,7 +140,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
         $subjectContextPath = $changeData['subject'];
         $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath);
 
-        if ($subject instanceof \TYPO3\Flow\Error\Error) {
+        if ($subject instanceof \Neos\Flow\Error\Error) {
             return $subject;
         }
 
@@ -150,7 +150,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
             $referenceContextPath = $changeData['reference'];
             $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath);
 
-            if ($reference instanceof \TYPO3\Flow\Error\Error) {
+            if ($reference instanceof \Neos\Flow\Error\Error) {
                 return $reference;
             }
 

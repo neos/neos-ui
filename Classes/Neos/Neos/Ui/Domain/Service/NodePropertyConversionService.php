@@ -1,10 +1,10 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Service;
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Property\PropertyMapper;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Property\PropertyMapper;
 use TYPO3\TYPO3CR\Domain\Service\Context;
 use TYPO3\TYPO3CR\Domain\Model\NodeType;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
@@ -66,9 +66,9 @@ class NodePropertyConversionService
                 $innerType = $propertyType;
                 if ($propertyType !== null) {
                     try {
-                        $parsedType = \TYPO3\Flow\Utility\TypeHandling::parseType($propertyType);
+                        $parsedType = \Neos\Flow\Utility\TypeHandling::parseType($propertyType);
                         $innerType = $parsedType['elementType'] ?: $parsedType['type'];
-                    } catch (\TYPO3\Flow\Utility\Exception\InvalidTypeException $exception) {
+                    } catch (\Neos\Flow\Utility\Exception\InvalidTypeException $exception) {
                     }
                 }
 
@@ -77,8 +77,8 @@ class NodePropertyConversionService
                     $propertyMappingConfiguration->allowOverrideTargetType();
                     $propertyMappingConfiguration->allowAllProperties();
                     $propertyMappingConfiguration->skipUnknownProperties();
-                    $propertyMappingConfiguration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
-                    $propertyMappingConfiguration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
+                    $propertyMappingConfiguration->setTypeConverterOption('Neos\Flow\Property\TypeConverter\PersistentObjectConverter', \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
+                    $propertyMappingConfiguration->setTypeConverterOption('Neos\Flow\Property\TypeConverter\PersistentObjectConverter', \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
                     return $this->propertyMapper->convert($rawValue, $propertyType, $propertyMappingConfiguration);
                 } else {
                     return $rawValue;

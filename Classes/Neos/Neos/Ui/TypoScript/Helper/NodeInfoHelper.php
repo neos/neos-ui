@@ -1,11 +1,11 @@
 <?php
 namespace Neos\Neos\Ui\TypoScript\Helper;
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 use TYPO3\Eel\ProtectedContextAwareInterface;
-use TYPO3\Flow\Mvc\Controller\ControllerContext;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Reflection\ObjectAccess;
+use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Reflection\ObjectAccess;
 use TYPO3\Neos\Domain\Service\ContentContext;
 use TYPO3\Neos\Service\LinkingService;
 use TYPO3\Neos\TypeConverter\EntityToIdentityConverter;
@@ -209,7 +209,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         if ($propertyValue instanceof \TYPO3\Media\Domain\Model\ImageInterface) {
-            $propertyMappingConfiguration = new \TYPO3\Flow\Property\PropertyMappingConfiguration();
+            $propertyMappingConfiguration = new \Neos\Flow\Property\PropertyMappingConfiguration();
             return $this->entityToIdentityConverter->convertFrom($propertyValue, 'array', array(), $propertyMappingConfiguration);
         }
 
@@ -222,7 +222,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         // Serialize an array of Assets to JSON
         if (is_array($propertyValue)) {
-            $parsedType = \TYPO3\Flow\Utility\TypeHandling::parseType($dataType);
+            $parsedType = \Neos\Flow\Utility\TypeHandling::parseType($dataType);
             if ($parsedType['elementType'] === ltrim('TYPO3\Media\Domain\Model\Asset', '\\')) {
                 $convertedValues = array();
                 foreach ($propertyValue as $singlePropertyValue) {

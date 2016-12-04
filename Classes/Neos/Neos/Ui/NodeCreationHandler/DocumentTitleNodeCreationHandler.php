@@ -1,7 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\NodeCreationHandler;
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Utility as NodeUtility;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;

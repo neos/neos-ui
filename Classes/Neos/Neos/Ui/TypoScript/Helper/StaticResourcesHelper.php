@@ -2,8 +2,8 @@
 namespace Neos\Neos\Ui\TypoScript\Helper;
 
 use TYPO3\Eel\ProtectedContextAwareInterface;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Session\SessionInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Session\SessionInterface;
 
 class StaticResourcesHelper implements ProtectedContextAwareInterface
 {

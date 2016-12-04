@@ -19,7 +19,8 @@
     "extra": {
         "applied-flow-migrations": [
             "TYPO3.FLOW3-201201261636",
-            "TYPO3.Fluid-201205031303"
+            "TYPO3.Fluid-201205031303",
+            "TYPO3.FLOW3-201205292145"
         ]
     }
 }

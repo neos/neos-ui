@@ -28,7 +28,8 @@
             "TYPO3.Flow-201212051340",
             "TYPO3.TypoScript-130516234520",
             "TYPO3.TypoScript-130516235550",
-            "TYPO3.TYPO3CR-130523180140"
+            "TYPO3.TYPO3CR-130523180140",
+            "TYPO3.Neos.NodeTypes-201309111655"
         ]
     }
 }

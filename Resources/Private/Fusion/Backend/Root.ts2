@@ -1,8 +1,8 @@
-include: resource://Neos.Fusion/Private/TypoScript/Root.ts2
-include: resource://Neos.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
-include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/RenderState.ts2
-include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/ArrayCollection.ts2
-include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/AppendAllToCollection.ts2
+include: resource://Neos.Fusion/Private/Fusion/Root.ts2
+include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.ts2
+include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderState.ts2
+include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/ArrayCollection.ts2
+include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/AppendAllToCollection.ts2
 
 backend = Neos.Fusion:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'

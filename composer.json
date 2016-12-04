@@ -15,5 +15,10 @@
         "psr-0": {
             "Neos\\Neos\\Ui": "Classes"
         }
+    },
+    "extra": {
+        "applied-flow-migrations": [
+            "TYPO3.FLOW3-201201261636"
+        ]
     }
 }

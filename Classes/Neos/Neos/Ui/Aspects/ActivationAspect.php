@@ -7,7 +7,7 @@ namespace Neos\Neos\Ui\Aspects;
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\FLOW\AOP\JoinPointInterface;
+use TYPO3\FLOW\Aop\JoinPointInterface;
 use TYPO3\Flow\Session\SessionInterface;
 use TYPO3\TypoScript\Core\Cache\ContentCache;
 

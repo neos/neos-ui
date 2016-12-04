@@ -14,36 +14,36 @@ manifest('inspectorEditors', {}, globalRegistry => {
     const saveHooksRegistry = globalRegistry.get('inspector').get('saveHooks');
     const {createImageVariant} = backend.get().endpoints;
 
-    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/TextFieldEditor', {
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/TextFieldEditor', {
         component: TextField
     });
 
-    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/TextAreaEditor', {
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/TextAreaEditor', {
         component: TextField
     });
 
-    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/BooleanEditor', {
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/BooleanEditor', {
         component: Boolean,
         hasOwnLabel: true
     });
 
-    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/DateTimeEditor', {
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/DateTimeEditor', {
         component: DateTime
     });
 
-    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/ImageEditor', {
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/ImageEditor', {
         component: Image
     });
 
-    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/SelectBoxEditor', {
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/SelectBoxEditor', {
         component: SelectBox
     });
 
-    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/LinkEditor', {
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/LinkEditor', {
         component: Link
     });
 
-    editorsRegistry.add('TYPO3.Neos/Inspector/Editors/NodeTypeEditor', {
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/NodeTypeEditor', {
         component: NodeType
     });
 

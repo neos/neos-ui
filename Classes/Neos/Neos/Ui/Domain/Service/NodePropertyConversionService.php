@@ -66,9 +66,9 @@ class NodePropertyConversionService
                 $innerType = $propertyType;
                 if ($propertyType !== null) {
                     try {
-                        $parsedType = \Neos\Flow\Utility\TypeHandling::parseType($propertyType);
+                        $parsedType = \Neos\Utility\TypeHandling::parseType($propertyType);
                         $innerType = $parsedType['elementType'] ?: $parsedType['type'];
-                    } catch (\Neos\Flow\Utility\Exception\InvalidTypeException $exception) {
+                    } catch (\Neos\Utility\Exception\InvalidTypeException $exception) {
                     }
                 }
 

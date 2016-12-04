@@ -93,7 +93,7 @@ class NodeService
 
         $workspace = $context->getWorkspace(false);
         if (!$workspace) {
-            return new \Neos\Flow\Error\Error(
+            return new \Neos\Error\Messages\Error(
                 sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName), 1451392329);
         }
 

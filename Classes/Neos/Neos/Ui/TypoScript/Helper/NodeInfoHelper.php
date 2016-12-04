@@ -5,7 +5,7 @@ use Neos\Flow\Annotations as Flow;
 use TYPO3\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Flow\Reflection\ObjectAccess;
+use Neos\Utility\ObjectAccess;
 use TYPO3\Neos\Domain\Service\ContentContext;
 use TYPO3\Neos\Service\LinkingService;
 use TYPO3\Neos\TypeConverter\EntityToIdentityConverter;
@@ -222,7 +222,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         // Serialize an array of Assets to JSON
         if (is_array($propertyValue)) {
-            $parsedType = \Neos\Flow\Utility\TypeHandling::parseType($dataType);
+            $parsedType = \Neos\Utility\TypeHandling::parseType($dataType);
             if ($parsedType['elementType'] === ltrim('TYPO3\Media\Domain\Model\Asset', '\\')) {
                 $convertedValues = array();
                 foreach ($propertyValue as $singlePropertyValue) {

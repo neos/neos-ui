@@ -8,7 +8,7 @@ namespace Neos\Neos\Ui\Controller;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\ResourceManagementManagement\ResourceManager;
+use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Session\SessionInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;

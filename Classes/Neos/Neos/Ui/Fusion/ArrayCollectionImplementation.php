@@ -1,12 +1,12 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript;
+namespace Neos\Neos\Ui\Fusion;
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Fusion\Exception as TypoScriptException;
-use Neos\Fusion\TypoScriptObjects\AbstractCollectionImplementation;
+use Neos\Fusion\Exception as FusionException;
+use Neos\Fusion\FusionObjects\AbstractCollectionImplementation;
 
 /**
- * Implementation of an array collection renderer for TypoScript.
+ * Implementation of an array collection renderer for Fusion.
  */
 class ArrayCollectionImplementation extends AbstractCollectionImplementation
 {
@@ -14,7 +14,7 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
      * Evaluate the collection nodes
      *
      * @return string
-     * @throws TypoScriptException
+     * @throws FusionException
      */
     public function evaluate()
     {

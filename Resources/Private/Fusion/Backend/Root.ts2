@@ -1,5 +1,5 @@
-include: resource://Neos.Fusion/Private/Fusion/Root.ts2
-include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.ts2
+include: resource://Neos.Fusion/Private/Fusion/Root.fusion
+include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderState.ts2
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/ArrayCollection.ts2
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/AppendAllToCollection.ts2

@@ -14,6 +14,6 @@ class BackendTypoScriptView extends TypoScriptView
     public function __construct(array $options = array())
     {
         parent::__construct($options);
-        $this->setTypoScriptPathPattern('resource://Neos.Neos.Ui/Private/TypoScript/Backend');
+        $this->setTypoScriptPathPattern('resource://Neos.Neos.Ui/Private/Fusion/Backend');
     }
 }

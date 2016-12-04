@@ -1,5 +1,5 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript\Helper;
+namespace Neos\Neos\Ui\Fusion\Helper;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;

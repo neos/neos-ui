@@ -1,5 +1,5 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript\Helper;
+namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "Neos.Neos.Ui".          *

@@ -8,7 +8,7 @@ namespace Neos\Neos\Ui\Controller;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\ActionController;
-use TYPO3\Flow\ResourceManagement\ResourceManager;
+use TYPO3\Flow\ResourceManagementManagement\ResourceManager;
 use TYPO3\Flow\Session\SessionInterface;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface;

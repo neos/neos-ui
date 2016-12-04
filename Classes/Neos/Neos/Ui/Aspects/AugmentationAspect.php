@@ -7,7 +7,7 @@ namespace Neos\Neos\Ui\Aspects;
  *                                                                        */
 
 use Neos\Flow\Annotations as Flow;
-use TYPO3\FLOW\Aop\JoinPointInterface;
+use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Neos\Service\HtmlAugmenter;
 

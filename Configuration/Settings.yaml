@@ -1,3 +1,4 @@
+
 TYPO3:
   Flow:
     security:
@@ -5,24 +6,24 @@ TYPO3:
         providers:
           Typo3BackendProvider:
             requestPatterns:
-              controllerObjectName: 'Neos\Neos\Ui\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|TYPO3\Media\Controller\.*'
+              'Neos.Neos.Ui:controllerObjectName':
+                pattern: ControllerObjectName
+                patternOptions:
+                  controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|TYPO3\Media\Controller\.*'
   Neos:
     typoScript:
       autoInclude:
-        'Neos.Neos.Ui': TRUE
-
+        Neos.Neos.Ui: true
   TypoScript:
     defaultContext:
-      'Neos.Ui.Activation': 'Neos\Neos\Ui\TypoScript\Helper\ActivationHelper'
-      'Neos.Ui.StaticResources': 'Neos\Neos\Ui\TypoScript\Helper\StaticResourcesHelper'
-      'Neos.Ui.Sites': 'Neos\Neos\Ui\TypoScript\Helper\SitesHelper'
-      'Neos.Ui.Modules': 'Neos\Neos\Ui\TypoScript\Helper\ModulesHelper'
-      'Neos.Ui.NodeTypes': 'Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper'
-
+      Neos.Ui.Activation: Neos\Neos\Ui\TypoScript\Helper\ActivationHelper
+      Neos.Ui.StaticResources: Neos\Neos\Ui\TypoScript\Helper\StaticResourcesHelper
+      Neos.Ui.Sites: Neos\Neos\Ui\TypoScript\Helper\SitesHelper
+      Neos.Ui.Modules: Neos\Neos\Ui\TypoScript\Helper\ModulesHelper
+      Neos.Ui.NodeTypes: Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper
 Neos:
   Neos:
     Ui:
-      # if you set this to "TRUE", the system won't load pre-compiled JS/CSS files, but instead your locally compiled files.
       frontendDevelopmentMode: false
       asyncModuleMapping:
         'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
@@ -35,33 +36,29 @@ Neos:
           'Neos.UI:Inspector.NodeType': true
       legacyModuleMapping:
         'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
-          'TYPO3.Neos/Inspector/Editors/TextFieldEditor': 'Neos.UI:Inspector.TextField'
-          'TYPO3.Neos/Inspector/Editors/BooleanEditor': 'Neos.UI:Inspector.Boolean'
-          'TYPO3.Neos/Inspector/Editors/DateTimeEditor': 'Neos.UI:Inspector.DateTime'
-          'TYPO3.Neos/Inspector/Editors/ImageEditor': 'Neos.UI:Inspector.Image'
-          'TYPO3.Neos/Inspector/Editors/TextAreaEditor': 'Neos.UI:Inspector.TextArea'
-          'TYPO3.Neos/Inspector/Editors/SelectBoxEditor': 'Neos.UI:Inspector.SelectBox'
-          'TYPO3.Neos/Inspector/Editors/NodeTypeEditor': 'Neos.UI:Inspector.NodeType'
-          'Content/Inspector/Editors/NodeTypeEditor': 'Neos.UI:Inspector.NodeType'
-
-      # All PRIVATE, not meant for public extensibility.
+          TYPO3.Neos/Inspector/Editors/TextFieldEditor: 'Neos.UI:Inspector.TextField'
+          TYPO3.Neos/Inspector/Editors/BooleanEditor: 'Neos.UI:Inspector.Boolean'
+          TYPO3.Neos/Inspector/Editors/DateTimeEditor: 'Neos.UI:Inspector.DateTime'
+          TYPO3.Neos/Inspector/Editors/ImageEditor: 'Neos.UI:Inspector.Image'
+          TYPO3.Neos/Inspector/Editors/TextAreaEditor: 'Neos.UI:Inspector.TextArea'
+          TYPO3.Neos/Inspector/Editors/SelectBoxEditor: 'Neos.UI:Inspector.SelectBox'
+          TYPO3.Neos/Inspector/Editors/NodeTypeEditor: 'Neos.UI:Inspector.NodeType'
+          Content/Inspector/Editors/NodeTypeEditor: 'Neos.UI:Inspector.NodeType'
       state:
         defaultEelContext:
-          String: 'TYPO3\Eel\Helper\StringHelper'
-          Array: 'TYPO3\Eel\Helper\ArrayHelper'
-          Date: 'TYPO3\Eel\Helper\DateHelper'
-          Configuration: 'TYPO3\Eel\Helper\ConfigurationHelper'
-          Math: 'TYPO3\Eel\Helper\MathHelper'
-          Json: 'TYPO3\Eel\Helper\JsonHelper'
-          I18n: 'TYPO3\Flow\I18n\EelHelper\TranslationHelper'
-          'Neos.Ui.Workspace': 'Neos\Neos\Ui\TypoScript\Helper\WorkspaceHelper'
-          'Neos.Ui.NodeInfo': 'Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper'
-          'Neos.Ui.NodeTypes': 'Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper'
-          'Neos.Ui.ContentDimensions': 'Neos\Neos\Ui\TypoScript\Helper\ContentDimensionsHelper'
-
+          String: TYPO3\Eel\Helper\StringHelper
+          Array: TYPO3\Eel\Helper\ArrayHelper
+          Date: TYPO3\Eel\Helper\DateHelper
+          Configuration: TYPO3\Eel\Helper\ConfigurationHelper
+          Math: TYPO3\Eel\Helper\MathHelper
+          Json: TYPO3\Eel\Helper\JsonHelper
+          I18n: TYPO3\Flow\I18n\EelHelper\TranslationHelper
+          Neos.Ui.Workspace: Neos\Neos\Ui\TypoScript\Helper\WorkspaceHelper
+          Neos.Ui.NodeInfo: Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper
+          Neos.Ui.NodeTypes: Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper
+          Neos.Ui.ContentDimensions: Neos\Neos\Ui\TypoScript\Helper\ContentDimensionsHelper
         frontendConfiguration:
-          editPreviewModes: ${Configuration.setting('TYPO3.Neos.userInterface.editPreviewModes')}
-
+          editPreviewModes: '${Configuration.setting(''TYPO3.Neos.userInterface.editPreviewModes'')}'
         documentNode:
           nodes: '${Neos.Ui.NodeInfo.renderDocumentNodeAndChildContent(documentNode, controllerContext)}'
           metaData:
@@ -72,27 +69,26 @@ Neos:
               allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
         backend:
           changes:
-            pending: []
-            processing: []
-            failed: []
+            pending: {  }
+            processing: {  }
+            failed: {  }
           cr:
             nodes:
-              byContextPath: ${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}
-              siteNode: ${q(site).property('_contextPath')}
+              byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
+              siteNode: '${q(site).property(''_contextPath'')}'
             workspaces:
-              byName: ${Neos.Ui.Workspace.initializeWorkspacesByName()}
-              active: ${Neos.Ui.Workspace.getPersonalWorkspaceName()}
+              byName: '${Neos.Ui.Workspace.initializeWorkspacesByName()}'
+              active: '${Neos.Ui.Workspace.getPersonalWorkspaceName()}'
             contentDimensions:
-              byName: ${Neos.Ui.ContentDimensions.contentDimensionsByName()}
-              active: ${documentNode.context.dimensions}
-              allowedPresets: ${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}
-              # TODO Target dimensions
+              byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
+              active: '${documentNode.context.dimensions}'
+              allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
           ui:
             contentCanvas:
-              src: ${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}
-              contextPath: ${q(documentNode).property('_contextPath')}
+              src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+              contextPath: '${q(documentNode).property(''_contextPath'')}'
             debugMode: false
-            editPreviewMode: ${Configuration.setting('TYPO3.Neos.userInterface.defaultEditPreviewMode')}
+            editPreviewMode: '${Configuration.setting(''TYPO3.Neos.userInterface.defaultEditPreviewMode'')}'
             fullScreen:
               isFullScreen: false
             editModePanel:
@@ -103,32 +99,31 @@ Neos:
               isHidden: false
             addNodeModal:
               referenceNode: ''
-              mode: 'insert'
+              mode: insert
             drawer:
               isHidden: true
             pageTree:
               isLoading: false
               hasError: false
-              focused: ${q(documentNode).property('_contextPath')}
-              active: ${q(documentNode).property('_contextPath')}
+              focused: '${q(documentNode).property(''_contextPath'')}'
+              active: '${q(documentNode).property(''_contextPath'')}'
             remote:
-              isSaving: FALSE
-              isPublishing: FALSE
-              isDiscarding: FALSE
+              isSaving: false
+              isPublishing: false
+              isDiscarding: false
           user:
             name:
-              title: ${q(user).property('name.title')}
-              firstName: ${q(user).property('name.firstName')}
-              middleName: ${q(user).property('name.middleName')}
-              lastName: ${q(user).property('name.lastName')}
-              otherName: ${q(user).property('name.otherName')}
-              fullName: ${q(user).property('name.fullName')}
+              title: '${q(user).property(''name.title'')}'
+              firstName: '${q(user).property(''name.firstName'')}'
+              middleName: '${q(user).property(''name.middleName'')}'
+              lastName: '${q(user).property(''name.lastName'')}'
+              otherName: '${q(user).property(''name.otherName'')}'
+              fullName: '${q(user).property(''name.fullName'')}'
             settings:
               isAutoPublishingEnabled: false
-
       changes:
         types:
-            'Neos.Neos.Ui:Property': 'Neos\Neos\Ui\Domain\Model\Changes\Property'
-            'Neos.Neos.Ui:Create': 'Neos\Neos\Ui\Domain\Model\Changes\Create'
-            'Neos.Neos.Ui:CreateBefore': 'Neos\Neos\Ui\Domain\Model\Changes\CreateBefore'
-            'Neos.Neos.Ui:CreateAfter': 'Neos\Neos\Ui\Domain\Model\Changes\CreateAfter'
+          'Neos.Neos.Ui:Property': Neos\Neos\Ui\Domain\Model\Changes\Property
+          'Neos.Neos.Ui:Create': Neos\Neos\Ui\Domain\Model\Changes\Create
+          'Neos.Neos.Ui:CreateBefore': Neos\Neos\Ui\Domain\Model\Changes\CreateBefore
+          'Neos.Neos.Ui:CreateAfter': Neos\Neos\Ui\Domain\Model\Changes\CreateAfter

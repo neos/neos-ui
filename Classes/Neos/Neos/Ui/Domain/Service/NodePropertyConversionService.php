@@ -5,9 +5,9 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
-use TYPO3\TYPO3CR\Domain\Service\Context;
-use TYPO3\TYPO3CR\Domain\Model\NodeType;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Service\Context;
+use Neos\ContentRepository\Domain\Model\NodeType;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * @Flow\Scope("singleton")

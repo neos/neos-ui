@@ -2,8 +2,8 @@
 namespace Neos\Neos\Ui\NodeCreationHandler;
 
 use Neos\Flow\Annotations as Flow;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Utility as NodeUtility;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Utility as NodeUtility;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface

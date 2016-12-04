@@ -1,7 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\NodeCreationHandler;
 
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * NodeTypePostprocessorInterface

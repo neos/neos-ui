@@ -9,7 +9,7 @@ use Neos\Utility\ObjectAccess;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * @Flow\Scope("singleton")

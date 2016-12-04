@@ -13,7 +13,7 @@ use Neos\Flow\Mvc\RequestInterface;
 use Neos\Flow\Mvc\ResponseInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Service\PublishingService;
-use TYPO3\TYPO3CR\Domain\Repository\WorkspaceRepository;
+use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;

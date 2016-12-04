@@ -1,8 +1,8 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Dto;
 
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Domain\Model\NodeType;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeType;
 
 class LoadTreeDto
 {

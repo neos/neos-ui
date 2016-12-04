@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\TYPO3CR\Service;
 
 use Neos\Flow\Annotations as Flow;
-use TYPO3\TYPO3CR\Domain\Model\Workspace;
+use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\Neos\Service\PublishingService;
 use Neos\Eel\FlowQuery\FlowQuery;
 

@@ -9,7 +9,7 @@ namespace Neos\Neos\Ui\TypoScript\Helper;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Repository\SiteRepository;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 class SitesHelper implements ProtectedContextAwareInterface
 {

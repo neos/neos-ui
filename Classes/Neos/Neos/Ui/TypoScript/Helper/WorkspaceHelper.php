@@ -3,7 +3,7 @@ namespace Neos\Neos\Ui\TypoScript\Helper;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;
-use TYPO3\TYPO3CR\Domain\Model\Workspace;
+use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\TYPO3CR\Service\WorkspaceService;
 

@@ -3,8 +3,8 @@ namespace Neos\Neos\Ui\Domain\Service;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Domain\Model\NodeType;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 

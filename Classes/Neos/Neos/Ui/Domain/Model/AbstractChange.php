@@ -3,7 +3,7 @@ namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Flow\Annotations as Flow;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;

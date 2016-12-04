@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\Flow\Annotations as Flow;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\TYPO3CR\Service\WorkspaceService;
 use Neos\Flow\Mvc\Controller\ControllerContext;

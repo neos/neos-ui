@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\TypeConverter;
 
 /*
- * This file is part of the TYPO3.TYPO3CR package.
+ * This file is part of the Neos.ContentRepository package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *

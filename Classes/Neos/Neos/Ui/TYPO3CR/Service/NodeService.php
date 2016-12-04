@@ -3,9 +3,9 @@ namespace Neos\Neos\Ui\TYPO3CR\Service;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Domain\Utility\NodePaths;
-use TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Utility\NodePaths;
+use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Neos\Domain\Model\Site;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Model\Domain;

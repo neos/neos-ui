@@ -126,4 +126,4 @@ Neos:
               'Neos.Neos.Ui:controllerObjectName':
                 pattern: ControllerObjectName
                 patternOptions:
-                  controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|TYPO3\Media\Controller\.*'
+                  controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|Neos\Media\Controller\.*'

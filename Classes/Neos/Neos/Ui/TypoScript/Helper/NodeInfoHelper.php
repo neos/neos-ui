@@ -208,14 +208,14 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             }
         }
 
-        if ($propertyValue instanceof \TYPO3\Media\Domain\Model\ImageInterface) {
+        if ($propertyValue instanceof \Neos\Media\Domain\Model\ImageInterface) {
             $propertyMappingConfiguration = new \Neos\Flow\Property\PropertyMappingConfiguration();
             return $this->entityToIdentityConverter->convertFrom($propertyValue, 'array', array(), $propertyMappingConfiguration);
         }
 
         // Serialize an Asset to JSON (the NodeConverter expects JSON for object type properties)
-        if ($dataType === ltrim('TYPO3\Media\Domain\Model\Asset', '\\') && $propertyValue !== null) {
-            if ($propertyValue instanceof \TYPO3\Media\Domain\Model\Asset) {
+        if ($dataType === ltrim('Neos\Media\Domain\Model\Asset', '\\') && $propertyValue !== null) {
+            if ($propertyValue instanceof \Neos\Media\Domain\Model\Asset) {
                 return $this->persistenceManager->getIdentifierByObject($propertyValue);
             }
         }
@@ -223,10 +223,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         // Serialize an array of Assets to JSON
         if (is_array($propertyValue)) {
             $parsedType = \Neos\Utility\TypeHandling::parseType($dataType);
-            if ($parsedType['elementType'] === ltrim('TYPO3\Media\Domain\Model\Asset', '\\')) {
+            if ($parsedType['elementType'] === ltrim('Neos\Media\Domain\Model\Asset', '\\')) {
                 $convertedValues = array();
                 foreach ($propertyValue as $singlePropertyValue) {
-                    if ($singlePropertyValue instanceof \TYPO3\Media\Domain\Model\Asset) {
+                    if ($singlePropertyValue instanceof \Neos\Media\Domain\Model\Asset) {
                         $convertedValues[] = $this->persistenceManager->getIdentifierByObject($singlePropertyValue);
                     }
                 }

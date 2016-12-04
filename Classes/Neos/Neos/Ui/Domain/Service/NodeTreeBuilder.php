@@ -5,7 +5,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Model\NodeType;
-use TYPO3\Neos\Service\LinkingService;
+use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 
 class NodeTreeBuilder
@@ -158,7 +158,7 @@ class NodeTreeBuilder
             $shouldLoadChildNodes = $hasChildNodes && ($depth > 1 || $this->isInRootLine($this->active, $childNode));
 
             $result[$childNode->getName()] = [
-                'label' => $childNode->getNodeType()->isOfType('TYPO3.Neos:Document') ?
+                'label' => $childNode->getNodeType()->isOfType('Neos.Neos:Document') ?
                     $childNode->getProperty('title') : $childNode->getLabel(),
                 'contextPath' => $childNode->getContextPath(),
                 'nodeType' => $childNode->getNodeType()->getName(),
@@ -174,7 +174,7 @@ class NodeTreeBuilder
                     $this->build(false, $childNode, $depth - 1);
             }
 
-            if ($childNode->getNodeType()->isOfType('TYPO3.Neos:Document')) {
+            if ($childNode->getNodeType()->isOfType('Neos.Neos:Document')) {
                 $result[$childNode->getName()]['href'] = $this->linkingService->createNodeUri(
                     /* $controllerContext */ $this->controllerContext,
                     /* $node */ $childNode,
@@ -193,7 +193,7 @@ class NodeTreeBuilder
         if ($includeRoot) {
             return [
                 $root->getName() => [
-                    'label' => $root->getNodeType()->isOfType('TYPO3.Neos:Document') ?
+                    'label' => $root->getNodeType()->isOfType('Neos.Neos:Document') ?
                         $root->getProperty('title') : $root->getLabel(),
                     'icon' => 'globe',
                     'contextPath' => $root->getContextPath(),

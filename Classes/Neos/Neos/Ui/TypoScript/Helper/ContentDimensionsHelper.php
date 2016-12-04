@@ -3,7 +3,7 @@ namespace Neos\Neos\Ui\TypoScript\Helper;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;
-use TYPO3\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
+use Neos\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
 
 class ContentDimensionsHelper implements ProtectedContextAwareInterface
 {

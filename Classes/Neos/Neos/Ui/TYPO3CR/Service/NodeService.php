@@ -6,10 +6,10 @@ use Neos\Eel\FlowQuery\FlowQuery;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Utility\NodePaths;
 use TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface;
-use TYPO3\Neos\Domain\Model\Site;
-use TYPO3\Neos\Domain\Repository\SiteRepository;
-use TYPO3\Neos\Domain\Model\Domain;
-use TYPO3\Neos\Domain\Repository\DomainRepository;
+use Neos\Neos\Domain\Model\Site;
+use Neos\Neos\Domain\Repository\SiteRepository;
+use Neos\Neos\Domain\Model\Domain;
+use Neos\Neos\Domain\Repository\DomainRepository;
 
 /**
  * @Flow\Scope("singleton")
@@ -42,12 +42,12 @@ class NodeService
      */
     public function getClosestDocument(NodeInterface $node)
     {
-        if ($node->getNodeType()->isOfType('TYPO3.Neos:Document')) {
+        if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
             return $node;
         }
 
         $flowQuery = new FlowQuery(array($node));
-        return $flowQuery->closest('[instanceof TYPO3.Neos:Document]')->get(0);
+        return $flowQuery->closest('[instanceof Neos.Neos:Document]')->get(0);
     }
 
     /**

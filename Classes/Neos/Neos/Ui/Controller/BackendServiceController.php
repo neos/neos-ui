@@ -12,7 +12,7 @@ use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;
 use Neos\Flow\Mvc\ResponseInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Neos\Service\PublishingService;
+use Neos\Neos\Service\PublishingService;
 use TYPO3\TYPO3CR\Domain\Repository\WorkspaceRepository;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;

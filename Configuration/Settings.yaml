@@ -1,9 +1,5 @@
 
 TYPO3:
-  Neos:
-    typoScript:
-      autoInclude:
-        Neos.Neos.Ui: true
   TypoScript:
     defaultContext:
       Neos.Ui.Activation: Neos\Neos\Ui\TypoScript\Helper\ActivationHelper
@@ -13,6 +9,9 @@ TYPO3:
       Neos.Ui.NodeTypes: Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper
 Neos:
   Neos:
+    typoScript:
+      autoInclude:
+        Neos.Neos.Ui: true
     Ui:
       frontendDevelopmentMode: false
       asyncModuleMapping:
@@ -26,13 +25,13 @@ Neos:
           'Neos.UI:Inspector.NodeType': true
       legacyModuleMapping:
         'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
-          TYPO3.Neos/Inspector/Editors/TextFieldEditor: 'Neos.UI:Inspector.TextField'
-          TYPO3.Neos/Inspector/Editors/BooleanEditor: 'Neos.UI:Inspector.Boolean'
-          TYPO3.Neos/Inspector/Editors/DateTimeEditor: 'Neos.UI:Inspector.DateTime'
-          TYPO3.Neos/Inspector/Editors/ImageEditor: 'Neos.UI:Inspector.Image'
-          TYPO3.Neos/Inspector/Editors/TextAreaEditor: 'Neos.UI:Inspector.TextArea'
-          TYPO3.Neos/Inspector/Editors/SelectBoxEditor: 'Neos.UI:Inspector.SelectBox'
-          TYPO3.Neos/Inspector/Editors/NodeTypeEditor: 'Neos.UI:Inspector.NodeType'
+          Neos.Neos/Inspector/Editors/TextFieldEditor: 'Neos.UI:Inspector.TextField'
+          Neos.Neos/Inspector/Editors/BooleanEditor: 'Neos.UI:Inspector.Boolean'
+          Neos.Neos/Inspector/Editors/DateTimeEditor: 'Neos.UI:Inspector.DateTime'
+          Neos.Neos/Inspector/Editors/ImageEditor: 'Neos.UI:Inspector.Image'
+          Neos.Neos/Inspector/Editors/TextAreaEditor: 'Neos.UI:Inspector.TextArea'
+          Neos.Neos/Inspector/Editors/SelectBoxEditor: 'Neos.UI:Inspector.SelectBox'
+          Neos.Neos/Inspector/Editors/NodeTypeEditor: 'Neos.UI:Inspector.NodeType'
           Content/Inspector/Editors/NodeTypeEditor: 'Neos.UI:Inspector.NodeType'
       state:
         defaultEelContext:
@@ -48,7 +47,7 @@ Neos:
           Neos.Ui.NodeTypes: Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper
           Neos.Ui.ContentDimensions: Neos\Neos\Ui\TypoScript\Helper\ContentDimensionsHelper
         frontendConfiguration:
-          editPreviewModes: '${Configuration.setting(''TYPO3.Neos.userInterface.editPreviewModes'')}'
+          editPreviewModes: '${Configuration.setting(''Neos.Neos.userInterface.editPreviewModes'')}'
         documentNode:
           nodes: '${Neos.Ui.NodeInfo.renderDocumentNodeAndChildContent(documentNode, controllerContext)}'
           metaData:
@@ -78,7 +77,7 @@ Neos:
               src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
               contextPath: '${q(documentNode).property(''_contextPath'')}'
             debugMode: false
-            editPreviewMode: '${Configuration.setting(''TYPO3.Neos.userInterface.defaultEditPreviewMode'')}'
+            editPreviewMode: '${Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
             fullScreen:
               isFullScreen: false
             editModePanel:
@@ -126,4 +125,4 @@ Neos:
               'Neos.Neos.Ui:controllerObjectName':
                 pattern: ControllerObjectName
                 patternOptions:
-                  controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*|TYPO3\Neos\Controller\.*|TYPO3\Neos\Service\.*|Neos\Media\Controller\.*'
+                  controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*|Neos\Neos\Controller\.*|Neos\Neos\Service\.*|Neos\Media\Controller\.*'

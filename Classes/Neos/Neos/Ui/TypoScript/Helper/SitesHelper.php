@@ -8,7 +8,7 @@ namespace Neos\Neos\Ui\TypoScript\Helper;
 
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
-use TYPO3\Neos\Domain\Repository\SiteRepository;
+use Neos\Neos\Domain\Repository\SiteRepository;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 
 class SitesHelper implements ProtectedContextAwareInterface

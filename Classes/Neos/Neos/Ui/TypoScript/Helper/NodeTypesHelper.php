@@ -3,7 +3,7 @@ namespace Neos\Neos\Ui\TypoScript\Helper;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;
-use TYPO3\Neos\Service\NodeTypeSchemaBuilder;
+use Neos\Neos\Service\NodeTypeSchemaBuilder;
 
 class NodeTypesHelper implements ProtectedContextAwareInterface
 {

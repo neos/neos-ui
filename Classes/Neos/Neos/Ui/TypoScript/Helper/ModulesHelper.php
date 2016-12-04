@@ -19,7 +19,7 @@ class ModulesHelper implements ProtectedContextAwareInterface
     protected $privilegeManager;
 
     /**
-     * @Flow\InjectConfiguration(path="TYPO3.Neos.modules")
+     * @Flow\InjectConfiguration(path="Neos.Neos.modules")
      * @var array
      */
     protected $modules;

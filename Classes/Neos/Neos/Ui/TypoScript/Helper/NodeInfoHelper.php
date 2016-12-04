@@ -6,9 +6,9 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Utility\ObjectAccess;
-use TYPO3\Neos\Domain\Service\ContentContext;
-use TYPO3\Neos\Service\LinkingService;
-use TYPO3\Neos\TypeConverter\EntityToIdentityConverter;
+use Neos\Neos\Domain\Service\ContentContext;
+use Neos\Neos\Service\LinkingService;
+use Neos\Neos\TypeConverter\EntityToIdentityConverter;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 
 /**
@@ -45,10 +45,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'properties' => $this->buildNodeProperties($node),
             'label' => $node->getLabel(),
             'isAutoCreated' => $node->isAutoCreated(),
-            // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof TYPO3.Neos:Document]')}
+            // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
             'children' => [],
         ];
-        if ($node->getNodeType()->isOfType('TYPO3.Neos:Document')) {
+        if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
         }
 
@@ -87,7 +87,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function renderDocumentNodeAndChildContentInternal(array &$nodes, NodeInterface $node, ControllerContext $controllerContext)
     {
         $this->renderNodeToList($nodes, $node, $controllerContext);
-        foreach ($node->getChildNodes('!TYPO3.Neos:Document') as $childNode) {
+        foreach ($node->getChildNodes('!Neos.Neos:Document') as $childNode) {
             $this->renderDocumentNodeAndChildContentInternal($nodes, $childNode, $controllerContext);
         }
     }
@@ -98,7 +98,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         if ($site !== $documentNode) {
             $this->renderNodeToList($nodes, $site, $controllerContext);
         }
-        foreach ($site->getChildNodes('TYPO3.Neos:Document') as $documentChildNodeInFirstLevel) {
+        foreach ($site->getChildNodes('Neos.Neos:Document') as $documentChildNodeInFirstLevel) {
             $this->renderNodeToList($nodes, $documentChildNodeInFirstLevel, $controllerContext);
         }
 

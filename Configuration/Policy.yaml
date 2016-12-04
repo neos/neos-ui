@@ -23,7 +23,7 @@ roles:
           privilegeTarget: 'Neos.Neos.Ui:BackendLogin'
           permission: GRANT
 
-    'TYPO3.Neos:Editor':
+    'Neos.Neos:Editor':
       privileges:
         -
           privilegeTarget: 'Neos.Neos.Ui:Backend.GeneralAccess'

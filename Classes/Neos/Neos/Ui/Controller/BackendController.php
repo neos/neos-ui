@@ -12,13 +12,13 @@ use Neos\Flow\ResourceManagementManagement\ResourceManager;
 use Neos\Flow\Session\SessionInterface;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\ContextFactoryInterface;
-use TYPO3\Neos\Domain\Repository\DomainRepository;
-use TYPO3\Neos\Domain\Repository\SiteRepository;
-use TYPO3\Neos\Domain\Service\ContentContext;
-use TYPO3\Neos\Service\UserService;
-use TYPO3\Neos\Service\NodeTypeSchemaBuilder;
+use Neos\Neos\Domain\Repository\DomainRepository;
+use Neos\Neos\Domain\Repository\SiteRepository;
+use Neos\Neos\Domain\Service\ContentContext;
+use Neos\Neos\Service\UserService;
+use Neos\Neos\Service\NodeTypeSchemaBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Neos\Service\XliffService;
+use Neos\Neos\Service\XliffService;
 use Neos\Flow\I18n\Locale;
 use TYPO3\TypoScript\Core\Cache\ContentCache;
 use TYPO3\TypoScript\View\TypoScriptView;
@@ -147,7 +147,7 @@ class BackendController extends ActionController
             return;
         }
 
-        $this->redirectToUri($this->uriBuilder->uriFor('index', array(), 'Login', 'TYPO3.Neos'));
+        $this->redirectToUri($this->uriBuilder->uriFor('index', array(), 'Login', 'Neos.Neos'));
     }
 
     /**

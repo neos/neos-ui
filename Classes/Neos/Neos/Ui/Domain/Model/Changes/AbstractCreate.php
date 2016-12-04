@@ -232,8 +232,8 @@ abstract class AbstractCreate extends AbstractChange
 
         $this->persistenceManager->persistAll();
 
-        if ($nodeType->isOfType('TYPO3.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
-            if ($parent->getNodeType()->isOfType('TYPO3.Neos:ContentCollection')) {
+        if ($nodeType->isOfType('Neos.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
+            if ($parent->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
                 $renderContentOutOfBand = new RenderContentOutOfBand();
                 $renderContentOutOfBand->setNode($node);
                 $renderContentOutOfBand->setParentDomAddress($this->getParentDomAddress());
@@ -243,7 +243,7 @@ abstract class AbstractCreate extends AbstractChange
                 $this->feedbackCollection->add($renderContentOutOfBand);
             } else {
                 $flowQuery = new FlowQuery(array($node));
-                $closestDocument = $flowQuery->closest('[instanceof TYPO3.Neos:Document]')->get(0);
+                $closestDocument = $flowQuery->closest('[instanceof Neos.Neos:Document]')->get(0);
 
                 $reloadDocument = new ReloadDocument();
                 $reloadDocument->setDocument($closestDocument);

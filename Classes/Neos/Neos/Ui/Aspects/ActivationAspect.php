@@ -31,7 +31,7 @@ class ActivationAspect
     protected $contentCache;
 
     /**
-     * @Flow\Before("method(TYPO3\Neos\Controller\Backend\BackendController->indexAction())")
+     * @Flow\Before("method(Neos\Neos\Controller\Backend\BackendController->indexAction())")
      * @param JoinPointInterface $joinPoint the join point
      * @return mixed
      */

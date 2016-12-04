@@ -34,7 +34,7 @@ prototype(TYPO3.Neos:Page) {
             @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
         }
 
-        guestFrameApplication = TYPO3.TypoScript:Template {
+        guestFrameApplication = Neos.Fusion:Template {
             @position = 'after javascriptDocumentInformation'
 
             templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Guest.html'

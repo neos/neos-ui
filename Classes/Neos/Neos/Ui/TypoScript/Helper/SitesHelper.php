@@ -6,7 +6,7 @@ namespace Neos\Neos\Ui\TypoScript\Helper;
  *                                                                        *
  *                                                                        */
 
-use TYPO3\Eel\ProtectedContextAwareInterface;
+use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use TYPO3\Neos\Domain\Repository\SiteRepository;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;

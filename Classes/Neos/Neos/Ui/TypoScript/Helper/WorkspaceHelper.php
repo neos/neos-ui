@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\TypoScript\Helper;
 
 use Neos\Flow\Annotations as Flow;
-use TYPO3\Eel\ProtectedContextAwareInterface;
+use Neos\Eel\ProtectedContextAwareInterface;
 use TYPO3\TYPO3CR\Domain\Model\Workspace;
 use TYPO3\Neos\Service\UserService;
 use Neos\Neos\Ui\TYPO3CR\Service\WorkspaceService;

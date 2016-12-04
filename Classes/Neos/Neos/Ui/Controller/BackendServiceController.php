@@ -23,7 +23,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
-use TYPO3\Eel\FlowQuery\FlowQuery;
+use Neos\Eel\FlowQuery\FlowQuery;
 
 class BackendServiceController extends ActionController
 {

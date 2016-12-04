@@ -4,7 +4,7 @@ namespace Neos\Neos\Ui\TYPO3CR\Service;
 use Neos\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\Workspace;
 use TYPO3\Neos\Service\PublishingService;
-use TYPO3\Eel\FlowQuery\FlowQuery;
+use Neos\Eel\FlowQuery\FlowQuery;
 
 /**
  * @Flow\Scope("singleton")

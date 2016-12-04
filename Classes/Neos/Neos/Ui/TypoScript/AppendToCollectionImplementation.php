@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\TypoScript;
 
 use Neos\Flow\Annotations as Flow;
-use TYPO3\TypoScript\TypoScriptObjects\AbstractTypoScriptObject;
+use Neos\Fusion\TypoScriptObjects\AbstractTypoScriptObject;
 
 class AppendToCollectionImplementation extends AbstractTypoScriptObject
 {

@@ -9,7 +9,7 @@ namespace Neos\Neos\Ui\Aspects;
 use Neos\Flow\Annotations as Flow;
 use TYPO3\FLOW\Aop\JoinPointInterface;
 use Neos\Flow\Session\SessionInterface;
-use TYPO3\TypoScript\Core\Cache\ContentCache;
+use Neos\Fusion\Core\Cache\ContentCache;
 
 /**
  * @Flow\Scope("singleton")

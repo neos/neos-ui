@@ -6,7 +6,7 @@ namespace Neos\Neos\Ui\View;
  *                                                                        *
  *                                                                        */
 use Neos\Flow\Annotations as Flow;
-use TYPO3\TypoScript\View\TypoScriptView;
+use Neos\Fusion\View\TypoScriptView;
 
 class BackendTypoScriptView extends TypoScriptView
 {

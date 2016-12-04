@@ -2,8 +2,8 @@
 namespace Neos\Neos\Ui\TypoScript;
 
 use Neos\Flow\Annotations as Flow;
-use TYPO3\TypoScript\Exception as TypoScriptException;
-use TYPO3\TypoScript\TypoScriptObjects\AbstractCollectionImplementation;
+use Neos\Fusion\Exception as TypoScriptException;
+use Neos\Fusion\TypoScriptObjects\AbstractCollectionImplementation;
 
 /**
  * Implementation of an array collection renderer for TypoScript.
@@ -28,7 +28,7 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
         $itemName = $this->getItemName();
         $itemKey = $this->tsValue('itemKey');
         if ($itemName === null) {
-            throw new \TYPO3\TypoScript\Exception('The Collection needs an itemName to be set.', 1344325771);
+            throw new \Neos\Fusion\Exception('The Collection needs an itemName to be set.', 1344325771);
         }
         $iterationName = $this->getIterationName();
         $collectionTotalCount = count($collection);

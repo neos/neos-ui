@@ -7,7 +7,7 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\View\TypoScriptView as FusionView;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
-use TYPO3\TypoScript\Core\Cache\ContentCache;
+use Neos\Fusion\Core\Cache\ContentCache;
 
 class RenderContentOutOfBand implements FeedbackInterface
 {

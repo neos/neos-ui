@@ -20,8 +20,8 @@ use Neos\Neos\Service\NodeTypeSchemaBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Service\XliffService;
 use Neos\Flow\I18n\Locale;
-use TYPO3\TypoScript\Core\Cache\ContentCache;
-use TYPO3\TypoScript\View\TypoScriptView;
+use Neos\Fusion\Core\Cache\ContentCache;
+use Neos\Fusion\View\TypoScriptView;
 use Neos\Flow\Mvc\View\ViewInterface;
 
 class BackendController extends ActionController

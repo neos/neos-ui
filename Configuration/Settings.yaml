@@ -1,12 +1,4 @@
 
-TYPO3:
-  TypoScript:
-    defaultContext:
-      Neos.Ui.Activation: Neos\Neos\Ui\TypoScript\Helper\ActivationHelper
-      Neos.Ui.StaticResources: Neos\Neos\Ui\TypoScript\Helper\StaticResourcesHelper
-      Neos.Ui.Sites: Neos\Neos\Ui\TypoScript\Helper\SitesHelper
-      Neos.Ui.Modules: Neos\Neos\Ui\TypoScript\Helper\ModulesHelper
-      Neos.Ui.NodeTypes: Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper
 Neos:
   Neos:
     typoScript:
@@ -126,3 +118,10 @@ Neos:
                 pattern: ControllerObjectName
                 patternOptions:
                   controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*|Neos\Neos\Controller\.*|Neos\Neos\Service\.*|Neos\Media\Controller\.*'
+  Fusion:
+    defaultContext:
+      Neos.Ui.Activation: Neos\Neos\Ui\TypoScript\Helper\ActivationHelper
+      Neos.Ui.StaticResources: Neos\Neos\Ui\TypoScript\Helper\StaticResourcesHelper
+      Neos.Ui.Sites: Neos\Neos\Ui\TypoScript\Helper\SitesHelper
+      Neos.Ui.Modules: Neos\Neos\Ui\TypoScript\Helper\ModulesHelper
+      Neos.Ui.NodeTypes: Neos\Neos\Ui\TypoScript\Helper\NodeTypesHelper

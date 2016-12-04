@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\TypoScript;
 
 use Neos\Flow\Annotations as Flow;
-use TYPO3\TypoScript\Exception as TypoScriptException;
+use Neos\Fusion\Exception as TypoScriptException;
 
 /**
  * Implementation of an array collection renderer for TypoScript.

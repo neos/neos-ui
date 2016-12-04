@@ -4,7 +4,7 @@ namespace Neos\Neos\Ui\TypoScript;
 use Neos\Neos\Ui\Domain\Service\StateRenderingService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Exception;
-use TYPO3\TypoScript\TypoScriptObjects\AbstractTypoScriptObject;
+use Neos\Fusion\TypoScriptObjects\AbstractTypoScriptObject;
 
 class RenderStateImplementation extends AbstractTypoScriptObject
 {

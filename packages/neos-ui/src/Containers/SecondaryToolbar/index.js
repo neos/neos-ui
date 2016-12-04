@@ -19,6 +19,7 @@ import style from './style.css';
     previewUrl: $get('ui.contentCanvas.previewUrl'),
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
+    isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     isDocumentNodeSelected: isDocumentNodeSelectedSelector
 }), {
@@ -29,6 +30,7 @@ export default class SecondaryToolbar extends PureComponent {
         previewUrl: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
+        isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         toggleFullScreen: PropTypes.func.isRequired,
         isDocumentNodeSelected: PropTypes.bool.isRequired
@@ -39,6 +41,7 @@ export default class SecondaryToolbar extends PureComponent {
             previewUrl,
             isFringedLeft,
             isFringedRight,
+            isEditModePanelHidden,
             isFullScreen,
             toggleFullScreen
         } = this.props;
@@ -46,6 +49,7 @@ export default class SecondaryToolbar extends PureComponent {
             [style.secondaryToolbar]: true,
             [style['secondaryToolbar--isFringeLeft']]: isFringedLeft,
             [style['secondaryToolbar--isFringeRight']]: isFringedRight,
+            [style['secondaryToolbar--isMovedDown']]: !isEditModePanelHidden,
             [style['secondaryToolbar--isHidden']]: isFullScreen
         });
         const previewButtonClassNames = mergeClassNames({

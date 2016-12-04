@@ -12,6 +12,13 @@ import {dom} from './Containers/ContentCanvas/Helpers/index';
 
 manifest('main', {}, globalRegistry => {
     //
+    // Create edit preview mode registry
+    //
+    globalRegistry.add('editPreviewModes', new SynchronousRegistry(`
+        # Edit/Preview Mode specific registry
+    `));
+
+    //
     // Create Inspector meta registry
     //
     const inspector = globalRegistry.add('inspector', new SynchronousMetaRegistry(`

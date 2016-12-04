@@ -16,6 +16,7 @@ import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattin
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
     isFringeRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
+    isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     src: $get('ui.contentCanvas.src'),
     byContextPathDynamicAccess: state => contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(state)
 }), {
@@ -38,6 +39,7 @@ export default class ContentCanvas extends PureComponent {
     static propTypes = {
         isFringeLeft: PropTypes.bool.isRequired,
         isFringeRight: PropTypes.bool.isRequired,
+        isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         src: PropTypes.string.isRequired,
         setGuestContext: PropTypes.func.isRequired,
@@ -70,11 +72,12 @@ export default class ContentCanvas extends PureComponent {
     }
 
     render() {
-        const {isFringeLeft, isFringeRight, isFullScreen, src} = this.props;
+        const {isFringeLeft, isFringeRight, isFullScreen, isEditModePanelHidden, src} = this.props;
         const classNames = mergeClassNames({
             [style.contentCanvas]: true,
             [style['contentCanvas--isFringeLeft']]: isFringeLeft,
             [style['contentCanvas--isFringeRight']]: isFringeRight,
+            [style['contentCanvas--isMovedDown']]: !isEditModePanelHidden,
             [style['contentCanvas--isFullScreen']]: isFullScreen
         });
 

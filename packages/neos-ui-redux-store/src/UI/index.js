@@ -4,6 +4,8 @@ import {handleActions} from '@neos-project/utils-redux';
 import * as FlashMessages from './FlashMessages/index';
 import * as FullScreen from './FullScreen/index';
 import * as LeftSideBar from './LeftSideBar/index';
+import * as EditModePanel from './EditModePanel/index';
+import * as EditPreviewMode from './EditPreviewMode/index';
 import * as Drawer from './Drawer/index';
 import * as Remote from './Remote/index';
 import * as RightSideBar from './RightSideBar/index';
@@ -17,6 +19,8 @@ const all = {
     FlashMessages,
     FullScreen,
     LeftSideBar,
+    EditModePanel,
+    EditPreviewMode,
     Drawer,
     Remote,
     RightSideBar,

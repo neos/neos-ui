@@ -2,7 +2,7 @@
 // Reset some rendering steps of the Neos backend, since the package
 // augments the website itself
 //
-prototype(TYPO3.Neos:Page) {
+prototype(Neos.Neos:Page) {
 
     //
     // Disable all html attributes printed for the Neos backend

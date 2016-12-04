@@ -1,5 +1,5 @@
 include: resource://Neos.Fusion/Private/TypoScript/Root.ts2
-include: resource://TYPO3.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
+include: resource://Neos.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
 include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/RenderState.ts2
 include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/ArrayCollection.ts2
 include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/AppendAllToCollection.ts2
@@ -24,16 +24,16 @@ backend = Neos.Fusion:Template {
         byName = ${Neos.Ui.NodeTypes.nodeTypesByName()}
         constraints = ${Neos.Ui.NodeTypes.nodeTypeConstraints()}
         inheritanceMap = ${Neos.Ui.NodeTypes.nodeTypeInheritanceMap()}
-        groups = ${Configuration.setting('TYPO3.Neos.nodeTypes.groups')}
+        groups = ${Configuration.setting('Neos.Neos.nodeTypes.groups')}
 
         @process.json = ${Json.stringify(value)}
     }
 
     menu = Neos.Fusion:RawArray {
         content = Neos.Fusion:RawArray {
-            label = 'TYPO3.Neos:Main:content'
+            label = 'Neos.Neos:Main:content'
             icon = 'file'
-            uri = TYPO3.Neos:NodeUri {
+            uri = Neos.Neos:NodeUri {
                 node = ${q(site).parent().children().get(0)}
             }
             target = 'ContentCanvas'
@@ -44,7 +44,7 @@ backend = Neos.Fusion:Template {
                 itemRenderer = Neos.Fusion:RawArray {
                     icon = 'globe'
                     label = ${q(siteNode).property('title')}
-                    uri = TYPO3.Neos:NodeUri {
+                    uri = Neos.Neos:NodeUri {
                         node = ${siteNode}
                     }
                     target = 'ContentCanvas'
@@ -56,7 +56,7 @@ backend = Neos.Fusion:Template {
 
         @process.modules = Neos.Neos.Ui:AppendAllToCollection {
             appendTo = ${value}
-            collection = ${Configuration.setting('TYPO3.Neos.modules')}
+            collection = ${Configuration.setting('Neos.Neos.modules')}
             itemName = 'module'
             itemKey = 'moduleName'
 
@@ -65,7 +65,7 @@ backend = Neos.Fusion:Template {
                 label = ${module.label}
                 icon = ${module.icon}
                 uri = Neos.Fusion:UriBuilder {
-                    package = 'TYPO3.Neos'
+                    package = 'Neos.Neos'
                     controller = 'Backend\\Module'
                     action = 'index'
                     absolute = true
@@ -84,7 +84,7 @@ backend = Neos.Fusion:Template {
                         icon = ${submodule.icon}
                         label = ${submodule.label}
                         uri = Neos.Fusion:UriBuilder {
-                            package = 'TYPO3.Neos'
+                            package = 'Neos.Neos'
                             controller = 'Backend\\Module'
                             action = 'index'
                             absolute = true

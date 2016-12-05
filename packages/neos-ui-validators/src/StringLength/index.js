@@ -23,6 +23,7 @@ const StringLength = (value, validatorOptions) => {
         }
         return <I18n id="content.inspector.validators.stringLength.greaterThanMaximum" params={{maximum}}/>;
     }
+    return null;
 };
 
 export default StringLength;

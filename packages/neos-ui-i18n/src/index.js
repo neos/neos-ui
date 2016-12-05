@@ -51,6 +51,10 @@ export default class I18n extends Component {
         return [packageKey, sourceName, id];
     }
 
+    /**
+     * This code is taken from the Ember version with minor adjustments. Possibly refactor it later
+     * as its style is not superb.
+     */
     substitutePlaceholders(textWithPlaceholders, parameters) {
         let startOfPlaceholder;
         while ((startOfPlaceholder = textWithPlaceholders.indexOf('{')) !== -1) {

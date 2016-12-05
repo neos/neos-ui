@@ -5,6 +5,7 @@ const NotEmpty = value => {
     if (value === null || value === '' || value === []) {
         return <I18n id="content.inspector.validators.notEmptyValidator.isEmpty" fallback="The value can't be empty"/>;
     }
+    return null;
 };
 
 export default NotEmpty;

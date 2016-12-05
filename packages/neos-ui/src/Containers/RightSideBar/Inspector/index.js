@@ -115,13 +115,14 @@ export default class Inspector extends PureComponent {
             console.error(`No properties configured in ${node.nodeType} nodetype`);
         }
         let validationErrors = null;
+        const propertiesForValidation = Object.assign({}, node.properties);
         if (transientValues) {
-            const transientProps = {};
+            // Override values with transient values
             Object.keys(transientValues.toJS()).forEach(key => {
-                transientProps[key] = $get([key, 'value'], transientValues);
+                propertiesForValidation[key] = $get([key, 'value'], transientValues);
             });
-            validationErrors = validate(transientProps, nodeType.properties, validatorRegistry);
         }
+        validationErrors = validate(propertiesForValidation, nodeType.properties, validatorRegistry);
 
         const viewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor(focusedNode.nodeType);
         const isDiscardDisabled = transientValues === undefined;

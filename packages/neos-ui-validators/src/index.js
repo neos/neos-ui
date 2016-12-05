@@ -13,7 +13,7 @@ const validate = (values, elementConfigurations, validatorRegistry) => {
         if (validator) {
             return validator(elementValue, validatorConfiguration);
         }
-        console.error(`Validator ${validatorName} not found`);
+        console.warn(`Validator ${validatorName} not found`);
     };
 
     const validateElement = (elementValue, elementConfiguration) => {
@@ -34,7 +34,7 @@ const validate = (values, elementConfigurations, validatorRegistry) => {
             const elementValue = values[elementName];
             const elementConfiguration = elementConfigurations[elementName];
             const elementErrors = validateElement(elementValue, elementConfiguration);
-            if (elementErrors.length > 0) {
+            if (elementErrors && elementErrors.length > 0) {
                 hasErrors = true;
                 errors[elementName] = elementErrors;
             }

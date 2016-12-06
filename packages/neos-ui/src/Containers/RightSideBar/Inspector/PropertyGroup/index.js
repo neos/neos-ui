@@ -12,30 +12,43 @@ export default class PropertyGroup extends Component {
     static propTypes = {
         label: PropTypes.string.isRequired,
         properties: PropTypes.array,
-        renderSecondaryInspector: PropTypes.func.isRequired
+        renderSecondaryInspector: PropTypes.func.isRequired,
+        validationErrors: PropTypes.object,
+
+        node: PropTypes.object.isRequired,
+        commit: PropTypes.func.isRequired,
+        transient: PropTypes.object
     };
 
     render() {
-        const {properties, label, renderSecondaryInspector} = this.props;
+        const {properties, label, renderSecondaryInspector, transient, validationErrors, node, commit} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
+
         const propertyGroup = properties => (
             <ToggablePanel isOpen={true} className={sidebarStyle.rightSideBar__section}>
                 <ToggablePanel.Header theme={headerTheme}>
                     <I18n id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
-                    {properties.map(property => (
-                        <InspectorEditorEnvelope
-                            key={property.id}
-                            id={property.id}
-                            label={property.label}
-                            editor={property.editor}
-                            options={property.editorOptions}
-                            renderSecondaryInspector={renderSecondaryInspector}
-                            />
-                    ))}
+                    {properties.map(property => {
+                        const propertyId = property.id;
+                        const validationErrorsForProperty = (validationErrors && propertyId in validationErrors) ? validationErrors[propertyId] : null;
+                        return (
+                            <InspectorEditorEnvelope
+                                key={propertyId}
+                                id={propertyId}
+                                label={property.label}
+                                editor={property.editor}
+                                options={property.editorOptions}
+                                renderSecondaryInspector={renderSecondaryInspector}
+                                node={node}
+                                commit={commit}
+                                transient={transient}
+                                validationErrors={validationErrorsForProperty}
+                                />);
+                    })}
                 </ToggablePanel.Contents>
             </ToggablePanel>
         );

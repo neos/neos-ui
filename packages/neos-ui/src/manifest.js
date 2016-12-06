@@ -83,6 +83,17 @@ manifest('main', {}, globalRegistry => {
     `));
 
     //
+    // Create validators registry
+    //
+
+    globalRegistry.add('validators', new SynchronousRegistry(`
+        Contains all validators.
+
+        The key is a validator name (such as TYPO3.Neos/Validation/NotEmptyValidator) and the values
+        are validator options.
+    `));
+
+    //
     // Create richtext editing toolbar registry
     //
 

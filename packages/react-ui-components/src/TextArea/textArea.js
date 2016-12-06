@@ -5,9 +5,9 @@ import TextareaAutoresize from 'react-textarea-autosize';
 class TextArea extends PureComponent {
     static propTypes = {
         /**
-         * This prop controls if the TextArea is rendered as invalid or not.
+         * Array of validation errors
          */
-        isValid: PropTypes.bool.isRequired,
+        validationErrors: PropTypes.array,
 
         /**
          * An optional className to render on the textarea node.
@@ -30,11 +30,12 @@ class TextArea extends PureComponent {
         theme: PropTypes.shape({
             'textArea': PropTypes.string,
             'textArea--invalid': PropTypes.string
-        }).isRequired
-    };
+        }).isRequired,
 
-    static defaultProps = {
-        isValid: true
+        /**
+         * Static component dependencies which are injected from the outside (index.js)
+         */
+        TooltipComponent: PropTypes.any.isRequired
     };
 
     constructor(props) {
@@ -45,26 +46,33 @@ class TextArea extends PureComponent {
 
     render() {
         const {
+            TooltipComponent,
             placeholder,
             className,
-            isValid,
+            validationErrors,
             theme,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textArea]: true,
-            [theme['textArea--invalid']]: !isValid
+            [theme['textArea--invalid']]: validationErrors && validationErrors.length > 0
+        });
+        const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
+            return <div key={key}>{validationError}</div>;
         });
 
         return (
-            <TextareaAutoresize
-                {...rest}
-                className={classNames}
-                role="textbox"
-                placeholder={placeholder}
-                onChange={this.handleValueChange}
-                />
+            <div className={theme.wrap}>
+                <TextareaAutoresize
+                    {...rest}
+                    className={classNames}
+                    role="textbox"
+                    placeholder={placeholder}
+                    onChange={this.handleValueChange}
+                    />
+                {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
+            </div>
         );
     }
 

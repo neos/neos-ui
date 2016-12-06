@@ -15,6 +15,7 @@ export default class EditorEnvelope extends PureComponent {
         value: PropTypes.any,
         renderSecondaryInspector: PropTypes.func,
         editorRegistry: PropTypes.object.isRequired,
+        validationErrors: PropTypes.array,
 
         commit: PropTypes.func.isRequired
     };

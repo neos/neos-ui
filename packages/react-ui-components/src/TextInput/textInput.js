@@ -4,11 +4,6 @@ import mergeClassNames from 'classnames';
 class TextInput extends PureComponent {
     static propTypes = {
         /**
-         * This prop controls if the TextArea is rendered as invalid or not.
-         */
-        isValid: PropTypes.bool.isRequired,
-
-        /**
          * An optional className to render on the textarea node.
          */
         className: PropTypes.string,
@@ -34,16 +29,22 @@ class TextInput extends PureComponent {
         onBlur: PropTypes.func,
 
         /**
+         * An array of error messages
+         */
+        validationErrors: PropTypes.array,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({
             'textInput': PropTypes.string,
             'textInput--invalid': PropTypes.string
-        }).isRequired
-    };
+        }).isRequired,
 
-    static defaultProps = {
-        isValid: true
+        /**
+         * Static component dependencies which are injected from the outside (index.js)
+         */
+        TooltipComponent: PropTypes.any.isRequired
     };
 
     constructor(props) {
@@ -54,26 +55,34 @@ class TextInput extends PureComponent {
 
     render() {
         const {
+            TooltipComponent,
             placeholder,
             className,
-            isValid,
+            validationErrors,
             theme,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textInput]: true,
-            [theme['textInput--invalid']]: !isValid
+            [theme['textInput--invalid']]: validationErrors && validationErrors.length > 0
+        });
+
+        const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
+            return <div key={key}>{validationError}</div>;
         });
 
         return (
-            <input
-                {...rest}
-                className={classNames}
-                role="textbox"
-                placeholder={placeholder}
-                onChange={this.handleValueChange}
-                />
+            <div className={theme.wrap}>
+                <input
+                    {...rest}
+                    className={classNames}
+                    role="textbox"
+                    placeholder={placeholder}
+                    onChange={this.handleValueChange}
+                    />
+                {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
+            </div>
         );
     }
 

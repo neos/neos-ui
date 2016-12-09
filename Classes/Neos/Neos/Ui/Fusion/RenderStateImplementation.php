@@ -1,12 +1,12 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript;
+namespace Neos\Neos\Ui\Fusion;
 
 use Neos\Neos\Ui\Domain\Service\StateRenderingService;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Exception;
-use TYPO3\TypoScript\TypoScriptObjects\AbstractTypoScriptObject;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Exception;
+use Neos\Fusion\FusionObjects\AbstractFusionObject;
 
-class RenderStateImplementation extends AbstractTypoScriptObject
+class RenderStateImplementation extends AbstractFusionObject
 {
 
     /**

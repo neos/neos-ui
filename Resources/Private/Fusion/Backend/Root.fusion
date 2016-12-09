@@ -1,14 +1,14 @@
-include: resource://TYPO3.TypoScript/Private/TypoScript/Root.ts2
-include: resource://TYPO3.Neos/Private/TypoScript/Prototypes/NodeUri.ts2
-include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/RenderState.ts2
-include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/ArrayCollection.ts2
-include: resource://Neos.Neos.Ui/Private/TypoScript/Prototypes/AppendAllToCollection.ts2
+include: resource://Neos.Fusion/Private/Fusion/Root.fusion
+include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.fusion
+include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderState.fusion
+include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/ArrayCollection.fusion
+include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/AppendAllToCollection.fusion
 
-backend = TYPO3.TypoScript:Template {
+backend = Neos.Fusion:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
     compiledResourcePackage = ${Neos.Ui.StaticResources.compiledResourcePackage()}
 
-    configuration = TYPO3.TypoScript:RawArray {
+    configuration = Neos.Fusion:RawArray {
         test = 1
         asyncModuleMapping = ${asyncModuleMapping}
         legacyModuleMapping = ${legacyModuleMapping}
@@ -20,20 +20,20 @@ backend = TYPO3.TypoScript:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    nodeTypes = TYPO3.TypoScript:RawArray {
+    nodeTypes = Neos.Fusion:RawArray {
         byName = ${Neos.Ui.NodeTypes.nodeTypesByName()}
         constraints = ${Neos.Ui.NodeTypes.nodeTypeConstraints()}
         inheritanceMap = ${Neos.Ui.NodeTypes.nodeTypeInheritanceMap()}
-        groups = ${Configuration.setting('TYPO3.Neos.nodeTypes.groups')}
+        groups = ${Configuration.setting('Neos.Neos.nodeTypes.groups')}
 
         @process.json = ${Json.stringify(value)}
     }
 
-    menu = TYPO3.TypoScript:RawArray {
-        content = TYPO3.TypoScript:RawArray {
-            label = 'TYPO3.Neos:Main:content'
+    menu = Neos.Fusion:RawArray {
+        content = Neos.Fusion:RawArray {
+            label = 'Neos.Neos:Main:content'
             icon = 'file'
-            uri = TYPO3.Neos:NodeUri {
+            uri = Neos.Neos:NodeUri {
                 node = ${q(site).parent().children().get(0)}
             }
             target = 'ContentCanvas'
@@ -41,10 +41,10 @@ backend = TYPO3.TypoScript:Template {
             children = Neos.Neos.Ui:ArrayCollection {
                 collection = ${q(site).parent().children().get()}
                 itemName = 'siteNode'
-                itemRenderer = TYPO3.TypoScript:RawArray {
+                itemRenderer = Neos.Fusion:RawArray {
                     icon = 'globe'
                     label = ${q(siteNode).property('title')}
-                    uri = TYPO3.Neos:NodeUri {
+                    uri = Neos.Neos:NodeUri {
                         node = ${siteNode}
                     }
                     target = 'ContentCanvas'
@@ -56,16 +56,16 @@ backend = TYPO3.TypoScript:Template {
 
         @process.modules = Neos.Neos.Ui:AppendAllToCollection {
             appendTo = ${value}
-            collection = ${Configuration.setting('TYPO3.Neos.modules')}
+            collection = ${Configuration.setting('Neos.Neos.modules')}
             itemName = 'module'
             itemKey = 'moduleName'
 
             itemKeyRenderer = ${moduleName}
-            itemRenderer = TYPO3.TypoScript:RawArray {
+            itemRenderer = Neos.Fusion:RawArray {
                 label = ${module.label}
                 icon = ${module.icon}
-                uri = TYPO3.TypoScript:UriBuilder {
-                    package = 'TYPO3.Neos'
+                uri = Neos.Fusion:UriBuilder {
+                    package = 'Neos.Neos'
                     controller = 'Backend\\Module'
                     action = 'index'
                     absolute = true
@@ -80,11 +80,11 @@ backend = TYPO3.TypoScript:Template {
                     itemName = 'submodule'
                     itemKey = 'submoduleName'
 
-                    itemRenderer = TYPO3.TypoScript:RawArray {
+                    itemRenderer = Neos.Fusion:RawArray {
                         icon = ${submodule.icon}
                         label = ${submodule.label}
-                        uri = TYPO3.TypoScript:UriBuilder {
-                            package = 'TYPO3.Neos'
+                        uri = Neos.Fusion:UriBuilder {
+                            package = 'Neos.Neos'
                             controller = 'Backend\\Module'
                             action = 'index'
                             absolute = true

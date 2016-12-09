@@ -1,12 +1,12 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript;
+namespace Neos\Neos\Ui\Fusion;
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\TypoScript\Exception as TypoScriptException;
-use TYPO3\TypoScript\TypoScriptObjects\AbstractCollectionImplementation;
+use Neos\Flow\Annotations as Flow;
+use Neos\Fusion\Exception as FusionException;
+use Neos\Fusion\FusionObjects\AbstractCollectionImplementation;
 
 /**
- * Implementation of an array collection renderer for TypoScript.
+ * Implementation of an array collection renderer for Fusion.
  */
 class ArrayCollectionImplementation extends AbstractCollectionImplementation
 {
@@ -14,7 +14,7 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
      * Evaluate the collection nodes
      *
      * @return string
-     * @throws TypoScriptException
+     * @throws FusionException
      */
     public function evaluate()
     {
@@ -28,7 +28,7 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
         $itemName = $this->getItemName();
         $itemKey = $this->tsValue('itemKey');
         if ($itemName === null) {
-            throw new \TYPO3\TypoScript\Exception('The Collection needs an itemName to be set.', 1344325771);
+            throw new \Neos\Fusion\Exception('The Collection needs an itemName to be set.', 1344325771);
         }
         $iterationName = $this->getIterationName();
         $collectionTotalCount = count($collection);

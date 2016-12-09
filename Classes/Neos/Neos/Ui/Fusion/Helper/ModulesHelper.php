@@ -1,14 +1,14 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript\Helper;
+namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "Neos.Neos.Ui".          *
  *                                                                        *
  *                                                                        */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Security\Authorization\PrivilegeManagerInterface;
-use TYPO3\Eel\ProtectedContextAwareInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
+use Neos\Eel\ProtectedContextAwareInterface;
 
 class ModulesHelper implements ProtectedContextAwareInterface
 {
@@ -19,7 +19,7 @@ class ModulesHelper implements ProtectedContextAwareInterface
     protected $privilegeManager;
 
     /**
-     * @Flow\InjectConfiguration(path="TYPO3.Neos.modules")
+     * @Flow\InjectConfiguration(path="Neos.Neos.modules")
      * @var array
      */
     protected $modules;

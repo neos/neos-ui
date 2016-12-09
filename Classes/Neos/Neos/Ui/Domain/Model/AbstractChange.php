@@ -2,9 +2,9 @@
 namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\DocumentNodeCreated;

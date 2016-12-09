@@ -1,10 +1,10 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript;
+namespace Neos\Neos\Ui\Fusion;
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\TypoScript\TypoScriptObjects\AbstractTypoScriptObject;
+use Neos\Flow\Annotations as Flow;
+use Neos\Fusion\FusionObjects\AbstractFusionObject;
 
-class AppendToCollectionImplementation extends AbstractTypoScriptObject
+class AppendToCollectionImplementation extends AbstractFusionObject
 {
     /**
      * Appends an item to the given collection

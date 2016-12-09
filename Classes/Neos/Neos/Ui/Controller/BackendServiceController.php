@@ -7,13 +7,13 @@ namespace Neos\Neos\Ui\Controller;
  *                                                                        */
 
 use Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Mvc\Controller\ActionController;
-use TYPO3\Flow\Mvc\RequestInterface;
-use TYPO3\Flow\Mvc\ResponseInterface;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Neos\Service\PublishingService;
-use TYPO3\TYPO3CR\Domain\Repository\WorkspaceRepository;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Mvc\RequestInterface;
+use Neos\Flow\Mvc\ResponseInterface;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Neos\Service\PublishingService;
+use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
@@ -23,7 +23,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
-use TYPO3\Eel\FlowQuery\FlowQuery;
+use Neos\Eel\FlowQuery\FlowQuery;
 
 class BackendServiceController extends ActionController
 {
@@ -36,7 +36,7 @@ class BackendServiceController extends ActionController
     /**
      * @var string
      */
-    protected $defaultViewObjectName = \TYPO3\Flow\Mvc\View\JsonView::class;
+    protected $defaultViewObjectName = \Neos\Flow\Mvc\View\JsonView::class;
 
     /**
      * @Flow\Inject

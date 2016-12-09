@@ -1,7 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model;
 
-use TYPO3\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\Controller\ControllerContext;
 
 interface FeedbackInterface
 {

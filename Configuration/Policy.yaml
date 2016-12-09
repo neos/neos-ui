@@ -1,13 +1,13 @@
 #                                                                        #
 # Security policy for the Neos.Neos.Ui package                           #
 #                                                                        #
-
+---
 privilegeTargets:
 
-  'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+  'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
 
     'Neos.Neos.Ui:BackendLogin':
-      matcher: 'method(Neos\Neos\Ui\Controller\LoginController->(index|authenticate)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
+      matcher: 'method(Neos\Neos\Ui\Controller\LoginController->(index|authenticate)Action()) || method(Neos\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
 
     'Neos.Neos.Ui:Backend.GeneralAccess':
       matcher: 'method(Neos\Neos\Ui\Controller\BackendController->.*())'
@@ -17,13 +17,13 @@ privilegeTargets:
 
 roles:
 
-    'TYPO3.Flow:Everybody':
+    'Neos.Flow:Everybody':
       privileges:
         -
           privilegeTarget: 'Neos.Neos.Ui:BackendLogin'
           permission: GRANT
 
-    'TYPO3.Neos:Editor':
+    'Neos.Neos:Editor':
       privileges:
         -
           privilegeTarget: 'Neos.Neos.Ui:Backend.GeneralAccess'

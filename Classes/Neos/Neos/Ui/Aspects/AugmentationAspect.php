@@ -6,10 +6,10 @@ namespace Neos\Neos\Ui\Aspects;
  *                                                                        *
  *                                                                        */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\FLOW\AOP\JoinPointInterface;
-use TYPO3\Flow\Session\SessionInterface;
-use TYPO3\Neos\Service\HtmlAugmenter;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Aop\JoinPointInterface;
+use Neos\Flow\Session\SessionInterface;
+use Neos\Neos\Service\HtmlAugmenter;
 
 /**
  * - Serialize all nodes related to the currently rendered document
@@ -38,7 +38,7 @@ class AugmentationAspect
      * Hooks into standard content element wrapping to render those attributes needed for the package to identify
      * nodes and typoScript paths
      *
-     * @Flow\Around("method(TYPO3\Neos\Service\ContentElementWrappingService->wrapContentObject())")
+     * @Flow\Around("method(Neos\Neos\Service\ContentElementWrappingService->wrapContentObject())")
      * @param JoinPointInterface $joinPoint the join point
      * @return mixed
      */
@@ -63,7 +63,7 @@ class AugmentationAspect
     /**
      * Hooks into the editable viewhelper to render those attributes needed for the package's inline editing
      *
-     * @Flow\Around("method(TYPO3\Neos\Service\ContentElementEditableService->wrapContentProperty())")
+     * @Flow\Around("method(Neos\Neos\Service\ContentElementEditableService->wrapContentProperty())")
      * @param JoinPointInterface $joinPoint the join point
      * @return mixed
      */

@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\Domain\Model\Feedback;
 
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use TYPO3\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\Controller\ControllerContext;
 
 abstract class AbstractMessageFeedback implements FeedbackInterface
 {

@@ -1,15 +1,15 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript\Helper;
+namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "Neos.Neos.Ui".          *
  *                                                                        *
  *                                                                        */
 
-use TYPO3\Eel\ProtectedContextAwareInterface;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Neos\Domain\Repository\SiteRepository;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\Repository\SiteRepository;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 class SitesHelper implements ProtectedContextAwareInterface
 {

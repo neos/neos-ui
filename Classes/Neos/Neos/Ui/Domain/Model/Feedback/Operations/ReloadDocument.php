@@ -2,8 +2,8 @@
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\Flow\Mvc\Controller\ControllerContext;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Mvc\Controller\ControllerContext;
 
 class ReloadDocument implements FeedbackInterface
 {

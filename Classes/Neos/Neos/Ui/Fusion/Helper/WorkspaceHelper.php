@@ -1,10 +1,10 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript\Helper;
+namespace Neos\Neos\Ui\Fusion\Helper;
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Eel\ProtectedContextAwareInterface;
-use TYPO3\TYPO3CR\Domain\Model\Workspace;
-use TYPO3\Neos\Service\UserService;
+use Neos\Flow\Annotations as Flow;
+use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\ContentRepository\Domain\Model\Workspace;
+use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\TYPO3CR\Service\WorkspaceService;
 
 class WorkspaceHelper implements ProtectedContextAwareInterface

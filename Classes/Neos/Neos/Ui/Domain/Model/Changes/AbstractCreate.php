@@ -2,12 +2,12 @@
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Eel\FlowQuery\FlowQuery;
-use TYPO3\TYPO3CR\Domain\Model\NodeType;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
-use TYPO3\TYPO3CR\Domain\Service\NodeServiceInterface;
-use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
+use Neos\Flow\Annotations as Flow;
+use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\ContentRepository\Domain\Model\NodeType;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
+use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
@@ -232,8 +232,8 @@ abstract class AbstractCreate extends AbstractChange
 
         $this->persistenceManager->persistAll();
 
-        if ($nodeType->isOfType('TYPO3.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
-            if ($parent->getNodeType()->isOfType('TYPO3.Neos:ContentCollection')) {
+        if ($nodeType->isOfType('Neos.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
+            if ($parent->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
                 $renderContentOutOfBand = new RenderContentOutOfBand();
                 $renderContentOutOfBand->setNode($node);
                 $renderContentOutOfBand->setParentDomAddress($this->getParentDomAddress());
@@ -243,7 +243,7 @@ abstract class AbstractCreate extends AbstractChange
                 $this->feedbackCollection->add($renderContentOutOfBand);
             } else {
                 $flowQuery = new FlowQuery(array($node));
-                $closestDocument = $flowQuery->closest('[instanceof TYPO3.Neos:Document]')->get(0);
+                $closestDocument = $flowQuery->closest('[instanceof Neos.Neos:Document]')->get(0);
 
                 $reloadDocument = new ReloadDocument();
                 $reloadDocument->setDocument($closestDocument);

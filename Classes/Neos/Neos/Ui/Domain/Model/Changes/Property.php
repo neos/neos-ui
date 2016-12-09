@@ -1,7 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;

@@ -2,7 +2,7 @@
 // Reset some rendering steps of the Neos backend, since the package
 // augments the website itself
 //
-prototype(TYPO3.Neos:Page) {
+prototype(Neos.Neos:Page) {
 
     //
     // Disable all html attributes printed for the Neos backend
@@ -34,7 +34,7 @@ prototype(TYPO3.Neos:Page) {
             @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
         }
 
-        guestFrameApplication = TYPO3.TypoScript:Template {
+        guestFrameApplication = Neos.Fusion:Template {
             @position = 'after javascriptDocumentInformation'
 
             templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Guest.html'

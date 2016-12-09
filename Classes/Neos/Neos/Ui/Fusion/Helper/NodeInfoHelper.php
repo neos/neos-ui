@@ -1,15 +1,15 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript\Helper;
+namespace Neos\Neos\Ui\Fusion\Helper;
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Eel\ProtectedContextAwareInterface;
-use TYPO3\Flow\Mvc\Controller\ControllerContext;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\Neos\Domain\Service\ContentContext;
-use TYPO3\Neos\Service\LinkingService;
-use TYPO3\Neos\TypeConverter\EntityToIdentityConverter;
-use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Utility\ObjectAccess;
+use Neos\Neos\Domain\Service\ContentContext;
+use Neos\Neos\Service\LinkingService;
+use Neos\Neos\TypeConverter\EntityToIdentityConverter;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * @Flow\Scope("singleton")
@@ -45,10 +45,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'properties' => $this->buildNodeProperties($node),
             'label' => $node->getLabel(),
             'isAutoCreated' => $node->isAutoCreated(),
-            // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof TYPO3.Neos:Document]')}
+            // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
             'children' => [],
         ];
-        if ($node->getNodeType()->isOfType('TYPO3.Neos:Document')) {
+        if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
         }
 
@@ -87,7 +87,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function renderDocumentNodeAndChildContentInternal(array &$nodes, NodeInterface $node, ControllerContext $controllerContext)
     {
         $this->renderNodeToList($nodes, $node, $controllerContext);
-        foreach ($node->getChildNodes('!TYPO3.Neos:Document') as $childNode) {
+        foreach ($node->getChildNodes('!Neos.Neos:Document') as $childNode) {
             $this->renderDocumentNodeAndChildContentInternal($nodes, $childNode, $controllerContext);
         }
     }
@@ -98,7 +98,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         if ($site !== $documentNode) {
             $this->renderNodeToList($nodes, $site, $controllerContext);
         }
-        foreach ($site->getChildNodes('TYPO3.Neos:Document') as $documentChildNodeInFirstLevel) {
+        foreach ($site->getChildNodes('Neos.Neos:Document') as $documentChildNodeInFirstLevel) {
             $this->renderNodeToList($nodes, $documentChildNodeInFirstLevel, $controllerContext);
         }
 
@@ -208,25 +208,25 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             }
         }
 
-        if ($propertyValue instanceof \TYPO3\Media\Domain\Model\ImageInterface) {
-            $propertyMappingConfiguration = new \TYPO3\Flow\Property\PropertyMappingConfiguration();
+        if ($propertyValue instanceof \Neos\Media\Domain\Model\ImageInterface) {
+            $propertyMappingConfiguration = new \Neos\Flow\Property\PropertyMappingConfiguration();
             return $this->entityToIdentityConverter->convertFrom($propertyValue, 'array', array(), $propertyMappingConfiguration);
         }
 
         // Serialize an Asset to JSON (the NodeConverter expects JSON for object type properties)
-        if ($dataType === ltrim('TYPO3\Media\Domain\Model\Asset', '\\') && $propertyValue !== null) {
-            if ($propertyValue instanceof \TYPO3\Media\Domain\Model\Asset) {
+        if ($dataType === ltrim('Neos\Media\Domain\Model\Asset', '\\') && $propertyValue !== null) {
+            if ($propertyValue instanceof \Neos\Media\Domain\Model\Asset) {
                 return $this->persistenceManager->getIdentifierByObject($propertyValue);
             }
         }
 
         // Serialize an array of Assets to JSON
         if (is_array($propertyValue)) {
-            $parsedType = \TYPO3\Flow\Utility\TypeHandling::parseType($dataType);
-            if ($parsedType['elementType'] === ltrim('TYPO3\Media\Domain\Model\Asset', '\\')) {
+            $parsedType = \Neos\Utility\TypeHandling::parseType($dataType);
+            if ($parsedType['elementType'] === ltrim('Neos\Media\Domain\Model\Asset', '\\')) {
                 $convertedValues = array();
                 foreach ($propertyValue as $singlePropertyValue) {
-                    if ($singlePropertyValue instanceof \TYPO3\Media\Domain\Model\Asset) {
+                    if ($singlePropertyValue instanceof \Neos\Media\Domain\Model\Asset) {
                         $convertedValues[] = $this->persistenceManager->getIdentifierByObject($singlePropertyValue);
                     }
                 }

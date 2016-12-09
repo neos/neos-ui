@@ -1,3 +1,0 @@
-prototype(Neos.Neos.Ui:ArrayCollection) {
-    @class = 'Neos\\Neos\\Ui\\TypoScript\\ArrayCollectionImplementation'
-}

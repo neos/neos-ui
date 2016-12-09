@@ -1,8 +1,8 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model;
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ControllerContext;
 
 /**
  * @Flow\Scope("singleton")

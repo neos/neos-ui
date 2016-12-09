@@ -6,10 +6,10 @@ namespace Neos\Neos\Ui\Aspects;
  *                                                                        *
  *                                                                        */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\FLOW\AOP\JoinPointInterface;
-use TYPO3\Flow\Session\SessionInterface;
-use TYPO3\TypoScript\Core\Cache\ContentCache;
+use Neos\Flow\Annotations as Flow;
+use TYPO3\FLOW\Aop\JoinPointInterface;
+use Neos\Flow\Session\SessionInterface;
+use Neos\Fusion\Core\Cache\ContentCache;
 
 /**
  * @Flow\Scope("singleton")
@@ -31,7 +31,7 @@ class ActivationAspect
     protected $contentCache;
 
     /**
-     * @Flow\Before("method(TYPO3\Neos\Controller\Backend\BackendController->indexAction())")
+     * @Flow\Before("method(Neos\Neos\Controller\Backend\BackendController->indexAction())")
      * @param JoinPointInterface $joinPoint the join point
      * @return mixed
      */

@@ -1,9 +1,9 @@
 <?php
-namespace Neos\Neos\Ui\TypoScript\Helper;
+namespace Neos\Neos\Ui\Fusion\Helper;
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Eel\ProtectedContextAwareInterface;
-use TYPO3\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
 
 class ContentDimensionsHelper implements ProtectedContextAwareInterface
 {

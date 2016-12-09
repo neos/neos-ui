@@ -1,10 +1,10 @@
 <?php
 namespace Neos\Neos\Ui\TYPO3CR\Service;
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\TYPO3CR\Domain\Model\Workspace;
-use TYPO3\Neos\Service\PublishingService;
-use TYPO3\Eel\FlowQuery\FlowQuery;
+use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Domain\Model\Workspace;
+use Neos\Neos\Service\PublishingService;
+use Neos\Eel\FlowQuery\FlowQuery;
 
 /**
  * @Flow\Scope("singleton")

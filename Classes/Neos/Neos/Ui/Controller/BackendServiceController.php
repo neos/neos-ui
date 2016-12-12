@@ -6,7 +6,7 @@ namespace Neos\Neos\Ui\Controller;
  *                                                                        *
  *                                                                        */
 
-use Neos\Neos\Ui\TypoScript\Helper\NodeInfoHelper;
+use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;

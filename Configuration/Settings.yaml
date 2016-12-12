@@ -6,6 +6,10 @@ Neos:
         Neos.Neos.Ui: true
     Ui:
       frontendDevelopmentMode: false
+      nodeTypeRoles:
+        document: 'Neos.Neos:Document'
+        content: 'Neos.Neos:Content'
+        contentCollection: 'Neos.Neos:ContentCollection'
       asyncModuleMapping:
         'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
           'Neos.UI:Inspector.TextField': true

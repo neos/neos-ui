@@ -91,6 +91,7 @@ function * application() {
     nodeTypesRegistry.setConstraints(nodeTypes.constraints);
     nodeTypesRegistry.setInheritanceMap(nodeTypes.inheritanceMap);
     nodeTypesRegistry.setGroups(nodeTypes.groups);
+    nodeTypesRegistry.setRoles(nodeTypes.roles);
 
     //
     // Load frontend configuration (edit/preview modes)

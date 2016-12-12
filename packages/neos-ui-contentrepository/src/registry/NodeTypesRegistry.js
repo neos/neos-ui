@@ -6,6 +6,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     _constraints = [];
     _inheritanceMap = [];
     _groups = [];
+    _roles = [];
 
     _inspectorViewConfigurationCache = {};
 
@@ -19,6 +20,18 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
 
     setGroups(groups) {
         this._groups = groups;
+    }
+
+    setRoles(roles) {
+        this._roles = roles;
+    }
+
+    getRole(roleName) {
+        return this._roles[roleName];
+    }
+
+    hasRole(nodeTypeName, roleName) {
+        return this.isOfType(nodeTypeName, this.getRole(roleName));
     }
 
     getAllowedChildNodeTypes(nodeTypeName) {

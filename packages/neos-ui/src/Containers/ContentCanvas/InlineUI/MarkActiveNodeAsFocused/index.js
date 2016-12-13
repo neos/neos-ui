@@ -11,6 +11,12 @@ export default class MarkActiveNodeAsFocused extends PureComponent {
     };
 
     render() {
+        const oldNode = dom.find(`.${style['markActiveNodeAsFocused--focusedNode']}`);
+
+        if (oldNode) {
+            oldNode.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
+        }
+
         const {contextPath, fusionPath} = this.props;
 
         if (!contextPath || !fusionPath) {
@@ -18,11 +24,6 @@ export default class MarkActiveNodeAsFocused extends PureComponent {
         }
 
         const nodeElement = dom.findNode(contextPath, fusionPath);
-        const oldNode = dom.find(`.${style['markActiveNodeAsFocused--focusedNode']}`);
-
-        if (oldNode) {
-            oldNode.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
-        }
 
         if (nodeElement) {
             nodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);

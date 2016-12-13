@@ -19,10 +19,6 @@ export default class InlineUI extends PureComponent {
     render() {
         const {focused} = this.props;
 
-        if (!$get('contextPath', focused)) {
-            return null;
-        }
-
         return (
             <div className={style.inlineUi} data-__neos__inlineUI="TRUE">
                 <NodeToolbar {...focused.toJS()}/>

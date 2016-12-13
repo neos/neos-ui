@@ -50,7 +50,7 @@ export default class PageTree extends PureComponent {
             return (<div>...</div>);
         }
 
-        const siteNode = getTreeNode(siteNodeContextPath);
+        const siteNode = getTreeNode(siteNodeContextPath, nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document')));
         const siteNodeIcon = $get('ui.icon', nodeTypesRegistry.get(siteNode.nodeType));
 
         if (siteNode) {

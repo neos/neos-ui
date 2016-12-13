@@ -19,51 +19,51 @@ function * watchToggle() {
     });
 }
 
-function * requestChildrenForContextPath(action) {
-    // ToDo Call yield put(actions.UI.PageTree.requestChildren(contextPath));
-    const {contextPath, opts} = action.payload;
-    const {unCollapse, activate} = opts;
-    const {q} = backend.get();
-    let parentNodes;
-    let childNodes;
+function * watchRequestChildrenForContextPath({globalRegistry}) {
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
 
-    yield put(actions.UI.PageTree.setAsLoading(contextPath));
+    yield * takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
+        // ToDo Call yield put(actions.UI.PageTree.requestChildren(contextPath));
+        const {contextPath, opts} = action.payload;
+        const {unCollapse, activate} = opts;
+        const {q} = backend.get();
+        let parentNodes;
+        let childNodes;
 
-    try {
-        const query = q(contextPath);
+        yield put(actions.UI.PageTree.setAsLoading(contextPath));
 
-        parentNodes = yield query.get();
-        childNodes = yield query.children('[instanceof TYPO3.Neos:Document]').get();
-    } catch (err) {
-        yield put(actions.UI.PageTree.invalidate(contextPath));
-        yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));
-    }
+        try {
+            const query = q(contextPath);
 
-    yield put(actions.UI.PageTree.setAsLoaded(contextPath));
-
-    if (childNodes && parentNodes) {
-        const nodes = parentNodes.concat(childNodes).reduce((nodeMap, node) => {
-            nodeMap[node.contextPath] = node;
-            return nodeMap;
-        }, {});
-
-        yield put(actions.CR.Nodes.add(nodes));
-
-        if (unCollapse) {
-            yield put(actions.UI.PageTree.uncollapse(contextPath));
+            parentNodes = yield query.get();
+            childNodes = yield query.children(`[instanceof ${nodeTypesRegistry.getRole('document')}]`).get();
+        } catch (err) {
+            yield put(actions.UI.PageTree.invalidate(contextPath));
+            yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));
         }
 
-        //
-        // ToDo: Set the ContentCanvas src / contextPath
-        //
-        if (activate) {
-            yield put(actions.UI.PageTree.focus(contextPath));
-        }
-    }
-}
+        yield put(actions.UI.PageTree.setAsLoaded(contextPath));
 
-function * watchRequestChildrenForContextPath() {
-    yield * takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, requestChildrenForContextPath);
+        if (childNodes && parentNodes) {
+            const nodes = parentNodes.concat(childNodes).reduce((nodeMap, node) => {
+                nodeMap[node.contextPath] = node;
+                return nodeMap;
+            }, {});
+
+            yield put(actions.CR.Nodes.add(nodes));
+
+            if (unCollapse) {
+                yield put(actions.UI.PageTree.uncollapse(contextPath));
+            }
+
+            //
+            // ToDo: Set the ContentCanvas src / contextPath
+            //
+            if (activate) {
+                yield put(actions.UI.PageTree.focus(contextPath));
+            }
+        }
+    });
 }
 
 function * watchNodeCreated() {
@@ -81,7 +81,7 @@ function * watchCommenceUncollapse({globalRegistry}) {
         const state = yield select();
         const {contextPath} = action.payload;
         const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state).toJS()
-            .filter(childEnvelope => nodeTypesRegistry.isOfType(childEnvelope.nodeType, 'TYPO3.Neos:Document'))
+            .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'document'))
             .every(
                 childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', childEnvelope.contextPath], state))
             );

@@ -44,8 +44,8 @@ class NodeTypeItem extends PureComponent {
                     className={style.nodeType}
                     onClick={this.handleNodeTypeClick}
                     >
-                    <Icon icon={ui.icon} className={style.nodeType__icon} padded="right"/>
-                    <I18n id={ui.label} fallback={ui.label}/>
+                    <Icon icon={$get('icon', ui)} className={style.nodeType__icon} padded="right"/>
+                    <I18n id={$get('label', ui)} fallback={$get('label', ui)}/>
                 </Button>
             </Grid.Col>
         );

@@ -62,7 +62,7 @@ class Step1 extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.props.onHandleClose}
                 >
-                <I18n id="TYPO3.Neos:Main:cancel" fallback="Cancel"/>
+                <I18n id="Neos.Neos:Main:cancel" fallback="Cancel"/>
             </Button>
         );
     }

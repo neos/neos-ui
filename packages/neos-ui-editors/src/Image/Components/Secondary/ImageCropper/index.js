@@ -126,7 +126,7 @@ export default class ImageCropper extends PureComponent {
         const aspectRatioLocked = false;
         const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock"/> : null);
         const {sourceImage, onComplete} = this.props;
-        const src = sourceImage.previewUri || '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg';
+        const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
 
         return (
             <div style={{textAlign: 'center'}}>

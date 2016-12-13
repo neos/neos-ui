@@ -31,7 +31,7 @@ manifest('main', {}, globalRegistry => {
     inspector.add('editors', new SynchronousRegistry(`
         Contains all inspector editors.
 
-        The key is an editor name (such as TYPO3.Neos/Inspector/Editors/SelectBoxEditor), and the values
+        The key is an editor name (such as Neos.Neos/Inspector/Editors/SelectBoxEditor), and the values
         are objects of the following form:
             {
                 component: TextInput // the React editor component to use.
@@ -89,7 +89,7 @@ manifest('main', {}, globalRegistry => {
     globalRegistry.add('validators', new SynchronousRegistry(`
         Contains all validators.
 
-        The key is a validator name (such as TYPO3.Neos/Validation/NotEmptyValidator) and the values
+        The key is a validator name (such as Neos.Neos/Validation/NotEmptyValidator) and the values
         are validator options.
     `));
 

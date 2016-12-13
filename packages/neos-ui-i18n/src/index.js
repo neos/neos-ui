@@ -28,7 +28,7 @@ export default class I18n extends Component {
     };
 
     static defaultProps = {
-        packageKey: 'TYPO3.Neos',
+        packageKey: 'Neos.Neos',
         sourceName: 'Main',
         params: {}
     };

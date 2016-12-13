@@ -64,7 +64,7 @@ export default class Node extends PureComponent {
                             .map(contextPath => {
                                 const node = getTreeNode(
                                     contextPath,
-                                    nodeTypesRegistry.getSubTypesOf('TYPO3.Neos:Document')
+                                    nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document'))
                                 );
 
                                 if (!node) {

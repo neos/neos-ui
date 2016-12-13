@@ -35,21 +35,21 @@ export default class Controls extends PureComponent {
                     style="lighter"
                     onClick={onChooseFromMedia}
                     >
-                    <I18n id="TYPO3.Neos:Main:media" fallback="Media"/>
+                    <I18n id="Neos.Neos:Main:media" fallback="Media"/>
                 </Button>
                 <Button
                     size="small"
                     style="lighter"
                     onClick={onChooseFromLocalFileSystem}
                     >
-                    <I18n id="TYPO3.Neos:Modules:media.chooseFile" fallback="Choose file"/>
+                    <I18n id="Neos.Neos:Modules:media.chooseFile" fallback="Choose file"/>
                 </Button>
                 <Button
                     size="small"
                     style="lighter"
                     onClick={onRemove}
                     >
-                    <I18n id="TYPO3.Neos:Main:remove" fallback="Remove"/>
+                    <I18n id="Neos.Neos:Main:remove" fallback="Remove"/>
                 </Button>
             </div>
         );
@@ -66,7 +66,7 @@ export default class Controls extends PureComponent {
                     className={style.cropButton}
                     onClick={onCrop}
                     >
-                    <I18n id="TYPO3.Neos:Main:crop" fallback="Crop"/>
+                    <I18n id="Neos.Neos:Main:crop" fallback="Crop"/>
                 </Button>
             );
         }

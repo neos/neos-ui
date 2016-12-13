@@ -21,6 +21,7 @@ backend = Neos.Fusion:Template {
     }
 
     nodeTypes = Neos.Fusion:RawArray {
+        roles = ${Configuration.setting('Neos.Neos.Ui.nodeTypeRoles')}
         byName = ${Neos.Ui.NodeTypes.nodeTypesByName()}
         constraints = ${Neos.Ui.NodeTypes.nodeTypeConstraints()}
         inheritanceMap = ${Neos.Ui.NodeTypes.nodeTypeInheritanceMap()}

@@ -60,7 +60,7 @@ export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
         nodes
     ],
     nodesMap => {
-        const documentSubNodeTypes = nodeTypesRegistry.getSubTypesOf('TYPO3.Neos:Document');
+        const documentSubNodeTypes = nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document'));
 
         return nodesMap.filter(node => documentSubNodeTypes.includes(node.get('nodeType')));
     }

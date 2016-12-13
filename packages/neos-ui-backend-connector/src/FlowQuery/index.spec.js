@@ -197,7 +197,7 @@ test(`
 
     q.applyMiddleware(middleware);
 
-    q('myContextPath').children('[instanceof TYPO3.Neos:Document]');
+    q('myContextPath').children('[instanceof Neos.Neos:Document]');
 
     t.true(middleware.calledOnce);
 });
@@ -210,7 +210,7 @@ test(`
 
     q.applyMiddleware(middleware);
 
-    q('myContextPath', true).children('[instanceof TYPO3.Neos:Document]');
+    q('myContextPath', true).children('[instanceof Neos.Neos:Document]');
 
     t.false(middleware.called);
 });

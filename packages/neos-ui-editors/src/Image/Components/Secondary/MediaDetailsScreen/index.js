@@ -10,7 +10,7 @@ const MediaDetailsScreen = props => {
         }
     };
 
-    const uri = `/neos/content/images/edit.html?asset[__identity]=${props.imageIdentity}`;
+    const uri = `/neos/module/media/browser/image/edit.html?asset[__identity]=${props.imageIdentity}`;
 
     return (
         <iframe src={uri} className={style.iframe}/>

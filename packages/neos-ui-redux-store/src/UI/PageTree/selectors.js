@@ -76,6 +76,7 @@ export const getTreeNodeSelector = createSelector(
                 contextPath,
                 label,
                 uri,
+                nodeType: node.nodeType,
                 isActive: contextPath === activeNodeContextPath,
                 isFocused: contextPath === focusedNodeContextPath,
                 isCollapsed: !uncollapsedNodeContextPaths.contains(contextPath),

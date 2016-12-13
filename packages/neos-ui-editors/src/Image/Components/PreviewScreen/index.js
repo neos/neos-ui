@@ -52,7 +52,7 @@ export default class PreviewScreen extends PureComponent {
                     <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
                         <img
                             className={style.cropArea__image}
-                            src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/TYPO3.Neos/Images/dummy-image.svg'}
+                            src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg'}
                             style={thumbnail ? thumbnail.styles.thumbnail : {}}
                             role="presentation"
                             />

@@ -71,11 +71,11 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         // Sort both groups and nodetypes within the group and return as array
         return Object.keys(groups).map(i => {
             if (groups[i].nodeTypes) {
-                groups[i].nodeTypes.sort((a, b) => a.ui.position > b.ui.position ? 1 : -1);
+                groups[i].nodeTypes.sort((a, b) => $get('ui.position', a) > $get('ui.position', b) ? 1 : -1);
             }
             groups[i].name = i;
             return groups[i];
-        }).filter(i => i.nodeTypes).sort((a, b) => a.position > b.position ? 1 : -1);
+        }).filter(i => i.nodeTypes).sort((a, b) => $get('position', a) > $get('position', b) ? 1 : -1);
     }
 
     isOfType(nodeTypeName, referenceNodeTypeName) {

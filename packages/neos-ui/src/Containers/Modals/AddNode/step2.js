@@ -25,7 +25,7 @@ export default class Step2 extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.props.onHandleBack}
                 >
-                <I18n id="TYPO3.Neos:Main:back" fallback="Back"/>
+                <I18n id="Neos.Neos:Main:back" fallback="Back"/>
             </Button>
         );
     }
@@ -39,7 +39,7 @@ export default class Step2 extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.props.onHandleSave}
                 >
-                <I18n id="TYPO3.Neos:Main:createNew" fallback="Create"/>
+                <I18n id="Neos.Neos:Main:createNew" fallback="Create"/>
             </Button>
         );
     }

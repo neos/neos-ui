@@ -12,7 +12,7 @@ const MediaSelectionScreen = props => {
 
     // TODO: hard-coded url
     return (
-        <iframe src="/neos/content/images.html" className={style.iframe}/>
+        <iframe src="/neos/module/media/browser/image.html" className={style.iframe}/>
     );
 };
 MediaSelectionScreen.propTypes = {

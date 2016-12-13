@@ -23,12 +23,12 @@ export const position = (contextPath, fusionPath) => {
         const domBounds = nodeElement.getBoundingClientRect();
 
         return {
-            x: domBounds.left - bodyBounds.left,
-            y: domBounds.top - bodyBounds.top
+            top: domBounds.top - bodyBounds.top,
+            right: bodyBounds.right - domBounds.right
         };
     }
 
-    return {x: 0, y: 0};
+    return {top: 0, right: 0};
 };
 
 export default class NodeToolbar extends PureComponent {
@@ -56,14 +56,14 @@ export default class NodeToolbar extends PureComponent {
             className: style.toolBar__btnGroup__btn
         };
 
-        const {x, y} = position(contextPath, fusionPath);
+        const {top, right} = position(contextPath, fusionPath);
 
         const classNames = mergeClassNames({
             [style.toolBar]: true
         });
 
         return (
-            <div className={classNames} style={{top: y - 50, left: x}}>
+            <div className={classNames} style={{top: top - 50, right}}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...props}/>
                     <HideSelectedNode {...props}/>

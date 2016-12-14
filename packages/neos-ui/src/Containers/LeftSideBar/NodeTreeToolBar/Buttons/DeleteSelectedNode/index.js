@@ -1,16 +1,21 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import {$get} from 'plow-js';
 
-@connect()
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import {selectors} from '@neos-project/neos-ui-redux-store';
+
+@connect(state => ({
+    focusedNodeContextPath: selectors.UI.PageTree.getFocusedNodeContextPathSelector(state),
+    siteNodeContextPath: $get('cr.nodes.siteNode', state),
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state)
+}))
 export default class DeleteSelectedNode extends PureComponent {
     static propTypes = {
-        isDisabled: PropTypes.bool,
-        className: PropTypes.string
-    };
+        className: PropTypes.string,
 
-    static defaultProps = {
-        isDisabled: true
+        focusedNodeContextPath: PropTypes.string.isRequired,
+        getNodeByContextPath: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -20,10 +25,14 @@ export default class DeleteSelectedNode extends PureComponent {
     }
 
     render() {
-        const {
-            isDisabled,
-            className
-        } = this.props;
+        const {className, focusedNodeContextPath, siteNodeContextPath, getNodeByContextPath} = this.props;
+        const node = getNodeByContextPath(focusedNodeContextPath);
+
+        //
+        // Do not allow deletion, when there's no focused node, the focused node is auto created or the focused node
+        // is the site node
+        //
+        const isDisabled = !node || $get('isAutoCreated', node) || siteNodeContextPath === focusedNodeContextPath;
 
         return (
             <IconButton

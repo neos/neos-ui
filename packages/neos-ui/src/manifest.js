@@ -1,4 +1,5 @@
 import uuid from 'uuid';
+import {$get} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import StyleSelect from './Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
@@ -427,5 +428,29 @@ manifest('main', {}, globalRegistry => {
                 parentElement.appendChild(contentElement);
                 break;
         }
+    });
+
+    //
+    // When the server has removed a node, remove it as well from the store and the dom
+    //
+    serverFeedbackHandlers.add('Neos.Neos.Ui:RemoveNode', ({contextPath, parentContextPath}, store) => {
+        const state = store.getState();
+
+        if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
+            store.dispatch(actions.CR.Nodes.unFocus());
+        }
+
+        if ($get('ui.pageTree.isFocused', state) === contextPath) {
+            store.dispatch(actions.UI.PageTree.focus(parentContextPath));
+        }
+
+        if ($get('ui.contentCanvas.contextPath', state) === contextPath) {
+            const parentNodeUri = $get(['cr', 'nodes', 'byContextPath', parentContextPath, 'uri'], state);
+
+            store.dispatch(actions.UI.ContentCanvas.setSrc(parentNodeUri));
+            store.dispatch(actions.UI.ContentCanvas.setContextPath(parentContextPath));
+        }
+
+        store.dispatch(actions.CR.Nodes.remove(contextPath));
     });
 });

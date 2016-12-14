@@ -123,10 +123,7 @@ export const reducer = handleActions({
     [COMMENCE_REMOVAL]: contextPath => $set('cr.nodes.toBeRemoved', contextPath),
     [REMOVAL_ABORTED]: () => $set('cr.nodes.toBeRemoved', ''),
     [REMOVAL_CONFIRMED]: () => $set('cr.nodes.toBeRemoved', ''),
-    [REMOVE]: state => () => $all(
-        $set('cr.nodes.toBeRemoved', ''),
-        $drop(['cr', 'nodes', 'byContextPath', $get('cr.nodes.toBeRemoved', state)])
-    )
+    [REMOVE]: contextPath => $drop(['cr', 'nodes', 'byContextPath', contextPath])
 });
 
 //

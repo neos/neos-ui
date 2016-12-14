@@ -17,6 +17,7 @@ export default class DeleteSelectedNode extends PureComponent {
         className: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string.isRequired,
+        siteNodeContextPath: PropTypes.string.isRequired,
         getNodeByContextPath: PropTypes.func.isRequired,
         removeNode: PropTypes.func.isRequired
     };

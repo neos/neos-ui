@@ -37,8 +37,8 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [PERSIST]: ({change}) => state =>  {
-        if (change.type === 'Neos.Neos.Ui:Propery') {
+    [PERSIST]: ({change}) => state => {
+        if (change.type === 'Neos.Neos.Ui:Property') {
             return $set(
                 ['cr', 'nodes', 'byContextPath', change.subject, 'properties', change.payload.propertyName],
                 change.payload.value

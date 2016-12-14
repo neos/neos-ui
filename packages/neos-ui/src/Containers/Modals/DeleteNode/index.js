@@ -46,7 +46,7 @@ export default class DeleteNodeModal extends PureComponent {
 
         return (
             <div>
-                <Icon icon="exclamation-triangle" />
+                <Icon icon="exclamation-triangle"/>
                 <span style={{marginLeft: '1em'}}>
                     <I18n id="Neos.Neos:Main:delete" fallback="Delete"/>
                     &nbsp;

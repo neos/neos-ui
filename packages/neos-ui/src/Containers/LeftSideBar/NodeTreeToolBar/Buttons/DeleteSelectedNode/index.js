@@ -3,25 +3,28 @@ import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
 @connect(state => ({
     focusedNodeContextPath: selectors.UI.PageTree.getFocusedNodeContextPathSelector(state),
     siteNodeContextPath: $get('cr.nodes.siteNode', state),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state)
-}))
+}), {
+    removeNode: actions.CR.Nodes.commenceRemoval
+})
 export default class DeleteSelectedNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string.isRequired,
-        getNodeByContextPath: PropTypes.func.isRequired
+        getNodeByContextPath: PropTypes.func.isRequired,
+        removeNode: PropTypes.func.isRequired
     };
 
     constructor(props) {
         super(props);
 
-        this.handleDeleteSelectedNodeClick = this.deleteSelectedNode.bind(this);
+        this.handleRemoveSelectedNodeClick = this.removeSelectedNode.bind(this);
     }
 
     render() {
@@ -38,14 +41,16 @@ export default class DeleteSelectedNode extends PureComponent {
             <IconButton
                 className={className}
                 isDisabled={isDisabled}
-                onClick={this.handleDeleteSelectedNodeClick}
+                onClick={this.handleRemoveSelectedNodeClick}
                 icon="trash"
                 hoverStyle="clean"
                 />
         );
     }
 
-    deleteSelectedNode() {
-        console.log('delete selected node');
+    removeSelectedNode() {
+        const {focusedNodeContextPath, removeNode} = this.props;
+
+        removeNode(focusedNodeContextPath);
     }
 }

@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {makeFocusNode} from './../_lib/focusNode';
 
-const validStyleKeys = ['clean', 'brand', 'lighter', 'transparent'];
-const validHoverStyleKeys = ['clean', 'brand', 'darken'];
+const validStyleKeys = ['clean', 'brand', 'lighter', 'transparent', 'warn'];
+const validHoverStyleKeys = ['clean', 'brand', 'darken', 'warn'];
 
 const Button = props => {
     const {

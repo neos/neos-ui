@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
-import {$all, $set, $get} from 'plow-js';
+import {$all, $set, $drop, $get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -10,6 +10,10 @@ import * as selectors from './selectors';
 const ADD = '@neos/neos-ui/Transient/Nodes/ADD';
 const FOCUS = '@neos/neos-ui/Transient/Nodes/FOCUS';
 const UNFOCUS = '@neos/neos-ui/Transient/Nodes/UNFOCUS';
+const COMMENCE_REMOVAL = '@neos/neos-ui/Transient/Nodes/COMMENCE_REMOVAL';
+const REMOVAL_ABORTED = '@neos/neos-ui/Transient/Nodes/REMOVAL_ABORTED';
+const REMOVAL_CONFIRMED = '@neos/neos-ui/Transient/Nodes/REMOVAL_CONFIRMED';
+const REMOVE = '@neos/neos-ui/Transient/Nodes/REMOVE';
 
 //
 // Export the action types
@@ -17,7 +21,11 @@ const UNFOCUS = '@neos/neos-ui/Transient/Nodes/UNFOCUS';
 export const actionTypes = {
     ADD,
     FOCUS,
-    UNFOCUS
+    UNFOCUS,
+    COMMENCE_REMOVAL,
+    REMOVAL_ABORTED,
+    REMOVAL_CONFIRMED,
+    REMOVE
 };
 
 /**
@@ -41,13 +49,41 @@ const focus = createAction(FOCUS, (contextPath, fusionPath) => ({contextPath, fu
  */
 const unFocus = createAction(UNFOCUS);
 
+/**
+ * Start node removal workflow
+ *
+ * @param {String} contextPath The context path of the node to be removed
+ */
+const commenceRemoval = createAction(COMMENCE_REMOVAL, contextPath => contextPath);
+
+/**
+ * Abort the ongoing node removal workflow
+ */
+const abortRemoval = createAction(REMOVAL_ABORTED);
+
+/**
+ * Confirm the ongoing removal
+ */
+const confirmRemoval = createAction(REMOVAL_CONFIRMED);
+
+/**
+ * Remove the node that was marked for removal
+ *
+ * @param {String} contextPath The context path of the node to be removed
+ */
+const remove = createAction(REMOVE, contextPath => contextPath);
+
 //
 // Export the actions
 //
 export const actions = {
     add,
     focus,
-    unFocus
+    unFocus,
+    commenceRemoval,
+    abortRemoval,
+    confirmRemoval,
+    remove
 };
 
 //
@@ -62,7 +98,8 @@ export const reducer = handleActions({
             focused: new Map({
                 contextPath: '',
                 fusionPath: ''
-            })
+            }),
+            toBeRemoved: ''
         })
     ),
     [ADD]: ({nodeMap}) => $all(
@@ -82,7 +119,14 @@ export const reducer = handleActions({
     [UNFOCUS]: () => $set('cr.nodes.focused', new Map({
         contextPath: '',
         fusionPath: ''
-    }))
+    })),
+    [COMMENCE_REMOVAL]: contextPath => $set('cr.nodes.toBeRemoved', contextPath),
+    [REMOVAL_ABORTED]: () => $set('cr.nodes.toBeRemoved', ''),
+    [REMOVAL_CONFIRMED]: () => $set('cr.nodes.toBeRemoved', ''),
+    [REMOVE]: state => () => $all(
+        $set('cr.nodes.toBeRemoved', ''),
+        $drop(['cr', 'nodes', 'byContextPath', $get('cr.nodes.toBeRemoved', state)])
+    )
 });
 
 //

@@ -10,6 +10,10 @@ test(`should export actionTypes`, t => {
     t.is(typeof (actionTypes.ADD), 'string');
     t.is(typeof (actionTypes.FOCUS), 'string');
     t.is(typeof (actionTypes.UNFOCUS), 'string');
+    t.is(typeof (actionTypes.COMMENCE_REMOVAL), 'string');
+    t.is(typeof (actionTypes.REMOVAL_ABORTED), 'string');
+    t.is(typeof (actionTypes.REMOVAL_CONFIRMED), 'string');
+    t.is(typeof (actionTypes.REMOVE), 'string');
 });
 
 test(`should export action creators`, t => {
@@ -17,6 +21,10 @@ test(`should export action creators`, t => {
     t.is(typeof (actions.add), 'function');
     t.is(typeof (actions.focus), 'function');
     t.is(typeof (actions.unFocus), 'function');
+    t.is(typeof (actions.commenceRemoval), 'function');
+    t.is(typeof (actions.abortRemoval), 'function');
+    t.is(typeof (actions.confirmRemoval), 'function');
+    t.is(typeof (actions.remove), 'function');
 });
 
 test(`should export a reducer`, t => {
@@ -109,3 +117,7 @@ test(`The reducer should add nodes to the store`, t => {
         foo: 'bar'
     });
 });
+
+test.todo(`The reducer should mark a node for removal`);
+test.todo(`The reducer should unmark a node for removal`);
+test.todo(`The reducer should remove a node that was marked for removal from the store`);

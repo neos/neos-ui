@@ -12,6 +12,15 @@ export const find = selector => {
     return iframeDocument.querySelector(selector);
 };
 
+export const findAll = selector => {
+    //
+    // TODO: workaround to access the frame from outside...
+    //
+    const iframeDocument = document.getElementsByName('neos-content-main')[0].contentDocument;
+
+    return [].slice.call(iframeDocument.querySelectorAll(selector));
+};
+
 export const body = () => document.getElementsByName('neos-content-main')[0].contentDocument.body;
 
 export const findNode = (contextPath, fusionPath) => find(

@@ -449,6 +449,9 @@ manifest('main', {}, globalRegistry => {
 
             store.dispatch(actions.UI.ContentCanvas.setSrc(parentNodeUri));
             store.dispatch(actions.UI.ContentCanvas.setContextPath(parentContextPath));
+        } else {
+            dom.findAll(`[data-__neos-node-contextpath="${contextPath}"]`)
+                .forEach(el => el.remove());
         }
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));

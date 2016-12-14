@@ -8,10 +8,7 @@ import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-const {isDocumentNodeSelectedSelector} = selectors.CR.Nodes;
-
 import DimensionSwitcher from './DimensionSwitcher/index';
-import EditorToolbar from './EditorToolbar/index';
 
 import style from './style.css';
 
@@ -20,8 +17,7 @@ import style from './style.css';
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
-    isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    isDocumentNodeSelected: isDocumentNodeSelectedSelector
+    isFullScreen: $get('ui.fullScreen.isFullScreen')
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })
@@ -32,8 +28,7 @@ export default class SecondaryToolbar extends PureComponent {
         isFringedRight: PropTypes.bool.isRequired,
         isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
-        toggleFullScreen: PropTypes.func.isRequired,
-        isDocumentNodeSelected: PropTypes.bool.isRequired
+        toggleFullScreen: PropTypes.func.isRequired
     };
 
     render() {
@@ -59,8 +54,7 @@ export default class SecondaryToolbar extends PureComponent {
 
         return (
             <div className={classNames}>
-                {this.props.isDocumentNodeSelected ? <DimensionSwitcher/> : <EditorToolbar/>}
-
+                <DimensionSwitcher/>
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     <a
                         href={previewUrl ? previewUrl : ''}

@@ -1,19 +1,23 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
 import {renderToolbarComponents} from './Helpers';
-import {calculateEnabledFormattingRulesForNodeType} from '../../ContentCanvas/Helpers';
+import {calculateEnabledFormattingRulesForNodeType} from '../ContentCanvas/Helpers';
 
 @connect($transform({
     focusedNode: selectors.CR.Nodes.focusedSelector,
     currentlyEditedPropertyName: selectors.UI.ContentCanvas.currentlyEditedPropertyName,
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor,
+    isFullScreen: $get('ui.fullScreen.isFullScreen'),
+    isFringedLeft: $get('ui.leftSideBar.isHidden'),
+    isFringedRight: $get('ui.rightSideBar.isHidden'),
+    isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     context: selectors.Guest.context
 }))
 @neos(globalRegistry => ({
@@ -25,6 +29,10 @@ export default class Toolbar extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object,
         currentlyEditedPropertyName: PropTypes.string,
+        isFullScreen: PropTypes.bool.isRequired,
+        isFringedLeft: PropTypes.bool.isRequired,
+        isFringedRight: PropTypes.bool.isRequired,
+        isEditModePanelHidden: PropTypes.bool.isRequired,
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.bool
@@ -58,10 +66,27 @@ export default class Toolbar extends PureComponent {
     }
 
     render() {
-        const {focusedNode, currentlyEditedPropertyName, formattingUnderCursor} = this.props;
+        const {
+            focusedNode,
+            currentlyEditedPropertyName,
+            formattingUnderCursor,
+            isFullScreen,
+            isFringedLeft,
+            isFringedRight,
+            isEditModePanelHidden
+        } = this.props;
         const enabledFormattingRuleIds = this.calculateEnabledFormattingRulesForNodeType(focusedNode.nodeType);
+
+        if (!enabledFormattingRuleIds[currentlyEditedPropertyName] || !enabledFormattingRuleIds[currentlyEditedPropertyName].length) {
+            return null;
+        }
+
         const classNames = mergeClassNames({
-            [style.toolBar]: true
+            [style.toolBar]: true,
+            [style['toolBar--isInFullScreen']]: isFullScreen,
+            [style['toolBar--isFringeLeft']]: isFringedLeft,
+            [style['toolBar--isFringeRight']]: isFringedRight,
+            [style['toolBar--isMovedDown']]: !isEditModePanelHidden
         });
         const renderedToolbarComponents = this.renderToolbarComponents(
             this.onToggleFormat,

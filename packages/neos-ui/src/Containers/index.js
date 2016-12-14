@@ -1,6 +1,7 @@
 import Neos from './Neos/index';
 import ContentCanvas from './ContentCanvas/index';
 import EditModePanel from './EditModePanel/index';
+import EditorToolbar from './EditorToolbar/index';
 import SecondaryToolbar from './SecondaryToolbar/index';
 import FlashMessages from './FlashMessages/index';
 import FullScreen from './FullScreen/index';
@@ -17,6 +18,7 @@ export {
     FlashMessages,
     FullScreen,
     EditModePanel,
+    EditorToolbar,
     LeftSideBar,
     Drawer,
     RightSideBar,

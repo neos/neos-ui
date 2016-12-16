@@ -10,6 +10,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+import style from './style.css';
+
 @connect($transform({
     nodeToBeDeletedContextPath: $get('cr.nodes.toBeRemoved'),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath
@@ -47,7 +49,7 @@ export default class DeleteNodeModal extends PureComponent {
         return (
             <div>
                 <Icon icon="exclamation-triangle"/>
-                <span style={{marginLeft: '1em'}}>
+                <span className={style.modalTitle}>
                     <I18n id="Neos.Neos:Main:delete" fallback="Delete"/>
                     &nbsp;
                     <I18n id={nodeTypeLabel} fallback="Node"/>
@@ -99,7 +101,7 @@ export default class DeleteNodeModal extends PureComponent {
                 onRequestClose={this.handleAbort}
                 isOpen
                 >
-                <div style={{padding: '1em'}}>
+                <div className={style.modalContents}>
                     <I18n id="Neos.Neos:Main:content.navigate.deleteNodeDialog.header"/>
                     &nbsp; "{$get('label', node)}"?
                 </div>

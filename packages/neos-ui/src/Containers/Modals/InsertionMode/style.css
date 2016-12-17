@@ -1,0 +1,9 @@
+.modalTitle {
+    margin-left: var(--spacing);
+}
+.modalContents {
+    padding: var(--spacing);
+}
+.applyBtn {
+    background: var(--brandColorsSuccess) !important;
+}

@@ -1,6 +1,11 @@
 
 Neos:
   Neos:
+    userInterface:
+      translation:
+        autoInclude:
+          'Neos.Neos.Ui':
+            - Main
     typoScript:
       autoInclude:
         Neos.Neos.Ui: true

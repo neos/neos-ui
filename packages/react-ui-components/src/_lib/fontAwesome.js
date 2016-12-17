@@ -1534,6 +1534,14 @@ const MIGRATION_PATH = [
     {
         deprecated: ['icon-renre'],
         name: 'fa-renre'
+    },
+    {
+        deprecated: ['icon-header'],
+        name: 'fa-header'
+    },
+    {
+        deprecated: ['icon-files-o'],
+        name: 'fa-files-o'
     }
 ];
 

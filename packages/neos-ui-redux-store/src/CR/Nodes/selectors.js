@@ -39,7 +39,7 @@ export const isDocumentNodeSelectedSelector = createSelector(
 //    ---> focusedSelector (also re-calculated at all times, because nodeByContextPath changes for all invocations); but
 //                         the RESULT of focusedSelector is "stable" again.
 //    ---> immutableNodeToJs(focusedSelector): converts the focusedSelector result to plain JS; properly using memoization here.
-const nodeByContextPath = state => contextPath =>
+export const nodeByContextPath = state => contextPath =>
     $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 
 const immutableNodeToJs = selectorWhichEmitsNode =>

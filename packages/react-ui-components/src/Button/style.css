@@ -48,6 +48,10 @@
 .btn--brand[disabled]:hover {
     background-color: var(--brandColorsPrimaryBlue);
 }
+.btn--warn,
+.btn--warn[disabled]:hover {
+    background-color: var(--brandColorsWarn);
+}
 .btn--brandHover {
     &:hover,
     &.btn--isPressed {
@@ -62,4 +66,8 @@
 .btn--darkenHover.btn--isPressed,
 .btn--darkenHover:hover {
     background: rgba(0, 0, 0, .1);
+}
+.btn--warnHover.btn--isPressed,
+.btn--warnHover:hover {
+    background-color: var(--brandColorsWarn);
 }

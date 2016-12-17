@@ -46,3 +46,6 @@
     border-top: 1px solid var(--brandColorsContrastDark);
     padding: var(--spacing);
 }
+.dialog__actions > * {
+    margin-left: calc(var(--spacing) / 2);
+}

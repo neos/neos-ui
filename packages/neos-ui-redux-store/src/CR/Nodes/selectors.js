@@ -76,10 +76,10 @@ export const byContextPathSelector = defaultMemoize(
 );
 
 export const parentNodeSelector = state => baseNode =>
-    byContextPathSelector(parentNodeContextPath(baseNode.contextPath))(state);
+    byContextPathSelector(parentNodeContextPath($get('contextPath', baseNode)))(state);
 
 export const grandParentNodeSelector = state => baseNode =>
-    byContextPathSelector(parentNodeContextPath(parentNodeContextPath(baseNode.contextPath)))(state);
+    byContextPathSelector(parentNodeContextPath(parentNodeContextPath($get('contextPath', baseNode))))(state);
 
 export const focusedNodePathSelector = immutableNodeToJs(createSelector(
     [
@@ -149,4 +149,70 @@ export const getAllowedSiblingNodeTypesForFocusedNodeSelector = createSelector(
                 nodeTypesRegistry
             );
         })
+);
+
+export const clipboardNodeContextPathSelector = createSelector(
+    [
+        $get('cr.nodes.clipboard')
+    ],
+    clipboardNodeContextPath => clipboardNodeContextPath
+);
+
+export const clipboardIsEmptySelector = createSelector(
+    [
+        $get('cr.nodes.clipboard')
+    ],
+    clipboardNodePath => Boolean(clipboardNodePath)
+);
+
+export const canBePastedAlongsideSelector = createSelector(
+    [
+        nodeByContextPath,
+        parentNodeSelector,
+        grandParentNodeSelector
+    ],
+    (getNodeByContextPath, getParentNode, getGrandParentNode) =>
+        (subjectContextPath, referenceContextPath, nodeTypesRegistry) => {
+            const subject = getNodeByContextPath(subjectContextPath);
+            const reference = getNodeByContextPath(referenceContextPath);
+            const referenceParent = getParentNode(reference);
+            const referenceGrandParent = getGrandParentNode(reference);
+            const allowedNodeTypes = getAllowedNodeTypesTakingAutoCreatedIntoAccount(
+                referenceParent,
+                referenceGrandParent,
+                nodeTypesRegistry
+            );
+
+            return allowedNodeTypes.indexOf($get('nodeType', subject)) !== -1;
+        }
+);
+
+export const canBePastedIntoSelector = createSelector(
+    [
+        nodeByContextPath,
+        parentNodeSelector
+    ],
+    (getNodeByContextPath, getParentNode) =>
+        (subjectContextPath, referenceContextPath, nodeTypesRegistry) => {
+            const subject = getNodeByContextPath(subjectContextPath);
+            const reference = getNodeByContextPath(referenceContextPath);
+            const referenceParent = getParentNode(reference);
+            const allowedNodeTypes = getAllowedNodeTypesTakingAutoCreatedIntoAccount(
+                reference,
+                referenceParent,
+                nodeTypesRegistry
+            );
+
+            return allowedNodeTypes.indexOf($get('nodeType', subject)) !== -1;
+        }
+);
+
+export const canBePastedSelector = createSelector(
+    [
+        canBePastedAlongsideSelector,
+        canBePastedIntoSelector
+    ],
+    (canBePastedAlongside, canBePastedInto) =>
+        (...args) => canBePastedAlongside(...args) || canBePastedInto(...args)
+
 );

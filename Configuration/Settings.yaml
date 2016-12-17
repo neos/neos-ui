@@ -118,6 +118,9 @@ Neos:
           'Neos.Neos.Ui:CreateBefore': Neos\Neos\Ui\Domain\Model\Changes\CreateBefore
           'Neos.Neos.Ui:CreateAfter': Neos\Neos\Ui\Domain\Model\Changes\CreateAfter
           'Neos.Neos.Ui:RemoveNode': Neos\Neos\Ui\Domain\Model\Changes\Remove
+          'Neos.Neos.Ui:CopyBefore': Neos\Neos\Ui\Domain\Model\Changes\CopyBefore
+          'Neos.Neos.Ui:CopyAfter': Neos\Neos\Ui\Domain\Model\Changes\CopyAfter
+          'Neos.Neos.Ui:CopyInto': Neos\Neos\Ui\Domain\Model\Changes\CopyInto
   Flow:
     security:
       authentication:

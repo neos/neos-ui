@@ -23,7 +23,7 @@ class NodeTypeItem extends PureComponent {
 
         nodeType: PropTypes.shape({
             name: PropTypes.string.isRequired,
-            ui: PropTypes.object.isRequired
+            ui: PropTypes.object
         }).isRequired
     };
 
@@ -35,6 +35,8 @@ class NodeTypeItem extends PureComponent {
 
     render() {
         const {ui} = this.props.nodeType;
+        const icon = $get('icon', ui);
+        const label = $get('label', ui);
 
         return (
             <Grid.Col className={style.gridItem} width="third">
@@ -44,8 +46,8 @@ class NodeTypeItem extends PureComponent {
                     className={style.nodeType}
                     onClick={this.handleNodeTypeClick}
                     >
-                    <Icon icon={$get('icon', ui)} className={style.nodeType__icon} padded="right"/>
-                    <I18n id={$get('label', ui)} fallback={$get('label', ui)}/>
+                    {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
+                    <I18n id={label} fallback={label}/>
                 </Button>
             </Grid.Col>
         );

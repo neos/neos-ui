@@ -41,7 +41,8 @@ export const reducer = handleActions({
         if (change.type === 'Neos.Neos.Ui:Property') {
             return $set(
                 ['cr', 'nodes', 'byContextPath', change.subject, 'properties', change.payload.propertyName],
-                change.payload.value
+                change.payload.value,
+                state
             );
         }
 

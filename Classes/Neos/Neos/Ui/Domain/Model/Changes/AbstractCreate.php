@@ -255,7 +255,11 @@ abstract class AbstractCreate extends AbstractChange
         $updateNodeInfo = new UpdateNodeInfo();
         $updateNodeInfo->setNode($node);
 
+        $updateParentNodeInfo = new UpdateNodeInfo();
+        $updateParentNodeInfo->setNode($node->getParent());
+
         $this->feedbackCollection->add($updateNodeInfo);
+        $this->feedbackCollection->add($updateParentNodeInfo);
 
         return $node;
     }

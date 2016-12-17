@@ -2,6 +2,8 @@
 namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
 
 abstract class AbstractReferencingChange extends AbstractChange implements ReferencingChangeInterface
 {
@@ -42,9 +44,10 @@ abstract class AbstractReferencingChange extends AbstractChange implements Refer
     {
         parent::updateWorkspaceInfo();
 
+        $nodeService = new NodeService();
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();
         $updateWorkspaceInfo->setDocument(
-            $this->getClosestDocument($this->getReference())
+            $nodeService->getClosestDocument($this->getReference())
         );
 
         $this->feedbackCollection->add($updateWorkspaceInfo);

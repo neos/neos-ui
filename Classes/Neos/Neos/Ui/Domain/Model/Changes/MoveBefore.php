@@ -3,6 +3,11 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class MoveBefore extends AbstractMove
 {
+    public function getMode()
+    {
+        return 'before';
+    }
+
     /**
      * Applies this change
      *

@@ -3,6 +3,11 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class CopyAfter extends AbstractCopy
 {
+    public function getMode()
+    {
+        return 'after';
+    }
+
     /**
      * Applies this change
      *
@@ -11,8 +16,8 @@ class CopyAfter extends AbstractCopy
     public function apply()
     {
         if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getReference()->getParent());
-            $this->getSubject()->copyAfter($this->getReference(), $nodeName);
+            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
+            $node = $this->getSubject()->copyAfter($this->getSiblingNode(), $nodeName);
             $this->finish($node);
         }
     }

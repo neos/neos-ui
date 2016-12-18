@@ -3,6 +3,11 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class MoveInto extends AbstractMove
 {
+    public function getMode()
+    {
+        return 'into';
+    }
+
     /**
      * Applies this change
      *

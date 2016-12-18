@@ -3,6 +3,11 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class CopyInto extends AbstractCopy
 {
+    public function getMode()
+    {
+        return 'into';
+    }
+
     /**
      * Applies this change
      *
@@ -11,8 +16,8 @@ class CopyInto extends AbstractCopy
     public function apply()
     {
         if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getReference());
-            $node = $this->getSubject()->copyInto($this->getReference(), $nodeName);
+            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
+            $node = $this->getSubject()->copyInto($this->getParentNode(), $nodeName);
             $this->finish($node);
         }
     }

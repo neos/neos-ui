@@ -2,19 +2,18 @@
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
-use Neos\Neos\Ui\Domain\Model\AbstractReferencingChange;
+use Neos\ContentRepository\Domain\Service as ContentRepository;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 
-abstract class AbstractCopy extends AbstractReferencingChange
+abstract class AbstractCopy extends AbstractStructuralChange
 {
     /**
      * @Flow\Inject
-     * @var NodeServiceInterface
+     * @var ContentRepository\NodeServiceInterface
      */
-    protected $nodeService;
+    protected $contentRepositoryNodeService;
 
     /**
      * Checks whether this change can be merged with a subsequent change
@@ -55,11 +54,9 @@ abstract class AbstractCopy extends AbstractReferencingChange
      */
     public function canApply()
     {
-        $referenceNode = $this->getReference();
-        $referenceNodeParent = $referenceNode->getParent();
         $nodeType = $this->getSubject()->getNodeType();
 
-        return $referenceNode->isNodeTypeAllowedAsChildNode($nodeType);
+        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
     }
 
     /**
@@ -70,26 +67,7 @@ abstract class AbstractCopy extends AbstractReferencingChange
      */
     protected function generateUniqueNodeName(NodeInterface $parentNode)
     {
-        return $this->nodeService->generateUniqueNodeName($parentNode->getPath(), $this->getSubject()->getName());
-    }
-
-    /**
-     * Prepare feedback
-     *
-     * @param NodeInterface $newNode
-     * @return void
-     */
-    protected function finish(NodeInterface $newNode)
-    {
-        $this->updateWorkspaceInfo();
-
-        $updateNodeInfo = new UpdateNodeInfo();
-        $updateNodeInfo->setNode($newNode);
-
-        $updateParentNodeInfo = new UpdateNodeInfo();
-        $updateParentNodeInfo->setNode($newNode->getParent());
-
-        $this->feedbackCollection->add($updateNodeInfo);
-        $this->feedbackCollection->add($updateParentNodeInfo);
+        return $this->contentRepositoryNodeService
+            ->generateUniqueNodeName($parentNode->getPath(), $this->getSubject()->getName());
     }
 }

@@ -1,10 +1,9 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
-use Neos\Neos\Ui\Domain\Model\AbstractReferencingChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 
-abstract class AbstractMove extends AbstractReferencingChange
+abstract class AbstractMove extends AbstractStructuralChange
 {
     /**
      * Checks whether this change can be merged with a subsequent change

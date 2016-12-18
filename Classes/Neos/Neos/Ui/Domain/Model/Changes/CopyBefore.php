@@ -3,6 +3,11 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class CopyBefore extends AbstractCopy
 {
+    public function getMode()
+    {
+        return 'before';
+    }
+
     /**
      * Applies this change
      *
@@ -11,8 +16,8 @@ class CopyBefore extends AbstractCopy
     public function apply()
     {
         if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getReference()->getParent());
-            $this->getSubject()->copyBefore($this->getReference(), $nodeName);
+            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
+            $node = $this->getSubject()->copyBefore($this->getSiblingNode(), $nodeName);
             $this->finish($node);
         }
     }

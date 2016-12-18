@@ -62,28 +62,30 @@ export const getTreeNodeSelector = createSelector(
         //
         // Check if the requested node is existent and has the correct node type
         //
-        if (node && isNodeTypeValid(node.nodeType)) {
+        if (node && isNodeTypeValid($get('nodeType', node))) {
             //
             // Check for valid child nodes
             //
-            const validChildren = node.children.filter(node => isNodeTypeValid(node.nodeType));
-            const {contextPath, label, uri} = node;
+            const validChildren = $get('children', node).filter(node => isNodeTypeValid($get('nodeType', node)));
+            const contextPath = $get('contextPath', node);
 
             //
             // Turn the node into a data structure, that can be consumed by a tree view
             //
             return {
                 contextPath,
-                label,
-                uri,
-                nodeType: node.nodeType,
+                label: $get('label', node),
+                uri: $get('uri', node),
+                nodeType: $get('nodeType', node),
                 isActive: contextPath === activeNodeContextPath,
                 isFocused: contextPath === focusedNodeContextPath,
+                isHidden: $get('properties._hidden', node),
+                isHiddenInIndex: $get('properties._hiddenInIndex', node),
                 isCollapsed: !uncollapsedNodeContextPaths.contains(contextPath),
                 isLoading: loadingNodeContextPaths.contains(contextPath),
                 hasError: errorNodeContextPaths.contains(contextPath),
                 hasChildren: validChildren.length > 0,
-                children: validChildren.map(node => $get('contextPath', node))
+                children: validChildren.map($get('contextPath'))
             };
         }
 

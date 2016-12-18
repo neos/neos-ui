@@ -234,8 +234,40 @@ function * cutAndPasteNode({globalRegistry}) {
     });
 }
 
+function * hideNode() {
+    yield * takeLatest(actionTypes.CR.Nodes.HIDE, function * performPropertyChange(action) {
+        const contextPath = action.payload;
+
+        yield put(actions.Changes.persistChange({
+            type: 'Neos.Neos.Ui:Property',
+            subject: contextPath,
+            payload: {
+                propertyName: '_hidden',
+                value: true
+            }
+        }));
+    });
+}
+
+function * showNode() {
+    yield * takeLatest(actionTypes.CR.Nodes.SHOW, function * performPropertyChange(action) {
+        const contextPath = action.payload;
+
+        yield put(actions.Changes.persistChange({
+            type: 'Neos.Neos.Ui:Property',
+            subject: contextPath,
+            payload: {
+                propertyName: '_hidden',
+                value: false
+            }
+        }));
+    });
+}
+
 export const sagas = [
     removeNodeIfConfirmed,
     copyAndPasteNode,
-    cutAndPasteNode
+    cutAndPasteNode,
+    hideNode,
+    showNode
 ];

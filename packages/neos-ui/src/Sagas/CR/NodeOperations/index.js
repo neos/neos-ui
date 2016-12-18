@@ -4,6 +4,8 @@ import {$get} from 'plow-js';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
+import {dom} from '../../../Containers/ContentCanvas/Helpers/index';
+
 function * removeNodeIfConfirmed() {
     yield * takeLatest(actionTypes.CR.Nodes.COMMENCE_REMOVAL, function * waitForConfirmation() {
         const state = yield select();
@@ -70,9 +72,41 @@ function * copyAndPasteNode({globalRegistry}) {
                 return 'Neos.Neos.Ui:CopyInto';
         }
     };
+    const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
+        switch (mode) {
+            case 'prepend':
+            case 'append': {
+                const parentElement = dom.closestNode(
+                    dom.findNode(contextPath, fusionPath).parentNode
+                );
+
+                return {
+                    siblingDomAddress: {
+                        contextPath,
+                        fusionPath
+                    },
+                    parentDomAddress: {
+                        contextPath: parentElement.getAttribute('data-__neos-node-contextpath'),
+                        fusionPath: parentElement.getAttribute('data-__neos-typoscript-path')
+                    }
+                };
+            }
+
+            default:
+                return {
+                    parentDomAddress: {
+                        contextPath,
+                        fusionPath
+                    }
+                };
+        }
+    };
 
     yield * takeEvery(actionTypes.CR.Nodes.COPY, function * waitForPaste() {
-        const state = yield select();
+        const nodeToBePasted = yield select($get('cr.nodes.clipboard'));
+        const getCanBePastedAlongside = yield select(canBePastedAlongsideSelector);
+        const getCanBePastedInto = yield select(canBePastedIntoSelector);
+
         const waitForNextAction = yield race([
             take(actionTypes.CR.Nodes.COPY),
             take(actionTypes.CR.Nodes.PASTE)
@@ -84,16 +118,15 @@ function * copyAndPasteNode({globalRegistry}) {
         }
 
         if (nextAction.type === actionTypes.CR.Nodes.PASTE) {
-            const nodeToBePasted = $get('cr.nodes.clipboard', state);
-            const referenceNodeContextPath = nextAction.payload;
-            const canBePastedArguments = [nodeToBePasted, referenceNodeContextPath, nodeTypesRegistry];
-            const canBePastedAlongside = canBePastedAlongsideSelector(state)(...canBePastedArguments);
-            const canBePastedInto = canBePastedIntoSelector(state)(...canBePastedArguments);
+            const {contextPath, fusionPath} = nextAction.payload;
+            const canBePastedArguments = [nodeToBePasted, contextPath, nodeTypesRegistry];
+            const canBePastedAlongside = getCanBePastedAlongside(...canBePastedArguments);
+            const canBePastedInto = getCanBePastedInto(...canBePastedArguments);
 
             const mode = yield call(
                 determineInsertMode,
                 nodeToBePasted,
-                referenceNodeContextPath,
+                contextPath,
                 canBePastedAlongside,
                 canBePastedInto
             );
@@ -102,8 +135,11 @@ function * copyAndPasteNode({globalRegistry}) {
                 yield put(actions.Changes.persistChange({
                     type: calculateChangeTypeFromMode(mode),
                     subject: nodeToBePasted,
-                    reference: referenceNodeContextPath,
-                    payload: {}
+                    payload: calculateDomAddressesFromMode(
+                        mode,
+                        contextPath,
+                        fusionPath
+                    )
                 }));
             }
 

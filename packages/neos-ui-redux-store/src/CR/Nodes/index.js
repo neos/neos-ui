@@ -87,9 +87,10 @@ const copy = createAction(COPY, contextPath => contextPath);
 /**
  * Paste the contents of the node clipboard
  *
- * @param {String} referenceNodeContextPath The context path of the node to be pasted to
+ * @param {String} contextPath The context path of the target node
+ * @param {String} fusionPath The fusion path of the target node, needed for out-of-band-rendering
  */
-const paste = createAction(PASTE, referenceNodeContextPath => referenceNodeContextPath);
+const paste = createAction(PASTE, (contextPath, fusionPath) => ({contextPath, fusionPath}));
 
 //
 // Export the actions

@@ -7,7 +7,6 @@ import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
 @connect(state => ({
-    focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
     clipboardNodeContextPath: selectors.CR.Nodes.clipboardNodeContextPathSelector(state),
     canBePasted: selectors.CR.Nodes.canBePastedSelector(state)
 }), {
@@ -20,7 +19,10 @@ export default class PasteClipBoardNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
         canBePasted: PropTypes.bool,
-        focusedNodeContextPath: PropTypes.string,
+
+        contextPath: PropTypes.string,
+        fusionPath: PropTypes.string,
+
         clipboardNodeContextPath: PropTypes.string,
         nodeTypesRegistry: PropTypes.object.isRequired,
         pasteNode: PropTypes.func.isRequired
@@ -36,11 +38,11 @@ export default class PasteClipBoardNode extends PureComponent {
         const {
             className,
             canBePasted,
-            focusedNodeContextPath,
+            contextPath,
             clipboardNodeContextPath,
             nodeTypesRegistry
         } = this.props;
-        const isDisabled = !canBePasted(clipboardNodeContextPath, focusedNodeContextPath, nodeTypesRegistry);
+        const isDisabled = !canBePasted(clipboardNodeContextPath, contextPath, nodeTypesRegistry);
 
         return (
             <IconButton
@@ -53,8 +55,8 @@ export default class PasteClipBoardNode extends PureComponent {
     }
 
     pasteClipBoardNode() {
-        const {pasteNode, focusedNodeContextPath} = this.props;
+        const {pasteNode, contextPath, fusionPath} = this.props;
 
-        pasteNode(focusedNodeContextPath);
+        pasteNode(contextPath, fusionPath);
     }
 }

@@ -45,6 +45,7 @@ export default class HideSelectedNode extends PureComponent {
         return (
             <IconButton
                 className={className}
+                isActive={isHidden}
                 isDisabled={isDisabled}
                 onClick={isHidden ? this.handleShowNode : this.handleHideNode}
                 icon="eye-slash"

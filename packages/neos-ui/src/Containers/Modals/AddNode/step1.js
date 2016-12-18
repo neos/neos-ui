@@ -1,9 +1,9 @@
 import React, {PureComponent, PropTypes} from 'react';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 import I18n from '@neos-project/neos-ui-i18n';
+
+import {InsertModeSelector} from '@neos-project/neos-ui-containers';
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 
 class Step1 extends PureComponent {
@@ -18,40 +18,14 @@ class Step1 extends PureComponent {
     };
 
     renderInsertModeSelector(activeMode, allowedNodeTypesByMode) {
-        const options = [];
-
-        if (allowedNodeTypesByMode.prepend.length) {
-            options.push({
-                value: 'prepend',
-                label: (<span>
-                    <I18n fallback="Create new" id="createNew"/> <I18n fallback="before" id="before"/> <Icon icon="level-up"/>
-                </span>)
-            });
-        }
-
-        if (allowedNodeTypesByMode.append.length) {
-            options.push({
-                value: 'append',
-                label: (<span>
-                    <I18n fallback="Create new" id="createNew"/> <I18n fallback="after" id="after"/> <Icon icon="level-down"/>
-                </span>)
-            });
-        }
-
-        if (allowedNodeTypesByMode.insert.length) {
-            options.push({
-                value: 'insert',
-                label: (<span>
-                    <I18n fallback="Create new" id="createNew"/> <I18n fallback="into" id="into"/> <Icon icon="long-arrow-right"/>
-                </span>)
-            });
-        }
-
-        return (<SelectBox
-            options={options}
-            value={activeMode}
-            onSelect={this.props.onHandleModeChange}
-            />);
+        return (
+            <InsertModeSelector
+                mode={activeMode}
+                onSelect={this.props.onHandleModeChange}
+                enableAlongsideModes={Boolean(allowedNodeTypesByMode.after.length)}
+                enableIntoMode={Boolean(allowedNodeTypesByMode.into.length)}
+                />
+        );
     }
 
     renderCancelAction() {

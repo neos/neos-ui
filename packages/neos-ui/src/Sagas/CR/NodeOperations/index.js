@@ -62,10 +62,10 @@ function * copyAndPasteNode({globalRegistry}) {
     } = selectors.CR.Nodes;
     const calculateChangeTypeFromMode = mode => {
         switch (mode) {
-            case 'prepend':
+            case 'before':
                 return 'Neos.Neos.Ui:CopyBefore';
 
-            case 'append':
+            case 'after':
                 return 'Neos.Neos.Ui:CopyAfter';
 
             default:
@@ -74,8 +74,8 @@ function * copyAndPasteNode({globalRegistry}) {
     };
     const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
         switch (mode) {
-            case 'prepend':
-            case 'append': {
+            case 'before':
+            case 'after': {
                 const parentElement = dom.closestNode(
                     dom.findNode(contextPath, fusionPath).parentNode
                 );

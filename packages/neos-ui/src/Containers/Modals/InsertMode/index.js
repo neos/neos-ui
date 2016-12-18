@@ -8,8 +8,9 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 import I18n from '@neos-project/neos-ui-i18n';
+
+import {InsertModeSelector} from '@neos-project/neos-ui-containers';
 
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
@@ -30,7 +31,7 @@ import style from './style.css';
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class InsertionModeModal extends PureComponent {
+export default class InsertModeModal extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
         enableAlongsideModes: PropTypes.bool.isRequired,
@@ -53,40 +54,6 @@ export default class InsertionModeModal extends PureComponent {
         this.handleModeChange = this.handleModeChange.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleApply = this.handleApply.bind(this);
-
-        this.options = [];
-    }
-
-    componentWillReceiveProps(props) {
-        const {enableAlongsideModes, enableIntoMode} = props;
-        this.options = [];
-
-        if (enableAlongsideModes) {
-            this.options.push({
-                value: 'prepend',
-                label: (<span>
-                    <I18n fallback="Insert" id="Neos.Neos.Ui:Main:insert"/> <I18n fallback="before" id="before"/> <Icon icon="level-up"/>
-                </span>)
-            });
-        }
-
-        if (enableAlongsideModes) {
-            this.options.push({
-                value: 'append',
-                label: (<span>
-                    <I18n fallback="Insert" id="Neos.Neos.Ui:Main:insert"/> <I18n fallback="after" id="after"/> <Icon icon="level-down"/>
-                </span>)
-            });
-        }
-
-        if (enableIntoMode) {
-            this.options.push({
-                value: 'insert',
-                label: (<span>
-                    <I18n fallback="Insert" id="Neos.Neos.Ui:Main:insert"/> <I18n fallback="into" id="into"/> <Icon icon="long-arrow-right"/>
-                </span>)
-            });
-        }
     }
 
     renderNodeLabel(contextPath) {
@@ -154,10 +121,12 @@ export default class InsertionModeModal extends PureComponent {
         const {
             isOpen,
             subjectContextPath,
-            referenceContextPath
+            referenceContextPath,
+            enableAlongsideModes,
+            enableIntoMode
         } = this.props;
 
-        if (!isOpen || !this.options.length) {
+        if (!isOpen) {
             return null;
         }
 
@@ -166,7 +135,7 @@ export default class InsertionModeModal extends PureComponent {
                 actions={[this.renderCancel(), this.renderApply()]}
                 title={this.renderTitle()}
                 onRequestClose={this.handleCancel}
-                isOpen
+                isOpen={isOpen}
                 >
                 <div className={style.modalContents}>
                     <p>
@@ -178,10 +147,11 @@ export default class InsertionModeModal extends PureComponent {
                             }}
                             />
                     </p>
-                    <SelectBox
-                        options={this.options}
-                        value={this.state.mode || this.options[0].value}
+                    <InsertModeSelector
+                        mode={this.state.mode}
                         onSelect={this.handleModeChange}
+                        enableAlongsideModes={enableAlongsideModes}
+                        enableIntoMode={enableIntoMode}
                         />
                 </div>
             </Dialog>
@@ -202,6 +172,6 @@ export default class InsertionModeModal extends PureComponent {
         const {apply} = this.props;
         const {mode} = this.state;
 
-        apply(mode || this.options[0].value);
+        apply(mode);
     }
 }

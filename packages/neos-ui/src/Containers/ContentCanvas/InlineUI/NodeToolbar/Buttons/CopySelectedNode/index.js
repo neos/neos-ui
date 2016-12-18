@@ -33,7 +33,7 @@ export default class CopySelectedNode extends PureComponent {
         return (
             <IconButton
                 className={className}
-                isDisabled={!Boolean(focusedNodeContextPath)}
+                isDisabled={!focusedNodeContextPath}
                 onClick={this.handleCopySelectedNodeClick}
                 icon="copy"
                 hoverStyle="clean"

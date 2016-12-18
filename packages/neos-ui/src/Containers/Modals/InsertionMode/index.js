@@ -37,7 +37,10 @@ export default class InsertionModeModal extends PureComponent {
         enableIntoMode: PropTypes.bool.isRequired,
         cancel: PropTypes.func.isRequired,
         apply: PropTypes.func.isRequired,
-        nodeTypesRegistry: PropTypes.object.isRequired
+        nodeTypesRegistry: PropTypes.object.isRequired,
+        getNodeByContextPath: PropTypes.func.isRequired,
+        subjectContextPath: PropTypes.string,
+        referenceContextPath: PropTypes.string
     };
 
     state = {
@@ -150,7 +153,6 @@ export default class InsertionModeModal extends PureComponent {
     render() {
         const {
             isOpen,
-            cancel,
             subjectContextPath,
             referenceContextPath
         } = this.props;

@@ -73,6 +73,40 @@ storiesOf('Tree', module)
                                     onNodeFocus={action('onNodeFocus')}
                                     />
                             </Tree.Node>
+                            <Tree.Node>
+                                <Tree.Node.Header
+                                    item={{
+                                        hasChildren: false,
+                                        isCollapsed: true,
+                                        isActive: false,
+                                        isFocused: false,
+                                        isLoading: false,
+                                        isHiddenInIndex: true,
+                                        hasError: false,
+                                        label: 'Hidden in menus'
+                                    }}
+                                    onNodeToggle={action('onNodeToggle')}
+                                    onNodeClick={action('onNodeClick')}
+                                    onNodeFocus={action('onNodeFocus')}
+                                    />
+                            </Tree.Node>
+                            <Tree.Node>
+                                <Tree.Node.Header
+                                    item={{
+                                        hasChildren: false,
+                                        isCollapsed: true,
+                                        isActive: false,
+                                        isFocused: false,
+                                        isLoading: false,
+                                        isHidden: true,
+                                        hasError: false,
+                                        label: 'Hidden (invisible)'
+                                    }}
+                                    onNodeToggle={action('onNodeToggle')}
+                                    onNodeClick={action('onNodeClick')}
+                                    onNodeFocus={action('onNodeFocus')}
+                                    />
+                            </Tree.Node>
                         </Tree.Node.Contents>
                     </Tree.Node>
                 </Tree>

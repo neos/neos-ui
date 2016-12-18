@@ -27,6 +27,8 @@ export class Header extends PureComponent {
             isActive: PropTypes.bool.isRequired,
             isFocused: PropTypes.bool.isRequired,
             isLoading: PropTypes.bool.isRequired,
+            isHidden: PropTypes.bool,
+            isHiddenInIndex: PropTypes.bool.isRequired,
             hasError: PropTypes.bool.isRequired,
             label: PropTypes.string.isRequired,
             icon: PropTypes.string
@@ -66,12 +68,16 @@ export class Header extends PureComponent {
             icon,
             hasChildren,
             isActive,
-            isFocused
+            isFocused,
+            isHiddenInIndex,
+            isHidden
         } = item;
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,
-            [theme['header__data--isFocused']]: isFocused
+            [theme['header__data--isFocused']]: isFocused,
+            [theme['header__data--isHiddenInIndex']]: isHiddenInIndex,
+            [theme['header__data--isHidden']]: isHidden
         });
 
         return (
@@ -94,11 +100,13 @@ export class Header extends PureComponent {
             onToggle,
             theme
         } = this.props;
-        const {isLoading, isCollapsed, hasError} = item;
+        const {isLoading, isCollapsed, hasError, isHiddenInIndex, isHidden} = item;
         const classnames = mergeClassNames({
             [theme.header__chevron]: true,
             [theme['header__chevron--isCollapsed']]: isCollapsed,
-            [theme['header__chevron--isLoading']]: isLoading
+            [theme['header__chevron--isLoading']]: isLoading,
+            [theme['header__chevron--isHiddenInIndex']]: isHiddenInIndex,
+            [theme['header__chevron--isHidden']]: isHidden
         });
         let icon;
 

@@ -15,6 +15,7 @@ test(`should export actionTypes`, t => {
     t.is(typeof (actionTypes.REMOVAL_CONFIRMED), 'string');
     t.is(typeof (actionTypes.REMOVE), 'string');
     t.is(typeof (actionTypes.COPY), 'string');
+    t.is(typeof (actionTypes.CUT), 'string');
     t.is(typeof (actionTypes.PASTE), 'string');
 });
 
@@ -28,6 +29,7 @@ test(`should export action creators`, t => {
     t.is(typeof (actions.confirmRemoval), 'function');
     t.is(typeof (actions.remove), 'function');
     t.is(typeof (actions.copy), 'function');
+    t.is(typeof (actions.cut), 'function');
     t.is(typeof (actions.paste), 'function');
 });
 
@@ -127,4 +129,5 @@ test.todo(`The reducer should unmark a node for removal`);
 test.todo(`The reducer should remove a node that was marked for removal from the store`);
 
 test.todo(`The reducer should mark a node for copy`);
+test.todo(`The reducer should mark a node for cut`);
 test.todo(`The reducer should paste nodes`);

@@ -1,7 +1,10 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 abstract class AbstractMove extends AbstractStructuralChange
 {
@@ -44,11 +47,29 @@ abstract class AbstractMove extends AbstractStructuralChange
      */
     public function canApply()
     {
-        $referenceNode = $this->getReference();
-        $referenceNodeParent = $referenceNode->getParent();
         $nodeType = $this->getSubject()->getNodeType();
 
-        return $referenceNode->getNodeType()->allowsChildNodeType($nodeType) &&
-            $referenceNodeParent->getNodeType()->allowsGrandchildNodeType($this->getSubject()->getName(), $nodeType);
+        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
+    }
+
+    /**
+     * Perform finish tasks - needs to be called from inheriting clas on `apply`
+     *
+     * @param NodeInterface $node
+     * @return void
+     */
+    protected function finish(NodeInterface $node)
+    {
+        $removeNode = new RemoveNode();
+        $removeNode->setNode($node);
+
+        $this->feedbackCollection->add($removeNode);
+
+        $updateParentNodeInfo = new UpdateNodeInfo();
+        $updateParentNodeInfo->setNode($node->getParent());
+
+        $this->feedbackCollection->add($updateParentNodeInfo);
+
+        parent::finish($this->getSubject());
     }
 }

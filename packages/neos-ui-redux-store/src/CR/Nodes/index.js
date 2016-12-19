@@ -15,6 +15,7 @@ const REMOVAL_ABORTED = '@neos/neos-ui/Transient/Nodes/REMOVAL_ABORTED';
 const REMOVAL_CONFIRMED = '@neos/neos-ui/Transient/Nodes/REMOVAL_CONFIRMED';
 const REMOVE = '@neos/neos-ui/Transient/Nodes/REMOVE';
 const COPY = '@neos/neos-ui/Transient/Nodes/COPY';
+const CUT = '@neos/neos-ui/Transient/Nodes/CUT';
 const PASTE = '@neos/neos-ui/Transient/Nodes/PASTE';
 
 //
@@ -29,6 +30,7 @@ export const actionTypes = {
     REMOVAL_CONFIRMED,
     REMOVE,
     COPY,
+    CUT,
     PASTE
 };
 
@@ -85,6 +87,13 @@ const remove = createAction(REMOVE, contextPath => contextPath);
 const copy = createAction(COPY, contextPath => contextPath);
 
 /**
+ * Mark a node for cut on paste
+ *
+ * @param {String} contextPath The context path of the node to be cut
+ */
+const cut = createAction(CUT, contextPath => contextPath);
+
+/**
  * Paste the contents of the node clipboard
  *
  * @param {String} contextPath The context path of the target node
@@ -104,6 +113,7 @@ export const actions = {
     confirmRemoval,
     remove,
     copy,
+    cut,
     paste
 };
 
@@ -147,6 +157,7 @@ export const reducer = handleActions({
     [REMOVAL_CONFIRMED]: () => $set('cr.nodes.toBeRemoved', ''),
     [REMOVE]: contextPath => $drop(['cr', 'nodes', 'byContextPath', contextPath]),
     [COPY]: contextPath => $set('cr.nodes.clipboard', contextPath),
+    [CUT]: contextPath => $set('cr.nodes.clipboard', contextPath),
     [PASTE]: () => $set('cr.nodes.clipboard', '')
 });
 

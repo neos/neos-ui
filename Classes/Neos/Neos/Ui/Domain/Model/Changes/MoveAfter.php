@@ -16,8 +16,9 @@ class MoveAfter extends AbstractMove
     public function apply()
     {
         if ($this->canApply()) {
-            $this->getSubject()->moveAfter($this->getReference());
-            $this->updateWorkspaceInfo();
+            $before = clone $this->getSubject();
+            $this->getSubject()->moveAfter($this->getSiblingNode());
+            $this->finish($before);
         }
     }
 }

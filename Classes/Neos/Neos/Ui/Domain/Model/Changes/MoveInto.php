@@ -16,8 +16,9 @@ class MoveInto extends AbstractMove
     public function apply()
     {
         if ($this->canApply()) {
-            $this->getSubject()->moveInto($this->getReference());
-            $this->updateWorkspaceInfo();
+            $before = clone $this->getSubject();
+            $this->getSubject()->moveInto($this->getParentNode());
+            $this->finish($before);
         }
     }
 }

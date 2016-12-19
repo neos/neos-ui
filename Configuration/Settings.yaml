@@ -121,6 +121,9 @@ Neos:
           'Neos.Neos.Ui:CopyBefore': Neos\Neos\Ui\Domain\Model\Changes\CopyBefore
           'Neos.Neos.Ui:CopyAfter': Neos\Neos\Ui\Domain\Model\Changes\CopyAfter
           'Neos.Neos.Ui:CopyInto': Neos\Neos\Ui\Domain\Model\Changes\CopyInto
+          'Neos.Neos.Ui:MoveBefore': Neos\Neos\Ui\Domain\Model\Changes\MoveBefore
+          'Neos.Neos.Ui:MoveAfter': Neos\Neos\Ui\Domain\Model\Changes\MoveAfter
+          'Neos.Neos.Ui:MoveInto': Neos\Neos\Ui\Domain\Model\Changes\MoveInto
   Flow:
     security:
       authentication:

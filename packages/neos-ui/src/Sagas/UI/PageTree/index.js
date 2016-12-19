@@ -5,6 +5,16 @@ import {$get, $contains} from 'plow-js';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
+const parentNodeContextPath = contextPath => {
+    if (typeof contextPath !== 'string') {
+        return null;
+    }
+
+    const [path, context] = contextPath.split('@');
+
+    return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
+};
+
 function * watchToggle() {
     yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
         const state = yield select();
@@ -114,10 +124,51 @@ function * watchReloadTree() {
     });
 }
 
+function * watchCurrentDocument() {
+    yield * takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
+        const {contextPath} = action.payload;
+        const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
+        const {q} = backend.get();
+
+        if (contextPath !== siteNodeContextPath) {
+            let parentContextPath = contextPath;
+
+            do {
+                parentContextPath = parentNodeContextPath(parentContextPath);
+                const isInStore = yield select($get(['cr', 'nodes', 'byContextPath', parentContextPath]));
+                const isUnCollapsed = yield select($contains(parentContextPath, 'ui.pageTree.uncollapsed'));
+
+                if (!isInStore || !isUnCollapsed) {
+                    yield put(actions.UI.PageTree.setAsLoading(siteNodeContextPath));
+                }
+
+                if (!isInStore) {
+                    const nodes = yield q(parentContextPath).get();
+                    yield put(actions.CR.Nodes.add(nodes.reduce((nodeMap, node) => {
+                        nodeMap[node.contextPath] = node;
+                        return nodeMap;
+                    }, {})));
+                }
+
+                if (!isUnCollapsed) {
+                    yield put(actions.UI.PageTree.commenceUncollapse(parentContextPath));
+                }
+
+                if (parentContextPath === siteNodeContextPath) {
+                    break;
+                }
+            } while (parentContextPath !== siteNodeContextPath);
+
+            yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
+        }
+    });
+}
+
 export const sagas = [
     watchToggle,
     watchCommenceUncollapse,
     watchRequestChildrenForContextPath,
     watchNodeCreated,
-    watchReloadTree
+    watchReloadTree,
+    watchCurrentDocument
 ];

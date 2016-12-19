@@ -48,6 +48,7 @@
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/neos-ui-backend-connector": "^4.4.8",
+    "@neos-project/neos-ui-containers": "^4.4.8",
     "@neos-project/neos-ui-decorators": "^4.4.8",
     "@neos-project/neos-ui-editors": "^4.4.8",
     "@neos-project/neos-ui-extensibility": "^4.4.8",

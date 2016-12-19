@@ -1,65 +1,62 @@
 import React, {PureComponent, PropTypes} from 'react';
-import IconButtonDropDown from '@neos-project/react-ui-components/lib/IconButtonDropDown/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import {connect} from 'react-redux';
+import {neos} from '@neos-project/neos-ui-decorators';
 
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+
+import {selectors, actions} from '@neos-project/neos-ui-redux-store';
+
+@connect(state => ({
+    clipboardNodeContextPath: selectors.CR.Nodes.clipboardNodeContextPathSelector(state),
+    canBePasted: selectors.CR.Nodes.canBePastedSelector(state)
+}), {
+    pasteNode: actions.CR.Nodes.paste
+})
+@neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+}))
 export default class PasteClipBoardNode extends PureComponent {
     static propTypes = {
-        isDisabled: PropTypes.bool,
-        className: PropTypes.string
+        className: PropTypes.string,
+        canBePasted: PropTypes.bool,
+
+        contextPath: PropTypes.string,
+        fusionPath: PropTypes.string,
+
+        clipboardNodeContextPath: PropTypes.string,
+        nodeTypesRegistry: PropTypes.object.isRequired,
+        pasteNode: PropTypes.func.isRequired
     };
 
-    static defaultProps = {
-        isDisabled: true
-    };
+    constructor(...args) {
+        super(...args);
 
-    constructor(props) {
-        super(props);
-
-        this.mouseHoldTimeout = null;
         this.handlePasteButtonClick = this.pasteClipBoardNode.bind(this);
-        this.handlePasteButtonModeChange = this.changePasteBoardMode.bind(this);
-        this.state = {currentMode: 'insert'};
     }
 
     render() {
-        const {isDisabled, className} = this.props;
-        let modeIcon;
-
-        switch (this.state.currentMode) {
-            case 'prepend':
-                modeIcon = 'long-arrow-up';
-                break;
-            case 'append':
-                modeIcon = 'long-arrow-down';
-                break;
-            default:
-                modeIcon = 'long-arrow-right';
-                break;
-        }
+        const {
+            className,
+            canBePasted,
+            contextPath,
+            clipboardNodeContextPath,
+            nodeTypesRegistry
+        } = this.props;
+        const isDisabled = !canBePasted(clipboardNodeContextPath, contextPath, nodeTypesRegistry);
 
         return (
-            <IconButtonDropDown
+            <IconButton
                 isDisabled={isDisabled}
                 className={className}
                 icon="paste"
-                modeIcon={modeIcon}
                 onClick={this.handlePasteButtonClick}
-                onItemSelect={this.handlePasteButtonModeChange}
-                >
-                <Icon dropDownId="prepend" icon="long-arrow-up"/>
-                <Icon dropDownId="insert" icon="long-arrow-right"/>
-                <Icon dropDownId="append" icon="long-arrow-down"/>
-            </IconButtonDropDown>
+                />
         );
     }
 
     pasteClipBoardNode() {
-        console.log('paste clipboard node');
-    }
+        const {pasteNode, contextPath, fusionPath} = this.props;
 
-    changePasteBoardMode(currentMode) {
-        this.setState({
-            currentMode
-        });
+        pasteNode(contextPath, fusionPath);
     }
 }

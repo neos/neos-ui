@@ -14,6 +14,8 @@ const COMMENCE_REMOVAL = '@neos/neos-ui/Transient/Nodes/COMMENCE_REMOVAL';
 const REMOVAL_ABORTED = '@neos/neos-ui/Transient/Nodes/REMOVAL_ABORTED';
 const REMOVAL_CONFIRMED = '@neos/neos-ui/Transient/Nodes/REMOVAL_CONFIRMED';
 const REMOVE = '@neos/neos-ui/Transient/Nodes/REMOVE';
+const COPY = '@neos/neos-ui/Transient/Nodes/COPY';
+const PASTE = '@neos/neos-ui/Transient/Nodes/PASTE';
 
 //
 // Export the action types
@@ -25,7 +27,9 @@ export const actionTypes = {
     COMMENCE_REMOVAL,
     REMOVAL_ABORTED,
     REMOVAL_CONFIRMED,
-    REMOVE
+    REMOVE,
+    COPY,
+    PASTE
 };
 
 /**
@@ -73,6 +77,21 @@ const confirmRemoval = createAction(REMOVAL_CONFIRMED);
  */
 const remove = createAction(REMOVE, contextPath => contextPath);
 
+/**
+ * Mark a node for copy on paste
+ *
+ * @param {String} contextPath The context path of the node to be copied
+ */
+const copy = createAction(COPY, contextPath => contextPath);
+
+/**
+ * Paste the contents of the node clipboard
+ *
+ * @param {String} contextPath The context path of the target node
+ * @param {String} fusionPath The fusion path of the target node, needed for out-of-band-rendering
+ */
+const paste = createAction(PASTE, (contextPath, fusionPath) => ({contextPath, fusionPath}));
+
 //
 // Export the actions
 //
@@ -83,7 +102,9 @@ export const actions = {
     commenceRemoval,
     abortRemoval,
     confirmRemoval,
-    remove
+    remove,
+    copy,
+    paste
 };
 
 //
@@ -99,7 +120,8 @@ export const reducer = handleActions({
                 contextPath: '',
                 fusionPath: ''
             }),
-            toBeRemoved: ''
+            toBeRemoved: '',
+            clipboard: ''
         })
     ),
     [ADD]: ({nodeMap}) => $all(
@@ -123,7 +145,9 @@ export const reducer = handleActions({
     [COMMENCE_REMOVAL]: contextPath => $set('cr.nodes.toBeRemoved', contextPath),
     [REMOVAL_ABORTED]: () => $set('cr.nodes.toBeRemoved', ''),
     [REMOVAL_CONFIRMED]: () => $set('cr.nodes.toBeRemoved', ''),
-    [REMOVE]: contextPath => $drop(['cr', 'nodes', 'byContextPath', contextPath])
+    [REMOVE]: contextPath => $drop(['cr', 'nodes', 'byContextPath', contextPath]),
+    [COPY]: contextPath => $set('cr.nodes.clipboard', contextPath),
+    [PASTE]: () => $set('cr.nodes.clipboard', '')
 });
 
 //

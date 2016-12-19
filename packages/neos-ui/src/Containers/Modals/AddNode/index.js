@@ -23,7 +23,7 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
         return currentMode;
     }
 
-    const fallbackOrder = ['insert', 'append', 'prepend'];
+    const fallbackOrder = ['into', 'after', 'before'];
 
     for (let i = 0; i < fallbackOrder.length; i++) {
         if (allowedNodeTypesByMode[fallbackOrder[i]].length) {
@@ -36,10 +36,10 @@ const calculateActiveMode = (currentMode, allowedNodeTypesByMode) => {
 
 const calculateChangeTypeFromMode = mode => {
     switch (mode) {
-        case 'prepend':
+        case 'before':
             return 'Neos.Neos.Ui:CreateBefore';
 
-        case 'append':
+        case 'after':
             return 'Neos.Neos.Ui:CreateAfter';
 
         default:
@@ -57,8 +57,8 @@ const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
     }
 
     switch (mode) {
-        case 'prepend':
-        case 'append': {
+        case 'before':
+        case 'after': {
             const parentElement = dom.closestNode(
                 dom.findNode(contextPath, fusionPath).parentNode
             );

@@ -1,10 +1,20 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
+use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Domain\Service as ContentRepository;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
-abstract class AbstractMove extends AbstractStructuralChange
+abstract class AbstractCopy extends AbstractStructuralChange
 {
+    /**
+     * @Flow\Inject
+     * @var ContentRepository\NodeServiceInterface
+     */
+    protected $contentRepositoryNodeService;
+
     /**
      * Checks whether this change can be merged with a subsequent change
      *
@@ -13,7 +23,7 @@ abstract class AbstractMove extends AbstractStructuralChange
      */
     public function canMerge(ChangeInterface $subsequentChange)
     {
-        if (!$subsequentChange instanceof AbstractMove) {
+        if (!$subsequentChange instanceof AbstractCopy) {
             return false;
         }
 
@@ -44,11 +54,20 @@ abstract class AbstractMove extends AbstractStructuralChange
      */
     public function canApply()
     {
-        $referenceNode = $this->getReference();
-        $referenceNodeParent = $referenceNode->getParent();
         $nodeType = $this->getSubject()->getNodeType();
 
-        return $referenceNode->getNodeType()->allowsChildNodeType($nodeType) &&
-            $referenceNodeParent->getNodeType()->allowsGrandchildNodeType($this->getSubject()->getName(), $nodeType);
+        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
+    }
+
+    /**
+     * Generate a unique node name for the copied node
+     *
+     * @param NodeInterface $parentNode
+     * @return string
+     */
+    protected function generateUniqueNodeName(NodeInterface $parentNode)
+    {
+        return $this->contentRepositoryNodeService
+            ->generateUniqueNodeName($parentNode->getPath(), $this->getSubject()->getName());
     }
 }

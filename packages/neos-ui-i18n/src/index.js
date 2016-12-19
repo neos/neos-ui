@@ -56,9 +56,11 @@ export default class I18n extends Component {
      * as its style is not superb.
      */
     substitutePlaceholders(textWithPlaceholders, parameters) {
+        const result = [];
         let startOfPlaceholder;
-        while ((startOfPlaceholder = textWithPlaceholders.indexOf('{')) !== -1) {
-            const endOfPlaceholder = textWithPlaceholders.indexOf('}');
+        let offset = 0;
+        while ((startOfPlaceholder = textWithPlaceholders.indexOf('{', offset)) !== -1) {
+            const endOfPlaceholder = textWithPlaceholders.indexOf('}', offset);
             const startOfNextPlaceholder = textWithPlaceholders.indexOf('{', startOfPlaceholder + 1);
 
             if (endOfPlaceholder === -1 || (startOfPlaceholder + 1) >= endOfPlaceholder || (startOfNextPlaceholder !== -1 && startOfNextPlaceholder < endOfPlaceholder)) {
@@ -85,10 +87,15 @@ export default class I18n extends Component {
                 break;
             }
 
-            textWithPlaceholders = textWithPlaceholders.replace('{' + contentBetweenBrackets + '}', formattedPlaceholder);
+            result.push(textWithPlaceholders.substr(offset, startOfPlaceholder - offset));
+            result.push(formattedPlaceholder);
+
+            offset = endOfPlaceholder + 1;
         }
 
-        return textWithPlaceholders;
+        result.push(textWithPlaceholders.substr(offset));
+
+        return result;
     }
 
     renderTranslation() {
@@ -104,7 +111,7 @@ export default class I18n extends Component {
             .reduce((prev, cur) => (prev ? prev[cur] || '' : ''), translations);
 
         if (translation && translation.length) {
-            if (params) {
+            if (Object.keys(params).length) {
                 return this.substitutePlaceholders(translation, params);
             }
             return translation;

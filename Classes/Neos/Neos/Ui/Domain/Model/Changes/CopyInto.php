@@ -1,7 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
-class MoveInto extends AbstractMove
+class CopyInto extends AbstractCopy
 {
     public function getMode()
     {
@@ -16,8 +16,9 @@ class MoveInto extends AbstractMove
     public function apply()
     {
         if ($this->canApply()) {
-            $this->getSubject()->moveInto($this->getReference());
-            $this->updateWorkspaceInfo();
+            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
+            $node = $this->getSubject()->copyInto($this->getParentNode(), $nodeName);
+            $this->finish($node);
         }
     }
 }

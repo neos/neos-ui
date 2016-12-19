@@ -44,7 +44,7 @@ export const referenceNodeGrandParentSelector = createSelector(
 
 /**
  * This selector returns a function which you need to pass in the node-Type-Registry, to
- * get back an object with keys "insert", "append" and "prepend".
+ * get back an object with keys "into", "after" and "before".
  */
 export const getAllowedNodeTypesByModeSelector = createSelector(
     [
@@ -56,22 +56,30 @@ export const getAllowedNodeTypesByModeSelector = createSelector(
         defaultMemoize(nodeTypesRegistry => {
             if (!referenceNode) {
                 return {
-                    insert: [],
-                    append: [],
-                    prepend: []
+                    into: [],
+                    after: [],
+                    before: []
                 };
             }
 
             const allowedNodeTypesByMode = {};
 
-            // INSERT
-            allowedNodeTypesByMode.insert = getAllowedNodeTypesTakingAutoCreatedIntoAccount(referenceNode, referenceNodeParent, nodeTypesRegistry);
+            // INTO
+            allowedNodeTypesByMode.into = getAllowedNodeTypesTakingAutoCreatedIntoAccount(
+                referenceNode,
+                referenceNodeParent,
+                nodeTypesRegistry
+            );
 
-            // APPEND
-            allowedNodeTypesByMode.append = getAllowedNodeTypesTakingAutoCreatedIntoAccount(referenceNodeParent, referenceNodeGrandParent, nodeTypesRegistry);
+            // AFTER
+            allowedNodeTypesByMode.after = getAllowedNodeTypesTakingAutoCreatedIntoAccount(
+                referenceNodeParent,
+                referenceNodeGrandParent,
+                nodeTypesRegistry
+            );
 
-            // PREPEND == append
-            allowedNodeTypesByMode.prepend = allowedNodeTypesByMode.append;
+            // BEFORE == after
+            allowedNodeTypesByMode.before = allowedNodeTypesByMode.after;
 
             return allowedNodeTypesByMode;
         }

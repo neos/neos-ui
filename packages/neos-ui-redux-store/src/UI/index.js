@@ -14,6 +14,7 @@ import * as PageTree from './PageTree/index';
 import * as ContentCanvas from './ContentCanvas/index';
 import * as Inspector from './Inspector/index';
 import * as Editors from './Editors/index';
+import * as InsertionModeModal from './InsertionModeModal/index';
 
 const all = {
     FlashMessages,
@@ -28,7 +29,8 @@ const all = {
     PageTree,
     ContentCanvas,
     Inspector,
-    Editors
+    Editors,
+    InsertionModeModal
 };
 
 //

@@ -3,7 +3,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
@@ -12,11 +11,8 @@ use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
-abstract class AbstractCreate extends AbstractChange
+abstract class AbstractCreate extends AbstractStructuralChange
 {
     /**
      * The type of the node that will be created
@@ -24,20 +20,6 @@ abstract class AbstractCreate extends AbstractChange
      * @var NodeType
      */
     protected $nodeType;
-
-    /**
-     * The node dom address for the parent node of the created node
-     *
-     * @var RenderedNodeDomAddress
-     */
-    protected $parentDomAddress;
-
-    /**
-     * The node dom address for the referenced sibling node of the created node
-     *
-     * @var RenderedNodeDomAddress
-     */
-    protected $siblingDomAddress;
 
     /**
      * @var NodeTypeManager
@@ -66,13 +48,6 @@ abstract class AbstractCreate extends AbstractChange
     protected $nodeService;
 
     /**
-     * Get the insertion mode (before|after|into) that is represented by this change
-     *
-     * @return string
-     */
-    abstract public function getMode();
-
-    /**
      * Set the node type
      *
      * @param string $nodeType
@@ -98,49 +73,6 @@ abstract class AbstractCreate extends AbstractChange
     public function getNodeType()
     {
         return $this->nodeType;
-    }
-
-
-    /**
-     * Set the parent node dom address
-     *
-     * @param RenderedNodeDomAddress $parentDomAddress
-     * @return void
-     */
-    public function setParentDomAddress(RenderedNodeDomAddress $parentDomAddress = null)
-    {
-        $this->parentDomAddress = $parentDomAddress;
-    }
-
-    /**
-     * Get the parent node dom address
-     *
-     * @return RenderedNodeDomAddress
-     */
-    public function getParentDomAddress()
-    {
-        return $this->parentDomAddress;
-    }
-
-    /**
-     * Set the sibling node dom address
-     *
-     * @param RenderedNodeDomAddress $siblingDomAddress
-     * @return void
-     */
-    public function setSiblingDomAddress(RenderedNodeDomAddress $siblingDomAddress = null)
-    {
-        $this->siblingDomAddress = $siblingDomAddress;
-    }
-
-    /**
-     * Get the sibling node dom address
-     *
-     * @return RenderedNodeDomAddress
-     */
-    public function getSiblingDomAddress()
-    {
-        return $this->siblingDomAddress;
     }
 
     /**
@@ -230,32 +162,7 @@ abstract class AbstractCreate extends AbstractChange
 
         $this->applyNodeCreationHandlers($node);
 
-        $this->persistenceManager->persistAll();
-
-        if ($nodeType->isOfType('Neos.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
-            if ($parent->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
-                $renderContentOutOfBand = new RenderContentOutOfBand();
-                $renderContentOutOfBand->setNode($node);
-                $renderContentOutOfBand->setParentDomAddress($this->getParentDomAddress());
-                $renderContentOutOfBand->setSiblingDomAddress($this->getSiblingDomAddress());
-                $renderContentOutOfBand->setMode($this->getMode());
-
-                $this->feedbackCollection->add($renderContentOutOfBand);
-            } else {
-                $flowQuery = new FlowQuery(array($node));
-                $closestDocument = $flowQuery->closest('[instanceof Neos.Neos:Document]')->get(0);
-
-                $reloadDocument = new ReloadDocument();
-                $reloadDocument->setDocument($closestDocument);
-
-                $this->feedbackCollection->add($reloadDocument);
-            }
-        }
-
-        $updateNodeInfo = new UpdateNodeInfo();
-        $updateNodeInfo->setNode($node);
-
-        $this->feedbackCollection->add($updateNodeInfo);
+        $this->finish($node);
 
         return $node;
     }

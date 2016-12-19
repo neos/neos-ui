@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext">
+		<body>
+			<trans-unit id="copy__from__to--title" xml:space="preserve">
+				<source>Copy {source} to {target}</source>
+			</trans-unit>
+			<trans-unit id="copy__from__to--description" xml:space="preserve">
+				<source>Please select the position at which you want {source} inserted relative to {target}.</source>
+			</trans-unit>
+			<trans-unit id="insert" xml:space="preserve">
+				<source>Insert</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

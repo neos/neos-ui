@@ -1,3 +1,5 @@
+import {$get} from 'plow-js';
+
 //
 // Helper function to determine allowed node types
 //
@@ -5,13 +7,16 @@ export const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode, parent
     if (!baseNode) {
         return [];
     }
-    if (baseNode.isAutoCreated) {
+    if ($get('isAutoCreated', baseNode)) {
         if (!parentOfBaseNode) {
             return [];
         }
-        return nodeTypesRegistry.getAllowedGrandChildNodeTypes(parentOfBaseNode.nodeType, baseNode.name);
+        return nodeTypesRegistry.getAllowedGrandChildNodeTypes(
+            $get('nodeType', parentOfBaseNode),
+            $get('name', baseNode)
+        );
     }
 
     // not auto created
-    return nodeTypesRegistry.getAllowedChildNodeTypes(baseNode.nodeType);
+    return nodeTypesRegistry.getAllowedChildNodeTypes($get('nodeType', baseNode));
 };

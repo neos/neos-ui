@@ -4,6 +4,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 
 /**
@@ -72,6 +73,11 @@ class Remove extends AbstractChange
             $removeNode->setNode($node);
 
             $this->feedbackCollection->add($removeNode);
+
+            $updateParentNodeInfo = new UpdateNodeInfo();
+            $updateParentNodeInfo->setNode($node->getParent());
+
+            $this->feedbackCollection->add($updateParentNodeInfo);
         }
     }
 }

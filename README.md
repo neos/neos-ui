@@ -56,6 +56,7 @@ You can use this composer.json for that.
         "phpunit/phpunit": "~4.8 || ~5.4.0",
         "symfony/css-selector": "~2.0",
         "flowpack/behat": "dev-master",
+        "neos/neos-ui-compiled": "dev-master",
         "neos/neos-ui": "dev-master"
     },
     "suggest": {
@@ -74,18 +75,10 @@ You can use this composer.json for that.
 
 2. Run the following commands:
    ```
-   composer require neos/neos-ui:dev-master # install our package (you only need this, if you are NOT using the composer.json from above)
+   # install our package (you only need this, if you are NOT using the composer.json from above)
+   composer require neos/neos-ui-compiled:dev-master neos/neos-ui:dev-master
    ```
 
-3. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`
-   ```yaml
-  -
-    name: 'Neos UI'
-    uriPattern: '<NeosUiSubroutes>'
-    subRoutes:
-      'NeosUiSubroutes':
-        package: 'Neos.Neos.Ui'
-   ```
 
 Now you are all set up and can open the sub-route `/neos!` to login to the new interface.
 

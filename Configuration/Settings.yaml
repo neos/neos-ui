@@ -6,7 +6,7 @@ Neos:
         autoInclude:
           'Neos.Neos.Ui':
             - Main
-    typoScript:
+    fusion:
       autoInclude:
         Neos.Neos.Ui: true
     Ui:

@@ -170,7 +170,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         // Serialize boolean values to String
         if ($dataType === 'boolean') {
-            return $propertyValue ? 'true' : 'false';
+            return (bool) $propertyValue;
         }
 
         // Serialize array values to String

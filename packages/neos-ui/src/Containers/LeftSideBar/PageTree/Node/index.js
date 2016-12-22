@@ -24,6 +24,7 @@ export default class Node extends PureComponent {
             isActive: PropTypes.bool.isRequired,
             isFocused: PropTypes.bool.isRequired,
             isLoading: PropTypes.bool.isRequired,
+            isHidden: PropTypes.bool.isRequired,
             hasError: PropTypes.bool.isRequired,
             label: PropTypes.string.isRequired,
             icon: PropTypes.string,

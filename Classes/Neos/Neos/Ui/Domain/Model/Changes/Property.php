@@ -28,7 +28,7 @@ class Property extends AbstractChange
     /**
      * The value, the property will be set to
      *
-     * @var mixed
+     * @var string
      */
     protected $value;
 
@@ -56,7 +56,7 @@ class Property extends AbstractChange
     /**
      * Set the value
      *
-     * @param mixed $value
+     * @param string $value
      */
     public function setValue($value)
     {
@@ -66,7 +66,7 @@ class Property extends AbstractChange
     /**
      * Get the value
      *
-     * @return mixed
+     * @return string
      */
     public function getValue()
     {
@@ -137,7 +137,11 @@ class Property extends AbstractChange
             $value = $this->nodePropertyConversionService->convert(
                 $node->getNodeType(), $this->getPropertyName(), $this->getValue(), $node->getContext());
 
-            $node->setProperty($this->getPropertyName(), $value);
+            if ($this->getPropertyName() === '_hidden') {
+                $node->setHidden($value);
+            } else {
+                $node->setProperty($this->getPropertyName(), $value);
+            }
 
             $this->updateWorkspaceInfo();
             if ($node->getNodeType()->getConfiguration('properties.' . $this->getPropertyName() . '.ui.reloadIfChanged')) {

@@ -22,6 +22,10 @@
 .header__chevron--isCollapsed {
     transform: translateY(-35%) translateX(-25%) rotate(-90deg);
 }
+.header__chevron--isHiddenInIndex,
+.header__data--isHidden {
+    opacity: .5;
+}
 
 .header__chevron--isLoading,
 .header__chevron--isLoading:hover {
@@ -34,8 +38,20 @@
     cursor: pointer;
 }
 
+.header__data--isHiddenInIndex {
+    opacity: .5;
+}
+.header__data--isHidden {
+    opacity: .5;
+    text-decoration: line-through;
+}
 .header__data--isFocused {
     background: var(--brandColorsContrastNeutral);
+
+    &.header__data--isHiddenInIndex,
+    &.header__data--isHidden {
+        opacity: .8;
+    }
 }
 .header__label {
     composes: reset from './../reset.css';

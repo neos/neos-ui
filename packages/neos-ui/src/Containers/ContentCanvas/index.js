@@ -145,6 +145,13 @@ export default class ContentCanvas extends PureComponent {
         //
         const components = iframeDocument.querySelectorAll('[data-__neos-node-contextpath]');
         Array.prototype.forEach.call(components, node => {
+            const contextPath = node.getAttribute('data-__neos-node-contextpath');
+            const isHidden = $get([contextPath, 'properties', '_hidden'], documentInformation.nodes);
+
+            if (isHidden) {
+                node.classList.add(style.markHiddenNodeAsHidden);
+            }
+
             node.addEventListener('mouseenter', e => {
                 const oldNode = iframeDocument.querySelector(`.${style.markHoveredNodeAsHovered}`);
                 if (oldNode) {

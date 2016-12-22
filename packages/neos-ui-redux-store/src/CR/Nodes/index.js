@@ -17,6 +17,8 @@ const REMOVE = '@neos/neos-ui/Transient/Nodes/REMOVE';
 const COPY = '@neos/neos-ui/Transient/Nodes/COPY';
 const CUT = '@neos/neos-ui/Transient/Nodes/CUT';
 const PASTE = '@neos/neos-ui/Transient/Nodes/PASTE';
+const HIDE = '@neos/neos-ui/Transient/Nodes/HIDE';
+const SHOW = '@neos/neos-ui/Transient/Nodes/SHOW';
 
 //
 // Export the action types
@@ -31,7 +33,9 @@ export const actionTypes = {
     REMOVE,
     COPY,
     CUT,
-    PASTE
+    PASTE,
+    HIDE,
+    SHOW
 };
 
 /**
@@ -101,6 +105,20 @@ const cut = createAction(CUT, contextPath => contextPath);
  */
 const paste = createAction(PASTE, (contextPath, fusionPath) => ({contextPath, fusionPath}));
 
+/**
+ * Hide the given node
+ *
+ * @param {String} contextPath The context path of the node to be hidden
+ */
+const hide = createAction(HIDE, contextPath => contextPath);
+
+/**
+ * Show the given node
+ *
+ * @param {String} contextPath The context path of the node to be shown
+ */
+const show = createAction(SHOW, contextPath => contextPath);
+
 //
 // Export the actions
 //
@@ -114,7 +132,9 @@ export const actions = {
     remove,
     copy,
     cut,
-    paste
+    paste,
+    hide,
+    show
 };
 
 //
@@ -158,7 +178,9 @@ export const reducer = handleActions({
     [REMOVE]: contextPath => $drop(['cr', 'nodes', 'byContextPath', contextPath]),
     [COPY]: contextPath => $set('cr.nodes.clipboard', contextPath),
     [CUT]: contextPath => $set('cr.nodes.clipboard', contextPath),
-    [PASTE]: () => $set('cr.nodes.clipboard', '')
+    [PASTE]: () => $set('cr.nodes.clipboard', ''),
+    [HIDE]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], true),
+    [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false)
 });
 
 //

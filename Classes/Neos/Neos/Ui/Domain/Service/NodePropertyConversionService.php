@@ -157,8 +157,8 @@ class NodePropertyConversionService
      */
     protected function convertBoolean($rawValue)
     {
-        if (is_string($rawValue)) {
-            return strtolower($rawValue) === 'true' ? true : false;
+        if (is_string($rawValue) && strtolower($rawValue) === 'false') {
+            return  false;
         }
 
         return (bool) $rawValue;

@@ -20,24 +20,12 @@
 
 1. You need to have latest Neos CMS 3.0 up & running.
 
-
-
 2. Run the following commands:
    ```
    composer require neos/neos-ui:dev-master neos/neos-ui-compiled:dev-master # install our package
    ```
 
-3. Paste the following configuration into the **head** of your global `Routes.yaml` which is located in `Configuration/`
-   ```yaml
-  -
-    name: 'Neos UI'
-    uriPattern: '<NeosUiSubroutes>'
-    subRoutes:
-      'NeosUiSubroutes':
-        package: 'Neos.Neos.Ui'
-   ```
-
-Now you are all set up and can open the sub-route `/neos!` to login to the new interface.
+3. Now you are all set up and can open the sub-route `/neos!` to login to the new interface.
 
 
 ### Use Docker image

@@ -134,6 +134,10 @@ Neos:
                 pattern: ControllerObjectName
                 patternOptions:
                   controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*|Neos\Neos\Controller\.*|Neos\Neos\Service\.*|Neos\Media\Controller\.*'
+    mvc:
+      routes:
+        'Neos.Neos.Ui':
+          position: 'before Neos.Neos'
   Fusion:
     defaultContext:
       Neos.Ui.Activation: Neos\Neos\Ui\Fusion\Helper\ActivationHelper

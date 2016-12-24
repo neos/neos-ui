@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Maybe} from 'monet';
 import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
@@ -11,6 +12,7 @@ import style from './style.css';
 export default class PropertyGroup extends Component {
     static propTypes = {
         label: PropTypes.string.isRequired,
+        icon: PropTypes.string,
         properties: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
         validationErrors: PropTypes.object,
@@ -21,7 +23,7 @@ export default class PropertyGroup extends Component {
     };
 
     render() {
-        const {properties, label, renderSecondaryInspector, transient, validationErrors, node, commit} = this.props;
+        const {properties, label, icon, renderSecondaryInspector, transient, validationErrors, node, commit} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
@@ -29,6 +31,7 @@ export default class PropertyGroup extends Component {
         const propertyGroup = properties => (
             <ToggablePanel isOpen={true} className={sidebarStyle.rightSideBar__section}>
                 <ToggablePanel.Header theme={headerTheme}>
+                    {icon && <Icon icon={icon} padded="right"/>}
                     <I18n id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>

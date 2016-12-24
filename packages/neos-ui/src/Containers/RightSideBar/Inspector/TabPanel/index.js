@@ -26,6 +26,7 @@ export default class TabPanel extends Component {
                         <PropertyGroup
                             key={group.id}
                             label={group.label}
+                            icon={group.icon}
                             properties={group.properties}
                             renderSecondaryInspector={renderSecondaryInspector}
                             node={node}

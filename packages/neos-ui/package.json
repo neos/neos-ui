@@ -78,6 +78,7 @@
     "lodash.memoize": "^4.1.2",
     "lodash.merge": "^4.6.0",
     "lodash.omit": "^4.5.0",
+    "lodash.unescape": "4.0.1",
     "mime-types": "^2.1.10",
     "moment": "^2.14.1",
     "monet": "^0.8.10",

@@ -1,6 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import Label from '@neos-project/react-ui-components/lib/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
+import {i18nService} from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
@@ -15,6 +16,9 @@ export default class EditorEnvelope extends PureComponent {
         value: PropTypes.any,
         renderSecondaryInspector: PropTypes.func,
         editorRegistry: PropTypes.object.isRequired,
+        packageKey: PropTypes.string.isRequired,
+        sourceName: PropTypes.string.isRequired,
+        translations: PropTypes.object.isRequired,
         validationErrors: PropTypes.array,
 
         commit: PropTypes.func.isRequired
@@ -25,8 +29,10 @@ export default class EditorEnvelope extends PureComponent {
     }
 
     renderEditorComponent() {
-        const {editor, editorRegistry} = this.props;
+        const {editor, editorRegistry, translations, packageKey, sourceName} = this.props;
         const editorDefinition = editorRegistry.get(editor);
+
+        const translate = i18nService(translations, packageKey, sourceName);
 
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;
@@ -34,6 +40,7 @@ export default class EditorEnvelope extends PureComponent {
             return (
                 <EditorComponent
                     {...this.props}
+                    translate={translate}
                     />
             );
         }

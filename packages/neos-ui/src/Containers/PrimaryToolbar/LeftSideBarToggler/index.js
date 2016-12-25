@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 import Button from '@neos-project/react-ui-components/lib/Button/';
+import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -37,7 +38,7 @@ export default class LeftSideBarToggler extends PureComponent {
                 isFocused={isActive}
                 onClick={toggleSidebar}
                 >
-                <I18n id="navigate" fallback="Navigate"/>
+                <Icon className={style.icon} icon="location-arrow"/> <I18n id="navigate" fallback="Navigate"/>
             </Button>
         );
     }

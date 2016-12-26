@@ -1542,6 +1542,22 @@ const MIGRATION_PATH = [
     {
         deprecated: ['icon-files-o'],
         name: 'fa-files-o'
+    },
+    {
+        deprecated: ['icon-paint-brush'],
+        name: 'fa-paint-brush'
+    },
+    {
+        deprecated: ['icon-language'],
+        name: 'fa-language'
+    },
+    {
+        deprecated: ['icon-image'],
+        name: 'fa-image'
+    },
+    {
+        deprecated: ['icon-eye'],
+        name: 'fa-eye'
     }
 ];
 

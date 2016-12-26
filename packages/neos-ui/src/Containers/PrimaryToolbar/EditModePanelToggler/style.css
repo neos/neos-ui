@@ -2,4 +2,5 @@
     transform: translateY(1px);
     padding-bottom: 2px;
     color: var(--brandColorsPrimaryBlue);
+    background-color: var(--brandColorsContrastDarkest);
 }

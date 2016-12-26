@@ -5,3 +5,21 @@
         height: 100%;
     }
 }
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: var(--brandColorsContrastDark);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--brandColorsContrastDarker);
+	border: 1px solid var(--brandColorsContrastDark);
+}
+
+::-webkit-scrollbar-corner {
+	background-color: var(--brandColorsContrastDark);
+}

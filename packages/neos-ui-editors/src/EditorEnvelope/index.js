@@ -1,7 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import Label from '@neos-project/react-ui-components/lib/Label/';
-import I18n from '@neos-project/neos-ui-i18n';
-import {i18nService} from '@neos-project/neos-ui-i18n';
+import I18n, {i18nService} from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({

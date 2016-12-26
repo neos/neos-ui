@@ -1,6 +1,3 @@
-.wrap {
-    margin-bottom: var(--spacing);
-}
 .textInput {
     composes: reset from './../reset.css';
     width: 100%;

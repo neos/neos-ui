@@ -73,7 +73,7 @@ class TextInput extends PureComponent {
         });
 
         return (
-            <div className={theme.wrap}>
+            <div>
                 <input
                     {...rest}
                     className={classNames}

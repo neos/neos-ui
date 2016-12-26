@@ -63,7 +63,7 @@ class TextArea extends PureComponent {
         });
 
         return (
-            <div className={theme.wrap}>
+            <div>
                 <TextareaAutoresize
                     {...rest}
                     className={classNames}

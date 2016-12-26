@@ -1,5 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {$get} from 'plow-js';
+import style from './style.css';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 
 /**
@@ -47,13 +48,15 @@ export default class InspectorEditorEnvelope extends PureComponent {
             transientValueRaw.toJS() : transientValueRaw;
 
         return (
-            <EditorEnvelope
-                {...otherProps}
-                identifier={id}
-                value={transientValue ? transientValue.value : sourceValue}
-                hooks={transientValue ? transientValue.hooks : null}
-                commit={this.onHandleCommit}
-                />
+            <div className={style.wrap}>
+                <EditorEnvelope
+                    {...otherProps}
+                    identifier={id}
+                    value={transientValue ? transientValue.value : sourceValue}
+                    hooks={transientValue ? transientValue.hooks : null}
+                    commit={this.onHandleCommit}
+                    />
+            </div>
         );
     }
 }

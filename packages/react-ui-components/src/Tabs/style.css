@@ -36,6 +36,8 @@
 .tabNavigation__item--isActive {
     background-color: var(--brandColorsContrastDarker);
     cursor: default;
+    border-bottom: 1px solid var(--brandColorsPrimaryBlue);
+    margin-bottom: -1px;
 
     > .tabNavigation__itemBtn {
         color: var(--brandColorsPrimaryBlue);

@@ -105,7 +105,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             ...subject,
             id
         }));
-        const getPosition = subject => subject.ui ? subject.ui.position : subject.position;
+        const getPosition = subject => ($get(['ui', 'inspector', 'position'], subject) || $get(['ui', 'position'], subject) || $get('position', subject));
         const positionalArraySorter = sort((a, b) => (getPosition(a) - getPosition(b)) || (a.id - b.id));
         const getNormalizedDeepStructureFromNodeType = path => compose(
             positionalArraySorter,

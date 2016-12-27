@@ -5,6 +5,8 @@ import {$transform, $get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import unescape from 'lodash.unescape';
+import {i18nService} from '@neos-project/neos-ui-i18n';
 
 import Frame from '@neos-project/react-ui-components/lib/Frame/';
 
@@ -54,7 +56,10 @@ export default class ContentCanvas extends PureComponent {
         persistChange: PropTypes.func.isRequired,
         byContextPathDynamicAccess: PropTypes.func.isRequired,
         formattingRulesRegistry: PropTypes.object.isRequired,
-        nodeTypesRegistry: PropTypes.object.isRequired
+        nodeTypesRegistry: PropTypes.object.isRequired,
+        packageKey: PropTypes.string.isRequired,
+        sourceName: PropTypes.string.isRequired,
+        translations: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -121,8 +126,13 @@ export default class ContentCanvas extends PureComponent {
             unFocusNode,
             persistChange,
             formattingRulesRegistry,
-            nodeTypesRegistry
+            nodeTypesRegistry,
+            translations,
+            packageKey,
+            sourceName
         } = this.props;
+
+        const translate = i18nService(translations, packageKey, sourceName);
 
         //
         // First of all, set the new version of the guest frame window object to the store.
@@ -219,7 +229,9 @@ export default class ContentCanvas extends PureComponent {
             }
 
             const nodeFormattingRules = this.calculateEnabledFormattingRulesForNodeType(node.nodeType);
-            const placeholder = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get(node.nodeType));
+            const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get(node.nodeType));
+            const placeholder = unescape(translate(placeholderLabel));
+
             const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];
 
             // Build up editor config for each enabled formatting

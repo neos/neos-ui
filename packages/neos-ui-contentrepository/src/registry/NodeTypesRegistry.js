@@ -53,8 +53,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
 
         // Distribute nodetypes into groups
         const groups = nodeTypes.reduce((groups, nodeType) => {
-            // Fallback to 'general' group
-            const groupName = nodeType.ui && nodeType.ui.group ? nodeType.ui.group : 'general';
+            const groupName = nodeType.ui && nodeType.ui.group;
             if (groupName in this._groups) {
                 const group = groups[groupName] || Object.assign({}, this._groups[groupName]);
 

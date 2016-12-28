@@ -5,3 +5,8 @@
     padding-left: 0;
     padding-right: 0;
 }
+
+.size-small {
+    width: 32px;
+    min-width: 32px;
+}

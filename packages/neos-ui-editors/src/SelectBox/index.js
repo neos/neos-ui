@@ -6,7 +6,8 @@ class SelectBoxEditor extends PureComponent {
     static propTypes = {
         commit: PropTypes.func.isRequired,
         value: PropTypes.any,
-        options: PropTypes.any.isRequired
+        options: PropTypes.any.isRequired,
+        translate: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -16,18 +17,26 @@ class SelectBoxEditor extends PureComponent {
     }
 
     render() {
-        const {commit, value} = this.props;
-        const options = Object.keys(this.props.options.values)
+        const {commit, value, options, translate} = this.props;
+        const selectBoxOptions = Object.keys(this.props.options.values)
             // Filter out items without a label
-            .map(k => this.props.options.values[k].label && Object.assign(
+            .map(k => options.values[k].label && Object.assign(
                 {value: k},
-                this.props.options.values[k],
-                {label: <I18n id={this.props.options.values[k].label}/>}
+                options.values[k],
+                {label: <I18n id={options.values[k].label}/>}
             )
         ).filter(k => k);
+        // Placeholder text must be unescaped in case html entities were used
+        const placeholder = options && options.placeholder && translate(unescape(options.placeholder));
         const onDelete = value ? this.handleDelete : null;
 
-        return <SelectBox options={options} value={value} onSelect={commit} onDelete={onDelete}/>;
+        return (<SelectBox
+            options={selectBoxOptions}
+            value={value}
+            onSelect={commit}
+            onDelete={onDelete}
+            placeholder={placeholder}
+            />);
     }
 }
 

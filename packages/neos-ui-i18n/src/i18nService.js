@@ -57,7 +57,7 @@ const substitutePlaceholders = function (textWithPlaceholders, parameters) {
     return result;
 };
 
-const makeTranslate = (translations, packageKeyOrig, sourceNameOrig) => (
+const makeTranslate = (translations, packageKeyOrig = null, sourceNameOrig = null) => (
     (idOrig, fallbackOrig, params = {}) => {
         const fallback = fallbackOrig || idOrig;
         const [packageKey, sourceName, id] = getTranslationAddress(idOrig, packageKeyOrig, sourceNameOrig);

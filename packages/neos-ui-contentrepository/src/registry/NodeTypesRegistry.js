@@ -51,30 +51,23 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return nodeTypeFilter.indexOf(nodeType.name) !== -1;
         }) : Object.values(this._registry);
 
-        // Distribute nodetypes into groups
-        const groups = nodeTypes.reduce((groups, nodeType) => {
-            const groupName = nodeType.ui && nodeType.ui.group;
-            if (groupName in this._groups) {
-                const group = groups[groupName] || Object.assign({}, this._groups[groupName]);
+        // It's important to preserve the ordering of `this._groups` as we can't sort them again by position in JS (sorting logic is too complex)
+        return Object.keys(this._groups).map(groupName => {
+            // If a nodetype does not have group defined it means it's a system nodetype like "unstrctured"
+            const nodesForGroup = nodeTypes
+                // Filter by current group
+                .filter(i => $get('ui.group', i) === groupName)
+                // Sort nodetypes within group by position
+                .sort((a, b) => $get('ui.position', a) > $get('ui.position', b) ? 1 : -1);
 
-                if (!group.nodeTypes) {
-                    group.nodeTypes = [];
-                }
-                group.nodeTypes.push(nodeType);
-                groups[groupName] = group;
+            if (nodesForGroup.length > 0) {
+                const group = Object.assign({}, this._groups[groupName]);
+                group.nodeTypes = nodesForGroup;
+                group.name = groupName;
+                return group;
             }
-
-            return groups;
-        }, {});
-
-        // Sort both groups and nodetypes within the group and return as array
-        return Object.keys(groups).map(i => {
-            if (groups[i].nodeTypes) {
-                groups[i].nodeTypes.sort((a, b) => $get('ui.position', a) > $get('ui.position', b) ? 1 : -1);
-            }
-            groups[i].name = i;
-            return groups[i];
-        }).filter(i => i.nodeTypes).sort((a, b) => $get('position', a) > $get('position', b) ? 1 : -1);
+            return null;
+        }).filter(i => i);
     }
 
     isOfType(nodeTypeName, referenceNodeTypeName) {

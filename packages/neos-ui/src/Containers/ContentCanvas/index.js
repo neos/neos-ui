@@ -57,8 +57,6 @@ export default class ContentCanvas extends PureComponent {
         byContextPathDynamicAccess: PropTypes.func.isRequired,
         formattingRulesRegistry: PropTypes.object.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
-        packageKey: PropTypes.string.isRequired,
-        sourceName: PropTypes.string.isRequired,
         translations: PropTypes.object.isRequired
     };
 
@@ -127,12 +125,10 @@ export default class ContentCanvas extends PureComponent {
             persistChange,
             formattingRulesRegistry,
             nodeTypesRegistry,
-            translations,
-            packageKey,
-            sourceName
+            translations
         } = this.props;
 
-        const translate = i18nService(translations, packageKey, sourceName);
+        const translate = i18nService(translations);
 
         //
         // First of all, set the new version of the guest frame window object to the store.

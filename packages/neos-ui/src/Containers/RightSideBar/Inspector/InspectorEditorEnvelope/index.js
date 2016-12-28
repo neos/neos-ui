@@ -40,7 +40,8 @@ export default class InspectorEditorEnvelope extends PureComponent {
 
     render() {
         const {node, id, transient, ...otherProps} = this.props;
-        const sourceValueRaw = $get(['properties', id], node);
+        // If property id starts with "_" then look in object properties directly
+        const sourceValueRaw = id.slice(0, 1) === '_' ? node[id.slice(1)] : $get(['properties', id], node);
         const sourceValue = sourceValueRaw && sourceValueRaw.toJS ?
             sourceValueRaw.toJS() : sourceValueRaw;
         const transientValueRaw = $get([id], transient);

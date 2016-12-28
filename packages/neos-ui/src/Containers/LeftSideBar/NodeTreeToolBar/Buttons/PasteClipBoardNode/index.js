@@ -19,7 +19,7 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 export default class PasteClipBoardNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
-        canBePasted: PropTypes.bool,
+        canBePasted: PropTypes.func.isRequired,
         focusedNodeContextPath: PropTypes.string,
         clipboardNodeContextPath: PropTypes.string,
         nodeTypesRegistry: PropTypes.object.isRequired,

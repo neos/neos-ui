@@ -15,8 +15,6 @@ export default class EditorEnvelope extends PureComponent {
         value: PropTypes.any,
         renderSecondaryInspector: PropTypes.func,
         editorRegistry: PropTypes.object.isRequired,
-        packageKey: PropTypes.string.isRequired,
-        sourceName: PropTypes.string.isRequired,
         translations: PropTypes.object.isRequired,
         validationErrors: PropTypes.array,
 
@@ -28,10 +26,10 @@ export default class EditorEnvelope extends PureComponent {
     }
 
     renderEditorComponent() {
-        const {editor, editorRegistry, translations, packageKey, sourceName} = this.props;
+        const {editor, editorRegistry, translations} = this.props;
         const editorDefinition = editorRegistry.get(editor);
 
-        const translate = i18nService(translations, packageKey, sourceName);
+        const translate = i18nService(translations);
 
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;

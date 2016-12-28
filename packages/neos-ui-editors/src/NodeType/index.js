@@ -20,16 +20,19 @@ export default class NodeType extends Component {
         commit: PropTypes.func.isRequired,
 
         getAllowedSiblingNodeTypesForFocusedNode: PropTypes.func,
-        nodeTypesRegistry: PropTypes.object
+        nodeTypesRegistry: PropTypes.object,
+        translate: PropTypes.func.isRequired
     }
 
     render() {
-        const {value, commit, nodeTypesRegistry, getAllowedSiblingNodeTypesForFocusedNode} = this.props;
+        const {value, commit, nodeTypesRegistry, getAllowedSiblingNodeTypesForFocusedNode, translate} = this.props;
         const options = getAllowedSiblingNodeTypesForFocusedNode(nodeTypesRegistry)
-            .filter(nodeType => nodeTypesRegistry.get(nodeType))
+            // Filter out system nodetypes (i.e. without groups)
+            // ToDo: move this logic to some more generic place, maybe nodeTypesRegistry
+            .filter(nodeType => $get('ui.group', nodeTypesRegistry.get(nodeType)))
             .map(nodeType => ({
                 icon: $get('ui.icon', nodeTypesRegistry.get(nodeType)),
-                label: $get('ui.label', nodeTypesRegistry.get(nodeType)) || nodeType,
+                label: translate($get('ui.label', nodeTypesRegistry.get(nodeType))) || nodeType,
                 value: nodeType
             }));
 
@@ -39,7 +42,7 @@ export default class NodeType extends Component {
 
         return (
             <div className={style.noOptionsAvailable}>
-                {$get('ui.label', nodeTypesRegistry.get(value))}
+                {translate($get('ui.label', nodeTypesRegistry.get(value)))}
             </div>
         );
     }

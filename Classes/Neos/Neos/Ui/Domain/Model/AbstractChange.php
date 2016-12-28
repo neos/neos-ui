@@ -95,13 +95,13 @@ abstract class AbstractChange implements ChangeInterface
 
     /**
      * Inform the client that a node has been created, the client decides if and which tree should react to this change.
-     *
+     * @param NodeInterface $subject
      * @return void
      */
-    protected function addDocumentNodeCreatedFeedback()
+    protected function addDocumentNodeCreatedFeedback($subject = null)
     {
+        $node = $subject ?: $this->getSubject();
         $nodeService = new NodeService();
-        $node = $nodeService->getClosestDocument($this->getSubject());
 
         if ($nodeService->isDocument($node)) {
             $documentNodeCreated = new DocumentNodeCreated();

@@ -7,6 +7,7 @@
 export default {
     bar: '@neos-project/react-ui-components/bar',
     button: '@neos-project/react-ui-components/button',
+    buttonGroup: '@neos-project/react-ui-components/buttonGroup',
     checkBox: '@neos-project/react-ui-components/checkBox',
     dateInput: '@neos-project/react-ui-components/dateInput',
     dialog: '@neos-project/react-ui-components/dialog',

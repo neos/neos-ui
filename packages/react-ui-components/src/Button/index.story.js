@@ -19,6 +19,7 @@ storiesOf('Button', module)
                     isActive={boolean('Active', false)}
                     isDisabled={boolean('Disabled', false)}
                     isFocused={boolean('Focused', false)}
+                    isPressed={boolean('Pressed', false)}
                     style={select('Style', validStyleKeys, 'clean')}
                     size={select('Size', validSizes, 'regular')}
                     hoverStyle={select('Hover style', validHoverStyleKeys, 'clean')}

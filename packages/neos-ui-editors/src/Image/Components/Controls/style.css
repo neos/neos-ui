@@ -1,3 +1,6 @@
 .cropButton {
     float: right;
 }
+.button {
+    margin-right: var(--quarterSpacing);
+}

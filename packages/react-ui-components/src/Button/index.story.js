@@ -6,6 +6,7 @@ import Button from './index.js';
 
 const validStyleKeys = ['clean', 'brand', 'lighter', 'transparent'];
 const validHoverStyleKeys = ['clean', 'brand', 'darken'];
+const validSizes = ['small', 'regular'];
 
 storiesOf('Button', module)
     .addDecorator(withKnobs)
@@ -19,6 +20,7 @@ storiesOf('Button', module)
                     isDisabled={boolean('Disabled', false)}
                     isFocused={boolean('Focused', false)}
                     style={select('Style', validStyleKeys, 'clean')}
+                    size={select('Size', validSizes, 'regular')}
                     hoverStyle={select('Hover style', validHoverStyleKeys, 'clean')}
                     onClick={action('onClick')}
                     onMouseEnter={action('onMouseEnter')}

@@ -8,12 +8,17 @@ const IconButton = props => {
         className,
         theme,
         icon,
+        size,
         ...rest
     } = props;
-    const finalClassName = mergeClassNames(theme.iconButton, className);
+    const finalClassName = mergeClassNames({
+        [className]: className && className.length,
+        [theme.iconButton]: true,
+        [theme[`size-${size}`]]: true
+    });
 
     return (
-        <ButtonComponent {...rest} className={finalClassName}>
+        <ButtonComponent {...rest} size={size} className={finalClassName}>
             <IconComponent icon={icon}/>
         </ButtonComponent>
     );
@@ -30,6 +35,11 @@ IconButton.propTypes = {
     className: PropTypes.string,
 
     /**
+     * Defines the size of the icon button.
+     */
+    size: PropTypes.oneOf(['small', 'regular']),
+
+    /**
     * An optional css theme to be injected.
     */
     theme: PropTypes.shape({/* eslint-disable quote-props */
@@ -43,6 +53,7 @@ IconButton.propTypes = {
     ButtonComponent: PropTypes.any.isRequired
 };
 IconButton.defaultProps = {
+    size: 'regular',
     style: 'transparent',
     hoverStyle: 'brand'
 };

@@ -49,20 +49,20 @@ export const getTreeNodeSelector = createSelector(
         loadingNodeContextPaths,
         errorNodeContextPaths,
         state
-    ) => (contextPath, nodeTypeFilter = []) => {
+    ) => (contextPath, nodeTypeFilterForChildren = []) => {
         //
         // Try to grab the node
         //
         const node = nodes.byContextPathSelector(contextPath)(state);
         const isNodeTypeValid = nodeType => Boolean(
-            nodeTypeFilter.length === 0 ||
-            nodeTypeFilter.indexOf(nodeType) > -1
+            nodeTypeFilterForChildren.length === 0 ||
+            nodeTypeFilterForChildren.indexOf(nodeType) > -1
         );
 
         //
-        // Check if the requested node is existent and has the correct node type
+        // Check if the requested node is existent
         //
-        if (node && isNodeTypeValid($get('nodeType', node))) {
+        if (node) {
             //
             // Check for valid child nodes
             //

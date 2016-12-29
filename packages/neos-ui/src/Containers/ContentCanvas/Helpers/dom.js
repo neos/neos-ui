@@ -1,3 +1,5 @@
+import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
+
 //
 // Helper functions for dom operations within the guest frame.
 // Functions are curried, to enable lazy execution.
@@ -27,6 +29,13 @@ export const findNode = (contextPath, fusionPath) => find(
     `[data-__neos-node-contextpath="${contextPath}"][data-__neos-typoscript-path="${fusionPath}"]`
 );
 
+export const findOneFusionPathForContextPath = contextPath => {
+    const el = find(
+        `[data-__neos-node-contextpath="${contextPath}"]`
+    );
+    return el && el.dataset && el.dataset.__neosTyposcriptPath;
+};
+
 export const closestNode = el => {
     if (!el) {
         return null;
@@ -43,4 +52,8 @@ export const closestContextPath = el => {
     }
 
     return dom.dataset.__neosNodeContextpath;
+};
+export const moveIntoView = el => {
+
+    // TODO implement
 };

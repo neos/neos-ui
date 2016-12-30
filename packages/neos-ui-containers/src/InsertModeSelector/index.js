@@ -4,7 +4,9 @@ import ButtonGroup from '@neos-project/react-ui-components/lib/ButtonGroup/';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 import {neos} from '@neos-project/neos-ui-decorators';
-import {i18nService} from '@neos-project/neos-ui-i18n';
+import I18n, {i18nService} from '@neos-project/neos-ui-i18n';
+
+import style from './style.css';
 
 const MODE_AFTER = 'after';
 const MODE_BEFORE = 'before';
@@ -79,29 +81,35 @@ export default class InsertModeSelector extends PureComponent {
         }
 
         return (
-            <ButtonGroup value={mode} onSelect={this.handleSelect}>
-                <IconButton
-                    id={MODE_BEFORE}
-                    isDisabled={!enableAlongsideModes}
-                    style="lighter"
-                    icon="level-up"
-                    title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('before')}`}
-                    />
-                <IconButton
-                    id={MODE_INTO}
-                    isDisabled={!enableIntoMode}
-                    style="lighter"
-                    icon="long-arrow-right"
-                    title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('into')}`}
-                    />
-                <IconButton
-                    id={MODE_AFTER}
-                    isDisabled={!enableAlongsideModes}
-                    style="lighter"
-                    icon="level-down"
-                    title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('after')}`}
-                    />
-            </ButtonGroup>
+            <div className={style.root}>
+                <I18n id="Neos.Neos.Ui:Main:insertMode"/>:&nbsp;
+                <ButtonGroup value={mode} onSelect={this.handleSelect}>
+                    <IconButton
+                        id={MODE_BEFORE}
+                        isDisabled={!enableAlongsideModes}
+                        style="lighter"
+                        size="small"
+                        icon="level-up"
+                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('before')}`}
+                        />
+                    <IconButton
+                        id={MODE_INTO}
+                        isDisabled={!enableIntoMode}
+                        style="lighter"
+                        size="small"
+                        icon="long-arrow-right"
+                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('into')}`}
+                        />
+                    <IconButton
+                        id={MODE_AFTER}
+                        isDisabled={!enableAlongsideModes}
+                        style="lighter"
+                        size="small"
+                        icon="level-down"
+                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('after')}`}
+                        />
+                </ButtonGroup>
+            </div>
         );
     }
 

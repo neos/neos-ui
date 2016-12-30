@@ -11,6 +11,9 @@
 			<trans-unit id="insert" xml:space="preserve">
 				<source>Insert</source>
 			</trans-unit>
+			<trans-unit id="insertMode" xml:space="preserve">
+				<source>Insert mode</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -59,16 +59,19 @@ export default class Step2 extends Component {
                 isWide
                 >
                 <div className={style.step2__body}>
-                    {Object.keys(creationDialogElements).map(elementName => {
+                    {Object.keys(creationDialogElements).map((elementName, index) => {
                         const element = selectedNodeType.ui.creationDialog.elements[elementName];
                         const onCommit = value => onHandleDialogEditorValueChange(elementName, value);
-                        const validationErrorsForElement = isDirty && validationErrors && validationErrors[elementName];
+                        // Only display errors after user input (isDirty)
+                        const validationErrorsForElement = isDirty ? (validationErrors && validationErrors[elementName]) : [];
+                        const options = $get('ui.editorOptions', element) ? $get('ui.editorOptions', element) : {};
+                        options.autoFocus = index === 0;
                         return (<EditorEnvelope
                             key={elementName}
                             identifier={elementName}
                             label={$get('ui.label', element)}
                             editor={$get('ui.editor', element)}
-                            options={$get('ui.editorOptions', element)}
+                            options={options}
                             commit={onCommit}
                             validationErrors={validationErrorsForElement}
                             />);

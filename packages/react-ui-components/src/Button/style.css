@@ -11,7 +11,7 @@
     width: auto;
     color: var(--brandColorsContrastBrightest);
     cursor: pointer;
-    background: var(--brandColorsContrastNeutral);
+    background-color: var(--brandColorsContrastNeutral);
     font-size: var(--baseFontSize);
 
     &:focus {
@@ -22,7 +22,10 @@
         opacity: .5;
         cursor: not-allowed;
 
-        &:hover {
+        &:hover,
+        &.btn--isPressed,
+        &:hover *,
+        &.btn--isPressed * {
             color: var(--brandColorsContrastBrightest);
         }
     }
@@ -34,22 +37,27 @@
 }
 
 .btn--clean,
-.btn--clean[disabled]:hover {
+.btn--clean[disabled]:hover,
+.btn--clean[disabled]:hover * {
     background-color: var(--brandColorsContrastDarker);
 }
 .btn--lighter,
-.btn--lighter[disabled]:hover {
+.btn--lighter[disabled]:hover,
+.btn--lighter[disabled]:hover * {
     background-color: var(--brandColorsContrastDark);
 }
 .btn--transparent {
     background: 0;
 }
 .btn--brand,
-.btn--brand[disabled]:hover {
+.btn--brand[disabled]:hover,
+.btn--brand[disabled]:hover * {
     background-color: var(--brandColorsPrimaryBlue);
+    color: white !important;
 }
 .btn--warn,
-.btn--warn[disabled]:hover {
+.btn--warn[disabled]:hover,
+.btn--warn[disabled]:hover * {
     background-color: var(--brandColorsWarn);
 }
 .btn--brandHover {
@@ -60,14 +68,17 @@
 }
 
 .btn--cleanHover.btn--isPressed,
-.btn--cleanHover:hover {
+.btn--cleanHover:hover,
+.btn--cleanHover:hover * {
     color: var(--brandColorsPrimaryBlue);
 }
 .btn--darkenHover.btn--isPressed,
-.btn--darkenHover:hover {
-    background: rgba(0, 0, 0, .1);
+.btn--darkenHover:hover,
+.btn--darkenHover:hover * {
+    background-color: rgba(0, 0, 0, .1);
 }
 .btn--warnHover.btn--isPressed,
-.btn--warnHover:hover {
+.btn--warnHover:hover,
+.btn--warnHover:hover * {
     background-color: var(--brandColorsWarn);
 }

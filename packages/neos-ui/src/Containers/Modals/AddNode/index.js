@@ -166,6 +166,7 @@ export default class AddNodeModal extends PureComponent {
                     onHandleDialogEditorValueChange={this.handleDialogEditorValueChange}
                     onHandleSave={this.handleSave}
                     onHandleBack={this.handleBack}
+                    onHandleClose={handleClose}
                     isDirty={this.state.isDirty}
                     />);
         }

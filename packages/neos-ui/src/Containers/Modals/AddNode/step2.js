@@ -16,6 +16,7 @@ export default class Step2 extends Component {
         onHandleDialogEditorValueChange: PropTypes.func.isRequired,
         onHandleSave: PropTypes.func.isRequired,
         onHandleBack: PropTypes.func.isRequired,
+        onHandleClose: PropTypes.func.isRequired,
         isDirty: PropTypes.bool.isRequired
     };
 
@@ -47,14 +48,14 @@ export default class Step2 extends Component {
     }
 
     render() {
-        const {validationErrors, selectedNodeType, onHandleDialogEditorValueChange, isDirty} = this.props;
+        const {validationErrors, selectedNodeType, onHandleDialogEditorValueChange, isDirty, onHandleClose} = this.props;
         const creationDialogElements = selectedNodeType.ui.creationDialog.elements;
 
         return (
             <Dialog
                 actions={[this.renderBackAction(), this.renderSaveAction()]}
                 title={(<span><I18n fallback="Create new" id="createNew"/> <I18n id={selectedNodeType.ui.label} fallback={selectedNodeType.ui.label}/></span>)}
-                onRequestClose={close}
+                onRequestClose={onHandleClose}
                 isOpen
                 isWide
                 >

@@ -18,11 +18,12 @@ export const actionTypes = {
     APPLY
 };
 
-const open = createAction(OPEN, (subjectContextPath, referenceContextPath, enableAlongsideModes, enableIntoMode) => ({
+const open = createAction(OPEN, (subjectContextPath, referenceContextPath, enableAlongsideModes, enableIntoMode, operationType) => ({ // eslint-disable-line max-params
     subjectContextPath,
     referenceContextPath,
     enableAlongsideModes,
-    enableIntoMode
+    enableIntoMode,
+    operationType
 }));
 const cancel = createAction(CANCEL);
 const apply = createAction(APPLY, mode => mode);
@@ -47,16 +48,18 @@ export const reducer = handleActions({
             subjectContextPath: '',
             referenceContextPath: '',
             enableAlongsideModes: false,
-            enableIntoMode: false
+            enableIntoMode: false,
+            operationType: null
         })
     ),
-    [OPEN]: ({subjectContextPath, referenceContextPath, enableAlongsideModes, enableIntoMode}) =>
+    [OPEN]: ({subjectContextPath, referenceContextPath, enableAlongsideModes, enableIntoMode, operationType}) =>
         $set('ui.insertionModeModal', new Map({
             isOpen: true,
             subjectContextPath,
             referenceContextPath,
             enableAlongsideModes,
-            enableIntoMode
+            enableIntoMode,
+            operationType
         })),
     [CANCEL]: () => $set('ui.insertionModeModal', new Map({
         isOpen: false,

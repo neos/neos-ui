@@ -12,7 +12,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 import {InsertModeSelector} from '@neos-project/neos-ui-containers';
 
-import {selectors, actions} from '@neos-project/neos-ui-redux-store';
+import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
 
@@ -22,6 +22,7 @@ import style from './style.css';
     referenceContextPath: $get('ui.insertionModeModal.referenceContextPath'),
     enableAlongsideModes: $get('ui.insertionModeModal.enableAlongsideModes'),
     enableIntoMode: $get('ui.insertionModeModal.enableIntoMode'),
+    operationType: $get('ui.insertionModeModal.operationType'),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath
 }), {
     cancel: actions.UI.InsertionModeModal.cancel,
@@ -36,6 +37,7 @@ export default class InsertModeModal extends PureComponent {
         isOpen: PropTypes.bool.isRequired,
         enableAlongsideModes: PropTypes.bool.isRequired,
         enableIntoMode: PropTypes.bool.isRequired,
+        operationType: PropTypes.string,
         cancel: PropTypes.func.isRequired,
         apply: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
@@ -72,19 +74,32 @@ export default class InsertModeModal extends PureComponent {
     }
 
     renderTitle() {
-        const {subjectContextPath, referenceContextPath} = this.props;
+        const {subjectContextPath, referenceContextPath, operationType} = this.props;
 
         return (
             <div>
                 <Icon icon="clipboard"/>
                 <span className={style.modalTitle}>
-                    <I18n
-                        id="Neos.Neos.Ui:Main:copy__from__to--title"
-                        params={{
-                            source: this.renderNodeLabel(subjectContextPath),
-                            target: this.renderNodeLabel(referenceContextPath)
-                        }}
-                        />
+                    {operationType === actionTypes.CR.Nodes.COPY &&
+                        <I18n
+                            key="copy"
+                            id="Neos.Neos.Ui:Main:copy__from__to--title"
+                            params={{
+                                source: this.renderNodeLabel(subjectContextPath),
+                                target: this.renderNodeLabel(referenceContextPath)
+                            }}
+                            />
+                    }
+                    {operationType === actionTypes.CR.Nodes.CUT &&
+                        <I18n
+                            key="move"
+                            id="Neos.Neos.Ui:Main:move__from__to--title"
+                            params={{
+                                source: this.renderNodeLabel(subjectContextPath),
+                                target: this.renderNodeLabel(referenceContextPath)
+                            }}
+                            />
+                    }
                 </span>
             </div>
         );

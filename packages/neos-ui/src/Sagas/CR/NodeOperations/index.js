@@ -78,7 +78,7 @@ function * removeNodeIfConfirmed() {
     });
 }
 
-function * determineInsertMode(subjectContextPath, referenceContextPath, canBePastedAlongside, canBePastedInto) {
+function * determineInsertMode(subjectContextPath, referenceContextPath, canBePastedAlongside, canBePastedInto, operation) { // eslint-disable-line max-params
     if (canBePastedInto && !canBePastedAlongside) {
         return 'into';
     }
@@ -87,7 +87,8 @@ function * determineInsertMode(subjectContextPath, referenceContextPath, canBePa
         subjectContextPath,
         referenceContextPath,
         canBePastedAlongside,
-        canBePastedInto
+        canBePastedInto,
+        operation
     ));
     const waitForNextAction = yield race([
         take(actionTypes.UI.InsertionModeModal.CANCEL),
@@ -148,7 +149,8 @@ function * copyAndPasteNode({globalRegistry}) {
                 nodeToBePasted,
                 contextPath,
                 canBePastedAlongside,
-                canBePastedInto
+                canBePastedInto,
+                actionTypes.CR.Nodes.COPY
             );
 
             if (mode) {
@@ -217,7 +219,8 @@ function * cutAndPasteNode({globalRegistry}) {
                 nodeToBePasted,
                 contextPath,
                 canBePastedAlongside,
-                canBePastedInto
+                canBePastedInto,
+                actionTypes.CR.Nodes.CUT
             );
 
             if (mode) {

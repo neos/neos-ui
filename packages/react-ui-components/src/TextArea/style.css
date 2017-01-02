@@ -19,3 +19,6 @@
 .textArea--invalid {
     outline: 2px solid var(--brandColorsError);
 }
+.textArea--highlight {
+    outline: 2px solid var(--brandColorsSuccess) !important;
+}

@@ -52,6 +52,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
             <div className={style.wrap}>
                 <EditorEnvelope
                     {...otherProps}
+                    highlight={transientValue && transientValue.value !== sourceValue}
                     identifier={id}
                     value={transientValue ? transientValue.value : sourceValue}
                     hooks={transientValue ? transientValue.hooks : null}

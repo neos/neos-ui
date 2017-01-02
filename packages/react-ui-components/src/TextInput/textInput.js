@@ -34,11 +34,17 @@ class TextInput extends PureComponent {
         validationErrors: PropTypes.array,
 
         /**
+         * Highlight input
+         */
+        highlight: PropTypes.bool,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({
             'textInput': PropTypes.string,
-            'textInput--invalid': PropTypes.string
+            'textInput--invalid': PropTypes.string,
+            'textInput--highlight': PropTypes.string
         }).isRequired,
 
         /**
@@ -60,12 +66,14 @@ class TextInput extends PureComponent {
             className,
             validationErrors,
             theme,
+            highlight,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textInput]: true,
-            [theme['textInput--invalid']]: validationErrors && validationErrors.length > 0
+            [theme['textInput--invalid']]: validationErrors && validationErrors.length > 0,
+            [theme['textInput--highlight']]: highlight
         });
 
         const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {

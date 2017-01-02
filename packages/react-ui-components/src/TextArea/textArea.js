@@ -10,6 +10,11 @@ class TextArea extends PureComponent {
         validationErrors: PropTypes.array,
 
         /**
+         * Highlight input
+         */
+        highlight: PropTypes.bool,
+
+        /**
          * An optional className to render on the textarea node.
          */
         className: PropTypes.string,
@@ -51,12 +56,14 @@ class TextArea extends PureComponent {
             className,
             validationErrors,
             theme,
+            highlight,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textArea]: true,
-            [theme['textArea--invalid']]: validationErrors && validationErrors.length > 0
+            [theme['textArea--invalid']]: validationErrors && validationErrors.length > 0,
+            [theme['textArea--highlight']]: highlight
         });
         const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
             return <div key={key}>{validationError}</div>;

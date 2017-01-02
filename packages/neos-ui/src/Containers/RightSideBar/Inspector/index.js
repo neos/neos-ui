@@ -1,6 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import I18n from '@neos-project/neos-ui-i18n';
 import Bar from '@neos-project/react-ui-components/lib/Bar/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
 import Button from '@neos-project/react-ui-components/lib/Button/';
@@ -167,12 +168,12 @@ export default class Inspector extends PureComponent {
                     <Grid gutter="micro">
                         <Grid.Col width="half">
                             <Button style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={style.discardBtn}>
-                                Discard changes
+                                <I18n id="discard"/>
                             </Button>
                         </Grid.Col>
                         <Grid.Col width="half">
                             <Button style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={style.publishBtn}>
-                                Apply
+                                <I18n id="apply"/>
                             </Button>
                         </Grid.Col>
                     </Grid>

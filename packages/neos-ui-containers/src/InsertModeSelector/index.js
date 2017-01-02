@@ -1,9 +1,12 @@
 import React, {PureComponent, PropTypes} from 'react';
 
-import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import ButtonGroup from '@neos-project/react-ui-components/lib/ButtonGroup/';
+import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
-import I18n from '@neos-project/neos-ui-i18n';
+import {neos} from '@neos-project/neos-ui-decorators';
+import I18n, {i18nService} from '@neos-project/neos-ui-i18n';
+
+import style from './style.css';
 
 const MODE_AFTER = 'after';
 const MODE_BEFORE = 'before';
@@ -32,12 +35,14 @@ const calculatePreferredInitialMode = props => {
     return null;
 };
 
+@neos()
 export default class InsertModeSelector extends PureComponent {
     static propTypes = {
         mode: PropTypes.string,
         enableAlongsideModes: PropTypes.bool.isRequired,
         enableIntoMode: PropTypes.bool.isRequired,
-        onSelect: PropTypes.func.isRequired
+        onSelect: PropTypes.func.isRequired,
+        translations: PropTypes.object.isRequired
     };
 
     constructor(...args) {
@@ -59,73 +64,52 @@ export default class InsertModeSelector extends PureComponent {
         }
     }
 
-    prepareOptions(props) {
-        const {enableAlongsideModes, enableIntoMode} = props;
-        this.options = [];
-
-        if (enableAlongsideModes) {
-            this.options.push({
-                value: MODE_BEFORE,
-                label: (
-                    <span>
-                        <I18n fallback="Insert" id="Neos.Neos.Ui:Main:insert"/>
-                        &nbsp;<I18n fallback="before" id="before"/>
-                        &nbsp;<Icon icon="level-up"/>
-                    </span>
-                )
-            });
-        }
-
-        if (enableIntoMode) {
-            this.options.push({
-                value: MODE_INTO,
-                label: (
-                    <span>
-                        <I18n fallback="Insert" id="Neos.Neos.Ui:Main:insert"/>
-                        &nbsp;<I18n fallback="into" id="into"/>
-                        &nbsp;<Icon icon="long-arrow-right"/>
-                    </span>
-                )
-            });
-        }
-
-        if (enableAlongsideModes) {
-            this.options.push({
-                value: MODE_AFTER,
-                label: (
-                    <span>
-                        <I18n fallback="Insert" id="Neos.Neos.Ui:Main:insert"/>
-                        &nbsp;<I18n fallback="after" id="after"/>
-                        &nbsp;<Icon icon="level-down"/>
-                    </span>
-                )
-            });
-        }
-    }
-
     componentWillMount() {
         this.selectPreferredInitialModeIfModeIsEmpty(this.props);
-        this.prepareOptions(this.props);
     }
 
     componentWillReceiveProps(props) {
         this.selectPreferredInitialModeIfModeIsEmpty(props);
-        this.prepareOptions(props);
     }
 
     render() {
-        const {mode} = this.props;
+        const {mode, enableIntoMode, enableAlongsideModes, translations} = this.props;
+        const translate = i18nService(translations);
 
         if (!mode) {
             return null;
         }
 
         return (
-            <SelectBox
-                options={this.options}
-                value={mode}
-                onSelect={this.handleSelect}
-                />
+            <div className={style.root}>
+                <I18n id="Neos.Neos.Ui:Main:insertMode"/>:&nbsp;
+                <ButtonGroup value={mode} onSelect={this.handleSelect}>
+                    <IconButton
+                        id={MODE_BEFORE}
+                        isDisabled={!enableAlongsideModes}
+                        style="lighter"
+                        size="small"
+                        icon="level-up"
+                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('before')}`}
+                        />
+                    <IconButton
+                        id={MODE_INTO}
+                        isDisabled={!enableIntoMode}
+                        style="lighter"
+                        size="small"
+                        icon="long-arrow-right"
+                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('into')}`}
+                        />
+                    <IconButton
+                        id={MODE_AFTER}
+                        isDisabled={!enableAlongsideModes}
+                        style="lighter"
+                        size="small"
+                        icon="level-down"
+                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('after')}`}
+                        />
+                </ButtonGroup>
+            </div>
         );
     }
 

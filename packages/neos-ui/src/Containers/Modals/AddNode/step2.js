@@ -66,15 +66,16 @@ export default class Step2 extends Component {
                         const validationErrorsForElement = isDirty ? (validationErrors && validationErrors[elementName]) : [];
                         const options = $get('ui.editorOptions', element) ? $get('ui.editorOptions', element) : {};
                         options.autoFocus = index === 0;
-                        return (<EditorEnvelope
-                            key={elementName}
-                            identifier={elementName}
-                            label={$get('ui.label', element)}
-                            editor={$get('ui.editor', element)}
-                            options={options}
-                            commit={onCommit}
-                            validationErrors={validationErrorsForElement}
-                            />);
+                        return (<div key={elementName} className={style.step2__editor}>
+                            <EditorEnvelope
+                                identifier={elementName}
+                                label={$get('ui.label', element)}
+                                editor={$get('ui.editor', element)}
+                                options={options}
+                                commit={onCommit}
+                                validationErrors={validationErrorsForElement}
+                                />
+                        </div>);
                     })}
                 </div>
             </Dialog>

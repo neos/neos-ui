@@ -128,7 +128,8 @@ export default class AddNodeModal extends PureComponent {
             step: 1,
             selectedNodeType: null,
             elementValues: {},
-            validationErrors: null
+            validationErrors: null,
+            isDirty: false
         };
 
         this.handleSelectNodeType = this.handleSelectNodeType.bind(this);
@@ -165,6 +166,7 @@ export default class AddNodeModal extends PureComponent {
                     onHandleDialogEditorValueChange={this.handleDialogEditorValueChange}
                     onHandleSave={this.handleSave}
                     onHandleBack={this.handleBack}
+                    isDirty={this.state.isDirty}
                     />);
         }
 
@@ -182,7 +184,7 @@ export default class AddNodeModal extends PureComponent {
             Object.keys(nodeType.ui.creationDialog.elements).forEach(elementKey => {
                 elementValues[elementKey] = '';
             });
-            this.setState({step: 2, selectedNodeType: nodeType, elementValues});
+            this.setState({step: 2, selectedNodeType: nodeType, elementValues, isDirty: false});
         } else {
             // no dialog elements; let's directly create the node!
             this.createNode(nodeType);
@@ -200,7 +202,7 @@ export default class AddNodeModal extends PureComponent {
     handleDialogEditorValueChange(elementName, value) {
         const newValues = Object.assign({}, this.state.elementValues);
         newValues[elementName] = value;
-        this.setState({elementValues: newValues});
+        this.setState({elementValues: newValues, isDirty: true});
     }
 
     getValidationErrors() {

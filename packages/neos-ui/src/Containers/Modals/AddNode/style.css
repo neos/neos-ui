@@ -28,3 +28,7 @@
 .gridItem {
     padding: 0;
 }
+
+.step2__body {
+    padding: var(--spacing);
+}

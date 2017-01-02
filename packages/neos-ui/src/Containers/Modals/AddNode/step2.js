@@ -1,11 +1,12 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {$get} from 'plow-js';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
+import style from './style.css';
 
-export default class Step2 extends PureComponent {
+export default class Step2 extends Component {
     static propTypes = {
         selectedNodeType: PropTypes.object.isRequired,
         validationErrors: PropTypes.oneOfType([
@@ -14,7 +15,8 @@ export default class Step2 extends PureComponent {
         ]),
         onHandleDialogEditorValueChange: PropTypes.func.isRequired,
         onHandleSave: PropTypes.func.isRequired,
-        onHandleBack: PropTypes.func.isRequired
+        onHandleBack: PropTypes.func.isRequired,
+        isDirty: PropTypes.bool.isRequired
     };
 
     renderBackAction() {
@@ -45,7 +47,7 @@ export default class Step2 extends PureComponent {
     }
 
     render() {
-        const {validationErrors, selectedNodeType, onHandleDialogEditorValueChange} = this.props;
+        const {validationErrors, selectedNodeType, onHandleDialogEditorValueChange, isDirty} = this.props;
         const creationDialogElements = selectedNodeType.ui.creationDialog.elements;
 
         return (
@@ -56,20 +58,22 @@ export default class Step2 extends PureComponent {
                 isOpen
                 isWide
                 >
-                {Object.keys(creationDialogElements).map(elementName => {
-                    const element = selectedNodeType.ui.creationDialog.elements[elementName];
-                    const onCommit = value => onHandleDialogEditorValueChange(elementName, value);
-                    const validationErrorsForElement = validationErrors && validationErrors[elementName];
-                    return (<EditorEnvelope
-                        key={elementName}
-                        identifier={elementName}
-                        label={$get('ui.label', element)}
-                        editor={$get('ui.editor', element)}
-                        options={$get('ui.editorOptions', element)}
-                        commit={onCommit}
-                        validationErrors={validationErrorsForElement}
-                        />);
-                })}
+                <div className={style.step2__body}>
+                    {Object.keys(creationDialogElements).map(elementName => {
+                        const element = selectedNodeType.ui.creationDialog.elements[elementName];
+                        const onCommit = value => onHandleDialogEditorValueChange(elementName, value);
+                        const validationErrorsForElement = isDirty && validationErrors && validationErrors[elementName];
+                        return (<EditorEnvelope
+                            key={elementName}
+                            identifier={elementName}
+                            label={$get('ui.label', element)}
+                            editor={$get('ui.editor', element)}
+                            options={$get('ui.editorOptions', element)}
+                            commit={onCommit}
+                            validationErrors={validationErrorsForElement}
+                            />);
+                    })}
+                </div>
             </Dialog>
         );
     }

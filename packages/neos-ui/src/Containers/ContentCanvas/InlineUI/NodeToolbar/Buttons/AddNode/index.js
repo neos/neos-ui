@@ -29,6 +29,7 @@ export default class AddNode extends PureComponent {
                     className={this.props.className}
                     icon="plus"
                     onClick={this.handleOpenModalBtnClick}
+                    hoverStyle="clean"
                     />
             </span>
         );

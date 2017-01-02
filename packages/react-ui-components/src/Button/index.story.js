@@ -25,7 +25,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -39,7 +39,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -53,7 +53,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -67,7 +67,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -85,7 +85,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -100,7 +100,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -115,7 +115,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -130,7 +130,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -148,7 +148,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -163,7 +163,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -178,7 +178,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -193,7 +193,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -211,7 +211,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -226,7 +226,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -241,7 +241,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>
@@ -256,7 +256,7 @@ storiesOf('Button', module)
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
-			size={select('Size', validSizes, 'regular')}
+                        size={select('Size', validSizes, 'regular')}
                         >
                         {text('Label', 'The Button')}
                     </Button>

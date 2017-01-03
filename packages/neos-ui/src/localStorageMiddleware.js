@@ -8,7 +8,7 @@ import {$get} from 'plow-js';
 //
 const localStorageMiddleware = ({getState}) => {
     let timer = null;
-    const debounceLocalStorageTimeout = 2000;
+    const debounceLocalStorageTimeout = 1000;
     const persistentActionsPattern = '@neos/neos-ui/UI';
 
     return next => action => {

@@ -56,7 +56,8 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, t =
         name: 'Neos.Neos.NodeTypes:Page',
         label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
         ui: {
-            label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label'
+            label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
+            group: 'general'
         }
     });
     nodeTypesRegistry.add('Test:Page', {
@@ -81,13 +82,13 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, t =
             label: 'Neos.Neos:Main:nodeTypes.groups.general',
             position: 'start'
         },
-        plugins: {
-            label: 'Neos.Neos:Main:nodeTypes.groups.plugins',
-            position: 200
-        },
         structure: {
             label: 'Neos.Neos:Main:nodeTypes.groups.structure',
             position: 100
+        },
+        plugins: {
+            label: 'Neos.Neos:Main:nodeTypes.groups.plugins',
+            position: 200
         }
     });
 
@@ -101,7 +102,8 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, t =
                     name: 'Neos.Neos.NodeTypes:Page',
                     label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
                     ui: {
-                        label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label'
+                        label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
+                        group: 'general'
                     }
                 }
             ]
@@ -139,7 +141,8 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
         name: 'Neos.Neos.NodeTypes:Page',
         label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
         ui: {
-            label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label'
+            label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
+            group: 'general'
         }
     });
     nodeTypesRegistry.add('Test:Page', {
@@ -173,7 +176,6 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
             position: 100
         }
     });
-
     t.deepEqual(nodeTypesRegistry.getGroupedNodeTypeList(['Test:Page', 'Neos.Neos.NodeTypes:Page']), [
         {
             name: 'general',
@@ -184,7 +186,8 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
                     name: 'Neos.Neos.NodeTypes:Page',
                     label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
                     ui: {
-                        label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label'
+                        label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
+                        group: 'general'
                     }
                 }
             ]
@@ -216,7 +219,8 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
                     name: 'Neos.Neos.NodeTypes:Page',
                     label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
                     ui: {
-                        label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label'
+                        label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
+                        group: 'general'
                     }
                 }
             ]

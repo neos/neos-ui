@@ -1,5 +1,6 @@
 'Neos.Neos:Document':
   ui:
+    group: 'general'
     creationDialog:
       elements:
         title:

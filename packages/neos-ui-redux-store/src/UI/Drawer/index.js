@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
-import {$toggle, $set} from 'plow-js';
+import Immutable from 'immutable';
+import {$toggle, $get, $set} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 
@@ -39,11 +39,9 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: () => $set(
+    [system.INIT]: payload => $set(
         'ui.drawer',
-        new Map({
-            isHidden: true
-        })
+        Immutable.fromJS($get('ui.drawer', payload) ? $get('ui.drawer', payload) : {isHidden: true})
     ),
     [TOGGLE]: () => $toggle('ui.drawer.isHidden'),
     [HIDE]: () => $set('ui.drawer.isHidden', true)

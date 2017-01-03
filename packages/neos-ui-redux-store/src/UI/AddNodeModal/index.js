@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$all, $set, $toggle} from 'plow-js';
+import {$all, $get, $set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -60,12 +60,12 @@ export const errorMessages = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: () => $set(
+    [system.INIT]: state => $set(
         'ui.addNodeModal',
         new Map({
             contextPath: '',
             fusionPath: '',
-            collapsedGroups: []
+            collapsedGroups: $get('ui.addNodeModal.collapsedGroups', state) ? $get('ui.addNodeModal.collapsedGroups', state) : []
         })
     ),
     [OPEN]: ({contextPath, fusionPath}) => {

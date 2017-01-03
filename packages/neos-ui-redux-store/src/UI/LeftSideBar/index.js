@@ -30,9 +30,9 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: state => $set(
+    [system.INIT]: payload => $set(
         'ui.leftSideBar',
-        Immutable.fromJS($get('ui.leftSideBar', state))
+        Immutable.fromJS($get('ui.leftSideBar', payload) ? $get('ui.leftSideBar', payload) : {isHidden: false})
     ),
     [TOGGLE]: () => $toggle('ui.leftSideBar.isHidden')
 });

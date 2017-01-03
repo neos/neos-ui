@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
-import {$set, $toggle} from 'plow-js';
+import Immutable from 'immutable';
+import {$get, $set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -30,11 +30,9 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: () => $set(
+    [system.INIT]: payload => $set(
         'ui.fullScreen',
-        new Map({
-            isFullScreen: false
-        })
+        Immutable.fromJS($get('ui.fullScreen', payload) ? $get('ui.fullScreen', payload) : {isFullScreen: false})
     ),
     [TOGGLE]: () => $toggle('ui.fullScreen.isFullScreen')
 });

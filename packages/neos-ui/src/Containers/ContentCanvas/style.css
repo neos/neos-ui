@@ -13,7 +13,7 @@
     padding-right: 0;
 }
 .contentCanvas--isMovedDown {
-    padding: 192px var(--sidebarWidth) 0; /* height of EditModePanel added */
+    padding-top: 192px; /* height of EditModePanel added */
 }
 .contentCanvas--isFullScreen {
     padding: 0;

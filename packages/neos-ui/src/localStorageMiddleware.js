@@ -9,18 +9,25 @@ import {$get} from 'plow-js';
 const localStorageMiddleware = ({getState}) => {
     let timer = null;
     const debounceLocalStorageTimeout = 1000;
-    const persistentActionsPattern = '@neos/neos-ui/UI';
+    const persistentActionsPatterns = ['@neos/neos-ui/UI', '@neos/neos-ui/User/Settings'];
 
     return next => action => {
         const returnValue = next(action);
 
+        const actionMatched = persistentActionsPatterns
+            .map(pattern => action.type.startsWith(pattern))
+            .reduce((result, current) => result || current, false);
         // If UI kind of action, persist state to local storage
-        if (action.type.startsWith(persistentActionsPattern)) {
+        if (actionMatched) {
             clearTimeout(timer);
             timer = setTimeout(() => {
-                const uiState = $get('ui', getState());
+                const state = getState();
+                // TODO: figure out a more declarative way to manage this. Or just move all persistent state under "ui"
                 const persistentStateSubset = {
-                    ui: uiState && uiState.toJS()
+                    ui: $get('ui', state) && $get('ui', state).toJS(),
+                    user: {
+                        settings: $get('user.settings', state)
+                    }
                 };
                 localStorage.setItem('persistedState', JSON.stringify(persistentStateSubset));
                 timer = null;

@@ -164,11 +164,7 @@ abstract class AbstractStructuralChange extends AbstractChange
 
                 $this->feedbackCollection->add($renderContentOutOfBand);
             } else {
-                $flowQuery = new FlowQuery(array($node));
-                $closestDocument = $flowQuery->closest('[instanceof Neos.Neos:Document]')->get(0);
-
                 $reloadDocument = new ReloadDocument();
-                $reloadDocument->setDocument($closestDocument);
 
                 $this->feedbackCollection->add($reloadDocument);
             }

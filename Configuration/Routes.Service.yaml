@@ -23,6 +23,14 @@
   httpMethods: ['POST']
 
 -
+  name: 'Change Base Workspace'
+  uriPattern: 'changeBaseWorkspace'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'changeBaseWorkspace'
+  httpMethods: ['POST']
+
+-
   name: 'Load Tree'
   uriPattern: 'load-tree'
   defaults:

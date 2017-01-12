@@ -27,23 +27,19 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     }
 
 
-    public function getPersonalWorkspaceName()
+    public function getPersonalWorkspace()
     {
-        return $this->userService->getPersonalWorkspace()->getName();
+        $personalWorkspace = $this->userService->getPersonalWorkspace();
+        return [
+            'name' => $personalWorkspace->getName(),
+            'publishableNodes' => $this->getPublishableNodeInfo($personalWorkspace),
+            'baseWorkspace' => $personalWorkspace->getBaseWorkspace()->getName()
+        ];
     }
 
-    public function initializeWorkspacesByName()
+    public function getAllowedTargetWorkspaces()
     {
-        $workspaces = [];
-
-        $personalWorkspace = $this->userService->getPersonalWorkspace();
-
-        $workspaces[$personalWorkspace->getName()] = [
-            'name' => $personalWorkspace->getName(),
-            'publishableNodes' => $this->getPublishableNodeInfo($personalWorkspace)
-        ];
-
-        return $workspaces;
+        return $this->workspaceService->getAllowedTargetWorkspaces();
     }
 
     /**

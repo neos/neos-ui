@@ -367,8 +367,7 @@ manifest('main', {}, globalRegistry => {
     // When the server advices to update the workspace information, dispatch the action to do so
     //
     serverFeedbackHandlers.add('Neos.Neos.Ui:UpdateWorkspaceInfo', (feedbackPayload, store) => {
-        const {workspaceName, workspaceInfo} = feedbackPayload;
-        store.dispatch(actions.CR.Workspaces.update(workspaceName, workspaceInfo));
+        store.dispatch(actions.CR.Workspaces.update(feedbackPayload));
     });
 
     //
@@ -381,12 +380,13 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server advices to reload the document, just reload it
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:ReloadDocument', () => {
+    serverFeedbackHandlers.add('Neos.Neos.Ui:ReloadDocument', (feedbackPayload, store) => {
         [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
             const iframeWindow = iframe.contentWindow || iframe;
 
             iframeWindow.location.href = iframeWindow.location.href;
         });
+        store.dispatch(actions.UI.PageTree.reloadTree());
     });
 
     //

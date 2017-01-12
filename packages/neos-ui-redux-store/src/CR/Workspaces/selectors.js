@@ -1,15 +1,19 @@
 import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
 
-export const activeWorkspaceNameSelector = $get('cr.workspaces.active');
 export const activeDocumentContextPathSelector = $get('ui.contentCanvas.contextPath');
 
-export const publishableNodesSelector = createSelector(
+export const baseWorkspaceSelector = createSelector(
     [
-        activeWorkspaceNameSelector,
         state => state
     ],
-    (activeWorkspaceName, state) => $get(['cr', 'workspaces', 'byName', activeWorkspaceName, 'publishableNodes'], state)
+    state => $get('cr.workspaces.personalWorkspace.baseWorkspace', state)
+);
+export const publishableNodesSelector = createSelector(
+    [
+        state => state
+    ],
+    state => $get('cr.workspaces.personalWorkspace.publishableNodes', state)
 );
 export const publishableNodesInDocumentSelector = createSelector(
     [

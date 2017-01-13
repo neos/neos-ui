@@ -9,14 +9,14 @@ import CheckBox from '@neos-project/react-ui-components/lib/CheckBox/';
 import Label from '@neos-project/react-ui-components/lib/Label/';
 import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
 
-import I18n from '@neos-project/neos-ui-i18n';
+import I18n, {i18nService} from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector} = selectors.CR.Workspaces;
 
 import AbstractButton from './AbstractButton/index';
-import WorkspaceSelector from './workspaceSelector';
+import WorkspaceSelector from './WorkspaceSelector/index';
 import style from './style.css';
 
 @connect($transform({
@@ -47,7 +47,8 @@ export default class PublishDropDown extends PureComponent {
         toggleAutoPublishing: PropTypes.func.isRequired,
         publishAction: PropTypes.func.isRequired,
         discardAction: PropTypes.func.isRequired,
-        changeBaseWorkspaceAction: PropTypes.func.isRequired
+        changeBaseWorkspaceAction: PropTypes.func.isRequired,
+        translations: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -68,11 +69,15 @@ export default class PublishDropDown extends PureComponent {
             toggleAutoPublishing,
             baseWorkspace,
             changeBaseWorkspaceAction,
-            neos
+            neos,
+            translations
         } = this.props;
+        const translate = i18nService(translations);
+
         const allowedWorkspaces = $get('configuration.allowedTargetWorkspaces', neos);
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
         const canPublishGlobally = publishableNodes && (publishableNodes.count() > 0);
+        const changingWorkspaceAllowed = !canPublishGlobally;
         const autoPublishWrapperClassNames = mergeClassNames({
             [style.dropDown__item]: true,
             [style['dropDown__item--noHover']]: true
@@ -92,7 +97,7 @@ export default class PublishDropDown extends PureComponent {
                     indicator={publishableNodesInDocument ? publishableNodesInDocument.count() : 0}
                     onClick={this.handlePublishClick}
                     >
-                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/>
+                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/> <I18n id="to"/> {baseWorkspace}
                 </AbstractButton>
 
                 <DropDown className={style.dropDown}>
@@ -108,6 +113,8 @@ export default class PublishDropDown extends PureComponent {
                                 baseWorkspace={baseWorkspace}
                                 allowedWorkspaces={allowedWorkspaces}
                                 changeBaseWorkspaceAction={changeBaseWorkspaceAction}
+                                changingWorkspaceAllowed={changingWorkspaceAllowed}
+                                translate={translate}
                                 />
                         </li>
                         <li className={style.dropDown__item}>

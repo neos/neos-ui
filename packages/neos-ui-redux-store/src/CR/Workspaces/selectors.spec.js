@@ -1,7 +1,7 @@
 import test from 'ava';
 
 import {
-    activeWorkspaceNameSelector,
+    baseWorkspaceSelector,
     publishableNodesSelector,
     publishableNodesInDocumentSelector
 } from './selectors.js';
@@ -9,15 +9,14 @@ import {
 const stateFixture = {
     cr: {
         workspaces: {
-            byName: {
-                'user-test': {
-                    publishableNodes: [
-                        {documentContextPath: '/sites/neosdemotypo3org@user-text;language=en_US'},
-                        {documentContextPath: '/sites/neosdemotypo3org/blah-blah@user-text;language=en_US'}
-                    ]
-                }
-            },
-            active: 'user-test'
+            personalWorkspace: {
+                name: 'user-text',
+                publishableNodes: [
+                    {documentContextPath: '/sites/neosdemotypo3org@user-text;language=en_US'},
+                    {documentContextPath: '/sites/neosdemotypo3org/blah-blah@user-text;language=en_US'}
+                ],
+                baseWorkspace: 'live'
+            }
         }
     },
     ui: {
@@ -27,8 +26,8 @@ const stateFixture = {
     }
 };
 
-test(`The "activeWorkspaceNameSelector" should deliver the name of the active workspace`, t => {
-    t.is(activeWorkspaceNameSelector(stateFixture), 'user-test');
+test(`The "baseWorkspaceSelector" should deliver the name of the active workspace`, t => {
+    t.is(baseWorkspaceSelector(stateFixture), 'live');
 });
 
 test(`

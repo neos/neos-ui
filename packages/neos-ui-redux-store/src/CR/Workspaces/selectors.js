@@ -3,18 +3,10 @@ import {createSelector} from 'reselect';
 
 export const activeDocumentContextPathSelector = $get('ui.contentCanvas.contextPath');
 
-export const baseWorkspaceSelector = createSelector(
-    [
-        state => state
-    ],
-    state => $get('cr.workspaces.personalWorkspace.baseWorkspace', state)
-);
-export const publishableNodesSelector = createSelector(
-    [
-        state => state
-    ],
-    state => $get('cr.workspaces.personalWorkspace.publishableNodes', state)
-);
+export const baseWorkspaceSelector = $get('cr.workspaces.personalWorkspace.baseWorkspace');
+
+export const publishableNodesSelector = $get('cr.workspaces.personalWorkspace.publishableNodes');
+
 export const publishableNodesInDocumentSelector = createSelector(
     [
         publishableNodesSelector,

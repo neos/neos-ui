@@ -75,6 +75,7 @@ export default class PublishDropDown extends PureComponent {
         const translate = i18nService(translations);
 
         const allowedWorkspaces = $get('configuration.allowedTargetWorkspaces', neos);
+        const baseWorkspaceTitle = $get([baseWorkspace, 'title'], allowedWorkspaces);
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
         const canPublishGlobally = publishableNodes && (publishableNodes.count() > 0);
         const changingWorkspaceAllowed = !canPublishGlobally;
@@ -97,7 +98,7 @@ export default class PublishDropDown extends PureComponent {
                     indicator={publishableNodesInDocument ? publishableNodesInDocument.count() : 0}
                     onClick={this.handlePublishClick}
                     >
-                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/> <I18n id="to"/> {baseWorkspace}
+                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/> <I18n id="to"/> {baseWorkspaceTitle}
                 </AbstractButton>
 
                 <DropDown className={style.dropDown}>

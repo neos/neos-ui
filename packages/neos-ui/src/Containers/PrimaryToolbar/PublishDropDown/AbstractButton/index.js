@@ -1,6 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
+import Badge from '@neos-project/react-ui-components/lib/Badge/';
 
 export default class AbstractButton extends PureComponent {
     static propTypes = {
@@ -34,7 +35,7 @@ export default class AbstractButton extends PureComponent {
 
         return (
             <button className={btnClassName} {...attributes} {...directProps}>
-                {this.props.children} {indicator > 0 ? `(${indicator})` : ''}
+                {this.props.children} {indicator > 0 && <Badge className={style.badge} label={indicator}/>}
             </button>
         );
     }

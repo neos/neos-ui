@@ -66,3 +66,8 @@
 .dropDown__item--canPublish {
     background: var(--brandColorsWarn);
 }
+
+
+.badge {
+    margin-left: var(--halfSpacing);
+}

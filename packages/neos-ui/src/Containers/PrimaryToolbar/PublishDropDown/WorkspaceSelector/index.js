@@ -10,6 +10,8 @@ const WorkspaceSelector = ({allowedWorkspaces, baseWorkspace, changeBaseWorkspac
         context.closeDropDown();
     };
     const anyWorkspacesAvailable = Object.keys(allowedWorkspaces).length > 1;
+    const baseWorkspaceTitle = $get([baseWorkspace, 'title'], allowedWorkspaces);
+
     return (<div>
         {anyWorkspacesAvailable && (changingWorkspaceAllowed ?
             <SelectBox
@@ -18,7 +20,7 @@ const WorkspaceSelector = ({allowedWorkspaces, baseWorkspace, changeBaseWorkspac
                 value={baseWorkspace}
                 /> :
             <div className={style.notAllowed} title={translate('Neos.Neos:Main:content.components.dirtyWorkspaceDialog.dirtyWorkspaceContainsChanges')}>
-                {baseWorkspace} – {translate('Neos.Neos:Main:content.components.dirtyWorkspaceDialog.dirtyWorkspaceHeader')}
+                {baseWorkspaceTitle} – {translate('Neos.Neos:Main:content.components.dirtyWorkspaceDialog.dirtyWorkspaceHeader')}
             </div>
         )}
     </div>);

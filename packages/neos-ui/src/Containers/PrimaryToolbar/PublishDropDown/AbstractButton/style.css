@@ -21,7 +21,3 @@
 .btn--highlighted {
     background: var(--brandColorsWarn);
 }
-
-.badge {
-    margin-left: var(--quarterSpacing);;
-}

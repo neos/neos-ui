@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
+import Badge from '@neos-project/react-ui-components/lib/Badge/';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import CheckBox from '@neos-project/react-ui-components/lib/CheckBox/';
 import Label from '@neos-project/react-ui-components/lib/Label/';
@@ -88,6 +89,8 @@ export default class PublishDropDown extends PureComponent {
             [style.dropDown__btn]: true,
             [style['dropDown__item--canPublish']]: canPublishGlobally
         });
+        const publishableNodesInDocumentCount = publishableNodesInDocument ? publishableNodesInDocument.count() : 0;
+        const publishableNodesCount = publishableNodes ? publishableNodes.count() : 0;
 
         return (
             <div className={style.wrapper}>
@@ -95,10 +98,11 @@ export default class PublishDropDown extends PureComponent {
                     className={style.publishBtn}
                     isEnabled={canPublishLocally || isSaving}
                     isHighlighted={canPublishLocally || isSaving}
-                    indicator={publishableNodesInDocument ? publishableNodesInDocument.count() : 0}
                     onClick={this.handlePublishClick}
                     >
-                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/> <I18n id="to"/> {baseWorkspaceTitle}
+                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/>
+                    <I18n id="to"/> {baseWorkspaceTitle}
+                    {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={publishableNodesInDocumentCount}/>}
                 </AbstractButton>
 
                 <DropDown className={style.dropDown}>
@@ -122,35 +126,35 @@ export default class PublishDropDown extends PureComponent {
                             <AbstractButton
                                 isEnabled={canPublishGlobally}
                                 isHighlighted={false}
-                                indicator={publishableNodes ? publishableNodes.count() : 0}
                                 onClick={this.handlePublishAllClick}
                                 >
                                 <Icon icon="upload"/>
                                 <I18n fallback="Publish All" id="publishAll"/>
+                                {publishableNodesCount > 0 && ` (${publishableNodesCount})`}
                             </AbstractButton>
                         </li>
                         <li className={style.dropDown__item}>
                             <AbstractButton
                                 isEnabled={canPublishLocally}
                                 isHighlighted={false}
-                                indicator={publishableNodesInDocument ? publishableNodesInDocument.count() : 0}
                                 label="Discard"
                                 icon="ban"
                                 onClick={this.handleDiscardClick}
                                 >
                                 <Icon icon="ban"/>
                                 <I18n fallback="Discard" id="discard"/>
+                                {publishableNodesInDocumentCount > 0 && ` (${publishableNodesInDocumentCount})`}
                             </AbstractButton>
                         </li>
                         <li className={style.dropDown__item}>
                             <AbstractButton
                                 isEnabled={canPublishGlobally}
                                 isHighlighted={false}
-                                indicator={publishableNodes ? publishableNodes.count() : 0}
                                 onClick={this.handleDiscardAllClick}
                                 >
                                 <Icon icon="ban"/>
                                 <I18n fallback="Discard All" id="discardAll"/>
+                                {publishableNodesCount > 0 && ` (${publishableNodesCount})`}
                             </AbstractButton>
                         </li>
                         <li className={autoPublishWrapperClassNames}>

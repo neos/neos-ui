@@ -100,8 +100,7 @@ export default class PublishDropDown extends PureComponent {
                     isHighlighted={canPublishLocally || isSaving}
                     onClick={this.handlePublishClick}
                     >
-                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/>
-                    <I18n id="to"/> {baseWorkspaceTitle}
+                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/> <I18n id="to"/> {baseWorkspaceTitle}
                     {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={publishableNodesInDocumentCount}/>}
                 </AbstractButton>
 

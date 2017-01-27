@@ -5,6 +5,7 @@
 // create custom themes / components.
 //
 export default {
+    badge: '@neos-project/react-ui-components/badge',
     bar: '@neos-project/react-ui-components/bar',
     button: '@neos-project/react-ui-components/button',
     buttonGroup: '@neos-project/react-ui-components/buttonGroup',

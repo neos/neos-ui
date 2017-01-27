@@ -1,0 +1,12 @@
+.badge {
+    composes: reset from './../reset.css';
+    display: inline-block;
+    padding: 2px 4px;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: bold;
+    color: var(--brandColorsWarn);
+    white-space: nowrap;
+    background-color: white;
+    border-radius: 3px;
+}

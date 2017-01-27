@@ -2,7 +2,6 @@ import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import style from './style.css';
 
-
 export default class AbstractButton extends PureComponent {
     static propTypes = {
         isEnabled: PropTypes.bool,

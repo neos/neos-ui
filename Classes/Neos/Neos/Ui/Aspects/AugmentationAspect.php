@@ -50,7 +50,7 @@ class AugmentationAspect
 
         $node = $joinPoint->getMethodArgument('node');
         $content = $joinPoint->getMethodArgument('content');
-        $fusionPath = $joinPoint->getMethodArgument('fusionPath');
+        $fusionPath = $joinPoint->getMethodArgument('typoScriptPath');
 
         $attributes = [
             'data-__neos-node-contextpath' => $node->getContextPath(),

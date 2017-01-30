@@ -18,7 +18,7 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
      */
     public function evaluate()
     {
-        $collection = $this->tsValue('collection');
+        $collection = $this->fusionValue('collection');
 
         $output = [];
         if ($collection === null) {
@@ -26,30 +26,30 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
         }
         $this->numberOfRenderedNodes = 0;
         $itemName = $this->getItemName();
-        $itemKey = $this->tsValue('itemKey');
+        $itemKey = $this->fusionValue('itemKey');
         if ($itemName === null) {
             throw new \Neos\Fusion\Exception('The Collection needs an itemName to be set.', 1344325771);
         }
         $iterationName = $this->getIterationName();
         $collectionTotalCount = count($collection);
         foreach ($collection as $collectionElementKey => $collectionElement) {
-            $context = $this->tsRuntime->getCurrentContext();
+            $context = $this->runtime->getCurrentContext();
             $context[$itemKey] = $collectionElementKey;
             $context[$itemName] = $collectionElement;
             if ($iterationName !== null) {
                 $context[$iterationName] = $this->prepareIterationInformation($collectionTotalCount);
             }
 
-            $this->tsRuntime->pushContextArray($context);
-            if ($value = $this->tsRuntime->render($this->path . '/itemRenderer')) {
-                if ($this->tsRuntime->canRender($this->path . '/itemKeyRenderer')) {
-                    $key = $this->tsRuntime->render($this->path . '/itemKeyRenderer');
+            $this->runtime->pushContextArray($context);
+            if ($value = $this->runtime->render($this->path . '/itemRenderer')) {
+                if ($this->runtime->canRender($this->path . '/itemKeyRenderer')) {
+                    $key = $this->runtime->render($this->path . '/itemKeyRenderer');
                     $output[$key] = $value;
                 } else {
                     $output[] = $value;
                 }
             }
-            $this->tsRuntime->popContext();
+            $this->runtime->popContext();
             $this->numberOfRenderedNodes++;
         }
 

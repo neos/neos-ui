@@ -6,14 +6,14 @@ namespace Neos\Neos\Ui\View;
  *                                                                        *
  *                                                                        */
 use Neos\Flow\Annotations as Flow;
-use Neos\Fusion\View\TypoScriptView;
+use Neos\Fusion\View\FusionView;
 
-class BackendTypoScriptView extends TypoScriptView
+class BackendFusionView extends FusionView
 {
 
     public function __construct(array $options = array())
     {
         parent::__construct($options);
-        $this->setTypoScriptPathPattern('resource://Neos.Neos.Ui/Private/Fusion/Backend');
+        $this->setFusionPathPattern('resource://Neos.Neos.Ui/Private/Fusion/Backend');
     }
 }

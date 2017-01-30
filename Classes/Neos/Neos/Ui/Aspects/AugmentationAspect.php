@@ -50,11 +50,11 @@ class AugmentationAspect
 
         $node = $joinPoint->getMethodArgument('node');
         $content = $joinPoint->getMethodArgument('content');
-        $typoScriptPath = $joinPoint->getMethodArgument('typoScriptPath');
+        $fusionPath = $joinPoint->getMethodArgument('fusionPath');
 
         $attributes = [
             'data-__neos-node-contextpath' => $node->getContextPath(),
-            'data-__neos-typoscript-path' => $typoScriptPath
+            'data-__neos-typoscript-path' => $fusionPath
         ];
 
         return $this->htmlAugmenter->addAttributes($content, $attributes, 'div');

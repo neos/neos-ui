@@ -4,7 +4,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Neos\View\TypoScriptView as FusionView;
+use Neos\Neos\View\FusionView as FusionView;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Fusion\Core\Cache\ContentCache;
@@ -194,7 +194,7 @@ class RenderContentOutOfBand implements FeedbackInterface
         $fusionView->setControllerContext($controllerContext);
 
         $fusionView->assign('value', $this->getNode()->getParent());
-        $fusionView->setTypoScriptPath($parentDomAddress->getFusionPath());
+        $fusionView->setFusionPath($parentDomAddress->getFusionPath());
 
         return $fusionView->render();
     }

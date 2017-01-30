@@ -23,12 +23,12 @@ class RenderStateImplementation extends AbstractFusionObject
 
     protected function getContext()
     {
-        return $this->tsValue('context');
+        return $this->fusionValue('context');
     }
 
     protected function getState()
     {
-        return $this->tsValue('state');
+        return $this->fusionValue('state');
     }
 
 
@@ -42,7 +42,7 @@ class RenderStateImplementation extends AbstractFusionObject
     {
         $context = $this->getContext();
         $stateNameToRender = $this->getState();
-        $context['controllerContext'] = $this->getTsRuntime()->getControllerContext();
+        $context['controllerContext'] = $this->getruntime()->getControllerContext();
 
         if (!isset($this->stateInSettings[$stateNameToRender])) {
             throw new Exception('The state "Neos.Neos.Ui.state.' . $stateNameToRender . '" was not found in the settings.', 1458814468);

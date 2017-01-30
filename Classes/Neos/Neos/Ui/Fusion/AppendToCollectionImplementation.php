@@ -13,9 +13,9 @@ class AppendToCollectionImplementation extends AbstractFusionObject
      */
     public function evaluate()
     {
-        $collection = $this->tsValue('collection');
-        $key = $this->tsValue('key');
-        $item = $this->tsValue('item');
+        $collection = $this->fusionValue('collection');
+        $key = $this->fusionValue('key');
+        $item = $this->fusionValue('item');
 
         if ($key) {
             $collection[$key] = $item;

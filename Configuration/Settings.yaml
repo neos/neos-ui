@@ -128,7 +128,7 @@ Neos:
     security:
       authentication:
         providers:
-          Typo3BackendProvider:
+          'Neos.Neos:Backend':
             requestPatterns:
               'Neos.Neos.Ui:controllerObjectName':
                 pattern: ControllerObjectName

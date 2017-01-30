@@ -1,4 +1,4 @@
-Neos\Neos\Ui\View\BackendTypoScriptView:
+Neos\Neos\Ui\View\BackendFusionView:
   properties:
     typoScriptParser:
       object: Neos\Fusion\Core\Parser

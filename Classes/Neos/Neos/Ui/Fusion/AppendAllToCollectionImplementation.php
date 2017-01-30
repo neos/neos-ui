@@ -11,7 +11,7 @@ class AppendAllToCollectionImplementation extends ArrayCollectionImplementation
 {
     public function getCollection()
     {
-        return $this->tsValue('items');
+        return $this->fusionValue('items');
     }
 
     /**
@@ -23,7 +23,7 @@ class AppendAllToCollectionImplementation extends ArrayCollectionImplementation
     public function evaluate()
     {
         $items = parent::evaluate();
-        $collection = $this->tsValue('appendTo');
+        $collection = $this->fusionValue('appendTo');
 
         return array_merge($collection, $items);
     }

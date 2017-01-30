@@ -2,18 +2,18 @@
 namespace Neos\Neos\Ui\View;
 
 /*                                                                        *
- * This script belongs to the TYPO3 Flow package "Neos.Neos.Ui".          *
+ * This script belongs to the Neos Flow package "Neos.Neos.Ui".           *
  *                                                                        *
  *                                                                        */
 use Neos\Flow\Annotations as Flow;
-use Neos\Fusion\View\TypoScriptView;
+use Neos\Fusion\View\FusionView;
 
-class BackendTypoScriptView extends TypoScriptView
+class BackendFusionView extends FusionView
 {
 
     public function __construct(array $options = array())
     {
         parent::__construct($options);
-        $this->setTypoScriptPathPattern('resource://Neos.Neos.Ui/Private/Fusion/Backend');
+        $this->setFusionPathPattern('resource://Neos.Neos.Ui/Private/Fusion/Backend');
     }
 }

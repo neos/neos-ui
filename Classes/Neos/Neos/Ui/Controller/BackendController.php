@@ -21,7 +21,7 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Service\XliffService;
 use Neos\Flow\I18n\Locale;
 use Neos\Fusion\Core\Cache\ContentCache;
-use Neos\Fusion\View\TypoScriptView;
+use Neos\Fusion\View\FusionView;
 use Neos\Flow\Mvc\View\ViewInterface;
 
 class BackendController extends ActionController
@@ -30,10 +30,10 @@ class BackendController extends ActionController
     /**
      * @var string
      */
-    protected $defaultViewObjectName = 'Neos\Neos\Ui\View\BackendTypoScriptView';
+    protected $defaultViewObjectName = 'Neos\Neos\Ui\View\BackendFusionView';
 
     /**
-     * @var TypoScriptView
+     * @var FusionView
      */
     protected $view;
 
@@ -106,7 +106,7 @@ class BackendController extends ActionController
 
     public function initializeView(ViewInterface $view)
     {
-        $view->setTypoScriptPath('backend');
+        $view->setFusionPath('backend');
     }
 
     /**

@@ -7,6 +7,7 @@ const TextField = props => {
     // Placeholder text must be unescaped in case html entities were used
     const placeholder = options && options.placeholder && translate(unescape(options.placeholder));
     return (<TextInput
+        autoFocus={options && options.autoFocus}
         value={value}
         onChange={commit}
         validationErrors={validationErrors}

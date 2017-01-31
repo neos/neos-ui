@@ -42,7 +42,7 @@ class Step1 extends PureComponent {
     }
 
     render() {
-        const {mode, calculateActiveMode, nodeTypesRegistry, getAllowedNodeTypesByModeGenerator, onHandleSelectNodeType} = this.props;
+        const {mode, calculateActiveMode, nodeTypesRegistry, getAllowedNodeTypesByModeGenerator, onHandleSelectNodeType, onHandleClose} = this.props;
         const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const activeMode = calculateActiveMode(mode, allowedNodeTypesByMode);
 
@@ -52,7 +52,7 @@ class Step1 extends PureComponent {
             <Dialog
                 actions={[this.renderCancelAction()]}
                 title={this.renderInsertModeSelector(activeMode, allowedNodeTypesByMode)}
-                onRequestClose={close}
+                onRequestClose={onHandleClose}
                 isOpen
                 isWide
                 >

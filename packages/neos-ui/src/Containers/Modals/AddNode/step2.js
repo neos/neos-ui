@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {$get} from 'plow-js';
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
@@ -6,7 +6,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 import style from './style.css';
 
-export default class Step2 extends Component {
+export default class Step2 extends PureComponent {
     static propTypes = {
         selectedNodeType: PropTypes.object.isRequired,
         validationErrors: PropTypes.oneOfType([

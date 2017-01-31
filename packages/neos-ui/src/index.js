@@ -14,13 +14,14 @@ import {delay} from '@neos-project/utils-helpers';
 
 import allSagas from './Sagas/index';
 import * as system from './System';
+import localStorageMiddleware from './localStorageMiddleware';
 import Root from './Containers/Root';
 
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
 const sagaMiddleWare = createSagaMiddleware();
 const store = createStore(reducer, new Map(), compose(
-    applyMiddleware(sagaMiddleWare),
+    applyMiddleware(sagaMiddleWare, localStorageMiddleware),
     devToolsStoreEnhancer()
 ));
 
@@ -107,9 +108,12 @@ function * application() {
 
     //
     // Hydrate server state
+    // Merges state fetched from server with the state saved in the local storage
     //
     const serverState = yield system.getServerState;
-    yield put(actions.System.init(serverState));
+    const persistedState = localStorage.getItem('persistedState') ? JSON.parse(localStorage.getItem('persistedState')) : {};
+    const mergedState = Object.assign({}, serverState, persistedState);
+    yield put(actions.System.init(mergedState));
 
     //
     // Just make sure that everybody does their initialization homework

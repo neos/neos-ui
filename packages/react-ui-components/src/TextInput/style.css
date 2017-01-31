@@ -21,3 +21,6 @@
     outline: 2px solid var(--brandColorsError) !important;
     color: var(--brandColorsError) !important;
 }
+.textInput--highlight {
+    outline: 2px solid var(--brandColorsSuccess);
+}

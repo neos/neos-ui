@@ -18,6 +18,7 @@ storiesOf('TextInput', module)
                         onChange={action('onChange')}
                         onFocus={action('onFocus')}
                         onBlur={action('onBlur')}
+                        highlight={boolean('Highlight', false)}
                         />
                 </StoryWrapper>
             );

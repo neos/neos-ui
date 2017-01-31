@@ -17,5 +17,8 @@
     color: var(--brandColorsContrastBright);
 }
 .textArea--invalid {
-    outline: 2px solid var(--brandColorsError);
+    outline: 2px solid var(--brandColorsError) !important;
+}
+.textArea--highlight {
+    outline: 2px solid var(--brandColorsSuccess);
 }

@@ -48,12 +48,12 @@
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/neos-ui-backend-connector": "^4.4.8",
+    "@neos-project/neos-ui-ckeditor-bindings": "^4.4.8",
     "@neos-project/neos-ui-containers": "^4.4.8",
+    "@neos-project/neos-ui-contentrepository": "^4.4.8",
     "@neos-project/neos-ui-decorators": "^4.4.8",
     "@neos-project/neos-ui-editors": "^4.4.8",
     "@neos-project/neos-ui-extensibility": "^4.4.8",
-    "@neos-project/neos-ui-ckeditor-bindings": "^4.4.8",
-    "@neos-project/neos-ui-contentrepository": "^4.4.8",
     "@neos-project/neos-ui-i18n": "^4.4.8",
     "@neos-project/neos-ui-inspector": "^4.4.8",
     "@neos-project/neos-ui-redux-store": "^4.4.8",
@@ -78,6 +78,7 @@
     "lodash.memoize": "^4.1.2",
     "lodash.merge": "^4.6.0",
     "lodash.omit": "^4.5.0",
+    "lodash.throttle": "^4.1.1",
     "lodash.unescape": "4.0.1",
     "mime-types": "^2.1.10",
     "moment": "^2.14.1",
@@ -87,6 +88,7 @@
     "ramda": "^0.22.1",
     "react": "^15.4.0",
     "react-addons-shallow-compare": "^15.4.0",
+    "react-broadcast": "^0.1.2",
     "react-click-outside": "^2.1.0",
     "react-collapse": "^2.3.3",
     "react-css-themr": "^1.2.0",
@@ -107,8 +109,7 @@
     "regenerator": "^0.8.46",
     "reselect": "^2.4.0",
     "uuid": "^2.0.2",
-    "whatwg-fetch": "^1.0.0",
-    "react-broadcast": "^0.1.2"
+    "whatwg-fetch": "^1.0.0"
   },
   "license": "GNU GPLv3"
 }

@@ -130,10 +130,10 @@ Neos:
         providers:
           'Neos.Neos:Backend':
             requestPatterns:
-              'Neos.Neos.Ui:controllerObjectName':
+              'Neos.Neos.Ui:BackendControllers':
                 pattern: ControllerObjectName
                 patternOptions:
-                  controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*|Neos\Neos\Controller\.*|Neos\Neos\Service\.*|Neos\Media\Controller\.*'
+                  controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*'
     mvc:
       routes:
         'Neos.Neos.Ui':

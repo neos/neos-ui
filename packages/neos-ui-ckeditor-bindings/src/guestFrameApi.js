@@ -1,3 +1,6 @@
+import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
+
 const noop = {
     initialize() {},
     toggleFormat() {},
@@ -173,12 +176,7 @@ const createCKEditorAPI = CKEDITOR => {
                     handleUserInteraction();
                 });
 
-                //
-                // TODO: This should be debounced!
-                //
-                editor.on('change', () => {
-                    onChange(editor.getData());
-                });
+                editor.on('change', debounce(throttle(() => onChange(editor.getData()), 1500), 150));
             });
         }
     };

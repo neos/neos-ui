@@ -37,6 +37,18 @@ const discard = csrfToken => nodeContextPaths => fetchJson('/neos!/service/disca
     })
 });
 
+const changeBaseWorkspace = csrfToken => targetWorkspaceName => fetchJson('/neos!/service/changeBaseWorkspace', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+        'X-Flow-Csrftoken': csrfToken,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        targetWorkspaceName
+    })
+});
+
 const loadImageMetadata = imageVariantUuid => fetchJson(`neos/content/image-with-metadata?image=${imageVariantUuid}`, {
     method: 'GET',
     credentials: 'include',
@@ -90,6 +102,7 @@ export default csrfToken => ({
     change: change(csrfToken),
     publish: publish(csrfToken),
     discard: discard(csrfToken),
+    changeBaseWorkspace: changeBaseWorkspace(csrfToken),
     createImageVariant: createImageVariant(csrfToken),
     uploadAsset: uploadAsset(csrfToken)
 });

@@ -39,6 +39,18 @@ function * watchToggleAutoPublish() {
     });
 }
 
+function * watchChangeBaseWorkspace() {
+    const {changeBaseWorkspace} = backend.get().endpoints;
+    yield * takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
+        try {
+            const feedback = yield call(changeBaseWorkspace, action.payload);
+            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+        } catch (error) {
+            console.error('Failed to change base workspace', error);
+        }
+    });
+}
+
 function * watchDiscard() {
     const {discard} = backend.get().endpoints;
 
@@ -58,5 +70,6 @@ function * watchDiscard() {
 export const sagas = [
     watchPublish,
     watchToggleAutoPublish,
-    watchDiscard
+    watchDiscard,
+    watchChangeBaseWorkspace
 ];

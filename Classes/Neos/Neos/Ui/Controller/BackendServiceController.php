@@ -13,6 +13,7 @@ use Neos\Flow\Mvc\RequestInterface;
 use Neos\Flow\Mvc\ResponseInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Service\PublishingService;
+use Neos\Neos\Service\UserService;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
@@ -23,6 +24,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
+use Neos\Neos\Ui\TYPO3CR\Service\WorkspaceService;
 use Neos\Eel\FlowQuery\FlowQuery;
 
 class BackendServiceController extends ActionController
@@ -69,6 +71,18 @@ class BackendServiceController extends ActionController
     protected $workspaceRepository;
 
     /**
+     * @Flow\Inject
+     * @var WorkspaceService
+     */
+    protected $workspaceService;
+
+    /**
+     * @Flow\Inject
+     * @var UserService
+     */
+    protected $userService;
+
+    /**
      * Set the controller context on the feedback collection after the controller
      * has been initialized
      *
@@ -91,9 +105,9 @@ class BackendServiceController extends ActionController
     {
         $nodeService = new NodeService();
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();
-        $documnetNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath);
-        $updateWorkspaceInfo->setDocument(
-            $nodeService->getClosestDocument($documnetNode)
+        $documentNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath);
+        $updateWorkspaceInfo->setWorkspace(
+            $documentNode->getContext()->getWorkspace()
         );
 
         $this->feedbackCollection->add($updateWorkspaceInfo);
@@ -173,11 +187,6 @@ class BackendServiceController extends ActionController
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath);
                 $this->publishingService->discardNode($node);
-
-                $reloadDocument = new ReloadDocument();
-                $reloadDocument->setDocument($this->nodeService->getClosestDocument($node));
-
-                $this->feedbackCollection->add($reloadDocument);
             }
 
             $success = new Success();
@@ -185,6 +194,51 @@ class BackendServiceController extends ActionController
 
             $this->updateWorkspaceInfo($nodeContextPaths[0]);
             $this->feedbackCollection->add($success);
+
+            $reloadDocument = new ReloadDocument();
+            $this->feedbackCollection->add($reloadDocument);
+
+            $this->persistenceManager->persistAll();
+        } catch (\Exception $e) {
+            $error = new Error();
+            $error->setMessage($e->getMessage());
+
+            $this->feedbackCollection->add($error);
+        }
+
+        $this->view->assign('value', $this->feedbackCollection);
+    }
+
+    /**
+     * Change base workspace of current user workspace
+     *
+     * @param string $targetWorkspaceName
+     * @return void
+     */
+    public function changeBaseWorkspaceAction($targetWorkspaceName)
+    {
+        try {
+            $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
+            $userWorkspace = $this->userService->getPersonalWorkspace();
+
+            if (count($this->workspaceService->getPublishableNodeInfo($userWorkspace)) > 0) {
+                // TODO: proper error dialog
+                throw new \Exception('Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.');
+            }
+
+            $userWorkspace->setBaseWorkspace($targetWorkspace);
+            $this->workspaceRepository->update($userWorkspace);
+
+            $success = new Success();
+            $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));
+            $this->feedbackCollection->add($success);
+
+            $updateWorkspaceInfo = new UpdateWorkspaceInfo();
+            $updateWorkspaceInfo->setWorkspace($userWorkspace);
+            $this->feedbackCollection->add($updateWorkspaceInfo);
+
+            $reloadDocument = new ReloadDocument();
+            $this->feedbackCollection->add($reloadDocument);
 
             $this->persistenceManager->persistAll();
         } catch (\Exception $e) {

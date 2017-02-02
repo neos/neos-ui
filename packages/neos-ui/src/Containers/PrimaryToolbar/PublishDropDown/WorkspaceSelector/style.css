@@ -1,0 +1,5 @@
+.notAllowed {
+    padding: 12px var(--spacing);
+    cursor: not-allowed;
+    opacity: .5;
+}

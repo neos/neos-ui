@@ -104,13 +104,9 @@ function * watchCommenceUncollapse({globalRegistry}) {
     });
 }
 
-function * watchReloadTree() {
-    yield * takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree(action) {
-        //
-        // ToDo: passing the nodeTypesRegistry via the action is pretty dirty, find a way
-        // to access the registry more directly.
-        //
-        const {nodeTypesRegistry} = action.payload;
+function * watchReloadTree({globalRegistry}) {
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    yield * takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
         const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
         const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsedContextPaths);
         const nodesToReload = documentNodes.toArray().filter(node => uncollapsedContextPaths.includes(node.get('contextPath')));

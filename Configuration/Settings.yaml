@@ -66,13 +66,12 @@ Neos:
             nodes:
               byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
               siteNode: '${q(site).property(''_contextPath'')}'
-            workspaces:
-              byName: '${Neos.Ui.Workspace.initializeWorkspacesByName()}'
-              active: '${Neos.Ui.Workspace.getPersonalWorkspaceName()}'
             contentDimensions:
               byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
               active: '${documentNode.context.dimensions}'
               allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
+            workspaces:
+              personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
           ui:
             contentCanvas:
               src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
@@ -111,6 +110,7 @@ Neos:
               fullName: '${q(user).property(''name.fullName'')}'
             settings:
               isAutoPublishingEnabled: false
+              targetWorkspace: 'live'
       changes:
         types:
           'Neos.Neos.Ui:Property': Neos\Neos\Ui\Domain\Model\Changes\Property
@@ -145,3 +145,4 @@ Neos:
       Neos.Ui.Sites: Neos\Neos\Ui\Fusion\Helper\SitesHelper
       Neos.Ui.Modules: Neos\Neos\Ui\Fusion\Helper\ModulesHelper
       Neos.Ui.NodeTypes: Neos\Neos\Ui\Fusion\Helper\NodeTypesHelper
+      Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper

@@ -68,8 +68,9 @@ abstract class AbstractChange implements ChangeInterface
     {
         $nodeService = new NodeService();
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();
-        $updateWorkspaceInfo->setDocument(
-            $nodeService->getClosestDocument($this->getSubject())
+        $documentNode = $nodeService->getClosestDocument($this->getSubject());
+        $updateWorkspaceInfo->setWorkspace(
+            $documentNode->getContext()->getWorkspace()
         );
 
         $this->feedbackCollection->add($updateWorkspaceInfo);
@@ -86,9 +87,6 @@ abstract class AbstractChange implements ChangeInterface
     {
         $nodeService = new NodeService();
         $reloadDocument = new ReloadDocument();
-        $reloadDocument->setDocument(
-            $nodeService->getClosestDocument($this->getSubject())
-        );
 
         $this->feedbackCollection->add($reloadDocument);
     }

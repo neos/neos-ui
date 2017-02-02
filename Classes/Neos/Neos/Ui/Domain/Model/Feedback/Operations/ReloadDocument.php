@@ -7,31 +7,6 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 
 class ReloadDocument implements FeedbackInterface
 {
-    /**
-     * @var NodeInterface
-     */
-    protected $document;
-
-    /**
-     * Set the document
-     *
-     * @param NodeInterface $document
-     * @return void
-     */
-    public function setDocument(NodeInterface $document)
-    {
-        $this->document = $document;
-    }
-
-    /**
-     * Get the document
-     *
-     * @return NodeInterface
-     */
-    public function getDocument()
-    {
-        return $this->document;
-    }
 
     /**
      * Get the type identifier
@@ -50,7 +25,7 @@ class ReloadDocument implements FeedbackInterface
      */
     public function getDescription()
     {
-        return sprintf('Reload of document "%s" required.', $this->getDocument()->getProperty('title'));
+        return sprintf('Reload of current document required.');
     }
 
     /**
@@ -65,7 +40,7 @@ class ReloadDocument implements FeedbackInterface
             return false;
         }
 
-        return $this->getDocument()->getContextPath() === $feedback->getDocument()->getContextPath();
+        return true;
     }
 
     /**
@@ -75,8 +50,6 @@ class ReloadDocument implements FeedbackInterface
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        return [
-            'documentContextPath' => $this->getDocument()->getContextPath()
-        ];
+        return [];
     }
 }

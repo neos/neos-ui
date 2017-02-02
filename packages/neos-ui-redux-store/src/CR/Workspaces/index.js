@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
-import {$set, $head, $get} from 'plow-js';
+import {$set, $get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -8,25 +8,20 @@ import {actionTypes as system} from '../../System/index';
 import * as selectors from './selectors';
 
 const UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE';
-const SWITCH = '@neos/neos-ui/CR/Workspaces/SWITCH';
 const PUBLISH = '@neos/neos-ui/CR/Workspaces/PUBLISH';
 const DISCARD = '@neos/neos-ui/CR/Workspaces/DISCARD';
+const CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE';
 
 export const actionTypes = {
     UPDATE,
-    SWITCH,
     PUBLISH,
-    DISCARD
+    DISCARD,
+    CHANGE_BASE_WORKSPACE
 };
 /**
  * Updates the data of a workspace
  */
-const update = createAction(UPDATE, (name, data) => ({name, data}));
-
-/**
- * Switches to the given workspace
- */
-const switchTo = createAction(SWITCH, name => name);
+const update = createAction(UPDATE, data => data);
 
 /**
  * Publish nodes to the given workspace
@@ -38,14 +33,19 @@ const publish = createAction(PUBLISH, (nodeContextPaths, targetWorkspaceName) =>
  */
 const discard = createAction(DISCARD, nodeContextPaths => nodeContextPaths);
 
+/**
+ * Change base workspace
+ */
+const changeBaseWorkspace = createAction(CHANGE_BASE_WORKSPACE, name => name);
+
 //
 // Export the actions
 //
 export const actions = {
     update,
-    switchTo,
     publish,
-    discard
+    discard,
+    changeBaseWorkspace
 };
 
 //
@@ -55,12 +55,10 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'cr.workspaces',
         new Map({
-            byName: Immutable.fromJS($get('cr.workspaces.byName', state)),
-            active: $get('cr.workspaces.active', state) || $head('cr.workspaces.byName', state)
+            personalWorkspace: Immutable.fromJS($get('cr.workspaces.personalWorkspace', state))
         })
     ),
-    [UPDATE]: ({name, data}) => $set(['cr', 'workspaces', 'byName', name, 'publishableNodes'], Immutable.fromJS(data)),
-    [SWITCH]: name => $set('cr.workspaces.active', name)
+    [UPDATE]: data => $set('cr.workspaces.personalWorkspace', Immutable.fromJS(data))
 });
 
 //

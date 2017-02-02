@@ -8,7 +8,6 @@ export default class AbstractButton extends PureComponent {
         isHighlighted: PropTypes.bool,
         className: PropTypes.string,
         label: PropTypes.string,
-        indicator: PropTypes.number,
         children: PropTypes.node.isRequired,
         onClick: PropTypes.func.isRequired
     };
@@ -17,7 +16,6 @@ export default class AbstractButton extends PureComponent {
         const {
             isEnabled,
             isHighlighted,
-            indicator,
             className,
             ...directProps
         } = this.props;
@@ -34,7 +32,7 @@ export default class AbstractButton extends PureComponent {
 
         return (
             <button className={btnClassName} {...attributes} {...directProps}>
-                {this.props.children} {indicator > 0 ? `(${indicator})` : ''}
+                {this.props.children}
             </button>
         );
     }

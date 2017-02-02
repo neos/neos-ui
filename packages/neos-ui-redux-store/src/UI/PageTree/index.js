@@ -43,7 +43,7 @@ const invalidate = createAction(INVALIDATE, contextPath => ({contextPath}));
 const requestChildren = createAction(REQUEST_CHILDREN, (contextPath, {unCollapse = true, activate = false} = {}) => ({contextPath, opts: {unCollapse, activate}}));
 const setAsLoading = createAction(SET_AS_LOADING, contextPath => ({contextPath}));
 const setAsLoaded = createAction(SET_AS_LOADED, contextPath => ({contextPath}));
-const reloadTree = createAction(RELOAD_TREE, nodeTypesRegistry => ({nodeTypesRegistry}));
+const reloadTree = createAction(RELOAD_TREE);
 
 //
 // Export the actions

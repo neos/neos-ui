@@ -6,6 +6,7 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {put} from 'redux-saga/effects';
 import {Map} from 'immutable';
+import merge from 'lodash.merge';
 
 import {reducer, actions} from '@neos-project/neos-ui-redux-store';
 import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
@@ -108,11 +109,11 @@ function * application() {
 
     //
     // Hydrate server state
-    // Merges state fetched from server with the state saved in the local storage
+    // Deep merges state fetched from server with the state saved in the local storage
     //
     const serverState = yield system.getServerState;
     const persistedState = localStorage.getItem('persistedState') ? JSON.parse(localStorage.getItem('persistedState')) : {};
-    const mergedState = Object.assign({}, serverState, persistedState);
+    const mergedState = merge({}, serverState, persistedState);
     yield put(actions.System.init(mergedState));
 
     //

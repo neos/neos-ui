@@ -111,12 +111,12 @@ export default class Inspector extends PureComponent {
             return this.renderFallback();
         }
 
-        const nodeType = nodeTypesRegistry.get(node.nodeType);
-        if (!nodeType.properties) {
-            console.error(`No properties configured in ${node.nodeType} nodetype`);
+        const nodeType = nodeTypesRegistry.get($get('nodeType', node));
+        if (!$get('properties', nodeType)) {
+            console.error(`No properties configured in ${$get('nodeType', node)} nodetype`);
         }
         let validationErrors = null;
-        const propertiesForValidation = Object.assign({}, node.properties);
+        const propertiesForValidation = Object.assign({}, $get('properties', node));
         if (transientValues) {
             // Override values with transient values
             Object.keys(transientValues.toJS()).forEach(key => {

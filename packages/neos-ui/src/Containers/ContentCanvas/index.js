@@ -224,8 +224,8 @@ export default class ContentCanvas extends PureComponent {
                 return;
             }
 
-            const nodeFormattingRules = this.calculateEnabledFormattingRulesForNodeType(node.nodeType);
-            const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get(node.nodeType));
+            const nodeFormattingRules = this.calculateEnabledFormattingRulesForNodeType($get('nodeType', node));
+            const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get($get('nodeType', node)));
             const placeholder = unescape(translate(placeholderLabel));
 
             const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];

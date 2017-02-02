@@ -27,7 +27,7 @@ export default ({nodeTypesRegistry, formattingRulesRegistry}) => {
     const postProcessAlohaConfig = createAlohaConfigPostProcessor(formattingRulesRegistry);
 
     return memoize(nodeTypeName => {
-        const {properties} = nodeTypesRegistry.get(nodeTypeName);
+        const properties = $get('properties', nodeTypesRegistry.get(nodeTypeName));
 
         const enabledFormattingRules = {};
         Object.keys(properties)

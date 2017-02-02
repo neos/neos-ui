@@ -192,7 +192,7 @@ export default class ContentCanvas extends PureComponent {
                 // Do nothing, everything OK!
             } else if (selectedDomNode) {
                 const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
-                const fusionPath = selectedDomNode.getAttribute('data-__neos-typoscript-path');
+                const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
 
                 focusNode(contextPath, fusionPath);
             } else {

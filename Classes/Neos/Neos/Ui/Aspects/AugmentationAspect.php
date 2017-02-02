@@ -6,9 +6,12 @@ namespace Neos\Neos\Ui\Aspects;
  *                                                                        *
  *                                                                        */
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Session\SessionInterface;
+use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\HtmlAugmenter;
 
 /**
@@ -20,6 +23,12 @@ use Neos\Neos\Service\HtmlAugmenter;
  */
 class AugmentationAspect
 {
+
+    /**
+     * @Flow\Inject
+     * @var AuthorizationService
+     */
+    protected $nodeAuthorizationService;
 
     /**
      * @Flow\Inject
@@ -48,13 +57,18 @@ class AugmentationAspect
             return $joinPoint->getAdviceChain()->proceed($joinPoint);
         }
 
+        /** @var NodeInterface $node */
         $node = $joinPoint->getMethodArgument('node');
         $content = $joinPoint->getMethodArgument('content');
         $fusionPath = $joinPoint->getMethodArgument('typoScriptPath');
 
+        if (!$this->needsMetadata($node, false)) {
+            return $content;
+        }
+
         $attributes = [
             'data-__neos-node-contextpath' => $node->getContextPath(),
-            'data-__neos-typoscript-path' => $fusionPath
+            'data-__neos-fusion-path' => $fusionPath
         ];
 
         return $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
@@ -75,6 +89,13 @@ class AugmentationAspect
 
         $property = $joinPoint->getMethodArgument('property');
         $node = $joinPoint->getMethodArgument('node');
+        $content = $joinPoint->getMethodArgument('content');
+
+        /** @var ContentContext $contentContext */
+        $contentContext = $node->getContext();
+        if (!$contentContext->isInBackend()) {
+            return $content;
+        }
 
         $content = $joinPoint->getAdviceChain()->proceed($joinPoint);
 
@@ -89,6 +110,18 @@ class AugmentationAspect
         }
 
         return $this->htmlAugmenter->addAttributes($content, $attributes, 'span');
+    }
+
+    /**
+     * @param NodeInterface $node
+     * @param boolean $renderCurrentDocumentMetadata
+     * @return boolean
+     */
+    protected function needsMetadata(NodeInterface $node, $renderCurrentDocumentMetadata)
+    {
+        /** @var $contentContext ContentContext */
+        $contentContext = $node->getContext();
+        return ($contentContext->isInBackend() === true && ($renderCurrentDocumentMetadata === true || $this->nodeAuthorizationService->isGrantedToEditNode($node) === true));
     }
 
 }

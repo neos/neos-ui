@@ -13,6 +13,7 @@ use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\HtmlAugmenter;
+use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 /**
  * - Serialize all nodes related to the currently rendered document
@@ -36,6 +37,11 @@ class AugmentationAspect
      */
     protected $htmlAugmenter;
 
+    /**
+     * @Flow\Inject
+     * @var NodeInfoHelper
+     */
+    protected $nodeInfoHelper;
 
     /**
      * @Flow\Inject
@@ -70,6 +76,10 @@ class AugmentationAspect
             'data-__neos-node-contextpath' => $node->getContextPath(),
             'data-__neos-fusion-path' => $fusionPath
         ];
+
+        // TODO Check how we can access the current controller context here (idea: use a custom content element wrapping implementation)
+        $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, null));
+        $content .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
 
         return $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
     }

@@ -140,7 +140,8 @@ export default class ContentCanvas extends PureComponent {
         // TODO: convert to single action: "guestFrameChange"
 
         // Add nodes before setting the new context path to prevent action ordering issues
-        addNodes(documentInformation.nodes);
+        const nodes = iframeWindow['@Neos.Neos.Ui:Nodes'];
+        addNodes(nodes);
 
         setContextPath(documentInformation.metaData.contextPath);
         setPreviewUrl(documentInformation.metaData.previewUrl);
@@ -152,7 +153,7 @@ export default class ContentCanvas extends PureComponent {
         const components = iframeDocument.querySelectorAll('[data-__neos-node-contextpath]');
         Array.prototype.forEach.call(components, node => {
             const contextPath = node.getAttribute('data-__neos-node-contextpath');
-            const isHidden = $get([contextPath, 'properties', '_hidden'], documentInformation.nodes);
+            const isHidden = $get([contextPath, 'properties', '_hidden'], nodes);
 
             if (isHidden) {
                 node.classList.add(style.markHiddenNodeAsHidden);

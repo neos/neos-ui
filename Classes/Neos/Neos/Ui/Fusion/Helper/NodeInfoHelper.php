@@ -35,7 +35,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected $persistenceManager;
 
-    public function renderNode(NodeInterface $node, ControllerContext $controllerContext)
+    /**
+     * @param NodeInterface $node
+     * @param ControllerContext $controllerContext
+     * @return array
+     */
+    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null)
     {
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
@@ -48,7 +53,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
             'children' => [],
         ];
-        if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+        if ($controllerContext !== null && $node->getNodeType()->isOfType('Neos.Neos:Document')) {
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
         }
 

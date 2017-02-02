@@ -11,6 +11,7 @@ use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Session\SessionInterface;
+use Neos\FluidAdaptor\Core\Rendering\FlowAwareRenderingContextInterface;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\HtmlAugmenter;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
@@ -50,6 +51,43 @@ class AugmentationAspect
     protected $session;
 
     /**
+     * Current controller context, will be set by advices
+     *
+     * This is a workaround to have the controller context available
+     * inside the wrapContentObject() advice. It will not be necessary once we implement a custom content element
+     * wrapping implementation.
+     *
+     * @var \Neos\Flow\Mvc\Controller\ControllerContext
+     */
+    protected $controllerContext = null;
+
+    /**
+     * @Flow\Before("method(Neos\Neos\Fusion\ContentElementWrappingImplementation->evaluate())")
+     * @param JoinPointInterface $joinPoint
+     * @return mixed
+     */
+    public function setControllerContextFromContentElementWrappingImplementation(JoinPointInterface $joinPoint)
+    {
+        /** @var \Neos\Neos\Fusion\ContentElementWrappingImplementation $proxy */
+        $proxy = $joinPoint->getProxy();
+        $runtime = $proxy->getRuntime();
+        $this->controllerContext = $runtime->getControllerContext();
+    }
+
+    /**
+     * @Flow\Before("method(Neos\Neos\ViewHelpers\ContentElement\WrapViewHelper->setRenderingContext())")
+     * @param JoinPointInterface $joinPoint
+     * @return mixed
+     */
+    public function setControllerContextFromWrapViewHelper(JoinPointInterface $joinPoint)
+    {
+        $renderingContext = $joinPoint->getMethodArgument('renderingContext');
+        if ($renderingContext instanceof FlowAwareRenderingContextInterface) {
+            $this->controllerContext = $renderingContext->getControllerContext();
+        }
+    }
+
+    /**
      * Hooks into standard content element wrapping to render those attributes needed for the package to identify
      * nodes and typoScript paths
      *
@@ -77,8 +115,7 @@ class AugmentationAspect
             'data-__neos-fusion-path' => $fusionPath
         ];
 
-        // TODO Check how we can access the current controller context here (idea: use a custom content element wrapping implementation)
-        $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, null));
+        $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
         $content .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
 
         return $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
@@ -110,14 +147,9 @@ class AugmentationAspect
         $content = $joinPoint->getAdviceChain()->proceed($joinPoint);
 
         $attributes = [
-            'data-__neos-property' => $property
+            'data-__neos-property' => $property,
+            'data-__neos-editable-node-contextpath' => $node->getContextPath()
         ];
-
-        if ($node !== null) {
-            $attributes += [
-                'data-__neos-editable-node-contextpath' => $node->getContextPath()
-            ];
-        }
 
         return $this->htmlAugmenter->addAttributes($content, $attributes, 'span');
     }

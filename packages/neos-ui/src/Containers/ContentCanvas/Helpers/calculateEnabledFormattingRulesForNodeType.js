@@ -23,7 +23,10 @@ const createAlohaConfigPostProcessor = formattingRulesRegistry => alohaConfigura
     return enabledFormattingRuleIds;
 };
 
-export default ({nodeTypesRegistry, formattingRulesRegistry}) => {
+const calculateEnabledFormattingRulesForNodeTypeFactory = memoize(globalRegistry => {
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    const formattingRulesRegistry = globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules');
+
     const postProcessAlohaConfig = createAlohaConfigPostProcessor(formattingRulesRegistry);
 
     return memoize(nodeTypeName => {
@@ -39,4 +42,6 @@ export default ({nodeTypesRegistry, formattingRulesRegistry}) => {
 
         return enabledFormattingRules;
     });
-};
+});
+
+export default calculateEnabledFormattingRulesForNodeTypeFactory;

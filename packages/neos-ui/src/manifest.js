@@ -4,12 +4,12 @@ import {$get} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import StyleSelect from './Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 import {RichTextToolbarRegistry} from './Registry';
-import {dom} from './Containers/ContentCanvas/Helpers/index';
+import {dom, initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './Containers/ContentCanvas/Helpers/index';
 
 manifest('main', {}, globalRegistry => {
     //
@@ -342,7 +342,7 @@ manifest('main', {}, globalRegistry => {
     //
     // Take care of message feedback
     //
-    const flashMessageFeedbackHandler = (feedbackPayload, store) => {
+    const flashMessageFeedbackHandler = (feedbackPayload, {store}) => {
         const {message, severity} = feedbackPayload;
         const timeout = severity.toLowerCase() === 'success' ? 5000 : 0;
         const id = uuid.v4();
@@ -366,21 +366,21 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server advices to update the workspace information, dispatch the action to do so
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:UpdateWorkspaceInfo', (feedbackPayload, store) => {
+    serverFeedbackHandlers.add('Neos.Neos.Ui:UpdateWorkspaceInfo', (feedbackPayload, {store}) => {
         store.dispatch(actions.CR.Workspaces.update(feedbackPayload));
     });
 
     //
     // When the server advices to reload the children of a document node, dispatch the action to do so.
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:DocumentNodeCreated', (feedbackPayload, store) => {
+    serverFeedbackHandlers.add('Neos.Neos.Ui:DocumentNodeCreated', (feedbackPayload, {store}) => {
         store.dispatch(actions.UI.Remote.documentNodeCreated(feedbackPayload.contextPath));
     });
 
     //
     // When the server advices to reload the document, just reload it
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:ReloadDocument', (feedbackPayload, store) => {
+    serverFeedbackHandlers.add('Neos.Neos.Ui:ReloadDocument', (feedbackPayload, {store}) => {
         [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
             const iframeWindow = iframe.contentWindow || iframe;
 
@@ -392,7 +392,7 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server has updated node info, apply it to the store
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:UpdateNodeInfo', (feedbackPayload, store) => {
+    serverFeedbackHandlers.add('Neos.Neos.Ui:UpdateNodeInfo', (feedbackPayload, {store}) => {
         store.dispatch(actions.CR.Nodes.add(feedbackPayload.byContextPath));
     });
 
@@ -400,7 +400,7 @@ manifest('main', {}, globalRegistry => {
     // When the server advices to render a new node, put the delivered html to the
     // corrent place inside the DOM
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderContentOutOfBand', feedbackPayload => {
+    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderContentOutOfBand', (feedbackPayload, {store, globalRegistry}) => {
         const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
         const parentElement = parentDomAddress && dom.findNode(
             parentDomAddress.contextPath,
@@ -428,12 +428,20 @@ manifest('main', {}, globalRegistry => {
                 parentElement.appendChild(contentElement);
                 break;
         }
+
+        initializeHoverHandlersInIFrame(contentElement, dom.iframeDocument());
+
+        initializeCkEditorForDomNode(contentElement, {
+            byContextPathDynamicAccess: contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState()),
+            globalRegistry,
+            persistChange: (...args) => store.dispatch(actions.Changes.persistChange(...args))
+        });
     });
 
     //
     // When the server has removed a node, remove it as well from the store and the dom
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:RemoveNode', ({contextPath, parentContextPath}, store) => {
+    serverFeedbackHandlers.add('Neos.Neos.Ui:RemoveNode', ({contextPath, parentContextPath}, {store}) => {
         const state = store.getState();
 
         if ($get('cr.nodes.focused.contextPath', state) === contextPath) {

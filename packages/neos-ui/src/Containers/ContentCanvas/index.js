@@ -5,13 +5,12 @@ import {$transform, $get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import unescape from 'lodash.unescape';
 
 import Frame from '@neos-project/react-ui-components/lib/Frame/';
 
 import style from './style.css';
 import InlineUI from './InlineUI/index';
-import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattingRulesForNodeType, dom} from './Helpers';
+import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './Helpers/index';
 
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
@@ -33,9 +32,8 @@ import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattin
     persistChange: actions.Changes.persistChange
 })
 @neos(globalRegistry => ({
-    formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules'),
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
-    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+    globalRegistry,
+    formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules')
 }))
 export default class ContentCanvas extends PureComponent {
     static propTypes = {
@@ -56,23 +54,14 @@ export default class ContentCanvas extends PureComponent {
         persistChange: PropTypes.func.isRequired,
         byContextPathDynamicAccess: PropTypes.func.isRequired,
 
-        formattingRulesRegistry: PropTypes.object.isRequired,
-        nodeTypesRegistry: PropTypes.object.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        globalRegistry: PropTypes.object.isRequired,
+        formattingRulesRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
         super(props);
 
         this.onFrameChange = this.handleFrameChanges.bind(this);
-    }
-
-    componentWillMount() {
-        const {nodeTypesRegistry, formattingRulesRegistry} = this.props;
-        this.calculateEnabledFormattingRulesForNodeType = _calculateEnabledFormattingRulesForNodeType({
-            nodeTypesRegistry,
-            formattingRulesRegistry
-        });
     }
 
     render() {
@@ -114,19 +103,11 @@ export default class ContentCanvas extends PureComponent {
         iframeDocument.__isInitialized = true;
 
         const {
-            focusNode,
             setGuestContext,
             setContextPath,
             setPreviewUrl,
             setActiveDimensions,
-            addNodes,
-            formattingUnderCursor,
-            setCurrentlyEditedPropertyName,
-            unFocusNode,
-            persistChange,
-            formattingRulesRegistry,
-            nodeTypesRegistry,
-            i18nRegistry
+            addNodes
         } = this.props;
 
         //
@@ -138,13 +119,26 @@ export default class ContentCanvas extends PureComponent {
 
         // TODO: convert to single action: "guestFrameChange"
 
-        // Add nodes before setting the new context path to prevent action ordering issues
+        // Add nodes before setting the new context path to prevent action ordering issues -> THIS WILL UPDATE OUR OWN PROPS!!!
         const nodes = iframeWindow['@Neos.Neos.Ui:Nodes'];
         addNodes(nodes);
 
         setContextPath(documentInformation.metaData.contextPath);
         setPreviewUrl(documentInformation.metaData.previewUrl);
         setActiveDimensions(documentInformation.metaData.contentDimensions.active);
+
+        // WARNING: we need to initialize byContextPathDynamicAccess AFTER addNodes from above; otherwise the access function
+        // will be based on the OLD state, and thus NOT return the new nodes...
+        const {
+            focusNode,
+            formattingUnderCursor,
+            setCurrentlyEditedPropertyName,
+            unFocusNode,
+            byContextPathDynamicAccess,
+            persistChange,
+            formattingRulesRegistry,
+            globalRegistry
+        } = this.props;
 
         //
         // Initialize node components
@@ -158,21 +152,7 @@ export default class ContentCanvas extends PureComponent {
                 node.classList.add(style.markHiddenNodeAsHidden);
             }
 
-            node.addEventListener('mouseenter', e => {
-                const oldNode = iframeDocument.querySelector(`.${style.markHoveredNodeAsHovered}`);
-                if (oldNode) {
-                    oldNode.classList.remove(style.markHoveredNodeAsHovered);
-                }
-
-                node.classList.add(style.markHoveredNodeAsHovered);
-
-                e.stopPropagation();
-            });
-            node.addEventListener('mouseleave', e => {
-                node.classList.remove(style.markHoveredNodeAsHovered);
-
-                e.stopPropagation();
-            });
+            initializeHoverHandlersInIFrame(node, iframeDocument);
         });
 
         //
@@ -206,57 +186,15 @@ export default class ContentCanvas extends PureComponent {
             setCurrentlyEditedPropertyName
         };
 
-        // ToDo: Throws an err.
         iframeWindow.NeosCKEditorApi.initialize(editorConfig);
 
         //
         // Initialize inline editors
         //
-        const editors = iframeDocument.querySelectorAll('.neos-inline-editable');
-        Array.prototype.forEach.call(editors, domNode => {
-            const contextPath = dom.closestContextPath(domNode);
-            const propertyName = domNode.dataset.__neosProperty;
-
-            const node = this.props.byContextPathDynamicAccess(contextPath);
-
-            if (!node) {
-                console.warn('No node found at path: ' + contextPath);
-                return;
-            }
-
-            const nodeFormattingRules = this.calculateEnabledFormattingRulesForNodeType(node.nodeType);
-            const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get(node.nodeType));
-            const placeholder = unescape(i18nRegistry.translate(placeholderLabel));
-
-            const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];
-
-            // Build up editor config for each enabled formatting
-            let editorOptions = Object.assign(
-                {
-                    extraPlugins: 'confighelper',
-                    removePlugins: 'floatingspace,maximize,resize,toolbar,contextmenu,liststyle,tabletools'
-                },
-                placeholder ? {placeholder} : {}
-            );
-
-            enabledFormattingRuleIds.forEach(formattingRuleId => {
-                const formattingDefinition = formattingRulesRegistry.get(formattingRuleId);
-
-                if (formattingDefinition.config) {
-                    editorOptions = formattingDefinition.config(editorOptions);
-                }
-            });
-
-            iframeWindow.NeosCKEditorApi.createEditor(domNode, editorOptions, propertyName, contents => {
-                persistChange({
-                    type: 'Neos.Neos.Ui:Property',
-                    subject: contextPath,
-                    payload: {
-                        propertyName,
-                        value: contents
-                    }
-                });
-            });
+        initializeCkEditorForDomNode(iframeDocument, {
+            byContextPathDynamicAccess,
+            globalRegistry,
+            persistChange
         });
     }
 }

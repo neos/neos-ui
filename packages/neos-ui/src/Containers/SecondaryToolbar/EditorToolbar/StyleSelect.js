@@ -7,7 +7,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import {hideDisallowedToolbarComponents} from './Helpers';
-import {calculateEnabledFormattingRulesForNodeType} from '../../ContentCanvas/Helpers';
+import {calculateEnabledFormattingRulesForNodeTypeFactory} from '../../ContentCanvas/Helpers/index';
 
 // Predicate matching all "element.id"s starting with "prefix".
 const startsWith = prefix => element =>
@@ -24,8 +24,7 @@ const startsWith = prefix => element =>
 }))
 @neos(globalRegistry => ({
     toolbarRegistry: globalRegistry.get('richtextToolbar'),
-    formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules'),
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    globalRegistry
 }))
 export default class StyleSelect extends PureComponent {
 
@@ -39,13 +38,11 @@ export default class StyleSelect extends PureComponent {
             PropTypes.number,
             PropTypes.bool
         ])),
+        // The current guest frames window object.
+        context: PropTypes.object,
 
         toolbarRegistry: PropTypes.object.isRequired,
-        formattingRulesRegistry: PropTypes.object.isRequired,
-        nodeTypesRegistry: PropTypes.object.isRequired,
-
-        // The current guest frames window object.
-        context: PropTypes.object
+        globalRegistry: PropTypes.object.isRequired
     };
 
     constructor(...args) {
@@ -54,11 +51,8 @@ export default class StyleSelect extends PureComponent {
     }
 
     componentWillMount() {
-        const {nodeTypesRegistry, formattingRulesRegistry} = this.props;
-        this.calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeType({
-            nodeTypesRegistry,
-            formattingRulesRegistry
-        });
+        const {globalRegistry} = this.props;
+        this.calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeTypeFactory(globalRegistry);
     }
 
     handleOnSelect(selectedStyleId) {

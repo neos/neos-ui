@@ -3,25 +3,22 @@
 // Functions are curried, to enable lazy execution.
 //
 
-export const find = selector => {
-    //
-    // TODO: workaround to access the frame from outside...
-    //
-    const iframeDocument = document.getElementsByName('neos-content-main')[0].contentDocument;
+export const iframeDocument = () => {
+    return document.getElementsByName('neos-content-main')[0].contentDocument;
+};
+export const iframeWindow = () => {
+    return document.getElementsByName('neos-content-main')[0].contentWindow;
+};
 
-    return iframeDocument.querySelector(selector);
+export const find = selector => {
+    return iframeDocument().querySelector(selector);
 };
 
 export const findAll = selector => {
-    //
-    // TODO: workaround to access the frame from outside...
-    //
-    const iframeDocument = document.getElementsByName('neos-content-main')[0].contentDocument;
-
-    return [].slice.call(iframeDocument.querySelectorAll(selector));
+    return [].slice.call(iframeDocument().querySelectorAll(selector));
 };
 
-export const body = () => document.getElementsByName('neos-content-main')[0].contentDocument.body;
+export const body = () => iframeDocument().body;
 
 export const findNode = (contextPath, fusionPath) => find(
     `[data-__neos-node-contextpath="${contextPath}"][data-__neos-fusion-path="${fusionPath}"]`

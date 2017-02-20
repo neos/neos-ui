@@ -12,13 +12,13 @@ const NumberRange = (value, validatorOptions) => {
     const maximum = parseInt(validatorOptions.maximum, 10);
 
     if (maximum < minimum) {
-       logger.error('The maximum is less than the minimum.');
+        logger.error('The maximum is less than the minimum.');
     }
 
-    const number = parseInt(value);
+    const number = parseInt(value, 10);
 
     if (!Number.isSafeInteger(number)) {
-        return <I18n id="content.inspector.validators.numberRangeValidator.validNumberExpected" />;
+        return <I18n id="content.inspector.validators.numberRangeValidator.validNumberExpected"/>;
     } else if (number < minimum || number > maximum) {
         return <I18n id="content.inspector.validators.numberRangeValidator.numberShouldBeInRange" params={{minimum, maximum}}/>;
     }

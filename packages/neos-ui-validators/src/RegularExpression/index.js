@@ -1,6 +1,5 @@
 import React from 'react';
 import I18n from '@neos-project/neos-ui-i18n';
-import logger from '@neos-project/utils-logger';
 
 const RegularExpression = (value, validatorOptions) => {
     const match = validatorOptions.regularExpression.match(new RegExp('^/(.*?)/([gimy]*)$'));

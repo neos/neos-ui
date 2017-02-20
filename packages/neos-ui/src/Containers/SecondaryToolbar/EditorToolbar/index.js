@@ -8,7 +8,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
 import {renderToolbarComponents} from './Helpers';
-import {calculateEnabledFormattingRulesForNodeType} from '../../ContentCanvas/Helpers';
+import {calculateEnabledFormattingRulesForNodeTypeFactory} from '../../ContentCanvas/Helpers/index';
 
 @connect($transform({
     focusedNode: selectors.CR.Nodes.focusedSelector,
@@ -17,9 +17,8 @@ import {calculateEnabledFormattingRulesForNodeType} from '../../ContentCanvas/He
     context: selectors.Guest.context
 }))
 @neos(globalRegistry => ({
-    toolbarRegistry: globalRegistry.get('richtextToolbar'),
-    formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules'),
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    globalRegistry,
+    toolbarRegistry: globalRegistry.get('richtextToolbar')
 }))
 export default class Toolbar extends PureComponent {
     static propTypes = {
@@ -29,12 +28,11 @@ export default class Toolbar extends PureComponent {
             PropTypes.number,
             PropTypes.bool
         ])),
-        toolbarRegistry: PropTypes.object,
-        formattingRulesRegistry: PropTypes.object,
-        nodeTypesRegistry: PropTypes.object,
-
         // The current guest frames window object.
-        context: PropTypes.object
+        context: PropTypes.object,
+
+        globalRegistry: PropTypes.object.isRequired,
+        toolbarRegistry: PropTypes.object.isRequired
     };
 
     constructor(...args) {
@@ -43,12 +41,8 @@ export default class Toolbar extends PureComponent {
     }
 
     componentWillMount() {
-        const {nodeTypesRegistry, formattingRulesRegistry, toolbarRegistry} = this.props;
+        const {toolbarRegistry} = this.props;
         this.renderToolbarComponents = renderToolbarComponents(toolbarRegistry);
-        this.calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeType({
-            nodeTypesRegistry,
-            formattingRulesRegistry
-        });
     }
 
     onToggleFormat(formattingRule) {
@@ -58,8 +52,9 @@ export default class Toolbar extends PureComponent {
     }
 
     render() {
-        const {focusedNode, currentlyEditedPropertyName, formattingUnderCursor} = this.props;
-        const enabledFormattingRuleIds = this.calculateEnabledFormattingRulesForNodeType(focusedNode.nodeType);
+        const {focusedNode, currentlyEditedPropertyName, formattingUnderCursor, globalRegistry} = this.props;
+        const calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeTypeFactory(globalRegistry);
+        const enabledFormattingRuleIds = calculateEnabledFormattingRulesForNodeType(focusedNode.nodeType);
         const classNames = mergeClassNames({
             [style.toolBar]: true
         });

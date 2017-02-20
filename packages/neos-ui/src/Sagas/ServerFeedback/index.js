@@ -13,7 +13,7 @@ function * watchServerFeedback({store, globalRegistry}) {
             const feedbackHandler = serverFeedbackHandlers.get(feedback.type);
 
             if (feedbackHandler) {
-                feedbackHandler(feedback.payload, store);
+                feedbackHandler(feedback.payload, {store, globalRegistry});
             } else {
                 console.warn(`Feedback Handler ${feedback.type} is not defined.`);
             }

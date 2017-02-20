@@ -1,13 +1,18 @@
 import React, {PureComponent, PropTypes} from 'react';
 import I18n from '@neos-project/neos-ui-i18n';
 import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
+import {neos} from '@neos-project/neos-ui-decorators';
 
-class SelectBoxEditor extends PureComponent {
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+}))
+export default class SelectBoxEditor extends PureComponent {
     static propTypes = {
         commit: PropTypes.func.isRequired,
         value: PropTypes.any,
         options: PropTypes.any.isRequired,
-        translate: PropTypes.func.isRequired
+
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -17,7 +22,7 @@ class SelectBoxEditor extends PureComponent {
     }
 
     render() {
-        const {commit, value, options, translate} = this.props;
+        const {commit, value, options, i18nRegistry} = this.props;
         const selectBoxOptions = Object.keys(this.props.options.values)
             // Filter out items without a label
             .map(k => options.values[k].label && Object.assign(
@@ -27,7 +32,7 @@ class SelectBoxEditor extends PureComponent {
             )
         ).filter(k => k);
         // Placeholder text must be unescaped in case html entities were used
-        const placeholder = options && options.placeholder && translate(unescape(options.placeholder));
+        const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
         const onDelete = value ? this.handleDelete : null;
 
         return (<SelectBox
@@ -40,4 +45,3 @@ class SelectBoxEditor extends PureComponent {
     }
 }
 
-export default SelectBoxEditor;

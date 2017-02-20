@@ -6,7 +6,6 @@ import {$transform, $get} from 'plow-js';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import unescape from 'lodash.unescape';
-import {i18nService} from '@neos-project/neos-ui-i18n';
 
 import Frame from '@neos-project/react-ui-components/lib/Frame/';
 
@@ -35,7 +34,8 @@ import {calculateEnabledFormattingRulesForNodeType as _calculateEnabledFormattin
 })
 @neos(globalRegistry => ({
     formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules'),
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
 }))
 export default class ContentCanvas extends PureComponent {
     static propTypes = {
@@ -55,9 +55,10 @@ export default class ContentCanvas extends PureComponent {
         unFocusNode: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired,
         byContextPathDynamicAccess: PropTypes.func.isRequired,
+
         formattingRulesRegistry: PropTypes.object.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
-        translations: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -125,10 +126,8 @@ export default class ContentCanvas extends PureComponent {
             persistChange,
             formattingRulesRegistry,
             nodeTypesRegistry,
-            translations
+            i18nRegistry
         } = this.props;
-
-        const translate = i18nService(translations);
 
         //
         // First of all, set the new version of the guest frame window object to the store.
@@ -227,7 +226,7 @@ export default class ContentCanvas extends PureComponent {
 
             const nodeFormattingRules = this.calculateEnabledFormattingRulesForNodeType(node.nodeType);
             const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get(node.nodeType));
-            const placeholder = unescape(translate(placeholderLabel));
+            const placeholder = unescape(i18nRegistry.translate(placeholderLabel));
 
             const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];
 

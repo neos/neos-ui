@@ -38,6 +38,7 @@ require('@neos-project/neos-ui-contentrepository');
 require('@neos-project/neos-ui-editors');
 require('@neos-project/neos-ui-ckeditor-bindings');
 require('@neos-project/neos-ui-validators');
+require('@neos-project/neos-ui-i18n/src/manifest');
 
 //
 // The main application
@@ -96,6 +97,13 @@ function * application() {
     nodeTypesRegistry.setRoles(nodeTypes.roles);
 
     //
+    // Load translations
+    //
+    const translations = yield system.getTranslations;
+    const i18nRegistry = globalRegistry.get('@neos-project/neos-ui-i18n');
+    i18nRegistry.setTranslations(translations);
+
+    //
     // Load frontend configuration (edit/preview modes)
     //
     const frontendConfiguration = yield system.getFrontendConfiguration;
@@ -128,7 +136,6 @@ function * application() {
 
     const menu = yield system.getMenu;
     const configuration = yield system.getConfiguration;
-    const translations = yield system.getTranslations;
 
     //
     // After everything was initilalized correctly, render the application itself.
@@ -138,7 +145,6 @@ function * application() {
             globalRegistry={globalRegistry}
             menu={menu}
             configuration={configuration}
-            translations={translations}
             store={store}
             />,
         appContainer

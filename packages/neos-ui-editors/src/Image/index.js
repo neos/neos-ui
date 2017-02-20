@@ -45,9 +45,7 @@ export default class ImageEditor extends Component {
         allowedFileTypes: PropTypes.string,
 
         siteNode: PropTypes.string,
-        siteNodePath: PropTypes.string,
-
-        translate: PropTypes.func.isRequired
+        siteNodePath: PropTypes.string
     };
 
     static defaultProps = {
@@ -259,7 +257,6 @@ export default class ImageEditor extends Component {
                     onChooseFromLocalFileSystem={this.handleChooseFile}
                     onRemove={this.handleRemoveFile}
                     onCrop={this.isFeatureEnabled('crop') && this.handleOpenImageCropper}
-                    translate={this.props.translate}
                     />
             </div>
         );

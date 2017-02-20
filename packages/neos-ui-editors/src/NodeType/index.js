@@ -12,7 +12,8 @@ import style from './style.css';
     getAllowedSiblingNodeTypesForFocusedNode: selectors.CR.Nodes.getAllowedSiblingNodeTypesForFocusedNodeSelector
 }))
 @neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
 }))
 export default class NodeType extends Component {
     static propTypes = {
@@ -20,19 +21,19 @@ export default class NodeType extends Component {
         commit: PropTypes.func.isRequired,
 
         getAllowedSiblingNodeTypesForFocusedNode: PropTypes.func,
-        nodeTypesRegistry: PropTypes.object,
-        translate: PropTypes.func.isRequired
+        nodeTypesRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     }
 
     render() {
-        const {value, commit, nodeTypesRegistry, getAllowedSiblingNodeTypesForFocusedNode, translate} = this.props;
+        const {value, commit, nodeTypesRegistry, getAllowedSiblingNodeTypesForFocusedNode, i18nRegistry} = this.props;
         const options = getAllowedSiblingNodeTypesForFocusedNode(nodeTypesRegistry)
             // Filter out system nodetypes (i.e. without groups)
             // ToDo: move this logic to some more generic place, maybe nodeTypesRegistry
             .filter(nodeType => $get('ui.group', nodeTypesRegistry.get(nodeType)))
             .map(nodeType => ({
                 icon: $get('ui.icon', nodeTypesRegistry.get(nodeType)),
-                label: translate($get('ui.label', nodeTypesRegistry.get(nodeType))) || nodeType,
+                label: i18nRegistry.translate($get('ui.label', nodeTypesRegistry.get(nodeType))) || nodeType,
                 value: nodeType
             }));
 
@@ -42,7 +43,7 @@ export default class NodeType extends Component {
 
         return (
             <div className={style.noOptionsAvailable}>
-                {translate($get('ui.label', nodeTypesRegistry.get(value)))}
+                {i18nRegistry.translate($get('ui.label', nodeTypesRegistry.get(value)))}
             </div>
         );
     }

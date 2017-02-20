@@ -79,7 +79,7 @@
     "skin-deep": "^0.16.0",
     "style-loader": "^0.13.1",
     "stylelint": "^7.5.0",
-    "watch": "^0.19.2",
+    "watch": "^1.0.2",
     "webpack": "^1.13.2",
     "webpack-livereload-plugin": "^0.9.0",
     "whatwg-fetch": "^2.0.0"

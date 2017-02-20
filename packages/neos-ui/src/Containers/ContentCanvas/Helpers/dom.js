@@ -24,7 +24,7 @@ export const findAll = selector => {
 export const body = () => document.getElementsByName('neos-content-main')[0].contentDocument.body;
 
 export const findNode = (contextPath, fusionPath) => find(
-    `[data-__neos-node-contextpath="${contextPath}"][data-__neos-typoscript-path="${fusionPath}"]`
+    `[data-__neos-node-contextpath="${contextPath}"][data-__neos-fusion-path="${fusionPath}"]`
 );
 
 export const closestNode = el => {

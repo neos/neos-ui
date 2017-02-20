@@ -31,7 +31,10 @@ prototype(Neos.Neos:Page) {
 
             @process.json = ${Json.stringify(value)}
             @process.wrapInJsObject = ${'<script>window[\'@Neos.Neos.Ui:DocumentInformation\']=' + value + '</script>'}
-            @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+            @if {
+                inBackend = ${documentNode.context.inBackend}
+                newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+            }
         }
 
         guestFrameApplication = Neos.Fusion:Template {
@@ -41,7 +44,10 @@ prototype(Neos.Neos:Page) {
             compiledResourcePackage = ${Neos.Ui.StaticResources.compiledResourcePackage()}
 
             sectionName = 'guestFrameApplication'
-            @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+            @if {
+                inBackend = ${documentNode.context.inBackend}
+                newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+            }
         }
     }
 

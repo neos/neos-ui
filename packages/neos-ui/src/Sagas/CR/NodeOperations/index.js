@@ -36,7 +36,7 @@ const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
                 },
                 parentDomAddress: parentElement ? {
                     contextPath: parentElement.getAttribute('data-__neos-node-contextpath'),
-                    fusionPath: parentElement.getAttribute('data-__neos-typoscript-path')
+                    fusionPath: parentElement.getAttribute('data-__neos-fusion-path')
                 } : {
                     contextPath: parentNodeContextPath(contextPath),
                     fusionPath: null

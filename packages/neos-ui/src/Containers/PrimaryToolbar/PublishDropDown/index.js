@@ -10,7 +10,7 @@ import CheckBox from '@neos-project/react-ui-components/lib/CheckBox/';
 import Label from '@neos-project/react-ui-components/lib/Label/';
 import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
 
-import I18n, {i18nService} from '@neos-project/neos-ui-i18n';
+import I18n from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -48,8 +48,7 @@ export default class PublishDropDown extends PureComponent {
         toggleAutoPublishing: PropTypes.func.isRequired,
         publishAction: PropTypes.func.isRequired,
         discardAction: PropTypes.func.isRequired,
-        changeBaseWorkspaceAction: PropTypes.func.isRequired,
-        translations: PropTypes.object.isRequired
+        changeBaseWorkspaceAction: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -70,10 +69,8 @@ export default class PublishDropDown extends PureComponent {
             toggleAutoPublishing,
             baseWorkspace,
             changeBaseWorkspaceAction,
-            neos,
-            translations
+            neos
         } = this.props;
-        const translate = i18nService(translations);
 
         const allowedWorkspaces = $get('configuration.allowedTargetWorkspaces', neos);
         const baseWorkspaceTitle = $get([baseWorkspace, 'title'], allowedWorkspaces);
@@ -118,7 +115,6 @@ export default class PublishDropDown extends PureComponent {
                                 allowedWorkspaces={allowedWorkspaces}
                                 changeBaseWorkspaceAction={changeBaseWorkspaceAction}
                                 changingWorkspaceAllowed={changingWorkspaceAllowed}
-                                translate={translate}
                                 />
                         </li>
                         <li className={style.dropDown__item}>

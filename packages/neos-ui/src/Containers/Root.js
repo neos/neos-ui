@@ -16,14 +16,13 @@ import {
     FullScreen
 } from './index';
 
-const Root = ({store, globalRegistry, configuration, translations, menu}) => {
+const Root = ({store, globalRegistry, configuration, menu}) => {
     return (
         <div className={style.applicationWrapper}>
             <Provider store={store}>
                 <Neos
                     globalRegistry={globalRegistry}
                     configuration={configuration}
-                    translations={translations}
                     >
                     <div>
                         <div id="dialog"/>
@@ -47,7 +46,6 @@ Root.propTypes = {
     store: PropTypes.object.isRequired,
     globalRegistry: PropTypes.object.isRequired,
     configuration: PropTypes.object.isRequired,
-    translations: PropTypes.object.isRequired,
     menu: PropTypes.object.isRequired
 };
 

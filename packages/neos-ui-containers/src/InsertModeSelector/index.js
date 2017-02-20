@@ -4,7 +4,7 @@ import ButtonGroup from '@neos-project/react-ui-components/lib/ButtonGroup/';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 import {neos} from '@neos-project/neos-ui-decorators';
-import I18n, {i18nService} from '@neos-project/neos-ui-i18n';
+import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';
 
@@ -35,14 +35,17 @@ const calculatePreferredInitialMode = props => {
     return null;
 };
 
-@neos()
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+}))
 export default class InsertModeSelector extends PureComponent {
     static propTypes = {
         mode: PropTypes.string,
         enableAlongsideModes: PropTypes.bool.isRequired,
         enableIntoMode: PropTypes.bool.isRequired,
         onSelect: PropTypes.func.isRequired,
-        translations: PropTypes.object.isRequired
+
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     constructor(...args) {
@@ -73,8 +76,7 @@ export default class InsertModeSelector extends PureComponent {
     }
 
     render() {
-        const {mode, enableIntoMode, enableAlongsideModes, translations} = this.props;
-        const translate = i18nService(translations);
+        const {mode, enableIntoMode, enableAlongsideModes, i18nRegistry} = this.props;
 
         if (!mode) {
             return null;
@@ -90,7 +92,7 @@ export default class InsertModeSelector extends PureComponent {
                         style="lighter"
                         size="small"
                         icon="level-up"
-                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('before')}`}
+                        title={`${i18nRegistry.translate('Neos.Neos.Ui:Main:insert')} ${i18nRegistry.translate('before')}`}
                         />
                     <IconButton
                         id={MODE_INTO}
@@ -98,7 +100,7 @@ export default class InsertModeSelector extends PureComponent {
                         style="lighter"
                         size="small"
                         icon="long-arrow-right"
-                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('into')}`}
+                        title={`${i18nRegistry.translate('Neos.Neos.Ui:Main:insert')} ${i18nRegistry.translate('into')}`}
                         />
                     <IconButton
                         id={MODE_AFTER}
@@ -106,7 +108,7 @@ export default class InsertModeSelector extends PureComponent {
                         style="lighter"
                         size="small"
                         icon="level-down"
-                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('after')}`}
+                        title={`${i18nRegistry.translate('Neos.Neos.Ui:Main:insert')} ${i18nRegistry.translate('after')}`}
                         />
                 </ButtonGroup>
             </div>

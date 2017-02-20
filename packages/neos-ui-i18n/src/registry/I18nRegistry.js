@@ -1,3 +1,5 @@
+import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
+
 import logger from '@neos-project/utils-logger';
 
 const errorCache = {};
@@ -57,15 +59,22 @@ const substitutePlaceholders = function (textWithPlaceholders, parameters) {
     return result;
 };
 
-const makeTranslate = (translations, packageKeyOrig = null, sourceNameOrig = null) => (
-    (idOrig, fallbackOrig, params = {}) => {
+export default class I18nRegistry extends SynchronousRegistry {
+
+    _translations = {};
+
+    setTranslations(translations) {
+        this._translations = translations;
+    }
+
+    translate(idOrig, fallbackOrig, params = {}, packageKeyOrig = null, sourceNameOrig = null) {
         const fallback = fallbackOrig || idOrig;
         const [packageKey, sourceName, id] = getTranslationAddress(idOrig, packageKeyOrig, sourceNameOrig);
         const translation = [packageKey, sourceName, id]
-            // Replace all dots with underscores
+        // Replace all dots with underscores
             .map(s => s ? s.replace(/\./g, '_') : '')
             // traverse through translations and find us a fitting one
-            .reduce((prev, cur) => (prev ? prev[cur] || '' : ''), translations);
+            .reduce((prev, cur) => (prev ? prev[cur] || '' : ''), this._translations);
 
         if (translation && translation.length) {
             if (Object.keys(params).length) {
@@ -75,13 +84,12 @@ const makeTranslate = (translations, packageKeyOrig = null, sourceNameOrig = nul
         }
 
         if (!errorCache[`${packageKey}:${sourceName}:${id}`]) {
-            logger.error(`No translation found for id "${packageKey}:${sourceName}:${id}" in:`, translations, `Using ${fallback} instead.`);
+            logger.error(`No translation found for id "${packageKey}:${sourceName}:${id}" in:`, this._translations, `Using ${fallback} instead.`);
 
             errorCache[`${packageKey}:${sourceName}:${id}`] = true;
         }
 
         return fallback;
     }
-);
 
-export default makeTranslate;
+}

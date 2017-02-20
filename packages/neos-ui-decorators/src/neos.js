@@ -15,20 +15,18 @@ export default mapRegistriesToProps => WrappedComponent => {
 
         static contextTypes = {
             globalRegistry: PropTypes.object.isRequired,
-            configuration: PropTypes.object.isRequired,
-            translations: PropTypes.object.isRequired
+            configuration: PropTypes.object.isRequired
         };
 
         static displayName = `Neos(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
         render() {
-            const {configuration, translations, globalRegistry} = this.context;
+            const {configuration, globalRegistry} = this.context;
             const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(globalRegistry) : {};
 
             return (
                 <WrappedComponent
                     neos={buildConfigurationAndGlobalRegistry(configuration, globalRegistry)}
-                    translations={translations}
                     {...this.props}
                     {...registriesToPropsMap}
                     />

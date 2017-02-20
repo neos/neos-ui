@@ -116,9 +116,10 @@ class AugmentationAspect
         ];
 
         $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
-        $content .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
 
-        return $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
+        $wrappedContent = $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
+        $wrappedContent .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";;
+        return $wrappedContent;
     }
 
     /**

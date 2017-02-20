@@ -23,7 +23,7 @@ roles:
           privilegeTarget: 'Neos.Neos.Ui:BackendLogin'
           permission: GRANT
 
-    'Neos.Neos:Editor':
+    'Neos.Neos:AbstractEditor':
       privileges:
         -
           privilegeTarget: 'Neos.Neos.Ui:Backend.GeneralAccess'

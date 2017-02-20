@@ -8,6 +8,7 @@ import {
     PrimaryToolbar,
     LeftSideBar,
     EditModePanel,
+    EditorToolbar,
     Drawer,
     Modals,
     RightSideBar,
@@ -33,8 +34,9 @@ const Root = ({store, globalRegistry, configuration, menu}) => {
                         <EditModePanel/>
                         <SecondaryToolbar/>
                         <Drawer menuData={menu}/>
-                        <LeftSideBar/>
                         <ContentCanvas/>
+                        <EditorToolbar/>
+                        <LeftSideBar/>
                         <RightSideBar/>
                     </div>
                 </Neos>

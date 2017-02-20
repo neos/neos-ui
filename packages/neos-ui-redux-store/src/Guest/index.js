@@ -40,7 +40,7 @@ export const reducer = handleActions({
             // Redux-Devtools - it just waits forever probably because it tries to serialize the full DOM.
             // That's why "context" will contain a function; and when you call it (without) arguments
             // you get back the actual context value.
-            context: null
+            context: () => null
         })
     ),
     [SET_CONTEXT]: ({contextAccessorFunction}) => $set('guest.context', contextAccessorFunction)

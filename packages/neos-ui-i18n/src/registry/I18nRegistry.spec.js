@@ -1,6 +1,4 @@
 import test from 'ava';
-import React from 'react';
-import {mount} from 'enzyme';
 
 import I18nRegistry from './I18nRegistry';
 

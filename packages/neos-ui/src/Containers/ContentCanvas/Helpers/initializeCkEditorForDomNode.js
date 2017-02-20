@@ -3,6 +3,8 @@ import {$get} from 'plow-js';
 import calculateEnabledFormattingRulesForNodeTypeFactory from './calculateEnabledFormattingRulesForNodeType';
 import * as dom from './dom';
 
+import style from '../style.css';
+
 export default function initializeCkEditorForDomNode(domNode, dependencies) {
     const {byContextPathDynamicAccess, globalRegistry, persistChange} = dependencies;
 
@@ -23,6 +25,8 @@ export default function initializeCkEditorForDomNode(domNode, dependencies) {
             console.warn('No node found at path: ' + contextPath);
             return;
         }
+
+        domNode.classList.add(style.editable);
 
         const nodeFormattingRules = calculateEnabledFormattingRulesForNodeType(node.nodeType);
         const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get(node.nodeType));

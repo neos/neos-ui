@@ -28,32 +28,10 @@ export const isDocumentNodeSelectedSelector = createSelector(
     }
 );
 
-// PERFORMANCE: This helper method is NOT allowed to post-process the retrieved node in any way;
-// as we need to ensure the output is deterministic and can be cached for upstream selectors to
-// work correctly.
-//
-// Instead of calling "node.toJS()" here (which totally breaks performance), we need to
-// use the immutableNodeToJs() at the USAGE POINT of "nodeByContextPath", i.e.:
-//
-// nodeByContextPath (re-calculated at all times)
-//    ---> focusedSelector (also re-calculated at all times, because nodeByContextPath changes for all invocations); but
-//                         the RESULT of focusedSelector is "stable" again.
-//    ---> immutableNodeToJs(focusedSelector): converts the focusedSelector result to plain JS; properly using memoization here.
+// PERFORMANCE: All selectors should return ImmutableJS objects,
+// do not call `.toJS()` anywhere here
 export const nodeByContextPath = state => contextPath =>
     $get(['cr', 'nodes', 'byContextPath', contextPath], state);
-
-const immutableNodeToJs = selectorWhichEmitsNode =>
-    createSelector(
-        [
-            selectorWhichEmitsNode
-        ],
-        node => {
-            if (node && node.toJS) {
-                node = node.toJS();
-            }
-            return node;
-        }
-    );
 
 export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
     [
@@ -67,12 +45,12 @@ export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
 );
 
 export const byContextPathSelector = defaultMemoize(
-    contextPath => immutableNodeToJs(createSelector(
+    contextPath => createSelector(
         [
             nodeByContextPath
         ],
         getNodeByContextPath => getNodeByContextPath(contextPath)
-    ))
+    )
 );
 
 export const parentNodeSelector = state => baseNode =>
@@ -81,7 +59,7 @@ export const parentNodeSelector = state => baseNode =>
 export const grandParentNodeSelector = state => baseNode =>
     byContextPathSelector(parentNodeContextPath(parentNodeContextPath($get('contextPath', baseNode))))(state);
 
-export const focusedNodePathSelector = immutableNodeToJs(createSelector(
+export const focusedNodePathSelector = createSelector(
     [
         focused,
         getCurrentContentCanvasContextPath
@@ -89,16 +67,16 @@ export const focusedNodePathSelector = immutableNodeToJs(createSelector(
     (focused, currentContentCanvasContextPath) => {
         return focused || currentContentCanvasContextPath;
     }
-));
+);
 
-export const focusedSelector = immutableNodeToJs(createSelector(
+export const focusedSelector = createSelector(
     [
         focusedNodePathSelector,
         nodeByContextPath
     ],
     (focusedNodePath, getNodeByContextPath) =>
         getNodeByContextPath(focusedNodePath)
-));
+);
 
 export const focusedParentSelector = createSelector(
     [

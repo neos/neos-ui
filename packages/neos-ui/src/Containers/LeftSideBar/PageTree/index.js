@@ -1,6 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {$transform, $get, $set} from 'plow-js';
 
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
@@ -52,15 +52,13 @@ export default class PageTree extends PureComponent {
 
         const siteNode = getTreeNode(siteNodeContextPath, nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document')));
         const siteNodeIcon = $get('ui.icon', nodeTypesRegistry.get(siteNode.nodeType));
+        const node = $set('icon', siteNodeIcon, siteNode);
 
         if (siteNode) {
             return (
                 <Tree>
                     <Node
-                        item={{
-                            ...siteNode,
-                            icon: siteNodeIcon
-                        }}
+                        item={node}
                         onNodeToggle={onNodeToggle}
                         onNodeClick={this.handleNodeClick}
                         onNodeFocus={onNodeFocus}

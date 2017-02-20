@@ -84,7 +84,7 @@ export const getTreeNodeSelector = createSelector(
                 isCollapsed: !uncollapsedNodeContextPaths.contains(contextPath),
                 isLoading: loadingNodeContextPaths.contains(contextPath),
                 hasError: errorNodeContextPaths.contains(contextPath),
-                hasChildren: validChildren.length > 0,
+                hasChildren: validChildren.count() > 0,
                 children: validChildren.map($get('contextPath'))
             };
         }

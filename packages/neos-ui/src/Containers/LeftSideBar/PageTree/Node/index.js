@@ -1,6 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
-import {$get} from 'plow-js';
+import {$get, $set} from 'plow-js';
 import {connect} from 'react-redux';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
@@ -29,9 +30,8 @@ export default class Node extends PureComponent {
             label: PropTypes.string.isRequired,
             icon: PropTypes.string,
             uri: PropTypes.string.isRequired,
-            children: PropTypes.arrayOf(
-                PropTypes.string
-            )
+            children: PropTypes.oneOfType([PropTypes.array, ImmutablePropTypes.listOf(PropTypes.string)])
+
         }),
         getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
@@ -50,7 +50,6 @@ export default class Node extends PureComponent {
 
     render() {
         const {item, nodeTypesRegistry, getTreeNode, onNodeToggle, onNodeClick, onNodeFocus} = this.props;
-
         return getTreeNode ? (
             <Tree.Node>
                 <Tree.Node.Header
@@ -73,11 +72,7 @@ export default class Node extends PureComponent {
                                 }
 
                                 const nodeIcon = $get('ui.icon', nodeTypesRegistry.get(node.nodeType));
-
-                                return {
-                                    ...node,
-                                    icon: nodeIcon
-                                };
+                                return $set('icon', nodeIcon, node);
                             })
                             .filter(i => i)
                             .map(item =>

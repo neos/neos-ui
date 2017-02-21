@@ -26,16 +26,6 @@ export default class CodeMirror extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(newValue) {
-        this.props.commit(newValue);
-    }
-
-    handleOpenCodeEditor() {
-        this.props.renderSecondaryInspector('CODEMIRROR_EDIT', () =>
-            <CodeMirrorWrap onChange={this.handleChange} value={this.props.value} highlightingMode={this.props.highlightingMode}/>
-        );
-    }
-
     render() {
         const {label, identifier} = this.props;
 
@@ -48,6 +38,17 @@ export default class CodeMirror extends Component {
                     </Button>
                 </Label>
             </div>
+        );
+    }
+
+    handleChange(newValue) {
+        this.props.commit(newValue);
+    }
+
+    handleOpenCodeEditor() {
+        this.props.renderSecondaryInspector('CODEMIRROR_EDIT', () =>
+            <CodeMirrorWrap onChange={this.handleChange} value={this.props.value}
+                            highlightingMode={this.props.highlightingMode}/>
         );
     }
 }

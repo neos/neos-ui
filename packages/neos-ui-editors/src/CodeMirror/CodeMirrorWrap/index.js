@@ -23,10 +23,6 @@ export default class CodeMirrorWrap extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(newValue) {
-        this.props.onChange(newValue);
-    }
-
     render() {
         const options = {
             mode: this.props.highlightingMode,
@@ -40,5 +36,9 @@ export default class CodeMirrorWrap extends PureComponent {
         return (
             <CodeMirror value={this.props.value} onChange={this.handleChange} options={options}/>
         );
+    }
+
+    handleChange(newValue) {
+        this.props.onChange(newValue);
     }
 }

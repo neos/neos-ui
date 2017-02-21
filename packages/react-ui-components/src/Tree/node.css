@@ -36,6 +36,9 @@
     composes: reset from './../reset.css';
     display: block;
     cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .header__data--isHiddenInIndex {

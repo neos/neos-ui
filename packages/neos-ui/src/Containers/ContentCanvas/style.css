@@ -38,3 +38,7 @@
 .markHiddenNodeAsHidden {
     opacity: .5;
 }
+
+.editable:focus {
+    outline: none;
+}

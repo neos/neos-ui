@@ -5,32 +5,26 @@ import {$transform, $get} from 'plow-js';
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {neos} from '@neos-project/neos-ui-decorators';
 
 import Node from './Node/index';
 
+import style from './style.css';
+
 @connect($transform({
-    allNodes: $get('cr.nodes.byContextPath'),
-    pageTreeState: $get('ui.pageTree'),
-    siteNodeContextPath: $get('cr.nodes.siteNode'),
-    getTreeNode: selectors.UI.PageTree.getTreeNodeSelector
+    siteNode: selectors.CR.Nodes.siteNodeSelector,
+    pageTreeState: $get('ui.pageTree')
 }), {
     onNodeToggle: actions.UI.PageTree.toggle,
     onNodeFocus: actions.UI.PageTree.focus,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
     setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath
 })
-@neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
-}))
 export default class PageTree extends PureComponent {
     static propTypes = {
-        allNodes: PropTypes.object.isRequired,
+        siteNode: PropTypes.object,
         pageTreeState: PropTypes.object.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
-        siteNodeContextPath: PropTypes.string,
 
-        getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
         onNodeFocus: PropTypes.func,
         setActiveContentCanvasSrc: PropTypes.func,
@@ -44,32 +38,22 @@ export default class PageTree extends PureComponent {
     }
 
     render() {
-        const {siteNodeContextPath, nodeTypesRegistry, getTreeNode, onNodeToggle, onNodeFocus} = this.props;
-
-        if (!siteNodeContextPath) {
+        const {siteNode, onNodeToggle, onNodeFocus} = this.props;
+        if (!siteNode) {
             return (<div>...</div>);
         }
 
-        const siteNode = getTreeNode(siteNodeContextPath, nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document')));
-        const siteNodeIcon = $get('ui.icon', nodeTypesRegistry.get(siteNode.nodeType));
-
-        if (siteNode) {
-            return (
-                <Tree>
-                    <Node
-                        item={{
-                            ...siteNode,
-                            icon: siteNodeIcon
-                        }}
-                        onNodeToggle={onNodeToggle}
-                        onNodeClick={this.handleNodeClick}
-                        onNodeFocus={onNodeFocus}
-                        />
-                </Tree>
-            );
-        }
-
-        return null;
+        return (
+            <Tree className={style.pageTree}>
+                <Node
+                    ChildRenderer={Node}
+                    node={siteNode}
+                    onNodeToggle={onNodeToggle}
+                    onNodeClick={this.handleNodeClick}
+                    onNodeFocus={onNodeFocus}
+                    />
+            </Tree>
+        );
     }
 
     handleNodeClick(src, contextPath) {

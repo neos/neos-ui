@@ -5,7 +5,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\Ui\TYPO3CR\Service\WorkspaceService;
+use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 
 class WorkspaceHelper implements ProtectedContextAwareInterface
 {

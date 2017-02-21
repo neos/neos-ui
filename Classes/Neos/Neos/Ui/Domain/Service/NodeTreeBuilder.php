@@ -6,7 +6,7 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\Neos\Service\LinkingService;
-use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 
 class NodeTreeBuilder
 {

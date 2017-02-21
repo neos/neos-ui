@@ -1,5 +1,5 @@
 <?php
-namespace Neos\Neos\Ui\TYPO3CR\Service;
+namespace Neos\Neos\Ui\ContentRepository\Service;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;

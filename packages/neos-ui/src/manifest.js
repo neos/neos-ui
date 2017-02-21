@@ -3,6 +3,7 @@ import {$get} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import StyleSelect from './Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
+import LinkIconButton from './Containers/SecondaryToolbar/EditorToolbar/LinkIconButton';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import manifest from '@neos-project/neos-ui-extensibility';
@@ -185,6 +186,16 @@ manifest('main', {}, globalRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'strikethrough',
+        hoverStyle: 'brand'
+    });
+
+    // Strike-Through
+    richtextToolbar.add('link', {
+        formattingRule: 'a',
+        component: LinkIconButton,
+        callbackPropName: 'onClick',
+
+        icon: 'link',
         hoverStyle: 'brand'
     });
 

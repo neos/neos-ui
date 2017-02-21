@@ -1,3 +1,5 @@
+import {urlWithParams} from './Helpers';
+
 const fetchJson = (endpoint, options) => fetch(endpoint, options).then(res => res.json());
 
 const change = csrfToken => changes => fetchJson('/neos!/service/change', {
@@ -97,6 +99,33 @@ const uploadAsset = csrfToken => (file, siteNodeName, metadata = 'Image') => {
     });
 };
 
+/**
+ * searchTerm:se
+ * nodeTypes[]:TYPO3.Neos.NodeTypes:Page
+ * workspaceName:user-admin
+ * dimensions[language][]:en_US
+ * contextNode:/sites/neosdemo@user-admin;language=en_US
+ *
+ * !! for options, use selectors.UI.NodeLinking.contextForNodeLinking and start modifying it!
+ *
+ * returns an array of {label, value} objects
+ */
+const searchNodes = options => fetch(urlWithParams('/neos/service/nodes', options), {
+    method: 'GET',
+    credentials: 'include'
+})
+    .then(result => result.text())
+    .then(result => {
+        const d = document.createElement('div');
+        d.innerHTML = result;
+        const nodes = d.querySelector('.nodes');
+
+        return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => ({
+            label: node.querySelector('.node-label').innerText,
+            value: node.querySelector('.node-identifier').innerText
+        }));
+    });
+
 export default csrfToken => ({
     loadImageMetadata,
     change: change(csrfToken),
@@ -104,5 +133,6 @@ export default csrfToken => ({
     discard: discard(csrfToken),
     changeBaseWorkspace: changeBaseWorkspace(csrfToken),
     createImageVariant: createImageVariant(csrfToken),
-    uploadAsset: uploadAsset(csrfToken)
+    uploadAsset: uploadAsset(csrfToken),
+    searchNodes
 });

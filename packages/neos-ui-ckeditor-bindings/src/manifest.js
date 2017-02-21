@@ -196,4 +196,12 @@ manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
     formattingRules.add('removeFormat', {
         command: 'removeFormat'
     });
+
+    /**
+     * Links
+     */
+    formattingRules.add('a', {
+        command: 'link',
+        config: formattingRules.config.add('link')
+    });
 });

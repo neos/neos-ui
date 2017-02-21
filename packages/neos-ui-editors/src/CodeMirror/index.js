@@ -23,11 +23,16 @@ export default class CodeMirror extends Component {
     constructor(props) {
         super(props);
         this.handleOpenCodeEditor = this.handleOpenCodeEditor.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(newValue) {
+        this.props.commit(newValue);
     }
 
     handleOpenCodeEditor() {
         this.props.renderSecondaryInspector('CODEMIRROR_EDIT', () =>
-            <CodeMirrorWrap onChange={this.props.commit} value={this.props.value} highlightingMode={this.props.highlightingMode} />
+            <CodeMirrorWrap onChange={this.handleChange} value={this.props.value} highlightingMode={this.props.highlightingMode}/>
         );
     }
 
@@ -38,7 +43,7 @@ export default class CodeMirror extends Component {
             <div>
                 <Label htmlFor={identifier}>
                     <Button onClick={this.handleOpenCodeEditor} style="brand">
-                        <Icon icon="pencil" padded="right" style="lighter" title="Edit" />
+                        <Icon icon="pencil" padded="right" style="lighter" title="Edit"/>
                         <I18n id={label}/>
                     </Button>
                 </Label>

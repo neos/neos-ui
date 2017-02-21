@@ -2,12 +2,14 @@ import React, {PureComponent, PropTypes} from 'react';
 import CodeMirror from 'react-codemirror';
 
 // TODO: Find way to dynamically load any mode?
+/* eslint-disable no-unused-vars */
 import XmlMode from 'codemirror/mode/xml/xml';
 import HtmlMixedMode from 'codemirror/mode/htmlmixed/htmlmixed';
 import JavascriptMode from 'codemirror/mode/javascript/javascript';
 import HandlebarsMode from 'codemirror/mode/handlebars/handlebars';
 import MarkdownMode from 'codemirror/mode/markdown/markdown';
 import YamlMode from 'codemirror/mode/yaml/yaml';
+/* eslint-ensable no-unused-vars */
 
 export default class CodeMirrorWrap extends PureComponent {
     static propTypes = {

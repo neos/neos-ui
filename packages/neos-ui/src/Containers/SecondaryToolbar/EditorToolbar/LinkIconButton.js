@@ -1,7 +1,7 @@
 import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$get, $transform} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
@@ -22,9 +22,10 @@ export default class LinkIconButton extends PureComponent {
     static propTypes = {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.bool
+            PropTypes.bool,
+            PropTypes.object
         ])),
-        isActive: PropTypes.bool,
+        formattingRule: PropTypes.string,
 
         // The current guest frames window object.
         context: PropTypes.object
@@ -33,44 +34,61 @@ export default class LinkIconButton extends PureComponent {
     constructor(...args) {
         super(...args);
         this.handleLinkButtonClick = this.handleLinkButtonClick.bind(this);
-
-        this.state = {
-            isOpen: false
-        };
     }
 
     handleLinkButtonClick() {
-        this.setState({isOpen: !this.state.isOpen});
+        if (this.isOpen()) {
+            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {remove: true});
+        } else {
+            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
+        }
     }
 
     render() {
         return (
             <div>
                 <IconButton
-                    isActive={this.props.isActive || this.state.isOpen}
+                    isActive={this.getHrefValue()}
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />
-                {this.state.isOpen ? <LinkTextField/> : null}
+                {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} formattingRule={this.props.formattingRule}/> : null}
             </div>
         );
     }
 
+    isOpen() {
+        return this.getHrefValue() === '' || this.getHrefValue();
+    }
+
+    getHrefValue() {
+        return $get([this.props.formattingRule, 'href'], this.props.formattingUnderCursor);
+    }
 }
 
+const stripNodePrefix = str =>
+    str && str.replace('node://', '');
+
 @connect($transform({
-    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
+    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking,
+    context: selectors.Guest.context
 }))
 class LinkTextField extends PureComponent {
 
     static propTypes = {
-        contextForNodeLinking: PropTypes.object.isRequired
+        formattingRule: PropTypes.string,
+        hrefValue: PropTypes.string,
+
+        contextForNodeLinking: PropTypes.object.isRequired,
+        // The current guest frames window object.
+        context: PropTypes.object
     };
 
     constructor(props) {
         super(props);
         this.searchNodes = backend.get().endpoints.searchNodes;
         this.optionGenerator = this.optionGenerator.bind(this);
+        this.handleLinkSelect = this.handleLinkSelect.bind(this);
     }
 
     render() {
@@ -79,23 +97,30 @@ class LinkTextField extends PureComponent {
                 <SelectBox
                     placeholder="Paste a link, or search"
                     options={this.optionGenerator}
-                    value={''}
+                    value={stripNodePrefix(this.props.hrefValue)}
+                    onSelect={this.handleLinkSelect}
                     />
             </div>
         );
     }
 
     optionGenerator({value, callback}) {
-        if (!value) {
-            callback([]);
-            return;
-        }
-
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
-        searchNodesQuery.searchTerm = value;
+
+        if (!value && this.props.hrefValue) {
+            // Init case: load the value
+            searchNodesQuery.nodeIdentifiers = [stripNodePrefix(this.props.hrefValue)];
+        } else {
+            // Search case
+            searchNodesQuery.searchTerm = value;
+        }
 
         this.searchNodes(searchNodesQuery).then(result => {
             callback(result);
         });
+    }
+
+    handleLinkSelect(link) {
+        this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: 'node://' + link});
     }
 }

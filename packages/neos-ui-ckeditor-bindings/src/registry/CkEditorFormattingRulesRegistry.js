@@ -4,6 +4,36 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
     constructor(...args) {
         super(...args);
 
+        /**
+         * Helper to expand the current selection to the currently-selected word
+         * @param editor
+         * @param CKEDITOR
+         */
+        this.expandCollapsedSelectionToCurrentWord = (editor, CKEDITOR) => {
+            const selection = editor.getSelection();
+            const range = selection.getRanges()[0];
+
+            if (range.collapsed) {
+                // Range is collapsed; so we expand it!
+                const startNode = range.startContainer;
+                if (startNode.type === CKEDITOR.NODE_TEXT && range.startOffset) {
+                    let indexPrevSpace = startNode.getText().lastIndexOf(' ', range.startOffset) + 1;
+                    let indexNextSpace = startNode.getText().indexOf(' ', range.startOffset);
+
+                    if (indexPrevSpace === -1) {
+                        indexPrevSpace = 0;
+                    }
+                    if (indexNextSpace === -1) {
+                        indexNextSpace = startNode.getText().length;
+                    }
+
+                    range.setStart(startNode, indexPrevSpace);
+                    range.setEnd(startNode, indexNextSpace);
+                    editor.getSelection().selectRanges([range]);
+                }
+            }
+        };
+
         this.config = {
 
             /**
@@ -34,6 +64,19 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
                     }
                     if (config.buttons.indexOf(buttonName) === -1) {
                         config.buttons.push(buttonName);
+                    }
+
+                    return config;
+                },
+            /**
+             * adds the given "expression" to the list of extraAllowedContent
+             */
+            addToExtraAllowedContent: extraExpression =>
+                config => {
+                    if (config.extraAllowedContent) {
+                        config.extraAllowedContent += ' ' + extraExpression;
+                    } else {
+                        config.extraAllowedContent = extraExpression;
                     }
 
                     return config;

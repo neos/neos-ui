@@ -36,7 +36,8 @@ export default class StyleSelect extends PureComponent {
         currentlyEditedPropertyName: PropTypes.string,
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.bool
+            PropTypes.bool,
+            PropTypes.object
         ])),
         // The current guest frames window object.
         context: PropTypes.object,

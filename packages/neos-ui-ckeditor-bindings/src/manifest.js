@@ -54,6 +54,12 @@ manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
           correctly. The function gets passed in the config so-far, and needs to return the modified config. See
           "CKEditor Configuration Helpers" below for helper functions.
 
+        - \`extractCurrentFormatFn\` (function, optional): If specified, this function will extract the current format.
+          The function gets passed the currend "editor" and "CKEDITOR".
+
+        - \`applyStyleFn\` (function, optional): This function applies a style to CKEditor.
+          Arguments: formattingOptions, editor, CKEDITOR.
+
         ## CKEditor Configuration Helpers
 
         - \`config: registry.ckEditor.formattingRules.config.addToFormatTags('h1')\`: adds the passed-in tag to the
@@ -201,7 +207,43 @@ manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
      * Links
      */
     formattingRules.add('a', {
-        command: 'link',
-        config: formattingRules.config.add('link')
+        config: formattingRules.config.addToExtraAllowedContent('a[href]'),
+        applyStyleFn: (formattingOptions, editor, CKEDITOR) => {
+            if (formattingOptions.remove) {
+                // we shall remove the link, so we first find it and then remove it; while keeping the contents.
+                const selectedLink = CKEDITOR.plugins.link.getSelectedLink(editor);
+                if (selectedLink) {
+                    selectedLink.remove(true);
+                }
+            } else {
+                const selectedLink = CKEDITOR.plugins.link.getSelectedLink(editor);
+                if (selectedLink) {
+                    // Link already exists; so we just modify it and set the href.
+                    selectedLink.setAttribute('href', formattingOptions.href);
+                } else {
+                    // Possibly expand the selection to the parent word
+                    formattingRules.expandCollapsedSelectionToCurrentWord(editor, CKEDITOR);
+
+                    // Actually create the link.
+                    const style = new CKEDITOR.style({element: 'a', attributes: {href: formattingOptions.href}}); // eslint-disable-line babel/new-cap
+                    style.type = CKEDITOR.STYLE_INLINE;
+                    editor.applyStyle(style);
+                }
+            }
+        },
+
+        extractCurrentFormatFn: (editor, CKEDITOR) => {
+            if (!editor.elementPath()) {
+                return false;
+            }
+
+            const selectedLink = CKEDITOR.plugins.link.getSelectedLink(editor);
+            if (selectedLink) {
+                return {
+                    href: selectedLink.getAttribute('href')
+                };
+            }
+            return false;
+        }
     });
 });

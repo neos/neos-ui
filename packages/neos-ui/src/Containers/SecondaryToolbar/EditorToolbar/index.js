@@ -7,7 +7,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
-import {renderToolbarComponents} from './Helpers';
+import {renderToolbarComponents} from './Helpers/index';
 import {calculateEnabledFormattingRulesForNodeTypeFactory} from '../../ContentCanvas/Helpers/index';
 
 @connect($transform({
@@ -26,7 +26,8 @@ export default class Toolbar extends PureComponent {
         currentlyEditedPropertyName: PropTypes.string,
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.bool
+            PropTypes.bool,
+            PropTypes.object
         ])),
         // The current guest frames window object.
         context: PropTypes.object,

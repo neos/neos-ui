@@ -3,8 +3,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 import logger from '@neos-project/utils-logger';
 
 /**
- * Checks if the given value is a valid number (or can be cast to a number
- * if an object is given) and its value is between minimum and maximum
+ * Checks if the given value is an object or array
+ * and its amount is between minimum and maximum
  * specified in the validation options.
  */
 const Count = (value, validatorOptions) => {

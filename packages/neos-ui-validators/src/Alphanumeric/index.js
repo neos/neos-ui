@@ -14,7 +14,7 @@ const Alphanumeric = value => {
         return null;
     } else {
         const pattern = regularExpression.toString();
-        return <I18n id="content.inspector.validators.alphanumericValidator"/>;
+        return <I18n id='content.inspector.validators.alphanumericValidator'/>;
     }
 };
 

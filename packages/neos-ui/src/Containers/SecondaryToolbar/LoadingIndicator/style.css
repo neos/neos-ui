@@ -1,0 +1,32 @@
+.loadingIndicator__container {
+	left: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+    padding: 0 320px;
+    width: 100%;
+}
+
+.loadingIndicator {
+	height: 0.25em;
+	position: relative;
+    width: 100%;
+}
+.loadingIndicator__bar {
+	height: 100%;
+	position: relative;
+	background-color: #ff8700;
+	animation: cssload-width 10s cubic-bezier(0.45, 0, 1, 1) infinite;
+}
+
+@keyframes cssload-width {
+	0%, 100% {
+		transition-timing-function: cubic-bezier(1, 0, 0.65, 0.85);
+	}
+	0% {
+		width: 0;
+	}
+	100% {
+		width: 100%;
+	}
+}
+

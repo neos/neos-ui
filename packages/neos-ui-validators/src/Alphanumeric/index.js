@@ -1,6 +1,9 @@
 import React from 'react';
 import I18n from '@neos-project/neos-ui-i18n';
 
+/**
+ * Checks if the given value contains only alphanumeric characters
+ */
 const Alphanumeric = value => {
     const regularExpression = /^[\w\d]*$/u;
 

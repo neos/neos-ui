@@ -47,8 +47,7 @@ export default class CodeMirror extends Component {
 
     handleOpenCodeEditor() {
         this.props.renderSecondaryInspector('CODEMIRROR_EDIT', () =>
-            <CodeMirrorWrap onChange={this.handleChange} value={this.props.value}
-                            highlightingMode={this.props.highlightingMode}/>
+            <CodeMirrorWrap onChange={this.handleChange} value={this.props.value} highlightingMode={this.props.highlightingMode}/>
         );
     }
 }

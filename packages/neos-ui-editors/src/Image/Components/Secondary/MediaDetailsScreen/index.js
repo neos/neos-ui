@@ -4,7 +4,7 @@ import style from './style.css';
 
 const MediaDetailsScreen = props => {
     // TODO: Media package refactoring
-    window.Typo3MediaBrowserCallbacks = {
+    window.NeosMediaBrowserCallbacks = {
         close() {
             props.onClose();
         }

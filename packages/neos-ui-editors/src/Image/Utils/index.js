@@ -4,12 +4,12 @@ import {Maybe} from 'monet';
 export const CROP_IMAGE_ADJUSTMENT = [
     'object',
     'adjustments',
-    'TYPO3\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'
+    'Neos\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'
 ];
 export const RESIZE_IMAGE_ADJUSTMENT = [
     'object',
     'adjustments',
-    'TYPO3\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'
+    'Neos\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'
 ];
 
 const DEFAULT_OFFSET = {x: 0, y: 0};

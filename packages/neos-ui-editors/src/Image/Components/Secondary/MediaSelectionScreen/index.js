@@ -4,7 +4,7 @@ import style from './style.css';
 
 const MediaSelectionScreen = props => {
     // TODO: Media package refactoring
-    window.Typo3MediaBrowserCallbacks = {
+    window.NeosMediaBrowserCallbacks = {
         assetChosen: assetIdentifier => {
             props.onComplete(assetIdentifier);
         }

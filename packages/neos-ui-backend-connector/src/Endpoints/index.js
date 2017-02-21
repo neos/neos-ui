@@ -58,11 +58,11 @@ const loadImageMetadata = imageVariantUuid => fetchJson(`neos/content/image-with
 });
 
 /**
- * asset[adjustments][TYPO3\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
- * asset[adjustments][TYPO3\Media\Domain\Model\Adjustment\CropImageAdjustment][position]:10
- * asset[adjustments][TYPO3\Media\Domain\Model\Adjustment\CropImageAdjustment][width]:210
- * asset[adjustments][TYPO3\Media\Domain\Model\Adjustment\CropImageAdjustment][x]:0
- * asset[adjustments][TYPO3\Media\Domain\Model\Adjustment\CropImageAdjustment][y]:0
+ * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
+ * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][position]:10
+ * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][width]:210
+ * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][x]:0
+ * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][y]:0
  * asset[originalAsset]:56d183f2-ee66-c845-7e2d-40661fb27571
  * @param asset
  */

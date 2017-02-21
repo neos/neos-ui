@@ -83,5 +83,8 @@
     "webpack": "^1.13.2",
     "webpack-livereload-plugin": "^0.10.0",
     "whatwg-fetch": "^2.0.0"
+  },
+  "dependencies": {
+    "react-codemirror": "^0.3.0"
   }
 }

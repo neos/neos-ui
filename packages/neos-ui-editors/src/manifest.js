@@ -5,6 +5,7 @@ import Image from './Image/index';
 import SelectBox from './SelectBox/index';
 import Link from './Link/index';
 import NodeType from './NodeType/index';
+import CodeMirror from './CodeMirror/index';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 import backend from '@neos-project/neos-ui-backend-connector';
@@ -45,6 +46,11 @@ manifest('inspectorEditors', {}, globalRegistry => {
 
     editorsRegistry.add('Neos.Neos/Inspector/Editors/NodeTypeEditor', {
         component: NodeType
+    });
+
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/CodeEditor', {
+        component: CodeMirror,
+        hasOwnLabel: true
     });
 
     //

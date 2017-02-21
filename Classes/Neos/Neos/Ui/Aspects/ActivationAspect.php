@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\Aspects;
 
 /*                                                                        *
- * This script belongs to the TYPO3 Flow package "Neos.Neos.Ui".*
+ * This script belongs to the Neos Flow package "Neos.Neos.Ui".*
  *                                                                        *
  *                                                                        */
 

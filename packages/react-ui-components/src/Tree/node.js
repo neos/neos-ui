@@ -21,18 +21,17 @@ export class Node extends PureComponent {
 
 export class Header extends PureComponent {
     static propTypes = {
-        item: PropTypes.shape({
-            hasChildren: PropTypes.bool.isRequired,
-            isCollapsed: PropTypes.bool.isRequired,
-            isActive: PropTypes.bool.isRequired,
-            isFocused: PropTypes.bool.isRequired,
-            isLoading: PropTypes.bool.isRequired,
-            isHidden: PropTypes.bool,
-            isHiddenInIndex: PropTypes.bool.isRequired,
-            hasError: PropTypes.bool.isRequired,
-            label: PropTypes.string.isRequired,
-            icon: PropTypes.string
-        }),
+        hasChildren: PropTypes.bool.isRequired,
+        isCollapsed: PropTypes.bool.isRequired,
+        isActive: PropTypes.bool.isRequired,
+        isFocused: PropTypes.bool.isRequired,
+        isLoading: PropTypes.bool.isRequired,
+        isHidden: PropTypes.bool,
+        isHiddenInIndex: PropTypes.bool.isRequired,
+        hasError: PropTypes.bool.isRequired,
+        label: PropTypes.string.isRequired,
+        icon: PropTypes.string,
+
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
         onLabelClick: PropTypes.func,
@@ -56,22 +55,19 @@ export class Header extends PureComponent {
     render() {
         const {
             IconComponent,
-            item,
+            hasChildren,
+            isActive,
+            isFocused,
+            isHidden,
+            isHiddenInIndex,
+            label,
+            icon,
             onClick,
             onLabelClick,
             theme,
             ...restProps
         } = this.props;
         const rest = omit(restProps, ['onToggle']);
-        const {
-            label,
-            icon,
-            hasChildren,
-            isActive,
-            isFocused,
-            isHiddenInIndex,
-            isHidden
-        } = item;
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,
@@ -96,11 +92,14 @@ export class Header extends PureComponent {
     renderCollapseControl() {
         const {
             IconComponent,
-            item,
+            isLoading,
+            isCollapsed,
+            hasError,
+            isHiddenInIndex,
+            isHidden,
             onToggle,
             theme
         } = this.props;
-        const {isLoading, isCollapsed, hasError, isHiddenInIndex, isHidden} = item;
         const classnames = mergeClassNames({
             [theme.header__chevron]: true,
             [theme['header__chevron--isCollapsed']]: isCollapsed,

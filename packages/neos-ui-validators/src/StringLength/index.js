@@ -17,11 +17,11 @@ const StringLength = (value, validatorOptions) => {
     const stringLength = value.toString().length;
     if (stringLength < minimum || stringLength > maximum) {
         if (minimum > 0 && maximum < 10000) {
-            return <I18n id="content.inspector.validators.stringLength.outOfBounds" params={{minimum, maximum}}/>;
+            return <I18n id='content.inspector.validators.stringLength.outOfBounds' params={{minimum, maximum}}/>;
         } else if (minimum > 0) {
-            return <I18n id="content.inspector.validators.stringLength.smallerThanMinimum" params={{minimum}}/>;
+            return <I18n id='content.inspector.validators.stringLength.smallerThanMinimum' params={{minimum}}/>;
         }
-        return <I18n id="content.inspector.validators.stringLength.greaterThanMaximum" params={{maximum}}/>;
+        return <I18n id='content.inspector.validators.stringLength.greaterThanMaximum' params={{maximum}}/>;
     }
     return null;
 };

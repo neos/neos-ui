@@ -2,8 +2,7 @@ import React from 'react';
 import I18n from '@neos-project/neos-ui-i18n';
 
 /**
- * Checks if the given value is a valid Integer number (or can be cast to a number
- * if an object is given)
+ * Checks if the given value is a valid Integer number
  */
 const Integer = value => {
     const number = parseInt(value, 10);

@@ -51,10 +51,15 @@ const createCKEditorAPI = CKEDITOR => {
                 return;
             }
 
+            if (formattingRule.extractCurrentFormatFn) {
+                formattingUnderCursor[key] = formattingRule.extractCurrentFormatFn(editor, CKEDITOR);
+                return;
+            }
+
             throw new Error(`
                 An error occured while checking a format in CK Editor.
-                The description parameter needs to either have a key "command" or
-                a key "style" - none of which could be found.
+                The description parameter needs to either have a key "command",
+                a key "style", or a style "extractCurrentFormatFn" - none of which could be found.
             `);
         });
 
@@ -103,7 +108,7 @@ const createCKEditorAPI = CKEDITOR => {
             editorConfig = _editorConfig;
         },
 
-        toggleFormat(formatting) {
+        toggleFormat(formatting, formattingOptions = {}) {
             const formattingRule = editorConfig.formattingRules[formatting];
             if (!formattingRule) {
                 console.warn(`Formatting instruction ${formatting} not found.`);
@@ -140,10 +145,18 @@ const createCKEditorAPI = CKEDITOR => {
                 return;
             }
 
+            if (formattingRule.applyStyleFn) {
+                formattingRule.applyStyleFn(formattingOptions, currentEditor, CKEDITOR);
+
+                currentEditor.fire('change');
+                handleUserInteractionCallbackFactory(currentEditor)();
+                return;
+            }
+
             throw new Error(`
                 An error occured while applying a format in CK Editor.
                 The description parameter needs to either have a key "command",
-                or "style" - none of which could be found.
+                "style", or "applyFn" - none of which could be found.
             `);
         },
 

@@ -27,6 +27,7 @@ export default richtextToolbarRegistry => {
                 const isActive = formattingRule && $get(formattingRule, formattingUnderCursor) === richtextToolbarRegistry.TRISTATE_ON;
                 const finalProps = {
                     ...restProps,
+                    formattingRule,
                     [callbackPropName]: () => onToggleFormat(formattingRule)
                 };
 

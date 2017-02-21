@@ -15,6 +15,7 @@ import * as ContentCanvas from './ContentCanvas/index';
 import * as Inspector from './Inspector/index';
 import * as Editors from './Editors/index';
 import * as InsertionModeModal from './InsertionModeModal/index';
+import * as NodeLinking from './NodeLinking/index';
 
 const all = {
     FlashMessages,
@@ -30,7 +31,8 @@ const all = {
     ContentCanvas,
     Inspector,
     Editors,
-    InsertionModeModal
+    InsertionModeModal,
+    NodeLinking
 };
 
 //

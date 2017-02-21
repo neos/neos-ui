@@ -17,3 +17,9 @@
 .toolBar__btnGroup__btn {
     float: left;
 }
+
+
+.linkIconButton__flyout {
+    position: fixed;
+    z-index: 1000;
+}

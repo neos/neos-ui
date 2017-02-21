@@ -101,4 +101,72 @@ storiesOf('Tree', module)
             </StoryWrapper>
         ),
         {inline: true}
+    )
+    .addWithInfo(
+        'drag and drop',
+        () => (
+            <StoryWrapper>
+                <Tree>
+                    <Tree.Node>
+                        <Tree.Node.Header
+                            hasChildren={true}
+                            isCollapsed={false}
+                            isActive={true}
+                            isFocused={true}
+                            isLoading={false}
+                            hasError={false}
+                            label="Parent Node"
+                            onNodeToggle={action('onNodeToggle')}
+                            onNodeClick={action('onNodeClick')}
+                            onNodeFocus={action('onNodeFocus')}
+                            />
+                        <Tree.Node.Contents>
+                            <Tree.Node>
+                                <Tree.Node.Header
+                                    hasChildren={false}
+                                    isCollapsed={true}
+                                    isActive={false}
+                                    isFocused={false}
+                                    isLoading={false}
+                                    hasError={false}
+                                    dragAndDropContext={{
+                                        data: 'hello',
+                                        acceptsBefore: () => true,
+                                        acceptsInto: () => false,
+                                        onDropBefore: action('dropBefore'),
+                                        onDropInto: action('dropInto')
+                                    }}
+                                    label="Normal node"
+                                    onNodeToggle={action('onNodeToggle')}
+                                    onNodeClick={action('onNodeClick')}
+                                    onNodeFocus={action('onNodeFocus')}
+                                    />
+                            </Tree.Node>
+                            <Tree.Node>
+                                <Tree.Node.Header
+                                    hasChildren={false}
+                                    isCollapsed={true}
+                                    isActive={false}
+                                    isFocused={false}
+                                    isLoading={false}
+                                    hasError={false}
+                                    dragAndDropContext={{
+                                        data: 'hello',
+                                        acceptsBefore: () => false,
+                                        acceptsInto: () => true,
+                                        onDropBefore: action('dropBefore'),
+                                        onDropInto: action('dropInto')
+                                    }}
+                                    label="Normal node"
+                                    onNodeToggle={action('onNodeToggle')}
+                                    onNodeClick={action('onNodeClick')}
+                                    onNodeFocus={action('onNodeFocus')}
+                                    />
+                            </Tree.Node>
+                        </Tree.Node.Contents>
+                    </Tree.Node>
+                </Tree>
+            </StoryWrapper>
+        ),
+        {inline: true}
     );

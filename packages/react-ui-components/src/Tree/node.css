@@ -1,7 +1,7 @@
 .header {
     composes: reset from './../reset.css';
+    margin: 0;
     position: relative;
-    height: 11px;
     line-height: 20px;
     padding-left: 15px;
 }
@@ -32,13 +32,19 @@
     color: var(--brandColorsContrastBrighter) !important;
 }
 
+.header__icon {
+    padding: 0 .4em;
+}
+
 .header__data {
     composes: reset from './../reset.css';
+    position: relative;
     display: block;
     cursor: pointer;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    padding: .2em 0;
 }
 
 .header__data--isHiddenInIndex {
@@ -55,6 +61,16 @@
     &.header__data--isHidden {
         opacity: .8;
     }
+}
+.header__data--acceptsDrop {
+    background-color: green;
+}
+.header__data--deniesDrop {
+    background-color: red;
+}
+.header__data--acceptsDrop *,
+.header__data--deniesDrop * {
+    pointer-events: none;
 }
 .header__label {
     composes: reset from './../reset.css';

@@ -31,6 +31,11 @@ export class Header extends PureComponent {
         hasError: PropTypes.bool.isRequired,
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
+        dragAndDropContext: PropTypes.shape({
+            accepts: PropTypes.func.isRequired,
+            onDrag: PropTypes.func.isRequired,
+            onDrop: PropTypes.func.isRequired
+        }),
 
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
@@ -43,13 +48,57 @@ export class Header extends PureComponent {
             'header__label': PropTypes.string,
             'header__chevron': PropTypes.string,
             'header__chevron--isCollapsed': PropTypes.string,
-            'header__chevron--isLoading': PropTypes.string
+            'header__chevron--isLoading': PropTypes.string,
+            'header__icon': PropTypes.string,
+            'dropZone': PropTypes.string,
+            'dropZone--accepts': PropTypes.string,
+            'dropZone--denies': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
         //
         // Static component dependencies which are injected from the outside (index.js)
         //
         IconComponent: PropTypes.any.isRequired
+    };
+
+    state = {
+        acceptsDrop: null
+    };
+
+    handleDrag = () => {
+        const {dragAndDropContext} = this.props;
+
+        if (dragAndDropContext) {
+            dragAndDropContext.onDrag();
+        }
+    };
+
+    handleDragOver = e => {
+        const {dragAndDropContext} = this.props;
+
+        if (dragAndDropContext) {
+            this.setState({
+                acceptsDrop: dragAndDropContext.accepts()
+            });
+            e.preventDefault();
+        }
+    };
+
+    handleDragLeave = () => {
+        this.setState({
+            acceptsDrop: null
+        });
+    };
+
+    handleDrop = () => {
+        const {dragAndDropContext} = this.props;
+
+        if (dragAndDropContext) {
+            dragAndDropContext.onDrop();
+            this.setState({
+                acceptsDrop: null
+            });
+        }
     };
 
     render() {
@@ -65,22 +114,36 @@ export class Header extends PureComponent {
             onClick,
             onLabelClick,
             theme,
+            dragAndDropContext,
             ...restProps
         } = this.props;
+        const {
+            acceptsDrop
+        } = this.state;
         const rest = omit(restProps, ['onToggle']);
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,
             [theme['header__data--isFocused']]: isFocused,
             [theme['header__data--isHiddenInIndex']]: isHiddenInIndex,
-            [theme['header__data--isHidden']]: isHidden
+            [theme['header__data--isHidden']]: isHidden,
+            [theme['header__data--acceptsDrop']]: acceptsDrop === true,
+            [theme['header__data--deniesDrop']]: acceptsDrop === false
         });
 
         return (
             <ul className={theme.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
-                <li className={dataClassNames} onClick={onClick}>
-                    <IconComponent icon={icon || 'question'} padded="right" role="button"/>
+                <li
+                    className={dataClassNames}
+                    onDragStart={this.handleDrag}
+                    onClick={onClick}
+                    onDragOver={this.handleDragOver}
+                    onDragLeave={this.handleDragLeave}
+                    onDrop={this.handleDrop}
+                    draggable={Boolean(dragAndDropContext)}
+                    >
+                    <IconComponent icon={icon || 'question'} padded="right" role="button" className={theme.header__icon}/>
                     <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                         {label}
                     </span>

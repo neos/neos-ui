@@ -22,7 +22,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
         focusedNodeContextPath: selectors.UI.PageTree.getFocused(state),
         uncollapsedNodeContextPaths: selectors.UI.PageTree.getUncollapsed(state),
         loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
-        errorNodeContextPaths: selectors.UI.PageTree.getErrors(state)
+        errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
+        canBePasted: selectors.CR.Nodes.canBePastedSelector(state)
     });
 }, {
     onNodeFocus: actions.UI.PageTree.focus
@@ -31,6 +32,7 @@ export default class Node extends PureComponent {
     static propTypes = {
         ChildRenderer: PropTypes.object,
         node: PropTypes.object,
+        currentlyDraggedNode: PropTypes.object,
         hasChildren: PropTypes.bool,
         childNodes: PropTypes.object,
         currentDocumentNodeContextPath: PropTypes.string,
@@ -38,13 +40,16 @@ export default class Node extends PureComponent {
         uncollapsedNodeContextPaths: PropTypes.object,
         loadingNodeContextPaths: PropTypes.object,
         errorNodeContextPaths: PropTypes.object,
+        canBePasted: PropTypes.func,
 
         nodeTypesRegistry: PropTypes.object.isRequired,
 
         getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
         onNodeClick: PropTypes.func,
-        onNodeFocus: PropTypes.func
+        onNodeFocus: PropTypes.func,
+        onNodeDrag: PropTypes.func,
+        onNodeDrop: PropTypes.func
     };
 
     constructor(props) {
@@ -53,6 +58,24 @@ export default class Node extends PureComponent {
         this.handleNodeToggle = this.handleNodeToggle.bind(this);
         this.handleNodeClick = this.handleNodeClick.bind(this);
         this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
+    }
+
+    accepts = () => {
+        const {node, currentlyDraggedNode, canBePasted, nodeTypesRegistry} = this.props;
+
+        return canBePasted($get('contextPath', currentlyDraggedNode), $get('contextPath', node), nodeTypesRegistry);
+    }
+
+    handleNodeDrag = () => {
+        const {node, onNodeDrag} = this.props;
+
+        onNodeDrag(node);
+    }
+
+    handleNodeDrop = () => {
+        const {node, onNodeDrop} = this.props;
+
+        onNodeDrop(node);
     }
 
     getValidChildren() {
@@ -98,6 +121,14 @@ export default class Node extends PureComponent {
         return errorNodeContextPaths.includes($get('contextPath', node));
     }
 
+    getDragAndDropContext() {
+        return {
+            onDrag: this.handleNodeDrag,
+            onDrop: this.handleNodeDrop,
+            accepts: this.accepts
+        };
+    }
+
     render() {
         const {
             ChildRenderer,
@@ -106,7 +137,10 @@ export default class Node extends PureComponent {
             hasChildren,
             onNodeToggle,
             onNodeClick,
-            onNodeFocus
+            onNodeFocus,
+            onNodeDrag,
+            onNodeDrop,
+            currentlyDraggedNode
         } = this.props;
 
         return (
@@ -125,6 +159,7 @@ export default class Node extends PureComponent {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     onLabelClick={this.handleNodeLabelClick}
+                    dragAndDropContext={this.getDragAndDropContext()}
                     />
                 {this.isCollapsed() ? null : (
                     <Tree.Node.Contents>
@@ -136,6 +171,9 @@ export default class Node extends PureComponent {
                                 onNodeToggle={onNodeToggle}
                                 onNodeClick={onNodeClick}
                                 onNodeFocus={onNodeFocus}
+                                onNodeDrag={onNodeDrag}
+                                onNodeDrop={onNodeDrop}
+                                currentlyDraggedNode={currentlyDraggedNode}
                                 />
                         )}
                     </Tree.Node.Contents>

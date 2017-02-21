@@ -17,7 +17,8 @@ import style from './style.css';
     onNodeToggle: actions.UI.PageTree.toggle,
     onNodeFocus: actions.UI.PageTree.focus,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
-    setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath
+    setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath,
+    moveNode: actions.CR.Nodes.move
 })
 export default class PageTree extends PureComponent {
     static propTypes = {
@@ -28,7 +29,29 @@ export default class PageTree extends PureComponent {
         onNodeToggle: PropTypes.func,
         onNodeFocus: PropTypes.func,
         setActiveContentCanvasSrc: PropTypes.func,
-        setActiveContentCanvasContextPath: PropTypes.func
+        setActiveContentCanvasContextPath: PropTypes.func,
+        moveNode: PropTypes.func
+    };
+
+    state = {
+        currentlyDraggedNode: null
+    };
+
+    handleNodeDrag = node => {
+        this.setState({
+            currentlyDraggedNode: node
+        });
+    };
+
+    handleNodeDrop = targetNode => {
+        const {currentlyDraggedNode} = this.state;
+        const {moveNode} = this.props;
+
+        moveNode($get('contextPath', currentlyDraggedNode), $get('contextPath', targetNode));
+
+        this.setState({
+            currentlyDraggedNode: null
+        });
     };
 
     constructor(props) {
@@ -51,6 +74,9 @@ export default class PageTree extends PureComponent {
                     onNodeToggle={onNodeToggle}
                     onNodeClick={this.handleNodeClick}
                     onNodeFocus={onNodeFocus}
+                    onNodeDrag={this.handleNodeDrag}
+                    onNodeDrop={this.handleNodeDrop}
+                    currentlyDraggedNode={this.state.currentlyDraggedNode}
                     />
             </Tree>
         );

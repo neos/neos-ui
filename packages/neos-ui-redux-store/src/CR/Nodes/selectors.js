@@ -70,7 +70,7 @@ export const makeHasChildrenSelector = allowedNodeTypes => createSelector(
     [
         (state, contextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
     ],
-    childNodeEnvelopes => childNodeEnvelopes.some(
+    childNodeEnvelopes => (childNodeEnvelopes || []).some(
         childNodeEnvelope => allowedNodeTypes.includes($get('nodeType', childNodeEnvelope))
     )
 );
@@ -80,7 +80,7 @@ export const makeChildrenOfSelector = allowedNodeTypes => createSelector(
         (state, contextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state),
         $get('cr.nodes.byContextPath')
     ],
-    (childNodeEnvelopes, nodesByContextPath) => childNodeEnvelopes
+    (childNodeEnvelopes, nodesByContextPath) => (childNodeEnvelopes || [])
     .filter(
         childNodeEnvelope => allowedNodeTypes.includes($get('nodeType', childNodeEnvelope))
     )

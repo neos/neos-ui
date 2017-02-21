@@ -8,6 +8,7 @@ import String from './String/index';
 import StringLength from './StringLength/index';
 import Text from './Text/index';
 import RegularExpression from './RegularExpression/index';
+import Uuid from './Uuid/index';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 
@@ -26,4 +27,5 @@ manifest('validators', {}, globalRegistry => {
     validatorRegistry.add('Neos.Neos/Validation/NumberRangeValidator', NumberRange);
     validatorRegistry.add('Neos.Neos/Validation/TextValidator', Text);
     validatorRegistry.add('Neos.Neos/Validation/RegularExpressionValidator', RegularExpression);
+    validatorRegistry.add('Neos.Neos/Validation/UuidValidator', Uuid);
 });

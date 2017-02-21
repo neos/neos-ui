@@ -17,15 +17,14 @@ const Count = (value, validatorOptions) => {
         logger.error('The minimum count can not be less than zero');
     }
 
-
-    if (typeof value !== 'array' || typeof value !== 'oject') {
-        return <I18n id='content.inspector.validators.countValidator.notCountable'/>;
+    if (typeof value !== 'object') {
+        return <I18n id="content.inspector.validators.countValidator.notCountable"/>;
     }
 
-    const length = Object.keys(object).length;
+    const length = Object.keys(value).length;
 
     if (length < minimum || length > maximum) {
-        return <I18n id='content.inspector.validators.countValidator.countBetween' params={{minimum, maximum}}>
+        return <I18n id="content.inspector.validators.countValidator.countBetween" params={{minimum, maximum}}/>;
     }
 
     return null;

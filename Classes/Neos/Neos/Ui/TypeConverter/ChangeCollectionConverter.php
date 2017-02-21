@@ -21,7 +21,7 @@ use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
-use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 
 /**
  * An Object Converter for ChangeCollections.

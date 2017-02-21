@@ -4,7 +4,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;

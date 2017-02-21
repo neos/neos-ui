@@ -119,5 +119,5 @@ backend = Neos.Fusion:Template {
 
     translations = ${translations}
 
-    env = ${Configuration.setting('TYPO3.Flow.core.context')}
+    env = ${Configuration.setting('Neos.Flow.core.context')}
 }

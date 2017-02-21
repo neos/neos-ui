@@ -2,7 +2,7 @@
 namespace Neos\Neos\Ui\Controller;
 
 /*                                                                        *
- * This script belongs to the TYPO3 Flow package "Neos.Neos.Ui".          *
+ * This script belongs to the Neos Flow package "Neos.Neos.Ui".           *
  *                                                                        *
  *                                                                        */
 
@@ -23,8 +23,8 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
-use Neos\Neos\Ui\TYPO3CR\Service\NodeService;
-use Neos\Neos\Ui\TYPO3CR\Service\WorkspaceService;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Eel\FlowQuery\FlowQuery;
 
 class BackendServiceController extends ActionController

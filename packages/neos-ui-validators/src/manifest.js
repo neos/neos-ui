@@ -1,3 +1,4 @@
+import EmailAddress from './EmailAddress/index';
 import Integer from './Integer/index';
 import Alphanumeric from './Alphanumeric/index';
 import Float from './Float/index';
@@ -15,6 +16,7 @@ import manifest from '@neos-project/neos-ui-extensibility';
 manifest('validators', {}, globalRegistry => {
     const validatorRegistry = globalRegistry.get('validators');
 
+    validatorRegistry.add('Neos.Neos/Validation/EmailAddressValidator', EmailAddress);
     validatorRegistry.add('Neos.Neos/Validation/IntegerValidator', Integer);
     validatorRegistry.add('Neos.Neos/Validation/AlphanumericValidator', Alphanumeric);
     validatorRegistry.add('Neos.Neos/Validation/NotEmptyValidator', NotEmpty);

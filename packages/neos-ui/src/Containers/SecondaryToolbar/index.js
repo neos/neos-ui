@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
@@ -22,12 +22,11 @@ import style from './style.css';
     isFringedRight: $get('ui.rightSideBar.isHidden'),
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    isDocumentNodeSelected: isDocumentNodeSelectedSelector,
-    src: $get('ui.contentCanvas.src')
+    isDocumentNodeSelected: isDocumentNodeSelectedSelector
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })
-export default class SecondaryToolbar extends Component {
+export default class SecondaryToolbar extends PureComponent {
     static propTypes = {
         previewUrl: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
@@ -35,32 +34,8 @@ export default class SecondaryToolbar extends Component {
         isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         toggleFullScreen: PropTypes.func.isRequired,
-        isDocumentNodeSelected: PropTypes.bool.isRequired,
-        src: PropTypes.string.isRequired
+        isDocumentNodeSelected: PropTypes.bool.isRequired
     };
-
-    constructor() {
-        super();
-        this.state = {
-            isLoading: false
-        };
-    }
-
-    componentWillUpdate(nextProps) {
-        if (this.state.isLoading) {
-            this.setState({
-                isLoading: false
-            });
-        } else if (nextProps.src !== this.props.src) {
-            this.setState({
-                isLoading: true
-            });
-        }
-    }
-
-    shouldComponentUpdate() {
-        return true;
-    }
 
     render() {
         const {
@@ -98,7 +73,7 @@ export default class SecondaryToolbar extends Component {
                     </a>
                     <IconButton icon="expand" onClick={toggleFullScreen}/>
                 </div>
-                {this.state.isLoading ? <LoadingIndicator/> : null}
+                <LoadingIndicator/>
             </div>
         );
     }

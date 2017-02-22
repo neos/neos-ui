@@ -23,6 +23,7 @@ import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './H
     setGuestContext: actions.Guest.setContext,
     setContextPath: actions.UI.ContentCanvas.setContextPath,
     setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
+    stopLoading: actions.UI.ContentCanvas.stopLoading,
     setActiveDimensions: actions.CR.ContentDimensions.setActive,
     formattingUnderCursor: actions.UI.ContentCanvas.formattingUnderCursor,
     setCurrentlyEditedPropertyName: actions.UI.ContentCanvas.setCurrentlyEditedPropertyName,
@@ -45,6 +46,7 @@ export default class ContentCanvas extends PureComponent {
         setGuestContext: PropTypes.func.isRequired,
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
+        stopLoading: PropTypes.func.isRequired,
         setActiveDimensions: PropTypes.func.isRequired,
         addNodes: PropTypes.func.isRequired,
         formattingUnderCursor: PropTypes.func.isRequired,
@@ -107,8 +109,11 @@ export default class ContentCanvas extends PureComponent {
             setContextPath,
             setPreviewUrl,
             setActiveDimensions,
-            addNodes
+            addNodes,
+            stopLoading
         } = this.props;
+
+        stopLoading();
 
         //
         // First of all, set the new version of the guest frame window object to the store.

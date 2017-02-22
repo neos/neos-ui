@@ -56,7 +56,7 @@ function * watchRequestChildrenForContextPath({globalRegistry}) {
 
         if (childNodes && parentNodes) {
             const nodes = parentNodes.concat(childNodes).reduce((nodeMap, node) => {
-                nodeMap[node.contextPath] = node;
+                nodeMap[$get('contextPath', node)] = node;
                 return nodeMap;
             }, {});
 
@@ -93,7 +93,7 @@ function * watchCommenceUncollapse({globalRegistry}) {
         const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state).toJS()
             .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'document'))
             .every(
-                childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', childEnvelope.contextPath], state))
+                childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))
             );
 
         if (childrenAreFullyLoaded) {
@@ -141,7 +141,7 @@ function * watchCurrentDocument() {
                 if (!isInStore) {
                     const nodes = yield q(parentContextPath).get();
                     yield put(actions.CR.Nodes.add(nodes.reduce((nodeMap, node) => {
-                        nodeMap[node.contextPath] = node;
+                        nodeMap[$get('contextPath', node)] = node;
                         return nodeMap;
                     }, {})));
                 }

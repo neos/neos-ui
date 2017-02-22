@@ -3,9 +3,11 @@ import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
 import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
+import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 
 import NodeTreeToolBar from './NodeTreeToolBar/index';
 import PageTree from './PageTree/index';
+import ContentTree from './ContentTree/index';
 import style from './style.css';
 
 @connect($transform({
@@ -34,6 +36,15 @@ export default class LeftSideBar extends PureComponent {
                 >
                 <NodeTreeToolBar/>
                 <PageTree/>
+                <ToggablePanel isOpen={true}>
+                    <ToggablePanel.Header>
+                        Structure Tree (TODO localize)
+                    </ToggablePanel.Header>
+                    <ToggablePanel.Contents>
+                        <NodeTreeToolBar/>
+                        <ContentTree/>
+                    </ToggablePanel.Contents>
+                </ToggablePanel>
             </SideBar>
         );
     }

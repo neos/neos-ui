@@ -108,7 +108,7 @@ function * watchReloadTree({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     yield * takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
         const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
-        const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsedContextPaths);
+        const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsed);
         const nodesToReload = documentNodes.toArray().filter(node => uncollapsedContextPaths.includes(node.get('contextPath')));
 
         for (let i = 0; i < nodesToReload.length; i++) {

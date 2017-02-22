@@ -121,6 +121,14 @@ export const focusedSelector = createSelector(
         getNodeByContextPath(focusedNodePath)
 );
 
+export const focusedNodeTypeSelector = createSelector(
+    [
+        focusedSelector
+    ],
+    focused =>
+        $get('nodeType', focused)
+);
+
 export const focusedParentSelector = createSelector(
     [
         focusedSelector,

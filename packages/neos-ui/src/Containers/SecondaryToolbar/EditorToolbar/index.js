@@ -1,7 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$get, $transform} from 'plow-js';
+import {$transform} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
@@ -11,7 +11,7 @@ import {renderToolbarComponents} from './Helpers/index';
 import {calculateEnabledFormattingRulesForNodeTypeFactory} from '../../ContentCanvas/Helpers/index';
 
 @connect($transform({
-    focusedNode: selectors.CR.Nodes.focusedSelector,
+    focusedNodeType: selectors.CR.Nodes.focusedNodeTypeSelector,
     currentlyEditedPropertyName: selectors.UI.ContentCanvas.currentlyEditedPropertyName,
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor,
     context: selectors.Guest.context
@@ -20,9 +20,9 @@ import {calculateEnabledFormattingRulesForNodeTypeFactory} from '../../ContentCa
     globalRegistry,
     toolbarRegistry: globalRegistry.get('richtextToolbar')
 }))
-export default class Toolbar extends PureComponent {
+export default class EditorToolbar extends PureComponent {
     static propTypes = {
-        focusedNode: PropTypes.object,
+        focusedNodeType: PropTypes.string,
         currentlyEditedPropertyName: PropTypes.string,
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
@@ -53,9 +53,9 @@ export default class Toolbar extends PureComponent {
     }
 
     render() {
-        const {focusedNode, currentlyEditedPropertyName, formattingUnderCursor, globalRegistry} = this.props;
+        const {focusedNodeType, currentlyEditedPropertyName, formattingUnderCursor, globalRegistry} = this.props;
         const calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeTypeFactory(globalRegistry);
-        const enabledFormattingRuleIds = calculateEnabledFormattingRulesForNodeType($get('nodeType', focusedNode));
+        const enabledFormattingRuleIds = calculateEnabledFormattingRulesForNodeType(focusedNodeType);
         const classNames = mergeClassNames({
             [style.toolBar]: true
         });

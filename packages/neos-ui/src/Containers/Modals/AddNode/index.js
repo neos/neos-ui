@@ -1,7 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {dom} from '../../ContentCanvas/Helpers/index';
-import {$transform, $get} from 'plow-js';
+import {$get} from 'plow-js';
 import validate from '@neos-project/neos-ui-validators/src/index';
 
 import Step1 from './step1.js';
@@ -85,28 +85,44 @@ const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
     }
 };
 
-@connect($transform({
-    fusionPath: $get('ui.addNodeModal.fusionPath'),
-    referenceNode: selectors.UI.AddNodeModal.referenceNodeSelector,
-    referenceNodeParent: selectors.UI.AddNodeModal.referenceNodeParentSelector,
-    referenceNodeGrandParent: selectors.UI.AddNodeModal.referenceNodeGrandParentSelector,
-    getAllowedNodeTypesByModeGenerator: selectors.UI.AddNodeModal.getAllowedNodeTypesByModeSelector
-}), {
-    handleClose: actions.UI.AddNodeModal.close,
-    persistChange: actions.Changes.persistChange
-})
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
     validatorRegistry: globalRegistry.get('validators')
 }))
+@connect((state, {nodeTypesRegistry}) => {
+    const getAllowedSiblingNodeTypesSelector = selectors.CR.Nodes.makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry);
+    const getAllowedChildNodeTypesSelector = selectors.CR.Nodes.makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry);
+
+    return state => {
+        const reference = $get('ui.addNodeModal.contextPath', state);
+        const allowedSiblingNodeTypes = reference ? getAllowedSiblingNodeTypesSelector(state, {reference}) : [];
+        const allowedChildNodeTypes = reference ? getAllowedChildNodeTypesSelector(state, {reference}) : [];
+
+        return {
+            referenceNode: reference,
+            fusionPath: $get('ui.addNodeModal.fusionPath', state),
+            allowedNodeTypesByMode: {
+                before: allowedSiblingNodeTypes,
+                into: allowedChildNodeTypes,
+                after: allowedSiblingNodeTypes
+            }
+        };
+    };
+}, {
+    handleClose: actions.UI.AddNodeModal.close,
+    persistChange: actions.Changes.persistChange
+})
 export default class AddNodeModal extends PureComponent {
     static propTypes = {
         fusionPath: PropTypes.string,
         referenceNode: NeosPropTypes.node,
         referenceNodeParent: NeosPropTypes.node,
         referenceNodeGrandParent: NeosPropTypes.node,
-        groupedAllowedNodeTypes: PropTypes.array,
-        getAllowedNodeTypesByModeGenerator: PropTypes.func.isRequired,
+        allowedNodeTypesByMode: PropTypes.shape({
+            before: PropTypes.array,
+            into: PropTypes.array,
+            after: PropTypes.array
+        }),
         nodeTypesRegistry: PropTypes.object.isRequired,
         validatorRegistry: PropTypes.object.isRequired,
 
@@ -141,7 +157,9 @@ export default class AddNodeModal extends PureComponent {
     }
 
     render() {
-        const {referenceNode, handleClose, nodeTypesRegistry, getAllowedNodeTypesByModeGenerator} = this.props;
+        const {referenceNode, allowedNodeTypesByMode, handleClose, nodeTypesRegistry} = this.props;
+        const {mode} = this.state;
+        const activeMode = calculateActiveMode(mode, allowedNodeTypesByMode);
         if (!referenceNode) {
             return null;
         }
@@ -149,10 +167,9 @@ export default class AddNodeModal extends PureComponent {
         if (this.state.step === 1) {
             return (
                 <Step1
-                    mode={this.state.mode}
-                    calculateActiveMode={calculateActiveMode}
+                    activeMode={activeMode}
                     nodeTypesRegistry={nodeTypesRegistry}
-                    getAllowedNodeTypesByModeGenerator={getAllowedNodeTypesByModeGenerator}
+                    allowedNodeTypesByMode={allowedNodeTypesByMode}
                     onHandleClose={handleClose}
                     onHandleModeChange={this.handleModeChange}
                     onHandleSelectNodeType={this.handleSelectNodeType}
@@ -212,27 +229,21 @@ export default class AddNodeModal extends PureComponent {
 
     createNode(nodeType, data = {}) {
         const {
-            nodeTypesRegistry,
-            getAllowedNodeTypesByModeGenerator,
+            allowedNodeTypesByMode,
             referenceNode,
             fusionPath,
             persistChange,
             handleClose
         } = this.props;
 
-        const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
         const mode = calculateActiveMode(this.state.mode, allowedNodeTypesByMode);
         const changeType = calculateChangeTypeFromMode(mode);
 
         const change = {
             type: changeType,
-            subject: $get('contextPath', referenceNode),
+            subject: referenceNode,
             payload: {
-                ...calculateDomAddressesFromMode(
-                    mode,
-                    $get('contextPath', referenceNode),
-                    fusionPath
-                ),
+                ...calculateDomAddressesFromMode(mode, referenceNode, fusionPath),
                 nodeType: $get('name', nodeType),
                 data
             }

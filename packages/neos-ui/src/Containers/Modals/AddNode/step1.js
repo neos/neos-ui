@@ -9,9 +9,12 @@ import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 class Step1 extends PureComponent {
     static propTypes = {
         nodeTypesRegistry: PropTypes.object.isRequired,
-        mode: PropTypes.string.isRequired,
-        getAllowedNodeTypesByModeGenerator: PropTypes.func.isRequired,
-        calculateActiveMode: PropTypes.func.isRequired,
+        activeMode: PropTypes.string.isRequired,
+        allowedNodeTypesByMode: PropTypes.shape({
+            before: PropTypes.array,
+            into: PropTypes.array,
+            after: PropTypes.array
+        }),
         onHandleModeChange: PropTypes.func.isRequired,
         onHandleClose: PropTypes.func.isRequired,
         onHandleSelectNodeType: PropTypes.func.isRequired
@@ -42,9 +45,7 @@ class Step1 extends PureComponent {
     }
 
     render() {
-        const {mode, calculateActiveMode, nodeTypesRegistry, getAllowedNodeTypesByModeGenerator, onHandleSelectNodeType, onHandleClose} = this.props;
-        const allowedNodeTypesByMode = getAllowedNodeTypesByModeGenerator(nodeTypesRegistry);
-        const activeMode = calculateActiveMode(mode, allowedNodeTypesByMode);
+        const {activeMode, nodeTypesRegistry, allowedNodeTypesByMode, onHandleSelectNodeType, onHandleClose} = this.props;
 
         const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(allowedNodeTypesByMode[activeMode]);
 

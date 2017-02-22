@@ -27,7 +27,7 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 export default class PasteClipBoardNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
-        canBePasted: PropTypes.func,
+        canBePasted: PropTypes.bool,
 
         contextPath: PropTypes.string,
         fusionPath: PropTypes.string,

@@ -3,8 +3,6 @@ import {createSelector, defaultMemoize} from 'reselect';
 
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
 
-import {getAllowedNodeTypesTakingAutoCreatedIntoAccount} from './helpers';
-
 const nodes = $get(['cr', 'nodes', 'byContextPath']);
 const focused = $get('cr.nodes.focused.contextPath');
 
@@ -157,28 +155,6 @@ export const focusedGrandParentSelector = createSelector(
     }
 );
 
-/**
- * This selector returns a function which you need to pass in the node-Type-Registry
- */
-export const makeAllowedSiblingNodeTypesForFocusedNodeSelector = nodeTypesRegistry => createSelector(
-    [
-        focusedSelector,
-        focusedParentSelector,
-        focusedGrandParentSelector
-    ],
-    (focusedNode, focusedNodeParent, focusedNodeGrandParent) => {
-        if (!focusedNode) {
-            return [];
-        }
-
-        return getAllowedNodeTypesTakingAutoCreatedIntoAccount(
-            focusedNodeParent,
-            focusedNodeGrandParent,
-            nodeTypesRegistry
-        );
-    }
-);
-
 export const clipboardNodeContextPathSelector = createSelector(
     [
         $get('cr.nodes.clipboard')
@@ -199,28 +175,33 @@ const getPathInNode = (state, contextPath, propertyPath) => {
     return $get(propertyPath, node);
 };
 
+export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator = id => id) => createSelector(
+    [
+        (state, {subject}) => getPathInNode(state, subject, 'isAutoCreated'),
+        (state, {reference}) => getPathInNode(state, elevator(reference), 'name'),
+        (state, {reference}) => getPathInNode(state, elevator(reference), 'nodeType'),
+        (state, {reference}) => getPathInNode(state, elevator(parentNodeContextPath(reference)), 'nodeType')
+    ],
+    (...args) => nodeTypesRegistry.getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args)
+);
+
+export const makeGetAllowedSiblingNodeTypesSelector = nodeTypesRegistry =>
+    makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, parentNodeContextPath);
+
 export const makeCanBeInsertedAlongsideSelector = nodeTypesRegistry => createSelector(
     [
         (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
-        (state, {subject}) => getPathInNode(state, subject, 'isAutoCreated'),
-        (state, {reference}) => getPathInNode(state, parentNodeContextPath(reference), 'name'),
-        (state, {reference}) => getPathInNode(state, parentNodeContextPath(reference), 'nodeType'),
-        (state, {reference}) => getPathInNode(state, parentNodeContextPath(parentNodeContextPath(reference)), 'nodeType')
+        makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
     ],
-    (subjectNodeType, ...args) => nodeTypesRegistry
-        .getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args).includes(subjectNodeType)
+    (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
 );
 
 export const makeCanBeInsertedIntoSelector = nodeTypesRegistry => createSelector(
     [
         (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
-        (state, {subject}) => getPathInNode(state, subject, 'isAutoCreated'),
-        (state, {reference}) => getPathInNode(state, reference, 'name'),
-        (state, {reference}) => getPathInNode(state, reference, 'nodeType'),
-        (state, {reference}) => getPathInNode(state, parentNodeContextPath(reference), 'nodeType')
+        makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry)
     ],
-    (subjectNodeType, ...args) => nodeTypesRegistry
-        .getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args).includes(subjectNodeType)
+    (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
 );
 
 export const makeCanBeInsertedSelector = nodeTypesRegistry => createSelector(

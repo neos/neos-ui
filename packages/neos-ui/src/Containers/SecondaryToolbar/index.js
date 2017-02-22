@@ -46,7 +46,7 @@ export default class SecondaryToolbar extends Component {
         };
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    componentWillUpdate(nextProps) {
         if (this.state.isLoading) {
             this.setState({
                 isLoading: false
@@ -56,6 +56,10 @@ export default class SecondaryToolbar extends Component {
                 isLoading: true
             });
         }
+    }
+
+    shouldComponentUpdate() {
+        return true;
     }
 
     render() {
@@ -94,7 +98,7 @@ export default class SecondaryToolbar extends Component {
                     </a>
                     <IconButton icon="expand" onClick={toggleFullScreen}/>
                 </div>
-                {this.state.isLoading ?  <LoadingIndicator/> : null}
+                {this.state.isLoading ? <LoadingIndicator/> : null}
             </div>
         );
     }

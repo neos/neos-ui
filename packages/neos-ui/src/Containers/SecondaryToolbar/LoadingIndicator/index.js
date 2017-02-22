@@ -4,12 +4,11 @@ import style from './style.css';
 export default class LoadingIndicator extends PureComponent {
     render() {
         return (
-                <div className={style.loadingIndicator__container}>
-                    <div className={style.loadingIndicator}>
-                        <div className={style.loadingIndicator__bar}>
-                        </div>
-                    </div>
+            <div className={style.loadingIndicator__container}>
+                <div className={style.loadingIndicator}>
+                    <div className={style.loadingIndicator__bar}/>
                 </div>
+            </div>
         );
     }
 }

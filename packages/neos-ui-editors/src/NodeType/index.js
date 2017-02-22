@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
@@ -15,7 +15,7 @@ import style from './style.css';
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
     i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
 }))
-export default class NodeType extends Component {
+export default class NodeType extends PureComponent {
     static propTypes = {
         value: PropTypes.string.isRequired,
         commit: PropTypes.func.isRequired,

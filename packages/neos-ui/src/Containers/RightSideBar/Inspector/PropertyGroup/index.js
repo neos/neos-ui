@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {Maybe} from 'monet';
 import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
@@ -9,7 +9,7 @@ import InspectorEditorEnvelope from '../InspectorEditorEnvelope/index';
 import sidebarStyle from '../../style.css';
 import style from './style.css';
 
-export default class PropertyGroup extends Component {
+export default class PropertyGroup extends PureComponent {
     static propTypes = {
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,

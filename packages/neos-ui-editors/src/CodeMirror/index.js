@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
@@ -6,7 +6,7 @@ import Label from '@neos-project/react-ui-components/lib/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
 import CodeMirrorWrap from './CodeMirrorWrap/index';
 
-export default class CodeMirror extends Component {
+export default class CodeMirror extends PureComponent {
     static propTypes = {
         identifier: PropTypes.string.isRequired,
         renderSecondaryInspector: PropTypes.func.isRequired,

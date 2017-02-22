@@ -4,8 +4,37 @@
   "description": "Validators for Neos CMS UI.",
   "private": true,
   "main": "./src/manifest.js",
+  "scripts": {
+    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
+    "test:watch": "npm run ava -- --watch",
+    "lint": "eslint src",
+    "ava": "PWD=$(pwd) NODE_ENV=test ava -c 6"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ],
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register",
+      "@neos-project/build-essentials/src/setup-browser-env"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/**/*.story.js",
+      "src/**/index.js"
+    ],
+    "include": [
+      "src/**"
+    ]
+  },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "^4.4.8"
+    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/build-essentials": "^4.4.8"
   },
   "license": "GNU GPLv3"
 }

@@ -22,6 +22,19 @@ const {
     canBePastedIntoSelector
 } = selectors.CR.Nodes;
 
+const calculateChangeTypeFromMode = (mode, prefix) => {
+    switch (mode) {
+        case 'before':
+            return `Neos.Neos.Ui:${prefix}Before`;
+
+        case 'after':
+            return `Neos.Neos.Ui:${prefix}After`;
+
+        default:
+            return `Neos.Neos.Ui:${prefix}Into`;
+    }
+};
+
 const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
     switch (mode) {
         case 'before':
@@ -105,18 +118,6 @@ function * determineInsertMode(subjectContextPath, referenceContextPath, canBePa
 
 function * copyAndPasteNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const calculateChangeTypeFromMode = mode => {
-        switch (mode) {
-            case 'before':
-                return 'Neos.Neos.Ui:CopyBefore';
-
-            case 'after':
-                return 'Neos.Neos.Ui:CopyAfter';
-
-            default:
-                return 'Neos.Neos.Ui:CopyInto';
-        }
-    };
 
     yield * takeEvery(actionTypes.CR.Nodes.COPY, function * waitForPaste() {
         const nodeToBePasted = yield select($get('cr.nodes.clipboard'));
@@ -155,7 +156,7 @@ function * copyAndPasteNode({globalRegistry}) {
 
             if (mode) {
                 yield put(actions.Changes.persistChange({
-                    type: calculateChangeTypeFromMode(mode),
+                    type: calculateChangeTypeFromMode(mode, 'Copy'),
                     subject: nodeToBePasted,
                     payload: calculateDomAddressesFromMode(
                         mode,
@@ -175,18 +176,6 @@ function * copyAndPasteNode({globalRegistry}) {
 
 function * cutAndPasteNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const calculateChangeTypeFromMode = mode => {
-        switch (mode) {
-            case 'before':
-                return 'Neos.Neos.Ui:MoveBefore';
-
-            case 'after':
-                return 'Neos.Neos.Ui:MoveAfter';
-
-            default:
-                return 'Neos.Neos.Ui:MoveInto';
-        }
-    };
 
     yield * takeEvery(actionTypes.CR.Nodes.CUT, function * waitForPaste() {
         const nodeToBePasted = yield select($get('cr.nodes.clipboard'));
@@ -225,7 +214,7 @@ function * cutAndPasteNode({globalRegistry}) {
 
             if (mode) {
                 yield put(actions.Changes.persistChange({
-                    type: calculateChangeTypeFromMode(mode),
+                    type: calculateChangeTypeFromMode(mode, 'Move'),
                     subject: nodeToBePasted,
                     payload: calculateDomAddressesFromMode(
                         mode,
@@ -240,18 +229,6 @@ function * cutAndPasteNode({globalRegistry}) {
 
 function * moveDroppedNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const calculateChangeTypeFromMode = mode => {
-        switch (mode) {
-            case 'before':
-                return 'Neos.Neos.Ui:MoveBefore';
-
-            case 'after':
-                return 'Neos.Neos.Ui:MoveAfter';
-
-            default:
-                return 'Neos.Neos.Ui:MoveInto';
-        }
-    };
 
     yield * takeEvery(actionTypes.CR.Nodes.MOVE, function * handleNodeMove({payload}) {
         const {nodeToBeMoved, targetNode} = payload;
@@ -273,7 +250,7 @@ function * moveDroppedNode({globalRegistry}) {
 
         if (mode) {
             yield put(actions.Changes.persistChange({
-                type: calculateChangeTypeFromMode(mode),
+                type: calculateChangeTypeFromMode(mode, 'Move'),
                 subject: nodeToBeMoved,
                 payload: calculateDomAddressesFromMode(
                     mode,

@@ -12,13 +12,11 @@ export default class TabPanel extends PureComponent {
         groups: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,
-        commit: PropTypes.func.isRequired,
-        transientValues: PropTypes.object,
-        validationErrors: PropTypes.object
+        commit: PropTypes.func.isRequired
     };
 
     render() {
-        const {groups, renderSecondaryInspector, validationErrors, node, commit, transientValues} = this.props;
+        const {groups, renderSecondaryInspector, node, commit} = this.props;
         const tabPanel = groups => (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 {
@@ -31,8 +29,6 @@ export default class TabPanel extends PureComponent {
                             renderSecondaryInspector={renderSecondaryInspector}
                             node={node}
                             commit={commit}
-                            transient={transientValues}
-                            validationErrors={validationErrors}
                             />
                     ))
                 }

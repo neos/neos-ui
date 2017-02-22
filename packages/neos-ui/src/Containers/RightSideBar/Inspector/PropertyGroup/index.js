@@ -15,15 +15,13 @@ export default class PropertyGroup extends PureComponent {
         icon: PropTypes.string,
         properties: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
-        validationErrors: PropTypes.object,
 
         node: PropTypes.object.isRequired,
-        commit: PropTypes.func.isRequired,
-        transient: PropTypes.object
+        commit: PropTypes.func.isRequired
     };
 
     render() {
-        const {properties, label, icon, renderSecondaryInspector, transient, validationErrors, node, commit} = this.props;
+        const {properties, label, icon, renderSecondaryInspector, node, commit} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
@@ -36,7 +34,6 @@ export default class PropertyGroup extends PureComponent {
                 <ToggablePanel.Contents>
                     {properties.map(property => {
                         const propertyId = property.id;
-                        const validationErrorsForProperty = (validationErrors && propertyId in validationErrors) ? validationErrors[propertyId] : null;
                         return (
                             <InspectorEditorEnvelope
                                 key={propertyId}
@@ -47,8 +44,6 @@ export default class PropertyGroup extends PureComponent {
                                 renderSecondaryInspector={renderSecondaryInspector}
                                 node={node}
                                 commit={commit}
-                                transient={transient}
-                                validationErrors={validationErrorsForProperty}
                                 />);
                     })}
                 </ToggablePanel.Contents>

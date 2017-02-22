@@ -12,7 +12,7 @@ import style from './style.css';
     i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
 }))
 @connect((state, {nodeTypesRegistry}) => {
-    const allowedSiblingNodeTypesForFocusedNodeSelector = selectors.CR.Nodes.makeAllowedSiblingNodeTypesForFocusedNodeSelector(nodeTypesRegistry)
+    const allowedSiblingNodeTypesForFocusedNodeSelector = selectors.CR.Nodes.makeAllowedSiblingNodeTypesForFocusedNodeSelector(nodeTypesRegistry);
 
     return state => ({
         allowedSiblingNodeTypesForFocusedNode: allowedSiblingNodeTypesForFocusedNodeSelector(state)

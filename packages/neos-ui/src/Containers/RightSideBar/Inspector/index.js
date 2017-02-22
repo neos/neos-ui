@@ -1,6 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {$get} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
 import Bar from '@neos-project/react-ui-components/lib/Bar/';
 import Grid from '@neos-project/react-ui-components/lib/Grid/';
@@ -10,34 +10,39 @@ import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import validate from '@neos-project/neos-ui-validators/src/index';
 
 import TabPanel from './TabPanel/index';
 import style from './style.css';
 
-@connect($transform({
-    focusedNode: selectors.CR.Nodes.focusedSelector,
-    transientValues: selectors.UI.Inspector.transientValues,
-    node: selectors.CR.Nodes.focusedSelector
-}), {
-    apply: actions.UI.Inspector.apply,
-    discard: actions.UI.Inspector.discard,
-    commit: actions.UI.Inspector.commit
-})
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
     validatorRegistry: globalRegistry.get('validators')
 }))
+@connect((state, {nodeTypesRegistry, validatorRegistry}) => {
+    const isApplyDisabledSelector = selectors.UI.Inspector.makeIsApplyDisabledSelector(nodeTypesRegistry, validatorRegistry);
+
+    return state => ({
+        focusedNode: selectors.CR.Nodes.focusedSelector(state),
+        node: selectors.CR.Nodes.focusedSelector(state),
+        isApplyDisabled: isApplyDisabledSelector(state),
+        isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state)
+    });
+}, {
+    apply: actions.UI.Inspector.apply,
+    discard: actions.UI.Inspector.discard,
+    commit: actions.UI.Inspector.commit
+})
 export default class Inspector extends PureComponent {
     static propTypes = {
-        focusedNode: PropTypes.object,
         nodeTypesRegistry: PropTypes.object,
-        validatorRegistry: PropTypes.object.isRequired,
+
+        focusedNode: PropTypes.object,
+        node: PropTypes.object.isRequired,
+        isApplyDisabled: PropTypes.bool,
+        isDiscardDisabled: PropTypes.bool,
+
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
-        transientValues: PropTypes.any,
-
-        node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired
     };
 
@@ -105,29 +110,13 @@ export default class Inspector extends PureComponent {
     }
 
     render() {
-        const {focusedNode, nodeTypesRegistry, transientValues, node, validatorRegistry, commit} = this.props;
+        const {focusedNode, nodeTypesRegistry, node, commit, isApplyDisabled, isDiscardDisabled} = this.props;
 
         if (!focusedNode) {
             return this.renderFallback();
         }
 
-        const nodeType = nodeTypesRegistry.get($get('nodeType', node));
-        if (!$get('properties', nodeType)) {
-            console.error(`No properties configured in ${$get('nodeType', node)} nodetype`);
-        }
-        let validationErrors = null;
-        const propertiesForValidation = Object.assign({}, $get('properties', node));
-        if (transientValues) {
-            // Override values with transient values
-            Object.keys(transientValues.toJS()).forEach(key => {
-                propertiesForValidation[key] = $get([key, 'value'], transientValues);
-            });
-        }
-        validationErrors = validate(propertiesForValidation, nodeType.properties, validatorRegistry);
-
         const viewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', focusedNode));
-        const isDiscardDisabled = transientValues === undefined;
-        const isApplyDisabled = transientValues === undefined || validationErrors !== null;
 
         if (!viewConfiguration || !viewConfiguration.tabs) {
             return this.renderFallback();
@@ -156,10 +145,8 @@ export default class Inspector extends PureComponent {
                                     icon={tab.icon}
                                     groups={tab.groups}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
-                                    validationErrors={validationErrors}
                                     node={node}
                                     commit={commit}
-                                    transientValues={transientValues}
                                     />);
                         })
                     }

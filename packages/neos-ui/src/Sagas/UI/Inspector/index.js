@@ -71,7 +71,7 @@ function * flushInspector(inspectorRegistry) {
     const state = yield select();
     const focusedNode = getFocusedNode(state);
     const transientInspectorValues = getTransientInspectorValues(state);
-    const transientInspectorValuesForFocusedNodes = transientInspectorValues[focusedNode.contextPath];
+    const transientInspectorValuesForFocusedNodes = $get([$get('contextPath', focusedNode)], transientInspectorValues);
 
     for (const propertyName of Object.keys(transientInspectorValuesForFocusedNodes)) {
         const transientValue = transientInspectorValuesForFocusedNodes[propertyName];
@@ -101,7 +101,7 @@ function * flushInspector(inspectorRegistry) {
         //
         const change = {
             type: 'Neos.Neos.Ui:Property',
-            subject: focusedNode.contextPath,
+            subject: $get('contextPath', focusedNode),
             payload: {propertyName, value}
         };
 

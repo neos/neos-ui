@@ -42,19 +42,6 @@ export const isDocumentNodeSelectedSelector = createSelector(
 export const nodeByContextPath = state => contextPath =>
     $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 
-const immutableNodeToJs = selectorWhichEmitsNode =>
-    createSelector(
-        [
-            selectorWhichEmitsNode
-        ],
-        node => {
-            if (node && node.toJS) {
-                node = node.toJS();
-            }
-            return node;
-        }
-    );
-
 export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
     [
         nodes
@@ -101,12 +88,12 @@ export const siteNodeSelector = createSelector(
 );
 
 export const byContextPathSelector = defaultMemoize(
-    contextPath => immutableNodeToJs(createSelector(
+    contextPath => createSelector(
         [
             nodeByContextPath
         ],
         getNodeByContextPath => getNodeByContextPath(contextPath)
-    ))
+    )
 );
 
 export const parentNodeSelector = state => baseNode =>
@@ -115,7 +102,7 @@ export const parentNodeSelector = state => baseNode =>
 export const grandParentNodeSelector = state => baseNode =>
     byContextPathSelector(parentNodeContextPath(parentNodeContextPath($get('contextPath', baseNode))))(state);
 
-export const focusedNodePathSelector = immutableNodeToJs(createSelector(
+export const focusedNodePathSelector = createSelector(
     [
         focused,
         getCurrentContentCanvasContextPath
@@ -123,16 +110,16 @@ export const focusedNodePathSelector = immutableNodeToJs(createSelector(
     (focused, currentContentCanvasContextPath) => {
         return focused || currentContentCanvasContextPath;
     }
-));
+);
 
-export const focusedSelector = immutableNodeToJs(createSelector(
+export const focusedSelector = createSelector(
     [
         focusedNodePathSelector,
         nodeByContextPath
     ],
     (focusedNodePath, getNodeByContextPath) =>
         getNodeByContextPath(focusedNodePath)
-));
+);
 
 export const focusedParentSelector = createSelector(
     [

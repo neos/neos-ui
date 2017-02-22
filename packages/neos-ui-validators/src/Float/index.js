@@ -8,7 +8,7 @@ const Float = value => {
     const number = parseFloat(value);
 
     if (value.length !== 0 && (isNaN(number) || value.match(/.+\d$/) === null)) {
-        return <I18n id='content.inspector.validators.floatValidator.validFloatExpected'/>;
+        return <I18n id="content.inspector.validators.floatValidator.validFloatExpected"/>;
     }
     return null;
 };

@@ -8,7 +8,7 @@ const Integer = value => {
     const number = parseInt(value, 10);
 
     if (value.length !== 0 && !Number.isSafeInteger(number)) {
-        return <I18n id='content.inspector.validators.integerValidator.aValidIntegerNumberIsExpected'/>;
+        return <I18n id="content.inspector.validators.integerValidator.aValidIntegerNumberIsExpected"/>;
     }
     return null;
 };

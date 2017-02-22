@@ -27,5 +27,5 @@ export const getIsLoading = createSelector(
     [
         getLoading
     ],
-    list => Boolean(list.toJS().length)
+    list => Boolean(list.size)
 );

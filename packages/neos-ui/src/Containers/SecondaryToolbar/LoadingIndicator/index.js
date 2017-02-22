@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import style from './style.css';
 
-export default class DimensionSwitcher extends PureComponent {
+export default class LoadingIndicator extends PureComponent {
     render() {
         return (
                 <div className={style.loadingIndicator__container}>

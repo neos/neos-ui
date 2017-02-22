@@ -60,7 +60,9 @@ export default class SelectBox extends PureComponent {
             'dropDown__btnIcon': PropTypes.string,
             'dropDown__contents': PropTypes.string,
             'dropDown__item': PropTypes.string,
-            'dropDown__itemIcon': PropTypes.string
+            'dropDown__itemIcon': PropTypes.string,
+            'dropDown__loadingIcon': PropTypes.string,
+            'dropDown__searchInput': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
         /**
@@ -78,7 +80,11 @@ export default class SelectBox extends PureComponent {
     };
 
     state = {
-        value: ''
+        value: undefined,
+        icon: undefined,
+        label: undefined,
+        searchValue: '',
+        isLoadingOptions: false
     };
 
     constructor(...args) {
@@ -86,32 +92,36 @@ export default class SelectBox extends PureComponent {
 
         this.filterOption = this.filterOption.bind(this);
         this.renderOption = this.renderOption.bind(this);
-        this.handleOnInputClick = this.handleOnInputClick.bind(this);
         this.handleDeleteClick = e => {
             e.preventDefault();
             e.stopPropagation();
 
-            this.props.onDelete();
+            this.setState({
+                value: undefined,
+                label: undefined,
+                searchValue: ''
+            });
+
+            if (this.props.onDelete) {
+                this.props.onDelete();
+            }
         };
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.handleOptionsLoad = this.handleOptionsLoad.bind(this);
     }
 
     componentDidMount() {
-        const {value} = this.props;
+        this.select(this.props.value, false);
 
-        this.loadOptions(); // initially load options
-        this.select(value, false);
+        if (isFunction(this.props.options)) {
+            this.loadOptions(); // initially load options
+        }
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(_, prevState) {
         // if the search input changes, reload async options
-        if (prevState.searchValue !== this.state.searchValue) {
+        if (prevState.searchValue !== this.state.searchValue && isFunction(this.props.options)) {
             this.loadOptions();
-        }
-
-        if (prevProps.value !== this.props.value) {
-            this.select(this.props.value, false);
         }
     }
 
@@ -122,37 +132,42 @@ export default class SelectBox extends PureComponent {
             InputComponent,
             placeholder,
             placeholderIcon,
-            theme,
-            onDelete
+            theme
         } = this.props;
-        const {icon, label, searchValue = ''} = this.state;
+        const {icon, label, searchValue = '', isLoadingOptions} = this.state;
 
         return (
             <div className={theme.wrapper}>
                 <DropDownComponent className={theme.dropDown}>
                     <DropDownComponent.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
-                        {icon || placeholderIcon ?
-                            <IconComponent className={theme.dropDown__btnIcon} icon={icon || placeholderIcon}/> :
+                        {this.isSearchEnabled() ?
+                            <IconComponent icon="search"/> :
+                            icon || placeholderIcon ?
+                                <IconComponent className={theme.dropDown__btnIcon} icon={icon || placeholderIcon}/> :
+                                null
+                        }
+                        {this.isSearchEnabled() ?
+                            <InputComponent
+                                value={searchValue}
+                                placeholder={placeholder}
+                                onChange={this.handleOnInputChange}
+                                className={theme.dropDown__searchInput}
+                            /> :
+                            isLoadingOptions ?
+                                <span>Loading ...</span> :
+                                <span>{label || placeholder}</span>
+
+                        }
+                        {this.isDeleteEnabled() ?
+                            <a href="" onClick={this.handleDeleteClick} className={theme.dropDown__btnDelete}><IconComponent icon="close"/></a> :
                             null
                         }
-                        <span>{label || placeholder}</span>
-                        {onDelete ?
-                            <a href="" onClick={this.handleDeleteClick} className={theme.dropDown__btnDelete}><IconComponent icon="close"/></a> :
+                        {isLoadingOptions ?
+                            <IconComponent className={theme.dropDown__loadingIcon} icon="spinner"/> :
                             null
                         }
                     </DropDownComponent.Header>
                     <DropDownComponent.Contents className={theme.dropDown__contents}>
-                        {
-                            this.isSearchEnabled() ?
-                                <li className={theme.dropDown__item}>
-                                    <InputComponent
-                                        value={searchValue}
-                                        onClick={this.handleOnInputClick}
-                                        onChange={this.handleOnInputChange}
-                                        />
-                                </li> : null
-                        }
-
                         {Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
                             this.getOptions()
                                 .filter(this.filterOption)
@@ -184,9 +199,22 @@ export default class SelectBox extends PureComponent {
      * @returns {boolean} isSearchEnabled   TRUE if searchbox should be displayed
      */
     isSearchEnabled() {
-        return (this.props.minimumResultsForSearch !== -1 && this.getOptions().length >= this.props.minimumResultsForSearch) ||
-            // the options prop has to be a function in order to assume that options are loaded async
-            isFunction(this.props.options);
+        if (!isFunction(this.props.onDelete)) {
+            return false
+        } else if (this.state.value) {
+            return false
+        } else {
+            return (this.props.minimumResultsForSearch !== -1 && this.getOptions().length >= this.props.minimumResultsForSearch) ||
+                // the options prop has to be a function in order to assume that options are loaded async
+                isFunction(this.props.options);
+        }
+    }
+
+    /**
+     * @returns {boolean} isDeleteEnabled   TRUE if delete button should be displayed
+     */
+    isDeleteEnabled() {
+        return !!this.state.value && isFunction(this.props.onDelete)
     }
 
     /**
@@ -195,6 +223,11 @@ export default class SelectBox extends PureComponent {
      */
     loadOptions() {
         const options = this.props.options;
+
+        this.setState({
+            isLoadingOptions: true
+        });
+
         return isFunction(options) && options({
             value: this.state.searchValue,
             callback: this.handleOptionsLoad
@@ -207,21 +240,14 @@ export default class SelectBox extends PureComponent {
      */
     handleOptionsLoad(data) {
         this.setState({
-            options: data
+            options: data,
+            isLoadingOptions: false
         });
 
         // After options loaded, re-try to select the current element!
-        this.select(this.props.value, false);
+        this.select(this.state.value, false);
     }
 
-    /**
-     * Handler for input click event
-     * prevents the dropdown from closing when you focus the text input
-     * @param {object} e    event
-     */
-    handleOnInputClick(e) {
-        e.stopPropagation();
-    }
 
     /**
      * Handler for input change event
@@ -240,14 +266,13 @@ export default class SelectBox extends PureComponent {
      */
     select(incomingValue, shouldTriggerOnSelect = true) {
         const {placeholder, placeholderIcon} = this.props;
-        const value = incomingValue || placeholder;
 
         this.setState({
-            value,
+            value: incomingValue,
             icon: Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
-                this.getOptions().filter(o => o.value === value).map(o => o.icon)[0] : placeholderIcon,
+                this.getOptions().filter(o => o.value === incomingValue).map(o => o.icon)[0] : placeholderIcon,
             label: Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
-                this.getOptions().filter(o => o.value === value).map(o => o.label)[0] : placeholder
+                this.getOptions().filter(o => o.value === incomingValue).map(o => o.label)[0] : placeholder
         });
 
         if (shouldTriggerOnSelect) {

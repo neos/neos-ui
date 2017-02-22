@@ -19,7 +19,39 @@
     border: 0;
     background: var(--brandColorsContrastNeutral);
     min-width: 160px;
+
+    > div {
+        display: inline-block;
+        width: 100%;
+    }
 }
+
+.dropDown__searchInput {
+    display: inline-block;
+    width: 100%;
+    color: #fff;
+    font-size: 14px;
+    &:focus {
+        background: transparent !important;
+        color: #fff !important;
+    }
+}
+
+.dropDown__loadingIcon {
+    composes: reset from './../reset.css';
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    display: block;
+    width: var(--goldenUnit);
+    height: var(--goldenUnit);
+    text-align: center;
+    background: var(--brandColorsContrastNeutral);
+    color: #FFF;
+    line-height: 40px;
+}
+
 .dropDown__btnIcon {
     composes: reset from './../reset.css';
     margin-right: .5em;

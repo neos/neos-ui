@@ -22,9 +22,10 @@ storiesOf('SelectBox', module)
         () => (
             <StoryWrapper>
                 <SelectBox
+                    value={"opt1"}
                     options={options}
                     placeholder={text('Placeholder', 'Select')}
-                    placeholderIcon={text('Placeholder icon', 'search')}
+                    placeholderIcon={text('Placeholder icon', 'bookmark')}
                     onSelect={action('onSelect')}
                     />
             </StoryWrapper>
@@ -38,7 +39,6 @@ storiesOf('SelectBox', module)
                 <SelectBox
                     options={loadOptions}
                     placeholder={text('Placeholder', 'Select')}
-                    placeholderIcon={text('Placeholder icon', 'search')}
                     onSelect={action('onSelect')}
                     />
             </StoryWrapper>
@@ -72,7 +72,8 @@ storiesOf('SelectBox', module)
             <StoryWrapper title="SelectBox">
                 <SelectBox
                     options={loadOptions}
-                    placeholder={text('Placeholder', 'Select')}
+                    value={"opt1"}
+                    placeholder={text('Placeholder', 'Type to search')}
                     onSelect={action('onSelect')}
                     onDelete={action('onDelete')}
                     />

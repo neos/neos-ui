@@ -18,8 +18,8 @@ const parentNodeContextPath = contextPath => {
 };
 
 const {
-    canBePastedAlongsideSelector,
-    canBePastedIntoSelector
+    makeCanBeInsertedAlongsideSelector,
+    makeCanBeInsertedIntoSelector
 } = selectors.CR.Nodes;
 
 const calculateChangeTypeFromMode = (mode, prefix) => {
@@ -91,16 +91,16 @@ function * removeNodeIfConfirmed() {
     });
 }
 
-function * determineInsertMode(subjectContextPath, referenceContextPath, canBePastedAlongside, canBePastedInto, operation) { // eslint-disable-line max-params
-    if (canBePastedInto && !canBePastedAlongside) {
+function * determineInsertMode(subjectContextPath, referenceContextPath, canBeInsertedAlongside, canBeInsertedInto, operation) { // eslint-disable-line max-params
+    if (canBeInsertedInto && !canBeInsertedAlongside) {
         return 'into';
     }
 
     yield put(actions.UI.InsertionModeModal.open(
         subjectContextPath,
         referenceContextPath,
-        canBePastedAlongside,
-        canBePastedInto,
+        canBeInsertedAlongside,
+        canBeInsertedInto,
         operation
     ));
     const waitForNextAction = yield race([
@@ -118,11 +118,11 @@ function * determineInsertMode(subjectContextPath, referenceContextPath, canBePa
 
 function * copyAndPasteNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    const canBeInsertedAlongsideSelector = makeCanBeInsertedAlongsideSelector(nodeTypesRegistry);
+    const canBeInsertedIntoSelector = makeCanBeInsertedIntoSelector(nodeTypesRegistry);
 
     yield * takeEvery(actionTypes.CR.Nodes.COPY, function * waitForPaste() {
-        const nodeToBePasted = yield select($get('cr.nodes.clipboard'));
-        const getCanBePastedAlongside = yield select(canBePastedAlongsideSelector);
-        const getCanBePastedInto = yield select(canBePastedIntoSelector);
+        const subject = yield select($get('cr.nodes.clipboard'));
 
         const waitForNextAction = yield race([
             take(actionTypes.CR.Nodes.COPY),
@@ -140,47 +140,42 @@ function * copyAndPasteNode({globalRegistry}) {
         }
 
         if (nextAction.type === actionTypes.CR.Nodes.PASTE) {
-            const {contextPath, fusionPath} = nextAction.payload;
-            const canBePastedArguments = [nodeToBePasted, contextPath, nodeTypesRegistry];
-            const canBePastedAlongside = getCanBePastedAlongside(...canBePastedArguments);
-            const canBePastedInto = getCanBePastedInto(...canBePastedArguments);
+            const {contextPath: reference, fusionPath} = nextAction.payload;
+            const canBeInsertedAlongside = yield select(canBeInsertedAlongsideSelector, {subject, reference});
+            const canBeInsertedInto = yield select(canBeInsertedIntoSelector, {subject, reference});
 
             const mode = yield call(
                 determineInsertMode,
-                nodeToBePasted,
-                contextPath,
-                canBePastedAlongside,
-                canBePastedInto,
+                subject,
+                reference,
+                canBeInsertedAlongside,
+                canBeInsertedInto,
                 actionTypes.CR.Nodes.COPY
             );
 
             if (mode) {
                 yield put(actions.Changes.persistChange({
                     type: calculateChangeTypeFromMode(mode, 'Copy'),
-                    subject: nodeToBePasted,
-                    payload: calculateDomAddressesFromMode(
-                        mode,
-                        contextPath,
-                        fusionPath
-                    )
+                    subject,
+                    payload: calculateDomAddressesFromMode(mode, reference, fusionPath)
                 }));
             }
 
             //
             // Keep the loop runnning
             //
-            yield put(actions.CR.Nodes.copy(nodeToBePasted));
+            yield put(actions.CR.Nodes.copy(subject));
         }
     });
 }
 
 function * cutAndPasteNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    const canBeInsertedAlongsideSelector = makeCanBeInsertedAlongsideSelector(nodeTypesRegistry);
+    const canBeInsertedIntoSelector = makeCanBeInsertedIntoSelector(nodeTypesRegistry);
 
     yield * takeEvery(actionTypes.CR.Nodes.CUT, function * waitForPaste() {
-        const nodeToBePasted = yield select($get('cr.nodes.clipboard'));
-        const getCanBePastedAlongside = yield select(canBePastedAlongsideSelector);
-        const getCanBePastedInto = yield select(canBePastedIntoSelector);
+        const subject = yield select($get('cr.nodes.clipboard'));
 
         const waitForNextAction = yield race([
             take(actionTypes.CR.Nodes.CUT),
@@ -198,29 +193,24 @@ function * cutAndPasteNode({globalRegistry}) {
         }
 
         if (nextAction.type === actionTypes.CR.Nodes.PASTE) {
-            const {contextPath, fusionPath} = nextAction.payload;
-            const canBePastedArguments = [nodeToBePasted, contextPath, nodeTypesRegistry];
-            const canBePastedAlongside = getCanBePastedAlongside(...canBePastedArguments);
-            const canBePastedInto = getCanBePastedInto(...canBePastedArguments);
+            const {contextPath: reference, fusionPath} = nextAction.payload;
+            const canBeInsertedAlongside = yield select(canBeInsertedAlongsideSelector, {subject, reference});
+            const canBeInsertedInto = yield select(canBeInsertedIntoSelector, {subject, reference});
 
             const mode = yield call(
                 determineInsertMode,
-                nodeToBePasted,
-                contextPath,
-                canBePastedAlongside,
-                canBePastedInto,
+                subject,
+                reference,
+                canBeInsertedAlongside,
+                canBeInsertedInto,
                 actionTypes.CR.Nodes.CUT
             );
 
             if (mode) {
                 yield put(actions.Changes.persistChange({
                     type: calculateChangeTypeFromMode(mode, 'Move'),
-                    subject: nodeToBePasted,
-                    payload: calculateDomAddressesFromMode(
-                        mode,
-                        contextPath,
-                        fusionPath
-                    )
+                    subject,
+                    payload: calculateDomAddressesFromMode(mode, reference, fusionPath)
                 }));
             }
         }
@@ -229,32 +219,30 @@ function * cutAndPasteNode({globalRegistry}) {
 
 function * moveDroppedNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    const canBeInsertedAlongsideSelector = makeCanBeInsertedAlongsideSelector(nodeTypesRegistry);
+    const canBeInsertedIntoSelector = makeCanBeInsertedIntoSelector(nodeTypesRegistry);
 
     yield * takeEvery(actionTypes.CR.Nodes.MOVE, function * handleNodeMove({payload}) {
-        const {nodeToBeMoved, targetNode} = payload;
-        const getCanBeMovedAlongside = yield select(canBePastedAlongsideSelector);
-        const getCanBeMovedInto = yield select(canBePastedIntoSelector);
-
-        const canBeMovedArguments = [nodeToBeMoved, targetNode, nodeTypesRegistry];
-        const canBeMovedAlongside = getCanBeMovedAlongside(...canBeMovedArguments);
-        const canBeMovedInto = getCanBeMovedInto(...canBeMovedArguments);
+        const {nodeToBeMoved: subject, targetNode: reference} = payload;
+        const canBeInsertedAlongside = yield select(canBeInsertedAlongsideSelector, {subject, reference});
+        const canBeInsertedInto = yield select(canBeInsertedIntoSelector, {subject, reference});
 
         const mode = yield call(
             determineInsertMode,
-            nodeToBeMoved,
-            targetNode,
-            canBeMovedAlongside,
-            canBeMovedInto,
+            subject,
+            reference,
+            canBeInsertedAlongside,
+            canBeInsertedInto,
             actionTypes.CR.Nodes.MOVE
         );
 
         if (mode) {
             yield put(actions.Changes.persistChange({
                 type: calculateChangeTypeFromMode(mode, 'Move'),
-                subject: nodeToBeMoved,
+                subject,
                 payload: calculateDomAddressesFromMode(
                     mode,
-                    targetNode
+                    reference
                 )
             }));
         }

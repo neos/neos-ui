@@ -193,54 +193,40 @@ export const clipboardIsEmptySelector = createSelector(
     clipboardNodePath => Boolean(clipboardNodePath)
 );
 
-export const canBePastedAlongsideSelector = createSelector(
-    [
-        nodeByContextPath,
-        parentNodeSelector,
-        grandParentNodeSelector
-    ],
-    (getNodeByContextPath, getParentNode, getGrandParentNode) =>
-        (subjectContextPath, referenceContextPath, nodeTypesRegistry) => {
-            const subject = getNodeByContextPath(subjectContextPath);
-            const reference = getNodeByContextPath(referenceContextPath);
-            const referenceParent = getParentNode(reference);
-            const referenceGrandParent = getGrandParentNode(reference);
-            const allowedNodeTypes = getAllowedNodeTypesTakingAutoCreatedIntoAccount(
-                referenceParent,
-                referenceGrandParent,
-                nodeTypesRegistry
-            );
+const getPathInNode = (state, contextPath, propertyPath) => {
+    const node = $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 
-            return allowedNodeTypes.indexOf($get('nodeType', subject)) !== -1;
-        }
+    return $get(propertyPath, node);
+};
+
+export const makeCanBeInsertedAlongsideSelector = nodeTypesRegistry => createSelector(
+    [
+        (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
+        (state, {subject}) => getPathInNode(state, subject, 'isAutoCreated'),
+        (state, {reference}) => getPathInNode(state, parentNodeContextPath(reference), 'name'),
+        (state, {reference}) => getPathInNode(state, parentNodeContextPath(reference), 'nodeType'),
+        (state, {reference}) => getPathInNode(state, parentNodeContextPath(parentNodeContextPath(reference)), 'nodeType')
+    ],
+    (subjectNodeType, ...args) => nodeTypesRegistry
+        .getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args).includes(subjectNodeType)
 );
 
-export const canBePastedIntoSelector = createSelector(
+export const makeCanBeInsertedIntoSelector = nodeTypesRegistry => createSelector(
     [
-        nodeByContextPath,
-        parentNodeSelector
+        (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
+        (state, {subject}) => getPathInNode(state, subject, 'isAutoCreated'),
+        (state, {reference}) => getPathInNode(state, reference, 'name'),
+        (state, {reference}) => getPathInNode(state, reference, 'nodeType'),
+        (state, {reference}) => getPathInNode(state, parentNodeContextPath(reference), 'nodeType')
     ],
-    (getNodeByContextPath, getParentNode) =>
-        (subjectContextPath, referenceContextPath, nodeTypesRegistry) => {
-            const subject = getNodeByContextPath(subjectContextPath);
-            const reference = getNodeByContextPath(referenceContextPath);
-            const referenceParent = getParentNode(reference);
-            const allowedNodeTypes = getAllowedNodeTypesTakingAutoCreatedIntoAccount(
-                reference,
-                referenceParent,
-                nodeTypesRegistry
-            );
-
-            return allowedNodeTypes.indexOf($get('nodeType', subject)) !== -1;
-        }
+    (subjectNodeType, ...args) => nodeTypesRegistry
+        .getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args).includes(subjectNodeType)
 );
 
-export const canBePastedSelector = createSelector(
+export const makeCanBeInsertedSelector = nodeTypesRegistry => createSelector(
     [
-        canBePastedAlongsideSelector,
-        canBePastedIntoSelector
+        makeCanBeInsertedAlongsideSelector(nodeTypesRegistry),
+        makeCanBeInsertedIntoSelector(nodeTypesRegistry)
     ],
-    (canBePastedAlongside, canBePastedInto) =>
-        (...args) => canBePastedAlongside(...args) || canBePastedInto(...args)
-
+    (canBeInsertedAlongside, canBeInsertedInto) => (canBeInsertedAlongside || canBeInsertedInto)
 );

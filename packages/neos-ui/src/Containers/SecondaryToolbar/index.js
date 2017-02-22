@@ -12,6 +12,7 @@ const {isDocumentNodeSelectedSelector} = selectors.CR.Nodes;
 
 import DimensionSwitcher from './DimensionSwitcher/index';
 import EditorToolbar from './EditorToolbar/index';
+import LoadingIndicator from './LoadingIndicator/index';
 
 import style from './style.css';
 
@@ -72,6 +73,7 @@ export default class SecondaryToolbar extends PureComponent {
                     </a>
                     <IconButton icon="expand" onClick={toggleFullScreen}/>
                 </div>
+                <LoadingIndicator/>
             </div>
         );
     }

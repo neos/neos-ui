@@ -66,6 +66,40 @@ export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
     }
 );
 
+export const makeHasChildrenSelector = allowedNodeTypes => createSelector(
+    [
+        (state, contextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
+    ],
+    childNodeEnvelopes => (childNodeEnvelopes || []).some(
+        childNodeEnvelope => allowedNodeTypes.includes($get('nodeType', childNodeEnvelope))
+    )
+);
+
+export const makeChildrenOfSelector = allowedNodeTypes => createSelector(
+    [
+        (state, contextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state),
+        $get('cr.nodes.byContextPath')
+    ],
+    (childNodeEnvelopes, nodesByContextPath) => (childNodeEnvelopes || [])
+    .filter(
+        childNodeEnvelope => allowedNodeTypes.includes($get('nodeType', childNodeEnvelope))
+    )
+    .map(
+        $get('contextPath')
+    )
+    .map(
+        contextPath => $get(contextPath, nodesByContextPath)
+    )
+);
+
+export const siteNodeSelector = createSelector(
+    [
+        $get('cr.nodes.siteNode'),
+        $get('cr.nodes.byContextPath')
+    ],
+    (siteNodeContextPath, nodesByContextPath) => $get(siteNodeContextPath, nodesByContextPath)
+);
+
 export const byContextPathSelector = defaultMemoize(
     contextPath => immutableNodeToJs(createSelector(
         [

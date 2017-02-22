@@ -65,11 +65,6 @@ abstract class AbstractMove extends AbstractStructuralChange
 
         $this->feedbackCollection->add($removeNode);
 
-        $updateParentNodeInfo = new UpdateNodeInfo();
-        $updateParentNodeInfo->setNode($node->getParent());
-
-        $this->feedbackCollection->add($updateParentNodeInfo);
-
         parent::finish($this->getSubject());
     }
 }

@@ -16,6 +16,7 @@ const REMOVAL_CONFIRMED = '@neos/neos-ui/Transient/Nodes/REMOVAL_CONFIRMED';
 const REMOVE = '@neos/neos-ui/Transient/Nodes/REMOVE';
 const COPY = '@neos/neos-ui/Transient/Nodes/COPY';
 const CUT = '@neos/neos-ui/Transient/Nodes/CUT';
+const MOVE = '@neos/neos-ui/Transient/Nodes/MOVE';
 const PASTE = '@neos/neos-ui/Transient/Nodes/PASTE';
 const HIDE = '@neos/neos-ui/Transient/Nodes/HIDE';
 const SHOW = '@neos/neos-ui/Transient/Nodes/SHOW';
@@ -33,6 +34,7 @@ export const actionTypes = {
     REMOVE,
     COPY,
     CUT,
+    MOVE,
     PASTE,
     HIDE,
     SHOW
@@ -98,6 +100,14 @@ const copy = createAction(COPY, contextPath => contextPath);
 const cut = createAction(CUT, contextPath => contextPath);
 
 /**
+ * Move a node
+ *
+ * @param {String} nodeToBeMoved The context path of the node to be moved
+ * @param {String} targetNode The context path of the target node
+ */
+const move = createAction(MOVE, (nodeToBeMoved, targetNode) => ({nodeToBeMoved, targetNode}));
+
+/**
  * Paste the contents of the node clipboard
  *
  * @param {String} contextPath The context path of the target node
@@ -132,6 +142,7 @@ export const actions = {
     remove,
     copy,
     cut,
+    move,
     paste,
     hide,
     show

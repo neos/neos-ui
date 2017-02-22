@@ -238,6 +238,52 @@ function * cutAndPasteNode({globalRegistry}) {
     });
 }
 
+function * moveDroppedNode({globalRegistry}) {
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    const calculateChangeTypeFromMode = mode => {
+        switch (mode) {
+            case 'before':
+                return 'Neos.Neos.Ui:MoveBefore';
+
+            case 'after':
+                return 'Neos.Neos.Ui:MoveAfter';
+
+            default:
+                return 'Neos.Neos.Ui:MoveInto';
+        }
+    };
+
+    yield * takeEvery(actionTypes.CR.Nodes.MOVE, function * handleNodeMove({payload}) {
+        const {nodeToBeMoved, targetNode} = payload;
+        const getCanBeMovedAlongside = yield select(canBePastedAlongsideSelector);
+        const getCanBeMovedInto = yield select(canBePastedIntoSelector);
+
+        const canBeMovedArguments = [nodeToBeMoved, targetNode, nodeTypesRegistry];
+        const canBeMovedAlongside = getCanBeMovedAlongside(...canBeMovedArguments);
+        const canBeMovedInto = getCanBeMovedInto(...canBeMovedArguments);
+
+        const mode = yield call(
+            determineInsertMode,
+            nodeToBeMoved,
+            targetNode,
+            canBeMovedAlongside,
+            canBeMovedInto,
+            actionTypes.CR.Nodes.MOVE
+        );
+
+        if (mode) {
+            yield put(actions.Changes.persistChange({
+                type: calculateChangeTypeFromMode(mode),
+                subject: nodeToBeMoved,
+                payload: calculateDomAddressesFromMode(
+                    mode,
+                    targetNode
+                )
+            }));
+        }
+    });
+}
+
 function * hideNode() {
     yield * takeLatest(actionTypes.CR.Nodes.HIDE, function * performPropertyChange(action) {
         const contextPath = action.payload;
@@ -282,6 +328,7 @@ export const sagas = [
     removeNodeIfConfirmed,
     copyAndPasteNode,
     cutAndPasteNode,
+    moveDroppedNode,
     hideNode,
     showNode
 ];

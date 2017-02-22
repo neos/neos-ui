@@ -100,6 +100,16 @@ export default class InsertModeModal extends PureComponent {
                             }}
                             />
                     }
+                    {operationType === actionTypes.CR.Nodes.MOVE &&
+                        <I18n
+                            key="move"
+                            id="Neos.Neos.Ui:Main:move__from__to--title"
+                            params={{
+                                source: this.renderNodeLabel(subjectContextPath),
+                                target: this.renderNodeLabel(referenceContextPath)
+                            }}
+                            />
+                    }
                 </span>
             </div>
         );

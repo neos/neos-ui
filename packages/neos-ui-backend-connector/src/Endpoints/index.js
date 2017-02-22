@@ -1,4 +1,4 @@
-import {urlWithParams} from './Helpers';
+import {urlWithParams, searchParams} from './Helpers';
 
 const fetchJson = (endpoint, options) => fetch(endpoint, options).then(res => res.json());
 
@@ -126,6 +126,61 @@ const searchNodes = options => fetch(urlWithParams('/neos/service/nodes', option
         }));
     });
 
+const parseGetSingleNodeResult = requestPromise => {
+    return requestPromise.then(result =>
+        result.text().then(bodyAsString => ({bodyAsString, result}))
+    ).then(({bodyAsString, result}) => {
+        if (result.status === 200) {
+            const d = document.createElement('div');
+            d.innerHTML = bodyAsString;
+
+            const nodeFrontendUri = d.querySelector('.node-frontend-uri').getAttribute('href');
+
+            return {
+                nodeFound: true,
+                nodeFrontendUri
+            };
+        } else if (result.status === 404) {
+            const nodeExistsInOtherDimensions = Boolean(result.headers.get('X-Neos-Node-Exists-In-Other-Dimensions'));
+            const numberOfNodesMissingOnRootline = parseInt(result.headers.get('X-Neos-Nodes-Missing-On-Rootline'), 10);
+            return {
+                nodeFound: false,
+                nodeExistsInOtherDimensions,
+                numberOfNodesMissingOnRootline
+            };
+        }
+    });
+};
+
+/**
+ * "params" is an object with:
+ * - dimensions
+ * - workspaceName
+ *
+ * !! for params, use selectors.UI.NodeLinking.contextForNodeLinking and start modifying it!
+ */
+const getSingleNode = (nodeIdentifier, params = {}) => parseGetSingleNodeResult(fetch(urlWithParams('/neos/service/nodes/' + nodeIdentifier, params), {
+    method: 'GET',
+    credentials: 'include'
+}));
+
+const adoptNodeToOtherDimension = csrfToken => ({identifier, targetDimensions, sourceDimensions, workspaceName, copyContent = false}) => {
+    const params = {
+        identifier,
+        dimensions: targetDimensions,
+        sourceDimensions,
+        workspaceName,
+        mode: (copyContent ? 'adoptFromAnotherDimensionAndCopyContent' : 'adoptFromAnotherDimension'),
+        __csrfToken: csrfToken
+    };
+
+    return parseGetSingleNodeResult(fetch('/neos/service/nodes', {
+        method: 'POST',
+        credentials: 'include',
+        body: searchParams(params)
+    }));
+};
+
 export default csrfToken => ({
     loadImageMetadata,
     change: change(csrfToken),
@@ -134,5 +189,7 @@ export default csrfToken => ({
     changeBaseWorkspace: changeBaseWorkspace(csrfToken),
     createImageVariant: createImageVariant(csrfToken),
     uploadAsset: uploadAsset(csrfToken),
-    searchNodes
+    searchNodes,
+    getSingleNode,
+    adoptNodeToOtherDimension: adoptNodeToOtherDimension(csrfToken)
 });

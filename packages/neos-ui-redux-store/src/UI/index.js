@@ -18,6 +18,7 @@ import * as InsertionModeModal from './InsertionModeModal/index';
 import * as NodeLinking from './NodeLinking/index';
 import * as SelectNodeTypeModal from './SelectNodeTypeModal/index';
 import * as NodeCreationDialog from './NodeCreationDialog/index';
+import * as NodeVariantCreationDialog from './NodeVariantCreationDialog/index';
 
 const all = {
     FlashMessages,
@@ -36,7 +37,8 @@ const all = {
     InsertionModeModal,
     NodeLinking,
     SelectNodeTypeModal,
-    NodeCreationDialog
+    NodeCreationDialog,
+    NodeVariantCreationDialog
 };
 
 //

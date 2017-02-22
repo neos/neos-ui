@@ -7,6 +7,7 @@ import DeleteNodeModal from './Containers/Modals/DeleteNode/index';
 import InsertModeModal from './Containers/Modals/InsertMode/index';
 import SelectNodeTypeModal from './Containers/Modals/SelectNodeType/index';
 import NodeCreationDialog from './Containers/Modals/NodeCreationDialog/index';
+import NodeVariantCreationDialog from './Containers/Modals/NodeVariantCreationDialog/index';
 
 import FullScreen from './Containers/FullScreen/index';
 
@@ -45,6 +46,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.add('Modals/InsertModeModal', InsertModeModal);
     containerRegistry.add('Modals/SelectNodeTypeModal', SelectNodeTypeModal);
     containerRegistry.add('Modals/NodeCreationDialog', NodeCreationDialog);
+    containerRegistry.add('Modals/NodeVariantCreationDialog', NodeVariantCreationDialog);
 
     containerRegistry.add('FullScreen', FullScreen);
 

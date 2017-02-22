@@ -20,6 +20,12 @@ const urlWithParamsInner = (searchParams, prepend, params = {}) => {
     });
 };
 
+export const searchParams = (params = {}) => {
+    const searchParams = new URLSearchParams();
+    urlWithParamsInner(searchParams, '', params);
+    return searchParams;
+};
+
 /**
  * Serializes an object to PHP-compatible URL serialization, with support for nested objects and arrays.
  *
@@ -29,12 +35,8 @@ const urlWithParamsInner = (searchParams, prepend, params = {}) => {
  */
 export const urlWithParams = (urlString, params = {}) => {
     const url = new URL(window.location.origin + urlString);
-    const searchParams = new URLSearchParams();
 
-    urlWithParamsInner(searchParams, '', params);
-
-    url.search = searchParams.toString();
+    url.search = searchParams(params).toString();
 
     return url.toString();
 };
-

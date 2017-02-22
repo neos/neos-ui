@@ -15,9 +15,10 @@ export const actionTypes = {
 };
 
 /**
- * Selects a preset for the given content dimension
+ * Selects a preset for the given content dimension; optionally
+ * with the previous preset name (as this is needed in the Saga; to be able to jump back to the old selection)
  */
-const selectPreset = createAction(SELECT_PRESET, (name, presetName) => ({name, presetName}));
+const selectPreset = createAction(SELECT_PRESET, (name, presetName, previousPresetName = null) => ({name, presetName, previousPresetName}));
 
 /**
  * Sets the currently active content dimensions

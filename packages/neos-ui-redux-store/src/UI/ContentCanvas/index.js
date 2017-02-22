@@ -27,7 +27,7 @@ export const actionTypes = {
     STOP_LOADING
 };
 
-const setContextPath = createAction(SET_CONTEXT_PATH, contextPath => ({contextPath}));
+const setContextPath = createAction(SET_CONTEXT_PATH, (contextPath, siteNode = null) => ({contextPath, siteNode}));
 const setPreviewUrl = createAction(SET_PREVIEW_URL, previewUrl => ({previewUrl}));
 const setSrc = createAction(SET_SRC, src => ({src}));
 const formattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formatting => ({formatting}));
@@ -61,7 +61,16 @@ export const reducer = handleActions({
             isLoading: true
         })
     ),
-    [SET_CONTEXT_PATH]: ({contextPath}) => $set('ui.contentCanvas.contextPath', contextPath),
+    [SET_CONTEXT_PATH]: ({contextPath, siteNode}) => state => {
+        state = $set('ui.contentCanvas.contextPath', contextPath, state);
+
+        if (siteNode) {
+            // !! HINT: set site node in case it is defined in SET_CONTEXT_PATH; otherwise the dimension switcher does not work.
+            state = $set('cr.nodes.siteNode', siteNode, state);
+        }
+
+        return state;
+    },
     [SET_PREVIEW_URL]: ({previewUrl}) => $set('ui.contentCanvas.previewUrl', previewUrl),
     [SET_SRC]: ({src}) => src ? $all(
         $set('ui.contentCanvas.src', src),

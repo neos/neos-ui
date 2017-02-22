@@ -6,7 +6,7 @@ import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
 @connect(state => ({
-    focusedNodeContextPath: selectors.UI.PageTree.getFocusedNodeContextPathSelector(state),
+    focusedNodeContextPath: selectors.UI.PageTree.getFocused(state),
     siteNodeContextPath: $get('cr.nodes.siteNode', state),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state)
 }), {

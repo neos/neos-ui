@@ -9,12 +9,6 @@ export const getUncollapsed = $get('ui.pageTree.uncollapsed');
 export const getLoading = $get('ui.pageTree.loading');
 export const getErrors = $get('ui.pageTree.errors');
 
-export const getFocusedNodeContextPathSelector = createSelector(
-    [
-        getFocused
-    ],
-    focusedNodeContextPath => focusedNodeContextPath
-);
 
 export const getUncollapsedContextPaths = createSelector(
     [

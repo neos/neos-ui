@@ -15,7 +15,7 @@
 	height: 100%;
 	position: relative;
 	background-color: #ff8700;
-	animation: cssload-width 10s cubic-bezier(0.45, 0, 1, 1) infinite;
+	animation: cssload-width 5s cubic-bezier(0.45, 0, 1, 1) infinite;
 }
 
 @keyframes cssload-width {

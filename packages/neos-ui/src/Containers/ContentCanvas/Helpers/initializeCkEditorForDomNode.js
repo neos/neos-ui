@@ -28,8 +28,8 @@ export default function initializeCkEditorForDomNode(domNode, dependencies) {
 
         domNode.classList.add(style.editable);
 
-        const nodeFormattingRules = calculateEnabledFormattingRulesForNodeType(node.nodeType);
-        const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get(node.nodeType));
+        const nodeFormattingRules = calculateEnabledFormattingRulesForNodeType($get('nodeType', node));
+        const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get($get('nodeType', node)));
         const placeholder = unescape(i18nRegistry.translate(placeholderLabel));
 
         const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];

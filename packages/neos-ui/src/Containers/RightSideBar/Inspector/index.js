@@ -111,12 +111,12 @@ export default class Inspector extends PureComponent {
             return this.renderFallback();
         }
 
-        const nodeType = nodeTypesRegistry.get(node.nodeType);
-        if (!nodeType.properties) {
-            console.error(`No properties configured in ${node.nodeType} nodetype`);
+        const nodeType = nodeTypesRegistry.get($get('nodeType', node));
+        if (!$get('properties', nodeType)) {
+            console.error(`No properties configured in ${$get('nodeType', node)} nodetype`);
         }
         let validationErrors = null;
-        const propertiesForValidation = Object.assign({}, node.properties);
+        const propertiesForValidation = Object.assign({}, $get('properties', node));
         if (transientValues) {
             // Override values with transient values
             Object.keys(transientValues.toJS()).forEach(key => {
@@ -125,7 +125,7 @@ export default class Inspector extends PureComponent {
         }
         validationErrors = validate(propertiesForValidation, nodeType.properties, validatorRegistry);
 
-        const viewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor(focusedNode.nodeType);
+        const viewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', focusedNode));
         const isDiscardDisabled = transientValues === undefined;
         const isApplyDisabled = transientValues === undefined || validationErrors !== null;
 

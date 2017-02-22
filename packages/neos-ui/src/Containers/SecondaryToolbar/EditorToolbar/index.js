@@ -1,7 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform} from 'plow-js';
+import {$get, $transform} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
@@ -55,7 +55,7 @@ export default class Toolbar extends PureComponent {
     render() {
         const {focusedNode, currentlyEditedPropertyName, formattingUnderCursor, globalRegistry} = this.props;
         const calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeTypeFactory(globalRegistry);
-        const enabledFormattingRuleIds = calculateEnabledFormattingRulesForNodeType(focusedNode.nodeType);
+        const enabledFormattingRuleIds = calculateEnabledFormattingRulesForNodeType($get('nodeType', focusedNode));
         const classNames = mergeClassNames({
             [style.toolBar]: true
         });

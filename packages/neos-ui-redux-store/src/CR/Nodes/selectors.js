@@ -160,24 +160,23 @@ export const focusedGrandParentSelector = createSelector(
 /**
  * This selector returns a function which you need to pass in the node-Type-Registry
  */
-export const getAllowedSiblingNodeTypesForFocusedNodeSelector = createSelector(
+export const makeAllowedSiblingNodeTypesForFocusedNodeSelector = nodeTypesRegistry => createSelector(
     [
         focusedSelector,
         focusedParentSelector,
         focusedGrandParentSelector
     ],
-    (focusedNode, focusedNodeParent, focusedNodeGrandParent) =>
-        defaultMemoize(nodeTypesRegistry => {
-            if (!focusedNode) {
-                return [];
-            }
+    (focusedNode, focusedNodeParent, focusedNodeGrandParent) => {
+        if (!focusedNode) {
+            return [];
+        }
 
-            return getAllowedNodeTypesTakingAutoCreatedIntoAccount(
-                focusedNodeParent,
-                focusedNodeGrandParent,
-                nodeTypesRegistry
-            );
-        })
+        return getAllowedNodeTypesTakingAutoCreatedIntoAccount(
+            focusedNodeParent,
+            focusedNodeGrandParent,
+            nodeTypesRegistry
+        );
+    }
 );
 
 export const clipboardNodeContextPathSelector = createSelector(

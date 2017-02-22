@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get, $or} from 'plow-js';
@@ -24,7 +23,7 @@ import style from './style.css';
 @neos(globalRegistry => ({
     editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
 }))
-export default class EditModePanel extends Component {
+export default class EditModePanel extends PureComponent {
     static propTypes = {
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
@@ -33,10 +32,6 @@ export default class EditModePanel extends Component {
         editPreviewModesRegistry: PropTypes.object.isRequired,
         setEditPreviewMode: PropTypes.func.isRequired
     };
-
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
 
     handleEditPreviewModeClick(mode) {
         return () => this.props.setEditPreviewMode(mode);

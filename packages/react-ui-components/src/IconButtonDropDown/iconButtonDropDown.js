@@ -1,8 +1,8 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import DropDownItem from './dropDownItem.js';
 
-export default class IconButtonDropDown extends Component {
+export default class IconButtonDropDown extends PureComponent {
     static propTypes = {
         /**
          * The key of the Icon which is always displayed.

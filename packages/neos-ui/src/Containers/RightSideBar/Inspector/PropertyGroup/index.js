@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {Maybe} from 'monet';
 import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
@@ -9,21 +9,19 @@ import InspectorEditorEnvelope from '../InspectorEditorEnvelope/index';
 import sidebarStyle from '../../style.css';
 import style from './style.css';
 
-export default class PropertyGroup extends Component {
+export default class PropertyGroup extends PureComponent {
     static propTypes = {
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
         properties: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
-        validationErrors: PropTypes.object,
 
         node: PropTypes.object.isRequired,
-        commit: PropTypes.func.isRequired,
-        transient: PropTypes.object
+        commit: PropTypes.func.isRequired
     };
 
     render() {
-        const {properties, label, icon, renderSecondaryInspector, transient, validationErrors, node, commit} = this.props;
+        const {properties, label, icon, renderSecondaryInspector, node, commit} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
@@ -36,7 +34,6 @@ export default class PropertyGroup extends Component {
                 <ToggablePanel.Contents>
                     {properties.map(property => {
                         const propertyId = property.id;
-                        const validationErrorsForProperty = (validationErrors && propertyId in validationErrors) ? validationErrors[propertyId] : null;
                         return (
                             <InspectorEditorEnvelope
                                 key={propertyId}
@@ -47,8 +44,6 @@ export default class PropertyGroup extends Component {
                                 renderSecondaryInspector={renderSecondaryInspector}
                                 node={node}
                                 commit={commit}
-                                transient={transient}
-                                validationErrors={validationErrorsForProperty}
                                 />);
                     })}
                 </ToggablePanel.Contents>

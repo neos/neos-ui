@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {defaultMemoize} from 'reselect';
 
 // We need to memoize configuration and global registry; otherwise a new object is created at every render; leading to
@@ -10,7 +10,7 @@ const buildConfigurationAndGlobalRegistry = defaultMemoize((configuration, globa
 // configuration
 //
 export default mapRegistriesToProps => WrappedComponent => {
-    return class NeosDecorator extends Component {
+    return class NeosDecorator extends PureComponent {
         static Original = WrappedComponent;
 
         static contextTypes = {

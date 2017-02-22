@@ -68,7 +68,7 @@ export default class StyleSelect extends PureComponent {
 
     render() {
         const {toolbarRegistry, currentlyEditedPropertyName, focusedNode} = this.props;
-        const enabledFormattingRuleIds = this.calculateEnabledFormattingRulesForNodeType(focusedNode.nodeType);
+        const enabledFormattingRuleIds = this.calculateEnabledFormattingRulesForNodeType($get('nodeType', focusedNode));
         const nestedStyles = toolbarRegistry.getAllAsList()
             .filter(startsWith(`${this.props.id}/`))
             .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds[currentlyEditedPropertyName] || []));

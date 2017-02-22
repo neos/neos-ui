@@ -1,15 +1,86 @@
 import {map, mapObjIndexed, values, sort, compose} from 'ramda';
-import {createSelector} from 'reselect';
+import {createSelector, defaultMemoize} from 'reselect';
 import {$get, $transform} from 'plow-js';
-
+import validate from '@neos-project/neos-ui-validators/src/index';
 import {selectors as nodes} from '../../CR/Nodes/index';
 
+/**
+ * Transient values and everything which depends on this
+ *
+ * - transientValues
+ * - propertiesForValidation (merges transientValues + selectors.CR.Nodes.focusedSelector)
+ * - makeValidationErrorsSelector (contains the full validation errors)
+ */
 export const transientValues = createSelector(
     [
         nodes.focusedNodePathSelector,
         $get('ui.inspector.valuesByNodePath')
     ],
     (focusedNodeContextPath, valuesByNodePath) => $get([focusedNodeContextPath], valuesByNodePath)
+);
+
+const propertiesForValidationSelector = createSelector(
+    [
+
+        transientValues,
+        nodes.focusedSelector
+    ],
+    (
+        transientValues,
+        focusedNode
+    ) => {
+        const propertiesForValidation = Object.assign({}, $get('properties', focusedNode));
+        if (transientValues) {
+            // Override values with transient values
+            Object.keys(transientValues.toJS()).forEach(key => {
+                propertiesForValidation[key] = $get([key, 'value'], transientValues);
+            });
+        }
+        return propertiesForValidation;
+    }
+);
+
+// here, we use "defaultMemoize()", as validation errors are quasi-singletons; so we want all instances of the selector
+// to be shared for all fields. If we did not do this, the system would recompute the validation for each form field (which
+// is way too often.)
+export const makeValidationErrorsSelector = defaultMemoize((nodeTypesRegistry, validatorRegistry) => createSelector(
+    [
+        propertiesForValidationSelector,
+        nodes.focusedSelector
+    ],
+    (
+        propertiesForValidation,
+        focusedNode
+    ) => {
+        const nodeType = nodeTypesRegistry.get($get('nodeType', focusedNode));
+        if (!$get('properties', nodeType)) {
+            console.error(`No properties configured in ${$get('nodeType', focusedNode)} nodetype`);
+        }
+        console.log('VALIDAT');
+        const validationErrors = validate(propertiesForValidation, nodeType.properties, validatorRegistry);
+        return validationErrors;
+    }
+));
+
+export const makeIsApplyDisabledSelector = (nodeTypesRegistry, validatorRegistry) => createSelector(
+    [
+        transientValues,
+        makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry)
+    ],
+    (
+        transientValues,
+        validationErrors
+    ) => {
+        return transientValues === undefined || validationErrors !== null;
+    }
+);
+
+export const isDiscardDisabledSelector = createSelector(
+    [
+        transientValues
+    ],
+    transientValues =>
+        transientValues === undefined
 );
 
 /*

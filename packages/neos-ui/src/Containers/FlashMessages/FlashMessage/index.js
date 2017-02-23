@@ -14,11 +14,18 @@ export default class FlashMessage extends PureComponent {
         onClose: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleClose = () => {
+        const {onClose, id} = this.props;
 
-        this.state = {isVisible: false};
-        this.handleCloseClick = this.commenceClose.bind(this);
+        setTimeout(() => onClose(id), 100);
+    }
+
+    componentDidMount() {
+        const {timeout} = this.props;
+
+        if (timeout) {
+            setTimeout(this.handleClose, timeout);
+        }
     }
 
     render() {
@@ -31,8 +38,7 @@ export default class FlashMessage extends PureComponent {
             [style.flashMessage]: true,
             [style['flashMessage--success']]: isSuccess,
             [style['flashMessage--error']]: isError,
-            [style['flashMessage--info']]: isInfo,
-            [style['flashMessage--visible']]: this.state.isVisible
+            [style['flashMessage--info']]: isInfo
         });
 
         const iconName = mergeClassNames({
@@ -50,25 +56,9 @@ export default class FlashMessage extends PureComponent {
                     className={style.flashMessage__btnClose}
                     style="transparent"
                     hoverStyle="darken"
-                    onClick={this.handleCloseClick}
+                    onClick={this.handleClose}
                     />
             </div>
         );
-    }
-
-    componentDidMount() {
-        const {timeout} = this.props;
-        setTimeout(() => this.setState({isVisible: true}), 0);
-
-        if (timeout) {
-            setTimeout(() => this.commenceClose(), timeout);
-        }
-    }
-
-    commenceClose() {
-        const {onClose, id} = this.props;
-        this.setState({isVisible: false});
-
-        setTimeout(() => onClose(id), 100);
     }
 }

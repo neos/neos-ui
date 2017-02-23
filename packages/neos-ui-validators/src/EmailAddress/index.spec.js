@@ -110,3 +110,6 @@ test('"email@domain..com" should not be a valid email adress', t => {
     t.not(emailAddressValidator('email@domain..com'), null);
 });
 
+test('empty value should be valid', t => {
+    t.is(emailAddressValidator(''), null);
+});

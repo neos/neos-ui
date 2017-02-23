@@ -21,3 +21,7 @@ test('"--" should not be alphanumeric', t => {
 test('"ab c" should not be alphanumeric', t => {
     t.not(alphanumericValidator('ab c'), null);
 });
+
+test('empty value should be valid', t => {
+    t.is(alphanumericValidator(''), null);
+});

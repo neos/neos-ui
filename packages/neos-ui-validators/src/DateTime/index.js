@@ -7,7 +7,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 const DateTime = value => {
     const dateRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})[+-](\d{2})\:(\d{2})$/; // eslint-disable-line
 
-    if (dateRegularExpression.test(value) === false || /Invalid|NaN/.test(new Date(value).toString())) {
+    if (value.length > 0 && (dateRegularExpression.test(value) === false || /Invalid|NaN/.test(new Date(value).toString()))) {
         return <I18n id="content.inspector.validators.dateTimeRangeValidator.invalidDate"/>;
     }
     return null;

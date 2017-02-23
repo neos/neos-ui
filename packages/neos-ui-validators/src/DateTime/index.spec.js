@@ -21,3 +21,7 @@ test('1234-1212T12:12:12+12:12 should not be a valid datetime', t => {
 test('1234-12-12D12:12:12+12:12 should not be a valid datetime', t => {
     t.not(dateTimeValidator('1234-12-12D12:12:12+12:12'), null);
 });
+
+test('empty value should be valid', t => {
+    t.is(dateTimeValidator(''), null);
+});

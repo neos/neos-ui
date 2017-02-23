@@ -37,3 +37,7 @@ test('Number.MIN_SAFE_INTEGER - 1 should not be a valid integer', t => {
 test('a should not be a valid integer', t => {
     t.not(integerValidator('a'), null);
 });
+
+test('empty value should be valid', t => {
+    t.is(integerValidator(''), null);
+});

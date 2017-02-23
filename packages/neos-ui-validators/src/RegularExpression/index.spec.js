@@ -49,3 +49,11 @@ test('"/\\d/" should not match "a"', t => {
 
     t.not(regularExpressionValidator('a', validatorOptions), null);
 });
+
+test('empty value should be valid', t => {
+    const validatorOptions = {
+        regularExpression: '/abc/'
+    };
+
+    t.is(regularExpressionValidator('', validatorOptions), null);
+});

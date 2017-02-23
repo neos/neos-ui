@@ -25,3 +25,7 @@ test('aaaaaaaa-Aaaa-aaaa-aaaa-aaaaaaaaaaaa should not be a valid uuid', t => {
 test('123 should not be a valid uuid', t => {
     t.not(uuidValidator('123'), null);
 });
+
+test('empty value should be valid', t => {
+    t.is(uuidValidator(''), null);
+});

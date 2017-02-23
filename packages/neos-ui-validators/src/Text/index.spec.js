@@ -9,3 +9,7 @@ test('text without xml tags should be valid', t => {
 test('text with xml tags should not be valid', t => {
     t.not(textValidator('someText<with>XMLTags'), null);
 });
+
+test('empty value should be valid', t => {
+    t.is(textValidator(''), null);
+});

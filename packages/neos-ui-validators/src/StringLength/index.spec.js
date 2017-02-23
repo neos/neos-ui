@@ -55,3 +55,12 @@ test('1234567890 should not be valid for min: 0 max: 5', t => {
 
     t.not(stringLengthValidator(1234567890, validatorOptions), null);
 });
+
+test('empty value should be valid for min: 0', t => {
+    const validatorOptions = {
+        minimum: 0,
+        maximum: 5
+    };
+
+    t.is(stringLengthValidator('', validatorOptions), null);
+});

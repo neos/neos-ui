@@ -55,3 +55,12 @@ test('-1 for min: 0 max: 10 should not be valid', t => {
 
     t.not(numberRangeValidator(-1, validatorOptions), null);
 });
+
+test('empty value should be valid', t => {
+    const validatorOptions = {
+        minimum: 0,
+        maximum: 10
+    };
+
+    t.is(numberRangeValidator('', validatorOptions), null);
+});

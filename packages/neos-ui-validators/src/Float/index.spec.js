@@ -33,3 +33,7 @@ test('"1" should not be a valid float', t => {
 test('1 should not be a valid float', t => {
     t.not(floatValidator(1), null);
 });
+
+test('empty value should be valid', t => {
+    t.is(floatValidator(''), null);
+});

@@ -1,0 +1,7 @@
+.body {
+    padding: var(--spacing);
+}
+
+.editor {
+    margin-bottom: var(--spacing);
+}

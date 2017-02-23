@@ -157,8 +157,8 @@ export default class Node extends PureComponent {
                     isActive={this.isActive()}
                     isFocused={this.isFocused()}
                     isLoading={this.isLoading()}
-                    isHidden={$get('_hidden', node)}
-                    isHiddenInIndex={$get('_hiddenInIndex', node)}
+                    isHidden={$get('properties._hidden', node)}
+                    isHiddenInIndex={$get('properties._hiddenInIndex', node)}
                     hasError={this.hasError()}
                     label={$get('label', node)}
                     icon={this.getIcon()}

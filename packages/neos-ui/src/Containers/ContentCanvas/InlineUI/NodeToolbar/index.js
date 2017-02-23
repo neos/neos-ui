@@ -18,7 +18,6 @@ export const position = (contextPath, fusionPath) => {
     const nodeElement = dom.findNode(contextPath, fusionPath);
 
     if (nodeElement && nodeElement.getBoundingClientRect) {
-        // TODO: workaround to access the frame from outside...
         const bodyBounds = dom.body().getBoundingClientRect();
         const domBounds = nodeElement.getBoundingClientRect();
 

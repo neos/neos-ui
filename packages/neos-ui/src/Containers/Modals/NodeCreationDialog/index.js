@@ -24,8 +24,8 @@ import style from './style.css';
 
     return {isOpen, label, configuration};
 }, {
-    onHandleClose: actions.UI.NodeCreationDialog.cancel,
-    onHandleBack: actions.UI.NodeCreationDialog.back,
+    cancel: actions.UI.NodeCreationDialog.cancel,
+    back: actions.UI.NodeCreationDialog.back,
     apply: actions.UI.NodeCreationDialog.apply
 })
 export default class NodeCreationDialog extends PureComponent {
@@ -34,9 +34,9 @@ export default class NodeCreationDialog extends PureComponent {
         label: PropTypes.string,
         configuration: PropTypes.object,
         validatorRegistry: PropTypes.object.isRequired,
-        apply: PropTypes.func.isRequired,
-        onHandleBack: PropTypes.func.isRequired,
-        onHandleClose: PropTypes.func.isRequired
+        cancel: PropTypes.func.isRequired,
+        back: PropTypes.func.isRequired,
+        apply: PropTypes.func.isRequired
     };
 
     state = {
@@ -57,6 +57,18 @@ export default class NodeCreationDialog extends PureComponent {
         });
     })
 
+    handleCancel = () => {
+        const {cancel} = this.props;
+
+        cancel();
+    }
+
+    handleBack = () => {
+        const {back} = this.props;
+
+        back();
+    }
+
     handleApply = () => {
         const {apply} = this.props;
         const {values} = this.state;
@@ -65,14 +77,12 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     renderBackAction() {
-        const {onHandleBack} = this.props;
-
         return (
             <Button
                 key="back"
                 style="lighter"
                 hoverStyle="brand"
-                onClick={onHandleBack}
+                onClick={this.handleBack}
                 >
                 <I18n id="Neos.Neos:Main:back" fallback="Back"/>
             </Button>
@@ -107,7 +117,7 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     render() {
-        const {isOpen, configuration, onHandleClose} = this.props;
+        const {isOpen, configuration} = this.props;
 
         if (!isOpen) {
             return null;
@@ -119,7 +129,7 @@ export default class NodeCreationDialog extends PureComponent {
             <Dialog
                 actions={[this.renderBackAction(), this.renderSaveAction()]}
                 title={this.renderTitle()}
-                onRequestClose={onHandleClose}
+                onRequestClose={this.handleCancel}
                 isOpen
                 isWide
                 >

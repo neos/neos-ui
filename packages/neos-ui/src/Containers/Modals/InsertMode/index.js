@@ -50,12 +50,19 @@ export default class InsertModeModal extends PureComponent {
         mode: ''
     };
 
-    constructor(...args) {
-        super(...args);
+    handleModeChange = mode => this.setState({mode});
 
-        this.handleModeChange = this.handleModeChange.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleApply = this.handleApply.bind(this);
+    handleCancel = () => {
+        const {cancel} = this.props;
+
+        cancel();
+    }
+
+    handleApply = () => {
+        const {apply} = this.props;
+        const {mode} = this.state;
+
+        apply(mode);
     }
 
     renderNodeLabel(contextPath) {
@@ -181,22 +188,5 @@ export default class InsertModeModal extends PureComponent {
                 </div>
             </Dialog>
         );
-    }
-
-    handleModeChange(mode) {
-        this.setState({mode});
-    }
-
-    handleCancel() {
-        const {cancel} = this.props;
-
-        cancel();
-    }
-
-    handleApply() {
-        const {apply} = this.props;
-        const {mode} = this.state;
-
-        apply(mode);
     }
 }

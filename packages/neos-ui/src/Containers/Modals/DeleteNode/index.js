@@ -33,11 +33,16 @@ export default class DeleteNodeModal extends PureComponent {
         abort: PropTypes.func.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
+    handleAbort = () => {
+        const {abort} = this.props;
 
-        this.handleAbort = this.abortRemoval.bind(this);
-        this.handleConfirm = this.confirmRemoval.bind(this);
+        abort();
+    }
+
+    handleConfirm = () => {
+        const {confirm} = this.props;
+
+        confirm();
     }
 
     renderTitle() {
@@ -107,17 +112,5 @@ export default class DeleteNodeModal extends PureComponent {
                 </div>
             </Dialog>
         );
-    }
-
-    abortRemoval() {
-        const {abort} = this.props;
-
-        abort();
-    }
-
-    confirmRemoval() {
-        const {confirm} = this.props;
-
-        confirm();
     }
 }

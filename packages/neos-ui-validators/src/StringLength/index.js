@@ -10,8 +10,11 @@ import logger from '@neos-project/utils-logger';
 const StringLength = (value, validatorOptions) => {
     const minimum = parseInt(validatorOptions.minimum, 10);
     const maximum = parseInt(validatorOptions.maximum, 10);
+
     if (maximum < minimum) {
         logger.error('The maximum is less than the minimum.');
+    } else {
+        logger.error('The minimum StringLength can not be less than zero');
     }
 
     const stringLength = value.toString().length;

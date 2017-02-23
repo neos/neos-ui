@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform} from 'plow-js';
 import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
@@ -12,7 +12,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
 }))
-export default class ReferenceEditor extends Component {
+export default class ReferenceEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,

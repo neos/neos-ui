@@ -36,7 +36,7 @@ const getContextPath = $get('contextPath');
 })
 export default class Node extends PureComponent {
     static propTypes = {
-        ChildRenderer: PropTypes.object,
+        ChildRenderer: PropTypes.func.isRequired,
         node: PropTypes.object,
         currentlyDraggedNode: PropTypes.object,
         hasChildren: PropTypes.bool,

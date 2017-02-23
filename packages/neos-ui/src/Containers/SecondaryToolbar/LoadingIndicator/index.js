@@ -8,7 +8,7 @@ import style from './style.css';
 }))
 export default class LoadingIndicator extends PureComponent {
     static propTypes = {
-        isLoading: PropTypes.string.isRequired
+        isLoading: PropTypes.bool.isRequired
     }
 
     render() {

@@ -38,6 +38,10 @@ module.exports = function(neosPackageJson) {
                 path.resolve(__dirname, '../../node_modules')
             ]
         },
-        resolve: {} // override config, use default!
+        resolve: { // override config!
+            alias: {
+                'react': '@neos-project/neos-ui-extensibility/src/shims/react/index'
+            }
+        }
     });
 };

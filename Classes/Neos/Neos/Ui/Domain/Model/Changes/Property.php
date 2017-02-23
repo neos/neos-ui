@@ -5,6 +5,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
+use Neos\Utility\ObjectAccess;
 
 /**
  * Changes a property on a node
@@ -134,17 +135,24 @@ class Property extends AbstractChange
     {
         if ($this->canApply()) {
             $node = $this->getSubject();
+            $propertyName = $this->getPropertyName();
             $value = $this->nodePropertyConversionService->convert(
-                $node->getNodeType(), $this->getPropertyName(), $this->getValue(), $node->getContext());
+                $node->getNodeType(),
+                $propertyName,
+                $this->getValue(),
+                $node->getContext()
+            );
 
-            if ($this->getPropertyName() === '_hidden') {
-                $node->setHidden($value);
+            if ($propertyName{0} === '_') {
+                ObjectAccess::setProperty($node, substr($propertyName, 1), $value);
             } else {
-                $node->setProperty($this->getPropertyName(), $value);
+                $node->setProperty($propertyName, $value);
             }
 
             $this->updateWorkspaceInfo();
-            if ($node->getNodeType()->getConfiguration('properties.' . $this->getPropertyName() . '.ui.reloadIfChanged')) {
+
+            $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
+            if ($node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
                 $this->reloadDocument();
             }
         }

@@ -24,7 +24,6 @@ export default class PageTree extends PureComponent {
     static propTypes = {
         siteNode: PropTypes.object,
         pageTreeState: PropTypes.object.isRequired,
-        nodeTypesRegistry: PropTypes.object.isRequired,
 
         onNodeToggle: PropTypes.func,
         onNodeFocus: PropTypes.func,

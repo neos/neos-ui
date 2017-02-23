@@ -31,14 +31,12 @@ import style from './style.css';
 export default class NodeCreationDialog extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
-        label: PropTypes.string.isRequired,
-        configuration: PropTypes.object.isRequired,
-        selectedNodeType: PropTypes.object.isRequired,
+        label: PropTypes.string,
+        configuration: PropTypes.object,
         validatorRegistry: PropTypes.object.isRequired,
         apply: PropTypes.func.isRequired,
         onHandleBack: PropTypes.func.isRequired,
-        onHandleClose: PropTypes.func.isRequired,
-        isDirty: PropTypes.bool.isRequired
+        onHandleClose: PropTypes.func.isRequired
     };
 
     state = {
@@ -109,13 +107,13 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     render() {
-        const {isOpen, configuration, isDirty, onHandleClose} = this.props;
+        const {isOpen, configuration, onHandleClose} = this.props;
 
         if (!isOpen) {
             return null;
         }
 
-        const {validationErrors} = this.state;
+        const {validationErrors, isDirty} = this.state;
 
         return (
             <Dialog

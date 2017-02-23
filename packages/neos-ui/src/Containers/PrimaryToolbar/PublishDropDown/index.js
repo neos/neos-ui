@@ -98,7 +98,7 @@ export default class PublishDropDown extends PureComponent {
                     onClick={this.handlePublishClick}
                     >
                     <I18n fallback={mainButtonTarget} id={mainButtonLabel}/> <I18n id="to"/> {baseWorkspaceTitle}
-                    {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={publishableNodesInDocumentCount}/>}
+                    {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={String(publishableNodesInDocumentCount)}/>}
                 </AbstractButton>
 
                 <DropDown className={style.dropDown}>

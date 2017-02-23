@@ -26,7 +26,5 @@ export default class InlineUI extends PureComponent {
                 <AddEmptyContentCollectionOverlays/>
             </div>
         );
-
-        // TODO: re-add EditorToolbar
     }
 }

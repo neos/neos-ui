@@ -5,7 +5,6 @@ import {
     CopySelectedNode,
     CutSelectedNode,
     DeleteSelectedNode,
-    EditSelectedNode,
     HideSelectedNode,
     PasteClipBoardNode,
     RefreshPageTree
@@ -31,7 +30,6 @@ export default class NodeTreeToolBar extends PureComponent {
             <div className={style.toolBar}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...childProps}/>
-                    <EditSelectedNode {...childProps}/>
                     <HideSelectedNode {...childProps}/>
                     <CopySelectedNode {...childProps}/>
                     <CutSelectedNode {...childProps}/>

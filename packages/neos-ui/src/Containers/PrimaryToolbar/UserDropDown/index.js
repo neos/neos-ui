@@ -17,6 +17,9 @@ export default class UserDropDown extends PureComponent {
     };
 
     render() {
+        //
+        // TODO: There are still hard-coded Uris in here
+        //
         return (
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>

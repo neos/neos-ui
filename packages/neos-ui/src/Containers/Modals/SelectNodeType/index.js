@@ -43,8 +43,8 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
         };
     };
 }, {
-    onHandleClose: actions.UI.SelectNodeTypeModal.cancel,
-    onHandleSelect: actions.UI.SelectNodeTypeModal.apply
+    cancel: actions.UI.SelectNodeTypeModal.cancel,
+    apply: actions.UI.SelectNodeTypeModal.apply
 })
 export default class SelectNodeType extends PureComponent {
     static propTypes = {
@@ -52,8 +52,8 @@ export default class SelectNodeType extends PureComponent {
         nodeTypesRegistry: PropTypes.object.isRequired,
         allowedSiblingNodeTypes: PropTypes.array,
         allowedChildNodeTypes: PropTypes.array,
-        onHandleClose: PropTypes.func.isRequired,
-        onHandleSelect: PropTypes.func.isRequired
+        cancel: PropTypes.func.isRequired,
+        apply: PropTypes.func.isRequired
     };
 
     state = {
@@ -65,11 +65,17 @@ export default class SelectNodeType extends PureComponent {
 
     handleModeChange = insertMode => this.setState({insertMode});
 
-    handleSelectNodeType = nodeType => {
-        const {onHandleSelect} = this.props;
+    handleCancel = () => {
+        const {cancel} = this.props;
+
+        cancel();
+    }
+
+    handleApply = nodeType => {
+        const {apply} = this.props;
         const {insertMode} = this.state;
 
-        onHandleSelect(insertMode, nodeType);
+        apply(insertMode, nodeType);
     };
 
     getAllowedNodeTypesByCurrentInsertMode() {
@@ -109,7 +115,7 @@ export default class SelectNodeType extends PureComponent {
                 key="cancel"
                 style="lighter"
                 hoverStyle="brand"
-                onClick={this.props.onHandleClose}
+                onClick={this.handleCancel}
                 >
                 <I18n id="Neos.Neos:Main:cancel" fallback="Cancel"/>
             </Button>
@@ -117,7 +123,7 @@ export default class SelectNodeType extends PureComponent {
     }
 
     render() {
-        const {isOpen, nodeTypesRegistry, onHandleClose} = this.props;
+        const {isOpen, nodeTypesRegistry} = this.props;
 
         if (!isOpen) {
             return null;
@@ -131,7 +137,7 @@ export default class SelectNodeType extends PureComponent {
             <Dialog
                 actions={[this.renderCancelAction()]}
                 title={this.renderInsertModeSelector()}
-                onRequestClose={onHandleClose}
+                onRequestClose={this.handleCancel}
                 isOpen
                 isWide
                 >
@@ -139,7 +145,7 @@ export default class SelectNodeType extends PureComponent {
                     <div key={key}>
                         <NodeTypeGroupPanel
                             group={group}
-                            onSelect={this.handleSelectNodeType}
+                            onSelect={this.handleApply}
                             />
                     </div>
                 ))}

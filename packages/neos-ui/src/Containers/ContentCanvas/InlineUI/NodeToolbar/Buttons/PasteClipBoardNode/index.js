@@ -10,11 +10,11 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect((state, {nodeTypesRegistry}) => {
-    const canBePastedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+    const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
 
     return (state, {contextPath}) => {
         const clipboardNodeContextPath = selectors.CR.Nodes.clipboardNodeContextPathSelector(state);
-        const canBePasted = canBePastedSelector(state, {
+        const canBePasted = canBeInsertedSelector(state, {
             subject: clipboardNodeContextPath,
             reference: contextPath
         });

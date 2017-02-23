@@ -14,8 +14,8 @@ import style from './style.css';
     siteNode: selectors.CR.Nodes.siteNodeSelector,
     pageTreeState: $get('ui.pageTree')
 }), {
-    onNodeToggle: actions.UI.PageTree.toggle,
-    onNodeFocus: actions.UI.PageTree.focus,
+    toggle: actions.UI.PageTree.toggle,
+    focus: actions.UI.PageTree.focus,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
     setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath,
     moveNode: actions.CR.Nodes.move
@@ -25,8 +25,8 @@ export default class PageTree extends PureComponent {
         siteNode: PropTypes.object,
         pageTreeState: PropTypes.object.isRequired,
 
-        onNodeToggle: PropTypes.func,
-        onNodeFocus: PropTypes.func,
+        toggle: PropTypes.func,
+        focus: PropTypes.func,
         setActiveContentCanvasSrc: PropTypes.func,
         setActiveContentCanvasContextPath: PropTypes.func,
         moveNode: PropTypes.func
@@ -36,13 +36,32 @@ export default class PageTree extends PureComponent {
         currentlyDraggedNode: null
     };
 
-    handleNodeDrag = node => {
+    handleToggle = contextPath => {
+        const {toggle} = this.props;
+
+        toggle(contextPath);
+    }
+
+    handleFocus = contextPath => {
+        const {focus} = this.props;
+
+        focus(contextPath);
+    }
+
+    handleClick = (src, contextPath) => {
+        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath} = this.props;
+
+        setActiveContentCanvasSrc(src);
+        setActiveContentCanvasContextPath(contextPath);
+    }
+
+    handleDrag = node => {
         this.setState({
             currentlyDraggedNode: node
         });
-    };
+    }
 
-    handleNodeDrop = targetNode => {
+    handleDrop = targetNode => {
         const {currentlyDraggedNode} = this.state;
         const {moveNode} = this.props;
 
@@ -51,16 +70,10 @@ export default class PageTree extends PureComponent {
         this.setState({
             currentlyDraggedNode: null
         });
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.handleNodeClick = this.handleNodeClick.bind(this);
     }
 
     render() {
-        const {siteNode, onNodeToggle, onNodeFocus} = this.props;
+        const {siteNode} = this.props;
         if (!siteNode) {
             return (<div>...</div>);
         }
@@ -70,21 +83,14 @@ export default class PageTree extends PureComponent {
                 <Node
                     ChildRenderer={Node}
                     node={siteNode}
-                    onNodeToggle={onNodeToggle}
-                    onNodeClick={this.handleNodeClick}
-                    onNodeFocus={onNodeFocus}
-                    onNodeDrag={this.handleNodeDrag}
-                    onNodeDrop={this.handleNodeDrop}
+                    onNodeToggle={this.handleToggle}
+                    onNodeClick={this.handleClick}
+                    onNodeFocus={this.handleFocus}
+                    onNodeDrag={this.handleDrag}
+                    onNodeDrop={this.handleDrop}
                     currentlyDraggedNode={this.state.currentlyDraggedNode}
                     />
             </Tree>
         );
-    }
-
-    handleNodeClick(src, contextPath) {
-        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath} = this.props;
-
-        setActiveContentCanvasSrc(src);
-        setActiveContentCanvasContextPath(contextPath);
     }
 }

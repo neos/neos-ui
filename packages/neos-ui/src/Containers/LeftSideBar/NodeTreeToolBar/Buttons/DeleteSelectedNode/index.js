@@ -22,10 +22,10 @@ export default class DeleteSelectedNode extends PureComponent {
         removeNode: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleRemoveSelectedNodeClick = () => {
+        const {focusedNodeContextPath, removeNode} = this.props;
 
-        this.handleRemoveSelectedNodeClick = this.removeSelectedNode.bind(this);
+        removeNode(focusedNodeContextPath);
     }
 
     render() {
@@ -47,11 +47,5 @@ export default class DeleteSelectedNode extends PureComponent {
                 hoverStyle="clean"
                 />
         );
-    }
-
-    removeSelectedNode() {
-        const {focusedNodeContextPath, removeNode} = this.props;
-
-        removeNode(focusedNodeContextPath);
     }
 }

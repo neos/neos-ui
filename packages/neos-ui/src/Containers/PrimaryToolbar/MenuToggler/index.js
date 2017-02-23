@@ -20,8 +20,14 @@ export default class MenuToggler extends PureComponent {
         toggleDrawer: PropTypes.func.isRequired
     };
 
+    handleToggle = () => {
+        const {toggleDrawer} = this.props;
+
+        toggleDrawer();
+    }
+
     render() {
-        const {className, isMenuHidden, toggleDrawer} = this.props;
+        const {className, isMenuHidden} = this.props;
         const isMenuVisible = !isMenuHidden;
         const classNames = mergeClassNames({
             [style['menuToggler--isActive']]: isMenuVisible,
@@ -37,7 +43,7 @@ export default class MenuToggler extends PureComponent {
                 style="clean"
                 hoverStyle="clean"
                 isFocused={isMenuVisible}
-                onClick={toggleDrawer}
+                onClick={this.handleToggle}
                 aria-label="Menu"
                 aria-controls="navigation"
                 aria-expanded={isMenuHidden ? 'false' : 'true'}

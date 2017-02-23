@@ -9,19 +9,19 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 @connect($transform({
     node: selectors.CR.Nodes.focusedSelector
 }), {
-    removeNode: actions.CR.Nodes.commenceRemoval
+    commenceNodeRemoval: actions.CR.Nodes.commenceRemoval
 })
 export default class DeleteSelectedNode extends PureComponent {
     static propTypes = {
         node: PropTypes.object,
         className: PropTypes.string,
-        removeNode: PropTypes.func.isRequired
+        commenceNodeRemoval: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleDeleteSelectedNodeClick = () => {
+        const {node, commenceNodeRemoval} = this.props;
 
-        this.handleDeleteSelectedNodeClick = this.deleteSelectedNode.bind(this);
+        commenceNodeRemoval($get('contextPath', node));
     }
 
     render() {
@@ -37,11 +37,5 @@ export default class DeleteSelectedNode extends PureComponent {
                 hoverStyle="clean"
                 />
         );
-    }
-
-    deleteSelectedNode() {
-        const {node, removeNode} = this.props;
-
-        removeNode($get('contextPath', node));
     }
 }

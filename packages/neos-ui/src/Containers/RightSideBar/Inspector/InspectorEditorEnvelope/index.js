@@ -36,12 +36,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
         commit: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
-        this.onHandleCommit = this.onHandleCommit.bind(this);
-    }
-
-    onHandleCommit(value, hooks = null) {
+    commit = (value, hooks = null) => {
         const {transientValueRaw, id, commit} = this.props;
 
         if (transientValueRaw === value && hooks === null) {
@@ -72,7 +67,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
                     identifier={id}
                     value={transientValue ? transientValue.value : sourceValue}
                     hooks={transientValue ? transientValue.hooks : null}
-                    commit={this.onHandleCommit}
+                    commit={this.commit}
                     />
             </div>
         );

@@ -18,13 +18,23 @@ export default class FullScreen extends PureComponent {
         toggleFullScreen: PropTypes.func.isRequired
     };
 
-    render() {
-        const {isFullScreen, toggleFullScreen} = this.props;
+    handleToggle = () => {
+        const {toggleFullScreen} = this.props;
 
-        return isFullScreen ?
+        toggleFullScreen();
+    }
+
+    render() {
+        const {isFullScreen} = this.props;
+
+        if (!isFullScreen) {
+            return null;
+        }
+
+        return (
             <div className={style.fullScreenClose}>
-                <IconButton icon="expand" onClick={toggleFullScreen}/>
-            </div> :
-            null;
+                <IconButton icon="expand" onClick={this.handleToggle}/>
+            </div>
+        );
     }
 }

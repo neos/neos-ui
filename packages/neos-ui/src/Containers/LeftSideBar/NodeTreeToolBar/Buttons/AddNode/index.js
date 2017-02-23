@@ -17,10 +17,10 @@ export default class AddNode extends PureComponent {
         focusedNode: PropTypes.string.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleOpenModalBtnClick = () => {
+        const {openAddNodeModal, focusedNode} = this.props;
 
-        this.handleOpenModalBtnClick = this.handleOpenModalBtnClick.bind(this);
+        openAddNodeModal(focusedNode);
     }
 
     render() {
@@ -37,14 +37,5 @@ export default class AddNode extends PureComponent {
                     />
             </span>
         );
-    }
-
-    handleOpenModalBtnClick() {
-        const {
-            openAddNodeModal,
-            focusedNode
-        } = this.props;
-
-        openAddNodeModal(focusedNode);
     }
 }

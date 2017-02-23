@@ -3,17 +3,11 @@
     font-size: 14px;
     position: relative;
     width: 512px;
-    max-height: 0;
     margin: 0 auto 4px;
     word-wrap: break-word;
     overflow: hidden;
     box-sizing: border-box;
     box-shadow: 0 0 14px rgba(#000, .15);
-    transition: .1s ease max-height;
-}
-
-.flashMessage--visible {
-    max-height: 100vh;
 }
 
 .flashMessage--success {

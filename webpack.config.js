@@ -13,10 +13,7 @@ module.exports = Object.assign({}, sharedWebPackConfig, {
             'immutable'
         ]
     },
-
     resolve: {
-        modulesDirectories: [
-            path.resolve(__dirname, './packages/neos-ui/node_modules')
-        ]
+        modules: [path.resolve(__dirname, './packages/neos-ui/node_modules')]
     }
 });

@@ -25,7 +25,7 @@ const webpackConfig = {
             {
                 test: /\.js$/,
                 exclude: /node_modules\/((?!@neos-project).)*$/,
-                loader: 'babel'
+                loader: 'babel-loader'
             },
             {
                 test: /\.json$/,
@@ -34,55 +34,60 @@ const webpackConfig = {
             },
             {
                 test: /\.(woff|woff2)$/,
-                loader: 'url?limit=100000'
+                loader: 'url-loader?limit=10000'
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
+                })
             }
         ]
     },
 
-    postcss: [
-        require('autoprefixer')({
-            browsers: ['last 2 versions']
-        }),
-        require('postcss-css-variables')({
-            variables: Object.assign({
-                //
-                // Spacings
-                //
-                '--goldenUnit': '40px',
-                '--spacing': '16px',
-                '--halfSpacing': '8px',
-                '--quarterSpacing': '4px',
-
-                //
-                // Sizes
-                //
-                '--sidebarWidth': '320px',
-
-                //
-                // Font sizes
-                //
-                '--baseFontSize': '14px'
-            }, brandVars)
-        }),
-        require('postcss-import')(),
-        require('postcss-nested')(),
-        require('postcss-hexrgba')()
-    ],
-
     plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true}),
-        new webpack.optimize.CommonsChunkPlugin({names: ['Vendor']})
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new ExtractTextPlugin({filename: './Styles/[name].css', allChunks: true}),
+        new webpack.optimize.CommonsChunkPlugin({names: ['Vendor']}),
+        new webpack.LoaderOptionsPlugin({
+            // test: /\.xxx$/, // may apply this only for some modules
+            options: {
+                postcss: [
+                    require('autoprefixer')({
+                        browsers: ['last 2 versions']
+                    }),
+                    require('postcss-css-variables')({
+                        variables: Object.assign({
+                            //
+                            // Spacings
+                            //
+                            '--goldenUnit': '40px',
+                            '--spacing': '16px',
+                            '--halfSpacing': '8px',
+                            '--quarterSpacing': '4px',
+
+                            //
+                            // Sizes
+                            //
+                            '--sidebarWidth': '320px',
+
+                            //
+                            // Font sizes
+                            //
+                            '--baseFontSize': '14px'
+                        }, brandVars)
+                    }),
+                    require('postcss-import')(),
+                    require('postcss-nested')(),
+                    require('postcss-hexrgba')()
+                ]
+            }
+        })
     ],
 
     resolve: {
-        modulesDirectories: [
-            path.resolve(rootPath, './node_modules')
-        ]
+        modules: [path.resolve(__dirname, './node_modules')]
     },
 
     output: {

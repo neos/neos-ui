@@ -16,4 +16,4 @@ test('[] should be empty', t => {
 
 test('[1,2,3] should not be empty', t => {
     t.is(notEmptyValidator([1, 2, 3]), null);
-})
+});

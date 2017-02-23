@@ -38,6 +38,15 @@ test('123 should not be valid for min: 5 max: 10', t => {
     t.not(stringLengthValidator(123, validatorOptions), null);
 });
 
+test('123 should not be valid for min: 5 max: 100000', t => {
+    const validatorOptions = {
+        minimum: 5,
+        maximum: 100000
+    };
+
+    t.not(stringLengthValidator(123, validatorOptions), null);
+});
+
 test('"abc" should not be valid for min: -1 max: 2', t => {
     const validatorOptions = {
         minimum: -1,
@@ -63,4 +72,13 @@ test('empty value should be valid for min: 0', t => {
     };
 
     t.is(stringLengthValidator('', validatorOptions), null);
+});
+
+test('should not be valid if maximum < minimum', t => {
+    const validatorOptions = {
+        minimum: 10,
+        maximum: 5
+    };
+
+    t.not(stringLengthValidator('123456', validatorOptions), null);
 });

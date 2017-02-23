@@ -15,7 +15,13 @@ const NumberRange = (value, validatorOptions) => {
         logger.error('The maximum is less than the minimum.');
     }
 
-    const number = parseInt(value, 10);
+    let number = null;
+
+    if (typeof value === 'number') {
+        number = value;
+    } else {
+        number = parseInt(value, 10);
+    }
 
     if (value.length > 0 && !Number.isSafeInteger(number)) {
         return <I18n id="content.inspector.validators.numberRangeValidator.validNumberExpected"/>;

@@ -13,8 +13,6 @@ const Count = (value, validatorOptions) => {
 
     if (maximum < minimum) {
         logger.error('The maximum is less than the minimum.');
-    } else if (minimum < 0) {
-        logger.error('The minimum count can not be less than zero');
     }
 
     if (typeof value !== 'object') {

@@ -38,13 +38,13 @@ test('[1, 2 3] should be valid for min:0 max: 10', t => {
     t.is(countValidator([1, 2, 3], validatorOptions), null);
 });
 
-test('maximum lower than minimum should result in an error', t => {
+test('maximum lower than minimum should return an error message', t => {
     const validatorOptions = {
         minimum: 10,
         maximum: 5
     };
 
-    t.not(countValidator([1, 2, 3], validatorOptions), null);
+    t.is(countValidator([1, 2, 3], validatorOptions), 'The maximum is less than the minimum.');
 });
 
 test('min -1 should be modified to 0', t => {
@@ -54,4 +54,13 @@ test('min -1 should be modified to 0', t => {
     };
 
     t.is(countValidator([1, 2, 3], validatorOptions), null);
+});
+
+test('[1, 2, 3, 4] should result in an error message for min: 1 max: 3', t => {
+    const validatorOptions = {
+        minimum: 1,
+        maximum: 3
+    };
+
+    t.not(countValidator([1, 2, 3, 4], validatorOptions), null);
 });

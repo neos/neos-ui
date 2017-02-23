@@ -25,11 +25,10 @@
   "nyc": {
     "exclude": [
       "src/**/*.spec.js",
-      "src/**/*.story.js",
-      "src/**/index.js"
+      "src/index.js"
     ],
     "include": [
-      "src/**"
+      "src/**/index.js"
     ]
   },
   "dependencies": {

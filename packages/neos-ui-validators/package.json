@@ -33,6 +33,7 @@
     ]
   },
   "dependencies": {
+    "@neos-project/neos-ui-i18n": "^4.4.8",
     "@neos-project/neos-ui-extensibility": "^4.4.8",
     "@neos-project/build-essentials": "^4.4.8"
   },

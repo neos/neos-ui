@@ -8,6 +8,7 @@
     background: var(--brandColorsContrastNeutral);
     transition: .2s ease padding;
     will-change: padding;
+    border-bottom: 1px solid var(--brandColorsContrastDark);
 
     &:before,
     &:after {

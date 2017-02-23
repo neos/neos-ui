@@ -32,7 +32,11 @@ const globalRegistry = new SynchronousMetaRegistry(`The global registry`);
 //
 // Create the host plugin api and load local manifests
 //
-createConsumerApi(manifests, {});
+createConsumerApi(manifests, {
+    '@ReactComponents': () => ({
+        React
+    })
+});
 console.log("CREATE CONSUMER API");
 require('./manifest');
 require('@neos-project/neos-ui-contentrepository');

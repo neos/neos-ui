@@ -15,25 +15,6 @@ Neos:
         document: 'Neos.Neos:Document'
         content: 'Neos.Neos:Content'
         contentCollection: 'Neos.Neos:ContentCollection'
-      asyncModuleMapping:
-        'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
-          'Neos.UI:Inspector.TextField': true
-          'Neos.UI:Inspector.Boolean': true
-          'Neos.UI:Inspector.DateTime': true
-          'Neos.UI:Inspector.Image': true
-          'Neos.UI:Inspector.TextArea': true
-          'Neos.UI:Inspector.SelectBox': true
-          'Neos.UI:Inspector.NodeType': true
-      legacyModuleMapping:
-        'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
-          Neos.Neos/Inspector/Editors/TextFieldEditor: 'Neos.UI:Inspector.TextField'
-          Neos.Neos/Inspector/Editors/BooleanEditor: 'Neos.UI:Inspector.Boolean'
-          Neos.Neos/Inspector/Editors/DateTimeEditor: 'Neos.UI:Inspector.DateTime'
-          Neos.Neos/Inspector/Editors/ImageEditor: 'Neos.UI:Inspector.Image'
-          Neos.Neos/Inspector/Editors/TextAreaEditor: 'Neos.UI:Inspector.TextArea'
-          Neos.Neos/Inspector/Editors/SelectBoxEditor: 'Neos.UI:Inspector.SelectBox'
-          Neos.Neos/Inspector/Editors/NodeTypeEditor: 'Neos.UI:Inspector.NodeType'
-          Content/Inspector/Editors/NodeTypeEditor: 'Neos.UI:Inspector.NodeType'
       state:
         defaultEelContext:
           String: Neos\Eel\Helper\StringHelper

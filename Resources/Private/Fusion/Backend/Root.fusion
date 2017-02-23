@@ -10,8 +10,6 @@ backend = Neos.Fusion:Template {
 
     configuration = Neos.Fusion:RawArray {
         test = 1
-        asyncModuleMapping = ${asyncModuleMapping}
-        legacyModuleMapping = ${legacyModuleMapping}
         allowedTargetWorkspaces = ${Neos.Ui.Workspace.getAllowedTargetWorkspaces()}
         @process.json = ${Json.stringify(value)}
     }

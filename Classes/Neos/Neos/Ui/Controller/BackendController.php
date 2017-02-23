@@ -92,18 +92,6 @@ class BackendController extends ActionController
      */
     protected $contentCache;
 
-    /**
-     * @Flow\InjectConfiguration(path="asyncModuleMapping")
-     * @var array
-     */
-    protected $asyncModuleMapping;
-
-    /**
-     * @Flow\InjectConfiguration(path="legacyModuleMapping")
-     * @var array
-     */
-    protected $legacyModuleMapping;
-
     public function initializeView(ViewInterface $view)
     {
         $view->setFusionPath('backend');
@@ -138,8 +126,6 @@ class BackendController extends ActionController
             $this->view->assign('user', $user);
             $this->view->assign('documentNode', $node);
             $this->view->assign('site', $siteNode);
-            $this->view->assign('asyncModuleMapping', $this->transformAsyncModuleMapping());
-            $this->view->assign('legacyModuleMapping', $this->transformLegacyModuleMapping());
 
             $this->view->assign('translations', $this->xliffService->getCachedJson(
                 new Locale($this->userService->getInterfaceLanguage())
@@ -174,82 +160,5 @@ class BackendController extends ActionController
         }
 
         return $this->contextFactory->create($contextProperties);
-    }
-
-    /**
-     * Creates a key-value list of JS modules and their sources files
-     * out of the given configuration
-     *
-     * @return array
-     */
-    protected function transformAsyncModuleMapping()
-    {
-        $finalMapping = [];
-
-        foreach ($this->asyncModuleMapping as $path => $modules) {
-            if (preg_match('#resource://([^/]+)/Public/(.*)#', $path, $matches) === 1) {
-                $packageKey = $matches[1];
-                $path = $matches[2];
-                $realPath = $this->resourceManager->getPublicPackageResourceUri($packageKey, $path);
-
-                foreach ($modules as $module => $activated) {
-                    if ($activated) {
-                        $finalMapping[$module] = $realPath;
-                    }
-                }
-
-                continue;
-            }
-
-            throw new \Exception(
-                sprintf(
-                    '"%s" is not a valid path to a public JavaScript. '.
-                    'Please provide a resource path ("resource://...")',
-                    $path
-                ),
-                1462703658
-            );
-        }
-
-        return $finalMapping;
-    }
-
-    /**
-     * Creates a key-value list of JS modules and their sources files
-     * out of the given configuration
-     *
-     * @return array
-     */
-    protected function transformLegacyModuleMapping()
-    {
-        $finalMapping = [];
-
-        foreach ($this->legacyModuleMapping as $path => $modules) {
-            if (preg_match('#resource://([^/]+)/Public/(.*)#', $path, $matches) === 1) {
-                $packageKey = $matches[1];
-                $path = $matches[2];
-                $realPath = $this->resourceManager->getPublicPackageResourceUri($packageKey, $path);
-
-                foreach ($modules as $module => $migratesTo) {
-                    $finalMapping[$module] = [
-                        'target' => $realPath,
-                        'migratesTo' => $migratesTo
-                    ];
-                }
-
-                continue;
-            }
-
-            throw new \Exception(
-                sprintf(
-                    '"%s" is not a valid path to a public JavaScript. '.
-                    'Please provide a resource path ("resource://...")',
-                    $path
-                ),
-                1463923183
-            );
-        }
-
-        return $finalMapping;
     }
 }

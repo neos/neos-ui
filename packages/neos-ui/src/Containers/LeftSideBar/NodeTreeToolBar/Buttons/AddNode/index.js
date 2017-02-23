@@ -8,7 +8,7 @@ import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 @connect($transform({
     focusedNode: $get('ui.pageTree.isFocused')
 }), {
-    openAddNodeModal: actions.UI.AddNodeModal.open
+    openAddNodeModal: actions.CR.Nodes.commenceCreation
 })
 export default class AddNode extends PureComponent {
     static propTypes = {

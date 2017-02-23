@@ -67,6 +67,110 @@ const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
     }
 };
 
+function * addNode({globalRegistry}) {
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    const STEP_SELECT_NODETYPE = 'STEP_SELECT_NODETYPE';
+    const STEP_NODE_CREATION_DIALOG = 'STEP_NODE_CREATION_DIALOG';
+    const STEP_FINISH = 'STEP_FINISH';
+
+    yield * takeLatest(actionTypes.CR.Nodes.COMMENCE_CREATION, function * (action) {
+        const {referenceNodeContextPath, referenceNodeFusionPath} = action.payload;
+
+        yield call(function * nodeCreationWorkflow(step = STEP_SELECT_NODETYPE, workflowData = {}) {
+            switch (step) {
+                //
+                // Start with showing a dialog for node type selection
+                //
+                case STEP_SELECT_NODETYPE: {
+                    yield put(actions.UI.SelectNodeTypeModal.open(referenceNodeContextPath));
+
+                    const waitForNextAction = yield race([
+                        take(actionTypes.UI.SelectNodeTypeModal.CANCEL),
+                        take(actionTypes.UI.SelectNodeTypeModal.APPLY)
+                    ]);
+                    const nextAction = Object.values(waitForNextAction)[0];
+
+                    //
+                    // User closed the modal, do nothing...
+                    //
+                    if (nextAction.type === actionTypes.UI.SelectNodeTypeModal.CANCEL) {
+                        return;
+                    }
+
+                    //
+                    // User selected a node type, move on
+                    //
+                    if (nextAction.type === actionTypes.UI.SelectNodeTypeModal.APPLY) {
+                        const {mode, nodeType} = nextAction.payload;
+                        return yield call(nodeCreationWorkflow, STEP_NODE_CREATION_DIALOG, {mode, nodeType});
+                    }
+                    break;
+                }
+
+                case STEP_NODE_CREATION_DIALOG: {
+                    const nodeType = nodeTypesRegistry.get(workflowData.nodeType);
+                    const label = $get('label', nodeType);
+                    const configuration = $get('ui.creationDialog', nodeType);
+
+                    if (configuration) {
+                        //
+                        // This node type has a creationDialog configuration,
+                        // therefore we show the creation dialog
+                        //
+                        yield put(actions.UI.NodeCreationDialog.open(label, configuration));
+
+                        const waitForNextAction = yield race([
+                            take(actionTypes.UI.NodeCreationDialog.CANCEL),
+                            take(actionTypes.UI.NodeCreationDialog.BACK),
+                            take(actionTypes.UI.NodeCreationDialog.APPLY)
+                        ]);
+                        const nextAction = Object.values(waitForNextAction)[0];
+
+                        //
+                        // User closed the creation dialog, do nothing...
+                        //
+                        if (nextAction.type === actionTypes.UI.NodeCreationDialog.CANCEL) {
+                            return;
+                        }
+
+                        //
+                        // User asked to go back
+                        //
+                        if (nextAction.type === actionTypes.UI.NodeCreationDialog.BACK) {
+                            return yield call(nodeCreationWorkflow, STEP_SELECT_NODETYPE);
+                        }
+
+                        if (nextAction.type === actionTypes.UI.NodeCreationDialog.APPLY) {
+                            return yield call(nodeCreationWorkflow, STEP_FINISH, {
+                                ...workflowData,
+                                data: nextAction.payload
+                            });
+                        }
+                    }
+
+                    return yield call(nodeCreationWorkflow, STEP_FINISH, workflowData);
+                }
+
+                case STEP_FINISH: {
+                    const {mode, nodeType, data} = workflowData;
+
+                    return yield put(actions.Changes.persistChange({
+                        type: calculateChangeTypeFromMode(mode, 'Create'),
+                        subject: referenceNodeContextPath,
+                        payload: {
+                            ...calculateDomAddressesFromMode(mode, referenceNodeContextPath, referenceNodeFusionPath),
+                            nodeType,
+                            data
+                        }
+                    }));
+                }
+
+                default: return;
+            }
+        });
+    });
+}
+
 function * removeNodeIfConfirmed() {
     yield * takeLatest(actionTypes.CR.Nodes.COMMENCE_REMOVAL, function * waitForConfirmation() {
         const state = yield select();
@@ -290,6 +394,7 @@ function * showNode() {
 }
 
 export const sagas = [
+    addNode,
     removeNodeIfConfirmed,
     copyAndPasteNode,
     cutAndPasteNode,

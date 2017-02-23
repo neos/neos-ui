@@ -22,8 +22,14 @@ export default class LeftSideBarToggler extends PureComponent {
         toggleSidebar: PropTypes.func.isRequired
     };
 
+    handleToggle = () => {
+        const {toggleSidebar} = this.props;
+
+        toggleSidebar();
+    }
+
     render() {
-        const {className, isSideBarHidden, toggleSidebar} = this.props;
+        const {className, isSideBarHidden} = this.props;
         const isActive = !isSideBarHidden;
         const classNames = mergeClassNames({
             [className]: true,
@@ -36,7 +42,7 @@ export default class LeftSideBarToggler extends PureComponent {
                 style="clean"
                 hoverStyle="clean"
                 isFocused={isActive}
-                onClick={toggleSidebar}
+                onClick={this.handleToggle}
                 >
                 <Icon className={style.icon} icon="location-arrow"/> <I18n id="navigate" fallback="Navigate"/>
             </Button>

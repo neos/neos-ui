@@ -23,6 +23,7 @@ use Neos\Flow\I18n\Locale;
 use Neos\Fusion\Core\Cache\ContentCache;
 use Neos\Fusion\View\FusionView;
 use Neos\Flow\Mvc\View\ViewInterface;
+use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
 
 class BackendController extends ActionController
 {
@@ -92,6 +93,12 @@ class BackendController extends ActionController
      */
     protected $contentCache;
 
+    /**
+     * @Flow\Inject
+     * @var StyleAndJavascriptInclusionService
+     */
+    protected $styleAndJavascriptInclusionService;
+
     public function initializeView(ViewInterface $view)
     {
         $view->setFusionPath('backend');
@@ -126,6 +133,8 @@ class BackendController extends ActionController
             $this->view->assign('user', $user);
             $this->view->assign('documentNode', $node);
             $this->view->assign('site', $siteNode);
+            $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
+            $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
 
             $this->view->assign('translations', $this->xliffService->getCachedJson(
                 new Locale($this->userService->getInterfaceLanguage())

@@ -6,7 +6,9 @@ include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/AppendAllToCollection
 
 backend = Neos.Fusion:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
-    compiledResourcePackage = ${Neos.Ui.StaticResources.compiledResourcePackage()}
+
+    headScripts = ${headScripts}
+    headStylesheets = ${headStylesheets}
 
     configuration = Neos.Fusion:RawArray {
         test = 1

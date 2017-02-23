@@ -10,6 +10,40 @@ Neos:
       autoInclude:
         Neos.Neos.Ui: true
     Ui:
+      # API: "start 100" and smaller numbers; "no numbers", ...
+      resources:
+
+        javascript:
+          'Neos.Neos.UI:Vendor':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Vendor.js"}'
+            position: 'start 1000'
+          'Neos.Neos.UI:Host':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Host.js"}'
+            position: 'start 900'
+
+        stylesheets:
+          'Neos.Neos.UI:Host':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/Host.css"}'
+            position: 'start 1000'
+          'Neos.Neos.UI:HostOnlyStyles':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/HostOnlyStyles.css"}'
+            position: 'start 900'
+          'Neos.Neos.UI:ReactCrop':
+            resource: resource://Neos.Neos.Ui/Public/Styles/ReactCrop.css
+            position: 'start 800'
+          'Neos.Neos.UI:Codemirror':
+            resource: resource://Neos.Neos.Ui/Public/Styles/codemirror.css
+            position: 'start 700'
+          'Neos.Neos.UI:CodemirrorTheme':
+            resource: resource://Neos.Neos.Ui/Public/Styles/codemirror-twilight.css
+            position: 'start 600'
+          'Neos.Neos.UI:WorkSans':
+            resource: https://fonts.googleapis.com/css?family=Work+Sans:300,200,200italic,300italic,400,400italic
+            position: 'start 500'
+
+      #################################
+      # INTERNAL CONFIG (no API)
+      #################################
       frontendDevelopmentMode: false
       nodeTypeRoles:
         document: 'Neos.Neos:Document'
@@ -28,6 +62,7 @@ Neos:
           Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
           Neos.Ui.NodeTypes: Neos\Neos\Ui\Fusion\Helper\NodeTypesHelper
           Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
+          Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
         frontendConfiguration:
           editPreviewModes: '${Configuration.setting(''Neos.Neos.userInterface.editPreviewModes'')}'
         documentNode:
@@ -121,7 +156,6 @@ Neos:
   Fusion:
     defaultContext:
       Neos.Ui.Activation: Neos\Neos\Ui\Fusion\Helper\ActivationHelper
-      Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
       Neos.Ui.Sites: Neos\Neos\Ui\Fusion\Helper\SitesHelper
       Neos.Ui.Modules: Neos\Neos\Ui\Fusion\Helper\ModulesHelper
       Neos.Ui.NodeTypes: Neos\Neos\Ui\Fusion\Helper\NodeTypesHelper

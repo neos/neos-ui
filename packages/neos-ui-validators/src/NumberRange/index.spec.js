@@ -65,13 +65,13 @@ test('empty value should be valid', t => {
     t.is(numberRangeValidator('', validatorOptions), null);
 });
 
-test('6 for min: 10 max: 5 should not be valid', t => {
+test('6 for min: 10 max: 5 should return an error message', t => {
     const validatorOptions = {
         minimum: 10,
         maximum: 5
     };
 
-    t.not(numberRangeValidator(6, validatorOptions), null);
+    t.is(numberRangeValidator(6, validatorOptions), 'The maximum is less than the minimum.');
 });
 
 test('Number.MIN_SAFE_INTEGER for min: Number.MIN_SAFE_INTEGER max: Number.MAX_SAFE_INTEGER should be valid', t => {

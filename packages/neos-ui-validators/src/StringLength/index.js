@@ -13,8 +13,10 @@ const StringLength = (value, validatorOptions) => {
 
     if (maximum < minimum) {
         logger.error('The maximum is less than the minimum.');
+        return 'The maximum is less than the minimum.';
     } else if (minimum < 0) {
         logger.error('The minimum StringLength can not be less than zero');
+        return 'The minimum StringLength can not be less than zero';
     }
 
     const stringLength = value.toString().length;

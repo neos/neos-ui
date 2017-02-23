@@ -12,10 +12,8 @@ const Alphanumeric = value => {
 
     if (value.length === 0 || value.match(regularExpression) !== null) {
         return null;
-    } else {
-        const pattern = regularExpression.toString();
-        return <I18n id='content.inspector.validators.alphanumericValidator'/>;
     }
+    return <I18n id="content.inspector.validators.alphanumericValidator"/>;
 };
 
 export default Alphanumeric;

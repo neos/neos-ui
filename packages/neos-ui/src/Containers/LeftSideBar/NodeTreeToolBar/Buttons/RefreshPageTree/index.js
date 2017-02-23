@@ -1,7 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import omit from 'lodash.omit';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import style from './style.css';
@@ -13,25 +12,23 @@ import style from './style.css';
 })
 export default class RefreshPageTree extends PureComponent {
     static propTypes = {
-        nodeTypesRegistry: PropTypes.object.isRequired,
         onClick: PropTypes.func.isRequired,
         isLoading: PropTypes.bool.isRequired,
         className: PropTypes.string
     };
 
-    constructor(props) {
-        super(props);
+    handleClick = () => {
+        const {onClick} = this.props;
 
-        this.handleClick = () => this.props.onClick(this.props.nodeTypesRegistry);
+        onClick();
     }
 
     render() {
-        const {isLoading, className, ...restProps} = this.props;
+        const {isLoading, className, ...rest} = this.props;
         const finalClassName = mergeClassNames({
             [style.spinning]: isLoading,
             [className]: className && className.length
         });
-        const rest = omit(restProps, ['nodeTypesRegistry']);
 
         return (
             <IconButton

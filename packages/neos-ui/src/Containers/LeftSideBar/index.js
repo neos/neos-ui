@@ -3,11 +3,13 @@ import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
 import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
+import {neos} from '@neos-project/neos-ui-decorators';
 
-import NodeTreeToolBar from './NodeTreeToolBar/index';
-import PageTree from './PageTree/index';
 import style from './style.css';
 
+@neos(globalRegistry => ({
+    containerRegistry: globalRegistry.get('containers')
+}))
 @connect($transform({
     isHidden: $or(
         $get('ui.leftSideBar.isHidden'),
@@ -16,15 +18,20 @@ import style from './style.css';
 }))
 export default class LeftSideBar extends PureComponent {
     static propTypes = {
+        containerRegistry: PropTypes.object.isRequired,
+
         isHidden: PropTypes.bool.isRequired
     };
 
     render() {
-        const {isHidden} = this.props;
+        const {isHidden, containerRegistry} = this.props;
         const classNames = mergeClassNames({
             [style.leftSideBar]: true,
             [style['leftSideBar--isHidden']]: isHidden
         });
+
+        const NodeTreeToolBar = containerRegistry.get('LeftSideBar/NodeTreeToolBar');
+        const PageTree = containerRegistry.get('LeftSideBar/PageTree');
 
         return (
             <SideBar

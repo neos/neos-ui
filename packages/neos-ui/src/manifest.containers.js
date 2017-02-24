@@ -11,6 +11,9 @@ import EditModePanel from './Containers/EditModePanel/index';
 import SecondaryToolbar from './Containers/SecondaryToolbar/index';
 import Drawer from './Containers/Drawer/index';
 import LeftSideBar from './Containers/LeftSideBar/index';
+import NodeTreeToolBar from './Containers/LeftSideBar/NodeTreeToolBar/index';
+import PageTree from './Containers/LeftSideBar/PageTree/index';
+
 import ContentCanvas from './Containers/ContentCanvas/index';
 import RightSideBar from './Containers/RightSideBar/index';
 
@@ -28,7 +31,11 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.add('EditModePanel', EditModePanel);
     containerRegistry.add('SecondaryToolbar', SecondaryToolbar);
     containerRegistry.add('Drawer', Drawer);
+
     containerRegistry.add('LeftSideBar', LeftSideBar);
+    containerRegistry.add('LeftSideBar/NodeTreeToolBar', NodeTreeToolBar);
+    containerRegistry.add('LeftSideBar/PageTree', PageTree);
+
     containerRegistry.add('ContentCanvas', ContentCanvas);
     containerRegistry.add('RightSideBar', RightSideBar);
 });

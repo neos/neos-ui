@@ -100,7 +100,7 @@ function * application() {
     // Load translations
     //
     const translations = yield system.getTranslations;
-    const i18nRegistry = globalRegistry.get('@neos-project/neos-ui-i18n');
+    const i18nRegistry = globalRegistry.get('i18n');
     i18nRegistry.setTranslations(translations);
 
     //

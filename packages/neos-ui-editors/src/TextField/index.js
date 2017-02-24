@@ -4,7 +4,7 @@ import unescape from 'lodash.unescape';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class TextField extends PureComponent {
 

@@ -9,7 +9,7 @@ import style from './style.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
-    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect((state, {nodeTypesRegistry}) => {
     const getAllowedSiblingNodeTypes = selectors.CR.Nodes.makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry);

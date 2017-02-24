@@ -4,7 +4,7 @@ import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class SelectBoxEditor extends PureComponent {
     static propTypes = {

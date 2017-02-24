@@ -10,7 +10,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }))
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class ReferenceEditor extends PureComponent {
     static propTypes = {

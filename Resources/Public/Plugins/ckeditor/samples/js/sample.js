@@ -1,5 +1,5 @@
-/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+﻿/**
+ * Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -51,4 +51,3 @@ var initSample = ( function() {
 	}
 } )();
 
-// %LEAVE_UNMINIFIED% %REMOVE_LINE%

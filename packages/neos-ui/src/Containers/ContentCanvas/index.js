@@ -191,6 +191,7 @@ export default class ContentCanvas extends PureComponent {
             setCurrentlyEditedPropertyName
         };
 
+        console.log("CKEDITOR EDITORCONFIG", editorConfig, iframeWindow.NeosCKEditorApi);
         iframeWindow.NeosCKEditorApi.initialize(editorConfig);
 
         //

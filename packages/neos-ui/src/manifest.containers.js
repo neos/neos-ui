@@ -1,6 +1,10 @@
 import manifest from '@neos-project/neos-ui-extensibility';
 
 import Modals from './Containers/Modals/index';
+import DeleteNodeModal from './Containers/Modals/DeleteNode/index';
+import InsertModeModal from './Containers/Modals/InsertMode/index';
+import SelectNodeTypeModal from './Containers/Modals/SelectNodeType/index';
+import NodeCreationDialog from './Containers/Modals/NodeCreationDialog/index';
 import FullScreen from './Containers/FullScreen/index';
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
 import EditModePanel from './Containers/EditModePanel/index';
@@ -14,6 +18,11 @@ manifest('main.containers', {}, globalRegistry => {
     const containerRegistry = globalRegistry.get('containers');
 
     containerRegistry.add('Modals', Modals);
+    containerRegistry.add('Modals/DeleteNodeModal', DeleteNodeModal);
+    containerRegistry.add('Modals/InsertModeModal', InsertModeModal);
+    containerRegistry.add('Modals/SelectNodeTypeModal', SelectNodeTypeModal);
+    containerRegistry.add('Modals/NodeCreationDialog', NodeCreationDialog);
+
     containerRegistry.add('FullScreen', FullScreen);
     containerRegistry.add('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.add('EditModePanel', EditModePanel);

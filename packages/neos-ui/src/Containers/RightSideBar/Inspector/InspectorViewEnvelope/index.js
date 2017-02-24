@@ -13,7 +13,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-@connect((state, {id, nodeTypesRegistry}) => {
+@connect((state, {id}) => {
     return state => ({
         transientValueRaw: $get([id], selectors.UI.Inspector.transientValues(state))
     });

@@ -17,7 +17,7 @@ import allSagas from './Sagas/index';
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
 import Root from './Containers/Root';
-
+import apiExposureMap from './apiExposureMap';
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
 const sagaMiddleWare = createSagaMiddleware();
@@ -32,29 +32,7 @@ const globalRegistry = new SynchronousMetaRegistry(`The global registry`);
 //
 // Create the host plugin api and load local manifests
 //
-createConsumerApi(manifests, {
-    '@ReactComponents': () => ({
-        React
-    }),
-
-    // TODO: immutable, plow-js, classnames, react-immutable-proptypes, react-redux, redux-actions, redux-saga, reselect
-
-    // TODO: make SemVer check at runtime for compatibility of API...
-
-    '@NeosProjectStuff': () => ({
-        // neos-ui-backend-connector
-        // neos-ui-decorators
-        // neos-ui-i18n
-        // neos-ui-redux-store
-        // react-proptypes (optional)
-        // react-ui-components
-
-        // TODO: how to write new reducers?
-        // TODO: how to write new sagas? -> Registry --> CUSTOM PACKAGE
-        // TODO: How to replace containers -> Registry --> CUSTOM PACKAGE
-    })
-});
-console.log("CREATE CONSUMER API");
+createConsumerApi(manifests, apiExposureMap);
 require('./manifest');
 require('@neos-project/neos-ui-contentrepository');
 require('@neos-project/neos-ui-editors');

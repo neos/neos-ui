@@ -40,7 +40,8 @@ module.exports = function(neosPackageJson) {
         },
         resolve: { // override config!
             alias: {
-                'react': '@neos-project/neos-ui-extensibility/src/shims/react/index'
+                'react': '@neos-project/neos-ui-extensibility/src/shims/vendor/react/index',
+                '@neos-project/react-ui-components': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/react-ui-components/index'
             }
         }
     });

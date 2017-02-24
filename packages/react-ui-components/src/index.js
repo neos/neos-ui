@@ -23,7 +23,7 @@ import Tooltip from './Tooltip/index';
 import Tree from './Tree/index';
 
 export {
-    Badge
+    Badge,
     Bar,
     Button,
     ButtonGroup,

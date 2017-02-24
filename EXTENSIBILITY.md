@@ -5,6 +5,16 @@
 ### External libraries
 
 - React (version X.Y)
+- immutable
+- plow-js
+- classnames
+- react-immutable-proptypes
+- react-redux
+- redux-actions
+- redux-saga
+- redux-saga/effects
+- reselect
+
 
 ### API libraries which can be included:
 

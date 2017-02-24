@@ -8,6 +8,7 @@ import * as reduxActions from 'redux-actions';
 import * as reduxSaga from 'redux-saga';
 import * as reduxSagaEffects from 'redux-saga/effects';
 import * as reselect from 'reselect';
+import * as reactCssThemr from 'react-css-themr';
 
 import ReactUiComponents from '@neos-project/react-ui-components';
 import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
@@ -24,7 +25,8 @@ export default {
         reduxActions,
         reduxSaga,
         reduxSagaEffects,
-        reselect
+        reselect,
+        reactCssThemr
     }),
 
     '@NeosProjectPackages': () => ({

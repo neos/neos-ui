@@ -19,6 +19,11 @@
     border: 0;
     background: var(--brandColorsContrastNeutral);
     min-width: 160px;
+}
+
+.dropDown__searchInputWrapper {
+    display: inline-block;
+    width: 100%;
 
     > div {
         display: inline-block;
@@ -31,10 +36,10 @@
     width: 100%;
     color: #fff;
     font-size: 14px;
-    &:focus {
-        background: transparent !important;
-        color: #fff !important;
-    }
+&:focus {
+     background: transparent !important;
+     color: #fff !important;
+ }
 }
 
 .dropDown__loadingIcon {
@@ -69,10 +74,10 @@
     background: var(--brandColorsContrastNeutral);
     border-left: 1px solid var(--brandColorsContrastDarker);
 
-    &:hover {
-        background: var(--brandColorsPrimaryBlue);
-        color: var(--brandColorsContrastBrightest);
-    }
+&:hover {
+     background: var(--brandColorsPrimaryBlue);
+     color: var(--brandColorsContrastBrightest);
+ }
 }
 .dropDown__contents {
     composes: reset from './../reset.css';
@@ -99,23 +104,23 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    &:hover {
-        background: var(--brandColorsPrimaryBlue);
-    }
+&:hover {
+     background: var(--brandColorsPrimaryBlue);
+ }
 
-    > a,
-    button {
-        display: block;
-        width: 100%;
-        border: 0;
-        padding: 0 var(--spacing);
-        background: 0;
-        color: #FFF;
-        cursor: pointer;
-        text-decoration: none;
-        line-height: 40px;
-        text-align: left;
-    }
+> a,
+  button {
+      display: block;
+      width: 100%;
+      border: 0;
+      padding: 0 var(--spacing);
+      background: 0;
+      color: #FFF;
+      cursor: pointer;
+      text-decoration: none;
+      line-height: 40px;
+      text-align: left;
+  }
 }
 .dropDown__itemIcon {
     composes: reset from './../reset.css';

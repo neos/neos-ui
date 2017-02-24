@@ -479,4 +479,13 @@ manifest('main', {}, globalRegistry => {
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));
     });
+
+    //
+    // Create container registry
+    //
+    globalRegistry.add('containers', new SynchronousRegistry(`
+        # Container Registry
+    `));
 });
+
+require('./manifest.containers');

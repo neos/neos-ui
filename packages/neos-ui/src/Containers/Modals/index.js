@@ -1,16 +1,30 @@
-import React from 'react';
-import DeleteNodeModal from './DeleteNode/index';
-import InsertModeModal from './InsertMode/index';
-import SelectNodeTypeModal from './SelectNodeType/index';
-import NodeCreationDialog from './NodeCreationDialog/index';
+import React, {PureComponent, PropTypes} from 'react';
+import {neos} from '@neos-project/neos-ui-decorators';
 
-const Modals = () => (
-    <div>
-        <DeleteNodeModal/>
-        <InsertModeModal/>
-        <SelectNodeTypeModal/>
-        <NodeCreationDialog/>
-    </div>
-);
+@neos(globalRegistry => ({
+    containerRegistry: globalRegistry.get('containers')
+}))
+export default class Modals extends PureComponent {
+    static propTypes = {
+        containerRegistry: PropTypes.object.isRequired
+    };
 
-export default Modals;
+    render() {
+        const {containerRegistry} = this.props;
+
+        const DeleteNodeModal = containerRegistry.get('Modals/DeleteNodeModal');
+        const InsertModeModal = containerRegistry.get('Modals/InsertModeModal');
+        const SelectNodeTypeModal = containerRegistry.get('Modals/SelectNodeTypeModal');
+        const NodeCreationDialog = containerRegistry.get('Modals/NodeCreationDialog');
+
+        return (
+            <div>
+                <DeleteNodeModal/>
+                <InsertModeModal/>
+                <SelectNodeTypeModal/>
+                <NodeCreationDialog/>
+            </div>
+
+        );
+    }
+}

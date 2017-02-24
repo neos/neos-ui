@@ -3,7 +3,6 @@ import {Provider} from 'react-redux';
 import style from './style.css';
 
 import Neos from './Neos/index';
-import App from './App';
 
 const Root = ({store, globalRegistry, configuration, menu}) => {
     const containerRegistry = globalRegistry.get('containers');

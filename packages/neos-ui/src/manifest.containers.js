@@ -16,8 +16,14 @@ import LeftSideBarToggler from './Containers/PrimaryToolbar/LeftSideBarToggler/i
 import EditModePanelToggler from './Containers/PrimaryToolbar/EditModePanelToggler/index';
 
 import EditModePanel from './Containers/EditModePanel/index';
+
 import SecondaryToolbar from './Containers/SecondaryToolbar/index';
+import DimensionSwitcher from './Containers/SecondaryToolbar/DimensionSwitcher/index';
+import EditorToolbar from './Containers/SecondaryToolbar/EditorToolbar/index';
+import LoadingIndicator from './Containers/SecondaryToolbar/LoadingIndicator/index';
+
 import Drawer from './Containers/Drawer/index';
+
 import LeftSideBar from './Containers/LeftSideBar/index';
 import NodeTreeToolBar from './Containers/LeftSideBar/NodeTreeToolBar/index';
 import PageTree from './Containers/LeftSideBar/PageTree/index';
@@ -46,7 +52,12 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.add('PrimaryToolbar/EditModePanelToggler', EditModePanelToggler);
 
     containerRegistry.add('EditModePanel', EditModePanel);
+
     containerRegistry.add('SecondaryToolbar', SecondaryToolbar);
+    containerRegistry.add('SecondaryToolbar/DimensionSwitcher', DimensionSwitcher);
+    containerRegistry.add('SecondaryToolbar/EditorToolbar', EditorToolbar);
+    containerRegistry.add('SecondaryToolbar/LoadingIndicator', LoadingIndicator);
+
     containerRegistry.add('Drawer', Drawer);
 
     containerRegistry.add('LeftSideBar', LeftSideBar);

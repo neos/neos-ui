@@ -2,7 +2,7 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
-
+import {neos} from '@neos-project/neos-ui-decorators';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
@@ -10,12 +10,11 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 const {isDocumentNodeSelectedSelector} = selectors.CR.Nodes;
 
-import DimensionSwitcher from './DimensionSwitcher/index';
-import EditorToolbar from './EditorToolbar/index';
-import LoadingIndicator from './LoadingIndicator/index';
-
 import style from './style.css';
 
+@neos(globalRegistry => ({
+    containerRegistry: globalRegistry.get('containers')
+}))
 @connect($transform({
     previewUrl: $get('ui.contentCanvas.previewUrl'),
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
@@ -28,6 +27,8 @@ import style from './style.css';
 })
 export default class SecondaryToolbar extends PureComponent {
     static propTypes = {
+        containerRegistry: PropTypes.object.isRequired,
+
         previewUrl: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
@@ -45,6 +46,7 @@ export default class SecondaryToolbar extends PureComponent {
 
     render() {
         const {
+            containerRegistry,
             previewUrl,
             isFringedLeft,
             isFringedRight,
@@ -62,6 +64,10 @@ export default class SecondaryToolbar extends PureComponent {
             [style.secondaryToolbar__buttonLink]: true,
             [style['secondaryToolbar__buttonLink--isDisabled']]: !previewUrl
         });
+
+        const DimensionSwitcher = containerRegistry.get('SecondaryToolbar/DimensionSwitcher');
+        const EditorToolbar = containerRegistry.get('SecondaryToolbar/EditorToolbar');
+        const LoadingIndicator = containerRegistry.get('SecondaryToolbar/LoadingIndicator');
 
         return (
             <div className={classNames}>

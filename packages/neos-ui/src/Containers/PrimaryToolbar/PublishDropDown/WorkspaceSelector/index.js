@@ -5,7 +5,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.css';
 
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class WorkspaceSelector extends PureComponent {
 

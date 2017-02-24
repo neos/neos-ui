@@ -9,8 +9,8 @@ export default function initializeCkEditorForDomNode(domNode, dependencies) {
     const {byContextPathDynamicAccess, globalRegistry, persistChange} = dependencies;
 
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const formattingRulesRegistry = globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules');
-    const i18nRegistry = globalRegistry.get('@neos-project/neos-ui-i18n');
+    const formattingRulesRegistry = globalRegistry.get('ckEditor').get('formattingRules');
+    const i18nRegistry = globalRegistry.get('i18n');
 
     const calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeTypeFactory(globalRegistry);
 

@@ -1,6 +1,6 @@
 const sharedWebPackConfig = require('@neos-project/build-essentials/src/webpack.config.js');
 const path = require('path');
-
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function(neosPackageJson) {
 
@@ -28,7 +28,9 @@ module.exports = function(neosPackageJson) {
         entry: {
             Plugin: './src/index.js'
         },
-        plugins: [], // REMOVE plugins; use default!
+        plugins: [
+            new ExtractTextPlugin('./[name].css', {allChunks: true})
+        ],
         output: {
             path: neosPackageJson.buildTargetDirectory,
             filename: 'Plugin.js'
@@ -50,6 +52,7 @@ module.exports = function(neosPackageJson) {
                 'redux-saga/effects': '@neos-project/neos-ui-extensibility/src/shims/vendor/redux-saga-effects/index',
                 'redux-saga': '@neos-project/neos-ui-extensibility/src/shims/vendor/redux-saga/index',
                 'reselect': '@neos-project/neos-ui-extensibility/src/shims/vendor/reselect/index',
+                'react-css-themr': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-css-themr/index',
 
                 '@neos-project/react-ui-components': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/react-ui-components/index',
                 '@neos-project/neos-ui-decorators': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/neos-ui-decorators/index',

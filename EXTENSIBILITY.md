@@ -19,6 +19,8 @@ without specifying them in package.json.
 - redux-saga 0.12.0
 - redux-saga/effects 0.12.0
 - reselect 2.4.0
+- react-css-themr 1.2.0
+
 
 ### Neos API libraries which can be included:
 

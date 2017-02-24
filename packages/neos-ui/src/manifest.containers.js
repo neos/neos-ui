@@ -1,5 +1,7 @@
 import manifest from '@neos-project/neos-ui-extensibility';
 
+import App from './Containers/App';
+
 import Modals from './Containers/Modals/index';
 import DeleteNodeModal from './Containers/Modals/DeleteNode/index';
 import InsertModeModal from './Containers/Modals/InsertMode/index';
@@ -35,6 +37,8 @@ import Inspector from './Containers/RightSideBar/Inspector/index';
 
 manifest('main.containers', {}, globalRegistry => {
     const containerRegistry = globalRegistry.get('containers');
+
+    containerRegistry.add('App', App);
 
     containerRegistry.add('Modals', Modals);
     containerRegistry.add('Modals/DeleteNodeModal', DeleteNodeModal);

@@ -76,6 +76,13 @@ export default class NodeCreationDialog extends PureComponent {
         apply(values);
     }
 
+    handleKeyPress = event => {
+        const {validationErrors} = this.state;
+        if (!validationErrors && event.key === 'Enter') {
+            this.handleApply();
+        }
+    }
+
     renderBackAction() {
         return (
             <Button
@@ -151,6 +158,7 @@ export default class NodeCreationDialog extends PureComponent {
                                     options={options}
                                     commit={this.handleDialogEditorValueChange(elementName)}
                                     validationErrors={validationErrorsForElement}
+                                    onKeyPress={this.handleKeyPress}
                                     />
                             </div>
                         );

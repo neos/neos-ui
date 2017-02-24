@@ -23,7 +23,9 @@ import NodeTreeToolBar from './Containers/LeftSideBar/NodeTreeToolBar/index';
 import PageTree from './Containers/LeftSideBar/PageTree/index';
 
 import ContentCanvas from './Containers/ContentCanvas/index';
+
 import RightSideBar from './Containers/RightSideBar/index';
+import Inspector from './Containers/RightSideBar/Inspector/index';
 
 manifest('main.containers', {}, globalRegistry => {
     const containerRegistry = globalRegistry.get('containers');
@@ -52,5 +54,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.add('LeftSideBar/PageTree', PageTree);
 
     containerRegistry.add('ContentCanvas', ContentCanvas);
+
     containerRegistry.add('RightSideBar', RightSideBar);
+    containerRegistry.add('RightSideBar/Inspector', Inspector);
 });

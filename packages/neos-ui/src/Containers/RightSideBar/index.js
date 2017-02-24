@@ -5,11 +5,13 @@ import {$transform, $get} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.css';
 
-import Inspector from './Inspector/index';
-
+@neos(globalRegistry => ({
+    containerRegistry: globalRegistry.get('containers')
+}))
 @connect($transform({
     isHidden: selectors.UI.RightSideBar.isHidden,
     isFullScreen: $get('ui.fullScreen.isFullScreen')
@@ -30,7 +32,7 @@ export default class RightSideBar extends PureComponent {
     }
 
     render() {
-        const {isHidden, isFullScreen} = this.props;
+        const {isHidden, isFullScreen, containerRegistry} = this.props;
         const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
             [style.rightSideBar]: true,
@@ -44,6 +46,8 @@ export default class RightSideBar extends PureComponent {
                 onClick={this.handleToggle}
                 />
         );
+
+        const Inspector = containerRegistry.get('RightSideBar/Inspector');
 
         return (
             <SideBar

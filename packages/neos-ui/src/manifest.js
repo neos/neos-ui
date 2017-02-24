@@ -27,6 +27,7 @@ manifest('main', {}, globalRegistry => {
         # Inspector specific registries
 
         - 'editors' for inspector editors
+        - 'views' for inspector views
         - 'saveHooks' for configured side-effects after apply
     `));
 
@@ -62,6 +63,12 @@ manifest('main', {}, globalRegistry => {
 
           Example usage: props.renderSecondaryInspector('IMAGE_CROPPING', () => <MySecondaryInspectorContent />)
 
+    `));
+
+    inspector.add('views', new SynchronousRegistry(`
+        Contains all inspector views.
+
+        Use it like the registry for editors.
     `));
 
     inspector.add('saveHooks', new SynchronousRegistry(`
@@ -108,7 +115,7 @@ manifest('main', {}, globalRegistry => {
                 formatting: 'h1' // References a key inside "formattingRules"
                 component: Button // the React component being used for rendering
                 callbackPropName: 'onClick' // Name of the callback prop of the Component which is
-                                               fired when the component's value changes. 
+                                               fired when the component's value changes.
 
                 // all other properties are directly passed on to the component.
             }
@@ -119,7 +126,7 @@ manifest('main', {}, globalRegistry => {
         - Furthermore, the "isActive" property is bound, which is a boolean flag defining whether the text style
           referenced by "formatting" is currently active or not.
         - Furthermore, the callback specified in "callbackPropName" is wired, which toggles the value.
-        
+
         For advanced use-cases; also the "formattingRule" is bound to the component; containing a formatting-rule identifier (string).
         If you need this, you'll most likely need to listen to selectors.UI.ContentCanvas.formattingUnderCursor and extract
         your relevant information manually.

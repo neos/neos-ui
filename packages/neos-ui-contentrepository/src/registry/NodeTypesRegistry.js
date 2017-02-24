@@ -118,6 +118,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         );
         const tabs = getNormalizedDeepStructureFromNodeType('ui.inspector.tabs')(nodeType);
         const groups = getNormalizedDeepStructureFromNodeType('ui.inspector.groups')(nodeType);
+        const views = getNormalizedDeepStructureFromNodeType('ui.inspector.views')(nodeType);
         const properties = getNormalizedDeepStructureFromNodeType('properties')(nodeType);
 
         const viewConfiguration = {
@@ -135,6 +136,15 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                                     editorOptions: $get('ui.inspector.editorOptions')
                                 }),
                                 properties.filter(p => $get('ui.inspector.group', p) === group.id)
+                            ),
+                            views: map(
+                                $transform({
+                                    id: $get('id'),
+                                    label: $get('label'),
+                                    view: $get('view'),
+                                    viewOptions: $get('viewOptions')
+                                }),
+                                views.filter(v => $get('group', v) === group.id)
                             )
                         }),
                         groups.filter(g => {

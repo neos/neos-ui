@@ -1,0 +1,54 @@
+{
+  "name": "@neos-project/neos-ui-views",
+  "version": "4.4.8",
+  "description": "Neos CMS UI Views for use in the inspector.",
+  "main": "src/manifest.js",
+  "private": true,
+  "scripts": {
+    "prepublish": "exit 0",
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
+    "test:watch": "npm run ava -- --watch",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src && stylelint 'src/**/*.css'",
+    "ava": "PWD=$(pwd) NODE_ENV=test ava",
+    "precoverage:generate": "rimraf ./coverage",
+    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
+    "coverage:publish": "codeclimate-test-reporter < lcov.info",
+    "postpublish": "greenkeeper-postpublish"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ],
+    "failFast": true,
+    "verbose": true,
+    "require": [
+      "babel-register",
+      "@neos-project/build-essentials/src/setup-browser-env"
+    ],
+    "babel": "inherit"
+  },
+  "nyc": {
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/**/*.story.js",
+      "src/**/index.js"
+    ],
+    "include": [
+      "src/**"
+    ]
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "^4.4.8",
+    "@neos-project/debug-reason-for-rendering": "^1.0.0"
+  },
+  "dependencies": {
+    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-i18n": "^4.4.8",
+    "@neos-project/neos-ui-inspector": "^4.4.8",
+    "@neos-project/neos-ui-redux-store": "^4.4.8",
+    "@neos-project/react-ui-components": "^4.4.8"
+  },
+  "license": "GNU GPLv3"
+}

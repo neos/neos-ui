@@ -14,12 +14,13 @@ export default class TextField extends PureComponent {
         validationErrors: PropTypes.array,
         highlight: PropTypes.bool,
         options: PropTypes.object,
+        onKeyPress: PropTypes.func,
 
         i18nRegistry: PropTypes.object.isRequired
     };
 
     render() {
-        const {value, commit, validationErrors, options, i18nRegistry, highlight} = this.props;
+        const {value, commit, validationErrors, options, i18nRegistry, highlight, onKeyPress} = this.props;
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
@@ -30,6 +31,7 @@ export default class TextField extends PureComponent {
             validationErrors={validationErrors}
             placeholder={placeholder}
             highlight={highlight}
+            onKeyPress={onKeyPress}
             />);
     }
 }

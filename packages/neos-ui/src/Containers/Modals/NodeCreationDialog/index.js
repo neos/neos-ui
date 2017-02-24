@@ -76,6 +76,13 @@ export default class NodeCreationDialog extends PureComponent {
         apply(values);
     }
 
+    handleKeyPress = event => {
+        const {validationErrors, isDirty} = this.state;
+        if (!validationErrors && isDirty && event.key === 'Enter') {
+            this.handleApply();
+        }
+    }
+
     renderBackAction() {
         return (
             <Button
@@ -101,11 +108,11 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     renderSaveAction() {
-        const {validationErrors} = this.state;
+        const {validationErrors, isDirty} = this.state;
 
         return (
             <Button
-                disabled={Boolean(validationErrors)}
+                disabled={Boolean(validationErrors || !isDirty)}
                 key="save"
                 style="lighter"
                 hoverStyle="brand"
@@ -151,6 +158,7 @@ export default class NodeCreationDialog extends PureComponent {
                                     options={options}
                                     commit={this.handleDialogEditorValueChange(elementName)}
                                     validationErrors={validationErrorsForElement}
+                                    onKeyPress={this.handleKeyPress}
                                     />
                             </div>
                         );

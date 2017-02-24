@@ -10,6 +10,8 @@ import * as reduxSagaEffects from 'redux-saga/effects';
 import * as reselect from 'reselect';
 
 import ReactUiComponents from '@neos-project/react-ui-components';
+import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
+import NeosUiI18n from '@neos-project/neos-ui-i18n';
 
 export default  {
     '@vendor': () => ({
@@ -31,8 +33,8 @@ export default  {
 
     '@NeosProjectPackages': () => ({
         // neos-ui-backend-connector
-        // neos-ui-decorators
-        // neos-ui-i18n
+        NeosUiDecorators,
+        NeosUiI18n,
         // neos-ui-redux-store
         // react-proptypes (optional)
         ReactUiComponents

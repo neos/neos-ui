@@ -26,6 +26,7 @@ export default class TabPanel extends PureComponent {
                             label={group.label}
                             icon={group.icon}
                             properties={group.properties}
+                            views={group.views}
                             renderSecondaryInspector={renderSecondaryInspector}
                             node={node}
                             commit={commit}

@@ -6,6 +6,7 @@ import Icon from '@neos-project/react-ui-components/lib/Icon/';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import InspectorEditorEnvelope from '../InspectorEditorEnvelope/index';
+import InspectorViewEnvelope from '../InspectorViewEnvelope/index';
 import sidebarStyle from '../../style.css';
 import style from './style.css';
 
@@ -14,6 +15,7 @@ export default class PropertyGroup extends PureComponent {
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
         properties: PropTypes.array,
+        views: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
 
         node: PropTypes.object.isRequired,
@@ -21,7 +23,7 @@ export default class PropertyGroup extends PureComponent {
     };
 
     render() {
-        const {properties, label, icon, renderSecondaryInspector, node, commit} = this.props;
+        const {properties, views, label, icon, renderSecondaryInspector, node, commit} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
@@ -41,6 +43,20 @@ export default class PropertyGroup extends PureComponent {
                                 label={property.label}
                                 editor={property.editor}
                                 options={property.editorOptions}
+                                renderSecondaryInspector={renderSecondaryInspector}
+                                node={node}
+                                commit={commit}
+                                />);
+                    })}
+                    {views.map(view => {
+                        const viewId = view.id;
+                        return (
+                            <InspectorViewEnvelope
+                                key={viewId}
+                                id={viewId}
+                                label={view.label}
+                                view={view.view}
+                                options={view.viewOptions}
                                 renderSecondaryInspector={renderSecondaryInspector}
                                 node={node}
                                 commit={commit}

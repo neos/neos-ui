@@ -58,6 +58,7 @@
     "@neos-project/neos-ui-inspector": "^4.4.8",
     "@neos-project/neos-ui-redux-store": "^4.4.8",
     "@neos-project/neos-ui-validators": "^4.4.8",
+    "@neos-project/neos-ui-views": "^4.4.8",
     "@neos-project/react-proptypes": "^4.4.8",
     "@neos-project/react-ui-components": "^4.4.8",
     "@neos-project/utils-helpers": "^4.4.8",

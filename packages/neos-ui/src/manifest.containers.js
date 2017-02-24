@@ -5,8 +5,16 @@ import DeleteNodeModal from './Containers/Modals/DeleteNode/index';
 import InsertModeModal from './Containers/Modals/InsertMode/index';
 import SelectNodeTypeModal from './Containers/Modals/SelectNodeType/index';
 import NodeCreationDialog from './Containers/Modals/NodeCreationDialog/index';
+
 import FullScreen from './Containers/FullScreen/index';
+
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
+import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
+import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
+import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
+import LeftSideBarToggler from './Containers/PrimaryToolbar/LeftSideBarToggler/index';
+import EditModePanelToggler from './Containers/PrimaryToolbar/EditModePanelToggler/index';
+
 import EditModePanel from './Containers/EditModePanel/index';
 import SecondaryToolbar from './Containers/SecondaryToolbar/index';
 import Drawer from './Containers/Drawer/index';
@@ -27,7 +35,14 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.add('Modals/NodeCreationDialog', NodeCreationDialog);
 
     containerRegistry.add('FullScreen', FullScreen);
+
     containerRegistry.add('PrimaryToolbar', PrimaryToolbar);
+    containerRegistry.add('PrimaryToolbar/UserDropDown', UserDropDown);
+    containerRegistry.add('PrimaryToolbar/PublishDropDown', PublishDropDown);
+    containerRegistry.add('PrimaryToolbar/MenuToggler', MenuToggler);
+    containerRegistry.add('PrimaryToolbar/LeftSideBarToggler', LeftSideBarToggler);
+    containerRegistry.add('PrimaryToolbar/EditModePanelToggler', EditModePanelToggler);
+
     containerRegistry.add('EditModePanel', EditModePanel);
     containerRegistry.add('SecondaryToolbar', SecondaryToolbar);
     containerRegistry.add('Drawer', Drawer);

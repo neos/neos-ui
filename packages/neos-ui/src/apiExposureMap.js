@@ -13,7 +13,7 @@ import ReactUiComponents from '@neos-project/react-ui-components';
 import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
 import NeosUiI18n from '@neos-project/neos-ui-i18n';
 
-export default  {
+export default {
     '@vendor': () => ({
         React,
         Immutable,
@@ -27,10 +27,6 @@ export default  {
         reselect
     }),
 
-    // TODO: immutable, plow-js, classnames, react-immutable-proptypes, react-redux, redux-actions, redux-saga, reselect
-
-    // TODO: make SemVer check at runtime for compatibility of API...
-
     '@NeosProjectPackages': () => ({
         // neos-ui-backend-connector
         NeosUiDecorators,
@@ -43,4 +39,4 @@ export default  {
         // TODO: how to write new sagas? -> Registry --> CUSTOM PACKAGE
         // TODO: How to replace containers -> Registry --> CUSTOM PACKAGE
     })
-}
+};

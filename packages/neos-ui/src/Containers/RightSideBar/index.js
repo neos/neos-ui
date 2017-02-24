@@ -20,6 +20,8 @@ import style from './style.css';
 })
 export default class RightSideBar extends PureComponent {
     static propTypes = {
+        containerRegistry: PropTypes.object.isRequired,
+
         isHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         toggleSidebar: PropTypes.func.isRequired

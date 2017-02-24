@@ -34,7 +34,7 @@ import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './H
 })
 @neos(globalRegistry => ({
     globalRegistry,
-    formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules')
+    formattingRulesRegistry: globalRegistry.get('ckEditor').get('formattingRules')
 }))
 export default class ContentCanvas extends PureComponent {
     static propTypes = {

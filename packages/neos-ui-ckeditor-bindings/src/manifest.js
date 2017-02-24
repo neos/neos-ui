@@ -5,7 +5,7 @@ import CkEditorFormattingRulesRegistry from './registry/CkEditorFormattingRulesR
 
 manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
     const ckEditorRegistry = globalRegistry.add(
-        '@neos-project/neos-ui-ckeditor-bindings',
+        'ckEditor',
         new SynchronousMetaRegistry(`
             # Registries for CK Editor
 

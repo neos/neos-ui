@@ -5,9 +5,9 @@ import {isManifestLoaded, getManifest} from '@neos-project/build-essentials/src/
 import './manifest';
 
 test(`should create manifest entry with no options.`, t => {
-    t.true(isManifestLoaded('@neos-project/neos-ui-ckeditor-bindings'));
+    t.true(isManifestLoaded('ckEditor'));
 
-    const manifestEntry = getManifest('@neos-project/neos-ui-ckeditor-bindings');
+    const manifestEntry = getManifest('ckEditor');
 
     t.deepEqual(manifestEntry.options, {});
     t.is(typeof (manifestEntry.bootstrap), 'function');

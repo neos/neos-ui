@@ -151,3 +151,4 @@ Neos:
       Neos.Ui.Modules: Neos\Neos\Ui\Fusion\Helper\ModulesHelper
       Neos.Ui.NodeTypes: Neos\Neos\Ui\Fusion\Helper\NodeTypesHelper
       Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
+      Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper

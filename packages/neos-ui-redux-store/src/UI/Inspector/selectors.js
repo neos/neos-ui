@@ -52,12 +52,18 @@ export const makeValidationErrorsSelector = defaultMemoize((nodeTypesRegistry, v
         propertiesForValidation,
         focusedNode
     ) => {
+        if (!focusedNode) {
+            return false;
+        }
+
         const nodeType = nodeTypesRegistry.get($get('nodeType', focusedNode));
         if (!$get('properties', nodeType)) {
             console.error(`No properties configured in ${$get('nodeType', focusedNode)} nodetype`);
             return null;
         }
+
         const validationErrors = validate(propertiesForValidation, $get('properties', nodeType), validatorRegistry);
+
         return validationErrors;
     }
 ));

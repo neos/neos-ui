@@ -6,58 +6,52 @@ import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
-@connect(state => ({
-    clipboardNodeContextPath: selectors.CR.Nodes.clipboardNodeContextPathSelector(state),
-    canBePasted: selectors.CR.Nodes.canBePastedSelector(state)
-}), {
-    pasteNode: actions.CR.Nodes.paste
-})
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
+@connect((state, {nodeTypesRegistry}) => {
+    const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+
+    return (state, {contextPath}) => {
+        const clipboardNodeContextPath = selectors.CR.Nodes.clipboardNodeContextPathSelector(state);
+        const canBePasted = canBeInsertedSelector(state, {
+            subject: clipboardNodeContextPath,
+            reference: contextPath
+        });
+
+        return {canBePasted};
+    };
+}, {
+    pasteNode: actions.CR.Nodes.paste
+})
 export default class PasteClipBoardNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
-        canBePasted: PropTypes.func,
+        canBePasted: PropTypes.bool,
 
         contextPath: PropTypes.string,
         fusionPath: PropTypes.string,
 
-        clipboardNodeContextPath: PropTypes.string,
-        nodeTypesRegistry: PropTypes.object.isRequired,
         pasteNode: PropTypes.func.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
+    handlePasteButtonClick = () => {
+        const {pasteNode, contextPath, fusionPath} = this.props;
 
-        this.handlePasteButtonClick = this.pasteClipBoardNode.bind(this);
+        pasteNode(contextPath, fusionPath);
     }
 
     render() {
-        const {
-            className,
-            canBePasted,
-            contextPath,
-            clipboardNodeContextPath,
-            nodeTypesRegistry
-        } = this.props;
-        const isDisabled = !canBePasted(clipboardNodeContextPath, contextPath, nodeTypesRegistry);
+        const {className, canBePasted} = this.props;
 
         return (
             <IconButton
-                isDisabled={isDisabled}
+                isDisabled={!canBePasted}
                 className={className}
                 icon="paste"
                 onClick={this.handlePasteButtonClick}
                 hoverStyle="clean"
                 />
         );
-    }
-
-    pasteClipBoardNode() {
-        const {pasteNode, contextPath, fusionPath} = this.props;
-
-        pasteNode(contextPath, fusionPath);
     }
 }

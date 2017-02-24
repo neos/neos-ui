@@ -54,7 +54,7 @@ class NodeTypeItem extends PureComponent {
     }
 
     handleNodeTypeClick() {
-        this.props.onSelect(this.props.nodeType);
+        this.props.onSelect(this.props.nodeType.name);
     }
 }
 

@@ -73,7 +73,7 @@ function * application() {
     // until we're good to go
     //
     ReactDOM.render(
-        <div style={{width: '100vw', height: '100vh', backgroundColor: 'black'}}>
+        <div style={{width: '100vw', height: '100vh', backgroundColor: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <h1>Loading...</h1>
         </div>,
         appContainer

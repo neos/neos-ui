@@ -46,28 +46,31 @@ export default class Inspector extends PureComponent {
         commit: PropTypes.func.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-        this.state = {
-            secondaryInspectorName: undefined,
-            secondaryInspectorComponent: undefined
-        };
+    state = {
+        secondaryInspectorComponent: null
+    };
 
-        this.handleCloseSecondaryInspector = this.handleCloseSecondaryInspector.bind(this);
-        this.renderSecondaryInspector = this.renderSecondaryInspector.bind(this);
-        this.handleDiscard = this.handleDiscard.bind(this);
-        this.handleApply = this.handleApply.bind(this);
-    }
-
-    renderFallback() {
-        return (<div>...</div>);
-    }
-
-    handleCloseSecondaryInspector() {
+    handleCloseSecondaryInspector = () => {
         this.setState({
             secondaryInspectorName: undefined,
             secondaryInspectorComponent: undefined
         });
+    }
+
+    handleDiscard = () => {
+        this.props.discard();
+        this.closeSecondaryInspectorIfNeeded();
+    }
+
+    handleApply = () => {
+        this.props.apply();
+        this.closeSecondaryInspectorIfNeeded();
+    }
+
+    closeSecondaryInspectorIfNeeded = () => {
+        if (this.state.secondaryInspectorComponent) {
+            this.renderSecondaryInspector(undefined);
+        }
     }
 
     /**
@@ -76,7 +79,7 @@ export default class Inspector extends PureComponent {
      * @param string secondaryInspectorName toggle the secondary inspector if the name is the same as before.
      * @param function secondaryInspectorComponentFactory this function, when called without arguments, must return the React component to be rendered.
      */
-    renderSecondaryInspector(secondaryInspectorName, secondaryInspectorComponentFactory) {
+    renderSecondaryInspector = (secondaryInspectorName, secondaryInspectorComponentFactory) => {
         if (this.state.secondaryInspectorName === secondaryInspectorName) {
             // we toggle the secondary inspector if it is rendered a second time; so that's why we hide it here.
             this.handleCloseSecondaryInspector();
@@ -93,20 +96,8 @@ export default class Inspector extends PureComponent {
         }
     }
 
-    handleDiscard() {
-        this.props.discard();
-        this.closeSecondaryInspectorIfNeeded();
-    }
-
-    handleApply() {
-        this.props.apply();
-        this.closeSecondaryInspectorIfNeeded();
-    }
-
-    closeSecondaryInspectorIfNeeded() {
-        if (this.state.secondaryInspectorComponent) {
-            this.renderSecondaryInspector(undefined);
-        }
+    renderFallback() {
+        return (<div>...</div>);
     }
 
     render() {

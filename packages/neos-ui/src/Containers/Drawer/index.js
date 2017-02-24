@@ -49,14 +49,7 @@ export default class Drawer extends PureComponent {
         mouseLeaveTimeout: null
     };
 
-    constructor() {
-        super();
-        this.handleMouseEnter = ::this.handleMouseEnter;
-        this.handleMouseLeave = ::this.handleMouseLeave;
-        this.handleMenuItemClick = ::this.handleMenuItemClick;
-    }
-
-    handleMouseLeave() {
+    handleMouseLeave = () => {
         const {hideDrawer} = this.props;
         const {mouseLeaveTimeout} = this.state;
 
@@ -74,7 +67,7 @@ export default class Drawer extends PureComponent {
         }
     }
 
-    handleMouseEnter() {
+    handleMouseEnter = () => {
         const {mouseLeaveTimeout} = this.state;
 
         if (mouseLeaveTimeout) {
@@ -85,7 +78,7 @@ export default class Drawer extends PureComponent {
         }
     }
 
-    handleMenuItemClick(target, uri) {
+    handleMenuItemClick = (target, uri) => {
         const {setContentCanvasSrc, hideDrawer} = this.props;
 
         switch (target) {

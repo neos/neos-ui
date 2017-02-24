@@ -5,8 +5,6 @@ import {$all, $get, $set, $toggle} from 'plow-js';
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
-import * as selectors from './selectors';
-
 const OPEN = '@neos/neos-ui/UI/AddNodeModal/OPEN';
 const CLOSE = '@neos/neos-ui/UI/AddNodeModal/CLOSE';
 const TOGGLE_GROUP = '@neos/neos-ui/UI/AddNodeModal/TOGGLE_GROUP';
@@ -87,8 +85,3 @@ export const reducer = handleActions({
     ),
     [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.collapsedGroups', groupId)
 });
-
-//
-// Export the selectors
-//
-export {selectors};

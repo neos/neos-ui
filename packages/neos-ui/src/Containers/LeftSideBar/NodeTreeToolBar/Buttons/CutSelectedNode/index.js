@@ -22,10 +22,10 @@ export default class CutSelectedNode extends PureComponent {
         cutNode: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleCutSelectedNodeClick = () => {
+        const {focusedNodeContextPath, cutNode} = this.props;
 
-        this.handleCutSelectedNodeClick = this.cutSelectedNode.bind(this);
+        cutNode(focusedNodeContextPath);
     }
 
     render() {
@@ -52,11 +52,5 @@ export default class CutSelectedNode extends PureComponent {
                 hoverStyle="clean"
                 />
         );
-    }
-
-    cutSelectedNode() {
-        const {focusedNodeContextPath, cutNode} = this.props;
-
-        cutNode(focusedNodeContextPath);
     }
 }

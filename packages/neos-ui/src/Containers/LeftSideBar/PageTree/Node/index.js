@@ -7,6 +7,8 @@ import Tree from '@neos-project/react-ui-components/lib/Tree/';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+const getContextPath = $get('contextPath');
+
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
@@ -14,23 +16,27 @@ import {neos} from '@neos-project/neos-ui-decorators';
     const allowedNodeTypes = nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document'));
     const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
     const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
+    const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
 
-    return (state, {node}) => ({
-        childNodes: childrenOfSelector(state, $get('contextPath', node)),
-        hasChildren: hasChildrenSelector(state, $get('contextPath', node)),
+    return (state, {node, currentlyDraggedNode}) => ({
+        childNodes: childrenOfSelector(state, getContextPath(node)),
+        hasChildren: hasChildrenSelector(state, getContextPath(node)),
         currentDocumentNodeContextPath: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state),
         focusedNodeContextPath: selectors.UI.PageTree.getFocused(state),
         uncollapsedNodeContextPaths: selectors.UI.PageTree.getUncollapsed(state),
         loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
         errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
-        canBePasted: selectors.CR.Nodes.canBePastedSelector(state)
+        canBeInserted: canBeInsertedSelector(state, {
+            subject: getContextPath(currentlyDraggedNode),
+            reference: getContextPath(node)
+        })
     });
 }, {
     onNodeFocus: actions.UI.PageTree.focus
 })
 export default class Node extends PureComponent {
     static propTypes = {
-        ChildRenderer: PropTypes.object,
+        ChildRenderer: PropTypes.func.isRequired,
         node: PropTypes.object,
         currentlyDraggedNode: PropTypes.object,
         hasChildren: PropTypes.bool,
@@ -40,7 +46,7 @@ export default class Node extends PureComponent {
         uncollapsedNodeContextPaths: PropTypes.object,
         loadingNodeContextPaths: PropTypes.object,
         errorNodeContextPaths: PropTypes.object,
-        canBePasted: PropTypes.func,
+        canBeInserted: PropTypes.bool,
 
         nodeTypesRegistry: PropTypes.object.isRequired,
 
@@ -61,9 +67,9 @@ export default class Node extends PureComponent {
     }
 
     accepts = () => {
-        const {node, currentlyDraggedNode, canBePasted, nodeTypesRegistry} = this.props;
+        const {node, currentlyDraggedNode, canBeInserted} = this.props;
 
-        return canBePasted($get('contextPath', currentlyDraggedNode), $get('contextPath', node), nodeTypesRegistry);
+        return canBeInserted && (getContextPath(currentlyDraggedNode) !== getContextPath(node));
     }
 
     handleNodeDrag = () => {
@@ -151,8 +157,8 @@ export default class Node extends PureComponent {
                     isActive={this.isActive()}
                     isFocused={this.isFocused()}
                     isLoading={this.isLoading()}
-                    isHidden={$get('_hidden', node)}
-                    isHiddenInIndex={$get('_hiddenInIndex', node)}
+                    isHidden={$get('properties._hidden', node)}
+                    isHiddenInIndex={$get('properties._hiddenInIndex', node)}
                     hasError={this.hasError()}
                     label={$get('label', node)}
                     icon={this.getIcon()}

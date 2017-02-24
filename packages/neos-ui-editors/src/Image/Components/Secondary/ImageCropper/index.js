@@ -9,6 +9,10 @@ import AspectRatioDropDown from './AspectRatioDropDown/index';
 import CropConfiguration from './model.js';
 import style from './style.css';
 
+/* eslint-disable no-unused-vars */
+import ReactCropStyles from './react_crop.vanilla-css';
+/* eslint-enable no-unused-vars */
+
 class AspectRatioItem extends PureComponent {
     static propTypes = {
         key: PropTypes.any,

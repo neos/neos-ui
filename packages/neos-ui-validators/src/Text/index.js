@@ -7,7 +7,7 @@ import I18n from '@neos-project/neos-ui-i18n';
  */
 const Text = value => {
     if (value !== value.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, '')) {
-        return <I18n id='content.inspector.validators.textValidator.validTextWithoutAnyXMLtagsIsExpected'/>;
+        return <I18n id="content.inspector.validators.textValidator.validTextWithoutAnyXMLtagsIsExpected"/>;
     }
     return null;
 };

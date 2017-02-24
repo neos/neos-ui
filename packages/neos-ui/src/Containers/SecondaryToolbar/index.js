@@ -37,14 +37,19 @@ export default class SecondaryToolbar extends PureComponent {
         isDocumentNodeSelected: PropTypes.bool.isRequired
     };
 
+    handleToggleFullScreen = () => {
+        const {toggleFullScreen} = this.props;
+
+        toggleFullScreen();
+    }
+
     render() {
         const {
             previewUrl,
             isFringedLeft,
             isFringedRight,
             isEditModePanelHidden,
-            isFullScreen,
-            toggleFullScreen
+            isFullScreen
         } = this.props;
         const classNames = mergeClassNames({
             [style.secondaryToolbar]: true,
@@ -71,7 +76,7 @@ export default class SecondaryToolbar extends PureComponent {
                         >
                         <Icon icon="external-link"/>
                     </a>
-                    <IconButton icon="expand" onClick={toggleFullScreen}/>
+                    <IconButton icon="expand" onClick={this.handleToggleFullScreen}/>
                 </div>
                 <LoadingIndicator/>
             </div>

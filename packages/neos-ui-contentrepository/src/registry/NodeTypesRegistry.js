@@ -46,6 +46,17 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         return Object.keys(result || []).filter(key => result[key]);
     }
 
+    getAllowedNodeTypesTakingAutoCreatedIntoAccount(isSubjectNodeAutocreated, referenceParentName, referenceParentNodeType, referenceGrandParentNodeType) {
+        if (isSubjectNodeAutocreated) {
+            if (!referenceGrandParentNodeType) {
+                return [];
+            }
+            return this.getAllowedGrandChildNodeTypes(referenceGrandParentNodeType, referenceParentName);
+        }
+
+        return this.getAllowedChildNodeTypes(referenceParentNodeType);
+    }
+
     getGroupedNodeTypeList(nodeTypeFilter) {
         const nodeTypes = nodeTypeFilter ? Object.values(this._registry).filter(nodeType => {
             return nodeTypeFilter.indexOf(nodeType.name) !== -1;

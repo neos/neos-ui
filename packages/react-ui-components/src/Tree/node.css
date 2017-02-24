@@ -8,7 +8,7 @@
 .header__chevron {
     composes: reset from './../reset.css';
     position: absolute;
-    top: 50%;
+    top: 35%;
     left: 0;
     transform: translateY(-50%);
     margin-top: 1px;

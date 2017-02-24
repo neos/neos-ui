@@ -23,8 +23,14 @@ export default class RightSideBar extends PureComponent {
         toggleSidebar: PropTypes.func.isRequired
     };
 
+    handleToggle = () => {
+        const {toggleSidebar} = this.props;
+
+        toggleSidebar();
+    }
+
     render() {
-        const {isHidden, isFullScreen, toggleSidebar} = this.props;
+        const {isHidden, isFullScreen} = this.props;
         const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
             [style.rightSideBar]: true,
@@ -35,7 +41,7 @@ export default class RightSideBar extends PureComponent {
             <IconButton
                 icon={toggleIcon}
                 className={style.rightSideBar__toggleBtn}
-                onClick={toggleSidebar}
+                onClick={this.handleToggle}
                 />
         );
 

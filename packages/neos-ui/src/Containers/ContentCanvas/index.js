@@ -18,7 +18,8 @@ import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './H
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     src: $get('ui.contentCanvas.src'),
-    byContextPathDynamicAccess: state => contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(state)
+    byContextPathDynamicAccess: state => contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(state),
+    currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {
     setGuestContext: actions.Guest.setContext,
     setContextPath: actions.UI.ContentCanvas.setContextPath,
@@ -34,7 +35,8 @@ import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './H
 })
 @neos(globalRegistry => ({
     globalRegistry,
-    formattingRulesRegistry: globalRegistry.get('ckEditor').get('formattingRules')
+    formattingRulesRegistry: globalRegistry.get('ckEditor').get('formattingRules'),
+    editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
 }))
 export default class ContentCanvas extends PureComponent {
     static propTypes = {
@@ -55,9 +57,11 @@ export default class ContentCanvas extends PureComponent {
         unFocusNode: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired,
         byContextPathDynamicAccess: PropTypes.func.isRequired,
+        currentEditPreviewMode: PropTypes.string.isRequired,
 
         globalRegistry: PropTypes.object.isRequired,
-        formattingRulesRegistry: PropTypes.object.isRequired
+        formattingRulesRegistry: PropTypes.object.isRequired,
+        editPreviewModesRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -67,7 +71,7 @@ export default class ContentCanvas extends PureComponent {
     }
 
     render() {
-        const {isFringeLeft, isFringeRight, isFullScreen, isEditModePanelHidden, src} = this.props;
+        const {isFringeLeft, isFringeRight, isFullScreen, isEditModePanelHidden, src, currentEditPreviewMode, editPreviewModesRegistry} = this.props;
         const classNames = mergeClassNames({
             [style.contentCanvas]: true,
             [style['contentCanvas--isFringeLeft']]: isFringeLeft,
@@ -76,11 +80,23 @@ export default class ContentCanvas extends PureComponent {
             [style['contentCanvas--isFullScreen']]: isFullScreen
         });
 
+        const currentEditPreviewModeConfiguration = editPreviewModesRegistry.get(currentEditPreviewMode);
+
+        const inlineStyles = {};
+        const width = $get('width', currentEditPreviewModeConfiguration);
+        const height = $get('height', currentEditPreviewModeConfiguration);
+        if (width) {
+            inlineStyles.width = width;
+        }
+        if (height) {
+            inlineStyles.height = height;
+        }
+
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
             <div className={classNames}>
                 <div id="centerArea"/>
-                <div className={style.contentCanvas__itemWrapper} data-__neos__hook="contentCanvas">
+                <div className={style.contentCanvas__itemWrapper} style={inlineStyles} data-__neos__hook="contentCanvas">
                     <Frame
                         src={src}
                         frameBorder="0"

@@ -4,8 +4,9 @@ import mergeClassNames from 'classnames';
 import {$transform, $get, $or} from 'plow-js';
 import {memoize} from 'ramda';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import I18n from '@neos-project/neos-ui-i18n';
 import Button from '@neos-project/react-ui-components/lib/Button/index';
 
 import style from './style.css';
@@ -13,7 +14,7 @@ import style from './style.css';
 @connect($transform({
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
-    editPreviewMode: $get('ui.editPreviewMode'),
+    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode,
     isHidden: $or(
         $get('ui.editModePanel.isHidden'),
         $get('ui.fullScreen.isFullScreen')
@@ -68,7 +69,7 @@ export default class EditModePanel extends PureComponent {
                             style={editMode.id === editPreviewMode ? 'brand' : null}
                             onClick={this.handleEditPreviewModeClick(editMode.id)}
                             >
-                            {editMode.id}
+                            <I18n id={editMode.title}/>
                         </Button>
                     ))}
                 </div>
@@ -80,7 +81,7 @@ export default class EditModePanel extends PureComponent {
                             style={previewMode.id === editPreviewMode ? 'brand' : null}
                             onClick={this.handleEditPreviewModeClick(previewMode.id)}
                             >
-                            {previewMode.id}
+                            <I18n id={previewMode.title}/>
                         </Button>
                     ))}
                 </div>

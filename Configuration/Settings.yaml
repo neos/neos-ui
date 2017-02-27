@@ -2,6 +2,12 @@
 Neos:
   Neos:
     userInterface:
+# New support for width and height of the preview mode:
+#      editPreviewModes:
+#        rawContent:
+#          width: 300px
+#          height: 600px
+
       translation:
         autoInclude:
           'Neos.Neos.Ui':
@@ -85,7 +91,7 @@ Neos:
               src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
               contextPath: '${q(documentNode).property(''_contextPath'')}'
             debugMode: false
-            editPreviewMode: '${Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
+            editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
             fullScreen:
               isFullScreen: false
             editModePanel:

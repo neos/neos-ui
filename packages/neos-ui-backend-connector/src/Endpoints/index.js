@@ -181,6 +181,19 @@ const adoptNodeToOtherDimension = csrfToken => ({identifier, targetDimensions, s
     }));
 };
 
+const setUserPreferences = csrfToken => (key, value) => {
+    const data = new URLSearchParams();
+    data.set('__csrfToken', csrfToken);
+    data.set('key', key);
+    data.set('value', value);
+
+    return fetch('neos/service/user-preferences', {
+        method: 'PUT',
+        credentials: 'include',
+        body: data
+    });
+};
+
 export default csrfToken => ({
     loadImageMetadata,
     change: change(csrfToken),
@@ -191,5 +204,6 @@ export default csrfToken => ({
     uploadAsset: uploadAsset(csrfToken),
     searchNodes,
     getSingleNode,
-    adoptNodeToOtherDimension: adoptNodeToOtherDimension(csrfToken)
+    adoptNodeToOtherDimension: adoptNodeToOtherDimension(csrfToken),
+    setUserPreferences: setUserPreferences(csrfToken)
 });

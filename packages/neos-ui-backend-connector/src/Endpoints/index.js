@@ -126,6 +126,19 @@ const searchNodes = options => fetch(urlWithParams('/neos/service/nodes', option
         }));
     });
 
+const setUserPreferences = csrfToken => (key, value) => {
+    const data = new URLSearchParams();
+    data.set('__csrfToken', csrfToken);
+    data.set('key', key);
+    data.set('value', value);
+
+    return fetch('neos/service/user-preferences', {
+        method: 'PUT',
+        credentials: 'include',
+        body: data
+    });
+};
+
 export default csrfToken => ({
     loadImageMetadata,
     change: change(csrfToken),
@@ -134,5 +147,6 @@ export default csrfToken => ({
     changeBaseWorkspace: changeBaseWorkspace(csrfToken),
     createImageVariant: createImageVariant(csrfToken),
     uploadAsset: uploadAsset(csrfToken),
-    searchNodes
+    searchNodes,
+    setUserPreferences: setUserPreferences(csrfToken)
 });

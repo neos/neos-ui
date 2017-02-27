@@ -20,8 +20,10 @@ export const findAll = selector => {
 
 export const body = () => iframeDocument().body;
 
-export const findNode = (contextPath, fusionPath) => find(
+export const findNode = (contextPath, fusionPath) => fusionPath ? find(
     `[data-__neos-node-contextpath="${contextPath}"][data-__neos-fusion-path="${fusionPath}"]`
+) : find(
+    `[data-__neos-node-contextpath="${contextPath}"]`
 );
 
 export const closestNode = el => {

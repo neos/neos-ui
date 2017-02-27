@@ -90,7 +90,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     }
 
     getSubTypesOf(nodeTypeName) {
-        return this._inheritanceMap.subTypes[nodeTypeName];
+        return [nodeTypeName, ...this._inheritanceMap.subTypes[nodeTypeName]];
     }
 
     getInspectorViewConfigurationFor(nodeTypeName) {

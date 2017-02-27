@@ -1,4 +1,4 @@
 .pageTree {
-    max-height: calc(100vh - 75px);
+    height: calc(50vh - 71px);
     overflow-y: auto;
 }

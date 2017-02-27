@@ -11,3 +11,11 @@ export const formattingUnderCursor = createSelector(
     formattingUnderCursor =>
         formattingUnderCursor.toJS()
 );
+
+export const documentNodeSelector = createSelector(
+    [
+        $get('ui.contentCanvas.contextPath'),
+        $get('cr.nodes.byContextPath')
+    ],
+    (documentNodeContextPath, nodesByContextPath) => $get(documentNodeContextPath, nodesByContextPath)
+);

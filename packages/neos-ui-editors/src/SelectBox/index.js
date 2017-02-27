@@ -23,7 +23,8 @@ export default class SelectBoxEditor extends PureComponent {
 
     render() {
         const {commit, value, options, i18nRegistry} = this.props;
-        const selectBoxOptions = Object.keys(this.props.options.values)
+        const selectBoxOptions = Object.keys(options.values)
+            .filter(k => options.values[k])
             // Filter out items without a label
             .map(k => options.values[k].label && Object.assign(
                 {value: k},

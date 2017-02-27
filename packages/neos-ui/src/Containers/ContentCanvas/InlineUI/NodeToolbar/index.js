@@ -45,7 +45,7 @@ export default class NodeToolbar extends PureComponent {
     render() {
         const {contextPath, fusionPath} = this.props;
 
-        if (!contextPath || !fusionPath) {
+        if (!contextPath) {
             return null;
         }
 

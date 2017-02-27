@@ -11,8 +11,8 @@
         line-height: 20px;
         min-height: 20px;
 
-        &:first-child {
-            border-top: 1px solid #222;
+        &:last-child {
+            border-bottom: none;
         }
 
         span {

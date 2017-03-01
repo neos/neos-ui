@@ -1,9 +1,23 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 
-export default class SimpleBox extends PureComponent {
+import DropDown from '../DropDown/index';
+import Icon from '../Icon/index';
+
+export default class SimpleBox extends Component {
     static propTypes = {
+        /**
+         * This prop represents the current label to show. Can be a placeholder or the label of the selected value.
+         */
         label: PropTypes.string,
+
+        /**
+         * This prop represents the current icon to show. Can be empty, or a placeholder or the icon of the selected value
+         */
         icon: PropTypes.string,
+
+        /**
+         * This prop represents if the results are currently loading or not.
+         */
         isLoadingOptions: PropTypes.bool,
 
         /**
@@ -44,12 +58,6 @@ export default class SimpleBox extends PureComponent {
             'dropDown__itemIcon': PropTypes.string,
             'dropDown__loadingIcon': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
-
-        //
-        // Static component dependencies which are injected from the outside (index.js)
-        //
-        DropDownComponent: PropTypes.any.isRequired,
-        IconComponent: PropTypes.any.isRequired,
     };
 
     constructor(...args) {
@@ -60,8 +68,6 @@ export default class SimpleBox extends PureComponent {
 
     render() {
         const {
-            DropDownComponent,
-            IconComponent,
             label,
             icon,
             theme,
@@ -70,10 +76,10 @@ export default class SimpleBox extends PureComponent {
 
         return (
             <div className={theme.wrapper}>
-                <DropDownComponent className={theme.dropDown}>
-                    <DropDownComponent.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
+                <DropDown className={theme.dropDown}>
+                    <DropDown.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
                         {icon ?
-                            <IconComponent className={theme.dropDown__btnIcon} icon={icon}/> :
+                            <Icon className={theme.dropDown__btnIcon} icon={icon}/> :
                             null
                         }
                         {isLoadingOptions ?
@@ -82,19 +88,19 @@ export default class SimpleBox extends PureComponent {
 
                         }
                         {isLoadingOptions ?
-                            <IconComponent className={theme.dropDown__loadingIcon} icon="spinner"/> :
+                            <Icon className={theme.dropDown__loadingIcon} icon="spinner"/> :
                             null
                         }
-                    </DropDownComponent.Header>
+                    </DropDown.Header>
                     {this.getOptions() ?
-                        <DropDownComponent.Contents className={theme.dropDown__contents}>
+                        <DropDown.Contents className={theme.dropDown__contents}>
                             {Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
                                 this.getOptions()
                                     .map(this.renderOption) : null}
-                        </DropDownComponent.Contents> :
+                        </DropDown.Contents> :
                         null
                     }
-                </DropDownComponent>
+                </DropDown>
             </div>
         );
     }

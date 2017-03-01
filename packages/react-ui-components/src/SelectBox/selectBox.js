@@ -30,6 +30,12 @@ export default class SelectBox extends PureComponent {
         ]),
 
         /**
+         * This prop represents if the options should be loaded on init or when the user starts typing
+         * something in the search field.
+         */
+        loadOptionsOnInput: PropTypes.bool,
+
+        /**
          * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
          */
         placeholder: PropTypes.string,
@@ -65,12 +71,13 @@ export default class SelectBox extends PureComponent {
 
         //
         // Static component dependencies which are injected from the outside (index.js)
+        // Used in sub-components
         //
         DropDownComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         InputComponent: PropTypes.any.isRequired,
-        SimpleSelectBoxComponent: PropTypes.any.isRequired,
         SearchableSelectBoxComponent: PropTypes.any.isRequired,
+        SimpleSelectBoxComponent: PropTypes.any.isRequired
     };
 
     state = {
@@ -78,15 +85,17 @@ export default class SelectBox extends PureComponent {
         icon: undefined,
         label: undefined,
         options: undefined,
-        isLoadingOptions: false
+        isLoadingOptions: false,
     };
 
     constructor(...args) {
         super(...args);
 
         this.handleOptionsLoad = this.handleOptionsLoad.bind(this);
+        this.setLoadedOptions = this.setLoadedOptions.bind(this);
         this.select = this.select.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
+        this.handleInput = this.handleInput.bind(this);
     }
 
     componentDidMount() {
@@ -96,7 +105,9 @@ export default class SelectBox extends PureComponent {
         });
 
         // if options are a function, we load them asynchronously
-        if (isFunction(this.props.options)) {
+        if (isFunction(this.props.options) && !this.props.loadOptionsOnInput) {
+            this.loadOptions();
+        } else if (this.props.loadOptionsOnInput && this.props.value) {
             this.loadOptions();
         } else {
             this.select(this.props.value, false);
@@ -104,17 +115,9 @@ export default class SelectBox extends PureComponent {
     }
 
     render() {
-        const SearchableSelectBoxComponent = this.props.SearchableSelectBoxComponent;
-        const SimpleSelectBoxComponent = this.props.SimpleSelectBoxComponent;
-
         const options = this.getOptions();
-        const isLoadingOptions = this.state.isLoadingOptions;
-        const icon = this.state.icon;
-        const label = this.state.label;
-        const value = this.state.value;
-
-        // TODO: rendering happens to often on init
-        console.log ('render with options', this.state);
+        const {theme, SearchableSelectBoxComponent, SimpleSelectBoxComponent, loadOptionsOnInput} = this.props;
+        const {isLoadingOptions, icon, label, value} = this.state;
 
         return (
             <div className={this.props.theme.wrapper}>
@@ -122,17 +125,21 @@ export default class SelectBox extends PureComponent {
                     <SearchableSelectBoxComponent
                         value={value}
                         options={options}
+                        loadOptionsOnInput={loadOptionsOnInput}
                         isLoadingOptions={isLoadingOptions}
                         label={label}
                         icon={icon}
+                        theme={theme}
                         onSelect={this.select}
                         onDelete={this.handleDeleteClick}
+                        onInput={this.handleInput}
                     /> :
                     <SimpleSelectBoxComponent
                         options={options}
                         isLoadingOptions={isLoadingOptions}
                         label={label}
                         icon={icon}
+                        theme={theme}
                         onSelect={this.select}
                     />
                 }
@@ -146,6 +153,15 @@ export default class SelectBox extends PureComponent {
     handleDeleteClick() {
         this.select('', false);
         this.props.onDelete();
+    }
+
+    /**
+     * Handles a search request
+     *
+     * @param searchValue
+     */
+    handleInput(searchValue) {
+        this.loadOptionsWithSearchTerm(searchValue);
     }
 
     /**
@@ -176,11 +192,41 @@ export default class SelectBox extends PureComponent {
     }
 
     /**
-     * loads async options if options is a function
+     * Loads async options if options is a function.
      *
      * @return {boolean} loadedOptions  TRUE, if options was called (async), otherwise FALSE
      */
     loadOptions() {
+        const options = this.props.options;
+        const selectedValue = this.props.value;
+
+        this.setState({
+            isLoadingOptions: true
+        });
+
+        return isFunction(options) && options({
+            value: selectedValue,
+            callback: this.handleOptionsLoad
+        });
+    }
+
+    /**
+     * Handler for the async options loading callback
+     * @param {object} options
+     */
+    handleOptionsLoad(options) {
+        this.setLoadedOptions(options);
+
+        // After options loaded, re-try to select the current element!
+        this.select(this.props.value, false);
+    }
+
+    /**
+     * Handler for loading async options with a given searchValue
+     *
+     * @returns {*}
+     */
+    loadOptionsWithSearchTerm(searchValue) {
         const options = this.props.options;
 
         this.setState({
@@ -188,27 +234,27 @@ export default class SelectBox extends PureComponent {
         });
 
         return isFunction(options) && options({
-            value: this.state.searchValue,
-            callback: this.handleOptionsLoad
+            searchTerm: searchValue,
+            callback: this.setLoadedOptions
         });
     }
 
     /**
-     * Handler for the async options loading callback
-     * @param {object} data
+     * Sets a given set of options to the internal state.
+     * Also disables the loading state.
+     *
+     * @param options
      */
-    handleOptionsLoad(data) {
+    setLoadedOptions(options) {
         this.setState({
-            options: data,
+            options: options,
             isLoadingOptions: false
         });
-
-        // After options loaded, re-try to select the current element!
-        this.select(this.props.value, false);
     }
 
     /**
      * select callback for option selection
+     *
      * @param {string} incomingValue
      * @param {boolean} shouldTriggerOnSelect
      */

@@ -12,13 +12,14 @@ import injectProps from './../_lib/injectProps.js';
 import DropDown from './../DropDown/index';
 import Icon from './../Icon/index';
 import TextInput from './../TextInput/index';
-import SearchableSelectBox from 'SearchableSelectBox/index';
-import SimpleSelectBox from 'SimpleSelectBox/index';
+import SearchableSelectBox from './searchableSelectBox';
+import SimpleSelectBox from './simpleSelectBox';
+// TODO: multi select with drag/drop
 
 export default injectProps({
     DropDownComponent: DropDown,
     IconComponent: Icon,
     InputComponent: TextInput,
     SearchableSelectBoxComponent: SearchableSelectBox,
-    SimpleSelectBoxComponent: SimpleSelectBox
+    SimpleSelectBoxComponent: SimpleSelectBox,
 })(ThemedSelectBox);

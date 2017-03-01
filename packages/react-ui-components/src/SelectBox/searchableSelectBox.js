@@ -1,10 +1,29 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 
-export default class SearchableSelectBox extends PureComponent {
+import DropDown from '../DropDown/index';
+import Icon from '../Icon/index';
+import TextInput from '../TextInput/index';
+
+export default class SearchableSelectBox extends Component {
     static propTypes = {
+        /**
+         * This prop represents the current selected value.
+         */
         value: PropTypes.string,
+
+        /**
+         * This prop represents the current label to show. Can be a placeholder or the label of the selected value.
+         */
         label: PropTypes.string,
+
+        /**
+         * This prop represents the current icon to show. Can be empty, or a placeholder or the icon of the selected value
+         */
         icon: PropTypes.string,
+
+        /**
+         * This prop represents if the results are currently loading or not.
+         */
         isLoadingOptions: PropTypes.bool,
 
         /**
@@ -29,6 +48,12 @@ export default class SearchableSelectBox extends PureComponent {
         ]),
 
         /**
+         * This prop represents if the options should be loaded on init or when the user starts typing
+         * something in the search field.
+         */
+        loadOptionsOnInput: PropTypes.bool,
+
+        /**
          * This prop gets called when an option was selected. It returns the new value.
          */
         onSelect: PropTypes.func.isRequired,
@@ -39,10 +64,13 @@ export default class SearchableSelectBox extends PureComponent {
          */
         onDelete: PropTypes.func.isRequired,
 
+        onInput: PropTypes.func.isRequired,
+
         /**
          * An optional css theme to be injected.
          */
-        theme: PropTypes.shape({/* eslint-disable quote-props */
+        theme: PropTypes.shape({
+            /* eslint-disable quote-props */
             'dropDown': PropTypes.string,
             'dropDown__btn': PropTypes.string,
             'dropDown__btnIcon': PropTypes.string,
@@ -54,13 +82,6 @@ export default class SearchableSelectBox extends PureComponent {
             'dropDown__searchInputWrapper': PropTypes.string,
             'dropDown__btnDelete': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
-
-        //
-        // Static component dependencies which are injected from the outside (index.js)
-        //
-        DropDownComponent: PropTypes.any.isRequired,
-        IconComponent: PropTypes.any.isRequired,
-        InputComponent: PropTypes.any.isRequired
     };
 
     state = {
@@ -76,9 +97,7 @@ export default class SearchableSelectBox extends PureComponent {
             e.preventDefault();
             e.stopPropagation();
             // TODO set focus on input field
-            this.setState({
-                searchValue: ''
-            });
+            this.handleOnInputChange('');
             this.props.onDelete();
         };
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
@@ -86,9 +105,6 @@ export default class SearchableSelectBox extends PureComponent {
 
     render() {
         const {
-            DropDownComponent,
-            IconComponent,
-            InputComponent,
             label,
             icon,
             theme,
@@ -100,12 +116,11 @@ export default class SearchableSelectBox extends PureComponent {
             return (
                 <div>
                     {icon ?
-                        <IconComponent className={theme.dropDown__btnIcon} icon={icon}/> :
+                        <Icon className={theme.dropDown__btnIcon} icon={icon}/> :
                         null
                     }
                     {label}
-                    <a href="" onClick={handleDeleteClick} className={theme.dropDown__btnDelete}><IconComponent
-                        icon="close"/></a>
+                    <a href="" onClick={handleDeleteClick} className={theme.dropDown__btnDelete}><Icon icon="close"/></a>
                 </div>
             )
         };
@@ -113,8 +128,8 @@ export default class SearchableSelectBox extends PureComponent {
         const renderSearchHeader = (searchValue, label, onChange, theme) => {
             return (
                 <div className={theme.dropDown__searchInputWrapper}>
-                    <IconComponent icon="search"/>
-                    <InputComponent
+                    <Icon icon="search"/>
+                    <TextInput
                         value={searchValue}
                         placeholder={label}
                         onChange={onChange}
@@ -125,29 +140,27 @@ export default class SearchableSelectBox extends PureComponent {
         };
 
         return (
-            <DropDownComponent className={theme.dropDown}>
-                <DropDownComponent.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
-                    {isLoadingOptions ?
-                        <div>
-                            <span>Loading ...</span>
-                            <IconComponent className={theme.dropDown__loadingIcon} icon="spinner"/>
-                        </div>
-                        :
-                        this.isOptionSelected() ?
-                            renderOptionHeader(icon, label, this.handleDeleteClick, theme) :
-                            renderSearchHeader(searchValue, label, this.handleOnInputChange, theme)
+            <DropDown className={theme.dropDown}>
+                <DropDown.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
+                    {this.isOptionSelected() ?
+                        renderOptionHeader(icon, label, this.handleDeleteClick, theme) :
+                        renderSearchHeader(searchValue, label, this.handleOnInputChange, theme)
                     }
-                </DropDownComponent.Header>
+
+                    {isLoadingOptions ?
+                        <Icon className={theme.dropDown__loadingIcon} icon="spinner"/> : null
+                    }
+                </DropDown.Header>
                 {this.getOptions() ?
-                    <DropDownComponent.Contents className={theme.dropDown__contents}>
+                    <DropDown.Contents className={theme.dropDown__contents}>
                         {Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
                             this.getOptions()
-                                .filter(this.filterOption)
+                                .filter(this.filterOption) // TODO filtering is not needed when we use a external api for searching
                                 .map(this.renderOption) : null}
-                    </DropDownComponent.Contents> :
+                    </DropDown.Contents> :
                     null
                 }
-            </DropDownComponent>
+            </DropDown>
         );
     }
 
@@ -165,7 +178,11 @@ export default class SearchableSelectBox extends PureComponent {
      * @returns {boolean} TRUE if passed filter
      */
     filterOption(o) {
-        return !this.state.searchValue || o.label.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1;
+        if (this.props.loadOptionsOnInput) {
+            return true
+        } else {
+            return !this.state.searchValue || o.label.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1;
+        }
     }
 
     /**
@@ -180,9 +197,15 @@ export default class SearchableSelectBox extends PureComponent {
      * @param input
      */
     handleOnInputChange(input) {
+        console.log (input);
         this.setState({
             searchValue: input
         });
+
+        // when we search options async we call the external api with the current searchValue
+        if (this.props.loadOptionsOnInput) {
+            this.props.onInput(input);
+        }
     }
 
     /**

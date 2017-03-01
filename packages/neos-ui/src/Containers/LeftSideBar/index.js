@@ -2,6 +2,9 @@ import React, {PureComponent, PropTypes} from 'react';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
+
+import {selectors} from '@neos-project/neos-ui-redux-store';
+
 import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -14,7 +17,9 @@ import style from './style.css';
     isHidden: $or(
         $get('ui.leftSideBar.isHidden'),
         $get('ui.fullScreen.isFullScreen')
-    )
+    ),
+    siteNode: selectors.CR.Nodes.siteNodeSelector,
+    documentNode: selectors.UI.ContentCanvas.documentNodeSelector
 }))
 export default class LeftSideBar extends PureComponent {
     static propTypes = {
@@ -25,13 +30,16 @@ export default class LeftSideBar extends PureComponent {
 
     render() {
         const {isHidden, containerRegistry} = this.props;
+
         const classNames = mergeClassNames({
             [style.leftSideBar]: true,
             [style['leftSideBar--isHidden']]: isHidden
         });
 
-        const NodeTreeToolBar = containerRegistry.get('LeftSideBar/NodeTreeToolBar');
+        const PageTreeToolbar = containerRegistry.get('LeftSideBar/PageTreeToolbar');
         const PageTree = containerRegistry.get('LeftSideBar/PageTree');
+        const ContentTreeToolbar = containerRegistry.get('LeftSideBar/ContentTreeToolbar');
+        const ContentTree = containerRegistry.get('LeftSideBar/ContentTree');
 
         return (
             <SideBar
@@ -39,8 +47,11 @@ export default class LeftSideBar extends PureComponent {
                 className={classNames}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
-                <NodeTreeToolBar/>
+                <PageTreeToolbar/>
                 <PageTree/>
+                <hr/>
+                <ContentTreeToolbar/>
+                <ContentTree/>
             </SideBar>
         );
     }

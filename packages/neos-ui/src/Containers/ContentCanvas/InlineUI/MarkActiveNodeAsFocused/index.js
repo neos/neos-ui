@@ -19,7 +19,7 @@ export default class MarkActiveNodeAsFocused extends PureComponent {
 
         const {contextPath, fusionPath} = this.props;
 
-        if (!contextPath || !fusionPath) {
+        if (!contextPath) {
             return null;
         }
 

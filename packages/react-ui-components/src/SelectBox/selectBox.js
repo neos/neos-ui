@@ -183,7 +183,7 @@ export default class SelectBox extends PureComponent {
     }
 
     /**
-     * returns the options or inits the loading of the options
+     * returns the options
      *
      * @returns {Array}
      */

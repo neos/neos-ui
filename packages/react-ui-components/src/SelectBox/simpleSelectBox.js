@@ -82,13 +82,9 @@ export default class SimpleBox extends Component {
                             <Icon className={theme.dropDown__btnIcon} icon={icon}/> :
                             null
                         }
+                        <span>{label}</span>
                         {isLoadingOptions ?
-                            <span>Loading ...</span> :
-                            <span>{label}</span>
-
-                        }
-                        {isLoadingOptions ?
-                            <Icon className={theme.dropDown__loadingIcon} icon="spinner"/> :
+                            <Icon className={theme.dropDown__loadingIcon} spin={true} icon="spinner"/> :
                             null
                         }
                     </DropDown.Header>

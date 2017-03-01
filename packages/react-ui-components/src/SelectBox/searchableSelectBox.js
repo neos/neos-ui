@@ -148,7 +148,7 @@ export default class SearchableSelectBox extends Component {
                     }
 
                     {isLoadingOptions ?
-                        <Icon className={theme.dropDown__loadingIcon} icon="spinner"/> : null
+                        <Icon className={theme.dropDown__loadingIcon} spin={true} icon="spinner"/> : null
                     }
                 </DropDown.Header>
                 {this.getOptions() ?

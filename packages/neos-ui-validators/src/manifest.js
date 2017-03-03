@@ -17,7 +17,7 @@ import manifest from '@neos-project/neos-ui-extensibility';
 
 manifest('validators', {}, globalRegistry => {
     const validatorRegistry = globalRegistry.get('validators');
-  
+
     validatorRegistry.add('Neos.Neos/Validation/AlphanumericValidator', Alphanumeric);
     validatorRegistry.add('Neos.Neos/Validation/CountValidator', Count);
     validatorRegistry.add('Neos.Neos/Validation/DateTimeValidator', DateTime);
@@ -27,7 +27,7 @@ manifest('validators', {}, globalRegistry => {
     validatorRegistry.add('Neos.Neos/Validation/LabelValidator', Label);
     validatorRegistry.add('Neos.Neos/Validation/NotEmptyValidator', NotEmpty);
     validatorRegistry.add('Neos.Neos/Validation/NumberRangeValidator', NumberRange);
-    validatorRegistry.add('Neos.Neos/Validation/RegularExpressionValidator', RegularExpression);  
+    validatorRegistry.add('Neos.Neos/Validation/RegularExpressionValidator', RegularExpression);
     validatorRegistry.add('Neos.Neos/Validation/StringValidator', String);
     validatorRegistry.add('Neos.Neos/Validation/StringLengthValidator', StringLength);
     validatorRegistry.add('Neos.Neos/Validation/TextValidator', Text);

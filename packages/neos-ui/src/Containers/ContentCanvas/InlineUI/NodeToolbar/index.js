@@ -18,7 +18,6 @@ export const position = (contextPath, fusionPath) => {
     const nodeElement = dom.findNode(contextPath, fusionPath);
 
     if (nodeElement && nodeElement.getBoundingClientRect) {
-        // TODO: workaround to access the frame from outside...
         const bodyBounds = dom.body().getBoundingClientRect();
         const domBounds = nodeElement.getBoundingClientRect();
 
@@ -46,7 +45,7 @@ export default class NodeToolbar extends PureComponent {
     render() {
         const {contextPath, fusionPath} = this.props;
 
-        if (!contextPath || !fusionPath) {
+        if (!contextPath) {
             return null;
         }
 

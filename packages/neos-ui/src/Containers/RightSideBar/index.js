@@ -5,11 +5,13 @@ import {$transform, $get} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.css';
 
-import Inspector from './Inspector/index';
-
+@neos(globalRegistry => ({
+    containerRegistry: globalRegistry.get('containers')
+}))
 @connect($transform({
     isHidden: selectors.UI.RightSideBar.isHidden,
     isFullScreen: $get('ui.fullScreen.isFullScreen')
@@ -18,13 +20,21 @@ import Inspector from './Inspector/index';
 })
 export default class RightSideBar extends PureComponent {
     static propTypes = {
+        containerRegistry: PropTypes.object.isRequired,
+
         isHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         toggleSidebar: PropTypes.func.isRequired
     };
 
+    handleToggle = () => {
+        const {toggleSidebar} = this.props;
+
+        toggleSidebar();
+    }
+
     render() {
-        const {isHidden, isFullScreen, toggleSidebar} = this.props;
+        const {isHidden, isFullScreen, containerRegistry} = this.props;
         const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
             [style.rightSideBar]: true,
@@ -35,9 +45,11 @@ export default class RightSideBar extends PureComponent {
             <IconButton
                 icon={toggleIcon}
                 className={style.rightSideBar__toggleBtn}
-                onClick={toggleSidebar}
+                onClick={this.handleToggle}
                 />
         );
+
+        const Inspector = containerRegistry.get('RightSideBar/Inspector');
 
         return (
             <SideBar

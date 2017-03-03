@@ -51,13 +51,28 @@ export default class PublishDropDown extends PureComponent {
         changeBaseWorkspaceAction: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handlePublishClick = () => {
+        const {publishableNodesInDocument, publishAction, baseWorkspace} = this.props;
 
-        this.handlePublishClick = this.handlePublishClick.bind(this);
-        this.handlePublishAllClick = this.handlePublishClick.bind(this);
-        this.handleDiscardClick = this.handleDiscardClick.bind(this);
-        this.handleDiscardAllClick = this.handleDiscardAllClick.bind(this);
+        publishAction(publishableNodesInDocument.map($get('contextPath')), baseWorkspace);
+    }
+
+    handlePublishAllClick = () => {
+        const {publishableNodes, publishAction, baseWorkspace} = this.props;
+
+        publishAction(publishableNodes.map($get('contextPath')), baseWorkspace);
+    }
+
+    handleDiscardClick = () => {
+        const {publishableNodesInDocument, discardAction} = this.props;
+
+        discardAction(publishableNodesInDocument.map($get('contextPath')));
+    }
+
+    handleDiscardAllClick = () => {
+        const {publishableNodes, discardAction} = this.props;
+
+        discardAction(publishableNodes.map($get('contextPath')));
     }
 
     render() {
@@ -98,7 +113,7 @@ export default class PublishDropDown extends PureComponent {
                     onClick={this.handlePublishClick}
                     >
                     <I18n fallback={mainButtonTarget} id={mainButtonLabel}/> <I18n id="to"/> {baseWorkspaceTitle}
-                    {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={publishableNodesInDocumentCount}/>}
+                    {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={String(publishableNodesInDocumentCount)}/>}
                 </AbstractButton>
 
                 <DropDown className={style.dropDown}>
@@ -223,28 +238,5 @@ export default class PublishDropDown extends PureComponent {
             mainButtonLabel: 'published',
             mainButtonTarget: 'Published'
         };
-    }
-
-    handlePublishClick() {
-        const {publishableNodesInDocument, publishAction, baseWorkspace} = this.props;
-
-        publishAction(publishableNodesInDocument.map($get('contextPath')), baseWorkspace);
-    }
-
-    handlePublishAllClick() {
-        const {publishableNodes, publishAction, baseWorkspace} = this.props;
-        publishAction(publishableNodes.map($get('contextPath')), baseWorkspace);
-    }
-
-    handleDiscardClick() {
-        const {publishableNodesInDocument, discardAction} = this.props;
-
-        discardAction(publishableNodesInDocument.map($get('contextPath')));
-    }
-
-    handleDiscardAllClick() {
-        const {publishableNodes, discardAction} = this.props;
-
-        discardAction(publishableNodes.map($get('contextPath')));
     }
 }

@@ -16,6 +16,9 @@ import * as Inspector from './Inspector/index';
 import * as Editors from './Editors/index';
 import * as InsertionModeModal from './InsertionModeModal/index';
 import * as NodeLinking from './NodeLinking/index';
+import * as SelectNodeTypeModal from './SelectNodeTypeModal/index';
+import * as NodeCreationDialog from './NodeCreationDialog/index';
+import * as ContentTree from './ContentTree/index';
 
 const all = {
     FlashMessages,
@@ -32,7 +35,10 @@ const all = {
     Inspector,
     Editors,
     InsertionModeModal,
-    NodeLinking
+    NodeLinking,
+    SelectNodeTypeModal,
+    NodeCreationDialog,
+    ContentTree
 };
 
 //

@@ -36,7 +36,7 @@ const calculatePreferredInitialMode = props => {
 };
 
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class InsertModeSelector extends PureComponent {
     static propTypes = {

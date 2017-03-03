@@ -39,4 +39,6 @@ export const reducer = handleActions({
 //
 // Export the selectors
 //
-export const selectors = {};
+export const selectors = {
+    currentEditPreviewMode: $get('ui.editPreviewMode')
+};

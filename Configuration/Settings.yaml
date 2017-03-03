@@ -2,6 +2,12 @@
 Neos:
   Neos:
     userInterface:
+# New support for width and height of the preview mode:
+#      editPreviewModes:
+#        rawContent:
+#          width: 300px
+#          height: 600px
+
       translation:
         autoInclude:
           'Neos.Neos.Ui':
@@ -10,30 +16,36 @@ Neos:
       autoInclude:
         Neos.Neos.Ui: true
     Ui:
+      # API: "start 100" and smaller numbers; "no numbers", ...
+      resources:
+
+        javascript:
+          'Neos.Neos.UI:Vendor':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Vendor.js"}'
+            position: 'start 1000'
+          'Neos.Neos.UI:Host':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Host.js"}'
+            position: 'start 900'
+
+        stylesheets:
+          'Neos.Neos.UI:Host':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/Host.css"}'
+            position: 'start 1000'
+          'Neos.Neos.UI:HostOnlyStyles':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/HostOnlyStyles.css"}'
+            position: 'start 900'
+          'Neos.Neos.UI:WorkSans':
+            resource: https://fonts.googleapis.com/css?family=Work+Sans:300,200,200italic,300italic,400,400italic
+            position: 'start 500'
+
+      #################################
+      # INTERNAL CONFIG (no API)
+      #################################
       frontendDevelopmentMode: false
       nodeTypeRoles:
         document: 'Neos.Neos:Document'
         content: 'Neos.Neos:Content'
         contentCollection: 'Neos.Neos:ContentCollection'
-      asyncModuleMapping:
-        'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
-          'Neos.UI:Inspector.TextField': true
-          'Neos.UI:Inspector.Boolean': true
-          'Neos.UI:Inspector.DateTime': true
-          'Neos.UI:Inspector.Image': true
-          'Neos.UI:Inspector.TextArea': true
-          'Neos.UI:Inspector.SelectBox': true
-          'Neos.UI:Inspector.NodeType': true
-      legacyModuleMapping:
-        'resource://Neos.Neos.Ui/Public/JavaScript/InspectorEditors.js':
-          Neos.Neos/Inspector/Editors/TextFieldEditor: 'Neos.UI:Inspector.TextField'
-          Neos.Neos/Inspector/Editors/BooleanEditor: 'Neos.UI:Inspector.Boolean'
-          Neos.Neos/Inspector/Editors/DateTimeEditor: 'Neos.UI:Inspector.DateTime'
-          Neos.Neos/Inspector/Editors/ImageEditor: 'Neos.UI:Inspector.Image'
-          Neos.Neos/Inspector/Editors/TextAreaEditor: 'Neos.UI:Inspector.TextArea'
-          Neos.Neos/Inspector/Editors/SelectBoxEditor: 'Neos.UI:Inspector.SelectBox'
-          Neos.Neos/Inspector/Editors/NodeTypeEditor: 'Neos.UI:Inspector.NodeType'
-          Content/Inspector/Editors/NodeTypeEditor: 'Neos.UI:Inspector.NodeType'
       state:
         defaultEelContext:
           String: Neos\Eel\Helper\StringHelper
@@ -47,6 +59,7 @@ Neos:
           Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
           Neos.Ui.NodeTypes: Neos\Neos\Ui\Fusion\Helper\NodeTypesHelper
           Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
+          Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
         frontendConfiguration:
           editPreviewModes: '${Configuration.setting(''Neos.Neos.userInterface.editPreviewModes'')}'
         documentNode:
@@ -76,7 +89,7 @@ Neos:
               src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
               contextPath: '${q(documentNode).property(''_contextPath'')}'
             debugMode: false
-            editPreviewMode: '${Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
+            editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
             fullScreen:
               isFullScreen: false
             editModePanel:
@@ -113,7 +126,7 @@ Neos:
       changes:
         types:
           'Neos.Neos.Ui:Property': Neos\Neos\Ui\Domain\Model\Changes\Property
-          'Neos.Neos.Ui:Create': Neos\Neos\Ui\Domain\Model\Changes\Create
+          'Neos.Neos.Ui:CreateInto': Neos\Neos\Ui\Domain\Model\Changes\Create
           'Neos.Neos.Ui:CreateBefore': Neos\Neos\Ui\Domain\Model\Changes\CreateBefore
           'Neos.Neos.Ui:CreateAfter': Neos\Neos\Ui\Domain\Model\Changes\CreateAfter
           'Neos.Neos.Ui:RemoveNode': Neos\Neos\Ui\Domain\Model\Changes\Remove
@@ -140,8 +153,8 @@ Neos:
   Fusion:
     defaultContext:
       Neos.Ui.Activation: Neos\Neos\Ui\Fusion\Helper\ActivationHelper
-      Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
       Neos.Ui.Sites: Neos\Neos\Ui\Fusion\Helper\SitesHelper
       Neos.Ui.Modules: Neos\Neos\Ui\Fusion\Helper\ModulesHelper
       Neos.Ui.NodeTypes: Neos\Neos\Ui\Fusion\Helper\NodeTypesHelper
       Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
+      Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper

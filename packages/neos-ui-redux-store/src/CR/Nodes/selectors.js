@@ -3,8 +3,6 @@ import {createSelector, defaultMemoize} from 'reselect';
 
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
 
-import {getAllowedNodeTypesTakingAutoCreatedIntoAccount} from './helpers';
-
 const nodes = $get(['cr', 'nodes', 'byContextPath']);
 const focused = $get('cr.nodes.focused.contextPath');
 
@@ -42,19 +40,6 @@ export const isDocumentNodeSelectedSelector = createSelector(
 export const nodeByContextPath = state => contextPath =>
     $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 
-const immutableNodeToJs = selectorWhichEmitsNode =>
-    createSelector(
-        [
-            selectorWhichEmitsNode
-        ],
-        node => {
-            if (node && node.toJS) {
-                node = node.toJS();
-            }
-            return node;
-        }
-    );
-
 export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
     [
         nodes
@@ -64,6 +49,13 @@ export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
 
         return nodesMap.filter(node => documentSubNodeTypes.includes(node.get('nodeType')));
     }
+);
+
+export const makeGetNodeByContextPathSelector = () => createSelector(
+    [
+        (state, contextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath], state)
+    ],
+    node => node
 );
 
 export const makeHasChildrenSelector = allowedNodeTypes => createSelector(
@@ -101,12 +93,12 @@ export const siteNodeSelector = createSelector(
 );
 
 export const byContextPathSelector = defaultMemoize(
-    contextPath => immutableNodeToJs(createSelector(
+    contextPath => createSelector(
         [
             nodeByContextPath
         ],
         getNodeByContextPath => getNodeByContextPath(contextPath)
-    ))
+    )
 );
 
 export const parentNodeSelector = state => baseNode =>
@@ -115,7 +107,7 @@ export const parentNodeSelector = state => baseNode =>
 export const grandParentNodeSelector = state => baseNode =>
     byContextPathSelector(parentNodeContextPath(parentNodeContextPath($get('contextPath', baseNode))))(state);
 
-export const focusedNodePathSelector = immutableNodeToJs(createSelector(
+export const focusedNodePathSelector = createSelector(
     [
         focused,
         getCurrentContentCanvasContextPath
@@ -123,16 +115,24 @@ export const focusedNodePathSelector = immutableNodeToJs(createSelector(
     (focused, currentContentCanvasContextPath) => {
         return focused || currentContentCanvasContextPath;
     }
-));
+);
 
-export const focusedSelector = immutableNodeToJs(createSelector(
+export const focusedSelector = createSelector(
     [
         focusedNodePathSelector,
         nodeByContextPath
     ],
     (focusedNodePath, getNodeByContextPath) =>
         getNodeByContextPath(focusedNodePath)
-));
+);
+
+export const focusedNodeTypeSelector = createSelector(
+    [
+        focusedSelector
+    ],
+    focused =>
+        $get('nodeType', focused)
+);
 
 export const focusedParentSelector = createSelector(
     [
@@ -162,29 +162,6 @@ export const focusedGrandParentSelector = createSelector(
     }
 );
 
-/**
- * This selector returns a function which you need to pass in the node-Type-Registry
- */
-export const getAllowedSiblingNodeTypesForFocusedNodeSelector = createSelector(
-    [
-        focusedSelector,
-        focusedParentSelector,
-        focusedGrandParentSelector
-    ],
-    (focusedNode, focusedNodeParent, focusedNodeGrandParent) =>
-        defaultMemoize(nodeTypesRegistry => {
-            if (!focusedNode) {
-                return [];
-            }
-
-            return getAllowedNodeTypesTakingAutoCreatedIntoAccount(
-                focusedNodeParent,
-                focusedNodeGrandParent,
-                nodeTypesRegistry
-            );
-        })
-);
-
 export const clipboardNodeContextPathSelector = createSelector(
     [
         $get('cr.nodes.clipboard')
@@ -199,54 +176,45 @@ export const clipboardIsEmptySelector = createSelector(
     clipboardNodePath => Boolean(clipboardNodePath)
 );
 
-export const canBePastedAlongsideSelector = createSelector(
-    [
-        nodeByContextPath,
-        parentNodeSelector,
-        grandParentNodeSelector
-    ],
-    (getNodeByContextPath, getParentNode, getGrandParentNode) =>
-        (subjectContextPath, referenceContextPath, nodeTypesRegistry) => {
-            const subject = getNodeByContextPath(subjectContextPath);
-            const reference = getNodeByContextPath(referenceContextPath);
-            const referenceParent = getParentNode(reference);
-            const referenceGrandParent = getGrandParentNode(reference);
-            const allowedNodeTypes = getAllowedNodeTypesTakingAutoCreatedIntoAccount(
-                referenceParent,
-                referenceGrandParent,
-                nodeTypesRegistry
-            );
+const getPathInNode = (state, contextPath, propertyPath) => {
+    const node = $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 
-            return allowedNodeTypes.indexOf($get('nodeType', subject)) !== -1;
-        }
+    return $get(propertyPath, node);
+};
+
+export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator = id => id) => createSelector(
+    [
+        (state, {subject}) => getPathInNode(state, subject, 'isAutoCreated'),
+        (state, {reference}) => getPathInNode(state, elevator(reference), 'name'),
+        (state, {reference}) => getPathInNode(state, elevator(reference), 'nodeType'),
+        (state, {reference}) => getPathInNode(state, elevator(parentNodeContextPath(reference)), 'nodeType')
+    ],
+    (...args) => nodeTypesRegistry.getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args)
 );
 
-export const canBePastedIntoSelector = createSelector(
-    [
-        nodeByContextPath,
-        parentNodeSelector
-    ],
-    (getNodeByContextPath, getParentNode) =>
-        (subjectContextPath, referenceContextPath, nodeTypesRegistry) => {
-            const subject = getNodeByContextPath(subjectContextPath);
-            const reference = getNodeByContextPath(referenceContextPath);
-            const referenceParent = getParentNode(reference);
-            const allowedNodeTypes = getAllowedNodeTypesTakingAutoCreatedIntoAccount(
-                reference,
-                referenceParent,
-                nodeTypesRegistry
-            );
+export const makeGetAllowedSiblingNodeTypesSelector = nodeTypesRegistry =>
+    makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, parentNodeContextPath);
 
-            return allowedNodeTypes.indexOf($get('nodeType', subject)) !== -1;
-        }
+export const makeCanBeInsertedAlongsideSelector = nodeTypesRegistry => createSelector(
+    [
+        (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
+        makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
+    ],
+    (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
 );
 
-export const canBePastedSelector = createSelector(
+export const makeCanBeInsertedIntoSelector = nodeTypesRegistry => createSelector(
     [
-        canBePastedAlongsideSelector,
-        canBePastedIntoSelector
+        (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
+        makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry)
     ],
-    (canBePastedAlongside, canBePastedInto) =>
-        (...args) => canBePastedAlongside(...args) || canBePastedInto(...args)
+    (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
+);
 
+export const makeCanBeInsertedSelector = nodeTypesRegistry => createSelector(
+    [
+        makeCanBeInsertedAlongsideSelector(nodeTypesRegistry),
+        makeCanBeInsertedIntoSelector(nodeTypesRegistry)
+    ],
+    (canBeInsertedAlongside, canBeInsertedInto) => (canBeInsertedAlongside || canBeInsertedInto)
 );

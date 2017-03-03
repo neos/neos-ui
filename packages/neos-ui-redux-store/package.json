@@ -43,6 +43,7 @@
   "dependencies": {
     "@neos-project/utils-redux": "^4.4.8",
     "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-validators": "^4.4.8",
     "immutable": "^3.8.0",
     "plow-js": "^1.2.0",
     "ramda": "^0.22.1",

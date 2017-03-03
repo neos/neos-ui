@@ -19,8 +19,14 @@ export default class EditModePanelToggler extends PureComponent {
         toggleEditModePanel: PropTypes.func.isRequired
     };
 
+    handleToggle = () => {
+        const {toggleEditModePanel} = this.props;
+
+        toggleEditModePanel();
+    }
+
     render() {
-        const {className, isEditModePanelHidden, toggleEditModePanel} = this.props;
+        const {className, isEditModePanelHidden} = this.props;
         const isActive = !isEditModePanelHidden;
         const classNames = mergeClassNames({
             [className]: true,
@@ -33,7 +39,7 @@ export default class EditModePanelToggler extends PureComponent {
                 style="clean"
                 hoverStyle="clean"
                 isFocused={isActive}
-                onClick={toggleEditModePanel}
+                onClick={this.handleToggle}
                 >
                 <I18n id="editPreview" fallback="Edit / Preview"/>
             </Button>

@@ -120,7 +120,7 @@ export class Header extends PureComponent {
         const {
             acceptsDrop
         } = this.state;
-        const rest = omit(restProps, ['onToggle']);
+        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError']);
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,

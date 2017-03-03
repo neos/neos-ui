@@ -2,21 +2,13 @@ import React, {PropTypes} from 'react';
 import {Provider} from 'react-redux';
 import style from './style.css';
 
-import {
-    Neos,
-    ContentCanvas,
-    PrimaryToolbar,
-    LeftSideBar,
-    EditModePanel,
-    Drawer,
-    Modals,
-    RightSideBar,
-    SecondaryToolbar,
-    FlashMessages,
-    FullScreen
-} from './index';
+import Neos from './Neos/index';
 
 const Root = ({store, globalRegistry, configuration, menu}) => {
+    const containerRegistry = globalRegistry.get('containers');
+
+    const App = containerRegistry.get('App');
+
     return (
         <div className={style.applicationWrapper}>
             <Provider store={store}>
@@ -24,19 +16,7 @@ const Root = ({store, globalRegistry, configuration, menu}) => {
                     globalRegistry={globalRegistry}
                     configuration={configuration}
                     >
-                    <div>
-                        <div id="dialog"/>
-                        <Modals/>
-                        <FlashMessages/>
-                        <FullScreen/>
-                        <PrimaryToolbar/>
-                        <EditModePanel/>
-                        <SecondaryToolbar/>
-                        <Drawer menuData={menu}/>
-                        <LeftSideBar/>
-                        <ContentCanvas/>
-                        <RightSideBar/>
-                    </div>
+                    <App globalRegistry={globalRegistry} menu={menu}/>
                 </Neos>
             </Provider>
         </div>

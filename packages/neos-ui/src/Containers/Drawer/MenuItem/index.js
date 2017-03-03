@@ -19,12 +19,7 @@ export default class MenuItem extends PureComponent {
         onClick: PropTypes.func.isRequired
     };
 
-    constructor() {
-        super();
-        this.handleClick = ::this.handleClick;
-    }
-
-    handleClick() {
+    handleClick = () => {
         const {uri, target, onClick} = this.props;
 
         onClick(target, uri);

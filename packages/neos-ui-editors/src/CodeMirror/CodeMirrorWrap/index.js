@@ -9,7 +9,9 @@ import JavascriptMode from 'codemirror/mode/javascript/javascript';
 import HandlebarsMode from 'codemirror/mode/handlebars/handlebars';
 import MarkdownMode from 'codemirror/mode/markdown/markdown';
 import YamlMode from 'codemirror/mode/yaml/yaml';
-/* eslint-ensable no-unused-vars */
+import Styles from './codemirror.vanilla-css';
+import ThemeStyles from './codemirror-twilight.vanilla-css';
+/* eslint-enable no-unused-vars */
 
 export default class CodeMirrorWrap extends PureComponent {
     static propTypes = {

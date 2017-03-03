@@ -19,11 +19,16 @@ export default class HideSelectedNode extends PureComponent {
         showNode: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleHideNode = () => {
+        const {node, hideNode} = this.props;
 
-        this.handleHideNode = this.handleHideNode.bind(this);
-        this.handleShowNode = this.handleShowNode.bind(this);
+        hideNode($get('contextPath', node));
+    }
+
+    handleShowNode = () => {
+        const {node, showNode} = this.props;
+
+        showNode($get('contextPath', node));
     }
 
     render() {
@@ -41,17 +46,5 @@ export default class HideSelectedNode extends PureComponent {
                 hoverStyle="clean"
                 />
         );
-    }
-
-    handleHideNode() {
-        const {node, hideNode} = this.props;
-
-        hideNode($get('contextPath', node));
-    }
-
-    handleShowNode() {
-        const {node, showNode} = this.props;
-
-        showNode($get('contextPath', node));
     }
 }

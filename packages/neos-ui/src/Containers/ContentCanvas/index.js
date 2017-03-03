@@ -18,11 +18,13 @@ import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './H
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     src: $get('ui.contentCanvas.src'),
-    byContextPathDynamicAccess: state => contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(state)
+    byContextPathDynamicAccess: state => contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(state),
+    currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {
     setGuestContext: actions.Guest.setContext,
     setContextPath: actions.UI.ContentCanvas.setContextPath,
     setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
+    stopLoading: actions.UI.ContentCanvas.stopLoading,
     setActiveDimensions: actions.CR.ContentDimensions.setActive,
     formattingUnderCursor: actions.UI.ContentCanvas.formattingUnderCursor,
     setCurrentlyEditedPropertyName: actions.UI.ContentCanvas.setCurrentlyEditedPropertyName,
@@ -33,7 +35,8 @@ import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './H
 })
 @neos(globalRegistry => ({
     globalRegistry,
-    formattingRulesRegistry: globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules')
+    formattingRulesRegistry: globalRegistry.get('ckEditor').get('formattingRules'),
+    editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
 }))
 export default class ContentCanvas extends PureComponent {
     static propTypes = {
@@ -45,6 +48,7 @@ export default class ContentCanvas extends PureComponent {
         setGuestContext: PropTypes.func.isRequired,
         setContextPath: PropTypes.func.isRequired,
         setPreviewUrl: PropTypes.func.isRequired,
+        stopLoading: PropTypes.func.isRequired,
         setActiveDimensions: PropTypes.func.isRequired,
         addNodes: PropTypes.func.isRequired,
         formattingUnderCursor: PropTypes.func.isRequired,
@@ -53,9 +57,11 @@ export default class ContentCanvas extends PureComponent {
         unFocusNode: PropTypes.func.isRequired,
         persistChange: PropTypes.func.isRequired,
         byContextPathDynamicAccess: PropTypes.func.isRequired,
+        currentEditPreviewMode: PropTypes.string.isRequired,
 
         globalRegistry: PropTypes.object.isRequired,
-        formattingRulesRegistry: PropTypes.object.isRequired
+        formattingRulesRegistry: PropTypes.object.isRequired,
+        editPreviewModesRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -65,7 +71,7 @@ export default class ContentCanvas extends PureComponent {
     }
 
     render() {
-        const {isFringeLeft, isFringeRight, isFullScreen, isEditModePanelHidden, src} = this.props;
+        const {isFringeLeft, isFringeRight, isFullScreen, isEditModePanelHidden, src, currentEditPreviewMode, editPreviewModesRegistry} = this.props;
         const classNames = mergeClassNames({
             [style.contentCanvas]: true,
             [style['contentCanvas--isFringeLeft']]: isFringeLeft,
@@ -74,11 +80,23 @@ export default class ContentCanvas extends PureComponent {
             [style['contentCanvas--isFullScreen']]: isFullScreen
         });
 
+        const currentEditPreviewModeConfiguration = editPreviewModesRegistry.get(currentEditPreviewMode);
+
+        const inlineStyles = {};
+        const width = $get('width', currentEditPreviewModeConfiguration);
+        const height = $get('height', currentEditPreviewModeConfiguration);
+        if (width) {
+            inlineStyles.width = width;
+        }
+        if (height) {
+            inlineStyles.height = height;
+        }
+
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
             <div className={classNames}>
                 <div id="centerArea"/>
-                <div className={style.contentCanvas__itemWrapper} data-__neos__hook="contentCanvas">
+                <div className={style.contentCanvas__itemWrapper} style={inlineStyles} data-__neos__hook="contentCanvas">
                     <Frame
                         src={src}
                         frameBorder="0"
@@ -107,8 +125,11 @@ export default class ContentCanvas extends PureComponent {
             setContextPath,
             setPreviewUrl,
             setActiveDimensions,
-            addNodes
+            addNodes,
+            stopLoading
         } = this.props;
+
+        stopLoading();
 
         //
         // First of all, set the new version of the guest frame window object to the store.

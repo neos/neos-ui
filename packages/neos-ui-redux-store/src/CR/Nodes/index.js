@@ -10,6 +10,7 @@ import * as selectors from './selectors';
 const ADD = '@neos/neos-ui/Transient/Nodes/ADD';
 const FOCUS = '@neos/neos-ui/Transient/Nodes/FOCUS';
 const UNFOCUS = '@neos/neos-ui/Transient/Nodes/UNFOCUS';
+const COMMENCE_CREATION = '@neos/neos-ui/Transient/Nodes/COMMENCE_CREATION';
 const COMMENCE_REMOVAL = '@neos/neos-ui/Transient/Nodes/COMMENCE_REMOVAL';
 const REMOVAL_ABORTED = '@neos/neos-ui/Transient/Nodes/REMOVAL_ABORTED';
 const REMOVAL_CONFIRMED = '@neos/neos-ui/Transient/Nodes/REMOVAL_CONFIRMED';
@@ -28,6 +29,7 @@ export const actionTypes = {
     ADD,
     FOCUS,
     UNFOCUS,
+    COMMENCE_CREATION,
     COMMENCE_REMOVAL,
     REMOVAL_ABORTED,
     REMOVAL_CONFIRMED,
@@ -67,6 +69,17 @@ const unFocus = createAction(UNFOCUS);
  * @param {String} contextPath The context path of the node to be removed
  */
 const commenceRemoval = createAction(COMMENCE_REMOVAL, contextPath => contextPath);
+
+/**
+ * Start node creation workflow
+ *
+ * @param {String} referenceNodeContextPath The context path of the referenceNode
+ * @param {String} referenceNodeFusionPath The fusion path of the referenceNode
+ */
+const commenceCreation = createAction(COMMENCE_CREATION, (referenceNodeContextPath, referenceNodeFusionPath) => ({
+    referenceNodeContextPath,
+    referenceNodeFusionPath
+}));
 
 /**
  * Abort the ongoing node removal workflow
@@ -136,6 +149,7 @@ export const actions = {
     add,
     focus,
     unFocus,
+    commenceCreation,
     commenceRemoval,
     abortRemoval,
     confirmRemoval,

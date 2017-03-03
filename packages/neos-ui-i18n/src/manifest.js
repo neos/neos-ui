@@ -4,7 +4,7 @@ import {I18nRegistry} from './registry/index';
 
 manifest('@neos-project/neos-ui-i18n', {}, globalRegistry => {
     globalRegistry.add(
-        '@neos-project/neos-ui-i18n',
+        'i18n',
         new I18nRegistry(`
             # Registry for Internationalization / Localization
 

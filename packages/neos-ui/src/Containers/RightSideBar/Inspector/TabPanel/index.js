@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 import {Maybe} from 'monet';
 import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
 
@@ -6,19 +6,17 @@ import PropertyGroup from '../PropertyGroup/index';
 
 import style from './style.css';
 
-export default class TabPanel extends Component {
+export default class TabPanel extends PureComponent {
     static displayName = 'Inspector Tab Panel';
     static propTypes = {
         groups: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,
-        commit: PropTypes.func.isRequired,
-        transientValues: PropTypes.object,
-        validationErrors: PropTypes.object
+        commit: PropTypes.func.isRequired
     };
 
     render() {
-        const {groups, renderSecondaryInspector, validationErrors, node, commit, transientValues} = this.props;
+        const {groups, renderSecondaryInspector, node, commit} = this.props;
         const tabPanel = groups => (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 {
@@ -28,11 +26,10 @@ export default class TabPanel extends Component {
                             label={group.label}
                             icon={group.icon}
                             properties={group.properties}
+                            views={group.views}
                             renderSecondaryInspector={renderSecondaryInspector}
                             node={node}
                             commit={commit}
-                            transient={transientValues}
-                            validationErrors={validationErrors}
                             />
                     ))
                 }

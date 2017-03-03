@@ -2,7 +2,7 @@ import isObject from 'lodash.isobject';
 import isString from 'lodash.isstring';
 import isArray from 'lodash.isarray';
 import * as operations from './Operations/index';
-import {$add} from 'plow-js';
+import {$get, $add} from 'plow-js';
 
 export const isStartingOperation = (operation = {}) => operation.type === 'CREATE_CONTEXT';
 export const isFinishingOperation = (operation = {}) => ['GET', 'COUNT'].indexOf(operation.type) !== -1;
@@ -14,7 +14,7 @@ export const createNodeEnvelope = (node = {}) => {
     let contextPath = '';
 
     if (isObject(node)) {
-        contextPath = node.contextPath || node.$node;
+        contextPath = $get('contextPath', node) || $get('$node', node);
     } else if (isString(node)) {
         contextPath = node;
     }
@@ -88,8 +88,8 @@ export default csrfToken => {
     // The main API factory which will return it's own mechanism as well as the chained middlewares.
     //
     const q = (context, ignoreMiddleware = false) => {
-        if (isObject(context) && context.contextPath) {
-            context = [context.contextPath];
+        if (isObject(context) && $get('contextPath', context)) {
+            context = [$get('contextPath', context)];
         } else if (isString(context)) {
             context = [context];
         }

@@ -18,17 +18,14 @@ export default class CopySelectedNode extends PureComponent {
         copyNode: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleCopySelectedNodeClick = () => {
+        const {focusedNodeContextPath, copyNode} = this.props;
 
-        this.handleCopySelectedNodeClick = this.copySelectedNode.bind(this);
+        copyNode(focusedNodeContextPath);
     }
 
     render() {
-        const {
-            focusedNodeContextPath,
-            className
-        } = this.props;
+        const {focusedNodeContextPath, className} = this.props;
 
         return (
             <IconButton
@@ -39,11 +36,5 @@ export default class CopySelectedNode extends PureComponent {
                 hoverStyle="clean"
                 />
         );
-    }
-
-    copySelectedNode() {
-        const {focusedNodeContextPath, copyNode} = this.props;
-
-        copyNode(focusedNodeContextPath);
     }
 }

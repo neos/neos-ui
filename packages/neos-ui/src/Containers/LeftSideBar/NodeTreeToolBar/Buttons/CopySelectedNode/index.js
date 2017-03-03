@@ -1,27 +1,20 @@
 import React, {PureComponent, PropTypes} from 'react';
-import {connect} from 'react-redux';
 
 import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
 
-import {selectors, actions} from '@neos-project/neos-ui-redux-store';
-
-@connect(state => ({
-    focusedNodeContextPath: selectors.UI.PageTree.getFocusedNodeContextPathSelector(state)
-}), {
-    copyNode: actions.CR.Nodes.copy
-})
 export default class CopySelectedNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
+
         focusedNodeContextPath: PropTypes.string,
 
-        copyNode: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleClick = () => {
+        const {focusedNodeContextPath, onClick} = this.props;
 
-        this.handleCopySelectedNodeClick = this.copySelectedNode.bind(this);
+        onClick(focusedNodeContextPath);
     }
 
     render() {
@@ -33,17 +26,11 @@ export default class CopySelectedNode extends PureComponent {
         return (
             <IconButton
                 className={className}
-                isDisabled={!focusedNodeContextPath}
-                onClick={this.handleCopySelectedNodeClick}
+                isDisabled={Boolean(focusedNodeContextPath) === false}
+                onClick={this.handleClick}
                 icon="copy"
                 hoverStyle="clean"
                 />
         );
-    }
-
-    copySelectedNode() {
-        const {focusedNodeContextPath, copyNode} = this.props;
-
-        copyNode(focusedNodeContextPath);
     }
 }

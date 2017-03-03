@@ -1,0 +1,30 @@
+.nodeType {
+    width: 100%;
+    text-align: left;
+}
+.nodeType__icon {
+    color: var(--brandColorsPrimaryBlue);
+
+    .nodeType:hover & {
+        color: var(--brandColorsContrastBrightest);
+    }
+}
+
+/* TODO: refactor such typography things to Headline component */
+.groupHeader {
+    border-bottom: 1px solid var(--brandColorsContrastDark);
+}
+.groupTitle {
+    color: var(--brandColorsContrastBrighter);
+    line-height: 1.2;
+    font-weight: normal;
+}
+.groupContents {
+    padding: 0 !important;
+}
+.grid {
+    margin: 0;
+}
+.gridItem {
+    padding: 0;
+}

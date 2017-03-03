@@ -7,6 +7,10 @@ const noop = {
     createEditor() {}
 };
 
+// We cache the "formattingUnderCursor"; to only emit events when it really changed.
+// As there is only a single cursor active at any given time, it is safe to do this caching here inside the singleton object.
+let lastFormattingUnderCursorSerialized = '';
+
 const createCKEditorAPI = CKEDITOR => {
     if (!CKEDITOR) {
         console.error('CKEditor not found!');
@@ -63,7 +67,11 @@ const createCKEditorAPI = CKEDITOR => {
             `);
         });
 
-        editorConfig.setFormattingUnderCursor(formattingUnderCursor);
+        const formattingUnderCursorSerialized = JSON.stringify(formattingUnderCursor);
+        if (formattingUnderCursorSerialized !== lastFormattingUnderCursorSerialized) {
+            editorConfig.setFormattingUnderCursor(formattingUnderCursor);
+            lastFormattingUnderCursorSerialized = formattingUnderCursorSerialized;
+        }
     };
 
     //

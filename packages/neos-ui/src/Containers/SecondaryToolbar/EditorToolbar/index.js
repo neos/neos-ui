@@ -11,7 +11,7 @@ import {renderToolbarComponents} from './Helpers/index';
 import {calculateEnabledFormattingRulesForNodeTypeFactory} from '../../ContentCanvas/Helpers/index';
 
 @connect($transform({
-    focusedNode: selectors.CR.Nodes.focusedSelector,
+    focusedNodeType: selectors.CR.Nodes.focusedNodeTypeSelector,
     currentlyEditedPropertyName: selectors.UI.ContentCanvas.currentlyEditedPropertyName,
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor,
     context: selectors.Guest.context
@@ -20,9 +20,9 @@ import {calculateEnabledFormattingRulesForNodeTypeFactory} from '../../ContentCa
     globalRegistry,
     toolbarRegistry: globalRegistry.get('richtextToolbar')
 }))
-export default class Toolbar extends PureComponent {
+export default class EditorToolbar extends PureComponent {
     static propTypes = {
-        focusedNode: PropTypes.object,
+        focusedNodeType: PropTypes.string,
         currentlyEditedPropertyName: PropTypes.string,
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
@@ -53,9 +53,9 @@ export default class Toolbar extends PureComponent {
     }
 
     render() {
-        const {focusedNode, currentlyEditedPropertyName, formattingUnderCursor, globalRegistry} = this.props;
+        const {focusedNodeType, currentlyEditedPropertyName, formattingUnderCursor, globalRegistry} = this.props;
         const calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeTypeFactory(globalRegistry);
-        const enabledFormattingRuleIds = calculateEnabledFormattingRulesForNodeType(focusedNode.nodeType);
+        const enabledFormattingRuleIds = calculateEnabledFormattingRulesForNodeType(focusedNodeType);
         const classNames = mergeClassNames({
             [style.toolBar]: true
         });

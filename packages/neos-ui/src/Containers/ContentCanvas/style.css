@@ -5,6 +5,7 @@
     padding: 82px var(--sidebarWidth) 0;
     transition: .2s ease padding;
     will-change: padding;
+    background-color: var(--brandColorsContrastDarker);
 }
 .contentCanvas--isFringeLeft {
     padding-left: 0;
@@ -22,6 +23,9 @@
     width: 100%;
     height: 100%;
     position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    transition: .2s ease width, .2s ease height;
 }
 .contentCanvas__contents {
     position: absolute;
@@ -29,6 +33,7 @@
     top: 0;
     width: 100%;
     height: 100%;
+    background-color: white;
 }
 
 .markHoveredNodeAsHovered {

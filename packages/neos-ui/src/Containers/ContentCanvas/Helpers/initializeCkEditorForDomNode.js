@@ -9,8 +9,8 @@ export default function initializeCkEditorForDomNode(domNode, dependencies) {
     const {byContextPathDynamicAccess, globalRegistry, persistChange} = dependencies;
 
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const formattingRulesRegistry = globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules');
-    const i18nRegistry = globalRegistry.get('@neos-project/neos-ui-i18n');
+    const formattingRulesRegistry = globalRegistry.get('ckEditor').get('formattingRules');
+    const i18nRegistry = globalRegistry.get('i18n');
 
     const calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeTypeFactory(globalRegistry);
 
@@ -28,8 +28,8 @@ export default function initializeCkEditorForDomNode(domNode, dependencies) {
 
         domNode.classList.add(style.editable);
 
-        const nodeFormattingRules = calculateEnabledFormattingRulesForNodeType(node.nodeType);
-        const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get(node.nodeType));
+        const nodeFormattingRules = calculateEnabledFormattingRulesForNodeType($get('nodeType', node));
+        const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get($get('nodeType', node)));
         const placeholder = unescape(i18nRegistry.translate(placeholderLabel));
 
         const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];

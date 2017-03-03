@@ -10,10 +10,9 @@ const RegularExpression = (value, validatorOptions) => {
 
     if (value.length === 0 || value.match(regularExpression) !== null) {
         return null;
-    } else {
-        const pattern = regularExpression.toString();
-        return <I18n id='content.inspector.validators.regularExpressionValidator.patternDoesNotMatch' params={{pattern}}/>;
     }
+    const pattern = regularExpression.toString();
+    return <I18n id="content.inspector.validators.regularExpressionValidator.patternDoesNotMatch" params={{pattern}}/>;
 };
 
 export default RegularExpression;

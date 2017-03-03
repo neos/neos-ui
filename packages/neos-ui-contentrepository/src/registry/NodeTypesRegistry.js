@@ -46,6 +46,17 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         return Object.keys(result || []).filter(key => result[key]);
     }
 
+    getAllowedNodeTypesTakingAutoCreatedIntoAccount(isSubjectNodeAutocreated, referenceParentName, referenceParentNodeType, referenceGrandParentNodeType) {
+        if (isSubjectNodeAutocreated) {
+            if (!referenceGrandParentNodeType) {
+                return [];
+            }
+            return this.getAllowedGrandChildNodeTypes(referenceGrandParentNodeType, referenceParentName);
+        }
+
+        return this.getAllowedChildNodeTypes(referenceParentNodeType);
+    }
+
     getGroupedNodeTypeList(nodeTypeFilter) {
         const nodeTypes = nodeTypeFilter ? Object.values(this._registry).filter(nodeType => {
             return nodeTypeFilter.indexOf(nodeType.name) !== -1;
@@ -79,7 +90,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     }
 
     getSubTypesOf(nodeTypeName) {
-        return this._inheritanceMap.subTypes[nodeTypeName];
+        return [nodeTypeName, ...this._inheritanceMap.subTypes[nodeTypeName]];
     }
 
     getInspectorViewConfigurationFor(nodeTypeName) {
@@ -107,6 +118,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         );
         const tabs = getNormalizedDeepStructureFromNodeType('ui.inspector.tabs')(nodeType);
         const groups = getNormalizedDeepStructureFromNodeType('ui.inspector.groups')(nodeType);
+        const views = getNormalizedDeepStructureFromNodeType('ui.inspector.views')(nodeType);
         const properties = getNormalizedDeepStructureFromNodeType('properties')(nodeType);
 
         const viewConfiguration = {
@@ -124,6 +136,15 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                                     editorOptions: $get('ui.inspector.editorOptions')
                                 }),
                                 properties.filter(p => $get('ui.inspector.group', p) === group.id)
+                            ),
+                            views: map(
+                                $transform({
+                                    id: $get('id'),
+                                    label: $get('label'),
+                                    view: $get('view'),
+                                    viewOptions: $get('viewOptions')
+                                }),
+                                views.filter(v => $get('group', v) === group.id)
                             )
                         }),
                         groups.filter(g => {

@@ -25,12 +25,12 @@ const createAlohaConfigPostProcessor = formattingRulesRegistry => alohaConfigura
 
 const calculateEnabledFormattingRulesForNodeTypeFactory = memoize(globalRegistry => {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const formattingRulesRegistry = globalRegistry.get('@neos-project/neos-ui-ckeditor-bindings').get('formattingRules');
+    const formattingRulesRegistry = globalRegistry.get('ckEditor').get('formattingRules');
 
     const postProcessAlohaConfig = createAlohaConfigPostProcessor(formattingRulesRegistry);
 
     return memoize(nodeTypeName => {
-        const {properties} = nodeTypesRegistry.get(nodeTypeName);
+        const properties = $get('properties', nodeTypesRegistry.get(nodeTypeName));
 
         const enabledFormattingRules = {};
         Object.keys(properties)

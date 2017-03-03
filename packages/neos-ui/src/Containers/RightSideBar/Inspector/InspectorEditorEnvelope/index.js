@@ -2,14 +2,29 @@ import React, {PureComponent, PropTypes} from 'react';
 import {$get} from 'plow-js';
 import style from './style.css';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
-
+import {neos} from '@neos-project/neos-ui-decorators';
+import {connect} from 'react-redux';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 /**
  * (Stateful) Editor envelope
  *
  * For reference on how to use editors, check the docs inside the Registry.
  */
+@neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    validatorRegistry: globalRegistry.get('validators')
+}))
+@connect((state, {id, nodeTypesRegistry, validatorRegistry}) => {
+    const validationErrorsSelector = selectors.UI.Inspector.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
+    return state => ({
+        transientValueRaw: $get([id], selectors.UI.Inspector.transientValues(state)),
+        validationErrors: $get([id], validationErrorsSelector(state)) || null
+    });
+})
 export default class InspectorEditorEnvelope extends PureComponent {
     static propTypes = {
+        transientValueRaw: PropTypes.any,
+
         id: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
         editor: PropTypes.string.isRequired,
@@ -18,19 +33,13 @@ export default class InspectorEditorEnvelope extends PureComponent {
         validationErrors: PropTypes.array,
 
         node: PropTypes.object.isRequired,
-        commit: PropTypes.func.isRequired,
-        transient: PropTypes.object
+        commit: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
-        this.onHandleCommit = this.onHandleCommit.bind(this);
-    }
+    commit = (value, hooks = null) => {
+        const {transientValueRaw, id, commit} = this.props;
 
-    onHandleCommit(value, hooks = null) {
-        const {transient, id, commit} = this.props;
-
-        if ($get([id], transient) === value && hooks === null) {
+        if (transientValueRaw === value && hooks === null) {
             // Nothing has changed...
             return commit(id, null, null);
         }
@@ -39,12 +48,14 @@ export default class InspectorEditorEnvelope extends PureComponent {
     }
 
     render() {
-        const {node, id, transient, ...otherProps} = this.props;
-        // If property id starts with "_" then look in object properties directly
-        const sourceValueRaw = id.slice(0, 1) === '_' ? node[id.slice(1)] : $get(['properties', id], node);
+        const {node, id, transientValueRaw, ...otherProps} = this.props;
+
+        //
+        // nodeType needs to be read directly from node
+        //
+        const sourceValueRaw = id === '_nodeType' ? $get('nodeType', node) : $get(['properties', id], node);
         const sourceValue = sourceValueRaw && sourceValueRaw.toJS ?
             sourceValueRaw.toJS() : sourceValueRaw;
-        const transientValueRaw = $get([id], transient);
         const transientValue = transientValueRaw && transientValueRaw.toJS ?
             transientValueRaw.toJS() : transientValueRaw;
 
@@ -56,7 +67,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
                     identifier={id}
                     value={transientValue ? transientValue.value : sourceValue}
                     hooks={transientValue ? transientValue.hooks : null}
-                    commit={this.onHandleCommit}
+                    commit={this.commit}
                     />
             </div>
         );

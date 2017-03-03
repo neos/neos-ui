@@ -17,7 +17,7 @@ import allSagas from './Sagas/index';
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
 import Root from './Containers/Root';
-
+import apiExposureMap from './apiExposureMap';
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
 const sagaMiddleWare = createSagaMiddleware();
@@ -32,10 +32,11 @@ const globalRegistry = new SynchronousMetaRegistry(`The global registry`);
 //
 // Create the host plugin api and load local manifests
 //
-createConsumerApi(manifests, {});
+createConsumerApi(manifests, apiExposureMap);
 require('./manifest');
 require('@neos-project/neos-ui-contentrepository');
 require('@neos-project/neos-ui-editors');
+require('@neos-project/neos-ui-views');
 require('@neos-project/neos-ui-ckeditor-bindings');
 require('@neos-project/neos-ui-validators');
 require('@neos-project/neos-ui-i18n/src/manifest');
@@ -51,7 +52,7 @@ function * application() {
     // until we're good to go
     //
     ReactDOM.render(
-        <div style={{width: '100vw', height: '100vh', backgroundColor: 'black'}}>
+        <div style={{width: '100vw', height: '100vh', backgroundColor: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <h1>Loading...</h1>
         </div>,
         appContainer
@@ -100,7 +101,7 @@ function * application() {
     // Load translations
     //
     const translations = yield system.getTranslations;
-    const i18nRegistry = globalRegistry.get('@neos-project/neos-ui-i18n');
+    const i18nRegistry = globalRegistry.get('i18n');
     i18nRegistry.setTranslations(translations);
 
     //

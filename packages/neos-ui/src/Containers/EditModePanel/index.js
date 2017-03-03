@@ -1,11 +1,12 @@
-import React, {Component, PropTypes} from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get, $or} from 'plow-js';
+import {memoize} from 'ramda';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import I18n from '@neos-project/neos-ui-i18n';
 import Button from '@neos-project/react-ui-components/lib/Button/index';
 
 import style from './style.css';
@@ -13,7 +14,7 @@ import style from './style.css';
 @connect($transform({
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
-    editPreviewMode: $get('ui.editPreviewMode'),
+    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode,
     isHidden: $or(
         $get('ui.editModePanel.isHidden'),
         $get('ui.fullScreen.isFullScreen')
@@ -24,7 +25,7 @@ import style from './style.css';
 @neos(globalRegistry => ({
     editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
 }))
-export default class EditModePanel extends Component {
+export default class EditModePanel extends PureComponent {
     static propTypes = {
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
@@ -34,13 +35,11 @@ export default class EditModePanel extends Component {
         setEditPreviewMode: PropTypes.func.isRequired
     };
 
-    shouldComponentUpdate(...args) {
-        return shallowCompare(this, ...args);
-    }
+    handleEditPreviewModeClick = memoize(mode => () => {
+        const {setEditPreviewMode} = this.props;
 
-    handleEditPreviewModeClick(mode) {
-        return () => this.props.setEditPreviewMode(mode);
-    }
+        setEditPreviewMode(mode);
+    });
 
     render() {
         const {
@@ -64,11 +63,27 @@ export default class EditModePanel extends Component {
             <div className={classNames}>
                 <div className={style.editModePanel__editingModes}>
                     <p>Editing Modes</p>
-                    {editModes.map(editMode => <Button key={editMode.id} style={editMode.id === editPreviewMode ? 'brand' : null} onClick={this.handleEditPreviewModeClick(editMode.id)}>{editMode.id}</Button>)}
+                    {editModes.map(editMode => (
+                        <Button
+                            key={editMode.id}
+                            style={editMode.id === editPreviewMode ? 'brand' : null}
+                            onClick={this.handleEditPreviewModeClick(editMode.id)}
+                            >
+                            <I18n id={editMode.title}/>
+                        </Button>
+                    ))}
                 </div>
                 <div className={style.editModePanel__previewCentral}>
                     <p>Preview Central</p>
-                    {previewModes.map(previewMode => <Button key={previewMode.id} style={previewMode.id === editPreviewMode ? 'brand' : null} onClick={this.handleEditPreviewModeClick(previewMode.id)}>{previewMode.id}</Button>)}
+                    {previewModes.map(previewMode => (
+                        <Button
+                            key={previewMode.id}
+                            style={previewMode.id === editPreviewMode ? 'brand' : null}
+                            onClick={this.handleEditPreviewModeClick(previewMode.id)}
+                            >
+                            <I18n id={previewMode.title}/>
+                        </Button>
+                    ))}
                 </div>
             </div>
         );

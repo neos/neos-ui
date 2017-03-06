@@ -1,6 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 import Button from '@neos-project/react-ui-components/lib/Button/';
 import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
@@ -13,23 +13,33 @@ import style from './style.css';
 
 @connect($transform({
     isOpen: selectors.UI.NodeVariantCreationDialog.isOpen,
-    numberOfParentNodesToBeCreated: selectors.UI.NodeVariantCreationDialog.numberOfParentNodesToBeCreated
+    numberOfParentNodesToBeCreated: selectors.UI.NodeVariantCreationDialog.numberOfParentNodesToBeCreated,
+    contentDimensions: selectors.CR.ContentDimensions.byName,
+    activePresets: selectors.CR.ContentDimensions.activePresets,
+    documentNode: selectors.UI.ContentCanvas.documentNodeSelector
 }), {
     cancel: actions.UI.NodeVariantCreationDialog.cancel,
     createEmpty: actions.UI.NodeVariantCreationDialog.createEmpty,
     createAndCopy: actions.UI.NodeVariantCreationDialog.createAndCopy
 })
 @neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class NodeVariantCreationDialog extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
         numberOfParentNodesToBeCreated: PropTypes.number.isRequired,
+        contentDimensions: PropTypes.object.isRequired,
+        activePresets: PropTypes.object.isRequired,
+        documentNode: PropTypes.object.isRequired,
 
         cancel: PropTypes.func.isRequired,
         createEmpty: PropTypes.func.isRequired,
-        createAndCopy: PropTypes.func.isRequired
+        createAndCopy: PropTypes.func.isRequired,
+
+        nodeTypesRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleAbort = () => {
@@ -54,7 +64,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
         return (
             <div>
                 <span className={style.modalTitle}>
-                    Start with an empty or pre-filled document?
+                    <I18n id="Neos.Neos:Main:content.dimension.createDialog.header" fallback="Start with an empty or pre-filled document?"/>
                 </span>
             </div>
         );
@@ -81,7 +91,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.handleCreateEmpty}
                 >
-                Create empyt TODO
+                <I18n id="Neos.Neos:Main:content.dimension.createDialog.createEmpty" fallback="Create empty"/>
             </Button>
         );
     }
@@ -94,20 +104,38 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.handleCreateAndCopy}
                 >
-                Create and copy TODO
+                <I18n id="Neos.Neos:Main:content.dimension.createDialog.createAndCopy" fallback="Create and copy"/>
             </Button>
         );
     }
 
     render() {
-        const {isOpen, numberOfParentNodesToBeCreated} = this.props;
+        const {isOpen, numberOfParentNodesToBeCreated, i18nRegistry, activePresets, contentDimensions, documentNode, nodeTypesRegistry} = this.props;
 
         if (!isOpen) {
             return null;
         }
 
+        let currentDimensionChoiceText = '';
+        activePresets.forEach((dimensionConfig, dimensionName) => {
+            const dimensionLabel = i18nRegistry.translate($get([dimensionName, 'label'], contentDimensions));
+            const dimensionValueLabel = i18nRegistry.translate($get('label', dimensionConfig));
+
+            if (currentDimensionChoiceText) {
+                currentDimensionChoiceText += ', ';
+            }
+            currentDimensionChoiceText += `${dimensionLabel} ${dimensionValueLabel}`;
+        });
+
+        const nodeType = nodeTypesRegistry.get($get('nodeType', documentNode));
+
+        const i18nParams = {
+            currentDimensionChoiceText,
+            currentDocumentDimensionChoiceText: currentDimensionChoiceText,
+            nodeTypeLabel: i18nRegistry.translate($get('label', nodeType))
+        };
+
         return (
-            // TODO: anchestor documents!!
             <Dialog
                 actions={[this.renderAbort(), this.renderCreateEmpty(), this.renderCreateAndCopy()]}
                 title={this.renderTitle()}
@@ -115,11 +143,16 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 isOpen
                 >
                 <div className={style.modalContents}>
-                    This TODO does not exist yet in Language German.
-You can create it now, either starting with an empty TODO or copying all content from the currently visible TODO in .
-{numberOfParentNodesToBeCreated > 0 ?
-    <span>Additionally, there are {numberOfParentNodesToBeCreated} ancestor documents which do not exist in the chosen variant either, and which will be created as well.</span> : null
-}
+                    <div>
+                        <I18n id="Neos.Neos:Main:content.dimension.createDialog.nodeTypeDoesNotExistInDimension" fallback="TODO" params={i18nParams}/>
+                    </div>
+
+                    <div>
+                        <I18n id="Neos.Neos:Main:content.dimension.createDialog.createEmptyOrCopy" fallback="TODO" params={i18nParams}/>
+                    </div>
+                    {numberOfParentNodesToBeCreated > 0 ?
+                        <div><I18n id="Neos.Neos:Main:content.dimension.createDialog.existingAncestorDocuments" fallback="TODO" params={{numberOfNodesMissingInRootline: numberOfParentNodesToBeCreated}}/></div> : null
+                    }
                 </div>
             </Dialog>
         );

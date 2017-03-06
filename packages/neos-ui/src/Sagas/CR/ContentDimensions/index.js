@@ -58,7 +58,7 @@ function * updateContentCanvasSrc(action) {
             });
             yield put(actions.UI.ContentCanvas.setSrc(result.nodeFrontendUri));
         } else if (nextAction.type === actionTypes.UI.NodeVariantCreationDialog.CANCEL) {
-            // Select old dimensions again if user cancelledd
+            // Select old dimensions again if user cancelled
             yield put(actions.CR.ContentDimensions.setActive(sourceDimensions));
         }
     }

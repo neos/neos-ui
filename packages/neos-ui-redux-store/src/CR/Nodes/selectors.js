@@ -51,6 +51,13 @@ export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
     }
 );
 
+export const makeGetNodeByContextPathSelector = () => createSelector(
+    [
+        (state, contextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath], state)
+    ],
+    node => node
+);
+
 export const makeHasChildrenSelector = allowedNodeTypes => createSelector(
     [
         (state, contextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)

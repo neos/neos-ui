@@ -1,30 +1,20 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {$get} from 'plow-js';
 
 import Tree from '@neos-project/react-ui-components/lib/Tree/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-import Node from './Node/index';
+import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.css';
 
-@connect($transform({
-    siteNode: selectors.CR.Nodes.siteNodeSelector,
-    pageTreeState: $get('ui.pageTree')
-}), {
-    toggle: actions.UI.PageTree.toggle,
-    focus: actions.UI.PageTree.focus,
-    setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
-    setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath,
-    moveNode: actions.CR.Nodes.move
-})
-export default class PageTree extends PureComponent {
+export default class NodeTree extends PureComponent {
     static propTypes = {
-        siteNode: PropTypes.object,
-        pageTreeState: PropTypes.object.isRequired,
-
+        ChildRenderer: PropTypes.func,
+        rootNode: PropTypes.object,
+        nodeTypeRole: PropTypes.string,
         toggle: PropTypes.func,
         focus: PropTypes.func,
         setActiveContentCanvasSrc: PropTypes.func,
@@ -51,8 +41,10 @@ export default class PageTree extends PureComponent {
     handleClick = (src, contextPath) => {
         const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath} = this.props;
 
-        setActiveContentCanvasSrc(src);
-        setActiveContentCanvasContextPath(contextPath);
+        if (setActiveContentCanvasSrc && setActiveContentCanvasContextPath) {
+            setActiveContentCanvasSrc(src);
+            setActiveContentCanvasContextPath(contextPath);
+        }
     }
 
     handleDrag = node => {
@@ -73,16 +65,16 @@ export default class PageTree extends PureComponent {
     }
 
     render() {
-        const {siteNode} = this.props;
-        if (!siteNode) {
+        const {rootNode, ChildRenderer} = this.props;
+        if (!rootNode) {
             return (<div>...</div>);
         }
 
         return (
             <Tree className={style.pageTree}>
-                <Node
-                    ChildRenderer={Node}
-                    node={siteNode}
+                <ChildRenderer
+                    ChildRenderer={ChildRenderer}
+                    node={rootNode}
                     onNodeToggle={this.handleToggle}
                     onNodeClick={this.handleClick}
                     onNodeFocus={this.handleFocus}
@@ -94,3 +86,23 @@ export default class PageTree extends PureComponent {
         );
     }
 }
+
+export const PageTree = connect(state => ({
+    rootNode: selectors.CR.Nodes.siteNodeSelector(state),
+    ChildRenderer: PageTreeNode
+}), {
+    toggle: actions.UI.PageTree.toggle,
+    focus: actions.UI.PageTree.focus,
+    setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
+    setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath,
+    moveNode: actions.CR.Nodes.move
+})(NodeTree);
+
+export const ContentTree = connect(state => ({
+    rootNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
+    ChildRenderer: ContentTreeNode
+}), {
+    toggle: actions.UI.ContentTree.toggle,
+    focus: actions.CR.Nodes.focus,
+    moveNode: actions.CR.Nodes.move
+})(NodeTree);

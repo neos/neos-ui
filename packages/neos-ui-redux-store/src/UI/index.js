@@ -19,6 +19,7 @@ import * as NodeLinking from './NodeLinking/index';
 import * as SelectNodeTypeModal from './SelectNodeTypeModal/index';
 import * as NodeCreationDialog from './NodeCreationDialog/index';
 import * as NodeVariantCreationDialog from './NodeVariantCreationDialog/index';
+import * as ContentTree from './ContentTree/index';
 
 const all = {
     FlashMessages,
@@ -38,7 +39,8 @@ const all = {
     NodeLinking,
     SelectNodeTypeModal,
     NodeCreationDialog,
-    NodeVariantCreationDialog
+    NodeVariantCreationDialog,
+    ContentTree
 };
 
 //

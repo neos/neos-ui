@@ -28,8 +28,8 @@ import LoadingIndicator from './Containers/SecondaryToolbar/LoadingIndicator/ind
 import Drawer from './Containers/Drawer/index';
 
 import LeftSideBar from './Containers/LeftSideBar/index';
-import NodeTreeToolBar from './Containers/LeftSideBar/NodeTreeToolBar/index';
-import PageTree from './Containers/LeftSideBar/PageTree/index';
+import {PageTreeToolbar, ContentTreeToolbar} from './Containers/LeftSideBar/NodeTreeToolBar/index';
+import {PageTree, ContentTree} from './Containers/LeftSideBar/NodeTree/index';
 
 import ContentCanvas from './Containers/ContentCanvas/index';
 
@@ -67,8 +67,10 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.add('Drawer', Drawer);
 
     containerRegistry.add('LeftSideBar', LeftSideBar);
-    containerRegistry.add('LeftSideBar/NodeTreeToolBar', NodeTreeToolBar);
+    containerRegistry.add('LeftSideBar/PageTreeToolbar', PageTreeToolbar);
     containerRegistry.add('LeftSideBar/PageTree', PageTree);
+    containerRegistry.add('LeftSideBar/ContentTreeToolbar', ContentTreeToolbar);
+    containerRegistry.add('LeftSideBar/ContentTree', ContentTree);
 
     containerRegistry.add('ContentCanvas', ContentCanvas);
 

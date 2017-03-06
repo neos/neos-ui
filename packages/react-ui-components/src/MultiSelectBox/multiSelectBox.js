@@ -1,12 +1,13 @@
 import React, {PureComponent, PropTypes} from 'react';
-import AbstractSelectBox from '../SelectBox/abstractSelectBox';
+import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abstractState} from '../SelectBox/abstractSelectBox';
 
 export default class MultiSelectBox extends AbstractSelectBox {
     static propTypes = {
-        /**
-         * This prop represents the current selected options.
-         */
-        selectedOptions: PropTypes.any,
+        ...abstractSelectBoxPropTypes,
+
+        value: PropTypes.arrayOf(
+            PropTypes.string
+        ),
 
         /**
          * An optional css theme to be injected.
@@ -25,10 +26,10 @@ export default class MultiSelectBox extends AbstractSelectBox {
         IconButtonComponent: PropTypes.any.isRequired
     };
 
-    // state = {
-    //     options: undefined,
-    //     selectedOptions: []
-    // };
+    state = {
+        ...abstractState,
+        selectedOptions: []
+    };
 
     constructor(...args) {
         super(...args);
@@ -39,9 +40,9 @@ export default class MultiSelectBox extends AbstractSelectBox {
     }
 
     componentDidMount() {
-        if (this.props.selectedOptions) {
+        if (this.props.value) {
             this.setState({
-                selectedOptions: this.props.selectedOptions
+                selectedOptions: this.props.value
             });
         }
     }

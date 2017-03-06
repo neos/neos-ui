@@ -113,11 +113,26 @@ storiesOf('SelectBox', module)
         {inline: true}
     )
     .addWithInfo(
-        'searchableAsyncWithLoadOnInput',
+        'searchableAsyncWithLoadOnInputAndValu',
         () => (
             <StoryWrapper title="SelectBox">
                 <SelectBox
                     value={"opt1"}
+                    options={loadOptions}
+                    placeholder={text('Placeholder', 'Type to search')}
+                    onSelect={action('onSelect')}
+                    onDelete={action('onDelete')}
+                    loadOptionsOnInput={true}
+                />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'searchableAsyncWithLoadOnInput',
+        () => (
+            <StoryWrapper title="SelectBox">
+                <SelectBox
                     options={loadOptions}
                     placeholder={text('Placeholder', 'Type to search')}
                     onSelect={action('onSelect')}

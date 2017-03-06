@@ -11,8 +11,7 @@ const options = [
 ];
 
 const selectedOptions = [
-    {value: 'opt1', label: 'Option 1'},
-    {value: 'opt2', label: 'Option 2'}
+    'opt1', 'opt2'
 ];
 
 const loadOptions = ({callback, value, searchTerm}) => {
@@ -56,7 +55,7 @@ storiesOf('MultiSelectBox', module)
         () => (
             <StoryWrapper>
                 <MultiSelectBox
-                    selectedOptions={selectedOptions}
+                    value={selectedOptions}
                     options={options}
                     placeholder={text('Placeholder', 'Select')}
                     placeholderIcon={text('Placeholder icon', 'bookmark')}

@@ -1,72 +1,71 @@
 import React, {PureComponent, PropTypes} from 'react';
 import isFunction from 'lodash.isfunction';
 
-export default class SelectBox extends PureComponent {
+export const propTypes = {
+    /**
+     * This prop represents either a set of options or a function that returns those.
+     * Each option must have a value and can have a label and an icon.
+     */
+    options: React.PropTypes.oneOfType([
+        PropTypes.arrayOf(
+            PropTypes.shape({
+                icon: PropTypes.string,
+                value: PropTypes.oneOfType([
+                    PropTypes.string,
+                    PropTypes.object
+                ]).isRequired,
+                label: PropTypes.oneOfType([
+                    PropTypes.string,
+                    PropTypes.object
+                ]).isRequired
+            })
+        ),
+        PropTypes.func
+    ]),
+
+    /**
+     * This prop represents if the options should be loaded on init or when the user starts typing
+     * something in the search field.
+     */
+    loadOptionsOnInput: PropTypes.bool,
+
+    /**
+     * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
+     */
+    placeholder: PropTypes.string,
+
+    /**
+     * This prop is an icon for the placeholder.
+     */
+    placeholderIcon: PropTypes.string,
+
+    /**
+     * This prop gets called when an option was selected. It returns the new value.
+     */
+    onSelect: PropTypes.func.isRequired,
+
+    /**
+     * If passed, a `delete` icon will be rendered instead of a chevron,
+     * this prop will be called when clicking on the icon.
+     */
+    onDelete: PropTypes.func,
+
+    /**
+     * The minimum amount of items in the select before showing a search box, if set to -1 the search box
+     * will never be shown.
+     */
+    minimumResultsForSearch: PropTypes.number
+};
+
+export const state = {
+    value: undefined,
+    options: undefined,
+    isLoadingOptions: false,
+};
+
+export default class AbstractSelectBox extends PureComponent {
     static propTypes = {
-        /**
-         * This prop represents the current selected value.
-         */
-        value: PropTypes.string,
-
-        /**
-         * This prop represents either a set of options or a function that returns those.
-         * Each option must have a value and can have a label and an icon.
-         */
-        options: React.PropTypes.oneOfType([
-            PropTypes.arrayOf(
-                PropTypes.shape({
-                    icon: PropTypes.string,
-                    value: PropTypes.oneOfType([
-                        PropTypes.string,
-                        PropTypes.object
-                    ]).isRequired,
-                    label: PropTypes.oneOfType([
-                        PropTypes.string,
-                        PropTypes.object
-                    ]).isRequired
-                })
-            ),
-            PropTypes.func
-        ]),
-
-        /**
-         * This prop represents if the options should be loaded on init or when the user starts typing
-         * something in the search field.
-         */
-        loadOptionsOnInput: PropTypes.bool,
-
-        /**
-         * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
-         */
-        placeholder: PropTypes.string,
-
-        /**
-         * This prop is an icon for the placeholder.
-         */
-        placeholderIcon: PropTypes.string,
-
-        /**
-         * This prop gets called when an option was selected. It returns the new value.
-         */
-        onSelect: PropTypes.func.isRequired,
-
-        /**
-         * If passed, a `delete` icon will be rendered instead of a chevron,
-         * this prop will be called when clicking on the icon.
-         */
-        onDelete: PropTypes.func,
-
-        /**
-         * The minimum amount of items in the select before showing a search box, if set to -1 the search box
-         * will never be shown.
-         */
-        minimumResultsForSearch: PropTypes.number,
-    };
-
-    state = {
-        options: undefined,
-        isLoadingOptions: false,
-        selectedOptions: []
+        ...propTypes
     };
 
     constructor(...args) {
@@ -93,19 +92,15 @@ export default class SelectBox extends PureComponent {
      */
     loadOptions() {
         const options = this.props.options;
-        let selectedValue = undefined;
 
         this.setState({
             isLoadingOptions: true
         });
 
-        // TODO explain
-        if (this.props.loadOptionsOnInput) {
-            selectedValue = this.props.value;
-        }
-
+        // We only use the current value when loading options, if the
+        // 'loadOptionsOnInput' flag is on.
         return isFunction(options) && options({
-            value: selectedValue,
+            value: this.props.loadOptionsOnInput ? this.props.value : undefined,
             callback: this.handleOptionsLoad
         });
     }
@@ -128,7 +123,6 @@ export default class SelectBox extends PureComponent {
      * @param options
      */
     setLoadedOptions(options) {
-        console.log ('set options', options);
         this.setState({
             options: options,
             isLoadingOptions: false

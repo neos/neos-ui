@@ -1,10 +1,16 @@
 import React, {PureComponent, PropTypes} from 'react';
 import isFunction from 'lodash.isfunction';
-import AbstractSelectBox from './abstractSelectBox';
+import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abstractState} from './abstractSelectBox';
 
 export default class SelectBox extends AbstractSelectBox {
-
     static propTypes = {
+        ...abstractSelectBoxPropTypes,
+
+        /**
+         * This prop represents the current selected value.
+         */
+        value: PropTypes.string,
+
         /**
          *
          */
@@ -32,7 +38,7 @@ export default class SelectBox extends AbstractSelectBox {
     };
 
     state = {
-        value: undefined,
+        ...abstractState,
         icon: undefined,
         label: undefined,
     };

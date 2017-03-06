@@ -16,6 +16,7 @@ export default class Modals extends PureComponent {
         const InsertModeModal = containerRegistry.get('Modals/InsertModeModal');
         const SelectNodeTypeModal = containerRegistry.get('Modals/SelectNodeTypeModal');
         const NodeCreationDialog = containerRegistry.get('Modals/NodeCreationDialog');
+        const NodeVariantCreationDialog = containerRegistry.get('Modals/NodeVariantCreationDialog');
 
         return (
             <div>
@@ -23,6 +24,7 @@ export default class Modals extends PureComponent {
                 <InsertModeModal/>
                 <SelectNodeTypeModal/>
                 <NodeCreationDialog/>
+                <NodeVariantCreationDialog/>
             </div>
 
         );

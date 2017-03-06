@@ -92,6 +92,14 @@ export const siteNodeSelector = createSelector(
     (siteNodeContextPath, nodesByContextPath) => $get(siteNodeContextPath, nodesByContextPath)
 );
 
+export const currentContentCanvasNodeSelector = createSelector(
+    [
+        getCurrentContentCanvasContextPath,
+        $get('cr.nodes.byContextPath')
+    ],
+    (currentContentCanvasNode, nodesByContextPath) => $get(currentContentCanvasNode, nodesByContextPath)
+);
+
 export const byContextPathSelector = defaultMemoize(
     contextPath => createSelector(
         [

@@ -25,6 +25,7 @@ prototype(Neos.Neos:Page) {
             state = 'documentNode'
             context {
                 documentNode = ${documentNode}
+                site = ${site}
             }
 
             @position = 'after javascripts'

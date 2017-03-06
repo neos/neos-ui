@@ -142,9 +142,10 @@ export default class ContentCanvas extends PureComponent {
 
         // Add nodes before setting the new context path to prevent action ordering issues -> THIS WILL UPDATE OUR OWN PROPS!!!
         const nodes = iframeWindow['@Neos.Neos.Ui:Nodes'];
+        nodes[documentInformation.metaData.contextPath] = documentInformation.metaData.documentNodeSerialization;
         addNodes(nodes);
 
-        setContextPath(documentInformation.metaData.contextPath);
+        setContextPath(documentInformation.metaData.contextPath, documentInformation.metaData.siteNode);
         setPreviewUrl(documentInformation.metaData.previewUrl);
         setActiveDimensions(documentInformation.metaData.contentDimensions.active);
 

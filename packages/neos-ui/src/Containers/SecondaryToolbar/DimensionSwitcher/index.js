@@ -36,7 +36,7 @@ const DimensionSelector = props => {
     ).toArray();
 
     const onPresetSelect = presetName => {
-        onSelect(dimensionName, presetName);
+        onSelect(dimensionName, presetName, activePreset);
     };
 
     return (

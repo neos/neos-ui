@@ -65,10 +65,12 @@ Neos:
         documentNode:
           metaData:
             contextPath: '${q(documentNode).property("_contextPath")}'
+            siteNode: '${q(site).property(''_contextPath'')}'
             previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: "live"}).get(0), controllerContext)}'
             contentDimensions:
               active: '${documentNode.context.dimensions}'
               allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
+            documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, controllerContext)}'
         backend:
           changes:
             pending: {  }

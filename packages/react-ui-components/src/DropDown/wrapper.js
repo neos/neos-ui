@@ -52,14 +52,9 @@ export class DropDownWrapper extends PureComponent {
         this.handleToggle = event => {
             if (event) {
                 event.stopPropagation();
-
-                // TODO discuss this
-                if (event.detail > 0) {
-                    this.toggle();
-                }
-            } else {
-                this.toggle();
             }
+
+            this.toggle();
         };
         this.handleClose = event => {
             this.close();

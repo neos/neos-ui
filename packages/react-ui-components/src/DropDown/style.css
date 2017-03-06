@@ -19,6 +19,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    line-height: var(--goldenUnit);
+    background: var(--brandColorsContrastNeutral);
 
     &:focus {
         outline: 1px dotted var(--brandColorsContrastBrightest);

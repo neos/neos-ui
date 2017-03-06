@@ -5,11 +5,24 @@
     width: 100%;
     vertical-align: top;
 }
+
+.selectedOptions {
+    position: relative;
+    width: 100%;
+    list-style: none;
+}
+
+.selectedOptions__item {
+    width: 100%;
+    position: relative;
+}
+
 .dropDown {
     composes: reset from './../reset.css';
     position: static;
     display: inline-block;
 }
+
 .dropDown__btn {
     composes: reset from './../reset.css';
     position: relative;
@@ -36,10 +49,10 @@
     width: 100%;
     color: #fff;
     font-size: 14px;
-&:focus {
-     background: transparent !important;
-     color: #fff !important;
- }
+    &:focus {
+        background: transparent !important;
+        color: #fff !important;
+    }
 }
 
 .dropDown__loadingIcon {
@@ -61,6 +74,7 @@
     composes: reset from './../reset.css';
     margin-right: .5em;
 }
+
 .dropDown__btnDelete {
     composes: reset from './../reset.css';
     position: absolute;
@@ -74,25 +88,29 @@
     background: var(--brandColorsContrastNeutral);
     border-left: 1px solid var(--brandColorsContrastDarker);
 
-&:hover {
-     background: var(--brandColorsPrimaryBlue);
-     color: var(--brandColorsContrastBrightest);
- }
+    &:hover {
+        background: var(--brandColorsPrimaryBlue);
+        color: var(--brandColorsContrastBrightest);
+    }
 }
+
 .dropDown__contents {
     composes: reset from './../reset.css';
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
     z-index: 10;
 }
+
 .dropDown__contents li {
     padding: 0 1em;
 }
+
 .dropDown__contents li input {
     width: 100%;
     height: 100%;
     background: #FFF;
 }
+
 .dropDown__item {
     composes: reset from './../reset.css';
     height: 40px;
@@ -104,24 +122,25 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-&:hover {
-     background: var(--brandColorsPrimaryBlue);
- }
+    &:hover {
+        background: var(--brandColorsPrimaryBlue);
+    }
 
-> a,
-  button {
-      display: block;
-      width: 100%;
-      border: 0;
-      padding: 0 var(--spacing);
-      background: 0;
-      color: #FFF;
-      cursor: pointer;
-      text-decoration: none;
-      line-height: 40px;
-      text-align: left;
-  }
+    > a,
+    button {
+        display: block;
+        width: 100%;
+        border: 0;
+        padding: 0 var(--spacing);
+        background: 0;
+        color: #FFF;
+        cursor: pointer;
+        text-decoration: none;
+        line-height: 40px;
+        text-align: left;
+    }
 }
+
 .dropDown__itemIcon {
     composes: reset from './../reset.css';
     padding-right: .5em;

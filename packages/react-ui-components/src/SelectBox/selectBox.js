@@ -1,77 +1,22 @@
 import React, {PureComponent, PropTypes} from 'react';
 import isFunction from 'lodash.isfunction';
+import AbstractSelectBox from './abstractSelectBox';
 
-export default class SelectBox extends PureComponent {
+export default class SelectBox extends AbstractSelectBox {
+
     static propTypes = {
         /**
-         * This prop represents the current selected value.
-         */
-        value: PropTypes.string,
-
-        /**
-         * This prop represents either a set of options or a function that returns those.
-         * Each option must have a value and can have a label and an icon.
          *
-         * If it is a function, it gets passed in an object with the following keys:
-         * - callback -> this callback must be called when the result is available with the standard "array of object" structure
-         * - value -> only defined ON INITIAL LOAD; contains an *array key* (like a UUID) where we need the label.
-         * - searchTerm -> only defined WHEN THE USER TYPES in the input field; contains a search string (typically searched over the label)
          */
-        options: React.PropTypes.oneOfType([
-            PropTypes.arrayOf(
-                PropTypes.shape({
-                    icon: PropTypes.string,
-                    value: PropTypes.oneOfType([
-                        PropTypes.string,
-                        PropTypes.object
-                    ]).isRequired,
-                    label: PropTypes.oneOfType([
-                        PropTypes.string,
-                        PropTypes.object
-                    ]).isRequired
-                })
-            ),
-            PropTypes.func
-        ]),
-
-        /**
-         * This prop represents if the options should be loaded on init or when the user starts typing
-         * something in the search field.
-         */
-        loadOptionsOnInput: PropTypes.bool,
-
-        /**
-         * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
-         */
-        placeholder: PropTypes.string,
-
-        /**
-         * This prop is an icon for the placeholder.
-         */
-        placeholderIcon: PropTypes.string,
-
-        /**
-         * This prop gets called when an option was selected. It returns the new value.
-         */
-        onSelect: PropTypes.func.isRequired,
-
-        /**
-         * If passed, a `delete` icon will be rendered instead of a chevron,
-         * this prop will be called when clicking on the icon.
-         */
-        onDelete: PropTypes.func,
-
-        /**
-         * The minimum amount of items in the select before showing a search box, if set to -1 the search box
-         * will never be shown.
-         */
-        minimumResultsForSearch: PropTypes.number,
+        clearOnSelect: PropTypes.bool,
 
         /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'wrapper': PropTypes.string,
+            'selectedOptions': PropTypes.string,
+            'selectedOptions__item': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
         //
@@ -80,6 +25,7 @@ export default class SelectBox extends PureComponent {
         //
         DropDownComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
+        IconButtonComponent: PropTypes.any.isRequired,
         InputComponent: PropTypes.any.isRequired,
         SearchableSelectBoxComponent: PropTypes.any.isRequired,
         SimpleSelectBoxComponent: PropTypes.any.isRequired
@@ -89,16 +35,11 @@ export default class SelectBox extends PureComponent {
         value: undefined,
         icon: undefined,
         label: undefined,
-        options: undefined,
-        isLoadingOptions: false,
     };
 
     constructor(...args) {
         super(...args);
 
-        this.handleOptionsLoad = this.handleOptionsLoad.bind(this);
-        this.setLoadedOptions = this.setLoadedOptions.bind(this);
-        this.select = this.select.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
@@ -188,45 +129,6 @@ export default class SelectBox extends PureComponent {
     }
 
     /**
-     * returns the options
-     *
-     * @returns {Array}
-     */
-    getOptions() {
-        return this.state.options || this.props.options;
-    }
-
-    /**
-     * Loads async options if options is a function.
-     *
-     * @return {boolean} loadedOptions  TRUE, if options was called (async), otherwise FALSE
-     */
-    loadOptions() {
-        const options = this.props.options;
-        const selectedValue = this.props.value;
-
-        this.setState({
-            isLoadingOptions: true
-        });
-
-        return isFunction(options) && options({
-            value: selectedValue,
-            callback: this.handleOptionsLoad
-        });
-    }
-
-    /**
-     * Handler for the async options loading callback
-     * @param {object} options
-     */
-    handleOptionsLoad(options) {
-        this.setLoadedOptions(options);
-
-        // After options loaded, re-try to select the current element!
-        this.select(this.props.value, false);
-    }
-
-    /**
      * Handler for loading async options with a given searchValue
      *
      * @returns {*}
@@ -245,19 +147,6 @@ export default class SelectBox extends PureComponent {
     }
 
     /**
-     * Sets a given set of options to the internal state.
-     * Also disables the loading state.
-     *
-     * @param options
-     */
-    setLoadedOptions(options) {
-        this.setState({
-            options: options,
-            isLoadingOptions: false
-        });
-    }
-
-    /**
      * select callback for option selection
      *
      * @param {string} incomingValue
@@ -266,17 +155,15 @@ export default class SelectBox extends PureComponent {
     select(incomingValue, shouldTriggerOnSelect = true) {
         const {placeholder, placeholderIcon} = this.props;
 
-        if (incomingValue) {
+        if (incomingValue && !this.props.clearOnSelect) {
             this.setState({
                 value: incomingValue,
-                icon: Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
-                    this.getOptions().filter(o => o.value === incomingValue).map(o => o.icon)[0] : placeholderIcon,
-                label: Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
-                    this.getOptions().filter(o => o.value === incomingValue).map(o => o.label)[0] : placeholder
+                icon: this.getOptionIconForValue(incomingValue) || placeholderIcon,
+                label: this.getOptionLabelForValue(incomingValue) || placeholder
             });
+
         } else {
             this.setState({
-                value: incomingValue,
                 icon: placeholderIcon,
                 label: placeholder
             });

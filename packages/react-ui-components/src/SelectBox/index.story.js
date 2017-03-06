@@ -12,7 +12,6 @@ const options = [
 ];
 
 const loadOptions = ({callback, value, searchTerm}) => { // TODO change api -> value / searchTerm
-    console.log (value, searchTerm);
     if (value) {
         // simple search for async options
         const filteredOptions = options.filter((option) => {
@@ -49,7 +48,7 @@ storiesOf('SelectBox', module)
         ),
         {inline: true}
     )
-    .addWithInfo(
+    .addWithInfo( // TODO: fix story, option 2 is selected, dropdown contains only this option
         'async',
         () => (
             <StoryWrapper title="SelectBox">
@@ -103,7 +102,7 @@ storiesOf('SelectBox', module)
         () => (
             <StoryWrapper title="SelectBox">
                 <SelectBox
-                    value={"opt1"} // TODO story broken
+                    value={"opt1"}
                     options={loadOptions}
                     placeholder={text('Placeholder', 'Type to search')}
                     onSelect={action('onSelect')}

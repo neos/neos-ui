@@ -11,6 +11,11 @@ export default class SelectBox extends PureComponent {
         /**
          * This prop represents either a set of options or a function that returns those.
          * Each option must have a value and can have a label and an icon.
+         *
+         * If it is a function, it gets passed in an object with the following keys:
+         * - callback -> this callback must be called when the result is available with the standard "array of object" structure
+         * - value -> only defined ON INITIAL LOAD; contains an *array key* (like a UUID) where we need the label.
+         * - searchTerm -> only defined WHEN THE USER TYPES in the input field; contains a search string (typically searched over the label)
          */
         options: React.PropTypes.oneOfType([
             PropTypes.arrayOf(

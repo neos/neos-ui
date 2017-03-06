@@ -38,12 +38,15 @@ class LinkEditor extends Component {
         this.optionGenerator = this.optionGenerator.bind(this);
     }
 
-    optionGenerator({value, callback}) {
+    optionGenerator({value, searchTerm, callback}) {
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
-        if (!value && this.props.value) {
-            searchNodesQuery.nodeIdentifiers = [removePrefixFromNodeIdentifier(this.props.value)];
-        } else {
-            searchNodesQuery.searchTerm = value;
+        if (value) {
+            // INITIAL load
+            searchNodesQuery.nodeIdentifiers = [removePrefixFromNodeIdentifier(value)];
+        }
+        if (searchTerm) {
+            // autocomplete-load
+            searchNodesQuery.searchTerm = searchTerm;
         }
 
         this.searchNodes(searchNodesQuery).then(result => {

@@ -41,8 +41,17 @@ export default class MultiSelectBox extends AbstractSelectBox {
 
     componentDidMount() {
         if (this.props.value) {
+            const selectedOptions = [];
+            this.props.value.forEach(value => {
+                selectedOptions.push({
+                    value: value,
+                    label: this.getOptionLabelForValue(value),
+                    icon: this.getOptionIconForValue(value)
+                });
+            });
+
             this.setState({
-                selectedOptions: this.props.value
+                selectedOptions: selectedOptions
             });
         }
     }

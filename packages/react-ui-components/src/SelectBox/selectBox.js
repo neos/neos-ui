@@ -170,6 +170,7 @@ export default class SelectBox extends AbstractSelectBox {
 
         } else {
             this.setState({
+                value: undefined,
                 icon: placeholderIcon,
                 label: placeholder
             });

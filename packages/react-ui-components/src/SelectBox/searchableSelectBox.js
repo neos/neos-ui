@@ -197,7 +197,6 @@ export default class SearchableSelectBox extends Component {
      * @param input
      */
     handleOnInputChange(input) {
-        console.log (input);
         this.setState({
             searchValue: input
         });

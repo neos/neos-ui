@@ -50,9 +50,15 @@ export class DropDownWrapper extends PureComponent {
 
         this.state = {isOpen: Boolean(props.isOpen)};
         this.handleToggle = event => {
-            this.toggle();
             if (event) {
                 event.stopPropagation();
+
+                // TODO discuss this
+                if (event.detail > 0) {
+                    this.toggle();
+                }
+            } else {
+                this.toggle();
             }
         };
         this.handleClose = event => {

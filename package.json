@@ -10,7 +10,7 @@
     "build:components": "lerna run --scope @neos-project/react-ui-components build",
     "build:components:watch": "lerna run --scope @neos-project/react-ui-components build:watch",
     "build:dev": "npm run build:components && npm run build:ui",
-    "build": "NODE_ENV=production npm run build:dev",
+    "build": "cross-env NODE_ENV=production npm run build:dev",
     "start-storybook": "lerna run --scope @neos-project/react-ui-components start",
     "coverage:generate": "lerna run coverage:generate --concurrency 1",
     "coverage:publish": "lerna run coverage:publish --concurrency 1",

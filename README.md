@@ -73,9 +73,9 @@ In order to start contributing, follow the following steps:
 | `npm run clear` | delete all node_modules in every subdirectory. |
 | `npm run build:ui`  | Builds the ui via webpack. |
 | `npm run build:components` | Builds the components. |
-| `npm run build` |  Runs the both build commands above sequentially. |
+| `npm run build:dev` |  Runs the both build commands above sequentially. |
+| `npm run build` |  Runs `build:dev` optimised for production. |
 | `npm run build:ui:watch` | Watches the source files for changes and runs a build:ui in case. |
-| `npm run build:components:watch` | Watches the source files for changes and runs a build:components in case. |
 | `npm run build:components:watch` | Watches the source files for changes and runs a build:components in case. |
 | `npm start-storybook` | Starts the storybook server. |
 | `npm run lint`  | Lints all source files. |

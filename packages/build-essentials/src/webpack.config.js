@@ -78,6 +78,11 @@ const webpackConfig = {
     ],
 
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+            }
+        }),
         new webpack.optimize.OccurenceOrderPlugin(),
         new ExtractTextPlugin('./Styles/[name].css', {allChunks: true}),
         new webpack.optimize.CommonsChunkPlugin({names: ['Vendor']})
@@ -102,9 +107,16 @@ const webpackConfig = {
 //
 // Adjust the config depending on the env.
 //
-if (!env.isCi && !env.isTesting && !env.isStorybook) {
+if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
     // TODO: LIVE RELOADING DOES NOT WORK WITH CODE SPLITTING
     webpackConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
+}
+
+if (env.isProduction) {
+    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+        minimize: true,
+        compress: true
+    }));
 }
 
 module.exports = webpackConfig;

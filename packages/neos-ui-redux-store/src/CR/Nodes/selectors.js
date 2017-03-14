@@ -192,7 +192,7 @@ const getPathInNode = (state, contextPath, propertyPath) => {
 
 export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator = id => id) => createSelector(
     [
-        (state, {subject}) => getPathInNode(state, subject, 'isAutoCreated'),
+        (state, {reference}) => getPathInNode(state, elevator(reference), 'isAutoCreated'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'name'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'nodeType'),
         (state, {reference}) => getPathInNode(state, elevator(parentNodeContextPath(reference)), 'nodeType')

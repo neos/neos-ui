@@ -94,7 +94,6 @@ manifest('main', {}, globalRegistry => {
     //
     // Create validators registry
     //
-
     globalRegistry.add('validators', new SynchronousRegistry(`
         Contains all validators.
 
@@ -105,7 +104,6 @@ manifest('main', {}, globalRegistry => {
     //
     // Create richtext editing toolbar registry
     //
-
     const richtextToolbar = globalRegistry.add('richtextToolbar', new RichTextToolbarRegistry(`
         Contains the Rich Text Editing Toolbar components.
 

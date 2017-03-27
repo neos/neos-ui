@@ -18,7 +18,7 @@ const appendPrefixBeforeNodeIdentifier = (nodeIdentifier) => {
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking,
 }))
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('@neos-project/neos-ui-i18n')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 class LinkEditor extends Component {
     static propTypes = {
@@ -43,10 +43,13 @@ class LinkEditor extends Component {
         if (value) {
             // INITIAL load
             searchNodesQuery.nodeIdentifiers = [removePrefixFromNodeIdentifier(value)];
-        }
-        if (searchTerm) {
+        } else if (searchTerm) {
             // autocomplete-load
             searchNodesQuery.searchTerm = searchTerm;
+        } else {
+            // no default set
+            callback([]);
+            return;
         }
 
         this.searchNodes(searchNodesQuery).then(result => {
@@ -65,10 +68,11 @@ class LinkEditor extends Component {
 
         return (<SelectBox
             options={this.optionGenerator}
-            value={removePrefixFromNodeIdentifier(this.props.value)}
+            value={this.props.value && removePrefixFromNodeIdentifier(this.props.value)}
             placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
             onSelect={handleSelect}
             onDelete={clearInput}
+            loadOptionsOnInput={true}
         />);
     }
 }

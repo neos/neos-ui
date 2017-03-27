@@ -38,6 +38,7 @@ export default class ReferenceEditor extends PureComponent {
             // INITIAL load
             searchNodesQuery.nodeIdentifiers = [this.props.value];
         } else if (!searchTerm || searchTerm.length < 2) {
+            callback([]);
             return;
         } else {
             searchNodesQuery.searchTerm = searchTerm;
@@ -59,6 +60,7 @@ export default class ReferenceEditor extends PureComponent {
             placeholder={placeholder}
             onSelect={commit}
             onDelete={onDelete}
+            loadOptionsOnInput={true}
             />);
     }
 }

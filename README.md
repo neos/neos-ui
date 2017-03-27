@@ -22,11 +22,15 @@
 
 2. Run the following commands:
    ```
-   composer require neos/neos-ui:dev-master neos/neos-ui-compiled:dev-master # install our package
+   composer require neos/neos-ui neos/neos-ui-compiled # install our package
    ```
 
 3. Now you are all set up and can open the sub-route `/neos!` to login to the new interface.
 
+### Updating
+```
+composer update neos/neos-ui neos/neos-ui-compiled
+```
 
 ### Use Docker image
 

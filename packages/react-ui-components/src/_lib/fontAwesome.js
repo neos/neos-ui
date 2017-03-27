@@ -9,12 +9,10 @@ export function makeValidateId(icons = {}) {
 
         const isValid = ICON_NAMES.includes(name);
 
-        if (isValid) {
-            return {
-                isValid,
-                iconName: name
-            };
-        }
+        return {
+            isValid,
+            iconName: name
+        };
     };
 }
 

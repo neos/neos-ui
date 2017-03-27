@@ -16,28 +16,6 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest",
     "postpublish": "greenkeeper-postpublish"
   },
-  "ava": {
-    "files": [
-      "src/**/*.spec.js"
-    ],
-    "failFast": true,
-    "verbose": true,
-    "require": [
-      "babel-register",
-      "@neos-project/build-essentials/src/setup-browser-env"
-    ],
-    "babel": "inherit"
-  },
-  "nyc": {
-    "exclude": [
-      "src/**/*.spec.js",
-      "src/**/*.story.js",
-      "src/**/index.js"
-    ],
-    "include": [
-      "src/**"
-    ]
-  },
   "devDependencies": {
     "@neos-project/build-essentials": "^4.4.8",
     "@neos-project/debug-reason-for-rendering": "^1.0.0"

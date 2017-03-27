@@ -1,9 +1,9 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 
 import DropDown from '../DropDown/index';
 import Icon from '../Icon/index';
 
-export default class SimpleBox extends Component {
+export default class SimpleBox extends PureComponent {
     static propTypes = {
         /**
          * This prop represents the current label to show. Can be a placeholder or the label of the selected value.
@@ -120,7 +120,6 @@ export default class SimpleBox extends Component {
      */
     renderOption({icon, label, value}, index) {
         const theme = this.props.theme;
-        const IconComponent = this.props.IconComponent;
         const onClick = () => {
             this.props.onSelect(value, true);
         };
@@ -133,7 +132,7 @@ export default class SimpleBox extends Component {
             >
                 {
                     icon ?
-                        <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
+                        <Icon className={theme.dropDown__itemIcon} icon={icon}/> :
                         null
                 }
                 <span>{ label }</span>

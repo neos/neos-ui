@@ -1,10 +1,10 @@
-import React, {Component, PropTypes} from 'react';
+import React, {PureComponent, PropTypes} from 'react';
 
 import DropDown from '../DropDown/index';
 import Icon from '../Icon/index';
 import TextInput from '../TextInput/index';
 
-export default class SearchableSelectBox extends Component {
+export default class SearchableSelectBox extends PureComponent {
     static propTypes = {
         /**
          * This prop represents the current selected value.

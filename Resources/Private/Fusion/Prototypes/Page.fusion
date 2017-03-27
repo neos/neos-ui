@@ -80,4 +80,13 @@ prototype(Neos.Neos:Page) {
     // Do not render the Neos backend footer
     //
     neosBackendFooter.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
+
+    neosBackendNotification = Neos.Fusion:Template {
+        @position = 'before closingBodyTag'
+        templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/GuestNotificationScript.html'
+        @if {
+            inBackend = ${documentNode.context.inBackend}
+            newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+        }
+    }
 }

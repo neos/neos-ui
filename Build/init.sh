@@ -21,12 +21,6 @@ fi
 yarn
 
 #
-# Prune the node directory in case npm did something unexpected.
-#
-yarn prune
-
-
-#
 # Copy githooks
 #
 

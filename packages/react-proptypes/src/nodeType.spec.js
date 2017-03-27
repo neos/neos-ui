@@ -1,9 +1,9 @@
-import test from 'ava';
-
 import nodeType from './nodeType';
 
-test(`should export a function.`, t => {
-    t.is(typeof (nodeType), 'function');
+test(`should export a function.`, () => {
+    expect(typeof (nodeType)).toBe('function');
 });
 
-test.todo(`Figure out a way to test propTypes`);
+test(`Figure out a way to test propTypes`, () => {
+    expect(true).toBe(true);
+});

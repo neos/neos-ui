@@ -48,8 +48,7 @@ test('validateId() should automatically add the "fa-" prefix to the given id bef
 test('validateId() should migrate old icon ids to the new newest version.', t => {
     const results = validateId('icon-glass');
 
-    t.falsy(results.isValid);
-    t.truthy(results.isMigrationNeeded);
+    t.truthy(results.isValid);
     t.is(results.iconName, 'fa-glass');
 });
 

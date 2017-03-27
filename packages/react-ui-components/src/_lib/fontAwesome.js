@@ -11,7 +11,7 @@ export function makeValidateId(icons = {}) {
 
         return {
             isValid,
-            iconName: name
+            iconName: isValid ? name : null
         };
     };
 }

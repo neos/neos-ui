@@ -5,7 +5,7 @@ export function makeValidateId(icons = {}) {
         //
         // Automatically prefix the passed id with fa regardless which prefix was passed
         //
-        const name = id.indexOf('fa-') === 0 ? id : (id.indexOf('icon-') === 0 ? id.replace(/^icon/, 'fa') : `fa-${id}`);
+        const name = id.startsWith('fa-') ? id : (id.startsWith('icon-') ? id.replace(/^icon/, 'fa') : `fa-${id}`);
 
         const isValid = ICON_NAMES.includes(name);
 

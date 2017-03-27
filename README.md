@@ -27,6 +27,10 @@
 
 3. Now you are all set up and can open the sub-route `/neos!` to login to the new interface.
 
+### Updating
+```
+composer update neos/neos-ui neos/neos-ui-compiled
+```
 
 ### Use Docker image
 

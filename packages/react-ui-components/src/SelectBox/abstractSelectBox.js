@@ -72,7 +72,6 @@ export default class AbstractSelectBox extends PureComponent {
         super(...args);
 
         this.handleOptionsLoad = this.handleOptionsLoad.bind(this);
-        this.setLoadedOptions = this.setLoadedOptions.bind(this);
         this.select = this.select.bind(this);
     }
 
@@ -117,7 +116,8 @@ export default class AbstractSelectBox extends PureComponent {
         // 'loadOptionsOnInput' flag is on.
         return isFunction(options) && options({
             value: this.props.loadOptionsOnInput ? this.props.value : undefined,
-            callback: this.handleOptionsLoad
+            callback: options =>
+                this.handleOptionsLoad(options)
         });
     }
 
@@ -126,23 +126,13 @@ export default class AbstractSelectBox extends PureComponent {
      * @param {object} options
      */
     handleOptionsLoad(options) {
-        this.setLoadedOptions(options);
-
-        // After options loaded, re-try to select the current element!
-        this.select(this.props.value, false);
-    }
-
-    /**
-     * Sets a given set of options to the internal state.
-     * Also disables the loading state.
-     *
-     * @param options
-     */
-    setLoadedOptions(options) {
         this.setState({
             options,
             isLoadingOptions: false
         });
+
+        // After options loaded, re-try to select the current element!
+        this.select(this.props.value, false);
     }
 
     select() {

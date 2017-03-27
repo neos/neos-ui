@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import isFunction from 'lodash.isfunction';
+import debounce from 'lodash.debounce';
 import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abstractState} from './abstractSelectBox';
 
 export default class SelectBox extends AbstractSelectBox {
@@ -49,6 +50,7 @@ export default class SelectBox extends AbstractSelectBox {
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleInput = this.handleInput.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
+        this.handleInput_loadOptions = debounce(this.handleInput_loadOptions.bind(this), 200);
     }
 
     render() {
@@ -93,12 +95,37 @@ export default class SelectBox extends AbstractSelectBox {
     }
 
     /**
-     * Handles a search request
+     * Handles a search request -> load options with search term
      *
      * @param searchValue
      */
     handleInput(searchValue) {
-        this.loadOptionsWithSearchTerm(searchValue);
+        const options = this.props.options;
+
+        this.setState({
+            isLoadingOptions: true
+        });
+
+        if (isFunction(options)) {
+            this.handleInput_loadOptions.cancel();
+            this.handleInput_loadOptions(searchValue);
+        }
+    }
+
+    handleInput_loadOptions(searchValue) {
+        const options = this.props.options;
+        this._currentSearchValue = searchValue;
+        options({
+            searchTerm: searchValue,
+            callback: options => {
+                if (searchValue === this._currentSearchValue) {
+                    this.setState({
+                        options,
+                        isLoadingOptions: false
+                    });
+                }
+            }
+        });
     }
 
     /**
@@ -119,24 +146,6 @@ export default class SelectBox extends AbstractSelectBox {
         }
 
         return false;
-    }
-
-    /**
-     * Handler for loading async options with a given searchValue
-     *
-     * @returns {*}
-     */
-    loadOptionsWithSearchTerm(searchValue) {
-        const options = this.props.options;
-
-        this.setState({
-            isLoadingOptions: true
-        });
-
-        return isFunction(options) && options({
-            searchTerm: searchValue,
-            callback: this.setLoadedOptions
-        });
     }
 
     handleSelect(...args) {

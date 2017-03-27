@@ -89,6 +89,7 @@ class LinkTextField extends PureComponent {
         this.searchNodes = backend.get().endpoints.searchNodes;
         this.optionGenerator = this.optionGenerator.bind(this);
         this.handleLinkSelect = this.handleLinkSelect.bind(this);
+        this.handleMakeLinkEmpty = this.handleMakeLinkEmpty.bind(this);
     }
 
     render() {
@@ -99,6 +100,8 @@ class LinkTextField extends PureComponent {
                     options={this.optionGenerator}
                     value={stripNodePrefix(this.props.hrefValue)}
                     onSelect={this.handleLinkSelect}
+                    onDelete={this.handleMakeLinkEmpty}
+                    loadOptionsOnInput={true}
                     />
             </div>
         );
@@ -113,6 +116,9 @@ class LinkTextField extends PureComponent {
         } else if (searchTerm) {
             // Search case
             searchNodesQuery.searchTerm = searchTerm;
+        } else {
+            // empty search term and no value
+            return;
         }
 
         this.searchNodes(searchNodesQuery).then(result => {
@@ -122,5 +128,9 @@ class LinkTextField extends PureComponent {
 
     handleLinkSelect(link) {
         this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: 'node://' + link});
+    }
+
+    handleMakeLinkEmpty() {
+        this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
     }
 }

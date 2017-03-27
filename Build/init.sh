@@ -6,15 +6,24 @@
 nvm install
 nvm use
 
+# check if yarn is installed, else install it
+which yarn &>/dev/null
+
+if [ $? -ne 0 ];
+then
+    sudo npm install -g yarn
+fi
+
 #
 # First of, install all application dependencies.
+# install is the default of yarn
 #
-npm install
+yarn
 
 #
 # Prune the node directory in case npm did something unexpected.
 #
-npm prune
+yarn prune
 
 
 #

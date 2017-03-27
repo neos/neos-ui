@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 export default class Frame extends PureComponent {
     static propTypes = {
         mountTarget: PropTypes.string.isRequired,
-        contentDidUpdate: .PropTypes.func.isRequired,
+        contentDidUpdate: PropTypes.func.isRequired,
         children: PropTypes.node
     };
 

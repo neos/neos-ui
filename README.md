@@ -43,10 +43,10 @@ documentation about how to use it.
 
 In order to start contributing, follow the following steps:
 
-1) We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
+1) We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` and `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
 
    If you've installed `nvm` make sure that the next node LTS version `6.3.0` is correctly installed - You can do so by executing `nvm install v6.3.0`.
-   If you need help setting up `nvm`, `npm` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
+   If you need help setting up `nvm`, `npm`, `yarn` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
 
 2) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
@@ -62,7 +62,7 @@ In order to start contributing, follow the following steps:
    ```
    cd Packages/Application/Neos.Neos.Ui
    source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps, copy githooks
-   npm run build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
+   yarn build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
    ```
 
 [Read developer documentation on our wiki](https://github.com/neos/neos-ui/wiki).
@@ -79,14 +79,14 @@ In order to start contributing, follow the following steps:
 | `yarn build:components:watch` | Watches the source files for changes and runs a build:components in case. |
 | `yarn start-storybook` | Starts the storybook server. |
 | `yarn lint`  | Lints all source files. |
-| `yarn test`  | Executes `npm run lint` to trigger tests via ava. |
+| `yarn test`  | Executes `yarn lint` to trigger tests via ava. |
 
 #### Code style
-Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `npm run lint` in your shell.
+Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `yarn lint` in your shell.
 
 #### Writing unit tests
 The unit tests are executed with [ava](https://github.com/avajs/ava).
-To run the unit tests, execute `npm run test` in your shell.
+To run the unit tests, execute `yarn test` in your shell.
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 

@@ -1,0 +1,33 @@
+.selectedOptions {
+    composes: reset from './../reset.css';
+
+    position: relative;
+    width: 100%;
+    list-style: none;
+    padding-left: 0;
+}
+
+.selectedOptions__item {
+    width: 100%;
+    position: relative;
+
+    button {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    span {
+        height: 40px;
+        box-sizing: border-box;
+        padding-right: 50px;
+        padding-left: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        width: 100%;
+        line-height: 40px;
+        vertical-align: middle;
+    }
+}

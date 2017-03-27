@@ -104,15 +104,15 @@ class LinkTextField extends PureComponent {
         );
     }
 
-    optionGenerator({value, callback}) {
+    optionGenerator({value, searchTerm, callback}) {
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
 
-        if (!value && this.props.hrefValue) {
+        if (value) {
             // Init case: load the value
-            searchNodesQuery.nodeIdentifiers = [stripNodePrefix(this.props.hrefValue)];
-        } else {
+            searchNodesQuery.nodeIdentifiers = [stripNodePrefix(value)];
+        } else if (searchTerm) {
             // Search case
-            searchNodesQuery.searchTerm = value;
+            searchNodesQuery.searchTerm = searchTerm;
         }
 
         this.searchNodes(searchNodesQuery).then(result => {

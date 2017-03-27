@@ -1,13 +1,12 @@
-// 98997e98ea6d5ececc49db0de528151e40e272b7 from https://github.com/ryanseddon/react-frame-component/commit/98997e98ea6d5ececc49db0de528151e40e272b7 - and then modified!
 import React, {PureComponent, PropTypes} from 'react';
 import omit from 'lodash.omit';
 import ReactDOM from 'react-dom';
 
 export default class Frame extends PureComponent {
     static propTypes = {
-        mountTarget: React.PropTypes.string.isRequired,
-        contentDidUpdate: React.PropTypes.func.isRequired,
-        children: React.PropTypes.node
+        mountTarget: PropTypes.string.isRequired,
+        contentDidUpdate: .PropTypes.func.isRequired,
+        children: PropTypes.node
     };
 
     render() {
@@ -18,7 +17,7 @@ export default class Frame extends PureComponent {
             'children'
         ]);
 
-        return <iframe {...rest}/>
+        return <iframe {...rest}/>;
     }
     componentWillMount() {
         document.addEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);

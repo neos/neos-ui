@@ -26,6 +26,8 @@ export const isDocumentNodeSelectedSelector = createSelector(
     }
 );
 
+export const hasFocusedContentNode = createSelector(focused, focused => Boolean(focused));
+
 // PERFORMANCE: This helper method is NOT allowed to post-process the retrieved node in any way;
 // as we need to ensure the output is deterministic and can be cached for upstream selectors to
 // work correctly.

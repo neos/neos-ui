@@ -17,14 +17,14 @@ const selectedOptions = [
 const loadOptions = ({callback, value, searchTerm}) => {
     if (value) {
         // simple search for async options
-        const filteredOptions = options.filter((option) => {
-            return option.value == value;
+        const filteredOptions = options.filter(option => {
+            return option.value === value;
         });
 
         setTimeout(() => (callback(filteredOptions)), 1000);
     } else if (searchTerm) {
         // simple search for async options
-        const filteredOptions = options.filter((option) => {
+        const filteredOptions = options.filter(option => {
             return option.label.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
         });
 
@@ -45,7 +45,7 @@ storiesOf('MultiSelectBox', module)
                     placeholder={text('Placeholder', 'Select')}
                     placeholderIcon={text('Placeholder icon', 'bookmark')}
                     onSelect={action('onSelect')}
-                />
+                    />
             </StoryWrapper>
         ),
         {inline: true}
@@ -60,7 +60,7 @@ storiesOf('MultiSelectBox', module)
                     placeholder={text('Placeholder', 'Select')}
                     placeholderIcon={text('Placeholder icon', 'bookmark')}
                     onSelect={action('onSelect')}
-                />
+                    />
             </StoryWrapper>
         ),
         {inline: true}
@@ -74,7 +74,7 @@ storiesOf('MultiSelectBox', module)
                     placeholder={text('Placeholder', 'Select')}
                     placeholderIcon={text('Placeholder icon', 'bookmark')}
                     onSelect={action('onSelect')}
-                />
+                    />
             </StoryWrapper>
         ),
         {inline: true}
@@ -89,7 +89,7 @@ storiesOf('MultiSelectBox', module)
                     placeholder={text('Placeholder', 'Select')}
                     placeholderIcon={text('Placeholder icon', 'bookmark')}
                     onSelect={action('onSelect')}
-                />
+                    />
             </StoryWrapper>
         ),
         {inline: true}

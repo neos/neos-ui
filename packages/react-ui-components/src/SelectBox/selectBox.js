@@ -1,4 +1,4 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import isFunction from 'lodash.isfunction';
 import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abstractState} from './abstractSelectBox';
 
@@ -40,7 +40,7 @@ export default class SelectBox extends AbstractSelectBox {
     state = {
         ...abstractState,
         icon: undefined,
-        label: undefined,
+        label: undefined
     };
 
     constructor(...args) {
@@ -48,6 +48,7 @@ export default class SelectBox extends AbstractSelectBox {
 
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleInput = this.handleInput.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
     }
 
     render() {
@@ -66,18 +67,18 @@ export default class SelectBox extends AbstractSelectBox {
                         label={label}
                         icon={icon}
                         theme={theme}
-                        onSelect={this.select}
+                        onSelect={this.handleSelect}
                         onDelete={this.handleDeleteClick}
                         onInput={this.handleInput}
-                    /> :
+                        /> :
                     <SimpleSelectBoxComponent
                         options={options}
                         isLoadingOptions={isLoadingOptions}
                         label={label}
                         icon={icon}
                         theme={theme}
-                        onSelect={this.select}
-                    />
+                        onSelect={this.handleSelect}
+                        />
                 }
             </div>
         );
@@ -110,12 +111,14 @@ export default class SelectBox extends AbstractSelectBox {
      */
     isSearchableSelectBox() {
         if (isFunction(this.props.onDelete)) {
-            return true
-        } else if (this.props.minimumResultsForSearch !== -1 && this.getOptions().length >= this.props.minimumResultsForSearch) {
-            return true
-        } else {
-            return false
+            return true;
         }
+
+        if (this.props.minimumResultsForSearch !== -1 && this.getOptions().length >= this.props.minimumResultsForSearch) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -136,6 +139,10 @@ export default class SelectBox extends AbstractSelectBox {
         });
     }
 
+    handleSelect(...args) {
+        this.select(...args);
+    }
+
     /**
      * select callback for option selection
      *
@@ -151,7 +158,6 @@ export default class SelectBox extends AbstractSelectBox {
                 icon: this.getOptionIconForValue(incomingValue) || placeholderIcon,
                 label: this.getOptionLabelForValue(incomingValue) || placeholder
             });
-
         } else {
             this.setState({
                 value: undefined,

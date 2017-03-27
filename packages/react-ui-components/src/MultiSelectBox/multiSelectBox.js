@@ -1,4 +1,4 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abstractState} from '../SelectBox/abstractSelectBox';
 
 export default class MultiSelectBox extends AbstractSelectBox {
@@ -35,7 +35,7 @@ export default class MultiSelectBox extends AbstractSelectBox {
         super(...args);
 
         this.renderSelectedOption = this.renderSelectedOption.bind(this);
-        this.addValueToSelectedOptions = this.addValueToSelectedOptions.bind(this);
+        this.handleOnSelect = this.handleOnSelect.bind(this);
         this.handleRemoveSelectedOptionsClick = this.handleRemoveSelectedOptionsClick.bind(this);
     }
 
@@ -68,25 +68,26 @@ export default class MultiSelectBox extends AbstractSelectBox {
                     placeholder={placeholder}
                     placeholderIcon={placeholderIcon}
                     theme={theme}
-                    onSelect={this.addValueToSelectedOptions}
+                    onSelect={this.handleOnSelect}
                     onDelete={null}
                     clearOnSelect={true}
                     minimumResultsForSearch={minimumResultsForSearch}
-                />
+                    />
             </div>
         );
     }
 
-    addValueToSelectedOptions(value) {
-        let currentSelectedOptions = [...this.state.selectedOptions || []];
+    // adds the newly selected value to the selected options
+    handleOnSelect(value) {
+        const currentSelectedOptions = [...this.state.selectedOptions || []];
 
-        const valueAlreadySelected = currentSelectedOptions.find(option => option.value == value);
+        const valueAlreadySelected = currentSelectedOptions.find(option => option.value === value);
 
         if (!valueAlreadySelected) {
             currentSelectedOptions.push({
                 icon: this.getOptionIconForValue(value),
                 label: this.getOptionLabelForValue(value),
-                value: value
+                value
             });
 
             this.setState({
@@ -95,12 +96,11 @@ export default class MultiSelectBox extends AbstractSelectBox {
 
             this.props.onSelect(currentSelectedOptions);
         }
-
     }
 
     handleRemoveSelectedOptionsClick(valueToRemove) {
-        let currentSelectedOptions = [...this.state.selectedOptions];
-        const newSelectedOptions = currentSelectedOptions.filter(option => option.value != valueToRemove);
+        const currentSelectedOptions = [...this.state.selectedOptions];
+        const newSelectedOptions = currentSelectedOptions.filter(option => option.value !== valueToRemove);
 
         this.setState({
             selectedOptions: newSelectedOptions
@@ -109,17 +109,17 @@ export default class MultiSelectBox extends AbstractSelectBox {
         this.props.onSelect(currentSelectedOptions);
     }
 
-    select(incomingValue, shouldTriggerOnSelect = true) {
+    select(incomingValue) {
         const selectedOptions = incomingValue.map(value =>
             ({
-                value: value,
+                value,
                 label: this.getOptionLabelForValue(value),
                 icon: this.getOptionIconForValue(value)
             })
         );
 
         this.setState({
-            selectedOptions: selectedOptions
+            selectedOptions
         });
     }
 
@@ -144,7 +144,7 @@ export default class MultiSelectBox extends AbstractSelectBox {
             <li
                 key={index}
                 className={theme.selectedOptions__item}
-            >
+                >
                 {
                     icon ?
                         <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
@@ -154,7 +154,7 @@ export default class MultiSelectBox extends AbstractSelectBox {
                 <IconButtonComponent
                     icon={'close'}
                     onClick={onClick}
-                />
+                    />
             </li>
         );
     }

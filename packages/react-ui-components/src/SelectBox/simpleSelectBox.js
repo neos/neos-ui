@@ -57,7 +57,7 @@ export default class SimpleBox extends PureComponent {
             'dropDown__item': PropTypes.string,
             'dropDown__itemIcon': PropTypes.string,
             'dropDown__loadingIcon': PropTypes.string
-        }).isRequired, /* eslint-enable quote-props */
+        }).isRequired /* eslint-enable quote-props */
     };
 
     constructor(...args) {
@@ -82,7 +82,7 @@ export default class SimpleBox extends PureComponent {
                             <Icon className={theme.dropDown__btnIcon} icon={icon}/> :
                             null
                         }
-                            <span>{label}</span>
+                        <span>{label}</span>
                         {isLoadingOptions ?
                             <Icon className={theme.dropDown__loadingIcon} spin={true} icon="spinner"/> :
                             null
@@ -129,7 +129,7 @@ export default class SimpleBox extends PureComponent {
                 key={index}
                 className={theme.dropDown__item}
                 onClick={onClick}
-            >
+                >
                 {
                     icon ?
                         <Icon className={theme.dropDown__itemIcon} icon={icon}/> :

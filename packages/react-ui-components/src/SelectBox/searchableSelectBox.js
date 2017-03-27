@@ -81,7 +81,7 @@ export default class SearchableSelectBox extends PureComponent {
             'dropDown__searchInput': PropTypes.string,
             'dropDown__searchInputWrapper': PropTypes.string,
             'dropDown__btnDelete': PropTypes.string
-        }).isRequired, /* eslint-enable quote-props */
+        }).isRequired /* eslint-enable quote-props */
     };
 
     state = {
@@ -122,7 +122,7 @@ export default class SearchableSelectBox extends PureComponent {
                     {label}
                     <a href="" onClick={handleDeleteClick} className={theme.dropDown__btnDelete}><Icon icon="close"/></a>
                 </div>
-            )
+            );
         };
 
         const renderSearchHeader = (searchValue, label, onChange, theme) => {
@@ -134,9 +134,9 @@ export default class SearchableSelectBox extends PureComponent {
                         placeholder={label}
                         onChange={onChange}
                         className={theme.dropDown__searchInput}
-                    />
+                        />
                 </div>
-            )
+            );
         };
 
         return (
@@ -179,17 +179,16 @@ export default class SearchableSelectBox extends PureComponent {
      */
     filterOption(o) {
         if (this.props.loadOptionsOnInput) {
-            return true
-        } else {
-            return !this.state.searchValue || o.label.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1;
+            return true;
         }
+        return !this.state.searchValue || o.label.toLowerCase().indexOf(this.state.searchValue.toLowerCase()) !== -1;
     }
 
     /**
      * @returns {boolean} isOptionSelected   TRUE if a option is selected
      */
     isOptionSelected() {
-        return !!this.props.value
+        return Boolean(this.props.value);
     }
 
     /**
@@ -218,7 +217,6 @@ export default class SearchableSelectBox extends PureComponent {
      */
     renderOption({icon, label, value}, index) {
         const theme = this.props.theme;
-        const IconComponent = this.props.IconComponent;
         const onClick = () => {
             this.props.onSelect(value, true);
         };
@@ -228,10 +226,10 @@ export default class SearchableSelectBox extends PureComponent {
                 key={index}
                 className={theme.dropDown__item}
                 onClick={onClick}
-            >
+                >
                 {
                     icon ?
-                        <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
+                        <Icon className={theme.dropDown__itemIcon} icon={icon}/> :
                         null
                 }
                 <span>{ label }</span>

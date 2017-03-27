@@ -60,7 +60,7 @@ export const propTypes = {
 export const state = {
     value: undefined,
     options: undefined,
-    isLoadingOptions: false,
+    isLoadingOptions: false
 };
 
 export default class AbstractSelectBox extends PureComponent {
@@ -79,7 +79,7 @@ export default class AbstractSelectBox extends PureComponent {
     componentDidMount() {
         this.setState({
             isLoadingOptions: false,
-            options: this.props.options,
+            options: this.props.options
         });
 
         // if options are a function, we load them asynchronously
@@ -140,13 +140,14 @@ export default class AbstractSelectBox extends PureComponent {
      */
     setLoadedOptions(options) {
         this.setState({
-            options: options,
+            options,
             isLoadingOptions: false
         });
     }
 
-    select(incomingValue, shouldTriggerOnSelect = true) {
-        console.error ('This method needs to be overridden!')
+    select() {
+        // argument: incomingValue
+        console.error('This method needs to be overridden!');
     }
 
     getOptionLabelForValue(value) {

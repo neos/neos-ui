@@ -22,5 +22,5 @@ export default injectProps({
     IconButtonComponent: IconButton,
     InputComponent: TextInput,
     SearchableSelectBoxComponent: SearchableSelectBox,
-    SimpleSelectBoxComponent: SimpleSelectBox,
+    SimpleSelectBoxComponent: SimpleSelectBox
 })(ThemedSelectBox);

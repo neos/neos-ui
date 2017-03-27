@@ -11,17 +11,17 @@ const options = [
     {value: 'opt3', label: 'Option 3'}
 ];
 
-const loadOptions = ({callback, value, searchTerm}) => { // TODO change api -> value / searchTerm
+const loadOptions = ({callback, value, searchTerm}) => {
     if (value) {
         // simple search for async options
-        const filteredOptions = options.filter((option) => {
-            return option.value == value;
+        const filteredOptions = options.filter(option => {
+            return option.value === value;
         });
 
         setTimeout(() => (callback(filteredOptions)), 1000);
     } else if (searchTerm) {
         // simple search for async options
-        const filteredOptions = options.filter((option) => {
+        const filteredOptions = options.filter(option => {
             return option.label.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
         });
 
@@ -38,7 +38,7 @@ storiesOf('SelectBox', module)
         () => (
             <StoryWrapper>
                 <SelectBox
-                    value={"opt1"}
+                    value={'opt1'}
                     options={options}
                     placeholder={text('Placeholder', 'Select')}
                     placeholderIcon={text('Placeholder icon', 'bookmark')}
@@ -48,12 +48,12 @@ storiesOf('SelectBox', module)
         ),
         {inline: true}
     )
-    .addWithInfo( // TODO: fix story, option 2 is selected, dropdown contains only this option
+    .addWithInfo(
         'async',
         () => (
             <StoryWrapper title="SelectBox">
                 <SelectBox
-                    value={"opt2"}
+                    value={'opt2'}
                     options={loadOptions}
                     placeholder={text('Placeholder', 'Select')}
                     onSelect={action('onSelect')}
@@ -92,7 +92,7 @@ storiesOf('SelectBox', module)
                     placeholder={text('Placeholder', 'Type to search')}
                     onSelect={action('onSelect')}
                     onDelete={action('onDelete')}
-                />
+                    />
             </StoryWrapper>
         ),
         {inline: true}
@@ -102,12 +102,12 @@ storiesOf('SelectBox', module)
         () => (
             <StoryWrapper title="SelectBox">
                 <SelectBox
-                    value={"opt1"}
+                    value={'opt1'}
                     options={loadOptions}
                     placeholder={text('Placeholder', 'Type to search')}
                     onSelect={action('onSelect')}
                     onDelete={action('onDelete')}
-                />
+                    />
             </StoryWrapper>
         ),
         {inline: true}
@@ -117,13 +117,13 @@ storiesOf('SelectBox', module)
         () => (
             <StoryWrapper title="SelectBox">
                 <SelectBox
-                    value={"opt1"}
+                    value={'opt1'}
                     options={loadOptions}
                     placeholder={text('Placeholder', 'Type to search')}
                     onSelect={action('onSelect')}
                     onDelete={action('onDelete')}
                     loadOptionsOnInput={true}
-                />
+                    />
             </StoryWrapper>
         ),
         {inline: true}
@@ -138,7 +138,7 @@ storiesOf('SelectBox', module)
                     onSelect={action('onSelect')}
                     onDelete={action('onDelete')}
                     loadOptionsOnInput={true}
-                />
+                    />
             </StoryWrapper>
         ),
         {inline: true}

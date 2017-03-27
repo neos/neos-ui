@@ -50,22 +50,6 @@ export default class SelectBox extends AbstractSelectBox {
         this.handleInput = this.handleInput.bind(this);
     }
 
-    componentDidMount() {
-        this.setState({
-            isLoadingOptions: false,
-            options: this.props.options,
-        });
-
-        // if options are a function, we load them asynchronously
-        if (isFunction(this.props.options) && !this.props.loadOptionsOnInput) {
-            this.loadOptions();
-        } else if (this.props.loadOptionsOnInput && this.props.value) {
-            this.loadOptions();
-        } else {
-            this.select(this.props.value, false);
-        }
-    }
-
     render() {
         const options = this.getOptions();
         const {theme, SearchableSelectBoxComponent, SimpleSelectBoxComponent, loadOptionsOnInput} = this.props;

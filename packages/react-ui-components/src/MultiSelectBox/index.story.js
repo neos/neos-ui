@@ -78,4 +78,19 @@ storiesOf('MultiSelectBox', module)
             </StoryWrapper>
         ),
         {inline: true}
+    )
+    .addWithInfo(
+        'asyncOptionsWithDefault',
+        () => (
+            <StoryWrapper>
+                <MultiSelectBox
+                    value={selectedOptions}
+                    options={loadOptions}
+                    placeholder={text('Placeholder', 'Select')}
+                    placeholderIcon={text('Placeholder icon', 'bookmark')}
+                    onSelect={action('onSelect')}
+                />
+            </StoryWrapper>
+        ),
+        {inline: true}
     );

@@ -39,23 +39,6 @@ export default class MultiSelectBox extends AbstractSelectBox {
         this.handleRemoveSelectedOptionsClick = this.handleRemoveSelectedOptionsClick.bind(this);
     }
 
-    componentDidMount() {
-        if (this.props.value) {
-            const selectedOptions = [];
-            this.props.value.forEach(value => {
-                selectedOptions.push({
-                    value: value,
-                    label: this.getOptionLabelForValue(value),
-                    icon: this.getOptionIconForValue(value)
-                });
-            });
-
-            this.setState({
-                selectedOptions: selectedOptions
-            });
-        }
-    }
-
     render() {
         const {
             options,
@@ -99,9 +82,6 @@ export default class MultiSelectBox extends AbstractSelectBox {
 
         const valueAlreadySelected = currentSelectedOptions.find(option => option.value == value);
 
-        // TODO fix this, options in state are empty
-        console.log (value, this.state.options, this.props.options);
-
         if (!valueAlreadySelected) {
             currentSelectedOptions.push({
                 icon: this.getOptionIconForValue(value),
@@ -130,7 +110,17 @@ export default class MultiSelectBox extends AbstractSelectBox {
     }
 
     select(incomingValue, shouldTriggerOnSelect = true) {
-        console.log (incomingValue, shouldTriggerOnSelect)
+        const selectedOptions = incomingValue.map(value =>
+            ({
+                value: value,
+                label: this.getOptionLabelForValue(value),
+                icon: this.getOptionIconForValue(value)
+            })
+        );
+
+        this.setState({
+            selectedOptions: selectedOptions
+        });
     }
 
     /**

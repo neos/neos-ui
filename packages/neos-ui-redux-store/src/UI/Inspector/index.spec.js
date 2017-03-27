@@ -1,48 +1,49 @@
-import test from 'ava';
 import Immutable, {Map} from 'immutable';
 
 import {actionTypes, actions, reducer, selectors} from './index.js';
 
 import {actionTypes as system} from '../../System/index';
 
-test(`should export actionTypes`, t => {
-    t.not(actionTypes, undefined);
-    t.is(typeof (actionTypes.COMMIT), 'string');
-    t.is(typeof (actionTypes.CLEAR), 'string');
-    t.is(typeof (actionTypes.APPLY), 'string');
-    t.is(typeof (actionTypes.DISCARD), 'string');
+test(`should export actionTypes`, () => {
+    expect(actionTypes).not.toBe(undefined);
+    expect(typeof (actionTypes.COMMIT)).toBe('string');
+    expect(typeof (actionTypes.CLEAR)).toBe('string');
+    expect(typeof (actionTypes.APPLY)).toBe('string');
+    expect(typeof (actionTypes.DISCARD)).toBe('string');
 });
 
-test(`should export action creators`, t => {
-    t.not(actions, undefined);
-    t.is(typeof (actions.commit), 'function');
-    t.is(typeof (actions.clear), 'function');
-    t.is(typeof (actions.apply), 'function');
-    t.is(typeof (actions.discard), 'function');
+test(`should export action creators`, () => {
+    expect(actions).not.toBe(undefined);
+    expect(typeof (actions.commit)).toBe('function');
+    expect(typeof (actions.clear)).toBe('function');
+    expect(typeof (actions.apply)).toBe('function');
+    expect(typeof (actions.discard)).toBe('function');
 });
 
-test(`should export a reducer`, t => {
-    t.not(reducer, undefined);
-    t.is(typeof (reducer), 'function');
+test(`should export a reducer`, () => {
+    expect(reducer).not.toBe(undefined);
+    expect(typeof (reducer)).toBe('function');
 });
 
-test(`should export selectors`, t => {
-    t.not(selectors, undefined);
-    t.is(typeof (selectors.transientValues), 'function');
-    t.is(typeof (selectors.viewConfiguration), 'function');
+test(`should export selectors`, () => {
+    expect(selectors).not.toBe(undefined);
+    expect(typeof (selectors.transientValues)).toBe('function');
+    expect(typeof (selectors.viewConfiguration)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, t => {
+test(`The reducer should return an Immutable.Map as the initial state.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('ui').get('inspector') instanceof Map);
-    t.true(nextState.get('ui').get('inspector').get('valuesByNodePath') instanceof Map);
+    expect(nextState.get('ui').get('inspector') instanceof Map).toBe(true);
+    expect(
+        nextState.get('ui').get('inspector').get('valuesByNodePath') instanceof Map
+    ).toBe(true);
 });
 
-test(`The "commit" action should store the last modification on the currently focused node.`, t => {
+test(`The "commit" action should store the last modification on the currently focused node.`, () => {
     const state = Immutable.fromJS({
         cr: {
             nodes: {
@@ -62,28 +63,28 @@ test(`The "commit" action should store the last modification on the currently fo
     const nextState3 = reducer(nextState1, actions.commit('test', 'another value'));
     const nextState4 = reducer(nextState1, actions.commit('test', 'another value', {some: 'hook'}));
 
-    t.deepEqual(nextState1.get('ui').get('inspector').get('valuesByNodePath').toJS(), {
+    expect(nextState1.get('ui').get('inspector').get('valuesByNodePath').toJS()).toEqual({
         '/my/path@user-foo': {
             test: {
                 value: 'value'
             }
         }
     });
-    t.deepEqual(nextState2.get('ui').get('inspector').get('valuesByNodePath').toJS(), {
+    expect(nextState2.get('ui').get('inspector').get('valuesByNodePath').toJS()).toEqual({
         '/my/path@user-foo': {
             test: {
                 value: 'another value'
             }
         }
     });
-    t.deepEqual(nextState3.get('ui').get('inspector').get('valuesByNodePath').toJS(), {
+    expect(nextState3.get('ui').get('inspector').get('valuesByNodePath').toJS()).toEqual({
         '/my/path@user-foo': {
             test: {
                 value: 'another value'
             }
         }
     });
-    t.deepEqual(nextState4.get('ui').get('inspector').get('valuesByNodePath').toJS(), {
+    expect(nextState4.get('ui').get('inspector').get('valuesByNodePath').toJS()).toEqual({
         '/my/path@user-foo': {
             test: {
                 value: 'another value',
@@ -95,7 +96,7 @@ test(`The "commit" action should store the last modification on the currently fo
     });
 });
 
-test(`The "clear" action should remove pending changes for the currently focused node.`, t => {
+test(`The "clear" action should remove pending changes for the currently focused node.`, () => {
     const state = Immutable.fromJS({
         cr: {
             nodes: {
@@ -130,14 +131,14 @@ test(`The "clear" action should remove pending changes for the currently focused
     const nextState1 = reducer(state, actions.clear());
     const nextState2 = reducer(nextState1, actions.clear());
 
-    t.deepEqual(nextState1.get('ui').get('inspector').get('valuesByNodePath').toJS(), {
+    expect(nextState1.get('ui').get('inspector').get('valuesByNodePath').toJS()).toEqual({
         '/my/other/path@user-foo': {
             test4: {
                 value: 'value4'
             }
         }
     });
-    t.deepEqual(nextState2.get('ui').get('inspector').get('valuesByNodePath').toJS(), {
+    expect(nextState2.get('ui').get('inspector').get('valuesByNodePath').toJS()).toEqual({
         '/my/other/path@user-foo': {
             test4: {
                 value: 'value4'
@@ -146,7 +147,7 @@ test(`The "clear" action should remove pending changes for the currently focused
     });
 });
 
-test(`The "discard" action should remove pending changes for the currently focused node.`, t => {
+test(`The "discard" action should remove pending changes for the currently focused node.`, () => {
     const state = Immutable.fromJS({
         cr: {
             nodes: {
@@ -181,14 +182,14 @@ test(`The "discard" action should remove pending changes for the currently focus
     const nextState1 = reducer(state, actions.discard());
     const nextState2 = reducer(nextState1, actions.discard());
 
-    t.deepEqual(nextState1.get('ui').get('inspector').get('valuesByNodePath').toJS(), {
+    expect(nextState1.get('ui').get('inspector').get('valuesByNodePath').toJS()).toEqual({
         '/my/other/path@user-foo': {
             test4: {
                 value: 'value4'
             }
         }
     });
-    t.deepEqual(nextState2.get('ui').get('inspector').get('valuesByNodePath').toJS(), {
+    expect(nextState2.get('ui').get('inspector').get('valuesByNodePath').toJS()).toEqual({
         '/my/other/path@user-foo': {
             test4: {
                 value: 'value4'

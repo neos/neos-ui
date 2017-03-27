@@ -6,13 +6,11 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix => {
-    return nodeIdentifierWithPrefix.replace('node://', '');
-};
+const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix =>
+    nodeIdentifierWithPrefix.replace('node://', '');
 
-const appendPrefixBeforeNodeIdentifier = nodeIdentifier => {
-    return 'node://' + nodeIdentifier;
-};
+const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
+    'node://' + nodeIdentifier;
 
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking

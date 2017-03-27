@@ -81,9 +81,12 @@ prototype(Neos.Neos:Page) {
     //
     neosBackendFooter.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
-    neosBackendNotification = '<script>document.addEventListener("DOMContentLoaded", function()
-    {
-        var event = new Event("Neos.Content.Ready"); window.parent.document.dispatchEvent(event);
-    });</script>'
-    neosBackendNotification.@if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+    neosBackendNotification = Neos.Fusion:Template {
+        @position = 'before closingBodyTag'
+        templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/GuestNotificationScript.html'
+        @if {
+            inBackend = ${documentNode.context.inBackend}
+            newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+        }
+    }
 }

@@ -23,7 +23,4 @@ yarn
 #
 # Copy githooks
 #
-
-# get the directory of this script no matter where it is called from
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cp -f $DIR/GitHooks/* $DIR/../.git/hooks/
+cd .git/hooks && ln -sf ../../Build/GitHooks/* . && cd -

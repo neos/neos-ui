@@ -168,6 +168,7 @@ abstract class AbstractStructuralChange extends AbstractChange
 
                 $this->feedbackCollection->add($reloadDocument);
             }
+            $this->updateWorkspaceInfo();
         }
     }
 }

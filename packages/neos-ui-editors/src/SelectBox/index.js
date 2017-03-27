@@ -34,7 +34,7 @@ export default class SelectBoxEditor extends PureComponent {
         ).filter(k => k);
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
-        const onDelete = value ? this.handleDelete : null;
+        const onDelete = this.handleDelete;
 
         return (<SelectBox
             options={selectBoxOptions}

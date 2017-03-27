@@ -89,6 +89,7 @@ class LinkTextField extends PureComponent {
         this.searchNodes = backend.get().endpoints.searchNodes;
         this.optionGenerator = this.optionGenerator.bind(this);
         this.handleLinkSelect = this.handleLinkSelect.bind(this);
+        this.handleMakeLinkEmpty = this.handleMakeLinkEmpty.bind(this);
     }
 
     render() {
@@ -99,20 +100,25 @@ class LinkTextField extends PureComponent {
                     options={this.optionGenerator}
                     value={stripNodePrefix(this.props.hrefValue)}
                     onSelect={this.handleLinkSelect}
+                    onDelete={this.handleMakeLinkEmpty}
+                    loadOptionsOnInput={true}
                     />
             </div>
         );
     }
 
-    optionGenerator({value, callback}) {
+    optionGenerator({value, searchTerm, callback}) {
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
 
-        if (!value && this.props.hrefValue) {
+        if (value) {
             // Init case: load the value
-            searchNodesQuery.nodeIdentifiers = [stripNodePrefix(this.props.hrefValue)];
-        } else {
+            searchNodesQuery.nodeIdentifiers = [stripNodePrefix(value)];
+        } else if (searchTerm) {
             // Search case
-            searchNodesQuery.searchTerm = value;
+            searchNodesQuery.searchTerm = searchTerm;
+        } else {
+            // empty search term and no value
+            return;
         }
 
         this.searchNodes(searchNodesQuery).then(result => {
@@ -122,5 +128,9 @@ class LinkTextField extends PureComponent {
 
     handleLinkSelect(link) {
         this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: 'node://' + link});
+    }
+
+    handleMakeLinkEmpty() {
+        this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
     }
 }

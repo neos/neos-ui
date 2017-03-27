@@ -23,7 +23,7 @@ const ShallowDropDownHeader = props => {
     });
 
     return (
-        <button
+        <div
             {...rest}
             onClick={toggleDropDown}
             ref={shouldKeepFocusState ? _refHandler(isOpen) : emptyFn}
@@ -32,7 +32,7 @@ const ShallowDropDownHeader = props => {
             >
             {children}
             <IconComponent icon={iconName} className={theme.dropDown__chevron}/>
-        </button>
+        </div>
     );
 };
 ShallowDropDownHeader.propTypes = {

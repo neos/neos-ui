@@ -32,14 +32,16 @@ export default class ReferenceEditor extends PureComponent {
         this.handleDelete = () => this.props.commit('');
     }
 
-    optionGenerator({value, callback}) {
+    optionGenerator({value, searchTerm, callback}) {
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
-        if (!value && this.props.value) {
+        if (value) {
+            // INITIAL load
             searchNodesQuery.nodeIdentifiers = [this.props.value];
-        } else if (!value || value.length < 2) {
+        } else if (!searchTerm || searchTerm.length < 2) {
+            callback([]);
             return;
         } else {
-            searchNodesQuery.searchTerm = value;
+            searchNodesQuery.searchTerm = searchTerm;
         }
 
         this.searchNodes(searchNodesQuery).then(result => {
@@ -58,6 +60,7 @@ export default class ReferenceEditor extends PureComponent {
             placeholder={placeholder}
             onSelect={commit}
             onDelete={onDelete}
+            loadOptionsOnInput={true}
             />);
     }
 }

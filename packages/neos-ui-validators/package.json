@@ -10,7 +10,7 @@
     "test:watch": "npm run jest -- --watch",
     "lint": "eslint src",
     "clean": "rimraf ./lib ./dist",
-    "jest": "PWD=$(pwd) NODE_ENV=test ./node_modules/.bin/jest --coverage"
+    "jest": "PWD=$(pwd) NODE_ENV=test jest --coverage"
   },
   "dependencies": {
     "@neos-project/build-essentials": "^4.4.8",

@@ -21,7 +21,6 @@
     position: relative;
     width: calc(100vw - var(--goldenUnit) * 2);
     max-width: calc(var(--goldenUnit) * 16);
-    max-height: calc(100vh - (var(--goldenUnit) * 2));
     border: 1px solid var(--brandColorsContrastDark);
 
     .dialog--wide & {
@@ -39,6 +38,10 @@
     position: absolute;
     top: 0;
     right: 0;
+}
+.dialog__body {
+    max-height: calc(65vh);
+    overflow-y: scroll;
 }
 .dialog__actions {
     composes: reset from './../reset.css';

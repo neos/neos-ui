@@ -37,7 +37,9 @@ const Dialog = props => {
                             {title}
                         </div>
 
-                        {children}
+                        <div className={theme.dialog__body}>
+                            {children}
+                        </div>
 
                         <div className={theme.dialog__actions}>
                             {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}

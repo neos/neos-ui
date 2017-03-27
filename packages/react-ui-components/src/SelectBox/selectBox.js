@@ -50,7 +50,7 @@ export default class SelectBox extends AbstractSelectBox {
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleInput = this.handleInput.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
-        this.handleInput_loadOptions = debounce(this.handleInput_loadOptions.bind(this), 200);
+        this.handleInputLoadOptions = debounce(this.handleInputLoadOptions.bind(this), 200);
     }
 
     render() {
@@ -107,12 +107,12 @@ export default class SelectBox extends AbstractSelectBox {
         });
 
         if (isFunction(options)) {
-            this.handleInput_loadOptions.cancel();
-            this.handleInput_loadOptions(searchValue);
+            this.handleInputLoadOptions.cancel();
+            this.handleInputLoadOptions(searchValue);
         }
     }
 
-    handleInput_loadOptions(searchValue) {
+    handleInputLoadOptions(searchValue) {
         const options = this.props.options;
         this._currentSearchValue = searchValue;
         options({

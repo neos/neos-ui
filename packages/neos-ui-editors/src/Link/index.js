@@ -6,16 +6,16 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-const removePrefixFromNodeIdentifier = (nodeIdentifierWithPrefix) => {
+const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix => {
     return nodeIdentifierWithPrefix.replace('node://', '');
 };
 
-const appendPrefixBeforeNodeIdentifier = (nodeIdentifier) => {
-    return 'node://' + nodeIdentifier
+const appendPrefixBeforeNodeIdentifier = nodeIdentifier => {
+    return 'node://' + nodeIdentifier;
 };
 
 @connect($transform({
-    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking,
+    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }))
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
@@ -25,8 +25,11 @@ class LinkEditor extends Component {
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
-            nodeTypes: PropTypes.arrayOf(PropTypes.string)
+            nodeTypes: PropTypes.arrayOf(PropTypes.string),
+            placeholder: PropTypes.string
         }),
+
+        contextForNodeLinking: PropTypes.object.isRequired,
 
         i18nRegistry: PropTypes.object.isRequired
     };
@@ -58,7 +61,7 @@ class LinkEditor extends Component {
     }
 
     render() {
-        const handleSelect = (value) => {
+        const handleSelect = value => {
             this.props.commit(appendPrefixBeforeNodeIdentifier(value));
         };
 
@@ -73,7 +76,7 @@ class LinkEditor extends Component {
             onSelect={handleSelect}
             onDelete={clearInput}
             loadOptionsOnInput={true}
-        />);
+            />);
     }
 }
 

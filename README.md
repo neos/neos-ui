@@ -43,7 +43,7 @@ documentation about how to use it.
 
 In order to start contributing, follow the following steps:
 
-1) We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` command to be installed on your system.
+1) We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
 
    If you've installed `nvm` make sure that the next node LTS version `6.3.0` is correctly installed - You can do so by executing `nvm install v6.3.0`.
    If you need help setting up `nvm`, `npm` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
@@ -70,16 +70,16 @@ In order to start contributing, follow the following steps:
 #### Development commands
 | Command         | Description                    |
 | --------------- | ------------------------------ |
-| `npm run clear` | delete all node_modules in every subdirectory. |
-| `npm run build:ui`  | Builds the ui via webpack. |
-| `npm run build:components` | Builds the components. |
-| `npm run build:dev` |  Runs the both build commands above sequentially. |
-| `npm run build` |  Runs `build:dev` optimised for production. |
-| `npm run build:ui:watch` | Watches the source files for changes and runs a build:ui in case. |
-| `npm run build:components:watch` | Watches the source files for changes and runs a build:components in case. |
-| `npm start-storybook` | Starts the storybook server. |
-| `npm run lint`  | Lints all source files. |
-| `npm run test`  | Executes `npm run lint` to trigger tests via ava. |
+| `yarn clear` | delete all node_modules in every subdirectory. |
+| `yarn build:ui`  | Builds the ui via webpack. |
+| `yarn build:components` | Builds the components. |
+| `yarn build:dev` |  Runs the both build commands above sequentially. |
+| `yarn build` |  Runs `build:dev` optimised for production. |
+| `yarn build:ui:watch` | Watches the source files for changes and runs a build:ui in case. |
+| `yarn build:components:watch` | Watches the source files for changes and runs a build:components in case. |
+| `yarn start-storybook` | Starts the storybook server. |
+| `yarn lint`  | Lints all source files. |
+| `yarn test`  | Executes `npm run lint` to trigger tests via ava. |
 
 #### Code style
 Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `npm run lint` in your shell.

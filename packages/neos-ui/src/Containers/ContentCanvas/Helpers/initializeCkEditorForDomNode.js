@@ -38,7 +38,8 @@ export default function initializeCkEditorForDomNode(domNode, dependencies) {
         let editorOptions = Object.assign(
             {
                 extraPlugins: 'confighelper',
-                removePlugins: 'floatingspace,maximize,resize,toolbar,contextmenu,liststyle,tabletools'
+                removePlugins: 'floatingspace,maximize,resize,toolbar,contextmenu,liststyle,tabletools',
+                autoParagraph: false
             },
             placeholder ? {placeholder} : {}
         );

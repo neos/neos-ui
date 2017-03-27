@@ -8,8 +8,6 @@ import Icon from '@neos-project/react-ui-components/lib/Icon/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-const {isDocumentNodeSelectedSelector} = selectors.CR.Nodes;
-
 import style from './style.css';
 
 @neos(globalRegistry => ({
@@ -21,7 +19,7 @@ import style from './style.css';
     isFringedRight: $get('ui.rightSideBar.isHidden'),
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    isDocumentNodeSelected: isDocumentNodeSelectedSelector
+    hasFocusedContentNode: selectors.CR.Nodes.hasFocusedContentNode
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })
@@ -35,7 +33,7 @@ export default class SecondaryToolbar extends PureComponent {
         isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         toggleFullScreen: PropTypes.func.isRequired,
-        isDocumentNodeSelected: PropTypes.bool.isRequired
+        hasFocusedContentNode: PropTypes.bool.isRequired
     };
 
     handleToggleFullScreen = () => {
@@ -51,7 +49,8 @@ export default class SecondaryToolbar extends PureComponent {
             isFringedLeft,
             isFringedRight,
             isEditModePanelHidden,
-            isFullScreen
+            isFullScreen,
+            hasFocusedContentNode
         } = this.props;
         const classNames = mergeClassNames({
             [style.secondaryToolbar]: true,
@@ -71,7 +70,7 @@ export default class SecondaryToolbar extends PureComponent {
 
         return (
             <div className={classNames}>
-                {this.props.isDocumentNodeSelected ? <DimensionSwitcher/> : <EditorToolbar/>}
+                {hasFocusedContentNode ? <EditorToolbar/> : <DimensionSwitcher/>}
 
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     <a

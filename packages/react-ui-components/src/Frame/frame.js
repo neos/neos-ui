@@ -37,14 +37,12 @@ const Frame = React.createClass({
         head: React.PropTypes.node,
         initialContent: React.PropTypes.string,
         mountTarget: React.PropTypes.string,
-        contentDidMount: React.PropTypes.func,
         contentDidUpdate: React.PropTypes.func,
         children: React.PropTypes.node
     },
     getDefaultProps() {
         return {
             initialContent: '<!DOCTYPE html><html><head></head><body><div></div></body></html>',
-            contentDidMount: () => null,
             contentDidUpdate: () => null
         };
     },
@@ -60,69 +58,39 @@ const Frame = React.createClass({
 
         return React.createElement('iframe', assign({}, rest, {children: undefined}));
     },
-    componentDidMount() {
-        this._isMounted = true;
-        this.renderFrameContents();
+    componentWillMount() {
+        document.addEventListener('Neos.Content.Ready', () => this.renderFrameContents());
     },
     renderFrameContents() {
-        if (!this._isMounted) {
-            return;
-        }
         const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
         const win = ReactDOM.findDOMNode(this).contentWindow; // eslint-disable-line react/no-find-dom-node
         // TODO: doc.readyState seems to be *always* true in Chrome at least; so we check whether the querySelectors exist.
-        if (doc && doc.readyState === 'complete' && doc.querySelector(this.props.mountTarget)) {
-            const contents = React.createElement('div',
-                undefined,
-                this.props.head,
-                this.props.children
-            );
+        const contents = React.createElement('div',
+            undefined,
+            this.props.head,
+            this.props.children
+        );
 
-            const initialRender = !this._setInitialContent;
+        swallowInvalidHeadWarning();
 
-            swallowInvalidHeadWarning();
+        // unstable_renderSubtreeIntoContainer allows us to pass this component as
+        // the parent, which exposes context to any child components.
+        const callback = this.props.contentDidUpdate;
+        let mountTarget;
 
-            // unstable_renderSubtreeIntoContainer allows us to pass this component as
-            // the parent, which exposes context to any child components.
-            const callback = initialRender ? this.props.contentDidMount : this.props.contentDidUpdate;
-            let mountTarget;
-
-            if (this.props.mountTarget) {
-                mountTarget = doc.querySelector(this.props.mountTarget);
-            } else {
-                mountTarget = doc.body.children[0];
-            }
-
-            // When the page unloads, unmount the component to clean up.
-            // TODO: this breaks quite often, so that it is not triggered on the next page!!!
-            win.addEventListener('beforeunload', () => {
-                ReactDOM.unmountComponentAtNode(mountTarget);
-                window.setTimeout(() => {
-                    // ... and trigger a rendering again (we use a timeout of 100 here as then the page might not be finished loading, but it has started to clear at least and might be empty.
-                    this.renderFrameContents();
-                // TODO: fix delay here
-                }, 1000);
-            });
-
-            ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, () => {
-                callback(win, doc, mountTarget);
-            });
-
-            resetWarnings();
+        if (this.props.mountTarget) {
+            mountTarget = doc.querySelector(this.props.mountTarget);
         } else {
-            // If we cannot render yet, we re-try in 10 ms.
-            // Also, we need to ensure that we do not loose "this" along the way, that's why we use a closure.
-            setTimeout(() => {
-                this.renderFrameContents();
-            }, 10);
+            mountTarget = doc.body.children[0];
         }
-    },
-    componentDidUpdate() {
-        this.renderFrameContents();
+
+        ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, () => {
+            callback(win, doc, mountTarget);
+        });
+
+        resetWarnings();
     },
     componentWillUnmount() {
-        this._isMounted = false;
-
         const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
         if (doc) {
             ReactDOM.unmountComponentAtNode(doc.body);

@@ -103,7 +103,6 @@ export default class ContentCanvas extends PureComponent {
                         name="neos-content-main"
                         className={style.contentCanvas__contents}
                         mountTarget="#neos-new-backend-container"
-                        contentDidMount={this.onFrameChange}
                         contentDidUpdate={this.onFrameChange}
                         >
                         <InlineUI/>

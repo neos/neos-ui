@@ -75,7 +75,7 @@ export default class SecondaryToolbar extends PureComponent {
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     <a
                         href={previewUrl ? previewUrl : ''}
-                        target="_blank"
+                        target="neosPreview"
                         rel="noopener noreferrer"
                         className={previewButtonClassNames}
                         >

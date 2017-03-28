@@ -17,12 +17,12 @@ export default class InlineUI extends PureComponent {
     };
 
     render() {
-        const {focused} = this.props;
+        const focused = this.props.focused.toJS();
 
         return (
             <div className={style.inlineUi} data-__neos__inlineUI="TRUE">
-                <NodeToolbar {...focused.toJS()}/>
-                <MarkActiveNodeAsFocused {...focused.toJS()}/>
+                <NodeToolbar {...focused}/>
+                <MarkActiveNodeAsFocused {...focused}/>
                 <AddEmptyContentCollectionOverlays/>
             </div>
         );

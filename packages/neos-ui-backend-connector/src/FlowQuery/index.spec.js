@@ -16,14 +16,14 @@ test(`
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a falsy boolean
-    if the given operation is not a type of "CREATE_CONTEXT".`, t => {
+    if the given operation is not a type of "createContext".`, t => {
     t.false(isStartingOperation({type: 'FOO'}));
 });
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a truthy boolean
-    if the given operation is a type of "CREATE_CONTEXT".`, t => {
-    t.true(isStartingOperation({type: 'CREATE_CONTEXT'}));
+    if the given operation is a type of "createContext".`, t => {
+    t.true(isStartingOperation({type: 'createContext'}));
 });
 
 test(`
@@ -35,7 +35,7 @@ test(`
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a falsy boolean
     if the given operation is not a type of "GET" or "COUNT".`, t => {
-    t.false(isFinishingOperation({type: 'CREATE_CONTEXT'}));
+    t.false(isFinishingOperation({type: 'createContext'}));
 });
 
 test(`

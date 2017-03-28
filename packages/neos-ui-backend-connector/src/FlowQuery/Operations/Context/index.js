@@ -1,4 +1,4 @@
 export default () => contextProperties => ({
-    type: 'CONTEXT',
+    type: 'context',
     payload: [contextProperties]
 });

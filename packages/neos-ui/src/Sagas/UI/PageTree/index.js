@@ -29,9 +29,7 @@ function * watchToggle() {
     });
 }
 
-function * watchRequestChildrenForContextPath({globalRegistry, configuration}) {
-    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-
+function * watchRequestChildrenForContextPath({configuration}) {
     yield * takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
         // ToDo Call yield put(actions.UI.PageTree.requestChildren(contextPath));
         const {contextPath, opts} = action.payload;

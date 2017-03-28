@@ -34,20 +34,20 @@ test(`
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a falsy boolean
-    if the given operation is not a type of "GET" or "COUNT".`, t => {
+    if the given operation is not a type of "get" or "count".`, t => {
     t.false(isFinishingOperation({type: 'createContext'}));
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
-    if the given operation is a type of "GET".`, t => {
-    t.true(isFinishingOperation({type: 'GET'}));
+    if the given operation is a type of "get".`, t => {
+    t.true(isFinishingOperation({type: 'get'}));
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
-    if the given operation is a type of "COUNT".`, t => {
-    t.true(isFinishingOperation({type: 'COUNT'}));
+    if the given operation is a type of "count".`, t => {
+    t.true(isFinishingOperation({type: 'count'}));
 });
 
 test(`

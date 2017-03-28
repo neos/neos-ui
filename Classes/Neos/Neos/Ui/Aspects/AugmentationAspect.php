@@ -216,13 +216,22 @@ class AugmentationAspect
     }
 
     /**
+     * Clear non rendered content node metadata to prevent possible side effects.
+     */
+    protected function clearNonRenderedContentNodeMetadata() {
+        $this->nonRenderedContentNodeMetadata = '';
+    }
+
+    /**
      * @param NodeInterface $documentNode
      * @return string
      */
     public function getNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {
         $this->appendNonRenderedContentNodeMetadata($documentNode);
+        $nonRenderedContentNodeMetadata = $this->nonRenderedContentNodeMetadata;
+        $this->clearNonRenderedContentNodeMetadata();
         $this->clearRenderedNodesArray();
-        return $this->nonRenderedContentNodeMetadata;
+        return $nonRenderedContentNodeMetadata;
     }
 }

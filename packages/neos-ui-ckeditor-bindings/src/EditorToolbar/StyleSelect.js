@@ -5,13 +5,14 @@ import {$get, $transform} from 'plow-js';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {hideDisallowedToolbarComponents} from './Helpers';
-import {calculateEnabledFormattingRulesForNodeTypeFactory} from '../../ContentCanvas/Helpers/index';
 
+//
 // Predicate matching all "element.id"s starting with "prefix".
-const startsWith = prefix => element =>
-    element.id.indexOf(prefix) === 0;
+//
+const startsWith = prefix => element => element.id.startsWith(prefix);
 
 /**
  * The Actual StyleSelect component
@@ -19,11 +20,10 @@ const startsWith = prefix => element =>
 @connect($transform({
     focusedNode: selectors.CR.Nodes.focusedSelector,
     currentlyEditedPropertyName: selectors.UI.ContentCanvas.currentlyEditedPropertyName,
-    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor,
-    context: selectors.Guest.context
+    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
 @neos(globalRegistry => ({
-    toolbarRegistry: globalRegistry.get('richtextToolbar'),
+    toolbarRegistry: globalRegistry.get('ckEditor').get('richtextToolbar'),
     globalRegistry
 }))
 export default class StyleSelect extends PureComponent {
@@ -39,8 +39,6 @@ export default class StyleSelect extends PureComponent {
             PropTypes.bool,
             PropTypes.object
         ])),
-        // The current guest frames window object.
-        context: PropTypes.object,
 
         toolbarRegistry: PropTypes.object.isRequired,
         globalRegistry: PropTypes.object.isRequired
@@ -51,16 +49,11 @@ export default class StyleSelect extends PureComponent {
         this.handleOnSelect = this.handleOnSelect.bind(this);
     }
 
-    componentWillMount() {
-        const {globalRegistry} = this.props;
-        this.calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeTypeFactory(globalRegistry);
-    }
-
     handleOnSelect(selectedStyleId) {
         const {toolbarRegistry} = this.props;
         const style = toolbarRegistry.get(selectedStyleId);
         if (style && style.formattingRule) {
-            this.props.context.NeosCKEditorApi.toggleFormat(style.formattingRule);
+            getGuestFrameWindow().NeosCKEditorApi.toggleFormat(style.formattingRule);
         } else {
             console.warn('Style formatting not set: ', selectedStyleId, style);
         }
@@ -68,7 +61,10 @@ export default class StyleSelect extends PureComponent {
 
     render() {
         const {toolbarRegistry, currentlyEditedPropertyName, focusedNode} = this.props;
-        const enabledFormattingRuleIds = this.calculateEnabledFormattingRulesForNodeType($get('nodeType', focusedNode));
+        const nodeTypeName = $get('nodeType', focusedNode);
+
+        const enabledFormattingRuleIds = toolbarRegistry
+            .getEnabledFormattingRulesForNodeTypeAndProperty(nodeTypeName)(currentlyEditedPropertyName);
         const nestedStyles = toolbarRegistry.getAllAsList()
             .filter(startsWith(`${this.props.id}/`))
             .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds[currentlyEditedPropertyName] || []));

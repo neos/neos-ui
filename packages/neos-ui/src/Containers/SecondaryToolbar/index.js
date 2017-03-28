@@ -11,22 +11,30 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import style from './style.css';
 
 @neos(globalRegistry => ({
-    containerRegistry: globalRegistry.get('containers')
+    inlineEditorRegistry: globalRegistry.get('inlineEditorRegistry'),
+    containerRegistry: globalRegistry.get('containers'),
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect($transform({
     previewUrl: $get('ui.contentCanvas.previewUrl'),
+    currentlyEditedPropertyName: $get('ui.contentCanvas.currentlyEditedPropertyName'),
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    hasFocusedContentNode: selectors.CR.Nodes.hasFocusedContentNode
+    hasFocusedContentNode: selectors.CR.Nodes.hasFocusedContentNode,
+    focusedNodeTypeName: selectors.CR.Nodes.focusedNodeTypeSelector
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })
 export default class SecondaryToolbar extends PureComponent {
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
+        nodeTypesRegistry: PropTypes.object.isRequired,
+        inlineEditorRegistry: PropTypes.object.isRequired,
 
+        focusedNodeTypeName: PropTypes.string,
+        currentlyEditedPropertyName: PropTypes.string,
         previewUrl: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
@@ -42,6 +50,24 @@ export default class SecondaryToolbar extends PureComponent {
         toggleFullScreen();
     }
 
+    getToolbarComponent() {
+        const {containerRegistry, currentlyEditedPropertyName, hasFocusedContentNode} = this.props;
+        const DimensionSwitcher = containerRegistry.get('SecondaryToolbar/DimensionSwitcher');
+
+        if (hasFocusedContentNode) {
+            return DimensionSwitcher;
+        }
+
+        const {nodeTypesRegistry, inlineEditorRegistry, focusedNodeTypeName} = this.props;
+        const editorIdentifier = nodeTypesRegistry.getInlineEditorForProperty(
+            focusedNodeTypeName,
+            currentlyEditedPropertyName
+        );
+        const {ToolbarComponent} = inlineEditorRegistry.get(editorIdentifier);
+
+        return ToolbarComponent || DimensionSwitcher;
+    }
+
     render() {
         const {
             containerRegistry,
@@ -49,8 +75,7 @@ export default class SecondaryToolbar extends PureComponent {
             isFringedLeft,
             isFringedRight,
             isEditModePanelHidden,
-            isFullScreen,
-            hasFocusedContentNode
+            isFullScreen
         } = this.props;
         const classNames = mergeClassNames({
             [style.secondaryToolbar]: true,
@@ -64,13 +89,12 @@ export default class SecondaryToolbar extends PureComponent {
             [style['secondaryToolbar__buttonLink--isDisabled']]: !previewUrl
         });
 
-        const DimensionSwitcher = containerRegistry.get('SecondaryToolbar/DimensionSwitcher');
-        const EditorToolbar = containerRegistry.get('SecondaryToolbar/EditorToolbar');
+        const Toolbar = this.getToolbarComponent();
         const LoadingIndicator = containerRegistry.get('SecondaryToolbar/LoadingIndicator');
 
         return (
             <div className={classNames}>
-                {hasFocusedContentNode ? <EditorToolbar/> : <DimensionSwitcher/>}
+                <Toolbar/>
 
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     <a

@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
+import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
@@ -14,8 +15,7 @@ import style from './style.css';
  * The Actual StyleSelect component
  */
 @connect($transform({
-    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor,
-    context: selectors.Guest.context
+    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
 export default class LinkIconButton extends PureComponent {
 
@@ -25,22 +25,16 @@ export default class LinkIconButton extends PureComponent {
             PropTypes.bool,
             PropTypes.object
         ])),
-        formattingRule: PropTypes.string,
-
-        // The current guest frames window object.
-        context: PropTypes.object
+        formattingRule: PropTypes.string
     };
 
-    constructor(...args) {
-        super(...args);
-        this.handleLinkButtonClick = this.handleLinkButtonClick.bind(this);
-    }
+    handleLinkButtonClick = () => {
+        const {NeosCKEditorApi} = getGuestFrameWindow();
 
-    handleLinkButtonClick() {
         if (this.isOpen()) {
-            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {remove: true});
+            NeosCKEditorApi.toggleFormat(this.props.formattingRule, {remove: true});
         } else {
-            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
+            NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
         }
     }
 
@@ -70,8 +64,7 @@ const stripNodePrefix = str =>
     str && str.replace('node://', '');
 
 @connect($transform({
-    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking,
-    context: selectors.Guest.context
+    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }))
 class LinkTextField extends PureComponent {
 
@@ -79,9 +72,7 @@ class LinkTextField extends PureComponent {
         formattingRule: PropTypes.string,
         hrefValue: PropTypes.string,
 
-        contextForNodeLinking: PropTypes.object.isRequired,
-        // The current guest frames window object.
-        context: PropTypes.object
+        contextForNodeLinking: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -126,11 +117,13 @@ class LinkTextField extends PureComponent {
         });
     }
 
-    handleLinkSelect(link) {
-        this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: 'node://' + link});
+    handleLinkSelect = link => {
+        getGuestFrameWindow().NeosCKEditorApi
+            .toggleFormat(this.props.formattingRule, {href: 'node://' + link});
     }
 
     handleMakeLinkEmpty() {
-        this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
+        getGuestFrameWindow().NeosCKEditorApi
+            .toggleFormat(this.props.formattingRule, {href: ''});
     }
 }

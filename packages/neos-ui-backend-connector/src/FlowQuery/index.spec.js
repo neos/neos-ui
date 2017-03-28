@@ -21,8 +21,8 @@ test(`
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a truthy boolean
-    if the given operation is a type of "CREATE_CONTEXT".`, () => {
-    expect(isStartingOperation({type: 'CREATE_CONTEXT'})).toBe(true);
+    if the given operation is a type of "createContext".`, () => {
+    expect(isStartingOperation({type: 'createContext'})).toBe(true);
 });
 
 test(`
@@ -40,13 +40,13 @@ test(`
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
     if the given operation is a type of "GET".`, () => {
-    expect(isFinishingOperation({type: 'GET'})).toBe(true);
+    expect(isFinishingOperation({type: 'get'})).toBe(true);
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
-    if the given operation is a type of "COUNT".`, () => {
-    expect(isFinishingOperation({type: 'COUNT'})).toBe(true);
+    if the given operation is a type of "count".`, () => {
+    expect(isFinishingOperation({type: 'count'})).toBe(true);
 });
 
 test(`

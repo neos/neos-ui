@@ -6,40 +6,25 @@
   "main": "./src/index.js",
   "scripts": {
     "prebuild": "check-dependencies && npm run clean",
-    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
-    "test:watch": "npm run ava -- --watch",
+    "test": "npm run lint && npm run jest",
+    "test:watch": "npm run jest -- --watch",
     "build": "exit 0",
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "ava": "PWD=$(pwd) NODE_ENV=test ava",
-    "precoverage:generate": "rimraf ./coverage",
-    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
+    "jest": "PWD=$(pwd) NODE_ENV=test jest --coverage",
     "coverage:publish": "codeclimate-test-reporter < lcov.info"
-  },
-  "ava": {
-    "files": [
-      "src/**/*.spec.js"
-    ],
-    "failFast": true,
-    "verbose": true,
-    "require": [
-      "babel-register"
-    ],
-    "babel": "inherit"
-  },
-  "nyc": {
-    "exclude": [
-      "src/**/*.spec.js",
-      "src/**/*.story.js",
-      "src/**/index.js"
-    ],
-    "include": [
-      "src/**"
-    ]
   },
   "devDependencies": {
     "@neos-project/build-essentials": "^4.4.8"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "jest": {
+    "transformIgnorePatterns": [],
+    "unmockedModulePathPatterns": ["sinon"],
+    "transform": {
+      "utils-redux/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
+      ".*node_modules/@neos-project.+\\.jsx?$": "./node_modules/.bin/babel-jest"
+    }
+  }
 }

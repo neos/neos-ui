@@ -155,7 +155,11 @@ abstract class AbstractStructuralChange extends AbstractChange
         $this->feedbackCollection->add($updateParentNodeInfo);
 
         if ($node->getNodeType()->isOfType('Neos.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
-            if ($node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
+            if (
+                $node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection') &&
+                $this->getParentDomAddress() &&
+                $this->getParentDomAddress()->getFusionPath()
+            ) {
                 $renderContentOutOfBand = new RenderContentOutOfBand();
                 $renderContentOutOfBand->setNode($node);
                 $renderContentOutOfBand->setParentDomAddress($this->getParentDomAddress());

@@ -62,6 +62,13 @@ class AugmentationAspect
     protected $controllerContext = null;
 
     /**
+     * All editable nodes rendered in the document
+     *
+     * @var array
+     */
+    protected $renderedNodes = [];
+
+    /**
      * @Flow\Before("method(Neos\Neos\Fusion\ContentElementWrappingImplementation->evaluate())")
      * @param JoinPointInterface $joinPoint
      * @return mixed
@@ -115,6 +122,8 @@ class AugmentationAspect
             'data-__neos-fusion-path' => $fusionPath
         ];
 
+        $this->renderedNodes[$node->getIdentifier()] = $node;
+
         $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
 
         $wrappedContent = $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
@@ -167,4 +176,31 @@ class AugmentationAspect
         return ($contentContext->isInBackend() === true && ($renderCurrentDocumentMetadata === true || $this->nodeAuthorizationService->isGrantedToEditNode($node) === true));
     }
 
+    /**
+     * Returns a string containing `<script>` tags for all child nodes not rendered
+     * within the current document node. This way we can show e.g. content collections
+     * within the structure tree which are not actually rendered.
+     *
+     * @param NodeInterface $documentNode
+     * @return string
+     */
+    public function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
+    {
+        $missingNodeScripts = '';
+        foreach ($documentNode->getChildNodes() as $node) {
+            if ($documentNode->getNodeType()->isOfType('Neos.Document') === true) {
+                continue;
+            }
+
+            if (isset($this->renderedNodes[$node->getIdentifier()]) === false) {
+              $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
+              $missingNodeScripts .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
+            }
+
+            if ($node->hasChildNodes() === true) {
+                $missingNodeScripts .= $this->appendNonRenderedContentNodeMetadata($node);
+            }
+        }
+        return $missingNodeScripts;
+    }
 }

@@ -1,4 +1,3 @@
-import test from 'ava';
 import sinon from 'sinon';
 import factory, {
     isStartingOperation,
@@ -10,188 +9,188 @@ import factory, {
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a falsy boolean
-    if no operation object was passed.`, t => {
-    t.false(isStartingOperation());
+    if no operation object was passed.`, () => {
+    expect(isStartingOperation()).toBe(false);
 });
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a falsy boolean
-    if the given operation is not a type of "createContext".`, t => {
-    t.false(isStartingOperation({type: 'FOO'}));
+    if the given operation is not a type of "CREATE_CONTEXT".`, () => {
+    expect(isStartingOperation({type: 'FOO'})).toBe(false);
 });
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a truthy boolean
-    if the given operation is a type of "createContext".`, t => {
-    t.true(isStartingOperation({type: 'createContext'}));
+    if the given operation is a type of "CREATE_CONTEXT".`, () => {
+    expect(isStartingOperation({type: 'CREATE_CONTEXT'})).toBe(true);
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a falsy boolean
-    if no operation object was passed.`, t => {
-    t.false(isFinishingOperation());
+    if no operation object was passed.`, () => {
+    expect(isFinishingOperation()).toBe(false);
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a falsy boolean
-    if the given operation is not a type of "get" or "count".`, t => {
-    t.false(isFinishingOperation({type: 'createContext'}));
+    if the given operation is not a type of "GET" or "COUNT".`, () => {
+    expect(isFinishingOperation({type: 'CREATE_CONTEXT'})).toBe(false);
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
-    if the given operation is a type of "get".`, t => {
-    t.true(isFinishingOperation({type: 'get'}));
+    if the given operation is a type of "GET".`, () => {
+    expect(isFinishingOperation({type: 'GET'})).toBe(true);
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
-    if the given operation is a type of "count".`, t => {
-    t.true(isFinishingOperation({type: 'count'}));
+    if the given operation is a type of "COUNT".`, () => {
+    expect(isFinishingOperation({type: 'COUNT'})).toBe(true);
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should throw an error if no
-    argument was passed.`, t => {
+    argument was passed.`, () => {
     const fn = () => createNodeEnvelope();
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should throw an error if an array
-    was passed as the argument.`, t => {
+    was passed as the argument.`, () => {
     const fn = () => createNodeEnvelope([]);
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return an object containing
-    the contextPath of the passed node if the passed argument is a string.`, t => {
+    the contextPath of the passed node if the passed argument is a string.`, () => {
     const result = createNodeEnvelope('my.contextPath');
 
-    t.not(result.$node, undefined);
-    t.is(result.$node, 'my.contextPath');
+    expect(result.$node).not.toBe(undefined);
+    expect(result.$node).toBe('my.contextPath');
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should throw an error if the passed
-    object has no "$node" or "contextPath" key/value pair.`, t => {
+    object has no "$node" or "contextPath" key/value pair.`, () => {
     const fn = () => createNodeEnvelope({foo: 'bar'});
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return an object containing
     the contextPath of the passed node if the passed argument is a object containing a
-    "contextPath" key/value pair.`, t => {
+    "contextPath" key/value pair.`, () => {
     const result = createNodeEnvelope({contextPath: 'another.contextPath'});
 
-    t.not(result.$node, undefined);
-    t.is(result.$node, 'another.contextPath');
+    expect(result.$node).not.toBe(undefined);
+    expect(result.$node).toBe('another.contextPath');
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return an object containing the
     contextPath of the passed node if the passed argument is a object containing a
-    "$node" key/value pair.`, t => {
+    "$node" key/value pair.`, () => {
     const result = createNodeEnvelope({$node: 'yet.another.contextPath'});
 
-    t.not(result.$node, undefined);
-    t.is(result.$node, 'yet.another.contextPath');
+    expect(result.$node).not.toBe(undefined);
+    expect(result.$node).toBe('yet.another.contextPath');
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return a falsy boolean if
-    no argument was passed.`, t => {
-    t.false(isNodeEnvelope());
+    no argument was passed.`, () => {
+    expect(isNodeEnvelope()).toBe(false);
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return a falsy boolean if
-    the the passed argument is an array.`, t => {
-    t.false(isNodeEnvelope([]));
+    the the passed argument is an array.`, () => {
+    expect(isNodeEnvelope([])).toBe(false);
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return a truthy boolean if
-    the the passed argument is an object which does not contain an "$node" key/value pair.`, t => {
-    t.false(isNodeEnvelope({foo: 'bar'}));
+    the the passed argument is an object which does not contain an "$node" key/value pair.`, () => {
+    expect(isNodeEnvelope({foo: 'bar'})).toBe(false);
 });
 
 test(`
     "api.flowQuery > createNodeEnvelope" utility should return a truthy boolean if
-    the passed argument is an object which does contain an "$node" key/value pair.`, t => {
-    t.true(isNodeEnvelope({$node: 'foo'}));
+    the passed argument is an object which does contain an "$node" key/value pair.`, () => {
+    expect(isNodeEnvelope({$node: 'foo'})).toBe(true);
 });
 
-test(`"api.flowQuery > resolveChain" utility should make a fetch call.`, t => {
+test(`"api.flowQuery > resolveChain" utility should make a fetch call.`, () => {
     const result = resolveChain({}, 'csrfToken');
 
-    t.not(result.then, undefined);
-    t.is(typeof (result.then), 'function');
+    expect(result.then).not.toBe(undefined);
+    expect(typeof (result.then)).toBe('function');
 });
 
-test(`"api.flowQuery > factory" should throw an error if no csrfToken was provided.`, t => {
+test(`"api.flowQuery > factory" should throw an error if no csrfToken was provided.`, () => {
     const fn = () => factory();
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
-test(`"api.flowQuery > factory" should throw an error if an empty csrfToken was provided.`, t => {
+test(`"api.flowQuery > factory" should throw an error if an empty csrfToken was provided.`, () => {
     const fn = () => factory('');
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
-test(`"api.flowQuery > factory" should expose the "q" function and its "applyMiddleware" method.`, t => {
+test(`"api.flowQuery > factory" should expose the "q" function and its "applyMiddleware" method.`, () => {
     const q = factory('csrfToken');
 
-    t.is(typeof (q), 'function');
-    t.is(typeof (q.applyMiddleware), 'function');
+    expect(typeof (q)).toBe('function');
+    expect(typeof (q.applyMiddleware)).toBe('function');
 });
 
-test(`"api.flowQuery > api" should expose all operations as methods of the api.`, t => {
+test(`"api.flowQuery > api" should expose all operations as methods of the api.`, () => {
     const q = factory('csrfToken');
     const api = q('myContextPath');
 
-    t.is(typeof (api), 'object');
-    t.not(api.children, undefined);
-    t.not(api.get, undefined);
+    expect(typeof (api)).toBe('object');
+    expect(api.children).not.toBe(undefined);
+    expect(api.get).not.toBe(undefined);
 });
 
 test(`
     "api.flowQuery > api" should throw an error if an argument was passed which is
-    not a string, array nor an object with an "contextPath" key/value pair.`, t => {
+    not a string, array nor an object with an "contextPath" key/value pair.`, () => {
     const q = factory('csrfToken');
     const fn = () => q(2);
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
 test(`
     "api.flowQuery > api" should not throw an error if provided with an object
-    containing an "contextPath" key/value pair.`, t => {
+    containing an "contextPath" key/value pair.`, () => {
     const q = factory('csrfToken');
     const fn = () => q({
         contextPath: 'myContextPath'
     });
 
-    t.notThrows(fn);
+    expect(fn).not.toThrow();
 });
 
-test(`"api.flowQuery > api" should not throw an error if provided with an string.`, t => {
+test(`"api.flowQuery > api" should not throw an error if provided with an string.`, () => {
     const q = factory('csrfToken');
     const fn = () => q('myContextPath');
 
-    t.notThrows(fn);
+    expect(fn).not.toThrow();
 });
 
 test(`
     "api.flowQuery > api" should apply the the given middleware function and call it
-    when executing an operation method.`, t => {
+    when executing an operation method.`, () => {
     const q = factory('csrfToken');
     const middleware = sinon.spy();
 
@@ -199,12 +198,12 @@ test(`
 
     q('myContextPath').children('[instanceof Neos.Neos:Document]');
 
-    t.true(middleware.calledOnce);
+    expect(middleware.calledOnce).toBe(true);
 });
 
 test(`
     "api.flowQuery > api" should apply the the given middleware function but ignore it
-    when passing a truthy boolean as the second argument of the API.`, t => {
+    when passing a truthy boolean as the second argument of the API.`, () => {
     const q = factory('csrfToken');
     const middleware = sinon.spy();
 
@@ -212,5 +211,5 @@ test(`
 
     q('myContextPath', true).children('[instanceof Neos.Neos:Document]');
 
-    t.false(middleware.called);
+    expect(middleware.called).toBe(false);
 });

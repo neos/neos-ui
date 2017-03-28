@@ -1,4 +1,4 @@
 export default () => filter => ({
-    type: 'filteredChildren',
+    type: 'neosUiFilteredChildren',
     payload: [filter]
 });

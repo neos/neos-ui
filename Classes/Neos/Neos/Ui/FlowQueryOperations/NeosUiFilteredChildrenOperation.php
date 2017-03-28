@@ -22,14 +22,14 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
  * context elements and returns all child nodes or only those matching
  * the filter expression specified as optional argument.
  */
-class FilteredChildrenOperation extends AbstractOperation
+class NeosUiFilteredChildrenOperation extends AbstractOperation
 {
     /**
      * {@inheritdoc}
      *
      * @var string
      */
-    protected static $shortName = 'filteredChildren';
+    protected static $shortName = 'neosUiFilteredChildren';
 
     /**
      * {@inheritdoc}

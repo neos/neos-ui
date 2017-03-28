@@ -4,8 +4,8 @@ import isArray from 'lodash.isarray';
 import * as operations from './Operations/index';
 import {$get, $add} from 'plow-js';
 
-export const isStartingOperation = (operation = {}) => operation.type === 'CREATE_CONTEXT';
-export const isFinishingOperation = (operation = {}) => ['GET', 'COUNT'].indexOf(operation.type) !== -1;
+export const isStartingOperation = (operation = {}) => operation.type === 'createContext';
+export const isFinishingOperation = (operation = {}) => ['get', 'count'].indexOf(operation.type) !== -1;
 
 export const isNodeEnvelope = envelope =>
     typeof envelope === 'object' && !Array.isArray(envelope) && typeof envelope.$node !== 'undefined';
@@ -100,7 +100,7 @@ export default csrfToken => {
 
         const chain = [
             {
-                type: 'CREATE_CONTEXT',
+                type: 'createContext',
                 payload: context.map(createNodeEnvelope)
             }
         ];

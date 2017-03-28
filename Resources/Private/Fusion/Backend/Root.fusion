@@ -11,7 +11,7 @@ backend = Neos.Fusion:Template {
     headStylesheets = ${headStylesheets}
 
     configuration = Neos.Fusion:RawArray {
-        test = 1
+        nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}
         allowedTargetWorkspaces = ${Neos.Ui.Workspace.getAllowedTargetWorkspaces()}
         @process.json = ${Json.stringify(value)}
     }

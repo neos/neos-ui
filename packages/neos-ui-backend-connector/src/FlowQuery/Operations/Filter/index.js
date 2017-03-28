@@ -1,4 +1,4 @@
 export default () => filter => ({
-    type: 'FILTER',
+    type: 'filter',
     payload: [filter]
 });

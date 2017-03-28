@@ -24,6 +24,28 @@ storiesOf('ToggablePanel', module)
         {inline: true}
     )
     .addWithInfo(
+        'stateful - closing towards bottom',
+        'ToggablePanel - Closing towards bottom',
+        () => (
+            <StoryWrapper>
+                <div style={{height: "200px", display: "flex", flexDirection: "column"}}>
+                    <div style={{flexBasis: "100%", color: "white"}}>
+                        Upper container, to push down ToggablePanel
+                    </div>
+                    <ToggablePanel isOpen={boolean('Is Open?', true)} closesToBottom={boolean('Closes towards bottom?', true)}>
+                        <ToggablePanel.Header>
+                            Header
+                        </ToggablePanel.Header>
+                        <ToggablePanel.Contents>
+                            Contents
+                        </ToggablePanel.Contents>
+                    </ToggablePanel>
+                </div>
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
         'stateless',
         'ToggablePanel - Stateless',
         () => (

@@ -49,12 +49,10 @@ export const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => 
         }
 
         default: {
-            const element = dom.findNode(contextPath, fusionPath);
-
             return {
                 parentDomAddress: {
-                    contextPath: element.getAttribute('data-__neos-node-contextpath'),
-                    fusionPath: element.getAttribute('data-__neos-fusion-path')
+                    contextPath,
+                    fusionPath
                 }
             };
         }

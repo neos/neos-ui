@@ -27,7 +27,8 @@ export const findNode = (contextPath, fusionPath) => fusionPath ? find(
 );
 
 export const closestNode = el => {
-    if (!el) {
+    if (!el || !el.dataset) {
+        // el.dataset is not existing for window.document; and we need to prevent this case from happening.
         return null;
     }
 

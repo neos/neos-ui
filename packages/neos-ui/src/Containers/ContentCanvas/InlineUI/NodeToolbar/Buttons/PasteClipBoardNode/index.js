@@ -44,9 +44,12 @@ export default class PasteClipBoardNode extends PureComponent {
     render() {
         const {className, canBePasted} = this.props;
 
+        if (!canBePasted) {
+            return null;
+        }
+
         return (
             <IconButton
-                isDisabled={!canBePasted}
                 className={className}
                 icon="paste"
                 onClick={this.handlePasteButtonClick}

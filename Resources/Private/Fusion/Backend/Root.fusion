@@ -41,16 +41,14 @@ backend = Neos.Fusion:Template {
             target = 'ContentCanvas'
 
             children = Neos.Neos.Ui:ArrayCollection {
-                collection = ${q(site).parent().children().get()}
-                itemName = 'siteNode'
+                collection = ${sitesForMenu}
+                itemName = 'currentSiteInMenu'
                 itemRenderer = Neos.Fusion:RawArray {
                     icon = 'globe'
-                    label = ${q(siteNode).property('title')}
-                    uri = Neos.Neos:NodeUri {
-                        node = ${siteNode}
-                    }
-                    target = 'ContentCanvas'
-                    isActive = ${Neos.Ui.Sites.isActive(siteNode)}
+                    label = ${currentSiteInMenu.name}
+                    uri = ${currentSiteInMenu.uri}
+                    target = 'Window'
+                    isActive = ${currentSiteInMenu.active}
                     skipI18n = ${true}
                 }
             }

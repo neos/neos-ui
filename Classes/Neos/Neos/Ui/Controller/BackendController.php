@@ -12,6 +12,7 @@ use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Session\SessionInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
+use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\ContentContext;
@@ -95,6 +96,12 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
+     * @var MenuHelper
+     */
+    protected $menuHelper;
+
+    /**
+     * @Flow\Inject
      * @var StyleAndJavascriptInclusionService
      */
     protected $styleAndJavascriptInclusionService;
@@ -135,6 +142,7 @@ class BackendController extends ActionController
             $this->view->assign('site', $siteNode);
             $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
             $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
+            $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
 
             $this->view->assign('translations', $this->xliffService->getCachedJson(
                 new Locale($this->userService->getInterfaceLanguage())

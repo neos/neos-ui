@@ -29,7 +29,7 @@ function * watchToggle() {
     });
 }
 
-function * watchRequestChildrenForContextPath({globalRegistry}) {
+function * watchRequestChildrenForContextPath({globalRegistry, configuration}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
 
     yield * takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
@@ -39,14 +39,14 @@ function * watchRequestChildrenForContextPath({globalRegistry}) {
         const {q} = backend.get();
         let parentNodes;
         let childNodes;
-
         yield put(actions.UI.PageTree.setAsLoading(contextPath));
 
         try {
             const query = q(contextPath);
 
             parentNodes = yield query.get();
-            childNodes = yield query.children(`[instanceof ${nodeTypesRegistry.getRole('document')}]`).get();
+            const baseNodeType = configuration.nodeTree.presets.default.baseNodeType;
+            childNodes = yield query.filteredChildren(baseNodeType).get();
         } catch (err) {
             yield put(actions.UI.PageTree.invalidate(contextPath));
             yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));

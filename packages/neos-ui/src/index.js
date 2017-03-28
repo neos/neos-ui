@@ -71,11 +71,6 @@ function * application() {
         .forEach(({bootstrap}) => bootstrap(globalRegistry));
 
     //
-    // Bootstrap the saga middleware with initial sagas
-    //
-    allSagas.forEach(saga => sagaMiddleWare.run(saga, {store, globalRegistry}));
-
-    //
     // Tell everybody, that we're booting now
     //
     store.dispatch(actions.System.boot());
@@ -137,6 +132,11 @@ function * application() {
 
     const menu = yield system.getMenu;
     const configuration = yield system.getConfiguration;
+
+    //
+    // Bootstrap the saga middleware with initial sagas
+    //
+    allSagas.forEach(saga => sagaMiddleWare.run(saga, {store, globalRegistry, configuration}));
 
     //
     // After everything was initilalized correctly, render the application itself.

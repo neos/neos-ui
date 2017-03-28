@@ -1,4 +1,3 @@
-import test from 'ava';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import Label from './label.js';
 
@@ -8,18 +7,18 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(Label, defaultProps);
 
-test('should render a "label" node.', t => {
+test('should render a "label" node.', () => {
     const label = shallow();
 
-    t.is(label.type(), 'label');
+    expect(label.type()).toBe('label');
 });
-test('should add the passed "className" prop to the rendered node if passed.', t => {
+test('should add the passed "className" prop to the rendered node if passed.', () => {
     const label = shallow({className: 'testClassName'});
 
-    t.truthy(label.hasClass('testClassName'));
+    expect(label.hasClass('testClassName')).toBeTruthy();
 });
-test('should render the passed "children".', t => {
+test('should render the passed "children".', () => {
     const label = shallow({children: 'Foo children'});
 
-    t.truthy(label.html().includes('Foo children'));
+    expect(label.html().includes('Foo children')).toBeTruthy();
 });

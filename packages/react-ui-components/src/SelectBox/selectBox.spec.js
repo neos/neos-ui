@@ -1,4 +1,3 @@
-import test from 'ava';
 import sinon from 'sinon';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import SelectBox from './selectBox.js';
@@ -18,18 +17,24 @@ const defaultProps = {
 
 const shallow = createShallowRenderer(SelectBox, defaultProps);
 
-test('should render passed options straight away', t => {
+test('should render passed options straight away', () => {
     const props = {
         options: [{value: 'foo', label: 'bar'}]
     };
 
     const selectBox = shallow(props);
 
-    t.falsy(selectBox.instance().loadOptions());
-    t.is(selectBox.instance().getOptions(), props.options);
+    expect(selectBox.instance().loadOptions()).toBeFalsy();
+    expect(selectBox.instance().getOptions()).toBe(props.options);
 });
 
-test('should have the selected value', t => {
+test('should have an initial value of \'\' (empty string)', () => {
+    const selectBox = shallow();
+
+    expect(selectBox.instance().state.value).toBe('');
+});
+
+test('should have the selected value', () => {
     const props = {
         options: [{value: 'foo', label: 'bar'}]
     };
@@ -37,10 +42,10 @@ test('should have the selected value', t => {
 
     selectBox.instance().select(props.options[0].value);
 
-    t.is(selectBox.instance().state.value, props.options[0].value);
+    expect(selectBox.instance().state.value).toBe(props.options[0].value);
 });
 
-test('should call "onSelect" when selecting a value', t => {
+test('should call "onSelect" when selecting a value', () => {
     const props = {
         options: [{value: 'foo', label: 'bar'}],
         onSelect: sinon.spy()
@@ -49,10 +54,10 @@ test('should call "onSelect" when selecting a value', t => {
 
     selectBox.instance().select(props.options[0].value);
 
-    t.truthy(props.onSelect.calledOnce);
+    expect(props.onSelect.calledOnce).toBeTruthy();
 });
 
-test('should not call "onSelect" on initial render when having a value set', t => {
+test('should not call "onSelect" on initial render when having a value set', () => {
     const props = {
         options: [{value: 'foo', label: 'bar'}],
         value: 'some value',
@@ -62,5 +67,43 @@ test('should not call "onSelect" on initial render when having a value set', t =
 
     selectBox.instance().componentDidMount();
 
-    t.truthy(props.onSelect.notCalled);
+    expect(props.onSelect.notCalled).toBeTruthy();
+});
+
+test('should render a searchbox when explicitly enabled', () => {
+    const props = {
+        minimumResultsForSearch: 0
+    };
+    const selectBox = shallow(props);
+
+    expect(selectBox.instance().isSearchEnabled()).toBeTruthy();
+});
+
+test('should not render a searchbox when explicitly disabled', () => {
+    const props = {
+        minimumResultsForSearch: -1
+    };
+    const selectBox = shallow(props);
+
+    expect(selectBox.instance().isSearchEnabled()).toBeFalsy();
+});
+
+test('should render a delete icon if a `onDelete` prop was passed', () => {
+    const props = {
+        minimumResultsForSearch: -1,
+        onDelete: sinon.spy()
+    };
+    const selectBox = shallow(props);
+    const deleteAnchor = selectBox.find(DropDownComponent.Header).find('a');
+
+    expect(deleteAnchor.length).toBe(1);
+    expect(deleteAnchor.find(defaultProps.IconComponent).length).toBe(1);
+    expect(deleteAnchor.find(defaultProps.IconComponent).prop('icon')).toBe('close');
+
+    deleteAnchor.simulate('click', {
+        preventDefault: () => null,
+        stopPropagation: () => null
+    });
+
+    expect(props.onDelete.callCount).toBe(1);
 });

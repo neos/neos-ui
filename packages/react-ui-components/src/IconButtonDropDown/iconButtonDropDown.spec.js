@@ -1,4 +1,3 @@
-import test from 'ava';
 import sinon from 'sinon';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import IconButtonDropDown from './iconButtonDropDown.js';
@@ -28,41 +27,41 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(IconButtonDropDown, defaultProps);
 
-test('should initialize with a state of "{isOpen: false}".', t => {
+test('should initialize with a state of "{isOpen: false}".', () => {
     const dd = shallow();
 
-    t.is(dd.state('isOpen'), false);
+    expect(dd.state('isOpen')).toBe(false);
 });
-test('should render a "div" node with the themes "wrapper" className.', t => {
+test('should render a "div" node with the themes "wrapper" className.', () => {
     const dd = shallow();
 
-    t.is(dd.type(), 'div');
-    t.truthy(dd.hasClass('baseWrapperClassName'));
+    expect(dd.type()).toBe('div');
+    expect(dd.hasClass('baseWrapperClassName')).toBeTruthy();
 });
-test('should render the "className" prop if passed.', t => {
+test('should render the "className" prop if passed.', () => {
     const dd = shallow({
         className: 'barClassName'
     });
 
-    t.truthy(dd.hasClass('barClassName'));
+    expect(dd.hasClass('barClassName')).toBeTruthy();
 });
-test('should render a "ButtonComponent" component with style="clean" and aria-haspopup="true" prop and a className which matches the themes "wrapper__btn".', t => {
+test('should render a "ButtonComponent" component with style="clean" and aria-haspopup="true" prop and a className which matches the themes "wrapper__btn".', () => {
     const dd = shallow();
     const btn = dd.find(Button);
 
-    t.is(btn.prop('style'), 'clean');
-    t.is(btn.prop('aria-haspopup'), 'true');
-    t.truthy(btn.hasClass('baseBtnClassName'));
+    expect(btn.prop('style')).toBe('clean');
+    expect(btn.prop('aria-haspopup')).toBe('true');
+    expect(btn.hasClass('baseBtnClassName')).toBeTruthy();
 });
-test('should render a "ButtonComponent" component which reflects the "isDisabled" prop.', t => {
+test('should render a "ButtonComponent" component which reflects the "isDisabled" prop.', () => {
     const dd = shallow({
         isDisabled: 'fooDisabled'
     });
     const btn = dd.find(Button);
 
-    t.is(btn.prop('isDisabled'), 'fooDisabled');
+    expect(btn.prop('isDisabled')).toBe('fooDisabled');
 });
-test('should set the "isOpen" state to "true" when pressing the "ButtonComponent" for more than 200 ms.', t => {
+test('should set the "isOpen" state to "true" when pressing the "ButtonComponent" for more than 200 ms.', () => {
     const dd = shallow();
     const btn = dd.find(Button);
 
@@ -70,12 +69,12 @@ test('should set the "isOpen" state to "true" when pressing the "ButtonComponent
         btn.simulate('mouseDown');
 
         setTimeout(() => {
-            t.is(dd.state('isOpen'), true);
+            expect(dd.state('isOpen')).toBe(true);
             resolve();
         }, 300);
     });
 });
-test('should abort the setting of the "isOpen" state to "true" when pressing and afterwards clicking on the "ButtonComponent" within the 200 ms.', t => {
+test('should abort the setting of the "isOpen" state to "true" when pressing and afterwards clicking on the "ButtonComponent" within the 200 ms.', () => {
     const dd = shallow();
     const btn = dd.find(Button);
 
@@ -85,12 +84,12 @@ test('should abort the setting of the "isOpen" state to "true" when pressing and
         btn.simulate('click');
 
         setTimeout(() => {
-            t.is(dd.state('isOpen'), false);
+            expect(dd.state('isOpen')).toBe(false);
             resolve();
         }, 300);
     });
 });
-test('should call the "onClick" prop when clicking on the "ButtonComponent".', t => {
+test('should call the "onClick" prop when clicking on the "ButtonComponent".', () => {
     const props = {
         onClick: sinon.spy()
     };
@@ -99,40 +98,40 @@ test('should call the "onClick" prop when clicking on the "ButtonComponent".', t
 
     btn.simulate('click');
 
-    t.truthy(props.onClick.calledOnce);
+    expect(props.onClick.calledOnce).toBeTruthy();
 });
 
-test('should render two "IconComponent"s within the "ButtonComponent".', t => {
+test('should render two "IconComponent"s within the "ButtonComponent".', () => {
     const dd = shallow();
     const btn = dd.find(Button);
     const icons = btn.find(Icon);
 
-    t.is(icons.length, 2);
+    expect(icons.length).toBe(2);
 });
-test('should propagate the "modeIcon" prop to the first "IconComponent".', t => {
+test('should propagate the "modeIcon" prop to the first "IconComponent".', () => {
     const dd = shallow();
     const btn = dd.find(Button);
     const icon = btn.find(Icon).at(0);
 
-    t.is(icon.prop('icon'), 'fooModeIcon');
+    expect(icon.prop('icon')).toBe('fooModeIcon');
 });
-test('should propagate the "icon" prop to the second "IconComponent".', t => {
+test('should propagate the "icon" prop to the second "IconComponent".', () => {
     const dd = shallow();
     const btn = dd.find(Button);
     const icon = btn.find(Icon).at(1);
 
-    t.is(icon.prop('icon'), 'barGeneralIcon');
+    expect(icon.prop('icon')).toBe('barGeneralIcon');
 });
 
-test('should render a "DropDownItem" for each passed child and propagate the "dropDownId" to it as "id".', t => {
+test('should render a "DropDownItem" for each passed child and propagate the "dropDownId" to it as "id".', () => {
     const dd = shallow();
     const items = dd.find(DropDownItem);
 
-    t.is(items.length, 2);
-    t.is(items.at(0).prop('id'), 'foo1');
-    t.is(items.at(1).prop('id'), 'foo2');
+    expect(items.length).toBe(2);
+    expect(items.at(0).prop('id')).toBe('foo1');
+    expect(items.at(1).prop('id')).toBe('foo2');
 });
-test('should call the "onItemSelect" prop when clicking on a "DropDownItem".', t => {
+test('should call the "onItemSelect" prop when clicking on a "DropDownItem".', () => {
     const props = {
         onItemSelect: sinon.spy()
     };
@@ -141,5 +140,5 @@ test('should call the "onItemSelect" prop when clicking on a "DropDownItem".', t
 
     item.simulate('click');
 
-    t.truthy(props.onItemSelect.calledOnce);
+    expect(props.onItemSelect.calledOnce).toBeTruthy();
 });

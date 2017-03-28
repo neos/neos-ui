@@ -5,7 +5,6 @@
   "private": true,
   "main": "./src",
   "bin": {
-    "ava": "./node_modules/.bin/ava",
     "babel": "./node_modules/.bin/babel",
     "babel-jest": "./node_modules/babel-jest/build/index.js",
     "check-dependencies": "./node_modules/.bin/check-dependencies",
@@ -15,7 +14,6 @@
     "eslint": "./node_modules/.bin/eslint",
     "greenkeeper-postpublish": "./node_modules/.bin/greenkeeper-postpublish",
     "jest": "./node_modules/.bin/jest",
-    "nyc": "./node_modules/.bin/nyc",
     "rimraf": "./node_modules/.bin/rimraf",
     "watch": "./node_modules/.bin/watch",
     "webpack": "./node_modules/.bin/webpack",
@@ -25,7 +23,6 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "ava": "^0.16.0",
     "babel-cli": "^6.8.0",
     "babel-jest": "^19.0.0",
     "check-dependencies": "^1.0.1",
@@ -35,7 +32,6 @@
     "eslint": "^3.1.1",
     "greenkeeper-postpublish": "^1.0.0",
     "jest": "^19.0.2",
-    "nyc": "^8.3.1",
     "rimraf": "^2.5.4",
     "stylelint": "^7.5.0",
     "watch": "^0.19.2",

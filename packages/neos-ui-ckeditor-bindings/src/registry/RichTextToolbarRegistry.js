@@ -10,14 +10,21 @@ export default class RichTextToolbarRegistry extends SynchronousRegistry {
         this.TRISTATE_OFF = 2;
     }
 
+    setNodeTypesRegistry(nodeTypesRegistry) {
+        this.nodeTypesRegistry = nodeTypesRegistry;
+    }
+
     hasFormattingRule = formattingRuleId =>
         Object.values(this._registry).some(option => option.formattingRule === formattingRuleId);
 
-    getEnabledFormattingRulesFromEditorOptions = memoize(
-        editorOptions => [].concat(
+    getEnabledFormattingRulesForNodeTypeAndProperty = memoize(nodeTypeName => memoize(propertyName => {
+        const editorOptions = this.nodeTypesRegistry
+            .getInlineEditorOptionsForProperty(nodeTypeName, propertyName) || {};
+
+        return [].concat(
             ...['format', 'link', 'list', 'table']
                 .map(configurationKey => editorOptions[configurationKey])
                 .filter(i => i)
-        ).filter(this.hasFormattingRule)
-    );
+        ).filter(this.hasFormattingRule);
+    }));
 }

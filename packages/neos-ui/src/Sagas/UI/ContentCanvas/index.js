@@ -5,8 +5,6 @@ import {iframeDocument} from '../../../Containers//ContentCanvas/Helpers/dom';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 
-import {getIframeWindow, findAllNodes} from './Helpers/dom';
-
 /**
  * Load newly created page into canvas
  */
@@ -27,8 +25,12 @@ function * watchCanvasUpdateToChangeTitle() {
     });
 }
 
+/**
+ * Run initialization sequence, after a new document has been loaded
+ */
 function * watchDocumentInitialized({globalRegistry, store}) {
-    const makeInitializeGuestFrame = globalRegistry.get('makeInitializeGuestFrame');
+    const guestFrameRegistry = globalRegistry.get('@neos-project/neos-ui-guestframe');
+    const makeInitializeGuestFrame = guestFrameRegistry.get('makeInitializeGuestFrame');
 
     yield * takeLatest(
         actionTypes.UI.ContentCanvas.DOCUMENT_INITIALIZED,

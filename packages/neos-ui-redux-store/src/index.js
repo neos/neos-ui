@@ -6,10 +6,9 @@ import * as CR from './CR/index';
 import * as System from './System/index';
 import * as UI from './UI/index';
 import * as User from './User/index';
-import * as Guest from './Guest/index';
 import * as ServerFeedback from './ServerFeedback/index';
 
-const all = {Changes, CR, System, UI, User, Guest, ServerFeedback};
+const all = {Changes, CR, System, UI, User, ServerFeedback};
 
 //
 // Export the actionTypes

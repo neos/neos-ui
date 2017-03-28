@@ -60,7 +60,8 @@ export const findNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? fi
 // in the guest frame
 //
 export const closestNodeInGuestFrame = el => {
-    if (!el) {
+    if (!el || !el.dataset) {
+        // el.dataset is not existing for window.document; and we need to prevent this case from happening.
         return null;
     }
 

@@ -1,6 +1,6 @@
 import {PureComponent, PropTypes} from 'react';
 
-import {dom} from '../../Helpers/index';
+import {findInGuestFrame, findNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import style from './style.css';
 
@@ -11,7 +11,7 @@ export default class MarkActiveNodeAsFocused extends PureComponent {
     };
 
     render() {
-        const oldNode = dom.find(`.${style['markActiveNodeAsFocused--focusedNode']}`);
+        const oldNode = findInGuestFrame(`.${style['markActiveNodeAsFocused--focusedNode']}`);
 
         if (oldNode) {
             oldNode.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
@@ -23,7 +23,7 @@ export default class MarkActiveNodeAsFocused extends PureComponent {
             return null;
         }
 
-        const nodeElement = dom.findNode(contextPath, fusionPath);
+        const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
 
         if (nodeElement) {
             nodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);

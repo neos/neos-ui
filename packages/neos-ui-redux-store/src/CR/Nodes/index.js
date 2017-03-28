@@ -192,7 +192,9 @@ export const reducer = handleActions({
             )
         ))
     ),
-    [FOCUS]: ({contextPath, fusionPath}) => $set('cr.nodes.focused', new Map({contextPath, fusionPath})),
+    [FOCUS]: ({contextPath, fusionPath}) => $all(
+        $set('cr.nodes.focused', new Map({contextPath, fusionPath}))
+    ),
     [UNFOCUS]: () => $set('cr.nodes.focused', new Map({
         contextPath: '',
         fusionPath: ''

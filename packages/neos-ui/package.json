@@ -29,6 +29,7 @@
     "@neos-project/neos-ui-decorators": "^4.4.8",
     "@neos-project/neos-ui-editors": "^4.4.8",
     "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
+    "@neos-project/neos-ui-guest-frame": "^4.4.8",
     "@neos-project/neos-ui-i18n": "^4.4.8",
     "@neos-project/neos-ui-inspector": "^4.4.8",
     "@neos-project/neos-ui-redux-store": "^4.4.8",

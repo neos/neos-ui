@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$set, $get, $all} from 'plow-js';
+import {$set, $get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 

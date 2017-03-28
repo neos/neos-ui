@@ -1,10 +1,13 @@
 import manifest from '@neos-project/neos-ui-extensibility';
+import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
-import dom from './dom';
 import makeInitializeGuestFrame from './initializeGuestFrame';
 
-manifest('@neos-project/neos-ui-guestframe', globalRegistry => {
-    globalRegistry.add('makeInitializeGuestFrame', makeInitializeGuestFrame);
-});
+manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
+    const guestFrameRegistry = new SynchronousRegistry(`
+        # Registry for guest-frame specific functionalities
+    `);
 
-export default dom;
+    guestFrameRegistry.add('makeInitializeGuestFrame', makeInitializeGuestFrame);
+    globalRegistry.add('@neos-project/neos-ui-guestframe', guestFrameRegistry);
+});

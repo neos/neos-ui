@@ -49,9 +49,9 @@ export const findAllPropertiesInGuestFrame = () =>
 //
 // Find a specific DOM node that represents a CR node in the guest frame
 //
-export const findNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? find(
+export const findNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? findInGuestFrame(
     `[data-__neos-node-contextpath="${contextPath}"][data-__neos-fusion-path="${fusionPath}"]`
-) : find(
+) : findInGuestFrame(
     `[data-__neos-node-contextpath="${contextPath}"]`
 );
 

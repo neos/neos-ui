@@ -18,6 +18,6 @@ class RenderNonRenderedNodeMetadataImplementation extends AbstractFusionObject
 
     public function evaluate()
     {
-        return $this->augmentedAspect->appendNonRenderedContentNodeMetadata($this->fusionValue('node'));
+        return $this->augmentedAspect->getNonRenderedContentNodeMetadata($this->fusionValue('node'));
     }
 }

@@ -6,11 +6,13 @@
     width: 100%;
     height: 110px;
     background: var(--brandColorsContrastDarkest);
-    transition: .2s ease padding;
+    transition: 200ms ease-in-out;
     will-change: padding;
     display: flex;
     justify-content: space-between;
     align-items: stretch;
+    transform: translateX(0);
+    opacity: 1;
 
     &:before,
     &:after {
@@ -29,6 +31,8 @@
 }
 .editModePanel--isHidden {
     display: none;
+    transform: translateX(-100%);
+    opacity: 0;
 }
 .editModePanel__editingModes,
 .editModePanel__previewCentral {

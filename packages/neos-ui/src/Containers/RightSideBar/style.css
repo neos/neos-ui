@@ -17,6 +17,7 @@
     transform: translateX(var(--sidebarWidth));
 }
 .rightSideBar__toggleBtn {
+    width: 46px;
     position: absolute!important;
     right: 0;
     top: 41px;

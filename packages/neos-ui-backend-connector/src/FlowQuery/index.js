@@ -5,7 +5,7 @@ import * as operations from './Operations/index';
 import {$get, $add} from 'plow-js';
 
 export const isStartingOperation = (operation = {}) => operation.type === 'createContext';
-export const isFinishingOperation = (operation = {}) => ['get', 'count'].indexOf(operation.type) !== -1;
+export const isFinishingOperation = (operation = {}) => ['get', 'getForTree', 'count'].indexOf(operation.type) !== -1;
 
 export const isNodeEnvelope = envelope =>
     typeof envelope === 'object' && !Array.isArray(envelope) && typeof envelope.$node !== 'undefined';

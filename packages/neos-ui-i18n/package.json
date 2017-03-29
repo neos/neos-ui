@@ -30,7 +30,7 @@
     "transformIgnorePatterns": [],
     "transform": {
       "neos-ui-i18n/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
-      ".*node_modules/@neos-project.+\\.jsx?$": "./node_modules/.bin/babel-jest"
+      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
     }
   }
 }

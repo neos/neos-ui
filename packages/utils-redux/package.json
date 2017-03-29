@@ -24,7 +24,7 @@
     "unmockedModulePathPatterns": ["sinon"],
     "transform": {
       "utils-redux/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
-      ".*node_modules/@neos-project.+\\.jsx?$": "./node_modules/.bin/babel-jest"
+      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
     }
   }
 }

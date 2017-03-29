@@ -37,7 +37,7 @@
     ],
     "transform": {
       "neos-ui-backend-connector/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
-      ".*node_modules/@neos-project.+\\.jsx?$": "./node_modules/.bin/babel-jest"
+      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
     }
   }
 }

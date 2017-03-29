@@ -1,11 +1,10 @@
 import uuid from 'uuid';
 import {$get} from 'plow-js';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {actions} from '@neos-project/neos-ui-redux-store';
+
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
-
-import {dom, initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './Containers/ContentCanvas/Helpers/index';
 
 manifest('main', {}, globalRegistry => {
     //
@@ -179,49 +178,7 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
-    // When the server advices to render a new node, put the delivered html to the
-    // corrent place inside the DOM
-    //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderContentOutOfBand', (feedbackPayload, {store, globalRegistry}) => {
-        const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
-        const parentElement = parentDomAddress && dom.findNode(
-            parentDomAddress.contextPath,
-            parentDomAddress.fusionPath
-        );
-        const siblingElement = siblingDomAddress && dom.findNode(
-            siblingDomAddress.contextPath,
-            siblingDomAddress.fusionPath
-        );
-        const contentElement = (new DOMParser())
-            .parseFromString(renderedContent, 'text/html')
-            .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
-
-        switch (mode) {
-            case 'before':
-                siblingElement.parentNode.insertBefore(contentElement, siblingElement);
-                break;
-
-            case 'after':
-                siblingElement.parentNode.insertBefore(contentElement, siblingElement.nextSibling);
-                break;
-
-            case 'into':
-            default:
-                parentElement.appendChild(contentElement);
-                break;
-        }
-
-        initializeHoverHandlersInIFrame(contentElement, dom.iframeDocument());
-
-        initializeCkEditorForDomNode(contentElement, {
-            byContextPathDynamicAccess: contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState()),
-            globalRegistry,
-            persistChange: (...args) => store.dispatch(actions.Changes.persistChange(...args))
-        });
-    });
-
-    //
-    // When the server has removed a node, remove it as well from the store and the dom
+    // When the server has removed a node, remove it as well from the store
     //
     serverFeedbackHandlers.add('Neos.Neos.Ui:RemoveNode', ({contextPath, parentContextPath}, {store}) => {
         const state = store.getState();
@@ -239,9 +196,6 @@ manifest('main', {}, globalRegistry => {
 
             store.dispatch(actions.UI.ContentCanvas.setSrc(parentNodeUri));
             store.dispatch(actions.UI.ContentCanvas.setContextPath(parentContextPath));
-        } else {
-            dom.findAll(`[data-__neos-node-contextpath="${contextPath}"]`)
-                .forEach(el => el.remove());
         }
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));

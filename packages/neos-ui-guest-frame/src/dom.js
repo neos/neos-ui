@@ -3,6 +3,8 @@
 // Functions are curried, to enable lazy execution.
 //
 
+import style from './style.css';
+
 //
 // Get the guest frame's document object
 //
@@ -47,11 +49,30 @@ export const findAllPropertiesInGuestFrame = () =>
     findAllInGuestFrame('[data-__neos-property]');
 
 //
+// Find all DOM nodes that represent CR node properties in the guest frame
+//
+export const findRelativePropertiesInGuestFrame = contentDomNode =>
+    [].slice.call(contentDomNode.querySelectorAll('[data-__neos-property]')).concat(...(
+        contentDomNode.hasAttribute('data-__neos-property') ?
+            [contentDomNode] : []
+    ));
+
+//
 // Find a specific DOM node that represents a CR node in the guest frame
 //
 export const findNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? findInGuestFrame(
     `[data-__neos-node-contextpath="${contextPath}"][data-__neos-fusion-path="${fusionPath}"]`
 ) : findInGuestFrame(
+    `[data-__neos-node-contextpath="${contextPath}"]`
+);
+
+//
+// Find all DOM nodes that represent a CR node identified by context path and
+// fusion path in the guest frame
+//
+export const findAllOccurrencesOfNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? findAllInGuestFrame(
+    `[data-__neos-node-contextpath="${contextPath}"][data-__neos-fusion-path="${fusionPath}"]`
+) : findAllInGuestFrame(
     `[data-__neos-node-contextpath="${contextPath}"]`
 );
 
@@ -80,4 +101,26 @@ export const closestContextPathInGuestFrame = el => {
     }
 
     return dom.dataset.__neosNodeContextpath;
+};
+
+//
+// Add hidden class to a DOM node that represents a CR node
+//
+export const markNodeAsHidden = contextPath => {
+    const domNode = findNodeInGuestFrame(contextPath);
+
+    if (domNode) {
+        domNode.classList.add(style.markHiddenNodeAsHidden);
+    }
+};
+
+//
+// Remove hidden class from a DOM node that represents a CR node
+//
+export const markNodeAsVisible = contextPath => {
+    const domNode = findNodeInGuestFrame(contextPath);
+
+    if (domNode) {
+        domNode.classList.remove(style.markHiddenNodeAsHidden);
+    }
 };

@@ -3,16 +3,13 @@ import {put} from 'redux-saga/effects';
 
 import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
-import {dom, style} from './helpers';
+import {markNodeAsHidden} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 export default function * hideNode() {
     yield * takeLatest(actionTypes.CR.Nodes.HIDE, function * performPropertyChange(action) {
         const contextPath = action.payload;
-        const domElement = dom.find(`[data-__neos-node-contextpath="${contextPath}"]`);
 
-        if (domElement) {
-            domElement.classList.add(style.markHiddenNodeAsHidden);
-        }
+        markNodeAsHidden(contextPath);
 
         yield put(actions.Changes.persistChange({
             type: 'Neos.Neos.Ui:Property',

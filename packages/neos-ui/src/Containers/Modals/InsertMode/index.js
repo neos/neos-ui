@@ -5,7 +5,7 @@ import {compose} from 'ramda';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import Button from '@neos-project/react-ui-components/src/Button/';
+import Button from '@neos-project/react-ui-components/src/NeosButton/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -128,6 +128,7 @@ export default class InsertModeModal extends PureComponent {
                 key="cancel"
                 style="lighter"
                 hoverStyle="brand"
+                variant="darker"
                 onClick={this.handleCancel}
                 >
                 <I18n id="Neos.Neos:Main:cancel" fallback="Cancel"/>
@@ -141,6 +142,7 @@ export default class InsertModeModal extends PureComponent {
                 key="apply"
                 style="lighter"
                 hoverStyle="brand"
+                variant="darker"
                 onClick={this.handleApply}
                 className={style.applyBtn}
                 >

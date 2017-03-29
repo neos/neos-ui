@@ -25,6 +25,7 @@ export default {
     label: '@neos-project/react-ui-components/label',
     selectBox: '@neos-project/react-ui-components/selectBox',
     multiSelectBox: '@neos-project/react-ui-components/multiSelectBox',
+    neosButton: '@neos-project/react-ui-components/neosButton',
     sideBar: '@neos-project/react-ui-components/sideBar',
     tabs: '@neos-project/react-ui-components/tabs',
     tabsPanel: '@neos-project/react-ui-components/tabsPanel',

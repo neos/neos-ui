@@ -89,4 +89,14 @@ prototype(Neos.Neos:Page) {
             newBackend = ${Neos.Ui.Activation.enableNewBackend()}
         }
     }
+
+    //
+    // Output `<script>` tags for all non rendered node children
+    //
+    neosUiNonRenderedNodeMetadata = Neos.Neos.Ui:RenderNonRenderedNodeMetadata {
+        @position = 'before neosBackendNotification'
+        @class = 'Neos\\Neos\\Ui\\Fusion\\RenderNonRenderedNodeMetadataImplementation'
+        @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+        node = ${node}
+    }
 }

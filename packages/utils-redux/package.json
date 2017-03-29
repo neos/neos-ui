@@ -13,7 +13,6 @@
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
     "jest": "PWD=$(pwd) NODE_ENV=test jest -i -w 1 --coverage",
-    "coverage:publish": "codeclimate-test-reporter < lcov.info"
   },
   "devDependencies": {
     "@neos-project/build-essentials": "^4.4.8"

@@ -57,8 +57,17 @@ export default class InsertModeSelector extends PureComponent {
 
     selectPreferredInitialModeIfModeIsEmpty(props) {
         const {mode, onSelect} = props;
+        let reconsiderMode = !mode;
 
-        if (!mode) {
+        if (mode === MODE_INTO && !props.enableIntoMode) {
+            reconsiderMode = true;
+        }
+
+        if ((mode === MODE_AFTER || mode === MODE_BEFORE) && !props.enableAlongsideModes) {
+            reconsiderMode = true;
+        }
+
+        if (reconsiderMode) {
             const preferredInitialMode = calculatePreferredInitialMode(props);
 
             if (preferredInitialMode) {

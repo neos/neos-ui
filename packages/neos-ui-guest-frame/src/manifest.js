@@ -11,8 +11,11 @@ import initializeContentDomNode from './initializeContentDomNode';
 import {
     findNodeInGuestFrame,
     findAllOccurrencesOfNodeInGuestFrame,
-    findRelativePropertiesInGuestFrame
+    findRelativePropertiesInGuestFrame,
+    createEmptyContentCollectionPlaceholderIfMissing
 } from './dom';
+
+import style from './style.css';
 
 manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
     const guestFrameRegistry = new SynchronousRegistry(`
@@ -63,6 +66,10 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const inlineEditorRegistry = globalRegistry.get('inlineEditors');
 
+        if (parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`)) {
+            parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`).remove();
+        }
+
         initializeContentDomNode({nodes})(contentElement);
         findRelativePropertiesInGuestFrame(contentElement).forEach(
             initializePropertyDomNode({
@@ -82,7 +89,12 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
         const state = store.getState();
 
         if ($get('ui.contentCanvas.contextPath', state) !== contextPath) {
-            findAllOccurrencesOfNodeInGuestFrame(contextPath).forEach(el => el.remove());
+            findAllOccurrencesOfNodeInGuestFrame(contextPath).forEach(el => {
+                const closestContentCollection = el.closest('.neos-contentcollection');
+                el.remove();
+
+                createEmptyContentCollectionPlaceholderIfMissing(closestContentCollection);
+            });
         }
     });
 });

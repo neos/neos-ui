@@ -124,3 +124,24 @@ export const markNodeAsVisible = contextPath => {
         domNode.classList.remove(style.markHiddenNodeAsHidden);
     }
 };
+
+//
+// Insert a placeholder element for content collections that don't have
+// any children yet
+//
+export const createEmptyContentCollectionPlaceholderIfMissing = collectionDomNode => {
+    if (collectionDomNode) {
+        const hasChildNodes = Boolean(
+            collectionDomNode.querySelector('[data-__neos-node-contextpath]')
+        );
+        const hasEmptyContentCollectionOverlay = Boolean(
+            collectionDomNode.querySelector(`.${style.addEmptyContentCollectionOverlay}`)
+        );
+
+        if (!hasChildNodes && !hasEmptyContentCollectionOverlay) {
+            const emptyContentCollectionOverlay = document.createElement('div');
+            emptyContentCollectionOverlay.setAttribute('class', style.addEmptyContentCollectionOverlay);
+            collectionDomNode.appendChild(emptyContentCollectionOverlay);
+        }
+    }
+};

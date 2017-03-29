@@ -1,6 +1,6 @@
 import {$get} from 'plow-js';
 
-import {getGuestFrameDocument} from './dom';
+import {getGuestFrameDocument, createEmptyContentCollectionPlaceholderIfMissing} from './dom';
 
 import style from './style.css';
 
@@ -28,4 +28,8 @@ export default ({nodes}) => contentDomNode => {
 
         e.stopPropagation();
     });
+
+    if (contentDomNode.classList.contains('neos-contentcollection')) {
+        createEmptyContentCollectionPlaceholderIfMissing(contentDomNode);
+    }
 };

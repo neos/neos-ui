@@ -8,21 +8,18 @@
     background: var(--brandColorsContrastDarkest);
     transition: 200ms ease-in-out;
     will-change: padding;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
     transform: translateX(0);
     opacity: 1;
-
-    &:before,
-    &:after {
-        content: '';
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
 }
+.editModePanel__wrapper {
+    display: flex;
+    width: 100%;
+    padding-left: 2rem;
+}
+.editModePanel__scrollable {
+    height: var(--goldenUnit);
+}
+
 .editModePanel--isFringeLeft {
     padding-left: 0;
 }
@@ -34,11 +31,14 @@
     transform: translateX(-100%);
     opacity: 0;
 }
-.editModePanel__editingModes,
-.editModePanel__previewCentral {
-    flex: 0 0 50%;
-    padding: 0 1rem;
+
+.editModePanel__previewModes,
+.editModePanel__editingModes {
+    width: 50%;
+    margin-right: 2rem;
 }
-.editModePanel--button {
+
+.editModePanel__button {
     margin-right: 1rem;
+    white-space: nowrap;
 }

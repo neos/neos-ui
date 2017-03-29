@@ -105,6 +105,7 @@
     "react-motion": "^0.4.2",
     "react-portal": "^3.0.0",
     "react-redux": "^4.4.5",
+    "react-scroll-horizontal": "0.0.7",
     "react-textarea-autosize": "^4.0.5",
     "redux": "^3.4.0",
     "redux-actions": "^0.12.0",

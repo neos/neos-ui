@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react';
 import {$get} from 'plow-js';
 import {Map} from 'immutable';
 
-import TextInput from '@neos-project/react-ui-components/lib/TextInput/';
-import CheckBox from '@neos-project/react-ui-components/lib/CheckBox/';
+import TextInput from '@neos-project/react-ui-components/src/TextInput/';
+import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';

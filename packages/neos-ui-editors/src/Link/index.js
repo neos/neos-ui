@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform} from 'plow-js';
-import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
+import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';

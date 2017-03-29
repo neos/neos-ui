@@ -1,8 +1,8 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
-import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
+import DropDown from '@neos-project/react-ui-components/src/DropDown/';
+import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import style from './style.css';
 import {$map, $get, $transform} from 'plow-js';
 import {Map} from 'immutable';

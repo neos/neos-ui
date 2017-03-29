@@ -16,7 +16,7 @@ npm i -S @neos-project/react-ui-components
 To reduce the bundled size of applications, we enforce singular import statements of components.
 You can import components by pointing to the `lib/` folder, f.e.
 ```js
-import Button from '@neos-project/react-ui-components/lib/Button/';
+import Button from '@neos-project/react-ui-components/src/Button/';
 ```
 
 ## Usage WITH CSS modules
@@ -36,14 +36,14 @@ requires a `theme` prop with the `classNames` you need to provide.
 
 In case you want to use the components purely, adjust the import statement to point to the react component only e.g.
 ```js
-import Button from '@neos-project/react-ui-components/lib/Button/button.js';
+import Button from '@neos-project/react-ui-components/src/Button/button.js';
 ```
 
 ## Theming
 All components can be themed using the [react-css-themr](https://github.com/javivelasco/react-css-themr) package,
 visit their docs for more information about how this approach works. Our identifiers can be imported e.g.
 ```js
-import identifiers from '@neos-project/react-ui-components/lib/identifiers.js';
+import identifiers from '@neos-project/react-ui-components/src/identifiers.js';
 ```
 
 ## Contributing

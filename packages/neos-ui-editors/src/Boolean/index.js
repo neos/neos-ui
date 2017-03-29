@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 
-import CheckBox from '@neos-project/react-ui-components/lib/CheckBox/';
-import Label from '@neos-project/react-ui-components/lib/Label/';
+import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
+import Label from '@neos-project/react-ui-components/src/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
 
 const toBoolean = val => {

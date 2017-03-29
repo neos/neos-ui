@@ -2,8 +2,8 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
-import Button from '@neos-project/react-ui-components/lib/Button/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import Button from '@neos-project/react-ui-components/src/Button/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';

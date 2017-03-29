@@ -7,7 +7,7 @@ import {memoize} from 'ramda';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
-import Button from '@neos-project/react-ui-components/lib/Button/index';
+import Button from '@neos-project/react-ui-components/src/Button/index';
 
 import style from './style.css';
 

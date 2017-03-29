@@ -1,5 +1,5 @@
 import React, {PureComponent, PropTypes} from 'react';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Dropzone from 'react-dropzone';
 
 import {Thumbnail} from '../../Utils/index';

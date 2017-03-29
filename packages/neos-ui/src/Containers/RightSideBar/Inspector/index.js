@@ -2,10 +2,10 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
-import Bar from '@neos-project/react-ui-components/lib/Bar/';
-import Grid from '@neos-project/react-ui-components/lib/Grid/';
-import Button from '@neos-project/react-ui-components/lib/Button/';
-import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
+import Bar from '@neos-project/react-ui-components/src/Bar/';
+import Grid from '@neos-project/react-ui-components/src/Grid/';
+import Button from '@neos-project/react-ui-components/src/Button/';
+import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';

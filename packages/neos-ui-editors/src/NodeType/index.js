@@ -2,7 +2,7 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 
-import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
+import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import style from './style.css';

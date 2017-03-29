@@ -20,21 +20,21 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
     if (isInlineEditable) {
         const editorIdentifier = nodeTypesRegistry.getInlineEditorForProperty(nodeTypeName, propertyName);
         const editorOptions = nodeTypesRegistry.getInlineEditorOptionsForProperty(nodeTypeName, propertyName);
-        const {initializeInlineEditorApi, createInlineEditor} = inlineEditorRegistry.get(editorIdentifier);
+        const {bootstrap, createInlineEditor} = inlineEditorRegistry.get(editorIdentifier);
 
         const initializeInlineEditor = () => {
             const {top} = propertyDomNode.getBoundingClientRect();
             const isVisible = top <= window.innerHeight;
 
             if (isVisible) {
-                if (!initializedInlindeEditorApis[editorIdentifier] && initializeInlineEditorApi) {
+                if (!initializedInlindeEditorApis[editorIdentifier] && bootstrap) {
                     try {
                         const {
                             setFormattingUnderCursor,
                             setCurrentlyEditedPropertyName
                         } = actions.UI.ContentCanvas;
 
-                        initializeInlineEditorApi({
+                        bootstrap({
                             setFormattingUnderCursor:
                                 (...args) => store.dispatch(setFormattingUnderCursor(...args)),
                             setCurrentlyEditedPropertyName:

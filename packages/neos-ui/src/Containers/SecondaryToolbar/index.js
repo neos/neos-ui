@@ -11,7 +11,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import style from './style.css';
 
 @neos(globalRegistry => ({
-    inlineEditorRegistry: globalRegistry.get('inlineEditorRegistry'),
+    inlineEditorRegistry: globalRegistry.get('inlineEditors'),
     containerRegistry: globalRegistry.get('containers'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))

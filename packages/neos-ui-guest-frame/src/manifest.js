@@ -61,7 +61,7 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
             [contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())
         });
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-        const inlineEditorRegistry = globalRegistry.get('inlineEditorRegistry');
+        const inlineEditorRegistry = globalRegistry.get('inlineEditors');
 
         initializeContentDomNode({nodes})(contentElement);
         findRelativePropertiesInGuestFrame(contentElement).forEach(

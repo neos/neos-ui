@@ -17,7 +17,7 @@ manifest('main', {}, globalRegistry => {
     //
     // Create inline editor registry
     //
-    globalRegistry.add('inlineEditorRegistry', new SynchronousRegistry(`
+    globalRegistry.add('inlineEditors', new SynchronousRegistry(`
         # Registry for inline editors
     `));
 

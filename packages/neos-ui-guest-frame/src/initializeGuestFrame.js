@@ -14,7 +14,7 @@ import initializeContentDomNode from './initializeContentDomNode';
 
 export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const inlineEditorRegistry = globalRegistry.get('inlineEditorRegistry');
+    const inlineEditorRegistry = globalRegistry.get('inlineEditors');
     const guestFrameWindow = getGuestFrameWindow();
     const documentInformation = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:DocumentInformation']);
     const nodes = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:Nodes'], {

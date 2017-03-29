@@ -3,9 +3,8 @@ import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/r
 
 import EditorToolbar from './EditorToolbar';
 
-import initializeCkEditor from './initializeCkEditor';
-import initializeCkEditorApi from './initializeCkEditorApi';
-import getEnabledFormattingRulesFromEditorOptions from './getEnabledFormattingRulesFromEditorOptions';
+import createCkEditor from './createCkEditor';
+import boostrapCkEditorApi from './boostrapCkEditorApi';
 
 import initializeFormattingRulesRegistry from './manifest.formattingRules';
 import initializeRichtextToolbarRegistry from './manifest.richtextToolbar';
@@ -20,17 +19,16 @@ manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
         `)
     );
 
-    const formattingRules = initializeFormattingRulesRegistry(ckEditorRegistry);
+    const formattingRulesRegistry = initializeFormattingRulesRegistry(ckEditorRegistry);
     initializeRichtextToolbarRegistry(ckEditorRegistry, globalRegistry.get('@neos-project/neos-ui-contentrepository'));
 
     //
     // Add CK Editor to the list of inline editors
     //
-    const inlineEditorRegistry = globalRegistry.get('inlineEditorRegistry');
+    const inlineEditorRegistry = globalRegistry.get('inlineEditors');
     inlineEditorRegistry.add('ckeditor', {
-        createInlineEditor: initializeCkEditor,
-        initializeInlineEditorApi: initializeCkEditorApi(formattingRules),
-        getEnabledFormattingRulesFromEditorOptions: getEnabledFormattingRulesFromEditorOptions(formattingRules),
+        bootstrap: boostrapCkEditorApi(formattingRulesRegistry),
+        createInlineEditor: createCkEditor,
         ToolbarComponent: EditorToolbar
     });
 });

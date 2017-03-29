@@ -1,5 +1,5 @@
 import React, {PureComponent, PropTypes} from 'react';
-import Label from '@neos-project/react-ui-components/lib/Label/';
+import Label from '@neos-project/react-ui-components/src/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 

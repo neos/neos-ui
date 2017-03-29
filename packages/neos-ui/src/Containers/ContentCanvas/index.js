@@ -6,7 +6,7 @@ import {$transform, $get} from 'plow-js';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import Frame from '@neos-project/react-ui-components/lib/Frame/';
+import Frame from '@neos-project/react-ui-components/src/Frame/';
 
 import style from './style.css';
 import InlineUI from './InlineUI/index';

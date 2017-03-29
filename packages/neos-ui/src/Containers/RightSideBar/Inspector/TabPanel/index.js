@@ -1,6 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {Maybe} from 'monet';
-import Tabs from '@neos-project/react-ui-components/lib/Tabs/';
+import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
 

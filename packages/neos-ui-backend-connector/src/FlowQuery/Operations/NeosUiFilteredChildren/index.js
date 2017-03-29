@@ -1,4 +1,4 @@
 export default () => filter => ({
-    type: 'find',
+    type: 'neosUiFilteredChildren',
     payload: [filter]
 });

@@ -2,9 +2,9 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
-import Button from '@neos-project/react-ui-components/lib/Button/';
-import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import Button from '@neos-project/react-ui-components/src/Button/';
+import Dialog from '@neos-project/react-ui-components/src/Dialog/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';

@@ -7,8 +7,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import validate from '@neos-project/neos-ui-validators/src/index';
 
-import Button from '@neos-project/react-ui-components/lib/Button/';
-import Dialog from '@neos-project/react-ui-components/lib/Dialog/';
+import Button from '@neos-project/react-ui-components/src/Button/';
+import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 

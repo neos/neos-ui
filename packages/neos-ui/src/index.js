@@ -70,10 +70,12 @@ function * application() {
         .map(manifest => manifest[Object.keys(manifest)[0]])
         .forEach(({bootstrap}) => bootstrap(globalRegistry));
 
+    const configuration = yield system.getConfiguration;
+
     //
     // Bootstrap the saga middleware with initial sagas
     //
-    allSagas.forEach(saga => sagaMiddleWare.run(saga, {store, globalRegistry}));
+    allSagas.forEach(saga => sagaMiddleWare.run(saga, {store, globalRegistry, configuration}));
 
     //
     // Tell everybody, that we're booting now
@@ -136,7 +138,6 @@ function * application() {
     yield put(actions.System.ready());
 
     const menu = yield system.getMenu;
-    const configuration = yield system.getConfiguration;
 
     //
     // After everything was initilalized correctly, render the application itself.

@@ -2,7 +2,7 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
-import Bar from '@neos-project/react-ui-components/lib/Bar/';
+import Bar from '@neos-project/react-ui-components/src/Bar/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.css';

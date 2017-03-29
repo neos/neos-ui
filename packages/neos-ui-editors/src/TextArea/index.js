@@ -1,5 +1,5 @@
 import React, {PropTypes} from '@host/react';
-import TextArea from '@neos-project/react-ui-components/lib/TextArea/';
+import TextArea from '@neos-project/react-ui-components/src/TextArea/';
 
 const TextAreaEditor = props => {
     const {value, commit, highlight} = props;

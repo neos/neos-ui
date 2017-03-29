@@ -1,9 +1,9 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import Button from '@neos-project/react-ui-components/lib/Button/';
-import Grid from '@neos-project/react-ui-components/lib/Grid/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
+import Button from '@neos-project/react-ui-components/src/Button/';
+import Grid from '@neos-project/react-ui-components/src/Grid/';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 

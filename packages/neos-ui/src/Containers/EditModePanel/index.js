@@ -7,7 +7,7 @@ import {memoize} from 'ramda';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
-import Button from '@neos-project/react-ui-components/lib/Button/index';
+import Button from '@neos-project/react-ui-components/src/Button/index';
 
 import style from './style.css';
 
@@ -68,6 +68,7 @@ export default class EditModePanel extends PureComponent {
                             key={editMode.id}
                             style={editMode.id === editPreviewMode ? 'brand' : null}
                             onClick={this.handleEditPreviewModeClick(editMode.id)}
+                            className={style['editModePanel--button']}
                             >
                             <I18n id={editMode.title}/>
                         </Button>
@@ -80,6 +81,7 @@ export default class EditModePanel extends PureComponent {
                             key={previewMode.id}
                             style={previewMode.id === editPreviewMode ? 'brand' : null}
                             onClick={this.handleEditPreviewModeClick(previewMode.id)}
+                            className={style['editModePanel--button']}
                             >
                             <I18n id={previewMode.title}/>
                         </Button>

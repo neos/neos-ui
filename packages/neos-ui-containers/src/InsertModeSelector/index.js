@@ -1,7 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 
-import ButtonGroup from '@neos-project/react-ui-components/lib/ButtonGroup/';
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import ButtonGroup from '@neos-project/react-ui-components/src/ButtonGroup/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -57,8 +57,17 @@ export default class InsertModeSelector extends PureComponent {
 
     selectPreferredInitialModeIfModeIsEmpty(props) {
         const {mode, onSelect} = props;
+        let reconsiderMode = !mode;
 
-        if (!mode) {
+        if (mode === MODE_INTO && !props.enableIntoMode) {
+            reconsiderMode = true;
+        }
+
+        if ((mode === MODE_AFTER || mode === MODE_BEFORE) && !props.enableAlongsideModes) {
+            reconsiderMode = true;
+        }
+
+        if (reconsiderMode) {
             const preferredInitialMode = calculatePreferredInitialMode(props);
 
             if (preferredInitialMode) {

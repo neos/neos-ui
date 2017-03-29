@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import {$get} from 'plow-js';
 
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import StyleSelect from './Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
 import LinkIconButton from './Containers/SecondaryToolbar/EditorToolbar/LinkIconButton';
 

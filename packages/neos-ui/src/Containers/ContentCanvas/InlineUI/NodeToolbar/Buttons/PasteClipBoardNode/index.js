@@ -2,7 +2,7 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
@@ -44,9 +44,12 @@ export default class PasteClipBoardNode extends PureComponent {
     render() {
         const {className, canBePasted} = this.props;
 
+        if (!canBePasted) {
+            return null;
+        }
+
         return (
             <IconButton
-                isDisabled={!canBePasted}
                 className={className}
                 icon="paste"
                 onClick={this.handlePasteButtonClick}

@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
@@ -75,7 +75,7 @@ export default class SecondaryToolbar extends PureComponent {
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     <a
                         href={previewUrl ? previewUrl : ''}
-                        target="_blank"
+                        target="neosPreview"
                         rel="noopener noreferrer"
                         className={previewButtonClassNames}
                         >

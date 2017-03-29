@@ -21,7 +21,7 @@ export const findAll = selector => {
 //
 // Firefox & Safari don't support event.path so this fallback method should be used
 //
-export const getClickPath = (event) => {
+export const getClickPath = event => {
     let path = event.path || (event.composedPath && event.composedPath());
 
     if (!path) {
@@ -31,10 +31,12 @@ export const getClickPath = (event) => {
             path.push(currentElem);
             currentElem = currentElem.parentElement;
         }
-        if (path.indexOf(window) === -1 && path.indexOf(document) === -1)
+        if (path.indexOf(window) === -1 && path.indexOf(document) === -1) {
             path.push(document);
-        if (path.indexOf(window) === -1)
+        }
+        if (path.indexOf(window) === -1) {
             path.push(window);
+        }
     }
     return path;
 };

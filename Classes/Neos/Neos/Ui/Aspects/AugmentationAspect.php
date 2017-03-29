@@ -193,7 +193,7 @@ class AugmentationAspect
     protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {
         foreach ($documentNode->getChildNodes() as $node) {
-            if ($documentNode->getNodeType()->isOfType('Neos.Document') === true) {
+            if ($documentNode->getNodeType()->isOfType('Neos.Neos:Document') === true) {
                 continue;
             }
 

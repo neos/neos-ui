@@ -68,6 +68,7 @@ export default class EditModePanel extends PureComponent {
                             key={editMode.id}
                             style={editMode.id === editPreviewMode ? 'brand' : null}
                             onClick={this.handleEditPreviewModeClick(editMode.id)}
+                            className={style['editModePanel--button']}
                             >
                             <I18n id={editMode.title}/>
                         </Button>
@@ -80,6 +81,7 @@ export default class EditModePanel extends PureComponent {
                             key={previewMode.id}
                             style={previewMode.id === editPreviewMode ? 'brand' : null}
                             onClick={this.handleEditPreviewModeClick(previewMode.id)}
+                            className={style['editModePanel--button']}
                             >
                             <I18n id={previewMode.title}/>
                         </Button>

@@ -14,6 +14,7 @@ import {
     findRelativePropertiesInGuestFrame,
     createEmptyContentCollectionPlaceholderIfMissing
 } from './dom';
+import InlineUI from './InlineUI';
 
 import style from './style.css';
 
@@ -23,7 +24,8 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
     `);
 
     guestFrameRegistry.add('makeInitializeGuestFrame', makeInitializeGuestFrame);
-    globalRegistry.add('@neos-project/neos-ui-guestframe', guestFrameRegistry);
+    guestFrameRegistry.add('InlineUIComponent', InlineUI);
+    globalRegistry.add('@neos-project/neos-ui-guest-frame', guestFrameRegistry);
 
     const serverFeedbackHandlers = globalRegistry.get('serverFeedbackHandlers');
 

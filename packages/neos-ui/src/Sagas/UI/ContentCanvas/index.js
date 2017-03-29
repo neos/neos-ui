@@ -29,7 +29,7 @@ function * watchCanvasUpdateToChangeTitle() {
  * Run initialization sequence, after a new document has been loaded
  */
 function * watchDocumentInitialized({globalRegistry, store}) {
-    const guestFrameRegistry = globalRegistry.get('@neos-project/neos-ui-guestframe');
+    const guestFrameRegistry = globalRegistry.get('@neos-project/neos-ui-guest-frame');
     const makeInitializeGuestFrame = guestFrameRegistry.get('makeInitializeGuestFrame');
 
     yield * takeLatest(

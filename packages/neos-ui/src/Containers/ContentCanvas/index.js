@@ -9,7 +9,6 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import Frame from '@neos-project/react-ui-components/src/Frame/';
 
 import style from './style.css';
-import InlineUI from './InlineUI/index';
 
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
@@ -22,7 +21,8 @@ import InlineUI from './InlineUI/index';
     documentInitialized: actions.UI.ContentCanvas.documentInitialized
 })
 @neos(globalRegistry => ({
-    editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
+    editPreviewModesRegistry: globalRegistry.get('editPreviewModes'),
+    guestFrameRegistry: globalRegistry.get('@neos-project/neos-ui-guest-frame')
 }))
 export default class ContentCanvas extends PureComponent {
     static propTypes = {
@@ -34,7 +34,8 @@ export default class ContentCanvas extends PureComponent {
         documentInitialized: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
 
-        editPreviewModesRegistry: PropTypes.object.isRequired
+        editPreviewModesRegistry: PropTypes.object.isRequired,
+        guestFrameRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -44,7 +45,16 @@ export default class ContentCanvas extends PureComponent {
     }
 
     render() {
-        const {isFringeLeft, isFringeRight, isFullScreen, isEditModePanelHidden, src, currentEditPreviewMode, editPreviewModesRegistry} = this.props;
+        const {
+            isFringeLeft,
+            isFringeRight,
+            isFullScreen,
+            isEditModePanelHidden,
+            src,
+            currentEditPreviewMode,
+            editPreviewModesRegistry,
+            guestFrameRegistry
+        } = this.props;
         const classNames = mergeClassNames({
             [style.contentCanvas]: true,
             [style['contentCanvas--isFringeLeft']]: isFringeLeft,
@@ -52,7 +62,7 @@ export default class ContentCanvas extends PureComponent {
             [style['contentCanvas--isMovedDown']]: !isEditModePanelHidden,
             [style['contentCanvas--isFullScreen']]: isFullScreen
         });
-
+        const InlineUI = guestFrameRegistry.get('InlineUIComponent');
         const currentEditPreviewModeConfiguration = editPreviewModesRegistry.get(currentEditPreviewMode);
 
         const inlineStyles = {};
@@ -78,7 +88,7 @@ export default class ContentCanvas extends PureComponent {
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         >
-                        <InlineUI/>
+                        {InlineUI && <InlineUI/>}
                     </Frame>
                 </div>
             </div>

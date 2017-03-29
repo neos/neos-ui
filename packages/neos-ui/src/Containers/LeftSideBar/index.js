@@ -48,7 +48,7 @@ export default class LeftSideBar extends PureComponent {
                 className={classNames}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
-                <div className={style['leftSideBar__top']}>
+                <div className={style.leftSideBar__top}>
                     <PageTreeToolbar/>
                     <PageTree/>
                 </div>

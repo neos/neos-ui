@@ -15,7 +15,12 @@
     outline: none;
 
     &:focus {
-        outline: 1px dotted var(--brandColorsContrastBrightest);
+        outline: 0;
+        opacity: 0.8;
+        .btn--content {
+            background-color: var(--brandColorsPrimaryBlue);
+            color: white !important;
+        }
     }
     &[disabled] {
         opacity: .5;

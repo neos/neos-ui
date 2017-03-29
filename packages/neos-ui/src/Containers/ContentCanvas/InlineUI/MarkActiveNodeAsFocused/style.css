@@ -1,4 +1,0 @@
-.markActiveNodeAsFocused--focusedNode {
-    outline-offset: .5em;
-    outline: 2px solid var(--brandColorsPrimaryBlue);
-}

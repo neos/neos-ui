@@ -1,16 +1,20 @@
+import {takeEvery} from 'redux-saga';
 import {put} from 'redux-saga/effects';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
+import initializePropertyDomNode from './initializePropertyDomNode';
+import initializeContentDomNode from './initializeContentDomNode';
 import {
     getGuestFrameWindow,
     getGuestFrameBody,
     findAllNodesInGuestFrame,
-    findAllPropertiesInGuestFrame
+    findAllPropertiesInGuestFrame,
+    findInGuestFrame,
+    findNodeInGuestFrame
 } from './dom';
 
-import initializePropertyDomNode from './initializePropertyDomNode';
-import initializeContentDomNode from './initializeContentDomNode';
+import style from './style.css';
 
 export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
@@ -71,4 +75,22 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             nodes
         })
     );
+
+    yield takeEvery(actionTypes.CR.Nodes.FOCUS, action => {
+        const oldNode = findInGuestFrame(`.${style['markActiveNodeAsFocused--focusedNode']}`);
+
+        if (oldNode) {
+            oldNode.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
+        }
+
+        const {contextPath, fusionPath} = action.payload;
+
+        if (contextPath) {
+            const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
+
+            if (nodeElement) {
+                nodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);
+            }
+        }
+    });
 };

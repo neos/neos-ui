@@ -46,7 +46,7 @@ export const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => 
         }
 
         default: {
-            const element = dom.findNode(contextPath, fusionPath);
+            const element = findNodeInGuestFrame(contextPath, fusionPath);
 
             return {
                 parentDomAddress: {

@@ -6,8 +6,8 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
     const formattingRulesRegistry = globalRegistry.get('ckEditor').get('formattingRules');
     const richtextToolbarRegistry = globalRegistry.get('ckEditor').get('richtextToolbar');
     const i18nRegistry = globalRegistry.get('i18n');
-    const enabledFormattingRuleIds = richtextToolbarRegistry.
-        getEnabledFormattingRulesForNodeTypeAndProperty(nodeType.name)(propertyName);
+    const enabledFormattingRuleIds = richtextToolbarRegistry
+        .getEnabledFormattingRulesForNodeTypeAndProperty(nodeType.name)(propertyName);
     const placeholder = unescape(i18nRegistry.translate($get('placeholder', editorOptions)));
 
     const ckEditorConfiguration = enabledFormattingRuleIds

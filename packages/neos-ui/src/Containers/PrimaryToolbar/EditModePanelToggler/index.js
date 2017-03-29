@@ -5,33 +5,53 @@ import mergeClassNames from 'classnames';
 import style from './style.css';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {neos} from '@neos-project/neos-ui-decorators';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 @connect($transform({
-    isEditModePanelHidden: $get('ui.editModePanel.isHidden')
+    isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
+    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode,
 }), {
     toggleEditModePanel: actions.UI.EditModePanel.toggle
 })
+@neos(globalRegistry => ({
+    editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
+}))
 export default class EditModePanelToggler extends PureComponent {
     static propTypes = {
-        className: PropTypes.string,
+        className: PropTypes.string.isRequired,
+        editPreviewModesRegistry: PropTypes.object.isRequired,
         isEditModePanelHidden: PropTypes.bool.isRequired,
-        toggleEditModePanel: PropTypes.func.isRequired
+        toggleEditModePanel: PropTypes.func.isRequired,
+        editPreviewMode: PropTypes.string.isRequired
     };
 
     handleToggle = () => {
         const {toggleEditModePanel} = this.props;
 
         toggleEditModePanel();
-    }
+    };
 
     render() {
-        const {className, isEditModePanelHidden} = this.props;
+        const {className, isEditModePanelHidden, editPreviewMode, editPreviewModesRegistry} = this.props;
         const isActive = !isEditModePanelHidden;
         const classNames = mergeClassNames({
             [className]: true,
             [style['btn--isActive']]: isActive
         });
+
+        const currentEditMode = editPreviewModesRegistry.get(editPreviewMode);
+
+        let editLabel = <I18n id="edit" fallback="Edit"/>;
+        let previewLabel = <I18n id="preview" fallback="Preview"/>;
+
+        const toBold = string => <b>{string}</b>;
+        
+        if (currentEditMode.isEditingMode) {
+            editLabel = toBold(editLabel);
+        } else {
+            previewLabel = toBold(previewLabel);
+        }
 
         return (
             <Button
@@ -41,7 +61,7 @@ export default class EditModePanelToggler extends PureComponent {
                 isFocused={isActive}
                 onClick={this.handleToggle}
                 >
-                <I18n id="editPreview" fallback="Edit / Preview"/>
+                {editLabel} / {previewLabel}
             </Button>
         );
     }

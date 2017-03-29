@@ -167,14 +167,12 @@ export default class ImageEditor extends Component {
 
     onRemoveFile() {
         const {commit} = this.props;
-        const value = this.getValue();
-        const newAsset = $set('__identity', '', value);
 
         this.handleCloseSecondaryScreen();
         this.setState({
             image: null
         }, () => {
-            commit(newAsset);
+            commit('');
         });
     }
 

@@ -52,7 +52,9 @@ export const findAllPropertiesInGuestFrame = () =>
 // Find all DOM nodes that represent CR node properties in the guest frame
 //
 export const findRelativePropertiesInGuestFrame = contentDomNode =>
-    [].slice.call(contentDomNode.querySelectorAll('[data-__neos-property]')).concat(...(
+    [].slice.call(contentDomNode.querySelectorAll(
+        `[data-__neos-property][data-__neos-editable-node-contextpath="${contentDomNode.getAttribute('data-__neos-node-contextpath')}"]`
+    )).concat(...(
         contentDomNode.hasAttribute('data-__neos-property') ?
             [contentDomNode] : []
     ));

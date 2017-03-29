@@ -6,12 +6,11 @@ import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/regis
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import makeInitializeGuestFrame from './initializeGuestFrame';
-import initializePropertyDomNode from './initializePropertyDomNode';
+
 import initializeContentDomNode from './initializeContentDomNode';
 import {
     findNodeInGuestFrame,
     findAllOccurrencesOfNodeInGuestFrame,
-    findRelativePropertiesInGuestFrame,
     createEmptyContentCollectionPlaceholderIfMissing
 } from './dom';
 import InlineUI from './InlineUI';
@@ -72,16 +71,13 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
             parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`).remove();
         }
 
-        initializeContentDomNode({nodes})(contentElement);
-        findRelativePropertiesInGuestFrame(contentElement).forEach(
-            initializePropertyDomNode({
-                store,
-                globalRegistry,
-                nodeTypesRegistry,
-                inlineEditorRegistry,
-                nodes
-            })
-        );
+        initializeContentDomNode({
+            store,
+            globalRegistry,
+            nodeTypesRegistry,
+            inlineEditorRegistry,
+            nodes
+        })(contentElement);
     });
 
     //

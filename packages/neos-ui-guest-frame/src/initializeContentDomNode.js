@@ -1,10 +1,15 @@
 import {$get} from 'plow-js';
 
-import {getGuestFrameDocument, createEmptyContentCollectionPlaceholderIfMissing} from './dom';
+import {
+    getGuestFrameDocument,
+    createEmptyContentCollectionPlaceholderIfMissing,
+    findRelativePropertiesInGuestFrame
+} from './dom';
+import initializePropertyDomNode from './initializePropertyDomNode';
 
 import style from './style.css';
 
-export default ({nodes}) => contentDomNode => {
+export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => contentDomNode => {
     const contextPath = contentDomNode.getAttribute('data-__neos-node-contextpath');
     const isHidden = $get([contextPath, 'properties', '_hidden'], nodes);
 
@@ -32,4 +37,14 @@ export default ({nodes}) => contentDomNode => {
     if (contentDomNode.classList.contains('neos-contentcollection')) {
         createEmptyContentCollectionPlaceholderIfMissing(contentDomNode);
     }
+
+    findRelativePropertiesInGuestFrame(contentDomNode).forEach(
+        initializePropertyDomNode({
+            store,
+            globalRegistry,
+            nodeTypesRegistry,
+            inlineEditorRegistry,
+            nodes
+        })
+    );
 };

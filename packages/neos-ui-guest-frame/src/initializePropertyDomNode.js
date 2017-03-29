@@ -22,52 +22,40 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         const editorOptions = nodeTypesRegistry.getInlineEditorOptionsForProperty(nodeTypeName, propertyName);
         const {bootstrap, createInlineEditor} = inlineEditorRegistry.get(editorIdentifier);
 
-        const initializeInlineEditor = () => {
-            const {top} = propertyDomNode.getBoundingClientRect();
-            const isVisible = top <= window.innerHeight;
+        if (!initializedInlindeEditorApis[editorIdentifier] && bootstrap) {
+            try {
+                const {
+                    setFormattingUnderCursor,
+                    setCurrentlyEditedPropertyName
+                } = actions.UI.ContentCanvas;
 
-            if (isVisible) {
-                if (!initializedInlindeEditorApis[editorIdentifier] && bootstrap) {
-                    try {
-                        const {
-                            setFormattingUnderCursor,
-                            setCurrentlyEditedPropertyName
-                        } = actions.UI.ContentCanvas;
+                bootstrap({
+                    setFormattingUnderCursor:
+                        (...args) => store.dispatch(setFormattingUnderCursor(...args)),
+                    setCurrentlyEditedPropertyName:
+                        (...args) => store.dispatch(setCurrentlyEditedPropertyName(...args))
+                });
 
-                        bootstrap({
-                            setFormattingUnderCursor:
-                                (...args) => store.dispatch(setFormattingUnderCursor(...args)),
-                            setCurrentlyEditedPropertyName:
-                                (...args) => store.dispatch(setCurrentlyEditedPropertyName(...args))
-                        });
-
-                        initializedInlindeEditorApis[editorIdentifier] = true;
-                    } catch (err) {
-                        console.error(err);
-                    }
-                }
-
-                try {
-                    createInlineEditor({
-                        propertyDomNode,
-                        propertyName,
-                        contextPath,
-                        nodeType,
-                        editorOptions,
-                        globalRegistry,
-                        persistChange: change => store.dispatch(
-                            actions.Changes.persistChange(change)
-                        )
-                    });
-                } catch (err) {
-                    console.error(err);
-                }
-
-                guestFrameWindow.removeEventListener('scroll', initializeInlineEditor);
+                initializedInlindeEditorApis[editorIdentifier] = true;
+            } catch (err) {
+                console.error(err);
             }
-        };
+        }
 
-        guestFrameWindow.addEventListener('scroll', initializeInlineEditor);
-        initializeInlineEditor();
+        try {
+            createInlineEditor({
+                propertyDomNode,
+                propertyName,
+                contextPath,
+                nodeType,
+                editorOptions,
+                globalRegistry,
+                persistChange: change => store.dispatch(
+                    actions.Changes.persistChange(change)
+                )
+            });
+        } catch (err) {
+            console.error(err);
+        }
     }
 };

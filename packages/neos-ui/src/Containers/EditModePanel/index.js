@@ -8,8 +8,8 @@ import HorizontalScroll from 'react-scroll-horizontal';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
-import Button from '@neos-project/react-ui-components/src/Button/index';
 
+import Panel from './Panel';
 import style from './style.css';
 
 @connect($transform({
@@ -28,11 +28,12 @@ import style from './style.css';
 }))
 export default class EditModePanel extends PureComponent {
     static propTypes = {
+        editPreviewModesRegistry: PropTypes.object.isRequired,
+
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
         editPreviewMode: PropTypes.string.isRequired,
         isHidden: PropTypes.bool.isRequired,
-        editPreviewModesRegistry: PropTypes.object.isRequired,
         setEditPreviewMode: PropTypes.func.isRequired
     };
 
@@ -57,46 +58,29 @@ export default class EditModePanel extends PureComponent {
             [style['editModePanel--isHidden']]: isHidden
         });
 
-        const editModes = editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isEditingMode);
-        const previewModes = editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isPreviewMode);
-
-        const scrollConfiguration = {
-          style: style.editModePanel__scrollable
-        };
+        const currentEditMode = editPreviewModesRegistry.get(editPreviewMode);
 
         return (
             <div className={classNames}>
                 <div className={style.editModePanel__wrapper}>
-                    <div className={style.editModePanel__editingModes}>
-                        <p>Editing Modes</p>
-                        <HorizontalScroll {...scrollConfiguration}>
-                            {editModes.map(editMode => (
-                                <Button
-                                    key={editMode.id}
-                                    style={editMode.id === editPreviewMode ? 'brand' : null}
-                                    onClick={this.handleEditPreviewModeClick(editMode.id)}
-                                    className={style['editModePanel__button']}
-                                    >
-                                    <I18n id={editMode.title}/>
-                                </Button>
-                            ))}
-                        </HorizontalScroll>
-                    </div>
-                    <div className={style.editModePanel__previewModes}>
-                        <p>Preview Central</p>
-                        <HorizontalScroll {...scrollConfiguration}>
-                          {previewModes.map(previewMode => (
-                            <Button
-                              key={previewMode.id}
-                              style={previewMode.id === editPreviewMode ? 'brand' : null}
-                              onClick={this.handleEditPreviewModeClick(previewMode.id)}
-                              className={style['editModePanel__button']}
-                            >
-                              <I18n id={previewMode.title}/>
-                            </Button>
-                          ))}
-                        </HorizontalScroll>
-                    </div>
+                    <Panel
+                        title="Editing Mode"
+                        className={style.editModePanel__editingModes}
+                        modes={editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isEditingMode && editPreviewMode.id !== editPreviewMode)}
+                        current={editPreviewMode}
+                        currentMode={currentEditMode.isEditingMode ? currentEditMode : null}
+                        style={style}
+                        handleEditPreviewModeClick={this.handleEditPreviewModeClick}
+                    />
+                    <Panel
+                        title="Preview Central"
+                        className={style.editModePanel__previewModes}
+                        modes={editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isPreviewMode && editPreviewMode.id !== editPreviewMode)}
+                        current={editPreviewMode}
+                        currentMode={currentEditMode.isPreviewMode ? currentEditMode : null}
+                        style={style}
+                        handleEditPreviewModeClick={this.handleEditPreviewModeClick}
+                    />
                 </div>
             </div>
         );

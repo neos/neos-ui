@@ -1,8 +1,8 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import DropDown from '@neos-project/react-ui-components/lib/DropDown/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
+import DropDown from '@neos-project/react-ui-components/src/DropDown/';
 
 import I18n from '@neos-project/neos-ui-i18n';
 

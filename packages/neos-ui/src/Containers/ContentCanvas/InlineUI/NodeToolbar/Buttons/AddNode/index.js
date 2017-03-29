@@ -1,7 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {actions} from '@neos-project/neos-ui-redux-store';
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 @connect(null, {
     commenceNodeCreation: actions.CR.Nodes.commenceCreation

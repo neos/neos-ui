@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import DateInput from '@neos-project/react-ui-components/lib/DateInput/';
+import DateInput from '@neos-project/react-ui-components/src/DateInput/';
 
 const DateTime = props => {
     const {value, commit} = props;

@@ -1,6 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import style from './style.css';
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({

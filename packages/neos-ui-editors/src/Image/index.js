@@ -106,10 +106,9 @@ export default class ImageEditor extends Component {
         // Re-Load the image metadata in case a new image was selected.
         //
         if (
-            this.props.value &&
             nextProps.value &&
             nextProps.value.__identity &&
-            nextProps.value.__identity !== this.props.value.__identity
+            nextProps.value.__identity !== (this.props.value && this.props.value.__identity)
         ) {
             loadImageMetadata(nextProps.value.__identity)
                 .then(image => {

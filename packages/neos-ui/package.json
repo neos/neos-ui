@@ -7,7 +7,7 @@
   "scripts": {
     "prepublish": "npm run build",
     "prebuild": "check-dependencies && npm run clean",
-    "test": "npm run lint && npm run jest",
+    "test": "npm run jest",
     "test:watch": "npm run jest -- --watch",
     "build": "webpack --progress --colors",
     "build:watch": "npm run build -- --watch",

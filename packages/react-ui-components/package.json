@@ -7,7 +7,7 @@
     "prebuild": "check-dependencies && npm run clean",
     "build": "exit 0",
     "build:watch": "exit 0",
-    "test": "npm run lint && npm run jest",
+    "test": "npm run jest",
     "test:watch": "npm run jest -- --watch",
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",

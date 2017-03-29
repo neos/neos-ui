@@ -12,7 +12,7 @@
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest --coverage"
+    "jest": "PWD=$(pwd) NODE_ENV=test jest -i -w 1 --coverage"
   },
   "dependencies": {
     "@neos-project/build-essentials": "^4.4.8",

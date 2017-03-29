@@ -12,7 +12,7 @@
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest --coverage",
+    "jest": "PWD=$(pwd) NODE_ENV=test jest -i -w 1 --coverage",
     "coverage:publish": "codeclimate-test-reporter < lcov.info"
   },
   "devDependencies": {

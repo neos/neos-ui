@@ -13,7 +13,7 @@
     "build:watch": "npm run build -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest -i -w 1 --coverage",
+    "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage",
     "postpublish": "greenkeeper-postpublish"
   },
   "devDependencies": {

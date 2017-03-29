@@ -11,7 +11,7 @@
     "build": "exit 0",
     "build:watch": "exit 0",
     "lint": "eslint src",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest -i -w 1 --coverage"
+    "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
     "@neos-project/build-essentials": "^4.4.8"

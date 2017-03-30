@@ -162,9 +162,9 @@ abstract class AbstractCreate extends AbstractStructuralChange
 
         $this->applyNodeCreationHandlers($node);
 
-        $this->addDocumentNodeCreatedFeedback($node);
-
         $this->finish($node);
+        // NOTE: we need to run "finish" before "addDocumentNodeCreatedFeedback" to ensure the new node already exists when the last feedback is processed
+        $this->addDocumentNodeCreatedFeedback($node);
 
         return $node;
     }

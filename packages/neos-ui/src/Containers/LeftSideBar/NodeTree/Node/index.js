@@ -166,8 +166,9 @@ export default class Node extends PureComponent {
     }
 
     handleNodeClick() {
-        const {node, onNodeFocus} = this.props;
+        const {node, onNodeFocus, onNodeClick} = this.props;
         onNodeFocus($get('contextPath', node));
+        onNodeClick($get('uri', node), $get('contextPath', node));
     }
 
     handleNodeLabelClick() {

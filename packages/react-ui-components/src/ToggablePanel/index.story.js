@@ -28,8 +28,8 @@ storiesOf('ToggablePanel', module)
         'ToggablePanel - Closing towards bottom',
         () => (
             <StoryWrapper>
-                <div style={{height: "200px", display: "flex", flexDirection: "column"}}>
-                    <div style={{flexBasis: "100%", color: "white"}}>
+                <div style={{height: '200px', display: 'flex', flexDirection: 'column'}}>
+                    <div style={{flexBasis: '100%', color: 'white'}}>
                         Upper container, to push down ToggablePanel
                     </div>
                     <ToggablePanel isOpen={boolean('Is Open?', true)} closesToBottom={boolean('Closes towards bottom?', true)}>

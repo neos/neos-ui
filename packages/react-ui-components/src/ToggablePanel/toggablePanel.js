@@ -82,6 +82,12 @@ export class StatelessToggablePanel extends PureComponent {
         isOpen: PropTypes.bool,
 
         /**
+         * Switches icon-open and icon-closed if set to true; can be used for
+         * panels that close downwards such as the page structure tree.
+         */
+        closesToBottom: PropTypes.bool,
+
+        /**
          * An optional className to render on the wrapper.
          */
         className: PropTypes.string,
@@ -182,7 +188,7 @@ export class Header extends PureComponent {
         } = this.props;
         const {onPanelToggle} = this.context;
 
-        const finalClassName = mergeClassNames([theme['panel__headline']],{
+        const finalClassName = mergeClassNames([theme.panel__headline], {
             [theme['panel__headline--noPadding']]: this.props.noPadding
         });
 
@@ -244,7 +250,7 @@ export class Contents extends PureComponent {
             theme
         } = this.props;
 
-        const finalClassName = mergeClassNames(theme['panel__contents'],{
+        const finalClassName = mergeClassNames(theme.panel__contents, {
             [theme['panel__contents--noPadding']]: this.props.noPadding,
             [className]: className && className.length
         });

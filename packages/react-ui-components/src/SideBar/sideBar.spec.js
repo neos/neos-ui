@@ -1,4 +1,3 @@
-import test from 'ava';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import SideBar from './sideBar.js';
 
@@ -9,13 +8,13 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(SideBar, defaultProps);
 
-test('should render a "label" node.', t => {
+test('should render a "label" node.', () => {
     const bar = shallow();
 
-    t.is(bar.type(), 'div');
+    expect(bar.type()).toBe('div');
 });
-test('should add the passed "className" prop to the rendered node if passed.', t => {
+test('should add the passed "className" prop to the rendered node if passed.', () => {
     const bar = shallow({className: 'testClassName'});
 
-    t.truthy(bar.hasClass('testClassName'));
+    expect(bar.hasClass('testClassName')).toBeTruthy();
 });

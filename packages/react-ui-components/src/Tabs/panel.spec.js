@@ -1,4 +1,3 @@
-import test from 'ava';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import Panel from './panel.js';
 
@@ -10,16 +9,16 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(Panel, defaultProps);
 
-test('should render the themes "panel" className.', t => {
+test('should render the themes "panel" className.', () => {
     const wrapper = shallow();
 
-    t.truthy(wrapper.hasClass(defaultProps.theme.panel));
+    expect(wrapper.hasClass(defaultProps.theme.panel)).toBeTruthy();
 });
-test('should render its provided children.', t => {
+test('should render its provided children.', () => {
     const wrapper = shallow();
 
-    t.truthy(wrapper.html().includes('Foo children'));
+    expect(wrapper.html().includes('Foo children')).toBeTruthy();
 });
-test('should have a "displayName" of "Panel".', t => {
-    t.is(Panel.displayName, 'Panel');
+test('should have a "displayName" of "Panel".', () => {
+    expect(Panel.displayName).toBe('Panel');
 });

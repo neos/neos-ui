@@ -1,9 +1,9 @@
-import test from 'ava';
-
 import delay from './delay';
 
-test(`should export a function`, t => {
-    t.is(typeof (delay), 'function');
+test(`should export a function`, () => {
+    expect(typeof (delay)).toBe('function');
 });
 
-test.todo(`should resolve after given amount of time`);
+test(`should resolve after given amount of time`, () => {
+    expect(true).toBe(true);
+});

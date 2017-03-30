@@ -1,4 +1,3 @@
-import test from 'ava';
 import {makeValidateId, makeGetClassName} from './fontAwesome.js';
 
 const icons = {
@@ -8,62 +7,62 @@ const icons = {
 const validateId = makeValidateId(icons);
 const getClassName = makeGetClassName(icons);
 
-test('validateId() should return an object containing at least key value pairs for "isValid" and "iconName".', t => {
+test('validateId() should return an object containing at least key value pairs for "isValid" and "iconName".', () => {
     const results = validateId('test');
 
-    t.truthy(results.isValid !== undefined);
-    t.truthy(results.iconName !== undefined);
+    expect(results.isValid !== undefined).toBeTruthy();
+    expect(results.iconName !== undefined).toBeTruthy();
 });
-test('validateId() should return a falsy "isValid" value if no id was passed.', t => {
+test('validateId() should return a falsy "isValid" value if no id was passed.', () => {
     const results = validateId();
 
-    t.falsy(results.isValid);
+    expect(results.isValid).toBeFalsy();
 });
-test('validateId() should return a falsy "isValid" value if the passed id was not found in the Font-Awesome icon names.', t => {
+test('validateId() should return a falsy "isValid" value if the passed id was not found in the Font-Awesome icon names.', () => {
     const results = validateId('bar');
 
-    t.falsy(results.isValid);
+    expect(results.isValid).toBeFalsy();
 });
-test('validateId() should not return a "iconName" value if the passed id was not found in the Font-Awesome icon names.', t => {
+test('validateId() should not return a "iconName" value if the passed id was not found in the Font-Awesome icon names.', () => {
     const results = validateId('bar');
 
-    t.is(results.iconName, null);
+    expect(results.iconName).toBe(null);
 });
-test('validateId() should return truthy "isValid" value if the passed id was found in the Font-Awesome icon names.', t => {
+test('validateId() should return truthy "isValid" value if the passed id was found in the Font-Awesome icon names.', () => {
     const results = validateId('fa-foo');
 
-    t.truthy(results.isValid);
+    expect(results.isValid).toBeTruthy();
 });
-test('validateId() should return the given id as the "iconName" if the passed id was found in the Font-Awesome icon names.', t => {
+test('validateId() should return the given id as the "iconName" if the passed id was found in the Font-Awesome icon names.', () => {
     const results = validateId('fa-foo');
 
-    t.is(results.iconName, 'fa-foo');
+    expect(results.iconName).toBe('fa-foo');
 });
-test('validateId() should automatically add the "fa-" prefix to the given id before starting the validation.', t => {
+test('validateId() should automatically add the "fa-" prefix to the given id before starting the validation.', () => {
     const results = validateId('foo');
 
-    t.truthy(results.isValid);
-    t.is(results.iconName, 'fa-foo');
+    expect(results.isValid).toBeTruthy();
+    expect(results.iconName).toBe('fa-foo');
 });
-test('validateId() should migrate old icon ids to the new newest version.', t => {
+test('validateId() should migrate old icon ids to the new newest version.', () => {
     const results = validateId('icon-glass');
 
-    t.truthy(results.isValid);
-    t.is(results.iconName, 'fa-glass');
+    expect(results.isValid).toBeTruthy();
+    expect(results.iconName).toBe('fa-glass');
 });
 
-test('getClassName() should return "undefined" if the passed id is invalid.', t => {
+test('getClassName() should return "undefined" if the passed id is invalid.', () => {
     const result = getClassName('test');
 
-    t.is(result, undefined);
+    expect(result).toBe(undefined);
 });
-test('getClassName() should return the icon className if the passed id is valid.', t => {
+test('getClassName() should return the icon className if the passed id is valid.', () => {
     const result = getClassName('fa-foo');
 
-    t.is(result, 'fooIconClassName');
+    expect(result).toBe('fooIconClassName');
 });
-test('getClassName() should apply the migration logic of the "validateId" to the passed id and should return the className of an outdated id.', t => {
+test('getClassName() should apply the migration logic of the "validateId" to the passed id and should return the className of an outdated id.', () => {
     const result = getClassName('icon-glass');
 
-    t.is(result, 'glassIconClassName');
+    expect(result).toBe('glassIconClassName');
 });

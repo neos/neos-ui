@@ -5,12 +5,8 @@ cache:
     - node_modules
 notifications:
   email: false
-before_install:
-  - npm i -g codeclimate-test-reporter
 before_script:
   - npm prune
-after_script:
-- npm run coverage:generate && codeclimate-test-reporter < lcov.info
 after_success:
   - npm run semantic-release
 branches:

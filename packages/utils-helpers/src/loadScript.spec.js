@@ -1,9 +1,9 @@
-import test from 'ava';
-
 import loadScript from './loadScript';
 
-test(`should export a function`, t => {
-    t.is(typeof (loadScript), 'function');
+test(`should export a function`, () => {
+    expect(typeof (loadScript)).toBe('function');
 });
 
-test.todo(`write tests`);
+test(`write tests`, () => {
+    expect(true).toBe(true);
+});

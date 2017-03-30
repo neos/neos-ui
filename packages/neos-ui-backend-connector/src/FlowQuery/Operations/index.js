@@ -4,6 +4,7 @@ import neosUiFilteredChildren from './NeosUiFilteredChildren/index';
 import find from './Find/index';
 import context from './Context/index';
 import get from './Get/index';
+import getForTree from './GetForTree/index';
 
 export {
     children,
@@ -11,5 +12,6 @@ export {
     filter,
     find,
     context,
-    get
+    get,
+    getForTree
 };

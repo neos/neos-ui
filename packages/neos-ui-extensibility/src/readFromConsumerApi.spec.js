@@ -1,37 +1,35 @@
-import test from 'ava';
-
 import readFromConsumerApi from './readFromConsumerApi';
 
 test(`
     "readFromConsumerApi" should return a function that complains, if there's no plugin
-    api present`, t => {
+    api present`, () => {
     const fn = readFromConsumerApi('test');
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
 test(`
     "readFromConsumerApi" should return a function that complains, if the given key is
-    not present in plugin api`, t => {
+    not present in plugin api`, () => {
     window['@Neos:HostPluginAPI'] = {};
 
     const fn = readFromConsumerApi('test');
 
-    t.throws(fn);
+    expect(fn).toThrow();
 
     delete window['@Neos:HostPluginAPI'];
 });
 
 test(`
     "readFromConsumerApi" should return a function that that runs the plugin function,
-    if the given key is present in plugin api`, t => {
+    if the given key is present in plugin api`, () => {
     window['@Neos:HostPluginAPI'] = {
         '@test': who => `Hello again, ${who}!`
     };
 
     const fn = readFromConsumerApi('test');
 
-    t.is(fn('Neos'), 'Hello again, Neos!');
+    expect(fn('Neos')).toBe('Hello again, Neos!');
 
     delete window['@Neos:HostPluginAPI'];
 });

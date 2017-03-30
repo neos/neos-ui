@@ -10,7 +10,7 @@ import Frame from '@neos-project/react-ui-components/src/Frame/';
 
 import style from './style.css';
 import InlineUI from './InlineUI/index';
-import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './Helpers/index';
+import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode, dom} from './Helpers/index';
 
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
@@ -180,7 +180,7 @@ export default class ContentCanvas extends PureComponent {
         // Initialize click outside handler
         //
         iframeDocument.body.addEventListener('click', e => {
-            const clickPath = Array.prototype.slice.call(e.path);
+            const clickPath = Array.prototype.slice.call(dom.getClickPath(e));
             const isInsideInlineUi = clickPath.filter(domNode =>
                 domNode &&
                 domNode.getAttribute &&

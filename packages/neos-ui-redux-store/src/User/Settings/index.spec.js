@@ -1,46 +1,45 @@
-import test from 'ava';
 import Immutable, {Map} from 'immutable';
 
 import {actionTypes, actions, reducer} from './index.js';
 
 import {actionTypes as system} from '../../System/index';
 
-test(`should export actionTypes`, t => {
-    t.not(actionTypes, undefined);
-    t.is(typeof (actionTypes.TOGGLE_AUTO_PUBLISHING), 'string');
+test(`should export actionTypes`, () => {
+    expect(actionTypes).not.toBe(undefined);
+    expect(typeof (actionTypes.TOGGLE_AUTO_PUBLISHING)).toBe('string');
 });
 
-test(`should export action creators`, t => {
-    t.not(actions, undefined);
-    t.is(typeof (actions.toggleAutoPublishing), 'function');
+test(`should export action creators`, () => {
+    expect(actions).not.toBe(undefined);
+    expect(typeof (actions.toggleAutoPublishing)).toBe('function');
 });
 
-test(`should export a reducer`, t => {
-    t.not(reducer, undefined);
-    t.is(typeof (reducer), 'function');
+test(`should export a reducer`, () => {
+    expect(reducer).not.toBe(undefined);
+    expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, t => {
+test(`The reducer should return an Immutable.Map as the initial state.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('user').get('settings') instanceof Map);
+    expect(nextState.get('user').get('settings') instanceof Map).toBe(true);
 });
 
-test(`The reducer should initially mark auto publishing as disabled.`, t => {
+test(`The reducer should initially mark auto publishing as disabled.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.false(nextState.get('user').get('settings').get('isAutoPublishingEnabled'));
+    expect(nextState.get('user').get('settings').get('isAutoPublishingEnabled')).toBe(false);
 });
 
 test(`
     The "toggle" action should be able to reverse the value of the
-    "isAutoPublishingEnabled" key.`, t => {
+    "isAutoPublishingEnabled" key.`, () => {
     const state = Immutable.fromJS({
         user: {
             settings: {
@@ -51,6 +50,6 @@ test(`
     const nextState1 = reducer(state, actions.toggleAutoPublishing());
     const nextState2 = reducer(nextState1, actions.toggleAutoPublishing());
 
-    t.true(nextState1.get('user').get('settings').get('isAutoPublishingEnabled'));
-    t.false(nextState2.get('user').get('settings').get('isAutoPublishingEnabled'));
+    expect(nextState1.get('user').get('settings').get('isAutoPublishingEnabled')).toBe(true);
+    expect(nextState2.get('user').get('settings').get('isAutoPublishingEnabled')).toBe(false);
 });

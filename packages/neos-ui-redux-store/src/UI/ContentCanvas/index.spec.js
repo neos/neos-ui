@@ -1,49 +1,48 @@
-import test from 'ava';
 import Immutable, {Map} from 'immutable';
 
 import {actionTypes, actions, reducer, selectors} from './index.js';
 
 import {actionTypes as system} from '../../System/index';
 
-test(`should export actionTypes`, t => {
-    t.not(actionTypes, undefined);
-    t.is(typeof (actionTypes.SET_CONTEXT_PATH), 'string');
-    t.is(typeof (actionTypes.SET_PREVIEW_URL), 'string');
-    t.is(typeof (actionTypes.SET_SRC), 'string');
-    t.is(typeof (actionTypes.FORMATTING_UNDER_CURSOR), 'string');
-    t.is(typeof (actionTypes.SET_CURRENTLY_EDITED_PROPERTY_NAME), 'string');
+test(`should export actionTypes`, () => {
+    expect(actionTypes).not.toBe(undefined);
+    expect(typeof (actionTypes.SET_CONTEXT_PATH)).toBe('string');
+    expect(typeof (actionTypes.SET_PREVIEW_URL)).toBe('string');
+    expect(typeof (actionTypes.SET_SRC)).toBe('string');
+    expect(typeof (actionTypes.FORMATTING_UNDER_CURSOR)).toBe('string');
+    expect(typeof (actionTypes.SET_CURRENTLY_EDITED_PROPERTY_NAME)).toBe('string');
 });
 
-test(`should export action creators`, t => {
-    t.not(actions, undefined);
-    t.is(typeof (actions.setContextPath), 'function');
-    t.is(typeof (actions.setPreviewUrl), 'function');
-    t.is(typeof (actions.setSrc), 'function');
-    t.is(typeof (actions.formattingUnderCursor), 'function');
-    t.is(typeof (actions.setCurrentlyEditedPropertyName), 'function');
+test(`should export action creators`, () => {
+    expect(actions).not.toBe(undefined);
+    expect(typeof (actions.setContextPath)).toBe('function');
+    expect(typeof (actions.setPreviewUrl)).toBe('function');
+    expect(typeof (actions.setSrc)).toBe('function');
+    expect(typeof (actions.formattingUnderCursor)).toBe('function');
+    expect(typeof (actions.setCurrentlyEditedPropertyName)).toBe('function');
 });
 
-test(`should export a reducer`, t => {
-    t.not(reducer, undefined);
-    t.is(typeof (reducer), 'function');
+test(`should export a reducer`, () => {
+    expect(reducer).not.toBe(undefined);
+    expect(typeof (reducer)).toBe('function');
 });
 
-test(`should export selectors`, t => {
-    t.not(selectors, undefined);
-    t.is(typeof (selectors.currentlyEditedPropertyName), 'function');
-    t.is(typeof (selectors.formattingUnderCursor), 'function');
+test(`should export selectors`, () => {
+    expect(selectors).not.toBe(undefined);
+    expect(typeof (selectors.currentlyEditedPropertyName)).toBe('function');
+    expect(typeof (selectors.formattingUnderCursor)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, t => {
+test(`The reducer should return an Immutable.Map as the initial state.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('ui').get('contentCanvas') instanceof Map);
+    expect(nextState.get('ui').get('contentCanvas') instanceof Map).toBe(true);
 });
 
-test(`The "setContextPath" action should set the currently opened documents context path.`, t => {
+test(`The "setContextPath" action should set the currently opened documents context path.`, () => {
     const state = Immutable.fromJS({
         ui: {
             contentCanvas: {
@@ -55,12 +54,12 @@ test(`The "setContextPath" action should set the currently opened documents cont
     const nextState2 = reducer(state, actions.setContextPath('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.setContextPath('someOtherContextPath'));
 
-    t.is(nextState1.get('ui').get('contentCanvas').get('contextPath'), 'someContextPath');
-    t.is(nextState2.get('ui').get('contentCanvas').get('contextPath'), 'someOtherContextPath');
-    t.is(nextState3.get('ui').get('contentCanvas').get('contextPath'), 'someOtherContextPath');
+    expect(nextState1.get('ui').get('contentCanvas').get('contextPath')).toBe('someContextPath');
+    expect(nextState2.get('ui').get('contentCanvas').get('contextPath')).toBe('someOtherContextPath');
+    expect(nextState3.get('ui').get('contentCanvas').get('contextPath')).toBe('someOtherContextPath');
 });
 
-test(`The "setSrc" action should set the currently opened documents src uri.`, t => {
+test(`The "setSrc" action should set the currently opened documents src uri.`, () => {
     const state = Immutable.fromJS({
         ui: {
             contentCanvas: {
@@ -73,7 +72,7 @@ test(`The "setSrc" action should set the currently opened documents src uri.`, t
     const nextState2 = reducer(state, actions.setSrc('http://www.some-other-source.com/document.html'));
     const nextState3 = reducer(nextState1, actions.setSrc('http://www.some-other-source.com/document.html'));
 
-    t.is(nextState1.get('ui').get('contentCanvas').get('src'), 'http://www.some-source.com/document.html');
-    t.is(nextState2.get('ui').get('contentCanvas').get('src'), 'http://www.some-other-source.com/document.html');
-    t.is(nextState3.get('ui').get('contentCanvas').get('src'), 'http://www.some-other-source.com/document.html');
+    expect(nextState1.get('ui').get('contentCanvas').get('src')).toBe('http://www.some-source.com/document.html');
+    expect(nextState2.get('ui').get('contentCanvas').get('src')).toBe('http://www.some-other-source.com/document.html');
+    expect(nextState3.get('ui').get('contentCanvas').get('src')).toBe('http://www.some-other-source.com/document.html');
 });

@@ -1,4 +1,3 @@
-import test from 'ava';
 import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import TextInput from './textInput.js';
@@ -8,17 +7,17 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(TextInput, defaultProps);
 
-test('should render an "input" node.', t => {
+test('should render an "input" node.', () => {
     const input = shallow().find('input');
 
-    t.is(input.type(), 'input');
+    expect(input.type()).toBe('input');
 });
-test('should add the passed "className" prop to the rendered button if passed.', t => {
+test('should add the passed "className" prop to the rendered button if passed.', () => {
     const input = shallow({className: 'testClassName'}).find('input');
 
-    t.truthy(input.hasClass('testClassName'));
+    expect(input.hasClass('testClassName')).toBeTruthy();
 });
-test('should call the passed "onChange" prop with the value of the input when changing it.', t => {
+test('should call the passed "onChange" prop with the value of the input when changing it.', () => {
     const onChange = sinon.spy();
     const input = shallow({onChange}).find('input');
 
@@ -28,10 +27,10 @@ test('should call the passed "onChange" prop with the value of the input when ch
         }
     });
 
-    t.is(onChange.callCount, 1);
-    t.is(onChange.args[0][0], 'my value');
+    expect(onChange.callCount).toBe(1);
+    expect(onChange.args[0][0]).toBe('my value');
 });
-test('should throw no error if no "onChange" prop was passed when changing the value of the input.', t => {
+test('should throw no error if no "onChange" prop was passed when changing the value of the input.', () => {
     const input = shallow().find('input');
     const fn = () => {
         input.simulate('change', {
@@ -41,5 +40,5 @@ test('should throw no error if no "onChange" prop was passed when changing the v
         });
     };
 
-    t.notThrows(fn);
+    expect(fn).not.toThrow();
 });

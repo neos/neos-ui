@@ -1,4 +1,3 @@
-import test from 'ava';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import GridItem from './gridItem.js';
 
@@ -8,25 +7,25 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(GridItem, defaultProps);
 
-test('should render a "div" node.', t => {
+test('should render a "div" node.', () => {
     const grid = shallow();
 
-    t.is(grid.type(), 'div');
+    expect(grid.type()).toBe('div');
 });
-test('should add the passed "className" prop to the rendered div if passed.', t => {
+test('should add the passed "className" prop to the rendered div if passed.', () => {
     const grid = shallow({className: 'testClassName'});
 
-    t.truthy(grid.hasClass('testClassName'));
+    expect(grid.hasClass('testClassName')).toBeTruthy();
 });
-test('should render a inline style matching the passed "width" prop.', t => {
+test('should render a inline style matching the passed "width" prop.', () => {
     const grid = shallow({width: 'half'});
 
-    t.truthy(grid.html().includes('style="width:50%;"'));
+    expect(grid.html().includes('style="width:50%;"')).toBeTruthy();
 });
-test('should propagate the rest of the passed props to the wrapping node.', t => {
+test('should propagate the rest of the passed props to the wrapping node.', () => {
     const grid = shallow({
         id: 'fooId'
     });
 
-    t.truthy(grid.html().includes('id="fooId"'));
+    expect(grid.html().includes('id="fooId"')).toBeTruthy();
 });

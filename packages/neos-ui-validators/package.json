@@ -5,37 +5,25 @@
   "private": true,
   "main": "./src/manifest.js",
   "scripts": {
-    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
-    "test:watch": "npm run ava -- --watch",
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run jest",
+    "test:watch": "npm run jest -- --watch",
     "lint": "eslint src",
-    "ava": "PWD=$(pwd) NODE_ENV=test ava -c 6"
-  },
-  "ava": {
-    "files": [
-      "src/**/*.spec.js"
-    ],
-    "failFast": true,
-    "verbose": true,
-    "require": [
-      "babel-register",
-      "@neos-project/build-essentials/src/setup-browser-env"
-    ],
-    "babel": "inherit"
-  },
-  "nyc": {
-    "exclude": [
-      "src/**/*.spec.js",
-      "src/index.js"
-    ],
-    "include": [
-      "src/**/index.js"
-    ]
+    "clean": "rimraf ./lib ./dist",
+    "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "dependencies": {
-    "@neos-project/neos-ui-i18n": "^4.4.8",
+    "@neos-project/build-essentials": "^4.4.8",
     "@neos-project/neos-ui-extensibility": "^4.4.8",
-    "@neos-project/utils-logger": "^4.4.8",
-    "@neos-project/build-essentials": "^4.4.8"
+    "@neos-project/neos-ui-i18n": "^4.4.8",
+    "@neos-project/utils-logger": "^4.4.8"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "jest": {
+    "transformIgnorePatterns": [],
+    "transform": {
+      "neos-ui-validators/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
+      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
+    }
+  }
 }

@@ -123,7 +123,7 @@ class BackendServiceController extends ActionController
     {
         try {
             $count = $changes->count();
-            $changes->compress()->apply();
+            $changes->apply();
 
             $success = new Info();
             $success->setMessage(sprintf('%d change(s) successfully applied.', $count));

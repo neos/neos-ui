@@ -27,7 +27,7 @@ export class Header extends PureComponent {
         isFocused: PropTypes.bool.isRequired,
         isLoading: PropTypes.bool.isRequired,
         isHidden: PropTypes.bool,
-        isHiddenInIndex: PropTypes.bool.isRequired,
+        isHiddenInIndex: PropTypes.bool,
         hasError: PropTypes.bool.isRequired,
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,

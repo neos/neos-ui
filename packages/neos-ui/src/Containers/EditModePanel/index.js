@@ -3,11 +3,9 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get, $or} from 'plow-js';
 import {memoize} from 'ramda';
-import HorizontalScroll from 'react-scroll-horizontal';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import I18n from '@neos-project/neos-ui-i18n';
 
 import Panel from './Panel';
 import style from './style.css';
@@ -28,13 +26,13 @@ import style from './style.css';
 }))
 export default class EditModePanel extends PureComponent {
     static propTypes = {
-        editPreviewModesRegistry: PropTypes.object.isRequired,
-
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
         editPreviewMode: PropTypes.string.isRequired,
         isHidden: PropTypes.bool.isRequired,
-        setEditPreviewMode: PropTypes.func.isRequired
+        setEditPreviewMode: PropTypes.func.isRequired,
+
+        editPreviewModesRegistry: PropTypes.object.isRequired
     };
 
     handleEditPreviewModeClick = memoize(mode => () => {
@@ -70,8 +68,8 @@ export default class EditModePanel extends PureComponent {
                         current={editPreviewMode}
                         currentMode={currentEditMode.isEditingMode ? currentEditMode : null}
                         style={style}
-                        handleEditPreviewModeClick={this.handleEditPreviewModeClick}
-                    />
+                        onPreviewModeClick={this.handleEditPreviewModeClick}
+                        />
                     <Panel
                         title="Preview Central"
                         className={style.editModePanel__previewModes}
@@ -79,8 +77,8 @@ export default class EditModePanel extends PureComponent {
                         current={editPreviewMode}
                         currentMode={currentEditMode.isPreviewMode ? currentEditMode : null}
                         style={style}
-                        handleEditPreviewModeClick={this.handleEditPreviewModeClick}
-                    />
+                        onPreviewModeClick={this.handleEditPreviewModeClick}
+                        />
                 </div>
             </div>
         );

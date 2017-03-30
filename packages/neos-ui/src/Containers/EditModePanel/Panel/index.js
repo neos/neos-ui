@@ -12,11 +12,11 @@ export default class DimensionSwitcher extends PureComponent {
         style: PropTypes.object.isRequired,
         current: PropTypes.string,
         currentMode: PropTypes.object,
-        handleEditPreviewModeClick: PropTypes.func.isRequired,
+        onPreviewModeClick: PropTypes.func.isRequired
     };
 
     render() {
-        const {title, className, modes, current, currentMode, style, handleEditPreviewModeClick} = this.props;
+        const {title, className, modes, current, currentMode, style, onPreviewModeClick} = this.props;
 
         const scrollConfiguration = {
             style: style.editModePanel__scrollable
@@ -29,7 +29,7 @@ export default class DimensionSwitcher extends PureComponent {
                     {modes.map(previewMode => (
                         <Button
                             key={previewMode.id}
-                            onClick={handleEditPreviewModeClick(previewMode.id)}
+                            onClick={onPreviewModeClick(previewMode.id)}
                             style={previewMode.id === current ? 'brand' : null}
                             className={style.editModePanel__button}
                             >

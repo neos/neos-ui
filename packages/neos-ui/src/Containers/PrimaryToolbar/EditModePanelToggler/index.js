@@ -20,10 +20,13 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 export default class EditModePanelToggler extends PureComponent {
     static propTypes = {
         className: PropTypes.string.isRequired,
-        editPreviewModesRegistry: PropTypes.object.isRequired,
+
         isEditModePanelHidden: PropTypes.bool.isRequired,
+        editPreviewMode: PropTypes.string.isRequired,
+
         toggleEditModePanel: PropTypes.func.isRequired,
-        editPreviewMode: PropTypes.string.isRequired
+
+        editPreviewModesRegistry: PropTypes.object.isRequired
     };
 
     handleToggle = () => {

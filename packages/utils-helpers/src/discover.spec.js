@@ -1,9 +1,9 @@
-import test from 'ava';
-
 import discover from './discover';
 
-test(`should export a function`, t => {
-    t.is(typeof (discover), 'function');
+test(`should export a function`, () => {
+    expect(typeof (discover)).toBe('function');
 });
 
-test.todo(`write tests`);
+test(`write tests`, () => {
+    expect(true).toBe(true);
+});

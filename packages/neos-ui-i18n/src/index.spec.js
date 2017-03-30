@@ -1,4 +1,3 @@
-import test from 'ava';
 import React from 'react';
 import {mount} from 'enzyme';
 
@@ -10,16 +9,16 @@ const FakeRegistry = {
     }
 };
 
-test(`Host > Containers > I18n: should render a <span> node.`, t => {
+test(`Host > Containers > I18n: should render a <span> node.`, () => {
     const original = mount(<I18n.Original i18nRegistry={FakeRegistry}/>);
 
-    t.is(original.html(), '<span></span>');
+    expect(original.html()).toBe('<span></span>');
 });
 
 test(`
-    Host > Containers > I18n: should call translation service with key.`, t => {
+    Host > Containers > I18n: should call translation service with key.`, () => {
     const original = mount(<I18n.Original i18nRegistry={FakeRegistry} id="My key"/>);
 
-    t.is(original.html(), '<span>My key</span>');
+    expect(original.html()).toBe('<span>My key</span>');
 });
 

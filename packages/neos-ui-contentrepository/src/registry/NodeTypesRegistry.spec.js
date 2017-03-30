@@ -1,10 +1,8 @@
-import test from 'ava';
-
 import NodeTypesRegistry from './NodeTypesRegistry';
 
 test(`
     "getAllowedChildNodeTypes" should return a list of all allowed child node types
-    for a given node type`, t => {
+    for a given node type`, () => {
     const nodeTypesRegistry = new NodeTypesRegistry(``);
 
     nodeTypesRegistry.setConstraints({
@@ -17,17 +15,19 @@ test(`
         }
     });
 
-    t.deepEqual(nodeTypesRegistry.getAllowedChildNodeTypes('Neos.Neos.NodeTypes:Page'), [
+    expect(nodeTypesRegistry.getAllowedChildNodeTypes('Neos.Neos.NodeTypes:Page')).toEqual([
         'Neos.Neos.NodeTypes:Page',
         'Test:Page',
         'Test:Page2'
     ]);
-    t.deepEqual(nodeTypesRegistry.getAllowedChildNodeTypes('Neos.Neos.NodeTypes:NotExistent'), []);
+    expect(
+        nodeTypesRegistry.getAllowedChildNodeTypes('Neos.Neos.NodeTypes:NotExistent')
+    ).toEqual([]);
 });
 
 test(`
     "getAllowedGrandChildNodeTypes" should return a list of all allowed grand child
-    node types for a given node type`, t => {
+    node types for a given node type`, () => {
     const nodeTypesRegistry = new NodeTypesRegistry(``);
 
     nodeTypesRegistry.setConstraints({
@@ -42,14 +42,20 @@ test(`
         }
     });
 
-    t.deepEqual(nodeTypesRegistry.getAllowedGrandChildNodeTypes('Neos.Neos.NodeTypes:Page', 'main'), [
+    expect(
+        nodeTypesRegistry.getAllowedGrandChildNodeTypes('Neos.Neos.NodeTypes:Page', 'main')
+    ).toEqual([
         'Test:Page'
     ]);
-    t.deepEqual(nodeTypesRegistry.getAllowedGrandChildNodeTypes('Neos.Neos.NodeTypes:Page', 'not-existent'), []);
-    t.deepEqual(nodeTypesRegistry.getAllowedGrandChildNodeTypes('Neos.Neos.NodeTypes:NotExistent', 'main'), []);
+    expect(
+        nodeTypesRegistry.getAllowedGrandChildNodeTypes('Neos.Neos.NodeTypes:Page', 'not-existent')
+    ).toEqual([]);
+    expect(
+        nodeTypesRegistry.getAllowedGrandChildNodeTypes('Neos.Neos.NodeTypes:NotExistent', 'main')
+    ).toEqual([]);
 });
 
-test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, t => {
+test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, () => {
     const nodeTypesRegistry = new NodeTypesRegistry(``);
 
     nodeTypesRegistry.add('Neos.Neos.NodeTypes:Page', {
@@ -92,7 +98,7 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, t =
         }
     });
 
-    t.deepEqual(nodeTypesRegistry.getGroupedNodeTypeList(), [
+    expect(nodeTypesRegistry.getGroupedNodeTypeList()).toEqual([
         {
             name: 'general',
             label: 'Neos.Neos:Main:nodeTypes.groups.general',
@@ -134,7 +140,7 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, t =
     ]);
 });
 
-test(`"getGroupedNodeTypeList" should take the given nodeType filter into account.`, t => {
+test(`"getGroupedNodeTypeList" should take the given nodeType filter into account.`, () => {
     const nodeTypesRegistry = new NodeTypesRegistry(``);
 
     nodeTypesRegistry.add('Neos.Neos.NodeTypes:Page', {
@@ -176,7 +182,9 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
             position: 100
         }
     });
-    t.deepEqual(nodeTypesRegistry.getGroupedNodeTypeList(['Test:Page', 'Neos.Neos.NodeTypes:Page']), [
+    expect(
+        nodeTypesRegistry.getGroupedNodeTypeList(['Test:Page', 'Neos.Neos.NodeTypes:Page'])
+    ).toEqual([
         {
             name: 'general',
             label: 'Neos.Neos:Main:nodeTypes.groups.general',
@@ -209,7 +217,7 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
         }
     ]);
 
-    t.deepEqual(nodeTypesRegistry.getGroupedNodeTypeList(['Neos.Neos.NodeTypes:Page']), [
+    expect(nodeTypesRegistry.getGroupedNodeTypeList(['Neos.Neos.NodeTypes:Page'])).toEqual([
         {
             name: 'general',
             label: 'Neos.Neos:Main:nodeTypes.groups.general',

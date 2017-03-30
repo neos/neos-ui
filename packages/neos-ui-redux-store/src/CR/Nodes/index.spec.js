@@ -1,62 +1,63 @@
-import test from 'ava';
 import Immutable, {Map} from 'immutable';
 
 import {actionTypes, reducer, actions, selectors} from './index';
 
 import {actionTypes as system} from '../../System/index';
 
-test(`should export actionTypes`, t => {
-    t.not(actionTypes, undefined);
-    t.is(typeof (actionTypes.ADD), 'string');
-    t.is(typeof (actionTypes.FOCUS), 'string');
-    t.is(typeof (actionTypes.UNFOCUS), 'string');
-    t.is(typeof (actionTypes.COMMENCE_REMOVAL), 'string');
-    t.is(typeof (actionTypes.REMOVAL_ABORTED), 'string');
-    t.is(typeof (actionTypes.REMOVAL_CONFIRMED), 'string');
-    t.is(typeof (actionTypes.REMOVE), 'string');
-    t.is(typeof (actionTypes.COPY), 'string');
-    t.is(typeof (actionTypes.CUT), 'string');
-    t.is(typeof (actionTypes.PASTE), 'string');
+test(`should export actionTypes`, () => {
+    expect(actionTypes).not.toBe(undefined);
+    expect(typeof (actionTypes.ADD)).toBe('string');
+    expect(typeof (actionTypes.FOCUS)).toBe('string');
+    expect(typeof (actionTypes.UNFOCUS)).toBe('string');
+    expect(typeof (actionTypes.COMMENCE_REMOVAL)).toBe('string');
+    expect(typeof (actionTypes.REMOVAL_ABORTED)).toBe('string');
+    expect(typeof (actionTypes.REMOVAL_CONFIRMED)).toBe('string');
+    expect(typeof (actionTypes.REMOVE)).toBe('string');
+    expect(typeof (actionTypes.COPY)).toBe('string');
+    expect(typeof (actionTypes.CUT)).toBe('string');
+    expect(typeof (actionTypes.PASTE)).toBe('string');
 });
 
-test(`should export action creators`, t => {
-    t.not(actions, undefined);
-    t.is(typeof (actions.add), 'function');
-    t.is(typeof (actions.focus), 'function');
-    t.is(typeof (actions.unFocus), 'function');
-    t.is(typeof (actions.commenceRemoval), 'function');
-    t.is(typeof (actions.abortRemoval), 'function');
-    t.is(typeof (actions.confirmRemoval), 'function');
-    t.is(typeof (actions.remove), 'function');
-    t.is(typeof (actions.copy), 'function');
-    t.is(typeof (actions.cut), 'function');
-    t.is(typeof (actions.paste), 'function');
+test(`should export action creators`, () => {
+    expect(actions).not.toBe(undefined);
+    expect(typeof (actions.add)).toBe('function');
+    expect(typeof (actions.focus)).toBe('function');
+    expect(typeof (actions.unFocus)).toBe('function');
+    expect(typeof (actions.commenceRemoval)).toBe('function');
+    expect(typeof (actions.abortRemoval)).toBe('function');
+    expect(typeof (actions.confirmRemoval)).toBe('function');
+    expect(typeof (actions.remove)).toBe('function');
+    expect(typeof (actions.copy)).toBe('function');
+    expect(typeof (actions.cut)).toBe('function');
+    expect(typeof (actions.paste)).toBe('function');
 });
 
-test(`should export a reducer`, t => {
-    t.not(reducer, undefined);
-    t.is(typeof (reducer), 'function');
+test(`should export a reducer`, () => {
+    expect(reducer).not.toBe(undefined);
+    expect(typeof (reducer)).toBe('function');
 });
 
-test(`should export selectors`, t => {
-    t.not(selectors, undefined);
+test(`should export selectors`, () => {
+    expect(selectors).not.toBe(undefined);
 });
 
-test(`The reducer should create a valid initial state`, t => {
+test(`The reducer should create a valid initial state`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('cr').get('nodes') instanceof Map);
-    t.true(nextState.get('cr').get('nodes').get('byContextPath') instanceof Map);
-    t.is(typeof (nextState.get('cr').get('nodes').get('siteNode')), 'string');
-    t.true(nextState.get('cr').get('nodes').get('focused') instanceof Map);
-    t.is(typeof (nextState.get('cr').get('nodes').get('focused').get('contextPath')), 'string');
-    t.is(typeof (nextState.get('cr').get('nodes').get('focused').get('fusionPath')), 'string');
+    expect(nextState.get('cr').get('nodes') instanceof Map).toBe(true);
+    expect(nextState.get('cr').get('nodes').get('byContextPath') instanceof Map).toBe(true);
+    expect(typeof (nextState.get('cr').get('nodes').get('siteNode'))).toBe('string');
+    expect(nextState.get('cr').get('nodes').get('focused') instanceof Map).toBe(true);
+    expect(
+        typeof (nextState.get('cr').get('nodes').get('focused').get('contextPath'))
+    ).toBe('string');
+    expect(typeof (nextState.get('cr').get('nodes').get('focused').get('fusionPath'))).toBe('string');
 });
 
-test(`The reducer should take initially existing nodes into account`, t => {
+test(`The reducer should take initially existing nodes into account`, () => {
     const state = new Map({});
     const serverState = Immutable.fromJS({
         cr: {
@@ -74,16 +75,18 @@ test(`The reducer should take initially existing nodes into account`, t => {
         payload: serverState
     });
 
-    t.true(nextState.get('cr').get('nodes').get('byContextPath') instanceof Map);
-    t.not(nextState.get('cr').get('nodes').get('byContextPath').get('someContextPath'), undefined);
-    t.deepEqual(nextState.get('cr').get('nodes').get('byContextPath').toJS(), {
+    expect(nextState.get('cr').get('nodes').get('byContextPath') instanceof Map).toBe(true);
+    expect(
+        nextState.get('cr').get('nodes').get('byContextPath').get('someContextPath')
+    ).not.toBe(undefined);
+    expect(nextState.get('cr').get('nodes').get('byContextPath').toJS()).toEqual({
         someContextPath: {
             some: 'property'
         }
     });
 });
 
-test(`The reducer should take an initially configured siteNode into account`, t => {
+test(`The reducer should take an initially configured siteNode into account`, () => {
     const state = new Map({});
     const serverState = Immutable.fromJS({
         cr: {
@@ -97,10 +100,10 @@ test(`The reducer should take an initially configured siteNode into account`, t 
         payload: serverState
     });
 
-    t.is(nextState.get('cr').get('nodes').get('siteNode'), 'theSiteNode');
+    expect(nextState.get('cr').get('nodes').get('siteNode')).toBe('theSiteNode');
 });
 
-test(`The reducer should add nodes to the store`, t => {
+test(`The reducer should add nodes to the store`, () => {
     const state = Immutable.fromJS({
         cr: {
             nodes: {
@@ -117,17 +120,28 @@ test(`The reducer should add nodes to the store`, t => {
 
     const addedItem = nextState.get('cr').get('nodes').get('byContextPath').get(contextPath);
 
-    t.not(addedItem, undefined);
-    t.true(addedItem instanceof Map);
-    t.deepEqual(addedItem.toJS(), {
+    expect(addedItem).not.toBe(undefined);
+    expect(addedItem instanceof Map).toBe(true);
+    expect(addedItem.toJS()).toEqual({
         foo: 'bar'
     });
 });
 
-test.todo(`The reducer should mark a node for removal`);
-test.todo(`The reducer should unmark a node for removal`);
-test.todo(`The reducer should remove a node that was marked for removal from the store`);
-
-test.todo(`The reducer should mark a node for copy`);
-test.todo(`The reducer should mark a node for cut`);
-test.todo(`The reducer should paste nodes`);
+test(`The reducer should mark a node for removal`, () => {
+    expect(true).toBe(true);
+});
+test(`The reducer should unmark a node for removal`, () => {
+    expect(true).toBe(true);
+});
+test(`The reducer should remove a node that was marked for removal from the store`, () => {
+    expect(true).toBe(true);
+});
+test(`The reducer should mark a node for copy`, () => {
+    expect(true).toBe(true);
+});
+test(`The reducer should mark a node for cut`, () => {
+    expect(true).toBe(true);
+});
+test(`The reducer should paste nodes`, () => {
+    expect(true).toBe(true);
+});

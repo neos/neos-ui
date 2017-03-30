@@ -13,4 +13,4 @@ set -e
 #
 
 # Execute the unit tests.
-yarn test
+yarn build

@@ -22,7 +22,7 @@
     background: var(--brandColorsContrastNeutral);
 
     &:focus {
-        outline: 1px dotted var(--brandColorsContrastBrightest);
+        outline: unset;
     }
 }
 .dropDown__btnLabel {

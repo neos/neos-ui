@@ -66,7 +66,7 @@ class NodeService
      * @param string $contextPath
      * @return NodeInterface
      */
-    public function getNodeFromContextPath($contextPath, Site $site = null, Domain $domain = null)
+    public function getNodeFromContextPath($contextPath, Site $site = null, Domain $domain = null, $includeAll = false)
     {
         $nodePathAndContext = NodePaths::explodeContextPath($contextPath);
         $nodePath = $nodePathAndContext['nodePath'];
@@ -86,6 +86,10 @@ class NodeService
 
         $contextProperties['currentSite'] = $site;
         $contextProperties['currentDomain'] = $domain;
+        if ($includeAll === true) {
+            $contextProperties['invisibleContentShown'] = true;
+            $contextProperties['removedContentShown'] = true;
+        }
 
         $context = $this->contextFactory->create(
             $contextProperties

@@ -2,7 +2,7 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
-import Button from '@neos-project/react-ui-components/src/Button/';
+import Button from '@neos-project/react-ui-components/src/NeosButton/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -70,6 +70,7 @@ export default class DeleteNodeModal extends PureComponent {
             <Button
                 key="cancel"
                 style="lighter"
+                variant="darker"
                 hoverStyle="brand"
                 onClick={this.handleAbort}
                 >
@@ -83,6 +84,7 @@ export default class DeleteNodeModal extends PureComponent {
             <Button
                 key="confirm"
                 style="warn"
+                variant="darker"
                 hoverStyle="brand"
                 onClick={this.handleConfirm}
                 >

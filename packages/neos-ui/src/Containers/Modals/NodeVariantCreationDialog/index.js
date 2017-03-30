@@ -2,7 +2,7 @@ import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
-import Button from '@neos-project/react-ui-components/src/Button/';
+import Button from '@neos-project/react-ui-components/src/NeosButton/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
 
@@ -76,6 +76,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 key="cancel"
                 style="lighter"
                 hoverStyle="brand"
+                variant="darker"
                 onClick={this.handleAbort}
                 >
                 <I18n id="Neos.Neos:Main:cancel" fallback="Cancel"/>
@@ -89,6 +90,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 key="createEmpty"
                 style="warn"
                 hoverStyle="brand"
+                variant="darker"
                 onClick={this.handleCreateEmpty}
                 >
                 <I18n id="Neos.Neos:Main:content.dimension.createDialog.createEmpty" fallback="Create empty"/>

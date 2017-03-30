@@ -5,7 +5,7 @@ import {$get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-import Button from '@neos-project/react-ui-components/src/Button/';
+import Button from '@neos-project/react-ui-components/src/NeosButton/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
 
@@ -115,6 +115,7 @@ export default class SelectNodeType extends PureComponent {
                 key="cancel"
                 style="lighter"
                 hoverStyle="brand"
+                variant="darker"
                 onClick={this.handleCancel}
                 >
                 <I18n id="Neos.Neos:Main:cancel" fallback="Cancel"/>

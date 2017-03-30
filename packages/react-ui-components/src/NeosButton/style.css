@@ -1,0 +1,170 @@
+.btn {
+    composes: reset from './../reset.css';
+    display: inline-block;
+    position: relative;
+    min-width: var(--goldenUnit);
+    border: 0;
+    cursor: pointer;
+    font-weight: 400;
+    color: var(--brandColorsContrastBrightest);
+    background-color: transparent;
+    vertical-align: top;
+    text-align: center;
+
+    font-size: var(--baseFontSize);
+    outline: none;
+
+    &:focus {
+        outline: 0;
+        opacity: 0.8;
+        .btn--content {
+            background-color: var(--brandColorsPrimaryBlue);
+            color: white !important;
+        }
+    }
+    &[disabled] {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+    &:hover,
+    &.btn--isPressed,
+    &:hover *,
+    &.btn--isPressed * {
+        color: var(--brandColorsContrastBrightest);
+    }
+}
+
+.btn + .btn {
+    margin-left: 1em;
+}
+
+.btn, .btn:hover, .btn:active, .btn:focus {
+    text-decoration: none;
+}
+
+.btn:active, .btn:focus {
+    transform: translateY(3px);
+}
+
+.btn a {
+    color: currentColor;
+}
+
+.btn--content {
+    width: 100%;
+    height: var(--goldenUnit);
+    line-height: var(--goldenUnit);
+    padding: 0 var(--spacing);
+    transition: background-color 0.3s ease;
+    background-color: var(--brandColorsContrastNeutral);
+    z-index: 1;
+}
+
+.btn--content,
+.btn--corner {
+    position: relative;
+    width: 100%;
+}
+
+.btn--corner {
+    z-index: 2;
+}
+
+.btn--corner--fill--darker {
+    fill: var(--brandColorsContrastDarker);
+    stroke: var(--brandColorsContrastDarker);
+}
+
+.btn--corner--fill--darkest {
+    fill: var(--brandColorsContrastDarkest);
+    stroke: var(--brandColorsContrastDarkest);
+}
+
+.btn--corner:after {
+    display: block;
+    content: '';
+    overflow-y: hidden;
+    width: 100%;
+}
+
+.btn--corner svg {
+    position: absolute;
+}
+
+.btn--corner--top {
+    padding-left: 14px;
+}
+
+.btn--corner--top svg {
+    left: 0;
+    top: 0;
+}
+
+.btn--corner--bottom {
+    padding-right: 14px;
+}
+
+.btn--corner--bottom svg {
+    right: 0;
+    bottom: 0;
+}
+
+.btn--size-small {
+    height: 32px;
+    font-size: 13px;
+    padding: 0 8px;
+}
+
+.btn--clean,
+.btn--clean[disabled]:hover,
+.btn--clean[disabled]:hover * {
+    background-color: var(--brandColorsContrastDarker);
+}
+
+.btn--lighter,
+.btn--lighter[disabled]:hover,
+.btn--lighter[disabled]:hover * {
+    background-color: var(--brandColorsContrastDark);
+}
+
+.btn--transparent {
+    background: 0;
+}
+
+.btn--brand,
+.btn--brand[disabled]:hover,
+.btn--brand[disabled]:hover * {
+    background-color: var(--brandColorsPrimaryBlue);
+    color: white !important;
+}
+
+.btn--warn,
+.btn--warn[disabled]:hover,
+.btn--warn[disabled]:hover * {
+    background-color: var(--brandColorsWarn);
+}
+
+.btn--brandHover {
+    &:hover,
+    &.btn--isPressed {
+        background-color: var(--brandColorsPrimaryBlue);
+    }
+}
+
+.btn--cleanHover.btn--isPressed,
+.btn--cleanHover:hover,
+.btn--cleanHover:hover * {
+    color: var(--brandColorsPrimaryBlue);
+}
+
+.btn--darkenHover.btn--isPressed,
+.btn--darkenHover:hover,
+.btn--darkenHover:hover * {
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.btn--warnHover.btn--isPressed,
+.btn--warnHover:hover,
+.btn--warnHover:hover * {
+    background-color: var(--brandColorsWarn);
+}

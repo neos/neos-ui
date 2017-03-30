@@ -7,7 +7,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import validate from '@neos-project/neos-ui-validators/src/index';
 
-import Button from '@neos-project/react-ui-components/src/Button/';
+import Button from '@neos-project/react-ui-components/src/NeosButton/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
@@ -89,6 +89,7 @@ export default class NodeCreationDialog extends PureComponent {
                 key="back"
                 style="lighter"
                 hoverStyle="brand"
+                variant="darker"
                 onClick={this.handleBack}
                 >
                 <I18n id="Neos.Neos:Main:back" fallback="Back"/>
@@ -116,6 +117,7 @@ export default class NodeCreationDialog extends PureComponent {
                 key="save"
                 style="lighter"
                 hoverStyle="brand"
+                variant="darker"
                 onClick={this.handleApply}
                 >
                 <I18n id="Neos.Neos:Main:createNew" fallback="Create"/>

@@ -1,8 +1,3 @@
-import test from 'ava';
-
-//
-// Mock CKEditor API
-//
 window.CKEDITOR = {
     dtd: {
         $editable: {}
@@ -14,12 +9,12 @@ window.CKEDITOR = {
 //
 require('./index');
 
-test(`should create a global, read-only object`, t => {
-    t.not(window.NeosCKEditorApi, undefined);
+test(`should create a global, read-only object`, () => {
+    expect(window.NeosCKEditorApi).not.toBe(undefined);
 
     const shouldThrow = () => {
         window.NeosCKEditorApi = 'I rudely overwrite the CK editor api!';
     };
 
-    t.throws(shouldThrow);
+    expect(shouldThrow).toThrow();
 });

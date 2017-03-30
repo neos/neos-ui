@@ -1,4 +1,3 @@
-import test from 'ava';
 import React from 'react';
 import * as enzyme from 'enzyme';
 import {createStubComponent} from './../_lib/testUtils.js';
@@ -36,51 +35,51 @@ const shallow = props => {
     );
 };
 
-test('should initialize with a state of {activeTab: 0}.', t => {
+test('should initialize with a state of {activeTab: 0}.', () => {
     const wrapper = shallow();
 
-    t.is(wrapper.state('activeTab'), 0);
+    expect(wrapper.state('activeTab')).toBe(0);
 });
-test('should render the themes "tabs" className.', t => {
+test('should render the themes "tabs" className.', () => {
     const wrapper = shallow();
 
-    t.truthy(wrapper.hasClass(defaultProps.theme.tabs));
+    expect(wrapper.hasClass(defaultProps.theme.tabs)).toBeTruthy();
 });
-test('should render a "TabMenuItem" for each passed Panel.', t => {
-    const wrapper = shallow();
-    const items = wrapper.find(TabMenuItem);
-
-    t.is(items.length, 3);
-});
-test('should pass a "isActive" prop to each "TabMenuItem".', t => {
+test('should render a "TabMenuItem" for each passed Panel.', () => {
     const wrapper = shallow();
     const items = wrapper.find(TabMenuItem);
 
-    t.is(items.at(0).prop('isActive'), true);
-    t.is(items.at(1).prop('isActive'), false);
-    t.is(items.at(2).prop('isActive'), false);
+    expect(items.length).toBe(3);
 });
-test('should pass a "onClick" prop to each "TabMenuItem" which matches the instances "handleTabNavItemClick" method.', t => {
+test('should pass a "isActive" prop to each "TabMenuItem".', () => {
     const wrapper = shallow();
     const items = wrapper.find(TabMenuItem);
 
-    t.is(items.at(0).prop('onClick'), wrapper.instance().handleTabNavItemClick);
+    expect(items.at(0).prop('isActive')).toBe(true);
+    expect(items.at(1).prop('isActive')).toBe(false);
+    expect(items.at(2).prop('isActive')).toBe(false);
 });
-test('should pass the Panels props to the "TabMenuItem" as well.', t => {
+test('should pass a "onClick" prop to each "TabMenuItem" which matches the instances "handleTabNavItemClick" method.', () => {
     const wrapper = shallow();
     const items = wrapper.find(TabMenuItem);
 
-    t.is(items.at(0).prop('title'), 'foo 1');
-    t.is(items.at(0).prop('icon'), 'icon 1');
+    expect(items.at(0).prop('onClick')).toBe(wrapper.instance().handleTabNavItemClick);
 });
-test('should pass the static props of the "Tabs" component to the "TabMenuItem" as well.', t => {
+test('should pass the Panels props to the "TabMenuItem" as well.', () => {
     const wrapper = shallow();
     const items = wrapper.find(TabMenuItem);
 
-    t.is(items.at(0).prop('IconComponent'), defaultProps.IconComponent);
-    t.is(items.at(0).prop('theme'), defaultProps.theme);
+    expect(items.at(0).prop('title')).toBe('foo 1');
+    expect(items.at(0).prop('icon')).toBe('icon 1');
 });
-test('should not attach the "tabNavigation__itemBtnIcon--hasLabel" className to the "TabMenuItem" if the Panels do not contain a titlte.', t => {
+test('should pass the static props of the "Tabs" component to the "TabMenuItem" as well.', () => {
+    const wrapper = shallow();
+    const items = wrapper.find(TabMenuItem);
+
+    expect(items.at(0).prop('IconComponent')).toBe(defaultProps.IconComponent);
+    expect(items.at(0).prop('theme')).toBe(defaultProps.theme);
+});
+test('should not attach the "tabNavigation__itemBtnIcon--hasLabel" className to the "TabMenuItem" if the Panels do not contain a titlte.', () => {
     const wrapper = enzyme.shallow(
         <Tabs {...defaultProps}>
             <Panel icon="icon 1" {...defaultPanelProps}>Foo 1</Panel>
@@ -90,23 +89,25 @@ test('should not attach the "tabNavigation__itemBtnIcon--hasLabel" className to 
     );
     const items = wrapper.find(TabMenuItem);
 
-    t.is(items.at(0).html().includes(defaultPanelProps.theme['tabNavigation__itemBtnIcon--hasLabel']), false);
+    expect(
+        items.at(0).html().includes(defaultPanelProps.theme['tabNavigation__itemBtnIcon--hasLabel'])
+    ).toBe(false);
 });
-test('should render each passed Panel wrapped in a div.', t => {
+test('should render each passed Panel wrapped in a div.', () => {
     const wrapper = shallow().find(`.${defaultProps.theme.tabs__content}`);
     const panels = wrapper.find(Panel);
 
-    t.is(wrapper.children().length, 3);
-    t.is(panels.length, 3);
+    expect(wrapper.children().length).toBe(3);
+    expect(panels.length).toBe(3);
 });
-test('should render a Panel wrapped in a div which is is hidden depending on the "activeTab" state.', t => {
+test('should render a Panel wrapped in a div which is is hidden depending on the "activeTab" state.', () => {
     const wrapper = shallow().find(`.${defaultProps.theme.tabs__content}`);
     const divs = wrapper.children();
 
-    t.truthy(divs.at(0).html().includes('aria-hidden="false"'));
-    t.truthy(divs.at(0).html().includes('style="display:block;"'));
-    t.truthy(divs.at(1).html().includes('aria-hidden="true"'));
-    t.truthy(divs.at(1).html().includes('style="display:none;"'));
-    t.truthy(divs.at(2).html().includes('aria-hidden="true"'));
-    t.truthy(divs.at(2).html().includes('style="display:none;"'));
+    expect(divs.at(0).html().includes('aria-hidden="false"')).toBeTruthy();
+    expect(divs.at(0).html().includes('style="display:block;"')).toBeTruthy();
+    expect(divs.at(1).html().includes('aria-hidden="true"')).toBeTruthy();
+    expect(divs.at(1).html().includes('style="display:none;"')).toBeTruthy();
+    expect(divs.at(2).html().includes('aria-hidden="true"')).toBeTruthy();
+    expect(divs.at(2).html().includes('style="display:none;"')).toBeTruthy();
 });

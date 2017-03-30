@@ -1,33 +1,27 @@
-import test from 'ava';
-
 import createConsumerApi from './createConsumerApi';
 
-test(`"createConsumerApi" should create a global, read-only object`, t => {
-    t.is(window['@Neos:HostPluginAPI'], undefined);
-
+test(`"createConsumerApi" should create a global, read-only object`, () => {
     createConsumerApi([], {});
 
-    t.deepEqual(window['@Neos:HostPluginAPI'], {});
+    expect(window['@Neos:HostPluginAPI']).toEqual({});
 
     const shouldThrow = () => {
         window['@Neos:HostPluginAPI'] = 'I rudely overwrite the plugin api!';
     };
 
-    t.throws(shouldThrow);
+    expect(shouldThrow).toThrow();
 
     delete window['@Neos:HostPluginAPI'];
 });
 
-test(`"createConsumerApi" should expose the passed api, with each key being read-only`, t => {
-    t.is(window['@Neos:HostPluginAPI'], undefined);
-
+test(`"createConsumerApi" should expose the passed api, with each key being read-only`, () => {
     createConsumerApi([], {
         something: 'else',
         andNow: 'to something completely different'
     });
 
-    t.is(window['@Neos:HostPluginAPI'].something, 'else');
-    t.is(window['@Neos:HostPluginAPI'].andNow, 'to something completely different');
+    expect(window['@Neos:HostPluginAPI'].something).toBe('else');
+    expect(window['@Neos:HostPluginAPI'].andNow).toBe('to something completely different');
 
     const shouldThrow1 = () => {
         window['@Neos:HostPluginAPI'].something = 'I rudely overwrite the something api!';
@@ -36,19 +30,17 @@ test(`"createConsumerApi" should expose the passed api, with each key being read
         window['@Neos:HostPluginAPI'].andNow = 'I rudely overwrite the andNow api!';
     };
 
-    t.throws(shouldThrow1);
-    t.throws(shouldThrow2);
+    expect(shouldThrow1).toThrow();
+    expect(shouldThrow2).toThrow();
 
     delete window['@Neos:HostPluginAPI'];
 });
 
-test(`"createConsumerApi" should expose the initialized manifest function`, t => {
-    t.is(window['@Neos:HostPluginAPI'], undefined);
-
+test(`"createConsumerApi" should expose the initialized manifest function`, () => {
     createConsumerApi([], {});
 
-    t.not(window['@Neos:HostPluginAPI']['@manifest'], undefined);
-    t.is(typeof (window['@Neos:HostPluginAPI']['@manifest']), 'function');
+    expect(window['@Neos:HostPluginAPI']['@manifest']).not.toBe(undefined);
+    expect(typeof (window['@Neos:HostPluginAPI']['@manifest'])).toBe('function');
 
     delete window['@Neos:HostPluginAPI'];
 });

@@ -1,31 +1,30 @@
-import test from 'ava';
 import sinon from 'sinon';
 
 import handleActions from './handleActions';
 
-test(`should export a function`, t => {
-    t.is(typeof (handleActions), 'function');
+test(`should export a function`, () => {
+    expect(typeof (handleActions)).toBe('function');
 });
 
-test(`should return a curry function when called`, t => {
-    t.is(typeof (handleActions()), 'function');
+test(`should return a curry function when called`, () => {
+    expect(typeof (handleActions())).toBe('function');
 });
 
 test(`
     should check if the passed handlers contain the given action object name and return the
-    state if none was found.`, t => {
+    state if none was found.`, () => {
     const handler = handleActions();
     const state = {};
     const action = {
         type: 'test'
     };
 
-    t.is(handler(state, action), state);
+    expect(handler(state, action)).toBe(state);
 });
 
 test(`
     should call the associated handler of the action type with the payload and the returned curry
-    function with the state.`, t => {
+    function with the state.`, () => {
     const actionReducer = sinon.spy();
     const handlers = {
         test: sinon.spy(() => actionReducer)
@@ -39,9 +38,9 @@ test(`
 
     handler(state, action);
 
-    t.true(handlers.test.calledOnce);
-    t.true(handlers.test.calledWith(action.payload));
+    expect(handlers.test.calledOnce).toBe(true);
+    expect(handlers.test.calledWith(action.payload)).toBe(true);
 
-    t.true(actionReducer.calledOnce);
-    t.true(actionReducer.calledWith(state));
+    expect(actionReducer.calledOnce).toBe(true);
+    expect(actionReducer.calledWith(state)).toBe(true);
 });

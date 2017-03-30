@@ -18,7 +18,8 @@ export default class ReferenceEditor extends PureComponent {
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.arrayOf(PropTypes.string),
-            placeholder: PropTypes.string
+            placeholder: PropTypes.string,
+            threshold: PropTypes.number
         }),
 
         contextForNodeLinking: PropTypes.object.isRequired,
@@ -35,12 +36,14 @@ export default class ReferenceEditor extends PureComponent {
 
     optionGenerator({value, searchTerm, callback}) {
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
+
         if (value) {
             // INITIAL load
             searchNodesQuery.nodeIdentifiers = [value];
-        } else if (searchTerm) {
+        } else if (searchTerm && searchTerm.length >= this.props.options.threshold) {
             // autocomplete-load
             searchNodesQuery.searchTerm = searchTerm;
+            searchNodesQuery.nodeTypes = this.props.options.nodeTypes;
         } else {
             // no default set
             callback([]);

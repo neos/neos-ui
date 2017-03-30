@@ -1,4 +1,4 @@
 export default () => (index = 'ALL') => ({
-    type: 'GET',
+    type: 'get',
     payload: index
 });

@@ -2,6 +2,7 @@
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
@@ -18,6 +19,12 @@ class Property extends AbstractChange
      * @var NodePropertyConversionService
      */
     protected $nodePropertyConversionService;
+
+    /**
+     * @Flow\Inject
+     * @var NodeTypeManager
+     */
+    protected $nodeTypeManager;
 
     /**
      * The name of the property to be changed
@@ -143,7 +150,10 @@ class Property extends AbstractChange
                 $node->getContext()
             );
 
-            if ($propertyName{0} === '_') {
+            if ($propertyName === '_nodeType') {
+                $nodeType = $this->nodeTypeManager->getNodeType($value);
+                ObjectAccess::setProperty($node, 'nodeType', $nodeType);
+            } else if ($propertyName{0} === '_') {
                 ObjectAccess::setProperty($node, substr($propertyName, 1), $value);
             } else {
                 $node->setProperty($propertyName, $value);

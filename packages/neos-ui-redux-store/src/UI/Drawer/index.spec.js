@@ -1,46 +1,45 @@
-import test from 'ava';
 import Immutable, {Map} from 'immutable';
 
 import {actionTypes as system} from '../../System/index';
 
 import {actionTypes, actions, reducer} from './index.js';
 
-test(`should export actionTypes`, t => {
-    t.not(actionTypes, undefined);
-    t.is(typeof (actionTypes.TOGGLE), 'string');
-    t.is(typeof (actionTypes.HIDE), 'string');
+test(`should export actionTypes`, () => {
+    expect(actionTypes).not.toBe(undefined);
+    expect(typeof (actionTypes.TOGGLE)).toBe('string');
+    expect(typeof (actionTypes.HIDE)).toBe('string');
 });
 
-test(`should export action creators`, t => {
-    t.not(actions, undefined);
-    t.is(typeof (actions.toggle), 'function');
-    t.is(typeof (actions.hide), 'function');
+test(`should export action creators`, () => {
+    expect(actions).not.toBe(undefined);
+    expect(typeof (actions.toggle)).toBe('function');
+    expect(typeof (actions.hide)).toBe('function');
 });
 
-test(`should export a reducer`, t => {
-    t.not(reducer, undefined);
-    t.is(typeof (reducer), 'function');
+test(`should export a reducer`, () => {
+    expect(reducer).not.toBe(undefined);
+    expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, t => {
+test(`The reducer should return an Immutable.Map as the initial state.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('ui').get('drawer') instanceof Map);
+    expect(nextState.get('ui').get('drawer') instanceof Map).toBe(true);
 });
 
-test(`The reducer should initially mark the drawer container as hidden.`, t => {
+test(`The reducer should initially mark the drawer container as hidden.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('ui').get('drawer').get('isHidden'));
+    expect(nextState.get('ui').get('drawer').get('isHidden')).toBe(true);
 });
 
-test(`The "toggle" action should be able to reverse the value of the "isHidden" key.`, t => {
+test(`The "toggle" action should be able to reverse the value of the "isHidden" key.`, () => {
     const state = Immutable.fromJS({
         ui: {
             drawer: {
@@ -51,11 +50,11 @@ test(`The "toggle" action should be able to reverse the value of the "isHidden" 
     const nextState1 = reducer(state, actions.toggle());
     const nextState2 = reducer(nextState1, actions.toggle());
 
-    t.false(nextState1.get('ui').get('drawer').get('isHidden'));
-    t.true(nextState2.get('ui').get('drawer').get('isHidden'));
+    expect(nextState1.get('ui').get('drawer').get('isHidden')).toBe(false);
+    expect(nextState2.get('ui').get('drawer').get('isHidden')).toBe(true);
 });
 
-test(`The "hide" action should set the "isHidden" key to "true".`, t => {
+test(`The "hide" action should set the "isHidden" key to "true".`, () => {
     const state = Immutable.fromJS({
         ui: {
             drawer: {
@@ -66,6 +65,6 @@ test(`The "hide" action should set the "isHidden" key to "true".`, t => {
     const nextState1 = reducer(state, actions.hide());
     const nextState2 = reducer(nextState1, actions.hide());
 
-    t.true(nextState1.get('ui').get('drawer').get('isHidden'));
-    t.true(nextState2.get('ui').get('drawer').get('isHidden'));
+    expect(nextState1.get('ui').get('drawer').get('isHidden')).toBe(true);
+    expect(nextState2.get('ui').get('drawer').get('isHidden')).toBe(true);
 });

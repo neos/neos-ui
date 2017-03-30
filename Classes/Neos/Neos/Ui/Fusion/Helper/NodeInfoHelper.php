@@ -36,6 +36,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $persistenceManager;
 
     /**
+     * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.presets.default.baseNodeType", package="Neos.Neos")
+     * @var string
+     */
+    protected $baseNodeType;
+
+    /**
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
      * @return array
@@ -103,7 +109,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         if ($site !== $documentNode) {
             $this->renderNodeToList($nodes, $site, $controllerContext);
         }
-        foreach ($site->getChildNodes('Neos.Neos:Document') as $documentChildNodeInFirstLevel) {
+        foreach ($site->getChildNodes($this->baseNodeType) as $documentChildNodeInFirstLevel) {
             $this->renderNodeToList($nodes, $documentChildNodeInFirstLevel, $controllerContext);
         }
 

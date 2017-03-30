@@ -2,46 +2,21 @@
   "name": "@neos-project/react-ui-components",
   "version": "4.4.8",
   "description": "The UI components which power the Neos backend application.",
-  "main": "./lib/index",
+  "main": "./src/index",
   "scripts": {
-    "prepublish": "npm run build",
     "prebuild": "check-dependencies && npm run clean",
-    "test": "npm run lint && nyc --lines 95 --functions 95 --branches 95 npm run ava",
-    "test:watch": "npm run ava -- --watch",
-    "build": "cross-env NODE_ENV=production npm run babel && npm run css",
-    "build:watch": "./node_modules/.bin/watch 'npm run build' src/",
+    "build": "exit 0",
+    "build:watch": "exit 0",
+    "test": "npm run jest",
+    "test:watch": "npm run jest -- --watch",
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "ava": "ava src/**/*.spec.js -c 6",
-    "precoverage:generate": "rimraf ./coverage",
-    "coverage:generate": "nyc report --reporter=html --reporter=text-lcov > lcov.info",
-    "coverage:publish": "codeclimate-test-reporter < lcov.info",
+    "jest": "jest src/**/*.spec.js -w 1 --coverage",
     "start": "cross-env STORY=true start-storybook -p 9001",
     "postpublish": "greenkeeper-postpublish",
     "semantic-release": "semantic-release pre && npm publish --access public && semantic-release post"
-  },
-  "ava": {
-    "files": [
-      "src/**/*.spec.js"
-    ],
-    "failFast": true,
-    "verbose": true,
-    "require": [
-      "babel-register"
-    ],
-    "babel": "inherit"
-  },
-  "nyc": {
-    "exclude": [
-      "src/**/*.spec.js",
-      "src/**/*.story.js",
-      "src/**/index.js"
-    ],
-    "include": [
-      "src/**"
-    ]
   },
   "release": {
     "analyzeCommits": "@inkdpixels/commit-analyzer",
@@ -60,6 +35,7 @@
     "classnames": "^2.2.3",
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
+    "lodash.debounce": "^4.0.8",
     "object-assign": "^4.1.0",
     "moment": "^2.14.1",
     "react": "^15.4.0",
@@ -79,5 +55,13 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/neos/react-ui-components.git"
+  },
+  "jest": {
+    "transformIgnorePatterns": [],
+    "unmockedModulePathPatterns": ["sinon"],
+    "transform": {
+      "react-ui-components/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
+      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
+    }
   }
 }

@@ -288,10 +288,10 @@ class BackendServiceController extends ActionController
         ));
 
         foreach ($chain as $operation) {
-            $flowQuery = call_user_func_array([$flowQuery, strtolower($operation['type'])], $operation['payload']);
+            $flowQuery = call_user_func_array([$flowQuery, $operation['type']], $operation['payload']);
         }
 
-        if ('GET' === $finisher['type']) {
+        if ('get' === $finisher['type']) {
             $result = $flowQuery->get();
         }
 

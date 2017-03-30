@@ -5,7 +5,7 @@ import {$transform, $get, $or} from 'plow-js';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
-import SideBar from '@neos-project/react-ui-components/lib/SideBar/';
+import SideBar from '@neos-project/react-ui-components/src/SideBar/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.css';

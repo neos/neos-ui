@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$set, $get, $all} from 'plow-js';
+import {$set, $get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 
@@ -72,10 +72,13 @@ export const reducer = handleActions({
         return state;
     },
     [SET_PREVIEW_URL]: ({previewUrl}) => $set('ui.contentCanvas.previewUrl', previewUrl),
-    [SET_SRC]: ({src}) => src ? $all(
-        $set('ui.contentCanvas.src', src),
-        $set('ui.contentCanvas.isLoading', true)
-    ) : state => state,
+    [SET_SRC]: ({src}) => state => {
+        if (src !== $get('ui.contentCanvas.src', state)) {
+            state = $set('ui.contentCanvas.src', src, state);
+            state = $set('ui.contentCanvas.isLoading', true, state);
+        }
+        return state;
+    },
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
     [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
     [STOP_LOADING]: () => $set('ui.contentCanvas.isLoading', false)

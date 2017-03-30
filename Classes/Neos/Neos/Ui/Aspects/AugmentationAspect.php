@@ -62,6 +62,20 @@ class AugmentationAspect
     protected $controllerContext = null;
 
     /**
+     * All editable nodes rendered in the document
+     *
+     * @var array
+     */
+    protected $renderedNodes = [];
+
+    /**
+     * String containing `<script>` tags for non rendered nodes
+     *
+     * @var string
+     */
+    protected $nonRenderedContentNodeMetadata;
+
+    /**
      * @Flow\Before("method(Neos\Neos\Fusion\ContentElementWrappingImplementation->evaluate())")
      * @param JoinPointInterface $joinPoint
      * @return mixed
@@ -115,6 +129,8 @@ class AugmentationAspect
             'data-__neos-fusion-path' => $fusionPath
         ];
 
+        $this->renderedNodes[$node->getIdentifier()] = $node;
+
         $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
 
         $wrappedContent = $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
@@ -167,4 +183,55 @@ class AugmentationAspect
         return ($contentContext->isInBackend() === true && ($renderCurrentDocumentMetadata === true || $this->nodeAuthorizationService->isGrantedToEditNode($node) === true));
     }
 
+    /**
+     * Concatenate strings containing `<script>` tags for all child nodes not rendered
+     * within the current document node. This way we can show e.g. content collections
+     * within the structure tree which are not actually rendered.
+     *
+     * @param NodeInterface $documentNode
+     */
+    protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
+    {
+        foreach ($documentNode->getChildNodes() as $node) {
+            if ($documentNode->getNodeType()->isOfType('Neos.Neos:Document') === true) {
+                continue;
+            }
+
+            if (isset($this->renderedNodes[$node->getIdentifier()]) === false) {
+              $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
+              $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
+            }
+
+            if ($node->hasChildNodes() === true) {
+                $this->nonRenderedContentNodeMetadata .= $this->appendNonRenderedContentNodeMetadata($node);
+            }
+        }
+    }
+
+    /**
+     * Clear rendered nodes helper array to prevent possible side effects.
+     */
+    protected function clearRenderedNodesArray() {
+        $this->renderedNodes = [];
+    }
+
+    /**
+     * Clear non rendered content node metadata to prevent possible side effects.
+     */
+    protected function clearNonRenderedContentNodeMetadata() {
+        $this->nonRenderedContentNodeMetadata = '';
+    }
+
+    /**
+     * @param NodeInterface $documentNode
+     * @return string
+     */
+    public function getNonRenderedContentNodeMetadata(NodeInterface $documentNode)
+    {
+        $this->appendNonRenderedContentNodeMetadata($documentNode);
+        $nonRenderedContentNodeMetadata = $this->nonRenderedContentNodeMetadata;
+        $this->clearNonRenderedContentNodeMetadata();
+        $this->clearRenderedNodesArray();
+        return $nonRenderedContentNodeMetadata;
+    }
 }

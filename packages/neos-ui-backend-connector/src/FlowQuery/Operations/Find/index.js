@@ -1,4 +1,4 @@
 export default () => filter => ({
-    type: 'FIND',
+    type: 'find',
     payload: [filter]
 });

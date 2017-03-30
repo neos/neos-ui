@@ -2,7 +2,7 @@ import React, {PureComponent, PropTypes} from 'react';
 import {$get} from 'plow-js';
 import {connect} from 'react-redux';
 
-import Tree from '@neos-project/react-ui-components/lib/Tree/';
+import Tree from '@neos-project/react-ui-components/src/Tree/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';

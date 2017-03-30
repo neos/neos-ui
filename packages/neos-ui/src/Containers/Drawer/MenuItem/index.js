@@ -1,7 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import Button from '@neos-project/react-ui-components/lib/Button/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
+import Button from '@neos-project/react-ui-components/src/Button/';
 
 import I18n from '@neos-project/neos-ui-i18n';
 

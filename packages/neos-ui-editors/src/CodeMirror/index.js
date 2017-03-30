@@ -1,8 +1,8 @@
 import React, {PureComponent, PropTypes} from 'react';
 
-import Button from '@neos-project/react-ui-components/lib/Button/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
-import Label from '@neos-project/react-ui-components/lib/Label/';
+import Button from '@neos-project/react-ui-components/src/Button/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
+import Label from '@neos-project/react-ui-components/src/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
 import CodeMirrorWrap from './CodeMirrorWrap/index';
 

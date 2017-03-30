@@ -13,5 +13,4 @@ set -e
 #
 
 # Execute the unit tests.
-npm run test
-npm run build
+yarn test

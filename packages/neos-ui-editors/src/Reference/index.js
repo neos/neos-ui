@@ -1,7 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform} from 'plow-js';
-import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
+import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -32,14 +32,16 @@ export default class ReferenceEditor extends PureComponent {
         this.handleDelete = () => this.props.commit('');
     }
 
-    optionGenerator({value, callback}) {
+    optionGenerator({value, searchTerm, callback}) {
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
-        if (!value && this.props.value) {
+        if (value) {
+            // INITIAL load
             searchNodesQuery.nodeIdentifiers = [this.props.value];
-        } else if (!value || value.length < 2) {
+        } else if (!searchTerm || searchTerm.length < 2) {
+            callback([]);
             return;
         } else {
-            searchNodesQuery.searchTerm = value;
+            searchNodesQuery.searchTerm = searchTerm;
         }
 
         this.searchNodes(searchNodesQuery).then(result => {
@@ -58,6 +60,7 @@ export default class ReferenceEditor extends PureComponent {
             placeholder={placeholder}
             onSelect={commit}
             onDelete={onDelete}
+            loadOptionsOnInput={true}
             />);
     }
 }

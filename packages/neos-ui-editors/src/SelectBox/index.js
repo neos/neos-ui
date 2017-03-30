@@ -1,6 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import I18n from '@neos-project/neos-ui-i18n';
-import SelectBox from '@neos-project/react-ui-components/lib/SelectBox/';
+import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
@@ -34,7 +34,7 @@ export default class SelectBoxEditor extends PureComponent {
         ).filter(k => k);
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
-        const onDelete = value ? this.handleDelete : null;
+        const onDelete = this.handleDelete;
 
         return (<SelectBox
             options={selectBoxOptions}

@@ -1,7 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {Maybe} from 'monet';
-import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
-import Icon from '@neos-project/react-ui-components/lib/Icon/';
+import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 
 import I18n from '@neos-project/neos-ui-i18n';
 

@@ -1,8 +1,8 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
-import Grid from '@neos-project/react-ui-components/lib/Grid/';
+import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
+import Grid from '@neos-project/react-ui-components/src/Grid/';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 

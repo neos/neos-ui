@@ -15,10 +15,11 @@
     font-size: var(--baseFontSize);
     padding: 0 38px 0 var(--spacing);
     border: 0;
-    background: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    line-height: var(--goldenUnit);
+    background: var(--brandColorsContrastNeutral);
 
     &:focus {
         outline: 1px dotted var(--brandColorsContrastBrightest);

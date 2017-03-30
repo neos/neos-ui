@@ -103,9 +103,8 @@ class BackendServiceController extends ActionController
      */
     protected function updateWorkspaceInfo($documentNodeContextPath)
     {
-        $nodeService = new NodeService();
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();
-        $documentNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath);
+        $documentNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath, null, null, true);
         $updateWorkspaceInfo->setWorkspace(
             $documentNode->getContext()->getWorkspace()
         );
@@ -153,7 +152,7 @@ class BackendServiceController extends ActionController
             $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
 
             foreach ($nodeContextPaths as $contextPath) {
-                $node = $this->nodeService->getNodeFromContextPath($contextPath);
+                $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null,true);
                 $this->publishingService->publishNode($node, $targetWorkspace);
             }
 

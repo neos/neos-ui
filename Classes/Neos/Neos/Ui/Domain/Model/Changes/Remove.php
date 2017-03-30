@@ -13,40 +13,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 class Remove extends AbstractChange
 {
     /**
-     * Checks whether this change can be merged with a subsequent change
-     *
-     * @param  ChangeInterface $subsequentChange
-     * @return boolean
-     */
-    public function canMerge(ChangeInterface $subsequentChange)
-    {
-        if ($subsequentChange->getSubject() !== $this->getSubject()) {
-            return false;
-        }
-
-        if ($subsequentChange->getPropertyName() !== $this->getPropertyName()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Merges this change with a subsequent change
-     *
-     * @param  ChangeInterface $subsequentChange
-     * @return ChangeInterface|null
-     */
-    public function merge(ChangeInterface $subsequentChange)
-    {
-        if ($this->canMerge($subsequentChange)) {
-            return $this;
-        }
-
-        return null;
-    }
-
-    /**
      * Checks whether this change can be applied to the subject
      *
      * @return boolean

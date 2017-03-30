@@ -1,4 +1,3 @@
-import test from 'ava';
 import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import CheckBox from './checkBox.js';
@@ -9,41 +8,41 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(CheckBox, defaultProps);
 
-test('should render a "input" node with the role="button" attribute.', t => {
+test('should render a "input" node with the role="button" attribute.', () => {
     const input = shallow().find('[type="checkbox"]');
 
-    t.is(input.length, 1);
+    expect(input.length).toBe(1);
 });
-test('should render the "className" prop if passed.', t => {
+test('should render the "className" prop if passed.', () => {
     const input = shallow({
         className: 'barClassName'
     });
 
-    t.truthy(input.hasClass('barClassName'));
+    expect(input.hasClass('barClassName')).toBeTruthy();
 });
-test('should throw no errors if no "onChange" prop was passed when clicking on the hidden checkbox.', t => {
+test('should throw no errors if no "onChange" prop was passed when clicking on the hidden checkbox.', () => {
     const cb = shallow();
     const fn = () => cb.find('[type="checkbox"]').simulate('change');
 
-    t.notThrows(fn);
+    expect(fn).not.toThrow();
 });
-test('should call the passed "onChange" prop when clicking on the hidden checkbox.', t => {
+test('should call the passed "onChange" prop when clicking on the hidden checkbox.', () => {
     const onChange = sinon.spy();
     const cb = shallow({onChange});
 
     cb.find('[type="checkbox"]').simulate('change');
 
-    t.is(onChange.callCount, 1);
+    expect(onChange.callCount).toBe(1);
 });
-test('should set truthy aria and checked attribute when passing a truthy "isChecked" prop.', t => {
+test('should set truthy aria and checked attribute when passing a truthy "isChecked" prop.', () => {
     const markup = shallow({isChecked: true}).find('[type="checkbox"]').html();
 
-    t.truthy(markup.includes('checked="true"'));
-    t.truthy(markup.includes('aria-checked="true"'));
+    expect(markup.includes('checked="true"')).toBeTruthy();
+    expect(markup.includes('aria-checked="true"')).toBeTruthy();
 });
-test('should set falsy aria and checked attribute when passing a falsy "isChecked" prop.', t => {
+test('should set falsy aria and checked attribute when passing a falsy "isChecked" prop.', () => {
     const markup = shallow({isChecked: false}).find('[type="checkbox"]').html();
 
-    t.truthy(markup.includes('checked="false"'));
-    t.truthy(markup.includes('aria-checked="false"'));
+    expect(markup.includes('checked="false"')).toBeTruthy();
+    expect(markup.includes('aria-checked="false"')).toBeTruthy();
 });

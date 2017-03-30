@@ -84,8 +84,8 @@ export default class DimensionSwitcher extends PureComponent {
         const contentDimensionsObjectKeys = Object.keys(contentDimensionsObject);
 
         return (
-            <DropDown className={style.dropDown}>
-                <DropDown.Header className={style.dropDown__btn}>
+            <DropDown style="darker" padded={true} className={style.dropDown}>
+                <DropDown.Header>
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
                         const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
@@ -99,7 +99,7 @@ export default class DimensionSwitcher extends PureComponent {
                         );
                     })}
                 </DropDown.Header>
-                <DropDown.Contents className={style.dropDown__contents}>
+                <DropDown.Contents>
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
                         const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);

@@ -14,6 +14,16 @@ export class DropDownWrapper extends PureComponent {
         className: PropTypes.string,
 
         /**
+         * An optional style variant (default, darker)
+         */
+        style: PropTypes.string,
+
+        /**
+         * An optional padding around the contents
+         */
+        padded: PropTypes.bool,
+
+        /**
          * This prop controls the initial visual opened state of the `DropDown`.
          */
         isOpen: PropTypes.bool.isRequired,
@@ -37,7 +47,8 @@ export class DropDownWrapper extends PureComponent {
     };
 
     static defaultProps = {
-        isOpen: false
+        isOpen: false,
+        style: 'default'
     };
 
     static childContextTypes = {
@@ -73,9 +84,12 @@ export class DropDownWrapper extends PureComponent {
     }
 
     render() {
-        const {children, className, theme, ...restProps} = this.props;
+        const {children, className, theme, style, padded, ...restProps} = this.props;
         const rest = omit(restProps, ['isOpen', 'onToggle']);
+        const styleClassName = `dropDown--${style}`;
         const finalClassName = mergeClassNames({
+            [theme[styleClassName]]: true,
+            [theme['dropDown--padded']]: padded,
             [className]: className && className.length,
             [theme.dropDown]: true
         });

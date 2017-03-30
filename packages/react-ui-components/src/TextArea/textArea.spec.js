@@ -1,4 +1,3 @@
-import test from 'ava';
 import sinon from 'sinon';
 import TextareaAutoresize from 'react-textarea-autosize';
 import {createShallowRenderer} from './../_lib/testUtils.js';
@@ -10,12 +9,12 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(TextArea, defaultProps);
 
-test('should render a "TextareaAutoresize" component.', t => {
+test('should render a "TextareaAutoresize" component.', () => {
     const input = shallow().find(TextareaAutoresize);
 
-    t.is(input.length, 1);
+    expect(input.length).toBe(1);
 });
-test('should call the passed "onChange" prop with the value of the input when changing it.', t => {
+test('should call the passed "onChange" prop with the value of the input when changing it.', () => {
     const onChange = sinon.spy();
     const input = shallow({onChange}).find(TextareaAutoresize);
 
@@ -25,6 +24,6 @@ test('should call the passed "onChange" prop with the value of the input when ch
         }
     });
 
-    t.is(onChange.callCount, 1);
-    t.is(onChange.args[0][0], 'my value');
+    expect(onChange.callCount).toBe(1);
+    expect(onChange.args[0][0]).toBe('my value');
 });

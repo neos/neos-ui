@@ -1,4 +1,3 @@
-import test from 'ava';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import {render} from 'enzyme';
 import React from 'react';
@@ -42,75 +41,75 @@ const defaultPropsFullRendering = {
     IconButtonComponent
 };
 
-test('<ToggablePanel/> should initialize with a state of {isOpen: props.isOpen}.', t => {
+test('<ToggablePanel/> should initialize with a state of {isOpen: props.isOpen}.', () => {
     const node = shallow();
 
-    t.is(node.state('isOpen'), false);
+    expect(node.state('isOpen')).toBe(false);
 });
-test('<ToggablePanel/> should toggle the "isOpen" state when calling the instance "toggle" method.', t => {
+test('<ToggablePanel/> should toggle the "isOpen" state when calling the instance "toggle" method.', () => {
     const node = shallow();
 
-    t.is(node.state('isOpen'), false);
+    expect(node.state('isOpen')).toBe(false);
 
     node.instance().toggle();
 
-    t.is(node.state('isOpen'), true);
+    expect(node.state('isOpen')).toBe(true);
 });
-test('<ToggablePanel/> should render a "StatelessToggablePanel" component.', t => {
+test('<ToggablePanel/> should render a "StatelessToggablePanel" component.', () => {
     const node = shallow().find(StatelessToggablePanel);
 
-    t.is(node.length, 1);
+    expect(node.length).toBe(1);
 });
-test('<ToggablePanel/> should propagate the rest of the passed props to the "StatelessToggablePanel" component.', t => {
+test('<ToggablePanel/> should propagate the rest of the passed props to the "StatelessToggablePanel" component.', () => {
     const node = shallow({className: 'testClassName'}).find(StatelessToggablePanel);
 
-    t.is(node.prop('className'), 'testClassName');
+    expect(node.prop('className')).toBe('testClassName');
 });
-test('<ToggablePanel/> should propagate the "isOpen" prop to the the "StatelessToggablePanel" component in case a "onPanelToggle" prop was provided.', t => {
+test('<ToggablePanel/> should propagate the "isOpen" prop to the the "StatelessToggablePanel" component in case a "onPanelToggle" prop was provided.', () => {
     const node = shallow({isOpen: true, onPanelToggle: () => null}).find(StatelessToggablePanel);
 
-    t.is(node.prop('isOpen'), true);
+    expect(node.prop('isOpen')).toBe(true);
 });
-test('<ToggablePanel/> should propagate the "onPanelToggle" prop to the the "StatelessToggablePanel" component in case it was provided.', t => {
+test('<ToggablePanel/> should propagate the "onPanelToggle" prop to the the "StatelessToggablePanel" component in case it was provided.', () => {
     const onPanelToggle = () => null;
     const node = shallow({isOpen: true, onPanelToggle}).find(StatelessToggablePanel);
 
-    t.is(node.prop('onPanelToggle'), onPanelToggle);
+    expect(node.prop('onPanelToggle')).toBe(onPanelToggle);
 });
-test('<ToggablePanel/> should propagate the "isOpen" state to the the "StatelessToggablePanel" component in case no "onPanelToggle" prop was provided.', t => {
+test('<ToggablePanel/> should propagate the "isOpen" state to the the "StatelessToggablePanel" component in case no "onPanelToggle" prop was provided.', () => {
     const wrapper = shallow();
     const node = wrapper.find(StatelessToggablePanel);
 
-    t.is(node.prop('isOpen'), wrapper.state('isOpen'));
+    expect(node.prop('isOpen')).toBe(wrapper.state('isOpen'));
 });
-test('<ToggablePanel/> should propagate the "toggle" instance method to the the "StatelessToggablePanel" component in case no "onPanelToggle" prop was provided.', t => {
+test('<ToggablePanel/> should propagate the "toggle" instance method to the the "StatelessToggablePanel" component in case no "onPanelToggle" prop was provided.', () => {
     const wrapper = shallow();
     const node = wrapper.find(StatelessToggablePanel);
 
-    t.is(node.prop('onPanelToggle'), wrapper.instance().toggle);
+    expect(node.prop('onPanelToggle')).toBe(wrapper.instance().toggle);
 });
 
-test('<StatelessToggablePanel/> should render only the "panel" className of the theme in any case.', t => {
+test('<StatelessToggablePanel/> should render only the "panel" className of the theme in any case.', () => {
     const wrapper = shallowStateLess(null);
 
-    t.truthy(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme.panel));
-    t.falsy(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme['panel--isOpen']));
+    expect(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme.panel)).toBeTruthy();
+    expect(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme['panel--isOpen'])).toBeFalsy();
 });
-test('<StatelessToggablePanel/> should render both the "panel" and "panel--isOpen" className of the theme in case the "isOpen" prop is truthy.', t => {
+test('<StatelessToggablePanel/> should render both the "panel" and "panel--isOpen" className of the theme in case the "isOpen" prop is truthy.', () => {
     const wrapper = shallowStateLess({isOpen: true});
 
-    t.truthy(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme.panel));
-    t.truthy(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme['panel--isOpen']));
+    expect(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme.panel)).toBeTruthy();
+    expect(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme['panel--isOpen'])).toBeTruthy();
 });
-test('<StatelessToggablePanel/> should render the "className" prop if provided.', t => {
+test('<StatelessToggablePanel/> should render the "className" prop if provided.', () => {
     const wrapper = shallowStateLess({isOpen: true, className: 'FooClassName'});
 
-    t.truthy(wrapper.childAt(0).hasClass('FooClassName'));
+    expect(wrapper.childAt(0).hasClass('FooClassName')).toBeTruthy();
 });
-test('<StatelessToggablePanel/> should render its propagated children.', t => {
+test('<StatelessToggablePanel/> should render its propagated children.', () => {
     const wrapper = shallowStateLess();
 
-    t.truthy(wrapper.html().includes('Foo children'));
+    expect(wrapper.html().includes('Foo children')).toBeTruthy();
 });
 
 const fullyRenderToggablePanel = isOpen => {
@@ -126,54 +125,62 @@ const getHeaderDomNode = panelDomNode =>
 const getContentsDomNode = panelDomNode =>
     panelDomNode.children('section').children('div').first().next();
 
-test('open ToggablePanel should render a <ToggablePanel.Header/> with an "aria-expanded" attribute of "true".', t => {
+test('open ToggablePanel should render a <ToggablePanel.Header/> with an "aria-expanded" attribute of "true".', () => {
     const wrapper = fullyRenderToggablePanel(true);
 
-    t.truthy(getHeaderDomNode(wrapper).attr('aria-expanded'));
+    expect(getHeaderDomNode(wrapper).attr('aria-expanded')).toBeTruthy();
 });
 
-test('closed ToggablePanel should render a <ToggablePanel.Header/> with an "aria-expanded" attribute of "false".', t => {
+test('closed ToggablePanel should render a <ToggablePanel.Header/> with an "aria-expanded" attribute of "false".', () => {
     const wrapper = fullyRenderToggablePanel(false);
 
-    t.is(getHeaderDomNode(wrapper).attr('aria-expanded'), 'false');
+    expect(getHeaderDomNode(wrapper).attr('aria-expanded')).toBe('false');
 });
 
-test('<ToggablePanel.Header/> should render a "HeadlineComponent" and "IconButtonComponent" component.', t => {
+test('<ToggablePanel.Header/> should render a "HeadlineComponent" and "IconButtonComponent" component.', () => {
     const wrapper = fullyRenderToggablePanel(false);
 
-    t.is(wrapper.find('[data-component-name=HeadlineComponent]').length, 1);
-    t.is(wrapper.find('[data-component-name=IconButtonComponent]').length, 1);
+    expect(wrapper.find('[data-component-name=HeadlineComponent]').length).toBe(1);
+    expect(wrapper.find('[data-component-name=IconButtonComponent]').length).toBe(1);
 });
-test('<ToggablePanel.Header/> should render a "HeadlineComponent" with the themes "panel__headline" className.', t => {
+test('<ToggablePanel.Header/> should render a "HeadlineComponent" with the themes "panel__headline" className.', () => {
     const wrapper = fullyRenderToggablePanel(false);
 
-    t.is(getHeaderDomNode(wrapper).find('[data-component-name=HeadlineComponent]').attr('class'), defaultThemeProps.theme.panel__headline);
+    expect(
+        getHeaderDomNode(wrapper).find('[data-component-name=HeadlineComponent]').attr('class')
+    ).toBe(defaultThemeProps.theme.panel__headline);
 });
-test('<ToggablePanel.Header/> should render all children within the "HeadlineComponent".', t => {
+test('<ToggablePanel.Header/> should render all children within the "HeadlineComponent".', () => {
     const wrapper = fullyRenderToggablePanel(false);
-    t.is(getHeaderDomNode(wrapper).text(), 'My Header');
+    expect(getHeaderDomNode(wrapper).text()).toBe('My Header');
 });
 
-test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-down" if the "isOpen" context is falsy.', t => {
+test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-down" if the "isOpen" context is falsy.', () => {
     const wrapper = fullyRenderToggablePanel(false);
-    t.is(getHeaderDomNode(wrapper).find('[data-component-name=IconButtonComponent]').attr('icon'), 'chevron-down');
+    expect(
+        getHeaderDomNode(wrapper).find('[data-component-name=IconButtonComponent]').attr('icon')
+    ).toBe('chevron-down');
 });
 
-test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-up" if the "isOpen" context is truthy.', t => {
+test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-up" if the "isOpen" context is truthy.', () => {
     const wrapper = fullyRenderToggablePanel(true);
-    t.is(getHeaderDomNode(wrapper).find('[data-component-name=IconButtonComponent]').attr('icon'), 'chevron-up');
+    expect(
+        getHeaderDomNode(wrapper).find('[data-component-name=IconButtonComponent]').attr('icon')
+    ).toBe('chevron-up');
 });
 
-test('<ToggablePanel.Contents/> should render the themes "panel__contents" className.', t => {
+test('<ToggablePanel.Contents/> should render the themes "panel__contents" className.', () => {
     const wrapper = fullyRenderToggablePanel(true);
-    t.truthy(getContentsDomNode(wrapper).find('[aria-hidden]').hasClass(defaultThemeProps.theme.panel__contents));
+    expect(
+        getContentsDomNode(wrapper).find('[aria-hidden]').hasClass(defaultThemeProps.theme.panel__contents)
+    ).toBeTruthy();
 });
 
-test('<ToggablePanel.Contents/> should render a falsy "aria-hidden" attribute if the "isOpen" context is truthy.', t => {
+test('<ToggablePanel.Contents/> should render a falsy "aria-hidden" attribute if the "isOpen" context is truthy.', () => {
     const wrapper = fullyRenderToggablePanel(true);
-    t.is(getContentsDomNode(wrapper).find('[aria-hidden]').attr('aria-hidden'), 'false');
+    expect(getContentsDomNode(wrapper).find('[aria-hidden]').attr('aria-hidden')).toBe('false');
 });
-test('<ToggablePanel.Contents/> should render a truthy "aria-hidden" attribute if the "isOpen" context is falsy.', t => {
+test('<ToggablePanel.Contents/> should render a truthy "aria-hidden" attribute if the "isOpen" context is falsy.', () => {
     const wrapper = fullyRenderToggablePanel(false);
-    t.is(getContentsDomNode(wrapper).find('[aria-hidden]').attr('aria-hidden'), 'true');
+    expect(getContentsDomNode(wrapper).find('[aria-hidden]').attr('aria-hidden')).toBe('true');
 });

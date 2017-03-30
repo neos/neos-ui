@@ -1,15 +1,13 @@
-import test from 'ava';
-
 import textValidator from './index';
 
-test('text without xml tags should be valid', t => {
-    t.is(textValidator('someTextWithoutXMLTags'), null);
+test('text without xml tags should be valid', () => {
+    expect(textValidator('someTextWithoutXMLTags')).toBe(null);
 });
 
-test('text with xml tags should not be valid', t => {
-    t.not(textValidator('someText<with>XMLTags'), null);
+test('text with xml tags should not be valid', () => {
+    expect(textValidator('someText<with>XMLTags')).not.toBe(null);
 });
 
-test('empty value should be valid', t => {
-    t.is(textValidator(''), null);
+test('empty value should be valid', () => {
+    expect(textValidator('')).toBe(null);
 });

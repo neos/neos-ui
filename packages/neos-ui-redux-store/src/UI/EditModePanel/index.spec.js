@@ -1,46 +1,45 @@
-import test from 'ava';
 import Immutable, {Map} from 'immutable';
 
 import {actionTypes, actions, reducer} from './index.js';
 
 import {actionTypes as system} from '../../System/index';
 
-test(`should export actionTypes`, t => {
-    t.not(actionTypes, undefined);
-    t.is(typeof (actionTypes.TOGGLE), 'string');
+test(`should export actionTypes`, () => {
+    expect(actionTypes).not.toBe(undefined);
+    expect(typeof (actionTypes.TOGGLE)).toBe('string');
 });
 
-test(`should export action creators`, t => {
-    t.not(actions, undefined);
-    t.is(typeof (actions.toggle), 'function');
+test(`should export action creators`, () => {
+    expect(actions).not.toBe(undefined);
+    expect(typeof (actions.toggle)).toBe('function');
 });
 
-test(`should export a reducer`, t => {
-    t.not(reducer, undefined);
-    t.is(typeof (reducer), 'function');
+test(`should export a reducer`, () => {
+    expect(reducer).not.toBe(undefined);
+    expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, t => {
+test(`The reducer should return an Immutable.Map as the initial state.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('ui').get('editModePanel') instanceof Map);
+    expect(nextState.get('ui').get('editModePanel') instanceof Map).toBe(true);
 });
 
-test(`The reducer should initially mark the editmode panel as invisible.`, t => {
+test(`The reducer should initially mark the editmode panel as invisible.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('ui').get('editModePanel').get('isHidden'));
+    expect(nextState.get('ui').get('editModePanel').get('isHidden')).toBe(true);
 });
 
 test(`
     The "toggle" action should be able to reverse the value of the
-    "isHidden" key.`, t => {
+    "isHidden" key.`, () => {
     const state = Immutable.fromJS({
         ui: {
             editModePanel: {
@@ -51,6 +50,6 @@ test(`
     const nextState1 = reducer(state, actions.toggle());
     const nextState2 = reducer(nextState1, actions.toggle());
 
-    t.false(nextState1.get('ui').get('editModePanel').get('isHidden'));
-    t.true(nextState2.get('ui').get('editModePanel').get('isHidden'));
+    expect(nextState1.get('ui').get('editModePanel').get('isHidden')).toBe(false);
+    expect(nextState2.get('ui').get('editModePanel').get('isHidden')).toBe(true);
 });

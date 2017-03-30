@@ -1,3 +1,3 @@
-import test from 'ava';
-
-test.todo(`write tests`);
+test(`write tests`, () => {
+    expect(true).toBe(true);
+});

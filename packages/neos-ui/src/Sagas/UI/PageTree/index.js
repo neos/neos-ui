@@ -42,9 +42,9 @@ function * watchRequestChildrenForContextPath({configuration}) {
         try {
             const query = q(contextPath);
 
-            parentNodes = yield query.get();
+            parentNodes = yield query.getForTree();
             const baseNodeType = configuration.nodeTree.presets.default.baseNodeType;
-            childNodes = yield query.neosUiFilteredChildren(baseNodeType).get();
+            childNodes = yield query.neosUiFilteredChildren(baseNodeType).getForTree();
         } catch (err) {
             yield put(actions.UI.PageTree.invalidate(contextPath));
             yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));

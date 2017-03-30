@@ -123,7 +123,7 @@ class BackendServiceController extends ActionController
     {
         try {
             $count = $changes->count();
-            $changes->compress()->apply();
+            $changes->apply();
 
             $success = new Info();
             $success->setMessage(sprintf('%d change(s) successfully applied.', $count));
@@ -291,11 +291,13 @@ class BackendServiceController extends ActionController
             $flowQuery = call_user_func_array([$flowQuery, $operation['type']], $operation['payload']);
         }
 
+        $nodeInfoHelper = new NodeInfoHelper();
         if ('get' === $finisher['type']) {
-            $result = $flowQuery->get();
+            $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext());
+        } else if ('getForTree' === $finisher['type']) {
+            $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext(), true);
         }
 
-        $nodeInfoHelper = new NodeInfoHelper();
-        return json_encode($nodeInfoHelper->renderNodes($result, $this->getControllerContext()));
+        return json_encode($result);
     }
 }

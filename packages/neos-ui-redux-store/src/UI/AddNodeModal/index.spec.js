@@ -1,83 +1,82 @@
-import test from 'ava';
 import Immutable, {Map} from 'immutable';
 
 import {actionTypes as system} from '../../System/index';
 
 import {actionTypes, actions, errorMessages, reducer} from './index.js';
 
-test(`should export actionTypes`, t => {
-    t.not(actionTypes, undefined);
-    t.is(typeof (actionTypes.OPEN), 'string');
-    t.is(typeof (actionTypes.CLOSE), 'string');
-    t.is(typeof (actionTypes.TOGGLE_GROUP), 'string');
+test(`should export actionTypes`, () => {
+    expect(actionTypes).not.toBe(undefined);
+    expect(typeof (actionTypes.OPEN)).toBe('string');
+    expect(typeof (actionTypes.CLOSE)).toBe('string');
+    expect(typeof (actionTypes.TOGGLE_GROUP)).toBe('string');
 });
 
-test(`should export action creators`, t => {
-    t.not(actions, undefined);
-    t.is(typeof (actions.open), 'function');
-    t.is(typeof (actions.close), 'function');
-    t.is(typeof (actions.toggleGroup), 'function');
+test(`should export action creators`, () => {
+    expect(actions).not.toBe(undefined);
+    expect(typeof (actions.open)).toBe('function');
+    expect(typeof (actions.close)).toBe('function');
+    expect(typeof (actions.toggleGroup)).toBe('function');
 });
 
-test(`should export errorMessages`, t => {
-    t.not(errorMessages, undefined);
-    t.is(typeof (errorMessages.ERROR_INVALID_CONTEXTPATH), 'string');
-    t.is(typeof (errorMessages.ERROR_INVALID_FUSIONPATH), 'string');
+test(`should export errorMessages`, () => {
+    expect(errorMessages).not.toBe(undefined);
+    expect(typeof (errorMessages.ERROR_INVALID_CONTEXTPATH)).toBe('string');
+    expect(typeof (errorMessages.ERROR_INVALID_FUSIONPATH)).toBe('string');
 });
 
-test(`should export a reducer`, t => {
-    t.not(reducer, undefined);
-    t.is(typeof (reducer), 'function');
+test(`should export a reducer`, () => {
+    expect(reducer).not.toBe(undefined);
+    expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, t => {
+test(`The reducer should return an Immutable.Map as the initial state.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('ui').get('addNodeModal') instanceof Map);
+    expect(nextState.get('ui').get('addNodeModal') instanceof Map).toBe(true);
 });
 
-test(`The reducer should initially indicate a closed modal`, t => {
+test(`The reducer should initially indicate a closed modal`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.is(nextState.get('ui').get('addNodeModal').get('contextPath'), '');
-    t.is(nextState.get('ui').get('addNodeModal').get('fusionPath'), '');
+    expect(nextState.get('ui').get('addNodeModal').get('contextPath')).toBe('');
+    expect(nextState.get('ui').get('addNodeModal').get('fusionPath')).toBe('');
 });
 
-test(`The "open" action should set "contextPath" key.`, t => {
+test(`The "open" action should set "contextPath" key.`, () => {
     const state = new Map({});
     const nextState = reducer(state, actions.open('someContextPath'));
 
-    t.is(nextState.get('ui').get('addNodeModal').get('contextPath'), 'someContextPath');
+    expect(nextState.get('ui').get('addNodeModal').get('contextPath')).toBe('someContextPath');
 });
 
-test(`The "open" action should set "fusionPath" key.`, t => {
+test(`The "open" action should set "fusionPath" key.`, () => {
     const state = new Map({});
     const nextState = reducer(state, actions.open('someContextPath', 'someFusionPath'));
 
-    t.is(nextState.get('ui').get('addNodeModal').get('fusionPath'), 'someFusionPath');
+    expect(nextState.get('ui').get('addNodeModal').get('fusionPath')).toBe('someFusionPath');
 });
 
-test(`The "open" action should throw on invalid contextPath.`, t => {
+test(`The "open" action should throw on invalid contextPath.`, () => {
     const state = new Map({});
     const fn = () => reducer(state, actions.open(null));
 
-    t.throws(fn, errorMessages.ERROR_INVALID_CONTEXTPATH);
+    expect(fn).toThrowError(errorMessages.ERROR_INVALID_CONTEXTPATH);
 });
 
-test(`The "open" action should throw on invalid fusionPath.`, t => {
+test(`The "open" action should throw on invalid fusionPath.`, () => {
     const state = new Map({});
     const fn = () => reducer(state, actions.open('someContextPath', null));
 
-    t.throws(fn, errorMessages.ERROR_INVALID_FUSIONPATH);
+    expect(fn).toThrowError(errorMessages.ERROR_INVALID_FUSIONPATH);
 });
 
-test(`The "close" action should set "isOpen" key to false.`, t => {
+test(`The "close" action should set "isOpen" key to false.`, () => {
     const state = Immutable.fromJS({
         ui: {
             addNodeModal: {
@@ -88,11 +87,11 @@ test(`The "close" action should set "isOpen" key to false.`, t => {
     });
     const nextState = reducer(state, actions.close());
 
-    t.is(nextState.get('ui').get('addNodeModal').get('contextPath'), '');
-    t.is(nextState.get('ui').get('addNodeModal').get('fusionPath'), '');
+    expect(nextState.get('ui').get('addNodeModal').get('contextPath')).toBe('');
+    expect(nextState.get('ui').get('addNodeModal').get('fusionPath')).toBe('');
 });
 
-test(`The "toggleGroup" action should work with fresh state.`, t => {
+test(`The "toggleGroup" action should work with fresh state.`, () => {
     const state = Immutable.fromJS({
         ui: {
             addNodeModal: {
@@ -102,10 +101,10 @@ test(`The "toggleGroup" action should work with fresh state.`, t => {
     });
     const nextState = reducer(state, actions.toggleGroup('test'));
 
-    t.deepEqual(nextState.get('ui').get('addNodeModal').get('collapsedGroups').toJS(), ['test']);
+    expect(nextState.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual(['test']);
 });
 
-test(`The "toggleGroup" action should toggle set group.`, t => {
+test(`The "toggleGroup" action should toggle set group.`, () => {
     const state = Immutable.fromJS({
         ui: {
             addNodeModal: {
@@ -116,10 +115,10 @@ test(`The "toggleGroup" action should toggle set group.`, t => {
     const nextState1 = reducer(state, actions.toggleGroup('test'));
     const nextState2 = reducer(nextState1, actions.toggleGroup('test'));
 
-    t.deepEqual(nextState2.get('ui').get('addNodeModal').get('collapsedGroups').toJS(), []);
+    expect(nextState2.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual([]);
 });
 
-test(`The "toggleGroup" action should work with multiple groups.`, t => {
+test(`The "toggleGroup" action should work with multiple groups.`, () => {
     const state = Immutable.fromJS({
         ui: {
             addNodeModal: {
@@ -132,8 +131,8 @@ test(`The "toggleGroup" action should work with multiple groups.`, t => {
     const nextState3 = reducer(nextState2, actions.toggleGroup('test1'));
     const nextState4 = reducer(nextState3, actions.toggleGroup('test2'));
 
-    t.deepEqual(nextState1.get('ui').get('addNodeModal').get('collapsedGroups').toJS(), ['test1']);
-    t.deepEqual(nextState2.get('ui').get('addNodeModal').get('collapsedGroups').toJS(), ['test1', 'test2']);
-    t.deepEqual(nextState3.get('ui').get('addNodeModal').get('collapsedGroups').toJS(), ['test2']);
-    t.deepEqual(nextState4.get('ui').get('addNodeModal').get('collapsedGroups').toJS(), []);
+    expect(nextState1.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual(['test1']);
+    expect(nextState2.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual(['test1', 'test2']);
+    expect(nextState3.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual(['test2']);
+    expect(nextState4.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual([]);
 });

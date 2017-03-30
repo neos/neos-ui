@@ -1,47 +1,46 @@
-import test from 'ava';
 import Immutable, {Map} from 'immutable';
 
 import {actionTypes, actions, reducer} from './index.js';
 
 import {actionTypes as system} from '../../System/index';
 
-test(`should export actionTypes`, t => {
-    t.not(actionTypes, undefined);
-    t.is(typeof (actionTypes.FOCUS), 'string');
-    t.is(typeof (actionTypes.COMMENCE_UNCOLLAPSE), 'string');
-    t.is(typeof (actionTypes.UNCOLLAPSE), 'string');
-    t.is(typeof (actionTypes.COLLAPSE), 'string');
-    t.is(typeof (actionTypes.TOGGLE), 'string');
-    t.is(typeof (actionTypes.INVALIDATE), 'string');
-    t.is(typeof (actionTypes.REQUEST_CHILDREN), 'string');
+test(`should export actionTypes`, () => {
+    expect(actionTypes).not.toBe(undefined);
+    expect(typeof (actionTypes.FOCUS)).toBe('string');
+    expect(typeof (actionTypes.COMMENCE_UNCOLLAPSE)).toBe('string');
+    expect(typeof (actionTypes.UNCOLLAPSE)).toBe('string');
+    expect(typeof (actionTypes.COLLAPSE)).toBe('string');
+    expect(typeof (actionTypes.TOGGLE)).toBe('string');
+    expect(typeof (actionTypes.INVALIDATE)).toBe('string');
+    expect(typeof (actionTypes.REQUEST_CHILDREN)).toBe('string');
 });
 
-test(`should export action creators`, t => {
-    t.not(actions, undefined);
-    t.is(typeof (actions.focus), 'function');
-    t.is(typeof (actions.commenceUncollapse), 'function');
-    t.is(typeof (actions.uncollapse), 'function');
-    t.is(typeof (actions.collapse), 'function');
-    t.is(typeof (actions.toggle), 'function');
-    t.is(typeof (actions.invalidate), 'function');
-    t.is(typeof (actions.requestChildren), 'function');
+test(`should export action creators`, () => {
+    expect(actions).not.toBe(undefined);
+    expect(typeof (actions.focus)).toBe('function');
+    expect(typeof (actions.commenceUncollapse)).toBe('function');
+    expect(typeof (actions.uncollapse)).toBe('function');
+    expect(typeof (actions.collapse)).toBe('function');
+    expect(typeof (actions.toggle)).toBe('function');
+    expect(typeof (actions.invalidate)).toBe('function');
+    expect(typeof (actions.requestChildren)).toBe('function');
 });
 
-test(`should export a reducer`, t => {
-    t.not(reducer, undefined);
-    t.is(typeof (reducer), 'function');
+test(`should export a reducer`, () => {
+    expect(reducer).not.toBe(undefined);
+    expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, t => {
+test(`The reducer should return an Immutable.Map as the initial state.`, () => {
     const state = new Map({});
     const nextState = reducer(state, {
         type: system.INIT
     });
 
-    t.true(nextState.get('ui').get('pageTree') instanceof Map);
+    expect(nextState.get('ui').get('pageTree') instanceof Map).toBe(true);
 });
 
-test(`The "focus" action should set the focused node context path.`, t => {
+test(`The "focus" action should set the focused node context path.`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -51,11 +50,11 @@ test(`The "focus" action should set the focused node context path.`, t => {
     });
     const nextState = reducer(state, actions.focus('someOtherContextPath'));
 
-    t.not(nextState.get('ui').get('pageTree').get('isFocused'), 'someContextPath');
-    t.is(nextState.get('ui').get('pageTree').get('isFocused'), 'someOtherContextPath');
+    expect(nextState.get('ui').get('pageTree').get('isFocused')).not.toBe('someContextPath');
+    expect(nextState.get('ui').get('pageTree').get('isFocused')).toBe('someOtherContextPath');
 });
 
-test(`The "uncollapse" action should remove the given node from error state`, t => {
+test(`The "uncollapse" action should remove the given node from error state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -69,12 +68,12 @@ test(`The "uncollapse" action should remove the given node from error state`, t 
     const nextState2 = reducer(state, actions.uncollapse('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.uncollapse('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('errors').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('errors').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('errors').toJS(), []);
+    expect(nextState1.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('errors').toJS()).toEqual([]);
 });
 
-test(`The "uncollapse" action should remove the given node from loading state`, t => {
+test(`The "uncollapse" action should remove the given node from loading state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -88,12 +87,12 @@ test(`The "uncollapse" action should remove the given node from loading state`, 
     const nextState2 = reducer(state, actions.uncollapse('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.uncollapse('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('loading').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('loading').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('loading').toJS(), []);
+    expect(nextState1.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('loading').toJS()).toEqual([]);
 });
 
-test(`The "uncollapse" action should add the given node to uncollapsed state`, t => {
+test(`The "uncollapse" action should add the given node to uncollapsed state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -107,12 +106,12 @@ test(`The "uncollapse" action should add the given node to uncollapsed state`, t
     const nextState2 = reducer(state, actions.uncollapse('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.uncollapse('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('uncollapsed').toJS(), ['someContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('uncollapsed').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('uncollapsed').toJS(), ['someContextPath', 'someOtherContextPath']);
+    expect(nextState1.get('ui').get('pageTree').get('uncollapsed').toJS()).toEqual(['someContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('uncollapsed').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('uncollapsed').toJS()).toEqual(['someContextPath', 'someOtherContextPath']);
 });
 
-test(`The "collapse" action should remove the given node from error state`, t => {
+test(`The "collapse" action should remove the given node from error state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -126,12 +125,12 @@ test(`The "collapse" action should remove the given node from error state`, t =>
     const nextState2 = reducer(state, actions.collapse('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.collapse('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('errors').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('errors').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('errors').toJS(), []);
+    expect(nextState1.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('errors').toJS()).toEqual([]);
 });
 
-test(`The "collapse" action should remove the given node from loading state`, t => {
+test(`The "collapse" action should remove the given node from loading state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -145,12 +144,12 @@ test(`The "collapse" action should remove the given node from loading state`, t 
     const nextState2 = reducer(state, actions.collapse('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.collapse('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('loading').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('loading').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('loading').toJS(), []);
+    expect(nextState1.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('loading').toJS()).toEqual([]);
 });
 
-test(`The "collapse" action should remove the given node from uncollapsed state`, t => {
+test(`The "collapse" action should remove the given node from uncollapsed state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -164,12 +163,12 @@ test(`The "collapse" action should remove the given node from uncollapsed state`
     const nextState2 = reducer(state, actions.collapse('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.collapse('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('uncollapsed').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('uncollapsed').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('uncollapsed').toJS(), []);
+    expect(nextState1.get('ui').get('pageTree').get('uncollapsed').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('uncollapsed').toJS()).toEqual(['someContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('uncollapsed').toJS()).toEqual([]);
 });
 
-test(`The "invalidate" action should remove the given node from uncollapsed state`, t => {
+test(`The "invalidate" action should remove the given node from uncollapsed state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -183,12 +182,12 @@ test(`The "invalidate" action should remove the given node from uncollapsed stat
     const nextState2 = reducer(state, actions.invalidate('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.invalidate('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('uncollapsed').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('uncollapsed').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('uncollapsed').toJS(), []);
+    expect(nextState1.get('ui').get('pageTree').get('uncollapsed').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('uncollapsed').toJS()).toEqual(['someContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('uncollapsed').toJS()).toEqual([]);
 });
 
-test(`The "invalidate" action should remove the given node from loading state`, t => {
+test(`The "invalidate" action should remove the given node from loading state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -202,12 +201,12 @@ test(`The "invalidate" action should remove the given node from loading state`, 
     const nextState2 = reducer(state, actions.invalidate('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.invalidate('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('loading').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('loading').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('loading').toJS(), []);
+    expect(nextState1.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('loading').toJS()).toEqual([]);
 });
 
-test(`The "invalidate" action should add the given node to error state`, t => {
+test(`The "invalidate" action should add the given node to error state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -221,12 +220,12 @@ test(`The "invalidate" action should add the given node to error state`, t => {
     const nextState2 = reducer(state, actions.invalidate('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.invalidate('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('errors').toJS(), ['someContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('errors').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('errors').toJS(), ['someContextPath', 'someOtherContextPath']);
+    expect(nextState1.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someContextPath', 'someOtherContextPath']);
 });
 
-test(`The "setAsLoading" action should remove the given node from error state`, t => {
+test(`The "setAsLoading" action should remove the given node from error state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -240,12 +239,12 @@ test(`The "setAsLoading" action should remove the given node from error state`, 
     const nextState2 = reducer(state, actions.setAsLoading('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.setAsLoading('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('errors').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('errors').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('errors').toJS(), []);
+    expect(nextState1.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('errors').toJS()).toEqual([]);
 });
 
-test(`The "setAsLoading" action should add the given node to loading state`, t => {
+test(`The "setAsLoading" action should add the given node to loading state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -259,12 +258,12 @@ test(`The "setAsLoading" action should add the given node to loading state`, t =
     const nextState2 = reducer(state, actions.setAsLoading('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.setAsLoading('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('loading').toJS(), ['someContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('loading').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('loading').toJS(), ['someContextPath', 'someOtherContextPath']);
+    expect(nextState1.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath', 'someOtherContextPath']);
 });
 
-test(`The "setAsLoaded" action should remove the given node to loading state`, t => {
+test(`The "setAsLoaded" action should remove the given node to loading state`, () => {
     const state = Immutable.fromJS({
         ui: {
             pageTree: {
@@ -278,7 +277,7 @@ test(`The "setAsLoaded" action should remove the given node to loading state`, t
     const nextState2 = reducer(state, actions.setAsLoaded('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.setAsLoaded('someOtherContextPath'));
 
-    t.deepEqual(nextState1.get('ui').get('pageTree').get('loading').toJS(), ['someOtherContextPath']);
-    t.deepEqual(nextState2.get('ui').get('pageTree').get('loading').toJS(), ['someContextPath']);
-    t.deepEqual(nextState3.get('ui').get('pageTree').get('loading').toJS(), []);
+    expect(nextState1.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someOtherContextPath']);
+    expect(nextState2.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath']);
+    expect(nextState3.get('ui').get('pageTree').get('loading').toJS()).toEqual([]);
 });

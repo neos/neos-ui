@@ -44,16 +44,17 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     /**
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
+     * @param bool $omitProperties
      * @return array
      */
-    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null)
+    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitProperties = false)
     {
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
             'name' => $node->getName(),
             'identifier' => $node->getIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
-            'properties' => $this->buildNodeProperties($node),
+            'properties' => $omitProperties ? [] : $this->buildNodeProperties($node),
             'label' => $node->getLabel(),
             'isAutoCreated' => $node->isAutoCreated(),
             // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
@@ -79,11 +80,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodes[$node->getContextPath()] = $this->renderNode($node, $controllerContext);
     }
 
-    public function renderNodes(array $nodes, ControllerContext $controllerContext)
+    public function renderNodes(array $nodes, ControllerContext $controllerContext, $omitProperties = false)
     {
         $renderedNodes = [];
         foreach ($nodes as $node) {
-            $renderedNodes[] = $this->renderNode($node, $controllerContext);
+            $renderedNodes[] = $this->renderNode($node, $controllerContext, $omitProperties);
         }
         return $renderedNodes;
     }

@@ -46,7 +46,7 @@
     text-align: center;
 
     &:focus {
-        outline: 1px dotted var(--brandColorsContrastBrightest);
+        outline: unset;
     }
 }
 

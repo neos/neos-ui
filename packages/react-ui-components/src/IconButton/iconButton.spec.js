@@ -1,4 +1,3 @@
-import test from 'ava';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import IconButton from './iconButton.js';
 
@@ -14,25 +13,25 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(IconButton, defaultProps);
 
-test('should render the "iconButton" className prop of the theme.', t => {
+test('should render the "iconButton" className prop of the theme.', () => {
     const wrapper = shallow();
 
-    t.truthy(wrapper.hasClass('iconButtonClassName'));
+    expect(wrapper.hasClass('iconButtonClassName')).toBeTruthy();
 });
-test('should render the "className" if provided.', t => {
+test('should render the "className" if provided.', () => {
     const wrapper = shallow({className: 'fooClassName'});
 
-    t.truthy(wrapper.hasClass('fooClassName'));
+    expect(wrapper.hasClass('fooClassName')).toBeTruthy();
 });
-test('should render the "ButtonComponent" and propagate all props to it.', t => {
+test('should render the "ButtonComponent" and propagate all props to it.', () => {
     const wrapper = shallow({className: 'fooClassName'});
     const btn = wrapper.find(Button);
 
-    t.truthy(btn.hasClass('fooClassName'));
+    expect(btn.hasClass('fooClassName')).toBeTruthy();
 });
-test('should render the "IconComponent" and propagate the "icon" prop to it.', t => {
+test('should render the "IconComponent" and propagate the "icon" prop to it.', () => {
     const wrapper = shallow({className: 'fooClassName'});
     const icon = wrapper.find(Icon);
 
-    t.is(icon.prop('icon'), 'fooIconName');
+    expect(icon.prop('icon')).toBe('fooIconName');
 });

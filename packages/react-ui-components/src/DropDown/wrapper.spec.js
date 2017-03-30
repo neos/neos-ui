@@ -1,4 +1,3 @@
-import test from 'ava';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import {DropDownWrapper} from './wrapper.js';
 
@@ -8,33 +7,33 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(DropDownWrapper, defaultProps);
 
-test('should initially have a falsy "isOpen" state value.', t => {
+test('should initially have a falsy "isOpen" state value.', () => {
     const dd = shallow();
 
-    t.falsy(dd.state('isOpen'));
+    expect(dd.state('isOpen')).toBeFalsy();
 });
-test('should render the "className" prop if passed.', t => {
+test('should render the "className" prop if passed.', () => {
     const dd = shallow({
         className: 'barClassName'
     });
 
-    t.truthy(dd.childAt(0).hasClass('barClassName'));
+    expect(dd.childAt(0).hasClass('barClassName')).toBeTruthy();
 });
-test('should set the "isOpen" state value to opposite when calling the toggle method.', t => {
+test('should set the "isOpen" state value to opposite when calling the toggle method.', () => {
     const dd = shallow();
 
     dd.instance().toggle();
 
-    t.truthy(dd.state('isOpen'));
+    expect(dd.state('isOpen')).toBeTruthy();
 
     dd.instance().toggle();
 
-    t.falsy(dd.state('isOpen'));
+    expect(dd.state('isOpen')).toBeFalsy();
 });
-test('should set the "isOpen" state value to false when calling the close method.', t => {
+test('should set the "isOpen" state value to false when calling the close method.', () => {
     const dd = shallow();
 
     dd.instance().close();
 
-    t.falsy(dd.state('isOpen'));
+    expect(dd.state('isOpen')).toBeFalsy();
 });

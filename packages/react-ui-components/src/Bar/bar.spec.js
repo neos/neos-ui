@@ -1,4 +1,3 @@
-import test from 'ava';
 import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import Bar from './bar.js';
@@ -10,21 +9,21 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(Bar, defaultProps);
 
-test('should render the passed "className" prop to the rendered wrapper if passed.', t => {
+test('should render the passed "className" prop to the rendered wrapper if passed.', () => {
     const bar = shallow({className: 'test'});
 
-    t.truthy(bar.hasClass('test'));
+    expect(bar.hasClass('test')).toBeTruthy();
 });
-test('should render the passed "children".', t => {
+test('should render the passed "children".', () => {
     const bar = shallow();
 
-    t.truthy(bar.html().includes('Foo children'));
+    expect(bar.html().includes('Foo children')).toBeTruthy();
 });
-test('should propagate the rest of the passed props to the wrapping node.', t => {
+test('should propagate the rest of the passed props to the wrapping node.', () => {
     const props = {onDrop: sinon.spy()};
     const bar = shallow(props);
 
     bar.simulate('drop');
 
-    t.truthy(props.onDrop.calledOnce);
+    expect(props.onDrop.calledOnce).toBeTruthy();
 });

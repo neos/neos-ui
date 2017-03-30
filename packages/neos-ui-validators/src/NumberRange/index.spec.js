@@ -1,102 +1,100 @@
-import test from 'ava';
-
 import numberRangeValidator from './index';
 
-test('0 for min: 0 max: 10 should be valid', t => {
+test('0 for min: 0 max: 10 should be valid', () => {
     const validatorOptions = {
         minimum: 0,
         maximum: 10
     };
 
-    t.is(numberRangeValidator(0, validatorOptions), null);
+    expect(numberRangeValidator(0, validatorOptions)).toBe(null);
 });
 
-test('5 for min: 0 max: 10 should be valid', t => {
+test('5 for min: 0 max: 10 should be valid', () => {
     const validatorOptions = {
         minimum: 0,
         maximum: 10
     };
 
-    t.is(numberRangeValidator(5, validatorOptions), null);
+    expect(numberRangeValidator(5, validatorOptions)).toBe(null);
 });
 
-test('10 for min: 0 max: 10 should be valid', t => {
+test('10 for min: 0 max: 10 should be valid', () => {
     const validatorOptions = {
         minimum: 0,
         maximum: 10
     };
 
-    t.is(numberRangeValidator(10, validatorOptions), null);
+    expect(numberRangeValidator(10, validatorOptions)).toBe(null);
 });
 
-test('-1 for min: -10 max: 10 should be valid', t => {
+test('-1 for min: -10 max: 10 should be valid', () => {
     const validatorOptions = {
         minimum: -10,
         maximum: 10
     };
 
-    t.is(numberRangeValidator(-1, validatorOptions), null);
+    expect(numberRangeValidator(-1, validatorOptions)).toBe(null);
 });
 
-test('11 for min: 0 max: 10 should not be valid', t => {
+test('11 for min: 0 max: 10 should not be valid', () => {
     const validatorOptions = {
         minimum: 0,
         maximum: 10
     };
 
-    t.not(numberRangeValidator(11, validatorOptions), null);
+    expect(numberRangeValidator(11, validatorOptions)).not.toBe(null);
 });
 
-test('-1 for min: 0 max: 10 should not be valid', t => {
+test('-1 for min: 0 max: 10 should not be valid', () => {
     const validatorOptions = {
         minimum: 0,
         maximum: 10
     };
 
-    t.not(numberRangeValidator(-1, validatorOptions), null);
+    expect(numberRangeValidator(-1, validatorOptions)).not.toBe(null);
 });
 
-test('empty value should be valid', t => {
+test('empty value should be valid', () => {
     const validatorOptions = {
         minimum: 0,
         maximum: 10
     };
 
-    t.is(numberRangeValidator('', validatorOptions), null);
+    expect(numberRangeValidator('', validatorOptions)).toBe(null);
 });
 
-test('6 for min: 10 max: 5 should return an error message', t => {
+test('6 for min: 10 max: 5 should return an error message', () => {
     const validatorOptions = {
         minimum: 10,
         maximum: 5
     };
 
-    t.is(numberRangeValidator(6, validatorOptions), 'The maximum is less than the minimum.');
+    expect(numberRangeValidator(6, validatorOptions)).toBe('The maximum is less than the minimum.');
 });
 
-test('Number.MIN_SAFE_INTEGER for min: Number.MIN_SAFE_INTEGER max: Number.MAX_SAFE_INTEGER should be valid', t => {
+test('Number.MIN_SAFE_INTEGER for min: Number.MIN_SAFE_INTEGER max: Number.MAX_SAFE_INTEGER should be valid', () => {
     const validatorOptions = {
         minimum: Number.MIN_SAFE_INTEGER,
         maximum: Number.MAX_SAFE_INTEGER
     };
 
-    t.is(numberRangeValidator(Number.MIN_SAFE_INTEGER, validatorOptions), null);
+    expect(numberRangeValidator(Number.MIN_SAFE_INTEGER, validatorOptions)).toBe(null);
 });
 
-test('Number.MAX_SAFE_INTEGER for min: Number.MIN_SAFE_INTEGER max: Number.MAX_SAFE_INTEGER should be valid', t => {
+test('Number.MAX_SAFE_INTEGER for min: Number.MIN_SAFE_INTEGER max: Number.MAX_SAFE_INTEGER should be valid', () => {
     const validatorOptions = {
         minimum: Number.MIN_SAFE_INTEGER,
         maximum: Number.MAX_SAFE_INTEGER
     };
 
-    t.is(numberRangeValidator(Number.MAX_SAFE_INTEGER, validatorOptions), null);
+    expect(numberRangeValidator(Number.MAX_SAFE_INTEGER, validatorOptions)).toBe(null);
 });
 
-test('"abc" should not be valid', t => {
+test('"abc" should not be valid', () => {
     const validatorOptions = {
         minimum: Number.MIN_SAFE_INTEGER,
         maximum: Number.MAX_SAFE_INTEGER
     };
 
-    t.not(numberRangeValidator('abc', validatorOptions), null);
+    expect(numberRangeValidator('abc', validatorOptions)).not.toBe(null);
 });

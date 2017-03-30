@@ -10,10 +10,10 @@
 //      ]
 //   }
 // }
+import 'regenerator-runtime/runtime';
+import 'core-js/shim';
 import browserEnv from 'browser-env';
 
 browserEnv();
-
-import 'core-js';
 
 window.fetch = () => Promise.resolve(null);

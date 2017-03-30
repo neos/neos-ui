@@ -10,7 +10,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 @connect($transform({
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
-    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode,
+    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {
     toggleEditModePanel: actions.UI.EditModePanel.toggle
 })
@@ -46,7 +46,7 @@ export default class EditModePanelToggler extends PureComponent {
         let previewLabel = <I18n id="preview" fallback="Preview"/>;
 
         const toBold = string => <b>{string}</b>;
-        
+
         if (currentEditMode.isEditingMode) {
             editLabel = toBold(editLabel);
         } else {

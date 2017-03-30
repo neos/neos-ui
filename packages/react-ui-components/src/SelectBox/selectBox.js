@@ -18,6 +18,11 @@ export default class SelectBox extends AbstractSelectBox {
         clearOnSelect: PropTypes.bool,
 
         /**
+         *
+         */
+        isSearchable: PropTypes.bool,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
@@ -55,12 +60,12 @@ export default class SelectBox extends AbstractSelectBox {
 
     render() {
         const options = this.getOptions();
-        const {theme, SearchableSelectBoxComponent, SimpleSelectBoxComponent, loadOptionsOnInput} = this.props;
+        const {theme, SearchableSelectBoxComponent, SimpleSelectBoxComponent, loadOptionsOnInput, isSearchable} = this.props;
         const {isLoadingOptions, icon, label, value} = this.state;
 
         return (
             <div className={this.props.theme.wrapper}>
-                {this.isSearchableSelectBox() ?
+                {isSearchable ?
                     <SearchableSelectBoxComponent
                         value={value}
                         options={options}
@@ -126,26 +131,6 @@ export default class SelectBox extends AbstractSelectBox {
                 }
             }
         });
-    }
-
-    /**
-     * We use a searchable selectBox if:
-     * - we have a delete method (when searching, you need to delete a selected option
-     *   in order to search again)
-     * - or props.minimumResultsForSearch is set and > options
-     *
-     * @returns {boolean}
-     */
-    isSearchableSelectBox() {
-        if (isFunction(this.props.onDelete)) {
-            return true;
-        }
-
-        if (this.props.minimumResultsForSearch !== -1 && this.getOptions().length >= this.props.minimumResultsForSearch) {
-            return true;
-        }
-
-        return false;
     }
 
     handleSelect(...args) {

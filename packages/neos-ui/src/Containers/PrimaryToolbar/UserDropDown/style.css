@@ -5,11 +5,10 @@
 }
 .dropDown {
     position: static;
-    display: inline-block;
+    display: block;
 }
 .dropDown__btn {
     position: relative;
-    display: inline-block;
     height: var(--goldenUnit);
     border: 0;
     background-color: var(--brandColorsContrastDarker);

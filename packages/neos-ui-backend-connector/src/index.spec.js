@@ -1,75 +1,74 @@
-import test from 'ava';
 import {initializeJsAPI, createPlugin, define} from './index.js';
 
 test(`
     "createPlugin" utility should expose a method to create plugins which will
-    add the given identifier to the constructor.`, t => {
+    add the given identifier to the constructor.`, () => {
     const plugin = createPlugin('myName', () => null);
 
-    t.is(plugin.identifier, 'myName');
+    expect(plugin.identifier).toBe('myName');
 });
 
 test(`
     "define" utility should return a curry function which defines the given
-    identifier/value in the given target object.`, t => {
+    identifier/value in the given target object.`, () => {
     const target = {};
     const targetDefine = define(target);
 
-    t.is(typeof (targetDefine), 'function');
+    expect(typeof (targetDefine)).toBe('function');
 
     targetDefine('myName', 'value');
 
-    t.not(target.myName, undefined);
+    expect(target.myName).not.toBe(undefined);
 });
 
 test(`
     "define" utility should throw an error if the given identifier was already
-    registered in the parent.`, t => {
+    registered in the parent.`, () => {
     const target = {};
     const targetDefine = define(target);
     const fn = () => targetDefine('myName', 'value');
 
     targetDefine('myName', 'value');
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
-test('should throw an error if no csrfToken was passed.', t => {
+test('should throw an error if no csrfToken was passed.', () => {
     const fn = () => initializeJsAPI({});
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
-test('should place itself inside the specified parent object with the specified alias.', t => {
+test('should place itself inside the specified parent object with the specified alias.', () => {
     const win = {};
     const csrfToken = 'csrfToken';
     const alias = 'test';
 
     initializeJsAPI(win, {csrfToken, alias});
 
-    t.not(win.test, undefined);
+    expect(win.test).not.toBe(undefined);
 });
 
-test('should throw an error if a value already exists under the given alias in parent.', t => {
+test('should throw an error if a value already exists under the given alias in parent.', () => {
     const win = {};
     const csrfToken = 'csrfToken';
     const fn = () => initializeJsAPI(win, 'csrfToken');
 
     initializeJsAPI(win, {csrfToken});
 
-    t.throws(fn);
+    expect(fn).toThrow();
 });
 
-test('should have a fallback alias "neos" if none was specified.', t => {
+test('should have a fallback alias "neos" if none was specified.', () => {
     const win = {};
     const csrfToken = 'csrfToken';
 
     initializeJsAPI(win, {csrfToken});
 
-    t.not(win.neos, undefined);
+    expect(win.neos).not.toBe(undefined);
 });
 
-test('should not be writable.', t => {
+test('should not be writable.', () => {
     const win = {};
     const csrfToken = 'csrfToken';
     const fn = () => {
@@ -80,16 +79,16 @@ test('should not be writable.', t => {
 
     const oldApi = win.neos;
 
-    t.throws(fn);
-    t.is(win.neos, oldApi);
+    expect(fn).toThrow();
+    expect(win.neos).toBe(oldApi);
 });
 
-test('should expose the use method by default.', t => {
+test('should expose the use method by default.', () => {
     const win = {};
     const csrfToken = 'csrfToken';
 
     initializeJsAPI(win, {csrfToken});
 
-    t.not(win.neos.use, undefined);
-    t.is(typeof (win.neos.use), 'function');
+    expect(win.neos.use).not.toBe(undefined);
+    expect(typeof (win.neos.use)).toBe('function');
 });

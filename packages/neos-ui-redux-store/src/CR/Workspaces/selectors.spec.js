@@ -1,5 +1,3 @@
-import test from 'ava';
-
 import {
     baseWorkspaceSelector,
     publishableNodesSelector,
@@ -26,14 +24,14 @@ const stateFixture = {
     }
 };
 
-test(`The "baseWorkspaceSelector" should deliver the name of the active workspace`, t => {
-    t.is(baseWorkspaceSelector(stateFixture), 'live');
+test(`The "baseWorkspaceSelector" should deliver the name of the active workspace`, () => {
+    expect(baseWorkspaceSelector(stateFixture)).toBe('live');
 });
 
 test(`
     The "publishableNodesSelector" should deliver a list of all publshable nodes with
-    their respective document context paths attached`, t => {
-    t.deepEqual(publishableNodesSelector(stateFixture), [
+    their respective document context paths attached`, () => {
+    expect(publishableNodesSelector(stateFixture)).toEqual([
         {documentContextPath: '/sites/neosdemo@user-text;language=en_US'},
         {documentContextPath: '/sites/neosdemo/blah-blah@user-text;language=en_US'}
     ]);
@@ -41,8 +39,8 @@ test(`
 
 test(`
     The "publishableNodesInDocumentSelector" should deliver a list of all publshable nodes
-    in the currently open document with their respective document context paths attached`, t => {
-    t.deepEqual(publishableNodesInDocumentSelector(stateFixture), [
+    in the currently open document with their respective document context paths attached`, () => {
+    expect(publishableNodesInDocumentSelector(stateFixture)).toEqual([
         {documentContextPath: '/sites/neosdemo@user-text;language=en_US'}
     ]);
 });

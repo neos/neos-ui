@@ -1,4 +1,3 @@
-import test from 'ava';
 import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import ShallowDropDownContents from './contents.js';
@@ -14,46 +13,46 @@ const defaultProps = {
 };
 const shallow = createShallowRenderer(ShallowDropDownContents, defaultProps);
 
-test('should render the themes "dropDown__contents" className.', t => {
+test('should render the themes "dropDown__contents" className.', () => {
     const contents = shallow();
 
-    t.truthy(contents.hasClass('baseDropDownContentsClassName'));
+    expect(contents.hasClass('baseDropDownContentsClassName')).toBeTruthy();
 });
-test('should render the themes "dropDown__contents--isOpen" className in case the "isOpen" prop is truthy.', t => {
+test('should render the themes "dropDown__contents--isOpen" className in case the "isOpen" prop is truthy.', () => {
     const contents = shallow({
         isOpen: true
     });
 
-    t.truthy(contents.hasClass('openDropDownContentsClassName'));
+    expect(contents.hasClass('openDropDownContentsClassName')).toBeTruthy();
 });
-test('should render the "className" prop if passed.', t => {
+test('should render the "className" prop if passed.', () => {
     const contents = shallow({
         className: 'barClassName'
     });
 
-    t.truthy(contents.hasClass('barClassName'));
+    expect(contents.hasClass('barClassName')).toBeTruthy();
 });
-test('should render a aria-hidden="true" attribute in the wrapper by default.', t => {
+test('should render a aria-hidden="true" attribute in the wrapper by default.', () => {
     const contents = shallow();
 
-    t.truthy(contents.html().includes('aria-hidden="true"'));
+    expect(contents.html().includes('aria-hidden="true"')).toBeTruthy();
 });
-test('should render a aria-hidden="false" attribute in the wrapper in case the "isOpen" prop is truthy.', t => {
+test('should render a aria-hidden="false" attribute in the wrapper in case the "isOpen" prop is truthy.', () => {
     const contents = shallow({
         isOpen: true
     });
 
-    t.truthy(contents.html().includes('aria-hidden="false"'));
+    expect(contents.html().includes('aria-hidden="false"')).toBeTruthy();
 });
-test('should render a aria-label="dropdown" and role="button" attribute in the wrapper.', t => {
+test('should render a aria-label="dropdown" and role="button" attribute in the wrapper.', () => {
     const contents = shallow({
         isOpen: true
     });
 
-    t.truthy(contents.html().includes('aria-label="dropdown"'));
-    t.truthy(contents.html().includes('role="button"'));
+    expect(contents.html().includes('aria-label="dropdown"')).toBeTruthy();
+    expect(contents.html().includes('role="button"')).toBeTruthy();
 });
-test('should call the "closeDropDown" prop when clicking on the wrapper.', t => {
+test('should call the "closeDropDown" prop when clicking on the wrapper.', () => {
     const props = {
         closeDropDown: sinon.spy()
     };
@@ -61,17 +60,17 @@ test('should call the "closeDropDown" prop when clicking on the wrapper.', t => 
 
     contents.simulate('click');
 
-    t.truthy(props.closeDropDown.calledOnce);
+    expect(props.closeDropDown.calledOnce).toBeTruthy();
 });
-test('should render the passed children.', t => {
+test('should render the passed children.', () => {
     const contents = shallow();
 
-    t.truthy(contents.html().includes('Foo children'));
+    expect(contents.html().includes('Foo children')).toBeTruthy();
 });
-test('should propagate the rest of the passed props to the wrapping node.', t => {
+test('should propagate the rest of the passed props to the wrapping node.', () => {
     const contents = shallow({
         id: 'fooId'
     });
 
-    t.truthy(contents.html().includes('id="fooId"'));
+    expect(contents.html().includes('id="fooId"')).toBeTruthy();
 });

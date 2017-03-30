@@ -1,14 +1,13 @@
-import test from 'ava';
 import sinon from 'sinon';
 import initializeUse from './index.js';
 
-test(`"api.use" should return a function when called.`, t => {
-    t.is(typeof (initializeUse()), 'function');
+test(`"api.use" should return a function when called.`, () => {
+    expect(typeof (initializeUse())).toBe('function');
 });
 
 test(`
     "api.use" should call the "addLibrary" function when initializing a plugin
-    factory called.`, t => {
+    factory called.`, () => {
     const apiTarget = {};
     const addLibrary = sinon.spy();
     const use = initializeUse(addLibrary, apiTarget);
@@ -17,13 +16,13 @@ test(`
 
     use(pluginFactory);
 
-    t.true(addLibrary.calledOnce);
-    t.true(addLibrary.calledWith('myPlugin', pluginFactory()));
+    expect(addLibrary.calledOnce).toBe(true);
+    expect(addLibrary.calledWith('myPlugin', pluginFactory())).toBe(true);
 });
 
 test(`
     "api.use" should call the "pluginFactory" when initializing a plugin
-    factory called.`, t => {
+    factory called.`, () => {
     const apiTarget = {};
     const addLibrary = () => {};
     const use = initializeUse(addLibrary, apiTarget);
@@ -32,5 +31,5 @@ test(`
 
     use(pluginFactory);
 
-    t.true(pluginFactory.calledOnce);
+    expect(pluginFactory.calledOnce).toBe(true);
 });

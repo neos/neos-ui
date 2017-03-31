@@ -25,9 +25,6 @@
         outline: unset;
     }
 }
-.dropDown__btn--open {
-
-}
 .dropDown__btnLabel {
     composes: reset from './../reset.css';
     margin-right: .5em;
@@ -54,9 +51,6 @@
 }
 .dropDown__contents--isOpen {
     display: block;
-}
-.dropDown--default {
-
 }
 .dropDown--darker {
     > .dropDown__btn--open {

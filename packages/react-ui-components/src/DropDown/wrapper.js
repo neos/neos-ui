@@ -86,9 +86,9 @@ export class DropDownWrapper extends PureComponent {
     render() {
         const {children, className, theme, style, padded, ...restProps} = this.props;
         const rest = omit(restProps, ['isOpen', 'onToggle']);
-        const styleClassName = `dropDown--${style}`;
+        const styleClassName = style ? `dropDown--${style}` : false;
         const finalClassName = mergeClassNames({
-            [theme[styleClassName]]: true,
+            [theme[styleClassName]]: styleClassName,
             [theme['dropDown--padded']]: padded,
             [className]: className && className.length,
             [theme.dropDown]: true

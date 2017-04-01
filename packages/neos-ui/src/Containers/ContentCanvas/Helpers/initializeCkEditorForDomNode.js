@@ -30,7 +30,7 @@ export default function initializeCkEditorForDomNode(domNode, dependencies) {
 
         const nodeFormattingRules = calculateEnabledFormattingRulesForNodeType($get('nodeType', node));
         const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get($get('nodeType', node)));
-        const placeholder = unescape(i18nRegistry.translate(placeholderLabel));
+        const placeholder = placeholderLabel ? unescape(i18nRegistry.translate(placeholderLabel)) : '';
 
         const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];
 

@@ -47,7 +47,8 @@ export default class MultiSelectBox extends AbstractSelectBox {
             placeholderIcon,
             theme,
             minimumResultsForSearch,
-            SelectBoxComponent
+            SelectBoxComponent,
+            isSearchable
         } = this.props;
 
         const selectedOptions = this.state.selectedOptions;
@@ -70,6 +71,7 @@ export default class MultiSelectBox extends AbstractSelectBox {
                     theme={theme}
                     onSelect={this.handleOnSelect}
                     onDelete={null}
+                    isSearchable={isSearchable}
                     clearOnSelect={true}
                     minimumResultsForSearch={minimumResultsForSearch}
                     />

@@ -19,7 +19,8 @@ const ShallowDropDownHeader = props => {
     const iconName = isOpen ? 'chevron-up' : 'chevron-down';
     const finalClassName = mergeClassNames({
         [theme.dropDown__btn]: true,
-        [className]: className && className.length
+        [className]: className && className.length,
+        [theme['dropDown__btn--open']]: isOpen
     });
 
     return (

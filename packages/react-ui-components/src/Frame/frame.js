@@ -23,7 +23,6 @@ export default class Frame extends PureComponent {
         document.addEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
     }
     renderFrameContents = () => {
-        console.log(this);
         const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
         const win = ReactDOM.findDOMNode(this).contentWindow; // eslint-disable-line react/no-find-dom-node
         const mountTarget = doc.querySelector(this.props.mountTarget);

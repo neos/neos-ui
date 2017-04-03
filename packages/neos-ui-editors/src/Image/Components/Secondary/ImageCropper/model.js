@@ -95,7 +95,6 @@ export class AspectRatioOption {
     }
 
     getNextAspectRatioStrategy(currentAspectRatioStrategy) {
-        console.log(currentAspectRatioStrategy);
         return this.__aspectRatioStrategyFactory(currentAspectRatioStrategy);
     }
 }

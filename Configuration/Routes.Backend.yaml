@@ -4,3 +4,9 @@
   defaults:
     '@controller': 'Backend'
     '@action': 'index'
+-
+  name: 'Deactivate'
+  uriPattern: 'deactivate'
+  defaults:
+    '@controller': 'Backend'
+    '@action': 'deactivate'

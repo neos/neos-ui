@@ -22,7 +22,7 @@
     background: var(--brandColorsContrastNeutral);
 
     &:focus {
-        outline: 1px dotted var(--brandColorsContrastBrightest);
+        outline: unset;
     }
 }
 .dropDown__btnLabel {
@@ -51,4 +51,18 @@
 }
 .dropDown__contents--isOpen {
     display: block;
+}
+.dropDown--darker {
+    > .dropDown__btn--open {
+        background-color: var(--brandColorsContrastDarker);
+    }
+
+    > .dropDown__contents {
+        background-color: var(--brandColorsContrastDarker);
+    }
+}
+.dropDown--padded {
+    > .dropDown__contents {
+        padding: var(--spacing);
+    }
 }

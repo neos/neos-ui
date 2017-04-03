@@ -35,6 +35,10 @@ export default class NodeTreeToolBar extends PureComponent {
         reloadTree: PropTypes.func.isRequired
     }
 
+    static defaultProps = {
+        isHidden: false
+    };
+
     handleAddNode = contextPath => {
         const {addNode} = this.props;
 

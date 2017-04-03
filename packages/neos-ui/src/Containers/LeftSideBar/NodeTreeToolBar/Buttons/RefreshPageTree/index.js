@@ -20,7 +20,7 @@ export default class RefreshPageTree extends PureComponent {
     }
 
     render() {
-        const {isLoading, className, ...rest} = this.props;
+        const {isLoading, className} = this.props;
         const finalClassName = mergeClassNames({
             [style.spinning]: isLoading,
             [className]: className && className.length
@@ -28,7 +28,6 @@ export default class RefreshPageTree extends PureComponent {
 
         return (
             <IconButton
-                {...rest}
                 className={finalClassName}
                 isDisabled={isLoading}
                 onClick={this.handleClick}

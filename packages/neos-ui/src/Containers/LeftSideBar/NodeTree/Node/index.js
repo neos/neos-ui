@@ -88,13 +88,13 @@ export default class Node extends PureComponent {
     isLoading() {
         const {node, loadingNodeContextPaths} = this.props;
 
-        return loadingNodeContextPaths && loadingNodeContextPaths.includes($get('contextPath', node));
+        return loadingNodeContextPaths ? loadingNodeContextPaths.includes($get('contextPath', node)) : false;
     }
 
     hasError() {
         const {node, errorNodeContextPaths} = this.props;
 
-        return errorNodeContextPaths && errorNodeContextPaths.includes($get('contextPath', node));
+        return errorNodeContextPaths ? errorNodeContextPaths.includes($get('contextPath', node)) : false;
     }
 
     getDragAndDropContext() {
@@ -166,8 +166,9 @@ export default class Node extends PureComponent {
     }
 
     handleNodeClick() {
-        const {node, onNodeFocus} = this.props;
+        const {node, onNodeFocus, onNodeClick} = this.props;
         onNodeFocus($get('contextPath', node));
+        onNodeClick($get('uri', node), $get('contextPath', node));
     }
 
     handleNodeLabelClick() {

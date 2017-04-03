@@ -22,6 +22,7 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\Domain\Model\Changes\Property;
 
 /**
  * An Object Converter for ChangeCollections.
@@ -164,7 +165,13 @@ class ChangeCollectionConverter extends AbstractTypeConverter
                     $methodParameter = current($methodParameters);
                     $targetType = $methodParameter['type'];
 
-                    $value = $this->propertyMapper->convert($value, $targetType);
+                    // Fixme: The type conversion runs depending on the target node property type inside Property::class
+                    // This is why we are not allowed to modify the value in any way.
+                    // Without this condition the object was parsed to a string leading to fatal errors when changing images
+                    // in the UI.
+                    if ($propertyName !== 'value' && $targetType !== Property::class)  {
+                        $value = $this->propertyMapper->convert($value, $targetType);
+                    }
 
                     ObjectAccess::setProperty($changeClassInstance, $propertyName, $value);
                 }

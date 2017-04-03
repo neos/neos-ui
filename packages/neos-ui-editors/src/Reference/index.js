@@ -17,8 +17,11 @@ export default class ReferenceEditor extends PureComponent {
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
-            nodeTypes: PropTypes.arrayOf(PropTypes.string)
+            nodeTypes: PropTypes.arrayOf(PropTypes.string),
+            placeholder: PropTypes.string,
+            threshold: PropTypes.number
         }),
+
         contextForNodeLinking: PropTypes.object.isRequired,
 
         i18nRegistry: PropTypes.object.isRequired
@@ -29,19 +32,22 @@ export default class ReferenceEditor extends PureComponent {
 
         this.searchNodes = backend.get().endpoints.searchNodes;
         this.optionGenerator = this.optionGenerator.bind(this);
-        this.handleDelete = () => this.props.commit('');
     }
 
     optionGenerator({value, searchTerm, callback}) {
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
+
         if (value) {
             // INITIAL load
-            searchNodesQuery.nodeIdentifiers = [this.props.value];
-        } else if (!searchTerm || searchTerm.length < 2) {
+            searchNodesQuery.nodeIdentifiers = [value];
+        } else if (searchTerm && searchTerm.length >= this.props.options.threshold) {
+            // autocomplete-load
+            searchNodesQuery.searchTerm = searchTerm;
+            searchNodesQuery.nodeTypes = this.props.options.nodeTypes;
+        } else {
+            // no default set
             callback([]);
             return;
-        } else {
-            searchNodesQuery.searchTerm = searchTerm;
         }
 
         this.searchNodes(searchNodesQuery).then(result => {
@@ -50,16 +56,21 @@ export default class ReferenceEditor extends PureComponent {
     }
 
     render() {
-        const {commit, options, i18nRegistry} = this.props;
-        const onDelete = this.props.value ? this.handleDelete : null;
-        const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
+        const handleSelect = value => {
+            this.props.commit(value);
+        };
+
+        const clearInput = () => {
+            this.props.commit('');
+        };
 
         return (<SelectBox
             options={this.optionGenerator}
             value={this.props.value}
-            placeholder={placeholder}
-            onSelect={commit}
-            onDelete={onDelete}
+            placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
+            onSelect={handleSelect}
+            onDelete={clearInput}
+            isSearchable={true}
             loadOptionsOnInput={true}
             />);
     }

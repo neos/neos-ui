@@ -154,6 +154,21 @@ class BackendController extends ActionController
     }
 
     /**
+     * Deactivates the new UI and redirects back to the old one
+     *
+     * @return void
+     */
+    public function deactivateAction()
+    {
+
+        $this->contentCache->flush();
+        $this->session->start();
+        $this->session->putData('__neosEnabled__', false);
+
+        $this->redirectToUri($this->uriBuilder->uriFor('index', array(), 'Backend\Backend', 'Neos.Neos'));
+    }
+
+    /**
      * Create a ContentContext to be used for the backend redirects.
      *
      * @param string $workspaceName

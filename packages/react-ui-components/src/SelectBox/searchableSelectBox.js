@@ -14,7 +14,10 @@ export default class SearchableSelectBox extends PureComponent {
         /**
          * This prop represents the current label to show. Can be a placeholder or the label of the selected value.
          */
-        label: PropTypes.string,
+        label: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.object
+        ]),
 
         /**
          * This prop represents the current icon to show. Can be empty, or a placeholder or the icon of the selected value

@@ -70,6 +70,7 @@ export default class ReferenceEditor extends PureComponent {
             placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
             onSelect={handleSelect}
             onDelete={clearInput}
+            isSearchable={true}
             loadOptionsOnInput={true}
             />);
     }

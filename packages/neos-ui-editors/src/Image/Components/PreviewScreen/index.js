@@ -51,7 +51,7 @@ export default class PreviewScreen extends PureComponent {
                     >
                     <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
                         <img
-                            className={style.cropArea__image}
+                            className={(thumbnail ? style.cropArea__image : style['cropArea__image--placeholder'])}
                             src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg'}
                             style={thumbnail ? thumbnail.styles.thumbnail : {}}
                             role="presentation"

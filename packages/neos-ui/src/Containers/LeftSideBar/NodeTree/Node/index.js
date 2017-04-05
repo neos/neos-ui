@@ -131,7 +131,7 @@ export default class Node extends PureComponent {
                     isHidden={$get('properties._hidden', node)}
                     isHiddenInIndex={$get('properties._hiddenInIndex', node)}
                     hasError={this.hasError()}
-                    label={$get('label', node)}
+                    label={$get('label', node).replace(/<\/?[^>]+(>|$)/g, '')}
                     icon={this.getIcon()}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}

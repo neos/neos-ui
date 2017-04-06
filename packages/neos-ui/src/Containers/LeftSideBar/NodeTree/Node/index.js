@@ -1,7 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {$get} from 'plow-js';
 import {connect} from 'react-redux';
-import striptags from 'striptags';
 
 import Tree from '@neos-project/react-ui-components/src/Tree/';
 import {striptags} from '@neos-project/utils-helpers';

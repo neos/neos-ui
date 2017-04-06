@@ -7,5 +7,5 @@ test(`should strip html tags if string contains some`, () => {
 
 test(`should return the same string if string does not contain html tags`, () => {
     const string = 'hello world';
-    expect(striptags(string)).toEqual('hello world');
+    expect(striptags(string)).toEqual(string);
 });

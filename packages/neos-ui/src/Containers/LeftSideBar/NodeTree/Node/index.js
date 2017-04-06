@@ -1,7 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {$get} from 'plow-js';
 import {connect} from 'react-redux';
-import striptags from 'striptags';
 
 import Tree from '@neos-project/react-ui-components/src/Tree/';
 
@@ -132,7 +131,7 @@ export default class Node extends PureComponent {
                     isHidden={$get('properties._hidden', node)}
                     isHiddenInIndex={$get('properties._hiddenInIndex', node)}
                     hasError={this.hasError()}
-                    label={striptags($get('label', node))}
+                    label={$get('label', node)}
                     icon={this.getIcon()}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}

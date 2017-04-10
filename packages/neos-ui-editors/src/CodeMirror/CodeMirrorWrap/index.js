@@ -25,6 +25,15 @@ export default class CodeMirrorWrap extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    componentDidMount() {
+        const codeMirrorDomElement = document.querySelector('div.ReactCodeMirror > .CodeMirror');
+        const offsetTop = codeMirrorDomElement.getBoundingClientRect().top;
+        const clientHeight = window.innerHeight || document.clientHeight || document.getElementByTagName('body').clientHeight;
+        const height = clientHeight - offsetTop;
+
+        codeMirrorDomElement.style.height = `${height}px`;
+    }
+
     render() {
         const options = {
             mode: this.props.highlightingMode,

@@ -1,4 +1,5 @@
 import TextField from './TextField/index';
+import TextArea from './TextArea/index';
 import Boolean from './Boolean/index';
 import DateTime from './DateTime/index';
 import Image from './Image/index';
@@ -21,7 +22,7 @@ manifest('inspectorEditors', {}, globalRegistry => {
     });
 
     editorsRegistry.add('Neos.Neos/Inspector/Editors/TextAreaEditor', {
-        component: TextField
+        component: TextArea
     });
 
     editorsRegistry.add('Neos.Neos/Inspector/Editors/BooleanEditor', {

@@ -8,11 +8,11 @@ cd $DIR/../../
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-# break on failures can only be applied AFTER nvm was loaded.
-set -xe
-
 nvm install
 nvm use
+
+# break on failures can only be applied AFTER nvm was loaded.
+set -xe
 
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`

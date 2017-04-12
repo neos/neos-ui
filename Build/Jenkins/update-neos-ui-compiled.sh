@@ -9,7 +9,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 # break on failures can only be applied AFTER nvm was loaded.
-set -e
+set -xe
 
 nvm install
 nvm use

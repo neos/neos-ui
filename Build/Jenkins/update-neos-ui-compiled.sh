@@ -16,6 +16,7 @@ nvm use
 
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`
+GIT_BRANCH=`git symbolic-ref -q --short HEAD`
 
 npm install
 npm run build
@@ -32,11 +33,13 @@ cd tmp_compiled_pkg
 git add Resources/Public/
 git commit -m "Compile Neos UI - $GIT_SHA1"
 
-git push origin master
+if [ "$GIT_BRANCH" != "" ]; then
+  echo "Git branch $GIT_BRANCH found, pushing to this branch."
+  git push origin HEAD:$GIT_BRANCH
+fi
 
 if [ "$GIT_TAG" != "" ]; then
   echo "Git tag $GIT_TAG found; also tagging the UI-compiled package."
   git tag -a -m "$GIT_TAG" $GIT_TAG
   git push origin $GIT_TAG
 fi
-

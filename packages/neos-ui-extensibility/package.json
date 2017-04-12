@@ -1,8 +1,7 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
-  "version": "4.4.8",
+  "version": "1.0.0-beta1",
   "description": "Extensibility mechanisms for the Neos CMS UI",
-  "private": true,
   "main": "./src/index.js",
   "scripts": {
     "prebuild": "check-dependencies && npm run clean",

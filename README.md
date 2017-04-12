@@ -20,16 +20,27 @@
 
 1. You need to have latest Neos CMS 3.0 up & running.
 
-2. Run the following commands:
+2. Run the following command:
    ```
-   composer require neos/neos-ui:dev-master neos/neos-ui-compiled:dev-master # install our package
+   composer require neos/neos-ui 1.0.*@beta neos/neos-ui-compiled 1.0.*@beta
    ```
 
 3. Now you are all set up and can open the sub-route `/neos!` to login to the new interface.
 
 ### Updating
+
 ```
 composer update neos/neos-ui neos/neos-ui-compiled
+```
+
+### Installing dev-master
+
+For trying out the new UI, we recommend you to run the regularily released beta releases.
+However, if you want to stay on bleeding-edge, or want to help out developing, you'll
+need the `dev-master` release. You can install the master release using:
+
+```
+composer require neos/neos-ui:dev-master neos/neos-ui-compiled:dev-master
 ```
 
 ### Use Docker image
@@ -47,12 +58,14 @@ documentation about how to use it.
 
 In order to start contributing, follow the following steps:
 
-1) We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` and `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
+1) Ensure you have the `dev-master` version installed (see above).
+
+2) We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` and `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
 
    If you've installed `nvm` make sure that the next node LTS version `6.3.0` is correctly installed - You can do so by executing `nvm install v6.3.0`.
    If you need help setting up `nvm`, `npm`, `yarn` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
 
-2) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
+3) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
    ```
    Neos:
@@ -61,12 +74,22 @@ In order to start contributing, follow the following steps:
          frontendDevelopmentMode: true
    ```
 
-2) Run the initialization script:
+4) Run the initialization script:
 
    ```
    cd Packages/Application/Neos.Neos.Ui
    source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps, copy githooks
    yarn build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
+   ```
+
+   Alternatively, you can also run the initialization by hand; which will mean:
+   ```
+   nvm install
+   nvm use
+   npm install -g yarn
+   yarn
+
+   npm run build:ui:watch
    ```
 
 [Read developer documentation on our wiki](https://github.com/neos/neos-ui/wiki).

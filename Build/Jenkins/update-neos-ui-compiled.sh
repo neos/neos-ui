@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+if [ -z "$GIT_BRANCH" ]; then echo "\$GIT_BRANCH not set"; exit 1; fi
+
 # go to root directory of Neos.Neos.Ui
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/../../
@@ -13,10 +15,8 @@ nvm use
 
 # break on failures can only be applied AFTER nvm was loaded.
 set -xe
-
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`
-GIT_BRANCH=`git symbolic-ref -q --short HEAD || true`
 
 npm install
 npm run build
@@ -33,9 +33,9 @@ cd tmp_compiled_pkg
 git add Resources/Public/
 git commit -m "Compile Neos UI - $GIT_SHA1"
 
-if [ "$GIT_BRANCH" != "" ]; then
+if [ "$GIT_BRANCH" == "origin/master" ]; then
   echo "Git branch $GIT_BRANCH found, pushing to this branch."
-  git push origin HEAD:$GIT_BRANCH
+  git push origin HEAD:${GIT_BRANCH#*/}
 fi
 
 if [ "$GIT_TAG" != "" ]; then

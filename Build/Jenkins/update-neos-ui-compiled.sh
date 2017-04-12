@@ -31,7 +31,7 @@ cp -Rf Resources/Public/Styles/* tmp_compiled_pkg/Resources/Public/Styles
 
 cd tmp_compiled_pkg
 git add Resources/Public/
-git commit -m "Compile Neos UI - $GIT_SHA1"
+git commit -m "Compile Neos UI - $GIT_SHA1" || true
 
 if [ "$GIT_BRANCH" == "origin/master" ]; then
   echo "Git branch $GIT_BRANCH found, pushing to this branch."

@@ -16,7 +16,7 @@ nvm use
 
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`
-GIT_BRANCH=`git symbolic-ref -q --short HEAD`
+GIT_BRANCH=`git symbolic-ref -q --short HEAD || true`
 
 npm install
 npm run build

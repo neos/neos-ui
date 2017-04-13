@@ -19,7 +19,7 @@
     "@neos-project/debug-reason-for-rendering": "^1.0.0"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
     "@neos-project/neos-ui-i18n": "^4.4.8",
     "@neos-project/neos-ui-inspector": "^4.4.8",
     "@neos-project/neos-ui-redux-store": "^4.4.8",

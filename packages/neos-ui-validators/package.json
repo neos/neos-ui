@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@neos-project/build-essentials": "^4.4.8",
-    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
     "@neos-project/neos-ui-i18n": "^4.4.8",
     "@neos-project/utils-logger": "^4.4.8"
   },

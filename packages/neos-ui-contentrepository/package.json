@@ -18,17 +18,19 @@
     "@neos-project/build-essentials": "^4.4.8"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
     "plow-js": "^1.2.1",
     "ramda": "^0.22.1"
   },
   "license": "GNU GPLv3",
   "jest": {
     "transformIgnorePatterns": [],
-    "unmockedModulePathPatterns": ["sinon"],
+    "unmockedModulePathPatterns": [
+      "sinon"
+    ],
     "setupFiles": [
-        "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js",
-        "./node_modules/@neos-project/build-essentials/src/setup-neos-ui-host-env.js"
+      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js",
+      "./node_modules/@neos-project/build-essentials/src/setup-neos-ui-host-env.js"
     ],
     "transform": {
       "neos-ui-contentrepository/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

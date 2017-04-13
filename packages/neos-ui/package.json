@@ -28,7 +28,7 @@
     "@neos-project/neos-ui-contentrepository": "^4.4.8",
     "@neos-project/neos-ui-decorators": "^4.4.8",
     "@neos-project/neos-ui-editors": "^4.4.8",
-    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
     "@neos-project/neos-ui-i18n": "^4.4.8",
     "@neos-project/neos-ui-inspector": "^4.4.8",
     "@neos-project/neos-ui-redux-store": "^4.4.8",
@@ -94,9 +94,11 @@
   "license": "GNU GPLv3",
   "jest": {
     "transformIgnorePatterns": [],
-    "unmockedModulePathPatterns": ["sinon"],
+    "unmockedModulePathPatterns": [
+      "sinon"
+    ],
     "setupFiles": [
-        "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js"
+      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js"
     ],
     "transform": {
       "neos-ui/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

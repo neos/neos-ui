@@ -22,7 +22,7 @@
   "dependencies": {
     "@neos-project/react-ui-components": "^4.4.8",
     "@neos-project/neos-ui-decorators": "^4.4.8",
-    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
     "@neos-project/utils-logger": "^4.4.8"
   },
   "license": "GNU GPLv3",

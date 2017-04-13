@@ -92,18 +92,17 @@ In order to start contributing, follow the following steps:
    npm run build:ui:watch
    ```
 
-[Read developer documentation on our wiki](https://github.com/neos/neos-ui/wiki).
+5) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
+   gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the
+   channel #project-ui-rewrite. We're eager to help you get started!
 
 #### Development commands
 | Command         | Description                    |
 | --------------- | ------------------------------ |
 | `yarn clear` | delete all node_modules in every subdirectory. |
 | `yarn build:ui`  | Builds the ui via webpack. |
-| `yarn build:components` | Builds the components. |
-| `yarn build:dev` |  Runs the both build commands above sequentially. |
 | `yarn build` |  Runs `build:dev` optimised for production. |
 | `yarn build:ui:watch` | Watches the source files for changes and runs a build:ui in case. |
-| `yarn build:components:watch` | Watches the source files for changes and runs a build:components in case. |
 | `yarn start-storybook` | Starts the storybook server. |
 | `yarn lint`  | Lints all source files. |
 | `yarn test`  | Executes `yarn lint` to trigger tests via ava. |
@@ -112,7 +111,7 @@ In order to start contributing, follow the following steps:
 Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `yarn lint` in your shell.
 
 #### Writing unit tests
-The unit tests are executed with [ava](https://github.com/avajs/ava).
+The unit tests are executed with [jest](https://facebook.github.io/jest/).
 To run the unit tests, execute `yarn test` in your shell.
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.

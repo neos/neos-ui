@@ -2,13 +2,13 @@ import delay from './delay';
 import discover from './discover';
 import isThenable from './isThenable';
 import loadScript from './loadScript';
-import {striptags, striptagsEncoded} from './striptags';
+import {stripTags, stripTagsEncoded} from './stripTags';
 
 export {
     delay,
     discover,
     isThenable,
     loadScript,
-    striptags,
-    striptagsEncoded
+    stripTags,
+    stripTagsEncoded
 };

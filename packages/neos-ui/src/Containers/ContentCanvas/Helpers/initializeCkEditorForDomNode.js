@@ -1,5 +1,5 @@
 import {$get} from 'plow-js';
-import {striptagsEncoded} from '@neos-project/utils-helpers';
+import {stripTagsEncoded} from '@neos-project/utils-helpers';
 
 import calculateEnabledFormattingRulesForNodeTypeFactory from './calculateEnabledFormattingRulesForNodeType';
 import * as dom from './dom';
@@ -31,7 +31,7 @@ export default function initializeCkEditorForDomNode(domNode, dependencies) {
 
         const nodeFormattingRules = calculateEnabledFormattingRulesForNodeType($get('nodeType', node));
         const placeholderLabel = $get(['properties', propertyName, 'ui', 'aloha', 'placeholder'], nodeTypesRegistry.get($get('nodeType', node)));
-        const placeholder = placeholderLabel ? unescape(striptagsEncoded(i18nRegistry.translate(placeholderLabel))) : '';
+        const placeholder = placeholderLabel ? unescape(stripTagsEncoded(i18nRegistry.translate(placeholderLabel))) : '';
 
         const enabledFormattingRuleIds = nodeFormattingRules[propertyName] || [];
 

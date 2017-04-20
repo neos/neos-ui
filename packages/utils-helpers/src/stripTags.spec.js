@@ -1,21 +1,21 @@
-import {striptags, striptagsEncoded} from './striptags';
+import {stripTags, stripTagsEncoded} from './stripTags';
 
 test(`should strip html tags if string contains some`, () => {
     const string = '<p>hello world</p>';
-    expect(striptags(string)).toEqual('hello world');
+    expect(stripTags(string)).toEqual('hello world');
 });
 
 test(`should return the same string if string does not contain html tags`, () => {
     const string = 'hello world';
-    expect(striptags(string)).toEqual(string);
+    expect(stripTags(string)).toEqual(string);
 });
 
 test(`should strip html tags if string contains some`, () => {
     const string = '&lt;p&gt;hello world&lt;/p&gt;';
-    expect(striptagsEncoded(string)).toEqual('hello world');
+    expect(stripTagsEncoded(string)).toEqual('hello world');
 });
 
 test(`should return the same string if string does not contain html tags`, () => {
     const string = 'hello world';
-    expect(striptagsEncoded(string)).toEqual(string);
+    expect(stripTagsEncoded(string)).toEqual(string);
 });

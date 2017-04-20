@@ -3,7 +3,7 @@ import {$get} from 'plow-js';
 import {connect} from 'react-redux';
 
 import Tree from '@neos-project/react-ui-components/src/Tree/';
-import {striptags} from '@neos-project/utils-helpers';
+import {stripTags} from '@neos-project/utils-helpers';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -132,7 +132,7 @@ export default class Node extends PureComponent {
                     isHidden={$get('properties._hidden', node)}
                     isHiddenInIndex={$get('properties._hiddenInIndex', node)}
                     hasError={this.hasError()}
-                    label={striptags($get('label', node))}
+                    label={stripTags($get('label', node))}
                     icon={this.getIcon()}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}

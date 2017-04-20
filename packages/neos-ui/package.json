@@ -87,7 +87,6 @@
     "redux-saga": "^0.12.0",
     "regenerator": "^0.8.46",
     "reselect": "^2.4.0",
-    "striptags": "^3.0.1",
     "uuid": "^2.0.2",
     "whatwg-fetch": "^1.0.0"
   },

@@ -77,7 +77,6 @@
     "semantic-release": "^6.3.2",
     "sinon": "^2.1.0",
     "skin-deep": "^0.16.0",
-    "striptags": "^3.0.1",
     "style-loader": "^0.16.0",
     "stylelint": "^7.5.0",
     "watch": "^1.0.2",

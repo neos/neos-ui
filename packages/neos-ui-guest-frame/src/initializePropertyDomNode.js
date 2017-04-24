@@ -10,7 +10,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         guestFrameWindow['@Neos.Neos.Ui:InitializedInlineEditors'] = {};
     }
 
-    const initializedInlindeEditorApis = guestFrameWindow['@Neos.Neos.Ui:InitializedInlineEditors'];
+    const initializedInlineEditorApis = guestFrameWindow['@Neos.Neos.Ui:InitializedInlineEditors'];
     const propertyName = propertyDomNode.getAttribute('data-__neos-property');
     const contextPath = closestContextPathInGuestFrame(propertyDomNode);
     const nodeTypeName = $get([contextPath, 'nodeType'], nodes);
@@ -22,7 +22,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         const editorOptions = nodeTypesRegistry.getInlineEditorOptionsForProperty(nodeTypeName, propertyName);
         const {bootstrap, createInlineEditor} = inlineEditorRegistry.get(editorIdentifier);
 
-        if (!initializedInlindeEditorApis[editorIdentifier] && bootstrap) {
+        if (!initializedInlineEditorApis[editorIdentifier] && bootstrap) {
             try {
                 const {
                     setFormattingUnderCursor,
@@ -36,7 +36,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                         (...args) => store.dispatch(setCurrentlyEditedPropertyName(...args))
                 });
 
-                initializedInlindeEditorApis[editorIdentifier] = true;
+                initializedInlineEditorApis[editorIdentifier] = true;
             } catch (err) {
                 console.error(err);
             }

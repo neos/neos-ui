@@ -38,6 +38,11 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
 
                 initializedInlineEditorApis[editorIdentifier] = true;
             } catch (err) {
+                //
+                // The entire function is executed in a saga-context. Since we're fiddeling with the guest
+                // frame at this point, there might be plenty of exceptions completely unknown to us, that would
+                // become invisible or at least hard to read, if we do not display them explicitly like this.
+                //
                 console.error(err);
             }
         }
@@ -55,6 +60,11 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                 )
             });
         } catch (err) {
+            //
+            // The entire function is executed in a saga-context. Since we're fiddeling with the guest
+            // frame at this point, there might be plenty of exceptions completely unknown to us, that would
+            // become invisible or at least hard to read, if we do not display them explicitly like this.
+            //
             console.error(err);
         }
     }

@@ -18,7 +18,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
     const isInlineEditable = $get(['properties', propertyName, 'ui', 'inlineEditable'], nodeType) !== false;
 
     if (isInlineEditable) {
-        const editorIdentifier = nodeTypesRegistry.getInlineEditorForProperty(nodeTypeName, propertyName);
+        const editorIdentifier = nodeTypesRegistry.getInlineEditorIdentifierForProperty(nodeTypeName, propertyName);
         const editorOptions = nodeTypesRegistry.getInlineEditorOptionsForProperty(nodeTypeName, propertyName);
         const {bootstrap, createInlineEditor} = inlineEditorRegistry.get(editorIdentifier);
 

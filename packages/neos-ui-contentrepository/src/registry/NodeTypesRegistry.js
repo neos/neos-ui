@@ -164,7 +164,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         return viewConfiguration;
     }
 
-    getInlineEditorForProperty(nodeTypeName, propertyName) {
+    getInlineEditorIdentifierForProperty(nodeTypeName, propertyName) {
         const nodeType = this.get(nodeTypeName);
 
         //

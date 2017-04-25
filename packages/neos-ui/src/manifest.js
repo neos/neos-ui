@@ -19,6 +19,36 @@ manifest('main', {}, globalRegistry => {
     //
     globalRegistry.add('inlineEditors', new SynchronousRegistry(`
         # Registry for inline editors
+
+        Each key in this registry should be a unique identifier for an inline editor, that can be referenced in a node type configuration.
+        Each entry in this registry is supposed to consist of an object with the following structure:
+
+        {
+            bootstrap: myBootstrapFunction,
+            createInlineEditor: myInlineEditorFactoryFunction
+        }
+
+        \`bootstrap\` is called only once during the global initialization of the guest frame. It is not required to do
+        anything in this function, but it is possible to prepare the guest frame environment, if any global variables
+        must be defined or other initialization routines must be run in order for the inline editor to work.
+
+        \`bootstrap\` will receive an API Object as its first parameter, with the following methods:
+
+            - setFormattingUnderCursor: Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.UI.ContentCanvas.setFormattingUnderCursor)
+            - setCurrentlyEditedPropertyName: Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.UI.ContentCanvas.setCurrentlyEditedPropertyName)
+
+        \`createInlineEditor\` is called on every dom node in the guest frame that represents an editable property. It
+        is supposed to handle the initialization and display of an inline editor.
+
+        \`createInlineEditor\` will receive an object as its first parameter, with the following properties:
+
+            - propertyDomNode: The DOM node associated with the editable property
+            - propertyName: The name of the editable property
+            - contextPath: The contextPath of the associated node
+            - nodeType: The nodeType of the associated node
+            - editorOptions: The configuration for this inline editor
+            - globalRegistry: The global registry
+            - persistChange: Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.Changes.persistChange)
     `));
 
     //

@@ -6,6 +6,7 @@ import Image from './Image/index';
 import SelectBox from './SelectBox/index';
 import Link from './Link/index';
 import Reference from './Reference/index';
+import References from './References/index';
 import NodeType from './NodeType/index';
 import CodeMirror from './CodeMirror/index';
 
@@ -48,6 +49,10 @@ manifest('inspectorEditors', {}, globalRegistry => {
 
     editorsRegistry.add('Neos.Neos/Inspector/Editors/ReferenceEditor', {
         component: Reference
+    });
+
+    editorsRegistry.add('Neos.Neos/Inspector/Editors/ReferencesEditor', {
+        component: References
     });
 
     editorsRegistry.add('Neos.Neos/Inspector/Editors/NodeTypeEditor', {

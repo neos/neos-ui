@@ -18,7 +18,7 @@ const Button = props => {
         size,
         theme,
         _refHandler,
-        ...rest
+        onClick
     } = props;
     const effectiveStyle = isActive ? 'brand' : style;
     const effectiveHoverStyle = isActive ? 'brand' : hoverStyle;
@@ -31,7 +31,13 @@ const Button = props => {
         [theme['btn--isPressed']]: isPressed,
         [className]: className && className.length
     });
-    const attributes = {};
+
+    const attributes = {
+        className: finalClassName,
+        role: 'button',
+        ref: _refHandler(isFocused),
+        onClick
+    };
 
     //
     // Disable the btn if `isDisabled` prop is truthy.
@@ -41,7 +47,7 @@ const Button = props => {
     }
 
     return (
-        <button {...rest} {...attributes} className={finalClassName} role="button" ref={_refHandler(isFocused)}>
+        <button {...attributes}>
             {children}
         </button>
     );
@@ -108,6 +114,8 @@ Button.propTypes = {
         'btn--isPressed': PropTypes.string,
         'btn--darkenHover': PropTypes.string
     }).isRequired,
+
+    onClick: PropTypes.func,
 
     /**
      * An interal prop for testing purposes, do not set this prop manually.

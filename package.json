@@ -9,7 +9,7 @@
     "build:ui:watch": "npm run build:ui -- --watch",
     "build:components": "echo 'Not needed anymore, just use build:ui'",
     "build:components:watch": "echo 'Not needed anymore, just use build:ui:watch'",
-    "build": "cross-env NODE_ENV=production npm run build:ui",
+    "build": "cross-env NODE_ENV=Production npm run build:ui",
     "start-storybook": "lerna run --scope @neos-project/react-ui-components start",
     "coverage:generate": "lerna run coverage:generate --concurrency 1",
     "coverage:publish": "lerna run coverage:publish --concurrency 1",

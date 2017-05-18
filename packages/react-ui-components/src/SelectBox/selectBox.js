@@ -1,11 +1,28 @@
-import React, {PropTypes} from 'react';
+import React, {PropTypes, PureComponent} from 'react';
 import isFunction from 'lodash.isfunction';
 import debounce from 'lodash.debounce';
 import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abstractState} from './abstractSelectBox';
+import DropDown from '../DropDown/index';
 
-export default class SelectBox extends AbstractSelectBox {
+export default class SelectBox extends PureComponent {
     static propTypes = {
-        ...abstractSelectBoxPropTypes,
+        /**
+         * This prop represents either a set of options or a function that returns those.
+         * Each option must have a value and can have a label and an icon.
+         */
+        options: PropTypes.arrayOf(
+            PropTypes.shape({
+                icon: PropTypes.string,
+                value: PropTypes.oneOfType([
+                    PropTypes.string,
+                    PropTypes.object
+                ]).isRequired,
+                label: PropTypes.oneOfType([
+                    PropTypes.string,
+                    PropTypes.object
+                ]).isRequired
+            })
+        ),
 
         /**
          * This prop represents the current selected value.
@@ -13,14 +30,33 @@ export default class SelectBox extends AbstractSelectBox {
         value: PropTypes.string,
 
         /**
-         *
+         * This prop gets called when an option was selected. It returns the new value.
          */
-        clearOnSelect: PropTypes.bool,
+        onValueChange: PropTypes.func.isRequired,
 
         /**
-         *
+         * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
          */
-        isSearchable: PropTypes.bool,
+        placeholder: PropTypes.string,
+
+        /**
+         * This prop is an icon for the placeholder.
+         */
+        placeholderIcon: PropTypes.string,
+
+        /**
+         * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
+         */
+        displayLoadingIndicator: PropTypes.bool,
+
+        /**
+         * search box related properties
+         */
+        displaySearchBox: PropTypes.bool,
+
+        searchTerm: PropTypes.string,
+
+        onSearchTermChange: PropTypes.func,
 
         /**
          * An optional css theme to be injected.
@@ -38,131 +74,106 @@ export default class SelectBox extends AbstractSelectBox {
         DropDownComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
-        InputComponent: PropTypes.any.isRequired,
         SearchableSelectBoxComponent: PropTypes.any.isRequired,
-        SimpleSelectBoxComponent: PropTypes.any.isRequired
-    };
-
-    state = {
-        ...abstractState,
-        icon: undefined,
-        label: undefined
+        SimpleSelectBoxComponent: PropTypes.any.isRequired,
+        TextInputComponent: PropTypes.any.isRequired
     };
 
     constructor(...args) {
         super(...args);
 
+        this.renderOption = this.renderOption.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
-        this.handleInput = this.handleInput.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
-        this.handleInputLoadOptions = debounce(this.handleInputLoadOptions.bind(this), 200);
     }
 
     render() {
-        const options = this.getOptions();
-        const {theme, SearchableSelectBoxComponent, SimpleSelectBoxComponent, loadOptionsOnInput, isSearchable} = this.props;
-        const {isLoadingOptions, icon, label, value} = this.state;
+        const {
+            options,
+            value,
+            displayLoadingIndicator,
+            theme,
+            placeholder,
+            placeholderIcon,
+            displaySearchBox,
+            searchTerm,
+            onSearchTermChange,
+            TextInputComponent,
+            IconButtonComponent,
+            IconComponent
+        } = this.props;
+
+        const selectedValue = (options || []).find(option => option.value === value)
+
+        let icon = '';
+
+        let label = '';
+        if (selectedValue) {
+            label = selectedValue.label;
+            icon = selectedValue.icon;
+        } else if (displayLoadingIndicator) {
+            label = '[Loading]'; // TODO: localize
+        } else if (placeholder) {
+            label = placeholder;
+            icon = placeholderIcon;
+        }
 
         return (
-            <div className={this.props.theme.wrapper}>
-                {isSearchable ?
-                    <SearchableSelectBoxComponent
-                        value={value}
-                        options={options}
-                        loadOptionsOnInput={loadOptionsOnInput}
-                        isLoadingOptions={isLoadingOptions}
-                        label={label}
-                        icon={icon}
-                        theme={theme}
-                        onSelect={this.handleSelect}
-                        onDelete={this.handleDeleteClick}
-                        onInput={this.handleInput}
-                        /> :
-                    <SimpleSelectBoxComponent
-                        options={options}
-                        isLoadingOptions={isLoadingOptions}
-                        label={label}
-                        icon={icon}
-                        theme={theme}
-                        onSelect={this.handleSelect}
-                        />
-                }
+            <div className={theme.wrapper}>
+                <DropDown className={theme.dropDown}>
+                    <DropDown.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
+                        {icon ?
+                            <IconComponent className={theme.dropDown__btnIcon} icon={icon}/> :
+                            null
+                        }
+                        {displaySearchBox && !selectedValue ?
+                            <span><TextInputComponent value={searchTerm} onChange={onSearchTermChange}/></span>
+                            : <span>{label}</span>
+                        }
+
+                        {displayLoadingIndicator ?
+                            <IconComponent className={theme.dropDown__loadingIcon} spin={true} icon="spinner"/> :
+                            null
+                        }
+                        {!displayLoadingIndicator && displaySearchBox && selectedValue ?
+                            <IconButtonComponent className={theme.dropDown__loadingIcon} icon="times" onClick={this.handleDeleteClick}/> :
+                            null
+                        }
+                    </DropDown.Header>
+                    <DropDown.Contents className={theme.dropDown__contents}>
+                        {(options || []).map(this.renderOption)}
+                    </DropDown.Contents>
+                </DropDown>
             </div>
         );
     }
 
     /**
-     * Handles the delete-option-click for searchable selectBox
+     * renders a single option (<li/>) for the select box
+     * @returns {JSX} option element
      */
-    handleDeleteClick() {
-        this.select('', false);
-        this.props.onDelete();
-    }
+    renderOption({icon, label, value}, index) {
+        const theme = this.props.theme;
+        const onClick = () => {
+            this.props.onValueChange(value);
+        };
 
-    /**
-     * Handles a search request -> load options with search term
-     *
-     * @param searchValue
-     */
-    handleInput(searchValue) {
-        const options = this.props.options;
-
-        this.setState({
-            isLoadingOptions: true
-        });
-
-        if (isFunction(options)) {
-            this.handleInputLoadOptions.cancel();
-            this.handleInputLoadOptions(searchValue);
-        }
-    }
-
-    handleInputLoadOptions(searchValue) {
-        const options = this.props.options;
-        this._currentSearchValue = searchValue;
-        options({
-            searchTerm: searchValue,
-            callback: options => {
-                if (searchValue === this._currentSearchValue) {
-                    this.setState({
-                        options,
-                        isLoadingOptions: false
-                    });
+        return (
+            <li
+                key={index}
+                className={theme.dropDown__item}
+                onClick={onClick}
+                >
+                {
+                    icon ?
+                        <Icon className={theme.dropDown__itemIcon} icon={icon}/> :
+                        null
                 }
-            }
-        });
+                <span>{ label }</span>
+            </li>
+        );
     }
 
-    handleSelect(...args) {
-        this.select(...args);
+    handleDeleteClick() {
+        this.props.onValueChange(undefined);
     }
-
-    /**
-     * select callback for option selection
-     *
-     * @param {string} incomingValue
-     * @param {boolean} shouldTriggerOnSelect
-     */
-    select(incomingValue, shouldTriggerOnSelect = true) {
-        const {placeholder, placeholderIcon} = this.props;
-
-        if (incomingValue && !this.props.clearOnSelect) {
-            this.setState({
-                value: incomingValue,
-                icon: this.getOptionIconForValue(incomingValue) || placeholderIcon,
-                label: this.getOptionLabelForValue(incomingValue) || placeholder
-            });
-        } else {
-            this.setState({
-                value: undefined,
-                icon: placeholderIcon,
-                label: placeholder
-            });
-        }
-
-        if (shouldTriggerOnSelect) {
-            this.props.onSelect(incomingValue);
-        }
-    }
-
 }

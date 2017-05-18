@@ -1,6 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import isFunction from 'lodash.isfunction';
 
+// SHOULD BE REMOVED, NOT NEEDED ANYMORE
 export const propTypes = {
     /**
      * This prop represents either a set of options or a function that returns those.

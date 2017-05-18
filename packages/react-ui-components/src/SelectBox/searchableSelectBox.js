@@ -4,6 +4,7 @@ import DropDown from '../DropDown/index';
 import Icon from '../Icon/index';
 import TextInput from '../TextInput/index';
 
+// SHOULD BE REMOVED, NOT NEEDED ANYMORE
 export default class SearchableSelectBox extends PureComponent {
     static propTypes = {
         /**

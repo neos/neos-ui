@@ -3,6 +3,7 @@ import React, {PureComponent, PropTypes} from 'react';
 import DropDown from '../DropDown/index';
 import Icon from '../Icon/index';
 
+// SHOULD BE REMOVED, NOT NEEDED ANYMORE
 export default class SimpleBox extends PureComponent {
     static propTypes = {
         /**

@@ -152,7 +152,7 @@ export default class SelectBox extends PureComponent {
      * @returns {JSX} option element
      */
     renderOption({icon, label, value}, index) {
-        const theme = this.props.theme;
+        const {theme, IconComponent} = this.props;
         const onClick = () => {
             this.props.onValueChange(value);
         };
@@ -165,7 +165,7 @@ export default class SelectBox extends PureComponent {
                 >
                 {
                     icon ?
-                        <Icon className={theme.dropDown__itemIcon} icon={icon}/> :
+                        <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
                         null
                 }
                 <span>{ label }</span>

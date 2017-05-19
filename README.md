@@ -89,7 +89,7 @@ In order to start contributing, follow the following steps:
    npm install -g yarn
    yarn
 
-   npm run build:ui:watch
+   npm run watch
    ```
 
 5) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
@@ -101,8 +101,8 @@ In order to start contributing, follow the following steps:
 | --------------- | ------------------------------ |
 | `yarn clear` | delete all node_modules in every subdirectory. |
 | `yarn build:ui`  | Builds the ui via webpack. |
-| `yarn build` |  Runs `build:dev` optimised for production. |
-| `yarn build:ui:watch` | Watches the source files for changes and runs a build:ui in case. |
+| `yarn build` |  Runs `build:ui` optimised for production. |
+| `yarn watch` | Watches the source files for changes and runs a build:ui in case. |
 | `yarn start-storybook` | Starts the storybook server. |
 | `yarn lint`  | Lints all source files. |
 | `yarn test`  | Executes `yarn lint` to trigger tests via ava. |

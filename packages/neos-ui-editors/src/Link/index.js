@@ -1,6 +1,6 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -12,14 +12,20 @@ const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix =>
 const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
     'node://' + nodeIdentifier;
 
-@connect($transform({
-    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
-}), {
-    // TODO: updateSearchTerm -> doSearch
-    updateSearchTerm: actions.UI.AsynchronousValueCache.updateSearchTerm
+@neos((globalRegistry, props) => {
+    const dataLoaderOptions = {
+        nodeTypes: $get('options.nodeTypes', props)
+    };
+
+    return {
+        nodeLookupDataLoader: globalRegistry.get('dataLoaders').getClient('NodeLookup', dataLoaderOptions),
+        i18nRegistry: globalRegistry.get('i18n')
+    }
 })
-@neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
+@connect((state, {value, nodeLookupDataLoader}) => ({
+    ...nodeLookupDataLoader.props(removePrefixFromNodeIdentifier(value), state)
+}), (dispatch, {nodeLookupDataLoader}) => ({
+    initializeDataLoader: (...args) => dispatch(nodeLookupDataLoader.doInitialize(...args))
 }))
 class LinkEditor extends PureComponent {
     static propTypes = {
@@ -31,11 +37,9 @@ class LinkEditor extends PureComponent {
             placeholder: PropTypes.string
         }),
 
-        contextForNodeLinking: PropTypes.object.isRequired,
+        initializeDataLoader: PropTypes.func.isRequired,
 
-        updateSearchTerm: PropTypes.func.isRequired,
-
-        i18nRegistry: PropTypes.object.isRequired
+        isLoading: PropTypes.bool.isRequired
     };
 
     constructor(props) {
@@ -44,17 +48,11 @@ class LinkEditor extends PureComponent {
         this.state = {
             searchTerm: ''
         };
-
-        this.searchNodes = backend.get().endpoints.searchNodes;
-        this.optionGenerator = this.optionGenerator.bind(this);
     }
 
     optionGenerator({value, searchTerm, callback}) {
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
-        if (value) {
-            // INITIAL load
-            searchNodesQuery.nodeIdentifiers = [removePrefixFromNodeIdentifier(value)];
-        } else if (searchTerm) {
+        if (searchTerm) {
             // autocomplete-load
             searchNodesQuery.searchTerm = searchTerm;
         } else {
@@ -68,14 +66,20 @@ class LinkEditor extends PureComponent {
         });
     }
 
+    componentDidMount() {
+        this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.value !== this.props.value) {
+            this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
+        }
+    }
+
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
 
-        // TODO: remove the cache identifier setup here; DUPLICATED CODE!
-        const targetNodeTypeNames = this.props.options.nodeTypes ? this.props.options.nodeTypes : ['Neos.Neos:Document'];
-        const cacheIdentifier = 'NodeReference_' + targetNodeTypeNames.join(',');
-
-        this.props.updateSearchTerm(cacheIdentifier, this.props.identifier, searchTerm);
+        // TODO!!
+        this.props.nodeLookupDataLoader.doSearch('LinkEditor_' + this.props.identifier, searchTerm);
     }
 
     render() {
@@ -85,7 +89,8 @@ class LinkEditor extends PureComponent {
 
         return (
             <SelectBox
-                options={[]}
+                options={this.props.optionValues.toJS()}
+                optionValueField="identifier"
                 value={this.props.value && removePrefixFromNodeIdentifier(this.props.value)}
                 placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
                 displayLoadingIndicator={false}

@@ -498,3 +498,4 @@ manifest('main', {}, globalRegistry => {
 });
 
 require('./manifest.containers');
+require('./manifest.dataloaders');

@@ -5,6 +5,11 @@ import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abs
 import DropDown from '../DropDown/index';
 
 export default class SelectBox extends PureComponent {
+
+    static defaultProps = {
+        optionValueField: 'value'
+    };
+
     static propTypes = {
         /**
          * This prop represents either a set of options or a function that returns those.
@@ -13,16 +18,21 @@ export default class SelectBox extends PureComponent {
         options: PropTypes.arrayOf(
             PropTypes.shape({
                 icon: PropTypes.string,
-                value: PropTypes.oneOfType([
+                /*value: PropTypes.oneOfType([
                     PropTypes.string,
                     PropTypes.object
-                ]).isRequired,
+                ]).isRequired,*/
                 label: PropTypes.oneOfType([
                     PropTypes.string,
                     PropTypes.object
                 ]).isRequired
             })
         ),
+
+        /**
+         * Field name specifying which field in a single "option" contains the "value"
+         */
+        optionValueField: PropTypes.string,
 
         /**
          * This prop represents the current selected value.
@@ -90,6 +100,7 @@ export default class SelectBox extends PureComponent {
         const {
             options,
             value,
+            optionValueField,
             displayLoadingIndicator,
             theme,
             placeholder,
@@ -102,7 +113,7 @@ export default class SelectBox extends PureComponent {
             IconComponent
         } = this.props;
 
-        const selectedValue = (options || []).find(option => option.value === value)
+        const selectedValue = (options || []).find(option => option[optionValueField] === value)
 
         let icon = '';
 
@@ -151,7 +162,9 @@ export default class SelectBox extends PureComponent {
      * renders a single option (<li/>) for the select box
      * @returns {JSX} option element
      */
-    renderOption({icon, label, value}, index) {
+    renderOption(option, index) {
+        const {icon, label} = option;
+        const value = option[this.props.optionValueField];
         const {theme, IconComponent} = this.props;
         const onClick = () => {
             this.props.onValueChange(value);

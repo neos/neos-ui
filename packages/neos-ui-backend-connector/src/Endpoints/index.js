@@ -122,7 +122,7 @@ const searchNodes = options => fetch(urlWithParams('/neos/service/nodes', option
 
         return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => ({
             label: node.querySelector('.node-label').innerText,
-            value: node.querySelector('.node-identifier').innerText
+            identifier: node.querySelector('.node-identifier').innerText
         }));
     });
 

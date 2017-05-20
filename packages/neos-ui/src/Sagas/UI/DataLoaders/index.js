@@ -1,12 +1,50 @@
-import {takeLatest} from 'redux-saga';
+import {takeLatest, takeEvery} from 'redux-saga';
 import {put, select, fork} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 import {iframeDocument} from '../../../Containers//ContentCanvas/Helpers/dom';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 
+function * handleInitialize({globalRegistry}) {
+    const dataLoadersRegistry = globalRegistry.get('dataLoaders');
+    yield * takeEvery(actionTypes.UI.DataLoaders.INITIALIZE, function * initializeDataLoader(action) {
+        const {dataLoaderIdentifier, dataLoaderOptions} = action.payload;
+
+        const dataLoaderDefinition = dataLoadersRegistry.get(dataLoaderIdentifier);
+        const state = yield select();
+        const cacheSegment = dataLoaderDefinition.cacheSegment(dataLoaderOptions, state);
+
+        // ensure currentlySelectedDataIdentifiers is always an array
+        let currentlySelectedDataIdentifiers = action.payload.currentlySelectedDataIdentifier;
+        if (!Boolean(currentlySelectedDataIdentifiers)) {
+            currentlySelectedDataIdentifiers = [];
+        } else if (!Array.isArray(currentlySelectedDataIdentifiers)) {
+            currentlySelectedDataIdentifiers = [currentlySelectedDataIdentifiers];
+        }
+
+        // check which data-item is already loaded and figure out which ones are missing
+        let dataIdentifiersWhichNeedToBeLoaded = [];
+        for (const identifier of currentlySelectedDataIdentifiers) {
+            const value = $get(['ui', 'dataLoaders', cacheSegment, 'valuesByIdentifier', identifier], state);
+            if (!value) {
+                dataIdentifiersWhichNeedToBeLoaded.push(identifier);
+            }
+        }
+
+        // load the missing items
+        const results = yield dataLoaderDefinition.loadItemsByIds(dataLoaderOptions, dataIdentifiersWhichNeedToBeLoaded);
+
+        if (results) {
+            // integrate the items in the store
+            yield put(actions.UI.DataLoaders.sagaResultsLoaded(cacheSegment, results))
+        }
+
+
+    });
+}
+
 /**
- * Load newly created page into canvas
+ * REWRITE THIS SAGA!!
  */
 function * watchNodeChange({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
@@ -65,5 +103,6 @@ function * watchNodeChange({globalRegistry}) {
 }
 
 export const sagas = [
-    watchNodeChange
+    handleInitialize
+    //watchNodeChange
 ];

@@ -3,7 +3,7 @@ import {sagas as ContentTreeSagas} from './ContentTree/index';
 import {sagas as InspectorSagas} from './Inspector/index';
 import {sagas as ContentCanvas} from './ContentCanvas/index';
 import {sagas as EditPreviewMode} from './EditPreviewMode/index';
-import {sagas as AdditionalOptionsLoader} from './AdditionalOptionsLoader/index';
+import {sagas as DataLoaders} from './DataLoaders/index';
 
 export const sagas = [
     ...PageTreeSagas,
@@ -11,5 +11,5 @@ export const sagas = [
     ...InspectorSagas,
     ...ContentCanvas,
     ...EditPreviewMode,
-    ...AdditionalOptionsLoader
+    ...DataLoaders
 ];

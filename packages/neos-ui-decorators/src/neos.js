@@ -22,7 +22,7 @@ export default mapRegistriesToProps => WrappedComponent => {
 
         render() {
             const {configuration, globalRegistry} = this.context;
-            const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(globalRegistry) : {};
+            const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(globalRegistry, this.props) : {};
 
             return (
                 <WrappedComponent

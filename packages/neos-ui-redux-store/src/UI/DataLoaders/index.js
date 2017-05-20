@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 import {$set, $get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -8,37 +8,58 @@ import {actionTypes as system} from '../../System/index';
 
 import * as selectors from './selectors';
 
-const UPDATE_SEARCH_TERM = '@neos/neos-ui/UI/AsynchronousValueCache/UPDATE_SEARCH_TERM';
-const SAGA_SET_LOADING_STATE = '@neos/neos-ui/UI/AsynchronousValueCache/SAGA_SET_LOADING_STATE';
-const SAGA_SET_LOADING_ERROR = '@neos/neos-ui/UI/AsynchronousValueCache/SAGA_SET_LOADING_ERROR';
-const SAGA_SEARCH_RESULTS_LOADED = '@neos/neos-ui/UI/AsynchronousValueCache/SAGA_SEARCH_RESULTS_LOADED';
+const INITIALIZE = '@neos/neos-ui/UI/DataLoaders/INITIALIZE';
+//const SAGA_SET_LOADING = '@neos/neos-ui/UI/DataLoaders/SAGA_SET_LOADING';
+//const SAGA_SET_LOADING_ERROR = '@neos/neos-ui/UI/DataLoaders/SAGA_SET_LOADING_ERROR';
+const SAGA_RESULTS_LOADED = '@neos/neos-ui/UI/DataLoaders/SAGA_RESULTS_LOADED';
+//const SAGA_SEARCH_RESULTS_LOADED = '@neos/neos-ui/UI/DataLoaders/SAGA_SEARCH_RESULTS_LOADED';
 
 //
 // Export the action types
 //
 export const actionTypes = {
-    UPDATE_SEARCH_TERM,
-    SAGA_SET_LOADING_ERROR
+    INITIALIZE,
+    SAGA_RESULTS_LOADED
 };
+
+// This action is triggered when e.g. a Select Editor is rendered for the first time, or its value changes; to ensure
+// that the data specified by "currentlySelectedDataIdentifier" is already loaded (or will be loaded).
+//
+// DO NOT CALL THIS ACTION DIRECTLY, instead call `globalRegistry.get('dataLoaders').getClient(dataLoaderIdentifier, dataLoaderOptions).doInitialize(currentlySelectedDataIdentifier)`.
+//
+// This action is handled by a "DataLoaderSaga"
+//
+// "dataLoaderIdentifier" references the key in the "dataLoaders" registry
+// "dataLoaderOptions" are the specific options of the data loader.
+// "currentlySelectedDataIdentifier" is the identifier of the data-element currently selected (if any); so e.g. the UUID (node identifier) of the currently selected node. Can be either a string or an array of strings, depending on the data loader.
+const initialize = createAction(INITIALIZE, (dataLoaderIdentifier, dataLoaderOptions, currentlySelectedDataIdentifier) => ({
+    dataLoaderIdentifier,
+    dataLoaderOptions,
+    currentlySelectedDataIdentifier
+}));
 
 // TODO: instance identifier is useful to ensure that only one request is in-flight at any given time (for a single editor) while
 // the user types. Example of "instance identifier": popertyName
 // This action is handled by a SAGA; to maybe trigger a search request
-const updateSearchTerm = createAction(UPDATE_SEARCH_TERM, (cacheIdentifier, instanceIdentifier, searchTerm) => ({cacheIdentifier, instanceIdentifier, searchTerm}));
+/*const updateSearchTerm = createAction(UPDATE_SEARCH_TERM, (cacheIdentifier, instanceIdentifier, searchTerm) => ({cacheIdentifier, instanceIdentifier, searchTerm}));
 
 const sagaSetLoadingState = createAction(SAGA_SET_LOADING_STATE, (cacheIdentifier, searchTerm) => ({cacheIdentifier, searchTerm}));
 const sagaSetLoadingError = createAction(SAGA_SET_LOADING_ERROR, (cacheIdentifier, searchTerm) => ({cacheIdentifier, searchTerm}));
-// "searchResults" is an *array* of objects; each having an "identifier" property which is used as key.
-const sagaSearchResultsLoaded = createAction(SAGA_SEARCH_RESULTS_LOADED, (cacheIdentifier, searchTerm, searchResults) => ({cacheIdentifier, searchTerm, searchResults}));
+*/
+
+// "results" is an *array* of objects; each having an "identifier" property which is used as key.
+const sagaResultsLoaded = createAction(SAGA_RESULTS_LOADED, (cacheSegment, results) => ({cacheSegment, results}));
 
 //
 // Export the actions
 //
 export const actions = {
-    updateSearchTerm,
+    initialize,
+    sagaResultsLoaded
+    /*updateSearchTerm,
     sagaSetLoadingState,
     sagaSetLoadingError,
-    sagaSearchResultsLoaded
+    sagaSearchResultsLoaded*/
 };
 
 //
@@ -46,7 +67,7 @@ export const actions = {
 //
 export const reducer = handleActions({
     [system.INIT]: state => $set(
-        'ui.asynchronousValueCache',
+        'ui.dataLoaders',
         new Map()
         /**
            Each map ELEMENT is of the following structure:
@@ -66,22 +87,25 @@ export const reducer = handleActions({
             }
          */
     ),
-    [SAGA_SET_LOADING_STATE]: ({cacheIdentifier, searchTerm}) => state => {
+    [SAGA_RESULTS_LOADED]: ({cacheSegment, results}) => state => {
+        results.forEach(result =>
+            state = $set(['ui', 'dataLoaders', cacheSegment, 'valuesByIdentifier', result.identifier], Immutable.fromJS(result), state)
+        );
+        return state;
+        //const identifiers = searchResults.map(result => result.identifier);
+
+        //return $set(['ui', 'asynchronousValueCache', cacheIdentifier, 'searchStrings', searchTerm], Immutable.fromJS(identifiers), state);
+    }
+
+
+    /*[SAGA_SET_LOADING_STATE]: ({cacheIdentifier, searchTerm}) => state => {
         // TODO: check that the object is created recursively!
         return $set(['ui', 'asynchronousValueCache', cacheIdentifier, 'searchStrings', searchTerm], 'LOADING', state);
     },
     [SAGA_SET_LOADING_ERROR]: ({cacheIdentifier, searchTerm}) => state => {
         // TODO: check that the object is created recursively!
         return $set(['ui', 'asynchronousValueCache', cacheIdentifier, 'searchStrings', searchTerm], 'ERROR', state);
-    },
-    [SAGA_SEARCH_RESULTS_LOADED]: ({cacheIdentifier, searchTerm, searchResults}) => state => {
-        searchResults.forEach(result =>
-            state = $set(['ui', 'asynchronousValueCache', cacheIdentifier, 'valuesByIdentifier', result.identifier], Immutable.fromJS(result))
-        );
-        const identifiers = searchResults.map(result => result.identifier);
-
-        return $set(['ui', 'asynchronousValueCache', cacheIdentifier, 'searchStrings', searchTerm], Immutable.fromJS(identifiers), state);
-    }
+    },*/
 });
 
 //

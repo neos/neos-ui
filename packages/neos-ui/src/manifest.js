@@ -37,9 +37,13 @@ manifest('main', {}, globalRegistry => {
         The key is an editor name (such as Neos.Neos/Inspector/Editors/SelectBoxEditor), and the values
         are objects of the following form:
             {
-                component: TextInput // the React editor component to use.
+                component: TextInput // the React editor component to use. Required.
 
                 hasOwnLabel: true|false // does the component render the label internally, or not?
+
+                makeDataLoader: function(editorOptions) {
+
+                }
             }
 
         ## Component Wiring

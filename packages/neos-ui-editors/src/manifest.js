@@ -43,7 +43,16 @@ manifest('inspectorEditors', {}, globalRegistry => {
     });
 
     editorsRegistry.add('Neos.Neos/Inspector/Editors/LinkEditor', {
-        component: Link
+        component: Link,
+        makeDataLoader: (editorOptions) => {
+            // TODO: sort editorOptions.nodeTypes
+            const targetNodeTypeNames = editorOptions.nodeTypes ? editorOptions.nodeTypes : ['Neos.Neos:Document'];
+            const cacheIdentifier = 'NodeReference_' + targetNodeTypeNames.join(',');
+
+            return {
+                cacheIdentifier
+            };
+        }
     });
 
     editorsRegistry.add('Neos.Neos/Inspector/Editors/ReferenceEditor', {

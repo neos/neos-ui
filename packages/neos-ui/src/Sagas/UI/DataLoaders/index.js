@@ -43,66 +43,36 @@ function * handleInitialize({globalRegistry}) {
     });
 }
 
-/**
- * REWRITE THIS SAGA!!
- */
-function * watchNodeChange({globalRegistry}) {
-    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const inspectorEditorRegistry = globalRegistry.get('inspector').get('editors');
+function * handleSearch({globalRegistry}) {
+    const dataLoadersRegistry = globalRegistry.get('dataLoaders');
 
-    yield * takeLatest([
-        actionTypes.System.INIT,
-        actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH,
-        actionTypes.CR.Nodes.FOCUS
-    ], function * nodeCreated(action) {
-        try {
-            yield fork(doInitialRequests);
-        } finally {
+    // TODO:let inFlightRequests = {};
 
+    yield * takeEvery(actionTypes.UI.DataLoaders.SEARCH, function * initializeDataLoader(action) {
+
+        // TODO: add delay here for debouncing!!!
+        const {dataLoaderIdentifier, dataLoaderOptions, instanceId, searchTerm} = action.payload;
+
+        const dataLoaderDefinition = dataLoadersRegistry.get(dataLoaderIdentifier);
+        const state = yield select();
+        const cacheSegment = dataLoaderDefinition.cacheSegment(dataLoaderOptions, state);
+
+        if ($get(['ui', 'dataLoaders', cacheSegment, 'searchStrings', searchTerm], state)) {
+            // nothing to be done; the data already exists for the search string.
+            return;
         }
 
-        //yield delay(1);
-        try {
-            const focusedNode = yield select(selectors.CR.Nodes.focusedSelector);
-            const nodeType = nodeTypesRegistry.get($get('nodeType', focusedNode));
+        // do the search
+        const results = yield dataLoaderDefinition.search(dataLoaderOptions, searchTerm);
 
-            const preparedDataLoaders = Object.keys($get('properties', nodeType))
-                .map(propertyName => {
-                    const currentPropertyValue = $get(['properties', propertyName], focusedNode);
-
-                    if (!currentPropertyValue) {
-                        // no value set; so we do not need to load anything.
-                        // !! WRONG; we might need to load *EVERYTHING* if specified. -> but not in the case of the Link Editor.
-                        return null;
-                    }
-
-                    const propertyDefinition = $get(['properties', propertyName], nodeType);
-                    if (!$get('ui.inspector.editor', propertyDefinition)) {
-                        // remove the ones which do not have an editor set
-                        return null;
-                    }
-
-                    const {makeDataLoader} = inspectorEditorRegistry.get($get('ui.inspector.editor', propertyDefinition));
-
-                    if (makeDataLoader) {
-                        // TODO: put NODE IN HERE as well
-                        const dataLoader = makeDataLoader($get('ui.inspector.editorOptions', propertyDefinition));
-                        console.log("DATA LOADER", dataLoader);
-                        return dataLoader;
-                    } else {
-                        return null;
-                    }
-                }).filter(el => Boolean(el));
-
-            console.log("x", preparedDataLoaders);
-            yield fork(watch)
-        } finally {
-
+        if (results) {
+            // integrate the items in the store
+            yield put(actions.UI.DataLoaders.sagaResultsLoaded(cacheSegment, results, searchTerm))
         }
     });
 }
 
 export const sagas = [
-    handleInitialize
-    //watchNodeChange
+    handleInitialize,
+    handleSearch
 ];

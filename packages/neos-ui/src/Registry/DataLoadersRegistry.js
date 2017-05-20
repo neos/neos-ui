@@ -17,13 +17,13 @@ class DataLoaderClient {
     }
 
     doInitialize(currentlySelectedDataIdentifier) {
-        return actions.UI.DataLoaders.initialize(this._dataLoaderIdentifier, this._dataLoaderOptions, currentlySelectedDataIdentifier)
+        return actions.UI.DataLoaders.initialize(this._dataLoaderIdentifier, this._dataLoaderOptions, currentlySelectedDataIdentifier);
     }
 
     // "instanceId" identifies the invocation location in the application, which triggers "search".
     // it is a string used to cancel previous, still-running search actions with the same instanceId.
     doSearch(instanceId, searchTerm) {
-
+        return actions.UI.DataLoaders.search(this._dataLoaderIdentifier, this._dataLoaderOptions, instanceId, searchTerm);
     }
 
     isLoading(state) {
@@ -32,21 +32,24 @@ class DataLoaderClient {
 
     findByIdentifier(identifier, state) {
         const cacheSegment = this._dataLoaderDefinition.cacheSegment(this._dataLoaderOptions, state);
-        console.log("CS", cacheSegment);
         return $get(['ui', 'dataLoaders', cacheSegment, 'valuesByIdentifier', identifier], state);
     }
 
-    props(currentlySelectedObjectIdentifier, state) {
+    props(currentlySelectedObjectIdentifier, searchTerm, state) {
         let optionValues = EMPTY_LIST;
-        if (currentlySelectedObjectIdentifier) {
+        if (searchTerm) {
+            const cacheSegment = this._dataLoaderDefinition.cacheSegment(this._dataLoaderOptions, state);
+            const identifiers = $get(['ui', 'dataLoaders', cacheSegment, 'searchStrings', searchTerm], state);
+            // TODO: somehow memoize this!
+            if (identifiers) {
+                optionValues = identifiers.map(id => $get(['ui', 'dataLoaders', cacheSegment, 'valuesByIdentifier', id], state));
+            }
+        } else if (currentlySelectedObjectIdentifier) {
             const option = this.findByIdentifier(currentlySelectedObjectIdentifier, state);
             if (option) {
                 optionValues = Immutable.fromJS([option]);
             }
         }
-
-        console.log("PROPS", currentlySelectedObjectIdentifier, state, $get('ui.dataLoaders', state).toJS(), optionValues);
-        // TODO: handle search here as well
         return {
             optionValues,
             isLoading: this.isLoading(state)

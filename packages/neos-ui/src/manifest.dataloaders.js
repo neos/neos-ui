@@ -76,6 +76,22 @@ manifest('main.dataloaders', {}, globalRegistry => {
 
                 return result;
             }
+        },
+
+        search: function* (options, searchTerm) {
+            if (searchTerm) {
+                // Build up query
+                const contextForNodeLinking = yield select(selectors.UI.NodeLinking.contextForNodeLinking);
+                const searchNodesQuery = contextForNodeLinking.toJS();
+                searchNodesQuery.searchTerm = searchTerm;
+
+                // trigger query
+                const searchNodesApi = backend.get().endpoints.searchNodes;
+                const result = yield searchNodesApi(searchNodesQuery);
+
+                return result;
+            }
+
         }
     });
 });

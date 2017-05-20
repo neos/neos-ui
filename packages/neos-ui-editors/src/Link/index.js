@@ -7,7 +7,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix =>
-    nodeIdentifierWithPrefix.replace('node://', '');
+    nodeIdentifierWithPrefix && nodeIdentifierWithPrefix.replace('node://', '');
 
 const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
     'node://' + nodeIdentifier;
@@ -22,10 +22,11 @@ const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
         i18nRegistry: globalRegistry.get('i18n')
     }
 })
-@connect((state, {value, nodeLookupDataLoader}) => ({
-    ...nodeLookupDataLoader.props(removePrefixFromNodeIdentifier(value), state)
+@connect((state, {value, searchTerm, nodeLookupDataLoader}) => ({
+    ...nodeLookupDataLoader.props(removePrefixFromNodeIdentifier(value), searchTerm, state)
 }), (dispatch, {nodeLookupDataLoader}) => ({
-    initializeDataLoader: (...args) => dispatch(nodeLookupDataLoader.doInitialize(...args))
+    initializeDataLoader: (...args) => dispatch(nodeLookupDataLoader.doInitialize(...args)),
+    search: (...args) => dispatch(nodeLookupDataLoader.doSearch(...args))
 }))
 class LinkEditor extends PureComponent {
     static propTypes = {
@@ -42,6 +43,42 @@ class LinkEditor extends PureComponent {
         isLoading: PropTypes.bool.isRequired
     };
 
+    componentDidMount() {
+        this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.value !== this.props.value) {
+            // TODO
+            //this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
+        }
+    }
+
+    handleSearchTermChange = searchTerm => {
+        this.props.search('LinkEditor_' + this.props.identifier, searchTerm);
+        this.props.onSearchTermChange(searchTerm);
+    }
+    handleValueChange = value => {
+        this.props.commit(appendPrefixBeforeNodeIdentifier(value));
+    }
+
+    render() {
+        return (
+            <SelectBox
+                options={this.props.optionValues.toJS()}
+                optionValueField="identifier"
+                value={this.props.value && removePrefixFromNodeIdentifier(this.props.value)}
+                onValueChange={this.handleValueChange}
+                placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
+                displayLoadingIndicator={false}
+                displaySearchBox={true}
+                searchTerm={this.props.searchTerm}
+                onSearchTermChange={this.handleSearchTermChange}
+                />
+        );
+    }
+}
+
+class StatefulLinkEditor extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -50,57 +87,20 @@ class LinkEditor extends PureComponent {
         };
     }
 
-    optionGenerator({value, searchTerm, callback}) {
-        const searchNodesQuery = this.props.contextForNodeLinking.toJS();
-        if (searchTerm) {
-            // autocomplete-load
-            searchNodesQuery.searchTerm = searchTerm;
-        } else {
-            // no default set
-            callback([]);
-            return;
-        }
 
-        this.searchNodes(searchNodesQuery).then(result => {
-            callback(result);
-        });
-    }
-
-    componentDidMount() {
-        this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
-    }
-    componentDidUpdate(prevProps) {
-        if (prevProps.value !== this.props.value) {
-            this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
-        }
-    }
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-
-        // TODO!!
-        this.props.nodeLookupDataLoader.doSearch('LinkEditor_' + this.props.identifier, searchTerm);
     }
 
     render() {
-        const handleSelect = value => {
-            this.props.commit(appendPrefixBeforeNodeIdentifier(value));
-        };
-
-        return (
-            <SelectBox
-                options={this.props.optionValues.toJS()}
-                optionValueField="identifier"
-                value={this.props.value && removePrefixFromNodeIdentifier(this.props.value)}
-                placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
-                displayLoadingIndicator={false}
-                displaySearchBox={true}
-                searchTerm={this.state.searchTerm}
-                onSearchTermChange={this.handleSearchTermChange}
-                />
-        );
+        return <LinkEditor {...this.props}
+            searchTerm={this.state.searchTerm}
+            onSearchTermChange={this.handleSearchTermChange}
+            />
     }
+
 }
 
-export default LinkEditor;
+export default StatefulLinkEditor;
 

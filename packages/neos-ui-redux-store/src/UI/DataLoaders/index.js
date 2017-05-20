@@ -9,6 +9,7 @@ import {actionTypes as system} from '../../System/index';
 import * as selectors from './selectors';
 
 const INITIALIZE = '@neos/neos-ui/UI/DataLoaders/INITIALIZE';
+const SEARCH = '@neos/neos-ui/UI/DataLoaders/SEARCH';
 //const SAGA_SET_LOADING = '@neos/neos-ui/UI/DataLoaders/SAGA_SET_LOADING';
 //const SAGA_SET_LOADING_ERROR = '@neos/neos-ui/UI/DataLoaders/SAGA_SET_LOADING_ERROR';
 const SAGA_RESULTS_LOADED = '@neos/neos-ui/UI/DataLoaders/SAGA_RESULTS_LOADED';
@@ -19,6 +20,7 @@ const SAGA_RESULTS_LOADED = '@neos/neos-ui/UI/DataLoaders/SAGA_RESULTS_LOADED';
 //
 export const actionTypes = {
     INITIALIZE,
+    SEARCH,
     SAGA_RESULTS_LOADED
 };
 
@@ -38,6 +40,23 @@ const initialize = createAction(INITIALIZE, (dataLoaderIdentifier, dataLoaderOpt
     currentlySelectedDataIdentifier
 }));
 
+// This action is triggered when e.g. the user enters a value in a Select Editor Search Box
+//
+// DO NOT CALL THIS ACTION DIRECTLY, instead call `globalRegistry.get('dataLoaders').getClient(dataLoaderIdentifier, dataLoaderOptions).doSearch(instanceId, searchTerm)`.
+//
+// This action is handled by a "DataLoaderSaga"
+//
+// "dataLoaderIdentifier" references the key in the "dataLoaders" registry
+// "dataLoaderOptions" are the specific options of the data loader.
+// "instanceId" is an identifier of the caller, which is used to cancel in-flight requests by the same caller.
+// "searchTerm" - the text to search for
+const search = createAction(SEARCH, (dataLoaderIdentifier, dataLoaderOptions, instanceId, searchTerm) => ({
+    dataLoaderIdentifier,
+    dataLoaderOptions,
+    instanceId,
+    searchTerm
+}));
+
 // TODO: instance identifier is useful to ensure that only one request is in-flight at any given time (for a single editor) while
 // the user types. Example of "instance identifier": popertyName
 // This action is handled by a SAGA; to maybe trigger a search request
@@ -48,13 +67,14 @@ const sagaSetLoadingError = createAction(SAGA_SET_LOADING_ERROR, (cacheIdentifie
 */
 
 // "results" is an *array* of objects; each having an "identifier" property which is used as key.
-const sagaResultsLoaded = createAction(SAGA_RESULTS_LOADED, (cacheSegment, results) => ({cacheSegment, results}));
+const sagaResultsLoaded = createAction(SAGA_RESULTS_LOADED, (cacheSegment, results, searchTerm = false) => ({cacheSegment, results, searchTerm}));
 
 //
 // Export the actions
 //
 export const actions = {
     initialize,
+    search,
     sagaResultsLoaded
     /*updateSearchTerm,
     sagaSetLoadingState,
@@ -87,14 +107,17 @@ export const reducer = handleActions({
             }
          */
     ),
-    [SAGA_RESULTS_LOADED]: ({cacheSegment, results}) => state => {
+    [SAGA_RESULTS_LOADED]: ({cacheSegment, results, searchTerm}) => state => {
         results.forEach(result =>
             state = $set(['ui', 'dataLoaders', cacheSegment, 'valuesByIdentifier', result.identifier], Immutable.fromJS(result), state)
         );
-        return state;
-        //const identifiers = searchResults.map(result => result.identifier);
 
-        //return $set(['ui', 'asynchronousValueCache', cacheIdentifier, 'searchStrings', searchTerm], Immutable.fromJS(identifiers), state);
+        if (searchTerm !== false) {
+            const identifiers = results.map(result => result.identifier);
+
+            return $set(['ui', 'dataLoaders', cacheSegment, 'searchStrings', searchTerm], Immutable.fromJS(identifiers), state);
+        }
+        return state;
     }
 
 

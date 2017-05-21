@@ -2,7 +2,7 @@
     position: absolute;
     top: 41px; /*-70px;*/
     left: 0;
-    padding: 0 var(--sidebarWidth);
+    padding: 0 370px; /*leave some space for slider button --sidebarWidth + 50px*/
     width: 100%;
     height: 110px;
     background: var(--brandColorsContrastDarkest);
@@ -16,10 +16,6 @@
     width: 100%;
     padding-left: 2rem;
 }
-.editModePanel__scrollable {
-    height: var(--goldenUnit);
-}
-
 .editModePanel--isFringeLeft {
     padding-left: 0;
 }
@@ -36,6 +32,7 @@
 .editModePanel__editingModes {
     width: 50%;
     margin-right: 2rem;
+    
 }
 
 .editModePanel__button {

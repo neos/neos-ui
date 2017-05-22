@@ -82,7 +82,6 @@ export class DropDownWrapper extends PureComponent {
             }
         };
 
-
         this.handleClickOutside = this.close.bind(this);
     }
 

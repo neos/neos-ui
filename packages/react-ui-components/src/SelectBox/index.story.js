@@ -11,27 +11,6 @@ const options = [
     {value: 'opt3', label: 'Option 3'}
 ];
 
-// TODO: remove
-const loadOptions = ({callback, value, searchTerm}) => {
-    if (value) {
-        // simple search for async options
-        const filteredOptions = options.filter(option => {
-            return option.value === value;
-        });
-
-        setTimeout(() => (callback(filteredOptions)), 1000);
-    } else if (searchTerm) {
-        // simple search for async options
-        const filteredOptions = options.filter(option => {
-            return option.label.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-        });
-
-        setTimeout(() => (callback(filteredOptions)), 1000);
-    } else {
-        setTimeout(() => (callback(options)), 1000);
-    }
-};
-
 storiesOf('SelectBox', module)
     .addDecorator(withKnobs)
     .addWithInfo(

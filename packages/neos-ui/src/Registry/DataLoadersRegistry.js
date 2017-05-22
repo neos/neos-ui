@@ -83,10 +83,6 @@ class DataLoaderClient {
 }
 
 export default class DataLoadersRegistry extends SynchronousRegistry {
-    constructor(...args) {
-        super(...args);
-    }
-
     getClient(dataLoaderIdentifier, dataLoaderOptions) {
         if (!this.has(dataLoaderIdentifier)) {
             throw new Error(`DataLoader with identifier "${dataLoaderIdentifier}" not found.`);

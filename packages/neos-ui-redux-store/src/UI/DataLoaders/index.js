@@ -1,12 +1,10 @@
 import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
-import {$set, $get} from 'plow-js';
+import {$set} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 
 import {actionTypes as system} from '../../System/index';
-
-import * as selectors from './selectors';
 
 const INITIALIZE = '@neos/neos-ui/UI/DataLoaders/INITIALIZE';
 const SEARCH = '@neos/neos-ui/UI/DataLoaders/SEARCH';
@@ -68,7 +66,7 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [system.INIT]: state => $set(
+    [system.INIT]: () => $set(
         'ui.dataLoaders',
         new Map()
         /**
@@ -88,9 +86,9 @@ export const reducer = handleActions({
          */
     ),
     [SAGA_RESULTS_LOADED]: ({cacheSegment, results, searchTerm}) => state => {
-        results.forEach(result =>
-            state = $set(['ui', 'dataLoaders', cacheSegment, 'valuesByIdentifier', result.identifier], Immutable.fromJS(result), state)
-        );
+        results.forEach(result => {
+            state = $set(['ui', 'dataLoaders', cacheSegment, 'valuesByIdentifier', result.identifier], Immutable.fromJS(result), state);
+        });
 
         if (searchTerm !== false) {
             const identifiers = results.map(result => result.identifier);
@@ -104,4 +102,4 @@ export const reducer = handleActions({
 //
 // Export the selectors
 //
-export {selectors};
+export const selectors = {};

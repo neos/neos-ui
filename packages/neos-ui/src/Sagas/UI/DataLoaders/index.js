@@ -1,9 +1,8 @@
-import {takeLatest, takeEvery, delay} from 'redux-saga';
-import {put, select, fork} from 'redux-saga/effects';
+import {takeLatest, takeEvery} from 'redux-saga';
+import {put, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
-import {iframeDocument} from '../../../Containers//ContentCanvas/Helpers/dom';
 
-import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 
 function * handleInitialize({globalRegistry}) {
     const dataLoadersRegistry = globalRegistry.get('dataLoaders');
@@ -16,14 +15,14 @@ function * handleInitialize({globalRegistry}) {
 
         // ensure currentlySelectedDataIdentifiers is always an array
         let currentlySelectedDataIdentifiers = action.payload.currentlySelectedDataIdentifier;
-        if (!Boolean(currentlySelectedDataIdentifiers)) {
+        if (!currentlySelectedDataIdentifiers) {
             currentlySelectedDataIdentifiers = [];
         } else if (!Array.isArray(currentlySelectedDataIdentifiers)) {
             currentlySelectedDataIdentifiers = [currentlySelectedDataIdentifiers];
         }
 
         // check which data-item is already loaded and figure out which ones are missing
-        let dataIdentifiersWhichNeedToBeLoaded = [];
+        const dataIdentifiersWhichNeedToBeLoaded = [];
         for (const identifier of currentlySelectedDataIdentifiers) {
             const value = $get(['ui', 'dataLoaders', cacheSegment, 'valuesByIdentifier', identifier], state);
             if (!value) {
@@ -36,10 +35,8 @@ function * handleInitialize({globalRegistry}) {
 
         if (results) {
             // integrate the items in the store
-            yield put(actions.UI.DataLoaders.sagaResultsLoaded(cacheSegment, results))
+            yield put(actions.UI.DataLoaders.sagaResultsLoaded(cacheSegment, results));
         }
-
-
     });
 }
 
@@ -64,7 +61,7 @@ function * handleSearch({globalRegistry}) {
 
         if (results) {
             // integrate the items in the store
-            yield put(actions.UI.DataLoaders.sagaResultsLoaded(cacheSegment, results, searchTerm))
+            yield put(actions.UI.DataLoaders.sagaResultsLoaded(cacheSegment, results, searchTerm));
         }
     });
 }

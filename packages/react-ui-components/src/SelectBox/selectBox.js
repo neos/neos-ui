@@ -1,7 +1,4 @@
 import React, {PropTypes, PureComponent} from 'react';
-import isFunction from 'lodash.isfunction';
-import debounce from 'lodash.debounce';
-import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abstractState} from './abstractSelectBox';
 import DropDown from '../DropDown/index';
 
 export default class SelectBox extends PureComponent {
@@ -18,10 +15,7 @@ export default class SelectBox extends PureComponent {
         options: PropTypes.arrayOf(
             PropTypes.shape({
                 icon: PropTypes.string,
-                /*value: PropTypes.oneOfType([
-                    PropTypes.string,
-                    PropTypes.object
-                ]).isRequired,*/
+                // "value" is not part of PropTypes validation, as the "value field" is specified via the "optionValueField" property
                 label: PropTypes.oneOfType([
                     PropTypes.string,
                     PropTypes.object
@@ -113,7 +107,7 @@ export default class SelectBox extends PureComponent {
             IconComponent
         } = this.props;
 
-        const selectedValue = (options || []).find(option => option[optionValueField] === value)
+        const selectedValue = (options || []).find(option => option[optionValueField] === value);
 
         let icon = '';
 
@@ -137,8 +131,8 @@ export default class SelectBox extends PureComponent {
                             null
                         }
                         {displaySearchBox && !selectedValue ?
-                            <span><TextInputComponent value={searchTerm} onChange={onSearchTermChange}/></span>
-                            : <span>{label}</span>
+                            <span><TextInputComponent value={searchTerm} onChange={onSearchTermChange}/></span> :
+                            <span>{label}</span>
                         }
 
                         {displayLoadingIndicator ?
@@ -187,6 +181,6 @@ export default class SelectBox extends PureComponent {
     }
 
     handleDeleteClick() {
-        this.props.onValueChange("");
+        this.props.onValueChange('');
     }
 }

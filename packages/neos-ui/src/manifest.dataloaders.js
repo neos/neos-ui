@@ -1,7 +1,7 @@
 import {delay} from 'redux-saga';
-import {put, select, fork} from 'redux-saga/effects';
+import {select} from 'redux-saga/effects';
 import manifest from '@neos-project/neos-ui-extensibility';
-import { DataLoadersRegistry } from './Registry/index';
+import {DataLoadersRegistry} from './Registry/index';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
@@ -55,18 +55,18 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 - nodeTypes: (TODO!!!)
         `,
         makeCacheSegmentSelector(options) {
-            return (state) => {
+            return state => {
                 const contextForNodeLinking = selectors.UI.NodeLinking.contextForNodeLinking(state);
-                const cacheIdentifierParts = contextForNodeLinking.toJS()
+                const cacheIdentifierParts = contextForNodeLinking.toJS();
                 if (options.nodeTypes) {
                     cacheIdentifierParts.nodeTypesFilter = options.nodeTypes;
                 } else {
                     cacheIdentifierParts.nodeTypesFilter = ['Neos.Neos:Document'];
                 }
                 return JSON.stringify(cacheIdentifierParts);
-            }
+            };
         },
-        loadItemsByIds: function* (options, identifiers) {
+        * loadItemsByIds(options, identifiers) {
             if (identifiers && identifiers.length > 0) {
                 // Build up query
                 const contextForNodeLinking = yield select(selectors.UI.NodeLinking.contextForNodeLinking);
@@ -81,7 +81,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
             }
         },
 
-        search: function* (options, searchTerm) {
+        * search(options, searchTerm) {
             if (searchTerm) {
                 // Debounce AJAX requests
                 yield delay(300);
@@ -97,7 +97,6 @@ manifest('main.dataloaders', {}, globalRegistry => {
 
                 return result;
             }
-
         }
     });
 });

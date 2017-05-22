@@ -24,17 +24,19 @@ const ShallowDropDownHeader = props => {
         [theme['dropDown__btn--open']]: isOpen
     });
 
+    const handleOnClick = e => {
+        // WORKAROUND for inputs in DropDown Headers (NEEDED for good select box handling -> TODO!)
+        if (e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'text') {
+            openDropDown();
+        } else {
+            toggleDropDown();
+        }
+    };
+
     return (
         <div
             {...rest}
-            onClick={(e) => {
-                // WORKAROUND for inputs in DropDown Headers (NEEDED for good select box handling -> TODO!)
-                if (e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'text') {
-                    openDropDown();
-                } else {
-                    toggleDropDown();
-                }
-            }}
+            onClick={handleOnClick}
             ref={shouldKeepFocusState ? _refHandler(isOpen) : emptyFn}
             className={finalClassName}
             aria-haspopup="true"

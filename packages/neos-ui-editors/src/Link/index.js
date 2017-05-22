@@ -10,7 +10,7 @@ const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix =>
     nodeIdentifierWithPrefix && nodeIdentifierWithPrefix.replace('node://', '');
 
 const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
-    'node://' + nodeIdentifier;
+    nodeIdentifier && 'node://' + nodeIdentifier;
 
 @neos((globalRegistry, props) => {
     const dataLoaderOptions = {
@@ -52,13 +52,12 @@ class LinkEditor extends PureComponent {
     }
     componentDidUpdate(prevProps) {
         if (prevProps.value !== this.props.value) {
-            // TODO
-            //this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
+            this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
         }
     }
 
     handleSearchTermChange = searchTerm => {
-        this.props.search('LinkEditor_' + this.props.identifier, searchTerm);
+        this.props.search(searchTerm);
         this.props.onSearchTermChange(searchTerm);
     }
     handleValueChange = value => {
@@ -73,7 +72,7 @@ class LinkEditor extends PureComponent {
                 value={this.props.value && removePrefixFromNodeIdentifier(this.props.value)}
                 onValueChange={this.handleValueChange}
                 placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
-                displayLoadingIndicator={false}
+                displayLoadingIndicator={this.props.isLoading}
                 displaySearchBox={true}
                 searchTerm={this.props.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}

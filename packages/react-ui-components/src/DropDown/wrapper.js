@@ -53,6 +53,7 @@ export class DropDownWrapper extends PureComponent {
 
     static childContextTypes = {
         toggleDropDown: PropTypes.func.isRequired,
+        openDropDown: PropTypes.func.isRequired,
         closeDropDown: PropTypes.func.isRequired
     };
 
@@ -73,13 +74,23 @@ export class DropDownWrapper extends PureComponent {
                 event.stopPropagation();
             }
         };
+
+        this.handleOpen = event => {
+            this.open();
+            if (event) {
+                event.stopPropagation();
+            }
+        };
+
+
         this.handleClickOutside = this.close.bind(this);
     }
 
     getChildContext() {
         return {
             toggleDropDown: this.handleToggle,
-            closeDropDown: this.handleClose
+            closeDropDown: this.handleClose,
+            openDropDown: this.handleOpen
         };
     }
 
@@ -107,6 +118,10 @@ export class DropDownWrapper extends PureComponent {
         this.setState({isOpen: false});
     }
 
+    open() {
+        this.setState({isOpen: true});
+    }
+
     toggle() {
         if (this.props.onToggle) {
             this.props.onToggle(!this.state.isOpen);
@@ -118,7 +133,8 @@ export class DropDownWrapper extends PureComponent {
 
 export class ContextDropDownHeader extends PureComponent {
     static contextTypes = {
-        toggleDropDown: PropTypes.func.isRequired
+        toggleDropDown: PropTypes.func.isRequired,
+        openDropDown: PropTypes.func.isRequired
     };
 
     render() {

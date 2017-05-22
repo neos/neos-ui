@@ -187,6 +187,6 @@ export default class SelectBox extends PureComponent {
     }
 
     handleDeleteClick() {
-        this.props.onValueChange(undefined);
+        this.props.onValueChange("");
     }
 }

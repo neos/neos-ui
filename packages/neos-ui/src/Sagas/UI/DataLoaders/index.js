@@ -1,4 +1,4 @@
-import {takeLatest, takeEvery} from 'redux-saga';
+import {takeLatest, takeEvery, delay} from 'redux-saga';
 import {put, select, fork} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 import {iframeDocument} from '../../../Containers//ContentCanvas/Helpers/dom';
@@ -46,19 +46,16 @@ function * handleInitialize({globalRegistry}) {
 function * handleSearch({globalRegistry}) {
     const dataLoadersRegistry = globalRegistry.get('dataLoaders');
 
-    // TODO:let inFlightRequests = {};
-
-    yield * takeEvery(actionTypes.UI.DataLoaders.SEARCH, function * initializeDataLoader(action) {
-
-        // TODO: add delay here for debouncing!!!
-        const {dataLoaderIdentifier, dataLoaderOptions, instanceId, searchTerm} = action.payload;
+    yield * takeLatest(actionTypes.UI.DataLoaders.SEARCH, function * initializeDataLoader(action) {
+        const {dataLoaderIdentifier, dataLoaderOptions, searchTerm} = action.payload;
 
         const dataLoaderDefinition = dataLoadersRegistry.get(dataLoaderIdentifier);
         const state = yield select();
         const cacheSegment = dataLoaderDefinition.makeCacheSegmentSelector(dataLoaderOptions)(state);
 
-        if ($get(['ui', 'dataLoaders', cacheSegment, 'searchStrings', searchTerm], state)) {
-            // nothing to be done; the data already exists for the search string.
+        const currentValue = $get(['ui', 'dataLoaders', cacheSegment, 'searchStrings', searchTerm], state);
+        if (currentValue) {
+            // nothing to be done; the data already exists for the search string
             return;
         }
 

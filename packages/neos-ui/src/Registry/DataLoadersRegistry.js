@@ -21,14 +21,8 @@ class DataLoaderClient {
         return actions.UI.DataLoaders.initialize(this._dataLoaderIdentifier, this._dataLoaderOptions, currentlySelectedDataIdentifier);
     }
 
-    // "instanceId" identifies the invocation location in the application, which triggers "search".
-    // it is a string used to cancel previous, still-running search actions with the same instanceId.
-    doSearch(instanceId, searchTerm) {
-        return actions.UI.DataLoaders.search(this._dataLoaderIdentifier, this._dataLoaderOptions, instanceId, searchTerm);
-    }
-
-    isLoading(state) {
-
+    doSearch(searchTerm) {
+        return actions.UI.DataLoaders.search(this._dataLoaderIdentifier, this._dataLoaderOptions, searchTerm);
     }
 
     findByIdentifier(identifier, state) {
@@ -61,28 +55,30 @@ class DataLoaderClient {
 
             if (searchTerm) {
                 const identifiers = $get(['searchStrings', searchTerm], cacheSegment);
-                if (identifiers) {
-                    optionValues = identifiers.map(id => $get(['valuesByIdentifier', id], cacheSegment));
+                if (!identifiers) {
+                    return {
+                        isLoading: true,
+                        optionValues: EMPTY_LIST
+                    };
                 }
+
+                optionValues = identifiers.map(id => $get(['valuesByIdentifier', id], cacheSegment));
             } else if (currentlySelectedObjectIdentifier) {
                 const option = $get(['valuesByIdentifier', currentlySelectedObjectIdentifier], cacheSegment);
-                if (option) {
-                    optionValues = Immutable.fromJS([option]);
+                if (!option) {
+                    return {
+                        isLoading: true,
+                        optionValues: EMPTY_LIST
+                    };
                 }
+                optionValues = Immutable.fromJS([option]);
             }
 
             return {
+                isLoading: false,
                 optionValues
             };
-
-
         });
-    }
-
-    // TODO: findByIdentifiersSelector
-
-    makeListSelector(searchTerm) {
-
     }
 }
 

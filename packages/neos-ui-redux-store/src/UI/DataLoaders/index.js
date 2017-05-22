@@ -10,10 +10,7 @@ import * as selectors from './selectors';
 
 const INITIALIZE = '@neos/neos-ui/UI/DataLoaders/INITIALIZE';
 const SEARCH = '@neos/neos-ui/UI/DataLoaders/SEARCH';
-//const SAGA_SET_LOADING = '@neos/neos-ui/UI/DataLoaders/SAGA_SET_LOADING';
-//const SAGA_SET_LOADING_ERROR = '@neos/neos-ui/UI/DataLoaders/SAGA_SET_LOADING_ERROR';
 const SAGA_RESULTS_LOADED = '@neos/neos-ui/UI/DataLoaders/SAGA_RESULTS_LOADED';
-//const SAGA_SEARCH_RESULTS_LOADED = '@neos/neos-ui/UI/DataLoaders/SAGA_SEARCH_RESULTS_LOADED';
 
 //
 // Export the action types
@@ -42,29 +39,18 @@ const initialize = createAction(INITIALIZE, (dataLoaderIdentifier, dataLoaderOpt
 
 // This action is triggered when e.g. the user enters a value in a Select Editor Search Box
 //
-// DO NOT CALL THIS ACTION DIRECTLY, instead call `globalRegistry.get('dataLoaders').getClient(dataLoaderIdentifier, dataLoaderOptions).doSearch(instanceId, searchTerm)`.
+// DO NOT CALL THIS ACTION DIRECTLY, instead call `globalRegistry.get('dataLoaders').getClient(dataLoaderIdentifier, dataLoaderOptions).doSearch(searchTerm)`.
 //
 // This action is handled by a "DataLoaderSaga"
 //
 // "dataLoaderIdentifier" references the key in the "dataLoaders" registry
 // "dataLoaderOptions" are the specific options of the data loader.
-// "instanceId" is an identifier of the caller, which is used to cancel in-flight requests by the same caller.
 // "searchTerm" - the text to search for
-const search = createAction(SEARCH, (dataLoaderIdentifier, dataLoaderOptions, instanceId, searchTerm) => ({
+const search = createAction(SEARCH, (dataLoaderIdentifier, dataLoaderOptions, searchTerm) => ({
     dataLoaderIdentifier,
     dataLoaderOptions,
-    instanceId,
     searchTerm
 }));
-
-// TODO: instance identifier is useful to ensure that only one request is in-flight at any given time (for a single editor) while
-// the user types. Example of "instance identifier": popertyName
-// This action is handled by a SAGA; to maybe trigger a search request
-/*const updateSearchTerm = createAction(UPDATE_SEARCH_TERM, (cacheIdentifier, instanceIdentifier, searchTerm) => ({cacheIdentifier, instanceIdentifier, searchTerm}));
-
-const sagaSetLoadingState = createAction(SAGA_SET_LOADING_STATE, (cacheIdentifier, searchTerm) => ({cacheIdentifier, searchTerm}));
-const sagaSetLoadingError = createAction(SAGA_SET_LOADING_ERROR, (cacheIdentifier, searchTerm) => ({cacheIdentifier, searchTerm}));
-*/
 
 // "results" is an *array* of objects; each having an "identifier" property which is used as key.
 const sagaResultsLoaded = createAction(SAGA_RESULTS_LOADED, (cacheSegment, results, searchTerm = false) => ({cacheSegment, results, searchTerm}));
@@ -76,10 +62,6 @@ export const actions = {
     initialize,
     search,
     sagaResultsLoaded
-    /*updateSearchTerm,
-    sagaSetLoadingState,
-    sagaSetLoadingError,
-    sagaSearchResultsLoaded*/
 };
 
 //
@@ -95,15 +77,13 @@ export const reducer = handleActions({
                 "dd118fff-5d1c-4fec-82a9-aef33df21447": { "label": "Homepage" },
                 "82dc8a1d-6097-40d2-bf79-1fedbd6d9aed": { "label": "Homer Simpson" },
                 "9f52e19c-677e-4a70-be73-daa7d99c8c56": { "label": "Neos CMS" },
-                "ed7c2575-4a7a-4dfb-bec6-2f19abb53997": "LOADING" // "LOADING" is a special key meaning we are currently loading the values.
             },
             "searchStrings": {
                 "": ["dd118fff-5d1c-4fec-82a9-aef33df21447", "82dc8a1d-6097-40d2-bf79-1fedbd6d9aed", "9f52e19c-677e-4a70-be73-daa7d99c8c56"],
                 "H": ["82dc8a1d-6097-40d2-bf79-1fedbd6d9aed", "dd118fff-5d1c-4fec-82a9-aef33df21447"],
                 "Home": ["82dc8a1d-6097-40d2-bf79-1fedbd6d9aed", "dd118fff-5d1c-4fec-82a9-aef33df21447"],
                 "Homep": ["dd118fff-5d1c-4fec-82a9-aef33df21447"],
-                "Ne": ["9f52e19c-677e-4a70-be73-daa7d99c8c56"],
-                "Neo": "LOADING" // "LOADING" is a special key meaning we are currently loading the values.
+                "Ne": ["9f52e19c-677e-4a70-be73-daa7d99c8c56"]
             }
          */
     ),
@@ -119,16 +99,6 @@ export const reducer = handleActions({
         }
         return state;
     }
-
-
-    /*[SAGA_SET_LOADING_STATE]: ({cacheIdentifier, searchTerm}) => state => {
-        // TODO: check that the object is created recursively!
-        return $set(['ui', 'asynchronousValueCache', cacheIdentifier, 'searchStrings', searchTerm], 'LOADING', state);
-    },
-    [SAGA_SET_LOADING_ERROR]: ({cacheIdentifier, searchTerm}) => state => {
-        // TODO: check that the object is created recursively!
-        return $set(['ui', 'asynchronousValueCache', cacheIdentifier, 'searchStrings', searchTerm], 'ERROR', state);
-    },*/
 });
 
 //

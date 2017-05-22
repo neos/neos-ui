@@ -1,3 +1,4 @@
+import {delay} from 'redux-saga';
 import {put, select, fork} from 'redux-saga/effects';
 import manifest from '@neos-project/neos-ui-extensibility';
 import { DataLoadersRegistry } from './Registry/index';
@@ -82,6 +83,9 @@ manifest('main.dataloaders', {}, globalRegistry => {
 
         search: function* (options, searchTerm) {
             if (searchTerm) {
+                // Debounce AJAX requests
+                yield delay(300);
+
                 // Build up query
                 const contextForNodeLinking = yield select(selectors.UI.NodeLinking.contextForNodeLinking);
                 const searchNodesQuery = contextForNodeLinking.toJS();

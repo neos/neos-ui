@@ -53,15 +53,17 @@ manifest('main.dataloaders', {}, globalRegistry => {
             OPTIONS:
                 - nodeTypes: (TODO!!!)
         `,
-        cacheSegment(options, state) {
-            const contextForNodeLinking = selectors.UI.NodeLinking.contextForNodeLinking(state);
-            const cacheIdentifierParts = contextForNodeLinking.toJS()
-            if (options.nodeTypes) {
-                cacheIdentifierParts.nodeTypesFilter = options.nodeTypes;
-            } else {
-                cacheIdentifierParts.nodeTypesFilter = ['Neos.Neos:Document'];
+        makeCacheSegmentSelector(options) {
+            return (state) => {
+                const contextForNodeLinking = selectors.UI.NodeLinking.contextForNodeLinking(state);
+                const cacheIdentifierParts = contextForNodeLinking.toJS()
+                if (options.nodeTypes) {
+                    cacheIdentifierParts.nodeTypesFilter = options.nodeTypes;
+                } else {
+                    cacheIdentifierParts.nodeTypesFilter = ['Neos.Neos:Document'];
+                }
+                return JSON.stringify(cacheIdentifierParts);
             }
-            return JSON.stringify(cacheIdentifierParts);
         },
         loadItemsByIds: function* (options, identifiers) {
             if (identifiers && identifiers.length > 0) {

@@ -22,9 +22,13 @@ const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
         i18nRegistry: globalRegistry.get('i18n')
     }
 })
-@connect((state, {value, searchTerm, nodeLookupDataLoader}) => ({
-    ...nodeLookupDataLoader.props(removePrefixFromNodeIdentifier(value), searchTerm, state)
-}), (dispatch, {nodeLookupDataLoader}) => ({
+@connect((state, {nodeLookupDataLoader}) => {
+    const propsSelector = nodeLookupDataLoader.makePropsSelector();
+
+    return (state, {value, searchTerm}) => ({
+        ...propsSelector(state, removePrefixFromNodeIdentifier(value), searchTerm)
+    });
+}, (dispatch, {nodeLookupDataLoader}) => ({
     initializeDataLoader: (...args) => dispatch(nodeLookupDataLoader.doInitialize(...args)),
     search: (...args) => dispatch(nodeLookupDataLoader.doSearch(...args))
 }))

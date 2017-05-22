@@ -12,7 +12,7 @@ function * handleInitialize({globalRegistry}) {
 
         const dataLoaderDefinition = dataLoadersRegistry.get(dataLoaderIdentifier);
         const state = yield select();
-        const cacheSegment = dataLoaderDefinition.cacheSegment(dataLoaderOptions, state);
+        const cacheSegment = dataLoaderDefinition.makeCacheSegmentSelector(dataLoaderOptions)(state);
 
         // ensure currentlySelectedDataIdentifiers is always an array
         let currentlySelectedDataIdentifiers = action.payload.currentlySelectedDataIdentifier;
@@ -55,7 +55,7 @@ function * handleSearch({globalRegistry}) {
 
         const dataLoaderDefinition = dataLoadersRegistry.get(dataLoaderIdentifier);
         const state = yield select();
-        const cacheSegment = dataLoaderDefinition.cacheSegment(dataLoaderOptions, state);
+        const cacheSegment = dataLoaderDefinition.makeCacheSegmentSelector(dataLoaderOptions)(state);
 
         if ($get(['ui', 'dataLoaders', cacheSegment, 'searchStrings', searchTerm], state)) {
             // nothing to be done; the data already exists for the search string.

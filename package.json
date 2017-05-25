@@ -70,7 +70,7 @@
     "react-height": "^2.0.4",
     "react-motion": "^0.4.2",
     "react-portal": "^3.0.0",
-    "react-textarea-autosize": "^4.0.0",
+    "react-textarea-autosize": "^5.0.6",
     "redux-devtools": "^3.2.0",
     "regenerator-runtime": "^0.10.3",
     "rimraf": "^2.5.4",

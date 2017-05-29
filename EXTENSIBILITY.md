@@ -10,6 +10,7 @@ The following external libraries are shipped within Neos; and you can simply req
 without specifying them in package.json.
 
 - React 15.4.0
+    - React-DOM 15.4.0
 - immutable.js 3.8.0
 - plow-js 1.2.0
 - classnames 2.2.3

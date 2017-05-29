@@ -6,91 +6,89 @@ import {Broadcast, Subscriber} from 'react-broadcast';
 import ShallowDropDownHeader from './header.js';
 import ShallowDropDownContents from './contents.js';
 
-export class DropDownWrapper extends PureComponent {
+const wrapperPropTypes = {
+    /**
+     * An optional `className` to attach to the wrapper.
+     */
+    className: PropTypes.string,
+
+    /**
+     * An optional style variant (default, darker)
+     */
+    style: PropTypes.string,
+
+    /**
+     * An optional padding around the contents
+     */
+    padded: PropTypes.bool,
+
+    /**
+     * This prop controls the initial visual opened state of the `DropDown`.
+     */
+    isOpen: PropTypes.bool.isRequired,
+
+    /**
+     * This callback gets called when the opened state toggles
+     */
+    onToggle: PropTypes.func,
+
+    /**
+     * The contents to be rendered, ideally `DropDown.Header` and `DropDown.Contents`.
+     */
+    children: PropTypes.any.isRequired,
+
+    /**
+     * An optional css theme to be injected.
+     */
+    theme: PropTypes.shape({/* eslint-disable quote-props */
+        'dropDown': PropTypes.string
+    }).isRequired/* eslint-enable quote-props */
+};
+const defaultProps = {
+    isOpen: false,
+    style: 'default'
+};
+
+class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent {
     static propTypes = {
-        /**
-         * An optional `className` to attach to the wrapper.
-         */
-        className: PropTypes.string,
-
-        /**
-         * An optional style variant (default, darker)
-         */
-        style: PropTypes.string,
-
-        /**
-         * An optional padding around the contents
-         */
-        padded: PropTypes.bool,
-
-        /**
-         * This prop controls the initial visual opened state of the `DropDown`.
-         */
-        isOpen: PropTypes.bool.isRequired,
-
-        /**
-         * This callback gets called when the opened state toggles
-         */
-        onToggle: PropTypes.func,
-
-        /**
-         * The contents to be rendered, ideally `DropDown.Header` and `DropDown.Contents`.
-         */
-        children: PropTypes.any.isRequired,
-
-        /**
-         * An optional css theme to be injected.
-         */
-        theme: PropTypes.shape({/* eslint-disable quote-props */
-            'dropDown': PropTypes.string
-        }).isRequired/* eslint-enable quote-props */
+        ...wrapperPropTypes,
+        onToggle: PropTypes.func.isRequired,
+        onClose: PropTypes.func.isRequired
     };
-
-    static defaultProps = {
-        isOpen: false,
-        style: 'default'
-    };
+    static defaultProps = defaultProps;
 
     static childContextTypes = {
         toggleDropDown: PropTypes.func.isRequired,
-        openDropDown: PropTypes.func.isRequired,
         closeDropDown: PropTypes.func.isRequired
     };
 
     constructor(props, context) {
         super(props, context);
 
-        this.state = {isOpen: Boolean(props.isOpen)};
         this.handleToggle = event => {
             if (event) {
                 event.stopPropagation();
             }
 
-            this.toggle();
+            this.props.onToggle(event);
         };
         this.handleClose = event => {
-            this.close();
             if (event) {
                 event.stopPropagation();
             }
+            this.props.onClose(event);
         };
-
-        this.handleOpen = event => {
-            this.open();
-            if (event) {
-                event.stopPropagation();
-            }
-        };
-
-        this.handleClickOutside = this.close.bind(this);
     }
 
     getChildContext() {
         return {
             toggleDropDown: this.handleToggle,
-            closeDropDown: this.handleClose,
-            openDropDown: this.handleOpen
+            closeDropDown: this.handleClose
         };
+    }
+
+    handleClickOutside() {
+        this.handleClose();
     }
 
     render() {
@@ -105,40 +103,56 @@ export class DropDownWrapper extends PureComponent {
         });
 
         return (
-            <Broadcast channel="isDropdownOpen" value={this.state.isOpen}>
+            <Broadcast channel="isDropdownOpen" value={this.props.isOpen}>
                 <div {...rest} className={finalClassName}>
                     {children}
                 </div>
             </Broadcast>
         );
     }
+}
 
-    close() {
-        this.setState({isOpen: false});
+//
+// Add the click-outside functionality to the StatelessDropDownWrapper component.
+//
+export const StatelessDropDownWrapper = enhanceWithClickOutside(StatelessDropDownWrapperWithoutClickOutsideBehavior);
+
+export class DropDownWrapper extends PureComponent {
+    static propTypes = wrapperPropTypes;
+    static defaultProps = defaultProps;
+
+    constructor(props) {
+        super(props);
+        this.state = {isOpen: Boolean(props.isOpen)};
     }
 
-    open() {
-        this.setState({isOpen: true});
-    }
-
-    toggle() {
+    handleToggle = () => {
         if (this.props.onToggle) {
-            this.props.onToggle(!this.state.isOpen);
+            this.props.onToggle();
         }
 
         this.setState({isOpen: !this.state.isOpen});
     }
+
+    handleClose = () => {
+        this.setState({isOpen: false});
+    }
+
+    render() {
+        return <StatelessDropDownWrapper {...this.props} isOpen={this.state.isOpen} onToggle={this.handleToggle} onClose={this.handleClose}/>;
+    }
 }
+
+export default DropDownWrapper;
 
 export class ContextDropDownHeader extends PureComponent {
     static contextTypes = {
-        toggleDropDown: PropTypes.func.isRequired,
-        openDropDown: PropTypes.func.isRequired
+        toggleDropDown: PropTypes.func.isRequired
     };
 
     render() {
         return (<Subscriber channel="isDropdownOpen">{ isOpen =>
-            <ShallowDropDownHeader isOpen={isOpen} {...this.props} {...this.context}/>
+            <ShallowDropDownHeader isOpen={isOpen} {...this.props} toggleDropDown={this.context.toggleDropDown}/>
         }</Subscriber>);
     }
 }
@@ -153,10 +167,3 @@ export class ContextDropDownContents extends PureComponent {
         }</Subscriber>);
     }
 }
-
-//
-// Add the click-outside functionality to the DropDown component.
-//
-const EnhancedDropDown = enhanceWithClickOutside(DropDownWrapper);
-
-export default EnhancedDropDown;

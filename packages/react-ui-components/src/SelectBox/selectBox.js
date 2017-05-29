@@ -86,8 +86,23 @@ export default class SelectBox extends PureComponent {
     constructor(...args) {
         super(...args);
 
+        this.state = {isOpen: false};
+
         this.renderOption = this.renderOption.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    }
+
+    handleDropdownToggle = e => {
+        if (e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'text') {
+            // force dropdown open if the search-input-box is focused
+            this.setState({isOpen: true});
+        } else {
+            this.setState({isOpen: !this.state.isOpen});
+        }
+    }
+
+    handleDropdownClose = () => {
+        this.setState({isOpen: false});
     }
 
     render() {
@@ -124,7 +139,7 @@ export default class SelectBox extends PureComponent {
 
         return (
             <div className={theme.wrapper}>
-                <DropDown className={theme.dropDown}>
+                <DropDown.Stateless className={theme.dropDown} isOpen={this.state.isOpen} onToggle={this.handleDropdownToggle} onClose={this.handleDropdownClose}>
                     <DropDown.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
                         {icon ?
                             <IconComponent className={theme.dropDown__btnIcon} icon={icon}/> :
@@ -147,7 +162,7 @@ export default class SelectBox extends PureComponent {
                     <DropDown.Contents className={theme.dropDown__contents}>
                         {(options || []).map(this.renderOption)}
                     </DropDown.Contents>
-                </DropDown>
+                </DropDown.Stateless>
             </div>
         );
     }

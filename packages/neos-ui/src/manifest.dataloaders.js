@@ -1,15 +1,17 @@
-import {delay} from 'redux-saga';
-import {select} from 'redux-saga/effects';
+import HLRU from 'hashlru';
 import manifest from '@neos-project/neos-ui-extensibility';
-import {DataLoadersRegistry} from './Registry/index';
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import backend from '@neos-project/neos-ui-backend-connector';
+
+function makeCacheKey(prefix, params) {
+    return prefix + JSON.stringify(params);
+}
 
 manifest('main.dataloaders', {}, globalRegistry => {
     //
     // Create container registry
     //
-    globalRegistry.add('dataLoaders', new DataLoadersRegistry(`
+    globalRegistry.add('dataLoaders', new SynchronousRegistry(`
         # A "Data Loader" controls asynchronous loading of secondary data, which is used in all kinds of Select / List boxes in the backend.
 
         Example of data which is loaded through a data loader:
@@ -52,51 +54,80 @@ manifest('main.dataloaders', {}, globalRegistry => {
             Takes the current context (workspace, dimensions) into account when doing the search.
 
             OPTIONS:
-                - nodeTypes: (TODO!!!)
+                - nodeTypes: (TODO!!!, optional)
+                - contextForNodeLinking (plain JS object - retrieved from Selector - required)
         `,
-        makeCacheSegmentSelector(options) {
-            return state => {
-                const contextForNodeLinking = selectors.UI.NodeLinking.contextForNodeLinking(state);
-                const cacheIdentifierParts = contextForNodeLinking.toJS();
-                if (options.nodeTypes) {
-                    cacheIdentifierParts.nodeTypesFilter = options.nodeTypes;
-                } else {
-                    cacheIdentifierParts.nodeTypesFilter = ['Neos.Neos:Document'];
+
+        _lru() {
+            if (!this._lruCache) {
+                this._lruCache = new HLRU(500);
+            }
+            return this._lruCache;
+        },
+
+        resolveValue(options, identifier) {
+            const cacheKey = makeCacheKey('resolve', {options, identifier});
+            if (this._lru().has(cacheKey)) {
+                return this._lru().get(cacheKey);
+            }
+            const resultPromise = Promise.resolve()
+                .then(() => {
+                    if (!identifier) {
+                        return [];
+                    }
+                    // Build up query
+                    const searchNodesQuery = Object.assign({}, options.contextForNodeLinking, {
+                        nodeIdentifiers: [identifier]
+                    });
+
+                    // trigger query
+                    const searchNodesApi = backend.get().endpoints.searchNodes;
+                    return searchNodesApi(searchNodesQuery);
+                });
+
+            this._lru().set(cacheKey, resultPromise);
+            return resultPromise;
+        },
+
+        search(options, searchTerm) {
+            if (!searchTerm) {
+                return Promise.resolve([]);
+            }
+
+            const cacheKey = makeCacheKey('search', {options, searchTerm});
+            if (this._lru().has(cacheKey)) {
+                return this._lru().get(cacheKey);
+            }
+
+            // Debounce AJAX requests for 300 ms
+            return new Promise(resolve => {
+                if (this._debounceTimer) {
+                    window.clearTimeout(this._debounceTimer);
                 }
-                return JSON.stringify(cacheIdentifierParts);
-            };
-        },
-        * loadItemsByIds(options, identifiers) {
-            if (identifiers && identifiers.length > 0) {
+                this._debounceTimer = window.setTimeout(resolve, 300);
+            }).then(() => {
                 // Build up query
-                const contextForNodeLinking = yield select(selectors.UI.NodeLinking.contextForNodeLinking);
-                const searchNodesQuery = contextForNodeLinking.toJS();
-                searchNodesQuery.nodeIdentifiers = identifiers;
+                const searchNodesQuery = Object.assign({}, options.contextForNodeLinking, {
+                    searchTerm
+                });
 
                 // trigger query
                 const searchNodesApi = backend.get().endpoints.searchNodes;
-                const result = yield searchNodesApi(searchNodesQuery);
+                const resultPromise = searchNodesApi(searchNodesQuery);
 
-                return result;
-            }
-        },
+                this._lru().set(cacheKey, resultPromise);
 
-        * search(options, searchTerm) {
-            if (searchTerm) {
-                // Debounce AJAX requests
-                yield delay(300);
-
-                // Build up query
-                const contextForNodeLinking = yield select(selectors.UI.NodeLinking.contextForNodeLinking);
-                const searchNodesQuery = contextForNodeLinking.toJS();
-                searchNodesQuery.searchTerm = searchTerm;
-
-                // trigger query
-                const searchNodesApi = backend.get().endpoints.searchNodes;
-                const result = yield searchNodesApi(searchNodesQuery);
-
-                return result;
-            }
+                // Next to storing the full result in the cache, we also store each individual result in the cache;
+                // in the same format as expected by resolveValue(); so that it is already loaded and does not need
+                // to be loaded once the element has been selected.
+                resultPromise.then(results => {
+                    results.forEach(result => {
+                        const cacheKey = makeCacheKey('resolve', {options, identifier: result.identifier});
+                        this._lru().set(cacheKey, Promise.resolve([result]));
+                    });
+                });
+                return resultPromise;
+            });
         }
     });
 });

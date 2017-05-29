@@ -1,9 +1,9 @@
 import React, {PureComponent, PropTypes} from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
+import {$get, $transform} from 'plow-js';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
 const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix =>
     nodeIdentifierWithPrefix && nodeIdentifierWithPrefix.replace('node://', '');
@@ -11,26 +11,15 @@ const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix =>
 const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
     nodeIdentifier && 'node://' + nodeIdentifier;
 
-@neos((globalRegistry, props) => {
-    const dataLoaderOptions = {
-        nodeTypes: $get('options.nodeTypes', props)
-    };
-
+@connect($transform({
+    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
+}))
+@neos(globalRegistry => {
     return {
-        nodeLookupDataLoader: globalRegistry.get('dataLoaders').getClient('NodeLookup', dataLoaderOptions),
+        nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
         i18nRegistry: globalRegistry.get('i18n')
     };
 })
-@connect((state, {nodeLookupDataLoader}) => {
-    const propsSelector = nodeLookupDataLoader.makePropsSelector();
-
-    return (state, {value, searchTerm}) => ({
-        ...propsSelector(state, removePrefixFromNodeIdentifier(value), searchTerm)
-    });
-}, (dispatch, {nodeLookupDataLoader}) => ({
-    initializeDataLoader: (...args) => dispatch(nodeLookupDataLoader.doInitialize(...args)),
-    search: (...args) => dispatch(nodeLookupDataLoader.doSearch(...args))
-}))
 class LinkEditor extends PureComponent {
     static propTypes = {
         identifier: PropTypes.string.isRequired,
@@ -41,38 +30,68 @@ class LinkEditor extends PureComponent {
             placeholder: PropTypes.string
         }),
 
+        contextForNodeLinking: PropTypes.shape({
+            toJS: PropTypes.func.isRequired
+        }).isRequired,
+
         i18nRegistry: PropTypes.object.isRequired,
-
-        // from nodeLookupDataLoader.makePropsSelector();
-        optionValues: ImmutablePropTypes.listOf(
-            ImmutablePropTypes.contains({
-                identifier: PropTypes.string.isRequired,
-                label: PropTypes.string.isRequired
-            })
-        ),
-        isLoading: PropTypes.bool.isRequired,
-
-        initializeDataLoader: PropTypes.func.isRequired,
-        search: PropTypes.func.isRequired,
-
-        // TODO: coming from a stateful component *above* wrapping the search term. This is only needed because we need the search term in the data loader (connect above)
-        onSearchTermChange: PropTypes.func.isRequired,
-        searchTerm: PropTypes.string.isRequired
+        nodeLookupDataLoader: PropTypes.shape({
+            resolveValue: PropTypes.func.isRequired,
+            search: PropTypes.func.isRequired
+        }).isRequired
     };
 
-    componentDidMount() {
-        this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
+    constructor(...args) {
+        super(...args);
+
+        this.state = {
+            searchTerm: '',
+            isLoading: false,
+            searchResults: [],
+            results: []
+        };
     }
+
+    getDataLoaderOptions() {
+        return {
+            nodeTypes: $get('options.nodeTypes', this.props),
+            contextForNodeLinking: this.props.contextForNodeLinking.toJS()
+        };
+    }
+
+    componentDidMount() {
+        if (this.props.value) {
+            this.setState({isLoading: true});
+            this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), removePrefixFromNodeIdentifier(this.props.value))
+                .then(options => {
+                    this.setState({
+                        isLoading: false,
+                        options
+                    });
+                });
+        }
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.value !== this.props.value) {
-            this.props.initializeDataLoader(removePrefixFromNodeIdentifier(this.props.value));
+            this.componentDidMount();
         }
     }
 
     handleSearchTermChange = searchTerm => {
-        this.props.search(searchTerm);
-        this.props.onSearchTermChange(searchTerm);
+        this.setState({searchTerm});
+        if (searchTerm) {
+            this.setState({isLoading: true, searchOptions: []});
+            this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
+                .then(searchOptions => {
+                    this.setState({
+                        isLoading: false,
+                        searchOptions
+                    });
+                });
+        }
     }
+
     handleValueChange = value => {
         this.props.commit(appendPrefixBeforeNodeIdentifier(value));
     }
@@ -80,44 +99,19 @@ class LinkEditor extends PureComponent {
     render() {
         return (
             <SelectBox
-                options={this.props.optionValues.toJS()}
+                options={this.props.value ? this.state.options : this.state.searchOptions}
                 optionValueField="identifier"
                 value={this.props.value && removePrefixFromNodeIdentifier(this.props.value)}
                 onValueChange={this.handleValueChange}
                 placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
-                displayLoadingIndicator={this.props.isLoading}
+                displayLoadingIndicator={this.state.isLoading}
                 displaySearchBox={true}
-                searchTerm={this.props.searchTerm}
-                onSearchTermChange={this.handleSearchTermChange}
-                />
-        );
-    }
-}
-
-class StatefulLinkEditor extends PureComponent {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchTerm: ''
-        };
-    }
-
-    handleSearchTermChange = searchTerm => {
-        this.setState({searchTerm});
-    }
-
-    render() {
-        return (
-            <LinkEditor
-                {...this.props}
                 searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
                 />
         );
     }
-
 }
 
-export default StatefulLinkEditor;
+export default LinkEditor;
 

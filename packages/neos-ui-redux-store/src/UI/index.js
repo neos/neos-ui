@@ -1,7 +1,6 @@
 import {map, keys} from 'ramda';
 import {handleActions} from '@neos-project/utils-redux';
 
-import * as DataLoaders from './DataLoaders/index';
 import * as FlashMessages from './FlashMessages/index';
 import * as FullScreen from './FullScreen/index';
 import * as LeftSideBar from './LeftSideBar/index';
@@ -23,7 +22,6 @@ import * as NodeVariantCreationDialog from './NodeVariantCreationDialog/index';
 import * as ContentTree from './ContentTree/index';
 
 const all = {
-    DataLoaders,
     FlashMessages,
     FullScreen,
     LeftSideBar,

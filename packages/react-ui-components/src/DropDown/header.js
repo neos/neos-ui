@@ -11,7 +11,6 @@ const ShallowDropDownHeader = props => {
         theme,
         isOpen,
         toggleDropDown,
-        openDropDown,
         IconComponent,
         _refHandler,
         shouldKeepFocusState,
@@ -24,19 +23,10 @@ const ShallowDropDownHeader = props => {
         [theme['dropDown__btn--open']]: isOpen
     });
 
-    const handleOnClick = e => {
-        // WORKAROUND for inputs in DropDown Headers (NEEDED for good select box handling -> TODO!)
-        if (e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'text') {
-            openDropDown();
-        } else {
-            toggleDropDown();
-        }
-    };
-
     return (
         <div
             {...rest}
-            onClick={handleOnClick}
+            onClick={toggleDropDown}
             ref={shouldKeepFocusState ? _refHandler(isOpen) : emptyFn}
             className={finalClassName}
             aria-haspopup="true"
@@ -77,7 +67,6 @@ ShallowDropDownHeader.propTypes = {
      */
     isOpen: PropTypes.bool.isRequired,
     toggleDropDown: PropTypes.func.isRequired,
-    openDropDown: PropTypes.func.isRequired,
 
     /**
      * An interal prop for testing purposes, do not set this prop manually.

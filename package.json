@@ -3,7 +3,7 @@
   "license": "GNU GPLv3",
   "private": true,
   "scripts": {
-    "clear": "rm -rf packages/*/node_modules",
+    "clear": "rm -Rf node_modules; rm -rf packages/*/node_modules",
     "postinstall": "lerna bootstrap",
     "build:ui": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
     "build:ui:watch": "npm run build:ui -- --watch",

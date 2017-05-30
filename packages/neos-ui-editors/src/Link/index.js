@@ -54,7 +54,7 @@ class LinkEditor extends PureComponent {
 
     getDataLoaderOptions() {
         return {
-            nodeTypes: $get('options.nodeTypes', this.props),
+            nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
             contextForNodeLinking: this.props.contextForNodeLinking.toJS()
         };
     }

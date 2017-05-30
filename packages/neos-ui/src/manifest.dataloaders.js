@@ -19,26 +19,20 @@ manifest('main.dataloaders', {}, globalRegistry => {
         - Reference / References editor
         - Data Sources in the Select Editor
 
-        TODO HIGH LEVEL
+        Each Data Loader can have a slightly different API, so check the "description" field of each data loader when using it.
 
-        {
-            description: "a human readable explanation for the data loader",
-            cacheSegment: function* (options) {
-                // return string: Cache Segment Identifier to be used!
-            }
-            loadItemsByIds: function* (options, identifiers) {
-                // "options" are the Data-Loader-Specific options
-                // "value" is the initial value in the component (e.g. a Node Identifier, or a list of Node Identifiers)
+        It is up to the data loaders to implement caching internally.
 
-                // NOTE: the data loader can load MORE values than specified in "identifiers", but it should try to load at least the objects referenced in "identifiers".
-                //       Thus, if "identifiers" is empty, the data loader might already load stuff.
+        Normally, each data loader exposes the following methods:
 
-                return [
-                    {
-                        ... // arbitarily structured object; needs at least an "identifier" property.
-                    }
-                ]
-            }
+        resolveValue(options, identifier) {
+            // "options" is a DataLoader-specific object.
+            // returns Promise with [{identifier, label}, ...] list; where "identifier" was resolved to the actual object represented by "identifier".
+        }
+
+        search(options, searchTerm) {
+            // "options" is a DataLoader-specific object.
+            // returns Promise with [{identifier, label}, ...] list; these are the objects displayed in the selection dropdown.
         }
     `));
 
@@ -46,16 +40,16 @@ manifest('main.dataloaders', {}, globalRegistry => {
 
     dataLoadersRegistry.add('NodeLookup', {
         description: `
-            Look up ContentRepository Nodes.
+            Look up ContentRepository Nodes:
 
-            - Identifier: Node Identifier (uuid)
-            - Search Term: search in node properties.
+            - by Node identifier (UUID) (resolveValue())
+            - by searching in node properties (search())
 
-            Takes the current context (workspace, dimensions) into account when doing the search.
+            Takes the current context (workspace, dimensions) into account when doing the search, as this is passed in
 
             OPTIONS:
-                - nodeTypes: (TODO!!!, optional)
-                - contextForNodeLinking (plain JS object - retrieved from Selector - required)
+                - contextForNodeLinking: the current value of "selectors.UI.NodeLinking.contextForNodeLinking", required.
+                - nodeTypes: an array of node type names; if set, the search is restricted to these node types.
         `,
 
         _lru() {
@@ -108,7 +102,8 @@ manifest('main.dataloaders', {}, globalRegistry => {
             }).then(() => {
                 // Build up query
                 const searchNodesQuery = Object.assign({}, options.contextForNodeLinking, {
-                    searchTerm
+                    searchTerm,
+                    nodeTypes: options.nodeTypes
                 });
 
                 // trigger query

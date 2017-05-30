@@ -78,8 +78,6 @@ export default class SelectBox extends PureComponent {
         DropDownComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
-        SearchableSelectBoxComponent: PropTypes.any.isRequired,
-        SimpleSelectBoxComponent: PropTypes.any.isRequired,
         TextInputComponent: PropTypes.any.isRequired
     };
 

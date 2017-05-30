@@ -40,10 +40,6 @@ manifest('main', {}, globalRegistry => {
                 component: TextInput // the React editor component to use. Required.
 
                 hasOwnLabel: true|false // does the component render the label internally, or not?
-
-                makeDataLoader: function(editorOptions) {
-
-                }
             }
 
         ## Component Wiring

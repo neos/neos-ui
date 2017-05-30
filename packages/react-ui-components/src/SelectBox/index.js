@@ -18,5 +18,5 @@ export default injectProps({
     DropDownComponent: DropDown,
     IconComponent: Icon,
     IconButtonComponent: IconButton,
-    TextInputComponent: TextInput,
+    TextInputComponent: TextInput
 })(ThemedSelectBox);

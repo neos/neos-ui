@@ -123,16 +123,18 @@ export default class SelectBox extends PureComponent {
         const selectedValue = (options || []).find(option => option[optionValueField] === value);
 
         let icon = '';
-
         let label = '';
+        if (displaySearchBox) {
+            icon = 'search'
+        }
         if (selectedValue) {
             label = selectedValue.label;
-            icon = selectedValue.icon;
+            icon = selectedValue.icon ? selectedValue.icon : icon;
         } else if (displayLoadingIndicator) {
             label = '[Loading]'; // TODO: localize
         } else if (placeholder) {
             label = placeholder;
-            icon = placeholderIcon;
+            icon = placeholderIcon ? placeholderIcon : icon;
         }
 
         return (
@@ -144,7 +146,11 @@ export default class SelectBox extends PureComponent {
                             null
                         }
                         {displaySearchBox && !selectedValue ?
-                            <span><TextInputComponent value={searchTerm} onChange={onSearchTermChange}/></span> :
+                            <TextInputComponent
+                                value={searchTerm}
+                                onChange={onSearchTermChange}
+                                className={theme.dropDown__searchInput}
+                                containerClassName={theme.dropDown__searchInputContainer}/> :
                             <span>{label}</span>
                         }
 

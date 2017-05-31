@@ -9,6 +9,11 @@ class TextInput extends PureComponent {
         className: PropTypes.string,
 
         /**
+         * An optional className for the surrounding container div.
+         */
+        containerClassName: PropTypes.string,
+
+        /**
          * An optional HTML5 placeholder.
          */
         placeholder: PropTypes.string,
@@ -67,6 +72,7 @@ class TextInput extends PureComponent {
             validationErrors,
             theme,
             highlight,
+            containerClassName,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
@@ -81,7 +87,7 @@ class TextInput extends PureComponent {
         });
 
         return (
-            <div>
+            <div className={containerClassName}>
                 <input
                     {...rest}
                     className={classNames}

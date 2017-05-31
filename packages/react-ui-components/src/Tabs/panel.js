@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Panel = ({theme, children}) => <div className={theme.panel}>{children}</div>;
 Panel.displayName = 'Panel';

@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Maybe} from 'monet';
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';

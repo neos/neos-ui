@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';

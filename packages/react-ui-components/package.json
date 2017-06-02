@@ -40,7 +40,6 @@
     "moment": "^2.14.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.0",
-    "react-addons-shallow-compare": "^15.4.0",
     "react-click-outside": "^2.1.0",
     "react-collapse": "^2.2.2",
     "react-datetime": "^2.5.0",

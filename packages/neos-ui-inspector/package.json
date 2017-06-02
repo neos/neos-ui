@@ -21,7 +21,6 @@
     "@neos-project/react-ui-components": "^4.4.8",
     "prop-types": "^15.5.10",
     "react": "^15.5.0",
-    "react-addons-shallow-compare": "^15.4.0",
     "react-redux": "^4.4.5",
     "react-portal": "^3.0.0",
     "classnames": "^2.2.3",

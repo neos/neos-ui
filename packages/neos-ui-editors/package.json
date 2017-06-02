@@ -52,7 +52,6 @@
     "prop-types": "^15.5.10",
     "ramda": "^0.22.1",
     "react": "^15.5.0",
-    "react-addons-shallow-compare": "^15.4.0",
     "react-click-outside": "^2.1.0",
     "react-codemirror": "^1.0.0",
     "react-collapse": "^2.3.3",

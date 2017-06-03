@@ -5085,9 +5085,11 @@ react-codemirror@^1.0.0:
     lodash.isequal "^4.5.0"
     prop-types "^15.5.4"
 
-react-collapse@^2.2.2:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-2.3.3.tgz#68c70f1fceeaf375e3599b95710cc51e5dd339a3"
+react-collapse@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-2.4.1.tgz#999a9969b2633752acba4847c28101edd2dcab89"
+  dependencies:
+    prop-types "15.5.8"
 
 react-css-themr@^2.1.0:
   version "2.1.2"

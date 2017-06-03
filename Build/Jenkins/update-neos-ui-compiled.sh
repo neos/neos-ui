@@ -18,8 +18,8 @@ set -xe
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`
 
-npm install
-npm run build
+yarn install
+yarn build
 
 rm -Rf tmp_compiled_pkg
 git clone git@github.com:neos/neos-ui-compiled.git tmp_compiled_pkg

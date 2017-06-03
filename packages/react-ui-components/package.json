@@ -45,8 +45,8 @@
     "react-datetime": "^2.5.0",
     "react-dom": "^15.5.0",
     "react-textarea-autosize": "^4.0.0",
-    "react-height": "^2.0.4",
-    "react-motion": "^0.4.2",
+    "react-height": "^3.0.0",
+    "react-motion": "^0.5.0",
     "react-css-themr": "^1.2.0",
     "react-portal": "^2.2.1",
     "react-broadcast": "^0.1.2"

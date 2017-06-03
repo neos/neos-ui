@@ -5089,10 +5089,11 @@ react-collapse@^2.2.2:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-2.3.3.tgz#68c70f1fceeaf375e3599b95710cc51e5dd339a3"
 
-react-css-themr@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-css-themr/-/react-css-themr-2.0.0.tgz#c4f93b9284009d9b4565121f09eb6b2bf402c3ef"
+react-css-themr@^2.1.0:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-css-themr/-/react-css-themr-2.1.2.tgz#e017514e471c232f43a754a55b49d81faf5dafb8"
   dependencies:
+    hoist-non-react-statics "^1.2.0"
     invariant "^2.2.1"
 
 react-datetime@^2.7.2:

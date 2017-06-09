@@ -68,7 +68,7 @@
     "react-motion": "^0.5.0",
     "react-portal": "^3.1.0",
     "react-textarea-autosize": "^5.0.6",
-    "redux-devtools": "^3.2.0",
+    "redux-devtools": "^3.4.0",
     "regenerator-runtime": "^0.10.3",
     "rimraf": "^2.5.4",
     "semantic-release": "^6.3.2",

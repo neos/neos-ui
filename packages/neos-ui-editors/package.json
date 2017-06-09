@@ -64,7 +64,7 @@
     "react-immutable-proptypes": "^2.1.0",
     "react-measure": "^1.4.7",
     "react-motion": "^0.5.0",
-    "react-portal": "^3.0.0",
+    "react-portal": "^3.1.0",
     "react-redux": "^5.0.5",
     "react-textarea-autosize": "^5.0.6",
     "redux": "^3.4.0",

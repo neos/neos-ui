@@ -9,7 +9,6 @@
     touch-action: pan-y;
     -webkit-tap-highlight-color: transparent;
 }
-
 .slick-list
 {
     position: relative;
@@ -33,13 +32,11 @@
 {
     transform: translate3d(0, 0, 0);
 }
-
 .slick-track
 {
     position: relative;
     top: 0;
     left: 0;
-
     display: block;
 }
 .slick-track:before,
@@ -57,7 +54,6 @@
 {
     visibility: hidden;
 }
-
 .slick-slide
 {
     display: none;

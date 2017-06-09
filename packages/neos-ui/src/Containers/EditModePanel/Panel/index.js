@@ -24,16 +24,12 @@ export default class Panel extends PureComponent {
         const {title, className, modes, current, currentMode, style, onPreviewModeClick} = this.props;
 
         let sliderSettings = {
-            dots: true,
+            dots: false,
             infinite: false,
-            speed: 500,
-            slidesToScroll: 1,
-            slidesToShow: 1,
+            speed: 300,
+            slidesToShow: Math.round(modes.length / 2), //https://github.com/kenwheeler/slick/issues/1207#issuecomment-105663300
             variableWidth: true,
-            //focusOnSelect: true,
             adaptiveHeight: true,
-            easing: 'swing',
-            edgeFriction: 0
         };
 
         return (
@@ -54,5 +50,4 @@ export default class Panel extends PureComponent {
             </div>
         );
     }
-
 }

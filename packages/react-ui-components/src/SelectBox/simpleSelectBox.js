@@ -25,7 +25,7 @@ export default class SimpleBox extends PureComponent {
          * This prop represents either a set of options or a function that returns those.
          * Each option must have a value and can have a label and an icon.
          */
-        options: React.PropTypes.oneOfType([
+        options: PropTypes.oneOfType([
             PropTypes.arrayOf(
                 PropTypes.shape({
                     icon: PropTypes.string,

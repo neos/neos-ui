@@ -18,9 +18,20 @@
     "@neos-project/build-essentials": "^4.4.8"
   },
   "dependencies": {
+    "@neos-project/neos-ui-backend-connector": "^4.4.8",
     "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
+    "@neos-project/neos-ui-decorators": "^4.4.8",
+    "@neos-project/neos-ui-guest-frame": "^4.4.8",
+    "@neos-project/neos-ui-redux-store": "^4.4.8",
+    "@neos-project/react-ui-components": "^4.4.8",
+    "classnames": "^2.2.3",
     "lodash.debounce": "^4.0.8",
-    "lodash.throttle": "^4.1.1"
+    "lodash.throttle": "^4.1.1",
+    "plow-js": "^2.1.0",
+    "ramda": "^0.22.1",
+    "react": "^15.4.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.4.0"
   },
   "license": "GNU GPLv3",
   "jest": {

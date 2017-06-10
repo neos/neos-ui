@@ -1,7 +1,7 @@
 import {takeLatest} from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
-import {iframeDocument} from '../../../Containers//ContentCanvas/Helpers/dom';
+import {iframeDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 

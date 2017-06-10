@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
-import {Broadcast, Subscriber} from 'react-broadcast';
 
 export default class ToggablePanel extends PureComponent {
     static propTypes = {
@@ -123,11 +122,12 @@ export class StatelessToggablePanel extends PureComponent {
         });
 
         return (
-            <Broadcast channel="isPanelOpen" value={this.props.isOpen}>
-                <section className={finalClassName}>
-                    {children}
-                </section>
-            </Broadcast>
+            <section className={finalClassName}>
+                {React.Children.map(
+                    children,
+                    child => child.type ? <child.type {...child.props} isPanelOpen={this.props.isOpen}/> : child
+                )}
+            </section>
         );
     }
 }
@@ -138,6 +138,11 @@ export class Header extends PureComponent {
          * The children which will be rendered within the header.
          */
         children: PropTypes.any.isRequired,
+
+        /**
+         * The propagated isOpen state from the toggle panel
+         */
+        isPanelOpen: PropTypes.bool.isRequired,
 
         /**
          * An optional css theme to be injected.
@@ -163,28 +168,27 @@ export class Header extends PureComponent {
             HeadlineComponent,
             IconButtonComponent,
             children,
+            isPanelOpen,
             theme,
             ...rest
         } = this.props;
         const {onPanelToggle} = this.context;
 
         return (
-            <Subscriber channel="isPanelOpen">{ isOpen =>
-                <div aria-expanded={isOpen} {...rest}>
-                    <HeadlineComponent
-                        className={theme.panel__headline}
-                        type="h1"
-                        style="h4"
-                        >
-                        {children}
-                    </HeadlineComponent>
-                    <IconButtonComponent
-                        className={theme.panel__toggleBtn}
-                        icon={isOpen ? 'chevron-up' : 'chevron-down'}
-                        onClick={onPanelToggle}
-                        />
-                </div>
-            }</Subscriber>
+            <div aria-expanded={isPanelOpen} {...rest}>
+                <HeadlineComponent
+                    className={theme.panel__headline}
+                    type="h1"
+                    style="h4"
+                    >
+                    {children}
+                </HeadlineComponent>
+                <IconButtonComponent
+                    className={theme.panel__toggleBtn}
+                    icon={isPanelOpen ? 'chevron-up' : 'chevron-down'}
+                    onClick={onPanelToggle}
+                    />
+            </div>
         );
     }
 }
@@ -202,6 +206,11 @@ export class Contents extends PureComponent {
         children: PropTypes.any.isRequired,
 
         /**
+         * The propagated isOpen state from the toggle panel
+         */
+        isPanelOpen: PropTypes.bool.isRequired,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
@@ -215,8 +224,9 @@ export class Contents extends PureComponent {
 
     render() {
         const {
-            children,
             className,
+            children,
+            isPanelOpen,
             theme
         } = this.props;
         const finalClassName = mergeClassNames({
@@ -225,13 +235,11 @@ export class Contents extends PureComponent {
         });
 
         return (
-            <Subscriber channel="isPanelOpen">{ isOpen =>
-                <Collapse isOpened={isOpen}>
-                    <div className={finalClassName} aria-hidden={isOpen ? 'false' : 'true'}>
-                        {children}
-                    </div>
-                </Collapse>
-            }</Subscriber>
+            <Collapse isOpened={isPanelOpen}>
+                <div className={finalClassName} aria-hidden={isPanelOpen ? 'false' : 'true'}>
+                    {children}
+                </div>
+            </Collapse>
         );
     }
 }

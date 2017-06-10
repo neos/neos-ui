@@ -1,4 +1,4 @@
-import IconButton from '@neos-project/react-ui-components/lib/IconButton/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 import LinkIconButton from './EditorToolbar/LinkIconButton';
 import StyleSelect from './EditorToolbar/StyleSelect';

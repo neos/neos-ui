@@ -42,7 +42,7 @@
     "@neos-project/build-essentials": "^4.4.8"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "^4.4.8",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
     "redux-saga": "^0.12.0"
   },
   "license": "GNU GPLv3"

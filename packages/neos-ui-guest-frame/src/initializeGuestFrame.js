@@ -58,35 +58,22 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         }
     });
 
-    findAllNodesInGuestFrame().reduce((nodesByPosition, node) => {
-        const {top} = node.getBoundingClientRect();
+    const initializeNodes = findAllNodesInGuestFrame().reduceRight((initializeSubSequentNodes, node) => () => {
+        const initializeCurrentNode = initializeContentDomNode({
+            store,
+            globalRegistry,
+            nodeTypesRegistry,
+            inlineEditorRegistry,
+            nodes
+        });
 
-        if (!nodesByPosition[Math.floor(top / guestFrameWindow.innerHeight)]) {
-            nodesByPosition[Math.floor(top / guestFrameWindow.innerHeight)] = [];
-        }
+        window.requestIdleCallback(() => {
+            initializeCurrentNode(node);
+            initializeSubSequentNodes();
+        });
+    }, () => { /* This noop function is called right at the end of content inialization */ });
 
-        nodesByPosition[Math.floor(top / guestFrameWindow.innerHeight)].push(node);
-
-        return nodesByPosition;
-    }, []).forEach((nodeGroup, position) => {
-        const handle = () => {
-            if (Math.floor(guestFrameWindow.scrollY / guestFrameWindow.innerHeight) + 1 >= position) {
-                nodeGroup.forEach(
-                    initializeContentDomNode({
-                        store,
-                        globalRegistry,
-                        nodeTypesRegistry,
-                        inlineEditorRegistry,
-                        nodes
-                    })
-                );
-                guestFrameWindow.removeEventListener('scroll', handle);
-            }
-        };
-
-        guestFrameWindow.addEventListener('scroll', handle);
-        handle();
-    });
+    initializeNodes();
 
     yield takeEvery(actionTypes.CR.Nodes.FOCUS, action => {
         const oldNode = findInGuestFrame(`.${style['markActiveNodeAsFocused--focusedNode']}`);

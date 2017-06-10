@@ -79,6 +79,11 @@ export const findAllOccurrencesOfNodeInGuestFrame = (contextPath, fusionPath) =>
 );
 
 //
+// Find all rendered childnodes beneath a given DOM ndoe
+//
+export const findAllChildNodes = el => [].slice.call(el.querySelectorAll('[data-__neos-node-contextpath]'));
+
+//
 // Find the closest DOM node that represents a CR node relative to the given DOM node
 // in the guest frame
 //

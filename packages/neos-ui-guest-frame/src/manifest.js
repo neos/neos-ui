@@ -11,7 +11,8 @@ import initializeContentDomNode from './initializeContentDomNode';
 import {
     findNodeInGuestFrame,
     findAllOccurrencesOfNodeInGuestFrame,
-    createEmptyContentCollectionPlaceholderIfMissing
+    createEmptyContentCollectionPlaceholderIfMissing,
+    findAllChildNodes
 } from './dom';
 import InlineUI from './InlineUI';
 
@@ -81,9 +82,17 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
                 break;
         }
 
-        const nodes = new Map({
-            [contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())
-        });
+        const children = findAllChildNodes(contentElement);
+
+        const nodes = new Map(
+            Object.assign(
+                {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
+                ...children.map(el => {
+                    const contextPath = el.getAttribute('data-__neos-node-contextpath');
+                    return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
+                })
+            )
+        );
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const inlineEditorRegistry = globalRegistry.get('inlineEditors');
 
@@ -91,13 +100,18 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
             parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`).remove();
         }
 
-        initializeContentDomNode({
-            store,
-            globalRegistry,
-            nodeTypesRegistry,
-            inlineEditorRegistry,
-            nodes
-        })(contentElement);
+        //
+        // Initialize the newly rendered node and all nodes that came with it
+        //
+        [contentElement, ...children].forEach(
+            initializeContentDomNode({
+                store,
+                globalRegistry,
+                nodeTypesRegistry,
+                inlineEditorRegistry,
+                nodes
+            })
+        );
     });
 
     //

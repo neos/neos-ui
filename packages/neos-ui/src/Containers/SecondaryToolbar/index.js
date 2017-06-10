@@ -59,7 +59,7 @@ export default class SecondaryToolbar extends PureComponent {
         }
 
         const {nodeTypesRegistry, inlineEditorRegistry, focusedNodeTypeName} = this.props;
-        const editorIdentifier = nodeTypesRegistry.getInlineEditorForProperty(
+        const editorIdentifier = nodeTypesRegistry.getInlineEditorIdentifierForProperty(
             focusedNodeTypeName,
             currentlyEditedPropertyName
         );

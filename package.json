@@ -43,6 +43,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.10.0",
     "greenkeeper-postpublish": "^1.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "imports-loader": "^0.7.0",
     "json-loader": "^0.5.4",
     "lerna": "2.0.0-beta.31",

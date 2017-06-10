@@ -24,7 +24,7 @@
     "react-redux": "^4.4.5",
     "react-portal": "^3.0.0",
     "classnames": "^2.2.3",
-    "plow-js": "^1.2.0"
+    "plow-js": "^2.1.0"
   },
   "license": "GNU GPLv3",
   "jest": {

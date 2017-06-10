@@ -48,7 +48,7 @@
     "moment": "^2.14.1",
     "monet": "^0.8.10",
     "normalize.css": "^5.0.0",
-    "plow-js": "^1.2.0",
+    "plow-js": "^2.1.0",
     "ramda": "^0.22.1",
     "react": "^15.4.0",
     "react-addons-shallow-compare": "^15.4.0",

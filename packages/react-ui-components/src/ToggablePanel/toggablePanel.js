@@ -123,7 +123,10 @@ export class StatelessToggablePanel extends PureComponent {
 
         return (
             <section className={finalClassName}>
-                {React.Children.map(children, child => <child.type {...child.props} isPanelOpen={this.props.isOpen}/>)}
+                {React.Children.map(
+                    children,
+                    child => child.type ? <child.type {...child.props} isPanelOpen={this.props.isOpen}/> : child
+                )}
             </section>
         );
     }

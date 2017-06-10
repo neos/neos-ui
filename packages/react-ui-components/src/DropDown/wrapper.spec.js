@@ -17,7 +17,7 @@ test('should render the "className" prop if passed.', () => {
         className: 'barClassName'
     });
 
-    expect(dd.childAt(0).hasClass('barClassName')).toBeTruthy();
+    expect(dd.hasClass('barClassName')).toBeTruthy();
 });
 test('should set the "isOpen" state value to opposite when calling the toggle method.', () => {
     const dd = shallow();

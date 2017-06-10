@@ -98,7 +98,7 @@ export class DropDownWrapper extends PureComponent {
             <div {...rest} className={finalClassName}>
                 {React.Children.map(
                     children,
-                    child => <child.type {...child.props} isDropdownOpen={this.state.isOpen}/>
+                    child => child.type ? <child.type {...child.props} isDropdownOpen={this.props.isOpen}/> : child
                 )}
             </div>
         );

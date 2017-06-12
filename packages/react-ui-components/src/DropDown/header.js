@@ -11,7 +11,6 @@ const ShallowDropDownHeader = props => {
         children,
         theme,
         isOpen,
-        isDropdownOpen,
         toggleDropDown,
         IconComponent,
         _refHandler,

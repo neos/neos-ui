@@ -130,9 +130,9 @@ export class ContextDropDownHeader extends PureComponent {
     };
 
     render() {
-        const {isDropdownOpen} = this.props;
+        const {isDropdownOpen, ...rest} = this.props;
 
-        return <ShallowDropDownHeader isOpen={isDropdownOpen} {...this.props} {...this.context}/>;
+        return <ShallowDropDownHeader isOpen={isDropdownOpen} {...rest} {...this.context}/>;
     }
 }
 export class ContextDropDownContents extends PureComponent {
@@ -148,9 +148,9 @@ export class ContextDropDownContents extends PureComponent {
     };
 
     render() {
-        const {isDropdownOpen} = this.props;
+        const {isDropdownOpen, ...rest} = this.props;
 
-        return <ShallowDropDownContents isOpen={isDropdownOpen} {...this.props} {...this.context}/>;
+        return <ShallowDropDownContents isOpen={isDropdownOpen} {...rest} {...this.context}/>;
     }
 }
 

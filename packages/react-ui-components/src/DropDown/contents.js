@@ -8,6 +8,7 @@ const ShallowDropDownContents = props => {
         children,
         theme,
         isOpen,
+        isDropdownOpen,
         closeDropDown,
         ...rest
     } = props;

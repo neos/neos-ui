@@ -85,7 +85,7 @@ export class DropDownWrapper extends PureComponent {
 
     render() {
         const {children, className, theme, style, padded, ...restProps} = this.props;
-        const rest = omit(restProps, ['isOpen', 'onToggle']);
+        const rest = omit(restProps, ['isOpen', 'onToggle', 'isOpen']);
         const styleClassName = style ? `dropDown--${style}` : false;
         const finalClassName = mergeClassNames({
             [theme[styleClassName]]: styleClassName,
@@ -98,7 +98,7 @@ export class DropDownWrapper extends PureComponent {
             <div {...rest} className={finalClassName}>
                 {React.Children.map(
                     children,
-                    child => child.type ? <child.type {...child.props} isDropdownOpen={this.props.isOpen}/> : child
+                    child => child.type ? <child.type {...child.props} isDropdownOpen={this.state.isOpen}/> : child
                 )}
             </div>
         );
@@ -140,7 +140,7 @@ export class ContextDropDownContents extends PureComponent {
         /**
          * The propagated isOpen state from the dropDown
          */
-        isDropdownOpen: PropTypes.bool.isRequired
+        isDropdownOpen: PropTypes.bool
     };
 
     static contextTypes = {

@@ -142,7 +142,7 @@ export class Header extends PureComponent {
         /**
          * The propagated isOpen state from the toggle panel
          */
-        isPanelOpen: PropTypes.bool.isRequired,
+        isPanelOpen: PropTypes.bool,
 
         /**
          * An optional css theme to be injected.
@@ -158,6 +158,10 @@ export class Header extends PureComponent {
         HeadlineComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired
     };
+
+    static defaultProps = {
+        isPanelOpen: true
+    }
 
     static contextTypes = {
         onPanelToggle: PropTypes.func.isRequired
@@ -208,7 +212,7 @@ export class Contents extends PureComponent {
         /**
          * The propagated isOpen state from the toggle panel
          */
-        isPanelOpen: PropTypes.bool.isRequired,
+        isPanelOpen: PropTypes.bool,
 
         /**
          * An optional css theme to be injected.
@@ -219,7 +223,8 @@ export class Contents extends PureComponent {
     };
 
     static defaultProps = {
-        theme: {}
+        theme: {},
+        isPanelOpen: true
     };
 
     render() {

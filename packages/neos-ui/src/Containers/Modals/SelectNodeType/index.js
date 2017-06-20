@@ -33,8 +33,8 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 
     return state => {
         const reference = $get('ui.selectNodeTypeModal.referenceNodeContextPath', state);
-        const allowedSiblingNodeTypes = getAllowedSiblingNodeTypesSelector(state, {reference});
-        const allowedChildNodeTypes = getAllowedChildNodeTypesSelector(state, {reference});
+        const allowedSiblingNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedSiblingNodeTypesSelector(state, {reference}));
+        const allowedChildNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedChildNodeTypesSelector(state, {reference}));
 
         return {
             isOpen: $get('ui.selectNodeTypeModal.isOpen', state),
@@ -56,12 +56,22 @@ export default class SelectNodeType extends PureComponent {
         apply: PropTypes.func.isRequired
     };
 
-    state = {
-        insertMode: calculateInitialMode(
-            this.props.allowedSiblingNodeTypes,
-            this.props.allowedChildNodeTypes
-        )
-    };
+
+    componentDidMount() {
+        this.setState({
+            insertMode: calculateInitialMode(
+                this.props.allowedSiblingNodeTypes,
+                this.props.allowedChildNodeTypes
+            )
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.allowedSiblingNodeTypes !== this.props.allowedSiblingNodeTypes
+            || prevProps.allowedChildNodeTypes !== this.props.allowedChildNodeTypes) {
+            this.componentDidMount();
+        }
+    }
 
     handleModeChange = insertMode => this.setState({insertMode});
 
@@ -97,7 +107,7 @@ export default class SelectNodeType extends PureComponent {
 
     renderInsertModeSelector() {
         const {insertMode} = this.state;
-        const {allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
+        const {allowedSiblingNodeTypes, allowedChildNodeTypes, nodeTypesRegistry} = this.props;
 
         return (
             <InsertModeSelector
@@ -129,10 +139,6 @@ export default class SelectNodeType extends PureComponent {
             return null;
         }
 
-        const groupedAllowedNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(
-            this.getAllowedNodeTypesByCurrentInsertMode()
-        );
-
         return (
             <Dialog
                 actions={[this.renderCancelAction()]}
@@ -141,7 +147,7 @@ export default class SelectNodeType extends PureComponent {
                 isOpen
                 isWide
                 >
-                {groupedAllowedNodeTypes.map((group, key) => (
+                {this.getAllowedNodeTypesByCurrentInsertMode().map((group, key) => (
                     <div key={key}>
                         <NodeTypeGroupPanel
                             group={group}

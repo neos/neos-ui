@@ -66,6 +66,9 @@ export default class LinkIconButton extends PureComponent {
     }
 }
 
+const isUri = str =>
+    str && Boolean(str.match("^https?://"))
+
 const stripNodePrefix = str =>
     str && str.replace('node://', '');
 
@@ -115,19 +118,25 @@ class LinkTextField extends PureComponent {
     }
 
     componentDidMount() {
-        if (this.props.hrefValue) {
-            this.setState({isLoading: true});
-            this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), stripNodePrefix(this.props.hrefValue))
-                .then(options => {
-                    this.setState({
-                        isLoading: false,
-                        options
+        if (isUri(this.props.hrefValue)) {
+            this.setState({
+                searchTerm: this.props.hrefValue
+            });
+        } else {
+            if (this.props.hrefValue) {
+                this.setState({isLoading: true});
+                this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), stripNodePrefix(this.props.hrefValue))
+                    .then(options => {
+                        this.setState({
+                            isLoading: false,
+                            options
+                        });
                     });
-                });
+            }
+            this.setState({
+                searchTerm: ''
+            });
         }
-        this.setState({
-            searchTerm: ''
-        });
     }
 
     componentDidUpdate(prevProps) {
@@ -139,7 +148,10 @@ class LinkTextField extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-        if (searchTerm) {
+        if (isUri(searchTerm)) {
+            this.setState({isLoading: false});
+            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: searchTerm});
+        } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
@@ -151,6 +163,7 @@ class LinkTextField extends PureComponent {
         }
     }
 
+    // A node has been selected
     handleValueChange = value => {
         if (!value) {
             this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});

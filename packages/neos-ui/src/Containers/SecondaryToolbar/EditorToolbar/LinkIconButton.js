@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-
+import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
@@ -69,6 +69,11 @@ export default class LinkIconButton extends PureComponent {
 const stripNodePrefix = str =>
     str && str.replace('node://', '');
 
+@neos(globalRegistry => {
+    return {
+        nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
+    };
+})
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking,
     context: selectors.Guest.context
@@ -79,58 +84,96 @@ class LinkTextField extends PureComponent {
         formattingRule: PropTypes.string,
         hrefValue: PropTypes.string,
 
-        contextForNodeLinking: PropTypes.object.isRequired,
+        nodeLookupDataLoader: PropTypes.shape({
+            resolveValue: PropTypes.func.isRequired,
+            search: PropTypes.func.isRequired
+        }).isRequired,
+
+        contextForNodeLinking: PropTypes.shape({
+            toJS: PropTypes.func.isRequired
+        }).isRequired,
         // The current guest frames window object.
         context: PropTypes.object
     };
 
     constructor(props) {
         super(props);
-        this.searchNodes = backend.get().endpoints.searchNodes;
-        this.optionGenerator = this.optionGenerator.bind(this);
-        this.handleLinkSelect = this.handleLinkSelect.bind(this);
-        this.handleMakeLinkEmpty = this.handleMakeLinkEmpty.bind(this);
+
+        this.state = {
+            searchTerm: '',
+            isLoading: false,
+            searchResults: [],
+            results: []
+        };
+    }
+
+    getDataLoaderOptions() {
+        return {
+            nodeTypes: ['Neos.Neos:Document'],
+            contextForNodeLinking: this.props.contextForNodeLinking.toJS()
+        };
+    }
+
+    componentDidMount() {
+        if (this.props.hrefValue) {
+            this.setState({isLoading: true});
+            this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), stripNodePrefix(this.props.hrefValue))
+                .then(options => {
+                    this.setState({
+                        isLoading: false,
+                        options
+                    });
+                });
+        }
+        this.setState({
+            searchTerm: ''
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.hrefValue !== this.props.hrefValue) {
+            this.componentDidMount();
+        }
+    }
+
+
+    handleSearchTermChange = searchTerm => {
+        this.setState({searchTerm});
+        if (searchTerm) {
+            this.setState({isLoading: true, searchOptions: []});
+            this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
+                .then(searchOptions => {
+                    this.setState({
+                        isLoading: false,
+                        searchOptions
+                    });
+                });
+        }
+    }
+
+    handleValueChange = value => {
+        if (!value) {
+            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
+        } else {
+            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: 'node://' + value});
+        }
     }
 
     render() {
         return (
             <div className={style.linkIconButton__flyout}>
-                <SelectBox
-                    placeholder="Paste a link, or search"
-                    options={this.optionGenerator}
-                    value={stripNodePrefix(this.props.hrefValue)}
-                    onSelect={this.handleLinkSelect}
-                    onDelete={this.handleMakeLinkEmpty}
-                    loadOptionsOnInput={true}
-                    />
+            <SelectBox
+                options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
+                optionValueField="identifier"
+                value={this.props.hrefValue && stripNodePrefix(this.props.hrefValue)}
+                onValueChange={this.handleValueChange}
+                placeholder="Paste a link, or search"
+                displayLoadingIndicator={this.state.isLoading}
+                displaySearchBox={true}
+                searchTerm={this.state.searchTerm}
+                onSearchTermChange={this.handleSearchTermChange}
+                />
             </div>
         );
-    }
-
-    optionGenerator({value, searchTerm, callback}) {
-        const searchNodesQuery = this.props.contextForNodeLinking.toJS();
-
-        if (value) {
-            // Init case: load the value
-            searchNodesQuery.nodeIdentifiers = [stripNodePrefix(value)];
-        } else if (searchTerm) {
-            // Search case
-            searchNodesQuery.searchTerm = searchTerm;
-        } else {
-            // empty search term and no value
-            return;
-        }
-
-        this.searchNodes(searchNodesQuery).then(result => {
-            callback(result);
-        });
-    }
-
-    handleLinkSelect(link) {
-        this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: 'node://' + link});
-    }
-
-    handleMakeLinkEmpty() {
-        this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
     }
 }

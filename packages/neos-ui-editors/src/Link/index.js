@@ -79,7 +79,10 @@ class LinkEditor extends PureComponent {
                         });
                     });
             }
-            this.setState({searchTerm: ''});
+            this.setState({
+                searchTerm: '',
+                searchOptions: []
+            });
         }
     }
 

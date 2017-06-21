@@ -1,16 +1,17 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$get, $transform} from 'plow-js';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import backend from '@neos-project/neos-ui-backend-connector';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n'),
+    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
+}))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
-}))
-@neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class ReferenceEditor extends PureComponent {
     static propTypes = {
@@ -22,56 +23,89 @@ export default class ReferenceEditor extends PureComponent {
             threshold: PropTypes.number
         }),
 
-        contextForNodeLinking: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
+        nodeLookupDataLoader: PropTypes.shape({
+            resolveValue: PropTypes.func.isRequired,
+            search: PropTypes.func.isRequired
+        }).isRequired,
 
-        i18nRegistry: PropTypes.object.isRequired
+
+        contextForNodeLinking: PropTypes.shape({
+            toJS: PropTypes.func.isRequired
+        }).isRequired
     };
 
     constructor(props) {
         super(props);
 
-        this.searchNodes = backend.get().endpoints.searchNodes;
-        this.optionGenerator = this.optionGenerator.bind(this);
+        this.state = {
+            searchTerm: '',
+            isLoading: false,
+            searchResults: [],
+            results: []
+        };
     }
 
-    optionGenerator({value, searchTerm, callback}) {
-        const searchNodesQuery = this.props.contextForNodeLinking.toJS();
+    getDataLoaderOptions() {
+        return {
+            nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
+            contextForNodeLinking: this.props.contextForNodeLinking.toJS()
+        };
+    }
 
-        if (value) {
-            // INITIAL load
-            searchNodesQuery.nodeIdentifiers = [value];
-        } else if (searchTerm && searchTerm.length >= this.props.options.threshold) {
-            // autocomplete-load
-            searchNodesQuery.searchTerm = searchTerm;
-            searchNodesQuery.nodeTypes = this.props.options.nodeTypes;
-        } else {
-            // no default set
-            callback([]);
-            return;
+    componentDidMount() {
+        if (this.props.value) {
+            this.setState({isLoading: true});
+            this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.value)
+                .then(options => {
+                    this.setState({
+                        isLoading: false,
+                        options
+                    });
+                });
         }
-
-        this.searchNodes(searchNodesQuery).then(result => {
-            callback(result);
+        this.setState({
+            searchTerm: '',
+            searchOptions: []
         });
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.value !== this.props.value) {
+            this.componentDidMount();
+        }
+    }
+
+    handleSearchTermChange = searchTerm => {
+        this.setState({searchTerm});
+        if (searchTerm) {
+            this.setState({isLoading: true, searchOptions: []});
+            this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
+                .then(searchOptions => {
+                    this.setState({
+                        isLoading: false,
+                        searchOptions
+                    });
+                });
+        }
+    }
+
+    handleValueChange = value => {
+        this.props.commit(value);
+    }
+
+
     render() {
-        const handleSelect = value => {
-            this.props.commit(value);
-        };
-
-        const clearInput = () => {
-            this.props.commit('');
-        };
-
         return (<SelectBox
-            options={this.optionGenerator}
+            options={this.props.value ? this.state.options : this.state.searchOptions}
+            optionValueField="identifier"
             value={this.props.value}
+            onValueChange={this.handleValueChange}
             placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
-            onSelect={handleSelect}
-            onDelete={clearInput}
-            isSearchable={true}
-            loadOptionsOnInput={true}
+            displayLoadingIndicator={this.state.isLoading}
+            displaySearchBox={true}
+            searchTerm={this.state.searchTerm}
+            onSearchTermChange={this.handleSearchTermChange}
             />);
     }
 }

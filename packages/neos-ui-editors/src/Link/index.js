@@ -11,6 +11,10 @@ const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix =>
 const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
     nodeIdentifier && 'node://' + nodeIdentifier;
 
+const isUri = str =>
+    str && Boolean(str.match("^https?://"))
+
+
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }))
@@ -60,15 +64,22 @@ class LinkEditor extends PureComponent {
     }
 
     componentDidMount() {
-        if (this.props.value) {
-            this.setState({isLoading: true});
-            this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), removePrefixFromNodeIdentifier(this.props.value))
-                .then(options => {
-                    this.setState({
-                        isLoading: false,
-                        options
+        if (isUri(this.props.value)) {
+            this.setState({
+                searchTerm: this.props.value
+            });
+        } else {
+            if (this.props.value) {
+                this.setState({isLoading: true});
+                this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), removePrefixFromNodeIdentifier(this.props.value))
+                    .then(options => {
+                        this.setState({
+                            isLoading: false,
+                            options
+                        });
                     });
-                });
+            }
+            this.setState({searchTerm: ''});
         }
     }
 
@@ -80,7 +91,13 @@ class LinkEditor extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-        if (searchTerm) {
+        if (isUri(searchTerm)) {
+            this.setState({isLoading: false});
+            this.props.commit(searchTerm);
+        } else if (!searchTerm && isUri(this.props.value)) {
+            // the user emptied the URL value, so we need to reset it
+            this.props.commit('');
+        } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {

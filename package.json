@@ -7,6 +7,7 @@
     "postinstall": "lerna bootstrap",
     "build:ui": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
     "build:ui:watch": "npm run build:ui -- --watch",
+    "build:ui:watch-poll": "npm run build:ui -- --watch-poll --watch",
     "build:components": "echo 'Not needed anymore, just use build:ui'",
     "build:components:watch": "echo 'Not needed anymore, just use build:ui:watch'",
     "build": "cross-env NODE_ENV=production npm run build:ui",

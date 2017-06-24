@@ -60,27 +60,56 @@ manifest('main.dataloaders', {}, globalRegistry => {
         },
 
         resolveValue(options, identifier) {
-            const cacheKey = makeCacheKey('resolve', {options, identifier});
-            if (this._lru().has(cacheKey)) {
-                return this._lru().get(cacheKey);
-            }
-            const resultPromise = Promise.resolve()
-                .then(() => {
-                    if (!identifier) {
-                        return [];
-                    }
-                    // Build up query
-                    const searchNodesQuery = Object.assign({}, options.contextForNodeLinking, {
-                        nodeIdentifiers: [identifier]
-                    });
+            return this.resolveValues(options, [identifier]);
+        },
 
-                    // trigger query
-                    const searchNodesApi = backend.get().endpoints.searchNodes;
-                    return searchNodesApi(searchNodesQuery);
+        resolveValues(options, identifiers) {
+            const resultPromisesByIdentifier = {};
+            const identifiersNotInCache = [];
+
+            identifiers.forEach(identifier => {
+                const cacheKey = makeCacheKey('resolve', {options, identifier});
+
+                if (this._lru().has(cacheKey)) {
+                    resultPromisesByIdentifier[identifier] = this._lru().get(cacheKey);
+                } else {
+                    identifiersNotInCache.push(identifier);
+                }
+            });
+
+            if (identifiersNotInCache.length > 0) {
+                // Build up query
+                const searchNodesQuery = Object.assign({}, options.contextForNodeLinking, {
+                    nodeIdentifiers: identifiersNotInCache
                 });
 
-            this._lru().set(cacheKey, resultPromise);
-            return resultPromise;
+                // trigger query
+                const searchNodesApi = backend.get().endpoints.searchNodes;
+
+                return searchNodesApi(searchNodesQuery).then(results => {
+                    // we store the result in the cache
+                    results.forEach(result => {
+                        const cacheKey = makeCacheKey('resolve', {options, identifier: result.identifier});
+                        const resultPromise = Promise.resolve(result);
+                        this._lru().set(cacheKey, resultPromise);
+                        resultPromisesByIdentifier[result.identifier] = resultPromise;
+                    });
+
+                    // by know,all identifiers are in cache.
+                    return Promise.all(
+                        identifiers.map(identifier =>
+                            resultPromisesByIdentifier[identifier]
+                        ).filter(promise => Boolean(promise)) // remove "null" values
+                    );
+                });
+            } else {
+                // we know all identifiers are in cache.
+                return Promise.all(
+                    identifiers.map(identifier =>
+                        resultPromisesByIdentifier[identifier]
+                    ).filter(promise => Boolean(promise)) // remove "null" values
+                );
+            }
         },
 
         search(options, searchTerm) {
@@ -118,7 +147,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 resultPromise.then(results => {
                     results.forEach(result => {
                         const cacheKey = makeCacheKey('resolve', {options, identifier: result.identifier});
-                        this._lru().set(cacheKey, Promise.resolve([result]));
+                        this._lru().set(cacheKey, Promise.resolve(result));
                     });
                 });
                 return resultPromise;

@@ -9,7 +9,7 @@ export default class SelectBox extends PureComponent {
 
     static propTypes = {
         /**
-         * This prop represents either a set of options or a function that returns those.
+         * This prop represents a set of options.
          * Each option must have a value and can have a label and an icon.
          */
         options: PropTypes.arrayOf(

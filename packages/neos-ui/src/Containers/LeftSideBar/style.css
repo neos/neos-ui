@@ -1,4 +1,7 @@
 .leftSideBar {
+    display: flex;
+    flex-direction: column;
+
     padding-top: 41px;
     transition: .2s ease transform;
     will-change: transform;
@@ -14,4 +17,8 @@
 }
 .leftSideBar--isHidden {
     transform: translateX(-var(--sidebarWidth));
+}
+
+.leftSideBar__top {
+    flex-basis: 100%;
 }

@@ -6,6 +6,7 @@ import {$transform, $get, $or} from 'plow-js';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import SideBar from '@neos-project/react-ui-components/src/SideBar/';
+import ToggablePanel from '@neos-project/react-ui-components/lib/ToggablePanel/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.css';
@@ -47,11 +48,21 @@ export default class LeftSideBar extends PureComponent {
                 className={classNames}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
-                <PageTreeToolbar/>
-                <PageTree/>
+                <div className={style.leftSideBar__top}>
+                    <PageTreeToolbar/>
+                    <PageTree/>
+                </div>
+
                 <hr/>
-                <ContentTreeToolbar/>
-                <ContentTree/>
+
+                <ToggablePanel isOpen={true} closesToBottom={true}>
+                    <ToggablePanel.Header noPadding={true}>
+                        <ContentTreeToolbar/>
+                    </ToggablePanel.Header>
+                    <ToggablePanel.Contents noPadding={true}>
+                        <ContentTree/>
+                    </ToggablePanel.Contents>
+                </ToggablePanel>
             </SideBar>
         );
     }

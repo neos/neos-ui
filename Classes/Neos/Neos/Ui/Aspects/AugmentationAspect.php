@@ -118,7 +118,7 @@ class AugmentationAspect
         /** @var NodeInterface $node */
         $node = $joinPoint->getMethodArgument('node');
         $content = $joinPoint->getMethodArgument('content');
-        $fusionPath = $joinPoint->getMethodArgument('typoScriptPath');
+        $fusionPath = $joinPoint->getMethodArgument('fusionPath');
 
         if (!$this->needsMetadata($node, false)) {
             return $content;

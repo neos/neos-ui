@@ -1,8 +1,7 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$transform} from 'plow-js';
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
+import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -13,9 +12,15 @@ import {neos} from '@neos-project/neos-ui-decorators';
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-export default class ReferenceEditor extends PureComponent {
+export default class ReferencesEditor extends PureComponent {
     static propTypes = {
-        value: PropTypes.string,
+        value: PropTypes.oneOfType([
+            PropTypes.arrayOf(
+                PropTypes.string
+            ),
+            PropTypes.string
+        ]),
+
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.arrayOf(PropTypes.string),
@@ -37,10 +42,9 @@ export default class ReferenceEditor extends PureComponent {
 
     optionGenerator({value, searchTerm, callback}) {
         const searchNodesQuery = this.props.contextForNodeLinking.toJS();
-
         if (value) {
             // INITIAL load
-            searchNodesQuery.nodeIdentifiers = [value];
+            searchNodesQuery.nodeIdentifiers = value;
         } else if (searchTerm && searchTerm.length >= this.props.options.threshold) {
             // autocomplete-load
             searchNodesQuery.searchTerm = searchTerm;
@@ -58,19 +62,17 @@ export default class ReferenceEditor extends PureComponent {
 
     render() {
         const handleSelect = valueObject => {
-            this.props.commit(valueObject.value);
+            const valueString = valueObject.map(value => {
+                return value.value;
+            });
+            this.props.commit(JSON.stringify(valueString));
         };
 
-        const clearInput = () => {
-            this.props.commit('');
-        };
-
-        return (<SelectBox
+        return (<MultiSelectBox
             options={this.optionGenerator}
             value={this.props.value}
             placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
             onSelect={handleSelect}
-            onDelete={clearInput}
             isSearchable={true}
             loadOptionsOnInput={true}
             />);

@@ -155,12 +155,11 @@ export default class SearchableSelectBox extends PureComponent {
                         <Icon className={theme.dropDown__loadingIcon} spin={true} icon="spinner"/> : null
                     }
                 </DropDown.Header>
-                {this.getOptions() ?
+                {Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
                     <DropDown.Contents className={theme.dropDown__contents}>
-                        {Object.prototype.toString.call(this.getOptions()) === '[object Array]' ?
-                            this.getOptions()
-                                .filter(this.filterOption) // TODO filtering is not needed when we use a external api for searching
-                                .map(this.renderOption) : null}
+                        {this.getOptions()
+                            .filter(this.filterOption) // TODO filtering is not needed when we use a external api for searching
+                            .map(this.renderOption)}
                     </DropDown.Contents> :
                     null
                 }
@@ -219,10 +218,11 @@ export default class SearchableSelectBox extends PureComponent {
      * @param {number} index
      * @returns {JSX} option element
      */
-    renderOption({icon, label, value}, index) {
+    renderOption(valueObject, index) {
+        const {icon, label, value} = valueObject;
         const theme = this.props.theme;
         const onClick = () => {
-            this.props.onSelect(value, true);
+            this.props.onSelect(valueObject, true);
         };
 
         return (

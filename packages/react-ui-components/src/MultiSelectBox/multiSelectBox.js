@@ -6,9 +6,12 @@ export default class MultiSelectBox extends AbstractSelectBox {
     static propTypes = {
         ...abstractSelectBoxPropTypes,
 
-        value: PropTypes.arrayOf(
+        value: PropTypes.oneOfType([
+            PropTypes.arrayOf(
+                PropTypes.string
+            ),
             PropTypes.string
-        ),
+        ]),
 
         /**
          * An optional css theme to be injected.
@@ -83,15 +86,10 @@ export default class MultiSelectBox extends AbstractSelectBox {
     // adds the newly selected value to the selected options
     handleOnSelect(value) {
         const currentSelectedOptions = [...this.state.selectedOptions || []];
-
-        const valueAlreadySelected = currentSelectedOptions.find(option => option.value === value);
+        const valueAlreadySelected = currentSelectedOptions.find(option => option.value === value.value);
 
         if (!valueAlreadySelected) {
-            currentSelectedOptions.push({
-                icon: this.getOptionIconForValue(value),
-                label: this.getOptionLabelForValue(value),
-                value
-            });
+            currentSelectedOptions.push(value);
 
             this.setState({
                 selectedOptions: currentSelectedOptions
@@ -109,7 +107,7 @@ export default class MultiSelectBox extends AbstractSelectBox {
             selectedOptions: newSelectedOptions
         });
 
-        this.props.onSelect(currentSelectedOptions);
+        this.props.onSelect(newSelectedOptions);
     }
 
     select(incomingValue) {

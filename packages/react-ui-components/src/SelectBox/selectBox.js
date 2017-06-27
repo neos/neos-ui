@@ -144,14 +144,14 @@ export default class SelectBox extends AbstractSelectBox {
      * @param {string} incomingValue
      * @param {boolean} shouldTriggerOnSelect
      */
-    select(incomingValue, shouldTriggerOnSelect = true) {
+    select(incomingValueObject, shouldTriggerOnSelect = true) {
         const {placeholder, placeholderIcon} = this.props;
 
-        if (incomingValue && !this.props.clearOnSelect) {
+        if (incomingValueObject && !this.props.clearOnSelect) {
             this.setState({
-                value: incomingValue,
-                icon: this.getOptionIconForValue(incomingValue) || placeholderIcon,
-                label: this.getOptionLabelForValue(incomingValue) || placeholder
+                value: incomingValueObject.value || incomingValueObject,
+                icon: incomingValueObject.icon || this.getOptionIconForValue(incomingValueObject) || placeholderIcon,
+                label: incomingValueObject.label || this.getOptionLabelForValue(incomingValueObject) || placeholder
             });
         } else {
             this.setState({
@@ -162,7 +162,7 @@ export default class SelectBox extends AbstractSelectBox {
         }
 
         if (shouldTriggerOnSelect) {
-            this.props.onSelect(incomingValue);
+            this.props.onSelect(incomingValueObject);
         }
     }
 

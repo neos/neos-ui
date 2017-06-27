@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {defaultMemoize} from 'reselect';
 
 // We need to memoize configuration and global registry; otherwise a new object is created at every render; leading to

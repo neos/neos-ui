@@ -5,9 +5,9 @@
   "private": true,
   "main": "./src/manifest.js",
   "scripts": {
-    "prebuild": "check-dependencies && npm run clean",
-    "test": "npm run jest",
-    "test:watch": "npm run jest -- --watch",
+    "prebuild": "check-dependencies && yarn clean",
+    "test": "yarn jest",
+    "test:watch": "yarn jest -- --watch",
     "lint": "eslint src",
     "clean": "rimraf ./lib ./dist",
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"

@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * The StoryWrapper is a simple component which can be used to wrap stories

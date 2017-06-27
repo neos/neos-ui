@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import isFunction from 'lodash.isfunction';
 
 export const propTypes = {
@@ -6,7 +7,7 @@ export const propTypes = {
      * This prop represents either a set of options or a function that returns those.
      * Each option must have a value and can have a label and an icon.
      */
-    options: React.PropTypes.oneOfType([
+    options: PropTypes.oneOfType([
         PropTypes.arrayOf(
             PropTypes.shape({
                 icon: PropTypes.string,

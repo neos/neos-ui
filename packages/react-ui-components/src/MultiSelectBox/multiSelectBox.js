@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abstractState} from '../SelectBox/abstractSelectBox';
 
 export default class MultiSelectBox extends AbstractSelectBox {

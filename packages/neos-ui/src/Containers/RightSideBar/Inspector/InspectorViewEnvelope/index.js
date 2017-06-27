@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import style from './style.css';
 import ViewEnvelope from '@neos-project/neos-ui-views/src/ViewEnvelope/index';

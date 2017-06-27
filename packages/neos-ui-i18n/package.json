@@ -5,9 +5,9 @@
   "private": true,
   "main": "./src/index.js",
   "scripts": {
-    "prebuild": "check-dependencies && npm run clean",
-    "test": "npm run jest",
-    "test:watch": "npm run jest -- --watch",
+    "prebuild": "check-dependencies && yarn clean",
+    "test": "yarn jest",
+    "test:watch": "yarn jest -- --watch",
     "build": "exit 0",
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
@@ -18,7 +18,8 @@
     "@neos-project/build-essentials": "^4.4.8"
   },
   "peerDependencies": {
-    "react": "^15.4.0"
+    "prop-types": "^15.5.10",
+    "react": "^15.5.0"
   },
   "dependencies": {
     "@neos-project/neos-ui-decorators": "^4.4.8",

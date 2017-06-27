@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';

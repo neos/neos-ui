@@ -26,37 +26,37 @@ export const getSystemEnv = discover(function * () {
 export const getServerState = discover(function * () {
     const appContainer = yield getAppContainer;
 
-    return JSON.parse(appContainer.querySelector('[data-json="initialState"]').innerHTML);
+    return JSON.parse(appContainer.querySelector('[data-json="initialState"]').textContent);
 });
 
 export const getConfiguration = discover(function * () {
     const appContainer = yield getAppContainer;
 
-    return JSON.parse(appContainer.querySelector('[data-json="configuration"]').innerHTML);
+    return JSON.parse(appContainer.querySelector('[data-json="configuration"]').textContent);
 });
 
 export const getNodeTypes = discover(function * () {
     const appContainer = yield getAppContainer;
 
-    return JSON.parse(appContainer.querySelector('[data-json="nodeTypes"]').innerHTML);
+    return JSON.parse(appContainer.querySelector('[data-json="nodeTypes"]').textContent);
 });
 
 export const getFrontendConfiguration = discover(function * () {
     const appContainer = yield getAppContainer;
 
-    return JSON.parse(appContainer.querySelector('[data-json="frontendConfiguration"]').innerHTML);
+    return JSON.parse(appContainer.querySelector('[data-json="frontendConfiguration"]').textContent);
 });
 
 export const getMenu = discover(function * () {
     const appContainer = yield getAppContainer;
 
-    return JSON.parse(appContainer.querySelector('[data-json="menu"]').innerHTML);
+    return JSON.parse(appContainer.querySelector('[data-json="menu"]').textContent);
 });
 
 export const getTranslations = discover(function * () {
     const appContainer = yield getAppContainer;
 
-    return JSON.parse(appContainer.querySelector('[data-json="translations"]').innerHTML);
+    return JSON.parse(appContainer.querySelector('[data-json="translations"]').textContent);
 });
 
 export const getNeos = discover(function * () {

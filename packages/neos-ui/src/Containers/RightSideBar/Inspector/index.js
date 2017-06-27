@@ -123,9 +123,11 @@ export default class Inspector extends PureComponent {
                     >
                     {viewConfiguration.tabs
                         //
-                        // Only display tabs, that have groups
+                        // Only display tabs, that have groups and these groups have properties
                         //
-                        .filter(t => t.groups && t.groups.length)
+                        .filter(t => t.groups && t.groups.length && t.groups.reduce((acc, group) => {
+                            return acc || group.properties.length > 0;
+                        }, false))
 
                         //
                         // Render each tab as a TabPanel

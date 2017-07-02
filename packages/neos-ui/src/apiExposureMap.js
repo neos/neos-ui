@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
 import * as plow from 'plow-js';
 import classnames from 'classnames';
@@ -17,6 +18,7 @@ import NeosUiI18n from '@neos-project/neos-ui-i18n';
 export default {
     '@vendor': () => ({
         React,
+        ReactDOM,
         Immutable,
         plow,
         classnames,

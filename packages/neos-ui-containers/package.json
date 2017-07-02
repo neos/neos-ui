@@ -6,8 +6,8 @@
   "main": "./src/index.js",
   "scripts": {
     "prebuild": "check-dependencies",
-    "test": "npm run jest",
-    "test:watch": "npm run jest -- --watch",
+    "test": "yarn jest",
+    "test:watch": "yarn jest -- --watch",
     "build": "exit 0",
     "build:watch": "exit 0",
     "lint": "eslint src",
@@ -17,7 +17,8 @@
     "@neos-project/build-essentials": "^4.4.8"
   },
   "peerDependencies": {
-    "react": "^15.4.0"
+    "prop-types": "^15.5.10",
+    "react": "^15.5.0"
   },
   "dependencies": {
     "@neos-project/react-ui-components": "^4.4.8",

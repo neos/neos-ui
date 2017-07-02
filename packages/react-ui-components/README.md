@@ -9,7 +9,7 @@ This package requires some peerDependencies which you need to install after inst
 
 ## Installation
 ```
-npm i -S @neos-project/react-ui-components
+yarn add @neos-project/react-ui-components
 ```
 
 ## Usage (general)
@@ -49,11 +49,11 @@ import identifiers from '@neos-project/react-ui-components/src/identifiers.js';
 ## Contributing
 #### Requirements
 * Node in version `^6.3.3`
-* NPM in version `^3.10.3`
+* yarn
 
 #### Setup
-Clone this repository, execute `nvm use` and afterwards `npm install` in the root directory of the project.
-After the installation succeeded, execute `npm start` to start the
+Clone this repository, execute `nvm use` and afterwards `yarn` in the root directory of the project.
+After the installation succeeded, execute `yarn start` to start the
 [development server of the styleguide](http://localhost:9001).
 
 
@@ -73,7 +73,7 @@ Make a symbolic link inside your Neos installation to your cloned sources od thi
 run the watcher inside the react-ui-components
 
 ```
- npm run watch:build
+yarn watch:build
 ```
 
 
@@ -81,7 +81,7 @@ run the watcher inside the Neos.Neos.Ui Package
 
 ```
  cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui
- npm run watch:build
+ yarn watch:build
 ```
 
 #### Commit Guidelines

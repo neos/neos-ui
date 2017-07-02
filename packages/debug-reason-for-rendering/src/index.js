@@ -1,5 +1,3 @@
-import shallowCompare from 'react-addons-shallow-compare';
-
 const BOLD = 'font-weight: bold;';
 const RESET = 'font-weight: normal;';
 
@@ -107,9 +105,6 @@ const debugReasonForRendering = (targetReactComponent, key, descriptor) => {
             shouldComponentUpdate(nextProps, nextState, nextContext) {
                 internalDebug(targetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
 
-                if (this.isPureReactComponent) {
-                    return shallowCompare(this, ...arguments);
-                }
                 return super.shouldComponentUpdate(...arguments);
             }
         }

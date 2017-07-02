@@ -6,7 +6,7 @@
 
 1. Ensure you have decorators enabled in your project (this is the case e.g. for create-react-app).
 
-2. Install the package: `npm install --save-dev @neos-project/debug-reason-for-rendering`
+2. Install the package: `yarn add --dev @neos-project/debug-reason-for-rendering`
 
 3. Import the decorator function:
 

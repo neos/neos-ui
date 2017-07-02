@@ -6,9 +6,9 @@
   "private": true,
   "scripts": {
     "prepublish": "exit 0",
-    "prebuild": "check-dependencies && npm run clean",
-    "test": "npm run jest",
-    "test:watch": "npm run jest -- --watch",
+    "prebuild": "check-dependencies && yarn clean",
+    "test": "yarn jest",
+    "test:watch": "yarn jest -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage",

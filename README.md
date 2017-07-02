@@ -103,6 +103,7 @@ In order to start contributing, follow the following steps:
 | `yarn build:ui`  | Builds the ui via webpack. |
 | `yarn build` |  Runs `build:dev` optimised for production. |
 | `yarn build:ui:watch` | Watches the source files for changes and runs a build:ui in case. |
+| `yarn build:ui:watch-poll` | Watches (and polls) the source files on a file share. Should preferably be used when working an a VM for example. |
 | `yarn start-storybook` | Starts the storybook server. |
 | `yarn lint`  | Lints all source files. |
 | `yarn test`  | Executes `yarn lint` to trigger tests via ava. |

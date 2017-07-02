@@ -1,6 +1,7 @@
-import {map, mapObjIndexed, values, sort, compose} from 'ramda';
+import {map} from 'ramda';
 import {$get, $transform} from 'plow-js';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
+import getNormalizedDeepStructureFromNodeType from './getNormalizedDeepStructureFromNodeType';
 
 export default class NodeTypesRegistry extends SynchronousRegistry {
     _constraints = [];
@@ -104,18 +105,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return this._inspectorViewConfigurationCache[nodeTypeName];
         }
 
-        const withId = mapObjIndexed((subject, id) => ({
-            ...subject,
-            id
-        }));
-        const getPosition = subject => ($get(['ui', 'inspector', 'position'], subject) || $get(['ui', 'position'], subject) || $get('position', subject) || 0);
-        const positionalArraySorter = sort((a, b) => (a.id - b.id) || (getPosition(a) - getPosition(b)));
-        const getNormalizedDeepStructureFromNodeType = path => compose(
-            positionalArraySorter,
-            values,
-            withId,
-            $get(path)
-        );
         const tabs = getNormalizedDeepStructureFromNodeType('ui.inspector.tabs')(nodeType);
         const groups = getNormalizedDeepStructureFromNodeType('ui.inspector.groups')(nodeType);
         const views = getNormalizedDeepStructureFromNodeType('ui.inspector.views')(nodeType);

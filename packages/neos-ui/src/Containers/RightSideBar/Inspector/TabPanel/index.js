@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Maybe} from 'monet';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 

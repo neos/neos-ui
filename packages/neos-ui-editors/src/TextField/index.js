@@ -1,4 +1,5 @@
-import React, {PropTypes, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import TextInput from '@neos-project/react-ui-components/src/TextInput/';
 import unescape from 'lodash.unescape';
 import {neos} from '@neos-project/neos-ui-decorators';

@@ -4,11 +4,11 @@
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
-    "prebuild": "check-dependencies && npm run clean",
+    "prebuild": "check-dependencies && yarn clean",
     "build": "exit 0",
     "build:watch": "exit 0",
-    "test": "npm run jest",
-    "test:watch": "npm run jest -- --watch",
+    "test": "yarn jest",
+    "test:watch": "yarn jest -- --watch",
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
     "clean": "rimraf ./lib ./dist",
@@ -16,7 +16,7 @@
     "jest": "jest src/**/*.spec.js -w 1 --coverage",
     "start": "cross-env STORY=true start-storybook -p 9001",
     "postpublish": "greenkeeper-postpublish",
-    "semantic-release": "semantic-release pre && npm publish --access public && semantic-release post"
+    "semantic-release": "semantic-release pre && yarn publish --access public && semantic-release post"
   },
   "release": {
     "analyzeCommits": "@inkdpixels/commit-analyzer",
@@ -38,18 +38,17 @@
     "lodash.debounce": "^4.0.8",
     "object-assign": "^4.1.0",
     "moment": "^2.14.1",
-    "react": "^15.4.0",
-    "react-addons-shallow-compare": "^15.4.0",
-    "react-click-outside": "^2.1.0",
-    "react-collapse": "^2.2.2",
-    "react-datetime": "^2.5.0",
-    "react-dom": "^15.4.0",
-    "react-textarea-autosize": "^4.0.0",
-    "react-height": "^2.0.4",
-    "react-motion": "^0.4.2",
-    "react-css-themr": "^1.2.0",
-    "react-portal": "^2.2.1",
-    "react-broadcast": "^0.1.2"
+    "prop-types": "^15.5.10",
+    "react": "^15.5.0",
+    "react-click-outside": "^2.3.1",
+    "react-collapse": "^2.4.1",
+    "react-datetime": "^2.8.10",
+    "react-dom": "^15.5.0",
+    "react-textarea-autosize": "^5.0.6",
+    "react-height": "^3.0.0",
+    "react-motion": "^0.5.0",
+    "react-css-themr": "^2.1.0",
+    "react-portal": "^3.1.0"
   },
   "license": "GNU GPLv3",
   "repository": {

@@ -139,7 +139,8 @@ class LinkTextField extends PureComponent {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
             this.setState({isLoading: false});
-            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: searchTerm});
+            getGuestFrameWindow().NeosCKEditorApi
+                .toggleFormat(this.props.formattingRule, {href: searchTerm});
         } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)

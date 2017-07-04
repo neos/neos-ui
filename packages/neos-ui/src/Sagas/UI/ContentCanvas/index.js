@@ -1,7 +1,7 @@
 import {takeLatest} from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
-import {iframeDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
+import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 
@@ -20,8 +20,8 @@ function * watchNodeCreated() {
  * Load newly created page into canvas
  */
 function * watchCanvasUpdateToChangeTitle() {
-    yield * takeLatest(actionTypes.UI.ContentCanvas.STOP_LOADING, () => {
-        document.title = iframeDocument().title;
+    yield * takeLatest(actionTypes.UI.ContentCanvas.DOCUMENT_INITIALIZED, () => {
+        document.title = getGuestFrameDocument().title;
     });
 }
 

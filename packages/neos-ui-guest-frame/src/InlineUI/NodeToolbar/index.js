@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import debounce from 'lodash.debounce';
 
-import {dom} from '../../Helpers/index';
+import {getGuestFrameBody, findNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {
     AddNode,
@@ -16,10 +16,10 @@ import {
 import style from './style.css';
 
 export const position = (contextPath, fusionPath) => {
-    const nodeElement = dom.findNode(contextPath, fusionPath);
+    const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
 
     if (nodeElement && nodeElement.getBoundingClientRect) {
-        const bodyBounds = dom.body().getBoundingClientRect();
+        const bodyBounds = getGuestFrameBody().getBoundingClientRect();
         const domBounds = nodeElement.getBoundingClientRect();
 
         return {

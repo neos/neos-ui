@@ -10,8 +10,6 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import Frame from '@neos-project/react-ui-components/src/Frame/';
 
 import style from './style.css';
-import InlineUI from './InlineUI/index';
-import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode, dom} from './Helpers/index';
 
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
@@ -19,25 +17,13 @@ import {initializeHoverHandlersInIFrame, initializeCkEditorForDomNode, dom} from
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     src: $get('ui.contentCanvas.src'),
-    byContextPathDynamicAccess: state => contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(state),
     currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {
-    setGuestContext: actions.Guest.setContext,
-    setContextPath: actions.UI.ContentCanvas.setContextPath,
-    setPreviewUrl: actions.UI.ContentCanvas.setPreviewUrl,
-    stopLoading: actions.UI.ContentCanvas.stopLoading,
-    setActiveDimensions: actions.CR.ContentDimensions.setActive,
-    formattingUnderCursor: actions.UI.ContentCanvas.formattingUnderCursor,
-    setCurrentlyEditedPropertyName: actions.UI.ContentCanvas.setCurrentlyEditedPropertyName,
-    addNodes: actions.CR.Nodes.add,
-    focusNode: actions.CR.Nodes.focus,
-    unFocusNode: actions.CR.Nodes.unFocus,
-    persistChange: actions.Changes.persistChange
+    documentInitialized: actions.UI.ContentCanvas.documentInitialized
 })
 @neos(globalRegistry => ({
-    globalRegistry,
-    formattingRulesRegistry: globalRegistry.get('ckEditor').get('formattingRules'),
-    editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
+    editPreviewModesRegistry: globalRegistry.get('editPreviewModes'),
+    guestFrameRegistry: globalRegistry.get('@neos-project/neos-ui-guest-frame')
 }))
 export default class ContentCanvas extends PureComponent {
     static propTypes = {
@@ -46,23 +32,11 @@ export default class ContentCanvas extends PureComponent {
         isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         src: PropTypes.string.isRequired,
-        setGuestContext: PropTypes.func.isRequired,
-        setContextPath: PropTypes.func.isRequired,
-        setPreviewUrl: PropTypes.func.isRequired,
-        stopLoading: PropTypes.func.isRequired,
-        setActiveDimensions: PropTypes.func.isRequired,
-        addNodes: PropTypes.func.isRequired,
-        formattingUnderCursor: PropTypes.func.isRequired,
-        setCurrentlyEditedPropertyName: PropTypes.func.isRequired,
-        focusNode: PropTypes.func.isRequired,
-        unFocusNode: PropTypes.func.isRequired,
-        persistChange: PropTypes.func.isRequired,
-        byContextPathDynamicAccess: PropTypes.func.isRequired,
+        documentInitialized: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
 
-        globalRegistry: PropTypes.object.isRequired,
-        formattingRulesRegistry: PropTypes.object.isRequired,
-        editPreviewModesRegistry: PropTypes.object.isRequired
+        editPreviewModesRegistry: PropTypes.object.isRequired,
+        guestFrameRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -72,7 +46,16 @@ export default class ContentCanvas extends PureComponent {
     }
 
     render() {
-        const {isFringeLeft, isFringeRight, isFullScreen, isEditModePanelHidden, src, currentEditPreviewMode, editPreviewModesRegistry} = this.props;
+        const {
+            isFringeLeft,
+            isFringeRight,
+            isFullScreen,
+            isEditModePanelHidden,
+            src,
+            currentEditPreviewMode,
+            editPreviewModesRegistry,
+            guestFrameRegistry
+        } = this.props;
         const classNames = mergeClassNames({
             [style.contentCanvas]: true,
             [style['contentCanvas--isFringeLeft']]: isFringeLeft,
@@ -80,7 +63,7 @@ export default class ContentCanvas extends PureComponent {
             [style['contentCanvas--isMovedDown']]: !isEditModePanelHidden,
             [style['contentCanvas--isFullScreen']]: isFullScreen
         });
-
+        const InlineUI = guestFrameRegistry.get('InlineUIComponent');
         const currentEditPreviewModeConfiguration = editPreviewModesRegistry.get(currentEditPreviewMode);
 
         const inlineStyles = {};
@@ -106,7 +89,7 @@ export default class ContentCanvas extends PureComponent {
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         >
-                        <InlineUI/>
+                        {InlineUI && <InlineUI/>}
                     </Frame>
                 </div>
             </div>
@@ -118,105 +101,10 @@ export default class ContentCanvas extends PureComponent {
             return;
         }
 
+        const {documentInitialized} = this.props;
+
         iframeDocument.__isInitialized = true;
 
-        const {
-            setGuestContext,
-            setContextPath,
-            setPreviewUrl,
-            setActiveDimensions,
-            addNodes,
-            stopLoading
-        } = this.props;
-
-        stopLoading();
-
-        //
-        // First of all, set the new version of the guest frame window object to the store.
-        //
-        setGuestContext(iframeWindow);
-
-        const documentInformation = iframeWindow['@Neos.Neos.Ui:DocumentInformation'];
-
-        // TODO: convert to single action: "guestFrameChange"
-
-        // Add nodes before setting the new context path to prevent action ordering issues -> THIS WILL UPDATE OUR OWN PROPS!!!
-        const nodes = iframeWindow['@Neos.Neos.Ui:Nodes'];
-        nodes[documentInformation.metaData.contextPath] = documentInformation.metaData.documentNodeSerialization;
-        addNodes(nodes);
-
-        setContextPath(documentInformation.metaData.contextPath, documentInformation.metaData.siteNode);
-        setPreviewUrl(documentInformation.metaData.previewUrl);
-        setActiveDimensions(documentInformation.metaData.contentDimensions.active);
-
-        // WARNING: we need to initialize byContextPathDynamicAccess AFTER addNodes from above; otherwise the access function
-        // will be based on the OLD state, and thus NOT return the new nodes...
-        const {
-            focusNode,
-            formattingUnderCursor,
-            setCurrentlyEditedPropertyName,
-            unFocusNode,
-            byContextPathDynamicAccess,
-            persistChange,
-            formattingRulesRegistry,
-            globalRegistry
-        } = this.props;
-
-        //
-        // Initialize node components
-        //
-        const components = iframeDocument.querySelectorAll('[data-__neos-node-contextpath]');
-        Array.prototype.forEach.call(components, node => {
-            const contextPath = node.getAttribute('data-__neos-node-contextpath');
-            const isHidden = $get([contextPath, 'properties', '_hidden'], nodes);
-
-            if (isHidden) {
-                node.classList.add(style.markHiddenNodeAsHidden);
-            }
-
-            initializeHoverHandlersInIFrame(node, iframeDocument);
-        });
-
-        //
-        // Initialize click outside handler
-        //
-        iframeDocument.body.addEventListener('click', e => {
-            const clickPath = Array.prototype.slice.call(dom.getClickPath(e));
-            const isInsideInlineUi = clickPath.filter(domNode =>
-                domNode &&
-                domNode.getAttribute &&
-                domNode.getAttribute('data-__neos__inlineUI')
-            ).length > 0;
-
-            const selectedDomNode = clickPath.find(domNode => domNode && domNode.getAttribute && domNode.getAttribute('data-__neos-node-contextpath'));
-
-            if (isInsideInlineUi) {
-                // Do nothing, everything OK!
-            } else if (selectedDomNode) {
-                const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
-                const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
-
-                focusNode(contextPath, fusionPath);
-            } else {
-                unFocusNode();
-            }
-        });
-
-        const editorConfig = {
-            formattingRules: formattingRulesRegistry.getAllAsObject(),
-            setFormattingUnderCursor: formattingUnderCursor,
-            setCurrentlyEditedPropertyName
-        };
-
-        iframeWindow.NeosCKEditorApi.initialize(editorConfig);
-
-        //
-        // Initialize inline editors
-        //
-        initializeCkEditorForDomNode(iframeDocument, {
-            byContextPathDynamicAccess,
-            globalRegistry,
-            persistChange
-        });
+        documentInitialized();
     }
 }

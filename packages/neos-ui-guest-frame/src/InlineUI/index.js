@@ -4,8 +4,6 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
 import NodeToolbar from './NodeToolbar/index';
-import MarkActiveNodeAsFocused from './MarkActiveNodeAsFocused/index';
-import AddEmptyContentCollectionOverlays from './AddEmptyContentCollectionOverlays/index';
 
 import style from './style.css';
 
@@ -23,8 +21,6 @@ export default class InlineUI extends PureComponent {
         return (
             <div className={style.inlineUi} data-__neos__inlineUI="TRUE">
                 <NodeToolbar {...focused}/>
-                <MarkActiveNodeAsFocused {...focused}/>
-                <AddEmptyContentCollectionOverlays/>
             </div>
         );
     }

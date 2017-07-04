@@ -1,7 +1,4 @@
-import {dom} from '../../../Containers/ContentCanvas/Helpers/index';
-import style from '../../../Containers/ContentCanvas/style.css';
-
-export {dom, style};
+import {findNodeInGuestFrame, closestNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 export const parentNodeContextPath = contextPath => {
     if (typeof contextPath !== 'string') {
@@ -30,8 +27,8 @@ export const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => 
     switch (mode) {
         case 'before':
         case 'after': {
-            const element = dom.findNode(contextPath, fusionPath);
-            const parentElement = element ? dom.closestNode(element.parentNode) : null;
+            const element = findNodeInGuestFrame(contextPath, fusionPath);
+            const parentElement = element ? closestNodeInGuestFrame(element.parentNode) : null;
 
             return {
                 siblingDomAddress: {
@@ -49,7 +46,7 @@ export const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => 
         }
 
         default: {
-            const element = dom.findNode(contextPath, fusionPath);
+            const element = findNodeInGuestFrame(contextPath, fusionPath);
 
             return {
                 parentDomAddress: {

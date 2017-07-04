@@ -37,6 +37,7 @@ require('./manifest');
 require('@neos-project/neos-ui-contentrepository');
 require('@neos-project/neos-ui-editors');
 require('@neos-project/neos-ui-views');
+require('@neos-project/neos-ui-guest-frame');
 require('@neos-project/neos-ui-ckeditor-bindings');
 require('@neos-project/neos-ui-validators');
 require('@neos-project/neos-ui-i18n/src/manifest');

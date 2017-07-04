@@ -14,7 +14,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 }))
 export default class ReferencesEditor extends PureComponent {
     static propTypes = {
-        value: PropTypes.string,
+        value: PropTypes.arrayOf(PropTypes.string),
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.arrayOf(PropTypes.string),

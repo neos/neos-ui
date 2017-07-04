@@ -13,7 +13,8 @@ const SET_PREVIEW_URL = '@neos/neos-ui/UI/ContentCanvas/SET_PREVIEW_URL';
 const SET_SRC = '@neos/neos-ui/UI/ContentCanvas/SET_SRC';
 const FORMATTING_UNDER_CURSOR = '@neos/neos-ui/UI/ContentCanvas/FORMATTING_UNDER_CURSOR';
 const SET_CURRENTLY_EDITED_PROPERTY_NAME = '@neos/neos-ui/UI/ContentCanvas/SET_CURRENTLY_EDITED_PROPERTY_NAME';
-const STOP_LOADING = '@neos/neos-ui/UI/ContentCanvas/STOP_LOADING';
+const DOCUMENT_INITIALIZED = '@neos/neos-ui/UI/ContentCanvas/DOCUMENT_INITIALIZED';
+const FOCUS_PROPERTY = '@neos/neos-ui/UI/ContentCanvas/FOCUS_PROPERTY';
 
 //
 // Export the action types
@@ -24,15 +25,16 @@ export const actionTypes = {
     SET_SRC,
     FORMATTING_UNDER_CURSOR,
     SET_CURRENTLY_EDITED_PROPERTY_NAME,
-    STOP_LOADING
+    DOCUMENT_INITIALIZED,
+    FOCUS_PROPERTY
 };
 
 const setContextPath = createAction(SET_CONTEXT_PATH, (contextPath, siteNode = null) => ({contextPath, siteNode}));
 const setPreviewUrl = createAction(SET_PREVIEW_URL, previewUrl => ({previewUrl}));
 const setSrc = createAction(SET_SRC, src => ({src}));
-const formattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formatting => ({formatting}));
+const setFormattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formatting => ({formatting}));
 const setCurrentlyEditedPropertyName = createAction(SET_CURRENTLY_EDITED_PROPERTY_NAME, propertyName => ({propertyName}));
-const stopLoading = createAction(STOP_LOADING);
+const documentInitialized = createAction(DOCUMENT_INITIALIZED);
 
 //
 // Export the actions
@@ -41,9 +43,9 @@ export const actions = {
     setContextPath,
     setPreviewUrl,
     setSrc,
-    formattingUnderCursor,
+    setFormattingUnderCursor,
     setCurrentlyEditedPropertyName,
-    stopLoading
+    documentInitialized
 };
 
 //
@@ -58,7 +60,8 @@ export const reducer = handleActions({
             src: $get('ui.contentCanvas.src', state) || '',
             formattingUnderCursor: new Map(),
             currentlyEditedPropertyName: '',
-            isLoading: true
+            isLoading: true,
+            focusedProperty: ''
         })
     ),
     [SET_CONTEXT_PATH]: ({contextPath, siteNode}) => state => {
@@ -81,7 +84,7 @@ export const reducer = handleActions({
     },
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
     [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
-    [STOP_LOADING]: () => $set('ui.contentCanvas.isLoading', false)
+    [DOCUMENT_INITIALIZED]: () => $set('ui.contentCanvas.isLoading', false)
 });
 
 //

@@ -6,6 +6,8 @@ import {$get, $transform} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
+
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
@@ -14,8 +16,7 @@ import style from './style.css';
  * The Actual StyleSelect component
  */
 @connect($transform({
-    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor,
-    context: selectors.Guest.context
+    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
 export default class LinkIconButton extends PureComponent {
 
@@ -25,22 +26,16 @@ export default class LinkIconButton extends PureComponent {
             PropTypes.bool,
             PropTypes.object
         ])),
-        formattingRule: PropTypes.string,
-
-        // The current guest frames window object.
-        context: PropTypes.object
+        formattingRule: PropTypes.string
     };
 
-    constructor(...args) {
-        super(...args);
-        this.handleLinkButtonClick = this.handleLinkButtonClick.bind(this);
-    }
+    handleLinkButtonClick = () => {
+        const {NeosCKEditorApi} = getGuestFrameWindow();
 
-    handleLinkButtonClick() {
         if (this.isOpen()) {
-            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {remove: true});
+            NeosCKEditorApi.toggleFormat(this.props.formattingRule, {remove: true});
         } else {
-            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
+            NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
         }
     }
 
@@ -48,7 +43,7 @@ export default class LinkIconButton extends PureComponent {
         return (
             <div>
                 <IconButton
-                    isActive={this.getHrefValue()}
+                    isActive={Boolean(this.getHrefValue())}
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />
@@ -76,8 +71,7 @@ const stripNodePrefix = str =>
     nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
 }))
 @connect($transform({
-    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking,
-    context: selectors.Guest.context
+    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }))
 class LinkTextField extends PureComponent {
 
@@ -92,9 +86,7 @@ class LinkTextField extends PureComponent {
 
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
-        }).isRequired,
-        // The current guest frames window object.
-        context: PropTypes.object
+        }).isRequired
     };
 
     constructor(props) {
@@ -147,7 +139,8 @@ class LinkTextField extends PureComponent {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
             this.setState({isLoading: false});
-            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: searchTerm});
+            getGuestFrameWindow().NeosCKEditorApi
+                .toggleFormat(this.props.formattingRule, {href: searchTerm});
         } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
@@ -163,9 +156,11 @@ class LinkTextField extends PureComponent {
     // A node has been selected
     handleValueChange = value => {
         if (value) {
-            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: 'node://' + value});
+            getGuestFrameWindow().NeosCKEditorApi
+                .toggleFormat(this.props.formattingRule, {href: 'node://' + value});
         } else {
-            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
+            getGuestFrameWindow().NeosCKEditorApi
+                .toggleFormat(this.props.formattingRule, {href: ''});
         }
     }
 

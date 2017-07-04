@@ -1,0 +1,35 @@
+{
+  "name": "@neos-project/neos-ui-guest-frame",
+  "version": "4.4.8",
+  "description": "Guest frame initialization bindings",
+  "private": true,
+  "main": "./src/manifest.js",
+  "scripts": {
+    "prebuild": "check-dependencies && npm run clean",
+    "test": "npm run jest",
+    "test:watch": "npm run jest -- --watch",
+    "build": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
+    "build:watch": "npm run build -- --watch",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src",
+    "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "^4.4.8"
+  },
+  "dependencies": {
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
+    "redux-saga": "^0.12.0"
+  },
+  "jest": {
+    "transformIgnorePatterns": [],
+    "setupFiles": [
+      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js"
+    ],
+    "transform": {
+      "neos-ui-extensibility/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
+      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
+    }
+  },
+  "license": "GNU GPLv3"
+}

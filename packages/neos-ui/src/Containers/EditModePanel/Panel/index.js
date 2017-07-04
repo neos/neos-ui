@@ -23,13 +23,13 @@ export default class Panel extends PureComponent {
     render() {
         const {title, className, modes, current, currentMode, style, onPreviewModeClick} = this.props;
 
-        let sliderSettings = {
+        const sliderSettings = {
             dots: false,
             infinite: false,
             speed: 300,
-            slidesToShow: Math.round(modes.length / 2), //https://github.com/kenwheeler/slick/issues/1207#issuecomment-105663300
+            slidesToShow: Math.round(modes.length / 2), // https://github.com/kenwheeler/slick/issues/1207#issuecomment-105663300
             variableWidth: true,
-            adaptiveHeight: true,
+            adaptiveHeight: true
         };
 
         return (

@@ -28,17 +28,6 @@ export const isDocumentNodeSelectedSelector = createSelector(
 
 export const hasFocusedContentNode = createSelector(focused, focused => Boolean(focused));
 
-// PERFORMANCE: This helper method is NOT allowed to post-process the retrieved node in any way;
-// as we need to ensure the output is deterministic and can be cached for upstream selectors to
-// work correctly.
-//
-// Instead of calling "node.toJS()" here (which totally breaks performance), we need to
-// use the immutableNodeToJs() at the USAGE POINT of "nodeByContextPath", i.e.:
-//
-// nodeByContextPath (re-calculated at all times)
-//    ---> focusedSelector (also re-calculated at all times, because nodeByContextPath changes for all invocations); but
-//                         the RESULT of focusedSelector is "stable" again.
-//    ---> immutableNodeToJs(focusedSelector): converts the focusedSelector result to plain JS; properly using memoization here.
 export const nodeByContextPath = state => contextPath =>
     $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 

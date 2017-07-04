@@ -10,85 +10,61 @@ const options = [
     {value: 'opt3', label: 'Option 3'}
 ];
 
-const selectedOptions = [
-    'opt1', 'opt2'
-];
-
-const loadOptions = ({callback, value, searchTerm}) => {
-    if (value) {
-        // simple search for async options
-        const filteredOptions = options.filter(option => {
-            return option.value === value;
-        });
-
-        setTimeout(() => (callback(filteredOptions)), 1000);
-    } else if (searchTerm) {
-        // simple search for async options
-        const filteredOptions = options.filter(option => {
-            return option.label.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-        });
-
-        setTimeout(() => (callback(filteredOptions)), 1000);
-    } else {
-        setTimeout(() => (callback(options)), 1000);
-    }
-};
-
 storiesOf('MultiSelectBox', module)
     .addDecorator(withKnobs)
     .addWithInfo(
-        'default',
+        'preselected values',
+        () => (
+            <StoryWrapper>
+                <MultiSelectBox
+                    values={['opt1']}
+                    options={options}
+                    searchOptions={options}
+                    onValuesChange={action('onValuesChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'showing loading indicator with options filled (e.g. during AJAX search)',
+        () => (
+            <StoryWrapper>
+                <MultiSelectBox
+                    values={['opt1']}
+                    options={options}
+                    onValuesChange={action('onValuesChange')}
+                    displayLoadingIndicator={true}
+                    placeholder={text('Placeholder', 'Select')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'showing loading indicator without options filled (e.g. on initial request)',
+        () => (
+            <StoryWrapper>
+                <MultiSelectBox
+                    values={['opt1']}
+
+                    onValuesChange={action('onValuesChange')}
+                    displayLoadingIndicator={true}
+                    placeholder={text('Placeholder', 'Select')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'no selected value should display placeholder',
         () => (
             <StoryWrapper>
                 <MultiSelectBox
                     options={options}
                     placeholder={text('Placeholder', 'Select')}
                     placeholderIcon={text('Placeholder icon', 'bookmark')}
-                    onSelect={action('onSelect')}
-                    />
-            </StoryWrapper>
-        ),
-        {inline: true}
-    )
-    .addWithInfo(
-        'defaultWithSelectedOptions',
-        () => (
-            <StoryWrapper>
-                <MultiSelectBox
-                    value={selectedOptions}
-                    options={options}
-                    placeholder={text('Placeholder', 'Select')}
-                    placeholderIcon={text('Placeholder icon', 'bookmark')}
-                    onSelect={action('onSelect')}
-                    />
-            </StoryWrapper>
-        ),
-        {inline: true}
-    )
-    .addWithInfo(
-        'asyncOptions',
-        () => (
-            <StoryWrapper>
-                <MultiSelectBox
-                    options={loadOptions}
-                    placeholder={text('Placeholder', 'Select')}
-                    placeholderIcon={text('Placeholder icon', 'bookmark')}
-                    onSelect={action('onSelect')}
-                    />
-            </StoryWrapper>
-        ),
-        {inline: true}
-    )
-    .addWithInfo(
-        'asyncOptionsWithDefault',
-        () => (
-            <StoryWrapper>
-                <MultiSelectBox
-                    value={selectedOptions}
-                    options={loadOptions}
-                    placeholder={text('Placeholder', 'Select')}
-                    placeholderIcon={text('Placeholder icon', 'bookmark')}
-                    onSelect={action('onSelect')}
+                    onValuesChange={action('onValuesChange')}
                     />
             </StoryWrapper>
         ),

@@ -1,8 +1,7 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+import React, {PureComponent, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
+import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -13,7 +12,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }))
-export default class ReferenceEditor extends PureComponent {
+export default class ReferencesEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
@@ -25,7 +24,7 @@ export default class ReferenceEditor extends PureComponent {
 
         i18nRegistry: PropTypes.object.isRequired,
         nodeLookupDataLoader: PropTypes.shape({
-            resolveValue: PropTypes.func.isRequired,
+            resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
 
@@ -53,9 +52,9 @@ export default class ReferenceEditor extends PureComponent {
     }
 
     componentDidMount() {
-        if (this.props.value) {
+        if (this.props.value && this.props.value.length) {
             this.setState({isLoading: true});
-            this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.value)
+            this.props.nodeLookupDataLoader.resolveValues(this.getDataLoaderOptions(), this.props.value)
                 .then(options => {
                     this.setState({
                         isLoading: false,
@@ -89,20 +88,21 @@ export default class ReferenceEditor extends PureComponent {
         }
     }
 
-    handleValueChange = value => {
+    handleValuesChange = value => {
         this.props.commit(value);
     }
 
     render() {
-        return (<SelectBox
-            options={this.props.value ? this.state.options : this.state.searchOptions}
+        return (<MultiSelectBox
+            options={this.state.options}
             optionValueField="identifier"
-            value={this.props.value}
-            onValueChange={this.handleValueChange}
+            values={this.props.value}
+            onValuesChange={this.handleValuesChange}
             placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
             displayLoadingIndicator={this.state.isLoading}
             displaySearchBox={true}
             searchTerm={this.state.searchTerm}
+            searchOptions={this.state.searchOptions}
             onSearchTermChange={this.handleSearchTermChange}
             />);
     }

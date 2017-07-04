@@ -49,7 +49,7 @@ export default class StyleSelect extends PureComponent {
 
     constructor(...args) {
         super(...args);
-        this.handleOnSelect = this.handleOnSelect.bind(this);
+        this.handleValueChange = this.handleValueChange.bind(this);
     }
 
     componentWillMount() {
@@ -57,7 +57,7 @@ export default class StyleSelect extends PureComponent {
         this.calculateEnabledFormattingRulesForNodeType = calculateEnabledFormattingRulesForNodeTypeFactory(globalRegistry);
     }
 
-    handleOnSelect(selectedStyleId) {
+    handleValueChange(selectedStyleId) {
         const {toolbarRegistry} = this.props;
         const style = toolbarRegistry.get(selectedStyleId);
         if (style && style.formattingRule) {
@@ -91,7 +91,7 @@ export default class StyleSelect extends PureComponent {
             <SelectBox
                 options={options}
                 value={selectedStyle ? selectedStyle.id : null}
-                onSelect={this.handleOnSelect}
+                onValueChange={this.handleValueChange}
                 />
         );
     }

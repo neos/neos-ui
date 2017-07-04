@@ -11,57 +11,97 @@ const options = [
     {value: 'opt3', label: 'Option 3'}
 ];
 
-const loadOptions = ({callback, value, searchTerm}) => {
-    if (value) {
-        // simple search for async options
-        const filteredOptions = options.filter(option => {
-            return option.value === value;
-        });
-
-        setTimeout(() => (callback(filteredOptions)), 1000);
-    } else if (searchTerm) {
-        // simple search for async options
-        const filteredOptions = options.filter(option => {
-            return option.label.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-        });
-
-        setTimeout(() => (callback(filteredOptions)), 1000);
-    } else {
-        setTimeout(() => (callback(options)), 1000);
-    }
-};
-
 storiesOf('SelectBox', module)
     .addDecorator(withKnobs)
     .addWithInfo(
-        'default',
+        'preselected value',
         () => (
             <StoryWrapper>
                 <SelectBox
                     value={'opt1'}
                     options={options}
-                    placeholder={text('Placeholder', 'Select')}
-                    placeholderIcon={text('Placeholder icon', 'bookmark')}
-                    onSelect={action('onSelect')}
+                    onValueChange={action('onValueChange')}
                     />
             </StoryWrapper>
         ),
         {inline: true}
     )
     .addWithInfo(
-        'async',
+        'showing loading indicator with options filled (e.g. during AJAX search)',
         () => (
-            <StoryWrapper title="SelectBox">
+            <StoryWrapper>
                 <SelectBox
-                    value={'opt2'}
-                    options={loadOptions}
+                    value={'opt1'}
+                    options={options}
+                    onValueChange={action('onValueChange')}
+                    displayLoadingIndicator={true}
                     placeholder={text('Placeholder', 'Select')}
-                    onSelect={action('onSelect')}
                     />
             </StoryWrapper>
         ),
         {inline: true}
     )
+    .addWithInfo(
+        'showing loading indicator without options filled (e.g. on initial request)',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    value={'opt1'}
+
+                    onValueChange={action('onValueChange')}
+                    displayLoadingIndicator={true}
+                    placeholder={text('Placeholder', 'Select')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'no selected value should display placeholder',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    options={options}
+                    placeholder={text('Placeholder', 'Select')}
+                    placeholderIcon={text('Placeholder icon', 'bookmark')}
+                    onValueChange={action('onValueChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'search field is only shown if no value is selected',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    options={options}
+                    displaySearchBox={true}
+                    searchTerm={'search term so far'}
+                    onSearchTermChange={action('onSearchTermChange')}
+                    onValueChange={action('onValueChange')}
+                    placeholder="Placeholder string is ignored..."
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'search field is not shown if a value is selected, but "clear"-x is displayed then',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    value={'opt2'}
+                    options={options}
+                    displaySearchBox={true}
+                    onValueChange={action('onValueChange')}
+                    placeholder="Placeholder string is ignored..."
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+
     .addWithInfo(
         'inside dropdown',
         () => (
@@ -79,66 +119,6 @@ storiesOf('SelectBox', module)
                             />
                     </DropDown.Contents>
                 </DropDown>
-            </StoryWrapper>
-        ),
-        {inline: true}
-    )
-    .addWithInfo(
-        'searchable',
-        () => (
-            <StoryWrapper title="SelectBox">
-                <SelectBox
-                    options={options}
-                    placeholder={text('Placeholder', 'Type to search')}
-                    onSelect={action('onSelect')}
-                    onDelete={action('onDelete')}
-                    />
-            </StoryWrapper>
-        ),
-        {inline: true}
-    )
-    .addWithInfo(
-        'searchableAsync',
-        () => (
-            <StoryWrapper title="SelectBox">
-                <SelectBox
-                    value={'opt1'}
-                    options={loadOptions}
-                    placeholder={text('Placeholder', 'Type to search')}
-                    onSelect={action('onSelect')}
-                    onDelete={action('onDelete')}
-                    />
-            </StoryWrapper>
-        ),
-        {inline: true}
-    )
-    .addWithInfo(
-        'searchableAsyncWithLoadOnInputAndValu',
-        () => (
-            <StoryWrapper title="SelectBox">
-                <SelectBox
-                    value={'opt1'}
-                    options={loadOptions}
-                    placeholder={text('Placeholder', 'Type to search')}
-                    onSelect={action('onSelect')}
-                    onDelete={action('onDelete')}
-                    loadOptionsOnInput={true}
-                    />
-            </StoryWrapper>
-        ),
-        {inline: true}
-    )
-    .addWithInfo(
-        'searchableAsyncWithLoadOnInput',
-        () => (
-            <StoryWrapper title="SelectBox">
-                <SelectBox
-                    options={loadOptions}
-                    placeholder={text('Placeholder', 'Type to search')}
-                    onSelect={action('onSelect')}
-                    onDelete={action('onDelete')}
-                    loadOptionsOnInput={true}
-                    />
             </StoryWrapper>
         ),
         {inline: true}

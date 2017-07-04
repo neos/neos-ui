@@ -107,7 +107,7 @@ class NodePropertyConversionService
      */
     protected function convertReferences($rawValue, Context $context)
     {
-        $nodeIdentifiers = json_decode($rawValue);
+        $nodeIdentifiers = $rawValue;
         $result = [];
 
         if (is_array($nodeIdentifiers)) {

@@ -45,7 +45,7 @@ const DimensionSelector = props => {
             <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
             <I18n id={dimensionLabel}/>
             <br/>
-            <SelectBox options={presetOptions} onSelect={onPresetSelect} value={activePreset}/>
+            <SelectBox options={presetOptions} onValueChange={onPresetSelect} value={activePreset}/>
         </li>
     );
 };

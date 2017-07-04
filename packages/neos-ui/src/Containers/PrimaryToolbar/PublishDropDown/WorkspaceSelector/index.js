@@ -38,8 +38,8 @@ export default class WorkspaceSelector extends PureComponent {
             {anyWorkspacesAvailable && (changingWorkspaceAllowed ?
                 <SelectBox
                     options={workspacesOptions}
-                    onSelect={onWorkspaceSelect}
                     value={baseWorkspace}
+                    onValueChange={onWorkspaceSelect}
                     /> :
                 <div className={style.notAllowed} title={i18nRegistry.translate('Neos.Neos:Main:content.components.dirtyWorkspaceDialog.dirtyWorkspaceContainsChanges')}>
                     {baseWorkspaceTitle} – {i18nRegistry.translate('Neos.Neos:Main:content.components.dirtyWorkspaceDialog.dirtyWorkspaceHeader')}

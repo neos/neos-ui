@@ -48,7 +48,7 @@ export default class NodeType extends PureComponent {
             }));
 
         if (options.length) {
-            return <SelectBox options={options} value={value} onSelect={commit}/>;
+            return <SelectBox options={options} value={value} onValueChange={commit}/>;
         }
 
         return (

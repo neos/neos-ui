@@ -55,6 +55,10 @@
     }
 }
 
+.dropDown__searchInputContainer {
+    display: inline-block;
+}
+
 .dropDown__loadingIcon {
     composes: reset from './../reset.css';
     position: absolute;

@@ -1,14 +1,76 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import AbstractSelectBox, {propTypes as abstractSelectBoxPropTypes, state as abstractState} from '../SelectBox/abstractSelectBox';
+export default class MultiSelectBox extends PureComponent {
 
-export default class MultiSelectBox extends AbstractSelectBox {
+    static defaultProps = {
+        optionValueField: 'value'
+    };
+
     static propTypes = {
-        ...abstractSelectBoxPropTypes,
-
-        value: PropTypes.arrayOf(
-            PropTypes.string
+        /**
+         * This prop represents a set of options.
+         * Each option must have a value and can have a label and an icon.
+         */
+        options: PropTypes.arrayOf(
+            PropTypes.shape({
+                icon: PropTypes.string,
+                // "value" is not part of PropTypes validation, as the "value field" is specified via the "optionValueField" property
+                label: PropTypes.oneOfType([
+                    PropTypes.string,
+                    PropTypes.object
+                ]).isRequired
+            })
         ),
+
+        /**
+         * Field name specifying which field in a single "option" contains the "value"
+         */
+        optionValueField: PropTypes.string,
+
+        /**
+         * This prop represents the current selected value.
+         */
+        values: PropTypes.arrayOf(PropTypes.string),
+
+        /**
+         * This prop gets called when an option was selected. It returns the new value.
+         */
+        onValuesChange: PropTypes.func.isRequired,
+
+        /**
+         * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
+         */
+        placeholder: PropTypes.string,
+
+        /**
+         * This prop is an icon for the placeholder.
+         */
+        placeholderIcon: PropTypes.string,
+
+        /**
+         * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
+         */
+        displayLoadingIndicator: PropTypes.bool,
+
+        /**
+         * search box related properties
+         */
+        displaySearchBox: PropTypes.bool,
+
+        searchTerm: PropTypes.string,
+
+        searchOptions: PropTypes.arrayOf(
+            PropTypes.shape({
+                icon: PropTypes.string,
+                // "value" is not part of PropTypes validation, as the "value field" is specified via the "optionValueField" property
+                label: PropTypes.oneOfType([
+                    PropTypes.string,
+                    PropTypes.object
+                ]).isRequired
+            })
+        ),
+
+        onSearchTermChange: PropTypes.func,
 
         /**
          * An optional css theme to be injected.
@@ -27,121 +89,69 @@ export default class MultiSelectBox extends AbstractSelectBox {
         IconButtonComponent: PropTypes.any.isRequired
     };
 
-    state = {
-        ...abstractState,
-        selectedOptions: []
-    };
-
-    constructor(...args) {
-        super(...args);
-
-        this.renderSelectedOption = this.renderSelectedOption.bind(this);
-        this.handleOnSelect = this.handleOnSelect.bind(this);
-        this.handleRemoveSelectedOptionsClick = this.handleRemoveSelectedOptionsClick.bind(this);
-    }
-
     render() {
         const {
-            options,
-            loadOptionsOnInput,
+            searchOptions,
+            values,
+            optionValueField,
+            displayLoadingIndicator,
+            theme,
             placeholder,
             placeholderIcon,
-            theme,
-            minimumResultsForSearch,
-            SelectBoxComponent,
-            isSearchable
+            displaySearchBox,
+            searchTerm,
+            onSearchTermChange,
+            SelectBoxComponent
         } = this.props;
 
-        const selectedOptions = this.state.selectedOptions;
+        const filteredSearchOptions = (searchOptions || [])
+            .filter(option => !(values && values.indexOf(option[optionValueField]) !== -1));
 
         return (
-            <div className={this.props.theme.wrapper}>
-                {Object.prototype.toString.call(selectedOptions) === '[object Array]' ?
-                    <ul className={this.props.theme.selectedOptions}>
-                        {
-                            selectedOptions.map(this.renderSelectedOption)
-                        }
-                    </ul> : null
-                }
+            <div className={theme.wrapper}>
+                <ul className={theme.selectedOptions}>
+                    {
+                        (values || []).map(this.renderSelectedValue)
+                    }
+                </ul>
                 <SelectBoxComponent
-                    value={null}
-                    options={options}
-                    loadOptionsOnInput={loadOptionsOnInput}
+                    options={filteredSearchOptions}
+                    value=""
+                    optionValueField={optionValueField}
+                    displayLoadingIndicator={displayLoadingIndicator}
                     placeholder={placeholder}
                     placeholderIcon={placeholderIcon}
-                    theme={theme}
-                    onSelect={this.handleOnSelect}
-                    onDelete={null}
-                    isSearchable={isSearchable}
-                    clearOnSelect={true}
-                    minimumResultsForSearch={minimumResultsForSearch}
+                    displaySearchBox={displaySearchBox}
+                    searchTerm={searchTerm}
+                    onSearchTermChange={onSearchTermChange}
+                    onValueChange={this.handleNewValueSelected}
                     />
             </div>
         );
     }
 
-    // adds the newly selected value to the selected options
-    handleOnSelect(value) {
-        const currentSelectedOptions = [...this.state.selectedOptions || []];
-
-        const valueAlreadySelected = currentSelectedOptions.find(option => option.value === value);
-
-        if (!valueAlreadySelected) {
-            currentSelectedOptions.push({
-                icon: this.getOptionIconForValue(value),
-                label: this.getOptionLabelForValue(value),
-                value
-            });
-
-            this.setState({
-                selectedOptions: currentSelectedOptions
-            });
-
-            this.props.onSelect(currentSelectedOptions);
-        }
-    }
-
-    handleRemoveSelectedOptionsClick(valueToRemove) {
-        const currentSelectedOptions = [...this.state.selectedOptions];
-        const newSelectedOptions = currentSelectedOptions.filter(option => option.value !== valueToRemove);
-
-        this.setState({
-            selectedOptions: newSelectedOptions
-        });
-
-        this.props.onSelect(currentSelectedOptions);
-    }
-
-    select(incomingValue) {
-        const selectedOptions = incomingValue.map(value =>
-            ({
-                value,
-                label: this.getOptionLabelForValue(value),
-                icon: this.getOptionIconForValue(value)
-            })
-        );
-
-        this.setState({
-            selectedOptions
-        });
-    }
-
     /**
      * renders a single option (<li/>) for the list of multi selected values
      *
-     * @param {object} option
+     * @param {string} option
      * @param {string} option.icon
      * @param {string} option.label
      * @param {number} index
      * @returns {JSX} option element
      */
-    renderSelectedOption({icon, label, value}, index) {
-        const theme = this.props.theme;
-        const IconComponent = this.props.IconComponent;
-        const IconButtonComponent = this.props.IconButtonComponent;
-        const onClick = () => {
-            this.handleRemoveSelectedOptionsClick(value);
-        };
+    renderSelectedValue = (value, index) => {
+        const {
+            optionValueField,
+            options,
+            theme,
+            IconComponent,
+            IconButtonComponent
+        } = this.props;
+
+        const option = (options || [])
+            .find(option => option[optionValueField] === value);
+
+        const {icon, label} = option || {label: `[Loading ${value}]`};
 
         return (
             <li
@@ -156,9 +166,21 @@ export default class MultiSelectBox extends AbstractSelectBox {
                 <span>{ label }</span>
                 <IconButtonComponent
                     icon={'close'}
-                    onClick={onClick}
+                    onClick={this.handleRemoveOption(value)}
                     />
             </li>
         );
+    }
+
+    handleNewValueSelected = value => {
+        const values = this.props.values || [];
+        const updatedValues = [...values, value];
+        this.props.onValuesChange(updatedValues);
+    }
+
+    handleRemoveOption = valueToRemove => () => {
+        const values = this.props.values || [];
+        const updatedValues = values.filter(value => value !== valueToRemove);
+        this.props.onValuesChange(updatedValues);
     }
 }

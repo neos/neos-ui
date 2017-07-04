@@ -18,7 +18,7 @@ test(`should export action creators`, () => {
     expect(typeof (actions.setContextPath)).toBe('function');
     expect(typeof (actions.setPreviewUrl)).toBe('function');
     expect(typeof (actions.setSrc)).toBe('function');
-    expect(typeof (actions.formattingUnderCursor)).toBe('function');
+    expect(typeof (actions.setFormattingUnderCursor)).toBe('function');
     expect(typeof (actions.setCurrentlyEditedPropertyName)).toBe('function');
 });
 

@@ -1,7 +1,7 @@
 import {takeLatest} from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
-import {iframeDocument} from '../../../Containers//ContentCanvas/Helpers/dom';
+import {iframeDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 
@@ -25,7 +25,21 @@ function * watchCanvasUpdateToChangeTitle() {
     });
 }
 
+/**
+ * Run initialization sequence, after a new document has been loaded
+ */
+function * watchDocumentInitialized({globalRegistry, store}) {
+    const guestFrameRegistry = globalRegistry.get('@neos-project/neos-ui-guest-frame');
+    const makeInitializeGuestFrame = guestFrameRegistry.get('makeInitializeGuestFrame');
+
+    yield * takeLatest(
+        actionTypes.UI.ContentCanvas.DOCUMENT_INITIALIZED,
+        makeInitializeGuestFrame({globalRegistry, store})
+    );
+}
+
 export const sagas = [
     watchNodeCreated,
-    watchCanvasUpdateToChangeTitle
+    watchCanvasUpdateToChangeTitle,
+    watchDocumentInitialized
 ];

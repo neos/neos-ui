@@ -152,4 +152,23 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
 
         return viewConfiguration;
     }
+
+    getInlineEditorIdentifierForProperty(nodeTypeName, propertyName) {
+        const nodeType = this.get(nodeTypeName);
+
+        //
+        // TODO: Add documentation for this node type configuration, once it can be considered to be public API
+        //
+        return $get(['properties', propertyName, 'ui', 'inline', 'editor'], nodeType) || 'ckeditor';
+    }
+
+    getInlineEditorOptionsForProperty(nodeTypeName, propertyName) {
+        const nodeType = this.get(nodeTypeName);
+
+        //
+        // TODO: Add documentation for this node type configuration, once it can be considered to be public API
+        //
+        return $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType) ||
+            $get(['properties', propertyName, 'ui', 'aloha'], nodeType);
+    }
 }

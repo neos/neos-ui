@@ -1,0 +1,21 @@
+.markHoveredNodeAsHovered {
+    outline-offset: .5em;
+    outline: 2px solid rgba(#000, .2);
+}
+.markHiddenNodeAsHidden {
+    opacity: .5;
+}
+
+.editable:focus {
+    outline: none;
+}
+
+.addEmptyContentCollectionOverlay {
+    height: 20px;
+    outline: 2px solid var(--brandColorsContrastBrighter);
+}
+
+.markActiveNodeAsFocused--focusedNode {
+    outline-offset: .5em;
+    outline: 2px solid var(--brandColorsPrimaryBlue);
+}

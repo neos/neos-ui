@@ -1,16 +1,10 @@
 import uuid from 'uuid';
 import {$get} from 'plow-js';
 
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import StyleSelect from './Containers/SecondaryToolbar/EditorToolbar/StyleSelect';
-import LinkIconButton from './Containers/SecondaryToolbar/EditorToolbar/LinkIconButton';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
-
-import {RichTextToolbarRegistry} from './Registry';
-import {dom, initializeHoverHandlersInIFrame, initializeCkEditorForDomNode} from './Containers/ContentCanvas/Helpers/index';
 
 manifest('main', {}, globalRegistry => {
     //
@@ -18,6 +12,43 @@ manifest('main', {}, globalRegistry => {
     //
     globalRegistry.add('editPreviewModes', new SynchronousRegistry(`
         # Edit/Preview Mode specific registry
+    `));
+
+    //
+    // Create inline editor registry
+    //
+    globalRegistry.add('inlineEditors', new SynchronousRegistry(`
+        # Registry for inline editors
+
+        Each key in this registry should be a unique identifier for an inline editor, that can be referenced in a node type configuration.
+        Each entry in this registry is supposed to consist of an object with the following structure:
+
+        {
+            bootstrap: myBootstrapFunction,
+            createInlineEditor: myInlineEditorFactoryFunction
+        }
+
+        \`bootstrap\` is called only once during the global initialization of the guest frame. It is not required to do
+        anything in this function, but it is possible to prepare the guest frame environment, if any global variables
+        must be defined or other initialization routines must be run in order for the inline editor to work.
+
+        \`bootstrap\` will receive an API Object as its first parameter, with the following methods:
+
+            - setFormattingUnderCursor: Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.UI.ContentCanvas.setFormattingUnderCursor)
+            - setCurrentlyEditedPropertyName: Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.UI.ContentCanvas.setCurrentlyEditedPropertyName)
+
+        \`createInlineEditor\` is called on every dom node in the guest frame that represents an editable property. It
+        is supposed to handle the initialization and display of an inline editor.
+
+        \`createInlineEditor\` will receive an object as its first parameter, with the following properties:
+
+            - propertyDomNode: The DOM node associated with the editable property
+            - propertyName: The name of the editable property
+            - contextPath: The contextPath of the associated node
+            - nodeType: The nodeType of the associated node
+            - editorOptions: The configuration for this inline editor
+            - globalRegistry: The global registry
+            - persistChange: Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.Changes.persistChange)
     `));
 
     //
@@ -102,246 +133,6 @@ manifest('main', {}, globalRegistry => {
     `));
 
     //
-    // Create richtext editing toolbar registry
-    //
-    const richtextToolbar = globalRegistry.add('richtextToolbar', new RichTextToolbarRegistry(`
-        Contains the Rich Text Editing Toolbar components.
-
-        The values are objects of the following form:
-
-            {
-                formatting: 'h1' // References a key inside "formattingRules"
-                component: Button // the React component being used for rendering
-                callbackPropName: 'onClick' // Name of the callback prop of the Component which is
-                                               fired when the component's value changes.
-
-                // all other properties are directly passed on to the component.
-            }
-
-        ## Component wiring
-
-        - Each toolbar component receives all properties except "formatting" and "component" directly as props.
-        - Furthermore, the "isActive" property is bound, which is a boolean flag defining whether the text style
-          referenced by "formatting" is currently active or not.
-        - Furthermore, the callback specified in "callbackPropName" is wired, which toggles the value.
-
-        For advanced use-cases; also the "formattingRule" is bound to the component; containing a formatting-rule identifier (string).
-        If you need this, you'll most likely need to listen to selectors.UI.ContentCanvas.formattingUnderCursor and extract
-        your relevant information manually.
-    `));
-
-    //
-    // Configure richtext editing toolbar
-    //
-
-    /**
-     * Basic Inline Styles (Bold, Italic, ...)
-     */
-
-    // Bold
-    richtextToolbar.add('strong', {
-        formattingRule: 'strong',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'bold',
-        hoverStyle: 'brand'
-    });
-
-    // Italic
-    richtextToolbar.add('italic', {
-        formattingRule: 'em',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'italic',
-        hoverStyle: 'brand'
-    });
-
-    // Underline
-    richtextToolbar.add('underline', {
-        formattingRule: 'u',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'underline',
-        hoverStyle: 'brand'
-    });
-
-    // Subscript
-    richtextToolbar.add('subscript', {
-        formattingRule: 'sub',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'subscript',
-        hoverStyle: 'brand'
-    });
-
-    // Superscript
-    richtextToolbar.add('superscript', {
-        formattingRule: 'sup',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'superscript',
-        hoverStyle: 'brand'
-    });
-
-    // Strike-Through
-    richtextToolbar.add('strikethrough', {
-        formattingRule: 'del',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'strikethrough',
-        hoverStyle: 'brand'
-    });
-
-    // Strike-Through
-    richtextToolbar.add('link', {
-        formattingRule: 'a',
-        component: LinkIconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'link',
-        hoverStyle: 'brand'
-    });
-
-    /**
-     * Basic Paragraph Styles (p, h1, h2, pre, ...)
-     */
-    richtextToolbar.add('style', {
-        component: StyleSelect,
-        callbackPropName: 'onSelect',
-        isVisibleWhen: () => true
-    });
-
-    // p tag
-    richtextToolbar.add('style/p', {
-        formattingRule: 'p',
-        label: 'Paragraph'
-    });
-
-    // h1
-    richtextToolbar.add('style/h1', {
-        formattingRule: 'h1',
-        label: 'Headline 1'
-    });
-
-    // h2
-    richtextToolbar.add('style/h2', {
-        formattingRule: 'h2',
-        label: 'Headline 2'
-    });
-
-    // h3
-    richtextToolbar.add('style/h3', {
-        formattingRule: 'h3',
-        label: 'Headline 3'
-    });
-
-    // h4
-    richtextToolbar.add('style/h4', {
-        formattingRule: 'h4',
-        label: 'Headline 4'
-    });
-
-    // h5
-    richtextToolbar.add('style/h5', {
-        formattingRule: 'h5',
-        label: 'Headline 5'
-    });
-
-    // h6
-    richtextToolbar.add('style/h6', {
-        formattingRule: 'h6',
-        label: 'Headline 6'
-    });
-
-    // pre
-    richtextToolbar.add('style/pre', {
-        formattingRule: 'pre',
-        label: 'Preformatted'
-    });
-
-    /**
-     * Sorted and Unsorted Lists
-     */
-
-    // ordered list
-    richtextToolbar.add('orderedList', {
-        formattingRule: 'ol',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'list-ol',
-        hoverStyle: 'brand'
-    });
-
-    // unordered list
-    richtextToolbar.add('unorderedList', {
-        formattingRule: 'ul',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'list-ul',
-        hoverStyle: 'brand'
-    });
-
-    // Indent
-    richtextToolbar.add('indent', {
-        formattingRule: 'indent',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'indent',
-        hoverStyle: 'brand',
-        isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
-            return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
-                formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED;
-        }
-    });
-
-    // Outdent
-    richtextToolbar.add('outdent', {
-        formattingRule: 'outdent',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'outdent',
-        hoverStyle: 'brand',
-        isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
-            return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
-                formattingUnderCursor.outdent !== richtextToolbar.TRISTATE_DISABLED;
-        }
-    });
-
-    /**
-     * Tables
-     */
-    richtextToolbar.add('table', {
-        formattingRule: 'table',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'table',
-        hoverStyle: 'brand'
-    });
-
-    /**
-     * Remove formatting
-     */
-    richtextToolbar.add('removeFormat', {
-        formattingRule: 'removeFormat',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'table',
-        hoverStyle: 'brand'
-    });
-
-    //
     // Create server feedback handlers registry
     //
 
@@ -417,49 +208,7 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
-    // When the server advices to render a new node, put the delivered html to the
-    // corrent place inside the DOM
-    //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderContentOutOfBand', (feedbackPayload, {store, globalRegistry}) => {
-        const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
-        const parentElement = parentDomAddress && dom.findNode(
-            parentDomAddress.contextPath,
-            parentDomAddress.fusionPath
-        );
-        const siblingElement = siblingDomAddress && dom.findNode(
-            siblingDomAddress.contextPath,
-            siblingDomAddress.fusionPath
-        );
-        const contentElement = (new DOMParser())
-            .parseFromString(renderedContent, 'text/html')
-            .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
-
-        switch (mode) {
-            case 'before':
-                siblingElement.parentNode.insertBefore(contentElement, siblingElement);
-                break;
-
-            case 'after':
-                siblingElement.parentNode.insertBefore(contentElement, siblingElement.nextSibling);
-                break;
-
-            case 'into':
-            default:
-                parentElement.appendChild(contentElement);
-                break;
-        }
-
-        initializeHoverHandlersInIFrame(contentElement, dom.iframeDocument());
-
-        initializeCkEditorForDomNode(contentElement, {
-            byContextPathDynamicAccess: contextPath => selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState()),
-            globalRegistry,
-            persistChange: (...args) => store.dispatch(actions.Changes.persistChange(...args))
-        });
-    });
-
-    //
-    // When the server has removed a node, remove it as well from the store and the dom
+    // When the server has removed a node, remove it as well from the store
     //
     serverFeedbackHandlers.add('Neos.Neos.Ui:RemoveNode', ({contextPath, parentContextPath}, {store}) => {
         const state = store.getState();
@@ -477,9 +226,6 @@ manifest('main', {}, globalRegistry => {
 
             store.dispatch(actions.UI.ContentCanvas.setSrc(parentNodeUri));
             store.dispatch(actions.UI.ContentCanvas.setContextPath(parentContextPath));
-        } else {
-            dom.findAll(`[data-__neos-node-contextpath="${contextPath}"]`)
-                .forEach(el => el.remove());
         }
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));

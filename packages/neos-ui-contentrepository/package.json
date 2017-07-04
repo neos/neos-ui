@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
-    "plow-js": "^1.2.1",
+    "plow-js": "^2.1.0",
     "ramda": "^0.22.1"
   },
   "license": "GNU GPLv3",

@@ -5,7 +5,6 @@ import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
     nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
@@ -28,7 +27,6 @@ export default class ReferenceEditor extends PureComponent {
             resolveValue: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
-
 
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
@@ -93,7 +91,6 @@ export default class ReferenceEditor extends PureComponent {
     handleValueChange = value => {
         this.props.commit(value);
     }
-
 
     render() {
         return (<SelectBox

@@ -125,7 +125,7 @@ export default class SelectBox extends PureComponent {
         let icon = '';
         let label = '';
         if (displaySearchBox) {
-            icon = 'search'
+            icon = 'search';
         }
         if (selectedValue) {
             label = selectedValue.label;
@@ -150,7 +150,8 @@ export default class SelectBox extends PureComponent {
                                 value={searchTerm}
                                 onChange={onSearchTermChange}
                                 className={theme.dropDown__searchInput}
-                                containerClassName={theme.dropDown__searchInputContainer}/> :
+                                containerClassName={theme.dropDown__searchInputContainer}
+                                /> :
                             <span>{label}</span>
                         }
 

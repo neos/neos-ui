@@ -5,7 +5,6 @@ import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
     nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
@@ -25,10 +24,9 @@ export default class ReferencesEditor extends PureComponent {
 
         i18nRegistry: PropTypes.object.isRequired,
         nodeLookupDataLoader: PropTypes.shape({
-            resolveValue: PropTypes.func.isRequired,
+            resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
-
 
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired

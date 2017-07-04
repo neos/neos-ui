@@ -6,7 +6,6 @@ import {$get, $transform} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import backend from '@neos-project/neos-ui-backend-connector';
 
 import style from './style.css';
 
@@ -67,16 +66,14 @@ export default class LinkIconButton extends PureComponent {
 }
 
 const isUri = str =>
-    str && Boolean(str.match("^https?://"))
+    str && Boolean(str.match('^https?://'));
 
 const stripNodePrefix = str =>
     str && str.replace('node://', '');
 
-@neos(globalRegistry => {
-    return {
-        nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
-    };
-})
+@neos(globalRegistry => ({
+    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
+}))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking,
     context: selectors.Guest.context
@@ -145,7 +142,6 @@ class LinkTextField extends PureComponent {
         }
     }
 
-
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
@@ -165,27 +161,27 @@ class LinkTextField extends PureComponent {
 
     // A node has been selected
     handleValueChange = value => {
-        if (!value) {
-            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
-        } else {
+        if (value) {
             this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: 'node://' + value});
+        } else {
+            this.props.context.NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
         }
     }
 
     render() {
         return (
             <div className={style.linkIconButton__flyout}>
-            <SelectBox
-                options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
-                optionValueField="identifier"
-                value={this.props.hrefValue && stripNodePrefix(this.props.hrefValue)}
-                onValueChange={this.handleValueChange}
-                placeholder="Paste a link, or search"
-                displayLoadingIndicator={this.state.isLoading}
-                displaySearchBox={true}
-                searchTerm={this.state.searchTerm}
-                onSearchTermChange={this.handleSearchTermChange}
-                />
+                <SelectBox
+                    options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
+                    optionValueField="identifier"
+                    value={this.props.hrefValue && stripNodePrefix(this.props.hrefValue)}
+                    onValueChange={this.handleValueChange}
+                    placeholder="Paste a link, or search"
+                    displayLoadingIndicator={this.state.isLoading}
+                    displaySearchBox={true}
+                    searchTerm={this.state.searchTerm}
+                    onSearchTermChange={this.handleSearchTermChange}
+                    />
             </div>
         );
     }

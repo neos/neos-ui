@@ -56,7 +56,6 @@ export default class SelectNodeType extends PureComponent {
         apply: PropTypes.func.isRequired
     };
 
-
     componentDidMount() {
         this.setState({
             insertMode: calculateInitialMode(
@@ -67,8 +66,8 @@ export default class SelectNodeType extends PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.allowedSiblingNodeTypes !== this.props.allowedSiblingNodeTypes
-            || prevProps.allowedChildNodeTypes !== this.props.allowedChildNodeTypes) {
+        if (prevProps.allowedSiblingNodeTypes !== this.props.allowedSiblingNodeTypes ||
+            prevProps.allowedChildNodeTypes !== this.props.allowedChildNodeTypes) {
             this.componentDidMount();
         }
     }
@@ -107,7 +106,7 @@ export default class SelectNodeType extends PureComponent {
 
     renderInsertModeSelector() {
         const {insertMode} = this.state;
-        const {allowedSiblingNodeTypes, allowedChildNodeTypes, nodeTypesRegistry} = this.props;
+        const {allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
 
         return (
             <InsertModeSelector
@@ -133,7 +132,7 @@ export default class SelectNodeType extends PureComponent {
     }
 
     render() {
-        const {isOpen, nodeTypesRegistry} = this.props;
+        const {isOpen} = this.props;
 
         if (!isOpen) {
             return null;

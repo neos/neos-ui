@@ -77,6 +77,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 }
             });
 
+            let result;
             if (identifiersNotInCache.length > 0) {
                 // Build up query
                 const searchNodesQuery = Object.assign({}, options.contextForNodeLinking, {
@@ -86,7 +87,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 // trigger query
                 const searchNodesApi = backend.get().endpoints.searchNodes;
 
-                return searchNodesApi(searchNodesQuery).then(results => {
+                result = searchNodesApi(searchNodesQuery).then(results => {
                     // we store the result in the cache
                     results.forEach(result => {
                         const cacheKey = makeCacheKey('resolve', {options, identifier: result.identifier});
@@ -104,12 +105,14 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 });
             } else {
                 // we know all identifiers are in cache.
-                return Promise.all(
+                result = Promise.all(
                     identifiers.map(identifier =>
                         resultPromisesByIdentifier[identifier]
                     ).filter(promise => Boolean(promise)) // remove "null" values
                 );
             }
+
+            return result;
         },
 
         search(options, searchTerm) {

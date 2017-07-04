@@ -91,7 +91,6 @@ export default class MultiSelectBox extends PureComponent {
 
     render() {
         const {
-            options,
             searchOptions,
             values,
             optionValueField,
@@ -117,7 +116,7 @@ export default class MultiSelectBox extends PureComponent {
                 </ul>
                 <SelectBoxComponent
                     options={filteredSearchOptions}
-                    value=''
+                    value=""
                     optionValueField={optionValueField}
                     displayLoadingIndicator={displayLoadingIndicator}
                     placeholder={placeholder}
@@ -130,7 +129,6 @@ export default class MultiSelectBox extends PureComponent {
             </div>
         );
     }
-
 
     /**
      * renders a single option (<li/>) for the list of multi selected values
@@ -153,7 +151,7 @@ export default class MultiSelectBox extends PureComponent {
         const option = (options || [])
             .find(option => option[optionValueField] === value);
 
-        let {icon, label} = option || {label: `[Loading ${value}]`};
+        const {icon, label} = option || {label: `[Loading ${value}]`};
 
         return (
             <li
@@ -174,7 +172,7 @@ export default class MultiSelectBox extends PureComponent {
         );
     }
 
-    handleNewValueSelected = (value) => {
+    handleNewValueSelected = value => {
         const values = this.props.values || [];
         const updatedValues = [...values, value];
         this.props.onValuesChange(updatedValues);

@@ -12,8 +12,7 @@ const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
     nodeIdentifier && 'node://' + nodeIdentifier;
 
 const isUri = str =>
-    str && Boolean(str.match("^https?://"))
-
+    str && Boolean(str.match('^https?://'));
 
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -134,4 +133,3 @@ class LinkEditor extends PureComponent {
 }
 
 export default LinkEditor;
-

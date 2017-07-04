@@ -10,10 +10,6 @@ const options = [
     {value: 'opt3', label: 'Option 3'}
 ];
 
-const selectedOptions = [
-    'opt1', 'opt2'
-];
-
 storiesOf('MultiSelectBox', module)
     .addDecorator(withKnobs)
     .addWithInfo(
@@ -74,4 +70,3 @@ storiesOf('MultiSelectBox', module)
         ),
         {inline: true}
     );
-

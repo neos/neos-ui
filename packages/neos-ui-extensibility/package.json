@@ -4,9 +4,9 @@
   "description": "Extensibility mechanisms for the Neos CMS UI",
   "main": "./src/index.js",
   "scripts": {
-    "prebuild": "check-dependencies && npm run clean",
-    "test": "npm run jest",
-    "test:watch": "npm run jest -- --watch",
+    "prebuild": "check-dependencies && yarn clean",
+    "test": "yarn jest",
+    "test:watch": "yarn jest -- --watch",
     "build": "exit 0",
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",

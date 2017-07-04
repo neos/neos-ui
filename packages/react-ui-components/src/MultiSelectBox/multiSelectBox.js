@@ -1,5 +1,5 @@
-import React, {PropTypes, PureComponent} from 'react';
-
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {

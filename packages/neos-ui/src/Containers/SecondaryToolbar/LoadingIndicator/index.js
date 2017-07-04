@@ -1,4 +1,5 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {$transform, $get} from 'plow-js';
 import {connect} from 'react-redux';
 import style from './style.css';

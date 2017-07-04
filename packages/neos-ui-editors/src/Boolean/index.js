@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
 import Label from '@neos-project/react-ui-components/src/Label/';

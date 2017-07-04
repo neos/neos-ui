@@ -92,19 +92,19 @@ test('<ToggablePanel/> should propagate the "toggle" instance method to the the 
 test('<StatelessToggablePanel/> should render only the "panel" className of the theme in any case.', () => {
     const wrapper = shallowStateLess(null);
 
-    expect(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme.panel)).toBeTruthy();
-    expect(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme['panel--isOpen'])).toBeFalsy();
+    expect(wrapper.hasClass(stateLessDefaultProps.theme.panel)).toBeTruthy();
+    expect(wrapper.hasClass(stateLessDefaultProps.theme['panel--isOpen'])).toBeFalsy();
 });
 test('<StatelessToggablePanel/> should render both the "panel" and "panel--isOpen" className of the theme in case the "isOpen" prop is truthy.', () => {
     const wrapper = shallowStateLess({isOpen: true});
 
-    expect(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme.panel)).toBeTruthy();
-    expect(wrapper.childAt(0).hasClass(stateLessDefaultProps.theme['panel--isOpen'])).toBeTruthy();
+    expect(wrapper.hasClass(stateLessDefaultProps.theme.panel)).toBeTruthy();
+    expect(wrapper.hasClass(stateLessDefaultProps.theme['panel--isOpen'])).toBeTruthy();
 });
 test('<StatelessToggablePanel/> should render the "className" prop if provided.', () => {
     const wrapper = shallowStateLess({isOpen: true, className: 'FooClassName'});
 
-    expect(wrapper.childAt(0).hasClass('FooClassName')).toBeTruthy();
+    expect(wrapper.hasClass('FooClassName')).toBeTruthy();
 });
 test('<StatelessToggablePanel/> should render its propagated children.', () => {
     const wrapper = shallowStateLess();

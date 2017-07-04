@@ -1,4 +1,5 @@
-import React, {PropTypes, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import HorizontalScroll from 'react-scroll-horizontal';
 
 import Button from '@neos-project/react-ui-components/src/Button/index';

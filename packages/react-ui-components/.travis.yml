@@ -6,9 +6,9 @@ cache:
 notifications:
   email: false
 before_script:
-  - npm prune
+  - yarn prune
 after_success:
-  - npm run semantic-release
+  - yarn semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

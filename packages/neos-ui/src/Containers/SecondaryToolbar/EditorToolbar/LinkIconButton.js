@@ -1,5 +1,6 @@
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 

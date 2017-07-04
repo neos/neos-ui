@@ -1,8 +1,8 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
-import {Broadcast, Subscriber} from 'react-broadcast';
 import ShallowDropDownHeader from './header.js';
 import ShallowDropDownContents from './contents.js';
 
@@ -93,7 +93,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
 
     render() {
         const {children, className, theme, style, padded, ...restProps} = this.props;
-        const rest = omit(restProps, ['isOpen', 'onToggle']);
+        const rest = omit(restProps, ['isOpen', 'onToggle', 'isOpen']);
         const styleClassName = style ? `dropDown--${style}` : false;
         const finalClassName = mergeClassNames({
             [theme[styleClassName]]: styleClassName,
@@ -103,11 +103,12 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
         });
 
         return (
-            <Broadcast channel="isDropdownOpen" value={this.props.isOpen}>
-                <div {...rest} className={finalClassName}>
-                    {children}
-                </div>
-            </Broadcast>
+            <div {...rest} className={finalClassName}>
+                {React.Children.map(
+                    children,
+                    child => child.type ? <child.type {...child.props} isDropdownOpen={this.props.isOpen}/> : child
+                )}
+            </div>
         );
     }
 }
@@ -146,24 +147,38 @@ export class DropDownWrapper extends PureComponent {
 export default DropDownWrapper;
 
 export class ContextDropDownHeader extends PureComponent {
+    static propTypes = {
+        /**
+         * The propagated isOpen state from the dropDown
+         */
+        isDropdownOpen: PropTypes.bool.isRequired
+    };
+
     static contextTypes = {
         toggleDropDown: PropTypes.func.isRequired
     };
 
     render() {
-        return (<Subscriber channel="isDropdownOpen">{ isOpen =>
-            <ShallowDropDownHeader isOpen={isOpen} {...this.props} toggleDropDown={this.context.toggleDropDown}/>
-        }</Subscriber>);
+        const {isDropdownOpen, ...rest} = this.props;
+
+        return <ShallowDropDownHeader isOpen={isDropdownOpen} {...rest} {...this.context}/>;
     }
 }
 export class ContextDropDownContents extends PureComponent {
+    static propTypes = {
+        /**
+         * The propagated isOpen state from the dropDown
+         */
+        isDropdownOpen: PropTypes.bool
+    };
+
     static contextTypes = {
         closeDropDown: PropTypes.func.isRequired
     };
 
     render() {
-        return (<Subscriber channel="isDropdownOpen">{ isOpen =>
-            <ShallowDropDownContents isOpen={isOpen} {...this.props} {...this.context}/>
-        }</Subscriber>);
+        const {isDropdownOpen, ...rest} = this.props;
+
+        return <ShallowDropDownContents isOpen={isDropdownOpen} {...rest} {...this.context}/>;
     }
 }

@@ -66,7 +66,7 @@ export default class StyleSelect extends PureComponent {
             .getEnabledFormattingRulesForNodeTypeAndProperty(nodeTypeName)(currentlyEditedPropertyName);
         const nestedStyles = toolbarRegistry.getAllAsList()
             .filter(startsWith(`${this.props.id}/`))
-            .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds[currentlyEditedPropertyName] || []));
+            .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds || []));
 
         const options = nestedStyles.map(style => ({
             label: style.label,

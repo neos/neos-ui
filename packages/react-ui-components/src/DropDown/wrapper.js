@@ -93,7 +93,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
 
     render() {
         const {children, className, theme, style, padded, ...restProps} = this.props;
-        const rest = omit(restProps, ['isOpen', 'onToggle', 'isOpen']);
+        const rest = omit(restProps, ['isOpen', 'onToggle', 'isOpen', 'onClose']);
         const styleClassName = style ? `dropDown--${style}` : false;
         const finalClassName = mergeClassNames({
             [theme[styleClassName]]: styleClassName,

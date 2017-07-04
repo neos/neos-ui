@@ -43,7 +43,7 @@ export default class LinkIconButton extends PureComponent {
         return (
             <div>
                 <IconButton
-                    isActive={this.getHrefValue()}
+                    isActive={Boolean(this.getHrefValue())}
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />

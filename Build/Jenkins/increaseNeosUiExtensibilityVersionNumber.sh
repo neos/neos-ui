@@ -1,41 +1,14 @@
 #!/bin/bash
 
-command -v jq >/dev/null 2>&1 || { echo >&2 "I require jq but it's not installed.  Aborting."; exit 1; }
-if [ -z "$1" ]; then echo "\$VERSION not given. Aborting."; exit 1; fi
-
-VERSION=$1
-
-function updateVersionInPackageJson {
-    # $1 = path-to-package
-    pushd $1
-
-    jq ".dependencies[\"@neos-project/neos-ui-extensibility\"] = \"$VERSION\"" package.json > package.json.new
-    rm package.json
-    mv package.json.new package.json
-
-    popd
-}
-
-
-# go to root directory of Neos.Neos.Ui
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd $DIR/../../
-
-# update neos-ui-extensibility package version
-cd packages/neos-ui-extensibility
-jq ".version = \"$VERSION\"" package.json > package.json.new
-rm package.json
-mv package.json.new package.json
-cd ../../
-
-# update dependent package versions
-updateVersionInPackageJson packages/neos-ui
-updateVersionInPackageJson packages/neos-ui-backend-connector
-updateVersionInPackageJson packages/neos-ui-ckeditor-bindings
-updateVersionInPackageJson packages/neos-ui-containers
-updateVersionInPackageJson packages/neos-ui-contentrepository
-updateVersionInPackageJson packages/neos-ui-editors
-updateVersionInPackageJson packages/neos-ui-i18n
-updateVersionInPackageJson packages/neos-ui-redux-store
-updateVersionInPackageJson packages/neos-ui-validators
-updateVersionInPackageJson packages/neos-ui-views
+echo 'Welcome! You want to do a release? Great!'
+echo ''
+echo 'You need to do some manual work currently still (to update the NPM registry). In the longer term, we can automate this for sure.'
+echo '1) TEST the NPM publishing - ADJUST the "repo-version" to the version you want to use'
+echo '     node_modules/.bin/lerna publish --skip-git --exact --repo-version=1.0.0-beta2 --yes --force-publish --skip-npm'
+echo '2) publish to NPM by RE-RUNNING the last command and OMITTING the "--skip-npm" argument.'
+echo '     (see above)'
+echo '3) commit the resulting changes'
+echo '     git commit -am "Preparing release 1.0.0-beta2"'
+echo '     git push'
+echo '4) trigger the Jenkins build'
+exit;

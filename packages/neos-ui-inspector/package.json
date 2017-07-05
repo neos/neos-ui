@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-inspector",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "Components for integrating views and editors into the Neos CMS UI inspector.",
   "private": true,
   "main": "./src/index.js",
@@ -15,7 +15,7 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta2"
+    "@neos-project/build-essentials": "1.0.0-beta3"
   },
   "peerDependencies": {
     "@neos-project/react-ui-components": "^4.4.8",

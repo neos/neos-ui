@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-backend-connector",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "Endoints and fetch cals to the Neos CMS backend",
   "private": true,
   "main": "./src/index.js",
@@ -15,11 +15,11 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta2"
+    "@neos-project/build-essentials": "1.0.0-beta3"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta2",
-    "@neos-project/utils-redux": "1.0.0-beta2",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta3",
+    "@neos-project/utils-redux": "1.0.0-beta3",
     "immutable": "^3.8.0",
     "lodash.isobject": "^3.0.2",
     "plow-js": "^2.1.0",

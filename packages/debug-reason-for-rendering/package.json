@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/debug-reason-for-rendering",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "React Performance Optimization Utility - Why does a component re-render?",
   "main": "./src/index.js",
   "license": "MIT"

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
@@ -26,8 +26,8 @@
     "@kadira/react-storybook-addon-info": "^3.2.1",
     "@kadira/storybook": "^2.11.0",
     "@kadira/storybook-addon-knobs": "^1.2.0",
-    "@neos-project/build-essentials": "1.0.0-beta2",
-    "@neos-project/debug-reason-for-rendering": "1.0.0-beta2"
+    "@neos-project/build-essentials": "1.0.0-beta3",
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta3"
   },
   "peerDependencies": {
     "@neos-project/brand": "^1.1.0",

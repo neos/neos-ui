@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-guest-frame",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "Guest frame initialization bindings",
   "private": true,
   "main": "./src/manifest.js",
@@ -15,10 +15,10 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta2"
+    "@neos-project/build-essentials": "1.0.0-beta3"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta2",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta3",
     "redux-saga": "^0.12.0"
   },
   "jest": {

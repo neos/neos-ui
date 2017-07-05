@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-contentrepository",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "Bindings for the Neos ContentRepository",
   "private": true,
   "main": "./src/manifest.js",
@@ -15,10 +15,10 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta2"
+    "@neos-project/build-essentials": "1.0.0-beta3"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta2",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta3",
     "plow-js": "^2.1.0",
     "ramda": "^0.22.1"
   },

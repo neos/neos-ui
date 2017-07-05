@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/build-essentials",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "Dependencies for building @neos-project packages",
   "main": "./src",
   "bin": {
@@ -26,6 +26,7 @@
     "babel-cli": "^6.8.0",
     "babel-core": "^6.13.2",
     "babel-eslint": "^7.1.1",
+    "babel-jest": "^19.0.0",
     "babel-loader": "^6.4.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-object-rest-spread": "^6.20.1",
@@ -33,7 +34,6 @@
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
-    "babel-jest": "^19.0.0",
     "check-dependencies": "^1.0.1",
     "codeclimate-test-reporter": "^0.4.0",
     "cpx": "^1.3.1",

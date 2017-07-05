@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-validators",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "Validators for Neos CMS UI.",
   "private": true,
   "main": "./src/manifest.js",
@@ -13,10 +13,10 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "dependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta2",
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta2",
-    "@neos-project/neos-ui-i18n": "1.0.0-beta2",
-    "@neos-project/utils-logger": "1.0.0-beta2"
+    "@neos-project/build-essentials": "1.0.0-beta3",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta3",
+    "@neos-project/neos-ui-i18n": "1.0.0-beta3",
+    "@neos-project/utils-logger": "1.0.0-beta3"
   },
   "license": "GNU GPLv3",
   "jest": {

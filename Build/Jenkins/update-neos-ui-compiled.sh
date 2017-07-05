@@ -12,7 +12,7 @@ export NVM_DIR="$HOME/.nvm"
 
 nvm install
 nvm use
-
+npm install -g yarn
 # break on failures can only be applied AFTER nvm was loaded.
 set -xe
 GIT_SHA1=`git rev-parse HEAD`

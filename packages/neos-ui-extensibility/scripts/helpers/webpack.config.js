@@ -37,7 +37,11 @@ module.exports = function(neosPackageJson) {
         },
         resolveLoader: {
             modulesDirectories: [
-                path.resolve(__dirname, '../../node_modules')
+                // not sure if we need this path still.
+                path.resolve(__dirname, '../../node_modules'),
+
+                // this path is the correct one when building an external Neos Module.
+                path.resolve(__dirname, '../../../../../node_modules')
             ]
         },
         resolve: { // override config!

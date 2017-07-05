@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-ckeditor-bindings",
-  "version": "4.4.8",
+  "version": "1.0.0-beta2",
   "description": "Prepare CKEditor for the Neos CMS UI",
   "private": true,
   "main": "./src/manifest.js",
@@ -15,15 +15,15 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "^4.4.8"
+    "@neos-project/build-essentials": "1.0.0-beta2"
   },
   "dependencies": {
-    "@neos-project/neos-ui-backend-connector": "^4.4.8",
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
-    "@neos-project/neos-ui-decorators": "^4.4.8",
-    "@neos-project/neos-ui-guest-frame": "^4.4.8",
-    "@neos-project/neos-ui-redux-store": "^4.4.8",
-    "@neos-project/react-ui-components": "^4.4.8",
+    "@neos-project/neos-ui-backend-connector": "1.0.0-beta2",
+    "@neos-project/neos-ui-decorators": "1.0.0-beta2",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta2",
+    "@neos-project/neos-ui-guest-frame": "1.0.0-beta2",
+    "@neos-project/neos-ui-redux-store": "1.0.0-beta2",
+    "@neos-project/react-ui-components": "1.0.0-beta2",
     "classnames": "^2.2.3",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",

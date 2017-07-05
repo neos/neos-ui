@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-editors",
-  "version": "4.4.8",
+  "version": "1.0.0-beta2",
   "description": "Neos CMS UI Editors for use in the inspector.",
   "main": "src/manifest.js",
   "private": true,
@@ -17,17 +17,17 @@
     "postpublish": "greenkeeper-postpublish"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "^4.4.8",
-    "@neos-project/debug-reason-for-rendering": "^1.0.0"
+    "@neos-project/build-essentials": "1.0.0-beta2",
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta2"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
-    "@neos-project/neos-ui-ckeditor-bindings": "^4.4.8",
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
-    "@neos-project/neos-ui-i18n": "^4.4.8",
-    "@neos-project/neos-ui-inspector": "^4.4.8",
-    "@neos-project/neos-ui-redux-store": "^4.4.8",
-    "@neos-project/react-ui-components": "^4.4.8",
+    "@neos-project/neos-ui-ckeditor-bindings": "1.0.0-beta2",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta2",
+    "@neos-project/neos-ui-i18n": "1.0.0-beta2",
+    "@neos-project/neos-ui-inspector": "1.0.0-beta2",
+    "@neos-project/neos-ui-redux-store": "1.0.0-beta2",
+    "@neos-project/react-ui-components": "1.0.0-beta2",
     "classnames": "^2.2.3",
     "core-js": "^2.4.1",
     "debug": "^2.2.0",

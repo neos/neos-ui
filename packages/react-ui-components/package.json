@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "4.4.8",
+  "version": "1.0.0-beta2",
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
@@ -23,32 +23,32 @@
     "generateNotes": "@inkdpixels/release-notes-generator"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "^4.4.8",
     "@kadira/react-storybook-addon-info": "^3.2.1",
     "@kadira/storybook": "^2.11.0",
     "@kadira/storybook-addon-knobs": "^1.2.0",
-    "@neos-project/debug-reason-for-rendering": "^1.0.0"
+    "@neos-project/build-essentials": "1.0.0-beta2",
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta2"
   },
   "peerDependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/utils-redux": "^4.4.8",
     "classnames": "^2.2.3",
+    "lodash.debounce": "^4.0.8",
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
-    "lodash.debounce": "^4.0.8",
-    "object-assign": "^4.1.0",
     "moment": "^2.14.1",
+    "object-assign": "^4.1.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.0",
     "react-click-outside": "^2.3.1",
     "react-collapse": "^2.4.1",
+    "react-css-themr": "^2.1.0",
     "react-datetime": "^2.8.10",
     "react-dom": "^15.5.0",
-    "react-textarea-autosize": "^5.0.6",
     "react-height": "^3.0.0",
     "react-motion": "^0.5.0",
-    "react-css-themr": "^2.1.0",
-    "react-portal": "^3.1.0"
+    "react-portal": "^3.1.0",
+    "react-textarea-autosize": "^5.0.6"
   },
   "license": "GNU GPLv3",
   "repository": {
@@ -57,7 +57,9 @@
   },
   "jest": {
     "transformIgnorePatterns": [],
-    "unmockedModulePathPatterns": ["sinon"],
+    "unmockedModulePathPatterns": [
+      "sinon"
+    ],
     "transform": {
       "react-ui-components/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
       "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"

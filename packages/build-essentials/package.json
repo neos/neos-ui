@@ -1,8 +1,7 @@
 {
   "name": "@neos-project/build-essentials",
-  "version": "4.4.8",
+  "version": "1.0.0-beta2",
   "description": "Dependencies for building @neos-project packages",
-  "private": true,
   "main": "./src",
   "bin": {
     "babel": "./node_modules/.bin/babel",

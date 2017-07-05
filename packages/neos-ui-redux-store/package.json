@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-redux-store",
-  "version": "4.4.8",
+  "version": "1.0.0-beta2",
   "description": "Redux store implementation for the Neos CMS UI",
   "private": true,
   "main": "./src/index.js",
@@ -15,12 +15,12 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "^4.4.8"
+    "@neos-project/build-essentials": "1.0.0-beta2"
   },
   "dependencies": {
-    "@neos-project/utils-redux": "^4.4.8",
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta1",
-    "@neos-project/neos-ui-validators": "^4.4.8",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta2",
+    "@neos-project/neos-ui-validators": "1.0.0-beta2",
+    "@neos-project/utils-redux": "1.0.0-beta2",
     "immutable": "^3.8.0",
     "plow-js": "^2.1.0",
     "ramda": "^0.22.1",

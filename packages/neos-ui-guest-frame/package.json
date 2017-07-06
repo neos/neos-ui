@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@neos-project/neos-ui-extensibility": "1.0.0-beta3",
+    "amator": "^1.0.1",
     "redux-saga": "^0.12.0"
   },
   "jest": {

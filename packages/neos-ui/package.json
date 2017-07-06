@@ -40,6 +40,7 @@
     "@neos-project/utils-helpers": "1.0.0-beta3",
     "@neos-project/utils-logger": "1.0.0-beta3",
     "@neos-project/utils-redux": "1.0.0-beta3",
+    "amator": "^1.0.1",
     "classnames": "^2.2.3",
     "codemirror": "^5.24.0",
     "core-js": "^2.4.1",

@@ -102,7 +102,7 @@ export default class NodeCreationDialog extends PureComponent {
 
         return (
             <span>
-                <I18n fallback="Create new" id="createNew"/>
+                <I18n fallback="Create new" id="createNew"/>&nbsp;
                 <I18n id={label} fallback={label}/>
             </span>
         );

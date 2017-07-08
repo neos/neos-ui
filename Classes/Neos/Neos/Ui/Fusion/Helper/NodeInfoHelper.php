@@ -44,17 +44,20 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     /**
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
-     * @param bool $omitProperties
+     * @param bool $omitMostPropertiesForTreeState
      * @return array
      */
-    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitProperties = false)
+    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false)
     {
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
             'name' => $node->getName(),
             'identifier' => $node->getIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
-            'properties' => $omitProperties ? [] : $this->buildNodeProperties($node),
+            'properties' => $omitMostPropertiesForTreeState ? [
+                // if we are only rendering the tree state, ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
+                '_hidden' => $node->isHidden()
+            ] : $this->buildNodeProperties($node),
             'label' => $node->getLabel(),
             'isAutoCreated' => $node->isAutoCreated(),
             // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
@@ -80,11 +83,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodes[$node->getContextPath()] = $this->renderNode($node, $controllerContext);
     }
 
-    public function renderNodes(array $nodes, ControllerContext $controllerContext, $omitProperties = false)
+    public function renderNodes(array $nodes, ControllerContext $controllerContext, $omitMostPropertiesForTreeState = false)
     {
         $renderedNodes = [];
         foreach ($nodes as $node) {
-            $renderedNodes[] = $this->renderNode($node, $controllerContext, $omitProperties);
+            $renderedNodes[] = $this->renderNode($node, $controllerContext, $omitMostPropertiesForTreeState);
         }
         return $renderedNodes;
     }

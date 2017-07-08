@@ -65,6 +65,17 @@ export const reducer = handleActions({
         })
     ),
     [SET_CONTEXT_PATH]: ({contextPath, siteNode}) => state => {
+        if ($get('ui.contentCanvas.contextPath', state) !== contextPath) {
+            // If context path changed, ensure to reset the "focused node". Otherwise, when switching
+            // to different Document nodes and having a (content) node selected previously, the Inspector
+            // does not properly refresh. We just need to ensure that everytime we switch pages, we
+            // reset the focused (content) node of the page.
+            state = $set('cr.nodes.focused', new Map({
+                contextPath: '',
+                fusionPath: ''
+            }), state);
+        }
+
         state = $set('ui.contentCanvas.contextPath', contextPath, state);
 
         if (siteNode) {

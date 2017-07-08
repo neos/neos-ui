@@ -1,9 +1,11 @@
 .toolBar {
+    border-top: 1px solid var(--brandColorsContrastDark);
     border-bottom: 1px solid var(--brandColorsContrastDark);
+    &:first-child {
+        border-top: 0;
+    }
 }
 .toolBar__btnGroup {
-    border-bottom: 1px solid var(--brandColorsContrastDark);
-
     &:before,
     &:after {
         content: '';

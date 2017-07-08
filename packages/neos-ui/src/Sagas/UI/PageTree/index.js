@@ -58,7 +58,12 @@ function * watchRequestChildrenForContextPath({configuration}) {
                 return nodeMap;
             }, {});
 
-            yield put(actions.CR.Nodes.add(nodes));
+            // the nodes loaded from the server for the tree representation are NOT the full
+            // nodes with all properties; but merely contain as little properties as needed
+            // for the tree.
+            // In order to not OVERRIDE the properties we already know, we need to merge
+            // the data which the nodes already in the system; and not override them completely.
+            yield put(actions.CR.Nodes.merge(nodes));
 
             if (unCollapse) {
                 yield put(actions.UI.PageTree.uncollapse(contextPath));

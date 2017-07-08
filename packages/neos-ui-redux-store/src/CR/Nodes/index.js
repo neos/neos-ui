@@ -1,32 +1,34 @@
 import {createAction} from 'redux-actions';
 import Immutable, {Map} from 'immutable';
-import {$all, $set, $drop, $get} from 'plow-js';
+import {$all, $set, $drop, $get, $merge} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
 import * as selectors from './selectors';
 
-const ADD = '@neos/neos-ui/Transient/Nodes/ADD';
-const FOCUS = '@neos/neos-ui/Transient/Nodes/FOCUS';
-const UNFOCUS = '@neos/neos-ui/Transient/Nodes/UNFOCUS';
-const COMMENCE_CREATION = '@neos/neos-ui/Transient/Nodes/COMMENCE_CREATION';
-const COMMENCE_REMOVAL = '@neos/neos-ui/Transient/Nodes/COMMENCE_REMOVAL';
-const REMOVAL_ABORTED = '@neos/neos-ui/Transient/Nodes/REMOVAL_ABORTED';
-const REMOVAL_CONFIRMED = '@neos/neos-ui/Transient/Nodes/REMOVAL_CONFIRMED';
-const REMOVE = '@neos/neos-ui/Transient/Nodes/REMOVE';
-const COPY = '@neos/neos-ui/Transient/Nodes/COPY';
-const CUT = '@neos/neos-ui/Transient/Nodes/CUT';
-const MOVE = '@neos/neos-ui/Transient/Nodes/MOVE';
-const PASTE = '@neos/neos-ui/Transient/Nodes/PASTE';
-const HIDE = '@neos/neos-ui/Transient/Nodes/HIDE';
-const SHOW = '@neos/neos-ui/Transient/Nodes/SHOW';
+const ADD = '@neos/neos-ui/CR/Nodes/ADD';
+const MERGE = '@neos/neos-ui/CR/Nodes/MERGE';
+const FOCUS = '@neos/neos-ui/CR/Nodes/FOCUS';
+const UNFOCUS = '@neos/neos-ui/CR/Nodes/UNFOCUS';
+const COMMENCE_CREATION = '@neos/neos-ui/CR/Nodes/COMMENCE_CREATION';
+const COMMENCE_REMOVAL = '@neos/neos-ui/CR/Nodes/COMMENCE_REMOVAL';
+const REMOVAL_ABORTED = '@neos/neos-ui/CR/Nodes/REMOVAL_ABORTED';
+const REMOVAL_CONFIRMED = '@neos/neos-ui/CR/Nodes/REMOVAL_CONFIRMED';
+const REMOVE = '@neos/neos-ui/CR/Nodes/REMOVE';
+const COPY = '@neos/neos-ui/CR/Nodes/COPY';
+const CUT = '@neos/neos-ui/CR/Nodes/CUT';
+const MOVE = '@neos/neos-ui/CR/Nodes/MOVE';
+const PASTE = '@neos/neos-ui/CR/Nodes/PASTE';
+const HIDE = '@neos/neos-ui/CR/Nodes/HIDE';
+const SHOW = '@neos/neos-ui/CR/Nodes/SHOW';
 
 //
 // Export the action types
 //
 export const actionTypes = {
     ADD,
+    MERGE,
     FOCUS,
     UNFOCUS,
     COMMENCE_CREATION,
@@ -43,11 +45,20 @@ export const actionTypes = {
 };
 
 /**
- * Adds a node to the application state
+ * Adds nodes to the application state. Completely *replaces*
+ * the nodes from the application state with the passed nodes.
  *
  * @param {Object} nodeMap A map of nodes, with contextPaths as key
  */
 const add = createAction(ADD, nodeMap => ({nodeMap}));
+
+/**
+ * Adds/Merges nodes to the application state. *Merges*
+ * the nodes from the application state with the passed nodes.
+ *
+ * @param {Object} nodeMap A map of nodes, with contextPaths as key
+ */
+const merge = createAction(MERGE, nodeMap => ({nodeMap}));
 
 /**
  * Marks a node as focused
@@ -147,6 +158,7 @@ const show = createAction(SHOW, contextPath => contextPath);
 //
 export const actions = {
     add,
+    merge,
     focus,
     unFocus,
     commenceCreation,
@@ -181,6 +193,19 @@ export const reducer = handleActions({
     ),
     [ADD]: ({nodeMap}) => $all(
         ...Object.keys(nodeMap).map(contextPath => $set(
+            ['cr', 'nodes', 'byContextPath', contextPath],
+            Immutable.fromJS(
+                //
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
+                // the data, to scope it relative to *this* frame.
+                //
+                JSON.parse(JSON.stringify(nodeMap[contextPath]))
+            )
+        ))
+    ),
+    [MERGE]: ({nodeMap}) => $all(
+        ...Object.keys(nodeMap).map(contextPath => $merge(
             ['cr', 'nodes', 'byContextPath', contextPath],
             Immutable.fromJS(
                 //

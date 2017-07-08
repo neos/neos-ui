@@ -49,6 +49,7 @@
     "postcss-nested": "^1.0.0",
     "rimraf": "^2.5.4",
     "stylelint": "^7.5.0",
+    "url-loader": "^0.5.9",
     "watch": "^1.0.2",
     "webpack": "^1.13.2",
     "webpack-livereload-plugin": "^0.10.0"

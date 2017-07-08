@@ -34,9 +34,6 @@ Neos:
           'Neos.Neos.UI:HostOnlyStyles':
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/HostOnlyStyles.css"}'
             position: 'start 900'
-          'Neos.Neos.UI:WorkSans':
-            resource: https://fonts.googleapis.com/css?family=Work+Sans:300,200,200italic,300italic,400,400italic
-            position: 'start 500'
 
       #################################
       # INTERNAL CONFIG (no API)

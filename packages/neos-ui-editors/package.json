@@ -27,7 +27,8 @@
     "@neos-project/neos-ui-i18n": "1.0.0-beta3",
     "@neos-project/neos-ui-inspector": "1.0.0-beta3",
     "@neos-project/neos-ui-redux-store": "1.0.0-beta3",
-    "@neos-project/react-ui-components": "1.0.0-beta3"
+    "@neos-project/react-ui-components": "1.0.0-beta3",
+    "@neos-project/neos-ui-decorators": "1.0.0-beta3"
   },
   "license": "GNU GPLv3",
   "jest": {
@@ -35,6 +36,9 @@
     "transform": {
       "neos-ui-editors/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
       "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.css$": "identity-obj-proxy"
     }
   }
 }

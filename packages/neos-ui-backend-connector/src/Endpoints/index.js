@@ -194,6 +194,11 @@ const setUserPreferences = csrfToken => (key, value) => {
     });
 };
 
+const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchJson(urlWithParams(dataSourceUri || '/neos/service/data-source/' + dataSourceIdentifier, params), {
+    method: 'GET',
+    credentials: 'include'
+});
+
 export default csrfToken => ({
     loadImageMetadata,
     change: change(csrfToken),
@@ -205,5 +210,6 @@ export default csrfToken => ({
     searchNodes,
     getSingleNode,
     adoptNodeToOtherDimension: adoptNodeToOtherDimension(csrfToken),
-    setUserPreferences: setUserPreferences(csrfToken)
+    setUserPreferences: setUserPreferences(csrfToken),
+    dataSource
 });

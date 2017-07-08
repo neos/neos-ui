@@ -172,6 +172,9 @@ class NodePropertyConversionService
      */
     protected function convertArray($rawValue)
     {
-        return json_decode($rawValue, true);
+        if (is_string($rawValue)) {
+            return json_decode($rawValue, true);
+        }
+        return $rawValue;
     }
 }

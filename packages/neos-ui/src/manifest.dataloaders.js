@@ -157,4 +157,50 @@ manifest('main.dataloaders', {}, globalRegistry => {
             });
         }
     });
+
+    dataLoadersRegistry.add('DataSources', {
+        description: `
+            Look up Data Source Values:
+
+            - by identifier (resolveValue())
+            - by searching data source values (client-side) (search())
+
+            OPTIONS:
+                - contextNodePath: ...
+                - dataSourceIdentifier: The data source to load. Either this or dataSourceUri is required.
+                - dataSourceUri: The data source URL to load.
+                - dataSourceAdditionalData: Additional data to send to the server
+        `,
+
+        _lru() {
+            if (!this._lruCache) {
+                this._lruCache = new HLRU(500);
+            }
+            return this._lruCache;
+        },
+
+        // "identifier" is (currently un-used) 2nd parameter
+        resolveValue(options) {
+            return this._loadDataSourcesByOptions(options);
+        },
+
+        _loadDataSourcesByOptions(options) {
+            const cacheKey = makeCacheKey('', options);
+            if (this._lru().has(cacheKey)) {
+                return this._lru().get(cacheKey);
+            }
+
+            const dataSource = backend.get().endpoints.dataSource;
+            const params = Object.assign({node: options.contextNodePath}, options.dataSourceAdditionalData || {});
+            const resultPromise = dataSource(options.dataSourceIdentifier, options.dataSourceUri, params);
+
+            this._lru().set(cacheKey, resultPromise);
+            return resultPromise;
+        },
+
+        // "identifiers" is (currently un-used) 2nd parameter
+        resolveValues(options) {
+            return this._loadDataSourcesByOptions(options);
+        }
+    });
 });

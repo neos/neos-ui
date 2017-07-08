@@ -1,40 +1,22 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import I18n from '@neos-project/neos-ui-i18n';
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import {neos} from '@neos-project/neos-ui-decorators';
+import SimpleSelectBoxEditor from './SimpleSelectBoxEditor';
+import DataSourceBasedSelectBoxEditor from './DataSourceBasedSelectBoxEditor';
 
-@neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
-}))
 export default class SelectBoxEditor extends PureComponent {
     static propTypes = {
-        commit: PropTypes.func.isRequired,
-        value: PropTypes.any,
-        options: PropTypes.any.isRequired,
-
-        i18nRegistry: PropTypes.object.isRequired
+        options: PropTypes.shape({
+            dataSourceIdentifier: PropTypes.string,
+            dataSourceUri: PropTypes.string
+        }).isRequired
     };
 
     render() {
-        const {commit, value, options, i18nRegistry} = this.props;
-        const selectBoxOptions = Object.keys(options.values)
-            .filter(k => options.values[k])
-            // Filter out items without a label
-            .map(k => options.values[k].label && Object.assign(
-                {value: k},
-                options.values[k],
-                {label: <I18n id={options.values[k].label}/>}
-            )
-        ).filter(k => k);
-        // Placeholder text must be unescaped in case html entities were used
-        const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
+        const {options} = this.props;
 
-        return (<SelectBox
-            options={selectBoxOptions}
-            value={value}
-            onValueChange={commit}
-            placeholder={placeholder}
-            />);
+        if (options.dataSourceIdentifier || options.dataSourceUri) {
+            return <DataSourceBasedSelectBoxEditor {...this.props}/>;
+        }
+        return <SimpleSelectBoxEditor {...this.props}/>;
     }
 }

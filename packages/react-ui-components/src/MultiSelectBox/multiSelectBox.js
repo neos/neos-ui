@@ -33,7 +33,7 @@ export default class MultiSelectBox extends PureComponent {
         values: PropTypes.arrayOf(PropTypes.string),
 
         /**
-         * This prop gets called when an option was selected. It returns the new value.
+         * This prop gets called when an option was selected. It returns the new values as array.
          */
         onValuesChange: PropTypes.func.isRequired,
 

@@ -1,0 +1,88 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "experimentalDecorators": true,
+        "baseUrl": "./",
+        "paths": {
+            "@neos-project/build-essentials" : ["build-essentials/src/index"],
+            "@neos-project/build-essentials/*" : ["build-essentials/*/index", "build-essentials/*"],
+
+            "@neos-project/debug-reason-for-rendering" : ["debug-reason-for-rendering/src/index"],
+            "@neos-project/debug-reason-for-rendering/*" : ["debug-reason-for-rendering/*/index", "debug-reason-for-rendering/*"],
+
+            "@neos-project/neos-ui" : ["neos-ui/src/index"],
+            "@neos-project/neos-ui/*" : ["neos-ui/*/index", "neos-ui/*"],
+
+            "@neos-project/neos-ui-backend-connector" : ["neos-ui-backend-connector/src/index"],
+            "@neos-project/neos-ui-backend-connector/*" : ["neos-ui-backend-connector/*/index", "neos-ui-backend-connector/*"],
+
+            "@neos-project/neos-ui-ckeditor-bindings" : ["neos-ui-ckeditor-bindings/src/index"],
+            "@neos-project/neos-ui-ckeditor-bindings/*" : ["neos-ui-ckeditor-bindings/*/index", "neos-ui-ckeditor-bindings/*"],
+
+            "@neos-project/neos-ui-containers" : ["neos-ui-containers/src/index"],
+            "@neos-project/neos-ui-containers/*" : ["neos-ui-containers/*/index", "neos-ui-containers/*"],
+
+            "@neos-project/neos-ui-editors" : ["neos-ui-editors/src/index"],
+            "@neos-project/neos-ui-editors/*" : ["neos-ui-editors/*/index", "neos-ui-editors/*"],
+
+            "@neos-project/neos-ui-extensibility" : ["neos-ui-extensibility/src/index"],
+            "@neos-project/neos-ui-extensibility/*" : ["neos-ui-extensibility/*/index", "neos-ui-extensibility/*"],
+
+            "@neos-project/neos-ui-guest-frame" : ["neos-ui-guest-frame/src/index"],
+            "@neos-project/neos-ui-guest-frame/*" : ["neos-ui-guest-frame/*/index", "neos-ui-guest-frame/*"],
+
+            "@neos-project/neos-ui-i18n" : ["neos-ui-i18n/src/index"],
+            "@neos-project/neos-ui-i18n/*" : ["neos-ui-i18n/*/index", "neos-ui-i18n/*"],
+
+            "@neos-project/neos-ui-inspector" : ["neos-ui-inspector/src/index"],
+            "@neos-project/neos-ui-inspector/*" : ["neos-ui-inspector/*/index", "neos-ui-inspector/*"],
+
+            "@neos-project/neos-ui-redux-store" : ["neos-ui-redux-store/src/index"],
+            "@neos-project/neos-ui-redux-store/*" : ["neos-ui-redux-store/*/index", "neos-ui-redux-store/*"],
+
+            "@neos-project/neos-ui-validators" : ["neos-ui-validators/src/index"],
+            "@neos-project/neos-ui-validators/*" : ["neos-ui-validators/*/index", "neos-ui-validators/*"],
+
+            "@neos-project/neos-ui-views" : ["neos-ui-views/src/index"],
+            "@neos-project/neos-ui-views/*" : ["neos-ui-views/*/index", "neos-ui-views/*"],
+
+            "@neos-project/react-proptypes" : ["react-proptypes/src/index"],
+            "@neos-project/react-proptypes/*" : ["react-proptypes/*/index", "react-proptypes/*"],
+
+            "@neos-project/react-ui-components" : ["react-ui-components/src/index"],
+            "@neos-project/react-ui-components/*" : ["react-ui-components/*/index", "react-ui-components/*"],
+
+            "@neos-project/utils-helpers" : ["utils-helpers/src/index"],
+            "@neos-project/utils-helpers/*" : ["utils-helpers/*/index", "utils-helpers/*"],
+
+            "@neos-project/utils-logger" : ["utils-logger/src/index"],
+            "@neos-project/utils-logger/*" : ["utils-logger/*/index", "utils-logger/*"],
+
+            "@neos-project/utils-redux" : ["utils-redux/src/index"],
+            "@neos-project/utils-redux/*" : ["utils-redux/*/index", "utils-redux/*"]
+        }
+    },
+    "include": [
+        "build-essentials/src/**/*",
+        "debug-reason-for-rendering/src/**/*",
+        "neos-ui/src/**/*",
+        "neos-ui-backend-connector/src/**/*",
+        "neos-ui-ckeditor-bindings/src/**/*",
+        "neos-ui-containers/src/**/*",
+        "neos-ui-contentrepository/src/**/*",
+        "neos-ui-decorators/src/**/*",
+        "neos-ui-editors/src/**/*",
+        "neos-ui-extensibility/src/**/*",
+        "neos-ui-guest-frame/src/**/*",
+        "neos-ui-i18n/src/**/*",
+        "neos-ui-inspector/src/**/*",
+        "neos-ui-redux-store/src/**/*",
+        "neos-ui-validators/src/**/*",
+        "neos-ui-views/src/**/*",
+        "react-proptypes/src/**/*",
+        "react-ui-components/src/**/*",
+        "utils-helpers/src/**/*",
+        "utils-logger/src/**/*",
+        "utils-redux/src/**/*"
+    ]
+}

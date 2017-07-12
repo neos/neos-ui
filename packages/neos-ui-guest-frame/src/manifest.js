@@ -9,6 +9,7 @@ import makeInitializeGuestFrame from './initializeGuestFrame';
 
 import initializeContentDomNode from './initializeContentDomNode';
 import {
+    getGuestFrameDocument,
     findNodeInGuestFrame,
     findAllOccurrencesOfNodeInGuestFrame,
     createEmptyContentCollectionPlaceholderIfMissing,
@@ -66,6 +67,14 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
         const contentElement = (new DOMParser())
             .parseFromString(renderedContent, 'text/html')
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
+
+        if (!contentElement) {
+            console.warn(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
+            console.log(renderedContent);
+
+            getGuestFrameDocument().location.reload();
+            return;
+        }
 
         switch (mode) {
             case 'before':

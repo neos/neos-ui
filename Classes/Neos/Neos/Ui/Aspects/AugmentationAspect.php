@@ -122,6 +122,8 @@ class AugmentationAspect
         // Stay compatible with Neos 3.0. When we remove this compatibility, we can convert everything to "fusionPath").
         $fusionPath = ($joinPoint->isMethodArgument('typoScriptPath') ? $joinPoint->getMethodArgument('typoScriptPath'): $joinPoint->getMethodArgument('fusionPath'));
 
+        $fusionPath = $this->postprocessFusionPath($fusionPath);
+
         if (!$this->needsMetadata($node, false)) {
             return $content;
         }
@@ -235,5 +237,40 @@ class AugmentationAspect
         $this->clearNonRenderedContentNodeMetadata();
         $this->clearRenderedNodesArray();
         return $nonRenderedContentNodeMetadata;
+    }
+
+    /**
+     * This method is a quick-fix for backwards compatibility until
+     * https://github.com/neos/neos-development-collection/pull/1635 has
+     * landed in the stable Neos 3.2 version. When the React UI starts
+     * supporting Neos 3.2 ONLY, this method can be removed; as the
+     * functionality is then correct in Neos ContentElementWrappingImplementation::getContentElementFusionPath
+     *
+     * @param $fusionPath
+     * @return string the processing information cropped from FusionPath
+     */
+    private function postprocessFusionPath($fusionPath)
+    {
+        $fusionPathSegments = explode('/', $fusionPath);
+        $numberOfFusionPathSegments = count($fusionPathSegments);
+        if (isset($fusionPathSegments[$numberOfFusionPathSegments - 3])
+            && $fusionPathSegments[$numberOfFusionPathSegments - 3] === '__meta'
+            && isset($fusionPathSegments[$numberOfFusionPathSegments - 2])
+            && $fusionPathSegments[$numberOfFusionPathSegments - 2] === 'process') {
+
+            // cut off the SHORTCUT processing syntax "__meta/process/contentElementWrapping<Neos.Neos:ContentElementWrapping>"
+            return implode('/', array_slice($fusionPathSegments, 0, -3));
+        }
+
+        if (isset($fusionPathSegments[$numberOfFusionPathSegments - 4])
+            && $fusionPathSegments[$numberOfFusionPathSegments - 4] === '__meta'
+            && isset($fusionPathSegments[$numberOfFusionPathSegments - 3])
+            && $fusionPathSegments[$numberOfFusionPathSegments - 3] === 'process') {
+
+            // cut off the EXTENDED processing syntax "__meta/process/contentElementWrapping/expression<Neos.Neos:ContentElementWrapping>"
+            return implode('/', array_slice($fusionPathSegments, 0, -4));
+        }
+
+        return $fusionPath;
     }
 }

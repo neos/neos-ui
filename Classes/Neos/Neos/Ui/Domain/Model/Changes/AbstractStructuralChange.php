@@ -147,6 +147,7 @@ abstract class AbstractStructuralChange extends AbstractChange
 
         $updateNodeInfo = new UpdateNodeInfo();
         $updateNodeInfo->setNode($node);
+        $updateNodeInfo->recursive();
 
         $updateParentNodeInfo = new UpdateNodeInfo();
         $updateParentNodeInfo->setNode($node->getParent());

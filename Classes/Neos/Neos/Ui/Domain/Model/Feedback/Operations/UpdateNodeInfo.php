@@ -20,6 +20,8 @@ class UpdateNodeInfo implements FeedbackInterface
      */
     protected $nodeInfoHelper;
 
+    protected $isRecursive = false;
+
     /**
      * Set the node
      *
@@ -29,6 +31,15 @@ class UpdateNodeInfo implements FeedbackInterface
     public function setNode(NodeInterface $node)
     {
         $this->node = $node;
+    }
+
+    /**
+     * Update node infos recursively
+     *
+     * @return void
+     */
+    public function recursive() {
+        $this->isRecursive = true;
     }
 
     /**
@@ -101,8 +112,10 @@ class UpdateNodeInfo implements FeedbackInterface
             $node->getContextPath() => $this->nodeInfoHelper->renderNode($node, $controllerContext)
         ];
 
-        foreach ($node->getChildNodes() as $childNode) {
-            $result = array_merge($result, $this->serializeNodeRecursively($childNode, $controllerContext));
+        if ($this->isRecursive === true) {
+            foreach ($node->getChildNodes() as $childNode) {
+                $result = array_merge($result, $this->serializeNodeRecursively($childNode, $controllerContext));
+            }
         }
 
         return $result;

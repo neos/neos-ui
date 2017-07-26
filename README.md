@@ -7,6 +7,11 @@
 
 > The next generation Neos CMS interface written in ReactJS with Immutable data structures.
 
+## Support the UI rewrite
+
+We are currently raising funds to speed up the development. If you like what you see you can
+support us by chipping in and help us to reach our goal. Find more details
+[here](https://www.neos.io/blog/speeding-up-the-react-ui-development-with-your-support.html)
 
 ## Features
 

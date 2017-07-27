@@ -23,7 +23,7 @@ support us by chipping in and help us to reach our goal. Find more details
 
 ## Installation and usage
 
-1. You need to have latest Neos CMS 3.0 up & running.
+1. You need to have the latest release of Neos CMS (3.x) up & running.
 
 2. Run the following command:
    ```
@@ -47,17 +47,6 @@ need the `dev-master` release. You can install the master release using:
 ```
 composer require neos/neos-ui:dev-master neos/neos-ui-compiled:dev-master
 ```
-
-### Use Docker image
-
-__Alternatively__, instead of doing above setup steps manually, use Docker.
-The [million12/neos-react-ui](https://github.com/million12/docker-neos-react-ui)
-contains Neos CMS, correct version of NodeJS/nvm and `neos/neos-ui` package
-installed and built, working out of the box.
-
-Refer to [million12/neos-react-ui](https://github.com/million12/docker-neos-react-ui)
-documentation about how to use it.
-
 
 ## Contributing
 

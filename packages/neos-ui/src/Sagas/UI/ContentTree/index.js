@@ -37,17 +37,15 @@ function * watchNodeFocus() {
         const {contextPath} = action.payload;
         const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
 
-        if (contextPath !== documentNodeContextPath) {
-            let parentContextPath = contextPath;
+        let parentContextPath = contextPath;
 
-            while (parentContextPath !== documentNodeContextPath) {
-                parentContextPath = parentNodeContextPath(parentContextPath);
-                const isInStore = yield select($get(['cr', 'nodes', 'byContextPath', parentContextPath]));
-                const isUnCollapsed = yield select($contains(parentContextPath, 'ui.contentTree.uncollapsed'));
+        while (parentContextPath !== documentNodeContextPath) {
+            parentContextPath = parentNodeContextPath(parentContextPath);
+            const isInStore = yield select($get(['cr', 'nodes', 'byContextPath', parentContextPath]));
+            const isUnCollapsed = yield select($contains(parentContextPath, 'ui.contentTree.uncollapsed'));
 
-                if (!isInStore || !isUnCollapsed) {
-                    yield put(actions.UI.ContentTree.uncollapse(parentContextPath));
-                }
+            if (!isInStore || !isUnCollapsed) {
+                yield put(actions.UI.ContentTree.uncollapse(parentContextPath));
             }
         }
     });

@@ -121,33 +121,31 @@ function * watchCurrentDocument() {
         const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
         const {q} = backend.get();
 
-        if (contextPath !== siteNodeContextPath) {
-            let parentContextPath = contextPath;
+        let parentContextPath = contextPath;
 
-            while (parentContextPath !== siteNodeContextPath) {
-                parentContextPath = parentNodeContextPath(parentContextPath);
-                const isInStore = yield select($get(['cr', 'nodes', 'byContextPath', parentContextPath]));
-                const isUnCollapsed = yield select($contains(parentContextPath, 'ui.pageTree.uncollapsed'));
+        while (parentContextPath !== siteNodeContextPath) {
+            parentContextPath = parentNodeContextPath(parentContextPath);
+            const isInStore = yield select($get(['cr', 'nodes', 'byContextPath', parentContextPath]));
+            const isUnCollapsed = yield select($contains(parentContextPath, 'ui.pageTree.uncollapsed'));
 
-                if (!isInStore || !isUnCollapsed) {
-                    yield put(actions.UI.PageTree.setAsLoading(siteNodeContextPath));
-                }
-
-                if (!isInStore) {
-                    const nodes = yield q(parentContextPath).get();
-                    yield put(actions.CR.Nodes.add(nodes.reduce((nodeMap, node) => {
-                        nodeMap[$get('contextPath', node)] = node;
-                        return nodeMap;
-                    }, {})));
-                }
-
-                if (!isUnCollapsed) {
-                    yield put(actions.UI.PageTree.commenceUncollapse(parentContextPath));
-                }
+            if (!isInStore || !isUnCollapsed) {
+                yield put(actions.UI.PageTree.setAsLoading(siteNodeContextPath));
             }
 
-            yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
+            if (!isInStore) {
+                const nodes = yield q(parentContextPath).get();
+                yield put(actions.CR.Nodes.add(nodes.reduce((nodeMap, node) => {
+                    nodeMap[$get('contextPath', node)] = node;
+                    return nodeMap;
+                }, {})));
+            }
+
+            if (!isUnCollapsed) {
+                yield put(actions.UI.PageTree.commenceUncollapse(parentContextPath));
+            }
         }
+
+        yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
     });
 }
 

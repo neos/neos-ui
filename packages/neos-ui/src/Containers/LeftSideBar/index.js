@@ -53,11 +53,14 @@ export default class LeftSideBar extends PureComponent {
         const ContentTreeToolbar = containerRegistry.get('LeftSideBar/ContentTreeToolbar');
         const ContentTree = containerRegistry.get('LeftSideBar/ContentTree');
 
+        const openedIcon = 'chevron-down';
+        const closedIcon = 'chevron-up';
+
         const toggleBottom = () => {
             this.setState({
                 isBottomOpen: !this.state.isBottomOpen
             });
-        }
+        };
 
         return (
             <SideBar
@@ -73,7 +76,7 @@ export default class LeftSideBar extends PureComponent {
                 <hr/>
 
                 <ToggablePanel className={bottomClassNames} onPanelToggle={toggleBottom} isOpen={this.state.isBottomOpen} closesToBottom={true}>
-                    <ToggablePanel.Header noPadding={true}>
+                    <ToggablePanel.Header noPadding={true} openedIcon={openedIcon} closedIcon={closedIcon}>
                         <ContentTreeToolbar/>
                     </ToggablePanel.Header>
                     <ToggablePanel.Contents noPadding={true}>

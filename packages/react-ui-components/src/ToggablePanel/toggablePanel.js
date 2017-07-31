@@ -11,6 +11,12 @@ export default class ToggablePanel extends PureComponent {
         isOpen: PropTypes.bool,
 
         /**
+         * Switches icon-open and icon-closed if set to true; can be used for
+         * panels that close downwards such as the page structure tree.
+         */
+        closesToBottom: PropTypes.bool,
+
+        /**
          * The children, ideally one Header and Contents component each.
          */
         children: PropTypes.any.isRequired,
@@ -76,6 +82,12 @@ export class StatelessToggablePanel extends PureComponent {
         isOpen: PropTypes.bool,
 
         /**
+         * Switches icon-open and icon-closed if set to true; can be used for
+         * panels that close downwards such as the page structure tree.
+         */
+        closesToBottom: PropTypes.bool,
+
+        /**
          * An optional className to render on the wrapper.
          */
         className: PropTypes.string,
@@ -114,6 +126,9 @@ export class StatelessToggablePanel extends PureComponent {
     }
 
     render() {
+        const openedIcon = this.props.closesToBottom ? 'chevron-down' : 'chevron-up';
+        const closedIcon = this.props.closesToBottom ? 'chevron-up' : 'chevron-down';
+
         const {children, className, theme} = this.props;
         const finalClassName = mergeClassNames({
             [className]: className && className.length,
@@ -149,8 +164,14 @@ export class Header extends PureComponent {
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'panel__headline': PropTypes.string,
+            'panel__headline--noPadding': PropTypes.string,
             'panel__toggleBtn': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
+
+        /**
+         * Can be set to remove padding from the content area
+         */
+        noPadding: PropTypes.bool,
 
         /**
          * Static component dependencies which are injected from the outside (index.js)
@@ -177,6 +198,10 @@ export class Header extends PureComponent {
             ...rest
         } = this.props;
         const {onPanelToggle} = this.context;
+
+        const finalClassName = mergeClassNames([theme.panel__headline], {
+            [theme['panel__headline--noPadding']]: this.props.noPadding
+        });
 
         return (
             <div aria-expanded={isPanelOpen} {...rest}>
@@ -205,6 +230,11 @@ export class Contents extends PureComponent {
         className: PropTypes.string,
 
         /**
+         * Can be set to remove padding from the content area
+         */
+        noPadding: PropTypes.bool,
+
+        /**
          * The rendered children which can be toggled.
          */
         children: PropTypes.any.isRequired,
@@ -218,7 +248,8 @@ export class Contents extends PureComponent {
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
-            'panel__contents': PropTypes.string
+            'panel__contents': PropTypes.string,
+            'panel__contents--noPadding': PropTypes.string
         }).isRequired/* eslint-enable quote-props */
     };
 
@@ -234,8 +265,9 @@ export class Contents extends PureComponent {
             isPanelOpen,
             theme
         } = this.props;
-        const finalClassName = mergeClassNames({
-            [theme.panel__contents]: true,
+
+        const finalClassName = mergeClassNames(theme.panel__contents, {
+            [theme['panel__contents--noPadding']]: this.props.noPadding,
             [className]: className && className.length
         });
 

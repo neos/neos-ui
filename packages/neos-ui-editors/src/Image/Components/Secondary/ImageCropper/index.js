@@ -33,7 +33,7 @@ class AspectRatioItem extends PureComponent {
         const {width, height, key} = this.props;
 
         return (
-            <span key={key}>
+            <span key={key} className={style.dimensionsWrapper}>
                 <TextInput
                     className={style.dimensionInput}
                     type="number"

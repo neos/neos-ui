@@ -126,9 +126,6 @@ export class StatelessToggablePanel extends PureComponent {
     }
 
     render() {
-        const openedIcon = this.props.closesToBottom ? 'chevron-down' : 'chevron-up';
-        const closedIcon = this.props.closesToBottom ? 'chevron-up' : 'chevron-down';
-
         const {children, className, theme} = this.props;
         const finalClassName = mergeClassNames({
             [className]: className && className.length,
@@ -177,11 +174,20 @@ export class Header extends PureComponent {
          * Static component dependencies which are injected from the outside (index.js)
          */
         HeadlineComponent: PropTypes.any.isRequired,
-        IconButtonComponent: PropTypes.any.isRequired
+        IconButtonComponent: PropTypes.any.isRequired,
+
+        /**
+         * Optional icons as closing/opening indicator
+         * If not provided defaults are chevron-up and chevron-down
+         */
+        openedIcon: PropTypes.string,
+        closedIcon: PropTypes.string
     };
 
     static defaultProps = {
-        isPanelOpen: true
+        isPanelOpen: true,
+        openedIcon: 'chevron-up',
+        closedIcon: 'chevron-down'
     }
 
     static contextTypes = {
@@ -194,6 +200,8 @@ export class Header extends PureComponent {
             IconButtonComponent,
             children,
             isPanelOpen,
+            openedIcon,
+            closedIcon,
             theme,
             ...rest
         } = this.props;
@@ -214,7 +222,7 @@ export class Header extends PureComponent {
                 </HeadlineComponent>
                 <IconButtonComponent
                     className={theme.panel__toggleBtn}
-                    icon={isPanelOpen ? 'chevron-up' : 'chevron-down'}
+                    icon={isPanelOpen ? openedIcon : closedIcon}
                     onClick={onPanelToggle}
                     />
             </div>

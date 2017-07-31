@@ -20,3 +20,13 @@ export const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode, parent
     // not auto created
     return nodeTypesRegistry.getAllowedChildNodeTypes($get('nodeType', baseNode));
 };
+
+export const parentNodeContextPath = contextPath => {
+    if (typeof contextPath !== 'string') {
+        return null;
+    }
+
+    const [path, context] = contextPath.split('@');
+
+    return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
+};

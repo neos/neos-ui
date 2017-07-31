@@ -5,6 +5,7 @@
     padding: 10px 14px;
     border: 0;
     background: var(--brandColorsContrastNeutral);
+    resize: vertical;
 
     &:focus {
         outline: 0;

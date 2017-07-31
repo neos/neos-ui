@@ -1,8 +1,9 @@
 import {takeLatest} from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
-import {$get} from 'plow-js';
+import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
+import {parentNodeContextPath} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 
 import backend from '@neos-project/neos-ui-backend-connector';
 
@@ -31,6 +32,28 @@ function * watchReloadTree({globalRegistry}) {
     });
 }
 
+function * watchNodeFocus() {
+    yield * takeLatest(actionTypes.CR.Nodes.FOCUS, function * loadContentNodeRootLine(action) {
+        const {contextPath} = action.payload;
+        const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
+
+        if (contextPath !== documentNodeContextPath) {
+            let parentContextPath = contextPath;
+
+            while (parentContextPath !== documentNodeContextPath) {
+                parentContextPath = parentNodeContextPath(parentContextPath);
+                const isInStore = yield select($get(['cr', 'nodes', 'byContextPath', parentContextPath]));
+                const isUnCollapsed = yield select($contains(parentContextPath, 'ui.contentTree.uncollapsed'));
+
+                if (!isInStore || !isUnCollapsed) {
+                    yield put(actions.UI.ContentTree.uncollapse(parentContextPath));
+                }
+            }
+        }
+    });
+}
+
 export const sagas = [
-    watchReloadTree
+    watchReloadTree,
+    watchNodeFocus
 ];

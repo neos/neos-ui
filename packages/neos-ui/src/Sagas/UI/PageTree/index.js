@@ -5,15 +5,7 @@ import {$get, $contains} from 'plow-js';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-const parentNodeContextPath = contextPath => {
-    if (typeof contextPath !== 'string') {
-        return null;
-    }
-
-    const [path, context] = contextPath.split('@');
-
-    return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
-};
+import {parentNodeContextPath} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 
 function * watchToggle() {
     yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
@@ -132,7 +124,7 @@ function * watchCurrentDocument() {
         if (contextPath !== siteNodeContextPath) {
             let parentContextPath = contextPath;
 
-            do {
+            while (parentContextPath !== siteNodeContextPath) {
                 parentContextPath = parentNodeContextPath(parentContextPath);
                 const isInStore = yield select($get(['cr', 'nodes', 'byContextPath', parentContextPath]));
                 const isUnCollapsed = yield select($contains(parentContextPath, 'ui.pageTree.uncollapsed'));
@@ -152,11 +144,7 @@ function * watchCurrentDocument() {
                 if (!isUnCollapsed) {
                     yield put(actions.UI.PageTree.commenceUncollapse(parentContextPath));
                 }
-
-                if (parentContextPath === siteNodeContextPath) {
-                    break;
-                }
-            } while (parentContextPath !== siteNodeContextPath);
+            }
 
             yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
         }

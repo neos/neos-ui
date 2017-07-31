@@ -206,7 +206,7 @@ export class Header extends PureComponent {
         return (
             <div aria-expanded={isPanelOpen} {...rest}>
                 <HeadlineComponent
-                    className={theme.panel__headline}
+                    className={finalClassName}
                     type="h1"
                     style="h4"
                     >

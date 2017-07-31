@@ -1,6 +1,7 @@
 .leftSideBar {
     display: flex;
     flex-direction: column;
+    flex-basis: 100%;
 
     padding-top: 41px;
     transition: .2s ease transform;
@@ -15,10 +16,27 @@
         clear: both;
     }
 }
+
 .leftSideBar--isHidden {
     transform: translateX(-var(--sidebarWidth));
 }
 
 .leftSideBar__top {
     flex-basis: 100%;
+    overflow-y: scroll;
+}
+
+.leftSideBar__bottom {
+    overflow-y: scroll;
+    max-height: calc(50vh - 71px);
+    height: calc(50vh - 71px);
+    flex-basis: 100%;
+    height: auto;
+    transition: flex-basis 0.5s, height 0.5s, overflow-y 0.5s;
+}
+
+.leftSideBar__bottom--isCollapsed {
+    overflow-y: visible;
+    flex-basis: 0%;
+    height: auto;
 }

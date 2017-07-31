@@ -24,6 +24,11 @@ import style from './style.css';
     documentNode: selectors.UI.ContentCanvas.documentNodeSelector
 }))
 export default class LeftSideBar extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {isBottomOpen: true};
+    }
+
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
 
@@ -38,10 +43,21 @@ export default class LeftSideBar extends PureComponent {
             [style['leftSideBar--isHidden']]: isHidden
         });
 
+        const bottomClassNames = mergeClassNames({
+            [style.leftSideBar__bottom]: true,
+            [style['leftSideBar__bottom--isCollapsed']]: !this.state.isBottomOpen
+        });
+
         const PageTreeToolbar = containerRegistry.get('LeftSideBar/PageTreeToolbar');
         const PageTree = containerRegistry.get('LeftSideBar/PageTree');
         const ContentTreeToolbar = containerRegistry.get('LeftSideBar/ContentTreeToolbar');
         const ContentTree = containerRegistry.get('LeftSideBar/ContentTree');
+
+        const toggleBottom = () => {
+            this.setState({
+                isBottomOpen: !this.state.isBottomOpen
+            });
+        }
 
         return (
             <SideBar
@@ -56,7 +72,7 @@ export default class LeftSideBar extends PureComponent {
 
                 <hr/>
 
-                <ToggablePanel isOpen={true} closesToBottom={true}>
+                <ToggablePanel className={bottomClassNames} onPanelToggle={toggleBottom} isOpen={this.state.isBottomOpen} closesToBottom={true}>
                     <ToggablePanel.Header noPadding={true}>
                         <ContentTreeToolbar/>
                     </ToggablePanel.Header>

@@ -31,6 +31,11 @@ class TextArea extends PureComponent {
         onChange: PropTypes.func,
 
         /**
+         * This prop controls if the CheckBox is disabled or not.
+         */
+        disabled: PropTypes.bool,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({
@@ -58,13 +63,15 @@ class TextArea extends PureComponent {
             validationErrors,
             theme,
             highlight,
+            disabled,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textArea]: true,
             [theme['textArea--invalid']]: validationErrors && validationErrors.length > 0,
-            [theme['textArea--highlight']]: highlight
+            [theme['textArea--highlight']]: highlight,
+            [theme['textArea--disabled']]: disabled
         });
         const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
             return <div key={key}>{validationError}</div>;
@@ -77,6 +84,7 @@ class TextArea extends PureComponent {
                     className={classNames}
                     role="textbox"
                     placeholder={placeholder}
+                    disabled={disabled}
                     onChange={this.handleValueChange}
                     />
                 {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}

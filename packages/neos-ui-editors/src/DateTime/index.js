@@ -1,22 +1,42 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import DateInput from '@neos-project/react-ui-components/src/DateInput/';
 import moment from 'moment';
+import {neos} from '@neos-project/neos-ui-decorators';
 
-const DateTime = props => {
-    const {value, commit} = props;
-    const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
+class DateTime extends PureComponent {
 
-    const onChange = date => {
-        commit(date ? moment(date).format('YYYY-MM-DDTHH:MM:SSZ') : '');
-    };
+    static propTypes = {
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+        commit: PropTypes.func.isRequired,
+        placeholder: PropTypes.string,
+        i18nRegistry: PropTypes.object
+    }
 
-    return <DateInput value={mappedValue} onChange={onChange}/>;
-};
+    render() {
+        const {
+          value,
+          commit,
+          placeholder,
+          i18nRegistry
+        } = this.props;
+        const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
 
-DateTime.propTypes = {
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-    commit: PropTypes.func.isRequired
-};
+        const onChange = date => {
+            commit(date ? moment(date).format('YYYY-MM-DDTHH:MM:SSZ') : '');
+        };
+
+        return (
+            <DateInput
+                value={mappedValue}
+                onChange={onChange}
+                placeholder={placeholder || i18nRegistry.translate('content.inspector.editors.dateTimeEditor.noDateSet', '', {}, 'Neos.Neos', 'Main')}
+                />
+        );
+    }
+}
 
 export default DateTime;

@@ -85,6 +85,8 @@ export default class ImageCropper extends PureComponent {
                 this.props.options.crop.aspectRatio
             )
         };
+        console.log(                 this.props.options.crop.aspectRatio
+ );
         this.handleSetAspectRatio = this.setAspectRatio.bind(this);
         this.handleClearAspectRatio = this.clearAspectRatio.bind(this);
         this.handleFlipAspectRatio = this.flipAspectRatio.bind(this);
@@ -134,19 +136,25 @@ export default class ImageCropper extends PureComponent {
         const {cropConfiguration} = this.state;
         const {height, width} = this.props.options.crop.aspectRatio.locked;
         const aspectRatioLocked = height > 0 && width > 0;
-        const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock"/> : null);
         const {sourceImage, onComplete} = this.props;
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
+
+        if (aspectRatioLocked) {
+            cropConfiguration.aspectRatioStrategy.__height = this.props.options.crop.aspectRatio.locked.height;
+            cropConfiguration.aspectRatioStrategy.__width = this.props.options.crop.aspectRatio.locked.width;
+        }
 
         return (
             <div style={{textAlign: 'center'}}>
                 <div className={style.tools}>
                     <div className={style.aspectRatioIndicator}>
-                        {cropConfiguration.aspectRatioReducedLabel.map((label, index) => [
-                            <Icon key={index} icon="crop"/>,
-                            <span key={index} title={label}>{label}</span>,
-                            <span key={index}>{aspectRatioLockIcon}</span>
-                        ]).orSome('')}
+                        {
+                            cropConfiguration.aspectRatioReducedLabel.map((label, index) => [
+                                <Icon key={index} icon="crop"/>,
+                                <span key={index} title={label}>{label}</span>,
+                                <span key={index}>{aspectRatioLocked ? <Icon icon="lock"/> : null}</span>
+                            ]).orSome('')
+                        }
                     </div>
 
                     <AspectRatioDropDown

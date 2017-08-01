@@ -1,5 +1,7 @@
 .tooltip {
     position: absolute;
+    z-index: 1000;
+    transition: all 2s ease-in;
 }
 
 .tooltip--arrow {
@@ -19,4 +21,14 @@
     padding: var(--halfSpacing);
     background: var(--brandColorsError);
     color: white;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.tooltip--regular .tooltip--arrow {
+  border-bottom: var(--halfSpacing) solid var(--brandColorsContrastDarker);
+}
+
+.tooltip--regular .tooltip--inner {
+  background: var(--brandColorsContrastDarker);
 }

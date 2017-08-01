@@ -6,12 +6,14 @@ const Tooltip = props => {
     const {
         children,
         className,
+        style,
         theme,
         ...rest
     } = props;
     const classNames = mergeClassNames({
         [theme.tooltip]: true,
-        [className]: className && className.length
+        [className]: className && className.length,
+        [theme['tooltip--regular']]: style === 'regular'
     });
 
     return (
@@ -37,7 +39,16 @@ Tooltip.propTypes = {
     /**
      * An optional css theme to be injected.
      */
-    theme: PropTypes.object
+    theme: PropTypes.object,
+
+    /**
+     * Use several style options
+     */
+    style: PropTypes.oneOf(['regular', 'error'])
+};
+
+Tooltip.defaultProps = {
+    style: 'error'
 };
 
 export default Tooltip;

@@ -19,7 +19,7 @@
         "declaration-block-trailing-semicolon": "always",
         "selector-list-comma-space-before": "never",
         "selector-list-comma-newline-after": "always",
-        "selector-no-id": true,
+        "selector-max-id": 0,
         "string-quotes": "single",
         "value-no-vendor-prefix": true
     }

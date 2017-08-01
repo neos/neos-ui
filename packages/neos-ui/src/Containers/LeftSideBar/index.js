@@ -52,6 +52,7 @@ export default class LeftSideBar extends PureComponent {
                 >
                 <PageTreeToolbar/>
                 <PageTreeSearchbar/>
+                <PageTree/>
                 <ContentTreeToolbar/>
                 <ContentTree/>
             </SideBar>

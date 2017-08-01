@@ -80,6 +80,7 @@ class TextInput extends PureComponent {
             highlight,
             disabled,
             containerClassName,
+            disabled,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
@@ -103,6 +104,7 @@ class TextInput extends PureComponent {
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={this.handleValueChange}
+                    disabled={disabled ? "disabled" : ""}
                     />
                 {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>

@@ -6,7 +6,7 @@ import context from './Context/index';
 import get from './Get/index';
 import getForTree from './GetForTree/index';
 import search from './Search/index';
-import getForTreeWithParents from './getForTreeWithParents/index';
+import getForTreeWithParents from './GetForTreeWithParents/index';
 
 export {
     children,

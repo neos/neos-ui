@@ -161,14 +161,18 @@ function * watchSearch() {
 
         const {q} = backend.get();
         const query = q(contextPath);
-        const matchingNodesMap = yield query.search(searchQuery).getForTreeWithParents();
-        const nodes = matchingNodesMap.reduce((map, node) => {
-            map[$get('contextPath', node)] = node;
-            return map;
-        }, {});
+        const matchingNodes = yield query.search(searchQuery).getForTreeWithParents();
 
-        yield put(actions.CR.Nodes.merge(nodes));
-        yield put(actions.UI.PageTree.setSearchResult(nodes));
+        if (matchingNodes.length > 0) {
+            const nodes = matchingNodes.reduce((map, node) => {
+                map[$get('contextPath', node)] = node;
+                return map;
+            }, {});
+
+            yield put(actions.CR.Nodes.merge(nodes));
+            yield put(actions.UI.PageTree.setSearchResult(nodes));
+        }
+
         yield put(actions.UI.PageTree.setAsLoaded(contextPath));
     });
 }

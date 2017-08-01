@@ -23,3 +23,7 @@
 .textArea--highlight {
     outline: 2px solid var(--brandColorsSuccess);
 }
+.textArea--disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}

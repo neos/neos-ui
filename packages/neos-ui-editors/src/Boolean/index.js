@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import {$get} from 'plow-js';
 
 import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
 import Label from '@neos-project/react-ui-components/src/Label/';
@@ -25,18 +24,22 @@ const toBoolean = val => {
     return Boolean(val);
 };
 
+const defaultOptions = {
+    disabled: false
+};
+
 const BooleanEditor = props => {
-    const {value, label, identifier, commit} = props;
-    const disabled = $get('options.disabled', props) || false;
+    const {value, label, identifier, commit, options} = props;
+    const finalOptions = Object.assign(defaultOptions, options);
 
     const finalClassName = mergeClassNames({
-        [style.boolean__disabled]: disabled
+        [style.boolean__disabled]: finalOptions.disabled
     });
 
     return (
         <div>
             <Label htmlFor={identifier} className={finalClassName}>
-                <CheckBox id={identifier} isChecked={toBoolean(value)} isDisabled={disabled} onChange={commit}/>
+                <CheckBox id={identifier} isChecked={toBoolean(value)} isDisabled={finalOptions.disabled} onChange={commit}/>
                 <I18n id={label}/>
             </Label>
         </div>
@@ -47,7 +50,7 @@ BooleanEditor.propTypes = {
     label: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     commit: PropTypes.func.isRequired,
-    isDisabled: PropTypes.bool
+    options: PropTypes.object
 };
 
 export default BooleanEditor;

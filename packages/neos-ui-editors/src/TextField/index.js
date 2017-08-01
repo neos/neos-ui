@@ -21,10 +21,15 @@ export default class TextField extends PureComponent {
     };
 
     render() {
+        // options = options || {};
         const {value, commit, validationErrors, options, i18nRegistry, highlight, onKeyPress} = this.props;
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
+        const disabled = options && options.disabled ? options.disabled : false;
+        const maxlength = options && options.maxlength ? options.maxlength : null;
+        const readonly = options && options.readonly ? options.readonly : false;
+
         return (<TextInput
             autoFocus={options && options.autoFocus}
             value={value}
@@ -33,6 +38,9 @@ export default class TextField extends PureComponent {
             placeholder={placeholder}
             highlight={highlight}
             onKeyPress={onKeyPress}
+            disabled={disabled}
+            maxLength={maxlength}
+            readOnly={readonly}
             />);
     }
 }

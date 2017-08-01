@@ -8,7 +8,6 @@ import {stripTags} from '@neos-project/utils-helpers';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import style from '../style.css';
 
 const getContextPath = $get('contextPath');
 
@@ -210,7 +209,6 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
         const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
 
         return (state, {node, currentlyDraggedNode}) => ({
-            className: $get('intermediate')(node) ? style.pageTree__intermediateNode : null,
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
             currentDocumentNodeContextPath: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state),

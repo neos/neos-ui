@@ -42,6 +42,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $baseNodeType;
 
     /**
+     * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.loadingDepth", package="Neos.Neos")
+     * @var string
+     */
+    protected $loadingDepth;
+
+    /**
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
      * @param bool $omitMostPropertiesForTreeState
@@ -60,6 +66,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             ] : $this->buildNodeProperties($node),
             'label' => $node->getLabel(),
             'isAutoCreated' => $node->isAutoCreated(),
+            'depth' => $node->getDepth(),
             // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
             'children' => [],
         ];
@@ -113,9 +120,16 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         if ($site !== $documentNode) {
             $this->renderNodeToList($nodes, $site, $controllerContext);
         }
-        foreach ($site->getChildNodes($this->baseNodeType) as $documentChildNodeInFirstLevel) {
-            $this->renderNodeToList($nodes, $documentChildNodeInFirstLevel, $controllerContext);
-        }
+
+        $renderNodesRecursively = function (&$nodes, $baseNode, $level = 0) use (&$renderNodesRecursively, $controllerContext) {
+            if ($level < $this->loadingDepth) {
+                foreach ($baseNode->getChildNodes($this->baseNodeType) as $childNode) {
+                    $this->renderNodeToList($nodes, $childNode, $controllerContext);
+                    $renderNodesRecursively($nodes, $childNode, $level + 1);
+                }
+            }
+        };
+        $renderNodesRecursively($nodes, $site);
 
         $this->renderNodeToList($nodes, $documentNode, $controllerContext);
 

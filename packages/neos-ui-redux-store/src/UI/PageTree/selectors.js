@@ -2,7 +2,7 @@ import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
 
 export const getFocused = $get('ui.pageTree.isFocused');
-export const getUncollapsed = $get('ui.pageTree.uncollapsed');
+export const getToggled = $get('ui.pageTree.toggled');
 export const getLoading = $get('ui.pageTree.loading');
 export const getErrors = $get('ui.pageTree.errors');
 

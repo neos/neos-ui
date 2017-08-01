@@ -1,4 +1,4 @@
 import {$get} from 'plow-js';
 
-export const getUncollapsed = $get('ui.contentTree.uncollapsed');
+export const getToggled = $get('ui.contentTree.toggled');
 export const getIsLoading = $get('ui.contentTree.isLoading');

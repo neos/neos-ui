@@ -24,18 +24,22 @@ const toBoolean = val => {
     return Boolean(val);
 };
 
+const defaultOptions = {
+    disabled: false
+};
+
 const BooleanEditor = props => {
     const {value, label, identifier, commit, options} = props;
-    const disabled = options && options.disabled ? options.disabled : false;
+    const finalOptions = Object.assign(defaultOptions, options);
 
     const finalClassName = mergeClassNames({
-        [style.boolean__disabled]: disabled
+        [style.boolean__disabled]: finalOptions.disabled
     });
 
     return (
         <div>
             <Label htmlFor={identifier} className={finalClassName}>
-                <CheckBox id={identifier} isChecked={toBoolean(value)} isDisabled={disabled} onChange={commit}/>
+                <CheckBox id={identifier} isChecked={toBoolean(value)} isDisabled={finalOptions.disabled} onChange={commit}/>
                 <I18n id={label}/>
             </Label>
         </div>

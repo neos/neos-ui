@@ -15,6 +15,7 @@ const ShallowDropDownHeader = props => {
         IconComponent,
         _refHandler,
         shouldKeepFocusState,
+        disabled,
         ...rest
     } = props;
     const iconName = isOpen ? 'chevron-up' : 'chevron-down';
@@ -27,7 +28,7 @@ const ShallowDropDownHeader = props => {
     return (
         <div
             {...rest}
-            onClick={toggleDropDown}
+            onClick={disabled ? null : toggleDropDown }
             ref={shouldKeepFocusState ? _refHandler(isOpen) : emptyFn}
             className={finalClassName}
             aria-haspopup="true"
@@ -79,7 +80,12 @@ ShallowDropDownHeader.propTypes = {
      * Must be set to FALSE when connected components want to manage the focus state themselves (e.g.
      * when this component is used to build a select box)
      */
-    shouldKeepFocusState: PropTypes.bool
+    shouldKeepFocusState: PropTypes.bool,
+
+    /**
+     * Disable the onclick handler if disabled
+     */
+    disabled: PropTypes.bool
 };
 ShallowDropDownHeader.defaultProps = {
     _refHandler: makeFocusNode,

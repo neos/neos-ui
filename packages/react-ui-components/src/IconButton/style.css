@@ -6,6 +6,11 @@
     padding-right: 0;
 }
 
+.iconButton--disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}
+
 .size-small {
     width: 32px !important;
     min-width: 32px !important;

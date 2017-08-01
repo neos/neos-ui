@@ -19,7 +19,8 @@ class AspectRatioItem extends PureComponent {
         key: PropTypes.any,
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired,
-        changeHandler: PropTypes.func.isRequired
+        changeHandler: PropTypes.func.isRequired,
+        locked: PropTypes.bool
     };
 
     constructor(props) {
@@ -30,7 +31,7 @@ class AspectRatioItem extends PureComponent {
     }
 
     render() {
-        const {width, height, key} = this.props;
+        const {width, height, key, locked} = this.props;
 
         return (
             <span key={key} className={style.dimensionsWrapper}>
@@ -39,9 +40,11 @@ class AspectRatioItem extends PureComponent {
                     type="number"
                     value={width}
                     onChange={this.handleWidthInputChange}
+                    disabled={locked}
                     />
                 <IconButton
                     icon="exchange"
+                    disabled={locked}
                     onClick={this.handleFlipAspectRatio}
                     />
                 <TextInput
@@ -49,6 +52,7 @@ class AspectRatioItem extends PureComponent {
                     type="number"
                     value={height}
                     onChange={this.handleHeightInputChange}
+                    disabled={locked}
                     />
             </span>
         );
@@ -128,7 +132,8 @@ export default class ImageCropper extends PureComponent {
 
     render() {
         const {cropConfiguration} = this.state;
-        const aspectRatioLocked = false;
+        const {height, width} = this.props.options.crop.aspectRatio.locked;
+        const aspectRatioLocked = height > 0 && width > 0;
         const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock"/> : null);
         const {sourceImage, onComplete} = this.props;
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
@@ -150,11 +155,12 @@ export default class ImageCropper extends PureComponent {
                         options={cropConfiguration.aspectRatioOptions}
                         onSelect={this.handleSetAspectRatio}
                         onClear={this.handleClearAspectRatio}
+                        locked={aspectRatioLocked}
                         />
 
                     <div className={style.dimensions}>
                         {cropConfiguration.aspectRatioDimensions.map((props, index) => (
-                            <AspectRatioItem {...props} key={index}/>
+                            <AspectRatioItem {...props} locked={aspectRatioLocked} key={index}/>
                         )).orSome('')}
                     </div>
                 </div>

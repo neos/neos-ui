@@ -10,12 +10,14 @@ const IconButton = props => {
         theme,
         icon,
         size,
+        disabled,
         ...rest
     } = props;
     const finalClassName = mergeClassNames({
         [className]: className && className.length,
         [theme.iconButton]: true,
-        [theme[`size-${size}`]]: true
+        [theme[`size-${size}`]]: true,
+        [theme['iconButton--disabled']]: disabled
     });
 
     return (

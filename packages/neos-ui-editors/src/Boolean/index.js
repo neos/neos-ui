@@ -26,7 +26,7 @@ const toBoolean = val => {
 
 const BooleanEditor = props => {
     const {value, label, identifier, commit, options} = props;
-    const disabled = options && options.disabled || false;
+    const disabled = options && options.disabled ? options.disabled : false;
 
     const finalClassName = mergeClassNames({
         [style.boolean__disabled]: disabled
@@ -46,7 +46,8 @@ BooleanEditor.propTypes = {
     label: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     commit: PropTypes.func.isRequired,
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    options: PropTypes.object
 };
 
 export default BooleanEditor;

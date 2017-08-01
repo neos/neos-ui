@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import {$get} from 'plow-js';
 
 import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
 import Label from '@neos-project/react-ui-components/src/Label/';
@@ -26,8 +25,8 @@ const toBoolean = val => {
 };
 
 const BooleanEditor = props => {
-    const {value, label, identifier, commit} = props;
-    const disabled = $get('options.disabled', props) || false;
+    const {value, label, identifier, commit, options} = props;
+    const disabled = options && options.disabled || false;
 
     const finalClassName = mergeClassNames({
         [style.boolean__disabled]: disabled

@@ -8,7 +8,7 @@ const DateTime = props => {
     const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
 
     const onChange = date => {
-        commit(moment(date).format('YYYY-MM-DDTHH:MM:SSZ'));
+        commit(date ? moment(date).format('YYYY-MM-DDTHH:MM:SSZ') : '');
     };
 
     return <DateInput value={mappedValue} onChange={onChange}/>;

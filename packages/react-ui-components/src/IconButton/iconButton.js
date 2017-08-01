@@ -53,7 +53,12 @@ IconButton.propTypes = {
      * Static component dependencies which are injected from the outside (index.js)
      */
     IconComponent: PropTypes.any.isRequired,
-    ButtonComponent: PropTypes.any.isRequired
+    ButtonComponent: PropTypes.any.isRequired,
+
+    /**
+     * Optional disabled flag
+     */
+    disabled: PropTypes.bool
 };
 IconButton.defaultProps = {
     size: 'regular',

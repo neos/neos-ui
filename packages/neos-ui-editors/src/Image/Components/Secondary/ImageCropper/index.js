@@ -85,8 +85,7 @@ export default class ImageCropper extends PureComponent {
                 this.props.options.crop.aspectRatio
             )
         };
-        console.log(                 this.props.options.crop.aspectRatio
- );
+
         this.handleSetAspectRatio = this.setAspectRatio.bind(this);
         this.handleClearAspectRatio = this.clearAspectRatio.bind(this);
         this.handleFlipAspectRatio = this.flipAspectRatio.bind(this);

@@ -28,7 +28,7 @@ const ShallowDropDownHeader = props => {
     return (
         <div
             {...rest}
-            onClick={disabled ? null : toggleDropDown }
+            onClick={disabled ? null : toggleDropDown}
             ref={shouldKeepFocusState ? _refHandler(isOpen) : emptyFn}
             className={finalClassName}
             aria-haspopup="true"

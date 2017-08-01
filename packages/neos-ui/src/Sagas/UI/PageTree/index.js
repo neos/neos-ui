@@ -149,7 +149,32 @@ function * watchCurrentDocument() {
     });
 }
 
+function * watchSearch() {
+    yield * takeLatest(actionTypes.UI.PageTree.SEARCH, function * searchForNode(action) {
+        const {contextPath, query: searchQuery} = action.payload;
+
+        if (!searchQuery) {
+            return;
+        }
+
+        yield put(actions.UI.PageTree.setAsLoading(contextPath));
+
+        const {q} = backend.get();
+        const query = q(contextPath);
+        const matchingNodesMap = yield query.search(searchQuery).getForTreeWithParents();
+        const nodes = matchingNodesMap.reduce((map, node) => {
+            map[$get('contextPath', node)] = node;
+            return map;
+        }, {});
+
+        yield put(actions.CR.Nodes.merge(nodes));
+        yield put(actions.UI.PageTree.setSearchResult(nodes));
+        yield put(actions.UI.PageTree.setAsLoaded(contextPath));
+    });
+}
+
 export const sagas = [
+    watchSearch,
     watchToggle,
     watchCommenceUncollapse,
     watchRequestChildrenForContextPath,

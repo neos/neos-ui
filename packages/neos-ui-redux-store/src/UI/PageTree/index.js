@@ -17,7 +17,8 @@ const SET_AS_LOADING = '@neos/neos-ui/UI/PageTree/SET_AS_LOADING';
 const SET_AS_LOADED = '@neos/neos-ui/UI/PageTree/SET_AS_LOADED';
 const REQUEST_CHILDREN = '@neos/neos-ui/UI/PageTree/REQUEST_CHILDREN';
 const RELOAD_TREE = '@neos/neos-ui/UI/PageTree/RELOAD_TREE';
-
+const SEARCH = '@neos/neos-ui/UI/PageTree/SEARCH';
+const SET_SEARCH_RESULT = '@neos/neos-ui/UI/PageTree/SET_SEARCH_RESULT';
 //
 // Export the action types
 //
@@ -31,7 +32,9 @@ export const actionTypes = {
     SET_AS_LOADING,
     SET_AS_LOADED,
     REQUEST_CHILDREN,
-    RELOAD_TREE
+    RELOAD_TREE,
+    SEARCH,
+    SET_SEARCH_RESULT
 };
 
 const focus = createAction(FOCUS, contextPath => ({contextPath}));
@@ -44,6 +47,8 @@ const requestChildren = createAction(REQUEST_CHILDREN, (contextPath, {unCollapse
 const setAsLoading = createAction(SET_AS_LOADING, contextPath => ({contextPath}));
 const setAsLoaded = createAction(SET_AS_LOADED, contextPath => ({contextPath}));
 const reloadTree = createAction(RELOAD_TREE);
+const search = createAction(SEARCH, (contextPath, {query}) => ({contextPath, query}));
+const setSearchResult = createAction(SET_SEARCH_RESULT, nodes => ({nodes}));
 
 //
 // Export the actions
@@ -58,7 +63,9 @@ export const actions = {
     setAsLoading,
     setAsLoaded,
     requestChildren,
-    reloadTree
+    reloadTree,
+    search,
+    setSearchResult
 };
 
 //
@@ -70,6 +77,8 @@ export const reducer = handleActions({
         new Map({
             isFocused: $get('ui.contentCanvas.contextPath', state) || $get('cr.nodes.siteNode', state),
             uncollapsed: new Set([$get('cr.nodes.siteNode', state)]),
+            hidden: new Set(),
+            intermediate: new Set(),
             loading: new Set(),
             errors: new Set()
         })
@@ -96,7 +105,47 @@ export const reducer = handleActions({
     ),
     [SET_AS_LOADED]: ({contextPath}) => $all(
         $remove('ui.pageTree.loading', contextPath)
-    )
+    ),
+    [SEARCH]: ({query}) => state => {
+        if (!query) {
+            return $all(
+              $set('ui.pageTree.hidden', new Set()),
+              $set('ui.pageTree.intermediate', new Set()),
+              $set('ui.pageTree.uncollapsed', new Set([$get('cr.nodes.siteNode', state)]))
+            )(state);
+        }
+
+        const hiddenContextPaths = new Set([...$get('cr.nodes.byContextPath', state).keys()]);
+
+        return $all(
+          $set('ui.pageTree.hidden', hiddenContextPaths.delete($get('cr.nodes.siteNode', state))),
+          $set('ui.pageTree.uncollapsed', new Set())
+        )(state);
+    },
+    [SET_SEARCH_RESULT]: ({nodes}) => state => {
+        const resultContextPaths = new Set(Object.keys(nodes));
+        const hiddenContextPaths = $get('ui.pageTree.hidden', state).subtract(resultContextPaths);
+
+        const uncollapsedContextPaths = [];
+        const intermediateContextPaths = [];
+
+        Object.keys(nodes).forEach(contextPath => {
+            const node = nodes[contextPath];
+            if (node.intermediate) {
+                uncollapsedContextPaths.push(contextPath);
+
+                if (!node.matched) {
+                    intermediateContextPaths.push(contextPath);
+                }
+            }
+        });
+
+        return $all(
+          $set('ui.pageTree.hidden', hiddenContextPaths),
+          $set('ui.pageTree.uncollapsed', new Set(uncollapsedContextPaths)),
+          $set('ui.pageTree.intermediate', new Set(intermediateContextPaths))
+        )(state);
+    }
 });
 
 //

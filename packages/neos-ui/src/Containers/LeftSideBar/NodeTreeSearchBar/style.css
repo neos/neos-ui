@@ -1,0 +1,18 @@
+.searchBar {
+  display: flex;
+}
+
+.searchBar__searchInput {
+  flex-grow: 1;
+}
+
+.searchBar__clearButton {
+  background: var(--brandColorsContrastNeutral);
+}
+
+.searchBar__clearButton--focused {
+  background: white;
+  > i {
+    color: var(--brandColorsContrastNeutral);
+  } 
+}

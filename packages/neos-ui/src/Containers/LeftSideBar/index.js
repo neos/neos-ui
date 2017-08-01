@@ -38,7 +38,9 @@ export default class LeftSideBar extends PureComponent {
         });
 
         const PageTreeToolbar = containerRegistry.get('LeftSideBar/PageTreeToolbar');
+        const PageTreeSearchbar = containerRegistry.get('LeftSideBar/PageTreeSearchbar');
         const PageTree = containerRegistry.get('LeftSideBar/PageTree');
+
         const ContentTreeToolbar = containerRegistry.get('LeftSideBar/ContentTreeToolbar');
         const ContentTree = containerRegistry.get('LeftSideBar/ContentTree');
 
@@ -49,7 +51,7 @@ export default class LeftSideBar extends PureComponent {
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 <PageTreeToolbar/>
-                <PageTree/>
+                <PageTreeSearchbar/>
                 <ContentTreeToolbar/>
                 <ContentTree/>
             </SideBar>

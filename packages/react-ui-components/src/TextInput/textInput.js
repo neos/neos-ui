@@ -78,7 +78,6 @@ class TextInput extends PureComponent {
             validationErrors,
             theme,
             highlight,
-            disabled,
             containerClassName,
             disabled,
             ...rest
@@ -104,7 +103,6 @@ class TextInput extends PureComponent {
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={this.handleValueChange}
-                    disabled={disabled ? 'disabled' : ''}
                     />
                 {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>

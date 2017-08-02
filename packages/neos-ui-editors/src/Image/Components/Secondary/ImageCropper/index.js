@@ -20,7 +20,7 @@ class AspectRatioItem extends PureComponent {
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired,
         changeHandler: PropTypes.func.isRequired,
-        locked: PropTypes.bool
+        isLocked: PropTypes.bool
     };
 
     constructor(props) {
@@ -31,7 +31,7 @@ class AspectRatioItem extends PureComponent {
     }
 
     render() {
-        const {width, height, key, locked} = this.props;
+        const {width, height, key, isLocked} = this.props;
 
         return (
             <span key={key} className={style.dimensionsWrapper}>
@@ -40,11 +40,11 @@ class AspectRatioItem extends PureComponent {
                     type="number"
                     value={width}
                     onChange={this.handleWidthInputChange}
-                    disabled={locked}
+                    disabled={isLocked}
                     />
                 <IconButton
                     icon="exchange"
-                    disabled={locked}
+                    disabled={isLocked}
                     onClick={this.handleFlipAspectRatio}
                     />
                 <TextInput
@@ -52,7 +52,7 @@ class AspectRatioItem extends PureComponent {
                     type="number"
                     value={height}
                     onChange={this.handleHeightInputChange}
-                    disabled={locked}
+                    disabled={isLocked}
                     />
             </span>
         );
@@ -139,8 +139,8 @@ export default class ImageCropper extends PureComponent {
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
 
         if (aspectRatioLocked) {
-            cropConfiguration.aspectRatioStrategy.__height = this.props.options.crop.aspectRatio.locked.height;
-            cropConfiguration.aspectRatioStrategy.__width = this.props.options.crop.aspectRatio.locked.width;
+            cropConfiguration.aspectRatioStrategy.__height = height;
+            cropConfiguration.aspectRatioStrategy.__width = width;
         }
 
         return (
@@ -162,12 +162,12 @@ export default class ImageCropper extends PureComponent {
                         options={cropConfiguration.aspectRatioOptions}
                         onSelect={this.handleSetAspectRatio}
                         onClear={this.handleClearAspectRatio}
-                        locked={aspectRatioLocked}
+                        isLocked={aspectRatioLocked}
                         />
 
                     <div className={style.dimensions}>
                         {cropConfiguration.aspectRatioDimensions.map((props, index) => (
-                            <AspectRatioItem {...props} locked={aspectRatioLocked} key={index}/>
+                            <AspectRatioItem {...props} isLocked={aspectRatioLocked} key={index}/>
                         )).orSome('')}
                     </div>
                 </div>

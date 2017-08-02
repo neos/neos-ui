@@ -47,26 +47,26 @@ export default class AspectRatioDropDown extends PureComponent {
 
         onSelect: PropTypes.func.isRequired,
         onClear: PropTypes.func.isRequired,
-        locked: PropTypes.bool
+        isLocked: PropTypes.bool
     };
 
     render() {
-        const {options, current, placeholder, onSelect, onClear, locked} = this.props;
+        const {options, current, placeholder, onSelect, onClear, isLocked} = this.props;
 
         const dropDownClasses = mergeClassNames({
             [style.dropDown]: true,
-            [style['dropDown--disabled']]: locked
+            [style['dropDown--disabled']]: isLocked
         });
 
         const dropDownHeaderClasses = mergeClassNames({
             [style.dropDown__btn]: true,
             [style['dropDown__btn--isPlaceholder']]: !current.label,
-            [style['dropDown--disabled']]: locked
+            [style['dropDown--disabled']]: isLocked
         });
 
         const iconButtonClasses = mergeClassNames({
             [style.dropDown__clear]: true,
-            [style['dropDown--disabled']]: locked
+            [style['dropDown--disabled']]: isLocked
         });
 
         return (
@@ -74,14 +74,14 @@ export default class AspectRatioDropDown extends PureComponent {
                 <DropDown className={dropDownClasses}>
                     {current.label ? (
                         <div style={{position: 'relative'}}>
-                            <DropDown.Header disabled={locked} className={dropDownHeaderClasses}>
+                            <DropDown.Header disabled={isLocked} className={dropDownHeaderClasses}>
                                 {current.label}
                             </DropDown.Header>
-                            <IconButton icon="times" onClick={locked ? null : onClear} className={iconButtonClasses}/>
+                            <IconButton icon="times" onClick={isLocked ? null : onClear} className={iconButtonClasses}/>
                         </div>
                     ) : (
                         <DropDown.Header
-                            disabled={locked}
+                            disabled={isLocked}
                             className={dropDownHeaderClasses}
                             >
                             {placeholder}

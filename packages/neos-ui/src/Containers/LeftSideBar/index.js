@@ -49,7 +49,9 @@ export default class LeftSideBar extends PureComponent {
         });
 
         const PageTreeToolbar = containerRegistry.get('LeftSideBar/PageTreeToolbar');
+        const PageTreeSearchbar = containerRegistry.get('LeftSideBar/PageTreeSearchbar');
         const PageTree = containerRegistry.get('LeftSideBar/PageTree');
+
         const ContentTreeToolbar = containerRegistry.get('LeftSideBar/ContentTreeToolbar');
         const ContentTree = containerRegistry.get('LeftSideBar/ContentTree');
 
@@ -70,6 +72,7 @@ export default class LeftSideBar extends PureComponent {
                 >
                 <div className={style.leftSideBar__top}>
                     <PageTreeToolbar/>
+                    <PageTreeSearchbar/>
                     <PageTree/>
                 </div>
 
@@ -83,6 +86,7 @@ export default class LeftSideBar extends PureComponent {
                         <ContentTree/>
                     </ToggablePanel.Contents>
                 </ToggablePanel>
+
             </SideBar>
         );
     }

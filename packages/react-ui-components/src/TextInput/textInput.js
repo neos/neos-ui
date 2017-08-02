@@ -45,6 +45,11 @@ class TextInput extends PureComponent {
         highlight: PropTypes.bool,
 
         /**
+         * This prop controls if the CheckBox is disabled or not.
+         */
+        disabled: PropTypes.bool,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({
@@ -73,6 +78,7 @@ class TextInput extends PureComponent {
             validationErrors,
             theme,
             highlight,
+            disabled,
             containerClassName,
             ...rest
         } = this.props;
@@ -80,7 +86,8 @@ class TextInput extends PureComponent {
             [className]: className && className.length,
             [theme.textInput]: true,
             [theme['textInput--invalid']]: validationErrors && validationErrors.length > 0,
-            [theme['textInput--highlight']]: highlight
+            [theme['textInput--highlight']]: highlight,
+            [theme['textInput--disabled']]: disabled
         });
 
         const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
@@ -94,6 +101,7 @@ class TextInput extends PureComponent {
                     className={classNames}
                     role="textbox"
                     placeholder={placeholder}
+                    disabled={disabled}
                     onChange={this.handleValueChange}
                     />
                 {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}

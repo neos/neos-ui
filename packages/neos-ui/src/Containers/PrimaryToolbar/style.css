@@ -7,6 +7,8 @@
     &:after {
         clear: both;
     }
+
+    z-index: 9999;
 }
 .primaryToolbar--isHidden {
     display: none;
@@ -16,7 +18,6 @@
     right: 0;
     top: 0;
 }
-
 .primaryToolbar__btn {
     border-right: 1px solid var(--brandColorsContrastDark);
 }

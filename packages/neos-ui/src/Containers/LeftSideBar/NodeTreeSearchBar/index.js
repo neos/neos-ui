@@ -20,13 +20,13 @@ class NodeTreeSearchBar extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object.isRequired,
         rootNode: PropTypes.object,
-        search: PropTypes.func.isRequired
+        commenceSearch: PropTypes.func.isRequired
     }
 
     constructor(props, ...args) {
         super(props, ...args);
 
-        this.debouncedSearch = debounce(props.search, searchDelay);
+        this.debouncedCommenceSearch = debounce(props.commenceSearch, searchDelay);
         this.state = {
             showClear: false,
             focused: false,
@@ -38,7 +38,7 @@ class NodeTreeSearchBar extends PureComponent {
         const {rootNode} = this.props;
         const contextPath = $get('contextPath', rootNode);
         this.setState({value: query, showClear: query.length > 0});
-        this.debouncedSearch(contextPath, {query});
+        this.debouncedCommenceSearch(contextPath, {query});
     }
 
     handleSearchFocus = () => {
@@ -50,13 +50,13 @@ class NodeTreeSearchBar extends PureComponent {
     }
 
     handleClearClick = () => {
-        const {search, rootNode} = this.props;
+        const {commenceSearch, rootNode} = this.props;
         const contextPath = $get('contextPath', rootNode);
         this.setState({
             value: '',
             showClear: false
         });
-        search(contextPath, {query: ''});
+        commenceSearch(contextPath, {query: ''});
     }
 
     render() {
@@ -90,5 +90,5 @@ class NodeTreeSearchBar extends PureComponent {
 export const PageTreeSearchbar = connect(state => ({
     rootNode: selectors.CR.Nodes.siteNodeSelector(state)
 }), {
-    search: actions.UI.PageTree.search
+    commenceSearch: actions.UI.PageTree.commenceSearch
 })(NodeTreeSearchBar);

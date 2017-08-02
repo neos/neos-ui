@@ -17,7 +17,7 @@ const SET_AS_LOADING = '@neos/neos-ui/UI/PageTree/SET_AS_LOADING';
 const SET_AS_LOADED = '@neos/neos-ui/UI/PageTree/SET_AS_LOADED';
 const REQUEST_CHILDREN = '@neos/neos-ui/UI/PageTree/REQUEST_CHILDREN';
 const RELOAD_TREE = '@neos/neos-ui/UI/PageTree/RELOAD_TREE';
-const SEARCH = '@neos/neos-ui/UI/PageTree/SEARCH';
+const COMMENCE_SEARCH = '@neos/neos-ui/UI/PageTree/COMMENCE_SEARCH';
 const SET_SEARCH_RESULT = '@neos/neos-ui/UI/PageTree/SET_SEARCH_RESULT';
 //
 // Export the action types
@@ -33,7 +33,7 @@ export const actionTypes = {
     SET_AS_LOADED,
     REQUEST_CHILDREN,
     RELOAD_TREE,
-    SEARCH,
+    COMMENCE_SEARCH,
     SET_SEARCH_RESULT
 };
 
@@ -47,7 +47,7 @@ const requestChildren = createAction(REQUEST_CHILDREN, (contextPath, {unCollapse
 const setAsLoading = createAction(SET_AS_LOADING, contextPath => ({contextPath}));
 const setAsLoaded = createAction(SET_AS_LOADED, contextPath => ({contextPath}));
 const reloadTree = createAction(RELOAD_TREE);
-const search = createAction(SEARCH, (contextPath, {query}) => ({contextPath, query}));
+const commenceSearch = createAction(COMMENCE_SEARCH, (contextPath, {query}) => ({contextPath, query}));
 const setSearchResult = createAction(SET_SEARCH_RESULT, nodes => ({nodes}));
 
 //
@@ -64,7 +64,7 @@ export const actions = {
     setAsLoaded,
     requestChildren,
     reloadTree,
-    search,
+    commenceSearch,
     setSearchResult
 };
 
@@ -106,7 +106,7 @@ export const reducer = handleActions({
     [SET_AS_LOADED]: ({contextPath}) => $all(
         $remove('ui.pageTree.loading', contextPath)
     ),
-    [SEARCH]: ({query}) => state => {
+    [COMMENCE_SEARCH]: ({query}) => state => {
         if (!query) {
             return $all(
               $set('ui.pageTree.hidden', new Set()),

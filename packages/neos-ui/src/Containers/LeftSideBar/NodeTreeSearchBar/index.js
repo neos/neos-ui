@@ -10,7 +10,6 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
 
-console.log(style);
 const searchDelay = 300;
 
 @neos(globalRegistry => ({

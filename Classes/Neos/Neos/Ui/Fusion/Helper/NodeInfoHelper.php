@@ -122,7 +122,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         $renderNodesRecursively = function (&$nodes, $baseNode, $level = 0) use (&$renderNodesRecursively, $controllerContext) {
-            if ($level < $this->loadingDepth) {
+            if ($level < $this->loadingDepth || $this->loadingDepth === 0) {
                 foreach ($baseNode->getChildNodes($this->baseNodeType) as $childNode) {
                     $this->renderNodeToList($nodes, $childNode, $controllerContext);
                     $renderNodesRecursively($nodes, $childNode, $level + 1);

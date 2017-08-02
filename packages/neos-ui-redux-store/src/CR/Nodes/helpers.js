@@ -38,6 +38,6 @@ export const parentNodeContextPath = contextPath => {
 // Helper function to check if the node is collapsed
 //
 export const isNodeCollapsed = (node, isToggled, rootNode, loadingDepth) => {
-    const isCollapsedByDefault = $get('depth', node) - $get('depth', rootNode) >= loadingDepth;
+    const isCollapsedByDefault = loadingDepth === 0 ? false : $get('depth', node) - $get('depth', rootNode) >= loadingDepth;
     return (isCollapsedByDefault && !isToggled) || (!isCollapsedByDefault && isToggled);
 };

@@ -30,6 +30,7 @@ export default class CopySelectedNode extends PureComponent {
                 isDisabled={Boolean(focusedNodeContextPath) === false}
                 onClick={this.handleClick}
                 icon="copy"
+                tooltipLabel="Copy"
                 hoverStyle="clean"
                 />
         );

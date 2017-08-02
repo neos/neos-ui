@@ -52,7 +52,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'bold',
         hoverStyle: 'brand',
-        tooltipLabel: 'bold'
+        tooltipLabel: 'strong'
     });
 
     // Italic
@@ -179,7 +179,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'list-ol',
         hoverStyle: 'brand',
-        tooltipLabel: 'orderedList'
+        tooltipLabel: 'Insert Ordered List'
     });
 
     // unordered list
@@ -190,7 +190,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'list-ul',
         hoverStyle: 'brand',
-        tooltipLabel: 'unorderedList'
+        tooltipLabel: 'Insert Unordered List'
     });
 
     // Indent

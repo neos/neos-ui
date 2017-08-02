@@ -28,6 +28,7 @@ export default class DeleteSelectedNode extends PureComponent {
                 isDisabled={isDisabled}
                 onClick={this.handleClick}
                 icon="trash"
+                tooltipLabel="Delete"
                 hoverStyle="clean"
                 />
         );

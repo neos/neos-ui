@@ -37,6 +37,7 @@ export default class HideSelectedNode extends PureComponent {
                 isDisabled={isDisabled}
                 onClick={isHidden ? this.handleShow : this.handleHide}
                 icon="eye-slash"
+                tooltipLabel="Hide / Unhide"
                 hoverStyle="clean"
                 />
         );

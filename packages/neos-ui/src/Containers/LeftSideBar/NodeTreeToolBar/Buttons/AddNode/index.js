@@ -25,6 +25,7 @@ export default class AddNode extends PureComponent {
                     isDisabled={Boolean(focusedNodeContextPath) === false}
                     className={className}
                     icon="plus"
+                    tooltipLabel="Create new"
                     onClick={this.handleClick}
                     hoverStyle="clean"
                     />

@@ -131,7 +131,7 @@ function * watchCurrentDocument({configuration}) {
 }
 
 function * watchSearch() {
-    yield * takeLatest(actionTypes.UI.PageTree.SEARCH, function * searchForNode(action) {
+    yield * takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
         const {contextPath, query: searchQuery} = action.payload;
 
         if (!searchQuery) {

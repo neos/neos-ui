@@ -240,8 +240,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         formattingRule: 'removeFormat',
         component: IconButton,
         callbackPropName: 'onClick',
-        tooltipLabel: 'removeFormat',
-        icon: 'table',
+        tooltipLabel: 'Keep / Discard formatting',
+        icon: 'clipboard',
         hoverStyle: 'brand'
     });
 

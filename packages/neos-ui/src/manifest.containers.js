@@ -29,6 +29,7 @@ import Drawer from './Containers/Drawer/index';
 import LeftSideBar from './Containers/LeftSideBar/index';
 import {PageTreeToolbar, ContentTreeToolbar} from './Containers/LeftSideBar/NodeTreeToolBar/index';
 import {PageTree, ContentTree} from './Containers/LeftSideBar/NodeTree/index';
+import {PageTreeSearchbar} from './Containers/LeftSideBar/NodeTreeSearchBar/index';
 
 import ContentCanvas from './Containers/ContentCanvas/index';
 
@@ -67,6 +68,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.add('LeftSideBar', LeftSideBar);
     containerRegistry.add('LeftSideBar/PageTreeToolbar', PageTreeToolbar);
     containerRegistry.add('LeftSideBar/PageTree', PageTree);
+    containerRegistry.add('LeftSideBar/PageTreeSearchbar', PageTreeSearchbar);
     containerRegistry.add('LeftSideBar/ContentTreeToolbar', ContentTreeToolbar);
     containerRegistry.add('LeftSideBar/ContentTree', ContentTree);
 

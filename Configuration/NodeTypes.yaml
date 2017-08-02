@@ -14,3 +14,6 @@
     nodeCreationHandlers:
       documentTitle:
         nodeCreationHandler: 'Neos\Neos\Ui\NodeCreationHandler\DocumentTitleNodeCreationHandler'
+'Neos.Neos:ContentCollection':
+  ui:
+    icon: 'icon-folder-open'

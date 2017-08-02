@@ -170,7 +170,16 @@ export class Button extends PureComponent {
         }
 
         return (
-            <button {...rest} {...attributes} onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut} className={finalClassName} role="button" ref={_refHandler(isFocused)}>
+            <button
+                {...rest} {...attributes}
+                onMouseOver={this.handleMouseOver}
+                onFocus={this.handleMouseOver}
+                onMouseOut={this.handleMouseOut}
+                onBlur={this.handleMouseOut}
+                className={finalClassName}
+                role="button"
+                ref={_refHandler(isFocused)}
+                >
                 {children}
                 {tooltipLabel && isHovering && (
                 <TooltipComponent style="regular">

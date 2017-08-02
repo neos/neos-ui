@@ -100,7 +100,7 @@ export const reducer = handleActions({
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
     [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
     [DOCUMENT_INITIALIZED]: () => $set('ui.contentCanvas.isLoading', false),
-    [DOCUMENT_INITIALIZING]: () => $set('ui.contentCanvas.isLoading', true),
+    [DOCUMENT_INITIALIZING]: () => $set('ui.contentCanvas.isLoading', true)
 });
 
 //

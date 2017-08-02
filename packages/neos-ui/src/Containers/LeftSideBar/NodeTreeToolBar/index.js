@@ -155,12 +155,12 @@ const withNodeTypesRegistry = neos(globalRegistry => ({
 export const PageTreeToolbar = withNodeTypesRegistry(connect(
     (state, {nodeTypesRegistry}) => {
         const canBePastedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
-        const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector();
 
         return state => {
             const siteNodeContextPath = $get('cr.nodes.siteNode', state);
             const focusedNodeContextPath = selectors.UI.PageTree.getFocused(state);
-            const focusedNode = getNodeByContextPathSelector(state, focusedNodeContextPath);
+            const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(focusedNodeContextPath);
+            const focusedNode = getNodeByContextPathSelector(state);
             const clipboardNodeContextPath = selectors.CR.Nodes.clipboardNodeContextPathSelector(state);
             const canBePasted = canBePastedSelector(state, {
                 subject: clipboardNodeContextPath,
@@ -197,12 +197,12 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
 export const ContentTreeToolbar = withNodeTypesRegistry(connect(
     (state, {nodeTypesRegistry}) => {
         const canBePastedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
-        const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector();
 
         return state => {
             const documentNodeContextPath = $get('ui.contentCanvas.contextPath', state);
             const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
-            const focusedNode = getNodeByContextPathSelector(state, focusedNodeContextPath);
+            const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(focusedNodeContextPath);
+            const focusedNode = getNodeByContextPathSelector(state);
             const clipboardNodeContextPath = selectors.CR.Nodes.clipboardNodeContextPathSelector(state);
             const canBePasted = canBePastedSelector(state, {
                 subject: clipboardNodeContextPath,

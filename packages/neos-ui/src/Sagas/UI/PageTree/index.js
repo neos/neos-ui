@@ -5,18 +5,22 @@ import {$get, $contains} from 'plow-js';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-import {parentNodeContextPath} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
+import {parentNodeContextPath, isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 
-function * watchToggle() {
+function * watchToggle({globalRegistry}) {
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
         const state = yield select();
         const {contextPath} = action.payload;
-        const isCollapsed = !$contains(contextPath, 'ui.pageTree.uncollapsed', state);
 
-        if (isCollapsed) {
-            yield put(actions.UI.PageTree.commenceUncollapse(contextPath));
-        } else {
-            yield put(actions.UI.PageTree.collapse(contextPath));
+        const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state).toJS()
+            .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'document'))
+            .every(
+                childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))
+            );
+
+        if (!childrenAreFullyLoaded) {
+            yield put(actions.UI.PageTree.requestChildren(contextPath));
         }
     });
 }
@@ -25,7 +29,7 @@ function * watchRequestChildrenForContextPath({configuration}) {
     yield * takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
         // ToDo Call yield put(actions.UI.PageTree.requestChildren(contextPath));
         const {contextPath, opts} = action.payload;
-        const {unCollapse, activate} = opts;
+        const {activate} = opts;
         const {q} = backend.get();
         let parentNodes;
         let childNodes;
@@ -57,10 +61,6 @@ function * watchRequestChildrenForContextPath({configuration}) {
             // the data which the nodes already in the system; and not override them completely.
             yield put(actions.CR.Nodes.merge(nodes));
 
-            if (unCollapse) {
-                yield put(actions.UI.PageTree.uncollapse(contextPath));
-            }
-
             //
             // ToDo: Set the ContentCanvas src / contextPath
             //
@@ -79,32 +79,12 @@ function * watchNodeCreated() {
     });
 }
 
-function * watchCommenceUncollapse({globalRegistry}) {
-    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-
-    yield * takeLatest(actionTypes.UI.PageTree.COMMENCE_UNCOLLAPSE, function * uncollapseNode(action) {
-        const state = yield select();
-        const {contextPath} = action.payload;
-        const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state).toJS()
-            .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'document'))
-            .every(
-                childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))
-            );
-
-        if (childrenAreFullyLoaded) {
-            yield put(actions.UI.PageTree.uncollapse(contextPath));
-        } else {
-            yield put(actions.UI.PageTree.requestChildren(contextPath));
-        }
-    });
-}
-
 function * watchReloadTree({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     yield * takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
         const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
-        const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsed);
-        const nodesToReload = documentNodes.toArray().filter(node => uncollapsedContextPaths.includes(node.get('contextPath')));
+        const toggledContextPaths = yield select(selectors.UI.PageTree.getToggled);
+        const nodesToReload = documentNodes.toArray().filter(node => toggledContextPaths.includes(node.get('contextPath')));
 
         for (let i = 0; i < nodesToReload.length; i++) {
             const node = nodesToReload[i];
@@ -115,7 +95,7 @@ function * watchReloadTree({globalRegistry}) {
     });
 }
 
-function * watchCurrentDocument() {
+function * watchCurrentDocument({configuration}) {
     yield * takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
         const {contextPath} = action.payload;
         const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
@@ -123,16 +103,17 @@ function * watchCurrentDocument() {
 
         let parentContextPath = contextPath;
 
+        const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
+        const loadingDepth = configuration.nodeTree.loadingDepth;
         while (parentContextPath !== siteNodeContextPath) {
             parentContextPath = parentNodeContextPath(parentContextPath);
-            const isInStore = yield select($get(['cr', 'nodes', 'byContextPath', parentContextPath]));
-            const isUnCollapsed = yield select($contains(parentContextPath, 'ui.pageTree.uncollapsed'));
+            const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
+            const node = yield select(getNodeByContextPathSelector);
+            const isToggled = yield select($contains(parentContextPath, 'ui.pageTree.toggled'));
+            const isCollapsed = isNodeCollapsed(node, isToggled, siteNode, loadingDepth);
 
-            if (!isInStore || !isUnCollapsed) {
+            if (!node) {
                 yield put(actions.UI.PageTree.setAsLoading(siteNodeContextPath));
-            }
-
-            if (!isInStore) {
                 const nodes = yield q(parentContextPath).get();
                 yield put(actions.CR.Nodes.add(nodes.reduce((nodeMap, node) => {
                     nodeMap[$get('contextPath', node)] = node;
@@ -140,8 +121,8 @@ function * watchCurrentDocument() {
                 }, {})));
             }
 
-            if (!isUnCollapsed) {
-                yield put(actions.UI.PageTree.commenceUncollapse(parentContextPath));
+            if (isCollapsed) {
+                yield put(actions.UI.PageTree.toggle(parentContextPath));
             }
         }
 
@@ -180,7 +161,6 @@ function * watchSearch() {
 export const sagas = [
     watchSearch,
     watchToggle,
-    watchCommenceUncollapse,
     watchRequestChildrenForContextPath,
     watchNodeCreated,
     watchReloadTree,

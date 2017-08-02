@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map, Set} from 'immutable';
-import {$all, $get, $set, $remove, $add} from 'plow-js';
+import {$all, $get, $set, $remove, $add, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -8,9 +8,6 @@ import {actionTypes as system} from '../../System/index';
 import * as selectors from './selectors';
 
 const FOCUS = '@neos/neos-ui/UI/PageTree/FOCUS';
-const COMMENCE_UNCOLLAPSE = '@neos/neos-ui/UI/PageTree/COMMENCE_UNCOLLAPSE';
-const UNCOLLAPSE = '@neos/neos-ui/UI/PageTree/UNCOLLAPSE';
-const COLLAPSE = '@neos/neos-ui/UI/PageTree/COLLAPSE';
 const TOGGLE = '@neos/neos-ui/UI/PageTree/TOGGLE';
 const INVALIDATE = '@neos/neos-ui/UI/PageTree/INVALIDATE';
 const SET_AS_LOADING = '@neos/neos-ui/UI/PageTree/SET_AS_LOADING';
@@ -24,9 +21,6 @@ const SET_SEARCH_RESULT = '@neos/neos-ui/UI/PageTree/SET_SEARCH_RESULT';
 //
 export const actionTypes = {
     FOCUS,
-    COMMENCE_UNCOLLAPSE,
-    UNCOLLAPSE,
-    COLLAPSE,
     TOGGLE,
     INVALIDATE,
     SET_AS_LOADING,
@@ -38,9 +32,6 @@ export const actionTypes = {
 };
 
 const focus = createAction(FOCUS, contextPath => ({contextPath}));
-const commenceUncollapse = createAction(COMMENCE_UNCOLLAPSE, contextPath => ({contextPath}));
-const uncollapse = createAction(UNCOLLAPSE, contextPath => ({contextPath}));
-const collapse = createAction(COLLAPSE, contextPath => ({contextPath}));
 const toggle = createAction(TOGGLE, contextPath => ({contextPath}));
 const invalidate = createAction(INVALIDATE, contextPath => ({contextPath}));
 const requestChildren = createAction(REQUEST_CHILDREN, (contextPath, {unCollapse = true, activate = false} = {}) => ({contextPath, opts: {unCollapse, activate}}));
@@ -55,9 +46,6 @@ const setSearchResult = createAction(SET_SEARCH_RESULT, nodes => ({nodes}));
 //
 export const actions = {
     focus,
-    commenceUncollapse,
-    uncollapse,
-    collapse,
     toggle,
     invalidate,
     setAsLoading,
@@ -76,7 +64,7 @@ export const reducer = handleActions({
         'ui.pageTree',
         new Map({
             isFocused: $get('ui.contentCanvas.contextPath', state) || $get('cr.nodes.siteNode', state),
-            uncollapsed: new Set([$get('cr.nodes.siteNode', state)]),
+            toggled: new Set(),
             hidden: new Set(),
             intermediate: new Set(),
             loading: new Set(),
@@ -84,18 +72,9 @@ export const reducer = handleActions({
         })
     ),
     [FOCUS]: ({contextPath}) => $set('ui.pageTree.isFocused', contextPath),
-    [UNCOLLAPSE]: ({contextPath}) => $all(
-        $remove('ui.pageTree.errors', contextPath),
-        $remove('ui.pageTree.loading', contextPath),
-        $add('ui.pageTree.uncollapsed', contextPath)
-    ),
-    [COLLAPSE]: ({contextPath}) => $all(
-        $remove('ui.pageTree.errors', contextPath),
-        $remove('ui.pageTree.loading', contextPath),
-        $remove('ui.pageTree.uncollapsed', contextPath)
-    ),
+    [TOGGLE]: ({contextPath}) => $toggle('ui.pageTree.toggled', contextPath),
     [INVALIDATE]: ({contextPath}) => $all(
-        $remove('ui.pageTree.uncollapsed', contextPath),
+        $remove('ui.pageTree.toggled', contextPath),
         $remove('ui.pageTree.loading', contextPath),
         $add('ui.pageTree.errors', contextPath)
     ),

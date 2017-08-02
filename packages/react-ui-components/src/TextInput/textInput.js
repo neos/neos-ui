@@ -78,8 +78,8 @@ class TextInput extends PureComponent {
             validationErrors,
             theme,
             highlight,
-            disabled,
             containerClassName,
+            disabled,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({

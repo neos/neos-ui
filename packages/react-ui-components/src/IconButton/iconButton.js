@@ -10,12 +10,14 @@ const IconButton = props => {
         theme,
         icon,
         size,
+        disabled,
         ...rest
     } = props;
     const finalClassName = mergeClassNames({
         [className]: className && className.length,
         [theme.iconButton]: true,
-        [theme[`size-${size}`]]: true
+        [theme[`size-${size}`]]: true,
+        [theme['iconButton--disabled']]: disabled
     });
 
     return (
@@ -51,7 +53,12 @@ IconButton.propTypes = {
      * Static component dependencies which are injected from the outside (index.js)
      */
     IconComponent: PropTypes.any.isRequired,
-    ButtonComponent: PropTypes.any.isRequired
+    ButtonComponent: PropTypes.any.isRequired,
+
+    /**
+     * Optional disabled flag
+     */
+    disabled: PropTypes.bool
 };
 IconButton.defaultProps = {
     size: 'regular',

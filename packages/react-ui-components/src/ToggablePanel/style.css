@@ -2,6 +2,7 @@
     composes: reset from './../reset.css';
     position: relative;
 }
+
 .panel__headline {
     composes: reset from './../reset.css';
     height: var(--goldenUnit);
@@ -11,6 +12,11 @@
     font-weight: bold;
     font-size: var(--baseFontSize);
 }
+
+.panel__headline--noPadding {
+    padding: 0;
+}
+
 .panel__toggleBtn {
     composes: reset from './../reset.css';
     position: absolute;
@@ -26,4 +32,8 @@
         padding-top: 5px;
         padding-bottom: 5px;
     }
+}
+
+.panel__contents--noPadding {
+    padding: 0;
 }

@@ -11,10 +11,12 @@ test(`should export actionTypes`, () => {
     expect(typeof (actionTypes.SET_SRC)).toBe('string');
     expect(typeof (actionTypes.FORMATTING_UNDER_CURSOR)).toBe('string');
     expect(typeof (actionTypes.SET_CURRENTLY_EDITED_PROPERTY_NAME)).toBe('string');
+    expect(typeof (actionTypes.DOCUMENT_INITIALIZING)).toBe('string');
 });
 
 test(`should export action creators`, () => {
     expect(actions).not.toBe(undefined);
+    expect(typeof (actions.documentInitializing)).toBe('function');
     expect(typeof (actions.setContextPath)).toBe('function');
     expect(typeof (actions.setPreviewUrl)).toBe('function');
     expect(typeof (actions.setSrc)).toBe('function');
@@ -75,4 +77,17 @@ test(`The "setSrc" action should set the currently opened documents src uri.`, (
     expect(nextState1.get('ui').get('contentCanvas').get('src')).toBe('http://www.some-source.com/document.html');
     expect(nextState2.get('ui').get('contentCanvas').get('src')).toBe('http://www.some-other-source.com/document.html');
     expect(nextState3.get('ui').get('contentCanvas').get('src')).toBe('http://www.some-other-source.com/document.html');
+});
+
+test(`The "documentInitializing" action should set the proper loading flag.`, () => {
+    const state = Immutable.fromJS({
+        ui: {
+            contentCanvas: {
+                isLoading: false
+            }
+        }
+    });
+
+    const nextState = reducer(state, actions.documentInitializing());
+    expect(nextState.get('ui').get('contentCanvas').get('isLoading')).toBe(true);
 });

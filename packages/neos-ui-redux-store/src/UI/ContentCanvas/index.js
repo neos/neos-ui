@@ -13,6 +13,7 @@ const SET_PREVIEW_URL = '@neos/neos-ui/UI/ContentCanvas/SET_PREVIEW_URL';
 const SET_SRC = '@neos/neos-ui/UI/ContentCanvas/SET_SRC';
 const FORMATTING_UNDER_CURSOR = '@neos/neos-ui/UI/ContentCanvas/FORMATTING_UNDER_CURSOR';
 const SET_CURRENTLY_EDITED_PROPERTY_NAME = '@neos/neos-ui/UI/ContentCanvas/SET_CURRENTLY_EDITED_PROPERTY_NAME';
+const DOCUMENT_INITIALIZING = '@neos/neos-ui/UI/ContentCanvas/DOCUMENT_INITIALIZING';
 const DOCUMENT_INITIALIZED = '@neos/neos-ui/UI/ContentCanvas/DOCUMENT_INITIALIZED';
 const FOCUS_PROPERTY = '@neos/neos-ui/UI/ContentCanvas/FOCUS_PROPERTY';
 
@@ -25,6 +26,7 @@ export const actionTypes = {
     SET_SRC,
     FORMATTING_UNDER_CURSOR,
     SET_CURRENTLY_EDITED_PROPERTY_NAME,
+    DOCUMENT_INITIALIZING,
     DOCUMENT_INITIALIZED,
     FOCUS_PROPERTY
 };
@@ -34,6 +36,7 @@ const setPreviewUrl = createAction(SET_PREVIEW_URL, previewUrl => ({previewUrl})
 const setSrc = createAction(SET_SRC, src => ({src}));
 const setFormattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formatting => ({formatting}));
 const setCurrentlyEditedPropertyName = createAction(SET_CURRENTLY_EDITED_PROPERTY_NAME, propertyName => ({propertyName}));
+const documentInitializing = createAction(DOCUMENT_INITIALIZING);
 const documentInitialized = createAction(DOCUMENT_INITIALIZED);
 
 //
@@ -45,6 +48,7 @@ export const actions = {
     setSrc,
     setFormattingUnderCursor,
     setCurrentlyEditedPropertyName,
+    documentInitializing,
     documentInitialized
 };
 
@@ -95,7 +99,8 @@ export const reducer = handleActions({
     },
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
     [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
-    [DOCUMENT_INITIALIZED]: () => $set('ui.contentCanvas.isLoading', false)
+    [DOCUMENT_INITIALIZED]: () => $set('ui.contentCanvas.isLoading', false),
+    [DOCUMENT_INITIALIZING]: () => $set('ui.contentCanvas.isLoading', true),
 });
 
 //

@@ -37,14 +37,14 @@ export default class Panel extends PureComponent {
                 <p>{title} {currentMode && <b className={style.editModePanel__current}><I18n id={currentMode.title}/></b>}</p>
                 <Slider {...sliderSettings}>
                     {modes.map(previewMode => (
-                        <Button
-                            key={previewMode.id}
-                            onClick={onPreviewModeClick(previewMode.id)}
-                            style={previewMode.id === current ? 'brand' : null}
-                            className={style.editModePanel__button}
-                            >
-                            <I18n id={previewMode.title}/>
-                        </Button>
+                        <div key={previewMode.id} className={style.editModePanel__buttonWrapper}>
+                            <Button
+                                onClick={onPreviewModeClick(previewMode.id)}
+                                style={previewMode.id === current ? 'brand' : null}
+                                >
+                                <I18n id={previewMode.title}/>
+                            </Button>
+                        </div>
                     ))}
                 </Slider>
             </div>

@@ -25,6 +25,8 @@ export default class Node extends PureComponent {
         currentDocumentNodeContextPath: PropTypes.string,
         focusedNodeContextPath: PropTypes.string,
         toggledNodeContextPaths: PropTypes.object,
+        hiddenContextPaths: PropTypes.arrayOf(PropTypes.string),
+        intermediateContextPaths: PropTypes.arrayOf(PropTypes.string),
         loadingNodeContextPaths: PropTypes.object,
         errorNodeContextPaths: PropTypes.object,
         canBeInserted: PropTypes.bool,
@@ -91,6 +93,16 @@ export default class Node extends PureComponent {
         return isNodeCollapsed(node, isToggled, rootNode, loadingDepth);
     }
 
+    isHidden() {
+        const {node, hiddenContextPaths} = this.props;
+        return hiddenContextPaths && hiddenContextPaths.includes($get('contextPath', node));
+    }
+
+    isIntermediate() {
+        const {node, intermediateContextPaths} = this.props;
+        return intermediateContextPaths && intermediateContextPaths.includes($get('contextPath', node));
+    }
+
     isLoading() {
         const {node, loadingNodeContextPaths} = this.props;
 
@@ -126,6 +138,10 @@ export default class Node extends PureComponent {
             currentlyDraggedNode
         } = this.props;
 
+        if (this.isHidden()) {
+            return null;
+        }
+
         return (
             <Tree.Node>
                 <Tree.Node.Header
@@ -135,7 +151,7 @@ export default class Node extends PureComponent {
                     isFocused={this.isFocused()}
                     isLoading={this.isLoading()}
                     isHidden={$get('properties._hidden', node)}
-                    isHiddenInIndex={$get('properties._hiddenInIndex', node)}
+                    isHiddenInIndex={$get('properties._hiddenInIndex', node) || this.isIntermediate()}
                     hasError={this.hasError()}
                     label={stripTags($get('label', node))}
                     icon={this.getIcon()}
@@ -205,6 +221,8 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
             currentDocumentNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
             focusedNodeContextPath: selectors.UI.PageTree.getFocused(state),
             toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
+            hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
+            intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
             loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
             errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
             canBeInserted: canBeInsertedSelector(state, {

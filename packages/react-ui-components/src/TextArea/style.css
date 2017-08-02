@@ -5,6 +5,7 @@
     padding: 10px 14px;
     border: 0;
     background: var(--brandColorsContrastNeutral);
+    resize: vertical;
 
     &:focus {
         outline: 0;
@@ -21,4 +22,8 @@
 }
 .textArea--highlight {
     outline: 2px solid var(--brandColorsSuccess);
+}
+.textArea--disabled {
+    opacity: .65;
+    cursor: not-allowed;
 }

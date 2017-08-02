@@ -10,6 +10,11 @@ class CheckBox extends PureComponent {
         isChecked: PropTypes.bool.isRequired,
 
         /**
+         * This prop controls if the CheckBox is disabled or not.
+         */
+        isDisabled: PropTypes.bool,
+
+        /**
          * An optional `className` to attach to the wrapper.
          */
         className: PropTypes.string,
@@ -39,13 +44,15 @@ class CheckBox extends PureComponent {
     render() {
         const {
             isChecked,
+            isDisabled,
             className,
             theme,
             ...rest
         } = this.props;
         const finalClassName = mergeClassNames({
             [className]: className && className.length,
-            [theme.checkbox]: true
+            [theme.checkbox]: true,
+            [theme.checkbox__disabled]: isDisabled
         });
         const mirrorClassNames = mergeClassNames({
             [theme.checkbox__inputMirror]: true,
@@ -62,6 +69,7 @@ class CheckBox extends PureComponent {
                     checked={isChecked}
                     aria-checked={isChecked}
                     onChange={this.handleChange}
+                    disabled={isDisabled}
                     />
                 <div className={mirrorClassNames}/>
             </div>

@@ -99,6 +99,41 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return $renderedNodes;
     }
 
+    /**
+     * @param array $nodes
+     * @param ControllerContext $controllerContext
+     * @return array
+     */
+    public function renderNodesWithParents(array $nodes, ControllerContext $controllerContext): array
+    {
+        $renderedNodes = [];
+
+        /** @var NodeInterface $node */
+        foreach($nodes as $node) {
+            if (array_key_exists($node->getPath(), $renderedNodes)) {
+                $renderedNodes[$node->getPath()]['matched'] = true;
+            } else {
+                $renderedNode = $this->renderNode($node, $controllerContext, true);
+                $renderedNode['matched'] = true;
+                $renderedNodes[$node->getPath()] = $renderedNode;
+            }
+
+            $parentNode = $node->getParent();
+            while($parentNode->getNodeType()->isOfType($this->baseNodeType)) {
+                if (array_key_exists($parentNode->getPath(), $renderedNodes)) {
+                    $renderedNodes[$parentNode->getPath()]['intermediate'] = true;
+                } else {
+                    $renderedParentNode = $this->renderNode($parentNode, $controllerContext, true);
+                    $renderedParentNode['intermediate'] = true;
+                    $renderedNodes[$parentNode->getPath()] = $renderedParentNode;
+                }
+                $parentNode = $parentNode->getParent();
+            }
+        }
+
+        return array_values($renderedNodes);
+    }
+
     public function renderDocumentNodeAndChildContent(NodeInterface $documentNode, ControllerContext $controllerContext)
     {
         $nodes = [];

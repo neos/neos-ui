@@ -22,7 +22,7 @@
     background: var(--brandColorsError);
     color: white;
     border-radius: 3px;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .tooltip--regular .tooltip--arrow {

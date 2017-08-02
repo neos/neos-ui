@@ -40,19 +40,32 @@ export class Tooltip extends PureComponent {
         };
     }
 
-    calculateOffset() {
+    calculateOffsetRight() {
         const tooltip = findDOMNode(this);
-        const offset = window.innerWidth - tooltip.getBoundingClientRect().right;
+        const offsetRight = window.innerWidth - tooltip.getBoundingClientRect().right;
 
-        if (offset < 0) {
+        if (offsetRight < 0) {
             this.setState({
-                style: {transform: `translateX(${offset}px)`}
+                style: {transform: `translateX(${offsetRight}px)`}
+            });
+        }
+    }
+
+    calculateOffsetLeft() {
+        const tooltip = findDOMNode(this);
+        const offsetLeft = tooltip.getBoundingClientRect().left;
+        const convertOffsetLet = Math.abs(offsetLeft);
+
+        if (offsetLeft < 0) {
+            this.setState({
+                style: {transform: `translateX(${convertOffsetLet}px)`}
             });
         }
     }
 
     componentDidMount() {
-        this.calculateOffset();
+        this.calculateOffsetRight();
+        this.calculateOffsetLeft();
     }
 
     render() {
@@ -70,15 +83,15 @@ export class Tooltip extends PureComponent {
 
         const classNames = mergeClassNames({
             [theme.tooltip]: true,
-            [className]: className && className.length,
+            [className]: className,
             [theme['tooltip--regular']]: style === 'regular'
         });
 
         return (
-            <div {...rest} className={classNames} style={inlineStyle}>
+            <div {...rest} className={classNames}>
                 <div className={theme['tooltip--arrow']}/>
-                <div className={theme['tooltip--inner']}>
-                    {children}
+                <div className={theme['tooltip--inner']} style={inlineStyle}>
+                    <span className={theme['tooltip--text']}>{children}</span>
                 </div>
             </div>
         );

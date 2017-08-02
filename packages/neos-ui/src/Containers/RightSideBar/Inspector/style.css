@@ -9,8 +9,7 @@
     text-align: center;
 }
 .publishBtn,
-.publishBtn:hover,
-.publishBtn:hover * {
+.publishBtn:hover {
     background: var(--brandColorsSuccess) !important;
 }
 .tabs > div {

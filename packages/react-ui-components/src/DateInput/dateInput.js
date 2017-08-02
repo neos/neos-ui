@@ -101,6 +101,7 @@ export class DateInput extends PureComponent {
                             placeholder={placeholder}
                             className={theme.calendarFakeInput}
                             value={selectedDate}
+                            readOnly
                             />
                     </div>
                     <button

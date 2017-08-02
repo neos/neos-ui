@@ -15,6 +15,9 @@
     width: 225px;
     margin-left: 1em;
 }
+.dimensionsWrapper {
+    display: flex;
+}
 
 .dimensionInput {
     width: 6em;

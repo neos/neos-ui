@@ -43,3 +43,11 @@
         transform: translateX(-50%) translateY(-50%);
     }
 }
+.checkbox__disabled {
+    opacity: .65;
+    cursor: not-allowed;
+
+    .checkbox__input {
+        cursor: not-allowed;
+    }
+}

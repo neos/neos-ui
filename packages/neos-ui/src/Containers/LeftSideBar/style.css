@@ -23,13 +23,10 @@
 
 .leftSideBar__top {
     flex-basis: 100%;
-    overflow-y: scroll;
 }
 
 .leftSideBar__bottom {
-    max-height: calc(50vh - 71px);
     height: auto;
-    overflow-y: scroll;
     flex-basis: 100%;
     transition: flex-basis .5s, height .5s, overflow-y .5s;
 }

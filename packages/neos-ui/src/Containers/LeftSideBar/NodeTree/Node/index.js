@@ -71,12 +71,12 @@ export default class Node extends PureComponent {
         if (this.isFocused()) {
             const scrollingElement = findScrollingParent(this.domNode);
             if (scrollingElement) {
-                const nodePosition = this.domNode.getBoundingClientRect().top;
+                const nodeTopPosition = this.domNode.getBoundingClientRect().top;
                 const offset = 50;
                 const scrollingElementPosition = scrollingElement.getBoundingClientRect();
-                const nodeIsNotInView = nodePosition < scrollingElementPosition.top + offset || nodePosition > scrollingElementPosition.bottom - offset;
+                const nodeIsNotInView = nodeTopPosition < scrollingElementPosition.top + offset || nodeTopPosition > scrollingElementPosition.bottom - offset;
                 if (nodeIsNotInView) {
-                    const scrollTop = nodePosition - scrollingElement.firstElementChild.getBoundingClientRect().top - offset;
+                    const scrollTop = nodeTopPosition - scrollingElement.firstElementChild.getBoundingClientRect().top - offset;
                     animate(scrollingElement, {scrollTop});
                 }
             }

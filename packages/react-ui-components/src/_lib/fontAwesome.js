@@ -3,9 +3,18 @@ export function makeValidateId(icons = {}) {
 
     return function validateId(id = '') {
         //
+        // A list of backward compatible icons
+        //
+        const backwardCompatibleIcons = {
+            'icon-folder-open-alt': 'fa-folder-open-o'
+        };
+
+        const tempName = id in backwardCompatibleIcons ? backwardCompatibleIcons[id] :
+            (id.startsWith('fa-') ? id : (id.startsWith('icon-') ? id.replace(/^icon/, 'fa') : `fa-${id}`));
+
+        //
         // Automatically prefix the passed id with fa regardless which prefix was passed
         //
-        const tempName = id.startsWith('fa-') ? id : (id.startsWith('icon-') ? id.replace(/^icon/, 'fa') : `fa-${id}`);
 
         //
         // becuase e.g. picture is called picture-o in FA

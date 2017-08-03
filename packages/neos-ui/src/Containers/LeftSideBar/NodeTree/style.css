@@ -1,4 +1,8 @@
+// TODO: get rid of magick numbers here, they are not safe!
 .pageTree {
     overflow-y: auto;
-    max-height: calc(50vh - 88px);
+    max-height: calc(50vh - 85px);
+}
+.pageTree--expanded {
+    max-height: calc(100vh - 164px);
 }

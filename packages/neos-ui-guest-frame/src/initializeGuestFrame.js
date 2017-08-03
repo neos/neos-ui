@@ -92,4 +92,12 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             }
         }
     });
+
+    yield takeEvery(actionTypes.CR.Nodes.UNFOCUS, () => {
+        const node = findInGuestFrame(`.${style['markActiveNodeAsFocused--focusedNode']}`);
+
+        if (node) {
+            node.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
+        }
+    });
 };

@@ -6,6 +6,17 @@ import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 
 /**
+ * Observe the removal of a node
+ *
+ */
+function * watchNodeRemove() {
+    yield takeLatest(actionTypes.CR.Nodes.REMOVAL_CONFIRMED, function * nodeRemovalStarted(action) {
+        console.log("REMOVAL CONFIRMED");
+        // TODO: Dispatch start loading action when https://github.com/neos/neos-ui/pull/795 has been merged
+    });
+}
+
+/**
  * Load newly created page into canvas
  */
 function * watchNodeCreated() {
@@ -39,6 +50,7 @@ function * watchDocumentInitialized({globalRegistry, store}) {
 }
 
 export const sagas = [
+    watchNodeRemove,
     watchNodeCreated,
     watchCanvasUpdateToChangeTitle,
     watchDocumentInitialized

@@ -13,7 +13,8 @@ const SET_PREVIEW_URL = '@neos/neos-ui/UI/ContentCanvas/SET_PREVIEW_URL';
 const SET_SRC = '@neos/neos-ui/UI/ContentCanvas/SET_SRC';
 const FORMATTING_UNDER_CURSOR = '@neos/neos-ui/UI/ContentCanvas/FORMATTING_UNDER_CURSOR';
 const SET_CURRENTLY_EDITED_PROPERTY_NAME = '@neos/neos-ui/UI/ContentCanvas/SET_CURRENTLY_EDITED_PROPERTY_NAME';
-const DOCUMENT_INITIALIZED = '@neos/neos-ui/UI/ContentCanvas/DOCUMENT_INITIALIZED';
+const START_LOADING = '@neos/neos-ui/UI/ContentCanvas/START_LOADING';
+const STOP_LOADING = '@neos/neos-ui/UI/ContentCanvas/STOP_LOADING';
 const FOCUS_PROPERTY = '@neos/neos-ui/UI/ContentCanvas/FOCUS_PROPERTY';
 
 //
@@ -25,7 +26,8 @@ export const actionTypes = {
     SET_SRC,
     FORMATTING_UNDER_CURSOR,
     SET_CURRENTLY_EDITED_PROPERTY_NAME,
-    DOCUMENT_INITIALIZED,
+    START_LOADING,
+    STOP_LOADING,
     FOCUS_PROPERTY
 };
 
@@ -34,7 +36,8 @@ const setPreviewUrl = createAction(SET_PREVIEW_URL, previewUrl => ({previewUrl})
 const setSrc = createAction(SET_SRC, src => ({src}));
 const setFormattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formatting => ({formatting}));
 const setCurrentlyEditedPropertyName = createAction(SET_CURRENTLY_EDITED_PROPERTY_NAME, propertyName => ({propertyName}));
-const documentInitialized = createAction(DOCUMENT_INITIALIZED);
+const startLoading = createAction(START_LOADING);
+const stopLoading = createAction(STOP_LOADING);
 
 //
 // Export the actions
@@ -45,7 +48,8 @@ export const actions = {
     setSrc,
     setFormattingUnderCursor,
     setCurrentlyEditedPropertyName,
-    documentInitialized
+    startLoading,
+    stopLoading
 };
 
 //
@@ -95,7 +99,8 @@ export const reducer = handleActions({
     },
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
     [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
-    [DOCUMENT_INITIALIZED]: () => $set('ui.contentCanvas.isLoading', false)
+    [STOP_LOADING]: () => $set('ui.contentCanvas.isLoading', false),
+    [START_LOADING]: () => $set('ui.contentCanvas.isLoading', true)
 });
 
 //

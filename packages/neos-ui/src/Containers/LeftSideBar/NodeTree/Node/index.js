@@ -9,8 +9,22 @@ import {stripTags} from '@neos-project/utils-helpers';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
+import animate from 'amator';
 
 const getContextPath = $get('contextPath');
+
+//
+// Finds the first parent element that has a scrollbar
+//
+const findScrollingParent = parentElement => {
+    if (parentElement.scrollHeight > parentElement.offsetHeight) {
+        return parentElement;
+    }
+    if (parentElement.parentElement) {
+        return findScrollingParent(parentElement.parentElement);
+    }
+    return null;
+};
 
 export default class Node extends PureComponent {
     static propTypes = {
@@ -47,6 +61,26 @@ export default class Node extends PureComponent {
         this.handleNodeToggle = this.handleNodeToggle.bind(this);
         this.handleNodeClick = this.handleNodeClick.bind(this);
         this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
+    }
+
+    componentDidUpdate() {
+        this.scrollFocusedNodeIntoView();
+    }
+
+    scrollFocusedNodeIntoView() {
+        if (this.isFocused()) {
+            const scrollingElement = findScrollingParent(this.domNode);
+            if (scrollingElement) {
+                const nodeTopPosition = this.domNode.getBoundingClientRect().top;
+                const offset = 50;
+                const scrollingElementPosition = scrollingElement.getBoundingClientRect();
+                const nodeIsNotInView = nodeTopPosition < scrollingElementPosition.top + offset || nodeTopPosition > scrollingElementPosition.bottom - offset;
+                if (nodeIsNotInView) {
+                    const scrollTop = nodeTopPosition - scrollingElement.firstElementChild.getBoundingClientRect().top - offset;
+                    animate(scrollingElement, {scrollTop});
+                }
+            }
+        }
     }
 
     accepts = () => {
@@ -141,9 +175,12 @@ export default class Node extends PureComponent {
         if (this.isHidden()) {
             return null;
         }
-
+        const refHandler = div => {
+            this.domNode = div;
+        };
         return (
             <Tree.Node>
+                <span ref={refHandler}/>
                 <Tree.Node.Header
                     hasChildren={hasChildren}
                     isCollapsed={this.isCollapsed()}

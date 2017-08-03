@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
+import mergeClassNames from 'classnames';
 
 import Tree from '@neos-project/react-ui-components/src/Tree/';
 
@@ -13,6 +14,7 @@ import style from './style.css';
 
 export default class NodeTree extends PureComponent {
     static propTypes = {
+        isExpanded: PropTypes.bool,
         ChildRenderer: PropTypes.func,
         rootNode: PropTypes.object,
         nodeTypeRole: PropTypes.string,
@@ -66,13 +68,18 @@ export default class NodeTree extends PureComponent {
     }
 
     render() {
-        const {rootNode, ChildRenderer} = this.props;
+        const {rootNode, ChildRenderer, isExpanded} = this.props;
         if (!rootNode) {
             return (<div>...</div>);
         }
 
+        const classNames = mergeClassNames({
+            [style.pageTree]: true,
+            [style['pageTree--expanded']]: isExpanded
+        });
+
         return (
-            <Tree className={style.pageTree}>
+            <Tree className={classNames}>
                 <ChildRenderer
                     ChildRenderer={ChildRenderer}
                     node={rootNode}

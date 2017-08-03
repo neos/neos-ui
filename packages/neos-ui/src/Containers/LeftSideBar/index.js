@@ -73,7 +73,7 @@ export default class LeftSideBar extends PureComponent {
                 <div className={style.leftSideBar__top}>
                     <PageTreeToolbar/>
                     <PageTreeSearchbar/>
-                    <PageTree/>
+                    <PageTree isExpanded={!this.state.isBottomOpen}/>
                 </div>
 
                 <hr/>

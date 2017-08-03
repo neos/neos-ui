@@ -10,7 +10,7 @@ import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
  */
 function * watchNodeCreate() {
     yield * takeLatest(actionTypes.UI.NodeCreationDialog.APPLY, function * nodeCreationStarted() {
-        yield put(actions.UI.ContentCanvas.documentInitializing());
+        yield put(actions.UI.ContentCanvas.startLoading());
     });
 }
 
@@ -29,7 +29,7 @@ function * watchNodeCreated() {
  * Load newly created page into canvas
  */
 function * watchCanvasUpdateToChangeTitle() {
-    yield * takeLatest(actionTypes.UI.ContentCanvas.DOCUMENT_INITIALIZED, () => {
+    yield * takeLatest(actionTypes.UI.ContentCanvas.STOP_LOADING, () => {
         document.title = getGuestFrameDocument().title;
     });
 }
@@ -37,12 +37,12 @@ function * watchCanvasUpdateToChangeTitle() {
 /**
  * Run initialization sequence, after a new document has been loaded
  */
-function * watchDocumentInitialized({globalRegistry, store}) {
+function * watchStopLoading({globalRegistry, store}) {
     const guestFrameRegistry = globalRegistry.get('@neos-project/neos-ui-guest-frame');
     const makeInitializeGuestFrame = guestFrameRegistry.get('makeInitializeGuestFrame');
 
     yield * takeLatest(
-        actionTypes.UI.ContentCanvas.DOCUMENT_INITIALIZED,
+        actionTypes.UI.ContentCanvas.STOP_LOADING,
         makeInitializeGuestFrame({globalRegistry, store})
     );
 }
@@ -51,5 +51,5 @@ export const sagas = [
     watchNodeCreate,
     watchNodeCreated,
     watchCanvasUpdateToChangeTitle,
-    watchDocumentInitialized
+    watchStopLoading
 ];

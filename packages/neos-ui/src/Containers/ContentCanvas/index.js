@@ -19,7 +19,7 @@ import style from './style.css';
     src: $get('ui.contentCanvas.src'),
     currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {
-    documentInitialized: actions.UI.ContentCanvas.documentInitialized
+    stopLoading: actions.UI.ContentCanvas.stopLoading
 })
 @neos(globalRegistry => ({
     editPreviewModesRegistry: globalRegistry.get('editPreviewModes'),
@@ -32,7 +32,7 @@ export default class ContentCanvas extends PureComponent {
         isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         src: PropTypes.string.isRequired,
-        documentInitialized: PropTypes.func.isRequired,
+        stopLoading: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
 
         editPreviewModesRegistry: PropTypes.object.isRequired,
@@ -101,10 +101,10 @@ export default class ContentCanvas extends PureComponent {
             return;
         }
 
-        const {documentInitialized} = this.props;
+        const {stopLoading} = this.props;
 
         iframeDocument.__isInitialized = true;
 
-        documentInitialized();
+        stopLoading();
     }
 }

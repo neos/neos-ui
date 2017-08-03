@@ -2,6 +2,7 @@
 .pageTree {
     overflow-y: auto;
     max-height: calc(50vh - 85px);
+    transition: .5s ease max-height, overflow-y .5s;
 }
 .pageTree--expanded {
     max-height: calc(100vh - 164px);

@@ -6,7 +6,8 @@ export function makeValidateId(icons = {}) {
         // A list of backward compatible icons
         //
         const backwardCompatibleIcons = {
-            'icon-folder-open-alt': 'fa-folder-open-o'
+            'icon-folder-open-alt': 'fa-folder-open-o',
+            'icon-envelope-alt': 'fa-envelope-o'
         };
 
         const tempName = id in backwardCompatibleIcons ? backwardCompatibleIcons[id] :

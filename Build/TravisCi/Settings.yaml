@@ -1,0 +1,13 @@
+Neos:
+  Imagine:
+    driver: Gd
+  Flow:
+    persistence:
+      backendOptions:
+        driver: pdo_mysql
+        dbname: neos
+        user: root
+        host: 127.0.0.1
+  Neos:
+    Ui:
+      frontendDevelopmentMode: true

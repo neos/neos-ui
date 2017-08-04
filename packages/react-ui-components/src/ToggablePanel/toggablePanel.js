@@ -203,12 +203,13 @@ export class Header extends PureComponent {
             openedIcon,
             closedIcon,
             theme,
+            noPadding,
             ...rest
         } = this.props;
         const {onPanelToggle} = this.context;
 
         const finalClassName = mergeClassNames([theme.panel__headline], {
-            [theme['panel__headline--noPadding']]: this.props.noPadding
+            [theme['panel__headline--noPadding']]: noPadding
         });
 
         return (

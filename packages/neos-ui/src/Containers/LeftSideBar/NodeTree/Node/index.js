@@ -28,6 +28,7 @@ const findScrollingParent = parentElement => {
 
 export default class Node extends PureComponent {
     static propTypes = {
+        isContentTreeNode: PropTypes.bool,
         rootNode: PropTypes.object,
         loadingDepth: PropTypes.number,
         ChildRenderer: PropTypes.func.isRequired,
@@ -115,8 +116,10 @@ export default class Node extends PureComponent {
     }
 
     isActive() {
-        const {node, currentDocumentNodeContextPath} = this.props;
-
+        const {node, currentDocumentNodeContextPath, isContentTreeNode} = this.props;
+        if (isContentTreeNode) {
+            return this.isFocused();
+        }
         return currentDocumentNodeContextPath === $get('contextPath', node);
     }
 
@@ -250,6 +253,7 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
         const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
 
         return (state, {node, currentlyDraggedNode}) => ({
+            isContentTreeNode: false,
             rootNode: selectors.CR.Nodes.siteNodeSelector(state),
             loadingDepth: neos.configuration.nodeTree.loadingDepth,
             childNodes: childrenOfSelector(state, getContextPath(node)),
@@ -283,6 +287,7 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
         const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
         return (state, {node, currentlyDraggedNode}) => ({
+            isContentTreeNode: true,
             rootNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
             loadingDepth: neos.configuration.structureTree.loadingDepth,
             childNodes: childrenOfSelector(state, getContextPath(node)),

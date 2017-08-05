@@ -13,7 +13,7 @@ storiesOf('Icon', module)
             <StoryWrapper>
                 <Icon
                     icon={text('Icon', 'search')}
-                    size={select('Size', ['big', 'small', 'tiny'], 'big')}
+                    size={select('Size', ['big', 'medium', 'small', 'tiny'], 'big')}
                     padded={select('Padded', ['none', 'left', 'right'], 'none')}
                     spin={boolean('Spin', false)}
                     />

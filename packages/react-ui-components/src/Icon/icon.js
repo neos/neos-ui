@@ -38,6 +38,7 @@ const Icon = props => {
         [iconClassName]: true,
         [props.className]: props.className && props.className.length,
         [theme['icon--big']]: size === 'big',
+        [theme['icon--medium']]: size === 'medium',
         [theme['icon--small']]: size === 'small',
         [theme['icon--tiny']]: size === 'tiny',
         [theme['icon--paddedLeft']]: padded === 'left',
@@ -56,7 +57,7 @@ Icon.propTypes = {
     /**
      * Controls the rendered size of the icon.
      */
-    size: PropTypes.oneOf(['big', 'small', 'tiny']),
+    size: PropTypes.oneOf(['big', 'medium', 'small', 'tiny']),
 
     /**
      * Controls the padding around the icon in a standardized way.

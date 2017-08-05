@@ -36,7 +36,7 @@ export default class MenuItem extends PureComponent {
                 style="transparent"
                 hoverStyle="clean"
                 >
-                {icon && <Icon icon={icon} padded="right"/>}
+                {icon && <Icon icon={icon} size="medium" padded="right"/>}
                 {skipI18n ? label : <I18n id={label} fallback={label}/>}
             </Button>
         );

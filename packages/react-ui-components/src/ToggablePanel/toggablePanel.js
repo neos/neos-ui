@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Collapse from 'react-collapse';
 import mergeClassNames from 'classnames';
 
+const validStyleKeys = ['condensed'];
+
 export default class ToggablePanel extends PureComponent {
     static propTypes = {
         /**
@@ -107,8 +109,14 @@ export class StatelessToggablePanel extends PureComponent {
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'panel': PropTypes.string,
-            'panel--isOpen': PropTypes.string
-        }).isRequired/* eslint-enable quote-props */
+            'panel--isOpen': PropTypes.string,
+            'panel--condensed': PropTypes.string
+        }).isRequired, /* eslint-enable quote-props */
+
+        /**
+         * The `style` prop defines the regular visual style of the `Button`.
+         */
+        style: PropTypes.oneOf(validStyleKeys)
     };
 
     static defaultProps = {
@@ -126,11 +134,12 @@ export class StatelessToggablePanel extends PureComponent {
     }
 
     render() {
-        const {children, className, theme} = this.props;
+        const {children, className, theme, style} = this.props;
         const finalClassName = mergeClassNames({
             [className]: className && className.length,
             [theme.panel]: true,
-            [theme['panel--isOpen']]: this.props.isOpen
+            [theme['panel--isOpen']]: this.props.isOpen,
+            [theme[`panel--${style}`]]: validStyleKeys.includes(style)
         });
 
         return (

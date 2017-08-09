@@ -74,7 +74,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
         }
 
-        foreach ($node->getChildNodes() as $childNode) {
+        $documentChildNodes = $node->getChildNodes($this->baseNodeType);
+        $contentChildNodes = $node->getChildNodes('!Neos.Neos:Document');
+        $childNodes = array_merge($documentChildNodes, $contentChildNodes);
+
+        foreach ($childNodes as $childNode) {
             /* @var NodeInterface $childNode */
             $nodeInfo['children'][] = [
                 'contextPath' => $childNode->getContextPath(),

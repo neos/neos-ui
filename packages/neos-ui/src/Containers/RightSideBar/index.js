@@ -46,6 +46,7 @@ export default class RightSideBar extends PureComponent {
             <IconButton
                 icon={toggleIcon}
                 tooltipLabel="Toggle Inspector"
+                style="inline"
                 className={style.rightSideBar__toggleBtn}
                 onClick={this.handleToggle}
                 />

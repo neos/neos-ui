@@ -36,7 +36,8 @@ export default class Tabs extends PureComponent {
         /**
          * Static component dependencies which are injected from the outside (index.js)
          */
-        IconComponent: PropTypes.any.isRequired
+        IconComponent: PropTypes.any.isRequired,
+        TooltipContainerComponent: PropTypes.any.isRequired
     };
 
     static defaultProps = {
@@ -75,6 +76,7 @@ export default class Tabs extends PureComponent {
 
     renderMenuItems() {
         const {
+            TooltipContainerComponent,
             IconComponent,
             theme,
             children
@@ -88,6 +90,8 @@ export default class Tabs extends PureComponent {
                 ref={`tab-${index}`}
                 onClick={this.handleTabNavItemClick}
                 isActive={activeTab === index}
+                TooltipContainerComponent={TooltipContainerComponent}
+                tooltipLabel={panel.props.title}
                 IconComponent={IconComponent}
                 theme={theme}
                 title={panel.props.title}
@@ -160,6 +164,8 @@ export class TabMenuItem extends PureComponent {
          */
         icon: PropTypes.string,
 
+        tooltipLabel: PropTypes.string,
+
         /**
          * An optional css theme to be injected.
          */
@@ -173,7 +179,8 @@ export class TabMenuItem extends PureComponent {
         /**
          * Static component dependencies which are injected from the outside (index.js)
          */
-        IconComponent: PropTypes.any.isRequired
+        IconComponent: PropTypes.any.isRequired,
+        TooltipContainerComponent: PropTypes.any.isRequired
     };
 
     static defaultProps = {
@@ -191,6 +198,8 @@ export class TabMenuItem extends PureComponent {
             theme,
             isActive,
             index,
+            TooltipContainerComponent,
+            tooltipLabel,
             IconComponent,
             icon,
             title,
@@ -208,16 +217,18 @@ export class TabMenuItem extends PureComponent {
 
         return (
             <li className={finalClassName} role="presentation" {...rest}>
-                <button
-                    className={theme.tabNavigation__itemBtn}
-                    onClick={this.handleClick}
-                    role="tab"
-                    aria-selected={isActive ? 'true' : 'false'}
-                    aria-controls={`section${index}`}
-                    >
-                    {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
-                    {title}
-                </button>
+                <TooltipContainerComponent tooltipLabel={tooltipLabel}>
+                    <button
+                        className={theme.tabNavigation__itemBtn}
+                        onClick={this.handleClick}
+                        role="tab"
+                        aria-selected={isActive ? 'true' : 'false'}
+                        aria-controls={`section${index}`}
+                        >
+                        {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
+                        {title}
+                    </button>
+                </TooltipContainerComponent>
             </li>
         );
     }

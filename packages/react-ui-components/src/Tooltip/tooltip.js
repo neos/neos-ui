@@ -21,9 +21,6 @@ export class Tooltip extends PureComponent {
        */
         theme: PropTypes.object,
 
-      /**
-       * Use several style options
-       */
         style: PropTypes.oneOf(['regular', 'error'])
 
     };
@@ -91,7 +88,7 @@ export class Tooltip extends PureComponent {
             <div {...rest} className={classNames}>
                 <div className={theme['tooltip--arrow']}/>
                 <div className={theme['tooltip--inner']} style={inlineStyle}>
-                    <span className={theme['tooltip--text']}>{children}</span>
+                    {children}
                 </div>
             </div>
         );

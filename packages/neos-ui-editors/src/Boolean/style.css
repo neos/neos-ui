@@ -1,0 +1,4 @@
+.boolean__disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}

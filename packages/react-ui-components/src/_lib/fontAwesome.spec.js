@@ -2,7 +2,8 @@ import {makeValidateId, makeGetClassName} from './fontAwesome.js';
 
 const icons = {
     'fa-foo': 'fooIconClassName',
-    'fa-glass': 'glassIconClassName'
+    'fa-glass': 'glassIconClassName',
+    'icon-folder-open-alt': 'fa-folder-open-o'
 };
 const validateId = makeValidateId(icons);
 const getClassName = makeGetClassName(icons);

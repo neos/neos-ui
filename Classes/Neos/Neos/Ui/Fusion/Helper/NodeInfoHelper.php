@@ -42,6 +42,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $baseNodeType;
 
     /**
+     * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.loadingDepth", package="Neos.Neos")
+     * @var string
+     */
+    protected $loadingDepth;
+
+    /**
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
      * @param bool $omitMostPropertiesForTreeState
@@ -60,6 +66,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             ] : $this->buildNodeProperties($node),
             'label' => $node->getLabel(),
             'isAutoCreated' => $node->isAutoCreated(),
+            'depth' => $node->getDepth(),
             // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
             'children' => [],
         ];
@@ -92,6 +99,41 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return $renderedNodes;
     }
 
+    /**
+     * @param array $nodes
+     * @param ControllerContext $controllerContext
+     * @return array
+     */
+    public function renderNodesWithParents(array $nodes, ControllerContext $controllerContext): array
+    {
+        $renderedNodes = [];
+
+        /** @var NodeInterface $node */
+        foreach($nodes as $node) {
+            if (array_key_exists($node->getPath(), $renderedNodes)) {
+                $renderedNodes[$node->getPath()]['matched'] = true;
+            } else {
+                $renderedNode = $this->renderNode($node, $controllerContext, true);
+                $renderedNode['matched'] = true;
+                $renderedNodes[$node->getPath()] = $renderedNode;
+            }
+
+            $parentNode = $node->getParent();
+            while($parentNode->getNodeType()->isOfType($this->baseNodeType)) {
+                if (array_key_exists($parentNode->getPath(), $renderedNodes)) {
+                    $renderedNodes[$parentNode->getPath()]['intermediate'] = true;
+                } else {
+                    $renderedParentNode = $this->renderNode($parentNode, $controllerContext, true);
+                    $renderedParentNode['intermediate'] = true;
+                    $renderedNodes[$parentNode->getPath()] = $renderedParentNode;
+                }
+                $parentNode = $parentNode->getParent();
+            }
+        }
+
+        return array_values($renderedNodes);
+    }
+
     public function renderDocumentNodeAndChildContent(NodeInterface $documentNode, ControllerContext $controllerContext)
     {
         $nodes = [];
@@ -113,9 +155,16 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         if ($site !== $documentNode) {
             $this->renderNodeToList($nodes, $site, $controllerContext);
         }
-        foreach ($site->getChildNodes($this->baseNodeType) as $documentChildNodeInFirstLevel) {
-            $this->renderNodeToList($nodes, $documentChildNodeInFirstLevel, $controllerContext);
-        }
+
+        $renderNodesRecursively = function (&$nodes, $baseNode, $level = 0) use (&$renderNodesRecursively, $controllerContext) {
+            if ($level < $this->loadingDepth || $this->loadingDepth === 0) {
+                foreach ($baseNode->getChildNodes($this->baseNodeType) as $childNode) {
+                    $this->renderNodeToList($nodes, $childNode, $controllerContext);
+                    $renderNodesRecursively($nodes, $childNode, $level + 1);
+                }
+            }
+        };
+        $renderNodesRecursively($nodes, $site);
 
         $this->renderNodeToList($nodes, $documentNode, $controllerContext);
 

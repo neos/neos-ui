@@ -24,8 +24,8 @@
 
         &:hover,
         &.btn--isPressed,
-        &:hover *,
-        &.btn--isPressed * {
+        &:hover i,
+        i {
             color: var(--brandColorsContrastBrightest);
         }
     }
@@ -37,48 +37,43 @@
 }
 
 .btn--clean,
-.btn--clean[disabled]:hover,
-.btn--clean[disabled]:hover * {
+.btn--clean i {
     background-color: var(--brandColorsContrastDarker);
 }
 .btn--lighter,
-.btn--lighter[disabled]:hover,
-.btn--lighter[disabled]:hover * {
+.btn--lighter i {
     background-color: var(--brandColorsContrastDark);
 }
 .btn--transparent {
     background: 0;
 }
 .btn--brand,
-.btn--brand[disabled]:hover,
-.btn--brand[disabled]:hover * {
+.btn--brand i {
     background-color: var(--brandColorsPrimaryBlue);
     color: white !important;
 }
 .btn--warn,
-.btn--warn[disabled]:hover,
-.btn--warn[disabled]:hover * {
+.btn--warn i {
     background-color: var(--brandColorsWarn);
 }
-.btn--brandHover {
-    &:hover,
-    &.btn--isPressed {
-        background-color: var(--brandColorsPrimaryBlue);
-    }
-}
 
+.btn--brandHover:hover,
+.btn--brandHover.btn--isPressed,
+.btn--brandHover.btn--isPressed i {
+    background-color: var(--brandColorsPrimaryBlue);
+}
 .btn--cleanHover.btn--isPressed,
 .btn--cleanHover:hover,
-.btn--cleanHover:hover * {
+.btn--cleanHover:hover i {
     color: var(--brandColorsPrimaryBlue);
 }
 .btn--darkenHover.btn--isPressed,
 .btn--darkenHover:hover,
-.btn--darkenHover:hover * {
+.btn--darkenHover:hover i {
     background-color: rgba(0, 0, 0, .1);
 }
 .btn--warnHover.btn--isPressed,
 .btn--warnHover:hover,
-.btn--warnHover:hover * {
+.btn--warnHover:hover i {
     background-color: var(--brandColorsWarn);
 }

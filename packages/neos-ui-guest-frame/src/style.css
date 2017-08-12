@@ -6,10 +6,6 @@
     opacity: .5;
 }
 
-.editable:focus {
-    outline: none;
-}
-
 .addEmptyContentCollectionOverlay {
     height: 20px;
     outline: 2px solid var(--brandColorsContrastBrighter);
@@ -18,4 +14,8 @@
 .markActiveNodeAsFocused--focusedNode {
     outline-offset: .5em;
     outline: 2px solid var(--brandColorsPrimaryBlue);
+}
+
+:global(.neos-inline-editable:focus) {
+    outline: none;
 }

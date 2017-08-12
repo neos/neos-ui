@@ -24,3 +24,8 @@
 .textInput--highlight {
     outline: 2px solid var(--brandColorsSuccess);
 }
+
+.textInput--disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}

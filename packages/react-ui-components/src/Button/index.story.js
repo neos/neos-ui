@@ -10,7 +10,7 @@ storiesOf('Button', module)
     .addDecorator(withKnobs)
     .addWithInfo(
         'default',
-        `The Button component. Toggle active and disabled states in the "knobs" section below.`,
+        `Button component. Toggle active and disabled states in the "knobs" section below.`,
         () => (
             <StoryWrapper>
                 <div>
@@ -27,7 +27,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Clean')}</span>
                     </Button>
                     <Button
                         style="brand"
@@ -41,7 +41,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Brand')}</span>
                     </Button>
                     <Button
                         style="lighter"
@@ -55,7 +55,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
                         style="transparent"
@@ -69,7 +69,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Transparent')}</span>
                     </Button>
                 </div>
                 <div>
@@ -87,7 +87,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Clean')}</span>
                     </Button>
                     <Button
                         style="brand"
@@ -102,7 +102,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Brand')}</span>
                     </Button>
                     <Button
                         style="lighter"
@@ -117,7 +117,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
                         style="transparent"
@@ -132,7 +132,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Transparent')}</span>
                     </Button>
                 </div>
                 <div>
@@ -150,7 +150,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Clean')}</span>
                     </Button>
                     <Button
                         style="brand"
@@ -165,7 +165,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Brand')}</span>
                     </Button>
                     <Button
                         style="lighter"
@@ -180,7 +180,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
                         style="transparent"
@@ -195,7 +195,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Transparent')}</span>
                     </Button>
                 </div>
                 <div>
@@ -213,7 +213,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Clean')}</span>
                     </Button>
                     <Button
                         style="brand"
@@ -228,7 +228,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Brand')}</span>
                     </Button>
                     <Button
                         style="lighter"
@@ -243,7 +243,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
                         style="transparent"
@@ -258,7 +258,7 @@ storiesOf('Button', module)
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                         >
-                        {text('Label', 'The Button')}
+                        <span>{text('Label', 'Button Transparent')}</span>
                     </Button>
                 </div>
             </StoryWrapper>

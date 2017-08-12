@@ -7,6 +7,10 @@
     position: static;
     display: inline-block;
 }
+.dropDown--disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}
 .dropDown__btn {
     position: relative;
     display: inline-block;

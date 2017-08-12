@@ -7,12 +7,30 @@ import Tree from '@neos-project/react-ui-components/src/Tree/';
 import {stripTags} from '@neos-project/utils-helpers';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
+import animate from 'amator';
 
 const getContextPath = $get('contextPath');
 
+//
+// Finds the first parent element that has a scrollbar
+//
+const findScrollingParent = parentElement => {
+    if (parentElement.scrollHeight > parentElement.offsetHeight) {
+        return parentElement;
+    }
+    if (parentElement.parentElement) {
+        return findScrollingParent(parentElement.parentElement);
+    }
+    return null;
+};
+
 export default class Node extends PureComponent {
     static propTypes = {
+        isContentTreeNode: PropTypes.bool,
+        rootNode: PropTypes.object,
+        loadingDepth: PropTypes.number,
         ChildRenderer: PropTypes.func.isRequired,
         node: PropTypes.object,
         nodeTypeRole: PropTypes.string,
@@ -21,7 +39,9 @@ export default class Node extends PureComponent {
         childNodes: PropTypes.object,
         currentDocumentNodeContextPath: PropTypes.string,
         focusedNodeContextPath: PropTypes.string,
-        uncollapsedNodeContextPaths: PropTypes.object,
+        toggledNodeContextPaths: PropTypes.object,
+        hiddenContextPaths: PropTypes.object,
+        intermediateContextPaths: PropTypes.object,
         loadingNodeContextPaths: PropTypes.object,
         errorNodeContextPaths: PropTypes.object,
         canBeInserted: PropTypes.bool,
@@ -42,6 +62,26 @@ export default class Node extends PureComponent {
         this.handleNodeToggle = this.handleNodeToggle.bind(this);
         this.handleNodeClick = this.handleNodeClick.bind(this);
         this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
+    }
+
+    componentDidUpdate() {
+        this.scrollFocusedNodeIntoView();
+    }
+
+    scrollFocusedNodeIntoView() {
+        if (this.isFocused()) {
+            const scrollingElement = findScrollingParent(this.domNode);
+            if (scrollingElement) {
+                const nodeTopPosition = this.domNode.getBoundingClientRect().top;
+                const offset = 50;
+                const scrollingElementPosition = scrollingElement.getBoundingClientRect();
+                const nodeIsNotInView = nodeTopPosition < scrollingElementPosition.top + offset || nodeTopPosition > scrollingElementPosition.bottom - offset;
+                if (nodeIsNotInView) {
+                    const scrollTop = nodeTopPosition - scrollingElement.firstElementChild.getBoundingClientRect().top - offset;
+                    animate(scrollingElement, {scrollTop});
+                }
+            }
+        }
     }
 
     accepts = () => {
@@ -76,15 +116,28 @@ export default class Node extends PureComponent {
     }
 
     isActive() {
-        const {node, currentDocumentNodeContextPath} = this.props;
-
+        const {node, currentDocumentNodeContextPath, isContentTreeNode} = this.props;
+        if (isContentTreeNode) {
+            return this.isFocused();
+        }
         return currentDocumentNodeContextPath === $get('contextPath', node);
     }
 
     isCollapsed() {
-        const {node, uncollapsedNodeContextPaths} = this.props;
+        const {node, toggledNodeContextPaths, rootNode, loadingDepth} = this.props;
 
-        return !uncollapsedNodeContextPaths.includes($get('contextPath', node));
+        const isToggled = toggledNodeContextPaths.includes($get('contextPath', node));
+        return isNodeCollapsed(node, isToggled, rootNode, loadingDepth);
+    }
+
+    isHidden() {
+        const {node, hiddenContextPaths} = this.props;
+        return hiddenContextPaths && hiddenContextPaths.includes($get('contextPath', node));
+    }
+
+    isIntermediate() {
+        const {node, intermediateContextPaths} = this.props;
+        return intermediateContextPaths && intermediateContextPaths.includes($get('contextPath', node));
     }
 
     isLoading() {
@@ -122,8 +175,15 @@ export default class Node extends PureComponent {
             currentlyDraggedNode
         } = this.props;
 
+        if (this.isHidden()) {
+            return null;
+        }
+        const refHandler = div => {
+            this.domNode = div;
+        };
         return (
             <Tree.Node>
+                <span ref={refHandler}/>
                 <Tree.Node.Header
                     hasChildren={hasChildren}
                     isCollapsed={this.isCollapsed()}
@@ -131,7 +191,7 @@ export default class Node extends PureComponent {
                     isFocused={this.isFocused()}
                     isLoading={this.isLoading()}
                     isHidden={$get('properties._hidden', node)}
-                    isHiddenInIndex={$get('properties._hiddenInIndex', node)}
+                    isHiddenInIndex={$get('properties._hiddenInIndex', node) || this.isIntermediate()}
                     hasError={this.hasError()}
                     label={stripTags($get('label', node))}
                     icon={this.getIcon()}
@@ -185,7 +245,7 @@ const withNodeTypeRegistry = neos(globalRegistry => ({
 }));
 
 export const PageTreeNode = withNodeTypeRegistry(connect(
-    (state, {nodeTypesRegistry}) => {
+    (state, {neos, nodeTypesRegistry}) => {
         const allowedNodeTypes = nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document'));
 
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
@@ -193,11 +253,17 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
         const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
 
         return (state, {node, currentlyDraggedNode}) => ({
+            isContentTreeNode: false,
+            rootNode: selectors.CR.Nodes.siteNodeSelector(state),
+            loadingDepth: neos.configuration.nodeTree.loadingDepth,
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
             currentDocumentNodeContextPath: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state),
+            currentDocumentNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
             focusedNodeContextPath: selectors.UI.PageTree.getFocused(state),
-            uncollapsedNodeContextPaths: selectors.UI.PageTree.getUncollapsed(state),
+            toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
+            hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
+            intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
             loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
             errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
             canBeInserted: canBeInsertedSelector(state, {
@@ -211,7 +277,7 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
 )(Node));
 
 export const ContentTreeNode = withNodeTypeRegistry(connect(
-    (state, {nodeTypesRegistry}) => {
+    (state, {neos, nodeTypesRegistry}) => {
         const allowedNodeTypes = [].concat(
             nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('content')),
             nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('contentCollection'))
@@ -220,13 +286,16 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
         const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
-
         return (state, {node, currentlyDraggedNode}) => ({
+            isContentTreeNode: true,
+            rootNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
+            loadingDepth: neos.configuration.structureTree.loadingDepth,
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
-            currentDocumentNodeContextPath: $get('cr.nodes.focused.contextPath', state),
+            currentDocumentNodeContextPath: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state),
+            currentDocumentNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
             focusedNodeContextPath: $get('cr.nodes.focused.contextPath', state),
-            uncollapsedNodeContextPaths: selectors.UI.ContentTree.getUncollapsed(state),
+            toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
             canBeInserted: canBeInsertedSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)

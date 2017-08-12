@@ -42,9 +42,9 @@ export const makeGetDocumentNodes = nodeTypesRegistry => createSelector(
     }
 );
 
-export const makeGetNodeByContextPathSelector = () => createSelector(
+export const makeGetNodeByContextPathSelector = contextPath => createSelector(
     [
-        (state, contextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath], state)
+        state => $get(['cr', 'nodes', 'byContextPath', contextPath], state)
     ],
     node => node
 );

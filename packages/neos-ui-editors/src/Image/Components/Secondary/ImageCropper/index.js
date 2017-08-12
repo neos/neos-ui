@@ -19,7 +19,8 @@ class AspectRatioItem extends PureComponent {
         key: PropTypes.any,
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired,
-        changeHandler: PropTypes.func.isRequired
+        changeHandler: PropTypes.func.isRequired,
+        isLocked: PropTypes.bool
     };
 
     constructor(props) {
@@ -30,7 +31,7 @@ class AspectRatioItem extends PureComponent {
     }
 
     render() {
-        const {width, height, key} = this.props;
+        const {width, height, key, isLocked} = this.props;
 
         return (
             <span key={key} className={style.dimensionsWrapper}>
@@ -39,9 +40,11 @@ class AspectRatioItem extends PureComponent {
                     type="number"
                     value={width}
                     onChange={this.handleWidthInputChange}
+                    disabled={isLocked}
                     />
                 <IconButton
                     icon="exchange"
+                    disabled={isLocked}
                     onClick={this.handleFlipAspectRatio}
                     />
                 <TextInput
@@ -49,6 +52,7 @@ class AspectRatioItem extends PureComponent {
                     type="number"
                     value={height}
                     onChange={this.handleHeightInputChange}
+                    disabled={isLocked}
                     />
             </span>
         );
@@ -81,6 +85,7 @@ export default class ImageCropper extends PureComponent {
                 this.props.options.crop.aspectRatio
             )
         };
+
         this.handleSetAspectRatio = this.setAspectRatio.bind(this);
         this.handleClearAspectRatio = this.clearAspectRatio.bind(this);
         this.handleFlipAspectRatio = this.flipAspectRatio.bind(this);
@@ -128,20 +133,27 @@ export default class ImageCropper extends PureComponent {
 
     render() {
         const {cropConfiguration} = this.state;
-        const aspectRatioLocked = false;
-        const aspectRatioLockIcon = (aspectRatioLocked ? <Icon icon="lock"/> : null);
+        const {height, width} = this.props.options.crop.aspectRatio.locked;
+        const aspectRatioLocked = height > 0 && width > 0;
         const {sourceImage, onComplete} = this.props;
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
+
+        if (aspectRatioLocked) {
+            cropConfiguration.aspectRatioStrategy.__height = height;
+            cropConfiguration.aspectRatioStrategy.__width = width;
+        }
 
         return (
             <div style={{textAlign: 'center'}}>
                 <div className={style.tools}>
                     <div className={style.aspectRatioIndicator}>
-                        {cropConfiguration.aspectRatioReducedLabel.map((label, index) => [
-                            <Icon key={index} icon="crop"/>,
-                            <span key={index} title={label}>{label}</span>,
-                            <span key={index}>{aspectRatioLockIcon}</span>
-                        ]).orSome('')}
+                        {
+                            cropConfiguration.aspectRatioReducedLabel.map((label, index) => [
+                                <Icon key={index} icon="crop"/>,
+                                <span key={index} title={label}>{label}</span>,
+                                <span key={index}>{aspectRatioLocked ? <Icon icon="lock"/> : null}</span>
+                            ]).orSome('')
+                        }
                     </div>
 
                     <AspectRatioDropDown
@@ -150,11 +162,12 @@ export default class ImageCropper extends PureComponent {
                         options={cropConfiguration.aspectRatioOptions}
                         onSelect={this.handleSetAspectRatio}
                         onClear={this.handleClearAspectRatio}
+                        isLocked={aspectRatioLocked}
                         />
 
                     <div className={style.dimensions}>
                         {cropConfiguration.aspectRatioDimensions.map((props, index) => (
-                            <AspectRatioItem {...props} key={index}/>
+                            <AspectRatioItem {...props} isLocked={aspectRatioLocked} key={index}/>
                         )).orSome('')}
                     </div>
                 </div>

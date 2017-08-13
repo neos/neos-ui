@@ -34,6 +34,15 @@ Neos:
           'Neos.Neos.UI:HostOnlyStyles':
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/HostOnlyStyles.css"}'
             position: 'start 900'
+          'WorkSans:200':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Fonts/work-sans-latin-200.woff"}'
+            position: 'start 500'
+          'WorkSans:300':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Fonts/work-sans-latin-300.woff"}'
+            position: 'start 600'
+          'WorkSans:400':
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Fonts/work-sans-latin-400.woff"}'
+            position: 'start 700'
 
       #################################
       # INTERNAL CONFIG (no API)

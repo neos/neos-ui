@@ -74,7 +74,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
         }
 
+        // child nodes for document tree, respecting the `baseNodeType` filter
         $documentChildNodes = $node->getChildNodes($this->baseNodeType);
+        // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $node->getChildNodes('!Neos.Neos:Document');
         $childNodes = array_merge($documentChildNodes, $contentChildNodes);
 

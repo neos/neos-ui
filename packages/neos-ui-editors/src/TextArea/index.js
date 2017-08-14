@@ -11,7 +11,7 @@ const defaultOptions = {
 const TextAreaEditor = props => {
     const {value, commit, highlight, options} = props;
 
-    const finalOptions = Object.assign(defaultOptions, options);
+    const finalOptions = Object.assign({}, defaultOptions, options);
 
     return (<TextArea
         value={value}

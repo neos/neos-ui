@@ -30,7 +30,7 @@ const defaultOptions = {
 
 const BooleanEditor = props => {
     const {value, label, identifier, commit, options} = props;
-    const finalOptions = Object.assign(defaultOptions, options);
+    const finalOptions = Object.assign({}, defaultOptions, options);
 
     const finalClassName = mergeClassNames({
         [style.boolean__disabled]: finalOptions.disabled

@@ -36,7 +36,7 @@ export default class TextField extends PureComponent {
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
-        const finalOptions = Object.assign(defaultOptions, options);
+        const finalOptions = Object.assign({}, defaultOptions, options);
 
         return (<TextInput
             autoFocus={finalOptions.autoFocus}

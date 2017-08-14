@@ -21,7 +21,7 @@ export default class TabPanel extends PureComponent {
         const tabPanel = groups => (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 {
-                    groups.filter(g => g.properties).map(group => (
+                    groups.filter(g => g.properties && g.properties.length).map(group => (
                         <PropertyGroup
                             key={group.id}
                             label={group.label}

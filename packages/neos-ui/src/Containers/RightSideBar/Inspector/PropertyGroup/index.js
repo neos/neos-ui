@@ -66,8 +66,8 @@ export default class PropertyGroup extends PureComponent {
                 </ToggablePanel.Contents>
             </ToggablePanel>
         );
-        const fallback = () => null;
+        const fallback = () => (<div>...</div>);
 
-        return Maybe.fromNull(properties.length > 0 ? properties : null).map(propertyGroup).orSome(fallback());
+        return Maybe.fromNull(properties).map(propertyGroup).orSome(fallback());
     }
 }

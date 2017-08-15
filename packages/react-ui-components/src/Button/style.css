@@ -39,9 +39,6 @@
 .btn--clean {
     background-color: var(--brandColorsContrastDarker);
 }
-.btn--clean i {
-    background-color: 0;
-}
 .btn--lighter,
 .btn--lighter i {
     background-color: var(--brandColorsContrastDark);

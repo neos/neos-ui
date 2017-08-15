@@ -48,6 +48,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $loadingDepth;
 
     /**
+     * @Flow\InjectConfiguration(path="nodeTypeRoles.document", package="Neos.Neos.Ui")
+     * @var string
+     */
+    protected $documentNodeTypeRole;
+
+    /**
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
      * @param bool $omitMostPropertiesForTreeState
@@ -70,11 +76,17 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
             'children' => [],
         ];
-        if ($controllerContext !== null && $node->getNodeType()->isOfType('Neos.Neos:Document')) {
+        if ($controllerContext !== null && $node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
         }
 
-        foreach ($node->getChildNodes() as $childNode) {
+        // child nodes for document tree, respecting the `baseNodeType` filter
+        $documentChildNodes = $node->getChildNodes($this->baseNodeType);
+        // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
+        $contentChildNodes = $node->getChildNodes('!' . $this->documentNodeTypeRole);
+        $childNodes = array_merge($documentChildNodes, $contentChildNodes);
+
+        foreach ($childNodes as $childNode) {
             /* @var NodeInterface $childNode */
             $nodeInfo['children'][] = [
                 'contextPath' => $childNode->getContextPath(),
@@ -144,7 +156,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function renderDocumentNodeAndChildContentInternal(array &$nodes, NodeInterface $node, ControllerContext $controllerContext)
     {
         $this->renderNodeToList($nodes, $node, $controllerContext);
-        foreach ($node->getChildNodes('!Neos.Neos:Document') as $childNode) {
+        foreach ($node->getChildNodes('!' . $this->documentNodeTypeRole) as $childNode) {
             $this->renderDocumentNodeAndChildContentInternal($nodes, $childNode, $controllerContext);
         }
     }

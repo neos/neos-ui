@@ -36,8 +36,7 @@
     padding: 0 8px;
 }
 
-.btn--clean,
-.btn--clean i {
+.btn--clean {
     background-color: var(--brandColorsContrastDarker);
 }
 .btn--lighter,

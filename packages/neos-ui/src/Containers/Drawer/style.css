@@ -16,12 +16,18 @@
 .drawer__menuItem {
     border-top: 1px solid var(--brandColorsContrastDark);
     cursor: pointer;
-    
+
     &:first-child {
         border-top: 0;
     }
 }
+.drawer__menuItemGroupBtn,
 .drawer__menuItemBtn {
     width: 100%;
+    padding: 0;
     text-align: left;
+    font-size: 15px;
+}
+.drawer__menuItemGroupBtn {
+    font-weight: 700;
 }

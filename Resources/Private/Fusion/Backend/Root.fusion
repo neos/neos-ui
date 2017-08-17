@@ -98,7 +98,10 @@ backend = Neos.Fusion:Template {
                     }
                 }
 
-                @if.isAvailable = ${Neos.Neos.Ui.Modules.isAvailable(moduleName)}
+                @if {
+                    isNotHiddenInMenu = ${!module.hideInMenu}
+                    isAvailable = ${Neos.Neos.Ui.Modules.isAvailable(moduleName)}
+                }
             }
         }
 

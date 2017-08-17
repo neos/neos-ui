@@ -32,6 +32,10 @@
         padding-top: 5px;
         padding-bottom: 5px;
     }
+    .panel--condensed.panel--isOpen & {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
 }
 
 .panel__contents--noPadding {

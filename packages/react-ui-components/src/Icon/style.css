@@ -10,6 +10,9 @@
 .icon--big {
     font-size: 1.5em;
 }
+.icon--medium {
+    font-size: 1.25em;
+}
 .icon--small {
     font-size: .75em;
 }

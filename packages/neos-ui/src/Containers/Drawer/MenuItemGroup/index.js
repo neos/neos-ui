@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
+import Button from '@neos-project/react-ui-components/src/Button/';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
@@ -41,13 +42,18 @@ export default class MenuItemGroup extends PureComponent {
         const {label, icon, children, onChildClick} = this.props;
 
         return (
-            <ToggablePanel isOpen={true} className={style.drawer__menuItem}>
+            <ToggablePanel isOpen={true} style="condensed" className={style.drawer__menuItem}>
                 <ToggablePanel.Header className={style.drawer__menuItem__header}>
-                    <span onClick={this.handleClick} role="button">
-                        {icon && <Icon icon={icon} padded="right"/>}
+                    <Button
+                        className={style.drawer__menuItemGroupBtn}
+                        onClick={this.handleClick}
+                        style="transparent"
+                        hoverStyle="clean"
+                        >
+                        {icon && <Icon icon={icon} size="medium" padded="right"/>}
 
                         <I18n id={label} fallback={label}/>
-                    </span>
+                    </Button>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {children.map((item, index) => (

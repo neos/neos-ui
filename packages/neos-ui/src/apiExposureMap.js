@@ -12,6 +12,7 @@ import * as reselect from 'reselect';
 import * as reactCssThemr from 'react-css-themr';
 
 import ReactUiComponents from '@neos-project/react-ui-components';
+import * as NeosUiReduxStore from '@neos-project/neos-ui-redux-store';
 import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
 import NeosUiI18n from '@neos-project/neos-ui-i18n';
 
@@ -35,7 +36,7 @@ export default {
         // neos-ui-backend-connector
         NeosUiDecorators,
         NeosUiI18n,
-        // neos-ui-redux-store
+        NeosUiReduxStore,
         // react-proptypes (optional)
         ReactUiComponents
 

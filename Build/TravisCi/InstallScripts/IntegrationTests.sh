@@ -23,6 +23,7 @@ mysql -e 'create database neos collate utf8_unicode_ci;'
 ./flow cache:warmup
 ./flow doctrine:migrate
 ./flow site:import --package-key=Neos.Demo
+./flow resource:publish
 
 # Create the demo backend user.
 ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator &

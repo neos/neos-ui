@@ -16,7 +16,7 @@ rm -rf Packages/Application/Neos.Neos.Ui
 mv temp Packages/Application/Neos.Neos.Ui
 
 # Move the configuration files into place.
-cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Development/Settings.yaml
+cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Settings.yaml
 
 # Setup the database and import the demo site package.
 mysql -e 'create database neos collate utf8_unicode_ci;'

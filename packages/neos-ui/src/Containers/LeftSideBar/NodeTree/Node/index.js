@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import {connect} from 'react-redux';
 
+import compose from 'lodash.compose';
 import Tree from '@neos-project/react-ui-components/src/Tree/';
-import {stripTags} from '@neos-project/utils-helpers';
+import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
@@ -25,6 +26,11 @@ const findScrollingParent = parentElement => {
     }
     return null;
 };
+
+const decodeLabel = compose(
+    decodeHtml,
+    stripTags
+);
 
 export default class Node extends PureComponent {
     static propTypes = {
@@ -181,6 +187,7 @@ export default class Node extends PureComponent {
         const refHandler = div => {
             this.domNode = div;
         };
+
         return (
             <Tree.Node>
                 <span ref={refHandler}/>
@@ -193,7 +200,7 @@ export default class Node extends PureComponent {
                     isHidden={$get('properties._hidden', node)}
                     isHiddenInIndex={$get('properties._hiddenInIndex', node) || this.isIntermediate()}
                     hasError={this.hasError()}
-                    label={stripTags($get('label', node))}
+                    label={decodeLabel($get('label', node))}
                     icon={this.getIcon()}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}

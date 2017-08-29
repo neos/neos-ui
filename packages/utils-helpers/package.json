@@ -24,5 +24,8 @@
       "utils-helpers/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
       "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
     }
+  },
+  "dependencies": {
+    "he": "^1.1.1"
   }
 }

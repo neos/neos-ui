@@ -1,10 +1,11 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
+import {compose} from 'redux';
 import {connect} from 'react-redux';
 
 import Tree from '@neos-project/react-ui-components/src/Tree/';
-import {stripTags} from '@neos-project/utils-helpers';
+import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
@@ -160,6 +161,11 @@ export default class Node extends PureComponent {
         };
     }
 
+    decodeLabel = compose(
+        decodeHtml,
+        stripTags
+    );
+
     render() {
         const {
             ChildRenderer,
@@ -181,6 +187,7 @@ export default class Node extends PureComponent {
         const refHandler = div => {
             this.domNode = div;
         };
+
         return (
             <Tree.Node>
                 <span ref={refHandler}/>
@@ -193,7 +200,7 @@ export default class Node extends PureComponent {
                     isHidden={$get('properties._hidden', node)}
                     isHiddenInIndex={$get('properties._hiddenInIndex', node) || this.isIntermediate()}
                     hasError={this.hasError()}
-                    label={stripTags($get('label', node))}
+                    label={this.decodeLabel($get('label', node))}
                     icon={this.getIcon()}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}

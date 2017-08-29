@@ -1,9 +1,9 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
-import {compose} from 'redux';
 import {connect} from 'react-redux';
 
+import compose from 'lodash.compose';
 import Tree from '@neos-project/react-ui-components/src/Tree/';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
@@ -162,8 +162,8 @@ export default class Node extends PureComponent {
     }
 
     decodeLabel = compose(
-        decodeHtml,
-        stripTags
+       decodeHtml,
+       stripTags
     );
 
     render() {

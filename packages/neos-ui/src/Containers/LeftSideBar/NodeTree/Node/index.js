@@ -27,6 +27,11 @@ const findScrollingParent = parentElement => {
     return null;
 };
 
+const decodeLabel = compose(
+    decodeHtml,
+    stripTags
+);
+
 export default class Node extends PureComponent {
     static propTypes = {
         isContentTreeNode: PropTypes.bool,
@@ -161,11 +166,6 @@ export default class Node extends PureComponent {
         };
     }
 
-    decodeLabel = compose(
-       decodeHtml,
-       stripTags
-    );
-
     render() {
         const {
             ChildRenderer,
@@ -200,7 +200,7 @@ export default class Node extends PureComponent {
                     isHidden={$get('properties._hidden', node)}
                     isHiddenInIndex={$get('properties._hiddenInIndex', node) || this.isIntermediate()}
                     hasError={this.hasError()}
-                    label={this.decodeLabel($get('label', node))}
+                    label={decodeLabel($get('label', node))}
                     icon={this.getIcon()}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}

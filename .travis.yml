@@ -17,11 +17,9 @@ services:
 # Cache the composer and node_modules directory to speed up the the installation of dependencies.
 #
 cache:
+  yarn: true
   directories:
-    - $HOME/build/Neos.Neos.Ui/Neos/Packages/Application/Neos.Neos.Ui/node_modules
-    - $HOME/build/Neos.Neos.Ui/Neos/Packages/Framework
-    - $HOME/build/Neos.Neos.Ui/Neos/Packages/Libraries
-    - $HOME/build/Neos.Neos.Ui/Neos/Packages/Sites
+    - ../Neos
     - $HOME/.composer/cache
     - $HOME/.nvm/versions/
 

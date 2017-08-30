@@ -79,7 +79,7 @@ install:
   # Since all environments depend on the node dependencies, install and
   # afterwards prune them to remove extranous packages from previous/cached runs.
   - yarn
-  - yarn build:ui
+  - yarn build
 
   # Deactivate the previous enabled handling of hidden files with the `mv` command.
   - shopt -u dotglob

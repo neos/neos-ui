@@ -115,7 +115,12 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
 if (env.isProduction) {
     webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
         minimize: true,
-        compress: true
+        compress: {
+            keep_fnames: true
+        },
+        mangle: {
+            keep_fnames: true
+        }
     }));
 }
 

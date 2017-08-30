@@ -7,4 +7,4 @@ set -e
 # The script will be executed in the package working directory.
 #
 
-yarn testcafe chrome:headless Tests/IntegrationTests/*
+yarn test:e2e

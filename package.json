@@ -13,6 +13,7 @@
     "coverage:generate": "lerna run coverage:generate --concurrency 1",
     "coverage:publish": "lerna run coverage:publish --concurrency 1",
     "test": "lerna run test --concurrency 1",
+    "test:e2e": "yarn run testcafe chrome:headless Tests/IntegrationTests/*",
     "lint": "lerna run lint --concurrency 1"
   },
   "devDependencies": {

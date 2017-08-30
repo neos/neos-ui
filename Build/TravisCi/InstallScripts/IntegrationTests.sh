@@ -33,4 +33,4 @@ mysql -e 'create database neos collate utf8_unicode_ci;'
 ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator &
 
 # Start the development server on which the integration tests will act on.
-./flow server:run --port 8081 &
+./flow server:run --port 8081 > /dev/null 2> /dev/null &

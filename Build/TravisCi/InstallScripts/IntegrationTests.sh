@@ -18,6 +18,10 @@ mv temp Packages/Application/Neos.Neos.Ui
 # Move the configuration files into place.
 cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Settings.yaml
 
+# Patch template to include script to fail on console.error.
+# TODO: Can be removed when this is implemented: https://github.com/DevExpress/testcafe/issues/1738
+sed -i 's/<title>/<script><![CDATA[ const originalError = console.error; console.error = (msg, trace) => { if (msg === 'uncaught') { throw new Error(trace);} else { throw new Error(msg);}};]]><\/script>\r\n<title>/g' Resources/Private/Templates/Backend/Index.html
+
 # Setup the database and import the demo site package.
 mysql -e 'create database neos collate utf8_unicode_ci;'
 ./flow cache:warmup

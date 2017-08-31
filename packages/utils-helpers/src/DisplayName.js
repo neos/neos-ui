@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // Wraps children with a dummy component with a given DisplayName
@@ -11,6 +11,6 @@ const DisplayName = ({children, name}) => {
 DisplayName.propTypes = {
     name: PropTypes.string.isRequired,
     children: PropTypes.any.isRequired
-}
+};
 
 export default DisplayName;

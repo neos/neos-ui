@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import TextareaAutoresize from 'react-textarea-autosize';
+import enhanceWithClickOutside from 'react-click-outside';
 
 class TextArea extends PureComponent {
     static propTypes = {
@@ -46,13 +47,46 @@ class TextArea extends PureComponent {
         /**
          * Static component dependencies which are injected from the outside (index.js)
          */
-        TooltipComponent: PropTypes.any.isRequired
+        TooltipComponent: PropTypes.any.isRequired,
+
+        /**
+         * Optional number to set the minRows of the TextArea if not expanded
+         */
+        minRows: PropTypes.number,
+
+        /**
+         * Optional number to set the minRows of the TextArea if expanded
+         */
+        expandedRows: PropTypes.number
+    };
+
+    static defaultProps = {
+        minRows: 2,
+        expandedRows: 6
     };
 
     constructor(props) {
         super(props);
 
+        this.state = {
+            isFocused: false
+        };
+
         this.handleValueChange = this.handleValueChange.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.handleOnClick = this.handleOnClick.bind(this);
+    }
+
+    handleOnClick() {
+        this.setState({
+            isFocused: true
+        });
+    }
+
+    handleClickOutside() {
+        this.setState({
+            isFocused: false
+        });
     }
 
     render() {
@@ -64,6 +98,8 @@ class TextArea extends PureComponent {
             theme,
             highlight,
             disabled,
+            minRows,
+            expandedRows,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
@@ -86,6 +122,8 @@ class TextArea extends PureComponent {
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={this.handleValueChange}
+                    onClick={this.handleOnClick}
+                    minRows={this.state.isFocused ? expandedRows : minRows}
                     />
                 {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>
@@ -102,4 +140,10 @@ class TextArea extends PureComponent {
     }
 }
 
-export default TextArea;
+//
+// Add the click-outside functionality to the TextArea component.
+//
+const EnhancedTextArea = enhanceWithClickOutside(TextArea);
+
+export default EnhancedTextArea;
+export const undecorated = TextArea;

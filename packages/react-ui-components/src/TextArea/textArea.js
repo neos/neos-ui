@@ -73,7 +73,7 @@ class TextArea extends PureComponent {
         };
 
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.handleClickOutside = this.close.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
         this.handleOnClick = this.handleOnClick.bind(this);
     }
 
@@ -83,7 +83,7 @@ class TextArea extends PureComponent {
         });
     }
 
-    close() {
+    handleClickOutside() {
         this.setState({
             isFocused: false
         });

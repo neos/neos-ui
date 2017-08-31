@@ -146,3 +146,4 @@ class TextArea extends PureComponent {
 const EnhancedTextArea = enhanceWithClickOutside(TextArea);
 
 export default EnhancedTextArea;
+export let undecorated = TextArea;

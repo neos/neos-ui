@@ -2,12 +2,12 @@ import sinon from 'sinon';
 import TextareaAutoresize from 'react-textarea-autosize';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 
-import TextArea from './textArea.js';
+import {undecorated} from './textArea.js';
 
 const defaultProps = {
     theme: {}
 };
-const shallow = createShallowRenderer(TextArea, defaultProps);
+const shallow = createShallowRenderer(undecorated, defaultProps);
 
 test('should render a "TextareaAutoresize" component.', () => {
     const input = shallow().find(TextareaAutoresize);

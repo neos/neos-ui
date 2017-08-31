@@ -34,7 +34,7 @@ const webpackConfig = {
             },
             {
                 test: /\.(woff|woff2)$/,
-                loader: 'url?limit=100000'
+                loader: 'url-loader?limit=100000'
             },
             {
                 test: /\.css$/,

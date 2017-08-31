@@ -328,7 +328,7 @@
                 width: 37px;
                 height: 40px;
                 line-height: 40px;
-                font-weight: 400;
+                font-weight: normal;
                 font-size: var(--baseFontSize);
                 border: 0;
                 border-right: 1px solid var(--brandColorsContrastNeutral);

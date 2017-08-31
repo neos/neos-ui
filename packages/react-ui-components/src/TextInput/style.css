@@ -14,7 +14,7 @@
     }
 }
 .textInput::-webkit-input-placeholder {
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Work Sans', sans-serif;
     color: var(--brandColorsContrastBright);
 }
 .textInput--invalid {

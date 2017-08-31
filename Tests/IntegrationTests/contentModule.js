@@ -39,10 +39,15 @@ test('All tests at once', async t => {
     await t.expect(rightSideBar.getReact(({props}) => props.isHidden)).eql(false);
 
     console.log('Can open node creation dialog');
-    const AddNodeButton = ReactSelector('AddNode Button');
     const SelectNodeTypeModal = ReactSelector('SelectNodeType');
     await t.expect(SelectNodeTypeModal.exists).ok();
     await t.expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(false);
-    await t.click(AddNodeButton);
+    await t.click(ReactSelector('AddNode Button'));
     await t.expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(true);
+    await t.click(ReactSelector('NodeTypeItem'));
+    await t.click(ReactSelector('BackButton'));
+    await t.click(ReactSelector('NodeTypeItem'));
+    await t.typeText(ReactSelector('NodeCreationDialogBody TextField').find('input'), 'TestPage');
+    await t.click(ReactSelector('CreateButton'));
+    await t.expect(ReactSelector('NodeCreationDialog').getReact(({props}) => props.isOpen)).eql(false);
 });

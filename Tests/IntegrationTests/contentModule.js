@@ -1,4 +1,4 @@
-import {Role} from 'testcafe';
+import {Selector, Role} from 'testcafe';
 import ReactSelector from 'testcafe-react-selectors';
 
 /* global fixture:true */
@@ -23,31 +23,39 @@ test('All tests at once', async t => {
     console.log('Can toggle leftSideBar');
     const leftSideBarToggler = ReactSelector('LeftSideBarToggler Button');
     const leftSideBar = ReactSelector('LeftSideBar');
-    await t.expect(leftSideBar.getReact(({props}) => props.isHidden)).eql(false);
-    await t.click(leftSideBarToggler);
-    await t.expect(leftSideBar.getReact(({props}) => props.isHidden)).eql(true);
-    await t.click(leftSideBarToggler);
-    await t.expect(leftSideBar.getReact(({props}) => props.isHidden)).eql(false);
+    await t
+        .expect(leftSideBar.getReact(({props}) => props.isHidden)).eql(false)
+        .click(leftSideBarToggler)
+        .expect(leftSideBar.getReact(({props}) => props.isHidden)).eql(true)
+        .click(leftSideBarToggler)
+        .expect(leftSideBar.getReact(({props}) => props.isHidden)).eql(false);
 
     console.log('Can toggle rightSideBar');
     const rightSideBarToggler = ReactSelector('RightSideBar Button');
     const rightSideBar = ReactSelector('RightSideBar');
-    await t.expect(rightSideBar.getReact(({props}) => props.isHidden)).eql(false);
-    await t.click(rightSideBarToggler);
-    await t.expect(rightSideBar.getReact(({props}) => props.isHidden)).eql(true);
-    await t.click(rightSideBarToggler);
-    await t.expect(rightSideBar.getReact(({props}) => props.isHidden)).eql(false);
+    await t
+        .expect(rightSideBar.getReact(({props}) => props.isHidden)).eql(false)
+        .click(rightSideBarToggler)
+        .expect(rightSideBar.getReact(({props}) => props.isHidden)).eql(true)
+        .click(rightSideBarToggler)
+        .expect(rightSideBar.getReact(({props}) => props.isHidden)).eql(false);
 
-    console.log('Can open node creation dialog');
+    console.log('Can create a new page');
     const SelectNodeTypeModal = ReactSelector('SelectNodeType');
-    await t.expect(SelectNodeTypeModal.exists).ok();
-    await t.expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(false);
-    await t.click(ReactSelector('AddNode Button'));
-    await t.expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(true);
-    await t.click(ReactSelector('NodeTypeItem'));
-    await t.click(ReactSelector('BackButton'));
-    await t.click(ReactSelector('NodeTypeItem'));
-    await t.typeText(ReactSelector('NodeCreationDialogBody TextField').find('input'), 'TestPage');
-    await t.click(ReactSelector('CreateButton'));
-    await t.expect(ReactSelector('NodeCreationDialog').getReact(({props}) => props.isOpen)).eql(false);
+    const newPageTitle = 'TestPage';
+    await t
+        .expect(SelectNodeTypeModal.exists).ok()
+        .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(false)
+        .click(ReactSelector('AddNode Button'))
+        .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(true)
+        .click(ReactSelector('NodeTypeItem'))
+        .click(ReactSelector('BackButton'))
+        .click(ReactSelector('NodeTypeItem'))
+        .typeText(ReactSelector('NodeCreationDialogBody TextField').find('input'), newPageTitle)
+        .click(ReactSelector('CreateButton'))
+        .expect(ReactSelector('NodeCreationDialog').getReact(({props}) => props.isOpen)).eql(false);
+    await t
+        .switchToIframe('[name="neos-content-main"]')
+        .expect(Selector('li').withText(newPageTitle).exists).ok()
+        .switchToMainWindow();
 });

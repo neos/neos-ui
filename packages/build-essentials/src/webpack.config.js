@@ -116,7 +116,8 @@ if (env.isProduction) {
     webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
         minimize: true,
         compress: {
-            keep_fnames: true
+            keep_fnames: true,
+            warnings: false
         },
         mangle: {
             keep_fnames: true

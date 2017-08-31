@@ -13,6 +13,7 @@
     "coverage:generate": "lerna run coverage:generate --concurrency 1",
     "coverage:publish": "lerna run coverage:publish --concurrency 1",
     "test": "lerna run test --concurrency 1",
+    "test:e2e": "yarn run testcafe chrome:headless Tests/IntegrationTests/*",
     "lint": "lerna run lint --concurrency 1"
   },
   "devDependencies": {
@@ -77,6 +78,8 @@
     "skin-deep": "^0.16.0",
     "style-loader": "^0.18.1",
     "stylelint": "^7.5.0",
+    "testcafe": "^0.17.0",
+    "testcafe-react-selectors": "^0.0.8-alpha4",
     "watch": "^1.0.2",
     "webpack": "^1.13.2",
     "webpack-livereload-plugin": "^0.10.0",

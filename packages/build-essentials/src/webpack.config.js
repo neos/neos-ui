@@ -112,10 +112,17 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
     webpackConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
 }
 
+/* eslint camelcase: ["error", {properties: "never"}] */
 if (env.isProduction) {
     webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
         minimize: true,
-        compress: true
+        compress: {
+            keep_fnames: true,
+            warnings: false
+        },
+        mangle: {
+            keep_fnames: true
+        }
     }));
 }
 

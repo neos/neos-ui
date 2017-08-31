@@ -1,11 +1,25 @@
 @import 'normalize.css';
 
+@font-face {
+  font-family: 'Work Sans';
+  src: url('../../../Resources/Public/Fonts/WorkSans-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('../../../Resources/Public/Fonts/WorkSans-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Work Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 14px;
     line-height: 20px;

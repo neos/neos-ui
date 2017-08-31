@@ -33,7 +33,7 @@ const webpackConfig = {
                 loader: 'json-loader'
             },
             {
-                test: /\.(woff|woff2|eot|svg)$/,
+                test: /\.(woff|woff2)$/,
                 loader: 'url-loader?limit=100000'
             },
             {

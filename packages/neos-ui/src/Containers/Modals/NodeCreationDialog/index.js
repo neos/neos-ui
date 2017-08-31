@@ -145,10 +145,9 @@ export default class NodeCreationDialog extends PureComponent {
                 onRequestClose={this.handleCancel}
                 isOpen
                 isWide
-                id="ddd"
                 >
                 <DisplayName name="NodeCreationDialogBody">
-                    <div className={style.body} id="ddd-d">
+                    <div className={style.body}>
                         {Object.keys(configuration.elements).map((elementName, index) => {
                             //
                             // Only display errors after user input (isDirty)

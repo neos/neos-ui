@@ -58,4 +58,21 @@ test('All tests at once', async t => {
         .switchToIframe('[name="neos-content-main"]')
         .expect(Selector('li').withText(newPageTitle).exists).ok()
         .switchToMainWindow();
+
+    console.log('Can create content node from inside InlineUI');
+    const headlineTitle = 'Helloworld!';
+    await t
+        .switchToIframe('[name="neos-content-main"]')
+        .click(Selector('.neos-contentcollection'))
+        .click(ReactSelector('AddNode Button'))
+        .switchToMainWindow()
+        .click(Selector('button#into'))
+        // TODO: this selector will only work with English translation.
+        // Change to `withProps` when implemented: https://github.com/DevExpress/testcafe-react-selectors/issues/14
+        .click(ReactSelector('NodeTypeItem').find('button').withText('Headline'))
+        .switchToIframe('[name="neos-content-main"]')
+        .typeText(Selector('.neos-inline-editable h1'), headlineTitle)
+        // Weird bug here, if I use `('.neos-inline-editable h1')` selector it fails
+        .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok()
+        .switchToMainWindow();
 });

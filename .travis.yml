@@ -19,7 +19,10 @@ services:
 cache:
   yarn: true
   directories:
-    - ../Neos
+    - ../Neos/Packages/Application/Neos.Neos.Ui/node_modules
+    - ../Neos/Packages/Framework
+    - ../Neos/Packages/Libraries
+    - ../Neos/Packages/Sites
     - $HOME/.composer/cache
     - $HOME/.nvm/versions/
 

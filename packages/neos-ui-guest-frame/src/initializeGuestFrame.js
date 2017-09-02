@@ -14,6 +14,32 @@ import {
 
 import style from './style.css';
 
+//
+// Polyfil for event path
+// see: https://stackoverflow.com/questions/39245488/event-path-undefined-with-firefox-and-vue-js
+// TODO: extract into helpers if needed elsewhere
+//
+const eventPath = event => {
+    const eventPath = event.path || (event.composedPath && event.composedPath());
+    if (eventPath) {
+        return eventPath;
+    }
+
+    let element = event.target;
+    const path = [];
+
+    while (element) {
+        path.push(element);
+        if (element.tagName === 'HTML') {
+            path.push(document);
+            path.push(window);
+            return path;
+        }
+        element = element.parentElement;
+    }
+    return path;
+};
+
 export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
@@ -30,7 +56,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     yield put(actions.CR.ContentDimensions.setActive(documentInformation.metaData.contentDimensions.active));
 
     getGuestFrameBody().addEventListener('click', e => {
-        const clickPath = Array.prototype.slice.call(e.path);
+        const clickPath = Array.prototype.slice.call(eventPath(e));
         const isInsideInlineUi = clickPath.some(domNode =>
             domNode &&
             domNode.getAttribute &&

@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import enhanceWithClickOutside from 'react-click-outside';
 import moment from 'moment';
+import Button from '../Button/index';
 
 export class DateInput extends PureComponent {
     static propTypes = {
@@ -19,6 +20,11 @@ export class DateInput extends PureComponent {
          * The label which will be displayed within the `Select Today` btn.
          */
         todayLabel: PropTypes.string,
+
+        /**
+         * The label which will be displayed within the `Select Today` btn.
+         */
+        applyLabel: PropTypes.string,
 
         /**
          * The moment format string to use to format the passed value.
@@ -50,6 +56,7 @@ export class DateInput extends PureComponent {
 
     static defaultProps = {
         todayLabel: 'Today',
+        applyLabel: 'Apply',
         labelFormat: 'DD-MM-YYYY hh:mm'
     };
 
@@ -57,9 +64,11 @@ export class DateInput extends PureComponent {
         super(props);
 
         this.state = {
-            isOpen: false
+            isOpen: false,
+            transientDate: null
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleApply = this.handleApply.bind(this);
         this.handleClearValueClick = this.handleClearValueClick.bind(this);
         this.handleInputClick = this.open.bind(this);
         this.handleCalendarIconClick = this.open.bind(this);
@@ -75,6 +84,7 @@ export class DateInput extends PureComponent {
             placeholder,
             theme,
             value,
+            applyLabel,
             todayLabel,
             labelFormat
         } = this.props;
@@ -112,17 +122,24 @@ export class DateInput extends PureComponent {
                     </button>
                 </div>
                 <CollapseComponent isOpened={this.state.isOpen}>
-                    <DatePickerComponent
-                        open={true}
-                        value={value}
-                        onChange={this.handleChange}
-                        />
                     <button
                         className={theme.selectTodayBtn}
                         onClick={this.handleSelectTodayBtnClick}
                         >
                         {todayLabel}
                     </button>
+                    <DatePickerComponent
+                        open={true}
+                        value={value}
+                        onChange={this.handleChange}
+                        />
+                    <Button
+                        onClick={this.handleApply}
+                        className={theme.applyBtn}
+                        style="brand"
+                        >
+                        {applyLabel}
+                    </Button>
                 </CollapseComponent>
             </div>
         );
@@ -130,11 +147,16 @@ export class DateInput extends PureComponent {
 
     handleChange(momentVal) {
         const date = momentVal.toDate();
+        this.setState({
+            transientDate: date
+        });
+    }
 
+    handleApply() {
         this.setState({
             isOpen: false
         }, () => {
-            this.props.onChange(date);
+            this.props.onChange(this.state.transientDate);
         });
     }
 

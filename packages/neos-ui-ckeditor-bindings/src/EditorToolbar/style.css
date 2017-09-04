@@ -1,5 +1,4 @@
 .toolBar__btnGroup {
-    border-bottom: 1px solid var(--brandColorsContrastDark);
     display: flex;
 
     &:before,

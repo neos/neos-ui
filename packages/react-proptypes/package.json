@@ -17,9 +17,6 @@
   "devDependencies": {
     "@neos-project/build-essentials": "1.0.0-beta3"
   },
-  "peerDependencies": {
-    "prop-types": "^15.5.10"
-  },
   "license": "GNU GPLv3",
   "jest": {
     "transformIgnorePatterns": [],

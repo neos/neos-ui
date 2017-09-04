@@ -16,7 +16,8 @@ module.exports = Object.assign({}, sharedWebPackConfig, {
 
     resolve: {
         modulesDirectories: [
-            path.resolve(__dirname, './packages/neos-ui/node_modules')
+            path.resolve(__dirname, './packages/neos-ui/node_modules'),
+            path.resolve(__dirname, './node_modules')
         ]
     }
 });

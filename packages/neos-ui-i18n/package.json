@@ -17,10 +17,6 @@
   "devDependencies": {
     "@neos-project/build-essentials": "1.0.0-beta3"
   },
-  "peerDependencies": {
-    "prop-types": "^15.5.10",
-    "react": "^15.5.0"
-  },
   "dependencies": {
     "@neos-project/neos-ui-decorators": "1.0.0-beta3",
     "@neos-project/neos-ui-extensibility": "1.0.0-beta3",

@@ -18,9 +18,7 @@
     "@neos-project/build-essentials": "1.0.0-beta3"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta3",
-    "plow-js": "^2.1.0",
-    "ramda": "^0.22.1"
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta3"
   },
   "license": "GNU GPLv3",
   "jest": {

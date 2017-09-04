@@ -23,15 +23,7 @@
     "@neos-project/neos-ui-extensibility": "1.0.0-beta3",
     "@neos-project/neos-ui-guest-frame": "1.0.0-beta3",
     "@neos-project/neos-ui-redux-store": "1.0.0-beta3",
-    "@neos-project/react-ui-components": "1.0.0-beta3",
-    "classnames": "^2.2.3",
-    "lodash.debounce": "^4.0.8",
-    "lodash.throttle": "^4.1.1",
-    "plow-js": "^2.1.0",
-    "ramda": "^0.22.1",
-    "react": "^15.4.0",
-    "react-redux": "^4.4.5",
-    "redux": "^3.4.0"
+    "@neos-project/react-ui-components": "1.0.0-beta3"
   },
   "license": "GNU GPLv3",
   "jest": {

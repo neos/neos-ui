@@ -1,6 +1,7 @@
 import {createSelector} from 'reselect';
 import {$get} from 'plow-js';
 
+export const shouldScrollIntoView = $get('ui.contentCanvas.shouldScrollIntoView');
 export const getCurrentContentCanvasContextPath = $get('ui.contentCanvas.contextPath');
 export const currentlyEditedPropertyName = $get('ui.contentCanvas.currentlyEditedPropertyName');
 

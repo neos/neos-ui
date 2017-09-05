@@ -33,7 +33,11 @@ export const position = nodeElement => {
 export default class NodeToolbar extends PureComponent {
     static propTypes = {
         contextPath: PropTypes.string,
-        fusionPath: PropTypes.string
+        fusionPath: PropTypes.string,
+        // Flag triggered by content tree that tells inlineUI that it should scroll into view
+        shouldScrollIntoView: PropTypes.bool.isRequired,
+        // Unsets the flag
+        requestScrollIntoView: PropTypes.func.isRequired
     };
 
     constructor() {
@@ -46,7 +50,11 @@ export default class NodeToolbar extends PureComponent {
     }
 
     componentDidUpdate() {
-        this.scrollIntoView();
+        // Only scroll into view when triggered from content tree (on focus change)
+        if (this.props.shouldScrollIntoView) {
+            this.scrollIntoView();
+            this.props.requestScrollIntoView(false);
+        }
     }
 
     scrollIntoView() {

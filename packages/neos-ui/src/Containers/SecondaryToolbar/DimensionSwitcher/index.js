@@ -84,7 +84,7 @@ export default class DimensionSwitcher extends PureComponent {
         const contentDimensionsObject = contentDimensions.toObject();
         const contentDimensionsObjectKeys = Object.keys(contentDimensionsObject);
 
-        return (
+        return contentDimensionsObjectKeys.lenght ? (
             <DropDown style="darker" padded={true} className={style.dropDown}>
                 <DropDown.Header>
                     {contentDimensionsObjectKeys.map(dimensionName => {
@@ -117,7 +117,7 @@ export default class DimensionSwitcher extends PureComponent {
                     })}
                 </DropDown.Contents>
             </DropDown>
-        );
+        ) : <span />;
     }
 
     presetsForDimension(dimensionName) {

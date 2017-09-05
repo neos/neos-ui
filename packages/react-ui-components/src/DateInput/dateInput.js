@@ -49,6 +49,7 @@ export class DateInput extends PureComponent {
         //
         // Static component dependencies which are injected from the outside (index.js)
         //
+        ButtonComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         DatePickerComponent: PropTypes.any.isRequired,
         CollapseComponent: PropTypes.any.isRequired
@@ -78,6 +79,7 @@ export class DateInput extends PureComponent {
 
     render() {
         const {
+            ButtonComponent,
             IconComponent,
             DatePickerComponent,
             CollapseComponent,
@@ -133,13 +135,13 @@ export class DateInput extends PureComponent {
                         value={value}
                         onChange={this.handleChange}
                         />
-                    <Button
+                    <ButtonComponent
                         onClick={this.handleApply}
                         className={theme.applyBtn}
                         style="brand"
                         >
                         {applyLabel}
-                    </Button>
+                    </ButtonComponent>
                 </CollapseComponent>
             </div>
         );

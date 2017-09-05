@@ -16,6 +16,7 @@ const SET_CURRENTLY_EDITED_PROPERTY_NAME = '@neos/neos-ui/UI/ContentCanvas/SET_C
 const START_LOADING = '@neos/neos-ui/UI/ContentCanvas/START_LOADING';
 const STOP_LOADING = '@neos/neos-ui/UI/ContentCanvas/STOP_LOADING';
 const FOCUS_PROPERTY = '@neos/neos-ui/UI/ContentCanvas/FOCUS_PROPERTY';
+const REQUEST_SCROLL_INTO_VIEW = '@neos/neos-ui/UI/ContentCanvas/REQUEST_SCROLL_INTO_VIEW';
 
 //
 // Export the action types
@@ -28,7 +29,8 @@ export const actionTypes = {
     SET_CURRENTLY_EDITED_PROPERTY_NAME,
     START_LOADING,
     STOP_LOADING,
-    FOCUS_PROPERTY
+    FOCUS_PROPERTY,
+    REQUEST_SCROLL_INTO_VIEW
 };
 
 const setContextPath = createAction(SET_CONTEXT_PATH, (contextPath, siteNode = null) => ({contextPath, siteNode}));
@@ -38,6 +40,7 @@ const setFormattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formattin
 const setCurrentlyEditedPropertyName = createAction(SET_CURRENTLY_EDITED_PROPERTY_NAME, propertyName => ({propertyName}));
 const startLoading = createAction(START_LOADING);
 const stopLoading = createAction(STOP_LOADING);
+const requestScrollIntoView = createAction(REQUEST_SCROLL_INTO_VIEW, activate => activate);
 
 //
 // Export the actions
@@ -49,7 +52,8 @@ export const actions = {
     setFormattingUnderCursor,
     setCurrentlyEditedPropertyName,
     startLoading,
-    stopLoading
+    stopLoading,
+    requestScrollIntoView
 };
 
 //
@@ -65,7 +69,8 @@ export const reducer = handleActions({
             formattingUnderCursor: new Map(),
             currentlyEditedPropertyName: '',
             isLoading: true,
-            focusedProperty: ''
+            focusedProperty: '',
+            shouldScrollIntoView: false
         })
     ),
     [SET_CONTEXT_PATH]: ({contextPath, siteNode}) => state => {
@@ -100,7 +105,8 @@ export const reducer = handleActions({
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
     [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
     [STOP_LOADING]: () => $set('ui.contentCanvas.isLoading', false),
-    [START_LOADING]: () => $set('ui.contentCanvas.isLoading', true)
+    [START_LOADING]: () => $set('ui.contentCanvas.isLoading', true),
+    [REQUEST_SCROLL_INTO_VIEW]: activate => $set('ui.contentCanvas.shouldScrollIntoView', activate)
 });
 
 //

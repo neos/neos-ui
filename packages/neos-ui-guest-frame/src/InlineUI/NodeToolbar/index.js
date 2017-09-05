@@ -33,7 +33,9 @@ export const position = nodeElement => {
 export default class NodeToolbar extends PureComponent {
     static propTypes = {
         contextPath: PropTypes.string,
-        fusionPath: PropTypes.string
+        fusionPath: PropTypes.string,
+        shouldScrollIntoView: PropTypes.bool.isRequired,
+        requestScrollIntoView: PropTypes.func.isRequired
     };
 
     constructor() {
@@ -46,7 +48,10 @@ export default class NodeToolbar extends PureComponent {
     }
 
     componentDidUpdate() {
-        this.scrollIntoView();
+        if (this.props.shouldScrollIntoView) {
+            this.scrollIntoView();
+            this.props.requestScrollIntoView(false);
+        }
     }
 
     scrollIntoView() {

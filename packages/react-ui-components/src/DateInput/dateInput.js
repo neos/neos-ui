@@ -173,7 +173,7 @@ export class DateInput extends PureComponent {
         this.setState({
             isOpen: false
         }, () => {
-            this.props.onChange(moment());
+            this.props.onChange(moment().toDate());
         });
     }
 

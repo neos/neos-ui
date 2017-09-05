@@ -365,7 +365,9 @@
             line-height: 40px;
             border: 1px solid var(--brandColorsContrastNeutral);
         }
-        td.rdtDay:hover, td.rdtMonth:hover, td.rdtTimeToggle:hover {
+        td.rdtDay:hover,
+        td.rdtMonth:hover,
+        td.rdtTimeToggle:hover {
             background: var(--brandColorsPrimaryBlue) !important;
         }
 

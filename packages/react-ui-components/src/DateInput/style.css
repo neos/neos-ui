@@ -77,11 +77,19 @@
         background: var(--brandColorsPrimaryBlue) !important;
     }
 }
+.applyBtn {
+    width: calc(100% - 2px);
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border: 1px solid var(--brandColorsContrastNeutral);
+    border-top: 0;
+    font-size: var(--baseFontSize);
+}
 .wrapper {
     composes: reset from './../reset.css';
     width: 288px;
 
-    tfoot,
     input[type='text'] {
         display: none;
     }
@@ -111,7 +119,7 @@
             z-index: 99999 !important;
             background: #fff;
             box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
-            border: 1px solid #f9f9f9;
+            border: 1px solid var(--brandColorsContrastNeutral);
         }
         .rdtOpen .rdtPicker {
             display: block;
@@ -188,7 +196,7 @@
             cursor: not-allowed;
         }
         .rdtPicker th {
-            border-bottom: 1px solid #f9f9f9;
+            border-bottom: 1px solid var(--brandColorsContrastNeutral);
         }
         .rdtPicker .dow {
             width: 14.2857%;
@@ -224,7 +232,7 @@
         }
 
         .rdtPicker tfoot {
-            border-top: 1px solid #f9f9f9;
+            border-top: 1px solid var(--brandColorsContrastNeutral);
         }
 
         .rdtPicker button {
@@ -282,7 +290,7 @@
             user-select: none;
         }
         .rdtCounter .rdtBtn:hover {
-            background: #eee;
+            color: var(--brandColorsPrimaryBlue);
         }
         .rdtCounter .rdtCount {
             height: 20%;
@@ -312,10 +320,10 @@
     :global {
         .rdtPicker {
             position: relative;
-            width: calc(100% - 3px);
+            width: calc(100% - 4px);
             background: var(--brandColorsContrastDarkest);
             padding: 0;
-            border: 1px solid var(--brandColorsContrastDarker);
+            border: 1px solid var(--brandColorsContrastNeutral);
             border-top: 0;
             margin: 0;
             box-shadow: none;
@@ -331,8 +339,9 @@
                 font-weight: normal;
                 font-size: var(--baseFontSize);
                 border: 0;
-                border-right: 1px solid var(--brandColorsContrastNeutral);
                 border-left: 1px solid var(--brandColorsContrastNeutral);
+                border-right: 1px solid var(--brandColorsContrastNeutral);
+                border-bottom: 1px solid var(--brandColorsContrastNeutral);
 
                 &.rdtPrev:hover,
                 &.rdtNext:hover,
@@ -348,31 +357,34 @@
             }
         }
 
-        td {
+        td.rdtDay,
+        td.rdtMonth,
+        td.rdtTimeToggle {
             width: 40px;
             height: 40px;
             line-height: 40px;
             border: 1px solid var(--brandColorsContrastNeutral);
+        }
+        td.rdtDay:hover,
+        td.rdtMonth:hover,
+        td.rdtTimeToggle:hover {
+            background: var(--brandColorsPrimaryBlue) !important;
+        }
 
-            &:hover {
-                background: var(--brandColorsPrimaryBlue) !important;
-            }
+        td.rdtDay.rdtOld,
+        td.rdtDay.rdtNew {
+            color: #5b5b5b;
+        }
 
-            &.rdtOld,
-            &.rdtNew {
-                color: #5b5b5b;
-            }
+        td.rdtToday:before {
+            border-bottom-color: var(--brandColorsPrimaryBlue) !important;
+        }
+        td.rdtActive {
+            background: var(--brandColorsPrimaryBlue) !important;
+            color: var(--brandColorsContrastBrightest);
 
-            &.rdtToday:before {
-                border-bottom-color: var(--brandColorsPrimaryBlue) !important;
-            }
-            &.rdtActive {
-                background: var(--brandColorsPrimaryBlue) !important;
-                color: var(--brandColorsContrastBrightest);
-
-                &:before {
-                    display: none !important;
-                }
+            &:before {
+                display: none !important;
             }
         }
     }

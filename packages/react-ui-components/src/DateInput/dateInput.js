@@ -21,6 +21,11 @@ export class DateInput extends PureComponent {
         todayLabel: PropTypes.string,
 
         /**
+         * The label which will be displayed within the `Select Today` btn.
+         */
+        applyLabel: PropTypes.string,
+
+        /**
          * The moment format string to use to format the passed value.
          */
         labelFormat: PropTypes.string,
@@ -43,6 +48,7 @@ export class DateInput extends PureComponent {
         //
         // Static component dependencies which are injected from the outside (index.js)
         //
+        ButtonComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         DatePickerComponent: PropTypes.any.isRequired,
         CollapseComponent: PropTypes.any.isRequired
@@ -50,6 +56,7 @@ export class DateInput extends PureComponent {
 
     static defaultProps = {
         todayLabel: 'Today',
+        applyLabel: 'Apply',
         labelFormat: 'DD-MM-YYYY hh:mm'
     };
 
@@ -57,24 +64,28 @@ export class DateInput extends PureComponent {
         super(props);
 
         this.state = {
-            isOpen: false
+            isOpen: false,
+            transientDate: null
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleApply = this.handleApply.bind(this);
         this.handleClearValueClick = this.handleClearValueClick.bind(this);
         this.handleInputClick = this.open.bind(this);
         this.handleCalendarIconClick = this.open.bind(this);
         this.handleClickOutside = this.close.bind(this);
-        this.handleSelectTodayBtnClick = () => this.handleChange(moment());
+        this.handleSelectTodayBtnClick = this.handleSelectTodayBtnClick.bind(this);
     }
 
     render() {
         const {
+            ButtonComponent,
             IconComponent,
             DatePickerComponent,
             CollapseComponent,
             placeholder,
             theme,
             value,
+            applyLabel,
             todayLabel,
             labelFormat
         } = this.props;
@@ -112,17 +123,24 @@ export class DateInput extends PureComponent {
                     </button>
                 </div>
                 <CollapseComponent isOpened={this.state.isOpen}>
-                    <DatePickerComponent
-                        open={true}
-                        value={value}
-                        onChange={this.handleChange}
-                        />
                     <button
                         className={theme.selectTodayBtn}
                         onClick={this.handleSelectTodayBtnClick}
                         >
                         {todayLabel}
                     </button>
+                    <DatePickerComponent
+                        open={true}
+                        value={value}
+                        onChange={this.handleChange}
+                        />
+                    <ButtonComponent
+                        onClick={this.handleApply}
+                        className={theme.applyBtn}
+                        style="brand"
+                        >
+                        {applyLabel}
+                    </ButtonComponent>
                 </CollapseComponent>
             </div>
         );
@@ -130,11 +148,16 @@ export class DateInput extends PureComponent {
 
     handleChange(momentVal) {
         const date = momentVal.toDate();
+        this.setState({
+            transientDate: date
+        });
+    }
 
+    handleApply() {
         this.setState({
             isOpen: false
         }, () => {
-            this.props.onChange(date);
+            this.props.onChange(this.state.transientDate);
         });
     }
 
@@ -143,6 +166,14 @@ export class DateInput extends PureComponent {
             isOpen: false
         }, () => {
             this.props.onChange(null);
+        });
+    }
+
+    handleSelectTodayBtnClick() {
+        this.setState({
+            isOpen: false
+        }, () => {
+            this.props.onChange(moment().toDate());
         });
     }
 

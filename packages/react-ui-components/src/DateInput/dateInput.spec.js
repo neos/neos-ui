@@ -7,6 +7,7 @@ const defaultProps = {
     onChange: () => null,
     IconComponent: createStubComponent(),
     DatePickerComponent: createStubComponent(),
+    ButtonComponent: createStubComponent(),
     CollapseComponent: createStubComponent(),
     theme: {
         'dropDown__contents': 'baseDropDownContentsClassName',
@@ -85,14 +86,16 @@ test('should render a "DatePicker" Component.', () => {
     expect(picker.prop('open')).toBe(true);
     expect(picker.prop('value')).toBe(value);
 });
-test('should call the "onChange" prop when triggering the change event on the "DatePicker" Component.', () => {
+test('should call the "onChange" prop when triggering the change event on the "DatePicker" Component and clicking apply.', () => {
     const onChange = sinon.spy();
     const value = new Date();
     const wrapper = shallow({value, onChange});
     const picker = wrapper.find(defaultProps.DatePickerComponent);
+    const applyButton = wrapper.find(defaultProps.ButtonComponent);
     const newVal = moment();
 
     picker.simulate('change', newVal);
+    applyButton.simulate('click');
 
     expect(onChange.callCount).toBe(1);
     expect(onChange.args[0][0].toTimeString()).toBe(newVal.toDate().toTimeString());
@@ -108,5 +111,6 @@ test('should set the "isOpen" state to a falsy value and call the "onChange" pro
 
     expect(wrapper.state('isOpen')).toBe(false);
     expect(onChange.callCount).toBe(1);
+    console.log(onChange.args[0][0].toTimeString());
     expect(onChange.args[0][0].toTimeString()).toBe(date.toTimeString());
 });

@@ -43,6 +43,7 @@ export default class NodeTree extends PureComponent {
 
     handleClick = (src, contextPath) => {
         const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView} = this.props;
+        // Set a flag that will imperatively tell ContentCanvas to scroll to focused node
         requestScrollIntoView(true);
         if (setActiveContentCanvasSrc && setActiveContentCanvasContextPath) {
             setActiveContentCanvasSrc(src);

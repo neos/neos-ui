@@ -1,3 +1,5 @@
+import React, {Component} from 'react';
+
 const BOLD = 'font-weight: bold;';
 const RESET = 'font-weight: normal;';
 
@@ -43,8 +45,6 @@ const findDifferences = (type, oldStatePropsOrContext, newStatePropsOrContext) =
                 } else {
                     result.push([`%cnew${capitalizeFirstLetter(type)}.${key}%c:`, BOLD, RESET, valueNew]);
                 }
-
-
             }
         } else {
             result.push([`new${capitalizeFirstLetter(type)} does not have the property %c${key}%c defined, but this.${type} has.`, BOLD, RESET]);
@@ -63,8 +63,7 @@ const findDifferences = (type, oldStatePropsOrContext, newStatePropsOrContext) =
     return result;
 };
 
-
-const internalDebug = (targetReactComponent, oldProps, nextProps, oldState, nextState, oldContext, nextContext) => {
+const internalDebug = (TargetReactComponent, oldProps, nextProps, oldState, nextState, oldContext, nextContext) => {
     const differencesInProps = findDifferences('props', oldProps, nextProps);
     const differencesInState = findDifferences('state', oldState, nextState);
     const differencesInContext = findDifferences('context', oldContext, nextContext);
@@ -85,7 +84,7 @@ const internalDebug = (targetReactComponent, oldProps, nextProps, oldState, next
             changeMessageParts.push('context changed');
         }
 
-        console.group(`%c${targetReactComponent.constructor.name}: component will re-render because %c${changeMessageParts.join(', ')}%c.`, RESET, BOLD, RESET);
+        console.group(`%c${TargetReactComponent.constructor.name}: component will re-render because %c${changeMessageParts.join(', ')}%c.`, RESET, BOLD, RESET);
         differencesInProps.forEach(logString => console.log.apply(console, logString));
         differencesInState.forEach(logString => console.log.apply(console, logString));
         differencesInContext.forEach(logString => console.log.apply(console, logString));
@@ -93,40 +92,35 @@ const internalDebug = (targetReactComponent, oldProps, nextProps, oldState, next
     }
 };
 
-
-const debugReasonForRendering = (targetReactComponent, key, descriptor) => {
+const debugReasonForRendering = (TargetReactComponent, key, descriptor) => {
     if (!key && !descriptor) {
         // @debugReasonForRendering applied on classes
-
-        class DebuggableComponent extends targetReactComponent {
-            constructor(...args) {
-                super(...args);
-            }
+        class DebuggableComponent extends Component {
             shouldComponentUpdate(nextProps, nextState, nextContext) {
-                internalDebug(targetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
-
-                return super.shouldComponentUpdate(...arguments);
+                internalDebug(TargetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
+                return true;
+            }
+            render() {
+                return <TargetReactComponent {...this.props}/>;
             }
         }
-
         return DebuggableComponent;
-    } else {
-        // @debugReasonForRendering applied on shouldComponentUpdate
-        if (key !== 'shouldComponentUpdate') {
-            console.warn(`${targetReactComponent.constructor.name}: The debugger "debugReasonForRendering" should only be applied to shouldComponentUpdate(), but you applied it to %c${key}()`, BOLD);
-            return descriptor;
-        }
-
-        const originalShouldComponentUpdate = descriptor.value;
-
-        descriptor.value = function (nextProps, nextState, nextContext) {
-            internalDebug(targetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
-
-            return originalShouldComponentUpdate.apply(this, arguments);
-        };
-
+    }
+    // @debugReasonForRendering applied on shouldComponentUpdate
+    if (key !== 'shouldComponentUpdate') {
+        console.warn(`${TargetReactComponent.constructor.name}: The debugger "debugReasonForRendering" should only be applied to shouldComponentUpdate(), but you applied it to %c${key}()`, BOLD);
         return descriptor;
     }
+
+    const originalShouldComponentUpdate = descriptor.value;
+
+    descriptor.value = function (nextProps, nextState, nextContext) {
+        internalDebug(TargetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
+
+        return originalShouldComponentUpdate.apply(this, arguments);
+    };
+
+    return descriptor;
 };
 
 export default debugReasonForRendering;

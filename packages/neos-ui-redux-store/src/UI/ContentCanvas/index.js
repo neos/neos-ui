@@ -40,6 +40,7 @@ const setFormattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formattin
 const setCurrentlyEditedPropertyName = createAction(SET_CURRENTLY_EDITED_PROPERTY_NAME, propertyName => ({propertyName}));
 const startLoading = createAction(START_LOADING);
 const stopLoading = createAction(STOP_LOADING);
+// Set a flag to tell ContentCanvas to scroll the focused node into view
 const requestScrollIntoView = createAction(REQUEST_SCROLL_INTO_VIEW, activate => activate);
 
 //

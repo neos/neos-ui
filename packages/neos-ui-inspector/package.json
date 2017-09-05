@@ -18,13 +18,7 @@
     "@neos-project/build-essentials": "1.0.0-beta3"
   },
   "peerDependencies": {
-    "@neos-project/react-ui-components": "^4.4.8",
-    "classnames": "^2.2.3",
-    "plow-js": "^2.1.0",
-    "prop-types": "^15.5.10",
-    "react": "^15.5.0",
-    "react-portal": "^3.1.0",
-    "react-redux": "^5.0.5"
+    "@neos-project/react-ui-components": "^4.4.8"
   },
   "license": "GNU GPLv3",
   "jest": {

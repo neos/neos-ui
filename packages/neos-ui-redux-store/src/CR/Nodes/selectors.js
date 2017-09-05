@@ -73,6 +73,7 @@ export const makeChildrenOfSelector = allowedNodeTypes => createSelector(
     .map(
         contextPath => $get(contextPath, nodesByContextPath)
     )
+    .filter(node => node)
 );
 
 export const siteNodeSelector = createSelector(

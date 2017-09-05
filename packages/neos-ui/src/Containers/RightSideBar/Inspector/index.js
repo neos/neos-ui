@@ -126,7 +126,7 @@ export default class Inspector extends PureComponent {
                         // Only display tabs, that have groups and these groups have properties
                         //
                         .filter(t => t.groups && t.groups.length && t.groups.reduce((acc, group) => {
-                            return acc || group.properties.length > 0;
+                            return acc || group.properties.length > 0 || group.views.length > 0;
                         }, false))
 
                         //

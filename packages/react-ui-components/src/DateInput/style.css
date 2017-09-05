@@ -357,59 +357,30 @@
             }
         }
 
-        /* TODO: next two blocks are not DRY, but for some reason nesting here doesn't work with multiple selectors */
-        td.rdtDay {
+        td.rdtDay, td.rdtMonth, td.rdtTimeToggle {
             width: 40px;
             height: 40px;
             line-height: 40px;
             border: 1px solid var(--brandColorsContrastNeutral);
-
-            &:hover {
-                background: var(--brandColorsPrimaryBlue) !important;
-            }
-
-            &.rdtOld,
-            &.rdtNew {
-                color: #5b5b5b;
-            }
-
-            &.rdtToday:before {
-                border-bottom-color: var(--brandColorsPrimaryBlue) !important;
-            }
-            &.rdtActive {
-                background: var(--brandColorsPrimaryBlue) !important;
-                color: var(--brandColorsContrastBrightest);
-
-                &:before {
-                    display: none !important;
-                }
-            }
         }
-        td.rdtTimeToggle {
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            border: 1px solid var(--brandColorsContrastNeutral);
+        td.rdtDay:hover, td.rdtMonth:hover, td.rdtTimeToggle:hover {
+            background: var(--brandColorsPrimaryBlue) !important;
+        }
 
-            &:hover {
-                background: var(--brandColorsPrimaryBlue) !important;
-            }
+        td.rdtDay.rdtOld,
+        td.rdtDay.rdtNew {
+            color: #5b5b5b;
+        }
 
-            &.rdtOld,
-            &.rdtNew {
-                color: #5b5b5b;
-            }
+        td.rdtToday:before {
+            border-bottom-color: var(--brandColorsPrimaryBlue) !important;
+        }
+        td.rdtActive {
+            background: var(--brandColorsPrimaryBlue) !important;
+            color: var(--brandColorsContrastBrightest);
 
-            &.rdtToday:before {
-                border-bottom-color: var(--brandColorsPrimaryBlue) !important;
-            }
-            &.rdtActive {
-                background: var(--brandColorsPrimaryBlue) !important;
-                color: var(--brandColorsContrastBrightest);
-
-                &:before {
-                    display: none !important;
-                }
+            &:before {
+                display: none !important;
             }
         }
     }

@@ -357,7 +357,9 @@
             }
         }
 
-        td.rdtDay, td.rdtMonth, td.rdtTimeToggle {
+        td.rdtDay,
+        td.rdtMonth,
+        td.rdtTimeToggle {
             width: 40px;
             height: 40px;
             line-height: 40px;

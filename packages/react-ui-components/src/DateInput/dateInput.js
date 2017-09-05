@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import enhanceWithClickOutside from 'react-click-outside';
 import moment from 'moment';
-import Button from '../Button/index';
 
 export class DateInput extends PureComponent {
     static propTypes = {
@@ -74,7 +73,7 @@ export class DateInput extends PureComponent {
         this.handleInputClick = this.open.bind(this);
         this.handleCalendarIconClick = this.open.bind(this);
         this.handleClickOutside = this.close.bind(this);
-        this.handleSelectTodayBtnClick = () => this.handleChange(moment());
+        this.handleSelectTodayBtnClick = this.handleSelectTodayBtnClick.bind(this);
     }
 
     render() {
@@ -167,6 +166,14 @@ export class DateInput extends PureComponent {
             isOpen: false
         }, () => {
             this.props.onChange(null);
+        });
+    }
+
+    handleSelectTodayBtnClick() {
+        this.setState({
+            isOpen: false
+        }, () => {
+            this.props.onChange(moment());
         });
     }
 

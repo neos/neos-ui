@@ -73,13 +73,20 @@ export default class Tabs extends PureComponent {
         );
     }
 
+    getActiveTab() {
+        // If activeTab is out of bounds, choose the first tab
+        const {activeTab} = this.state;
+        const childrenCount = React.Children.count(this.props.children);
+        return childrenCount < activeTab ? 0 : activeTab;
+    }
+
     renderMenuItems() {
         const {
             IconComponent,
             theme,
             children
         } = this.props;
-        const {activeTab} = this.state;
+        const activeTab = this.getActiveTab();
 
         const menuItems = React.Children.map(children, (panel, index) => (
             <TabMenuItem
@@ -108,11 +115,12 @@ export default class Tabs extends PureComponent {
 
     renderPanels() {
         const {theme, children} = this.props;
+        const activeTab = this.getActiveTab();
 
         return (
             <div className={theme.tabs__content}>
                 {React.Children.map(children, (panel, index) => {
-                    const isActive = this.state.activeTab === index;
+                    const isActive = activeTab === index;
                     const style = {
                         display: isActive ? 'block' : 'none'
                     };

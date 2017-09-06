@@ -66,6 +66,5 @@
 
 .panel {
     composes: reset from './../reset.css';
-    padding: 11px 0;
     overflow-y: auto;
 }

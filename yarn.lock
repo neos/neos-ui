@@ -2659,6 +2659,15 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
+editorconfig-checker@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/editorconfig-checker/-/editorconfig-checker-1.0.2.tgz#a1a0d0dd1f6e4d51fd27f485d73549b89c54b8b1"
+  dependencies:
+    iniparser "^1.0.5"
+    minimatch "^3.0.4"
+    minimist "^1.2.0"
+    node-find-files "^0.0.4"
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
@@ -3941,6 +3950,10 @@ inherits@2.0.1:
 ini@^1.2.0, ini@^1.3.2, ini@^1.3.4, ini@~1.3.0:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.4.tgz#0537cb79daf59b59a1a517dff706c86ec039162e"
+
+iniparser@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/iniparser/-/iniparser-1.0.5.tgz#836d6befe6dfbfcee0bccf1cf9f2acc7027f783d"
 
 inquirer@^0.12.0:
   version "0.12.0"
@@ -5466,6 +5479,12 @@ node-fetch@^1.0.1:
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
+
+node-find-files@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/node-find-files/-/node-find-files-0.0.4.tgz#e4b62c7f83a992627260d56f072115c618a87059"
+  dependencies:
+    async "0.2.6"
 
 node-int64@^0.4.0:
   version "0.4.0"

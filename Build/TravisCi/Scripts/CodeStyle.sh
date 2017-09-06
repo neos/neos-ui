@@ -11,4 +11,4 @@ set -e
 # This file serves as the script for the TravisCI `CodeStyle` TEST_SUITE environment.
 # The script will be executed in the package working directory.
 #
-yarn lint
+yarn lint && yarn lint:editorconfig

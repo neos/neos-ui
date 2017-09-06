@@ -64,9 +64,9 @@ After the installation succeeded, execute `yarn start` to start the
 Make a symbolic link inside your Neos installation to your cloned sources od this package. The following example assumes that both installations are in the same folder.
 
 ```
- cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui/node_modules/@neos-project
- rm -rf react-ui-components
- ln -s ./../../../../../../react-ui-components/ .
+cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui/node_modules/@neos-project
+rm -rf react-ui-components
+ln -s ./../../../../../../react-ui-components/ .
 ```
 
 
@@ -80,8 +80,8 @@ yarn watch:build
 run the watcher inside the Neos.Neos.Ui Package
 
 ```
- cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui
- yarn watch:build
+cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui
+yarn watch:build
 ```
 
 #### Commit Guidelines

@@ -24,8 +24,8 @@ cd $DIR/../../
 
 # download JQ if we don't have it yet, for manipulating composer.json
 if [ ! -f "jq-linux64" ]; then
-   wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
-   chmod +x jq-linux64
+    wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+    chmod +x jq-linux64
 fi
 
 

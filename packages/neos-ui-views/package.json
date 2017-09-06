@@ -11,6 +11,7 @@
     "test:watch": "yarn jest -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
+    "lint:editorconfig": "editorconfig-checker",
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage",
     "postpublish": "greenkeeper-postpublish"
   },

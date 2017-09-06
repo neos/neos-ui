@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {
-        optionValueField: 'value'
+        optionValueField: 'value',
+        allowEmpty: true
     };
 
     static propTypes = {
@@ -53,6 +54,11 @@ export default class MultiSelectBox extends PureComponent {
         displayLoadingIndicator: PropTypes.bool,
 
         /**
+         * if false, prevents removing the last element.
+         */
+        allowEmpty: PropTypes.bool,
+
+        /**
          * search box related properties
          */
         displaySearchBox: PropTypes.bool,
@@ -98,6 +104,7 @@ export default class MultiSelectBox extends PureComponent {
             theme,
             placeholder,
             placeholderIcon,
+            allowEmpty,
             displaySearchBox,
             searchTerm,
             onSearchTermChange,
@@ -141,8 +148,10 @@ export default class MultiSelectBox extends PureComponent {
      */
     renderSelectedValue = (value, index) => {
         const {
+            values,
             optionValueField,
             options,
+            allowEmpty,
             theme,
             IconComponent,
             IconButtonComponent
@@ -164,10 +173,14 @@ export default class MultiSelectBox extends PureComponent {
                         null
                 }
                 <span>{ label }</span>
-                <IconButtonComponent
-                    icon={'close'}
-                    onClick={this.handleRemoveOption(value)}
-                    />
+                {
+                    values && values.length == 1 && !allowEmpty ?
+                    null:
+                    <IconButtonComponent
+                        icon={'close'}
+                        onClick={this.handleRemoveOption(value)}
+                        />
+                }
             </li>
         );
     }

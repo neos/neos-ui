@@ -27,6 +27,36 @@ storiesOf('MultiSelectBox', module)
         {inline: true}
     )
     .addWithInfo(
+        'allowEmpty=false with more than one element should display "x" next to the elements',
+        () => (
+            <StoryWrapper>
+                <MultiSelectBox
+                    allowEmpty={false}
+                    values={['opt1', 'opt2']}
+                    options={options}
+                    searchOptions={options}
+                    onValuesChange={action('onValuesChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'allowEmpty=false with one element should not display "x" next to the element',
+        () => (
+            <StoryWrapper>
+                <MultiSelectBox
+                    allowEmpty={false}
+                    values={['opt1']}
+                    options={options}
+                    searchOptions={options}
+                    onValuesChange={action('onValuesChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
         'showing loading indicator with options filled (e.g. during AJAX search)',
         () => (
             <StoryWrapper>

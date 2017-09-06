@@ -27,6 +27,20 @@ storiesOf('SelectBox', module)
         {inline: true}
     )
     .addWithInfo(
+        'preselected value with allowEmpty displays "clear"-x icon.',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    value={'opt1'}
+                    options={options}
+                    allowEmpty={true}
+                    onValueChange={action('onValueChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
         'showing loading indicator with options filled (e.g. during AJAX search)',
         () => (
             <StoryWrapper>

@@ -16,6 +16,7 @@ storiesOf('Tree', module)
                             isActive={true}
                             isFocused={true}
                             isLoading={false}
+                            isDirty={true}
                             hasError={false}
                             label="Active focused node with children"
                             onNodeToggle={action('onNodeToggle')}
@@ -44,6 +45,7 @@ storiesOf('Tree', module)
                                     isActive={true}
                                     isFocused={false}
                                     isLoading={false}
+                                    isDirty={true}
                                     hasError={false}
                                     label="Active node"
                                     onNodeToggle={action('onNodeToggle')}

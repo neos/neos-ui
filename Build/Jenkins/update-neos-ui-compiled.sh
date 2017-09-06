@@ -34,12 +34,12 @@ git add Resources/Public/
 git commit -m "Compile Neos UI - $GIT_SHA1" || true
 
 if [ "$GIT_BRANCH" == "origin/master" ]; then
-  echo "Git branch $GIT_BRANCH found, pushing to this branch."
-  git push origin HEAD:${GIT_BRANCH#*/}
+    echo "Git branch $GIT_BRANCH found, pushing to this branch."
+    git push origin HEAD:${GIT_BRANCH#*/}
 fi
 
 if [ "$GIT_TAG" != "" ]; then
-  echo "Git tag $GIT_TAG found; also tagging the UI-compiled package."
-  git tag -a -m "$GIT_TAG" $GIT_TAG
-  git push origin $GIT_TAG
+    echo "Git tag $GIT_TAG found; also tagging the UI-compiled package."
+    git tag -a -m "$GIT_TAG" $GIT_TAG
+    git push origin $GIT_TAG
 fi

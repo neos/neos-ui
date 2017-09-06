@@ -24,7 +24,7 @@
     border: 1px solid var(--brandColorsContrastDark);
 
     .dialog--wide & {
-       max-width: calc(var(--goldenUnit) * 24);
+        max-width: calc(var(--goldenUnit) * 24);
     }
 }
 .dialog__title {

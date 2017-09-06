@@ -131,7 +131,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
 
         if (!isset($this->typeMap[$type])) {
             return new \Neos\Error\Messages\Error(
-              sprintf('Could not convert change type %s, it is unknown to the system', $type));
+                sprintf('Could not convert change type %s, it is unknown to the system', $type));
         }
 
         $changeClass = $this->typeMap[$type];

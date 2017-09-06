@@ -38,7 +38,7 @@ class ModulesHelper implements ProtectedContextAwareInterface
         if (isset($moduleConfiguration['enabled']) && $moduleConfiguration['enabled'] !== true) {
             return false;
         }
-        
+
         array_pop($modulePathSegments);
 
         if ($modulePathSegments === []) {

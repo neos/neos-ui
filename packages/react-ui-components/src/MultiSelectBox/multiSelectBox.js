@@ -104,7 +104,6 @@ export default class MultiSelectBox extends PureComponent {
             theme,
             placeholder,
             placeholderIcon,
-            allowEmpty,
             displaySearchBox,
             searchTerm,
             onSearchTermChange,
@@ -177,8 +176,8 @@ export default class MultiSelectBox extends PureComponent {
                     { label }
                 </span>
                 {
-                    values && values.length == 1 && !allowEmpty ?
-                    null:
+                    values && values.length === 1 && !allowEmpty ?
+                    null :
                     <IconButtonComponent
                         icon={'close'}
                         onClick={this.handleRemoveOption(value)}

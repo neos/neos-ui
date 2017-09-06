@@ -15,8 +15,8 @@ export default class I18n extends PureComponent {
         id: PropTypes.string,
 
         // The destination paths for the package and source of the translation.
-        packageKey: PropTypes.string.isRequired,
-        sourceName: PropTypes.string.isRequired,
+        packageKey: PropTypes.string,
+        sourceName: PropTypes.string,
 
         // Additional parameters which are passed to the i18n service.
         params: PropTypes.object.isRequired,
@@ -28,8 +28,8 @@ export default class I18n extends PureComponent {
     };
 
     static defaultProps = {
-        packageKey: 'Neos.Neos',
-        sourceName: 'Main',
+        packageKey: null,
+        sourceName: null,
         params: {}
     };
 

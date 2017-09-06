@@ -4,6 +4,7 @@ import {createSelector, defaultMemoize} from 'reselect';
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
 
 const nodes = $get(['cr', 'nodes', 'byContextPath']);
+const siteNode = $get('cr.nodes.siteNode');
 const focused = $get('cr.nodes.focused.contextPath');
 
 const parentNodeContextPath = contextPath => {
@@ -77,7 +78,7 @@ export const makeChildrenOfSelector = allowedNodeTypes => createSelector(
 
 export const siteNodeSelector = createSelector(
     [
-        $get('cr.nodes.siteNode'),
+        siteNode,
         $get('cr.nodes.byContextPath')
     ],
     (siteNodeContextPath, nodesByContextPath) => $get(siteNodeContextPath, nodesByContextPath)
@@ -216,4 +217,19 @@ export const makeCanBeInsertedSelector = nodeTypesRegistry => createSelector(
         makeCanBeInsertedIntoSelector(nodeTypesRegistry)
     ],
     (canBeInsertedAlongside, canBeInsertedInto) => (canBeInsertedAlongside || canBeInsertedInto)
+);
+
+export const destructiveOperationsAreDisabledSelector = createSelector(
+    [
+        siteNode,
+        focused,
+        focusedSelector
+    ],
+    (siteNodeContextPath, focusedNodeContextPath, focusedNode) => {
+        return (
+            Boolean(focusedNode) === false ||
+            $get('isAutoCreated', focusedNode) ||
+            siteNodeContextPath === focusedNodeContextPath
+        );
+    }
 );

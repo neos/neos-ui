@@ -1,38 +1,35 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
-import {selectors, actions} from '@neos-project/neos-ui-redux-store';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
-@connect($transform({
-    node: selectors.CR.Nodes.focusedSelector
-}), {
+@connect(null, {
     commenceNodeRemoval: actions.CR.Nodes.commenceRemoval
 })
 export default class DeleteSelectedNode extends PureComponent {
     static propTypes = {
-        node: PropTypes.object,
+        contextPath: PropTypes.string,
         className: PropTypes.string,
+        destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         commenceNodeRemoval: PropTypes.func.isRequired
     };
 
     handleDeleteSelectedNodeClick = () => {
-        const {node, commenceNodeRemoval} = this.props;
+        const {contextPath, commenceNodeRemoval} = this.props;
 
-        commenceNodeRemoval($get('contextPath', node));
+        commenceNodeRemoval(contextPath);
     }
 
     render() {
-        const {className, node} = this.props;
-        const isDisabled = !node || $get('isAutoCreated', node);
+        const {className, destructiveOperationsAreDisabled} = this.props;
 
         return (
             <IconButton
                 className={className}
-                isDisabled={isDisabled}
+                isDisabled={destructiveOperationsAreDisabled}
                 onClick={this.handleDeleteSelectedNodeClick}
                 icon="trash"
                 hoverStyle="clean"

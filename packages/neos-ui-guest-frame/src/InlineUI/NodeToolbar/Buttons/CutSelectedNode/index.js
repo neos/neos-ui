@@ -4,37 +4,35 @@ import {connect} from 'react-redux';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
-import {selectors, actions} from '@neos-project/neos-ui-redux-store';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
-@connect(state => ({
-    focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state)
-}), {
+@connect(null, {
     cutNode: actions.CR.Nodes.cut
 })
 export default class CutSelectedNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
-        focusedNodeContextPath: PropTypes.string,
-
+        contextPath: PropTypes.string,
+        destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         cutNode: PropTypes.func.isRequired
     };
 
     handleCutSelectedNodeClick = () => {
-        const {focusedNodeContextPath, cutNode} = this.props;
+        const {contextPath, cutNode} = this.props;
 
-        cutNode(focusedNodeContextPath);
+        cutNode(contextPath);
     }
 
     render() {
         const {
-            focusedNodeContextPath,
+            destructiveOperationsAreDisabled,
             className
         } = this.props;
 
         return (
             <IconButton
                 className={className}
-                isDisabled={!focusedNodeContextPath}
+                isDisabled={destructiveOperationsAreDisabled}
                 onClick={this.handleCutSelectedNodeClick}
                 icon="cut"
                 hoverStyle="clean"

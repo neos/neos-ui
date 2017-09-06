@@ -25,9 +25,10 @@ export const makeIsDocumentNodeDirtySelector = documentContextPath => createSele
     )).count() > 0
 );
 
-export const makeIsContentNodeDirtySelector = contextPath => createSelector(
+export const makeIsContentNodeDirtySelector = () => createSelector(
     [
-        publishableNodesSelector
+        publishableNodesSelector,
+        (state, contextPath) => contextPath
     ],
-    publishableNodes => publishableNodes.filter(i => $get('contextPath', i) === contextPath).count() > 0
+    (publishableNodes, contextPath) => publishableNodes.filter(i => $get('contextPath', i) === contextPath).count() > 0
 );

@@ -117,6 +117,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         onClick={this.handleCopyNode}
+                        isDisabled={destructiveOperationsAreDisabled}
                         />
                     <CutSelectedNode
                         className={style.toolBar__btnGroup__btn}
@@ -199,7 +200,6 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
         const canBePastedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
 
         return state => {
-            const documentNodeContextPath = $get('ui.contentCanvas.contextPath', state);
             const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(focusedNodeContextPath);
             const focusedNode = getNodeByContextPathSelector(state);
@@ -210,11 +210,7 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
             });
             const isLoading = selectors.UI.ContentTree.getIsLoading(state);
             const isHidden = $get('properties._hidden', focusedNode);
-            const destructiveOperationsAreDisabled = (
-                Boolean(focusedNode) === false ||
-                $get('isAutoCreated', focusedNode) ||
-                documentNodeContextPath === focusedNodeContextPath
-            );
+            const destructiveOperationsAreDisabled = selectors.CR.Nodes.destructiveOperationsAreDisabledSelector(state);
 
             return {
                 focusedNodeContextPath,

@@ -34,6 +34,7 @@ export default class NodeToolbar extends PureComponent {
     static propTypes = {
         contextPath: PropTypes.string,
         fusionPath: PropTypes.string,
+        destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         // Flag triggered by content tree that tells inlineUI that it should scroll into view
         shouldScrollIntoView: PropTypes.bool.isRequired,
         // Unsets the flag
@@ -73,7 +74,7 @@ export default class NodeToolbar extends PureComponent {
     }
 
     render() {
-        const {contextPath, fusionPath} = this.props;
+        const {contextPath, fusionPath, destructiveOperationsAreDisabled} = this.props;
 
         if (!contextPath) {
             return null;
@@ -82,6 +83,7 @@ export default class NodeToolbar extends PureComponent {
         const props = {
             contextPath,
             fusionPath,
+            destructiveOperationsAreDisabled,
             className: style.toolBar__btnGroup__btn
         };
 

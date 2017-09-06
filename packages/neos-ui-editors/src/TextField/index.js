@@ -17,7 +17,7 @@ const defaultOptions = {
 export default class TextField extends PureComponent {
 
     static propTypes = {
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.numer]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         commit: PropTypes.func.isRequired,
         validationErrors: PropTypes.array,
         highlight: PropTypes.bool,

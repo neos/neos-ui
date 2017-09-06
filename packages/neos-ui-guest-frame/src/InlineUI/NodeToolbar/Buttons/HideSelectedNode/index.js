@@ -17,7 +17,8 @@ export default class HideSelectedNode extends PureComponent {
         node: PropTypes.object,
         className: PropTypes.string,
         hideNode: PropTypes.func.isRequired,
-        showNode: PropTypes.func.isRequired
+        showNode: PropTypes.func.isRequired,
+        destructiveOperationsAreDisabled: PropTypes.bool.isRequired
     };
 
     handleHideNode = () => {
@@ -33,15 +34,14 @@ export default class HideSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, node} = this.props;
-        const isDisabled = !node || $get('isAutoCreated', node);
+        const {className, node, destructiveOperationsAreDisabled} = this.props;
         const isHidden = $get('properties._hidden', node);
 
         return (
             <IconButton
                 className={className}
                 isActive={isHidden}
-                isDisabled={isDisabled}
+                isDisabled={destructiveOperationsAreDisabled}
                 onClick={isHidden ? this.handleShowNode : this.handleHideNode}
                 icon="eye-slash"
                 hoverStyle="clean"

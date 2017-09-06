@@ -9,7 +9,9 @@ export default class CopySelectedNode extends PureComponent {
 
         focusedNodeContextPath: PropTypes.string,
 
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
+
+        isDisabled: PropTypes.bool
     };
 
     handleClick = () => {
@@ -20,14 +22,14 @@ export default class CopySelectedNode extends PureComponent {
 
     render() {
         const {
-            focusedNodeContextPath,
-            className
+            className,
+            isDisabled
         } = this.props;
 
         return (
             <IconButton
                 className={className}
-                isDisabled={Boolean(focusedNodeContextPath) === false}
+                isDisabled={isDisabled}
                 onClick={this.handleClick}
                 icon="copy"
                 hoverStyle="clean"

@@ -23,7 +23,6 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             PropTypes.arrayOf(PropTypes.string)
         ]),
         options: PropTypes.shape({
-            // TODO
             allowEmpty: PropTypes.bool,
             placeholder: PropTypes.string,
 
@@ -107,6 +106,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
                 displayLoadingIndicator={this.state.isLoading}
                 placeholder={placeholder}
 
+                allowEmpty={options.allowEmpty}
                 displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
                 searchTerm={this.state.searchTerm}
@@ -122,6 +122,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             displayLoadingIndicator={this.state.isLoading}
             placeholder={placeholder}
 
+            allowEmpty={options.allowEmpty}
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
             searchTerm={this.state.searchTerm}
             onSearchTermChange={this.handleSearchTermChange}

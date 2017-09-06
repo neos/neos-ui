@@ -13,7 +13,6 @@ export default class SimpleSelectBoxEditor extends PureComponent {
         commit: PropTypes.func.isRequired,
         value: PropTypes.any,
         options: PropTypes.shape({
-            // TODO
             allowEmpty: PropTypes.bool,
             placeholder: PropTypes.string,
 
@@ -64,7 +63,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
                 values={value || []}
                 onValuesChange={commit}
                 placeholder={placeholder}
-
+                allowEmpty={options.allowEmpty}
                 displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
                 searchTerm={this.state.searchTerm}
@@ -79,6 +78,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             onValueChange={commit}
             placeholder={placeholder}
 
+            allowEmpty={options.allowEmpty}
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
             searchTerm={this.state.searchTerm}
             onSearchTermChange={this.handleSearchTermChange}

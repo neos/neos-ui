@@ -55,6 +55,11 @@ export default class SelectBox extends PureComponent {
         displayLoadingIndicator: PropTypes.bool,
 
         /**
+         * if true, allows to clear the selected element completely (without choosing another one)
+         */
+        allowEmpty: PropTypes.bool,
+
+        /**
          * search box related properties
          */
         displaySearchBox: PropTypes.bool,
@@ -120,8 +125,16 @@ export default class SelectBox extends PureComponent {
             IconButtonComponent,
             IconComponent
         } = this.props;
+        let allowEmpty = this.props.allowEmpty;
 
         const selectedValue = (options || []).find(option => option[optionValueField] === value);
+
+        // if the search box should be shown, we *need* to force allowEmpty (to display the "clear" button if a value is selected),
+        // as the search box is only shown if nothing is selected.
+        // If we would not force this and allowEmpty=false, the user could not go back to the search box after he has initially selected a value.
+        if (displaySearchBox) {
+            allowEmpty = true;
+        }
 
         let icon = '';
         let label = '';
@@ -160,7 +173,7 @@ export default class SelectBox extends PureComponent {
                             <IconComponent className={theme.dropDown__loadingIcon} spin={true} icon="spinner"/> :
                             null
                         }
-                        {!displayLoadingIndicator && displaySearchBox && selectedValue ?
+                        {!displayLoadingIndicator && allowEmpty && selectedValue ?
                             <IconButtonComponent className={theme.dropDown__loadingIcon} icon="times" onClick={this.handleDeleteClick}/> :
                             null
                         }

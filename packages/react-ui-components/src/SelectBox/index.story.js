@@ -6,7 +6,7 @@ import SelectBox from './index.js';
 import DropDown from './../DropDown/index.js';
 
 const options = [
-    {value: 'opt1', label: 'Option 1'},
+    {value: 'opt1', label: 'Option 1', icon: 'bookmark'},
     {value: 'opt2', label: 'Option 2'},
     {value: 'opt3', label: 'Option 3'}
 ];
@@ -20,6 +20,20 @@ storiesOf('SelectBox', module)
                 <SelectBox
                     value={'opt1'}
                     options={options}
+                    onValueChange={action('onValueChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'preselected value with allowEmpty displays "clear"-x icon.',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    value={'opt1'}
+                    options={options}
+                    allowEmpty={true}
                     onValueChange={action('onValueChange')}
                     />
             </StoryWrapper>

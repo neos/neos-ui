@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {
-        optionValueField: 'value'
+        optionValueField: 'value',
+        allowEmpty: true
     };
 
     static propTypes = {
@@ -33,7 +34,7 @@ export default class MultiSelectBox extends PureComponent {
         values: PropTypes.arrayOf(PropTypes.string),
 
         /**
-         * This prop gets called when an option was selected. It returns the new value.
+         * This prop gets called when an option was selected. It returns the new values as array.
          */
         onValuesChange: PropTypes.func.isRequired,
 
@@ -51,6 +52,11 @@ export default class MultiSelectBox extends PureComponent {
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
+
+        /**
+         * if false, prevents removing the last element.
+         */
+        allowEmpty: PropTypes.bool,
 
         /**
          * search box related properties
@@ -141,8 +147,10 @@ export default class MultiSelectBox extends PureComponent {
      */
     renderSelectedValue = (value, index) => {
         const {
+            values,
             optionValueField,
             options,
+            allowEmpty,
             theme,
             IconComponent,
             IconButtonComponent
@@ -158,16 +166,23 @@ export default class MultiSelectBox extends PureComponent {
                 key={index}
                 className={theme.selectedOptions__item}
                 >
+                <span>
+                    {
+                        icon ?
+                            <IconComponent className={theme.selectedOptions__itemIcon} icon={icon}/> :
+                            null
+                    }
+
+                    { label }
+                </span>
                 {
-                    icon ?
-                        <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
-                        null
+                    values && values.length === 1 && !allowEmpty ?
+                    null :
+                    <IconButtonComponent
+                        icon={'close'}
+                        onClick={this.handleRemoveOption(value)}
+                        />
                 }
-                <span>{ label }</span>
-                <IconButtonComponent
-                    icon={'close'}
-                    onClick={this.handleRemoveOption(value)}
-                    />
             </li>
         );
     }

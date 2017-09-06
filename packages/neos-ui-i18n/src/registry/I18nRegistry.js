@@ -67,7 +67,7 @@ export default class I18nRegistry extends SynchronousRegistry {
         this._translations = translations;
     }
 
-    translate(idOrig, fallbackOrig, params = {}, packageKeyOrig = null, sourceNameOrig = null) {
+    translate(idOrig, fallbackOrig, params = {}, packageKeyOrig = 'Neos.Neos', sourceNameOrig = 'Main') {
         const fallback = fallbackOrig || idOrig;
         const [packageKey, sourceName, id] = getTranslationAddress(idOrig, packageKeyOrig, sourceNameOrig);
         const translation = [packageKey, sourceName, id]

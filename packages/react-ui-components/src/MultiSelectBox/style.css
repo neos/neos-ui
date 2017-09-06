@@ -31,3 +31,7 @@
         vertical-align: middle;
     }
 }
+
+.selectedOptions__itemIcon {
+    margin-right: .5em;
+}

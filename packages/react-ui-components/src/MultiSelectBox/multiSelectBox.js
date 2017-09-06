@@ -167,12 +167,15 @@ export default class MultiSelectBox extends PureComponent {
                 key={index}
                 className={theme.selectedOptions__item}
                 >
-                {
-                    icon ?
-                        <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
-                        null
-                }
-                <span>{ label }</span>
+                <span>
+                    {
+                        icon ?
+                            <IconComponent className={theme.selectedOptions__itemIcon} icon={icon}/> :
+                            null
+                    }
+
+                    { label }
+                </span>
                 {
                     values && values.length == 1 && !allowEmpty ?
                     null:

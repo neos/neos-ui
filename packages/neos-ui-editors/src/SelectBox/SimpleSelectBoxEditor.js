@@ -23,7 +23,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             values: PropTypes.objectOf(
                 PropTypes.shape({
                     label: PropTypes.string,
-                    icon: PropTypes.string, // TODO test
+                    icon: PropTypes.string,
 
                     // TODO
                     group: PropTypes.string

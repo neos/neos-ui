@@ -6,7 +6,7 @@ import SelectBox from './index.js';
 import DropDown from './../DropDown/index.js';
 
 const options = [
-    {value: 'opt1', label: 'Option 1'},
+    {value: 'opt1', label: 'Option 1', icon: 'bookmark'},
     {value: 'opt2', label: 'Option 2'},
     {value: 'opt3', label: 'Option 3'}
 ];

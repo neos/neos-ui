@@ -6,7 +6,7 @@ import MultiSelectBox from './index.js';
 
 const options = [
     {value: 'opt1', label: 'Option 1'},
-    {value: 'opt2', label: 'Option 2'},
+    {value: 'opt2', label: 'Option 2', icon: 'bookmark'},
     {value: 'opt3', label: 'Option 3'}
 ];
 

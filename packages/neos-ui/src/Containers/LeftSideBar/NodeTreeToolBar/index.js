@@ -117,6 +117,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         onClick={this.handleCopyNode}
+                        isDisabled={destructiveOperationsAreDisabled}
                         />
                     <CutSelectedNode
                         className={style.toolBar__btnGroup__btn}

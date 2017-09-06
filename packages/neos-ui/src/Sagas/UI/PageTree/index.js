@@ -108,10 +108,9 @@ function * watchCurrentDocument({configuration}) {
         while (parentContextPath !== siteNodeContextPath) {
             parentContextPath = parentNodeContextPath(parentContextPath);
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
-            const node = yield select(getNodeByContextPathSelector);
-            const isToggled = yield select($contains(parentContextPath, 'ui.pageTree.toggled'));
-            const isCollapsed = isNodeCollapsed(node, isToggled, siteNode, loadingDepth);
+            let node = yield select(getNodeByContextPathSelector);
 
+            // If the given node is not in the state, load it
             if (!node) {
                 yield put(actions.UI.PageTree.setAsLoading(siteNodeContextPath));
                 const nodes = yield q(parentContextPath).get();
@@ -119,8 +118,12 @@ function * watchCurrentDocument({configuration}) {
                     nodeMap[$get('contextPath', node)] = node;
                     return nodeMap;
                 }, {})));
+                node = yield select(getNodeByContextPathSelector);
             }
 
+            // Calculate if the given node is collapsed, and if so the uncollapse it
+            const isToggled = yield select($contains(parentContextPath, 'ui.pageTree.toggled'));
+            const isCollapsed = isNodeCollapsed(node, isToggled, siteNode, loadingDepth);
             if (isCollapsed) {
                 yield put(actions.UI.PageTree.toggle(parentContextPath));
             }

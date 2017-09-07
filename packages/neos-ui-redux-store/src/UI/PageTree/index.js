@@ -39,7 +39,7 @@ const setAsLoading = createAction(SET_AS_LOADING, contextPath => ({contextPath})
 const setAsLoaded = createAction(SET_AS_LOADED, contextPath => ({contextPath}));
 const reloadTree = createAction(RELOAD_TREE);
 const commenceSearch = createAction(COMMENCE_SEARCH, (contextPath, {query}) => ({contextPath, query}));
-const setSearchResult = createAction(SET_SEARCH_RESULT, nodes => ({nodes}));
+const setSearchResult = createAction(SET_SEARCH_RESULT, result => (result));
 
 //
 // Export the actions
@@ -90,7 +90,7 @@ export const reducer = handleActions({
             return $all(
               $set('ui.pageTree.hidden', new Set()),
               $set('ui.pageTree.intermediate', new Set()),
-              $set('ui.pageTree.uncollapsed', new Set([$get('cr.nodes.siteNode', state)]))
+              $set('ui.pageTree.toggled', new Set())
             )(state);
         }
 
@@ -98,33 +98,14 @@ export const reducer = handleActions({
 
         return $all(
           $set('ui.pageTree.hidden', hiddenContextPaths.delete($get('cr.nodes.siteNode', state))),
-          $set('ui.pageTree.uncollapsed', new Set())
+          $set('ui.pageTree.toggled', new Set())
         )(state);
     },
-    [SET_SEARCH_RESULT]: ({nodes}) => state => {
-        const resultContextPaths = new Set(Object.keys(nodes));
-        const hiddenContextPaths = $get('ui.pageTree.hidden', state).subtract(resultContextPaths);
-
-        const uncollapsedContextPaths = [];
-        const intermediateContextPaths = [];
-
-        Object.keys(nodes).forEach(contextPath => {
-            const node = nodes[contextPath];
-            if (node.intermediate) {
-                uncollapsedContextPaths.push(contextPath);
-
-                if (!node.matched) {
-                    intermediateContextPaths.push(contextPath);
-                }
-            }
-        });
-
-        return $all(
-          $set('ui.pageTree.hidden', hiddenContextPaths),
-          $set('ui.pageTree.uncollapsed', new Set(uncollapsedContextPaths)),
-          $set('ui.pageTree.intermediate', new Set(intermediateContextPaths))
-        )(state);
-    }
+    [SET_SEARCH_RESULT]: result => $all(
+        $set('ui.pageTree.hidden', result.hiddenContextPaths),
+        $set('ui.pageTree.toggled', new Set(result.toggledContextPaths)),
+        $set('ui.pageTree.intermediate', new Set(result.intermediateContextPaths))
+    )
 });
 
 //

@@ -131,7 +131,7 @@ function * watchCurrentDocument({configuration}) {
     });
 }
 
-function * watchSearch() {
+function * watchSearch({configuration}) {
     yield * takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
         const {contextPath, query: searchQuery} = action.payload;
 
@@ -144,6 +144,8 @@ function * watchSearch() {
         const {q} = backend.get();
         const query = q(contextPath);
         const matchingNodes = yield query.search(searchQuery).getForTreeWithParents();
+        const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
+        const loadingDepth = configuration.nodeTree.loadingDepth;
 
         if (matchingNodes.length > 0) {
             const nodes = matchingNodes.reduce((map, node) => {
@@ -152,7 +154,37 @@ function * watchSearch() {
             }, {});
 
             yield put(actions.CR.Nodes.merge(nodes));
-            yield put(actions.UI.PageTree.setSearchResult(nodes));
+
+            const resultContextPaths = new Set(Object.keys(nodes));
+            const oldHidden = yield select($get('ui.pageTree.hidden'));
+            const hiddenContextPaths = oldHidden.subtract(resultContextPaths);
+
+            const toggledContextPaths = [];
+            const intermediateContextPaths = [];
+
+            Object.keys(nodes).forEach(contextPath => {
+                const node = nodes[contextPath];
+                if (node.intermediate) {
+                    // We reset all toggled state before search, so we can assume "isToggled == false" here
+                    const isToggled = false;
+                    const isCollapsed = isNodeCollapsed(node, isToggled, siteNode, loadingDepth);
+                    if (isCollapsed) {
+                        toggledContextPaths.push(contextPath);
+                    }
+
+                    if (!node.matched) {
+                        intermediateContextPaths.push(contextPath);
+                    }
+                }
+            });
+
+            const result = {
+                hiddenContextPaths,
+                toggledContextPaths,
+                intermediateContextPaths
+            };
+
+            yield put(actions.UI.PageTree.setSearchResult(result));
         }
 
         yield put(actions.UI.PageTree.setAsLoaded(contextPath));

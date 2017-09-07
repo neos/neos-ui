@@ -43,6 +43,12 @@ function * watchNodeFocus({configuration}) {
         const loadingDepth = configuration.structureTree.loadingDepth;
         while (parentContextPath !== documentNodeContextPath) {
             parentContextPath = parentNodeContextPath(parentContextPath);
+            if (!parentContextPath) {
+                // in case our focused node is not on the current document, documentNodeContextPath
+                // can never be an anchestor of contextPath. In this case, we traverse the path until
+                // we reached the top level, where we need to abort the loop to avoid infinite spinning.
+                break;
+            }
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             const node = yield select(getNodeByContextPathSelector);
             const isToggled = yield select($contains(parentContextPath, 'ui.contentTree.toggled'));

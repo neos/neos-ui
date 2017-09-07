@@ -31,6 +31,11 @@ export const parentNodeContextPath = contextPath => {
 
     const [path, context] = contextPath.split('@');
 
+    if (path.length === 0) {
+        // we are at top level; so there is no parent anymore!
+        return false;
+    }
+
     return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
 };
 

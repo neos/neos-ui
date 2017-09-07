@@ -8,7 +8,7 @@
     "require": {
         "neos/neos-development-collection": "@dev",
         "neos/flow-development-collection": "@dev",
-        "neos/demo": "@dev",
+        "neos/demo": "dev-master@dev",
 
         "neos/neos-ui": "@dev",
         "neos/neos-ui-compiled": "@dev",

@@ -6,7 +6,7 @@
     }
 }
 
-/* eslint-disable selector-max-id */
+/* stylelint-disable selector-max-id */
 
 /* Scrollbar styles for appContainer, its siblings (needed for React portals) and also for contentcanvas' body */
 :global #appContainer ::-webkit-scrollbar,

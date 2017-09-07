@@ -84,7 +84,7 @@ test('should render a "DatePicker" Component.', () => {
 
     expect(picker.length).toBe(1);
     expect(picker.prop('open')).toBe(true);
-    expect(picker.prop('value')).toBe(value);
+    expect(picker.prop('defaultValue')).toBe(value);
 });
 test('should call the "onChange" prop when triggering the change event on the "DatePicker" Component and clicking apply.', () => {
     const onChange = sinon.spy();

@@ -121,6 +121,11 @@ function * flushInspector(inspectorRegistry) {
                 const oldUriFragment = oldUri.split('@')[0];
                 const newUriFragment = oldUriFragment.replace(new RegExp(oldValue + '$'), newValue);
                 yield put(actions.CR.Nodes.updateUri(oldUriFragment, newUriFragment));
+
+                // Update previewUrl
+                const oldPreviewUrl = $get('ui.contentCanvas.previewUrl', state);
+                const newPreviewUrl = oldPreviewUrl.replace(oldUriFragment, newUriFragment);
+                yield put(actions.UI.ContentCanvas.setPreviewUrl(newPreviewUrl));
             }
         }
     }

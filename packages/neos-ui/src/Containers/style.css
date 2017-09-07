@@ -6,20 +6,26 @@
     }
 }
 
-::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
+/* Scrollbar styles for appContainer, its siblings (needed for React portals) and also for contentcanvas' body */
+:global #appContainer ::-webkit-scrollbar,
+:global #appContainer ~ * ::-webkit-scrollbar,
+:global body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
-
-::-webkit-scrollbar-track {
-	background-color: var(--brandColorsContrastDark);
+:global #appContainer ::-webkit-scrollbar-track,
+:global #appContainer ~ * ::-webkit-scrollbar-track,
+:global body::-webkit-scrollbar-track {
+    background-color: var(--brandColorsContrastDark);
 }
-
-::-webkit-scrollbar-thumb {
-	background-color: var(--brandColorsContrastDarker);
-	border: 1px solid var(--brandColorsContrastDark);
+:global #appContainer ::-webkit-scrollbar-thumb,
+:global #appContainer ~ * ::-webkit-scrollbar-thumb,
+:global body::-webkit-scrollbar-thumb {
+    background-color: var(--brandColorsContrastDarker);
+    border: 1px solid var(--brandColorsContrastDark);
 }
-
-::-webkit-scrollbar-corner {
-	background-color: var(--brandColorsContrastDark);
+:global #appContainer ::-webkit-scrollbar-corner,
+:global #appContainer ~ * ::-webkit-scrollbar-corner,
+:global body::-webkit-scrollbar-corner {
+    background-color: var(--brandColorsContrastDark);
 }

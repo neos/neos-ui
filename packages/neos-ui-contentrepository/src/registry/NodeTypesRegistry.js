@@ -58,7 +58,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
 
         result = this.getAllowedChildNodeTypes(referenceParentNodeType);
         // If role is provided, filter by role, e.g. only "content" or "document" ndoetypes
-        console.log(role);
         return role ? result.filter(nodeTypeName => this.hasRole(nodeTypeName, role)) : result;
     }
 

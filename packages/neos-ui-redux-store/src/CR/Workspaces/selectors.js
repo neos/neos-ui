@@ -15,11 +15,12 @@ export const publishableNodesInDocumentSelector = createSelector(
     (publishableNodes, activeDocumentContextPath) => publishableNodes.filter(i => $get('documentContextPath', i) === activeDocumentContextPath)
 );
 
-export const makeIsDocumentNodeDirtySelector = documentContextPath => createSelector(
+export const makeIsDocumentNodeDirtySelector = () => createSelector(
     [
-        publishableNodesSelector
+        publishableNodesSelector,
+        (state, documentContextPath) => documentContextPath
     ],
-    publishableNodes => publishableNodes.filter(i => (
+    (publishableNodes, documentContextPath) => publishableNodes.filter(i => (
         $get('documentContextPath', i) === documentContextPath ||
         $get('contextPath', i) === documentContextPath
     )).count() > 0

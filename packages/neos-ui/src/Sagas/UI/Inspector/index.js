@@ -109,6 +109,20 @@ function * flushInspector(inspectorRegistry) {
         // Then persist the final value
         //
         yield put(actions.Changes.persistChange(change));
+
+        //
+        // Update uris of all nodes in state if uriPathSegment has been changed
+        //
+        if (propertyName === 'uriPathSegment') {
+            const oldValue = $get('properties.uriPathSegment', focusedNode);
+            const newValue = transientValue.value;
+            if (oldValue !== newValue) {
+                const oldUri = $get('uri', focusedNode);
+                const oldUriFragment = oldUri.split('@')[0];
+                const newUriFragment = oldUriFragment.replace(new RegExp(oldValue + '$'), newValue);
+                yield put(actions.CR.Nodes.updateUri(oldUriFragment, newUriFragment));
+            }
+        }
     }
 
     //

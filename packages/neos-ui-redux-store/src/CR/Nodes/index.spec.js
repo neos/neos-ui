@@ -16,6 +16,9 @@ test(`should export actionTypes`, () => {
     expect(typeof (actionTypes.COPY)).toBe('string');
     expect(typeof (actionTypes.CUT)).toBe('string');
     expect(typeof (actionTypes.PASTE)).toBe('string');
+    expect(typeof (actionTypes.HIDE)).toBe('string');
+    expect(typeof (actionTypes.SHOW)).toBe('string');
+    expect(typeof (actionTypes.UPDATE_URI)).toBe('string');
 });
 
 test(`should export action creators`, () => {
@@ -30,6 +33,9 @@ test(`should export action creators`, () => {
     expect(typeof (actions.copy)).toBe('function');
     expect(typeof (actions.cut)).toBe('function');
     expect(typeof (actions.paste)).toBe('function');
+    expect(typeof (actions.hide)).toBe('function');
+    expect(typeof (actions.show)).toBe('function');
+    expect(typeof (actions.updateUri)).toBe('function');
 });
 
 test(`should export a reducer`, () => {
@@ -144,4 +150,49 @@ test(`The reducer should mark a node for cut`, () => {
 });
 test(`The reducer should paste nodes`, () => {
     expect(true).toBe(true);
+});
+
+test.only(`The "updateUri" action should update uris.`, () => {
+    const state = Immutable.fromJS({
+        cr: {
+            nodes: {
+                byContextPath: {
+                    'abc@user-admin;language=en_US': {
+                        contextPath: 'abc@user-admin;language=en_US',
+                        uri: 'https://domain/someUri@user-admin;language=en_US'
+                    },
+                    'abc/abc@user-admin;language=en_US': {
+                        contextPath: 'abc/abc@user-admin;language=en_US',
+                        uri: 'https://domain/someUri/someUri@user-admin;language=en_US'
+                    },
+                    'cda/abc@user-admin;language=en_US': {
+                        contextPath: 'abc/abc@user-admin;language=en_US',
+                        uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
+                    }
+                }
+            }
+        }
+    });
+    const nextState = reducer(state, actions.updateUri('https://domain/someUri', 'https://domain/someUri2'));
+
+    expect(nextState.toJS()).toEqual({
+        cr: {
+            nodes: {
+                byContextPath: {
+                    'abc@user-admin;language=en_US': {
+                        contextPath: 'abc@user-admin;language=en_US',
+                        uri: 'https://domain/someUri2@user-admin;language=en_US'
+                    },
+                    'abc/abc@user-admin;language=en_US': {
+                        contextPath: 'abc/abc@user-admin;language=en_US',
+                        uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
+                    },
+                    'cda/abc@user-admin;language=en_US': {
+                        contextPath: 'abc/abc@user-admin;language=en_US',
+                        uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
+                    }
+                }
+            }
+        }
+    });
 });

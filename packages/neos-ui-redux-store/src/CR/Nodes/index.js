@@ -22,6 +22,7 @@ const MOVE = '@neos/neos-ui/CR/Nodes/MOVE';
 const PASTE = '@neos/neos-ui/CR/Nodes/PASTE';
 const HIDE = '@neos/neos-ui/CR/Nodes/HIDE';
 const SHOW = '@neos/neos-ui/CR/Nodes/SHOW';
+const UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI';
 
 //
 // Export the action types
@@ -41,7 +42,8 @@ export const actionTypes = {
     MOVE,
     PASTE,
     HIDE,
-    SHOW
+    SHOW,
+    UPDATE_URI
 };
 
 /**
@@ -153,6 +155,15 @@ const hide = createAction(HIDE, contextPath => contextPath);
  */
 const show = createAction(SHOW, contextPath => contextPath);
 
+/**
+ * Update uris of all affected nodes after uriPathSegment of a node has changed
+ * Must update the node itself and all of its descendants
+ *
+ * @param {String} oldUri
+ * @param {String} newUri
+ */
+const updateUri = createAction(UPDATE_URI, (oldUri, newUri) => ({oldUri, newUri}));
+
 //
 // Export the actions
 //
@@ -171,7 +182,8 @@ export const actions = {
     move,
     paste,
     hide,
-    show
+    show,
+    updateUri
 };
 
 //
@@ -230,7 +242,30 @@ export const reducer = handleActions({
     [CUT]: contextPath => $set('cr.nodes.clipboard', contextPath),
     [PASTE]: () => $set('cr.nodes.clipboard', ''),
     [HIDE]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], true),
-    [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false)
+    [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false),
+    [UPDATE_URI]: ({oldUri, newUri}) => state => {
+        const allNodes = $get('cr.nodes.byContextPath', state);
+        // Make sure to not include false positives by checking that the given segment ends either with "/" or "@"
+        const containsOldUriSegmentRegex = new RegExp(oldUri + '(/|@)');
+        return $all(
+            ...allNodes.map(node => {
+                const nodeUri = $get('uri', node);
+                if (nodeUri && nodeUri.match(containsOldUriSegmentRegex)) {
+                    const contextPath = $get('contextPath', node);
+                    return $set(
+                        ['cr', 'nodes', 'byContextPath', contextPath, 'uri'],
+                        nodeUri
+                            // node with changes uriPathSegment
+                            .replace(oldUri + '@', newUri + '@')
+                            // descendant of a node with changed uriPathSegment
+                            .replace(oldUri + '/', newUri + '/')
+                    );
+                }
+                return null;
+            }).filter(i => i).toArray(),
+            state
+        );
+    }
 });
 
 //

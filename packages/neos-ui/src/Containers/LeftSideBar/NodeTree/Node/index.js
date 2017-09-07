@@ -51,6 +51,7 @@ export default class Node extends PureComponent {
         loadingNodeContextPaths: PropTypes.object,
         errorNodeContextPaths: PropTypes.object,
         canBeInserted: PropTypes.bool,
+        isNodeDirty: PropTypes.bool.isRequired,
 
         nodeTypesRegistry: PropTypes.object.isRequired,
 
@@ -197,6 +198,7 @@ export default class Node extends PureComponent {
                     isActive={this.isActive()}
                     isFocused={this.isFocused()}
                     isLoading={this.isLoading()}
+                    isDirty={this.props.isNodeDirty}
                     isHidden={$get('properties._hidden', node)}
                     isHiddenInIndex={$get('properties._hiddenInIndex', node) || this.isIntermediate()}
                     hasError={this.hasError()}
@@ -258,6 +260,7 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
         const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const isDocumentNodeDirtySelector = selectors.CR.Workspaces.makeIsDocumentNodeDirtySelector();
 
         return (state, {node, currentlyDraggedNode}) => ({
             isContentTreeNode: false,
@@ -273,6 +276,7 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
             intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
             loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
             errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
+            isNodeDirty: isDocumentNodeDirtySelector(state, $get('contextPath', node)),
             canBeInserted: canBeInsertedSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
@@ -293,6 +297,8 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
         const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const isContentNodeDirtySelector = selectors.CR.Workspaces.makeIsContentNodeDirtySelector();
+
         return (state, {node, currentlyDraggedNode}) => ({
             isContentTreeNode: true,
             rootNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
@@ -303,6 +309,7 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
             currentDocumentNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
             focusedNodeContextPath: $get('cr.nodes.focused.contextPath', state),
             toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
+            isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
             canBeInserted: canBeInsertedSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)

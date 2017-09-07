@@ -28,6 +28,7 @@ export class Header extends PureComponent {
         isFocused: PropTypes.bool.isRequired,
         isLoading: PropTypes.bool.isRequired,
         isHidden: PropTypes.bool,
+        isDirty: PropTypes.bool,
         isHiddenInIndex: PropTypes.bool,
         hasError: PropTypes.bool.isRequired,
         label: PropTypes.string.isRequired,
@@ -110,6 +111,7 @@ export class Header extends PureComponent {
             isFocused,
             isHidden,
             isHiddenInIndex,
+            isDirty,
             label,
             icon,
             onClick,
@@ -128,6 +130,7 @@ export class Header extends PureComponent {
             [theme['header__data--isFocused']]: isFocused,
             [theme['header__data--isHiddenInIndex']]: isHiddenInIndex,
             [theme['header__data--isHidden']]: isHidden,
+            [theme['header__data--isDirty']]: isDirty,
             [theme['header__data--acceptsDrop']]: acceptsDrop === true,
             [theme['header__data--deniesDrop']]: acceptsDrop === false
         });
@@ -136,6 +139,7 @@ export class Header extends PureComponent {
             <ul className={theme.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
                 <li
+                    role="button"
                     className={dataClassNames}
                     onDragStart={this.handleDrag}
                     onClick={onClick}

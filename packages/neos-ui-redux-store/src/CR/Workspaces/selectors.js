@@ -14,3 +14,22 @@ export const publishableNodesInDocumentSelector = createSelector(
     ],
     (publishableNodes, activeDocumentContextPath) => publishableNodes.filter(i => $get('documentContextPath', i) === activeDocumentContextPath)
 );
+
+export const makeIsDocumentNodeDirtySelector = () => createSelector(
+    [
+        publishableNodesSelector,
+        (state, documentContextPath) => documentContextPath
+    ],
+    (publishableNodes, documentContextPath) => publishableNodes.filter(i => (
+        $get('documentContextPath', i) === documentContextPath ||
+        $get('contextPath', i) === documentContextPath
+    )).count() > 0
+);
+
+export const makeIsContentNodeDirtySelector = () => createSelector(
+    [
+        publishableNodesSelector,
+        (state, contextPath) => contextPath
+    ],
+    (publishableNodes, contextPath) => publishableNodes.filter(i => $get('contextPath', i) === contextPath).count() > 0
+);

@@ -54,6 +54,9 @@
     opacity: .5;
     text-decoration: line-through;
 }
+.header__data--isDirty {
+    border-left: 3px solid var(--brandColorsWarn);
+}
 .header__data--isFocused {
     background: var(--brandColorsContrastNeutral);
 

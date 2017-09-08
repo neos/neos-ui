@@ -1,8 +1,15 @@
+import React from 'react';
+import omit from 'lodash.omit';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 import LinkIconButton from './EditorToolbar/LinkIconButton';
 import StyleSelect from './EditorToolbar/StyleSelect';
 import RichTextToolbarRegistry from './registry/RichTextToolbarRegistry';
+
+const IconButtonComponent = props => {
+    const finalProps = omit(props, ['formattingRule']);
+    return (<IconButton {...finalProps}/>);
+};
 
 //
 // Create richtext editing toolbar registry
@@ -47,7 +54,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // Bold
     richtextToolbar.add('strong', {
         formattingRule: 'strong',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'bold',
@@ -57,7 +64,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // Italic
     richtextToolbar.add('italic', {
         formattingRule: 'em',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'italic',
@@ -67,7 +74,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // Underline
     richtextToolbar.add('underline', {
         formattingRule: 'u',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'underline',
@@ -77,7 +84,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // Subscript
     richtextToolbar.add('subscript', {
         formattingRule: 'sub',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'subscript',
@@ -87,7 +94,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // Superscript
     richtextToolbar.add('superscript', {
         formattingRule: 'sup',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'superscript',
@@ -97,7 +104,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // Strike-Through
     richtextToolbar.add('strikethrough', {
         formattingRule: 'del',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'strikethrough',
@@ -178,7 +185,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // ordered list
     richtextToolbar.add('orderedList', {
         formattingRule: 'ol',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'list-ol',
@@ -188,7 +195,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // unordered list
     richtextToolbar.add('unorderedList', {
         formattingRule: 'ul',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'list-ul',
@@ -198,7 +205,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // Indent
     richtextToolbar.add('indent', {
         formattingRule: 'indent',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'indent',
@@ -212,7 +219,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     // Outdent
     richtextToolbar.add('outdent', {
         formattingRule: 'outdent',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'outdent',
@@ -228,7 +235,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
      */
     richtextToolbar.add('table', {
         formattingRule: 'table',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'table',
@@ -240,7 +247,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
      */
     richtextToolbar.add('removeFormat', {
         formattingRule: 'removeFormat',
-        component: IconButton,
+        component: IconButtonComponent,
         callbackPropName: 'onClick',
 
         icon: 'table',

@@ -41,7 +41,7 @@
 }
 .dialog__body {
     max-height: calc(65vh);
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .dialog__actions {
     composes: reset from './../reset.css';

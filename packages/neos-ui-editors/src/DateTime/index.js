@@ -26,7 +26,7 @@ class DateTime extends PureComponent {
         const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
 
         const onChange = date => {
-            commit(date ? moment(date).format('YYYY-MM-DDTHH:MM:ssZ') : '');
+            commit(date ? moment(date).format('YYYY-MM-DDTHH:mm:ssZ') : '');
         };
 
         return (

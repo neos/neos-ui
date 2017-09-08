@@ -49,7 +49,6 @@ test('All tests at once', async t => {
     const clearFilter = ReactSelector('NodeTreeFilter Button');
     await t
         .click(clearFilter)
-        .expect(treeNode.withText('Shortcut to child node').exists).notOk('Deep Shortcut pages should be hidden')
         .expect(treeNode.withText('Try me').exists).ok('Top level "Try me" page should shown again');
 
     section('Can toggle leftSideBar');

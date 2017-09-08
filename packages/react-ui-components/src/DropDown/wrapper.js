@@ -106,7 +106,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
             <div {...rest} className={finalClassName}>
                 {React.Children.map(
                     children,
-                    child => child.type ? <child.type {...child.props} isDropdownOpen={this.props.isOpen}/> : child
+                    child => typeof child.type === 'string' ? child : <child.type {...child.props} isDropdownOpen={this.props.isOpen}/>
                 )}
             </div>
         );
@@ -151,7 +151,7 @@ export class ContextDropDownHeader extends PureComponent {
         /**
          * The propagated isOpen state from the dropDown
          */
-        isDropdownOpen: PropTypes.bool.isRequired
+        isDropdownOpen: PropTypes.bool
     };
 
     static contextTypes = {

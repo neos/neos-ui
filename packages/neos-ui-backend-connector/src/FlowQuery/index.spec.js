@@ -133,18 +133,6 @@ test(`"api.flowQuery > resolveChain" utility should make a fetch call.`, () => {
     expect(typeof (result.then)).toBe('function');
 });
 
-test(`"api.flowQuery > factory" should throw an error if no csrfToken was provided.`, () => {
-    const fn = () => factory();
-
-    expect(fn).toThrow();
-});
-
-test(`"api.flowQuery > factory" should throw an error if an empty csrfToken was provided.`, () => {
-    const fn = () => factory('');
-
-    expect(fn).toThrow();
-});
-
 test(`"api.flowQuery > factory" should expose the "q" function and its "applyMiddleware" method.`, () => {
     const q = factory('csrfToken');
 

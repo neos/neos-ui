@@ -3,6 +3,7 @@ import isString from 'lodash.isstring';
 import isArray from 'lodash.isarray';
 import * as operations from './Operations/index';
 import {$get, $add} from 'plow-js';
+import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 
 export const isStartingOperation = (operation = {}) => operation.type === 'createContext';
 export const isFinishingOperation = (operation = {}) => ['get', 'getForTree', 'count', 'getForTreeWithParents'].indexOf(operation.type) !== -1;
@@ -26,28 +27,23 @@ export const createNodeEnvelope = (node = {}) => {
     return {$node: contextPath};
 };
 
-export const resolveChain = (chain, csrfToken) => {
-    return window.fetch('/neos!/service/flow-query', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'X-Flow-Csrftoken': csrfToken,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({chain})
-    })
-    .then(response => response && response.json());
-};
+export const resolveChain = fetchWithErrorHandling.withCsrfToken(chain => csrfToken => ({
+    url: '/neos!/service/flow-query',
+
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+        'X-Flow-Csrftoken': csrfToken,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({chain})
+}), result => result.then(response => response && response.json()));
 
 //
 // The core FlowQuery plugin
 //
-export default csrfToken => {
+export default () => {
     const middlewares = [];
-
-    if (!csrfToken || csrfToken.length === 0) {
-        throw new Error('Please provide a csrfToken as the first argument while initializing the FlowQuery API.');
-    }
 
     //
     // Helper function which calls all registered middleswares when calling the API.
@@ -73,7 +69,7 @@ export default csrfToken => {
                 }
 
                 if (isFinishingOperation(result)) {
-                    return resolveChain($add('chain', result, {chain}).chain, csrfToken);
+                    return resolveChain($add('chain', result, {chain}).chain);
                 }
 
                 return createChainableApi(operations, $add('chain', result, {chain}).chain, ignoreMiddleware);

@@ -20,11 +20,7 @@ export const define = parent => (name, value) => {
 //
 // Initializes the Neos API
 //
-export const initializeJsAPI = (parent, {csrfToken, alias = 'neos', systemEnv = 'Development'}) => {
-    if (csrfToken === undefined) {
-        throw new Error('You need to provide a valid csrf token for the Neos API');
-    }
-
+export const initializeJsAPI = (parent, {alias = 'neos', systemEnv = 'Development'}) => {
     if (parent[alias] !== undefined) {
         throw new Error(`Could not initialize Neos API, because ${alias} is already defined.`);
     }
@@ -33,9 +29,8 @@ export const initializeJsAPI = (parent, {csrfToken, alias = 'neos', systemEnv = 
     const addLibrary = define(neos);
 
     addLibrary('use', initializeUse(addLibrary, neos));
-    addLibrary('q', initializeFlowQuery(csrfToken));
-    addLibrary('endpoints', initializeEndpoints(csrfToken));
-    addLibrary('csrfToken', csrfToken);
+    addLibrary('q', initializeFlowQuery());
+    addLibrary('endpoints', initializeEndpoints());
 
     //
     // Attach Neos API to the parent object

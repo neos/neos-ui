@@ -18,14 +18,17 @@ export default class Modals extends PureComponent {
         const SelectNodeTypeModal = containerRegistry.get('Modals/SelectNodeTypeModal');
         const NodeCreationDialog = containerRegistry.get('Modals/NodeCreationDialog');
         const NodeVariantCreationDialog = containerRegistry.get('Modals/NodeVariantCreationDialog');
+        const ReloginDialog = containerRegistry.get('Modals/ReloginDialog');
 
         return (
             <div>
+
                 <DeleteNodeModal/>
                 <InsertModeModal/>
                 <SelectNodeTypeModal/>
                 <NodeCreationDialog/>
                 <NodeVariantCreationDialog/>
+                <ReloginDialog/>
             </div>
 
         );

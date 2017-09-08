@@ -7,6 +7,7 @@ import Portal from 'react-portal';
 const Dialog = props => {
     const {
         className,
+        contentsClassName,
         title,
         isWide,
         children,
@@ -24,11 +25,16 @@ const Dialog = props => {
         [className]: className && className.length
     });
 
+    const finalContentsClassName = mergeClassNames({
+        [theme.dialog__contents]: true,
+        [contentsClassName]: contentsClassName && contentsClassName.length
+    });
+
     return (
         <Portal isOpened={isOpen}>
             <section {...rest} className={finalClassName} role="dialog" tabIndex="0">
                 <div className={theme.dialog__contentsPosition}>
-                    <div className={theme.dialog__contents}>
+                    <div className={finalContentsClassName}>
                         <IconButtonComponent
                             icon="close"
                             className={theme.dialog__closeBtn}
@@ -42,9 +48,11 @@ const Dialog = props => {
                             {children}
                         </div>
 
-                        <div className={theme.dialog__actions}>
-                            {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}
-                        </div>
+                        {actions && actions.length ?
+                            <div className={theme.dialog__actions}>
+                                {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}
+                            </div> : null
+                        }
                     </div>
                 </div>
             </section>
@@ -80,12 +88,17 @@ Dialog.propTypes = {
     /**
      * An Array of nodes(e.g. Action Buttons) which are placed at the bottom of the Dialog.
      */
-    actions: PropTypes.any.isRequired,
+    actions: PropTypes.any,
 
     /**
      * An optional `className` to attach to the wrapper.
      */
     className: PropTypes.string,
+
+    /**
+     * An optional `contentsClassName` to attach to the content area of the dialog.
+     */
+    contentsClassName: PropTypes.string,
 
     /**
      * An optional css theme to be injected.

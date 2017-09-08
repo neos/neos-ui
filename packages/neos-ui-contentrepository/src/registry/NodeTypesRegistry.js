@@ -58,6 +58,10 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         return this.getAllowedChildNodeTypes(referenceParentNodeType);
     }
 
+    getNodeType(nodeTypeName) {
+        return this._registry[nodeTypeName] || false;
+    }
+
     getGroupedNodeTypeList(nodeTypeFilter) {
         const nodeTypes = nodeTypeFilter ? Object.values(this._registry).filter(nodeType => {
             return nodeTypeFilter.indexOf(nodeType.name) !== -1;

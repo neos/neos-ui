@@ -11,12 +11,14 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Factory\NodeFactory;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Repository\NodeDataRepository;
 use Neos\ContentRepository\Domain\Service\ContextFactory;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Domain\Service\NodeSearchService;
 
 /**
@@ -34,6 +36,18 @@ class SearchOperation extends AbstractOperation
      * @var NodeTypeManager
      */
     protected $nodeTypeManager;
+
+    /**
+     * @Flow\Inject
+     * @var NodeDataRepository
+     */
+    protected $nodeDataRepository;
+
+    /**
+     * @Flow\Inject
+     * @var NodeFactory
+     */
+    protected $nodeFactory;
 
     /**
      * {@inheritdoc}
@@ -70,11 +84,29 @@ class SearchOperation extends AbstractOperation
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
         $term = isset($arguments[0]) ? $arguments[0] : null;
+        $filterNodeTypeName = isset($arguments[1]) ? $arguments[1] : null;
 
-        $nodeTypes = $this->nodeTypeManager->getSubNodeTypes('Neos.Neos:Document', false);
+        $nodeTypes = strlen($filterNodeTypeName) > 0 ? array($filterNodeTypeName) : array_keys($this->nodeTypeManager->getSubNodeTypes('Neos.Neos:Document', false));
+
         /** @var NodeInterface $contextNode */
         $contextNode = $flowQuery->getContext()[0];
-        $matchedNodes = $this->nodeSearchService->findByProperties($term, $nodeTypes, $contextNode->getContext(), $contextNode);
+
+        $context = $contextNode->getContext();
+
+        if ($term) {
+            $matchedNodes = $this->nodeSearchService->findByProperties($term, $nodeTypes, $context, $contextNode);
+        } else {
+            $matchedNodes = array();
+            // Yep, an internal API. But that's what we used in the old UI.
+            $nodeDataRecords = $this->nodeDataRepository->findByParentAndNodeTypeRecursively($contextNode->getPath(), implode(',', $nodeTypes), $context->getWorkspace(), $context->getDimensions());
+            foreach ($nodeDataRecords as $nodeData) {
+                $matchedNode = $this->nodeFactory->createFromNodeData($nodeData, $context);
+                if ($matchedNode !== null) {
+                    $matchedNodes[$matchedNode->getPath()] = $matchedNode;
+                }
+            }
+        }
+
         $flowQuery->setContext($matchedNodes);
     }
 }

@@ -1,4 +1,4 @@
-export default () => term => ({
+export default () => (term, filterNodeType) => ({
     type: 'search',
-    payload: [term]
+    payload: [term, filterNodeType]
 });

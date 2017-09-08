@@ -136,9 +136,9 @@ function * watchCurrentDocument({configuration}) {
 
 function * watchSearch({configuration}) {
     yield * takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
-        const {contextPath, query: searchQuery} = action.payload;
+        const {contextPath, query: searchQuery, filterNodeType} = action.payload;
 
-        if (!searchQuery) {
+        if (!searchQuery && !filterNodeType) {
             return;
         }
 
@@ -146,7 +146,7 @@ function * watchSearch({configuration}) {
 
         const {q} = backend.get();
         const query = q(contextPath);
-        const matchingNodes = yield query.search(searchQuery).getForTreeWithParents();
+        const matchingNodes = yield query.search(searchQuery, filterNodeType).getForTreeWithParents();
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
         const loadingDepth = configuration.nodeTree.loadingDepth;
 

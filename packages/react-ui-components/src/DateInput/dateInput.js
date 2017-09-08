@@ -131,7 +131,7 @@ export class DateInput extends PureComponent {
                     </button>
                     <DatePickerComponent
                         open={true}
-                        value={value}
+                        defaultValue={value}
                         onChange={this.handleChange}
                         />
                     <ButtonComponent

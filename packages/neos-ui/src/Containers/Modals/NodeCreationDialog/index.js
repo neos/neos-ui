@@ -41,11 +41,21 @@ export default class NodeCreationDialog extends PureComponent {
         apply: PropTypes.func.isRequired
     };
 
-    state = {
+    constructor() {
+        super();
+
+        this.state = {...this.defaultState};
+    }
+
+    defaultState = {
         values: {},
         validationErrors: false,
         isDirty: false
     };
+
+    resetState() {
+        this.setState(this.defaultState);
+    }
 
     handleDialogEditorValueChange = memoize(elementName => value => {
         const {validatorRegistry, configuration} = this.props;
@@ -63,6 +73,7 @@ export default class NodeCreationDialog extends PureComponent {
         const {cancel} = this.props;
 
         cancel();
+        this.resetState();
     }
 
     handleBack = () => {
@@ -76,6 +87,7 @@ export default class NodeCreationDialog extends PureComponent {
         const {values} = this.state;
 
         apply(values);
+        this.resetState();
     }
 
     handleKeyPress = event => {

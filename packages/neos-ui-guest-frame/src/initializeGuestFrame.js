@@ -1,7 +1,7 @@
 import {takeEvery} from 'redux-saga';
-import {put} from 'redux-saga/effects';
+import {put, select} from 'redux-saga/effects';
 
-import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
+import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
 import initializeContentDomNode from './initializeContentDomNode';
 import {
@@ -100,6 +100,15 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     }, () => { /* This noop function is called right at the end of content inialization */ });
 
     initializeNodes();
+
+    // When the contentCanvas is reloaded (e.g. from the inspector change) and focused style to it
+    const focusedNode = yield select(selectors.CR.Nodes.focusedNodePathSelector);
+    const focusedNodeElement = findNodeInGuestFrame(focusedNode);
+    if (focusedNodeElement) {
+        focusedNodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);
+        // Request to scroll focused node into view
+        yield put(actions.UI.ContentCanvas.requestScrollIntoView(true));
+    }
 
     yield takeEvery(actionTypes.CR.Nodes.FOCUS, action => {
         const oldNode = findInGuestFrame(`.${style['markActiveNodeAsFocused--focusedNode']}`);

@@ -23,11 +23,12 @@ export const position = nodeElement => {
 
         return {
             top: domBounds.top - bodyBounds.top,
-            right: bodyBounds.right - domBounds.right
+            right: bodyBounds.right - domBounds.right,
+            bottom: bodyBounds.bottom - domBounds.bottom
         };
     }
 
-    return {top: 0, right: 0};
+    return {top: 0, right: 0, bottom: 0};
 };
 
 export default class NodeToolbar extends PureComponent {
@@ -62,12 +63,13 @@ export default class NodeToolbar extends PureComponent {
         const iframeDocument = this.iframeWindow.document;
         // See: https://gist.github.com/dperini/ac3d921d6a08f10fd10e
         const scrollingElement = iframeDocument.compatMode.indexOf('CSS1') === 0 && iframeDocument.documentElement.scrollHeight > iframeDocument.body.scrollHeight ? iframeDocument.documentElement : iframeDocument.body;
-        if (this.toolbarElement) {
-            const position = this.toolbarElement.getBoundingClientRect();
+        const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
+        if (nodeElement) {
+            const nodePosition = position(nodeElement);
             const offset = 100;
-            const elementIsNotInView = position.top < offset || position.bottom + offset > this.iframeWindow.innerHeight;
+            const elementIsNotInView = nodePosition.top < offset || nodePosition.bottom + offset > this.iframeWindow.innerHeight;
             if (elementIsNotInView) {
-                const scrollTop = position.top + this.iframeWindow.pageYOffset - offset;
+                const scrollTop = nodePosition.top + this.iframeWindow.pageYOffset - offset;
                 animate(scrollingElement, {scrollTop});
             }
         }
@@ -94,12 +96,8 @@ export default class NodeToolbar extends PureComponent {
             [style.toolBar]: true
         });
 
-        const refHandler = div => {
-            this.toolbarElement = div;
-        };
-
         return (
-            <div className={classNames} style={{top: top - 50, right}} ref={refHandler}>
+            <div className={classNames} style={{top: top - 50, right}}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...props}/>
                     <HideSelectedNode {...props}/>

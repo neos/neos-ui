@@ -1,5 +1,6 @@
 import {take, race, put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
+import escapeRegExp from 'lodash.escaperegexp';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 
@@ -119,7 +120,7 @@ function * flushInspector(inspectorRegistry) {
             if (oldValue !== newValue) {
                 const oldUri = $get('uri', focusedNode);
                 const oldUriFragment = oldUri.split('@')[0];
-                const newUriFragment = oldUriFragment.replace(new RegExp(oldValue + '$'), newValue);
+                const newUriFragment = oldUriFragment.replace(new RegExp(escapeRegExp(oldValue) + '$'), newValue);
                 yield put(actions.CR.Nodes.updateUri(oldUriFragment, newUriFragment));
 
                 // Update previewUrl

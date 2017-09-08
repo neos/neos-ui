@@ -159,10 +159,10 @@ const show = createAction(SHOW, contextPath => contextPath);
  * Update uris of all affected nodes after uriPathSegment of a node has changed
  * Must update the node itself and all of its descendants
  *
- * @param {String} oldUri
- * @param {String} newUri
+ * @param {String} oldUriFragment
+ * @param {String} newUriFragment
  */
-const updateUri = createAction(UPDATE_URI, (oldUri, newUri) => ({oldUri, newUri}));
+const updateUri = createAction(UPDATE_URI, (oldUriFragment, newUriFragment) => ({oldUriFragment, newUriFragment}));
 
 //
 // Export the actions
@@ -243,22 +243,24 @@ export const reducer = handleActions({
     [PASTE]: () => $set('cr.nodes.clipboard', ''),
     [HIDE]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], true),
     [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false),
-    [UPDATE_URI]: ({oldUri, newUri}) => state => {
+    [UPDATE_URI]: ({oldUriFragment, newUriFragment}) => state => {
         const allNodes = $get('cr.nodes.byContextPath', state);
-        // Make sure to not include false positives by checking that the given segment ends either with "/" or "@"
-        const containsOldUriSegmentRegex = new RegExp(oldUri + '(/|@)');
         return $all(
             ...allNodes.map(node => {
                 const nodeUri = $get('uri', node);
-                if (nodeUri && nodeUri.match(containsOldUriSegmentRegex)) {
+                if (
+                    nodeUri &&
+                    // Make sure to not include false positives by checking that the given segment ends either with "/" or "@"
+                    (nodeUri.includes(oldUriFragment + '/') || nodeUri.includes(oldUriFragment + '@'))
+                ) {
                     const contextPath = $get('contextPath', node);
                     return $set(
                         ['cr', 'nodes', 'byContextPath', contextPath, 'uri'],
                         nodeUri
                             // node with changes uriPathSegment
-                            .replace(oldUri + '@', newUri + '@')
+                            .replace(oldUriFragment + '@', newUriFragment + '@')
                             // descendant of a node with changed uriPathSegment
-                            .replace(oldUri + '/', newUri + '/')
+                            .replace(oldUriFragment + '/', newUriFragment + '/')
                     );
                 }
                 return null;

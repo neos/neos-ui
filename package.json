@@ -89,6 +89,7 @@
     "lodash.compose": "^2.4.1",
     "lodash.debounce": "^4.0.8",
     "lodash.defer": "^4.1.0",
+    "lodash.escaperegexp": "^4.1.2",
     "lodash.isarray": "^4.0.0",
     "lodash.isfunction": "^3.0.8",
     "lodash.isobject": "^3.0.2",

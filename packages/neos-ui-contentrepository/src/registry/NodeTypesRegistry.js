@@ -47,15 +47,18 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         return Object.keys(result || []).filter(key => result[key]);
     }
 
-    getAllowedNodeTypesTakingAutoCreatedIntoAccount(isSubjectNodeAutocreated, referenceParentName, referenceParentNodeType, referenceGrandParentNodeType) {
+    getAllowedNodeTypesTakingAutoCreatedIntoAccount(isSubjectNodeAutocreated, referenceParentName, referenceParentNodeType, referenceGrandParentNodeType, role) {
+        let result;
         if (isSubjectNodeAutocreated) {
             if (!referenceGrandParentNodeType) {
                 return [];
             }
-            return this.getAllowedGrandChildNodeTypes(referenceGrandParentNodeType, referenceParentName);
+            result = this.getAllowedGrandChildNodeTypes(referenceGrandParentNodeType, referenceParentName);
         }
 
-        return this.getAllowedChildNodeTypes(referenceParentNodeType);
+        result = this.getAllowedChildNodeTypes(referenceParentNodeType);
+        // If role is provided, filter by role, e.g. only "content" or "document" ndoetypes
+        return role ? result.filter(nodeTypeName => this.hasRole(nodeTypeName, role)) : result;
     }
 
     getGroupedNodeTypeList(nodeTypeFilter) {

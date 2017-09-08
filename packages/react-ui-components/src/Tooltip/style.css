@@ -1,5 +1,9 @@
 .tooltip {
     position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1000;
 }
 
 .tooltip--arrow {
@@ -19,4 +23,20 @@
     padding: var(--halfSpacing);
     background: var(--brandColorsError);
     color: white;
+    border-radius: 3px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+ /*todo: better use bem than nesting css */
+.tooltip--inner span{
+    color: white!important;
+}
+
+.tooltip--regular .tooltip--arrow {
+  border-bottom: var(--halfSpacing) solid var(--brandColorsContrastDarker);
+}
+
+.tooltip--regular .tooltip--inner {
+  background: var(--brandColorsContrastDarker);
 }

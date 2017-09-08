@@ -1,0 +1,8 @@
+.tooltipContainer {
+  position: relative;
+  display: inline-block
+}
+
+.tooltipContainer--inlineElement {
+  display: inline;
+}

@@ -51,7 +51,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'bold',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'strong'
     });
 
     // Italic
@@ -61,7 +62,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'italic',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'italic'
     });
 
     // Underline
@@ -71,7 +73,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'underline',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'underline'
     });
 
     // Subscript
@@ -81,17 +84,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'subscript',
-        hoverStyle: 'brand'
-    });
-
-    // Superscript
-    richtextToolbar.add('superscript', {
-        formattingRule: 'sup',
-        component: IconButton,
-        callbackPropName: 'onClick',
-
-        icon: 'superscript',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'subscript'
     });
 
     // Strike-Through
@@ -101,7 +95,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'strikethrough',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'strikethrough'
     });
 
     // Strike-Through
@@ -111,7 +106,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'link',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'link'
     });
 
     /**
@@ -182,7 +178,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'list-ol',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'Insert Ordered List'
     });
 
     // unordered list
@@ -192,7 +189,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'list-ul',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'Insert Unordered List'
     });
 
     // Indent
@@ -200,7 +198,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         formattingRule: 'indent',
         component: IconButton,
         callbackPropName: 'onClick',
-
+        tooltipLabel: 'indent',
         icon: 'indent',
         hoverStyle: 'brand',
         isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
@@ -214,7 +212,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         formattingRule: 'outdent',
         component: IconButton,
         callbackPropName: 'onClick',
-
+        tooltipLabel: 'outdent',
         icon: 'outdent',
         hoverStyle: 'brand',
         isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
@@ -230,7 +228,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         formattingRule: 'table',
         component: IconButton,
         callbackPropName: 'onClick',
-
+        tooltipLabel: 'table',
         icon: 'table',
         hoverStyle: 'brand'
     });
@@ -242,8 +240,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         formattingRule: 'removeFormat',
         component: IconButton,
         callbackPropName: 'onClick',
-
-        icon: 'table',
+        tooltipLabel: 'Keep / Discard formatting',
+        icon: 'clipboard',
         hoverStyle: 'brand'
     });
 

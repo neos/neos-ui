@@ -106,7 +106,7 @@ export default class SecondaryToolbar extends PureComponent {
                         >
                         <Icon icon="external-link"/>
                     </a>
-                    <IconButton icon="expand" onClick={this.handleToggleFullScreen}/>
+                    <IconButton icon="expand"  onClick={this.handleToggleFullScreen}/>
                 </div>
                 <LoadingIndicator/>
             </div>

@@ -30,6 +30,7 @@ export default class PasteClipBoardNode extends PureComponent {
                 isDisabled={!canBePasted}
                 className={className}
                 icon="paste"
+                tooltipLabel="Paste"
                 onClick={this.handleClick}
                 hoverStyle="clean"
                 />

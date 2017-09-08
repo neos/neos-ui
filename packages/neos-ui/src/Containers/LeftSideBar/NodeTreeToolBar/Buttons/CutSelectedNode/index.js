@@ -27,6 +27,7 @@ export default class CutSelectedNode extends PureComponent {
                 isDisabled={isDisabled}
                 onClick={this.handleClick}
                 icon="cut"
+                tooltipLabel="Cut"
                 hoverStyle="clean"
                 />
         );

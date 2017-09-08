@@ -8,6 +8,8 @@ const validHoverStyleKeys = ['clean', 'brand', 'darken', 'warn'];
 
 const Button = props => {
     const {
+        TooltipContainerComponent,
+        tooltipLabel,
         children,
         className,
         isPressed,
@@ -42,9 +44,11 @@ const Button = props => {
     }
 
     return (
-        <button {...rest} {...attributes} className={finalClassName} role="button" ref={_refHandler(isFocused)}>
-            {children}
-        </button>
+        <TooltipContainerComponent tooltipLabel={tooltipLabel}>
+            <button {...rest} {...attributes} className={finalClassName} role="button" ref={_refHandler(isFocused)}>
+                {children}
+            </button>
+        </TooltipContainerComponent>
     );
 };
 Button.propTypes = {
@@ -85,6 +89,10 @@ Button.propTypes = {
      */
     size: PropTypes.oneOf(['small', 'regular']),
 
+    TooltipContainerComponent: PropTypes.any.isRequired,
+
+    tooltipLabel: PropTypes.string,
+
     /**
      * An optional `className` to attach to the wrapper.
      */
@@ -114,6 +122,7 @@ Button.propTypes = {
      * An interal prop for testing purposes, do not set this prop manually.
      */
     _refHandler: PropTypes.func
+
 };
 Button.defaultProps = {
     style: '',

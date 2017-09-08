@@ -33,6 +33,7 @@ export default class RefreshPageTree extends PureComponent {
                 isDisabled={isLoading}
                 onClick={this.handleClick}
                 icon="refresh"
+                tooltipLabel="Refresh"
                 hoverStyle="clean"
                 />
         );

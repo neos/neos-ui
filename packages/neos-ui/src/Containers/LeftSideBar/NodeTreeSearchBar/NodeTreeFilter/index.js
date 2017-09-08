@@ -37,9 +37,11 @@ export default class NodeTreeFilter extends PureComponent {
             <div className={style.searchBar}>
                 <SelectBox
                     placeholder={label}
+                    placeholderIcon={'filter'}
                     onValueChange={onChange}
                     value={value}
                     options={options}
+                    displaySearchBox={true}
                     />
             </div>
         );

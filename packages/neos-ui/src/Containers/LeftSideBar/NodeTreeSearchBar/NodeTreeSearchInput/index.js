@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {TextInput, IconButton} from '@neos-project/react-ui-components';
+import {TextInput, Icon, IconButton} from '@neos-project/react-ui-components';
+import mergeClassNames from 'classnames';
 
 import style from './style.css';
 
@@ -14,8 +15,18 @@ const NodeTreeSearchInput = ({
         focused
     }) => {
     const showClear = value.length > 0;
+    const inputClassName = mergeClassNames({
+        [style.searchInput]: true,
+        [style['searchInput--focused']]: focused
+    });
     return (
-        <div>
+        <div className={style.wrapper}>
+            <Icon
+                icon="search"
+                className={focused ? style.hidden : style.placeholderIcon}
+                theme={{iconButton: focused ? style['clearButton--focused'] : style.clearButton}}
+                onClick={onClearClick}
+                />
             <TextInput
                 placeholder={label}
                 onChange={onChange}
@@ -23,7 +34,7 @@ const NodeTreeSearchInput = ({
                 onBlur={onBlur}
                 type="search"
                 value={value}
-                containerClassName={style.searchInput}
+                containerClassName={inputClassName}
                 />
             {showClear && (
                 <IconButton

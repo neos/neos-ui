@@ -74,23 +74,19 @@ class NodeTreeSearchBar extends PureComponent {
 
         return (
             <div className={style.searchBar}>
-                <div>
-                    <NodeTreeSearchInput
-                        label={searchLabel}
-                        value={searchValue}
-                        focused={searchFocused}
-                        onChange={this.handleSearchChange}
-                        onFocus={this.handleSearchFocus}
-                        onBlur={this.handleSearchBlur}
-                        onClearClick={this.handleClearClick}
-                        />
-                </div>
-                <div>
-                    <NodeTreeFilter
-                        value={filterNodeType}
-                        onChange={this.handleFilterChange}
-                        />
-                </div>
+                <NodeTreeSearchInput
+                    label={searchLabel}
+                    value={searchValue}
+                    focused={searchFocused}
+                    onChange={this.handleSearchChange}
+                    onFocus={this.handleSearchFocus}
+                    onBlur={this.handleSearchBlur}
+                    onClearClick={this.handleClearClick}
+                    />
+                <NodeTreeFilter
+                    value={filterNodeType}
+                    onChange={this.handleFilterChange}
+                    />
             </div>
         );
     }

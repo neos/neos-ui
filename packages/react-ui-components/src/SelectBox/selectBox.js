@@ -147,7 +147,7 @@ export default class SelectBox extends PureComponent {
         } else if (displayLoadingIndicator) {
             label = '[Loading]'; // TODO: localize
         } else if (placeholder) {
-            label = placeholder;
+            label = (<span className={theme.dropDown__placeholder}>{placeholder}</span>);
             icon = placeholderIcon ? placeholderIcon : icon;
         }
 
@@ -161,6 +161,7 @@ export default class SelectBox extends PureComponent {
                         }
                         {displaySearchBox && !selectedValue ?
                             <TextInputComponent
+                                placeholder={placeholder}
                                 value={searchTerm}
                                 onChange={onSearchTermChange}
                                 className={theme.dropDown__searchInput}

@@ -68,7 +68,7 @@
     "style-loader": "^0.18.1",
     "stylelint": "^7.5.0",
     "testcafe": "^0.17.0",
-    "testcafe-react-selectors": "^0.0.8-alpha4",
+    "testcafe-react-selectors": "^0.0.8",
     "url-loader": "^0.5.9",
     "watch": "^1.0.2",
     "webpack": "^1.13.2",

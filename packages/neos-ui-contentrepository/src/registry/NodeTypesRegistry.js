@@ -61,6 +61,10 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         return role ? result.filter(nodeTypeName => this.hasRole(nodeTypeName, role)) : result;
     }
 
+    getNodeType(nodeTypeName) {
+        return this._registry[nodeTypeName] || false;
+    }
+
     getGroupedNodeTypeList(nodeTypeFilter) {
         const nodeTypes = nodeTypeFilter ? Object.values(this._registry).filter(nodeType => {
             return nodeTypeFilter.indexOf(nodeType.name) !== -1;

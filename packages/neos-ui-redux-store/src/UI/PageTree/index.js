@@ -38,7 +38,7 @@ const requestChildren = createAction(REQUEST_CHILDREN, (contextPath, {unCollapse
 const setAsLoading = createAction(SET_AS_LOADING, contextPath => ({contextPath}));
 const setAsLoaded = createAction(SET_AS_LOADED, contextPath => ({contextPath}));
 const reloadTree = createAction(RELOAD_TREE);
-const commenceSearch = createAction(COMMENCE_SEARCH, (contextPath, {query}) => ({contextPath, query}));
+const commenceSearch = createAction(COMMENCE_SEARCH, (contextPath, {query, filterNodeType}) => ({contextPath, query, filterNodeType}));
 const setSearchResult = createAction(SET_SEARCH_RESULT, result => (result));
 
 //
@@ -85,8 +85,8 @@ export const reducer = handleActions({
     [SET_AS_LOADED]: ({contextPath}) => $all(
         $remove('ui.pageTree.loading', contextPath)
     ),
-    [COMMENCE_SEARCH]: ({query}) => state => {
-        if (!query) {
+    [COMMENCE_SEARCH]: ({query, filterNodeType}) => state => {
+        if (!query && !filterNodeType) {
             return $all(
               $set('ui.pageTree.hidden', new Set()),
               $set('ui.pageTree.intermediate', new Set()),

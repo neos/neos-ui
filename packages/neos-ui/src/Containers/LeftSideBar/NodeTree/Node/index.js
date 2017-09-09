@@ -76,7 +76,7 @@ export default class Node extends PureComponent {
     }
 
     scrollFocusedNodeIntoView() {
-        if (this.isFocused()) {
+        if (this.isFocused() && this.domNode) {
             const scrollingElement = findScrollingParent(this.domNode);
             if (scrollingElement) {
                 const nodeTopPosition = this.domNode.getBoundingClientRect().top;

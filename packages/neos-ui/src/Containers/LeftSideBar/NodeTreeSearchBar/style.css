@@ -1,19 +1,10 @@
 .searchBar {
-  display: flex;
+    display: flex;
+    line-height: 0;
+    border-bottom: 1px solid var(--brandColorsContrastDark);
+    background-color: var(--brandColorsContrastNeutral);
 }
 
-.searchBar__searchInput {
-  flex-grow: 1;
-}
-
-.searchBar__clearButton {
-  background: var(--brandColorsContrastNeutral);
-}
-
-.searchBar__clearButton--focused {
-  background: white;
-}
-
-.searchBar__clearButton--focused > i {
-  color: var(--brandColorsContrastNeutral);
+.searchBar > * {
+    width: 50%;
 }

@@ -11,13 +11,13 @@ export default function * hideNode() {
 
         markNodeAsHidden(contextPath);
 
-        yield put(actions.Changes.persistChange({
+        yield put(actions.Changes.persistChanges([{
             type: 'Neos.Neos.Ui:Property',
             subject: contextPath,
             payload: {
                 propertyName: '_hidden',
                 value: true
             }
-        }));
+        }]));
     });
 }

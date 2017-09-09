@@ -56,7 +56,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                 editorOptions,
                 globalRegistry,
                 persistChange: change => store.dispatch(
-                    actions.Changes.persistChange(change)
+                    actions.Changes.persistChanges([change])
                 )
             });
         } catch (err) {

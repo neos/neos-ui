@@ -16,7 +16,7 @@ import style from './style.css';
     mode: $get('ui.addNodeModal.mode')
 }), {
     closeModal: actions.UI.AddNodeModal.close,
-    persistChange: actions.Changes.persistChange
+    persistChanges: actions.Changes.persistChanges
 })
 class NodeTypeItem extends PureComponent {
     static propTypes = {

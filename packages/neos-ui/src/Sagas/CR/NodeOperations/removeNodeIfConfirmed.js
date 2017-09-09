@@ -20,10 +20,10 @@ export default function * removeNodeIfConfirmed() {
         if (nextAction.type === actionTypes.CR.Nodes.REMOVAL_CONFIRMED) {
             const nodeToBeRemovedContextPath = $get('cr.nodes.toBeRemoved', state);
 
-            yield put(actions.Changes.persistChange({
+            yield put(actions.Changes.persistChanges([{
                 type: 'Neos.Neos.Ui:RemoveNode',
                 subject: nodeToBeRemovedContextPath
-            }));
+            }]));
         }
     });
 }

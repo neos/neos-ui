@@ -5,7 +5,8 @@ import DropDown from '../DropDown/index';
 export default class SelectBox extends PureComponent {
 
     static defaultProps = {
-        optionValueField: 'value'
+        optionValueField: 'value',
+        scrollable: true
     };
 
     static propTypes = {
@@ -90,10 +91,6 @@ export default class SelectBox extends PureComponent {
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
         TextInputComponent: PropTypes.any.isRequired
-    };
-
-    static defaultProps = {
-        scrollable: true
     };
 
     constructor(...args) {

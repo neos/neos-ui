@@ -9,11 +9,13 @@ const ShallowDropDownContents = props => {
         theme,
         isOpen,
         closeDropDown,
+        scrollable,
         ...rest
     } = props;
     const finalClassName = mergeClassNames({
         [className]: className && className.length,
         [theme.dropDown__contents]: true,
+        [theme['dropDown__contents--scrollable']]: scrollable,
         [theme['dropDown__contents--isOpen']]: isOpen
     });
 
@@ -40,6 +42,11 @@ ShallowDropDownContents.propTypes = {
      * The contents to be rendered within the contents wrapper.
      */
     children: PropTypes.any.isRequired,
+
+    /**
+     * Limit height and add scrollbar.
+     */
+    scrollable: PropTypes.bool,
 
     /**
      * An optional css theme to be injected.

@@ -60,6 +60,11 @@ export default class SelectBox extends PureComponent {
         allowEmpty: PropTypes.bool,
 
         /**
+         * limit height and show scrollbars if needed, defaults to true
+         */
+        scrollable: PropTypes.bool,
+
+        /**
          * search box related properties
          */
         displaySearchBox: PropTypes.bool,
@@ -85,6 +90,10 @@ export default class SelectBox extends PureComponent {
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
         TextInputComponent: PropTypes.any.isRequired
+    };
+
+    static defaultProps = {
+        scrollable: true
     };
 
     constructor(...args) {
@@ -121,6 +130,7 @@ export default class SelectBox extends PureComponent {
             displaySearchBox,
             searchTerm,
             onSearchTermChange,
+            scrollable,
             TextInputComponent,
             IconButtonComponent,
             IconComponent
@@ -178,7 +188,7 @@ export default class SelectBox extends PureComponent {
                             null
                         }
                     </DropDown.Header>
-                    <DropDown.Contents className={theme.dropDown__contents}>
+                    <DropDown.Contents className={theme.dropDown__contents} scrollable={scrollable}>
                         {(options || []).map(this.renderOption)}
                     </DropDown.Contents>
                 </DropDown.Stateless>

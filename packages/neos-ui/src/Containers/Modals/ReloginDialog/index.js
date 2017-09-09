@@ -62,7 +62,7 @@ export default class ReloginDialog extends PureComponent {
                 this.setState(this.defaultState);
             } else {
                 this.setState({
-                    message: 'Username or password wrong TODO localize',
+                    message: this.props.i18nRegistry.translate('Neos.Neos:Main:wrongCredentials', 'The entered username or password was wrong'),
                     isLoading: false
                 });
             }
@@ -78,22 +78,27 @@ export default class ReloginDialog extends PureComponent {
 
         return (
             <Dialog
-                title={<I18n id="Neos.Neos:Main:login.expired" fallback="Your login has expired. Please log in again. TODO"/>}
+                title={<I18n id="Neos.Neos:Main:login.expired" fallback="Your login has expired. Please log in again."/>}
                 onRequestClose={emptyFn}
                 contentsClassName={style.dialog}
                 isOpen
                 >
                 <div className={style.modalContents}>
-                    <TextInput className={style.inputField} value={this.state.username} placeholder={i18nRegistry.translate('Neos.Neos:Main:username', 'Username TODO')} onChange={this.handleUsernameChange}/>
-                    <TextInput className={style.inputField} value={this.state.password} placeholder={i18nRegistry.translate('Neos.Neos:Main:password', 'Password TODO')} onChange={this.handlePasswordChange}/>
+                    <TextInput className={style.inputField} value={this.state.username} placeholder={i18nRegistry.translate('Neos.Neos:Main:username', 'Username')} onChange={this.handleUsernameChange}/>
+                    <TextInput className={style.inputField} value={this.state.password} placeholder={i18nRegistry.translate('Neos.Neos:Main:password', 'Password')} onChange={this.handlePasswordChange}/>
                     <Button
                         key="login"
                         style="brand"
                         hoverStyle="brand"
                         onClick={this.handleTryLogin}
+                        isDisabled={this.state.isLoading}
                         className={style.loginButton}
                         >
-                        <I18n id="Neos.Neos:Main:login" fallback="LoginTODO"/>
+                        {this.state.isLoading ?
+                            <I18n id="Neos.Neos:Main:authenticating" fallback="Authenticating"/> :
+                            <I18n id="Neos.Neos:Main:login" fallback="Login"/>
+                        }
+
                     </Button>
                     {this.state.message ?
                         <Tooltip>{this.state.message}</Tooltip> : null}

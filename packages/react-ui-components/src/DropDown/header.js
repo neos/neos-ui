@@ -67,7 +67,7 @@ ShallowDropDownHeader.propTypes = {
      * These props control the visual state of the contents, and are passed
      * from the outside via the `ContextDropDownHeader` component.
      */
-    isOpen: PropTypes.bool.isRequired,
+    isOpen: PropTypes.bool,
     toggleDropDown: PropTypes.func.isRequired,
 
     /**

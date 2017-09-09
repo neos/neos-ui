@@ -19,7 +19,8 @@ class AspectRatioItem extends PureComponent {
         key: PropTypes.any,
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired,
-        changeHandler: PropTypes.func.isRequired,
+        onChange: PropTypes.func.isRequired,
+        onFlipAspectRatio: PropTypes.func.isRequired,
         isLocked: PropTypes.bool
     };
 
@@ -28,6 +29,7 @@ class AspectRatioItem extends PureComponent {
 
         this.handleWidthInputChange = this.handleInputChange.bind(this, 'width');
         this.handleHeightInputChange = this.handleInputChange.bind(this, 'height');
+        this.handleFlipAspectRatio = this.props.onFlipAspectRatio.bind(this);
     }
 
     render() {
@@ -59,13 +61,10 @@ class AspectRatioItem extends PureComponent {
     }
 
     handleInputChange(type, val) {
-        const {width, height, changeHandler} = this.props;
+        const width = type === 'width' ? val : this.props.width;
+        const height = type === 'height' ? val : this.props.height;
 
-        changeHandler({
-            width,
-            height,
-            [type]: val
-        });
+        this.props.onChange(Number(width), Number(height));
     }
 }
 
@@ -89,6 +88,7 @@ export default class ImageCropper extends PureComponent {
         this.handleSetAspectRatio = this.setAspectRatio.bind(this);
         this.handleClearAspectRatio = this.clearAspectRatio.bind(this);
         this.handleFlipAspectRatio = this.flipAspectRatio.bind(this);
+        this.handleSetCustomAspectRatioDimensions = this.setCustomAspectRatioDimensions.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -101,7 +101,6 @@ export default class ImageCropper extends PureComponent {
 
     setAspectRatio(aspectRatioOption) {
         const {cropConfiguration} = this.state;
-
         this.setState({
             cropConfiguration: cropConfiguration.selectAspectRatioOption(aspectRatioOption)
         });
@@ -148,11 +147,13 @@ export default class ImageCropper extends PureComponent {
                 <div className={style.tools}>
                     <div className={style.aspectRatioIndicator}>
                         {
-                            cropConfiguration.aspectRatioReducedLabel.map((label, index) => [
-                                <Icon key={index} icon="crop"/>,
-                                <span key={index} title={label}>{label}</span>,
-                                <span key={index}>{aspectRatioLocked ? <Icon icon="lock"/> : null}</span>
-                            ]).orSome('')
+                            cropConfiguration.aspectRatioReducedLabel.map((label, index) => (
+                                <div key={index}>
+                                    <Icon key={index} icon="crop"/>,
+                                    <span key={index} title={label}>{label}</span>,
+                                    <span key={index}>{aspectRatioLocked ? <Icon icon="lock"/> : null}</span>
+                                </div>
+                            )).orSome('')
                         }
                     </div>
 
@@ -167,7 +168,13 @@ export default class ImageCropper extends PureComponent {
 
                     <div className={style.dimensions}>
                         {cropConfiguration.aspectRatioDimensions.map((props, index) => (
-                            <AspectRatioItem {...props} isLocked={aspectRatioLocked} key={index}/>
+                            <AspectRatioItem
+                                {...props}
+                                isLocked={aspectRatioLocked}
+                                onFlipAspectRatio={this.handleFlipAspectRatio}
+                                onChange={this.handleSetCustomAspectRatioDimensions}
+                                key={index}
+                                />
                         )).orSome('')}
                     </div>
                 </div>

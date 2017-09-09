@@ -14,7 +14,7 @@ import {
     createEmptyContentCollectionPlaceholderIfMissing,
     findAllChildNodes,
     initializeContentDomNode
-} from '@neos-project/neos-ui-guest-frame';
+} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import style from '@neos-project/neos-ui-guest-frame/src/style.css';
 

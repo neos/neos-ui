@@ -21,7 +21,7 @@ storiesOf('DropDown', module)
                     <DropDown.Header>
                         {text('Header', 'Dropdown header')}
                     </DropDown.Header>
-                    <DropDown.Contents>
+                    <DropDown.Contents scrollable={boolean('Scrollable', true)}>
                         {text('Contents', 'Dropdown contents')}
                     </DropDown.Contents>
                 </DropDown>

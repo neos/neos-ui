@@ -5,7 +5,8 @@ import DropDown from '../DropDown/index';
 export default class SelectBox extends PureComponent {
 
     static defaultProps = {
-        optionValueField: 'value'
+        optionValueField: 'value',
+        scrollable: true
     };
 
     static propTypes = {
@@ -58,6 +59,11 @@ export default class SelectBox extends PureComponent {
          * if true, allows to clear the selected element completely (without choosing another one)
          */
         allowEmpty: PropTypes.bool,
+
+        /**
+         * limit height and show scrollbars if needed, defaults to true
+         */
+        scrollable: PropTypes.bool,
 
         /**
          * search box related properties
@@ -121,6 +127,7 @@ export default class SelectBox extends PureComponent {
             displaySearchBox,
             searchTerm,
             onSearchTermChange,
+            scrollable,
             TextInputComponent,
             IconButtonComponent,
             IconComponent
@@ -178,7 +185,7 @@ export default class SelectBox extends PureComponent {
                             null
                         }
                     </DropDown.Header>
-                    <DropDown.Contents className={theme.dropDown__contents}>
+                    <DropDown.Contents className={theme.dropDown__contents} scrollable={scrollable}>
                         {(options || []).map(this.renderOption)}
                     </DropDown.Contents>
                 </DropDown.Stateless>

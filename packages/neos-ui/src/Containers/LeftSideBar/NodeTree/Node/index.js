@@ -67,7 +67,7 @@ export default class Node extends PureComponent {
         super(props);
 
         this.state = {
-            shoulScrollIntoView: false
+            shouldScrollIntoView: false
         };
 
         this.handleNodeToggle = this.handleNodeToggle.bind(this);
@@ -82,7 +82,7 @@ export default class Node extends PureComponent {
             if (nextProps.focusedNodeContextPath === $get('contextPath', nextProps.node)) {
                 // Request scrolling itself into view
                 this.setState({
-                    shoulScrollIntoView: true
+                    shouldScrollIntoView: true
                 });
             }
         }
@@ -93,7 +93,7 @@ export default class Node extends PureComponent {
     }
 
     scrollFocusedNodeIntoView() {
-        if (this.state.shoulScrollIntoView && this.domNode) {
+        if (this.state.shouldScrollIntoView && this.domNode) {
             const scrollingElement = findScrollingParent(this.domNode);
             if (scrollingElement) {
                 const nodeTopPosition = this.domNode.getBoundingClientRect().top;
@@ -105,7 +105,7 @@ export default class Node extends PureComponent {
                     animate(scrollingElement, {scrollTop});
                 }
                 this.setState({
-                    shoulScrollIntoView: false
+                    shouldScrollIntoView: false
                 });
             }
         }

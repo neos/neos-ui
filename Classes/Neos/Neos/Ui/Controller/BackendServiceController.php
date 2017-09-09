@@ -184,7 +184,7 @@ class BackendServiceController extends ActionController
     {
         try {
             foreach ($nodeContextPaths as $contextPath) {
-                $node = $this->nodeService->getNodeFromContextPath($contextPath);
+                $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
                 $this->publishingService->discardNode($node);
             }
 

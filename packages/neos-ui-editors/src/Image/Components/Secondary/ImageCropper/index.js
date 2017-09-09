@@ -91,6 +91,21 @@ export default class ImageCropper extends PureComponent {
         this.handleSetCustomAspectRatioDimensions = this.setCustomAspectRatioDimensions.bind(this);
     }
 
+    componentDidMount() {
+        //
+        // Calculate and set maximum height for the cropped image
+        const containerHeight = this.containerNode.clientHeight;
+        const toolbarStyles = getComputedStyle(this.toolbarNode);
+        const toolbarFullHeight = parseInt(toolbarStyles.height, 10) + parseInt(toolbarStyles['margin-top'], 10) + parseInt(toolbarStyles['margin-bottom'], 10);
+        const spacing = 32;
+        const topOffset = 82;
+        const height = (containerHeight - toolbarFullHeight - spacing - topOffset) + 'px';
+        const imageNode = this.containerNode.querySelector('.ReactCrop__image');
+        const imageCopyNode = this.containerNode.querySelector('.ReactCrop__image-copy');
+        imageNode.style.height = height;
+        imageCopyNode.style.height = height;
+    }
+
     componentWillReceiveProps(nextProps) {
         const {cropConfiguration} = this.state;
 
@@ -142,9 +157,15 @@ export default class ImageCropper extends PureComponent {
             cropConfiguration.aspectRatioStrategy.__width = width;
         }
 
+        const toolbarRef = el => {
+            this.toolbarNode = el;
+        };
+        const containerRef = el => {
+            this.containerNode = el;
+        };
         return (
-            <div style={{textAlign: 'center'}}>
-                <div className={style.tools}>
+            <div style={{textAlign: 'center'}} ref={containerRef}>
+                <div ref={toolbarRef} className={style.tools}>
                     <div className={style.aspectRatioIndicator}>
                         {
                             cropConfiguration.aspectRatioReducedLabel.map((label, index) => (

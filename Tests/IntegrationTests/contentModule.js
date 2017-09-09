@@ -49,10 +49,10 @@ test('All tests at once', async t => {
         .click(ReactSelector('AddNode Button'))
         .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(true)
         .click(ReactSelector('NodeTypeItem'))
-        .click(ReactSelector('BackButton'))
+        .click(Selector('#neos-nodeCreationDialog-back'))
         .click(ReactSelector('NodeTypeItem'))
-        .typeText(ReactSelector('NodeCreationDialogBody TextField').find('input'), newPageTitle)
-        .click(ReactSelector('CreateButton'))
+        .typeText(Selector('#neos-nodeCreationDialog-body input'), newPageTitle)
+        .click(Selector('#neos-nodeCreationDialog-createNew'))
         .expect(ReactSelector('NodeCreationDialog').getReact(({props}) => props.isOpen)).eql(false);
     await t
         .switchToIframe('[name="neos-content-main"]')

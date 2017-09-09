@@ -11,7 +11,6 @@ import validate from '@neos-project/neos-ui-validators/src/index';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
-import {DisplayName} from '@neos-project/utils-helpers';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 
 import style from './style.css';
@@ -99,16 +98,15 @@ export default class NodeCreationDialog extends PureComponent {
 
     renderBackAction() {
         return (
-            <DisplayName name="BackButton">
-                <Button
-                    key="back"
-                    style="lighter"
-                    hoverStyle="brand"
-                    onClick={this.handleBack}
-                    >
-                    <I18n id="Neos.Neos:Main:back" fallback="Back"/>
-                </Button>
-            </DisplayName>
+            <Button
+                id="neos-nodeCreationDialog-back"
+                key="back"
+                style="lighter"
+                hoverStyle="brand"
+                onClick={this.handleBack}
+                >
+                <I18n id="Neos.Neos:Main:back" fallback="Back"/>
+            </Button>
         );
     }
 
@@ -127,17 +125,16 @@ export default class NodeCreationDialog extends PureComponent {
         const {validationErrors, isDirty} = this.state;
 
         return (
-            <DisplayName name="CreateButton">
-                <Button
-                    disabled={Boolean(validationErrors || !isDirty)}
-                    key="save"
-                    style="lighter"
-                    hoverStyle="brand"
-                    onClick={this.handleApply}
-                    >
-                    <I18n id="Neos.Neos:Main:createNew" fallback="Create"/>
-                </Button>
-            </DisplayName>
+            <Button
+                id="neos-nodeCreationDialog-createNew"
+                disabled={Boolean(validationErrors || !isDirty)}
+                key="save"
+                style="lighter"
+                hoverStyle="brand"
+                onClick={this.handleApply}
+                >
+                <I18n id="Neos.Neos:Main:createNew" fallback="Create"/>
+            </Button>
         );
     }
 
@@ -158,33 +155,31 @@ export default class NodeCreationDialog extends PureComponent {
                 isOpen
                 isWide
                 >
-                <DisplayName name="NodeCreationDialogBody">
-                    <div className={style.body}>
-                        {Object.keys(configuration.elements).map((elementName, index) => {
-                            //
-                            // Only display errors after user input (isDirty)
-                            //
-                            const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
-                            const element = configuration.elements[elementName];
-                            const options = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
+                <div id="neos-nodeCreationDialog-body" className={style.body}>
+                    {Object.keys(configuration.elements).map((elementName, index) => {
+                        //
+                        // Only display errors after user input (isDirty)
+                        //
+                        const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
+                        const element = configuration.elements[elementName];
+                        const options = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
 
-                            return (
-                                <div key={elementName} className={style.editor}>
-                                    <EditorEnvelope
-                                        identifier={elementName}
-                                        label={$get('ui.label', element)}
-                                        editor={$get('ui.editor', element)}
-                                        options={options}
-                                        commit={this.handleDialogEditorValueChange(elementName)}
-                                        validationErrors={validationErrorsForElement}
-                                        value={this.state.values[elementName]}
-                                        onKeyPress={this.handleKeyPress}
-                                        />
-                                </div>
-                            );
-                        })}
-                    </div>
-                </DisplayName>
+                        return (
+                            <div key={elementName} className={style.editor}>
+                                <EditorEnvelope
+                                    identifier={elementName}
+                                    label={$get('ui.label', element)}
+                                    editor={$get('ui.editor', element)}
+                                    options={options}
+                                    commit={this.handleDialogEditorValueChange(elementName)}
+                                    validationErrors={validationErrorsForElement}
+                                    value={this.state.values[elementName] || ''}
+                                    onKeyPress={this.handleKeyPress}
+                                    />
+                            </div>
+                        );
+                    })}
+                </div>
             </Dialog>
         );
     }

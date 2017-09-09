@@ -34,8 +34,10 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 
     return state => {
         const reference = $get('ui.selectNodeTypeModal.referenceNodeContextPath', state);
-        const allowedSiblingNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedSiblingNodeTypesSelector(state, {reference}));
-        const allowedChildNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedChildNodeTypesSelector(state, {reference}));
+        const referenceNodeType = selectors.CR.Nodes.getPathInNode(state, reference, 'nodeType');
+        const role = nodeTypesRegistry.hasRole(referenceNodeType, 'document') ? 'document' : 'content';
+        const allowedSiblingNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedSiblingNodeTypesSelector(state, {reference, role}));
+        const allowedChildNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedChildNodeTypesSelector(state, {reference, role}));
 
         return {
             isOpen: $get('ui.selectNodeTypeModal.isOpen', state),

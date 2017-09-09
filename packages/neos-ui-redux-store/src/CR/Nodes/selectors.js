@@ -177,7 +177,7 @@ export const clipboardIsEmptySelector = createSelector(
     clipboardNodePath => Boolean(clipboardNodePath)
 );
 
-const getPathInNode = (state, contextPath, propertyPath) => {
+export const getPathInNode = (state, contextPath, propertyPath) => {
     const node = $get(['cr', 'nodes', 'byContextPath', contextPath], state);
 
     return $get(propertyPath, node);
@@ -188,7 +188,8 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator
         (state, {reference}) => getPathInNode(state, elevator(reference), 'isAutoCreated'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'name'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'nodeType'),
-        (state, {reference}) => getPathInNode(state, elevator(parentNodeContextPath(reference)), 'nodeType')
+        (state, {reference}) => getPathInNode(state, elevator(parentNodeContextPath(reference)), 'nodeType'),
+        (state, {role}) => role
     ],
     (...args) => nodeTypesRegistry.getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args)
 );

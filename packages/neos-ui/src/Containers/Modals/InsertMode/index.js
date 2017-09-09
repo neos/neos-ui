@@ -74,7 +74,7 @@ export default class InsertModeModal extends PureComponent {
         const getNodeTypeLabel = compose(getLabel, nodeTypesRegistry.get.bind(nodeTypesRegistry), getNodeType);
 
         return (
-            <span>
+            <span key={getNodeTypeLabel(node) + getLabel(node)}>
                 <I18n id={getNodeTypeLabel(node)}/>
                 &nbsp;"{getLabel(node)}"
             </span>

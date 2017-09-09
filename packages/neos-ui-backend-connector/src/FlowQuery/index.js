@@ -27,7 +27,7 @@ export const createNodeEnvelope = (node = {}) => {
     return {$node: contextPath};
 };
 
-export const resolveChain = fetchWithErrorHandling.withCsrfToken(chain => csrfToken => ({
+export const resolveChain = chain => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
     url: '/neos!/service/flow-query',
 
     method: 'POST',
@@ -37,7 +37,7 @@ export const resolveChain = fetchWithErrorHandling.withCsrfToken(chain => csrfTo
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({chain})
-}), result => result.then(response => response && response.json()));
+})).then(response => response && response.json());
 
 //
 // The core FlowQuery plugin

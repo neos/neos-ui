@@ -127,21 +127,21 @@ test(`
 });
 
 test(`"api.flowQuery > resolveChain" utility should make a fetch call.`, () => {
-    const result = resolveChain({}, 'csrfToken');
+    const result = resolveChain({});
 
     expect(result.then).not.toBe(undefined);
     expect(typeof (result.then)).toBe('function');
 });
 
 test(`"api.flowQuery > factory" should expose the "q" function and its "applyMiddleware" method.`, () => {
-    const q = factory('csrfToken');
+    const q = factory();
 
     expect(typeof (q)).toBe('function');
     expect(typeof (q.applyMiddleware)).toBe('function');
 });
 
 test(`"api.flowQuery > api" should expose all operations as methods of the api.`, () => {
-    const q = factory('csrfToken');
+    const q = factory();
     const api = q('myContextPath');
 
     expect(typeof (api)).toBe('object');
@@ -152,7 +152,7 @@ test(`"api.flowQuery > api" should expose all operations as methods of the api.`
 test(`
     "api.flowQuery > api" should throw an error if an argument was passed which is
     not a string, array nor an object with an "contextPath" key/value pair.`, () => {
-    const q = factory('csrfToken');
+    const q = factory();
     const fn = () => q(2);
 
     expect(fn).toThrow();
@@ -161,7 +161,7 @@ test(`
 test(`
     "api.flowQuery > api" should not throw an error if provided with an object
     containing an "contextPath" key/value pair.`, () => {
-    const q = factory('csrfToken');
+    const q = factory();
     const fn = () => q({
         contextPath: 'myContextPath'
     });
@@ -170,7 +170,7 @@ test(`
 });
 
 test(`"api.flowQuery > api" should not throw an error if provided with an string.`, () => {
-    const q = factory('csrfToken');
+    const q = factory();
     const fn = () => q('myContextPath');
 
     expect(fn).not.toThrow();
@@ -179,7 +179,7 @@ test(`"api.flowQuery > api" should not throw an error if provided with an string
 test(`
     "api.flowQuery > api" should apply the the given middleware function and call it
     when executing an operation method.`, () => {
-    const q = factory('csrfToken');
+    const q = factory();
     const middleware = sinon.spy();
 
     q.applyMiddleware(middleware);
@@ -192,7 +192,7 @@ test(`
 test(`
     "api.flowQuery > api" should apply the the given middleware function but ignore it
     when passing a truthy boolean as the second argument of the API.`, () => {
-    const q = factory('csrfToken');
+    const q = factory();
     const middleware = sinon.spy();
 
     q.applyMiddleware(middleware);

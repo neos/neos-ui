@@ -15,7 +15,7 @@
     "test": "lerna run test --concurrency 1",
     "test:e2e": "yarn run testcafe chrome:headless Tests/IntegrationTests/*",
     "lint": "lerna run lint --concurrency 1",
-    "lint:editorconfig": "editorconfig-checker --exclude 'packages\/|Resources\/|LICENSE|README' && lerna run lint:editorconfig --concurrency 1"
+    "lint:editorconfig": "editorconfig-checker --exclude 'packages/|Resources/|LICENSE|README' && lerna run lint:editorconfig --concurrency 1"
   },
   "devDependencies": {
     "@inkdpixels/commit-analyzer": "^1.0.0",
@@ -67,8 +67,8 @@
     "skin-deep": "^0.16.0",
     "style-loader": "^0.18.1",
     "stylelint": "^7.5.0",
-    "testcafe": "^0.17.0",
-    "testcafe-react-selectors": "^0.0.8-alpha4",
+    "testcafe": "^0.17.2",
+    "testcafe-react-selectors": "^0.0.8",
     "url-loader": "^0.5.9",
     "watch": "^1.0.2",
     "webpack": "^1.13.2",

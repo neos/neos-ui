@@ -41,7 +41,7 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [INIT]: state => $set(
+    [INIT]: () => $set(
         'system',
         new Map({
             authenticationTimeout: false

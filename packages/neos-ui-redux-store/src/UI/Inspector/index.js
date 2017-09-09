@@ -12,14 +12,14 @@ import * as selectors from './selectors.js';
 //
 // System actions
 //
-const COMMIT = '@packagefactory/guevara/UI/Inspector/COMMIT';
-const CLEAR = '@packagefactory/guevara/UI/Inspector/CLEAR';
+const COMMIT = '@neos/neos-ui/UI/Inspector/COMMIT';
+const CLEAR = '@neos/neos-ui/UI/Inspector/CLEAR';
 
 //
 // User actions, which are handled by a saga
 //
-const APPLY = '@packagefactory/guevara/UI/Inspector/APPLY';
-const DISCARD = '@packagefactory/guevara/UI/Inspector/DISCARD';
+const APPLY = '@neos/neos-ui/UI/Inspector/APPLY';
+const DISCARD = '@neos/neos-ui/UI/Inspector/DISCARD';
 
 //
 // Export the action types

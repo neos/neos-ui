@@ -5,10 +5,10 @@ import {Map} from 'immutable';
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../../System/index';
 
-const TOGGLE_IMAGE_DETAILS_SCREEN = '@packagefactory/guevara/UI/Editors/Image/TOGGLE_IMAGE_DETAILS_SCREEN';
-const UPDATE_IMAGE = '@packagefactory/guevara/UI/Editors/Image/UPDATE_IMAGE';
-const UPLOAD_IMAGE = '@packagefactory/guevara/UI/Editors/Image/UPLOAD_IMAGE';
-const FINISH_IMAGE_UPLOAD = '@packagefactory/guevara/UI/Editors/Image/FINISH_IMAGE_UPLOAD';
+const TOGGLE_IMAGE_DETAILS_SCREEN = '@neos/neos-ui/UI/Editors/Image/TOGGLE_IMAGE_DETAILS_SCREEN';
+const UPDATE_IMAGE = '@neos/neos-ui/UI/Editors/Image/UPDATE_IMAGE';
+const UPLOAD_IMAGE = '@neos/neos-ui/UI/Editors/Image/UPLOAD_IMAGE';
+const FINISH_IMAGE_UPLOAD = '@neos/neos-ui/UI/Editors/Image/FINISH_IMAGE_UPLOAD';
 
 const toggleImageDetailsScreen = createAction(TOGGLE_IMAGE_DETAILS_SCREEN, screenIdentifier => ({screenIdentifier}));
 const updateImage = createAction(UPDATE_IMAGE, (nodeContextPath, imageUuid, transientImage) => ({nodeContextPath, imageUuid, transientImage}));

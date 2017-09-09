@@ -7,8 +7,8 @@ import {actionTypes as system} from '../../System/index';
 
 import * as selectors from './selectors';
 
-const START_LOADING = '@packagefactory/guevara/CR/Images/START_LOADING';
-const FINISH_LOADING = '@packagefactory/guevara/CR/Images/FINISH_LOADING';
+const START_LOADING = '@neos/neos-ui/CR/Images/START_LOADING';
+const FINISH_LOADING = '@neos/neos-ui/CR/Images/FINISH_LOADING';
 //
 // Export the action types
 //

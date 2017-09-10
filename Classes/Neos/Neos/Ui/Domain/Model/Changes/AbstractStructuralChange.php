@@ -136,7 +136,7 @@ abstract class AbstractStructuralChange extends AbstractChange
     }
 
     /**
-     * Perform finish tasks - needs to be called from inheriting clas on `apply`
+     * Perform finish tasks - needs to be called from inheriting class on `apply`
      *
      * @param NodeInterface $node
      * @return void

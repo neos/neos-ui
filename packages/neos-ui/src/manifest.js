@@ -220,7 +220,7 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
-    // When the server has removed a node, remove it as well from the store
+    // When the server has removed a node, remove it as well from the store amd the dom
     //
     serverFeedbackHandlers.add('Neos.Neos.Ui:RemoveNode', ({contextPath, parentContextPath}, {store}) => {
         const state = store.getState();
@@ -242,9 +242,7 @@ manifest('main', {}, globalRegistry => {
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));
 
-        //
-        // When the server has removed a node, remove it as well from the dom
-        //
+        // Remove the node from the dom
         if ($get('ui.contentCanvas.contextPath', state) !== contextPath) {
             findAllOccurrencesOfNodeInGuestFrame(contextPath).forEach(el => {
                 const closestContentCollection = el.closest('.neos-contentcollection');

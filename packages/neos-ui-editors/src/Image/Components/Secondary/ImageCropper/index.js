@@ -94,12 +94,11 @@ export default class ImageCropper extends PureComponent {
     componentDidMount() {
         //
         // Calculate and set maximum height for the cropped image
-        const containerHeight = this.containerNode.clientHeight;
+        const containerHeight = this.containerNode.parentElement.clientHeight;
         const toolbarStyles = getComputedStyle(this.toolbarNode);
         const toolbarFullHeight = parseInt(toolbarStyles.height, 10) + parseInt(toolbarStyles['margin-top'], 10) + parseInt(toolbarStyles['margin-bottom'], 10);
         const spacing = 32;
-        const topOffset = 82;
-        const height = (containerHeight - toolbarFullHeight - spacing - topOffset) + 'px';
+        const height = (containerHeight - toolbarFullHeight - spacing) + 'px';
         const imageNode = this.containerNode.querySelector('.ReactCrop__image');
         const imageCopyNode = this.containerNode.querySelector('.ReactCrop__image-copy');
         imageNode.style.height = height;

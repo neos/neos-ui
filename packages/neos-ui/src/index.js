@@ -10,6 +10,7 @@ import merge from 'lodash.merge';
 
 import {reducer, actions} from '@neos-project/neos-ui-redux-store';
 import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
+import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling';
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import {delay} from '@neos-project/utils-helpers';
 
@@ -137,6 +138,10 @@ function * application() {
     // Inform everybody, that we're ready now
     //
     yield put(actions.System.ready());
+
+    fetchWithErrorHandling.registerAuthenticationErrorHandler(() => {
+        store.dispatch(actions.System.authenticationTimeout());
+    });
 
     const menu = yield system.getMenu;
 

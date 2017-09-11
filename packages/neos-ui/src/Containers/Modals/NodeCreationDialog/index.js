@@ -153,7 +153,7 @@ export default class NodeCreationDialog extends PureComponent {
                 title={this.renderTitle()}
                 onRequestClose={this.handleCancel}
                 isOpen
-                isWide
+                style="wide"
                 >
                 <div id="neos-nodeCreationDialog-body" className={style.body}>
                     {Object.keys(configuration.elements).map((elementName, index) => {

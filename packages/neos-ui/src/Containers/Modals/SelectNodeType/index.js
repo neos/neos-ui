@@ -147,7 +147,7 @@ export default class SelectNodeType extends PureComponent {
                 title={this.renderInsertModeSelector()}
                 onRequestClose={this.handleCancel}
                 isOpen
-                isWide
+                style="wide"
                 >
                 {this.getAllowedNodeTypesByCurrentInsertMode().map((group, key) => (
                     <div key={key}>

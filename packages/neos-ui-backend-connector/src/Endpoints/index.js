@@ -1,8 +1,10 @@
 import {urlWithParams, searchParams} from './Helpers';
 
-const fetchJson = (endpoint, options) => fetch(endpoint, options).then(res => res.json());
+import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 
-const change = csrfToken => changes => fetchJson('/neos!/service/change', {
+const change = changes => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    url: '/neos!/service/change',
+
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -12,9 +14,10 @@ const change = csrfToken => changes => fetchJson('/neos!/service/change', {
     body: JSON.stringify({
         changes
     })
-});
+})).then(response => response.json());
 
-const publish = csrfToken => (nodeContextPaths, targetWorkspaceName) => fetchJson('/neos!/service/publish', {
+const publish = (nodeContextPaths, targetWorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    url: '/neos!/service/publish',
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -25,9 +28,11 @@ const publish = csrfToken => (nodeContextPaths, targetWorkspaceName) => fetchJso
         nodeContextPaths,
         targetWorkspaceName
     })
-});
+})).then(response => response.json());
 
-const discard = csrfToken => nodeContextPaths => fetchJson('/neos!/service/discard', {
+const discard = nodeContextPaths => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    url: '/neos!/service/discard',
+
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -37,9 +42,11 @@ const discard = csrfToken => nodeContextPaths => fetchJson('/neos!/service/disca
     body: JSON.stringify({
         nodeContextPaths
     })
-});
+})).then(response => response.json());
 
-const changeBaseWorkspace = csrfToken => targetWorkspaceName => fetchJson('/neos!/service/changeBaseWorkspace', {
+const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    url: '/neos!/service/changeBaseWorkspace',
+
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -49,15 +56,17 @@ const changeBaseWorkspace = csrfToken => targetWorkspaceName => fetchJson('/neos
     body: JSON.stringify({
         targetWorkspaceName
     })
-});
+})).then(response => response.json());
 
-const loadImageMetadata = imageVariantUuid => fetchJson(`neos/content/image-with-metadata?image=${imageVariantUuid}`, {
+const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: `neos/content/image-with-metadata?image=${imageVariantUuid}`,
+
     method: 'GET',
     credentials: 'include',
     headers: {
         'Content-Type': 'application/json'
     }
-});
+})).then(response => response.json());
 
 /**
  * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
@@ -68,7 +77,9 @@ const loadImageMetadata = imageVariantUuid => fetchJson(`neos/content/image-with
  * asset[originalAsset]:56d183f2-ee66-c845-7e2d-40661fb27571
  * @param asset
  */
-const createImageVariant = csrfToken => (originalAssetUuid, adjustments) => fetchJson('neos/content/create-image-variant', {
+const createImageVariant = (originalAssetUuid, adjustments) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    url: 'neos/content/create-image-variant',
+
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -81,23 +92,25 @@ const createImageVariant = csrfToken => (originalAssetUuid, adjustments) => fetc
             adjustments
         }
     })
-});
+})).then(response => response.json());
 
-const uploadAsset = csrfToken => (file, siteNodeName, metadata = 'Image') => {
+const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
     const data = new FormData();
     data.append('__siteNodeName', siteNodeName);
     data.append('asset[resource]', file);
     data.append('metadata', metadata);
 
-    return fetchJson('neos/content/upload-asset', {
+    return {
+        url: 'neos/content/upload-asset',
+
         method: 'POST',
         credentials: 'include',
         headers: {
             'X-Flow-Csrftoken': csrfToken
         },
         body: data
-    });
-};
+    };
+}).then(response => response.json());
 
 /**
  * searchTerm:se
@@ -110,10 +123,12 @@ const uploadAsset = csrfToken => (file, siteNodeName, metadata = 'Image') => {
  *
  * returns an array of {label, value} objects
  */
-const searchNodes = options => fetch(urlWithParams('/neos/service/nodes', options), {
+const searchNodes = options => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: urlWithParams('/neos/service/nodes', options),
+
     method: 'GET',
     credentials: 'include'
-})
+}))
     .then(result => result.text())
     .then(result => {
         const d = document.createElement('div');
@@ -159,57 +174,80 @@ const parseGetSingleNodeResult = requestPromise => {
  *
  * !! for params, use selectors.UI.NodeLinking.contextForNodeLinking and start modifying it!
  */
-const getSingleNode = (nodeIdentifier, params = {}) => parseGetSingleNodeResult(fetch(urlWithParams('/neos/service/nodes/' + nodeIdentifier, params), {
+const getSingleNode = (nodeIdentifier, params = {}) => parseGetSingleNodeResult(fetchWithErrorHandling.withCsrfToken(() => ({
+    url: urlWithParams('/neos/service/nodes/' + nodeIdentifier, params),
+
     method: 'GET',
     credentials: 'include'
-}));
+})));
 
-const adoptNodeToOtherDimension = csrfToken => ({identifier, targetDimensions, sourceDimensions, workspaceName, copyContent = false}) => {
-    const params = {
+const adoptNodeToOtherDimension = ({identifier, targetDimensions, sourceDimensions, workspaceName, copyContent = false}) => parseGetSingleNodeResult(fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    url: '/neos/service/nodes',
+
+    method: 'POST',
+    credentials: 'include',
+    body: searchParams({
         identifier,
         dimensions: targetDimensions,
         sourceDimensions,
         workspaceName,
         mode: (copyContent ? 'adoptFromAnotherDimensionAndCopyContent' : 'adoptFromAnotherDimension'),
         __csrfToken: csrfToken
-    };
+    })
+})));
 
-    return parseGetSingleNodeResult(fetch('/neos/service/nodes', {
-        method: 'POST',
-        credentials: 'include',
-        body: searchParams(params)
-    }));
-};
-
-const setUserPreferences = csrfToken => (key, value) => {
+const setUserPreferences = (key, value) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
     const data = new URLSearchParams();
     data.set('__csrfToken', csrfToken);
     data.set('key', key);
     data.set('value', value);
 
-    return fetch('neos/service/user-preferences', {
+    return {
+        url: 'neos/service/user-preferences',
+
         method: 'PUT',
         credentials: 'include',
         body: data
-    });
-};
-
-const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchJson(urlWithParams(dataSourceUri || '/neos/service/data-source/' + dataSourceIdentifier, params), {
-    method: 'GET',
-    credentials: 'include'
+    };
 });
 
-export default csrfToken => ({
+const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: urlWithParams(dataSourceUri || '/neos/service/data-source/' + dataSourceIdentifier, params),
+
+    method: 'GET',
+    credentials: 'include'
+})).then(response => response.json());
+
+const tryLogin = (username, password) => {
+    const data = new URLSearchParams();
+    data.set('__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][username]', username);
+    data.set('__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][password]', password);
+    // here, we
+    return fetch('/neos/login.json', {
+        method: 'POST',
+        body: data,
+        credentials: 'same-origin'
+    })
+    // parse the JSON if possible ...
+    .then(response => response.json())
+    // ... and if the JSON cannot be parsed, convert this to "false".
+    .then(result => result, () => false)
+    // return the new CSRF Protection token
+    .then(result => result && result.csrfToken);
+};
+
+export default () => ({
     loadImageMetadata,
-    change: change(csrfToken),
-    publish: publish(csrfToken),
-    discard: discard(csrfToken),
-    changeBaseWorkspace: changeBaseWorkspace(csrfToken),
-    createImageVariant: createImageVariant(csrfToken),
-    uploadAsset: uploadAsset(csrfToken),
+    change,
+    publish,
+    discard,
+    changeBaseWorkspace,
+    createImageVariant,
+    uploadAsset,
     searchNodes,
     getSingleNode,
-    adoptNodeToOtherDimension: adoptNodeToOtherDimension(csrfToken),
-    setUserPreferences: setUserPreferences(csrfToken),
-    dataSource
+    adoptNodeToOtherDimension,
+    setUserPreferences,
+    dataSource,
+    tryLogin
 });

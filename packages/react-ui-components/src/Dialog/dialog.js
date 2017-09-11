@@ -4,11 +4,13 @@ import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
 import Portal from 'react-portal';
 
+const validStyleKeys = ['wide', 'narrow'];
+
 const Dialog = props => {
     const {
         className,
         title,
-        isWide,
+        style,
         children,
         isOpen,
         onRequestClose,
@@ -20,7 +22,8 @@ const Dialog = props => {
     const rest = omit(restProps, ['isOpen']);
     const finalClassName = mergeClassNames({
         [theme.dialog]: true,
-        [theme['dialog--wide']]: isWide,
+        [theme['dialog--wide']]: style === 'wide',
+        [theme['dialog--narrow']]: style === 'narrow',
         [className]: className && className.length
     });
 
@@ -42,9 +45,11 @@ const Dialog = props => {
                             {children}
                         </div>
 
-                        <div className={theme.dialog__actions}>
-                            {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}
-                        </div>
+                        {actions && actions.length ?
+                            <div className={theme.dialog__actions}>
+                                {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}
+                            </div> : null
+                        }
                     </div>
                 </div>
             </section>
@@ -68,9 +73,9 @@ Dialog.propTypes = {
     title: PropTypes.any,
 
     /**
-     * When truthy, the Dialog gets rendered in bigger dimensions.
+     * The `style` prop defines the visual style of the `Dialog`.
      */
-    isWide: PropTypes.bool,
+    style: PropTypes.oneOf(validStyleKeys),
 
     /**
      * The contents to be rendered within the Dialog.
@@ -80,12 +85,17 @@ Dialog.propTypes = {
     /**
      * An Array of nodes(e.g. Action Buttons) which are placed at the bottom of the Dialog.
      */
-    actions: PropTypes.any.isRequired,
+    actions: PropTypes.any,
 
     /**
      * An optional `className` to attach to the wrapper.
      */
     className: PropTypes.string,
+
+    /**
+     * An optional `contentsClassName` to attach to the content area of the dialog.
+     */
+    contentsClassName: PropTypes.string,
 
     /**
      * An optional css theme to be injected.
@@ -97,7 +107,8 @@ Dialog.propTypes = {
         'dialog__title': PropTypes.string,
         'dialog__closeBtn': PropTypes.string,
         'dialog__actions': PropTypes.string,
-        'dialog--isWide': PropTypes.string
+        'dialog--wide': PropTypes.string,
+        'dialog--narrow': PropTypes.string
     }).isRequired,
 
     /**

@@ -26,6 +26,10 @@
     .dialog--wide & {
         max-width: calc(var(--goldenUnit) * 24);
     }
+
+    .dialog--narrow & {
+        max-width: 400px;
+    }
 }
 .dialog__title {
     composes: reset from './../reset.css';
@@ -41,7 +45,7 @@
 }
 .dialog__body {
     max-height: calc(65vh);
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .dialog__actions {
     composes: reset from './../reset.css';

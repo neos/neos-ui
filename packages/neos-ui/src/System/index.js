@@ -1,5 +1,6 @@
 import {discover} from '@neos-project/utils-helpers';
 import {initializeJsAPI} from '@neos-project/neos-ui-backend-connector';
+import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling/index';
 
 export const getAppContainer = discover(function * () {
     const appContainer = yield new Promise(resolve => {
@@ -61,10 +62,12 @@ export const getTranslations = discover(function * () {
 
 export const getNeos = discover(function * () {
     const csrfToken = yield getCsrfToken;
+
+    fetchWithErrorHandling.setCsrfToken(csrfToken);
+
     const systemEnv = yield getSystemEnv;
 
     const neos = initializeJsAPI(window, {
-        csrfToken,
         systemEnv
     });
 

@@ -1,11 +1,15 @@
 import {Selector, Role} from 'testcafe';
 import ReactSelector from 'testcafe-react-selectors';
 
+import Page from './pageModel';
+
 const section = name => console.log('\x1b[44m%s\x1b[0m', name);
 const subSection = name => console.log('\x1b[33m%s\x1b[0m', ' - ' + name);
 
 /* global fixture:true */
 /* eslint babel/new-cap: 0 */
+
+const page = new Page();
 
 const adminUrl = 'http://127.0.0.1:8081/neos!';
 
@@ -22,34 +26,128 @@ fixture `Content Module`
     });
 
 test('All tests at once', async t => {
+    section('Discarding: create a document node and then discard it');
+    const pageTitleToCreate = 'DiscardTest';
+    subSection('Create a document node');
+    await t
+        .click(ReactSelector('AddNode Button'))
+        .click(ReactSelector('NodeTypeItem'))
+        .typeText(Selector('#neos-nodeCreationDialog-body input'), pageTitleToCreate)
+        .click(Selector('#neos-nodeCreationDialog-createNew'))
+        .expect(page.treeNode.withText(pageTitleToCreate).exists).ok('Node with the given title appeared in the tree')
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
+        })).gt(0, 'There are some unpublished nodes');
+    subSection('Discard that node');
+    await t
+        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'))
+        .expect(page.treeNode.withText(pageTitleToCreate).exists).notOk('Discarded node gone from the tree')
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
+        })).eql(0, 'No unpublished nodes left')
+        .switchToIframe('[name="neos-content-main"]')
+        .expect(Selector('.neos-message-header').withText('Page Not Found').exists).notOk('Make sure we don\'t end up on 404 page')
+        .switchToMainWindow();
+
+    section('Discarding: delete a document node and then discard deletion');
+    const pageTitleToDelete = 'Try me';
+    subSection('Navigate via the page tree');
+    await t
+        .click(page.treeNode.withText(pageTitleToDelete))
+        .switchToIframe('[name="neos-content-main"]')
+        .expect(Selector('.neos-nodetypes-headline h1').withText(pageTitleToDelete).exists).ok('Navigated to the page and see the headline inline')
+        .switchToMainWindow();
+    subSection('Delete that page');
+    await t
+        .click(ReactSelector('DeleteSelectedNode'))
+        .click(Selector('#neos-deleteNodeModal-confirm'))
+        .expect(page.treeNode.withText(pageTitleToDelete).exists).notOk('Deleted node gone from the tree')
+        .expect(Selector('.neos-message-header').withText('Page Not Found').exists).notOk('Make sure we don\'t end up on 404 page');
+    subSection('Discard page deletion');
+    await t
+        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'))
+        .expect(page.treeNode.withText(pageTitleToDelete).exists).ok('Deleted node reappeared in the tree');
+
+    section('Discarding: create a content node and then discard it');
+    const defaultHeadlineTitle = 'Enter headline here';
+    subSection('Create a content node');
+    await t
+        .click(page.treeNode.withText('Content Collection (main)'))
+        .click(ReactSelector('AddNode').nth(1).find('button'))
+        .click(ReactSelector('NodeTypeItem').find('button').withText('Headline'))
+        .switchToIframe('[name="neos-content-main"]')
+        .expect(Selector('.neos-contentcollection').withText(defaultHeadlineTitle).exists).ok('New headline appeared on the page')
+        .switchToMainWindow()
+        .expect(page.treeNode.withText(defaultHeadlineTitle).exists).ok('New headline appeared in the tree')
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
+        })).gt(0, 'There are some unpublished nodes');
+
+    subSection('Discard that node');
+    await t
+        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'))
+        .expect(page.treeNode.withText(defaultHeadlineTitle).exists).notOk('Discarded node gone from the tree')
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
+        })).eql(0, 'No unpublished nodes left')
+        .switchToIframe('[name="neos-content-main"]')
+        .expect(Selector('.neos-contentcollection').withText(defaultHeadlineTitle).exists).notOk('New headline gone from the page')
+        .switchToMainWindow();
+
+    section('Discarding: delete a content node and then discard deletion');
+    const headlineToDelete = 'Imagine this...';
+    subSection('Delete this headline');
+    await t
+        .click(page.treeNode.withText(headlineToDelete))
+        .click(ReactSelector('DeleteSelectedNode').nth(1))
+        .click(Selector('#neos-deleteNodeModal-confirm'))
+        .expect(page.treeNode.withText(headlineToDelete).exists).notOk('Deleted node gone from the tree')
+        .switchToIframe('[name="neos-content-main"]')
+        .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).notOk('New headline gone from the page')
+        .switchToMainWindow();
+    subSection('Discard page deletion');
+    await t
+        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'))
+        .expect(page.treeNode.withText(headlineToDelete).exists).ok('Deleted node reappeared in the tree')
+        .switchToIframe('[name="neos-content-main"]')
+        .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).ok('New headline reappeared on the page')
+        .switchToMainWindow();
+
     section('PageTree search and filter');
     subSection('Search the page tree');
     const nodeTreeSearchInput = ReactSelector('NodeTreeSearchInput');
-    const treeNode = ReactSelector('Node').find('span');
     const nodeTreeFilter = ReactSelector('NodeTreeFilter');
     const shortcutFilter = ReactSelector('NodeTreeFilter').find('li').withText('Shortcut');
     await t
         .typeText(nodeTreeSearchInput, 'Download')
-        .expect(treeNode.withText('Download').count).eql(2, 'Two "Download" nodes should be found, on shortcut and one normal page')
-        .expect(treeNode.withText('Try me').exists).notOk('Top level "Try me" page should be hidden ');
+        .expect(page.treeNode.withText('Download').count).eql(2, 'Two "Download" nodes should be found, on shortcut and one normal page')
+        .expect(page.treeNode.withText('Try me').exists).notOk('Top level "Try me" page should be hidden ');
     subSection('Set the Shortcut filter');
     await t
         .click(nodeTreeFilter)
         .click(shortcutFilter)
-        .expect(treeNode.withText('Download').count).eql(1, 'Only one "Download" page should be found, of type Shortcut')
-        .expect(treeNode.withText('Shortcut to child node').exists).notOk('No matching "Shortcut" pages should be hidden')
-        .expect(treeNode.withText('Try me').exists).notOk('Top level "Try me" page should still be hidden');
+        .expect(page.treeNode.withText('Download').count).eql(1, 'Only one "Download" page should be found, of type Shortcut')
+        .expect(page.treeNode.withText('Shortcut to child node').exists).notOk('No matching "Shortcut" pages should be hidden')
+        .expect(page.treeNode.withText('Try me').exists).notOk('Top level "Try me" page should still be hidden');
     subSection('Clear search');
     const clearSearch = ReactSelector('NodeTreeSearchInput IconButton');
     await t
         .click(clearSearch)
-        .expect(treeNode.withText('Shortcut to child node').exists).ok('All "Shortcut" pages should be found')
-        .expect(treeNode.withText('Try me').exists).notOk('Top level "Try me" page should still be hidden');
+        .expect(page.treeNode.withText('Shortcut to child node').exists).ok('All "Shortcut" pages should be found')
+        .expect(page.treeNode.withText('Try me').exists).notOk('Top level "Try me" page should still be hidden');
     subSection('Clear filter');
     const clearFilter = ReactSelector('NodeTreeFilter Button');
     await t
         .click(clearFilter)
-        .expect(treeNode.withText('Try me').exists).ok('Top level "Try me" page should shown again');
+        .expect(page.treeNode.withText('Try me').exists).ok('Top level "Try me" page should shown again');
 
     section('Can toggle leftSideBar');
     const leftSideBarToggler = ReactSelector('LeftSideBarToggler Button');
@@ -72,8 +170,8 @@ test('All tests at once', async t => {
         .expect(rightSideBar.getReact(({props}) => props.isHidden)).eql(false);
 
     section('Can create a new page');
-    const SelectNodeTypeModal = ReactSelector('SelectNodeType');
     const newPageTitle = 'TestPage';
+    const SelectNodeTypeModal = ReactSelector('SelectNodeType');
     await t
         .expect(SelectNodeTypeModal.exists).ok()
         .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(false)
@@ -103,7 +201,6 @@ test('All tests at once', async t => {
         .click(ReactSelector('NodeTypeItem').find('button').withText('Headline'))
         .switchToIframe('[name="neos-content-main"]')
         .typeText(Selector('.neos-inline-editable h1'), headlineTitle)
-        // Weird bug here, if I use `('.neos-inline-editable h1')` selector it fails
-        .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok()
+        .expect(Selector('.neos-inline-editable').withText(headlineTitle).exists).ok()
         .switchToMainWindow();
 });

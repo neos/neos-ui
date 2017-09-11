@@ -69,6 +69,7 @@ export default class DeleteNodeModal extends PureComponent {
     renderAbort() {
         return (
             <Button
+                id="neos-deleteNodeModal-cancel"
                 key="cancel"
                 style="lighter"
                 hoverStyle="brand"
@@ -82,6 +83,7 @@ export default class DeleteNodeModal extends PureComponent {
     renderConfirm() {
         return (
             <Button
+                id="neos-deleteNodeModal-confirm"
                 key="confirm"
                 style="warn"
                 hoverStyle="brand"

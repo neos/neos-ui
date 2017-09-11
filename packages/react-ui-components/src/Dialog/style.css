@@ -26,6 +26,10 @@
     .dialog--wide & {
         max-width: calc(var(--goldenUnit) * 24);
     }
+
+    .dialog--narrow & {
+        max-width: 400px;
+    }
 }
 .dialog__title {
     composes: reset from './../reset.css';

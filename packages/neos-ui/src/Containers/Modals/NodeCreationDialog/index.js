@@ -144,7 +144,7 @@ export default class NodeCreationDialog extends PureComponent {
                 title={this.renderTitle()}
                 onRequestClose={this.handleCancel}
                 isOpen
-                isWide
+                style="wide"
                 >
                 <DisplayName name="NodeCreationDialogBody">
                     <div className={style.body}>

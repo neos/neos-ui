@@ -4,12 +4,13 @@ import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
 import Portal from 'react-portal';
 
+const validStyleKeys = ['wide', 'narrow'];
+
 const Dialog = props => {
     const {
         className,
-        contentsClassName,
         title,
-        isWide,
+        style,
         children,
         isOpen,
         onRequestClose,
@@ -21,20 +22,16 @@ const Dialog = props => {
     const rest = omit(restProps, ['isOpen']);
     const finalClassName = mergeClassNames({
         [theme.dialog]: true,
-        [theme['dialog--wide']]: isWide,
+        [theme['dialog--wide']]: style === 'wide',
+        [theme['dialog--narrow']]: style === 'narrow',
         [className]: className && className.length
-    });
-
-    const finalContentsClassName = mergeClassNames({
-        [theme.dialog__contents]: true,
-        [contentsClassName]: contentsClassName && contentsClassName.length
     });
 
     return (
         <Portal isOpened={isOpen}>
             <section {...rest} className={finalClassName} role="dialog" tabIndex="0">
                 <div className={theme.dialog__contentsPosition}>
-                    <div className={finalContentsClassName}>
+                    <div className={theme.dialog__contents}>
                         <IconButtonComponent
                             icon="close"
                             className={theme.dialog__closeBtn}
@@ -76,9 +73,9 @@ Dialog.propTypes = {
     title: PropTypes.any,
 
     /**
-     * When truthy, the Dialog gets rendered in bigger dimensions.
+     * The `style` prop defines the visual style of the `Dialog`.
      */
-    isWide: PropTypes.bool,
+    style: PropTypes.oneOf(validStyleKeys),
 
     /**
      * The contents to be rendered within the Dialog.
@@ -110,7 +107,8 @@ Dialog.propTypes = {
         'dialog__title': PropTypes.string,
         'dialog__closeBtn': PropTypes.string,
         'dialog__actions': PropTypes.string,
-        'dialog--isWide': PropTypes.string
+        'dialog--wide': PropTypes.string,
+        'dialog--narrow': PropTypes.string
     }).isRequired,
 
     /**

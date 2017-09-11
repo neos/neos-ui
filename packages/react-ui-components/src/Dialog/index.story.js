@@ -19,7 +19,27 @@ storiesOf('Dialog', module)
                     actions={[
                         <Button key="foo">An action button</Button>
                     ]}
-                    isWide
+                    style="wide"
+                    >
+                    {text('Inner content', 'Hello world!')}
+                </Dialog>
+            </StoryWrapper>
+        ),
+        {inline: true, source: false}
+    )
+    .addWithInfo(
+        'narrow',
+        'Dialog',
+        () => (
+            <StoryWrapper>
+                <Dialog
+                    isOpen={boolean('Is opened?', true)}
+                    title={text('Title', 'Hello title!')}
+                    onRequestClose={action('onRequestClose')}
+                    actions={[
+                        <Button key="foo">An action button</Button>
+                    ]}
+                    style="narrow"
                     >
                     {text('Inner content', 'Hello world!')}
                 </Dialog>

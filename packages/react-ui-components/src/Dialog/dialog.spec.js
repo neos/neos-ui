@@ -7,7 +7,8 @@ const IconButtonComponent = createStubComponent();
 const defaultProps = {
     isOpen: false,
     theme: {
-        'dialog--wide': 'wideClassName'
+        'dialog--wide': 'wideClassName',
+        'dialog--narrow': 'narrowClassName'
     },
     children: 'Foo children',
     actions: ['Foo 1', 'Foo 2'],
@@ -46,13 +47,21 @@ test('should render the "className" prop if passed.', () => {
 
     expect(section.hasClass('barClassName')).toBeTruthy();
 });
-test('should render the "dialog--wide" className from the "theme" prop if the "isWide" prop is truthy.', () => {
+test('should render the "dialog--wide" className from the "theme" prop if the style is wide.', () => {
     const portal = shallow({
-        isWide: true
+        style: 'wide'
     }).find(Portal);
     const section = portal.find('section');
 
     expect(section.hasClass('wideClassName')).toBeTruthy();
+});
+test('should render the "dialog--narrow" className from the "theme" prop if the style is narrow.', () => {
+    const portal = shallow({
+        style: 'narrow'
+    }).find(Portal);
+    const section = portal.find('section');
+
+    expect(section.hasClass('narrowClassName')).toBeTruthy();
 });
 test('should render the actions if passed.', () => {
     const portal = shallow().find(Portal);

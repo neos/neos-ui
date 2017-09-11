@@ -80,12 +80,12 @@ export default class ReloginDialog extends PureComponent {
             <Dialog
                 title={<I18n id="Neos.Neos:Main:login.expired" fallback="Your login has expired. Please log in again."/>}
                 onRequestClose={emptyFn}
-                contentsClassName={style.dialog}
+                style="narrow"
                 isOpen
                 >
                 <div className={style.modalContents}>
                     <TextInput className={style.inputField} value={this.state.username} placeholder={i18nRegistry.translate('Neos.Neos:Main:username', 'Username')} onChange={this.handleUsernameChange}/>
-                    <TextInput className={style.inputField} value={this.state.password} placeholder={i18nRegistry.translate('Neos.Neos:Main:password', 'Password')} onChange={this.handlePasswordChange}/>
+                    <TextInput type="password" className={style.inputField} value={this.state.password} placeholder={i18nRegistry.translate('Neos.Neos:Main:password', 'Password')} onChange={this.handlePasswordChange}/>
                     <Button
                         key="login"
                         style="brand"

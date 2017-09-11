@@ -21,7 +21,9 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
@@ -184,7 +186,32 @@ class BackendServiceController extends ActionController
     {
         try {
             foreach ($nodeContextPaths as $contextPath) {
-                $node = $this->nodeService->getNodeFromContextPath($contextPath);
+                $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
+                // When discarding node removal we should re-create it
+                if ($node->isRemoved() === TRUE) {
+                    $updateNodeInfo = new UpdateNodeInfo();
+                    $updateNodeInfo->setNode($node);
+                    $updateNodeInfo->recursive();
+
+                    $updateParentNodeInfo = new UpdateNodeInfo();
+                    $updateParentNodeInfo->setNode($node->getParent());
+
+                    $this->feedbackCollection->add($updateNodeInfo);
+                    $this->feedbackCollection->add($updateParentNodeInfo);
+
+                    // Reload document for content node changes
+                    // (as we can't RenderContentOutOfBand from here, we don't know dom addresses)
+                    if (!$this->nodeService->isDocument($node)) {
+                        $reloadDocument = new ReloadDocument();
+                        $this->feedbackCollection->add($reloadDocument);
+                    }
+
+                // When discarding node creation we should remove it
+                } else {
+                    $removeNode = new RemoveNode();
+                    $removeNode->setNode($node);
+                    $this->feedbackCollection->add($removeNode);
+                }
                 $this->publishingService->discardNode($node);
             }
 
@@ -193,9 +220,6 @@ class BackendServiceController extends ActionController
 
             $this->updateWorkspaceInfo($nodeContextPaths[0]);
             $this->feedbackCollection->add($success);
-
-            $reloadDocument = new ReloadDocument();
-            $this->feedbackCollection->add($reloadDocument);
 
             $this->persistenceManager->persistAll();
         } catch (\Exception $e) {

@@ -1,10 +1,22 @@
 import uuid from 'uuid';
+import {Map} from 'immutable';
 import {$get} from 'plow-js';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
+
+import {
+    getGuestFrameDocument,
+    findNodeInGuestFrame,
+    findAllOccurrencesOfNodeInGuestFrame,
+    createEmptyContentCollectionPlaceholderIfMissing,
+    findAllChildNodes
+} from '@neos-project/neos-ui-guest-frame/src/dom';
+import initializeContentDomNode from '@neos-project/neos-ui-guest-frame/src/initializeContentDomNode';
+
+import style from '@neos-project/neos-ui-guest-frame/src/style.css';
 
 manifest('main', {}, globalRegistry => {
     //
@@ -208,7 +220,7 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
-    // When the server has removed a node, remove it as well from the store
+    // When the server has removed a node, remove it as well from the store amd the dom
     //
     serverFeedbackHandlers.add('Neos.Neos.Ui:RemoveNode', ({contextPath, parentContextPath}, {store}) => {
         const state = store.getState();
@@ -229,6 +241,89 @@ manifest('main', {}, globalRegistry => {
         }
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));
+
+        // Remove the node from the dom
+        if ($get('ui.contentCanvas.contextPath', state) !== contextPath) {
+            findAllOccurrencesOfNodeInGuestFrame(contextPath).forEach(el => {
+                const closestContentCollection = el.closest('.neos-contentcollection');
+                el.remove();
+
+                createEmptyContentCollectionPlaceholderIfMissing(closestContentCollection);
+            });
+        }
+    });
+
+    //
+    // When the server advices to render a new node, put the delivered html to the
+    // corrent place inside the DOM
+    //
+    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderContentOutOfBand', (feedbackPayload, {store, globalRegistry}) => {
+        const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
+        const parentElement = parentDomAddress && findNodeInGuestFrame(
+            parentDomAddress.contextPath,
+            parentDomAddress.fusionPath
+        );
+        const siblingElement = siblingDomAddress && findNodeInGuestFrame(
+            siblingDomAddress.contextPath,
+            siblingDomAddress.fusionPath
+        );
+        const contentElement = (new DOMParser())
+            .parseFromString(renderedContent, 'text/html')
+            .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
+
+        if (!contentElement) {
+            console.warn(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
+            console.log(renderedContent);
+
+            getGuestFrameDocument().location.reload();
+            return;
+        }
+
+        switch (mode) {
+            case 'before':
+                siblingElement.parentNode.insertBefore(contentElement, siblingElement);
+                break;
+
+            case 'after':
+                siblingElement.parentNode.insertBefore(contentElement, siblingElement.nextSibling);
+                break;
+
+            case 'into':
+            default:
+                parentElement.appendChild(contentElement);
+                break;
+        }
+
+        const children = findAllChildNodes(contentElement);
+
+        const nodes = new Map(
+            Object.assign(
+                {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
+                ...children.map(el => {
+                    const contextPath = el.getAttribute('data-__neos-node-contextpath');
+                    return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
+                })
+            )
+        );
+        const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+        const inlineEditorRegistry = globalRegistry.get('inlineEditors');
+
+        if (parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`)) {
+            parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`).remove();
+        }
+
+        //
+        // Initialize the newly rendered node and all nodes that came with it
+        //
+        [contentElement, ...children].forEach(
+            initializeContentDomNode({
+                store,
+                globalRegistry,
+                nodeTypesRegistry,
+                inlineEditorRegistry,
+                nodes
+            })
+        );
     });
 
     //

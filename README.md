@@ -27,7 +27,7 @@ support us by chipping in and help us to reach our goal. Find more details
 
 2. Run the following command:
    ```
-   composer require neos/neos-ui 1.0.*@beta neos/neos-ui-compiled 1.0.*@beta
+   composer require "neos/neos-ui 1.0.*@beta" "neos/neos-ui-compiled 1.0.*@beta"
    ```
 
 3. Now you are all set up and can open the sub-route `/neos!` to login to the new interface.

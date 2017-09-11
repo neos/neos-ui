@@ -48,7 +48,7 @@ manifest('main', {}, globalRegistry => {
             - nodeType: The nodeType of the associated node
             - editorOptions: The configuration for this inline editor
             - globalRegistry: The global registry
-            - persistChange: Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.Changes.persistChange)
+            - persistChange: Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.Changes.persistChanges)
     `));
 
     //

@@ -45,11 +45,11 @@ export default function * cutAndPasteNode({globalRegistry}) {
             );
 
             if (mode) {
-                yield put(actions.Changes.persistChange({
+                yield put(actions.Changes.persistChanges([{
                     type: calculateChangeTypeFromMode(mode, 'Move'),
                     subject,
                     payload: calculateDomAddressesFromMode(mode, reference, fusionPath)
-                }));
+                }]));
             }
         }
     });

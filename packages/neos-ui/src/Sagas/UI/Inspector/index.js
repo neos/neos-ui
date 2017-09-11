@@ -74,6 +74,11 @@ function * flushInspector(inspectorRegistry) {
     const transientInspectorValues = getTransientInspectorValues(state);
     const transientInspectorValuesForFocusedNodes = $get([$get('contextPath', focusedNode)], transientInspectorValues);
 
+    //
+    // Accumulate changes to be persisted
+    //
+    const changes = [];
+
     for (const propertyName of Object.keys(transientInspectorValuesForFocusedNodes)) {
         const transientValue = transientInspectorValuesForFocusedNodes[propertyName];
 
@@ -107,9 +112,9 @@ function * flushInspector(inspectorRegistry) {
         };
 
         //
-        // Then persist the final value
+        // Add to changes to be persisted
         //
-        yield put(actions.Changes.persistChange(change));
+        changes.push(change);
 
         //
         // Update uris of all nodes in state if uriPathSegment has been changed
@@ -130,6 +135,7 @@ function * flushInspector(inspectorRegistry) {
             }
         }
     }
+    yield put(actions.Changes.persistChanges(changes));
 
     //
     // TODO: Handle reloadIfChanged

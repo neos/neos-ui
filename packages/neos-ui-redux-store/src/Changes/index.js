@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$set} from 'plow-js';
+import {$set, $all} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 
@@ -13,40 +13,43 @@ export const actionTypes = {
 };
 
 /**
- * Perists the change.
+ * Perists an array of changes.
  * Example:
- * change: {
+ * changes: [{
  *   type: 'Neos.Neos.Ui:Property',
  *   subject: nodeContext.contextPath,
  *   payload: {
  *     propertyName: nodeContext.propertyName,
  *     value
  *   }
- * }
+ * }]
  */
-const persistChange = createAction(PERSIST, change => ({change}));
+const persistChanges = createAction(PERSIST, changes => ({changes}));
 
 //
 // Export the actions
 //
 export const actions = {
-    persistChange
+    persistChanges
 };
 
 //
 // Export the reducer
 //
 export const reducer = handleActions({
-    [PERSIST]: ({change}) => state => {
-        if (change.type === 'Neos.Neos.Ui:Property') {
-            return $set(
-                ['cr', 'nodes', 'byContextPath', change.subject, 'properties', change.payload.propertyName],
-                change.payload.value,
-                state
-            );
-        }
-
-        return state;
+    [PERSIST]: ({changes}) => state => {
+        return $all(
+            ...changes.map(change => {
+                if (change.type === 'Neos.Neos.Ui:Property') {
+                    return $set(
+                        ['cr', 'nodes', 'byContextPath', change.subject, 'properties', change.payload.propertyName],
+                        change.payload.value
+                    );
+                }
+                return null;
+            }).filter(i => i),
+            state
+        );
     }
 });
 

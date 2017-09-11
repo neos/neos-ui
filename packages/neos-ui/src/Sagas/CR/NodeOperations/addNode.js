@@ -94,7 +94,7 @@ export default function * addNode({globalRegistry}) {
                 case STEP_FINISH: {
                     const {mode, nodeType, data} = workflowData;
 
-                    return yield put(actions.Changes.persistChange({
+                    return yield put(actions.Changes.persistChanges([{
                         type: calculateChangeTypeFromMode(mode, 'Create'),
                         subject: referenceNodeContextPath,
                         payload: {
@@ -102,7 +102,7 @@ export default function * addNode({globalRegistry}) {
                             nodeType,
                             data
                         }
-                    }));
+                    }]));
                 }
 
                 default: return;

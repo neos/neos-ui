@@ -4,21 +4,22 @@
     padding: 0;
     list-style: none;
 
-    li {
+    &__item {
         padding: 8px;
         border-bottom: 1px solid #222;
-        text-align: right;
         line-height: 20px;
         min-height: 20px;
 
         &:last-child {
             border-bottom: none;
         }
+    }
 
-        span {
-            float: left;
-            padding-right: 8px;
-            font-weight: bold;
-        }
+    &__title {
+        font-weight: bold;
+    }
+
+    &__content {
+        font-size: 13px;
     }
 }

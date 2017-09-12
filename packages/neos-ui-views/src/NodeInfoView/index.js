@@ -35,13 +35,34 @@ export default class NodeInfoView extends PureComponent {
             name: $get('properties._name', node) ? $get('properties._name', node) : '/'
         };
 
+        const nodeType = $get('nodeType', node);
+
         return (
             <ul className={style.nodeInfoView}>
-                <li><span>{i18nRegistry.translate('created', 'Created', {}, 'Neos.Neos')}</span> {new Date(properties.created).toLocaleString()}</li>
-                <li><span>{i18nRegistry.translate('lastModification', 'Last modification', {}, 'Neos.Neos')}</span> {new Date(properties.lastModification).toLocaleString()}</li>
-                {properties.lastPublication ? <li><span>{i18nRegistry.translate('lastPublication', 'Last publication', {}, 'Neos.Neos')}</span> {new Date(properties.lastPublication).toLocaleString()}</li> : []}
-                <li><span>{i18nRegistry.translate('identifier', 'Identifier', {}, 'Neos.Neos')}</span> {properties.identifier}</li>
-                <li title={properties.path}><span>{i18nRegistry.translate('name', 'Name', {}, 'Neos.Neos')}</span> {properties.name}</li>
+                <li className={style.nodeInfoView__item} title={new Date(properties.created).toLocaleString()}>
+                    <div className={style.nodeInfoView__title}>{i18nRegistry.translate('created', 'Created', {}, 'Neos.Neos')}</div>
+                    <div className={style.nodeInfoView__content}>{new Date(properties.created).toLocaleString()}</div>
+                </li>
+                <li className={style.nodeInfoView__item} title={new Date(properties.lastModification).toLocaleString()}>
+                    <div className={style.nodeInfoView__title}>{i18nRegistry.translate('lastModification', 'Last modification', {}, 'Neos.Neos')}</div>
+                    <div className={style.nodeInfoView__content}>{new Date(properties.lastModification).toLocaleString()}</div>
+                </li>
+                {properties.lastPublication ? (<li className={style.nodeInfoView__item} title={new Date(properties.lastPublication).toLocaleString()}>
+                    <div className={style.nodeInfoView__title}>{i18nRegistry.translate('lastPublication', 'Last publication', {}, 'Neos.Neos')}</div>
+                    <div className={style.nodeInfoView__content}>{new Date(properties.lastPublication).toLocaleString()}</div>
+                </li>) : []}
+                <li className={style.nodeInfoView__item} title={properties.identifier}>
+                    <div className={style.nodeInfoView__title}>{i18nRegistry.translate('identifier', 'Identifier', {}, 'Neos.Neos')}</div>
+                    <div className={style.nodeInfoView__content}>{properties.identifier}</div>
+                </li>
+                <li className={style.nodeInfoView__item} title={properties.path}>
+                    <div className={style.nodeInfoView__title}>{i18nRegistry.translate('name', 'Name', {}, 'Neos.Neos')}</div>
+                    <div className={style.nodeInfoView__content}>{properties.name}</div>
+                </li>
+                <li className={style.nodeInfoView__item} title={nodeType}>
+                    <div className={style.nodeInfoView__title}>{i18nRegistry.translate('type', 'Type', {}, 'Neos.Neos')}</div>
+                    <div className={style.nodeInfoView__content}>{nodeType}</div>
+                </li>
             </ul>
         );
     }

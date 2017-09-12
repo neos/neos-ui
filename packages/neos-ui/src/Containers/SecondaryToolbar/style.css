@@ -19,7 +19,7 @@
     padding-left: 0;
 }
 .secondaryToolbar--isFringeRight {
-    padding-right: var(--goldenUnit);
+    padding-right: 46px;
 }
 .secondaryToolbar--isHidden {
     display: none;

@@ -1,6 +1,5 @@
 import isObject from 'lodash.isobject';
 import isString from 'lodash.isstring';
-import isArray from 'lodash.isarray';
 import * as operations from './Operations/index';
 import {$get, $add} from 'plow-js';
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
@@ -90,7 +89,7 @@ export default () => {
             context = [context];
         }
 
-        if (!isArray(context)) {
+        if (!Array.isArray(context)) {
             throw new Error('Please provide either a string, an array or an object containing a `contextPath` to the FlowQuery API.');
         }
 

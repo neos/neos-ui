@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import {connect} from 'react-redux';
 
-import compose from 'lodash.compose';
+import flowright from 'lodash.flowright';
 import Tree from '@neos-project/react-ui-components/src/Tree/';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
@@ -27,7 +27,7 @@ const findScrollingParent = parentElement => {
     return null;
 };
 
-const decodeLabel = compose(
+const decodeLabel = flowright(
     decodeHtml,
     stripTags
 );

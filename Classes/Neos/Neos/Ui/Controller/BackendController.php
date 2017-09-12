@@ -19,7 +19,6 @@ use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Service\NodeTypeSchemaBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Service\XliffService;
 use Neos\Flow\I18n\Locale;
 use Neos\Fusion\Core\Cache\ContentCache;
 use Neos\Fusion\View\FusionView;
@@ -68,13 +67,6 @@ class BackendController extends ActionController
      * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
-
-    /**
-     * @Flow\Inject
-     * @var XliffService
-     */
-    protected $xliffService;
-
 
     /**
      * @Flow\Inject
@@ -144,9 +136,7 @@ class BackendController extends ActionController
             $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
             $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
 
-            $this->view->assign('translations', $this->xliffService->getCachedJson(
-                new Locale($this->userService->getInterfaceLanguage())
-            ));
+            $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
             return;
         }
 

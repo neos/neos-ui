@@ -6,9 +6,10 @@ import SelectBox from './index.js';
 import DropDown from './../DropDown/index.js';
 
 const options = [
-    {value: 'opt1', label: 'Option 1', icon: 'bookmark'},
-    {value: 'opt2', label: 'Option 2'},
-    {value: 'opt3', label: 'Option 3'}
+    {value: 'opt1', label: 'Option 1', icon: 'bookmark', group: 'Group 1'},
+    {value: 'opt2', label: 'Option 2', group: 'Group 2'},
+    {value: 'opt3', label: 'Option 3', group: 'Group 1'},
+    {value: 'opt4', label: 'Option 4'}
 ];
 
 storiesOf('SelectBox', module)

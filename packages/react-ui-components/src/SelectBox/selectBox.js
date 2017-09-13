@@ -98,6 +98,8 @@ export default class SelectBox extends PureComponent {
 
         this.state = {isOpen: false};
 
+        this.groupOptions = this.groupOptions.bind(this);
+        this.renderGroup = this.renderGroup.bind(this);
         this.renderOption = this.renderOption.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
     }
@@ -135,6 +137,8 @@ export default class SelectBox extends PureComponent {
         let allowEmpty = this.props.allowEmpty;
 
         const selectedValue = (options || []).find(option => option[optionValueField] === value);
+
+        const groupedOptions = this.groupOptions(options);
 
         // if the search box should be shown, we *need* to force allowEmpty (to display the "clear" button if a value is selected),
         // as the search box is only shown if nothing is selected.
@@ -187,7 +191,7 @@ export default class SelectBox extends PureComponent {
                         }
                     </DropDown.Header>
                     <DropDown.Contents className={theme.dropDown__contents} scrollable={scrollable}>
-                        {(options || []).map(this.renderOption)}
+                        {Array.from(groupedOptions).map(this.renderGroup)}
                     </DropDown.Contents>
                 </DropDown.Stateless>
             </div>
@@ -195,11 +199,49 @@ export default class SelectBox extends PureComponent {
     }
 
     /**
-     * renders a single option (<li/>) for the select box
+     * Groups the options of the selectBox by their group-attribute.
+     * @returns A javascript Map with the group names as key and an array of options as values.
+     *              Options without a group-attribute assigned will receive the key "Without group".
+     * @param {*} options: Options from Neos yaml describing property editor.
+     */
+    groupOptions(options) {
+        return (options || []).reduce(function (accumulator, currentOpt) {
+            let value = accumulator.get(currentOpt.group);
+            if (value) {
+                value.push(currentOpt);
+            } else {
+                value = [currentOpt];
+            }
+            accumulator.set(currentOpt.group ? currentOpt.group : "Without group", value);
+            return accumulator;
+        }, new Map()); //<-- Initial value of the accumulator
+    }
+
+    /**
+     * Renders the options of the selectBox as <li> and groups them below a <span>
+     * that displays their group name.
+     * @returns {JSX} option elements grouped by and labeled with their group-attribute.
+     */
+    renderGroup(group, index) {
+        const GROUP_LABEL = 0;
+        const OPTIONS_LIST = 1;
+        const {theme} = this.props;        
+        return (
+            <div>
+                <span className={theme.dropDown__group}> 
+                    {group[GROUP_LABEL]}
+                </span>
+                { group[OPTIONS_LIST].map(this.renderOption) }
+            </div>
+        )
+    }
+
+    /**
+     * Renders a single option (<li/>) for the select box
      * @returns {JSX} option element
      */
     renderOption(option, index) {
-        const {icon, label} = option;
+        const {icon, label, group} = option;
         const value = option[this.props.optionValueField];
         const {theme, IconComponent} = this.props;
         const onClick = () => {

@@ -120,6 +120,12 @@
     background: #FFF;
 }
 
+.dropDown__group {
+    font-weight: bold;
+    border-bottom: 3px solid #FFF;
+    display: block;
+}
+
 .dropDown__item {
     composes: reset from './../reset.css';
     height: 40px;

@@ -50,7 +50,7 @@
     background: var(--brandColorsContrastNeutral);
 }
 .dropDown__contents--scrollable {
-    max-height: 320px;
+    max-height: 80vh;
     overflow-y: auto;
 }
 .dropDown__contents--isOpen {

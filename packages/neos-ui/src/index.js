@@ -13,6 +13,7 @@ import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling';
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import {delay} from '@neos-project/utils-helpers';
+import backend from '@neos-project/neos-ui-backend-connector';
 
 import allSagas from './Sagas/index';
 import * as system from './System';
@@ -84,27 +85,28 @@ function * application() {
     //
     store.dispatch(actions.System.boot());
 
+    const {getJsonResource} = backend.get().endpoints;
     //
     // Load node types
     //
-    const nodeTypes = yield system.getNodeTypes;
+    const groupsAndRoles = yield system.getNodeTypes;
+    const nodeTypesSchema = yield getJsonResource(configuration.endpoints.nodeTypeSchema);
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-
-    Object.keys(nodeTypes.byName).forEach(nodeTypeName => {
+    Object.keys(nodeTypesSchema.nodeTypes).forEach(nodeTypeName => {
         nodeTypesRegistry.add(nodeTypeName, {
-            ...nodeTypes.byName[nodeTypeName],
+            ...nodeTypesSchema.nodeTypes[nodeTypeName],
             name: nodeTypeName
         });
     });
-    nodeTypesRegistry.setConstraints(nodeTypes.constraints);
-    nodeTypesRegistry.setInheritanceMap(nodeTypes.inheritanceMap);
-    nodeTypesRegistry.setGroups(nodeTypes.groups);
-    nodeTypesRegistry.setRoles(nodeTypes.roles);
+    nodeTypesRegistry.setConstraints(nodeTypesSchema.constraints);
+    nodeTypesRegistry.setInheritanceMap(nodeTypesSchema.inheritanceMap);
+    nodeTypesRegistry.setGroups(groupsAndRoles.groups);
+    nodeTypesRegistry.setRoles(groupsAndRoles.roles);
 
     //
     // Load translations
     //
-    const translations = yield system.getTranslations;
+    const translations = yield getJsonResource(configuration.endpoints.translations);
     const i18nRegistry = globalRegistry.get('i18n');
     i18nRegistry.setTranslations(translations);
 

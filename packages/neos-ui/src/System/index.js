@@ -54,12 +54,6 @@ export const getMenu = discover(function * () {
     return JSON.parse(appContainer.querySelector('[data-json="menu"]').textContent);
 });
 
-export const getTranslations = discover(function * () {
-    const appContainer = yield getAppContainer;
-
-    return JSON.parse(appContainer.querySelector('[data-json="translations"]').textContent);
-});
-
 export const getNeos = discover(function * () {
     const csrfToken = yield getCsrfToken;
 

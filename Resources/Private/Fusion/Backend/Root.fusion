@@ -14,6 +14,30 @@ backend = Neos.Fusion:Template {
         nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}
         structureTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.structureTree')}
         allowedTargetWorkspaces = ${Neos.Ui.Workspace.getAllowedTargetWorkspaces()}
+        endpoints = Neos.Fusion:RawArray {
+            nodeTypeSchema = Neos.Fusion:UriBuilder {
+                package = 'Neos.Neos'
+                controller = 'Backend\\Schema'
+                action = 'nodeTypeSchema'
+                absolute = true
+                arguments = Neos.Fusion:RawArray {
+                    # TODO: dirty hack to not have to re-implement neos:backend.configurationCacheVersion VH
+                    version = Neos.Fusion:Template {
+                        templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/ConfigurationVersion.html'
+                        @process.trim = ${String.trim(value)}
+                    }
+                }
+            }
+            translations = Neos.Fusion:UriBuilder {
+                package = 'Neos.Neos'
+                controller = 'Backend\\Backend'
+                action = 'xliffAsJson'
+                absolute = true
+                arguments = Neos.Fusion:RawArray {
+                    locale = ${interfaceLanguage}
+                }
+            }
+        }
         @process.json = ${Json.stringify(value)}
     }
 
@@ -24,9 +48,6 @@ backend = Neos.Fusion:Template {
 
     nodeTypes = Neos.Fusion:RawArray {
         roles = ${Configuration.setting('Neos.Neos.Ui.nodeTypeRoles')}
-        byName = ${Neos.Ui.NodeTypes.nodeTypesByName()}
-        constraints = ${Neos.Ui.NodeTypes.nodeTypeConstraints()}
-        inheritanceMap = ${Neos.Ui.NodeTypes.nodeTypeInheritanceMap()}
         groups = ${Configuration.setting('Neos.Neos.nodeTypes.groups')}
 
         @process.json = ${Json.stringify(value)}
@@ -118,8 +139,6 @@ backend = Neos.Fusion:Template {
 
         @process.json = ${Json.stringify(value)}
     }
-
-    translations = ${translations}
 
     env = ${Configuration.setting('Neos.Flow.core.context')}
 }

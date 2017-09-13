@@ -218,6 +218,12 @@ const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWi
     credentials: 'include'
 })).then(response => response.json());
 
+const getJsonResource = resourceUri => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: resourceUri,
+    method: 'GET',
+    credentials: 'include'
+})).then(response => response.json());
+
 const tryLogin = (username, password) => {
     const data = new URLSearchParams();
     data.set('__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][username]', username);
@@ -249,5 +255,6 @@ export default () => ({
     adoptNodeToOtherDimension,
     setUserPreferences,
     dataSource,
+    getJsonResource,
     tryLogin
 });

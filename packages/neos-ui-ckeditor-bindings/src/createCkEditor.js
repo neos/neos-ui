@@ -24,7 +24,8 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
             {
                 extraPlugins: 'confighelper',
                 removePlugins: 'floatingspace,maximize,resize,toolbar,contextmenu,liststyle,tabletools',
-                autoParagraph: false
+                autoParagraph: false,
+                entities: false
             },
             placeholder ? {placeholder} : {}
         ));

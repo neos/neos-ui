@@ -1,6 +1,9 @@
 window.CKEDITOR = {
     dtd: {
         $editable: {}
+    },
+    plugins: {
+        add: () => {}
     }
 };
 

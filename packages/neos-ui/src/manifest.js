@@ -278,7 +278,7 @@ manifest('main', {}, globalRegistry => {
             getGuestFrameDocument().location.reload();
             return;
         }
-        
+
         const fusionPath = contentElement.dataset.__neosFusionPath;
 
         switch (mode) {

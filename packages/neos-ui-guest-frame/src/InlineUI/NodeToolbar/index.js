@@ -65,11 +65,12 @@ export default class NodeToolbar extends PureComponent {
         const scrollingElement = iframeDocument.compatMode.indexOf('CSS1') === 0 && iframeDocument.documentElement.scrollHeight > iframeDocument.body.scrollHeight ? iframeDocument.documentElement : iframeDocument.body;
         const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
         if (nodeElement) {
-            const nodePosition = position(nodeElement);
+            const nodeAbsolutePosition = position(nodeElement);
+            const nodeRelativePosition = nodeElement.getBoundingClientRect();
             const offset = 100;
-            const elementIsNotInView = nodePosition.top < offset || nodePosition.bottom + offset > this.iframeWindow.innerHeight;
+            const elementIsNotInView = nodeRelativePosition.top < offset || nodeRelativePosition.bottom + offset > this.iframeWindow.innerHeight;
             if (elementIsNotInView) {
-                const scrollTop = nodePosition.top + this.iframeWindow.pageYOffset - offset;
+                const scrollTop = nodeAbsolutePosition.top - offset;
                 animate(scrollingElement, {scrollTop});
             }
         }

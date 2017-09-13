@@ -270,7 +270,6 @@ manifest('main', {}, globalRegistry => {
         const contentElement = (new DOMParser())
             .parseFromString(renderedContent, 'text/html')
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
-        const fusionPath = contentElement.dataset.__neosFusionPath;
 
         if (!contentElement) {
             console.warn(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
@@ -279,6 +278,8 @@ manifest('main', {}, globalRegistry => {
             getGuestFrameDocument().location.reload();
             return;
         }
+        
+        const fusionPath = contentElement.dataset.__neosFusionPath;
 
         switch (mode) {
             case 'before':

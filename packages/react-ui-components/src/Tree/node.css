@@ -55,7 +55,7 @@
     text-decoration: line-through;
 }
 .header__data--isDragging {
-    opacity: 0.2;
+    opacity: .2;
 }
 .header__data--isDirty {
     border-left: 3px solid var(--brandColorsWarn);
@@ -67,8 +67,6 @@
     &.header__data--isHidden {
         opacity: .8;
     }
-}
-.header__data--isLastChild {
 }
 .header__data--acceptsDrop {
     background-color: var(--brandColorsPrimaryBlue);

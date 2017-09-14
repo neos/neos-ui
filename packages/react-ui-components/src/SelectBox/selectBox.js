@@ -1,11 +1,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import DropDown from '../DropDown/index';
+import mergeClassNames from 'classnames';
 
 export default class SelectBox extends PureComponent {
-
+    
     static defaultProps = {
         optionValueField: 'value',
+        withoutGroupLabel: 'Without group',
         scrollable: true
     };
 
@@ -49,6 +51,11 @@ export default class SelectBox extends PureComponent {
          * This prop is an icon for the placeholder.
          */
         placeholderIcon: PropTypes.string,
+
+        /**
+         * text for the group label of options without a group
+         */
+        withoutGroupLabel: PropTypes.string,
 
         /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
@@ -97,11 +104,6 @@ export default class SelectBox extends PureComponent {
         super(...args);
 
         this.state = {isOpen: false};
-
-        this.groupOptions = this.groupOptions.bind(this);
-        this.renderGroup = this.renderGroup.bind(this);
-        this.renderOption = this.renderOption.bind(this);
-        this.handleDeleteClick = this.handleDeleteClick.bind(this);
     }
 
     handleDropdownToggle = e => {
@@ -139,6 +141,7 @@ export default class SelectBox extends PureComponent {
         const selectedValue = (options || []).find(option => option[optionValueField] === value);
 
         const groupedOptions = this.groupOptions(options);
+        const hasMultipleGroups = Object.keys(groupedOptions).length > 1;
 
         // if the search box should be shown, we *need* to force allowEmpty (to display the "clear" button if a value is selected),
         // as the search box is only shown if nothing is selected.
@@ -158,16 +161,16 @@ export default class SelectBox extends PureComponent {
         } else if (displayLoadingIndicator) {
             label = '[Loading]'; // TODO: localize
         } else if (placeholder) {
-            label = (<span className={theme.dropDown__placeholder}>{placeholder}</span>);
+            label = (<span className={theme["selectBox__placeholder"]}>{placeholder}</span>);
             icon = placeholderIcon ? placeholderIcon : icon;
         }
 
         return (
-            <div className={theme.wrapper}>
-                <DropDown.Stateless className={theme.dropDown} isOpen={this.state.isOpen} onToggle={this.handleDropdownToggle} onClose={this.handleDropdownClose}>
-                    <DropDown.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
+            <div className={theme["wrapper"]}>
+                <DropDown.Stateless className={theme["selectBox"]} isOpen={this.state.isOpen} onToggle={this.handleDropdownToggle} onClose={this.handleDropdownClose}>
+                    <DropDown.Header className={theme["selectBox__btn"]} shouldKeepFocusState={false}>
                         {icon ?
-                            <IconComponent className={theme.dropDown__btnIcon} icon={icon}/> :
+                            <IconComponent className={theme["selectBox__btnIcon"]} icon={icon}/> :
                             null
                         }
                         {displaySearchBox && !selectedValue ?
@@ -175,23 +178,25 @@ export default class SelectBox extends PureComponent {
                                 placeholder={placeholder}
                                 value={searchTerm}
                                 onChange={onSearchTermChange}
-                                className={theme.dropDown__searchInput}
-                                containerClassName={theme.dropDown__searchInputContainer}
+                                className={theme["selectBox__searchInput"]}
+                                containerClassName={theme["selectBox__searchInputContainer"]}
                                 /> :
                             <span>{label}</span>
                         }
 
                         {displayLoadingIndicator ?
-                            <IconComponent className={theme.dropDown__loadingIcon} spin={true} icon="spinner"/> :
+                            <IconComponent className={theme["selectBox__loadingIcon"]} spin={true} icon="spinner"/> :
                             null
                         }
                         {!displayLoadingIndicator && allowEmpty && selectedValue ?
-                            <IconButtonComponent className={theme.dropDown__loadingIcon} icon="times" onClick={this.handleDeleteClick}/> :
+                            <IconButtonComponent className={theme["selectBox__loadingIcon"]} icon="times" onClick={this.handleDeleteClick}/> :
                             null
                         }
                     </DropDown.Header>
-                    <DropDown.Contents className={theme.dropDown__contents} scrollable={scrollable}>
-                        {Array.from(groupedOptions).map(this.renderGroup)}
+                    <DropDown.Contents className={theme["selectBox__contents"]} scrollable={scrollable}>
+                        {hasMultipleGroups ? //skip rendering of groups if there are none or only one group
+                            Object.entries(groupedOptions).map(this.renderGroup) :
+                            (options || []).map(this.renderOption)}
                     </DropDown.Contents>
                 </DropDown.Stateless>
             </div>
@@ -199,22 +204,17 @@ export default class SelectBox extends PureComponent {
     }
 
     /**
-     * Groups the options of the selectBox by their group-attribute.
-     * @returns A javascript Map with the group names as key and an array of options as values.
-     *              Options without a group-attribute assigned will receive the key "Without group".
-     * @param {*} options: Options from Neos yaml describing property editor.
+     * Groups the options of the selectBox by their group-attribute. Returns a javascript Map with the group names 
+     * as key and an array of options as values.
+     * Options without a group-attribute assigned will receive the key specified in props.withoutGroupLabel.
      */
-    groupOptions(options) {
-        return (options || []).reduce(function (accumulator, currentOpt) {
-            let value = accumulator.get(currentOpt.group);
-            if (value) {
-                value.push(currentOpt);
-            } else {
-                value = [currentOpt];
-            }
-            accumulator.set(currentOpt.group ? currentOpt.group : "Without group", value);
+    groupOptions = (options) => {
+        return (options || []).reduce((accumulator, currentOpt) => {
+            let groupLabel = currentOpt.group ? currentOpt.group : this.props.withoutGroupLabel;
+            accumulator[groupLabel] = accumulator[groupLabel] || [];
+            accumulator[groupLabel].push(currentOpt);
             return accumulator;
-        }, new Map()); //<-- Initial value of the accumulator
+        }, Object.create(null)); //<-- Initial value of the accumulator
     }
 
     /**
@@ -222,17 +222,25 @@ export default class SelectBox extends PureComponent {
      * that displays their group name.
      * @returns {JSX} option elements grouped by and labeled with their group-attribute.
      */
-    renderGroup(group, index) {
-        const GROUP_LABEL = 0;
-        const OPTIONS_LIST = 1;
-        const {theme} = this.props;        
+    renderGroup = (group, index) => {
+        const [groupLabel, optionsList] = group;
+        const {theme} = this.props;
+        const groupClassName = mergeClassNames({
+            [theme["selectBox__item"]]: true, 
+            [theme["selectBox__item--isGroup"]]: true 
+        });       
         return (
-            <div>
-                <span className={theme.dropDown__group}> 
-                    {group[GROUP_LABEL]}
+            <li
+                key={groupLabel}
+                className={groupClassName}
+                >
+                <span> 
+                    {groupLabel}
                 </span>
-                { group[OPTIONS_LIST].map(this.renderOption) }
-            </div>
+                <ul>
+                    { optionsList.map(this.renderOption) }
+                </ul>
+            </li>
         )
     }
 
@@ -240,10 +248,14 @@ export default class SelectBox extends PureComponent {
      * Renders a single option (<li/>) for the select box
      * @returns {JSX} option element
      */
-    renderOption(option, index) {
-        const {icon, label, group} = option;
+    renderOption = (option, index) => {
+        const {icon, label} = option;
         const value = option[this.props.optionValueField];
         const {theme, IconComponent} = this.props;
+        const optionClassName = mergeClassNames ({
+            [theme["selectBox__item"]]: true, 
+            [theme["selectBox__item--isSelectable"]]: true 
+        });
         const onClick = () => {
             this.props.onValueChange(value);
         };
@@ -251,12 +263,12 @@ export default class SelectBox extends PureComponent {
         return (
             <li
                 key={index}
-                className={theme.dropDown__item}
+                className={optionClassName}
                 onClick={onClick}
                 >
                 {
                     icon ?
-                        <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
+                        <IconComponent className={theme["selectBox__itemIcon"]} icon={icon}/> :
                         null
                 }
                 <span>{ label }</span>
@@ -264,7 +276,7 @@ export default class SelectBox extends PureComponent {
         );
     }
 
-    handleDeleteClick() {
+    handleDeleteClick = () => {
         this.props.onValueChange('');
     }
 }

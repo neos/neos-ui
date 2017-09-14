@@ -5,7 +5,19 @@ import {StoryWrapper} from './../_lib/storyUtils.js';
 import SelectBox from './index.js';
 import DropDown from './../DropDown/index.js';
 
-const options = [
+const optionsWithoutGroups = [
+    {value: 'opt1', label: 'Option 1', icon: 'bookmark'},
+    {value: 'opt2', label: 'Option 2'},
+    {value: 'opt3', label: 'Option 3'},
+    {value: 'opt4', label: 'Option 4'}
+];
+const optionsWithExactlyOneGroup = [
+    {value: 'opt1', label: 'Option 1', icon: 'bookmark', group: 'Group 1'},
+    {value: 'opt2', label: 'Option 2', group: 'Group 1'},
+    {value: 'opt3', label: 'Option 3', group: 'Group 1'},
+    {value: 'opt4', label: 'Option 4', group: 'Group 1'}
+];
+const optionsWithMultipleGroups = [
     {value: 'opt1', label: 'Option 1', icon: 'bookmark', group: 'Group 1'},
     {value: 'opt2', label: 'Option 2', group: 'Group 2'},
     {value: 'opt3', label: 'Option 3', group: 'Group 1'},
@@ -15,12 +27,48 @@ const options = [
 storiesOf('SelectBox', module)
     .addDecorator(withKnobs)
     .addWithInfo(
+        'Grouping with multiple groups',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    options={optionsWithMultipleGroups}
+                    onValueChange={action('onValueChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )    
+    .addWithInfo(
+        'Grouping with exactly one group',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    options={optionsWithExactlyOneGroup}
+                    onValueChange={action('onValueChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'Grouping without groups',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    options={optionsWithoutGroups}
+                    onValueChange={action('onValueChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
         'preselected value',
         () => (
             <StoryWrapper>
                 <SelectBox
                     value={'opt1'}
-                    options={options}
+                    options={optionsWithoutGroups}
                     onValueChange={action('onValueChange')}
                     />
             </StoryWrapper>
@@ -33,7 +81,7 @@ storiesOf('SelectBox', module)
             <StoryWrapper>
                 <SelectBox
                     value={'opt1'}
-                    options={options}
+                    options={optionsWithoutGroups}
                     allowEmpty={true}
                     onValueChange={action('onValueChange')}
                     />
@@ -47,7 +95,7 @@ storiesOf('SelectBox', module)
             <StoryWrapper>
                 <SelectBox
                     value={'opt1'}
-                    options={options}
+                    options={optionsWithoutGroups}
                     onValueChange={action('onValueChange')}
                     displayLoadingIndicator={true}
                     placeholder={text('Placeholder', 'Select')}
@@ -76,7 +124,7 @@ storiesOf('SelectBox', module)
         () => (
             <StoryWrapper>
                 <SelectBox
-                    options={options}
+                    options={optionsWithoutGroups}
                     placeholder={text('Placeholder', 'Select')}
                     placeholderIcon={text('Placeholder icon', 'bookmark')}
                     onValueChange={action('onValueChange')}
@@ -90,7 +138,7 @@ storiesOf('SelectBox', module)
         () => (
             <StoryWrapper>
                 <SelectBox
-                    options={options}
+                    options={optionsWithoutGroups}
                     displaySearchBox={true}
                     searchTerm={'search term so far'}
                     onSearchTermChange={action('onSearchTermChange')}
@@ -107,7 +155,7 @@ storiesOf('SelectBox', module)
             <StoryWrapper>
                 <SelectBox
                     value={'opt2'}
-                    options={options}
+                    options={optionsWithoutGroups}
                     displaySearchBox={true}
                     onValueChange={action('onValueChange')}
                     placeholder="Placeholder string is ignored..."
@@ -127,7 +175,7 @@ storiesOf('SelectBox', module)
                     </DropDown.Header>
                     <DropDown.Contents>
                         <SelectBox
-                            options={options}
+                            options={optionsWithoutGroups}
                             placeholder={text('Placeholder', 'Select')}
                             placeholderIcon={text('Placeholder icon', 'search')}
                             onSelect={action('onSelect')}

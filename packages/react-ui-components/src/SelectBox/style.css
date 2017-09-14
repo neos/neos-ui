@@ -126,20 +126,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 14px;
-
-    > a,
-    button {
-        display: block;
-        width: 100%;
-        border: 0;
-        padding: 0 var(--spacing);
-        background: 0;
-        color: #FFF;
-        cursor: pointer;
-        text-decoration: none;
-        line-height: 40px;
-        text-align: left;
-    }
 }
 
 .selectBox__item--isGroup {

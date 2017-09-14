@@ -25,7 +25,7 @@ export default class SelectBox extends PureComponent {
                     PropTypes.string,
                     PropTypes.object
                 ]).isRequired,
-                uriPath: PropTypes.string
+                link: PropTypes.string
             })
         ),
 

@@ -24,7 +24,8 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
             {
                 extraPlugins: 'neos_placeholder,neos_fixPasteIntoInlineElements',
                 removePlugins: 'floatingspace,maximize,resize,contextmenu,liststyle,tabletools',
-                autoParagraph: false
+                autoParagraph: false,
+                entities: false
             },
             placeholder ? {neosPlaceholder: placeholder} : {}
         ));

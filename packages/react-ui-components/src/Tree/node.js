@@ -1,7 +1,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {DragSource, DropTarget} from 'react-dnd';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
+
+// TODO: find a way to extract it out of the package
+const Types = {
+    NODE: 'neos-tree-node'
+};
 
 export class Node extends PureComponent {
     static propTypes = {
@@ -20,8 +26,37 @@ export class Node extends PureComponent {
     }
 }
 
+@DragSource(Types.NODE, {
+    beginDrag(props) {
+        props.dragAndDropContext.onDrag();
+        return {
+            contextPath: props.id
+        };
+    },
+    endDrag(props, monitor) {
+        if (!monitor.didDrop()) {
+            return;
+        }
+        props.dragAndDropContext.onDrop();
+    }
+}, (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+}))
+@DropTarget(Types.NODE, {
+    canDrop(props) {
+        return props.dragAndDropContext.accepts(props.id);
+    },
+    hover() {
+    }
+}, (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    canDrop: monitor.canDrop(),
+    isOver: monitor.isOver()
+}))
 export class Header extends PureComponent {
     static propTypes = {
+        id: PropTypes.string,
         hasChildren: PropTypes.bool.isRequired,
         isCollapsed: PropTypes.bool.isRequired,
         isActive: PropTypes.bool.isRequired,
@@ -38,6 +73,10 @@ export class Header extends PureComponent {
             onDrag: PropTypes.func.isRequired,
             onDrop: PropTypes.func.isRequired
         }),
+        connectDragSource: PropTypes.func.isRequired,
+        connectDropTarget: PropTypes.func.isRequired,
+        canDrop: PropTypes.bool.isRequired,
+        isOver: PropTypes.bool,
 
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
@@ -63,46 +102,6 @@ export class Header extends PureComponent {
         IconComponent: PropTypes.any.isRequired
     };
 
-    state = {
-        acceptsDrop: null
-    };
-
-    handleDrag = () => {
-        const {dragAndDropContext} = this.props;
-
-        if (dragAndDropContext) {
-            dragAndDropContext.onDrag();
-        }
-    };
-
-    handleDragOver = e => {
-        const {dragAndDropContext} = this.props;
-
-        if (dragAndDropContext) {
-            this.setState({
-                acceptsDrop: dragAndDropContext.accepts()
-            });
-            e.preventDefault();
-        }
-    };
-
-    handleDragLeave = () => {
-        this.setState({
-            acceptsDrop: null
-        });
-    };
-
-    handleDrop = () => {
-        const {dragAndDropContext} = this.props;
-
-        if (dragAndDropContext) {
-            dragAndDropContext.onDrop();
-            this.setState({
-                acceptsDrop: null
-            });
-        }
-    };
-
     render() {
         const {
             IconComponent,
@@ -117,13 +116,13 @@ export class Header extends PureComponent {
             onClick,
             onLabelClick,
             theme,
-            dragAndDropContext,
+            canDrop,
+            isOver,
+            connectDragSource,
+            connectDropTarget,
             ...restProps
         } = this.props;
-        const {
-            acceptsDrop
-        } = this.state;
-        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError']);
+        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError', 'isDragging', 'isOver', 'dragAndDropContext']);
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,
@@ -131,22 +130,17 @@ export class Header extends PureComponent {
             [theme['header__data--isHiddenInIndex']]: isHiddenInIndex,
             [theme['header__data--isHidden']]: isHidden,
             [theme['header__data--isDirty']]: isDirty,
-            [theme['header__data--acceptsDrop']]: acceptsDrop === true,
-            [theme['header__data--deniesDrop']]: acceptsDrop === false
+            [theme['header__data--acceptsDrop']]: isOver && canDrop,
+            [theme['header__data--deniesDrop']]: isOver && !canDrop
         });
 
-        return (
+        return connectDropTarget(connectDragSource(
             <ul className={theme.header}>
                 {hasChildren ? this.renderCollapseControl() : null}
                 <li
                     role="button"
                     className={dataClassNames}
-                    onDragStart={this.handleDrag}
                     onClick={onClick}
-                    onDragOver={this.handleDragOver}
-                    onDragLeave={this.handleDragLeave}
-                    onDrop={this.handleDrop}
-                    draggable={Boolean(dragAndDropContext)}
                     >
                     <IconComponent icon={icon || 'question'} padded="right" role="button" className={theme.header__icon}/>
                     <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
@@ -154,7 +148,7 @@ export class Header extends PureComponent {
                     </span>
                 </li>
             </ul>
-        );
+        ));
     }
 
     renderCollapseControl() {

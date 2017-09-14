@@ -213,6 +213,7 @@ export default class Node extends PureComponent {
             <Tree.Node>
                 <span ref={refHandler}/>
                 <Tree.Node.Header
+                    id={$get('contextPath', node)}
                     hasChildren={hasChildren}
                     isCollapsed={this.isCollapsed()}
                     isActive={this.isActive()}

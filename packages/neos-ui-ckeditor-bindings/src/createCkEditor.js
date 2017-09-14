@@ -22,12 +22,12 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
             return ckEditorConfiguration;
         }, Object.assign(
             {
-                extraPlugins: 'confighelper',
-                removePlugins: 'floatingspace,maximize,resize,toolbar,contextmenu,liststyle,tabletools',
+                extraPlugins: 'neos_placeholder,neos_fixPasteIntoInlineElements',
+                removePlugins: 'floatingspace,maximize,resize,contextmenu,liststyle,tabletools',
                 autoParagraph: false,
                 entities: false
             },
-            placeholder ? {placeholder} : {}
+            placeholder ? {neosPlaceholder: placeholder} : {}
         ));
 
     getGuestFrameWindow().NeosCKEditorApi.createEditor(propertyDomNode, ckEditorConfiguration, propertyName, contents => {

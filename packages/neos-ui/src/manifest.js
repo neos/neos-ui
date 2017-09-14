@@ -279,6 +279,8 @@ manifest('main', {}, globalRegistry => {
             return;
         }
 
+        const fusionPath = contentElement.dataset.__neosFusionPath;
+
         switch (mode) {
             case 'before':
                 siblingElement.parentNode.insertBefore(contentElement, siblingElement);
@@ -324,6 +326,7 @@ manifest('main', {}, globalRegistry => {
                 nodes
             })
         );
+        store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
     });
 
     //

@@ -101,8 +101,8 @@ export default class ImageCropper extends PureComponent {
         const height = (containerHeight - toolbarFullHeight - spacing) + 'px';
         const imageNode = this.containerNode.querySelector('.ReactCrop__image');
         const imageCopyNode = this.containerNode.querySelector('.ReactCrop__image-copy');
-        imageNode.style.height = height;
-        imageCopyNode.style.height = height;
+        imageNode.style.maxHeight = height;
+        imageCopyNode.style.maxHeight = height;
     }
 
     componentWillReceiveProps(nextProps) {

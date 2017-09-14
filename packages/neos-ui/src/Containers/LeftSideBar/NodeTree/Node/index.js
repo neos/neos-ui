@@ -39,6 +39,7 @@ export default class Node extends PureComponent {
         loadingDepth: PropTypes.number,
         ChildRenderer: PropTypes.func.isRequired,
         node: PropTypes.object,
+        nodeDndType: PropTypes.string.isRequired,
         nodeTypeRole: PropTypes.string,
         currentlyDraggedNode: PropTypes.object,
         hasChildren: PropTypes.bool,
@@ -194,6 +195,7 @@ export default class Node extends PureComponent {
         const {
             ChildRenderer,
             node,
+            nodeDndType,
             nodeTypeRole,
             childNodes,
             hasChildren,
@@ -220,6 +222,7 @@ export default class Node extends PureComponent {
                 <Tree.Node.Header
                     id={$get('contextPath', node)}
                     hasChildren={hasChildren}
+                    nodeDndType={nodeDndType}
                     isLastChild={isLastChild}
                     isCollapsed={this.isCollapsed()}
                     isActive={this.isActive()}
@@ -243,6 +246,7 @@ export default class Node extends PureComponent {
                                 ChildRenderer={ChildRenderer}
                                 key={$get('contextPath', node)}
                                 node={node}
+                                nodeDndType={nodeDndType}
                                 nodeTypeRole={nodeTypeRole}
                                 onNodeToggle={onNodeToggle}
                                 onNodeClick={onNodeClick}

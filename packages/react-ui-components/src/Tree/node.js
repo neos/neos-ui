@@ -4,11 +4,6 @@ import {DragSource, DropTarget} from 'react-dnd';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 
-// TODO: find a way to extract it out of the package
-const Types = {
-    NODE: 'neos-tree-node'
-};
-
 const spec = {
     canDrop({dragAndDropContext, mode}) {
         return dragAndDropContext.accepts(mode || 'into');
@@ -41,10 +36,11 @@ export class Node extends PureComponent {
     }
 }
 
-@DropTarget(Types.NODE, spec, collect)
+@DropTarget(({nodeDndType}) => nodeDndType, spec, collect)
 class NodeDropTarget extends PureComponent {
     static propTypes = {
         connectDropTarget: PropTypes.func.isRequired,
+        nodeDndType: PropTypes.string.isRequired,
         canDrop: PropTypes.bool.isRequired,
         isOver: PropTypes.bool,
         theme: PropTypes.object,
@@ -69,7 +65,7 @@ class NodeDropTarget extends PureComponent {
     }
 }
 
-@DragSource(Types.NODE, {
+@DragSource(({nodeDndType}) => nodeDndType, {
     beginDrag(props) {
         props.dragAndDropContext.onDrag();
         return {
@@ -80,10 +76,11 @@ class NodeDropTarget extends PureComponent {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
 }))
-@DropTarget(Types.NODE, spec, collect)
+@DropTarget(({nodeDndType}) => nodeDndType, spec, collect)
 export class Header extends PureComponent {
     static propTypes = {
         id: PropTypes.string,
+        nodeDndType: PropTypes.string.isRequired,
         hasChildren: PropTypes.bool.isRequired,
         isLastChild: PropTypes.bool,
         isCollapsed: PropTypes.bool.isRequired,
@@ -134,6 +131,7 @@ export class Header extends PureComponent {
     render() {
         const {
             id,
+            nodeDndType,
             IconComponent,
             hasChildren,
             isLastChild,
@@ -177,6 +175,7 @@ export class Header extends PureComponent {
                         id={id}
                         theme={theme}
                         dragAndDropContext={dragAndDropContext}
+                        nodeDndType={nodeDndType}
                         mode="before"
                         />
                     {connectDropTarget(
@@ -196,6 +195,7 @@ export class Header extends PureComponent {
                             id={id}
                             theme={theme}
                             dragAndDropContext={dragAndDropContext}
+                            nodeDndType={nodeDndType}
                             mode="after"
                             />
                     )}

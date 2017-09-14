@@ -42,6 +42,7 @@ export default class Node extends PureComponent {
         nodeTypeRole: PropTypes.string,
         currentlyDraggedNode: PropTypes.object,
         hasChildren: PropTypes.bool,
+        isLastChild: PropTypes.bool,
         childNodes: PropTypes.object,
         currentDocumentNodeContextPath: PropTypes.string,
         focusedNodeContextPath: PropTypes.string,
@@ -50,7 +51,8 @@ export default class Node extends PureComponent {
         intermediateContextPaths: PropTypes.object,
         loadingNodeContextPaths: PropTypes.object,
         errorNodeContextPaths: PropTypes.object,
-        canBeInserted: PropTypes.bool,
+        canBeInsertedAlongside: PropTypes.bool,
+        canBeInsertedInto: PropTypes.bool,
         isNodeDirty: PropTypes.bool.isRequired,
 
         nodeTypesRegistry: PropTypes.object.isRequired,
@@ -111,8 +113,9 @@ export default class Node extends PureComponent {
         }
     }
 
-    accepts = () => {
-        const {node, currentlyDraggedNode, canBeInserted} = this.props;
+    accepts = mode => {
+        const {node, currentlyDraggedNode, canBeInsertedAlongside, canBeInsertedInto} = this.props;
+        const canBeInserted = mode === 'into' ? canBeInsertedInto : canBeInsertedAlongside;
 
         return canBeInserted && (getContextPath(currentlyDraggedNode) !== getContextPath(node));
     }
@@ -123,10 +126,10 @@ export default class Node extends PureComponent {
         onNodeDrag(node);
     }
 
-    handleNodeDrop = () => {
+    handleNodeDrop = position => {
         const {node, onNodeDrop} = this.props;
 
-        onNodeDrop(node);
+        onNodeDrop(node, position);
     }
 
     getIcon() {
@@ -194,6 +197,7 @@ export default class Node extends PureComponent {
             nodeTypeRole,
             childNodes,
             hasChildren,
+            isLastChild,
             onNodeToggle,
             onNodeClick,
             onNodeFocus,
@@ -208,6 +212,7 @@ export default class Node extends PureComponent {
         const refHandler = div => {
             this.domNode = div;
         };
+        const childNodesCount = childNodes.count();
 
         return (
             <Tree.Node>
@@ -215,6 +220,7 @@ export default class Node extends PureComponent {
                 <Tree.Node.Header
                     id={$get('contextPath', node)}
                     hasChildren={hasChildren}
+                    isLastChild={isLastChild}
                     isCollapsed={this.isCollapsed()}
                     isActive={this.isActive()}
                     isFocused={this.isFocused()}
@@ -232,7 +238,7 @@ export default class Node extends PureComponent {
                     />
                 {this.isCollapsed() ? null : (
                     <Tree.Node.Contents>
-                        {childNodes.filter(n => n).map(node =>
+                        {childNodes.filter(n => n).map((node, index) =>
                             <ChildRenderer
                                 ChildRenderer={ChildRenderer}
                                 key={$get('contextPath', node)}
@@ -244,6 +250,7 @@ export default class Node extends PureComponent {
                                 onNodeDrag={onNodeDrag}
                                 onNodeDrop={onNodeDrop}
                                 currentlyDraggedNode={currentlyDraggedNode}
+                                isLastChild={index + 1 === childNodesCount}
                                 />
                         )}
                     </Tree.Node.Contents>
@@ -280,7 +287,8 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
 
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
-        const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const canBeInsertedAlongsideSelector = selectors.CR.Nodes.makeCanBeInsertedAlongsideSelector(nodeTypesRegistry);
+        const canBeInsertedIntoSelector = selectors.CR.Nodes.makeCanBeInsertedIntoSelector(nodeTypesRegistry);
         const isDocumentNodeDirtySelector = selectors.CR.Workspaces.makeIsDocumentNodeDirtySelector();
 
         return (state, {node, currentlyDraggedNode}) => ({
@@ -298,7 +306,11 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
             loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
             errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
             isNodeDirty: isDocumentNodeDirtySelector(state, $get('contextPath', node)),
-            canBeInserted: canBeInsertedSelector(state, {
+            canBeInsertedAlongside: canBeInsertedAlongsideSelector(state, {
+                subject: getContextPath(currentlyDraggedNode),
+                reference: getContextPath(node)
+            }),
+            canBeInsertedInto: canBeInsertedIntoSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
             })
@@ -317,7 +329,8 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
 
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
-        const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const canBeInsertedAlongsideSelector = selectors.CR.Nodes.makeCanBeInsertedAlongsideSelector(nodeTypesRegistry);
+        const canBeInsertedIntoSelector = selectors.CR.Nodes.makeCanBeInsertedIntoSelector(nodeTypesRegistry);
         const isContentNodeDirtySelector = selectors.CR.Workspaces.makeIsContentNodeDirtySelector();
 
         return (state, {node, currentlyDraggedNode}) => ({
@@ -331,7 +344,11 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
             focusedNodeContextPath: $get('cr.nodes.focused.contextPath', state),
             toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
             isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
-            canBeInserted: canBeInsertedSelector(state, {
+            canBeInsertedAlongside: canBeInsertedAlongsideSelector(state, {
+                subject: getContextPath(currentlyDraggedNode),
+                reference: getContextPath(node)
+            }),
+            canBeInsertedInto: canBeInsertedIntoSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
             })

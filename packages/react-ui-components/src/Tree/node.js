@@ -9,6 +9,21 @@ const Types = {
     NODE: 'neos-tree-node'
 };
 
+const spec = {
+    canDrop({dragAndDropContext, mode}) {
+        return dragAndDropContext.accepts(mode || 'into');
+    },
+    drop({dragAndDropContext, mode}) {
+        dragAndDropContext.onDrop(mode || 'into');
+    }
+};
+
+const collect = (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    canDrop: monitor.canDrop(),
+    isOver: monitor.isOver()
+});
+
 export class Node extends PureComponent {
     static propTypes = {
         children: PropTypes.node
@@ -26,38 +41,51 @@ export class Node extends PureComponent {
     }
 }
 
+@DropTarget(Types.NODE, spec, collect)
+class NodeDropTarget extends PureComponent {
+    static propTypes = {
+        connectDropTarget: PropTypes.func.isRequired,
+        canDrop: PropTypes.bool.isRequired,
+        isOver: PropTypes.bool,
+        theme: PropTypes.object,
+        mode: PropTypes.string.isRequired
+    };
+    render() {
+        const {connectDropTarget, isOver, mode, theme} = this.props;
+        const classNames = mergeClassNames({
+            [theme.dropTarget]: true,
+            [theme['dropTarget--before']]: mode === 'before',
+            [theme['dropTarget--after']]: mode === 'after'
+        });
+        const classNamesInner = mergeClassNames({
+            [theme.dropTarget__inner]: true,
+            [theme['dropTarget__inner--acceptsDrop']]: isOver
+        });
+        return connectDropTarget(
+            <div className={classNames}>
+                <div className={classNamesInner}/>
+            </div>
+        );
+    }
+}
+
 @DragSource(Types.NODE, {
     beginDrag(props) {
         props.dragAndDropContext.onDrag();
         return {
             contextPath: props.id
         };
-    },
-    endDrag(props, monitor) {
-        if (!monitor.didDrop()) {
-            return;
-        }
-        props.dragAndDropContext.onDrop();
     }
 }, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
 }))
-@DropTarget(Types.NODE, {
-    canDrop(props) {
-        return props.dragAndDropContext.accepts(props.id);
-    },
-    hover() {
-    }
-}, (connect, monitor) => ({
-    connectDropTarget: connect.dropTarget(),
-    canDrop: monitor.canDrop(),
-    isOver: monitor.isOver()
-}))
+@DropTarget(Types.NODE, spec, collect)
 export class Header extends PureComponent {
     static propTypes = {
         id: PropTypes.string,
         hasChildren: PropTypes.bool.isRequired,
+        isLastChild: PropTypes.bool,
         isCollapsed: PropTypes.bool.isRequired,
         isActive: PropTypes.bool.isRequired,
         isFocused: PropTypes.bool.isRequired,
@@ -76,6 +104,7 @@ export class Header extends PureComponent {
         connectDragSource: PropTypes.func.isRequired,
         connectDropTarget: PropTypes.func.isRequired,
         canDrop: PropTypes.bool.isRequired,
+        isDragging: PropTypes.bool,
         isOver: PropTypes.bool,
 
         onToggle: PropTypes.func,
@@ -104,8 +133,10 @@ export class Header extends PureComponent {
 
     render() {
         const {
+            id,
             IconComponent,
             hasChildren,
+            isLastChild,
             isActive,
             isFocused,
             isHidden,
@@ -116,39 +147,61 @@ export class Header extends PureComponent {
             onClick,
             onLabelClick,
             theme,
-            canDrop,
-            isOver,
             connectDragSource,
             connectDropTarget,
+            dragAndDropContext,
+            isOver,
+            isDragging,
+            canDrop,
             ...restProps
         } = this.props;
-        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError', 'isDragging', 'isOver', 'dragAndDropContext']);
+        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError', 'isDragging']);
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,
             [theme['header__data--isFocused']]: isFocused,
+            [theme['header__data--isLastChild']]: isLastChild,
             [theme['header__data--isHiddenInIndex']]: isHiddenInIndex,
             [theme['header__data--isHidden']]: isHidden,
             [theme['header__data--isDirty']]: isDirty,
+            [theme['header__data--isDragging']]: isDragging,
             [theme['header__data--acceptsDrop']]: isOver && canDrop,
             [theme['header__data--deniesDrop']]: isOver && !canDrop
         });
 
-        return connectDropTarget(connectDragSource(
-            <ul className={theme.header}>
-                {hasChildren ? this.renderCollapseControl() : null}
-                <li
-                    role="button"
-                    className={dataClassNames}
-                    onClick={onClick}
-                    >
-                    <IconComponent icon={icon || 'question'} padded="right" role="button" className={theme.header__icon}/>
-                    <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
-                        {label}
-                    </span>
-                </li>
-            </ul>
-        ));
+        return connectDragSource(
+            <div>
+                <div className={theme.header}>
+                    {hasChildren ? this.renderCollapseControl() : null}
+                    <NodeDropTarget
+                        id={id}
+                        theme={theme}
+                        dragAndDropContext={dragAndDropContext}
+                        mode="before"
+                        />
+                    {connectDropTarget(
+                        <div
+                            role="button"
+                            className={dataClassNames}
+                            onClick={onClick}
+                            >
+                            <IconComponent icon={icon || 'question'} padded="right" role="button" className={theme.header__icon}/>
+                            <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                                {label}
+                            </span>
+                        </div>
+                    )}
+                    {isLastChild && (
+                        <NodeDropTarget
+                            id={id}
+                            theme={theme}
+                            dragAndDropContext={dragAndDropContext}
+                            mode="after"
+                            />
+                    )}
+                </div>
+            </div>
+        );
     }
 
     renderCollapseControl() {

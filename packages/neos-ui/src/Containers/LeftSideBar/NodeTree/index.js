@@ -59,11 +59,10 @@ export default class NodeTree extends PureComponent {
         });
     }
 
-    handleDrop = targetNode => {
+    handleDrop = (targetNode, position) => {
         const {currentlyDraggedNode} = this.state;
         const {moveNode} = this.props;
-
-        moveNode($get('contextPath', currentlyDraggedNode), $get('contextPath', targetNode));
+        moveNode($get('contextPath', currentlyDraggedNode), $get('contextPath', targetNode), position);
 
         this.setState({
             currentlyDraggedNode: null

@@ -130,8 +130,9 @@ const cut = createAction(CUT, contextPath => contextPath);
  *
  * @param {String} nodeToBeMoved The context path of the node to be moved
  * @param {String} targetNode The context path of the target node
+ * @param {String} position "into", "before" or "after"
  */
-const move = createAction(MOVE, (nodeToBeMoved, targetNode) => ({nodeToBeMoved, targetNode}));
+const move = createAction(MOVE, (nodeToBeMoved, targetNode, position) => ({nodeToBeMoved, targetNode, position}));
 
 /**
  * Paste the contents of the node clipboard

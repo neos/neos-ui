@@ -1,6 +1,9 @@
 import React, {PureComponent} from 'react';
+import withScrolling from 'react-dnd-scrollzone';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
+
+const ScrollingComponent = withScrolling('div');
 
 export class Tree extends PureComponent {
     static propTypes = {
@@ -31,9 +34,11 @@ export class Tree extends PureComponent {
         });
 
         return (
-            <NodeComponent {...rest} className={classNames} tabIndex="0">
-                {this.props.children}
-            </NodeComponent>
+            <ScrollingComponent className={classNames} tabIndex="0">
+                <NodeComponent {...rest}>
+                    {this.props.children}
+                </NodeComponent>
+            </ScrollingComponent>
         );
     }
 }

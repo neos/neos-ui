@@ -96,8 +96,8 @@ class LinkTextField extends PureComponent {
         this.state = {
             searchTerm: '',
             isLoading: false,
-            searchResults: [],
-            results: []
+            searchOptions: [],
+            options: []
         };
     }
 
@@ -199,7 +199,7 @@ class LinkOptionRenderer extends PureComponent {
                 PropTypes.string,
                 PropTypes.object
             ]).isRequired,
-            link: PropTypes.string
+            uri: PropTypes.string.isRequired
         }),
 
         onClick: PropTypes.func.isRequired,
@@ -227,12 +227,12 @@ class LinkOptionRenderer extends PureComponent {
             theme, 
             IconComponent
         } = this.props;
-        const {icon, label, link} = option;
+        const {icon, label, uri} = option;
         const optionClassName = mergeClassNames ({
             [style.linkIconButton__item]: true, 
             [style["linkIconButton__item--isSelectable"]]: true 
         });
-        
+
         return (
             <li 
                 onClick = {onClick}
@@ -244,7 +244,7 @@ class LinkOptionRenderer extends PureComponent {
                         null
                 }
                 <span>{label}</span>
-                <span className={style.linkIconButton__link}>https://test.me{/*link*/}</span>
+                <span className={style.linkIconButton__link}>{uri}</span>
             </li>
         );
     }

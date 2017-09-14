@@ -1,5 +1,6 @@
 import throttle from 'lodash.throttle';
 import debounce from 'lodash.debounce';
+import registerNeosCkeditorPlugins from './ckeditor/index';
 
 const noop = {
     initialize() {},
@@ -20,6 +21,8 @@ const createCKEditorAPI = CKEDITOR => {
         //
         return noop;
     }
+
+    registerNeosCkeditorPlugins(CKEDITOR);
 
     // an object with the following keys:
     // - globalRegistry

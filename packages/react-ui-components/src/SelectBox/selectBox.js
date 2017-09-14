@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import DropDown from '../DropDown/index';
 import mergeClassNames from 'classnames';
 
+
 export default class SelectBox extends PureComponent {
     
     static defaultProps = {
@@ -98,7 +99,8 @@ export default class SelectBox extends PureComponent {
         DropDownComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
-        TextInputComponent: PropTypes.any.isRequired
+        TextInputComponent: PropTypes.any.isRequired,
+        OptionRenderer: PropTypes.any
     };
 
     constructor(...args) {
@@ -250,21 +252,23 @@ export default class SelectBox extends PureComponent {
      * @returns {JSX} option element
      */
     renderOption = (option, index) => {
-        const {icon, label} = option;
         const value = option[this.props.optionValueField];
         const {theme, IconComponent} = this.props;
-
         const onClick = () => {
             this.props.onValueChange(value);
         };
 
-        return <DefaultOptionRenderer option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
+        let {OptionRenderer} = this.props;
+        if (!OptionRenderer) OptionRenderer = DefaultOptionRenderer;
+
+        return <OptionRenderer option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
     }
 
     handleDeleteClick = () => {
         this.props.onValueChange('');
     }
 }
+
 
 class DefaultOptionRenderer extends PureComponent {
 
@@ -282,9 +286,7 @@ class DefaultOptionRenderer extends PureComponent {
             ]).isRequired
         }),
 
-        key: PropTypes.any,
-
-        onClick: PropTypes.func,
+        onClick: PropTypes.func.isRequired,
 
         /**
          * An optional css theme to be injected.
@@ -305,7 +307,6 @@ class DefaultOptionRenderer extends PureComponent {
     render() {
         const {
             option, 
-            key, 
             onClick, 
             theme, 
             IconComponent
@@ -318,7 +319,6 @@ class DefaultOptionRenderer extends PureComponent {
         
         return (
             <li 
-                key = {key}
                 onClick = {onClick}
                 className = {optionClassName} 
                 >

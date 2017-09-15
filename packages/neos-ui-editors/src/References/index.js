@@ -61,9 +61,12 @@ export default class ReferencesEditor extends PureComponent {
             this.setState({isLoading: true});
             this.props.nodeLookupDataLoader.resolveValues(this.getDataLoaderOptions(), this.props.value)
                 .then(options => {
-                    options.map(option => {
-                        option.icon = this.props.nodeTypeRegistry.getNodeType(option.nodeType).ui.icon;
-                        return option;
+                    options.forEach(option => {
+                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
+                        const icon = $get('ui.icon', nodeType);
+                        if (icon) {
+                            option.icon = icon;
+                        }
                     });
 
                     this.setState({
@@ -90,9 +93,12 @@ export default class ReferencesEditor extends PureComponent {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
-                    searchOptions.map(option => {
-                        option.icon = this.props.nodeTypeRegistry.getNodeType(option.nodeType).ui.icon;
-                        return option;
+                    searchOptions.forEach(option => {
+                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
+                        const icon = $get('ui.icon', nodeType);
+                        if (icon) {
+                            option.icon = icon;
+                        }
                     });
 
                     this.setState({

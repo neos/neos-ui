@@ -8,7 +8,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
-    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
+    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
+    nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -28,6 +29,9 @@ export default class ReferenceEditor extends PureComponent {
             resolveValue: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
+        nodeTypeRegistry: PropTypes.shape({
+            getNodeType: PropTypes.func.isRequired
+        }),
 
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
@@ -57,6 +61,11 @@ export default class ReferenceEditor extends PureComponent {
             this.setState({isLoading: true});
             this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.value)
                 .then(options => {
+                    options.map(option => {
+                        option.icon = this.props.nodeTypeRegistry.getNodeType(option.nodeType).ui.icon;
+                        return option;
+                    });
+
                     this.setState({
                         isLoading: false,
                         options
@@ -81,6 +90,11 @@ export default class ReferenceEditor extends PureComponent {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
+                    searchOptions.map(option => {
+                        option.icon = this.props.nodeTypeRegistry.getNodeType(option.nodeType).ui.icon;
+                        return option;
+                    });
+
                     this.setState({
                         isLoading: false,
                         searchOptions

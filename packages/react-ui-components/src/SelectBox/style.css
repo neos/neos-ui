@@ -64,6 +64,10 @@
     display: inline-block;
 }
 
+.dropDown__itemLabel {
+  padding: 0 10px;
+}
+
 .dropDown__loadingIcon {
     composes: reset from './../reset.css';
     position: absolute;

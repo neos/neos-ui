@@ -174,7 +174,7 @@ export default class SelectBox extends PureComponent {
                                 className={theme.dropDown__searchInput}
                                 containerClassName={theme.dropDown__searchInputContainer}
                                 /> :
-                            <span>{label}</span>
+                            <span className={theme.dropDown__itemLabel}>{label}</span>
                         }
 
                         {displayLoadingIndicator ?
@@ -217,7 +217,7 @@ export default class SelectBox extends PureComponent {
                         <IconComponent className={theme.dropDown__itemIcon} icon={icon}/> :
                         null
                 }
-                <span>{ label }</span>
+                <span className={theme.dropDown__itemLabel}>{ label }</span>
             </li>
         );
     }

@@ -8,7 +8,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
-    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
+    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
+    nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -28,6 +29,9 @@ export default class ReferencesEditor extends PureComponent {
             resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
+        nodeTypeRegistry: PropTypes.shape({
+            getNodeType: PropTypes.func.isRequired
+        }),
 
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
@@ -57,6 +61,14 @@ export default class ReferencesEditor extends PureComponent {
             this.setState({isLoading: true});
             this.props.nodeLookupDataLoader.resolveValues(this.getDataLoaderOptions(), this.props.value)
                 .then(options => {
+                    options.forEach(option => {
+                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
+                        const icon = $get('ui.icon', nodeType);
+                        if (icon) {
+                            option.icon = icon;
+                        }
+                    });
+
                     this.setState({
                         isLoading: false,
                         options
@@ -81,6 +93,14 @@ export default class ReferencesEditor extends PureComponent {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
+                    searchOptions.forEach(option => {
+                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
+                        const icon = $get('ui.icon', nodeType);
+                        if (icon) {
+                            option.icon = icon;
+                        }
+                    });
+
                     this.setState({
                         isLoading: false,
                         searchOptions

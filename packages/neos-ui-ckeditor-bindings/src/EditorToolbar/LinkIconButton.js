@@ -228,15 +228,11 @@ class LinkOptionRenderer extends PureComponent {
             IconComponent
         } = this.props;
         const {icon, label, uri} = option;
-        const optionClassName = mergeClassNames ({
-            [style.linkIconButton__item]: true, 
-            [style["linkIconButton__item--isSelectable"]]: true 
-        });
 
         return (
             <li 
                 onClick = {onClick}
-                className = {optionClassName} 
+                className = {style.linkIconButton__item} 
                 >
                 {
                     icon ?

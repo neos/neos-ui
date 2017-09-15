@@ -1,0 +1,13 @@
+.reset {
+    font-family: '\var(--brandFontsCopyFamily)', sans-serif;
+    font-weight: var(--brandFontsCopyCssWeight);
+    color: #FFF;
+    margin: 0;
+    padding: 0;
+
+    &,
+    &:before,
+    &:after {
+        box-sizing: border-box;
+    }
+}

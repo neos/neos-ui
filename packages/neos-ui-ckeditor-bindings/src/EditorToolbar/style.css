@@ -18,6 +18,7 @@
 .linkIconButton__flyout {
     position: fixed;
     z-index: 1000;
+    width: 500px;
 }
 
 .linkIconButton__item {
@@ -29,11 +30,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 14px;
-    padding: 0;
-}
-
-.linkIconButton__item--isSelectable {
-    height: 40px;
     line-height: 20px;
     padding: 0 2em;
     &:hover {

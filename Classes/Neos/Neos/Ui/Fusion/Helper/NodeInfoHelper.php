@@ -57,10 +57,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
      * @param bool $omitMostPropertiesForTreeState
+     * @param string $baseNodeTypeOverride
      * @return array
      */
-    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false)
+    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false,  $baseNodeTypeOverride = null)
     {
+        $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
             'name' => $node->getName(),
@@ -81,7 +83,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         // child nodes for document tree, respecting the `baseNodeType` filter
-        $documentChildNodes = $node->getChildNodes($this->baseNodeType);
+        $documentChildNodes = $node->getChildNodes($baseNodeType);
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $node->getChildNodes('!' . $this->documentNodeTypeRole);
         $childNodes = array_merge($documentChildNodes, $contentChildNodes);
@@ -118,6 +120,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     public function renderNodesWithParents(array $nodes, ControllerContext $controllerContext): array
     {
+        // For search operation we want to include all nodes, not respecting the "baseNodeType" setting
+        $baseNodeTypeOverride = $this->documentNodeTypeRole;
         $renderedNodes = [];
 
         /** @var NodeInterface $node */
@@ -125,17 +129,17 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             if (array_key_exists($node->getPath(), $renderedNodes)) {
                 $renderedNodes[$node->getPath()]['matched'] = true;
             } else {
-                $renderedNode = $this->renderNode($node, $controllerContext, true);
+                $renderedNode = $this->renderNode($node, $controllerContext, true, $baseNodeTypeOverride);
                 $renderedNode['matched'] = true;
                 $renderedNodes[$node->getPath()] = $renderedNode;
             }
 
             $parentNode = $node->getParent();
-            while($parentNode->getNodeType()->isOfType($this->baseNodeType)) {
+            while($parentNode->getNodeType()->isOfType($baseNodeTypeOverride)) {
                 if (array_key_exists($parentNode->getPath(), $renderedNodes)) {
                     $renderedNodes[$parentNode->getPath()]['intermediate'] = true;
                 } else {
-                    $renderedParentNode = $this->renderNode($parentNode, $controllerContext, true);
+                    $renderedParentNode = $this->renderNode($parentNode, $controllerContext, true, $baseNodeTypeOverride);
                     $renderedParentNode['intermediate'] = true;
                     $renderedNodes[$parentNode->getPath()] = $renderedParentNode;
                 }

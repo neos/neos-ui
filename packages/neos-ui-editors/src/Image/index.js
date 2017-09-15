@@ -219,13 +219,14 @@ export default class ImageEditor extends Component {
         const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
 
         return uploadAsset(files[0], siteNodeName).then(res => {
-            this.setState({image: res});
-            commit(res.object);
+            this.setState({image: res}, () => {
+                commit(res.object);
 
-            if (isImageCropperOpen) {
-                this.handleCloseSecondaryScreen();
-                this.handleOpenImageCropper();
-            }
+                if (isImageCropperOpen) {
+                    this.handleCloseSecondaryScreen();
+                    this.handleOpenImageCropper();
+                }
+            });
         });
     }
 
@@ -236,12 +237,13 @@ export default class ImageEditor extends Component {
     }
 
     handleOpenImageCropper() {
-        this.setState({isImageCropperOpen: true});
-        this.props.renderSecondaryInspector('IMAGE_CROP', () => <Secondary.ImageCropper
-            sourceImage={Image.fromImageData(this.getUsedImage())}
-            options={this.props.options}
-            onComplete={this.handleMediaCrop}
-            />);
+        this.setState({isImageCropperOpen: true}, () => {
+            this.props.renderSecondaryInspector('IMAGE_CROP', () => <Secondary.ImageCropper
+                sourceImage={Image.fromImageData(this.getUsedImage())}
+                options={this.props.options}
+                onComplete={this.handleMediaCrop}
+                />);
+        });
     }
 
     render() {

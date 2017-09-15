@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-logger",
-  "version": "1.0.0-beta3",
+  "version": "1.0.0-beta4",
   "description": "Logger implementation for Neos CMS UI.",
   "private": true,
   "main": "./src/index.js",
@@ -16,7 +16,7 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta3"
+    "@neos-project/build-essentials": "1.0.0-beta4"
   },
   "license": "GNU GPLv3",
   "jest": {

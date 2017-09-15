@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-ckeditor-bindings",
-  "version": "1.0.0-beta3",
+  "version": "1.0.0-beta4",
   "description": "Prepare CKEditor for the Neos CMS UI",
   "private": true,
   "main": "./src/manifest.js",
@@ -16,15 +16,15 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta3"
+    "@neos-project/build-essentials": "1.0.0-beta4"
   },
   "dependencies": {
-    "@neos-project/neos-ui-backend-connector": "1.0.0-beta3",
-    "@neos-project/neos-ui-decorators": "1.0.0-beta3",
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta3",
-    "@neos-project/neos-ui-guest-frame": "1.0.0-beta3",
-    "@neos-project/neos-ui-redux-store": "1.0.0-beta3",
-    "@neos-project/react-ui-components": "1.0.0-beta3"
+    "@neos-project/neos-ui-backend-connector": "1.0.0-beta4",
+    "@neos-project/neos-ui-decorators": "1.0.0-beta4",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta4",
+    "@neos-project/neos-ui-guest-frame": "1.0.0-beta4",
+    "@neos-project/neos-ui-redux-store": "1.0.0-beta4",
+    "@neos-project/react-ui-components": "1.0.0-beta4"
   },
   "license": "GNU GPLv3",
   "jest": {

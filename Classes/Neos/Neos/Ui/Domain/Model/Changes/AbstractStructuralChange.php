@@ -155,6 +155,8 @@ abstract class AbstractStructuralChange extends AbstractChange
         $this->feedbackCollection->add($updateNodeInfo);
         $this->feedbackCollection->add($updateParentNodeInfo);
 
+        $this->updateWorkspaceInfo();
+
         if ($node->getNodeType()->isOfType('Neos.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
             if (
                 $node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection') &&
@@ -173,7 +175,6 @@ abstract class AbstractStructuralChange extends AbstractChange
 
                 $this->feedbackCollection->add($reloadDocument);
             }
-            $this->updateWorkspaceInfo();
         }
     }
 }

@@ -54,6 +54,9 @@
     opacity: .5;
     text-decoration: line-through;
 }
+.header__data--isDragging {
+    opacity: .2;
+}
 .header__data--isDirty {
     border-left: 3px solid var(--brandColorsWarn);
 }
@@ -66,10 +69,7 @@
     }
 }
 .header__data--acceptsDrop {
-    background-color: green;
-}
-.header__data--deniesDrop {
-    background-color: red;
+    background-color: var(--brandColorsPrimaryBlue);
 }
 .header__data--acceptsDrop *,
 .header__data--deniesDrop * {
@@ -86,4 +86,29 @@
 .contents {
     composes: reset from './../reset.css';
     margin-left: var(--spacing);
+}
+
+.dropTarget {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding-left: 15px;
+}
+.dropTarget--before {
+    top: -5px;
+    z-index: 1;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.dropTarget--after {
+    bottom: 0;
+    z-index: 2;
+    padding-top: 6px;
+    padding-bottom: 0;
+}
+.dropTarget__inner {
+    height: 2px;
+}
+.dropTarget__inner--acceptsDrop {
+    background-color: var(--brandColorsPrimaryBlue);
 }

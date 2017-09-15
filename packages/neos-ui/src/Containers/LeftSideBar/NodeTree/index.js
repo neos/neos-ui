@@ -8,6 +8,7 @@ import Tree from '@neos-project/react-ui-components/src/Tree/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
+import dndTypes from './../../dndTypes';
 import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.css';
@@ -58,11 +59,10 @@ export default class NodeTree extends PureComponent {
         });
     }
 
-    handleDrop = targetNode => {
+    handleDrop = (targetNode, position) => {
         const {currentlyDraggedNode} = this.state;
         const {moveNode} = this.props;
-
-        moveNode($get('contextPath', currentlyDraggedNode), $get('contextPath', targetNode));
+        moveNode($get('contextPath', currentlyDraggedNode), $get('contextPath', targetNode), position);
 
         this.setState({
             currentlyDraggedNode: null
@@ -84,6 +84,7 @@ export default class NodeTree extends PureComponent {
             <Tree className={classNames}>
                 <ChildRenderer
                     ChildRenderer={ChildRenderer}
+                    nodeDndType={dndTypes.NODE}
                     node={rootNode}
                     onNodeToggle={this.handleToggle}
                     onNodeClick={this.handleClick}

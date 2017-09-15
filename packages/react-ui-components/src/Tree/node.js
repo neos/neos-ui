@@ -1,7 +1,23 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {DragSource, DropTarget} from 'react-dnd';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
+
+const spec = {
+    canDrop({dragAndDropContext, mode}) {
+        return dragAndDropContext.accepts(mode || 'into');
+    },
+    drop({dragAndDropContext, mode}) {
+        dragAndDropContext.onDrop(mode || 'into');
+    }
+};
+
+const collect = (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    canDrop: monitor.canDrop(),
+    isOver: monitor.isOver()
+});
 
 export class Node extends PureComponent {
     static propTypes = {
@@ -20,9 +36,53 @@ export class Node extends PureComponent {
     }
 }
 
+@DropTarget(({nodeDndType}) => nodeDndType, spec, collect)
+class NodeDropTarget extends PureComponent {
+    static propTypes = {
+        connectDropTarget: PropTypes.func.isRequired,
+        nodeDndType: PropTypes.string.isRequired,
+        canDrop: PropTypes.bool.isRequired,
+        isOver: PropTypes.bool,
+        theme: PropTypes.object,
+        mode: PropTypes.string.isRequired
+    };
+    render() {
+        const {connectDropTarget, isOver, mode, theme} = this.props;
+        const classNames = mergeClassNames({
+            [theme.dropTarget]: true,
+            [theme['dropTarget--before']]: mode === 'before',
+            [theme['dropTarget--after']]: mode === 'after'
+        });
+        const classNamesInner = mergeClassNames({
+            [theme.dropTarget__inner]: true,
+            [theme['dropTarget__inner--acceptsDrop']]: isOver
+        });
+        return connectDropTarget(
+            <div className={classNames}>
+                <div className={classNamesInner}/>
+            </div>
+        );
+    }
+}
+
+@DragSource(({nodeDndType}) => nodeDndType, {
+    beginDrag(props) {
+        props.dragAndDropContext.onDrag();
+        return {
+            contextPath: props.id
+        };
+    }
+}, (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+}))
+@DropTarget(({nodeDndType}) => nodeDndType, spec, collect)
 export class Header extends PureComponent {
     static propTypes = {
+        id: PropTypes.string,
+        nodeDndType: PropTypes.string.isRequired,
         hasChildren: PropTypes.bool.isRequired,
+        isLastChild: PropTypes.bool,
         isCollapsed: PropTypes.bool.isRequired,
         isActive: PropTypes.bool.isRequired,
         isFocused: PropTypes.bool.isRequired,
@@ -38,6 +98,11 @@ export class Header extends PureComponent {
             onDrag: PropTypes.func.isRequired,
             onDrop: PropTypes.func.isRequired
         }),
+        connectDragSource: PropTypes.func.isRequired,
+        connectDropTarget: PropTypes.func.isRequired,
+        canDrop: PropTypes.bool.isRequired,
+        isDragging: PropTypes.bool,
+        isOver: PropTypes.bool,
 
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
@@ -63,50 +128,13 @@ export class Header extends PureComponent {
         IconComponent: PropTypes.any.isRequired
     };
 
-    state = {
-        acceptsDrop: null
-    };
-
-    handleDrag = () => {
-        const {dragAndDropContext} = this.props;
-
-        if (dragAndDropContext) {
-            dragAndDropContext.onDrag();
-        }
-    };
-
-    handleDragOver = e => {
-        const {dragAndDropContext} = this.props;
-
-        if (dragAndDropContext) {
-            this.setState({
-                acceptsDrop: dragAndDropContext.accepts()
-            });
-            e.preventDefault();
-        }
-    };
-
-    handleDragLeave = () => {
-        this.setState({
-            acceptsDrop: null
-        });
-    };
-
-    handleDrop = () => {
-        const {dragAndDropContext} = this.props;
-
-        if (dragAndDropContext) {
-            dragAndDropContext.onDrop();
-            this.setState({
-                acceptsDrop: null
-            });
-        }
-    };
-
     render() {
         const {
+            id,
+            nodeDndType,
             IconComponent,
             hasChildren,
+            isLastChild,
             isActive,
             isFocused,
             isHidden,
@@ -117,43 +145,62 @@ export class Header extends PureComponent {
             onClick,
             onLabelClick,
             theme,
+            connectDragSource,
+            connectDropTarget,
             dragAndDropContext,
+            isOver,
+            isDragging,
+            canDrop,
             ...restProps
         } = this.props;
-        const {
-            acceptsDrop
-        } = this.state;
-        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError']);
+        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError', 'isDragging']);
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,
             [theme['header__data--isFocused']]: isFocused,
+            [theme['header__data--isLastChild']]: isLastChild,
             [theme['header__data--isHiddenInIndex']]: isHiddenInIndex,
             [theme['header__data--isHidden']]: isHidden,
             [theme['header__data--isDirty']]: isDirty,
-            [theme['header__data--acceptsDrop']]: acceptsDrop === true,
-            [theme['header__data--deniesDrop']]: acceptsDrop === false
+            [theme['header__data--isDragging']]: isDragging,
+            [theme['header__data--acceptsDrop']]: isOver && canDrop,
+            [theme['header__data--deniesDrop']]: isOver && !canDrop
         });
 
-        return (
-            <ul className={theme.header}>
-                {hasChildren ? this.renderCollapseControl() : null}
-                <li
-                    role="button"
-                    className={dataClassNames}
-                    onDragStart={this.handleDrag}
-                    onClick={onClick}
-                    onDragOver={this.handleDragOver}
-                    onDragLeave={this.handleDragLeave}
-                    onDrop={this.handleDrop}
-                    draggable={Boolean(dragAndDropContext)}
-                    >
-                    <IconComponent icon={icon || 'question'} padded="right" role="button" className={theme.header__icon}/>
-                    <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
-                        {label}
-                    </span>
-                </li>
-            </ul>
+        return connectDragSource(
+            <div>
+                <div className={theme.header}>
+                    {hasChildren ? this.renderCollapseControl() : null}
+                    <NodeDropTarget
+                        id={id}
+                        theme={theme}
+                        dragAndDropContext={dragAndDropContext}
+                        nodeDndType={nodeDndType}
+                        mode="before"
+                        />
+                    {connectDropTarget(
+                        <div
+                            role="button"
+                            className={dataClassNames}
+                            onClick={onClick}
+                            >
+                            <IconComponent icon={icon || 'question'} padded="right" role="button" className={theme.header__icon}/>
+                            <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                                {label}
+                            </span>
+                        </div>
+                    )}
+                    {isLastChild && (
+                        <NodeDropTarget
+                            id={id}
+                            theme={theme}
+                            dragAndDropContext={dragAndDropContext}
+                            nodeDndType={nodeDndType}
+                            mode="after"
+                            />
+                    )}
+                </div>
+            </div>
         );
     }
 

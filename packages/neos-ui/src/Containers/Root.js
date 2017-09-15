@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Provider} from 'react-redux';
+import HTML5Backend from 'react-dnd-html5-backend';
+import {DragDropContextProvider} from 'react-dnd';
 import style from './style.css';
 
 import Neos from './Neos/index';
@@ -13,12 +15,14 @@ const Root = ({store, globalRegistry, configuration, menu}) => {
     return (
         <div className={style.applicationWrapper}>
             <Provider store={store}>
-                <Neos
-                    globalRegistry={globalRegistry}
-                    configuration={configuration}
-                    >
-                    <App globalRegistry={globalRegistry} menu={menu}/>
-                </Neos>
+                <DragDropContextProvider backend={HTML5Backend}>
+                    <Neos
+                        globalRegistry={globalRegistry}
+                        configuration={configuration}
+                        >
+                        <App globalRegistry={globalRegistry} menu={menu}/>
+                    </Neos>
+                </DragDropContextProvider>
             </Provider>
         </div>
     );

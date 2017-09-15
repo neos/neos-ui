@@ -18,7 +18,7 @@ export default class ReferencesEditor extends PureComponent {
         value: PropTypes.arrayOf(PropTypes.string),
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
-            nodeTypes: PropTypes.arrayOf(PropTypes.string),
+            nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string,
             threshold: PropTypes.number
         }),

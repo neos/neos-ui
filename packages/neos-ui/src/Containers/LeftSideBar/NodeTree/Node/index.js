@@ -27,9 +27,12 @@ const findScrollingParent = parentElement => {
     return null;
 };
 
+const getOrDefault = defaultValue => value => value || defaultValue;
+
 const decodeLabel = flowright(
     decodeHtml,
-    stripTags
+    stripTags,
+    getOrDefault('')
 );
 
 export default class Node extends PureComponent {

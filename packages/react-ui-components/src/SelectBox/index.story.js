@@ -15,6 +15,12 @@ const optionsWithExactlyOneGroup = [
     {value: 'opt1', label: 'Option 1', icon: 'bookmark', group: 'Group 1'},
     {value: 'opt2', label: 'Option 2', group: 'Group 1'},
     {value: 'opt3', label: 'Option 3', group: 'Group 1'},
+    {value: 'opt4', label: 'Option 4'}
+];
+const optionsWithAllItemsInSameGroup = [
+    {value: 'opt1', label: 'Option 1', icon: 'bookmark', group: 'Group 1'},
+    {value: 'opt2', label: 'Option 2', group: 'Group 1'},
+    {value: 'opt3', label: 'Option 3', group: 'Group 1'},
     {value: 'opt4', label: 'Option 4', group: 'Group 1'}
 ];
 const optionsWithMultipleGroups = [
@@ -44,6 +50,18 @@ storiesOf('SelectBox', module)
             <StoryWrapper>
                 <SelectBox
                     options={optionsWithExactlyOneGroup}
+                    onValueChange={action('onValueChange')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
+        'Grouping with all items in the same group',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    options={optionsWithAllItemsInSameGroup}
                     onValueChange={action('onValueChange')}
                     />
             </StoryWrapper>

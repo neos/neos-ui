@@ -178,7 +178,7 @@ export default class ImageCropper extends PureComponent {
                     </div>
 
                     <AspectRatioDropDown
-                        placeholder="Aspect Ratio"
+                        placeholder="Choose a Aspect Ratio"
                         current={cropConfiguration.aspectRatioStrategy}
                         options={cropConfiguration.aspectRatioOptions}
                         onSelect={this.handleSetAspectRatio}

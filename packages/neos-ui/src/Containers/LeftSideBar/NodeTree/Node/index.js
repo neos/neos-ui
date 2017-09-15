@@ -72,7 +72,6 @@ export default class Node extends PureComponent {
 
         this.handleNodeToggle = this.handleNodeToggle.bind(this);
         this.handleNodeClick = this.handleNodeClick.bind(this);
-        this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -226,7 +225,6 @@ export default class Node extends PureComponent {
                     icon={this.getIcon()}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
-                    onLabelClick={this.handleNodeLabelClick}
                     dragAndDropContext={this.getDragAndDropContext()}
                     />
                 {this.isCollapsed() ? null : (
@@ -257,12 +255,6 @@ export default class Node extends PureComponent {
     }
 
     handleNodeClick() {
-        const {node, onNodeFocus, onNodeClick} = this.props;
-        onNodeFocus($get('contextPath', node));
-        onNodeClick($get('uri', node), $get('contextPath', node));
-    }
-
-    handleNodeLabelClick() {
         const {node, onNodeFocus, onNodeClick} = this.props;
         onNodeFocus($get('contextPath', node));
         onNodeClick($get('uri', node), $get('contextPath', node));

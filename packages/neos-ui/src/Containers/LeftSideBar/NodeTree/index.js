@@ -41,15 +41,14 @@ export default class NodeTree extends PureComponent {
         focus(contextPath);
     }
 
-    handleClick = (src, contextPath) => {
-        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView} = this.props;
+    handleClick = src => {
+        const {setActiveContentCanvasSrc, requestScrollIntoView} = this.props;
         // Set a flag that will imperatively tell ContentCanvas to scroll to focused node
         if (requestScrollIntoView) {
             requestScrollIntoView(true);
         }
-        if (setActiveContentCanvasSrc && setActiveContentCanvasContextPath) {
+        if (setActiveContentCanvasSrc) {
             setActiveContentCanvasSrc(src);
-            setActiveContentCanvasContextPath(contextPath);
         }
     }
 
@@ -105,7 +104,6 @@ export const PageTree = connect(state => ({
     toggle: actions.UI.PageTree.toggle,
     focus: actions.UI.PageTree.focus,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
-    setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath,
     moveNode: actions.CR.Nodes.move,
     requestScrollIntoView: null
 })(NodeTree);

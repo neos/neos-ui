@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
-import Dialog from './dialog.js';
+import {DialogWidhoutEscape as Dialog} from './dialog.js';
 import Portal from 'react-portal';
 
 const IconButtonComponent = createStubComponent();

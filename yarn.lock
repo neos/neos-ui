@@ -6529,6 +6529,10 @@ react-click-outside@^2.3.1:
   dependencies:
     hoist-non-react-statics "^1.2.0"
 
+react-close-on-escape@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-close-on-escape/-/react-close-on-escape-2.0.0.tgz#d3bf6d18fac516979d76e7732fda39057176f017"
+
 react-codemirror@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-codemirror/-/react-codemirror-1.0.0.tgz#91467b53b1f5d80d916a2fd0b4c7adb85a9001ba"

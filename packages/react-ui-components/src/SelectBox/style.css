@@ -17,13 +17,13 @@
     position: relative;
 }
 
-.dropDown {
+.selectBox {
     composes: reset from './../reset.css';
     position: static;
     display: inline-block;
 }
 
-.dropDown__btn {
+.selectBox__btn {
     composes: reset from './../reset.css';
     position: relative;
     display: inline-block;
@@ -35,11 +35,11 @@
     min-width: 160px;
 }
 
-.dropDown__placeholder {
+.selectBox__placeholder {
     color: var(--brandColorsContrastBright);
 }
 
-.dropDown__searchInputWrapper {
+.selectBox__searchInputWrapper {
     display: inline-block;
     width: 100%;
 
@@ -49,7 +49,7 @@
     }
 }
 
-.dropDown__searchInput {
+.selectBox__searchInput {
     display: inline-block;
     width: 100%;
     color: #fff;
@@ -60,11 +60,11 @@
     }
 }
 
-.dropDown__searchInputContainer {
+.selectBox__searchInputContainer {
     display: inline-block;
 }
 
-.dropDown__loadingIcon {
+.selectBox__loadingIcon {
     composes: reset from './../reset.css';
     position: absolute;
     top: 0;
@@ -79,12 +79,12 @@
     line-height: 40px;
 }
 
-.dropDown__btnIcon {
+.selectBox__btnIcon {
     composes: reset from './../reset.css';
     margin-right: .5em;
 }
 
-.dropDown__btnDelete {
+.selectBox__btnDelete {
     composes: reset from './../reset.css';
     position: absolute;
     top: 0;
@@ -103,37 +103,29 @@
     }
 }
 
-.dropDown__contents {
+.selectBox__contents {
     composes: reset from './../reset.css';
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
     z-index: 10;
 }
 
-.dropDown__contents li {
-    padding: 0 1em;
-}
 
-.dropDown__contents li input {
+.selectBox__contents li input {
     width: 100%;
     height: 100%;
     background: #FFF;
 }
 
-.dropDown__item {
+.selectBox__item {
     composes: reset from './../reset.css';
-    height: 40px;
-    line-height: 40px;
     background: var(--brandColorsContrastNeutral);
     border-top: 1px solid var(--brandColorsContrastDarker);
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    &:hover {
-        background: var(--brandColorsPrimaryBlue);
-    }
+    font-size: 14px;
 
     > a,
     button {
@@ -150,7 +142,31 @@
     }
 }
 
-.dropDown__itemIcon {
+.selectBox__item--isGroup {
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    > span {
+        font-style: italic;
+        color: var(--brandColorsContrastBright);
+        display: block;
+        height: 40px;
+        line-height: 40px;    
+        padding: 0 1em;
+    }
+}
+
+.selectBox__item--isSelectable {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 2em;
+    &:hover {
+        background: var(--brandColorsPrimaryBlue);
+    }
+}
+
+.selectBox__itemIcon {
     composes: reset from './../reset.css';
     padding-right: .5em;
 }

@@ -24,7 +24,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
                 formatting: 'h1' // References a key inside "formattingRules"
                 component: Button // the React component being used for rendering
                 callbackPropName: 'onClick' // Name of the callback prop of the Component which is
-                                               fired when the component's value changes.
+                                            fired when the component's value changes.
 
                 // all other properties are directly passed on to the component.
             }
@@ -33,7 +33,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         - Each toolbar component receives all properties except "formatting" and "component" directly as props.
         - Furthermore, the "isActive" property is bound, which is a boolean flag defining whether the text style
-          referenced by "formatting" is currently active or not.
+            referenced by "formatting" is currently active or not.
         - Furthermore, the callback specified in "callbackPropName" is wired, which toggles the value.
 
         For advanced use-cases; also the "formattingRule" is bound to the component; containing a formatting-rule identifier (string).

@@ -1,33 +1,33 @@
 .loadingIndicator__container {
-	left: 50%;
+    left: 50%;
     top: 39px;
-	position: absolute;
-	transform: translateX(-50%);
+    position: absolute;
+    transform: translateX(-50%);
     padding: 0 320px;
     width: 100%;
 }
 
 .loadingIndicator {
-	height: 2px;
-	position: relative;
+    height: 2px;
+    position: relative;
     width: 100%;
 }
 .loadingIndicator__bar {
-	height: 100%;
-	position: relative;
-	background-color: #ff8700;
-	animation: cssload-width 2s cubic-bezier(.45, 0, 1, 1) infinite;
+    height: 100%;
+    position: relative;
+    background-color: #ff8700;
+    animation: cssload-width 2s cubic-bezier(.45, 0, 1, 1) infinite;
 }
 
 @keyframes cssload-width {
-	0%,
+    0%,
     100% {
-		transition-timing-function: cubic-bezier(1, 0, .65, .85);
-	}
-	0% {
-		width: 0;
-	}
-	100% {
-		width: 100%;
-	}
+        transition-timing-function: cubic-bezier(1, 0, .65, .85);
+    }
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
 }

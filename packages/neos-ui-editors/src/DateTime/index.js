@@ -18,10 +18,10 @@ class DateTime extends PureComponent {
 
     render() {
         const {
-          value,
-          commit,
-          placeholder,
-          i18nRegistry
+            value,
+            commit,
+            placeholder,
+            i18nRegistry
         } = this.props;
         const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
 

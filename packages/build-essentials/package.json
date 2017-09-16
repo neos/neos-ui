@@ -9,7 +9,6 @@
     "check-dependencies": "./node_modules/.bin/check-dependencies",
     "cpx": "./node_modules/.bin/cpx",
     "cross-env": "./node_modules/.bin/cross-env",
-    "editorconfig-checker": "./node_modules/.bin/editorconfig-checker",
     "eslint": "./node_modules/.bin/eslint",
     "greenkeeper-postpublish": "./node_modules/.bin/greenkeeper-postpublish",
     "jest": "./node_modules/.bin/jest",
@@ -19,8 +18,7 @@
     "stylelint": "./node_modules/.bin/stylelint"
   },
   "scripts": {
-    "lint": "eslint src",
-    "lint:editorconfig": "editorconfig-checker"
+    "lint": "eslint src"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
@@ -38,7 +36,6 @@
     "check-dependencies": "^1.0.1",
     "cpx": "^1.3.1",
     "cross-env": "^3.0.0",
-    "editorconfig-checker": "^1.0.2",
     "eslint": "^3.1.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "greenkeeper-postpublish": "^1.0.0",

@@ -36,20 +36,20 @@
     > a,
     > label,
     > button {
-      display: block;
-      width: 100%;
-      border: 0;
-      padding: 0 var(--spacing);
-      background: 0;
-      color: #FFF;
-      text-decoration: none;
-      line-height: var(--goldenUnit);
-      text-align: left;
+        display: block;
+        width: 100%;
+        border: 0;
+        padding: 0 var(--spacing);
+        background: 0;
+        color: #FFF;
+        text-decoration: none;
+        line-height: var(--goldenUnit);
+        text-align: left;
 
-      > i,
-      > input {
-          margin-right: .5em;
-      }
+        > i,
+        > input {
+            margin-right: .5em;
+        }
     }
 }
 .dropDown__item--noHover:hover {

@@ -13,7 +13,6 @@
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "lint:editorconfig": "editorconfig-checker --exclude 'LICENSE|/fontAwesome/'",
     "jest": "jest src/**/*.spec.js -w 1 --coverage",
     "start": "cross-env STORY=true start-storybook -p 9001",
     "postpublish": "greenkeeper-postpublish",

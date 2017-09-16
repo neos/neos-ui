@@ -12,7 +12,6 @@
     "build:watch": "npm run build -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "lint:editorconfig": "editorconfig-checker",
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {

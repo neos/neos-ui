@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import enhanceWithClickOutside from 'react-click-outside';
 import moment from 'moment';
+import mergeClassNames from 'classnames';
 
 export class DateInput extends PureComponent {
     static propTypes = {
@@ -29,6 +30,11 @@ export class DateInput extends PureComponent {
          * The moment format string to use to format the passed value.
          */
         labelFormat: PropTypes.string,
+
+        /**
+         * Highlight input
+         */
+        highlight: PropTypes.bool,
 
         /**
          * The changehandler to call when the date changes.
@@ -87,13 +93,19 @@ export class DateInput extends PureComponent {
             value,
             applyLabel,
             todayLabel,
-            labelFormat
+            labelFormat,
+            highlight,
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
 
+        const calendarInputWrapper = mergeClassNames({
+            [theme.calendarInputWrapper]: true,
+            [theme['calendarInputWrapper--highlight']]: highlight
+        });
+
         return (
             <div className={theme.wrapper}>
-                <div className={theme.calendarInputWrapper}>
+                <div className={calendarInputWrapper}>
                     <button
                         onClick={this.handleCalendarIconClick}
                         className={theme.calendarIconBtn}

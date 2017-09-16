@@ -80,6 +80,13 @@ export default class Node extends PureComponent {
         this.handleNodeClick = this.handleNodeClick.bind(this);
     }
 
+    componentDidMount() {
+        // Always request scroll on first render
+        this.setState({
+            shouldScrollIntoView: true
+        });
+    }
+
     componentWillReceiveProps(nextProps) {
         // If focused node changed
         if (this.props.focusedNodeContextPath !== nextProps.focusedNodeContextPath) {

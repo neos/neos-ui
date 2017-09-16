@@ -17,6 +17,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 export default class ReferencesEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),
+        highlight: PropTypes.string,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -99,6 +100,7 @@ export default class ReferencesEditor extends PureComponent {
                         if (icon) {
                             option.icon = icon;
                         }
+                        option.isNew = true;
                     });
 
                     this.setState({
@@ -118,6 +120,7 @@ export default class ReferencesEditor extends PureComponent {
             options={this.state.options}
             optionValueField="identifier"
             values={this.props.value}
+            highlight={this.props.highlight}
             onValuesChange={this.handleValuesChange}
             placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
             displayLoadingIndicator={this.state.isLoading}

@@ -6,7 +6,10 @@
     list-style: none;
     padding-left: 0;
 }
-
+.selectedOptions--highlight {
+  outline: 2px solid var(--brandColorsSuccess);
+  margin-bottom: 2px;
+}
 .selectedOptions__item {
     width: 100%;
     position: relative;
@@ -31,7 +34,6 @@
         vertical-align: middle;
     }
 }
-
 .selectedOptions__itemIcon {
     margin-right: .5em;
 }

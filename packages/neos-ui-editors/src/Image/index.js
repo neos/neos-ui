@@ -33,6 +33,7 @@ export default class ImageEditor extends Component {
         renderSecondaryInspector: PropTypes.func.isRequired,
 
         options: PropTypes.object,
+        highlight: PropTypes.bool,
 
         // Public API:
         // I18N key
@@ -250,6 +251,7 @@ export default class ImageEditor extends Component {
         const {
             isAssetLoading
         } = this.state;
+        const {highlight} = this.props;
 
         return (
             <div className={style.imageEditor}>
@@ -258,6 +260,7 @@ export default class ImageEditor extends Component {
                     image={this.getUsedImage()}
                     isLoading={isAssetLoading}
                     onDrop={this.handleFilesDrop}
+                    highlight={highlight}
                     onClick={this.handleThumbnailClicked}
                     />
                 <Controls

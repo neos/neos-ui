@@ -94,7 +94,7 @@ export class DateInput extends PureComponent {
             applyLabel,
             todayLabel,
             labelFormat,
-            highlight,
+            highlight
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
 

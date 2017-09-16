@@ -140,7 +140,7 @@ export default class SelectBox extends PureComponent {
             IconButtonComponent,
             IconComponent
         } = this.props;
-        const {isOpen} = this.state
+        const {isOpen} = this.state;
         let allowEmpty = this.props.allowEmpty;
 
         const selectedValue = (options || []).find(option => option[optionValueField] === value);

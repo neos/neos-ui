@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import DropDown from '../DropDown/index';
+import mergeClassNames from 'classnames';
 
 export default class SelectBox extends PureComponent {
 
@@ -75,10 +76,16 @@ export default class SelectBox extends PureComponent {
         onSearchTermChange: PropTypes.func,
 
         /**
+         * Highlight input
+         */
+        highlight: PropTypes.bool,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'wrapper': PropTypes.string,
+            'wrapper--highlight': PropTypes.string,
             'selectedOptions': PropTypes.string,
             'selectedOptions__item': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
@@ -122,6 +129,7 @@ export default class SelectBox extends PureComponent {
             optionValueField,
             displayLoadingIndicator,
             theme,
+            highlight,
             placeholder,
             placeholderIcon,
             displaySearchBox,
@@ -132,6 +140,7 @@ export default class SelectBox extends PureComponent {
             IconButtonComponent,
             IconComponent
         } = this.props;
+        const {isOpen} = this.state
         let allowEmpty = this.props.allowEmpty;
 
         const selectedValue = (options || []).find(option => option[optionValueField] === value);
@@ -158,9 +167,14 @@ export default class SelectBox extends PureComponent {
             icon = placeholderIcon ? placeholderIcon : icon;
         }
 
+        const classNames = mergeClassNames({
+            [theme.wrapper]: true,
+            [theme['wrapper--highlight']]: (highlight && !isOpen)
+        });
+
         return (
-            <div className={theme.wrapper}>
-                <DropDown.Stateless className={theme.dropDown} isOpen={this.state.isOpen} onToggle={this.handleDropdownToggle} onClose={this.handleDropdownClose}>
+            <div className={classNames}>
+                <DropDown.Stateless className={theme.dropDown} isOpen={isOpen} onToggle={this.handleDropdownToggle} onClose={this.handleDropdownClose}>
                     <DropDown.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
                         {icon ?
                             <IconComponent className={theme.dropDown__btnIcon} icon={icon}/> :

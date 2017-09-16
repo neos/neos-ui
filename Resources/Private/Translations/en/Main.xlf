@@ -17,6 +17,9 @@
 			<trans-unit id="insertMode" xml:space="preserve">
 				<source>Insert mode</source>
 			</trans-unit>
+			<trans-unit id="imageCropper__aspect-ratio-placeholder" xml:space="preserve">
+				<source>Choose an Aspect Ratio</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

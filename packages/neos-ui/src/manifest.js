@@ -104,7 +104,7 @@ manifest('main', {}, globalRegistry => {
           - 1st argument: a string identifier of the inspector; used to implement toggling of the inspector when calling this method twice.
           - 2nd argument: a callback function which can be used to render the secondary inspector. The callback function should return the secondary inspector content itself; or "undefined/null" to close the secondary inspector.
 
-          Example usage: props.renderSecondaryInspector('IMAGE_CROPPING', () => <MySecondaryInspectorContent />)
+            Example usage: props.renderSecondaryInspector('IMAGE_CROPPING', () => <MySecondaryInspectorContent />)
 
     `));
 

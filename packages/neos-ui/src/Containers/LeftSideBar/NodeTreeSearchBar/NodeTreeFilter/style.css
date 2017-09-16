@@ -1,19 +1,19 @@
 .searchBar {
-  display: flex;
+    display: flex;
 }
 
 .searchBar__searchInput {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
 .searchBar__clearButton {
-  background: var(--brandColorsContrastNeutral);
+    background: var(--brandColorsContrastNeutral);
 }
 
 .searchBar__clearButton--focused {
-  background: white;
+    background: white;
 }
 
 .searchBar__clearButton--focused > i {
-  color: var(--brandColorsContrastNeutral);
+    color: var(--brandColorsContrastNeutral);
 }

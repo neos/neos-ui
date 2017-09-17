@@ -30,6 +30,7 @@ class LinkEditor extends PureComponent {
         identifier: PropTypes.string.isRequired,
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
+        highlight: PropTypes.bool,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string
@@ -159,6 +160,7 @@ class LinkEditor extends PureComponent {
             <SelectBox
                 options={this.props.value ? this.state.options : this.state.searchOptions}
                 optionValueField="identifier"
+                highlight={this.props.highlight}
                 value={this.props.value && removePrefixFromNodeIdentifier(this.props.value)}
                 onValueChange={this.handleValueChange}
                 placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}

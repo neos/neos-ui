@@ -32,7 +32,7 @@ export default class PreviewScreen extends PureComponent {
         const classNames = mergeClassNames({
             [style.thumbnail]: true,
             [style['thumbnail--highlight']]: highlight
-        }); 
+        });
 
         if (isLoading) {
             return (

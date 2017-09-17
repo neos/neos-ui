@@ -4,7 +4,6 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Utility as NodeUtility;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
 {
@@ -17,7 +16,7 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
      */
     public function handle(NodeInterface $node, array $data)
     {
-        if(isset($data['title']) && $node->getNodeType()->isOfType('Neos.Neos:Document')) {
+        if (isset($data['title']) && $node->getNodeType()->isOfType('Neos.Neos:Document')) {
             $node->setProperty('title', $data['title']);
             $node->setProperty('uriPathSegment', NodeUtility::renderValidNodeName($data['title']));
         }

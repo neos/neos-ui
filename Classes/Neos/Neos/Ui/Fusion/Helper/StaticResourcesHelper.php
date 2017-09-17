@@ -3,12 +3,9 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Session\SessionInterface;
 
 class StaticResourcesHelper implements ProtectedContextAwareInterface
 {
-
-
     /**
      * @Flow\InjectConfiguration("frontendDevelopmentMode")
      * @var boolean

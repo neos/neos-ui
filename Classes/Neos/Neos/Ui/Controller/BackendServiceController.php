@@ -6,6 +6,7 @@ namespace Neos\Neos\Ui\Controller;
  *                                                                        *
  *                                                                        */
 
+use Neos\Flow\Mvc\View\JsonView;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
@@ -40,7 +41,7 @@ class BackendServiceController extends ActionController
     /**
      * @var string
      */
-    protected $defaultViewObjectName = \Neos\Flow\Mvc\View\JsonView::class;
+    protected $defaultViewObjectName = JsonView::class;
 
     /**
      * @Flow\Inject
@@ -100,6 +101,7 @@ class BackendServiceController extends ActionController
 
     /**
      * Helper method to inform the client, that new workspace information is available
+     *
      * @param string $documentNodeContextPath
      * @return void
      */
@@ -154,13 +156,12 @@ class BackendServiceController extends ActionController
             $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
 
             foreach ($nodeContextPaths as $contextPath) {
-                $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null,true);
+                $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
                 $this->publishingService->publishNode($node, $targetWorkspace);
             }
 
             $success = new Success();
-            $success->setMessage(sprintf('Published %d change(s) to %s.', count($nodeContextPaths),
-                $targetWorkspaceName));
+            $success->setMessage(sprintf('Published %d change(s) to %s.', count($nodeContextPaths), $targetWorkspaceName));
 
             $this->updateWorkspaceInfo($nodeContextPaths[0]);
             $this->feedbackCollection->add($success);
@@ -188,7 +189,7 @@ class BackendServiceController extends ActionController
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
                 // When discarding node removal we should re-create it
-                if ($node->isRemoved() === TRUE) {
+                if ($node->isRemoved() === true) {
                     $updateNodeInfo = new UpdateNodeInfo();
                     $updateNodeInfo->setNode($node);
                     $updateNodeInfo->recursive();
@@ -206,7 +207,7 @@ class BackendServiceController extends ActionController
                         $this->feedbackCollection->add($reloadDocument);
                     }
 
-                // When discarding node creation we should remove it
+                    // When discarding node creation we should remove it
                 } else {
                     $removeNode = new RemoveNode();
                     $removeNode->setNode($node);
@@ -296,7 +297,7 @@ class BackendServiceController extends ActionController
      * Build and execute a flow query chain
      *
      * @param array $chain
-     * @return void
+     * @return string
      */
     public function flowQueryAction(array $chain)
     {
@@ -315,7 +316,8 @@ class BackendServiceController extends ActionController
         }
 
         $nodeInfoHelper = new NodeInfoHelper();
-        switch($finisher['type']) {
+        $result = [];
+        switch ($finisher['type']) {
             case 'get':
                 $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext());
                 break;

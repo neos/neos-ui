@@ -37,5 +37,4 @@ interface ChangeInterface
      * @return void
      */
     public function apply();
-
 }

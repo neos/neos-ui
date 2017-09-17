@@ -6,7 +6,6 @@ use Neos\Eel\CompilingEvaluator;
 use Neos\Eel\Utility;
 use Neos\Flow\Annotations as Flow;
 
-
 /**
  * @Flow\Scope("singleton")
  */

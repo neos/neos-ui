@@ -8,6 +8,9 @@ use Neos\Flow\Property\PropertyMapper;
 use Neos\ContentRepository\Domain\Service\Context;
 use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Utility\Exception\InvalidTypeException;
+use Neos\Utility\TypeHandling;
 
 /**
  * @Flow\Scope("singleton")
@@ -66,9 +69,9 @@ class NodePropertyConversionService
                 $innerType = $propertyType;
                 if ($propertyType !== null) {
                     try {
-                        $parsedType = \Neos\Utility\TypeHandling::parseType($propertyType);
+                        $parsedType = TypeHandling::parseType($propertyType);
                         $innerType = $parsedType['elementType'] ?: $parsedType['type'];
-                    } catch (\Neos\Utility\Exception\InvalidTypeException $exception) {
+                    } catch (InvalidTypeException $exception) {
                     }
                 }
 
@@ -77,8 +80,8 @@ class NodePropertyConversionService
                     $propertyMappingConfiguration->allowOverrideTargetType();
                     $propertyMappingConfiguration->allowAllProperties();
                     $propertyMappingConfiguration->skipUnknownProperties();
-                    $propertyMappingConfiguration->setTypeConverterOption('Neos\Flow\Property\TypeConverter\PersistentObjectConverter', \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
-                    $propertyMappingConfiguration->setTypeConverterOption('Neos\Flow\Property\TypeConverter\PersistentObjectConverter', \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
+                    $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
+                    $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
                     return $this->propertyMapper->convert($rawValue, $propertyType, $propertyMappingConfiguration);
                 } else {
                     return $rawValue;
@@ -167,7 +170,7 @@ class NodePropertyConversionService
     /**
      * Convert raw value to array
      *
-     * @param string $rawValue
+     * @param string|array $rawValue
      * @return array
      */
     protected function convertArray($rawValue)

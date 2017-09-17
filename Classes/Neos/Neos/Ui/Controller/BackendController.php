@@ -111,7 +111,6 @@ class BackendController extends ActionController
      */
     public function indexAction(NodeInterface $node = null)
     {
-
         $this->contentCache->flush();
         $this->session->start();
         $this->session->putData('__neosEnabled__', true);
@@ -150,7 +149,6 @@ class BackendController extends ActionController
      */
     public function deactivateAction()
     {
-
         $this->contentCache->flush();
         $this->session->start();
         $this->session->putData('__neosEnabled__', false);

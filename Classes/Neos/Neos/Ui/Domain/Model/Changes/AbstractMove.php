@@ -2,9 +2,7 @@
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 abstract class AbstractMove extends AbstractStructuralChange
 {
@@ -21,7 +19,7 @@ abstract class AbstractMove extends AbstractStructuralChange
     }
 
     /**
-     * Perform finish tasks - needs to be called from inheriting clas on `apply`
+     * Perform finish tasks - needs to be called from inheriting class on `apply`
      *
      * @param NodeInterface $node
      * @return void

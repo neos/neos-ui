@@ -21,11 +21,14 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
      */
     protected $userService;
 
+    /**
+     * @param Workspace $workspace
+     * @return array
+     */
     public function getPublishableNodeInfo(Workspace $workspace)
     {
         return $this->workspaceService->getPublishableNodeInfo($workspace);
     }
-
 
     public function getPersonalWorkspace()
     {

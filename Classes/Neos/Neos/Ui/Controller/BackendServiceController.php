@@ -207,7 +207,7 @@ class BackendServiceController extends ActionController
                         $this->feedbackCollection->add($reloadDocument);
                     }
 
-                // When discarding node creation we should remove it
+                    // When discarding node creation we should remove it
                 } else {
                     $removeNode = new RemoveNode();
                     $removeNode->setNode($node);

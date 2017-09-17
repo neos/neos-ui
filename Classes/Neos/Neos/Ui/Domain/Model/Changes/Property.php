@@ -114,7 +114,7 @@ class Property extends AbstractChange
             if ($propertyName === '_nodeType') {
                 $nodeType = $this->nodeTypeManager->getNodeType($value);
                 ObjectAccess::setProperty($node, 'nodeType', $nodeType);
-            } else if ($propertyName{0} === '_') {
+            } elseif ($propertyName{0} === '_') {
                 ObjectAccess::setProperty($node, substr($propertyName, 1), $value);
             } else {
                 $node->setProperty($propertyName, $value);

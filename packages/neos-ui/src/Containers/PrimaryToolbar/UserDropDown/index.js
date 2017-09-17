@@ -21,6 +21,7 @@ export default class UserDropDown extends PureComponent {
         //
         // TODO: There are still hard-coded Uris in here
         //
+        const csrfToken = document.getElementById('appContainer').dataset.csrfToken;
         return (
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>
@@ -31,6 +32,7 @@ export default class UserDropDown extends PureComponent {
                     <DropDown.Contents className={style.dropDown__contents}>
                         <li className={style.dropDown__item}>
                             <form title="Logout" action="/neos/logout" method="post">
+                                <input type="hidden" name="__csrfToken" value={csrfToken}/>
                                 <button type="submit" name="" value="logout">
                                     <Icon icon="power-off" className={style.dropDown__itemIcon}/>
                                     <I18n id="logout" fallback="Logout"/>

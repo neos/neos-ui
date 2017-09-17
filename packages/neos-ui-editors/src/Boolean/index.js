@@ -29,7 +29,7 @@ const defaultOptions = {
 };
 
 const BooleanEditor = props => {
-    const {value, label, identifier, commit, options} = props;
+    const {value, label, identifier, commit, options, highlight} = props;
     const finalOptions = Object.assign({}, defaultOptions, options);
 
     const finalClassName = mergeClassNames({
@@ -39,7 +39,7 @@ const BooleanEditor = props => {
     return (
         <div>
             <Label htmlFor={identifier} className={finalClassName}>
-                <CheckBox id={identifier} isChecked={toBoolean(value)} isDisabled={finalOptions.disabled} onChange={commit}/>
+                <CheckBox id={identifier} highlight={highlight} isChecked={toBoolean(value)} isDisabled={finalOptions.disabled} onChange={commit}/>
                 <I18n id={label}/>
             </Label>
         </div>
@@ -50,7 +50,8 @@ BooleanEditor.propTypes = {
     label: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     commit: PropTypes.func.isRequired,
-    options: PropTypes.object
+    options: PropTypes.object,
+    highlight: PropTypes.bool
 };
 
 export default BooleanEditor;

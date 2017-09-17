@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
 import Grid from '@neos-project/react-ui-components/src/Grid/';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 
@@ -12,6 +13,9 @@ import I18n from '@neos-project/neos-ui-i18n';
 import NodeTypeItem from './nodeTypeItem';
 import style from './style.css';
 
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
 @connect($transform({
     collapsedGroups: $get('ui.addNodeModal.collapsedGroups')
 }), {
@@ -21,13 +25,16 @@ class NodeTypeGroupPanel extends PureComponent {
     static propTypes = {
         toggleNodeTypeGroup: PropTypes.func.isRequired,
         collapsedGroups: PropTypes.array.isRequired,
+        filterSearchTerm: PropTypes.string,
 
         group: PropTypes.shape({
             name: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
             nodeTypes: PropTypes.array.isRequired
         }).isRequired,
-        onSelect: PropTypes.func.isRequired
+        onSelect: PropTypes.func.isRequired,
+
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -40,9 +47,20 @@ class NodeTypeGroupPanel extends PureComponent {
         const {
             group,
             collapsedGroups,
-            onSelect
+            onSelect,
+            filterSearchTerm,
+            i18nRegistry
         } = this.props;
         const {name, label, nodeTypes} = group;
+
+        const filteredNodeTypes = (nodeTypes || [])
+            .filter(nodeType => {
+                const label = i18nRegistry.translate(nodeType.label, nodeType.label);
+                if (label.toLowerCase().search(filterSearchTerm.toLowerCase()) !== -1) {
+                    return true;
+                }
+                return false;
+            });
 
         return (
             <ToggablePanel
@@ -54,7 +72,7 @@ class NodeTypeGroupPanel extends PureComponent {
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
                     <Grid className={style.grid}>
-                        {nodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect}/>)}
+                        {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect}/>)}
                     </Grid>
                 </ToggablePanel.Contents>
             </ToggablePanel>

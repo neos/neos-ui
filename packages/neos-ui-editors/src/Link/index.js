@@ -21,6 +21,7 @@ const isUri = str =>
 @neos(globalRegistry => {
     return {
         nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
+        nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
         i18nRegistry: globalRegistry.get('i18n')
     };
 })
@@ -30,14 +31,16 @@ class LinkEditor extends PureComponent {
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
-            nodeTypes: PropTypes.arrayOf(PropTypes.string),
+            nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string
         }),
 
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
         }).isRequired,
-
+        nodeTypeRegistry: PropTypes.shape({
+            getNodeType: PropTypes.func.isRequired
+        }),
         i18nRegistry: PropTypes.object.isRequired,
         nodeLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
@@ -73,6 +76,14 @@ class LinkEditor extends PureComponent {
                 this.setState({isLoading: true});
                 this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), removePrefixFromNodeIdentifier(this.props.value))
                     .then(options => {
+                        options.forEach(option => {
+                            const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
+                            const icon = $get('ui.icon', nodeType);
+                            if (icon) {
+                                option.icon = icon;
+                            }
+                        });
+
                         this.setState({
                             isLoading: false,
                             options
@@ -104,6 +115,14 @@ class LinkEditor extends PureComponent {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
+                    searchOptions.forEach(option => {
+                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
+                        const icon = $get('ui.icon', nodeType);
+                        if (icon) {
+                            option.icon = icon;
+                        }
+                    });
+
                     this.setState({
                         isLoading: false,
                         searchOptions

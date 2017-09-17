@@ -68,8 +68,15 @@ class LinkEditor extends PureComponent {
 
     componentDidMount() {
         if (isUri(this.props.value)) {
+            const options = [{
+                icon: 'icon-external-link',
+                identifier: this.props.value,
+                label: this.props.value
+            }];
+
             this.setState({
-                searchTerm: this.props.value
+                searchTerm: this.props.value,
+                options
             });
         } else {
             if (this.props.value) {
@@ -106,8 +113,16 @@ class LinkEditor extends PureComponent {
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
-            this.setState({isLoading: false});
-            this.props.commit(searchTerm);
+            const searchOptions = [{
+                icon: 'icon-external-link',
+                identifier: searchTerm,
+                label: searchTerm
+            }];
+
+            this.setState({
+                isLoading: false,
+                searchOptions
+            });
         } else if (!searchTerm && isUri(this.props.value)) {
             // the user emptied the URL value, so we need to reset it
             this.props.commit('');
@@ -132,7 +147,11 @@ class LinkEditor extends PureComponent {
     }
 
     handleValueChange = value => {
-        this.props.commit(appendPrefixBeforeNodeIdentifier(value));
+        if (isUri(value)) {
+            this.props.commit(value);
+        } else {
+            this.props.commit(appendPrefixBeforeNodeIdentifier(value));
+        }
     }
 
     render() {

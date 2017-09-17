@@ -45,7 +45,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             )
 
         }).isRequired,
-
+        highlight: PropTypes.bool,
         i18nRegistry: PropTypes.object.isRequired,
         dataSourcesDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired
@@ -90,7 +90,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
     }
 
     render() {
-        const {commit, value, i18nRegistry} = this.props;
+        const {commit, value, i18nRegistry, highlight} = this.props;
         const options = Object.assign({}, this.defaultOptions, this.props.options);
 
         const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, this.state.selectBoxOptions);
@@ -105,7 +105,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
                 onValuesChange={commit}
                 displayLoadingIndicator={this.state.isLoading}
                 placeholder={placeholder}
-
+                highlight={highlight}
                 allowEmpty={options.allowEmpty}
                 displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
@@ -121,7 +121,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             onValueChange={commit}
             displayLoadingIndicator={this.state.isLoading}
             placeholder={placeholder}
-
+            highlight={highlight}
             allowEmpty={options.allowEmpty}
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
             searchTerm={this.state.searchTerm}

@@ -1,6 +1,8 @@
 <?php
+
 namespace Neos\Neos\Ui\ContentRepository\Service;
 
+use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
@@ -56,7 +58,8 @@ class NodeService
      * @param  NodeInterface $node The node to check
      * @return boolean             A boolean which indicates if the given node is a document node.
      */
-    public function isDocument(NodeInterface $node) {
+    public function isDocument(NodeInterface $node)
+    {
         return ($this->getClosestDocument($node) === $node);
     }
 
@@ -64,7 +67,7 @@ class NodeService
      * Converts a given context path to a node object
      *
      * @param string $contextPath
-     * @return NodeInterface
+     * @return NodeInterface|Error
      */
     public function getNodeFromContextPath($contextPath, Site $site = null, Domain $domain = null, $includeAll = false)
     {
@@ -76,7 +79,7 @@ class NodeService
         $contextProperties = $this->prepareContextProperties($workspaceName, $dimensions);
 
         if ($site === null) {
-            list(,,$siteNodeName) = explode('/', $nodePath);
+            list(, , $siteNodeName) = explode('/', $nodePath);
             $site = $this->siteRepository->findOneByNodeName($siteNodeName);
         }
 
@@ -97,7 +100,7 @@ class NodeService
 
         $workspace = $context->getWorkspace(false);
         if (!$workspace) {
-            return new \Neos\Error\Messages\Error(
+            return new Error(
                 sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName), 1451392329);
         }
 

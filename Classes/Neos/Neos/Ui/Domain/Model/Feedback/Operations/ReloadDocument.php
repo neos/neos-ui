@@ -2,7 +2,6 @@
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
 class ReloadDocument implements FeedbackInterface
@@ -46,6 +45,7 @@ class ReloadDocument implements FeedbackInterface
     /**
      * Serialize the payload for this feedback
      *
+     * @param ControllerContext $controllerContext
      * @return mixed
      */
     public function serializePayload(ControllerContext $controllerContext)

@@ -62,8 +62,9 @@ export default class SelectNodeType extends PureComponent {
     };
 
     componentDidMount() {
+        const {filterSearchTerm} = this.state || {};
         this.setState({
-            filterSearchTerm: '',
+            filterSearchTerm: filterSearchTerm || '',
             insertMode: calculateInitialMode(
                 this.props.allowedSiblingNodeTypes,
                 this.props.allowedChildNodeTypes

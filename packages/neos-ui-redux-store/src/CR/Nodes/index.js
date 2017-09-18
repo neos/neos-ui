@@ -6,6 +6,7 @@ import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
 import * as selectors from './selectors';
+import {parentNodeContextPath} from './helpers';
 
 const ADD = '@neos/neos-ui/CR/Nodes/ADD';
 const MERGE = '@neos/neos-ui/CR/Nodes/MERGE';
@@ -217,6 +218,45 @@ export const reducer = handleActions({
             )
         ))
     ),
+    [MOVE]: ({nodeToBeMoved: sourceNodeContextPath, targetNode: targetNodeContextPath, position}) => state => {
+        // Determine base node into which we'll be inserting
+        let baseNodeContextPath;
+        if (position === 'into') {
+            baseNodeContextPath = targetNodeContextPath;
+        } else {
+            baseNodeContextPath = parentNodeContextPath(targetNodeContextPath);
+        }
+
+        const sourceNodeParentContextPath = parentNodeContextPath(sourceNodeContextPath);
+        const originalSourceChildren = $get(['cr', 'nodes', 'byContextPath', sourceNodeParentContextPath, 'children'], state);
+        const sourceIndex = originalSourceChildren.findIndex(child => $get('contextPath', child) === sourceNodeContextPath);
+        const childRepresentationOfSourceNode = originalSourceChildren.get(sourceIndex);
+
+        let processedChildren = $get(['cr', 'nodes', 'byContextPath', baseNodeContextPath, 'children'], state);
+
+        const transformations = [];
+        if (sourceNodeParentContextPath === baseNodeContextPath) {
+            // If moving into the same parent, delete source node from it
+            processedChildren = processedChildren.delete(sourceIndex);
+        } else {
+            // Else add an extra transformation to delete the source node from its parent
+            const processedSourceChildren = originalSourceChildren.delete(sourceIndex);
+            transformations.push($set(['cr', 'nodes', 'byContextPath', sourceNodeParentContextPath, 'children'], processedSourceChildren));
+        }
+
+        // Add source node to the children of the base node, at the right position
+        if (position === 'into') {
+            processedChildren = processedChildren.push(childRepresentationOfSourceNode);
+        } else {
+            const targetIndex = processedChildren.findIndex(child => $get('contextPath', child) === targetNodeContextPath);
+            const insertIndex = position === 'before' ? targetIndex : targetIndex + 1;
+            processedChildren = processedChildren.insert(insertIndex, childRepresentationOfSourceNode);
+        }
+        transformations.push($set(['cr', 'nodes', 'byContextPath', baseNodeContextPath, 'children'], processedChildren));
+
+        // Run all transformations
+        return $all(...transformations, state);
+    },
     [MERGE]: ({nodeMap}) => $all(
         ...Object.keys(nodeMap).map(contextPath => $merge(
             ['cr', 'nodes', 'byContextPath', contextPath],

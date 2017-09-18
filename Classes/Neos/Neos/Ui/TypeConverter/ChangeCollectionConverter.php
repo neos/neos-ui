@@ -1,16 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\TypeConverter;
 
-/*
- * This file is part of the Neos.ContentRepository package.
- *
- * (c) Contributors of the Neos Project - www.neos.io
- *
- * This package is Open Source Software. For the full copyright and license
- * information, please view the LICENSE file which was distributed with this
- * source code.
- */
-
+use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\TypeConverter\AbstractTypeConverter;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
@@ -100,16 +91,14 @@ class ChangeCollectionConverter extends AbstractTypeConverter
     public function convertFrom($source, $targetType, array $subProperties = array(), PropertyMappingConfigurationInterface $configuration = null)
     {
         if (!is_array($source)) {
-            return new \Neos\Error\Messages\Error(sprintf('Cannot convert %s to ChangeCollection.',
-                gettype($source)));
+            return new Error(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));
         }
 
         $changeCollection = new ChangeCollection();
-
         foreach ($source as $changeData) {
             $convertedData = $this->convertChangeData($changeData);
 
-            if ($convertedData instanceof \Neos\Error\Messages\Error) {
+            if ($convertedData instanceof Error) {
                 return $convertedData;
             }
 
@@ -130,8 +119,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
         $type = $changeData['type'];
 
         if (!isset($this->typeMap[$type])) {
-            return new \Neos\Error\Messages\Error(
-                sprintf('Could not convert change type %s, it is unknown to the system', $type));
+            return new Error(sprintf('Could not convert change type %s, it is unknown to the system', $type));
         }
 
         $changeClass = $this->typeMap[$type];
@@ -141,7 +129,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
         $subjectContextPath = $changeData['subject'];
         $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath);
 
-        if ($subject instanceof \Neos\Error\Messages\Error) {
+        if ($subject instanceof Error) {
             return $subject;
         }
 
@@ -151,7 +139,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
             $referenceContextPath = $changeData['reference'];
             $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath);
 
-            if ($reference instanceof \Neos\Error\Messages\Error) {
+            if ($reference instanceof Error) {
                 return $reference;
             }
 
@@ -169,7 +157,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
                     // This is why we are not allowed to modify the value in any way.
                     // Without this condition the object was parsed to a string leading to fatal errors when changing images
                     // in the UI.
-                    if ($propertyName !== 'value' && $targetType !== Property::class)  {
+                    if ($propertyName !== 'value' && $targetType !== Property::class) {
                         $value = $this->propertyMapper->convert($value, $targetType);
                     }
 

@@ -4,7 +4,6 @@ namespace Neos\Neos\Ui\Domain\Service;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 
@@ -143,6 +142,9 @@ class NodeTreeBuilder
     /**
      * Build a json serializable tree structure containing node information
      *
+     * @param bool $includeRoot
+     * @param null $root
+     * @param null $depth
      * @return array
      */
     public function build($includeRoot = false, $root = null, $depth = null)

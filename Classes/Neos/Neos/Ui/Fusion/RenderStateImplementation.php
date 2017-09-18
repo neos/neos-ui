@@ -35,7 +35,7 @@ class RenderStateImplementation extends AbstractFusionObject
     /**
      * Appends an item to the given collection
      *
-     * @return string
+     * @return array
      * @throws Exception
      */
     public function evaluate()

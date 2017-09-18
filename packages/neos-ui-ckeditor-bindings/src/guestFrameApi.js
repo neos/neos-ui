@@ -82,10 +82,10 @@ const createCKEditorAPI = CKEDITOR => {
     //
     CKEDITOR.disableAutoInline = true;
 
-	//
-	// Workaround as per http://stackoverflow.com/questions/14575036/enable-ckeditor4-inline-on-span-and-other-inline-tags
-	// The issue won't be fixed, we have to live with this...
-	//
+    //
+    // Workaround as per http://stackoverflow.com/questions/14575036/enable-ckeditor4-inline-on-span-and-other-inline-tags
+    // The issue won't be fixed, we have to live with this...
+    //
     Object.assign(CKEDITOR.dtd.$editable, {
         b: true,
         big: true,

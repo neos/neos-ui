@@ -38,7 +38,8 @@ class UpdateNodeInfo implements FeedbackInterface
      *
      * @return void
      */
-    public function recursive() {
+    public function recursive()
+    {
         $this->isRecursive = true;
     }
 
@@ -90,6 +91,7 @@ class UpdateNodeInfo implements FeedbackInterface
     /**
      * Serialize the payload for this feedback
      *
+     * @param ControllerContext $controllerContext
      * @return mixed
      */
     public function serializePayload(ControllerContext $controllerContext)
@@ -103,7 +105,7 @@ class UpdateNodeInfo implements FeedbackInterface
      * Serialize node and all child nodes
      *
      * @param NodeInterface $node
-     * @param array $list
+     * @param ControllerContext $controllerContext
      * @return array
      */
     public function serializeNodeRecursively(NodeInterface $node, ControllerContext $controllerContext)

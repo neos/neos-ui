@@ -3,7 +3,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
-use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 

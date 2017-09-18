@@ -4,8 +4,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Service as ContentRepository;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Neos\Ui\Domain\Model\ChangeInterface;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 abstract class AbstractCopy extends AbstractStructuralChange
 {

@@ -9,6 +9,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
 use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Utility\Arrays;
 
 class ModulesHelper implements ProtectedContextAwareInterface
 {
@@ -27,7 +28,7 @@ class ModulesHelper implements ProtectedContextAwareInterface
     /**
      * Checks whether a module is enabled
      *
-     * @param strin $modulePath
+     * @param string $modulePath
      * @return boolean
      */
     public function isEnabled($modulePath)
@@ -51,14 +52,13 @@ class ModulesHelper implements ProtectedContextAwareInterface
     /**
      * Checks whether the current user has access to a module
      *
-     * @param string $modulePath
+     * @param string $moduleName
      * @return boolean
      */
     public function isAllowed($moduleName)
     {
         $moduleConfiguration = $this->modules[$moduleName];
-        if (
-            isset($moduleConfiguration['privilegeTarget']) &&
+        if (isset($moduleConfiguration['privilegeTarget']) &&
             !$this->privilegeManager->isPrivilegeTargetGranted($moduleConfiguration['privilegeTarget'])
         ) {
             return true;

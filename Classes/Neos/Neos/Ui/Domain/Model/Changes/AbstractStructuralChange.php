@@ -2,7 +2,6 @@
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
@@ -158,8 +157,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         $this->updateWorkspaceInfo();
 
         if ($node->getNodeType()->isOfType('Neos.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
-            if (
-                $node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection') &&
+            if ($node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection') &&
                 $this->getParentDomAddress() &&
                 $this->getParentDomAddress()->getFusionPath()
             ) {

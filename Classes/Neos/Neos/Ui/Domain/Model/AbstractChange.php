@@ -1,8 +1,8 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model;
 
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
@@ -85,7 +85,6 @@ abstract class AbstractChange implements ChangeInterface
      */
     protected function reloadDocument()
     {
-        $nodeService = new NodeService();
         $reloadDocument = new ReloadDocument();
 
         $this->feedbackCollection->add($reloadDocument);

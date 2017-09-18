@@ -7,8 +7,6 @@ use Neos\Flow\Session\SessionInterface;
 
 class ActivationHelper implements ProtectedContextAwareInterface
 {
-
-
     /**
      * @Flow\Inject
      * @var SessionInterface

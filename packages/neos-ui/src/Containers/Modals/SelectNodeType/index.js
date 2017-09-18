@@ -61,29 +61,27 @@ export default class SelectNodeType extends PureComponent {
         apply: PropTypes.func.isRequired
     };
 
-    componentDidMount() {
-        this.setState({
+    constructor(props) {
+        super(props);
+
+        this.state = {
             filterSearchTerm: '',
             insertMode: calculateInitialMode(
                 this.props.allowedSiblingNodeTypes,
                 this.props.allowedChildNodeTypes
             )
-        });
+        };
     }
 
-    updateInsertMode() {
-        this.setState({
-            insertMode: calculateInitialMode(
-                this.props.allowedSiblingNodeTypes,
-              this.props.allowedChildNodeTypes
-            )
-        });
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.allowedSiblingNodeTypes !== this.props.allowedSiblingNodeTypes ||
-            prevProps.allowedChildNodeTypes !== this.props.allowedChildNodeTypes) {
-            this.updateInsertMode();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.allowedSiblingNodeTypes !== nextProps.allowedSiblingNodeTypes ||
+            this.props.allowedChildNodeTypes !== nextProps.allowedChildNodeTypes) {
+            this.setState({
+                insertMode: calculateInitialMode(
+                    nextProps.allowedSiblingNodeTypes,
+                    nextProps.allowedChildNodeTypes
+                )
+            });
         }
     }
 

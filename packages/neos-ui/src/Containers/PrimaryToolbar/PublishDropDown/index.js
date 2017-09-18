@@ -15,7 +15,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector} = selectors.CR.Workspaces;
+const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector, isWorkspaceReadOnlySelector} = selectors.CR.Workspaces;
 
 import AbstractButton from './AbstractButton/index';
 import WorkspaceSelector from './WorkspaceSelector/index';
@@ -28,6 +28,7 @@ import style from './style.css';
     publishableNodes: publishableNodesSelector,
     publishableNodesInDocument: publishableNodesInDocumentSelector,
     baseWorkspace: baseWorkspaceSelector,
+    isWorkspaceReadOnly: isWorkspaceReadOnlySelector,
     isAutoPublishingEnabled: $get('user.settings.isAutoPublishingEnabled')
 }), {
     toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing,
@@ -41,6 +42,7 @@ export default class PublishDropDown extends PureComponent {
         isSaving: PropTypes.bool,
         isPublishing: PropTypes.bool,
         isDiscarding: PropTypes.bool,
+        isWorkspaceReadOnly: PropTypes.bool,
         publishableNodes: ImmutablePropTypes.list,
         publishableNodesInDocument: ImmutablePropTypes.list,
         baseWorkspace: PropTypes.string.isRequired,
@@ -82,6 +84,7 @@ export default class PublishDropDown extends PureComponent {
             publishableNodesInDocument,
             isSaving,
             isAutoPublishingEnabled,
+            isWorkspaceReadOnly,
             toggleAutoPublishing,
             baseWorkspace,
             changeBaseWorkspaceAction,
@@ -109,11 +112,11 @@ export default class PublishDropDown extends PureComponent {
             <div className={style.wrapper}>
                 <AbstractButton
                     className={style.publishBtn}
-                    isEnabled={canPublishLocally || isSaving}
+                    isEnabled={!isWorkspaceReadOnly && (canPublishLocally || isSaving)}
                     isHighlighted={canPublishLocally || isSaving}
                     onClick={this.handlePublishClick}
                     >
-                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/> <I18n id="to"/> {baseWorkspaceTitle}
+                    <I18n fallback={mainButtonTarget} id={mainButtonLabel}/> <I18n id="to"/> {isWorkspaceReadOnly ? (<Icon icon="lock"/>) : ''} {baseWorkspaceTitle}
                     {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={String(publishableNodesInDocumentCount)}/>}
                 </AbstractButton>
 
@@ -135,7 +138,7 @@ export default class PublishDropDown extends PureComponent {
                         </li>
                         <li className={style.dropDown__item}>
                             <AbstractButton
-                                isEnabled={canPublishGlobally}
+                                isEnabled={!isWorkspaceReadOnly && canPublishGlobally}
                                 isHighlighted={false}
                                 onClick={this.handlePublishAllClick}
                                 >

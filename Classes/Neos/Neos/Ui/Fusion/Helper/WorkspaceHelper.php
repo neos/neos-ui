@@ -5,6 +5,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\Neos\Service\UserService;
+use Neos\Neos\Domain\Service\UserService as DomainUserService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 
 class WorkspaceHelper implements ProtectedContextAwareInterface
@@ -14,6 +15,12 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
      * @var WorkspaceService
      */
     protected $workspaceService;
+
+    /**
+     * @Flow\Inject
+     * @var DomainUserService
+     */
+    protected $domainUserService;
 
     /**
      * @Flow\Inject
@@ -33,10 +40,12 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     public function getPersonalWorkspace()
     {
         $personalWorkspace = $this->userService->getPersonalWorkspace();
+        $baseWorkspace = $personalWorkspace->getBaseWorkspace();
         return [
             'name' => $personalWorkspace->getName(),
             'publishableNodes' => $this->getPublishableNodeInfo($personalWorkspace),
-            'baseWorkspace' => $personalWorkspace->getBaseWorkspace()->getName()
+            'baseWorkspace' => $baseWorkspace->getName(),
+            'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
         ];
     }
 

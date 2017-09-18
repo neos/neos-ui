@@ -43,6 +43,13 @@
         transform: translateX(-50%) translateY(-50%);
     }
 }
+.checkbox__inputMirror--highlight-checked {
+    background: var(--brandColorsSuccess);
+    border-color: var(--brandColorsSuccess);
+}
+.checkbox__inputMirror--highlight-unchecked {
+    border-color: var(--brandColorsSuccess);
+}
 .checkbox__disabled {
     opacity: .65;
     cursor: not-allowed;

@@ -12,6 +12,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
     static propTypes = {
         commit: PropTypes.func.isRequired,
         value: PropTypes.any,
+        highlight: PropTypes.bool,
         options: PropTypes.shape({
             allowEmpty: PropTypes.bool,
             placeholder: PropTypes.string,
@@ -49,7 +50,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
     }
 
     render() {
-        const {commit, value, i18nRegistry} = this.props;
+        const {commit, value, i18nRegistry, highlight} = this.props;
         const options = Object.assign({}, this.defaultOptions, this.props.options);
 
         const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, options.values);
@@ -62,6 +63,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
                 options={processedSelectBoxOptions}
                 values={value || []}
                 onValuesChange={commit}
+                highlight={highlight}
                 placeholder={placeholder}
                 allowEmpty={options.allowEmpty}
                 displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
@@ -77,7 +79,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             value={value}
             onValueChange={commit}
             placeholder={placeholder}
-
+            highlight={highlight}
             allowEmpty={options.allowEmpty}
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
             searchTerm={this.state.searchTerm}

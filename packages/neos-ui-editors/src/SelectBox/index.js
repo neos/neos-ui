@@ -5,6 +5,7 @@ import DataSourceBasedSelectBoxEditor from './DataSourceBasedSelectBoxEditor';
 
 export default class SelectBoxEditor extends PureComponent {
     static propTypes = {
+        highlight: PropTypes.bool,
         options: PropTypes.shape({
             dataSourceIdentifier: PropTypes.string,
             dataSourceUri: PropTypes.string

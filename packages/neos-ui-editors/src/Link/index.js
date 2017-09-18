@@ -21,6 +21,7 @@ const isUri = str =>
 @neos(globalRegistry => {
     return {
         nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
+        nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
         i18nRegistry: globalRegistry.get('i18n')
     };
 })
@@ -29,15 +30,18 @@ class LinkEditor extends PureComponent {
         identifier: PropTypes.string.isRequired,
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
+        highlight: PropTypes.bool,
         options: PropTypes.shape({
-            nodeTypes: PropTypes.arrayOf(PropTypes.string),
+            nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string
         }),
 
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
         }).isRequired,
-
+        nodeTypeRegistry: PropTypes.shape({
+            getNodeType: PropTypes.func.isRequired
+        }),
         i18nRegistry: PropTypes.object.isRequired,
         nodeLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
@@ -65,14 +69,29 @@ class LinkEditor extends PureComponent {
 
     componentDidMount() {
         if (isUri(this.props.value)) {
+            const options = [{
+                icon: 'icon-external-link',
+                identifier: this.props.value,
+                label: this.props.value
+            }];
+
             this.setState({
-                searchTerm: this.props.value
+                searchTerm: this.props.value,
+                options
             });
         } else {
             if (this.props.value) {
                 this.setState({isLoading: true});
                 this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), removePrefixFromNodeIdentifier(this.props.value))
                     .then(options => {
+                        options.forEach(option => {
+                            const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
+                            const icon = $get('ui.icon', nodeType);
+                            if (icon) {
+                                option.icon = icon;
+                            }
+                        });
+
                         this.setState({
                             isLoading: false,
                             options
@@ -95,8 +114,16 @@ class LinkEditor extends PureComponent {
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
-            this.setState({isLoading: false});
-            this.props.commit(searchTerm);
+            const searchOptions = [{
+                icon: 'icon-external-link',
+                identifier: searchTerm,
+                label: searchTerm
+            }];
+
+            this.setState({
+                isLoading: false,
+                searchOptions
+            });
         } else if (!searchTerm && isUri(this.props.value)) {
             // the user emptied the URL value, so we need to reset it
             this.props.commit('');
@@ -104,6 +131,14 @@ class LinkEditor extends PureComponent {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
+                    searchOptions.forEach(option => {
+                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
+                        const icon = $get('ui.icon', nodeType);
+                        if (icon) {
+                            option.icon = icon;
+                        }
+                    });
+
                     this.setState({
                         isLoading: false,
                         searchOptions
@@ -113,7 +148,11 @@ class LinkEditor extends PureComponent {
     }
 
     handleValueChange = value => {
-        this.props.commit(appendPrefixBeforeNodeIdentifier(value));
+        if (isUri(value)) {
+            this.props.commit(value);
+        } else {
+            this.props.commit(appendPrefixBeforeNodeIdentifier(value));
+        }
     }
 
     render() {
@@ -121,6 +160,7 @@ class LinkEditor extends PureComponent {
             <SelectBox
                 options={this.props.value ? this.state.options : this.state.searchOptions}
                 optionValueField="identifier"
+                highlight={this.props.highlight}
                 value={this.props.value && removePrefixFromNodeIdentifier(this.props.value)}
                 onValueChange={this.handleValueChange}
                 placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}

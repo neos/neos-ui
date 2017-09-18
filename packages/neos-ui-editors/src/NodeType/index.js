@@ -29,6 +29,7 @@ export default class NodeType extends PureComponent {
     static propTypes = {
         value: PropTypes.string.isRequired,
         commit: PropTypes.func.isRequired,
+        highlight: PropTypes.bool,
 
         allowedSiblingNodeTypesForFocusedNode: PropTypes.array,
         nodeTypesRegistry: PropTypes.object.isRequired,
@@ -36,7 +37,7 @@ export default class NodeType extends PureComponent {
     }
 
     render() {
-        const {value, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry} = this.props;
+        const {value, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry, highlight} = this.props;
         const options = allowedSiblingNodeTypesForFocusedNode
             // Filter out system nodetypes (i.e. without groups)
             // ToDo: move this logic to some more generic place, maybe nodeTypesRegistry
@@ -48,7 +49,7 @@ export default class NodeType extends PureComponent {
             }));
 
         if (options.length) {
-            return <SelectBox options={options} value={value} onValueChange={commit}/>;
+            return <SelectBox options={options} highlight={highlight} value={value} onValueChange={commit}/>;
         }
 
         return (

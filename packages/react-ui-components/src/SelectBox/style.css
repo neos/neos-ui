@@ -3,9 +3,12 @@
     position: relative;
     display: inline-block;
     width: 100%;
+    height: 40px;
     vertical-align: top;
 }
-
+.wrapper--highlight {
+    outline: 2px solid var(--brandColorsSuccess);
+}
 .selectedOptions {
     position: relative;
     width: 100%;

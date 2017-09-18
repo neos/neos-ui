@@ -12,6 +12,7 @@ class DateTime extends PureComponent {
     static propTypes = {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
         commit: PropTypes.func.isRequired,
+        highlight: PropTypes.bool,
         placeholder: PropTypes.string,
         i18nRegistry: PropTypes.object
     }
@@ -21,7 +22,8 @@ class DateTime extends PureComponent {
             value,
             commit,
             placeholder,
-            i18nRegistry
+            i18nRegistry,
+            highlight
         } = this.props;
         const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
 
@@ -33,6 +35,7 @@ class DateTime extends PureComponent {
             <DateInput
                 value={mappedValue}
                 onChange={onChange}
+                highlight={highlight}
                 placeholder={placeholder || i18nRegistry.translate('content.inspector.editors.dateTimeEditor.noDateSet', '', {}, 'Neos.Neos', 'Main')}
                 />
         );

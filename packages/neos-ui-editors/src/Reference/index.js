@@ -17,6 +17,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 export default class ReferenceEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.string,
+        highlight: PropTypes.string,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -118,6 +119,7 @@ export default class ReferenceEditor extends PureComponent {
             options={this.props.value ? this.state.options : this.state.searchOptions}
             optionValueField="identifier"
             value={this.props.value}
+            highlight={this.props.highlight}
             onValueChange={this.handleValueChange}
             placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
             displayLoadingIndicator={this.state.isLoading}

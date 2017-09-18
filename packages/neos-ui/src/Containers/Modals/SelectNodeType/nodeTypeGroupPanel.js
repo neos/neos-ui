@@ -5,7 +5,7 @@ import {$transform, $get} from 'plow-js';
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
 import Grid from '@neos-project/react-ui-components/src/Grid/';
 import {neos} from '@neos-project/neos-ui-decorators';
-
+import escaperegexp from 'lodash.escaperegexp';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 import I18n from '@neos-project/neos-ui-i18n';
@@ -56,7 +56,7 @@ class NodeTypeGroupPanel extends PureComponent {
         const filteredNodeTypes = (nodeTypes || [])
             .filter(nodeType => {
                 const label = i18nRegistry.translate(nodeType.label, nodeType.label);
-                if (label.toLowerCase().search(filterSearchTerm.toLowerCase()) !== -1) {
+                if (label.toLowerCase().search(escaperegexp(filterSearchTerm.toLowerCase())) !== -1) {
                     return true;
                 }
                 return false;

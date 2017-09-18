@@ -188,8 +188,8 @@ class BackendServiceController extends ActionController
         try {
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
-                // When discarding node removal we should re-create it
                 if ($node->isRemoved() === true) {
+                    // When discarding node removal we should re-create it
                     $updateNodeInfo = new UpdateNodeInfo();
                     $updateNodeInfo->setNode($node);
                     $updateNodeInfo->recursive();
@@ -206,9 +206,9 @@ class BackendServiceController extends ActionController
                         $reloadDocument = new ReloadDocument();
                         $this->feedbackCollection->add($reloadDocument);
                     }
-                // The node could either be created, moved, or have properties changed
-                // To not have to account for all that, just reload the document...
                 } else {
+                    // The node could either be created, moved, or have properties changed
+                    // To not have to account for all that, just reload the document...
                     $reloadDocument = new ReloadDocument();
                     $this->feedbackCollection->add($reloadDocument);
                 }

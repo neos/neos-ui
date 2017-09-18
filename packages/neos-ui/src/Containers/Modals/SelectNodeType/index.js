@@ -62,9 +62,8 @@ export default class SelectNodeType extends PureComponent {
     };
 
     componentDidMount() {
-        const {filterSearchTerm} = this.state || {};
         this.setState({
-            filterSearchTerm: filterSearchTerm || '',
+            filterSearchTerm: '',
             insertMode: calculateInitialMode(
                 this.props.allowedSiblingNodeTypes,
                 this.props.allowedChildNodeTypes
@@ -72,10 +71,19 @@ export default class SelectNodeType extends PureComponent {
         });
     }
 
+    updateInsertMode() {
+        this.setState({
+            insertMode: calculateInitialMode(
+                this.props.allowedSiblingNodeTypes,
+              this.props.allowedChildNodeTypes
+            )
+        });
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.allowedSiblingNodeTypes !== this.props.allowedSiblingNodeTypes ||
             prevProps.allowedChildNodeTypes !== this.props.allowedChildNodeTypes) {
-            this.componentDidMount();
+            this.updateInsertMode();
         }
     }
 

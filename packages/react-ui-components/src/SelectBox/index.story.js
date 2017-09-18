@@ -43,7 +43,7 @@ storiesOf('SelectBox', module)
             </StoryWrapper>
         ),
         {inline: true}
-    )    
+    )
     .addWithInfo(
         'Grouping with exactly one group',
         () => (

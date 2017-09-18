@@ -5,6 +5,7 @@ import ReactCrop from 'react-image-crop';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import TextInput from '@neos-project/react-ui-components/src/TextInput/';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import AspectRatioDropDown from './AspectRatioDropDown/index';
 import CropConfiguration from './model.js';
@@ -68,11 +69,15 @@ class AspectRatioItem extends PureComponent {
     }
 }
 
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
 export default class ImageCropper extends PureComponent {
     static propTypes = {
         onComplete: PropTypes.func.isRequired,
         sourceImage: PropTypes.object.isRequired,
-        options: PropTypes.object
+        options: PropTypes.object,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -148,7 +153,7 @@ export default class ImageCropper extends PureComponent {
         const {cropConfiguration} = this.state;
         const {height, width} = this.props.options.crop.aspectRatio.locked;
         const aspectRatioLocked = height > 0 && width > 0;
-        const {sourceImage, onComplete} = this.props;
+        const {sourceImage, onComplete, i18nRegistry} = this.props;
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
 
         if (aspectRatioLocked) {
@@ -162,6 +167,7 @@ export default class ImageCropper extends PureComponent {
         const containerRef = el => {
             this.containerNode = el;
         };
+
         return (
             <div style={{textAlign: 'center'}} ref={containerRef}>
                 <div ref={toolbarRef} className={style.tools}>
@@ -178,7 +184,7 @@ export default class ImageCropper extends PureComponent {
                     </div>
 
                     <AspectRatioDropDown
-                        placeholder="Aspect Ratio"
+                        placeholder={`${i18nRegistry.translate('Neos.Neos.Ui:Main:imageCropper__aspect-ratio-placeholder')}`}
                         current={cropConfiguration.aspectRatioStrategy}
                         options={cropConfiguration.aspectRatioOptions}
                         onSelect={this.handleSetAspectRatio}

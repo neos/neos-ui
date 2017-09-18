@@ -71,9 +71,9 @@ There are three ACF modes:
 - ACF disabled: not useful for us :-)
 
 - ACF manually configured: This is rather low-level, as you need to specify exactly what tags, dom nodes, properties, ... are allowed on an individual
-  basis. While this works for basic styles like h1, bold, ..., it gets rather messy for more complex features like Table editing.
+basis. While this works for basic styles like h1, bold, ..., it gets rather messy for more complex features like Table editing.
 
 - ACF automatic mode: In "normal" CKEditor, ACF is auto-configured by the editor toolbar configuration: If you e.g. add a "table" button, then all Table
-  markup is automatically allowed; and conversely, if you remove a certain button, the ACF is configured to prevent the associated markup automatically.
+markup is automatically allowed; and conversely, if you remove a certain button, the ACF is configured to prevent the associated markup automatically.
 
 For the integrated CKeditor, we basically use ACF automatic mode, but without actually rendering the toolbar. We discussed this with the CKeditor team.

@@ -13,7 +13,7 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
     /**
      * Evaluate the collection nodes
      *
-     * @return string
+     * @return string|array
      * @throws FusionException
      */
     public function evaluate()
@@ -28,7 +28,7 @@ class ArrayCollectionImplementation extends AbstractCollectionImplementation
         $itemName = $this->getItemName();
         $itemKey = $this->fusionValue('itemKey');
         if ($itemName === null) {
-            throw new \Neos\Fusion\Exception('The Collection needs an itemName to be set.', 1344325771);
+            throw new FusionException('The Collection needs an itemName to be set.', 1344325771);
         }
         $iterationName = $this->getIterationName();
         $collectionTotalCount = count($collection);

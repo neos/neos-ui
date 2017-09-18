@@ -32,21 +32,21 @@ export default ckEditorRegistry => {
         NOTE: one of "command" or "style" must be specified in all cases.
 
         - \`command\` (string, optional). If specified, this CKEditor command is triggered; so the command string
-          is known by CKeditor in the "commands" section:
-          http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getCommand
+            is known by CKeditor in the "commands" section:
+            http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getCommand
 
         - \`style\` (object, optional). If specified, this CKEditor style is applied. Expects a style description
-          adhering to CKEDITOR.style(...), so for example: \`{ style: {element: 'h1'}\`
+            adhering to CKEDITOR.style(...), so for example: \`{ style: {element: 'h1'}\`
 
         - \`config\` (function, optional): This function needs to adjust the CKEditor config to e.g. configure ACF
-          correctly. The function gets passed in the config so-far, and needs to return the modified config. See
-          "CKEditor Configuration Helpers" below for helper functions.
+            correctly. The function gets passed in the config so-far, and needs to return the modified config. See
+            "CKEditor Configuration Helpers" below for helper functions.
 
         - \`extractCurrentFormatFn\` (function, optional): If specified, this function will extract the current format.
-          The function gets passed the currend "editor" and "CKEDITOR".
+            The function gets passed the currend "editor" and "CKEDITOR".
 
         - \`applyStyleFn\` (function, optional): This function applies a style to CKEditor.
-          Arguments: formattingOptions, editor, CKEDITOR.
+            Arguments: formattingOptions, editor, CKEDITOR.
 
         ## CKEditor Configuration Helpers
 
@@ -54,8 +54,8 @@ export default ckEditorRegistry => {
           \`format_tags\` configuration option of CKEditor.
 
         - \`registry.ckEditor.formattingRules.config.add('Strong')\`: adds the passed-in *Button Definition Name*
-          to the ACF configuration (automatic mode). This means the button names are standard CKEditor config
-          buttons, like "Cut,Copy,Paste,Undo,Redo,Anchor".
+            to the ACF configuration (automatic mode). This means the button names are standard CKEditor config
+            buttons, like "Cut,Copy,Paste,Undo,Redo,Anchor".
     `));
 
     /**

@@ -9,7 +9,6 @@
     "test": "yarn jest",
     "test:watch": "yarn jest -- --watch",
     "lint": "eslint src",
-    "lint:editorconfig": "editorconfig-checker",
     "clean": "rimraf ./lib ./dist",
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },

@@ -61,7 +61,7 @@ class DocumentNodeCreated implements FeedbackInterface
      */
     public function isSimilarTo(FeedbackInterface $feedback)
     {
-        if (!$feedback instanceof NodeCreated) {
+        if (!$feedback instanceof DocumentNodeCreated) {
             return false;
         }
 
@@ -71,6 +71,7 @@ class DocumentNodeCreated implements FeedbackInterface
     /**
      * Serialize the payload for this feedback
      *
+     * @param ControllerContext $controllerContext
      * @return mixed
      */
     public function serializePayload(ControllerContext $controllerContext)

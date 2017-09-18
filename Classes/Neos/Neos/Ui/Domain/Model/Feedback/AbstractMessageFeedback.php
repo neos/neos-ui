@@ -68,6 +68,7 @@ abstract class AbstractMessageFeedback implements FeedbackInterface
     /**
      * Serialize the payload for this feedback
      *
+     * @param ControllerContext $controllerContext
      * @return mixed
      */
     public function serializePayload(ControllerContext $controllerContext)

@@ -1,5 +1,5 @@
 .searchInput {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
 .searchInput {
@@ -11,15 +11,15 @@
 }
 
 .clearButton {
-  background: var(--brandColorsContrastNeutral);
+    background: var(--brandColorsContrastNeutral);
 }
 
 .clearButton--focused {
-  background: white;
+    background: white;
 }
 
 .clearButton--focused > i {
-  color: var(--brandColorsContrastNeutral);
+    color: var(--brandColorsContrastNeutral);
 }
 
 .wrapper {

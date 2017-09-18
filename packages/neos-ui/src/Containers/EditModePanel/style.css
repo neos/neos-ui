@@ -39,7 +39,7 @@
     white-space: nowrap;
 
     &:last-child {
-         margin-right: 0;
+        margin-right: 0;
     }
 }
 

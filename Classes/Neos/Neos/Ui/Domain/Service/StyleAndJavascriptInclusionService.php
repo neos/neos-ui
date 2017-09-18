@@ -48,14 +48,14 @@ class StyleAndJavascriptInclusionService
 
     public function getHeadScripts()
     {
-        return $this->build($this->javascriptResources, function($uri) {
+        return $this->build($this->javascriptResources, function ($uri) {
             return '<script src="' . $uri . '"></script>';
         });
     }
 
     public function getHeadStylesheets()
     {
-        return $this->build($this->stylesheetResources, function($uri) {
+        return $this->build($this->stylesheetResources, function ($uri) {
             return '<link rel="stylesheet" href="' . $uri . '" />';
         });
     }

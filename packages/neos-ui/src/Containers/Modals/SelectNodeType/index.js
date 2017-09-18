@@ -133,7 +133,7 @@ export default class SelectNodeType extends PureComponent {
     }
 
     renderSelectNodeTypeDialogHeader() {
-        const {insertMode} = this.state;
+        const {insertMode, filterSearchTerm} = this.state;
         const {allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
 
         return (
@@ -145,6 +145,7 @@ export default class SelectNodeType extends PureComponent {
                     enableIntoMode={Boolean(allowedChildNodeTypes.length)}
                     />
                 <NodeTypeFilter
+                    filterSearchTerm={filterSearchTerm}
                     onChange={this.handleNodeTypeFilterChange}
                     />
             </div>

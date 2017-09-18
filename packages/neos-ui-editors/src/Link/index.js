@@ -12,6 +12,12 @@ const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix =>
 const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
     nodeIdentifier && 'node://' + nodeIdentifier;
 
+const removePrefixFromAssetIdentifier = assetIdentifierWithPrefix =>
+    assetIdentifierWithPrefix && assetIdentifierWithPrefix.replace('asset://', '');
+
+const appendPrefixBeforeAssetIdentifier = assetIdentifier =>
+    assetIdentifier && 'asset://' + assetIdentifier;
+
 const isUri = str =>
     str && Boolean(str.match('^https?://'));
 
@@ -21,6 +27,7 @@ const isUri = str =>
 @neos(globalRegistry => {
     return {
         nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
+        assetLookupDataLoader: globalRegistry.get('dataLoaders').get('AssetLookup'),
         i18nRegistry: globalRegistry.get('i18n')
     };
 })
@@ -39,7 +46,13 @@ class LinkEditor extends PureComponent {
         }).isRequired,
 
         i18nRegistry: PropTypes.object.isRequired,
+
         nodeLookupDataLoader: PropTypes.shape({
+            resolveValue: PropTypes.func.isRequired,
+            search: PropTypes.func.isRequired
+        }).isRequired,
+
+        assetLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired
@@ -71,11 +84,11 @@ class LinkEditor extends PureComponent {
         } else {
             if (this.props.value) {
                 this.setState({isLoading: true});
-                this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), removePrefixFromNodeIdentifier(this.props.value))
-                    .then(options => {
+                this.props.assetLookupDataLoader.resolveValue({}, removePrefixFromAssetIdentifier(this.props.value))
+                    .then(asset => {
                         this.setState({
                             isLoading: false,
-                            options
+                            options: [asset]
                         });
                     });
             }
@@ -102,7 +115,7 @@ class LinkEditor extends PureComponent {
             this.props.commit('');
         } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
-            this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
+            this.props.assetLookupDataLoader.search({}, searchTerm)
                 .then(searchOptions => {
                     this.setState({
                         isLoading: false,
@@ -113,7 +126,7 @@ class LinkEditor extends PureComponent {
     }
 
     handleValueChange = value => {
-        this.props.commit(appendPrefixBeforeNodeIdentifier(value));
+        this.props.commit(appendPrefixBeforeAssetIdentifier(value));
     }
 
     render() {
@@ -121,7 +134,7 @@ class LinkEditor extends PureComponent {
             <SelectBox
                 options={this.props.value ? this.state.options : this.state.searchOptions}
                 optionValueField="identifier"
-                value={this.props.value && removePrefixFromNodeIdentifier(this.props.value)}
+                value={this.props.value && removePrefixFromAssetIdentifier(this.props.value)}
                 onValueChange={this.handleValueChange}
                 placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
                 displayLoadingIndicator={this.state.isLoading}

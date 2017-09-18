@@ -112,6 +112,45 @@ const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHa
     };
 }).then(response => response.json());
 
+const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: urlWithParams('/neos/service/assets', {searchTerm}),
+
+    method: 'GET',
+    credentials: 'include'
+}))
+    .then(result => result.text())
+    .then(result => {
+        const d = document.createElement('div');
+        d.innerHTML = result;
+        const assetRoot = d.querySelector('.assets');
+
+        return Array.prototype.map.call(assetRoot.querySelectorAll('.asset'), asset => ({
+            label: asset.querySelector('.asset-label').innerText,
+            preview: asset.querySelector('[rel=thumbnail]').getAttribute('href'),
+            identifier: asset.querySelector('.asset-identifier').innerText
+        }));
+    });
+
+
+const assetDetail = (identifier) => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: '/neos/service/assets/' + identifier,
+
+    method: 'GET',
+    credentials: 'include'
+}))
+    .then(result => result.text())
+    .then(result => {
+        const d = document.createElement('div');
+        d.innerHTML = result;
+        const asset = d.querySelector('.asset');
+
+        return {
+            label: asset.querySelector('.asset-label').innerText,
+            preview: asset.querySelector('[rel=preview]').getAttribute('href'),
+            identifier: asset.querySelector('.asset-identifier').innerText
+        };
+    });
+
 /**
  * searchTerm:se
  * nodeTypes[]:TYPO3.Neos.NodeTypes:Page
@@ -250,6 +289,8 @@ export default () => ({
     changeBaseWorkspace,
     createImageVariant,
     uploadAsset,
+    assetSearch,
+    assetDetail,
     searchNodes,
     getSingleNode,
     adoptNodeToOtherDimension,

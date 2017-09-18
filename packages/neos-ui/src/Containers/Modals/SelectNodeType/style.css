@@ -35,11 +35,11 @@
 }
 
 .nodeTypeDialogHeader__filter {
-    margin-right: 40px;
+    margin-right: var(--goldenUnit);
     display: flex;
     align-items: center;
 }
 
 .nodeTypeFilter__label {
-    margin-right: 10px;
+    margin-right: var(--halfSpacing);
 }

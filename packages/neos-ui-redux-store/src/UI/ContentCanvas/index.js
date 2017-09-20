@@ -71,6 +71,7 @@ export const reducer = handleActions({
             currentlyEditedPropertyName: '',
             isLoading: true,
             focusedProperty: '',
+            backgroundColor: $get('ui.contentCanvas.backgroundColor', state),
             shouldScrollIntoView: false
         })
     ),

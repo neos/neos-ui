@@ -16,6 +16,7 @@ import style from './style.css';
     isFringeRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
+    backgroundColor: $get('ui.contentCanvas.backgroundColor'),
     src: $get('ui.contentCanvas.src'),
     currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {
@@ -31,6 +32,7 @@ export default class ContentCanvas extends PureComponent {
         isFringeRight: PropTypes.bool.isRequired,
         isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
+        backgroundColor: PropTypes.string,
         src: PropTypes.string.isRequired,
         stopLoading: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
@@ -54,7 +56,8 @@ export default class ContentCanvas extends PureComponent {
             src,
             currentEditPreviewMode,
             editPreviewModesRegistry,
-            guestFrameRegistry
+            guestFrameRegistry,
+            backgroundColor
         } = this.props;
         const classNames = mergeClassNames({
             [style.contentCanvas]: true,
@@ -76,6 +79,11 @@ export default class ContentCanvas extends PureComponent {
             inlineStyles.height = height;
         }
 
+        const canvasContentStyle = {};
+        if (backgroundColor) {
+            canvasContentStyle.background = backgroundColor;
+        }
+
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
             <div className={classNames}>
@@ -86,6 +94,7 @@ export default class ContentCanvas extends PureComponent {
                         frameBorder="0"
                         name="neos-content-main"
                         className={style.contentCanvas__contents}
+                        style={canvasContentStyle}
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         >

@@ -14,7 +14,6 @@ backend = Neos.Fusion:Template {
         nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}
         structureTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.structureTree')}
         allowedTargetWorkspaces = ${Neos.Ui.Workspace.getAllowedTargetWorkspaces()}
-        contentCanvas = ${Configuration.setting('Neos.Neos.Ui.contentCanvas')}
         endpoints = Neos.Fusion:RawArray {
             nodeTypeSchema = Neos.Fusion:UriBuilder {
                 package = 'Neos.Neos'

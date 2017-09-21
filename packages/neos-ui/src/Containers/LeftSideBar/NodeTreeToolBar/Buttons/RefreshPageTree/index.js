@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
+import I18n from '@neos-project/neos-ui-i18n';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import style from './style.css';
 
@@ -26,9 +27,11 @@ export default class RefreshPageTree extends PureComponent {
             [style.spinning]: isLoading,
             [className]: className && className.length
         });
+        const tooltipLabel = <I18n id="Neos.Neos:Main:refresh" fallback="Copy"/>;
 
         return (
             <IconButton
+                tooltipLabel={tooltipLabel}
                 className={finalClassName}
                 isDisabled={isLoading}
                 onClick={this.handleClick}

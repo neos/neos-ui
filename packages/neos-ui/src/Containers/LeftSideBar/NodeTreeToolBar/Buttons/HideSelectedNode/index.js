@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
+import I18n from '@neos-project/neos-ui-i18n';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 export default class HideSelectedNode extends PureComponent {
@@ -29,9 +30,11 @@ export default class HideSelectedNode extends PureComponent {
 
     render() {
         const {className, isDisabled, isHidden} = this.props;
+        const tooltipLabel = <I18n id="Neos.Neos:Main:hideUnhide" fallback="Copy"/>;
 
         return (
             <IconButton
+                tooltipLabel={tooltipLabel}
                 className={className}
                 isActive={isHidden}
                 isDisabled={isDisabled}

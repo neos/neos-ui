@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
+import I18n from '@neos-project/neos-ui-i18n';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 export default class CopySelectedNode extends PureComponent {
@@ -26,9 +27,11 @@ export default class CopySelectedNode extends PureComponent {
             isDisabled
         } = this.props;
 
+        const tooltipLabel = <I18n id="Neos.Neos:Main:copy" fallback="Copy"/>;
+
         return (
             <IconButton
-                tooltipLabel="Copy the selected node"
+                tooltipLabel={tooltipLabel}
                 className={className}
                 isDisabled={isDisabled}
                 onClick={this.handleClick}

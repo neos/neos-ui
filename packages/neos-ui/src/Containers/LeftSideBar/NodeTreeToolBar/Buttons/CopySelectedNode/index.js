@@ -28,6 +28,7 @@ export default class CopySelectedNode extends PureComponent {
 
         return (
             <IconButton
+                tooltipLabel="Copy the selected node"
                 className={className}
                 isDisabled={isDisabled}
                 onClick={this.handleClick}

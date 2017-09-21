@@ -16,12 +16,22 @@ export default class AddNode extends PureComponent {
         onClick(focusedNodeContextPath);
     }
 
+    tooltipChildren = () => {
+        return (
+            <div>
+            <div>asdfsdf</div>
+          </div>
+        )
+    }
+
     render() {
         const {focusedNodeContextPath, className} = this.props;
 
         return (
             <span>
                 <IconButton
+                    tooltipLabel="Dies ist ein Label"
+                    tooltipChildren={this.tooltipChildren()}
                     isDisabled={Boolean(focusedNodeContextPath) === false}
                     className={className}
                     icon="plus"

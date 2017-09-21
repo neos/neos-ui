@@ -90,6 +90,9 @@ class TextInput extends PureComponent {
             [theme['textInput--disabled']]: disabled
         });
 
+        const tooltipIdentifier = Math.random().toString(36).substring(7);
+        const tooltipData = {'data-tip': 'Error', 'data-for': tooltipIdentifier};
+
         const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
             return <div key={key}>{validationError}</div>;
         });
@@ -103,8 +106,9 @@ class TextInput extends PureComponent {
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={this.handleValueChange}
+                    {...tooltipData}
                     />
-                {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
+                {renderedErrors && <TooltipComponent type="error" className="foo-test" place="bottom" id={tooltipIdentifier}>{renderedErrors}</TooltipComponent>}
             </div>
         );
     }

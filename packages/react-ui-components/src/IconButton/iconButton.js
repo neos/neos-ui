@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
+import Tooltip from '@neos-project/react-ui-components/src/Tooltip/';
 
 const IconButton = props => {
     const {
         IconComponent,
         ButtonComponent,
+        tooltipLabel,
         className,
         theme,
         icon,
@@ -20,10 +22,16 @@ const IconButton = props => {
         [theme['iconButton--disabled']]: disabled
     });
 
+    const tooltipIdentifier = Math.random().toString(36).substring(7);
+    const tooltipData = {'data-tip': tooltipLabel, 'data-for': tooltipIdentifier};
+
     return (
-        <ButtonComponent {...rest} size={size} className={finalClassName}>
-            <IconComponent icon={icon}/>
-        </ButtonComponent>
+        <div>
+            <ButtonComponent {...rest} {...tooltipData} size={size} className={finalClassName}>
+                <IconComponent icon={icon}/>
+            </ButtonComponent>
+            {tooltipIdentifier && <Tooltip id={tooltipIdentifier}/>}
+        </div>
     );
 };
 IconButton.propTypes = {
@@ -54,6 +62,12 @@ IconButton.propTypes = {
      */
     IconComponent: PropTypes.any.isRequired,
     ButtonComponent: PropTypes.any.isRequired,
+
+    /**
+     *
+     */
+    tooltipIdentifier: PropTypes.string,
+    tooltipLabel: PropTypes.string,
 
     /**
      * Optional disabled flag

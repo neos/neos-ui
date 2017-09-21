@@ -2,21 +2,16 @@
     position: absolute;
 }
 
-.tooltip--arrow {
-    position: relative;
-    top: 0;
-    left: 50%;
-    width: 0;
-    height: 0;
-    margin-left: -var(--halfSpacing);
-    border-left: var(--halfSpacing) solid transparent;
-    border-right: var(--halfSpacing) solid transparent;
-    border-bottom: var(--halfSpacing) solid var(--brandColorsError);
+.tooltip--error{
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-top: 0 !important;
 }
 
-.tooltip--inner {
-    position: relative;
-    padding: var(--halfSpacing);
-    background: var(--brandColorsError);
-    color: white;
+.tooltip--warning{
+
+}
+.tooltip--info{
+
+
 }

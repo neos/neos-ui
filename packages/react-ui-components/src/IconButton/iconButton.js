@@ -26,12 +26,10 @@ const IconButton = props => {
     const tooltipData = {'data-tip': tooltipLabel, 'data-for': tooltipIdentifier};
 
     return (
-        <div>
             <ButtonComponent {...rest} {...tooltipData} size={size} className={finalClassName}>
                 <IconComponent icon={icon}/>
+                {tooltipIdentifier && <Tooltip id={tooltipIdentifier}/>}
             </ButtonComponent>
-            {tooltipIdentifier && <Tooltip id={tooltipIdentifier}/>}
-        </div>
     );
 };
 IconButton.propTypes = {

@@ -22,14 +22,15 @@ const IconButton = props => {
         [theme['iconButton--disabled']]: disabled
     });
 
+    // generate a randon identifer for each tooltip wich is rendered
     const tooltipIdentifier = Math.random().toString(36).substring(7);
-    const tooltipData = {'data-tip': tooltipLabel, 'data-for': tooltipIdentifier};
+    const tooltipData = {'data-tip': '', 'data-for': tooltipIdentifier};
 
     return (
-            <ButtonComponent {...rest} {...tooltipData} size={size} className={finalClassName}>
-                <IconComponent icon={icon}/>
-                {tooltipIdentifier && <Tooltip id={tooltipIdentifier}/>}
-            </ButtonComponent>
+        <ButtonComponent {...rest} {...tooltipData} size={size} className={finalClassName}>
+            <IconComponent icon={icon}/>
+            {tooltipIdentifier && <Tooltip id={tooltipIdentifier}>{tooltipLabel}</Tooltip>}
+        </ButtonComponent>
     );
 };
 IconButton.propTypes = {
@@ -62,10 +63,10 @@ IconButton.propTypes = {
     ButtonComponent: PropTypes.any.isRequired,
 
     /**
-     *
+     * The content shwon inside the tooltip wich appears on mouse over. Can
+     * either be a simple string or other components
      */
-    tooltipIdentifier: PropTypes.string,
-    tooltipLabel: PropTypes.string,
+    tooltipLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
      * Optional disabled flag

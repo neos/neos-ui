@@ -4,58 +4,53 @@ import ReactTooltip from 'react-tooltip';
 import mergeClassNames from 'classnames';
 
 const Tooltip = props => {
-    const {
-        children,
-        id,
-        place,
-        style,
-        type,
-        className,
-        theme,
-        effect
-    } = props;
+    const {children, type, className, theme} = props;
 
     const classNames = mergeClassNames({
         [className]: className && className.length,
         [theme.tooltip]: true,
-        [theme['tooltip--error']]: type === 'error'
+        [theme['tooltip--error']]: type === 'error',
+        [theme['tooltip--warning']]: type === 'warning',
+        [theme['tooltip--success']]: type === 'success',
+        [theme['tooltip--info']]: type === 'info',
+        [theme['tooltip--light']]: type === 'light'
     });
 
-    return (
-        <ReactTooltip className={classNames} {...props}>
-            {children}
-        </ReactTooltip>
-    );
+    if (children) {
+        return (
+            <ReactTooltip className={classNames} {...props}>
+                {children}
+            </ReactTooltip>
+        );
+    }
+
+    return <ReactTooltip {...props}/>;
 };
 
 Tooltip.propTypes = {
-
     /**
-     * TODO
+     * A unique ID to refenrence the node the tooltip belongs to. This ID
+     * must be set in a data-for attribute on the related node
      */
     id: PropTypes.string.isRequired,
 
     /**
-     * The children to render within the tooltip node.
+     * The children to render within the tooltip node. If children are set
+     * the prop label is not rendered
      */
     children: PropTypes.node,
 
     /**
-     * The positon where the ToolTip should be placed. Should be one of
+     * The positon where the Tooltip should be placed. Should be one of
      * top, right, bottom or left
      */
     place: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
 
     /**
-     *  TODO
-     */
-    style: PropTypes.string,
-
-    /**
      * The type of the tooltip
      * TODO
      */
-    type: PropTypes.oneOf(['success', 'warning', 'error', 'info', 'light']).isRequired,
+    type: PropTypes.oneOf(['success', 'warning', 'error', 'info', 'light', 'dark']).isRequired,
 
     /**
      * Should the tooltop be sticky or float with the mouse cursor. Defaults
@@ -64,18 +59,23 @@ Tooltip.propTypes = {
     effect: PropTypes.oneOf(['float', 'solid']),
 
     /**
-     *
+     * Delay until the tooltip is displayed
+     */
+    delayShow: PropTypes.number,
+
+    /**
+     * Additonal class names can be injected in this prop
      */
     className: PropTypes.string,
 
     theme: PropTypes.object.isRequired
-
 };
 
 Tooltip.defaultProps = {
-    type: 'warning',
+    type: 'info',
     place: 'top',
-    effect: 'solid'
+    effect: 'solid',
+    delayShow: 500
 };
 
 export default Tooltip;

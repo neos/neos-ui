@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import Tooltip from '@neos-project/react-ui-components/src/Tooltip/';
+import Tooltip from './../Tooltip/index.js';
 
 const IconButton = props => {
     const {

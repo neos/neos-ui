@@ -108,7 +108,7 @@ class TextInput extends PureComponent {
                     onChange={this.handleValueChange}
                     {...tooltipData}
                     />
-                {renderedErrors && <TooltipComponent type="error" className="foo-test" place="bottom" id={tooltipIdentifier}>{renderedErrors}</TooltipComponent>}
+                {renderedErrors && <TooltipComponent type="error" place="bottom" id={tooltipIdentifier}>{renderedErrors}</TooltipComponent>}
             </div>
         );
     }

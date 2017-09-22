@@ -10,6 +10,7 @@ const Tooltip = props => {
         [className]: className && className.length,
         [theme.tooltip]: true,
         [theme['tooltip--error']]: type === 'error',
+        [theme['tooltip--sticky']]: type === 'error',
         [theme['tooltip--warning']]: type === 'warning',
         [theme['tooltip--success']]: type === 'success',
         [theme['tooltip--info']]: type === 'info',
@@ -24,7 +25,7 @@ const Tooltip = props => {
         );
     }
 
-    return <ReactTooltip {...props}/>;
+    return <ReactTooltip className={classNames} {...props}/>;
 };
 
 Tooltip.propTypes = {
@@ -47,8 +48,7 @@ Tooltip.propTypes = {
     place: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
 
     /**
-     * The type of the tooltip
-     * TODO
+     * The type of the tooltip. Will change the style of the tooltip
      */
     type: PropTypes.oneOf(['success', 'warning', 'error', 'info', 'light', 'dark']).isRequired,
 
@@ -68,7 +68,18 @@ Tooltip.propTypes = {
      */
     className: PropTypes.string,
 
-    theme: PropTypes.object.isRequired
+    /**
+     * An optional css theme to be injected.
+     */
+    theme: PropTypes.shape({
+        'tooltip': PropTypes.string,
+        'tooltip--error': PropTypes.string,
+        'tooltip--warning': PropTypes.string,
+        'tooltip--info': PropTypes.string,
+        'tooltip--light': PropTypes.string,
+        'tooltip--success': PropTypes.string,
+        'tooltip--sticky': PropTypes.string
+    }).isRequired
 };
 
 Tooltip.defaultProps = {

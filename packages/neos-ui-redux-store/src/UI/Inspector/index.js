@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$get, $set, $drop} from 'plow-js';
+import {$all, $get, $set, $drop} from 'plow-js';
 import Immutable, {Map} from 'immutable';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -20,6 +20,8 @@ const CLEAR = '@neos/neos-ui/UI/Inspector/CLEAR';
 //
 const APPLY = '@neos/neos-ui/UI/Inspector/APPLY';
 const DISCARD = '@neos/neos-ui/UI/Inspector/DISCARD';
+const ESCAPE = '@neos/neos-ui/UI/Inspector/ESCAPE';
+const RESUME = '@neos/neos-ui/UI/Inspector/RESUME';
 
 //
 // Export the action types
@@ -29,7 +31,9 @@ export const actionTypes = {
     COMMIT,
     CLEAR,
     APPLY,
-    DISCARD
+    DISCARD,
+    ESCAPE,
+    RESUME
 };
 
 const commit = createAction(COMMIT, (propertyId, value, hooks) => ({propertyId, value, hooks}));
@@ -37,6 +41,8 @@ const clear = createAction(CLEAR);
 
 const apply = createAction(APPLY);
 const discard = createAction(DISCARD);
+const escape = createAction(ESCAPE);
+const resume = createAction(RESUME);
 
 //
 // Export the actions
@@ -45,12 +51,18 @@ export const actions = {
     commit,
     clear,
     apply,
-    discard
+    discard,
+    escape,
+    resume
 };
 
 const clearReducer = () => state => {
     const focusedNodePath = nodes.focusedNodePathSelector(state);
-    return $drop(['ui', 'inspector', 'valuesByNodePath', focusedNodePath], state);
+    return $all(
+        $set('ui.inspector.forceApply', false),
+        $drop(['ui', 'inspector', 'valuesByNodePath', focusedNodePath]),
+        state
+    );
 };
 
 //
@@ -60,6 +72,7 @@ export const reducer = handleActions({
     [system.INIT]: () => $set(
         'ui.inspector',
         new Map({
+            forceApply: false,
             valuesByNodePath: new Map()
         })
     ),
@@ -83,7 +96,9 @@ export const reducer = handleActions({
     },
 
     [DISCARD]: clearReducer,
-    [CLEAR]: clearReducer
+    [CLEAR]: clearReducer,
+    [ESCAPE]: () => $set('ui.inspector.forceApply', true),
+    [RESUME]: () => $set('ui.inspector.forceApply', false)
 });
 
 //

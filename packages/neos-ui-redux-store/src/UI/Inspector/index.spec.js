@@ -28,6 +28,7 @@ test(`should export a reducer`, () => {
 test(`should export selectors`, () => {
     expect(selectors).not.toBe(undefined);
     expect(typeof (selectors.transientValues)).toBe('function');
+    expect(typeof (selectors.isDirty)).toBe('function');
     expect(typeof (selectors.viewConfiguration)).toBe('function');
 });
 

@@ -77,23 +77,22 @@ export const makeValidationErrorsSelector = defaultMemoize((nodeTypesRegistry, v
 
 export const makeIsApplyDisabledSelector = (nodeTypesRegistry, validatorRegistry) => createSelector(
     [
-        transientValues,
+        isDirty,
         makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry)
     ],
     (
-        transientValues,
+        isDirty,
         validationErrors
     ) => {
-        return transientValues === undefined || validationErrors !== null;
+        return !isDirty || (isDirty && validationErrors !== null);
     }
 );
 
 export const isDiscardDisabledSelector = createSelector(
     [
-        transientValues
+        isDirty
     ],
-    transientValues =>
-        transientValues === undefined
+    isDirty => !isDirty
 );
 
 /*

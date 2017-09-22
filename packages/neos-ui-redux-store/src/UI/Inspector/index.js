@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$set, $drop} from 'plow-js';
+import {$get, $set, $drop} from 'plow-js';
 import Immutable, {Map} from 'immutable';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -64,15 +64,18 @@ export const reducer = handleActions({
         })
     ),
     [COMMIT]: ({propertyId, value, hooks}) => state => {
-        const focusedNodePath = nodes.focusedNodePathSelector(state);
+        const focusedNode = nodes.focusedSelector(state);
+        const focusedNodePath = $get('contextPath', focusedNode);
+        const currentPropertyValue = $get(['properties', propertyId], focusedNode);
         const setValueForProperty = (data, state) =>
             $set(['ui', 'inspector', 'valuesByNodePath', focusedNodePath, propertyId], data, state);
+        const transientValueDiffers = (value !== null) && (value !== currentPropertyValue);
 
-        if (value !== null && hooks) {
+        if (transientValueDiffers && hooks) {
             return setValueForProperty(Immutable.fromJS({value, hooks}), state);
         }
 
-        if (value !== null) {
+        if (transientValueDiffers) {
             return setValueForProperty(Immutable.fromJS({value}), state);
         }
 

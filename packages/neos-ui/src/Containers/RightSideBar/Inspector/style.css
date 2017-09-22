@@ -15,3 +15,22 @@
 .tabs > div {
     height: 100%;
 }
+.forceApplyOverlay {
+    left: 0;
+    width: calc(100% - var(--sidebarWidth));
+    height: 100%;
+    z-index: 10000;
+    &,
+    &::after {
+        position: fixed;
+        top: 0;
+        background-color: transparent;
+    }
+    &::after {
+        content: '';
+        top: 0;
+        right: 0;
+        height: var(--goldenUnit);
+        width: var(--sidebarWidth);
+    }
+}

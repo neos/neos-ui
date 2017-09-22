@@ -22,15 +22,23 @@ import style from './style.css';
 @connect((state, {nodeTypesRegistry, validatorRegistry}) => {
     const isApplyDisabledSelector = selectors.UI.Inspector.makeIsApplyDisabledSelector(nodeTypesRegistry, validatorRegistry);
 
-    return state => ({
-        focusedNode: selectors.CR.Nodes.focusedSelector(state),
-        node: selectors.CR.Nodes.focusedSelector(state),
-        isApplyDisabled: isApplyDisabledSelector(state),
-        isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state)
-    });
+    return state => {
+        const isDirty = selectors.UI.Inspector.isDirty(state);
+        const shouldForceApply = selectors.UI.Inspector.shouldForceApply(state);
+        const shouldShowForceApplyOverlay = isDirty && !shouldForceApply;
+
+        return {
+            focusedNode: selectors.CR.Nodes.focusedSelector(state),
+            node: selectors.CR.Nodes.focusedSelector(state),
+            isApplyDisabled: isApplyDisabledSelector(state),
+            isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
+            shouldShowForceApplyOverlay
+        };
+    };
 }, {
     apply: actions.UI.Inspector.apply,
     discard: actions.UI.Inspector.discard,
+    escape: actions.UI.Inspector.escape,
     commit: actions.UI.Inspector.commit
 })
 export default class Inspector extends PureComponent {
@@ -41,9 +49,11 @@ export default class Inspector extends PureComponent {
         node: PropTypes.object.isRequired,
         isApplyDisabled: PropTypes.bool,
         isDiscardDisabled: PropTypes.bool,
+        shouldShowForceApplyOverlay: PropTypes.bool,
 
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
+        escape: PropTypes.func.isRequired,
         commit: PropTypes.func.isRequired
     };
 
@@ -66,6 +76,10 @@ export default class Inspector extends PureComponent {
     handleApply = () => {
         this.props.apply();
         this.closeSecondaryInspectorIfNeeded();
+    }
+
+    handleEscape = () => {
+        this.props.escape();
     }
 
     closeSecondaryInspectorIfNeeded = () => {
@@ -102,7 +116,15 @@ export default class Inspector extends PureComponent {
     }
 
     render() {
-        const {focusedNode, nodeTypesRegistry, node, commit, isApplyDisabled, isDiscardDisabled} = this.props;
+        const {
+            focusedNode,
+            nodeTypesRegistry,
+            node,
+            commit,
+            isApplyDisabled,
+            isDiscardDisabled,
+            shouldShowForceApplyOverlay
+        } = this.props;
 
         if (!focusedNode) {
             return this.renderFallback();
@@ -116,6 +138,13 @@ export default class Inspector extends PureComponent {
 
         return (
             <div className={style.inspector}>
+                {shouldShowForceApplyOverlay &&
+                    <div
+                        role="button"
+                        className={style.forceApplyOverlay}
+                        onClick={this.handleEscape}
+                        />
+                }
                 <Tabs
                     theme={{
                         tabs__content: style.tabs // eslint-disable-line camelcase

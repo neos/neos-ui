@@ -33,6 +33,7 @@ test(`should export selectors`, () => {
     expect(selectors).not.toBe(undefined);
     expect(typeof (selectors.transientValues)).toBe('function');
     expect(typeof (selectors.isDirty)).toBe('function');
+    expect(typeof (selectors.shouldForceApply)).toBe('function');
     expect(typeof (selectors.viewConfiguration)).toBe('function');
 });
 
@@ -63,7 +64,7 @@ test(`The initial state should not be forcing apply`, () => {
         type: system.INIT
     });
 
-    expect(nextState.get('ui').get('inspector').get('forceApply')).toBe(false);
+    expect(selectors.shouldForceApply(nextState)).toBe(false);
 });
 
 test(`The "commit" action should store the last modification on the currently focused node.`, () => {

@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -21,7 +20,7 @@ import style from './style.css';
     const isApplyDisabledSelector = selectors.UI.Inspector.makeIsApplyDisabledSelector(nodeTypesRegistry, validatorRegistry);
 
     return {
-        shouldAppear: selectors.UI.Inspector.shouldForceApply(state),
+        shouldAppear: selectors.UI.Inspector.shouldPromptToHandleUnappliedChanges(state),
         isApplyDisabled: isApplyDisabledSelector(state),
         isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state)
     };
@@ -30,7 +29,7 @@ import style from './style.css';
     apply: actions.UI.Inspector.apply,
     discard: actions.UI.Inspector.discard
 })
-export default class ForceApplyDialog extends PureComponent {
+export default class UnappliedChangesDialog extends PureComponent {
     static propTypes = {
         shouldAppear: PropTypes.bool.isRequired,
         isApplyDisabled: PropTypes.bool.isRequired,

@@ -9,7 +9,7 @@ import SelectNodeTypeModal from './Containers/Modals/SelectNodeType/index';
 import NodeCreationDialog from './Containers/Modals/NodeCreationDialog/index';
 import NodeVariantCreationDialog from './Containers/Modals/NodeVariantCreationDialog/index';
 import ReloginDialog from './Containers/Modals/ReloginDialog/index';
-import ForceApplyDialog from './Containers/Modals/ForceApplyDialog/index';
+import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
 
 import FullScreen from './Containers/FullScreen/index';
 
@@ -50,7 +50,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.add('Modals/NodeCreationDialog', NodeCreationDialog);
     containerRegistry.add('Modals/NodeVariantCreationDialog', NodeVariantCreationDialog);
     containerRegistry.add('Modals/ReloginDialog', ReloginDialog);
-    containerRegistry.add('Modals/ForceApplyDialog', ForceApplyDialog);
+    containerRegistry.add('Modals/UnappliedChangesDialog', UnappliedChangesDialog);
 
     containerRegistry.add('FullScreen', FullScreen);
 

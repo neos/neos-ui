@@ -33,7 +33,7 @@ test(`should export selectors`, () => {
     expect(selectors).not.toBe(undefined);
     expect(typeof (selectors.transientValues)).toBe('function');
     expect(typeof (selectors.isDirty)).toBe('function');
-    expect(typeof (selectors.shouldForceApply)).toBe('function');
+    expect(typeof (selectors.shouldPromptToHandleUnappliedChanges)).toBe('function');
     expect(typeof (selectors.viewConfiguration)).toBe('function');
 });
 
@@ -64,7 +64,7 @@ test(`The initial state should not be forcing apply`, () => {
         type: system.INIT
     });
 
-    expect(selectors.shouldForceApply(nextState)).toBe(false);
+    expect(selectors.shouldPromptToHandleUnappliedChanges(nextState)).toBe(false);
 });
 
 test(`The "commit" action should store the last modification on the currently focused node.`, () => {
@@ -181,17 +181,17 @@ test(`The "clear" action should remove pending changes for the currently focused
     });
 });
 
-test(`The "clear" action should reset the forceApply state to false`, () => {
+test(`The "clear" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
     const state = Immutable.fromJS({
         ui: {
             inspector: {
-                forceApply: true
+                shouldPromptToHandleUnappliedChanges: true
             }
         }
     });
     const nextState = reducer(state, actions.clear());
 
-    expect(nextState.get('ui').get('inspector').get('forceApply')).toBe(false);
+    expect(nextState.get('ui').get('inspector').get('shouldPromptToHandleUnappliedChanges')).toBe(false);
 });
 
 test(`The "discard" action should remove pending changes for the currently focused node.`, () => {
@@ -250,28 +250,28 @@ test(`The "discard" action should remove pending changes for the currently focus
     });
 });
 
-test(`The "discard" action should reset the forceApply state to false`, () => {
+test(`The "discard" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
     const state = Immutable.fromJS({
         ui: {
             inspector: {
-                forceApply: true
+                shouldPromptToHandleUnappliedChanges: true
             }
         }
     });
     const nextState = reducer(state, actions.discard());
 
-    expect(nextState.get('ui').get('inspector').get('forceApply')).toBe(false);
+    expect(nextState.get('ui').get('inspector').get('shouldPromptToHandleUnappliedChanges')).toBe(false);
 });
 
-test(`The "resume" action should reset the forceApply state to false`, () => {
+test(`The "resume" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
     const state = Immutable.fromJS({
         ui: {
             inspector: {
-                forceApply: true
+                shouldPromptToHandleUnappliedChanges: true
             }
         }
     });
     const nextState = reducer(state, actions.resume());
 
-    expect(nextState.get('ui').get('inspector').get('forceApply')).toBe(false);
+    expect(nextState.get('ui').get('inspector').get('shouldPromptToHandleUnappliedChanges')).toBe(false);
 });

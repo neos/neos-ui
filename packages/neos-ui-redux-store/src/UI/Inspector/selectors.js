@@ -26,7 +26,7 @@ export const isDirty = createSelector(
     transientValues => Boolean(transientValues && ($count('transientValues', {transientValues}) > 0))
 );
 
-export const shouldForceApply = $get('ui.inspector.forceApply');
+export const shouldPromptToHandleUnappliedChanges = $get('ui.inspector.shouldPromptToHandleUnappliedChanges');
 
 const propertiesForValidationSelector = createSelector(
     [

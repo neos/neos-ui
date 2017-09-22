@@ -15,7 +15,7 @@
 .tabs > div {
     height: 100%;
 }
-.forceApplyOverlay {
+.unappliedChangesOverlay {
     left: 0;
     width: calc(100% - var(--sidebarWidth));
     height: 100%;

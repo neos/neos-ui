@@ -59,7 +59,7 @@ export const actions = {
 const clearReducer = () => state => {
     const focusedNodePath = nodes.focusedNodePathSelector(state);
     return $all(
-        $set('ui.inspector.forceApply', false),
+        $set('ui.inspector.shouldPromptToHandleUnappliedChanges', false),
         $drop(['ui', 'inspector', 'valuesByNodePath', focusedNodePath]),
         state
     );
@@ -72,7 +72,7 @@ export const reducer = handleActions({
     [system.INIT]: () => $set(
         'ui.inspector',
         new Map({
-            forceApply: false,
+            shouldPromptToHandleUnappliedChanges: false,
             valuesByNodePath: new Map()
         })
     ),
@@ -97,8 +97,8 @@ export const reducer = handleActions({
 
     [DISCARD]: clearReducer,
     [CLEAR]: clearReducer,
-    [ESCAPE]: () => $set('ui.inspector.forceApply', true),
-    [RESUME]: () => $set('ui.inspector.forceApply', false)
+    [ESCAPE]: () => $set('ui.inspector.shouldPromptToHandleUnappliedChanges', true),
+    [RESUME]: () => $set('ui.inspector.shouldPromptToHandleUnappliedChanges', false)
 });
 
 //

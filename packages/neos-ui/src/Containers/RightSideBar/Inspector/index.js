@@ -24,15 +24,15 @@ import style from './style.css';
 
     return state => {
         const isDirty = selectors.UI.Inspector.isDirty(state);
-        const shouldForceApply = selectors.UI.Inspector.shouldForceApply(state);
-        const shouldShowForceApplyOverlay = isDirty && !shouldForceApply;
+        const shouldPromptToHandleUnappliedChanges = selectors.UI.Inspector.shouldPromptToHandleUnappliedChanges(state);
+        const shouldShowUnappliedChangesOverlay = isDirty && !shouldPromptToHandleUnappliedChanges;
 
         return {
             focusedNode: selectors.CR.Nodes.focusedSelector(state),
             node: selectors.CR.Nodes.focusedSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
             isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
-            shouldShowForceApplyOverlay
+            shouldShowUnappliedChangesOverlay
         };
     };
 }, {
@@ -49,7 +49,7 @@ export default class Inspector extends PureComponent {
         node: PropTypes.object.isRequired,
         isApplyDisabled: PropTypes.bool,
         isDiscardDisabled: PropTypes.bool,
-        shouldShowForceApplyOverlay: PropTypes.bool,
+        shouldShowUnappliedChangesOverlay: PropTypes.bool,
 
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
@@ -123,7 +123,7 @@ export default class Inspector extends PureComponent {
             commit,
             isApplyDisabled,
             isDiscardDisabled,
-            shouldShowForceApplyOverlay
+            shouldShowUnappliedChangesOverlay
         } = this.props;
 
         if (!focusedNode) {
@@ -138,10 +138,10 @@ export default class Inspector extends PureComponent {
 
         return (
             <div className={style.inspector}>
-                {shouldShowForceApplyOverlay &&
+                {shouldShowUnappliedChangesOverlay &&
                     <div
                         role="button"
-                        className={style.forceApplyOverlay}
+                        className={style.unappliedChangesOverlay}
                         onClick={this.handleEscape}
                         />
                 }

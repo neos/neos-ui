@@ -1,6 +1,6 @@
 import {map, mapObjIndexed, values, sort, compose} from 'ramda';
 import {createSelector, defaultMemoize} from 'reselect';
-import {$get, $transform} from 'plow-js';
+import {$get, $count, $transform} from 'plow-js';
 import validate from '@neos-project/neos-ui-validators/src/index';
 import {selectors as nodes} from '../../CR/Nodes/index';
 
@@ -17,6 +17,13 @@ export const transientValues = createSelector(
         $get('ui.inspector.valuesByNodePath')
     ],
     (focusedNodeContextPath, valuesByNodePath) => $get([focusedNodeContextPath], valuesByNodePath)
+);
+
+export const isDirty = createSelector(
+    [
+        transientValues
+    ],
+    transientValues => Boolean(transientValues && ($count('transientValues', {transientValues}) > 0))
 );
 
 const propertiesForValidationSelector = createSelector(

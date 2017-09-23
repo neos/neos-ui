@@ -70,6 +70,7 @@ export default CKEDITOR => {
                 const range = editor.createRange();
                 range.moveToElementEditablePosition(editable.getFirst(), true);
                 editor.getSelection().selectRanges([range]);
+                editor.editable().$.click();
             } else {
                 // if we are inside an inline editable (e.g. a span), we have to set the selection
                 // *using a timeout*, otherwise it won't be selected in Firefox and Chrome.
@@ -79,6 +80,7 @@ export default CKEDITOR => {
                     const range = editor.createRange();
                     range.moveToElementEditablePosition(editable.getFirst(), true);
                     editor.getSelection().selectRanges([range]);
+                    editor.editable().$.click();
                 }, 5);
             }
         }

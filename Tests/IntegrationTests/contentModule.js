@@ -3,9 +3,9 @@ import ReactSelector from 'testcafe-react-selectors';
 
 import Page from './pageModel';
 
-const section = (name, testFunc) => {
+const section = async (name, testFunc) => {
     console.log('\x1b[44m%s\x1b[0m', name);
-    testFunc();
+    await testFunc();
 };
 const subSection = name => console.log('\x1b[33m%s\x1b[0m', ' - ' + name);
 
@@ -29,7 +29,7 @@ fixture `Content Module`
     });
 
 test('All tests at once', async t => {
-    section('Discarding: create a document node and then discard it', async () => {
+    await section('Discarding: create a document node and then discard it', async () => {
         const pageTitleToCreate = 'DiscardTest';
         subSection('Create a document node');
         await t
@@ -56,7 +56,7 @@ test('All tests at once', async t => {
             .switchToMainWindow();
     });
 
-    section('Discarding: delete a document node and then discard deletion', async () => {
+    await section('Discarding: delete a document node and then discard deletion', async () => {
         const pageTitleToDelete = 'Try me';
         subSection('Navigate via the page tree');
         await t
@@ -77,7 +77,7 @@ test('All tests at once', async t => {
             .expect(page.treeNode.withText(pageTitleToDelete).exists).ok('Deleted node reappeared in the tree');
     });
 
-    section('Discarding: create a content node and then discard it', async () => {
+    await section('Discarding: create a content node and then discard it', async () => {
         const defaultHeadlineTitle = 'Enter headline here';
         subSection('Create a content node');
         await t
@@ -107,8 +107,7 @@ test('All tests at once', async t => {
             .switchToMainWindow();
     });
 
-
-    section('Discarding: delete a content node and then discard deletion', async () => {
+    await section('Discarding: delete a content node and then discard deletion', async () => {
         const headlineToDelete = 'Imagine this...';
         subSection('Delete this headline');
         await t
@@ -129,7 +128,7 @@ test('All tests at once', async t => {
             .switchToMainWindow();
     });
 
-    section('PageTree search and filter', async () => {
+    await section('PageTree search and filter', async () => {
         subSection('Search the page tree');
         const nodeTreeSearchInput = ReactSelector('NodeTreeSearchInput');
         const nodeTreeFilter = ReactSelector('NodeTreeFilter');
@@ -158,7 +157,7 @@ test('All tests at once', async t => {
             .expect(page.treeNode.withText('Try me').exists).ok('Top level "Try me" page should shown again');
     });
 
-    section('Can toggle sidebars', async () => {
+    await section('Can toggle sidebars', async () => {
         subSection('LeftSideBar');
         const leftSideBarToggler = ReactSelector('LeftSideBarToggler Button');
         const leftSideBar = ReactSelector('LeftSideBar');
@@ -180,7 +179,7 @@ test('All tests at once', async t => {
         .expect(rightSideBar.getReact(({props}) => props.isHidden)).eql(false);
     });
 
-    section('Can create a new page', async () => {
+    await section('Can create a new page', async () => {
         const newPageTitle = 'TestPage';
         const SelectNodeTypeModal = ReactSelector('SelectNodeType');
         await t
@@ -200,7 +199,7 @@ test('All tests at once', async t => {
             .switchToMainWindow();
     });
 
-    section('Can create content node from inside InlineUI', async () => {
+    await section('Can create content node from inside InlineUI', async () => {
         const headlineTitle = 'Helloworld!';
         await t
             .switchToIframe('[name="neos-content-main"]')

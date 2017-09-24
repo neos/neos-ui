@@ -6,7 +6,7 @@ import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store
 import initializeContentDomNode from './initializeContentDomNode';
 import {
     getGuestFrameWindow,
-    getGuestFrameBody,
+    getGuestFrameDocument,
     findAllNodesInGuestFrame,
     findInGuestFrame,
     findNodeInGuestFrame
@@ -55,7 +55,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     yield put(actions.UI.ContentCanvas.setPreviewUrl(documentInformation.metaData.previewUrl));
     yield put(actions.CR.ContentDimensions.setActive(documentInformation.metaData.contentDimensions.active));
 
-    getGuestFrameBody().addEventListener('click', e => {
+    getGuestFrameDocument().addEventListener('click', e => {
         const clickPath = Array.prototype.slice.call(eventPath(e));
         const isInsideInlineUi = clickPath.some(domNode =>
             domNode &&

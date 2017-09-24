@@ -1,4 +1,4 @@
-import {$get, $count} from 'plow-js';
+import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
 
 import {siteNodeSelector} from '../../CR/Nodes/selectors';

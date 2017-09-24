@@ -15,7 +15,7 @@ export default class RichTextToolbarRegistry extends SynchronousRegistry {
 
     getEnabledFormattingRulesFromEditorOptions = memoize(
         editorOptions => [].concat(
-            ...['format', 'link', 'list', 'table']
+            ...['format', 'link', 'list', 'table', 'alignment']
                 .map(configurationKey => editorOptions[configurationKey])
                 .filter(i => i)
         ).filter(this.hasFormattingRule)

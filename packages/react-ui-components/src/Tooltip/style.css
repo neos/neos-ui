@@ -14,22 +14,40 @@
 }
 
 .tooltip--error {
-    background: var(warning)!important;
-    border-color: var(warning)!important;
+    background: var(--brandColorsError)!important;
+    border-color: var(--brandColorsError)!important;
 }
 
 .tooltip--warning {
-    background: var(warning)!important;
-    border-color: var(warning)!important;
+    background: var(--brandColorsWarn)!important;
+    border-color: var(--brandColorsWarn)!important;
 }
 
 .tooltip--success {
-    background: var(success)!important;
-    border-color: var(success)!important;
+    background: var(--brandColorsSuccess)!important;
+    border-color: var(--brandColorsSuccess)!important;
 }
 
 .tooltip--sticky {
     max-width: 100%;
     visibility: visible !important;
     opacity: 1 !important;
+    position: static;
+    width: 100$;
+}
+
+[class*=place-top]:after {
+  border-top-color: inherit!important;
+}
+
+[class*=place-right]:after {
+  border-right-color: inherit!important;
+}
+
+[class*=place-bottom]:after {
+  border-bottom-color: inherit!important;
+}
+
+[class*=place-right]:after {
+  border-left-color: inherit!important;
 }

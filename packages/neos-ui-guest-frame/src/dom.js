@@ -152,3 +152,20 @@ export const createEmptyContentCollectionPlaceholderIfMissing = collectionDomNod
         }
     }
 };
+
+//
+// Create an overlay that indicates that the related content
+// cannot be edited
+//
+export const createNotInlineEditableOverlay = contentDomNode => {
+    const initialCssPosition = getComputedStyle(contentDomNode).position;
+
+    if (initialCssPosition === 'static') {
+        contentDomNode.style.position = 'relative';
+    }
+
+    const notInlineEditableOverlay = document.createElement('div');
+    notInlineEditableOverlay.setAttribute('class', style.notInlineEditableOverlay);
+
+    contentDomNode.appendChild(notInlineEditableOverlay);
+};

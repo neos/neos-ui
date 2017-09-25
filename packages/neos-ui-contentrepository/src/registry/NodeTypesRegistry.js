@@ -178,4 +178,22 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         return $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType) ||
             $get(['properties', propertyName, 'ui', 'aloha'], nodeType);
     }
+
+    isInlineEditable(nodeTypeName) {
+        const nodeType = this.get(nodeTypeName);
+
+        if ($get('ui.inlineEditable', nodeType)) {
+            return true;
+        }
+
+        const propertyDefinitions = $get('properties', nodeType);
+
+        if (!propertyDefinitions) {
+            return false;
+        }
+
+        return Object.keys(propertyDefinitions).some(
+            propertyName => $get('ui.inlineEditable', propertyDefinitions[propertyName])
+        );
+    }
 }

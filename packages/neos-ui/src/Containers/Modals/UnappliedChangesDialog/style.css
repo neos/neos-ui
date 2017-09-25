@@ -1,0 +1,17 @@
+.modalContents {
+    padding: var(--spacing);
+}
+.discardBtn,
+.resumeBtn,
+.publishBtn {
+    width: 100%;
+    text-align: center;
+}
+.discardBtn,
+.discardBtn:hover {
+    background: var(--brandColorsWarn) !important;
+}
+.publishBtn,
+.publishBtn:hover {
+    background: var(--brandColorsSuccess) !important;
+}

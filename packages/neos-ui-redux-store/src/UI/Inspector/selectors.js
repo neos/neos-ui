@@ -1,6 +1,6 @@
 import {map, mapObjIndexed, values, sort, compose} from 'ramda';
 import {createSelector, defaultMemoize} from 'reselect';
-import {$get, $transform} from 'plow-js';
+import {$get, $count, $transform} from 'plow-js';
 import validate from '@neos-project/neos-ui-validators/src/index';
 import {selectors as nodes} from '../../CR/Nodes/index';
 
@@ -18,6 +18,15 @@ export const transientValues = createSelector(
     ],
     (focusedNodeContextPath, valuesByNodePath) => $get([focusedNodeContextPath], valuesByNodePath)
 );
+
+export const isDirty = createSelector(
+    [
+        transientValues
+    ],
+    transientValues => Boolean(transientValues && ($count('transientValues', {transientValues}) > 0))
+);
+
+export const shouldPromptToHandleUnappliedChanges = $get('ui.inspector.shouldPromptToHandleUnappliedChanges');
 
 const propertiesForValidationSelector = createSelector(
     [
@@ -70,23 +79,22 @@ export const makeValidationErrorsSelector = defaultMemoize((nodeTypesRegistry, v
 
 export const makeIsApplyDisabledSelector = (nodeTypesRegistry, validatorRegistry) => createSelector(
     [
-        transientValues,
+        isDirty,
         makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry)
     ],
     (
-        transientValues,
+        isDirty,
         validationErrors
     ) => {
-        return transientValues === undefined || validationErrors !== null;
+        return !isDirty || (isDirty && validationErrors !== null);
     }
 );
 
 export const isDiscardDisabledSelector = createSelector(
     [
-        transientValues
+        isDirty
     ],
-    transientValues =>
-        transientValues === undefined
+    isDirty => !isDirty
 );
 
 /*

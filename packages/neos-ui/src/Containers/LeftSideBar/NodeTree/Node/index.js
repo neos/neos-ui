@@ -81,10 +81,12 @@ export default class Node extends PureComponent {
     }
 
     componentDidMount() {
-        // Always request scroll on first render
-        this.setState({
-            shouldScrollIntoView: true
-        });
+        // Always request scroll on first render if given node is focused
+        if (this.props.focusedNodeContextPath === $get('contextPath', this.props.node)) {
+            this.setState({
+                shouldScrollIntoView: true
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps) {

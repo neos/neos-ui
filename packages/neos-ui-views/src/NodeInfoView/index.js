@@ -73,7 +73,7 @@ export default class NodeInfoView extends PureComponent {
  */
 class NodeInfoViewContent extends PureComponent {
     static propTypes = {
-        children: PropTypes.element
+        children: PropTypes.node
     };
 
     handleReference = ref => {

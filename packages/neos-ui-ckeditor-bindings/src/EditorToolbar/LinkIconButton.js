@@ -62,7 +62,7 @@ export default class LinkIconButton extends PureComponent {
 }
 
 const isUri = str =>
-    str && Boolean(str.match('^https?://'));
+    str && Boolean(str.match('^(https?://|mailto:|tel:)'));
 
 const stripNodePrefix = str =>
     str && str.replace('node://', '');

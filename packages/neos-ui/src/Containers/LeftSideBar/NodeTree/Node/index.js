@@ -116,7 +116,11 @@ export default class Node extends PureComponent {
                 const nodeIsNotInView = nodeTopPosition < scrollingElementPosition.top + offset || nodeTopPosition > scrollingElementPosition.bottom - offset;
                 if (nodeIsNotInView) {
                     const scrollTop = nodeTopPosition - scrollingElement.firstElementChild.getBoundingClientRect().top - offset;
-                    animate(scrollingElement, {scrollTop});
+                    animate({scrollTop: scrollingElement.scrollTop}, {scrollTop}, {
+                        step: ({scrollTop}) => {
+                            scrollingElement.scrollTop = scrollTop;
+                        }
+                    });
                 }
                 this.setState({
                     shouldScrollIntoView: false

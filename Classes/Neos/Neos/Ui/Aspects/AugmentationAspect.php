@@ -10,9 +10,12 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
+use Neos\Flow\I18n\Locale;
+use Neos\Flow\I18n\Service as I18nService;
 use Neos\Flow\Session\SessionInterface;
 use Neos\FluidAdaptor\Core\Rendering\FlowAwareRenderingContextInterface;
 use Neos\Neos\Domain\Service\ContentContext;
+use Neos\Neos\Domain\Service\UserService;
 use Neos\Neos\Service\HtmlAugmenter;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
@@ -37,6 +40,18 @@ class AugmentationAspect
      * @var HtmlAugmenter
      */
     protected $htmlAugmenter;
+
+    /**
+     * @Flow\Inject
+     * @var I18nService
+     */
+    protected $i18nService;
+
+    /**
+     * @Flow\Inject
+     * @var UserService
+     */
+    protected $userService;
 
     /**
      * @Flow\Inject
@@ -135,10 +150,19 @@ class AugmentationAspect
 
         $this->renderedNodes[$node->getIdentifier()] = $node;
 
+        // For serialization, we need to respect the UI locale, rather than the content locale
+        $rememberedContentLocale = $this->i18nService->getConfiguration()->getCurrentLocale();
+        $userLocale = new Locale($this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage());
+        $this->i18nService->getConfiguration()->setCurrentLocale($userLocale);
+
         $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
 
+        // Reset the locale
+        $this->i18nService->getConfiguration()->setCurrentLocale($rememberedContentLocale);
+
         $wrappedContent = $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
-        $wrappedContent .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";;
+        $wrappedContent .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
+
         return $wrappedContent;
     }
 
@@ -202,8 +226,8 @@ class AugmentationAspect
             }
 
             if (isset($this->renderedNodes[$node->getIdentifier()]) === false) {
-              $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
-              $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
+                $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
+                $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
             }
 
             if ($node->hasChildNodes() === true) {
@@ -215,14 +239,16 @@ class AugmentationAspect
     /**
      * Clear rendered nodes helper array to prevent possible side effects.
      */
-    protected function clearRenderedNodesArray() {
+    protected function clearRenderedNodesArray()
+    {
         $this->renderedNodes = [];
     }
 
     /**
      * Clear non rendered content node metadata to prevent possible side effects.
      */
-    protected function clearNonRenderedContentNodeMetadata() {
+    protected function clearNonRenderedContentNodeMetadata()
+    {
         $this->nonRenderedContentNodeMetadata = '';
     }
 

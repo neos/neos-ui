@@ -24,6 +24,11 @@
     display: none;
 }
 
+.toolBar--isSticky {
+    position: fixed;
+    top: 0!important;
+}
+
 .toolBar--isBlurred {
     display: none;
 }

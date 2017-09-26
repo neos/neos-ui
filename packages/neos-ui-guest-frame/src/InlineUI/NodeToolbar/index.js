@@ -42,13 +42,31 @@ export default class NodeToolbar extends PureComponent {
         requestScrollIntoView: PropTypes.func.isRequired
     };
 
+    state = {
+        isSticky: false
+    };
+
     constructor() {
         super();
         this.iframeWindow = document.getElementsByName('neos-content-main')[0].contentWindow;
     }
 
+    updateStickyness = () => {
+        const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
+        if (nodeElement) {
+            const {isSticky} = this.state;
+            const {top, bottom} = nodeElement.getBoundingClientRect();
+            const shouldBeSticky = top < 50 && bottom > 0;
+
+            if (isSticky !== shouldBeSticky) {
+                this.setState({isSticky: shouldBeSticky});
+            }
+        }
+    };
+
     componentDidMount() {
         this.iframeWindow.addEventListener('resize', debounce(() => this.forceUpdate(), 20));
+        this.iframeWindow.addEventListener('scroll', debounce(this.updateStickyness, 5));
     }
 
     componentDidUpdate() {
@@ -57,6 +75,8 @@ export default class NodeToolbar extends PureComponent {
             this.scrollIntoView();
             this.props.requestScrollIntoView(false);
         }
+
+        this.updateStickyness();
     }
 
     scrollIntoView() {
@@ -96,8 +116,10 @@ export default class NodeToolbar extends PureComponent {
         const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
         const {top, right} = position(nodeElement);
 
+        const {isSticky} = this.state;
         const classNames = mergeClassNames({
-            [style.toolBar]: true
+            [style.toolBar]: true,
+            [style['toolBar--isSticky']]: isSticky
         });
 
         return (

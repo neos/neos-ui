@@ -11,7 +11,7 @@ export default class Controls extends PureComponent {
     static propTypes = {
         onChooseFromMedia: PropTypes.func.isRequired,
         onChooseFromLocalFileSystem: PropTypes.func.isRequired,
-        onRemove: PropTypes.func.isRequired,
+        onRemove: PropTypes.func,
         onCrop: PropTypes.func,
 
         i18nRegistry: PropTypes.object.isRequired

@@ -267,9 +267,9 @@ export default class ImageEditor extends Component {
                 <Controls
                     onChooseFromMedia={this.handleChooseFromMedia}
                     onChooseFromLocalFileSystem={this.handleChooseFile}
-                    onRemove={image !== null ? this.handleRemoveFile : null}
-                    onCrop={image !== null ? this.isFeatureEnabled('crop') && this.handleOpenImageCropper : null}
-                        />
+                    onRemove={image ? this.handleRemoveFile : null}
+                    onCrop={image ? this.isFeatureEnabled('crop') && this.handleOpenImageCropper : null}
+                    />
             </div>
         );
     }

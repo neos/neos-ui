@@ -11,7 +11,7 @@ export default class Controls extends PureComponent {
     static propTypes = {
         onChooseFromMedia: PropTypes.func.isRequired,
         onChooseFromLocalFileSystem: PropTypes.func.isRequired,
-        onRemove: PropTypes.func.isRequired,
+        onRemove: PropTypes.func,
         onCrop: PropTypes.func,
 
         i18nRegistry: PropTypes.object.isRequired
@@ -57,6 +57,7 @@ export default class Controls extends PureComponent {
                     size="small"
                     style="lighter"
                     onClick={onRemove}
+                    disabled={!onRemove}
                     className={style.button}
                     title={i18nRegistry.translate('Neos.Neos:Main:remove')}
                     />

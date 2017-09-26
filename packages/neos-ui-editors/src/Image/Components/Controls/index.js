@@ -57,6 +57,7 @@ export default class Controls extends PureComponent {
                     size="small"
                     style="lighter"
                     onClick={onRemove}
+                    disabled={!onRemove}
                     className={style.button}
                     title={i18nRegistry.translate('Neos.Neos:Main:remove')}
                     />

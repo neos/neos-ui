@@ -206,12 +206,13 @@ class BackendServiceController extends ActionController
                         $reloadDocument = new ReloadDocument();
                         $this->feedbackCollection->add($reloadDocument);
                     }
-                } else {
-                    // The node could either be created, moved, or have properties changed
-                    // To not have to account for all that, just reload the document...
-                    $reloadDocument = new ReloadDocument();
-                    $this->feedbackCollection->add($reloadDocument);
+                } elseif (!$this->nodeService->nodeExistsInWorkspace($node, $node->getWorkSpace()->getBaseWorkspace())) {
+                    // If the node doesn't exist in the target workspace, tell the UI to remove it
+                    $removeNode = new RemoveNode();
+                    $removeNode->setNode($node);
+                    $this->feedbackCollection->add($removeNode);
                 }
+
                 $this->publishingService->discardNode($node);
             }
 

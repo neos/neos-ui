@@ -4,6 +4,7 @@ import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
+import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
@@ -58,9 +59,21 @@ function * watchDiscard() {
         yield put(actions.UI.Remote.startDiscarding());
 
         try {
+            const currentContentCanvasContextPath = yield select(selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath);
             const feedback = yield call(discard, action.payload);
             yield put(actions.UI.Remote.finishDiscarding());
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+
+            // check if the currently focused document node has been removed
+            const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
+
+            // if not, reload the document
+            if (contentCanvasNodeIsStillThere) {
+                getGuestFrameDocument().location.reload();
+            }
+
+            // reload the page tree
+            yield put(actions.UI.PageTree.reloadTree());
         } catch (error) {
             console.error('Failed to discard', error);
         }

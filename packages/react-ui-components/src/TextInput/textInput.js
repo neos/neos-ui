@@ -107,7 +107,7 @@ class TextInput extends PureComponent {
             ...restProps
         } = this.props;
 
-        const rest = omit(...restProps, ['onEnterKey']);
+        const rest = omit(restProps, ['onEnterKey', 'setFocus']);
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textInput]: true,
@@ -146,7 +146,7 @@ class TextInput extends PureComponent {
         const enterKeyCode = 13;
         const keyCode = e.keyCode || e.which;
         const {onEnterKey} = this.props;
-        if (keyCode === enterKeyCode) {
+        if (keyCode === enterKeyCode && typeof onEnterKey === 'function') {
             onEnterKey();
         }
     }

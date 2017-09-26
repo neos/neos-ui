@@ -24,7 +24,11 @@ export default richtextToolbarRegistry => {
             .map((componentDefinition, index) => {
                 const {component, formattingRule, callbackPropName, ...props} = componentDefinition;
                 const restProps = omit(props, ['isVisibleWhen']);
-                const isActive = formattingRule && $get(formattingRule, formattingUnderCursor) === richtextToolbarRegistry.TRISTATE_ON;
+                const isActive = formattingRule && (
+                    $get(formattingRule, formattingUnderCursor) === true ||
+                    $get(formattingRule, formattingUnderCursor) === richtextToolbarRegistry.TRISTATE_ON
+                );
+
                 const finalProps = {
                     ...restProps,
                     formattingRule,

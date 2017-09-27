@@ -1,3 +1,5 @@
+import removeTags from './removeTags';
+
 /* eslint babel/new-cap: 0 */
 export default CKEDITOR => {
     function paste(event) {
@@ -20,20 +22,7 @@ export default CKEDITOR => {
             // 1) cancel the "paste" event to be able to handle pasting ourselves
             event.cancel();
 
-            // 2) apply content filtering *with an empty filter rule set*; this will strip out:
-            //    - all attributes
-            //    - most tags (such as "b")
-            // For some reason, it does not strip out <p> Tags; not sure why...
-            const filterRules = {};
-            const filter = new CKEDITOR.filter(filterRules);
-            const fragment = CKEDITOR.htmlParser.fragment.fromHtml(event.data.dataValue);
-            const writer = new CKEDITOR.htmlParser.basicWriter();
-            filter.applyTo(fragment);
-            fragment.writeHtml(writer);
-            let text = writer.getHtml();
-
-            // 3) that's why we finally remove all remaining (opening and closing) tags with a regex.
-            text = text.replace(/<\/?[a-z0-9A-Z]+[^>]*>/g, '');
+            const text = removeTags(event.data.dataValue, CKEDITOR);
 
             // 4) do the actual paste; modelled after CKEDITOR.editable.insertHtml().
             // 4a) we store an undo-snapshot

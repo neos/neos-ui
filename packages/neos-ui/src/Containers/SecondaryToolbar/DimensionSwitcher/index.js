@@ -79,13 +79,37 @@ export default class DimensionSwitcher extends PureComponent {
         activePresets: new Map()
     };
 
+    state = {
+        isOpen: false
+    };
+
+    handleSelectPreset = preset => {
+        this.setState({isOpen: false});
+        this.props.selectPreset(preset);
+    }
+
+    handleToggle = () => {
+        this.setState({isOpen: !this.state.isOpen});
+    }
+
+    handleClose = () => {
+        this.setState({isOpen: false});
+    }
+
     render() {
-        const {contentDimensions, activePresets, selectPreset} = this.props;
+        const {contentDimensions, activePresets} = this.props;
         const contentDimensionsObject = contentDimensions.toObject();
         const contentDimensionsObjectKeys = Object.keys(contentDimensionsObject);
 
         return contentDimensionsObjectKeys.length ? (
-            <DropDown style="darker" padded={true} className={style.dropDown}>
+            <DropDown.Stateless
+                style="darker"
+                padded={true}
+                className={style.dropDown}
+                isOpen={this.state.isOpen}
+                onToggle={this.handleToggle}
+                onClose={this.handleClose}
+                >
                 <DropDown.Header>
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
@@ -111,12 +135,12 @@ export default class DimensionSwitcher extends PureComponent {
                             dimensionLabel={$get('label', dimensionConfiguration)}
                             presets={this.presetsForDimension(dimensionName)}
                             activePreset={$get([dimensionName, 'name'], activePresets)}
-                            onSelect={selectPreset}
+                            onSelect={this.handleSelectPreset}
                             />
                         );
                     })}
                 </DropDown.Contents>
-            </DropDown>
+            </DropDown.Stateless>
         ) : null;
     }
 

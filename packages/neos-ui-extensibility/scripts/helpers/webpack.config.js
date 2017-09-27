@@ -2,8 +2,7 @@ const sharedWebPackConfig = require('@neos-project/build-essentials/src/webpack.
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = function(neosPackageJson) {
-
+module.exports = function (neosPackageJson) {
     return Object.assign({}, sharedWebPackConfig, {
         module: {
             loaders: sharedWebPackConfig.module.loaders.map(loaderConfig => {
@@ -11,13 +10,13 @@ module.exports = function(neosPackageJson) {
                     loaderConfig.query = {
                         babelrc: false,
                         presets: [
-                            require.resolve("babel-preset-react"),
-                            require.resolve("babel-preset-es2015"),
-                            require.resolve("babel-preset-stage-0")
+                            require.resolve('babel-preset-react'),
+                            require.resolve('babel-preset-es2015'),
+                            require.resolve('babel-preset-stage-0')
                         ],
                         plugins: [
-                            require.resolve("babel-plugin-transform-decorators-legacy"),
-                            require.resolve("babel-plugin-transform-object-rest-spread")
+                            require.resolve('babel-plugin-transform-decorators-legacy'),
+                            require.resolve('babel-plugin-transform-object-rest-spread')
                         ]
                     };
                 }
@@ -48,6 +47,7 @@ module.exports = function(neosPackageJson) {
             alias: {
                 'react': '@neos-project/neos-ui-extensibility/src/shims/vendor/react/index',
                 'react-dom': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dom/index',
+                'prop-types': '@neos-project/neos-ui-extensibility/src/shims/vendor/prop-types/index',
                 'immutable': '@neos-project/neos-ui-extensibility/src/shims/vendor/immutable/index',
                 'plow-js': '@neos-project/neos-ui-extensibility/src/shims/vendor/plow-js/index',
                 'classnames': '@neos-project/neos-ui-extensibility/src/shims/vendor/classnames/index',

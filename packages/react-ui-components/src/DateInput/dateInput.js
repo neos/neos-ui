@@ -17,6 +17,11 @@ export class DateInput extends PureComponent {
         placeholder: PropTypes.string,
 
         /**
+         * An optional id for the input.
+         */
+        id: PropTypes.string,
+
+        /**
          * The label which will be displayed within the `Select Today` btn.
          */
         todayLabel: PropTypes.string,
@@ -91,6 +96,7 @@ export class DateInput extends PureComponent {
             placeholder,
             theme,
             value,
+            id,
             applyLabel,
             todayLabel,
             labelFormat,
@@ -119,6 +125,7 @@ export class DateInput extends PureComponent {
                             className={theme.calendarFakeInputMirror}
                             />
                         <input
+                            id={id}
                             onFocus={this.handleInputClick}
                             type="datetime"
                             placeholder={placeholder}

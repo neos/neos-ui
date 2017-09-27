@@ -14,11 +14,13 @@ class DateTime extends PureComponent {
         commit: PropTypes.func.isRequired,
         highlight: PropTypes.bool,
         placeholder: PropTypes.string,
+        id: PropTypes.string,
         i18nRegistry: PropTypes.object
     }
 
     render() {
         const {
+            id,
             value,
             commit,
             placeholder,
@@ -33,6 +35,7 @@ class DateTime extends PureComponent {
 
         return (
             <DateInput
+                id={id}
                 value={mappedValue}
                 onChange={onChange}
                 highlight={highlight}

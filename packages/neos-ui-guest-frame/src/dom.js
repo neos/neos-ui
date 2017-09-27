@@ -169,7 +169,7 @@ export const createNotInlineEditableOverlay = contentDomNode => {
     notInlineEditableOverlay.setAttribute('class', style.notInlineEditableOverlay);
 
     contentDomNode.appendChild(notInlineEditableOverlay);
-}
+};
 
 //
 // Get the horizontal scrolloffset of the guest frame

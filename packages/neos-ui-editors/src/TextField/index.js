@@ -23,6 +23,7 @@ export default class TextField extends PureComponent {
         highlight: PropTypes.bool,
         options: PropTypes.object,
         onKeyPress: PropTypes.func,
+        id: PropTypes.string,
 
         i18nRegistry: PropTypes.object.isRequired
     };
@@ -32,13 +33,14 @@ export default class TextField extends PureComponent {
     };
 
     render() {
-        const {value, commit, validationErrors, options, i18nRegistry, highlight, onKeyPress} = this.props;
+        const {id, value, commit, validationErrors, options, i18nRegistry, highlight, onKeyPress} = this.props;
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
         const finalOptions = Object.assign({}, defaultOptions, options);
 
         return (<TextInput
+            id={id}
             autoFocus={finalOptions.autoFocus}
             value={value}
             onChange={commit}

@@ -54,9 +54,10 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                 return [];
             }
             result = this.getAllowedGrandChildNodeTypes(referenceGrandParentNodeType, referenceParentName);
+        } else {
+            result = this.getAllowedChildNodeTypes(referenceParentNodeType);
         }
 
-        result = this.getAllowedChildNodeTypes(referenceParentNodeType);
         // If role is provided, filter by role, e.g. only "content" or "document" ndoetypes
         return role ? result.filter(nodeTypeName => this.hasRole(nodeTypeName, role)) : result;
     }

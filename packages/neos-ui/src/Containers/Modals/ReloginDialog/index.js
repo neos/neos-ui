@@ -84,8 +84,22 @@ export default class ReloginDialog extends PureComponent {
                 isOpen
                 >
                 <div className={style.modalContents}>
-                    <TextInput className={style.inputField} value={this.state.username} placeholder={i18nRegistry.translate('Neos.Neos:Main:username', 'Username')} onChange={this.handleUsernameChange}/>
-                    <TextInput type="password" className={style.inputField} value={this.state.password} placeholder={i18nRegistry.translate('Neos.Neos:Main:password', 'Password')} onChange={this.handlePasswordChange}/>
+                    <TextInput
+                        className={style.inputField}
+                        value={this.state.username}
+                        placeholder={i18nRegistry.translate('Neos.Neos:Main:username', 'Username')}
+                        onChange={this.handleUsernameChange}
+                        onEnterKey={this.handleTryLogin}
+                        setFocus={true}
+                        />
+                    <TextInput
+                        type="password"
+                        className={style.inputField}
+                        value={this.state.password}
+                        placeholder={i18nRegistry.translate('Neos.Neos:Main:password', 'Password')}
+                        onChange={this.handlePasswordChange}
+                        onEnterKey={this.handleTryLogin}
+                        />
                     <Button
                         key="login"
                         style="brand"

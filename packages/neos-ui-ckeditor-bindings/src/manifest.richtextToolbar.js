@@ -231,6 +231,45 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     /**
+     * Alignment
+     */
+    richtextToolbar.add('alignleft', {
+        formattingRule: 'left',
+        component: IconButtonComponent,
+        callbackPropName: 'onClick',
+
+        icon: 'align-left',
+        hoverStyle: 'brand'
+    });
+
+    richtextToolbar.add('aligncenter', {
+        formattingRule: 'center',
+        component: IconButtonComponent,
+        callbackPropName: 'onClick',
+
+        icon: 'align-center',
+        hoverStyle: 'brand'
+    });
+
+    richtextToolbar.add('alignright', {
+        formattingRule: 'right',
+        component: IconButtonComponent,
+        callbackPropName: 'onClick',
+
+        icon: 'align-right',
+        hoverStyle: 'brand'
+    });
+
+    richtextToolbar.add('alignjustify', {
+        formattingRule: 'justify',
+        component: IconButtonComponent,
+        callbackPropName: 'onClick',
+
+        icon: 'align-justify',
+        hoverStyle: 'brand'
+    });
+
+    /**
      * Tables
      */
     richtextToolbar.add('table', {

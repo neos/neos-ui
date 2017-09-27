@@ -2,9 +2,13 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import debounce from 'lodash.debounce';
-import animate from 'amator';
 
-import {getGuestFrameBody, findNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
+import {
+    findNodeInGuestFrame,
+    getAbsolutePositionOfElementInGuestFrame,
+    isElementVisibleInGuestFrame,
+    animateScrollToElementInGuestFrame
+} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {
     AddNode,
@@ -15,21 +19,6 @@ import {
     PasteClipBoardNode
 } from './Buttons/index';
 import style from './style.css';
-
-export const position = nodeElement => {
-    if (nodeElement && nodeElement.getBoundingClientRect) {
-        const bodyBounds = getGuestFrameBody().getBoundingClientRect();
-        const domBounds = nodeElement.getBoundingClientRect();
-
-        return {
-            top: domBounds.top - bodyBounds.top,
-            right: bodyBounds.right - domBounds.right,
-            bottom: bodyBounds.bottom - domBounds.bottom
-        };
-    }
-
-    return {top: 0, right: 0, bottom: 0};
-};
 
 export default class NodeToolbar extends PureComponent {
     static propTypes = {
@@ -42,13 +31,31 @@ export default class NodeToolbar extends PureComponent {
         requestScrollIntoView: PropTypes.func.isRequired
     };
 
+    state = {
+        isSticky: false
+    };
+
     constructor() {
         super();
         this.iframeWindow = document.getElementsByName('neos-content-main')[0].contentWindow;
     }
 
+    updateStickyness = () => {
+        const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
+        if (nodeElement) {
+            const {isSticky} = this.state;
+            const {top, bottom} = nodeElement.getBoundingClientRect();
+            const shouldBeSticky = top < 50 && bottom > 0;
+
+            if (isSticky !== shouldBeSticky) {
+                this.setState({isSticky: shouldBeSticky});
+            }
+        }
+    };
+
     componentDidMount() {
         this.iframeWindow.addEventListener('resize', debounce(() => this.forceUpdate(), 20));
+        this.iframeWindow.addEventListener('scroll', debounce(this.updateStickyness, 5));
     }
 
     componentDidUpdate() {
@@ -57,25 +64,15 @@ export default class NodeToolbar extends PureComponent {
             this.scrollIntoView();
             this.props.requestScrollIntoView(false);
         }
+
+        this.updateStickyness();
     }
 
     scrollIntoView() {
-        const iframeDocument = this.iframeWindow.document;
-        const currentScrollY = this.iframeWindow.scrollY || this.iframeWindow.pageYOffset || iframeDocument.body.scrollTop;
         const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
 
-        if (nodeElement) {
-            const nodeAbsolutePosition = position(nodeElement);
-            const nodeRelativePosition = nodeElement.getBoundingClientRect();
-            const offset = 100;
-            const elementIsNotInView = nodeRelativePosition.top < offset || nodeRelativePosition.bottom + offset > this.iframeWindow.innerHeight;
-            if (elementIsNotInView) {
-                const scrollY = nodeAbsolutePosition.top - offset;
-
-                animate({scrollY: currentScrollY}, {scrollY}, {
-                    step: ({scrollY}) => this.iframeWindow.scrollTo(0, scrollY)
-                });
-            }
+        if (nodeElement && !isElementVisibleInGuestFrame(nodeElement)) {
+            animateScrollToElementInGuestFrame(nodeElement, 100);
         }
     }
 
@@ -94,10 +91,12 @@ export default class NodeToolbar extends PureComponent {
         };
 
         const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
-        const {top, right} = position(nodeElement);
+        const {top, right} = getAbsolutePositionOfElementInGuestFrame(nodeElement);
 
+        const {isSticky} = this.state;
         const classNames = mergeClassNames({
-            [style.toolBar]: true
+            [style.toolBar]: true,
+            [style['toolBar--isSticky']]: isSticky
         });
 
         return (

@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$set, $drop} from 'plow-js';
+import {$all, $get, $set, $drop} from 'plow-js';
 import Immutable, {Map} from 'immutable';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -20,6 +20,8 @@ const CLEAR = '@neos/neos-ui/UI/Inspector/CLEAR';
 //
 const APPLY = '@neos/neos-ui/UI/Inspector/APPLY';
 const DISCARD = '@neos/neos-ui/UI/Inspector/DISCARD';
+const ESCAPE = '@neos/neos-ui/UI/Inspector/ESCAPE';
+const RESUME = '@neos/neos-ui/UI/Inspector/RESUME';
 
 //
 // Export the action types
@@ -29,7 +31,9 @@ export const actionTypes = {
     COMMIT,
     CLEAR,
     APPLY,
-    DISCARD
+    DISCARD,
+    ESCAPE,
+    RESUME
 };
 
 const commit = createAction(COMMIT, (propertyId, value, hooks) => ({propertyId, value, hooks}));
@@ -37,6 +41,8 @@ const clear = createAction(CLEAR);
 
 const apply = createAction(APPLY);
 const discard = createAction(DISCARD);
+const escape = createAction(ESCAPE);
+const resume = createAction(RESUME);
 
 //
 // Export the actions
@@ -45,12 +51,18 @@ export const actions = {
     commit,
     clear,
     apply,
-    discard
+    discard,
+    escape,
+    resume
 };
 
 const clearReducer = () => state => {
     const focusedNodePath = nodes.focusedNodePathSelector(state);
-    return $drop(['ui', 'inspector', 'valuesByNodePath', focusedNodePath], state);
+    return $all(
+        $set('ui.inspector.shouldPromptToHandleUnappliedChanges', false),
+        $drop(['ui', 'inspector', 'valuesByNodePath', focusedNodePath]),
+        state
+    );
 };
 
 //
@@ -60,19 +72,23 @@ export const reducer = handleActions({
     [system.INIT]: () => $set(
         'ui.inspector',
         new Map({
+            shouldPromptToHandleUnappliedChanges: false,
             valuesByNodePath: new Map()
         })
     ),
     [COMMIT]: ({propertyId, value, hooks}) => state => {
-        const focusedNodePath = nodes.focusedNodePathSelector(state);
+        const focusedNode = nodes.focusedSelector(state);
+        const focusedNodePath = $get('contextPath', focusedNode);
+        const currentPropertyValue = $get(['properties', propertyId], focusedNode);
         const setValueForProperty = (data, state) =>
             $set(['ui', 'inspector', 'valuesByNodePath', focusedNodePath, propertyId], data, state);
+        const transientValueDiffers = (value !== null) && (value !== currentPropertyValue);
 
-        if (value !== null && hooks) {
+        if (transientValueDiffers && hooks) {
             return setValueForProperty(Immutable.fromJS({value, hooks}), state);
         }
 
-        if (value !== null) {
+        if (transientValueDiffers) {
             return setValueForProperty(Immutable.fromJS({value}), state);
         }
 
@@ -80,7 +96,9 @@ export const reducer = handleActions({
     },
 
     [DISCARD]: clearReducer,
-    [CLEAR]: clearReducer
+    [CLEAR]: clearReducer,
+    [ESCAPE]: () => $set('ui.inspector.shouldPromptToHandleUnappliedChanges', true),
+    [RESUME]: () => $set('ui.inspector.shouldPromptToHandleUnappliedChanges', false)
 });
 
 //

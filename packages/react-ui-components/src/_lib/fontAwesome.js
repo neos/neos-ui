@@ -12,8 +12,11 @@ export function makeValidateId(icons = {}) {
         // A list of backward compatible icons
         //
         const backwardCompatibleIcons = {
+            'icon-calendar-empty': 'fa-calendar-o',
+            'icon-flag-alt': 'fa-flag-o',
             'icon-folder-open-alt': 'fa-folder-open-o',
-            'icon-envelope-alt': 'fa-envelope-o'
+            'icon-envelope-alt': 'fa-envelope-o',
+            'icon-upload-alt': 'fa-upload'
         };
 
         const processedIcons = iconClassesArray.map(iconClass => {

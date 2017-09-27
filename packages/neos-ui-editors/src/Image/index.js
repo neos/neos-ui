@@ -249,7 +249,8 @@ export default class ImageEditor extends Component {
 
     render() {
         const {
-            isAssetLoading
+            isAssetLoading,
+            image
         } = this.state;
         const {highlight} = this.props;
 
@@ -266,8 +267,8 @@ export default class ImageEditor extends Component {
                 <Controls
                     onChooseFromMedia={this.handleChooseFromMedia}
                     onChooseFromLocalFileSystem={this.handleChooseFile}
-                    onRemove={this.handleRemoveFile}
-                    onCrop={this.isFeatureEnabled('crop') && this.handleOpenImageCropper}
+                    onRemove={image ? this.handleRemoveFile : null}
+                    onCrop={image ? this.isFeatureEnabled('crop') && this.handleOpenImageCropper : null}
                     />
             </div>
         );

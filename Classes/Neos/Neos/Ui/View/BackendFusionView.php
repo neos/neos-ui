@@ -10,7 +10,6 @@ use Neos\Fusion\View\FusionView;
 
 class BackendFusionView extends FusionView
 {
-
     public function __construct(array $options = array())
     {
         parent::__construct($options);

@@ -17,6 +17,7 @@ const COMMENCE_REMOVAL = '@neos/neos-ui/CR/Nodes/COMMENCE_REMOVAL';
 const REMOVAL_ABORTED = '@neos/neos-ui/CR/Nodes/REMOVAL_ABORTED';
 const REMOVAL_CONFIRMED = '@neos/neos-ui/CR/Nodes/REMOVAL_CONFIRMED';
 const REMOVE = '@neos/neos-ui/CR/Nodes/REMOVE';
+const REPLACE = '@neos/neos-ui/CR/Nodes/REPLACE';
 const COPY = '@neos/neos-ui/CR/Nodes/COPY';
 const CUT = '@neos/neos-ui/CR/Nodes/CUT';
 const MOVE = '@neos/neos-ui/CR/Nodes/MOVE';
@@ -38,6 +39,7 @@ export const actionTypes = {
     REMOVAL_ABORTED,
     REMOVAL_CONFIRMED,
     REMOVE,
+    REPLACE,
     COPY,
     CUT,
     MOVE,
@@ -113,6 +115,11 @@ const confirmRemoval = createAction(REMOVAL_CONFIRMED);
 const remove = createAction(REMOVE, contextPath => contextPath);
 
 /**
+ * Remove all nodes from the store
+ */
+const replace = createAction(REPLACE, ({siteNode, documentNode, nodes}) => ({siteNode, documentNode, nodes}));
+
+/**
  * Mark a node for copy on paste
  *
  * @param {String} contextPath The context path of the node to be copied
@@ -179,6 +186,7 @@ export const actions = {
     abortRemoval,
     confirmRemoval,
     remove,
+    replace,
     copy,
     cut,
     move,
@@ -279,6 +287,15 @@ export const reducer = handleActions({
     [REMOVAL_ABORTED]: () => $set('cr.nodes.toBeRemoved', ''),
     [REMOVAL_CONFIRMED]: () => $set('cr.nodes.toBeRemoved', ''),
     [REMOVE]: contextPath => $drop(['cr', 'nodes', 'byContextPath', contextPath]),
+    [REPLACE]: ({siteNode, documentNode, nodes}) => $all(
+        $set('cr.nodes.siteNode', siteNode),
+        $set('ui.contentCanvas.contextPath', documentNode),
+        $set('cr.nodes.focused', new Map({
+            contextPath: '',
+            fusionPath: ''
+        })),
+        $set('cr.nodes.byContextPath', Immutable.fromJS(nodes))
+    ),
     [COPY]: contextPath => $set('cr.nodes.clipboard', contextPath),
     [CUT]: contextPath => $set('cr.nodes.clipboard', contextPath),
     [PASTE]: () => $set('cr.nodes.clipboard', ''),

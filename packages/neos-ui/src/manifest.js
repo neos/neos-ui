@@ -334,6 +334,7 @@ manifest('main', {}, globalRegistry => {
             })
         );
         store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
+        store.dispatch(actions.UI.ContentCanvas.requestScrollIntoView(true));
     });
 
     //

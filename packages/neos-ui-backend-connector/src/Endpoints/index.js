@@ -152,9 +152,13 @@ const parseGetSingleNodeResult = requestPromise => {
 
             const nodeFrontendUri = d.querySelector('.node-frontend-uri').getAttribute('href');
 
+            // TODO: Temporary hack due to missing contextPath in the API response
+            const nodeContextPath = `${d.querySelector('.node-path').innerHTML}@${nodeFrontendUri.split('@')[1]}`;
+
             return {
                 nodeFound: true,
-                nodeFrontendUri
+                nodeFrontendUri,
+                nodeContextPath
             };
         } else if (result.status === 404) {
             const nodeExistsInOtherDimensions = Boolean(result.headers.get('X-Neos-Node-Exists-In-Other-Dimensions'));

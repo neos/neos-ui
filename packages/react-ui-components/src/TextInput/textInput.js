@@ -35,19 +35,19 @@ class TextInput extends PureComponent {
         onBlur: PropTypes.func,
 
         /**
-         * An array of error messages
-         */
-        validationErrors: PropTypes.array,
-
-        /**
          * Highlight input
          */
         highlight: PropTypes.bool,
 
         /**
-         * This prop controls if the CheckBox is disabled or not.
+         * This prop controls if the TextInput is disabled or not.
          */
         disabled: PropTypes.bool,
+
+        /**
+         * This prop controls if the TextInput is marked as invalid or not.
+         */
+        invalid: PropTypes.bool,
 
         /**
          * An optional css theme to be injected.
@@ -56,12 +56,7 @@ class TextInput extends PureComponent {
             'textInput': PropTypes.string,
             'textInput--invalid': PropTypes.string,
             'textInput--highlight': PropTypes.string
-        }).isRequired,
-
-        /**
-         * Static component dependencies which are injected from the outside (index.js)
-         */
-        TooltipComponent: PropTypes.any.isRequired
+        }).isRequired
     };
 
     constructor(props) {
@@ -72,29 +67,21 @@ class TextInput extends PureComponent {
 
     render() {
         const {
-            TooltipComponent,
             placeholder,
             className,
-            validationErrors,
             theme,
             highlight,
             containerClassName,
             disabled,
+            invalid,
             ...rest
         } = this.props;
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textInput]: true,
-            [theme['textInput--invalid']]: validationErrors && validationErrors.length > 0,
+            [theme['textInput--invalid']]: invalid,
             [theme['textInput--highlight']]: highlight,
             [theme['textInput--disabled']]: disabled
-        });
-
-        const tooltipIdentifier = Math.random().toString(36).substring(7);
-        const tooltipData = {'data-tip': 'Error', 'data-for': tooltipIdentifier};
-
-        const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
-            return <div key={key}>{validationError}</div>;
         });
 
         return (
@@ -106,9 +93,7 @@ class TextInput extends PureComponent {
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={this.handleValueChange}
-                    {...tooltipData}
                     />
-                {renderedErrors && <TooltipComponent type="error" place="bottom" id={tooltipIdentifier}>{renderedErrors}</TooltipComponent>}
             </div>
         );
     }

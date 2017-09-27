@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextArea from '@neos-project/react-ui-components/src/TextArea/';
+import TextAreaWithValidationResultRendering from '@neos-project/react-ui-components/src/TextArea/';
 
 const defaultOptions = {
     disabled: false,
@@ -9,14 +9,16 @@ const defaultOptions = {
 };
 
 const TextAreaEditor = props => {
-    const {value, commit, highlight, options} = props;
+    const {value, commit, highlight, options, validationErrors} = props;
 
     const finalOptions = Object.assign({}, defaultOptions, options);
 
-    return (<TextArea
+    return (<TextAreaWithValidationResultRendering
         value={value}
         onChange={commit}
         highlight={highlight}
+        invalid={validationErrors && validationErrors.length > 0}
+        validationErrors={validationErrors}
         disabled={finalOptions.disabled}
         maxLength={finalOptions.maxlength}
         readOnly={finalOptions.readonly}
@@ -26,6 +28,7 @@ const TextAreaEditor = props => {
 TextAreaEditor.propTypes = {
     value: PropTypes.string,
     highlight: PropTypes.bool,
+    validationErrors: PropTypes.array,
     commit: PropTypes.func.isRequired,
     options: PropTypes.object
 };

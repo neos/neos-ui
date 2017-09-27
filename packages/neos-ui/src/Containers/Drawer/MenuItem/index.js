@@ -12,7 +12,7 @@ export default class MenuItem extends PureComponent {
     static propTypes = {
         icon: PropTypes.string,
         label: PropTypes.string.isRequired,
-        uri: PropTypes.string.isRequired,
+        uri: PropTypes.string,
         target: PropTypes.string,
         isActive: PropTypes.bool.isRequired,
         skipI18n: PropTypes.bool,
@@ -27,7 +27,7 @@ export default class MenuItem extends PureComponent {
     }
 
     render() {
-        const {skipI18n, label, icon} = this.props;
+        const {skipI18n, label, icon, uri} = this.props;
 
         return (
             <Button
@@ -35,6 +35,7 @@ export default class MenuItem extends PureComponent {
                 onClick={this.handleClick}
                 style="transparent"
                 hoverStyle="clean"
+                disabled={!uri}
                 >
                 {icon && <Icon icon={icon} size="medium" padded="right"/>}
                 {skipI18n ? label : <I18n id={label} fallback={label}/>}

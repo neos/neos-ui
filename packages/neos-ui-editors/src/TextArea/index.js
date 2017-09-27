@@ -9,11 +9,12 @@ const defaultOptions = {
 };
 
 const TextAreaEditor = props => {
-    const {value, commit, highlight, options} = props;
+    const {id, value, commit, highlight, options} = props;
 
     const finalOptions = Object.assign({}, defaultOptions, options);
 
     return (<TextArea
+        id={id}
         value={value}
         onChange={commit}
         highlight={highlight}
@@ -24,6 +25,7 @@ const TextAreaEditor = props => {
     );
 };
 TextAreaEditor.propTypes = {
+    id: PropTypes.string,
     value: PropTypes.string,
     highlight: PropTypes.bool,
     commit: PropTypes.func.isRequired,

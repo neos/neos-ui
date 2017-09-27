@@ -16,11 +16,13 @@ class DateTime extends PureComponent {
         highlight: PropTypes.bool,
         placeholder: PropTypes.string,
         options: PropTypes.object,
+        id: PropTypes.string,
         i18nRegistry: PropTypes.object
     }
 
     render() {
         const {
+            id,
             value,
             commit,
             placeholder,
@@ -36,6 +38,7 @@ class DateTime extends PureComponent {
 
         return (
             <DateInput
+                id={id}
                 value={mappedValue}
                 onChange={onChange}
                 labelFormat={convertPhpDateFormatToMoment(options.format)}

@@ -10,6 +10,8 @@ test(`should export actionTypes`, () => {
     expect(typeof (actionTypes.CLEAR)).toBe('string');
     expect(typeof (actionTypes.APPLY)).toBe('string');
     expect(typeof (actionTypes.DISCARD)).toBe('string');
+    expect(typeof (actionTypes.ESCAPE)).toBe('string');
+    expect(typeof (actionTypes.RESUME)).toBe('string');
 });
 
 test(`should export action creators`, () => {
@@ -18,6 +20,8 @@ test(`should export action creators`, () => {
     expect(typeof (actions.clear)).toBe('function');
     expect(typeof (actions.apply)).toBe('function');
     expect(typeof (actions.discard)).toBe('function');
+    expect(typeof (actions.escape)).toBe('function');
+    expect(typeof (actions.resume)).toBe('function');
 });
 
 test(`should export a reducer`, () => {
@@ -28,6 +32,8 @@ test(`should export a reducer`, () => {
 test(`should export selectors`, () => {
     expect(selectors).not.toBe(undefined);
     expect(typeof (selectors.transientValues)).toBe('function');
+    expect(typeof (selectors.isDirty)).toBe('function');
+    expect(typeof (selectors.shouldPromptToHandleUnappliedChanges)).toBe('function');
     expect(typeof (selectors.viewConfiguration)).toBe('function');
 });
 
@@ -43,10 +49,33 @@ test(`The reducer should return an Immutable.Map as the initial state.`, () => {
     ).toBe(true);
 });
 
+test(`The initial state should not be dirty`, () => {
+    const state = new Map({});
+    const nextState = reducer(state, {
+        type: system.INIT
+    });
+
+    expect(selectors.isDirty(nextState)).toBe(false);
+});
+
+test(`The initial state should not be forcing apply`, () => {
+    const state = new Map({});
+    const nextState = reducer(state, {
+        type: system.INIT
+    });
+
+    expect(selectors.shouldPromptToHandleUnappliedChanges(nextState)).toBe(false);
+});
+
 test(`The "commit" action should store the last modification on the currently focused node.`, () => {
     const state = Immutable.fromJS({
         cr: {
             nodes: {
+                byContextPath: {
+                    '/my/path@user-foo': {
+                        contextPath: '/my/path@user-foo'
+                    }
+                },
                 focused: {
                     contextPath: '/my/path@user-foo'
                 }
@@ -100,6 +129,11 @@ test(`The "clear" action should remove pending changes for the currently focused
     const state = Immutable.fromJS({
         cr: {
             nodes: {
+                byContextPath: {
+                    '/my/path@user-foo': {
+                        contextPath: '/my/path@user-foo'
+                    }
+                },
                 focused: {
                     contextPath: '/my/path@user-foo'
                 }
@@ -147,10 +181,28 @@ test(`The "clear" action should remove pending changes for the currently focused
     });
 });
 
+test(`The "clear" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
+    const state = Immutable.fromJS({
+        ui: {
+            inspector: {
+                shouldPromptToHandleUnappliedChanges: true
+            }
+        }
+    });
+    const nextState = reducer(state, actions.clear());
+
+    expect(nextState.get('ui').get('inspector').get('shouldPromptToHandleUnappliedChanges')).toBe(false);
+});
+
 test(`The "discard" action should remove pending changes for the currently focused node.`, () => {
     const state = Immutable.fromJS({
         cr: {
             nodes: {
+                byContextPath: {
+                    '/my/path@user-foo': {
+                        contextPath: '/my/path@user-foo'
+                    }
+                },
                 focused: {
                     contextPath: '/my/path@user-foo'
                 }
@@ -196,4 +248,30 @@ test(`The "discard" action should remove pending changes for the currently focus
             }
         }
     });
+});
+
+test(`The "discard" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
+    const state = Immutable.fromJS({
+        ui: {
+            inspector: {
+                shouldPromptToHandleUnappliedChanges: true
+            }
+        }
+    });
+    const nextState = reducer(state, actions.discard());
+
+    expect(nextState.get('ui').get('inspector').get('shouldPromptToHandleUnappliedChanges')).toBe(false);
+});
+
+test(`The "resume" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
+    const state = Immutable.fromJS({
+        ui: {
+            inspector: {
+                shouldPromptToHandleUnappliedChanges: true
+            }
+        }
+    });
+    const nextState = reducer(state, actions.resume());
+
+    expect(nextState.get('ui').get('inspector').get('shouldPromptToHandleUnappliedChanges')).toBe(false);
 });

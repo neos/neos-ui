@@ -41,29 +41,61 @@ export default class NodeInfoView extends PureComponent {
             <ul className={style.nodeInfoView}>
                 <li className={style.nodeInfoView__item} title={new Date(properties.created).toLocaleString()}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('created', 'Created', {}, 'Neos.Neos')}</div>
-                    <div className={style.nodeInfoView__content}>{new Date(properties.created).toLocaleString()}</div>
+                    <NodeInfoViewContent>{new Date(properties.created).toLocaleString()}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={new Date(properties.lastModification).toLocaleString()}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('lastModification', 'Last modification', {}, 'Neos.Neos')}</div>
-                    <div className={style.nodeInfoView__content}>{new Date(properties.lastModification).toLocaleString()}</div>
+                    <NodeInfoViewContent>{new Date(properties.lastModification).toLocaleString()}</NodeInfoViewContent>
                 </li>
                 {properties.lastPublication ? (<li className={style.nodeInfoView__item} title={new Date(properties.lastPublication).toLocaleString()}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('lastPublication', 'Last publication', {}, 'Neos.Neos')}</div>
-                    <div className={style.nodeInfoView__content}>{new Date(properties.lastPublication).toLocaleString()}</div>
+                    <NodeInfoViewContent>{new Date(properties.lastPublication).toLocaleString()}</NodeInfoViewContent>
                 </li>) : []}
                 <li className={style.nodeInfoView__item} title={properties.identifier}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('identifier', 'Identifier', {}, 'Neos.Neos')}</div>
-                    <div className={style.nodeInfoView__content}>{properties.identifier}</div>
+                    <NodeInfoViewContent>{properties.identifier}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={properties.path}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('name', 'Name', {}, 'Neos.Neos')}</div>
-                    <div className={style.nodeInfoView__content}>{properties.name}</div>
+                    <NodeInfoViewContent>{properties.name}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={nodeType}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('type', 'Type', {}, 'Neos.Neos')}</div>
-                    <div className={style.nodeInfoView__content}>{nodeType}</div>
+                    <NodeInfoViewContent>{nodeType}</NodeInfoViewContent>
                 </li>
             </ul>
+        );
+    }
+}
+
+/**
+ * Handles the automatic selection of it's content to ease copy&paste
+ */
+class NodeInfoViewContent extends PureComponent {
+    static propTypes = {
+        children: PropTypes.node
+    };
+
+    handleReference = ref => {
+        this.element = ref;
+    }
+
+    handleClick = () => {
+        if (this.element) {
+            window.getSelection().selectAllChildren(this.element);
+        }
+    }
+
+    render() {
+        return (
+            <div
+                role="button"
+                ref={this.handleReference}
+                className={style.nodeInfoView__content}
+                onClick={this.handleClick}
+                >
+                {this.props.children}
+            </div>
         );
     }
 }

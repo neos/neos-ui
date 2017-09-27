@@ -81,10 +81,12 @@ export default class Node extends PureComponent {
     }
 
     componentDidMount() {
-        // Always request scroll on first render
-        this.setState({
-            shouldScrollIntoView: true
-        });
+        // Always request scroll on first render if given node is focused
+        if (this.props.focusedNodeContextPath === $get('contextPath', this.props.node)) {
+            this.setState({
+                shouldScrollIntoView: true
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -114,7 +116,11 @@ export default class Node extends PureComponent {
                 const nodeIsNotInView = nodeTopPosition < scrollingElementPosition.top + offset || nodeTopPosition > scrollingElementPosition.bottom - offset;
                 if (nodeIsNotInView) {
                     const scrollTop = nodeTopPosition - scrollingElement.firstElementChild.getBoundingClientRect().top - offset;
-                    animate(scrollingElement, {scrollTop});
+                    animate({scrollTop: scrollingElement.scrollTop}, {scrollTop}, {
+                        step: ({scrollTop}) => {
+                            scrollingElement.scrollTop = scrollTop;
+                        }
+                    });
                 }
                 this.setState({
                     shouldScrollIntoView: false

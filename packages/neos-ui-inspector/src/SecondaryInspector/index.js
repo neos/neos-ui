@@ -3,22 +3,32 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Portal from 'react-portal';
 import mergeClassNames from 'classnames';
-import {$transform, $get} from 'plow-js';
+import {$get} from 'plow-js';
+
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 
 import style from './style.css';
 
-@connect($transform({
-    isFringeLeft: $get('ui.leftSideBar.isHidden'),
-    isFringeRight: $get('ui.rightSideBar.isHidden'),
-    isFullScreen: $get('ui.fullScreen.isFullScreen')
-}))
+@connect(state => {
+    const isDirty = selectors.UI.Inspector.isDirty(state);
+    const shouldPromptToHandleUnappliedChanges = selectors.UI.Inspector.shouldPromptToHandleUnappliedChanges(state);
+    const unappliedChangesOverlayIsVisible = isDirty && !shouldPromptToHandleUnappliedChanges;
+
+    return {
+        isFringeLeft: $get('ui.leftSideBar.isHidden', state),
+        isFringeRight: $get('ui.rightSideBar.isHidden', state),
+        isFullScreen: $get('ui.fullScreen.isFullScreen', state),
+        unappliedChangesOverlayIsVisible
+    };
+})
 export default class SecondaryInspector extends PureComponent {
     static propTypes = {
         isFringeLeft: PropTypes.bool.isRequired,
         isFringeRight: PropTypes.bool.isRequired,
+        unappliedChangesOverlayIsVisible: PropTypes.bool.isRequired,
 
         // Interaction related propTypes.
         onClose: PropTypes.func.isRequired,
@@ -30,12 +40,14 @@ export default class SecondaryInspector extends PureComponent {
             onClose,
             children,
             isFringeLeft,
-            isFringeRight
+            isFringeRight,
+            unappliedChangesOverlayIsVisible
         } = this.props;
         const finalClassName = mergeClassNames({
             [style.secondaryInspector]: true,
             [style['secondaryInspector--isFringeLeft']]: isFringeLeft,
-            [style['secondaryInspector--isFringeRight']]: isFringeRight
+            [style['secondaryInspector--isFringeRight']]: isFringeRight,
+            [style['secondaryInspector--isElevated']]: unappliedChangesOverlayIsVisible
         });
 
         return (

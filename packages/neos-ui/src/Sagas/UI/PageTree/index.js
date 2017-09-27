@@ -79,12 +79,16 @@ function * watchNodeCreated() {
     });
 }
 
-function * watchReloadTree({globalRegistry}) {
+function * watchReloadTree({globalRegistry, configuration}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     yield * takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
         const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
-        const toggledContextPaths = yield select(selectors.UI.PageTree.getToggled);
-        const nodesToReload = documentNodes.toArray().filter(node => toggledContextPaths.includes(node.get('contextPath')));
+        const {loadingDepth} = configuration.nodeTree;
+        const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsed, {loadingDepth});
+        const nodesToReload = documentNodes.toArray().filter(node =>
+            uncollapsedContextPaths.includes(node.get('contextPath')) &&
+            node.get('children').filter(child => nodeTypesRegistry.hasRole(child.get('nodeType'), 'document')).size
+        );
 
         for (let i = 0; i < nodesToReload.length; i++) {
             const node = nodesToReload[i];

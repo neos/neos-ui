@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
+import omit from 'lodash.omit';
 
 class TextInput extends PureComponent {
     static propTypes = {
@@ -44,10 +45,25 @@ class TextInput extends PureComponent {
          */
         disabled: PropTypes.bool,
 
-        /**
+        /*
          * This prop controls if the TextInput is marked as invalid or not.
          */
         invalid: PropTypes.bool,
+
+        /**
+         * This prob controls what function is triggered when the enter key is pressed
+         */
+        onEnterKey: PropTypes.func,
+
+        /**
+         * A prop of which type this input field is eg password
+         */
+        type: PropTypes.string,
+
+        /**
+         * Set the focus to this input element after mount
+         */
+        setFocus: PropTypes.bool,
 
         /**
          * An optional css theme to be injected.
@@ -63,6 +79,13 @@ class TextInput extends PureComponent {
         super(props);
 
         this.handleValueChange = this.handleValueChange.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.setFocus) {
+            this.inputRef.focus();
+        }
     }
 
     render() {
@@ -72,10 +95,13 @@ class TextInput extends PureComponent {
             theme,
             highlight,
             containerClassName,
-            disabled,
+            disabled
             invalid,
-            ...rest
+            type,
+            ...restProps
         } = this.props;
+
+        const rest = omit(restProps, ['onEnterKey', 'setFocus']);
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textInput]: true,
@@ -83,19 +109,33 @@ class TextInput extends PureComponent {
             [theme['textInput--highlight']]: highlight,
             [theme['textInput--disabled']]: disabled
         });
-
+        const inputRef = el => {
+            this.inputRef = el;
+        };
         return (
             <div className={containerClassName}>
                 <input
                     {...rest}
                     className={classNames}
                     role="textbox"
+                    type={type}
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={this.handleValueChange}
+                    onKeyPress={this.handleKeyPress}
+                    ref={inputRef}
                     />
             </div>
         );
+    }
+
+    handleKeyPress(e) {
+        const enterKeyCode = 13;
+        const keyCode = e.keyCode || e.which;
+        const {onEnterKey} = this.props;
+        if (keyCode === enterKeyCode && typeof onEnterKey === 'function') {
+            onEnterKey();
+        }
     }
 
     handleValueChange(e) {

@@ -2,6 +2,7 @@
 // Helper functions for dom operations within the guest frame.
 // Functions are curried, to enable lazy execution.
 //
+import animate from 'amator';
 
 import style from './style.css';
 
@@ -151,4 +152,80 @@ export const createEmptyContentCollectionPlaceholderIfMissing = collectionDomNod
             collectionDomNode.appendChild(emptyContentCollectionOverlay);
         }
     }
+};
+
+//
+// Get the horizontal scrolloffset of the guest frame
+//
+export const getGuestFrameScrollOffsetX = () => {
+    const iframeWindow = getGuestFrameWindow();
+    const iframeDocument = getGuestFrameDocument();
+
+    return iframeWindow.scrollX || iframeWindow.pageXOffset || iframeDocument.body.scrollLeft;
+};
+
+//
+// Get the vertical scrolloffset of the guest frame
+//
+export const getGuestFrameScrollOffsetY = () => {
+    const iframeWindow = getGuestFrameWindow();
+    const iframeDocument = getGuestFrameDocument();
+
+    return iframeWindow.scrollY || iframeWindow.pageYOffset || iframeDocument.body.scrollTop;
+};
+
+//
+// Get the absolute position of an element in the guest frame
+//
+export const getAbsolutePositionOfElementInGuestFrame = element => {
+    if (element && element.getBoundingClientRect) {
+        const relativeDocumentDimensions = getGuestFrameDocument().documentElement.getBoundingClientRect();
+        const relativeElementDimensions = element.getBoundingClientRect();
+
+        return {
+            top: relativeElementDimensions.top - relativeDocumentDimensions.top,
+            left: relativeElementDimensions.left - relativeDocumentDimensions.left,
+            bottom: relativeDocumentDimensions.bottom - relativeElementDimensions.bottom,
+            right: relativeDocumentDimensions.right - relativeElementDimensions.right
+        };
+    }
+
+    return {top: 0, left: 0, bottom: 0, right: 0};
+};
+
+//
+// Checks whether the given element is visible to the user
+// in the guest frame
+//
+export const isElementVisibleInGuestFrame = (element, offsetY = 0, offsetX = 0) => {
+    const {innerHeight, innerWidth} = getGuestFrameWindow();
+    const {top, left, bottom, right} = element.getBoundingClientRect();
+    const isVisibleOnYAxis = top >= offsetY && bottom + offsetY <= innerHeight;
+    const isVisibleOnXAxis = left >= offsetX && right + offsetX <= innerWidth;
+
+    return isVisibleOnYAxis && isVisibleOnXAxis;
+};
+
+//
+// Animate scroll to a given position in the guest frame
+//
+export const animateScrollToPositionInGuestFrame = (x, y) => {
+    const initialState = {
+        x: getGuestFrameScrollOffsetX(),
+        y: getGuestFrameScrollOffsetY()
+    };
+    const iframeWindow = getGuestFrameWindow();
+
+    animate(initialState, {x, y}, {
+        step: ({x, y}) => iframeWindow.scrollTo(x, y)
+    });
+};
+
+//
+// Animate scroll to a given element in the guest frame
+//
+export const animateScrollToElementInGuestFrame = (element, offsetY = 0, offsetX = 0) => {
+    const {top, left} = getAbsolutePositionOfElementInGuestFrame(element);
+
+    animateScrollToPositionInGuestFrame(left - offsetX, top - offsetY);
 };

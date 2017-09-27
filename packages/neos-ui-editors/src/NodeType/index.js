@@ -16,13 +16,14 @@ import style from './style.css';
     const getAllowedSiblingNodeTypes = selectors.CR.Nodes.makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry);
 
     return state => {
-        const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
+        const focusedNode = selectors.CR.Nodes.focusedSelector(state);
+        const focusedNodeContextPath = $get('contextPath', focusedNode);
         const allowedSiblingNodeTypesForFocusedNode = getAllowedSiblingNodeTypes(state, {
             subject: focusedNodeContextPath,
             reference: focusedNodeContextPath
         });
 
-        return {allowedSiblingNodeTypesForFocusedNode};
+        return {focusedNode, allowedSiblingNodeTypesForFocusedNode};
     };
 })
 export default class NodeType extends PureComponent {
@@ -31,13 +32,30 @@ export default class NodeType extends PureComponent {
         commit: PropTypes.func.isRequired,
         highlight: PropTypes.bool,
 
+        focusedNode: PropTypes.object,
         allowedSiblingNodeTypesForFocusedNode: PropTypes.array,
         nodeTypesRegistry: PropTypes.object.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     }
 
+    renderNoOptionsAvailable() {
+        const {value, nodeTypesRegistry, i18nRegistry} = this.props;
+
+        return (
+            <div className={style.noOptionsAvailable}>
+                {i18nRegistry.translate($get('ui.label', nodeTypesRegistry.get(value)))}
+            </div>
+        );
+    }
+
     render() {
-        const {value, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry, highlight} = this.props;
+        const {value, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry, highlight, focusedNode} = this.props;
+
+        // auto-created child nodes cannot change type
+        if ($get('isAutoCreated', focusedNode) === true) {
+            return this.renderNoOptionsAvailable();
+        }
+
         const options = allowedSiblingNodeTypesForFocusedNode
             // Filter out system nodetypes (i.e. without groups)
             // ToDo: move this logic to some more generic place, maybe nodeTypesRegistry
@@ -52,10 +70,6 @@ export default class NodeType extends PureComponent {
             return <SelectBox options={options} highlight={highlight} value={value} onValueChange={commit}/>;
         }
 
-        return (
-            <div className={style.noOptionsAvailable}>
-                {i18nRegistry.translate($get('ui.label', nodeTypesRegistry.get(value)))}
-            </div>
-        );
+        return this.renderNoOptionsAvailable();
     }
 }

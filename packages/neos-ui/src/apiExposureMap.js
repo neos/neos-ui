@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import * as plow from 'plow-js';
 import classnames from 'classnames';
@@ -20,6 +21,7 @@ export default {
     '@vendor': () => ({
         React,
         ReactDOM,
+        PropTypes,
         Immutable,
         plow,
         classnames,

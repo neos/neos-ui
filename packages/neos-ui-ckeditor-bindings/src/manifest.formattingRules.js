@@ -177,6 +177,34 @@ export default ckEditorRegistry => {
     });
 
     /**
+     * Alignment
+     */
+
+    // left
+    formattingRules.add('left', {
+        command: 'justifyleft',
+        config: formattingRules.config.add('JustifyLeft')
+    });
+
+    // center
+    formattingRules.add('center', {
+        command: 'justifycenter',
+        config: formattingRules.config.add('JustifyCenter')
+    });
+
+    // right
+    formattingRules.add('right', {
+        command: 'justifyright',
+        config: formattingRules.config.add('JustifyRight')
+    });
+
+    // justify
+    formattingRules.add('justify', {
+        command: 'justifyblock',
+        config: formattingRules.config.add('JustifyBlock')
+    });
+
+    /**
      * Tables
      */
     formattingRules.add('table', {

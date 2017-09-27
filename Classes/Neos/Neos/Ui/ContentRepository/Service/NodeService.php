@@ -6,6 +6,7 @@ use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Utility\NodePaths;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Neos\Domain\Model\Site;
@@ -105,6 +106,21 @@ class NodeService
         }
 
         return $context->getNode($nodePath);
+    }
+
+    /**
+     * Checks if the given node exists in the given workspace
+     *
+     * @param NodeInterface $node
+     * @param Workspace $workspace
+     * @return boolean
+     */
+    public function nodeExistsInWorkspace(NodeInterface $node, Workspace $workspace)
+    {
+        $context = ['workspaceName' => $workspace->getName()];
+        $flowQuery = new FlowQuery([$node]);
+
+        return $flowQuery->context($context)->count() > 0;
     }
 
     /**

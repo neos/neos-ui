@@ -95,7 +95,7 @@ class TextInput extends PureComponent {
             theme,
             highlight,
             containerClassName,
-            disabled
+            disabled,
             invalid,
             type,
             ...restProps

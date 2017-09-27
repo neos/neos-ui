@@ -10,7 +10,6 @@ const Tooltip = props => {
         [className]: className && className.length,
         [theme.tooltip]: true,
         [theme['tooltip--error']]: type === 'error',
-        [theme['tooltip--sticky']]: type === 'error',
         [theme['tooltip--warning']]: type === 'warning',
         [theme['tooltip--success']]: type === 'success',
         [theme['tooltip--info']]: type === 'info',
@@ -77,8 +76,7 @@ Tooltip.propTypes = {
         'tooltip--warning': PropTypes.string,
         'tooltip--info': PropTypes.string,
         'tooltip--light': PropTypes.string,
-        'tooltip--success': PropTypes.string,
-        'tooltip--sticky': PropTypes.string
+        'tooltip--success': PropTypes.string
     }).isRequired
 };
 

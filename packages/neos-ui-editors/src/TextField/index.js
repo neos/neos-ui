@@ -14,7 +14,7 @@ const defaultOptions = {
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-class TextField extends PureComponent {
+export default class TextField extends PureComponent {
 
     static propTypes = {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -55,8 +55,3 @@ class TextField extends PureComponent {
         );
     }
 }
-
-//
-// Add the click-outside functionality to the TextArea component.
-//
-export default TextField;

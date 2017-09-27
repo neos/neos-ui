@@ -152,7 +152,9 @@ class AugmentationAspect
 
         // For serialization, we need to respect the UI locale, rather than the content locale
         $rememberedContentLocale = $this->i18nService->getConfiguration()->getCurrentLocale();
-        $userLocale = new Locale($this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage());
+        $userLocalePreference = $this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage();
+        $defaultLocale = $this->i18nService->getConfiguration()->getDefaultLocale();
+        $userLocale = $userLocalePreference ? new Locale($userLocalePreference) : $defaultLocale;
         $this->i18nService->getConfiguration()->setCurrentLocale($userLocale);
 
         $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));

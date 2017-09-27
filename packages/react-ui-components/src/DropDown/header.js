@@ -11,6 +11,7 @@ const ShallowDropDownHeader = props => {
         children,
         theme,
         isOpen,
+        showDropDownToggle,
         toggleDropDown,
         IconComponent,
         _refHandler,
@@ -34,7 +35,7 @@ const ShallowDropDownHeader = props => {
             aria-haspopup="true"
             >
             {children}
-            <IconComponent icon={iconName} className={theme.dropDown__chevron}/>
+            {showDropDownToggle && <IconComponent icon={iconName} className={theme.dropDown__chevron}/>}
         </div>
     );
 };
@@ -70,6 +71,8 @@ ShallowDropDownHeader.propTypes = {
     isOpen: PropTypes.bool,
     toggleDropDown: PropTypes.func.isRequired,
 
+    showDropDownToggle: PropTypes.bool,
+
     /**
      * An interal prop for testing purposes, do not set this prop manually.
      */
@@ -89,6 +92,7 @@ ShallowDropDownHeader.propTypes = {
 };
 ShallowDropDownHeader.defaultProps = {
     _refHandler: makeFocusNode,
+    showDropDownToggle: true,
     shouldKeepFocusState: true
 };
 

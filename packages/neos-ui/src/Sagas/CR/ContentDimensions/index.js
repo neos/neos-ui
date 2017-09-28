@@ -33,6 +33,7 @@ function * watchSelectPreset({configuration}) {
         const siteNodeContextPath = $get('contextPath', siteNode);
         const targetSiteNodeContextPath = `${siteNodeContextPath.split('@')[0]}@${nodeContextPath.split('@')[1]}`;
 
+        yield put(actions.UI.ContentCanvas.setSrc(nodeFrontendUri));
         const nodes = yield q([targetSiteNodeContextPath, nodeContextPath]).neosUiDefaultNodes(
             configuration.nodeTree.presets.default.baseNodeType,
             configuration.nodeTree.loadingDepth
@@ -46,7 +47,6 @@ function * watchSelectPreset({configuration}) {
                 return nodes;
             }, {})
         }));
-        yield put(actions.UI.ContentCanvas.setSrc(nodeFrontendUri));
 
         sourceDimensions = targetDimensions;
     }

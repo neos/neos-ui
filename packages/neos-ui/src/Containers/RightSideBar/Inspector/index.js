@@ -162,10 +162,13 @@ export default class Inspector extends PureComponent {
                         // Render each tab as a TabPanel
                         //
                         .map(tab => {
+                            const tooltipLabel = <I18n id={tab.label} fallback={tab.label}/>;
+
                             return (
                                 <TabPanel
                                     key={tab.id}
                                     icon={tab.icon}
+                                    tooltipLabel={tooltipLabel}
                                     groups={tab.groups}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
                                     node={node}

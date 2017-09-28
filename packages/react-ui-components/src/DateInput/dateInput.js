@@ -42,6 +42,16 @@ export class DateInput extends PureComponent {
         highlight: PropTypes.bool,
 
         /**
+         * Display only date picker
+         */
+        dateOnly: PropTypes.bool,
+
+        /**
+         * Display only time picker
+         */
+        timeOnly: PropTypes.bool,
+
+        /**
          * The changehandler to call when the date changes.
          */
         onChange: PropTypes.func.isRequired,
@@ -100,6 +110,8 @@ export class DateInput extends PureComponent {
             applyLabel,
             todayLabel,
             labelFormat,
+            dateOnly,
+            timeOnly,
             highlight
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
@@ -151,6 +163,8 @@ export class DateInput extends PureComponent {
                     <DatePickerComponent
                         open={true}
                         defaultValue={value}
+                        dateFormat={!timeOnly}
+                        timeFormat={!dateOnly}
                         onChange={this.handleChange}
                         />
                     <ButtonComponent

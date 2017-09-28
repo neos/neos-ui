@@ -1,4 +1,4 @@
-import {$get} from 'plow-js';
+import {$get, $count} from 'plow-js';
 
 import {
     getGuestFrameDocument,
@@ -13,13 +13,14 @@ import style from './style.css';
 export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => contentDomNode => {
     const contextPath = contentDomNode.getAttribute('data-__neos-node-contextpath');
     const isHidden = $get([contextPath, 'properties', '_hidden'], nodes);
+    const hasChildren = Boolean($count([contextPath, 'children'], nodes));
     const isInlineEditable = nodeTypesRegistry.isInlineEditable($get([contextPath, 'nodeType'], nodes));
 
     if (isHidden) {
         contentDomNode.classList.add(style.markHiddenNodeAsHidden);
     }
 
-    if (!isInlineEditable) {
+    if (!isInlineEditable && !hasChildren) {
         createNotInlineEditableOverlay(contentDomNode);
     }
 

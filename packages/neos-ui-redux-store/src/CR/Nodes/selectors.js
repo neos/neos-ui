@@ -1,4 +1,5 @@
 import {$get} from 'plow-js';
+import Immutable from 'immutable';
 import {createSelector, defaultMemoize} from 'reselect';
 
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
@@ -233,5 +234,26 @@ export const destructiveOperationsAreDisabledSelector = createSelector(
             $get('isAutoCreated', focusedNode) ||
             siteNodeContextPath === focusedNodeContextPath
         );
+    }
+);
+
+export const focusedNodeParentLineSelector = createSelector(
+    [
+        focusedSelector,
+        $get('cr.nodes.byContextPath'),
+        (_, highestConsideredParentNode) => highestConsideredParentNode
+    ],
+    (focusedNode, nodesByContextPath, highestConsideredParentNode) => {
+        let result = Immutable.fromJS([focusedNode]);
+        let currentNode = focusedNode;
+
+        while (currentNode && $get('contextPath', currentNode) !== $get('contextPath', highestConsideredParentNode)) {
+            currentNode = $get(parentNodeContextPath($get('contextPath', currentNode)), nodesByContextPath);
+            if (currentNode) {
+                result = result.push(currentNode);
+            }
+        }
+
+        return result;
     }
 );

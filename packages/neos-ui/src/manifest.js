@@ -204,7 +204,7 @@ manifest('main', {}, globalRegistry => {
     // When the server advices to reload the document, just reload it
     //
     serverFeedbackHandlers.add('Neos.Neos.Ui:ReloadDocument', (feedbackPayload, {store}) => {
-        const currentPreviewUrl = $get('ui.contentCanvas.previewUrl', store.getState());
+        const currentIframeUrl = $get('ui.contentCanvas.src', store.getState());
 
         [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
             const iframeWindow = iframe.contentWindow || iframe;
@@ -213,7 +213,8 @@ manifest('main', {}, globalRegistry => {
             // Make sure href is still consistent before reloading - if not, some other process
             // might be already handling this
             //
-            if (iframeWindow.location.href === currentPreviewUrl) {
+            console.log(iframeWindow.location.href, currentIframeUrl);
+            if (iframeWindow.location.href === currentIframeUrl) {
                 iframeWindow.location.href = iframeWindow.location.href;
             }
         });

@@ -198,6 +198,15 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator
 export const makeGetAllowedSiblingNodeTypesSelector = nodeTypesRegistry =>
     makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, parentNodeContextPath);
 
+export const makeHasAnyNodeTypeOptionsSelector = nodeTypesRegistry => createSelector(
+    [
+        makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry),
+        makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
+    ],
+    (allowedChildNodeTypes, allowedSiblingNodeTypes) =>
+        Boolean(allowedChildNodeTypes.length + allowedSiblingNodeTypes.length)
+);
+
 export const makeCanBeInsertedAlongsideSelector = nodeTypesRegistry => createSelector(
     [
         (state, {subject}) => getPathInNode(state, subject, 'nodeType'),

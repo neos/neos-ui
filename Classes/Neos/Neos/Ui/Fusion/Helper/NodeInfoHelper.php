@@ -2,6 +2,7 @@
 namespace Neos\Neos\Ui\Fusion\Helper;
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
@@ -171,24 +172,15 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function defaultNodesForBackend(NodeInterface $site, NodeInterface $documentNode, ControllerContext $controllerContext)
     {
-        $nodes = [];
-        if ($site !== $documentNode) {
-            $this->renderNodeToList($nodes, $site, $controllerContext);
+        $flowQuery = new FlowQuery([$site, $documentNode]);
+        $nodes = $flowQuery->neosUiDefaultNodes($this->baseNodeType, $this->loadingDepth)->get();
+
+        $result = [];
+        foreach ($nodes as $node) {
+            $this->renderNodeToList($result, $node, $controllerContext);
         }
 
-        $renderNodesRecursively = function (&$nodes, $baseNode, $level = 0) use (&$renderNodesRecursively, $controllerContext) {
-            if ($level < $this->loadingDepth || $this->loadingDepth === 0) {
-                foreach ($baseNode->getChildNodes($this->baseNodeType) as $childNode) {
-                    $this->renderNodeToList($nodes, $childNode, $controllerContext);
-                    $renderNodesRecursively($nodes, $childNode, $level + 1);
-                }
-            }
-        };
-        $renderNodesRecursively($nodes, $site);
-
-        $this->renderNodeToList($nodes, $documentNode, $controllerContext);
-
-        return $nodes;
+        return $result;
     }
 
     public function uri(NodeInterface $node = null, ControllerContext $controllerContext)

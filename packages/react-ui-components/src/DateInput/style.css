@@ -91,7 +91,6 @@
 }
 .wrapper {
     composes: reset from './../reset.css';
-    width: 288px;
 
     input[type='text'] {
         display: none;

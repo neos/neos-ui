@@ -14,4 +14,4 @@ export default (text, CKEDITOR) => {
 
     // 3) that's why we finally remove all remaining (opening and closing) tags with a regex.
     return text.replace(/<\/?[a-z0-9A-Z]+[^>]*>/g, '');
-}
+};

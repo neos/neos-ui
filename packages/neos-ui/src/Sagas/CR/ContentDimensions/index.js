@@ -4,6 +4,16 @@ import {$get} from 'plow-js';
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
+/**
+ * Watch for the user's request to change a dimension. And then:
+ *
+ * 1. Make sure, the current content canvas node exists in the target dimension
+ * by either loading it or offer the user a workflow to create it.
+ *
+ * 2. Load the node in the target dimension into the content canvas.
+ *
+ * 3. Load all default nodes needed for the tree
+ */
 function * watchSelectPreset({configuration}) {
     yield take(actionTypes.System.READY);
 
@@ -52,6 +62,10 @@ function * watchSelectPreset({configuration}) {
     }
 }
 
+/**
+ * Make sure, that the given nodeidentifier has a representation in the target dimension.
+ * If not: Ask the user to either create an empty node or to copy the given node.
+ */
 function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targetDimensions}) {
     const {
         getSingleNode,

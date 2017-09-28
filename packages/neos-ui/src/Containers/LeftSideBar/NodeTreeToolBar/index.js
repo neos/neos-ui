@@ -25,6 +25,7 @@ export default class NodeTreeToolBar extends PureComponent {
         isLoading: PropTypes.bool.isRequired,
         isHidden: PropTypes.bool.isRequired,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
+        hasAnyNodeTypeOptions: PropTypes.bool.isRequired,
 
         addNode: PropTypes.func.isRequired,
         copyNode: PropTypes.func.isRequired,
@@ -94,7 +95,8 @@ export default class NodeTreeToolBar extends PureComponent {
             canBePasted,
             isHidden,
             isLoading,
-            destructiveOperationsAreDisabled
+            destructiveOperationsAreDisabled,
+            hasAnyNodeTypeOptions
         } = this.props;
 
         return (
@@ -103,6 +105,7 @@ export default class NodeTreeToolBar extends PureComponent {
                     <AddNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
+                        hasAnyNodeTypeOptions={hasAnyNodeTypeOptions}
                         onClick={this.handleAddNode}
                         />
                     <HideSelectedNode
@@ -156,6 +159,7 @@ const withNodeTypesRegistry = neos(globalRegistry => ({
 export const PageTreeToolbar = withNodeTypesRegistry(connect(
     (state, {nodeTypesRegistry}) => {
         const canBePastedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const hasAnyNodeTypeOptionsSelector = selectors.CR.Nodes.makeHasAnyNodeTypeOptionsSelector(nodeTypesRegistry);
 
         return state => {
             const siteNodeContextPath = $get('cr.nodes.siteNode', state);
@@ -174,13 +178,17 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 $get('isAutoCreated', focusedNode) ||
                 siteNodeContextPath === focusedNodeContextPath
             );
+            const hasAnyNodeTypeOptions = hasAnyNodeTypeOptionsSelector(state, {
+                reference: focusedNodeContextPath
+            });
 
             return {
                 focusedNodeContextPath,
                 canBePasted,
                 isLoading,
                 isHidden,
-                destructiveOperationsAreDisabled
+                destructiveOperationsAreDisabled,
+                hasAnyNodeTypeOptions
             };
         };
     }, {
@@ -198,6 +206,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
 export const ContentTreeToolbar = withNodeTypesRegistry(connect(
     (state, {nodeTypesRegistry}) => {
         const canBePastedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const hasAnyNodeTypeOptionsSelector = selectors.CR.Nodes.makeHasAnyNodeTypeOptionsSelector(nodeTypesRegistry);
 
         return state => {
             const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
@@ -211,13 +220,17 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
             const isLoading = selectors.UI.ContentTree.getIsLoading(state);
             const isHidden = $get('properties._hidden', focusedNode);
             const destructiveOperationsAreDisabled = selectors.CR.Nodes.destructiveOperationsAreDisabledSelector(state);
+            const hasAnyNodeTypeOptions = hasAnyNodeTypeOptionsSelector(state, {
+                reference: focusedNodeContextPath
+            });
 
             return {
                 focusedNodeContextPath,
                 canBePasted,
                 isLoading,
                 isHidden,
-                destructiveOperationsAreDisabled
+                destructiveOperationsAreDisabled,
+                hasAnyNodeTypeOptions
             };
         };
     }, {

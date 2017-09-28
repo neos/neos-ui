@@ -22,7 +22,7 @@ export default class PasteClipBoardNode extends PureComponent {
 
     render() {
         const {className, canBePasted} = this.props;
-        const tooltipLabel = <I18n id="Neos.Neos:Main:paste" fallback="Copy"/>;
+        const tooltipLabel = <I18n id="Neos.Neos:Main:paste" fallback="Paste"/>;
 
         return (
             <IconButton

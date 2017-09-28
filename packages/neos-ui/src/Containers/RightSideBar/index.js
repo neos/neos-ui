@@ -7,6 +7,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import SideBar from '@neos-project/react-ui-components/src/SideBar/';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';
 
@@ -42,9 +43,11 @@ export default class RightSideBar extends PureComponent {
             [style['rightSideBar--isHidden']]: isSideBarHidden
         });
         const toggleIcon = isHidden ? 'chevron-left' : 'chevron-right';
+        const tooltipLabel = <I18n id="Neos.Neos:Main:toggleInspector" fallback="Toggle Inspector"/>;
+
         const toggle = isFullScreen ? null : (
             <IconButton
-                tooltipLabel="Toogle Sidebar"
+                tooltipLabel={tooltipLabel}
                 icon={toggleIcon}
                 className={style.rightSideBar__toggleBtn}
                 onClick={this.handleToggle}

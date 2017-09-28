@@ -27,7 +27,7 @@ export default class RefreshPageTree extends PureComponent {
             [style.spinning]: isLoading,
             [className]: className && className.length
         });
-        const tooltipLabel = <I18n id="Neos.Neos:Main:refresh" fallback="Copy"/>;
+        const tooltipLabel = <I18n id="Neos.Neos:Main:refresh" fallback="Refresh"/>;
 
         return (
             <IconButton

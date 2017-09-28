@@ -22,7 +22,7 @@ export default class DeleteSelectedNode extends PureComponent {
 
     render() {
         const {className, isDisabled} = this.props;
-        const tooltipLabel = <I18n id="Neos.Neos:Main:delete" fallback="Copy"/>;
+        const tooltipLabel = <I18n id="Neos.Neos:Main:delete" fallback="Delete"/>;
 
         return (
             <IconButton

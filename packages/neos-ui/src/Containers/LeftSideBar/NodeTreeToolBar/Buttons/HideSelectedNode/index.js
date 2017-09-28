@@ -30,7 +30,7 @@ export default class HideSelectedNode extends PureComponent {
 
     render() {
         const {className, isDisabled, isHidden} = this.props;
-        const tooltipLabel = <I18n id="Neos.Neos:Main:hideUnhide" fallback="Copy"/>;
+        const tooltipLabel = <I18n id="Neos.Neos:Main:hideUnhide" fallback="Hide / Unhide"/>;
 
         return (
             <IconButton

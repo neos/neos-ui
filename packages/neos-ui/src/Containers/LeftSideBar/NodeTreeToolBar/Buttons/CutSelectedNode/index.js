@@ -22,7 +22,7 @@ export default class CutSelectedNode extends PureComponent {
 
     render() {
         const {className, isDisabled} = this.props;
-        const tooltipLabel = <I18n id="Neos.Neos:Main:cut" fallback="Copy"/>;
+        const tooltipLabel = <I18n id="Neos.Neos:Main:cut" fallback="Cut"/>;
 
         return (
             <IconButton

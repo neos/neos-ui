@@ -175,7 +175,7 @@ export default class SelectBox extends PureComponent {
         return (
             <div className={classNames}>
                 <DropDown.Stateless className={theme.dropDown} isOpen={isOpen} onToggle={this.handleDropdownToggle} onClose={this.handleDropdownClose}>
-                    <DropDown.Header className={theme.dropDown__btn} shouldKeepFocusState={false}>
+                    <DropDown.Header className={theme.dropDown__btn} shouldKeepFocusState={false} showDropDownToggle={options && options.length > 0}>
                         {icon ?
                             <IconComponent className={theme.dropDown__btnIcon} icon={icon}/> :
                             null

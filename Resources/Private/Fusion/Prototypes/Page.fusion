@@ -53,11 +53,6 @@ prototype(Neos.Neos:Page) {
     }
 
     //
-    // Do not add Neos backend clas
-    //
-    bodyTag.attributes.class.@process.addNeosBackendClass.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
-
-    //
     // Do not print document meta data
     //
     neosBackendDocumentNodeData.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}

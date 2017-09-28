@@ -2,10 +2,10 @@
     width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
-    padding: 0 40px 0 16px;
-    height: 40px;
+    padding: 0 var(--goldenUnit) 0 var(--spacing);
+    height: var(--goldenUnit);
     margin: 0;
-    line-height: 40px;
+    line-height: var(--goldenUnit);
     font-weight: bold;
     font-size: 14px;
 
@@ -16,5 +16,5 @@
 }
 
 .content {
-    padding-bottom: 16px;
+    padding-bottom: var(--spacing);
 }

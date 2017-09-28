@@ -83,14 +83,9 @@ export default class DimensionSwitcher extends PureComponent {
         isOpen: false
     };
 
-    constructor(props) {
-        super(props);
-        this.handleSelectPreset = this.handleSelectPreset.bind(this);
-    }
-
-    handleSelectPreset() {
+    handleSelectPreset = (...args) => {
         this.setState({isOpen: false});
-        this.props.selectPreset.apply(this, arguments);
+        this.props.selectPreset(...args);
     }
 
     handleToggle = () => {

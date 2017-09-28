@@ -20,3 +20,14 @@
 :global(.neos-inline-editable:focus) {
     outline: none;
 }
+
+.notInlineEditableOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 10000;
+    background-size: 100%;
+    background-image: linear-gradient(to bottom, rgba(50, 50, 50, .1), rgba(50, 50, 50, .2), rgba(50, 50, 50, .1));
+}

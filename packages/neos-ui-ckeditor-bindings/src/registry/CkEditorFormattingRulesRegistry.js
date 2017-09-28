@@ -54,6 +54,20 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
 
                     return config;
                 },
+
+            /**
+             * create a new `format_*` configuration key and add it to `format_tags`
+             * to enable custom styles
+             */
+            addCustomFormat: (name, styleDefinition) =>
+                config => {
+                    config[`format_${name}`] = styleDefinition;
+
+                    config = this.config.addToFormatTags(name)(config);
+
+                    return config;
+                },
+
             /**
              * adds the given "buttonName" to the list of enabled buttons, i.e. configuring ACF for them correctly
              */
@@ -78,9 +92,18 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
                     } else {
                         config.extraAllowedContent = extraExpression;
                     }
-
                     return config;
                 }
         };
+    }
+
+    /**
+     * Shorthand add* method to ease creation of custom styles
+     */
+    addCustomStyle(name, styleDefinition) {
+        this.add(name, {
+            config: this.config.addCustomFormat(name, styleDefinition),
+            style: styleDefinition
+        });
     }
 }

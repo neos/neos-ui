@@ -1,0 +1,20 @@
+.label {
+    width: 100%;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    padding: 0 40px 0 16px;
+    height: 40px;
+    margin: 0;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 14px;
+
+    span {
+        display: inline-block;
+        margin-left: .1em;
+    }
+}
+
+.content {
+    padding-bottom: 16px;
+}

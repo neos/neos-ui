@@ -87,7 +87,6 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
         return {nodeFrontendUri, nodeContextPath};
     }
 
-    console.log('Open NodeVariantCreationDialog');
     yield put(actions.UI.NodeVariantCreationDialog.open(numberOfNodesMissingOnRootline));
 
     const waitForNextAction = yield race([

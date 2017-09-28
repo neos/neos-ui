@@ -1,3 +1,4 @@
+/* eslint babel/new-cap: 0 */
 export default (text, CKEDITOR) => {
     // 2) apply content filtering *with an empty filter rule set*; this will strip out:
     //    - all attributes

@@ -213,7 +213,6 @@ manifest('main', {}, globalRegistry => {
             // Make sure href is still consistent before reloading - if not, some other process
             // might be already handling this
             //
-            console.log(iframeWindow.location.href, currentIframeUrl);
             if (iframeWindow.location.href === currentIframeUrl) {
                 iframeWindow.location.href = iframeWindow.location.href;
             }

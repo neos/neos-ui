@@ -38,9 +38,9 @@ function * watchSelectPreset({configuration}) {
             configuration.nodeTree.loadingDepth
         ).get();
 
-        yield put(actions.CR.Nodes.replace({
-            siteNode: targetSiteNodeContextPath,
-            documentNode: nodeContextPath,
+        yield put(actions.CR.Nodes.switchDimension({
+            siteNodeContextPath: targetSiteNodeContextPath,
+            documentNodeContextPath: nodeContextPath,
             nodes: nodes.reduce((nodes, node) => {
                 nodes[node.contextPath] = node;
                 return nodes;

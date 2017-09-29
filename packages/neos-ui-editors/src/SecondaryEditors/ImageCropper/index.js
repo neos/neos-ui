@@ -175,8 +175,8 @@ export default class ImageCropper extends PureComponent {
                         {
                             cropConfiguration.aspectRatioReducedLabel.map((label, index) => (
                                 <div key={index}>
-                                    <Icon key={index} icon="crop"/>,
-                                    <span key={index} title={label}>{label}</span>,
+                                    <Icon key={index} icon="crop"/>
+                                    <span key={index} title={label}>{label}</span>
                                     <span key={index}>{aspectRatioLocked ? <Icon icon="lock"/> : null}</span>
                                 </div>
                             )).orSome('')

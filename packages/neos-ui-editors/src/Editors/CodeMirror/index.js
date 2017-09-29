@@ -5,8 +5,12 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Label from '@neos-project/react-ui-components/src/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
-import {CodeMirrorWrap} from '../../SecondaryEditors/index';
 
+import {neos} from '@neos-project/neos-ui-decorators';
+
+@neos(globalRegistry => ({
+    secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')
+}))
 export default class CodeMirror extends PureComponent {
     static propTypes = {
         identifier: PropTypes.string.isRequired,
@@ -14,7 +18,8 @@ export default class CodeMirror extends PureComponent {
         commit: PropTypes.func.isRequired,
         label: PropTypes.string.isRequired,
         highlightingMode: PropTypes.string,
-        value: PropTypes.string
+        value: PropTypes.string,
+        secondaryEditorsRegistry: PropTypes.object.isRequired
     };
 
     static defaultProps = {
@@ -47,6 +52,9 @@ export default class CodeMirror extends PureComponent {
     }
 
     handleOpenCodeEditor() {
+        const {secondaryEditorsRegistry} = this.props;
+        const {component: CodeMirrorWrap} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/CodeMirrorWrap');
+
         this.props.renderSecondaryInspector('CODEMIRROR_EDIT', () =>
             <CodeMirrorWrap onChange={this.handleChange} value={this.props.value} highlightingMode={this.props.highlightingMode}/>
         );

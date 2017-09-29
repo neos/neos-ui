@@ -4,12 +4,7 @@ import {$set, $drop, $get, $transform} from 'plow-js';
 import {connect} from 'react-redux';
 
 import backend from '@neos-project/neos-ui-backend-connector';
-
-import {
-    MediaDetailsScreen,
-    MediaSelectionScreen,
-    ImageCropper
-} from '../../SecondaryEditors/index';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import {PreviewScreen, Controls} from './Components/index';
 import {Image, CROP_IMAGE_ADJUSTMENT, RESIZE_IMAGE_ADJUSTMENT} from './Utils/index';
@@ -21,6 +16,9 @@ const DEFAULT_FEATURES = {
     resize: false
 };
 
+@neos(globalRegistry => ({
+    secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')
+}))
 @connect($transform({
     siteNodePath: $get('cr.nodes.siteNode')
 }))
@@ -37,6 +35,7 @@ export default class ImageEditor extends Component {
 
         commit: PropTypes.func.isRequired,
         renderSecondaryInspector: PropTypes.func.isRequired,
+        secondaryEditorsRegistry: PropTypes.object.isRequired,
 
         options: PropTypes.object,
         highlight: PropTypes.bool,
@@ -200,6 +199,8 @@ export default class ImageEditor extends Component {
     }
 
     handleThumbnailClicked() {
+        const {secondaryEditorsRegistry} = this.props;
+        const {component: MediaDetailsScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaDetailsScreen');
         const imageIdentity = $get('__identity', this.props.value);
 
         if (imageIdentity) {
@@ -238,12 +239,18 @@ export default class ImageEditor extends Component {
     }
 
     handleChooseFromMedia() {
+        const {secondaryEditorsRegistry} = this.props;
+        const {component: MediaSelectionScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen');
+
         this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () =>
             <MediaSelectionScreen onComplete={this.handleMediaSelected}/>
         );
     }
 
     handleOpenImageCropper() {
+        const {secondaryEditorsRegistry} = this.props;
+        const {component: ImageCropper} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/ImageCropper');
+
         this.setState({isImageCropperOpen: true}, () => {
             this.props.renderSecondaryInspector('IMAGE_CROP', () => <ImageCropper
                 sourceImage={Image.fromImageData(this.getUsedImage())}

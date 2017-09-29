@@ -6,25 +6,26 @@ import mergeClassNames from 'classnames';
 const Tooltip = props => {
     const {children, type, className, theme} = props;
 
-    const classNames = mergeClassNames({
-        [className]: className && className.length,
+    const finalClassName = mergeClassNames({
         [theme.tooltip]: true,
         [theme['tooltip--error']]: type === 'error',
+        [theme['tooltip--validation-error']]: type === 'validation-error',
         [theme['tooltip--warning']]: type === 'warning',
         [theme['tooltip--success']]: type === 'success',
         [theme['tooltip--info']]: type === 'info',
-        [theme['tooltip--light']]: type === 'light'
+        [theme['tooltip--light']]: type === 'light',
+        [className]: className && className.length > 0
     });
 
-    if (children) {
+    if (children || type === 'validation-error') {
         return (
-            <ReactTooltip className={classNames} {...props}>
+            <ReactTooltip className={finalClassName} {...props} >
                 {children}
             </ReactTooltip>
         );
     }
 
-    return <ReactTooltip className={classNames} {...props}/>;
+    return <ReactTooltip className={finalClassName} {...props}/>;
 };
 
 Tooltip.propTypes = {
@@ -49,7 +50,7 @@ Tooltip.propTypes = {
     /**
      * The type of the tooltip. Will change the style of the tooltip
      */
-    type: PropTypes.oneOf(['success', 'warning', 'error', 'info', 'light', 'dark']).isRequired,
+    type: PropTypes.oneOf(['success', 'warning', 'error', 'validation-error', 'info', 'light', 'dark']).isRequired,
 
     /**
      * Should the tooltop be sticky or float with the mouse cursor. Defaults
@@ -73,6 +74,8 @@ Tooltip.propTypes = {
     theme: PropTypes.shape({
         'tooltip': PropTypes.string,
         'tooltip--error': PropTypes.string,
+        'tooltip--validation-error': PropTypes.string,
+        'tooltip--sticky': PropTypes.string,
         'tooltip--warning': PropTypes.string,
         'tooltip--info': PropTypes.string,
         'tooltip--light': PropTypes.string,

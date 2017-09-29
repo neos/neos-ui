@@ -13,6 +13,20 @@
     border-color: #000!important;
 }
 
+.tooltip--validation-error {
+    position: relative !important;
+    background-color: var(--brandColorsError)!important;
+    border-color: var(--brandColorsError)!important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    opacity: 0.9 !important;
+    margin-top: 0px !important;
+    margin-left: 0px !important;
+    visibility: visible !important;
+}
+
 .tooltip--error {
     background: var(--brandColorsError)!important;
     border-color: var(--brandColorsError)!important;

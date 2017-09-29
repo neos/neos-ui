@@ -5,6 +5,6 @@
   "main": "./src/index.js",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^15.6.1"
+    "react": "^16.0.0"
   }
 }

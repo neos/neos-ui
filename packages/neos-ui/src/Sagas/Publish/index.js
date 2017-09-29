@@ -21,6 +21,9 @@ function * watchPublish() {
                 const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
                 yield put(actions.UI.Remote.finishPublishing());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+
+                // Reload the iframe to retrieve new preview uri
+                getGuestFrameDocument().location.reload();
             } catch (error) {
                 console.error('Failed to publish', error);
             }

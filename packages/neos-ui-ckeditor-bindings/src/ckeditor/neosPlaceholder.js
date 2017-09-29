@@ -65,7 +65,12 @@ export default CKEDITOR => {
             // IF: editable allows a "P" inside, we create a "newline".
             // NOTE: this condition might not be good enough; we might need to check for block level elements using CKEDITOR.dtd.$block
             if (CKEDITOR.dtd[editable.getName()].p) {
-                editable.setHtml('<p><br/></p>');
+                if (editor.config.autoParagraph) {
+                    editable.setHtml('<p><br/></p>');
+                } else {
+                    editable.setHtml('');
+                }
+
                 // Set caret in position
                 const range = editor.createRange();
                 range.moveToElementEditablePosition(editable.getFirst(), true);

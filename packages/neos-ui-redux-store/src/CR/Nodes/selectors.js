@@ -198,7 +198,7 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator
 export const makeGetAllowedSiblingNodeTypesSelector = nodeTypesRegistry =>
     makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, parentNodeContextPath);
 
-export const makeHasAnyNodeTypeOptionsSelector = nodeTypesRegistry => createSelector(
+export const makeIsAllowedToAddChildOrSiblingNodes = nodeTypesRegistry => createSelector(
     [
         makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry),
         makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)

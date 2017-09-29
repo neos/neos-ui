@@ -12,16 +12,16 @@ import {neos} from '@neos-project/neos-ui-decorators';
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect((state, {nodeTypesRegistry}) => {
-    const hasAnyNodeTypeOptionsSelector = selectors.CR.Nodes.makeHasAnyNodeTypeOptionsSelector(nodeTypesRegistry);
+    const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
 
     return state => {
         const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
-        const hasAnyNodeTypeOptions = hasAnyNodeTypeOptionsSelector(state, {
+        const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
             reference: focusedNodeContextPath
         });
 
         return {
-            hasAnyNodeTypeOptions
+            isAllowedToAddChildOrSiblingNodes
         };
     };
 }, {
@@ -33,7 +33,7 @@ export default class AddNode extends PureComponent {
         fusionPath: PropTypes.string,
         className: PropTypes.string,
         commenceNodeCreation: PropTypes.func.isRequired,
-        hasAnyNodeTypeOptions: PropTypes.bool
+        isAllowedToAddChildOrSiblingNodes: PropTypes.bool
     };
 
     handleCommenceNodeCreation = () => {
@@ -47,12 +47,12 @@ export default class AddNode extends PureComponent {
     }
 
     render() {
-        const {hasAnyNodeTypeOptions} = this.props;
+        const {isAllowedToAddChildOrSiblingNodes} = this.props;
 
         return (
             <span>
                 <IconButton
-                    isDisabled={!hasAnyNodeTypeOptions}
+                    isDisabled={!isAllowedToAddChildOrSiblingNodes}
                     className={this.props.className}
                     icon="plus"
                     onClick={this.handleCommenceNodeCreation}

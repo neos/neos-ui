@@ -12,13 +12,25 @@ import {
     CodeMirror
 } from './Editors/index';
 
+import {
+    CodeMirrorWrap,
+    ImageCropper,
+    MediaDetailsScreen,
+    MediaSelectionScreen
+} from './SecondaryEditors/index';
+
 import manifest from '@neos-project/neos-ui-extensibility';
 import backend from '@neos-project/neos-ui-backend-connector';
 
 manifest('inspectorEditors', {}, globalRegistry => {
     const editorsRegistry = globalRegistry.get('inspector').get('editors');
+    const secondaryEditorsRegistry = globalRegistry.get('inspector').get('secondaryEditors');
     const saveHooksRegistry = globalRegistry.get('inspector').get('saveHooks');
     const {createImageVariant} = backend.get().endpoints;
+
+    //
+    // Primary inspector editors
+    //
 
     editorsRegistry.add('Neos.Neos/Inspector/Editors/TextFieldEditor', {
         component: TextField
@@ -64,6 +76,26 @@ manifest('inspectorEditors', {}, globalRegistry => {
     editorsRegistry.add('Neos.Neos/Inspector/Editors/CodeEditor', {
         component: CodeMirror,
         hasOwnLabel: true
+    });
+
+    //
+    // Secondary inspector editors
+    //
+
+    secondaryEditorsRegistry.add('Neos.Neos/Inspector/Secondary/Editors/CodeMirrorWrap', {
+        component: CodeMirrorWrap
+    });
+
+    secondaryEditorsRegistry.add('Neos.Neos/Inspector/Secondary/Editors/ImageCropper', {
+        component: ImageCropper
+    });
+
+    secondaryEditorsRegistry.add('Neos.Neos/Inspector/Secondary/Editors/MediaDetailsScreen', {
+        component: MediaDetailsScreen
+    });
+
+    secondaryEditorsRegistry.add('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen', {
+        component: MediaSelectionScreen
     });
 
     //

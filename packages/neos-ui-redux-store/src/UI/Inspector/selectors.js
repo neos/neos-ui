@@ -28,6 +28,8 @@ export const isDirty = createSelector(
 
 export const shouldPromptToHandleUnappliedChanges = $get('ui.inspector.shouldPromptToHandleUnappliedChanges');
 
+export const shouldShowSecondaryInspector = $get('ui.inspector.secondaryInspectorIsOpen');
+
 const propertiesForValidationSelector = createSelector(
     [
 

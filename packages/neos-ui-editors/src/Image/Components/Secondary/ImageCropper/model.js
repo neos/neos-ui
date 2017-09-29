@@ -142,7 +142,6 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
     const whenIsOriginal = o => whenAllowOriginal(o)
         .bind(() => image.cropAspectRatio)
         .bind(aspectRatio => aspectRatio.toFixed(2) === image.aspectRatio.toFixed(2) ? Some(o) : None());// eslint-disable-line babel/new-cap
-    const whenAllowCustom = when(neosConfiguration.allowCustom);
 
     //
     // First, check if the image maybe is cropped with
@@ -163,15 +162,6 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
                 values(options).filter(o => (o.width / o.height).toFixed(2) === aspectRatio.toFixed(2))[0]
             ))
             .map(o => new ConfiguredAspectRatioStrategy(o.width, o.height, o.label))
-        )
-
-        //
-        // If the original aspect ratio does not match, assume, that a custom aspect ratio was
-        // applied
-        //
-        .orElse(
-            image.cropAdjustment
-            .bind(({width, height}) => whenAllowCustom(new CustomAspectRatioStrategy(width, height)))
         )
 
         //

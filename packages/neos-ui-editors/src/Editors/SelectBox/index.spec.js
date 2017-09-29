@@ -1,11 +1,14 @@
 import React from 'react';
-import {mount} from 'enzyme';
+import Enzyme, {mount} from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import Immutable from 'immutable';
 
 import SelectBoxEditor from './index.js';
 import {WrapWithMockGlobalRegistry, MockDataSourceDataLoader} from '../../_lib/testUtils';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 const optionValues = {
     foo: {

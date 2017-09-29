@@ -1,11 +1,14 @@
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
-import {render} from 'enzyme';
+import Enzyme, {render} from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import ToggablePanel, {
     StatelessToggablePanel,
     Header,
     Contents
 } from './toggablePanel.js';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 const defaultThemeProps = {
     theme: {

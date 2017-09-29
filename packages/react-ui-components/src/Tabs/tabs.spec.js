@@ -1,8 +1,11 @@
 import React from 'react';
-import * as enzyme from 'enzyme';
+import Enzyme from 'enzyme';
 import {createStubComponent} from './../_lib/testUtils.js';
 import Tabs, {TabMenuItem} from './tabs.js';
 import Panel from './panel.js';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 const IconComponent = createStubComponent();
 
@@ -26,7 +29,7 @@ const defaultPanelProps = {
     }
 };
 const shallow = props => {
-    return enzyme.shallow(
+    return Enzyme.shallow(
         <Tabs {...defaultProps} {...props}>
             <Panel title="foo 1" icon="icon 1" {...defaultPanelProps}>Foo 1</Panel>
             <Panel title="foo 2" icon="icon 2" {...defaultPanelProps}>Foo 2</Panel>
@@ -80,7 +83,7 @@ test('should pass the static props of the "Tabs" component to the "TabMenuItem" 
     expect(items.at(0).prop('theme')).toBe(defaultProps.theme);
 });
 test('should not attach the "tabNavigation__itemBtnIcon--hasLabel" className to the "TabMenuItem" if the Panels do not contain a titlte.', () => {
-    const wrapper = enzyme.shallow(
+    const wrapper = Enzyme.shallow(
         <Tabs {...defaultProps}>
             <Panel icon="icon 1" {...defaultPanelProps}>Foo 1</Panel>
             <Panel icon="icon 2" title="foo title" {...defaultPanelProps}>Foo 2</Panel>

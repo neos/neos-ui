@@ -5,7 +5,7 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Label from '@neos-project/react-ui-components/src/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
-import CodeMirrorWrap from './CodeMirrorWrap/index';
+import {CodeMirrorWrap} from '../../SecondaryEditors/index';
 
 export default class CodeMirror extends PureComponent {
     static propTypes = {

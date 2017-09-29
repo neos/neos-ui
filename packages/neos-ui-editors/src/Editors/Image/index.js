@@ -5,7 +5,13 @@ import {connect} from 'react-redux';
 
 import backend from '@neos-project/neos-ui-backend-connector';
 
-import {PreviewScreen, Controls, Secondary} from './Components/index';
+import {
+    MediaDetailsScreen,
+    MediaSelectionScreen,
+    ImageCropper
+} from '../../SecondaryEditors/index';
+
+import {PreviewScreen, Controls} from './Components/index';
 import {Image, CROP_IMAGE_ADJUSTMENT, RESIZE_IMAGE_ADJUSTMENT} from './Utils/index';
 
 import style from './style.css';
@@ -198,7 +204,7 @@ export default class ImageEditor extends Component {
 
         if (imageIdentity) {
             this.props.renderSecondaryInspector('IMAGE_MEDIA_DETAILS', () =>
-                <Secondary.MediaDetailsScreen
+                <MediaDetailsScreen
                     onClose={this.handleCloseSecondaryScreen}
                     imageIdentity={imageIdentity}
                     />
@@ -233,13 +239,13 @@ export default class ImageEditor extends Component {
 
     handleChooseFromMedia() {
         this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () =>
-            <Secondary.MediaSelectionScreen onComplete={this.handleMediaSelected}/>
+            <MediaSelectionScreen onComplete={this.handleMediaSelected}/>
         );
     }
 
     handleOpenImageCropper() {
         this.setState({isImageCropperOpen: true}, () => {
-            this.props.renderSecondaryInspector('IMAGE_CROP', () => <Secondary.ImageCropper
+            this.props.renderSecondaryInspector('IMAGE_CROP', () => <ImageCropper
                 sourceImage={Image.fromImageData(this.getUsedImage())}
                 options={this.props.options}
                 onComplete={this.handleMediaCrop}

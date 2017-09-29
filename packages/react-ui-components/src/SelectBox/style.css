@@ -65,6 +65,7 @@
 
 .selectBox__searchInputContainer {
     display: inline-block;
+    width: 100%;
 }
 
 .dropDown__itemLabel {
@@ -154,7 +155,7 @@
 }
 
 .selectBox__item--isSelectable {
-    height:  var(--goldenUnit);
+    height: var(--goldenUnit);
     line-height: var(--goldenUnit);
     padding: 0 var(--spacing);
     &:hover {

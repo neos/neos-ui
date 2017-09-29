@@ -112,6 +112,11 @@ const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHa
     };
 }).then(response => response.json());
 
+const extractFileEndingFromUri = uri => {
+    const parts = uri.split('.');
+    return parts.length ? '.' + parts[parts.length - 1] : '';
+};
+
 /**
  * searchTerm:se
  * nodeTypes[]:TYPO3.Neos.NodeTypes:Page
@@ -135,12 +140,16 @@ const searchNodes = options => fetchWithErrorHandling.withCsrfToken(() => ({
         d.innerHTML = result;
         const nodes = d.querySelector('.nodes');
 
-        return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => ({
-            label: node.querySelector('.node-label').innerText,
-            identifier: node.querySelector('.node-identifier').innerText,
-            nodeType: node.querySelector('.node-type').innerText,
-            uri: node.querySelector('.node-frontend-uri').innerText
-        }));
+        return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => {
+            const uri = node.querySelector('.node-frontend-uri').innerText;
+            return {
+                label: node.querySelector('.node-label').innerText,
+                identifier: node.querySelector('.node-identifier').innerText,
+                nodeType: node.querySelector('.node-type').innerText,
+                uri,
+                uriInLiveWorkspace: uri.split('@')[0] + extractFileEndingFromUri(uri)
+            };
+        });
     });
 
 const parseGetSingleNodeResult = requestPromise => {

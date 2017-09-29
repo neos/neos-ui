@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import DropDown from '../DropDown/index';
-import DefaultOptionRenderer from './defaultOptionRenderer.js';
+import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import mergeClassNames from 'classnames';
 
 export default class SelectBox extends PureComponent {
@@ -9,7 +9,8 @@ export default class SelectBox extends PureComponent {
     static defaultProps = {
         optionValueField: 'value',
         withoutGroupLabel: 'Without group',
-        scrollable: true
+        scrollable: true,
+        optionComponent: DefaultSelectBoxOption
     };
 
     static propTypes = {
@@ -88,6 +89,11 @@ export default class SelectBox extends PureComponent {
         highlight: PropTypes.bool,
 
         /**
+         * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
+         */
+        optionComponent: PropTypes.any,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
@@ -104,8 +110,7 @@ export default class SelectBox extends PureComponent {
         DropDownComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
-        TextInputComponent: PropTypes.any.isRequired,
-        OptionRenderer: PropTypes.any
+        TextInputComponent: PropTypes.any.isRequired
     };
 
     constructor(...args) {
@@ -267,17 +272,13 @@ export default class SelectBox extends PureComponent {
      */
     renderOption = (option, index) => {
         const value = option[this.props.optionValueField];
-        const {theme, IconComponent} = this.props;
+        const {theme, IconComponent, optionComponent} = this.props;
         const onClick = () => {
             this.props.onValueChange(value);
         };
 
-        let {OptionRenderer} = this.props;
-        if (!OptionRenderer) {
-            OptionRenderer = DefaultOptionRenderer;
-        }
-
-        return <OptionRenderer option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
+        const OptionComponent = optionComponent;
+        return <OptionComponent option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
     }
 
     handleDeleteClick = () => {

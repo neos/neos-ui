@@ -9,6 +9,7 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
     const enabledFormattingRuleIds = richtextToolbarRegistry
         .getEnabledFormattingRulesForNodeTypeAndProperty(nodeType.name)(propertyName);
     const placeholder = unescape(i18nRegistry.translate($get('placeholder', editorOptions)));
+    const isAutoParagraphEnabled = Boolean($get('autoparagraph', editorOptions));
 
     const ckEditorConfiguration = enabledFormattingRuleIds
         .map(formattingRuleId => formattingRulesRegistry.get(formattingRuleId))
@@ -24,7 +25,7 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
             {
                 extraPlugins: 'neos_placeholder,neos_fixPasteIntoInlineElements',
                 removePlugins: 'floatingspace,maximize,resize,contextmenu,liststyle,tabletools',
-                autoParagraph: false,
+                autoParagraph: isAutoParagraphEnabled,
                 entities: false
             },
             placeholder ? {neosPlaceholder: placeholder} : {}

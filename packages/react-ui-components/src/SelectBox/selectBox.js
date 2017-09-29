@@ -143,7 +143,8 @@ export default class SelectBox extends PureComponent {
             scrollable,
             TextInputComponent,
             IconButtonComponent,
-            IconComponent
+            IconComponent,
+            withoutGroupLabel
         } = this.props;
         const {isOpen} = this.state;
         let allowEmpty = this.props.allowEmpty;
@@ -151,7 +152,8 @@ export default class SelectBox extends PureComponent {
         const selectedValue = (options || []).find(option => option[optionValueField] === value);
 
         const groupedOptions = this.groupOptions(options);
-        const hasMultipleGroups = Object.keys(groupedOptions).length > 1;
+
+        const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[withoutGroupLabel]);
 
         // if the search box should be shown, we *need* to force allowEmpty (to display the "clear" button if a value is selected),
         // as the search box is only shown if nothing is selected.

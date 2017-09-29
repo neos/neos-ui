@@ -68,7 +68,7 @@
 }
 
 .dropDown__itemLabel {
-    padding: 0 10px;
+    padding: 0 var(--halfSpacing);
 }
 
 .selectBox__loadingIcon {
@@ -139,21 +139,24 @@
     ul {
         list-style-type: none;
         padding: 0;
+
+        li.selectBox__item--isSelectable {
+            padding-left: calc(var(--spacing) * 2);
+        }
     }
     > span {
-        font-style: italic;
         color: var(--brandColorsContrastBright);
         display: block;
-        height: 40px;
-        line-height: 40px;
-        padding: 0 1em;
+        height: var(--goldenUnit);
+        line-height: var(--goldenUnit);
+        padding: 0 var(--spacing);
     }
 }
 
 .selectBox__item--isSelectable {
-    height: 40px;
-    line-height: 40px;
-    padding: 0 2em;
+    height:  var(--goldenUnit);
+    line-height: var(--goldenUnit);
+    padding: 0 var(--spacing);
     &:hover {
         background: var(--brandColorsPrimaryBlue);
     }

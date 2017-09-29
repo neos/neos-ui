@@ -136,7 +136,6 @@ export default class ContentCanvas extends PureComponent {
 
     handleFrameAccess = iframe => {
         const {startLoading, requestRegainControl} = this.props;
-        const {isVisible} = this.state;
 
         try {
             if (iframe) {

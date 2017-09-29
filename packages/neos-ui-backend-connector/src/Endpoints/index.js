@@ -138,7 +138,8 @@ const searchNodes = options => fetchWithErrorHandling.withCsrfToken(() => ({
         return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => ({
             label: node.querySelector('.node-label').innerText,
             identifier: node.querySelector('.node-identifier').innerText,
-            nodeType: node.querySelector('.node-type').innerText
+            nodeType: node.querySelector('.node-type').innerText,
+            uri: node.querySelector('.node-frontend-uri').innerText
         }));
     });
 

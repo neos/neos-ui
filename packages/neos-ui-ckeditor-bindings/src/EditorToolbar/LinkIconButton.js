@@ -3,6 +3,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
+import mergeClassNames from 'classnames';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -95,8 +96,8 @@ class LinkTextField extends PureComponent {
         this.state = {
             searchTerm: '',
             isLoading: false,
-            searchResults: [],
-            results: []
+            searchOptions: [],
+            options: []
         };
     }
 
@@ -177,8 +178,70 @@ class LinkTextField extends PureComponent {
                     displaySearchBox={true}
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
+                    OptionRenderer={LinkOptionRenderer}
                     />
             </div>
+        );
+    }
+}
+
+class LinkOptionRenderer extends PureComponent {
+    
+    static propTypes = {
+        /**
+         * This prop represents a set of options.
+         * Each option must have a value and can have a label and an icon.
+         */
+        option: PropTypes.shape({
+            icon: PropTypes.string,
+            // "value" is not part of PropTypes validation, as the "value field" is specified via the "optionValueField" property
+            label: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.object
+            ]).isRequired,
+            uri: PropTypes.string.isRequired
+        }),
+
+        onClick: PropTypes.func.isRequired,
+
+        /**
+         * An optional css theme to be injected.
+         */
+        theme: PropTypes.shape({/* eslint-disable quote-props */
+            'wrapper': PropTypes.string,
+            'selectedOptions': PropTypes.string,
+            'selectedOptions__item': PropTypes.string
+        }).isRequired, /* eslint-enable quote-props */
+
+        //
+        // Static component dependencies which are injected from the outside (index.js)
+        // Used in sub-components
+        //
+        IconComponent: PropTypes.any.isRequired
+    }
+
+    render() {
+        const {
+            option, 
+            onClick, 
+            theme, 
+            IconComponent
+        } = this.props;
+        const {icon, label, uri} = option;
+
+        return (
+            <li 
+                onClick = {onClick}
+                className = {style.linkIconButton__item} 
+                >
+                {
+                    icon ?
+                        <IconComponent className={style.linkIconButton__itemIcon} icon={icon}/> :
+                        null
+                }
+                <span>{label}</span>
+                <span className={style.linkIconButton__link}>{uri}</span>
+            </li>
         );
     }
 }

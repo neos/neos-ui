@@ -18,4 +18,32 @@
 .linkIconButton__flyout {
     position: fixed;
     z-index: 1000;
+    width: 500px;
+}
+
+.linkIconButton__item {
+    composes: reset from './../reset.css';
+    background: var(--brandColorsContrastNeutral);
+    border-top: 1px solid var(--brandColorsContrastDarker);
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0 2em;
+    &:hover {
+        background: var(--brandColorsPrimaryBlue);
+    }
+}
+
+.linkIconButton__itemIcon {
+    composes: reset from './../reset.css';
+    padding-right: .5em;
+}
+
+.linkIconButton__link {
+    font-style: italic;
+    color: var(--brandColorsContrastBright);
+    display: block;
 }

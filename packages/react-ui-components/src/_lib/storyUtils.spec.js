@@ -3,7 +3,7 @@ import Enzyme, {shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import {StoryWrapper} from './storyUtils.js';
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({adapter: new Adapter()});
 
 test('should be a React element.', () => {
     expect(typeof StoryWrapper).toBe('function');

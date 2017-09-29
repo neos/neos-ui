@@ -5,7 +5,7 @@ import Tabs, {TabMenuItem} from './tabs.js';
 import Panel from './panel.js';
 import Adapter from 'enzyme-adapter-react-16';
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({adapter: new Adapter()});
 
 const IconComponent = createStubComponent();
 

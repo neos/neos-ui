@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 import SelectBoxEditor from './index.js';
 import {WrapWithMockGlobalRegistry, MockDataSourceDataLoader} from '../../_lib/testUtils';
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({adapter: new Adapter()});
 
 const optionValues = {
     foo: {

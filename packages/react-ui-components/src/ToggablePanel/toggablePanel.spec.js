@@ -8,7 +8,7 @@ import ToggablePanel, {
     Contents
 } from './toggablePanel.js';
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({adapter: new Adapter()});
 
 const defaultThemeProps = {
     theme: {

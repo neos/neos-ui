@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import I18n from './index.js';
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({adapter: new Adapter()});
 
 const FakeRegistry = {
     translate(key) {

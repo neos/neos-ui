@@ -28,7 +28,7 @@ const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key')
     // Extract all position keys from the subject
     const positionsArray = subject.map(value => positionKey in value ? value[positionKey] : 0);
     // Extract valid id keys
-    const validKeys = subject.map(value => idKey in value && value[idKey]).filter(i => i);
+    const validKeys = subject.map(value => idKey in value && value[idKey]).filter(i => i).map(i => String(i));
 
     const middleKeys = [];
     const startKeys = [];
@@ -39,8 +39,8 @@ const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key')
 
     // Split all positions into start, end, before, after and middle keys
     positionsArray.forEach((value, index) => {
-        if (Number.isInteger(value)) {
-            middleKeys.push({index, weight: value});
+        if (isNaN(value) === false) {
+            middleKeys.push([index, Number(value)]);
         } else if (typeof value === 'string') {
             if (value.includes('start')) {
                 const weightMatch = value.match(/start\s+(\d+)/);
@@ -72,6 +72,9 @@ const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key')
                 corruptKeys.push(index);
                 console.warn('The following position value is corrupt: %s', value);
             }
+        } else {
+            corruptKeys.push(index);
+            console.warn('The following position value is corrupt: %s', value);
         }
     });
 
@@ -90,7 +93,7 @@ const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key')
     while (beforeKeys.length > 0 || afterKeys.length > 0) {
         let alteredNumber = 0;
         beforeKeys.forEach((pair, index) => { // eslint-disable-line no-loop-func
-            const targetIndexInSubject = subject.findIndex(item => item[idKey] === pair[1]);
+            const targetIndexInSubject = subject.findIndex(item => String(item[idKey]) === pair[1]);
             const indexInIndexes = sortedIndexes.findIndex(item => item === targetIndexInSubject);
             if (indexInIndexes !== -1) {
                 sortedIndexes.splice(indexInIndexes, 0, pair[0]);
@@ -99,7 +102,7 @@ const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key')
             }
         });
         afterKeys.forEach((pair, index) => { // eslint-disable-line no-loop-func
-            const targetIndexInSubject = subject.findIndex(item => item.key === pair[1]);
+            const targetIndexInSubject = subject.findIndex(item => String(item[idKey]) === pair[1]);
             const indexInIndexes = sortedIndexes.findIndex(item => item === targetIndexInSubject);
             if (indexInIndexes !== -1) {
                 sortedIndexes.splice(indexInIndexes + 1, 0, pair[0]);

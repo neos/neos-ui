@@ -10,7 +10,6 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Session\SessionInterface;
-use Neos\Fusion\Core\Cache\ContentCache;
 use Neos\Neos\Service\UserService;
 
 /**
@@ -32,12 +31,6 @@ class BackendRedirectionServiceAspect
      * @var SessionInterface
      */
     protected $session;
-
-    /**
-     * @Flow\Inject
-     * @var ContentCache
-     */
-    protected $contentCache;
 
     /**
      * @Flow\Around("method(Neos\Neos\Service\BackendRedirectionService->getAfterLoginRedirectionUri())")

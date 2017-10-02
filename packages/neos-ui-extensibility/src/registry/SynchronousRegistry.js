@@ -31,8 +31,20 @@ export default class SortedSynchronousRegistry extends AbstractRegistry {
         return result ? result.value : false;
     }
 
+    _getChildrenWrapped(searchKey) {
+        return this._registry.filter(item => item.key.indexOf(searchKey + '/') === 0);
+    }
+
+    getChildrenAsObject(searchKey) {
+        const result = {};
+        this._getChildrenWrapped(searchKey).forEach(item => {
+            result[item.key] = item.value;
+        });
+        return result;
+    }
+
     getChildren(searchKey) {
-        return this._registry.filter(item => item.key.indexOf(searchKey + '/') === 0).map(item => item.value);
+        return this._getChildrenWrapped(searchKey).map(item => item.value);
     }
 
     has(key) {

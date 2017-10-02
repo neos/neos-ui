@@ -106,6 +106,19 @@ test(`Circulare reference go to the end (after)`, () => {
     ];
     expect(positionalArraySorter(source)).toEqual(result);
 });
+test(`Handles non-word keys`, () => {
+    const source = [
+        {position: 'after $#@!'},
+        {key: '$#@!'},
+        {position: 'before $#@!'}
+    ];
+    const result = [
+        {position: 'before $#@!'},
+        {key: '$#@!'},
+        {position: 'after $#@!'}
+    ];
+    expect(positionalArraySorter(source)).toEqual(result);
+});
 test(`Corrupt keys go after the middle`, () => {
     const source = [
         {position: {}},

@@ -51,7 +51,7 @@ const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key')
                 const weight = (weightMatch && weightMatch[1]) || 0;
                 endKeys.push([index, Number(weight)]);
             } else if (value.includes('before')) {
-                const keyMatch = value.match(/before\s+(\w+)/);
+                const keyMatch = value.match(/before\s+(\S+)/);
                 const key = keyMatch && keyMatch[1];
                 if (key && validKeys.includes(key)) {
                     beforeKeys.push([index, key]);
@@ -60,7 +60,7 @@ const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key')
                     console.warn('The following position value is corrupt: %s', value);
                 }
             } else if (value.includes('after')) {
-                const keyMatch = value.match(/after\s+(\w+)/);
+                const keyMatch = value.match(/after\s+(\S+)/);
                 const key = keyMatch && keyMatch[1];
                 if (key && validKeys.includes(key)) {
                     afterKeys.push([index, key]);

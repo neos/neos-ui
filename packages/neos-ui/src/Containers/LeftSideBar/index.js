@@ -48,12 +48,10 @@ export default class LeftSideBar extends PureComponent {
             [style['leftSideBar__bottom--isCollapsed']]: !this.state.isBottomOpen
         });
 
-        const PageTreeToolbar = containerRegistry.get('LeftSideBar/PageTreeToolbar');
-        const PageTreeSearchbar = containerRegistry.get('LeftSideBar/PageTreeSearchbar');
-        const PageTree = containerRegistry.get('LeftSideBar/PageTree');
+        const LeftSideBarTop = containerRegistry.getChildren('LeftSideBar/Top');
+        const LeftSideBarBottom = containerRegistry.getChildren('LeftSideBar/Bottom');
 
         const ContentTreeToolbar = containerRegistry.get('LeftSideBar/ContentTreeToolbar');
-        const ContentTree = containerRegistry.get('LeftSideBar/ContentTree');
 
         const openedIcon = 'chevron-down';
         const closedIcon = 'chevron-up';
@@ -71,9 +69,7 @@ export default class LeftSideBar extends PureComponent {
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 <div className={style.leftSideBar__top}>
-                    <PageTreeToolbar/>
-                    <PageTreeSearchbar/>
-                    <PageTree isExpanded={!this.state.isBottomOpen}/>
+                    {LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!this.state.isBottomOpen}/>)}
                 </div>
 
                 <hr/>
@@ -83,7 +79,7 @@ export default class LeftSideBar extends PureComponent {
                         <ContentTreeToolbar/>
                     </ToggablePanel.Header>
                     <ToggablePanel.Contents noPadding={true}>
-                        <ContentTree/>
+                        {LeftSideBarBottom.map((Item, key) => <Item key={key}/>)}
                     </ToggablePanel.Contents>
                 </ToggablePanel>
 

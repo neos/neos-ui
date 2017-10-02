@@ -24,11 +24,8 @@ export default class PrimaryToolbar extends PureComponent {
     render() {
         const {isHidden, containerRegistry} = this.props;
 
-        const MenuToggler = containerRegistry.get('PrimaryToolbar/MenuToggler');
-        const LeftSideBarToggler = containerRegistry.get('PrimaryToolbar/LeftSideBarToggler');
-        const EditModePanelToggler = containerRegistry.get('PrimaryToolbar/EditModePanelToggler');
-        const UserDropDown = containerRegistry.get('PrimaryToolbar/UserDropDown');
-        const PublishDropDown = containerRegistry.get('PrimaryToolbar/PublishDropDown');
+        const PrimaryToolbalLeft = containerRegistry.getChildren('PrimaryToolbar/Left');
+        const PrimaryToolbalRight = containerRegistry.getChildren('PrimaryToolbar/Right');
 
         const classNames = mergeClassNames({
             [style.primaryToolbar]: true,
@@ -36,13 +33,10 @@ export default class PrimaryToolbar extends PureComponent {
         });
         return (
             <Bar position="top" className={classNames}>
-                <MenuToggler className={style.primaryToolbar__btn}/>
-                <LeftSideBarToggler className={style.primaryToolbar__btn}/>
-                <EditModePanelToggler className={style.primaryToolbar__btn}/>
+                {PrimaryToolbalLeft.map((Item, key) => <Item className={style.primaryToolbar__btn} key={key}/>)}
 
                 <div className={style.primaryToolbar__rightSidedActions}>
-                    <UserDropDown/>
-                    <PublishDropDown/>
+                    {PrimaryToolbalRight.map((Item, key) => <Item key={key}/>)}
                 </div>
             </Bar>
         );

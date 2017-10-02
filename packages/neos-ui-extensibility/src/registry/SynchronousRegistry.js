@@ -51,6 +51,6 @@ export default class SortedSynchronousRegistry extends AbstractRegistry {
     }
 
     getAllAsList() {
-        return this._registry.map(item => item.value);
+        return this._registry.map(item => Object.assign({id: item.key}, item.value));
     }
 }

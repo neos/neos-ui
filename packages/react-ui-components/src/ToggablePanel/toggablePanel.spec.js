@@ -122,14 +122,15 @@ const fullyRenderToggablePanel = isOpen => {
     </ToggablePanel>);
 };
 
-const getHeaderDomNode = panelDomNode =>
-    panelDomNode.children('section').children('div').first();
+const getHeaderDomNode = panelDomNode => panelDomNode;
 
 const getContentsDomNode = panelDomNode =>
     panelDomNode.children('section').children('div').first().next();
 
 test('open ToggablePanel should render a <ToggablePanel.Header/> with an "aria-expanded" attribute of "true".', () => {
     const wrapper = fullyRenderToggablePanel(true);
+    console.error(getHeaderDomNode(wrapper).html());
+    console.error(getHeaderDomNode(wrapper).equals('<div />'));
 
     expect(getHeaderDomNode(wrapper).attr('aria-expanded')).toBeTruthy();
 });

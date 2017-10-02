@@ -1,5 +1,5 @@
 import AbstractRegistry from './AbstractRegistry';
-import {positionalArraySorter} from '@neos-project/utils-helpers'
+import {positionalArraySorter} from '@neos-project/utils-helpers';
 
 export default class SortedSynchronousRegistry extends AbstractRegistry {
     constructor(description) {

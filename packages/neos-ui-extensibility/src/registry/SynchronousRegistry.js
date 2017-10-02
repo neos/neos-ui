@@ -1,38 +1,56 @@
 import AbstractRegistry from './AbstractRegistry';
 
-export default class SynchronousRegistry extends AbstractRegistry {
+export default class SortedSynchronousRegistry extends AbstractRegistry {
     constructor(description) {
         super(description);
 
-        // internal registry, containing the keys as object keys, and the values being the values in the registry.
-        this._registry = {};
-        this._keys = [];
+        this._registry = [];
     }
 
-    add(key, value) {
-        // TODO: implement position in registry!
-        // TODO: "key" must be string!
-        this._registry[key] = value;
-        this._keys.push(key);
+    set(key, value, position = 0) {
+        if (typeof key !== 'string') {
+            throw new Error('Key must be a string');
+        }
+        if (typeof position !== 'string' && typeof position !== 'number') {
+            throw new Error('Position must be a string or a number');
+        }
+        const entry = {key, value};
+        if (position) {
+            entry.position = position;
+        }
+        this._registry.push(entry);
 
-        return this._registry[key];
+        return value;
     }
 
     get(key) {
-        // TODO: "key" must be string!
-        return this._registry[key];
+        if (typeof key !== 'string') {
+            throw new Error('Key must be a string');
+        }
+        const result = this._registry.find(item => item.key === key);
+        return result ? result.value : false;
+    }
+
+    getChildren(searchKey) {
+        return this._registry.filter(item => item.key.indexOf(searchKey + '/') === 0).map(item => item.value);
     }
 
     has(key) {
-        // TODO: "key" must be string!
-        return {}.hasOwnProperty.call(this._registry, key);
+        if (typeof key !== 'string') {
+            throw new Error('Key must be a string');
+        }
+        return this._registry.find(item => item.key === key) && true;
     }
 
     getAllAsObject() {
-        return Object.assign({}, this._registry);
+        const result = {};
+        this._registry.forEach(item => {
+            result[item.key] = item.value;
+        });
+        return result;
     }
 
     getAllAsList() {
-        return Object.keys(this._registry).map(key => Object.assign({id: key}, this._registry[key]));
+        return this._registry.map(item => item.value);
     }
 }

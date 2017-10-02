@@ -170,7 +170,7 @@ manifest('main', {}, globalRegistry => {
         const timeout = severity.toLowerCase() === 'success' ? 5000 : 0;
         const id = uuid.v4();
 
-        store.dispatch(actions.UI.FlashMessages.set(id, message, severity, timeout));
+        store.dispatch(actions.UI.FlashMessages.add(id, message, severity, timeout));
     };
     serverFeedbackHandlers.set('Neos.Neos.Ui:Success', flashMessageFeedbackHandler);
     serverFeedbackHandlers.set('Neos.Neos.Ui:Error', flashMessageFeedbackHandler);

@@ -1,4 +1,5 @@
 import AbstractRegistry from './AbstractRegistry';
+import {positionalArraySorter} from '@neos-project/utils-helpers'
 
 export default class SortedSynchronousRegistry extends AbstractRegistry {
     constructor(description) {
@@ -32,7 +33,8 @@ export default class SortedSynchronousRegistry extends AbstractRegistry {
     }
 
     _getChildrenWrapped(searchKey) {
-        return this._registry.filter(item => item.key.indexOf(searchKey + '/') === 0);
+        const unsortedChildren = this._registry.filter(item => item.key.indexOf(searchKey + '/') === 0);
+        return positionalArraySorter(unsortedChildren);
     }
 
     getChildrenAsObject(searchKey) {
@@ -54,15 +56,19 @@ export default class SortedSynchronousRegistry extends AbstractRegistry {
         return this._registry.find(item => item.key === key) && true;
     }
 
+    _getAllWrapped() {
+        return positionalArraySorter(this._registry);
+    }
+
     getAllAsObject() {
         const result = {};
-        this._registry.forEach(item => {
+        this._getAllWrapped().forEach(item => {
             result[item.key] = item.value;
         });
         return result;
     }
 
     getAllAsList() {
-        return this._registry.map(item => Object.assign({id: item.key}, item.value));
+        return this._getAllWrapped().map(item => Object.assign({id: item.key}, item.value));
     }
 }

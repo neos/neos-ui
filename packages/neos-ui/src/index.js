@@ -93,7 +93,7 @@ function * application() {
     const nodeTypesSchema = yield getJsonResource(configuration.endpoints.nodeTypeSchema);
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     Object.keys(nodeTypesSchema.nodeTypes).forEach(nodeTypeName => {
-        nodeTypesRegistry.add(nodeTypeName, {
+        nodeTypesRegistry.set(nodeTypeName, {
             ...nodeTypesSchema.nodeTypes[nodeTypeName],
             name: nodeTypeName
         });
@@ -117,7 +117,7 @@ function * application() {
     const editPreviewModesRegistry = globalRegistry.get('editPreviewModes');
 
     Object.keys(frontendConfiguration.editPreviewModes).forEach(editPreviewModeName => {
-        editPreviewModesRegistry.add(editPreviewModeName, {
+        editPreviewModesRegistry.set(editPreviewModeName, {
             ...frontendConfiguration.editPreviewModes[editPreviewModeName]
         });
     });

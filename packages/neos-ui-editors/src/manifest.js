@@ -18,48 +18,48 @@ manifest('inspectorEditors', {}, globalRegistry => {
     const saveHooksRegistry = globalRegistry.get('inspector').get('saveHooks');
     const {createImageVariant} = backend.get().endpoints;
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/TextFieldEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/TextFieldEditor', {
         component: TextField
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/TextAreaEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/TextAreaEditor', {
         component: TextArea
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/BooleanEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/BooleanEditor', {
         component: Boolean,
         hasOwnLabel: true
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/DateTimeEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/DateTimeEditor', {
         component: DateTime
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/ImageEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/ImageEditor', {
         component: Image
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/SelectBoxEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/SelectBoxEditor', {
         component: SelectBox
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/LinkEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/LinkEditor', {
         component: Link
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/ReferenceEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/ReferenceEditor', {
         component: Reference
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/ReferencesEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/ReferencesEditor', {
         component: References
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/NodeTypeEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/NodeTypeEditor', {
         component: NodeType
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/CodeEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/CodeEditor', {
         component: CodeMirror,
         hasOwnLabel: true
     });
@@ -68,7 +68,7 @@ manifest('inspectorEditors', {}, globalRegistry => {
     // This hook will create an image variant right before changes to an image
     // are saved
     //
-    saveHooksRegistry.add(
+    saveHooksRegistry.set(
         'Neos.UI:Hook.BeforeSave.CreateImageVariant',
         (value, options) => {
             const {__identity, adjustments, originalAsset} = options.object;

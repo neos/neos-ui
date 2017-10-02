@@ -10,7 +10,7 @@ import initializeFormattingRulesRegistry from './manifest.formattingRules';
 import initializeRichtextToolbarRegistry from './manifest.richtextToolbar';
 
 manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
-    const ckEditorRegistry = globalRegistry.add(
+    const ckEditorRegistry = globalRegistry.set(
         'ckEditor',
         new SynchronousMetaRegistry(`
             # Registries for CK Editor
@@ -26,7 +26,7 @@ manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
     // Add CK Editor to the list of inline editors
     //
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
-    inlineEditorRegistry.add('ckeditor', {
+    inlineEditorRegistry.set('ckeditor', {
         bootstrap: boostrapCkEditorApi(formattingRulesRegistry),
         createInlineEditor: createCkEditor,
         ToolbarComponent: EditorToolbar

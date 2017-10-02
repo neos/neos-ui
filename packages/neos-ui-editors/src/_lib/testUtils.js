@@ -10,7 +10,7 @@ class FakeI18NRegistry extends SynchronousRegistry {
         return key;
     }
 }
-globalRegistry.add('i18n', new FakeI18NRegistry());
+globalRegistry.set('i18n', new FakeI18NRegistry());
 
 // Data Source DataLoader
 export const MockDataSourceDataLoader = {
@@ -37,8 +37,8 @@ export const MockDataSourceDataLoader = {
         return this._currentPromise;
     }
 };
-globalRegistry.add('dataLoaders', new SynchronousRegistry());
-globalRegistry.get('dataLoaders').add('DataSources', MockDataSourceDataLoader);
+globalRegistry.set('dataLoaders', new SynchronousRegistry());
+globalRegistry.get('dataLoaders').set('DataSources', MockDataSourceDataLoader);
 
 // wrapper
 export class WrapWithMockGlobalRegistry extends PureComponent {

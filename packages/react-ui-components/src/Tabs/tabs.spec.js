@@ -108,9 +108,9 @@ test('should render a Panel wrapped in a div which is is hidden depending on the
     const divs = wrapper.children();
 
     expect(divs.at(0).html().includes('aria-hidden="false"')).toBeTruthy();
-    expect(divs.at(0).html().includes('style="display:block;"')).toBeTruthy();
+    expect(divs.at(0).html().includes('style="display:block"')).toBeTruthy();
     expect(divs.at(1).html().includes('aria-hidden="true"')).toBeTruthy();
-    expect(divs.at(1).html().includes('style="display:none;"')).toBeTruthy();
+    expect(divs.at(1).html().includes('style="display:none"')).toBeTruthy();
     expect(divs.at(2).html().includes('aria-hidden="true"')).toBeTruthy();
-    expect(divs.at(2).html().includes('style="display:none;"')).toBeTruthy();
+    expect(divs.at(2).html().includes('style="display:none"')).toBeTruthy();
 });

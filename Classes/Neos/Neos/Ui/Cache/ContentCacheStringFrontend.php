@@ -23,6 +23,8 @@ use Neos\Flow\Session\SessionInterface;
  *
  * Class ContentCacheStringFrontend
  * @package Neos\Neos\Ui\Cache
+ * @internal
+ * @deprecated - get rid as soon as the old UI is no longer delivered with Neos.
  */
 class ContentCacheStringFrontend extends StringFrontend
 {
@@ -66,5 +68,4 @@ class ContentCacheStringFrontend extends StringFrontend
 
         return $entryIdentifier;
     }
-
 }

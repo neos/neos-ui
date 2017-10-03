@@ -5,7 +5,7 @@ import {createStore} from 'redux';
 import Immutable from 'immutable';
 
 import SelectBoxEditor from './index.js';
-import {WrapWithMockGlobalRegistry, MockDataSourceDataLoader} from '../_lib/testUtils';
+import {WrapWithMockGlobalRegistry, MockDataSourceDataLoader} from '../../_lib/testUtils';
 
 const optionValues = {
     foo: {

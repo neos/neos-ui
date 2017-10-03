@@ -7,21 +7,34 @@ export default class Frame extends PureComponent {
     static propTypes = {
         mountTarget: PropTypes.string.isRequired,
         contentDidUpdate: PropTypes.func.isRequired,
+        onLoad: PropTypes.func,
         children: PropTypes.node
     };
+
+    handleReference = ref => {
+        this.ref = ref;
+    }
 
     render() {
         const rest = omit(this.props, [
             'mountTarget',
             'contentDidUpdate',
             'theme',
-            'children'
+            'children',
+            'onLoad'
         ]);
 
-        return <iframe {...rest}/>;
+        return <iframe ref={this.handleReference} onLoad={this.handleLoad} {...rest}/>;
     }
     componentWillMount() {
         document.addEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
+    }
+    handleLoad = () => {
+        const {onLoad} = this.props;
+
+        if (typeof onLoad === 'function') {
+            onLoad(this.ref);
+        }
     }
     renderFrameContents = () => {
         const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node

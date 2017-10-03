@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {$all, $get, $set, $drop} from 'plow-js';
+import {$all, $get, $set, $drop, $toggle} from 'plow-js';
 import Immutable, {Map} from 'immutable';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -24,6 +24,13 @@ const ESCAPE = '@neos/neos-ui/UI/Inspector/ESCAPE';
 const RESUME = '@neos/neos-ui/UI/Inspector/RESUME';
 
 //
+// Actions to control the secondary inspector window
+//
+const SECONDARY_OPEN = '@neos/neos-ui/UI/Inspector/SECONDARY_OPEN';
+const SECONDARY_CLOSE = '@neos/neos-ui/UI/Inspector/SECONDARY_CLOSE';
+const SECONDARY_TOGGLE = '@neos/neos-ui/UI/Inspector/SECONDARY_TOGGLE';
+
+//
 // Export the action types
 //
 
@@ -33,7 +40,10 @@ export const actionTypes = {
     APPLY,
     DISCARD,
     ESCAPE,
-    RESUME
+    RESUME,
+    SECONDARY_OPEN,
+    SECONDARY_CLOSE,
+    SECONDARY_TOGGLE
 };
 
 const commit = createAction(COMMIT, (propertyId, value, hooks) => ({propertyId, value, hooks}));
@@ -44,6 +54,10 @@ const discard = createAction(DISCARD);
 const escape = createAction(ESCAPE);
 const resume = createAction(RESUME);
 
+const openSecondaryInspector = createAction(SECONDARY_OPEN);
+const closeSecondaryInspector = createAction(SECONDARY_CLOSE);
+const toggleSecondaryInspector = createAction(SECONDARY_TOGGLE);
+
 //
 // Export the actions
 //
@@ -53,7 +67,10 @@ export const actions = {
     apply,
     discard,
     escape,
-    resume
+    resume,
+    openSecondaryInspector,
+    closeSecondaryInspector,
+    toggleSecondaryInspector
 };
 
 const clearReducer = () => state => {
@@ -73,6 +90,7 @@ export const reducer = handleActions({
         'ui.inspector',
         new Map({
             shouldPromptToHandleUnappliedChanges: false,
+            secondaryInspectorIsOpen: false,
             valuesByNodePath: new Map()
         })
     ),
@@ -98,7 +116,11 @@ export const reducer = handleActions({
     [DISCARD]: clearReducer,
     [CLEAR]: clearReducer,
     [ESCAPE]: () => $set('ui.inspector.shouldPromptToHandleUnappliedChanges', true),
-    [RESUME]: () => $set('ui.inspector.shouldPromptToHandleUnappliedChanges', false)
+    [RESUME]: () => $set('ui.inspector.shouldPromptToHandleUnappliedChanges', false),
+
+    [SECONDARY_OPEN]: () => $set('ui.inspector.secondaryInspectorIsOpen', true),
+    [SECONDARY_CLOSE]: () => $set('ui.inspector.secondaryInspectorIsOpen', false),
+    [SECONDARY_TOGGLE]: () => $toggle('ui.inspector.secondaryInspectorIsOpen')
 });
 
 //

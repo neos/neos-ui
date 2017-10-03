@@ -26,14 +26,14 @@ test(`Set should return the value`, () => {
     expect(testRegistry.set('test', testObject)).toEqual(testObject);
 });
 
-test(`Should not be able to set the same key twice`, () => {
+test(`Setting the same key twice should override the old value`, () => {
     const testRegistry = new SynchronousRegistry('# Test registry');
-    const testObject = {test: 'test'};
-    const shouldThrow = () => {
-        testRegistry.set('test', testObject);
-        testRegistry.set('test', testObject);
+    testRegistry.set('test', {test: 'old'});
+    testRegistry.set('test', {test: 'new'});
+    const expectedResult = {
+        test: {test: 'new'}
     };
-    expect(shouldThrow).toThrow();
+    expect(testRegistry.getAllAsObject('test')).toEqual(expectedResult);
 });
 
 test(`getChildren should return unsorted children in the same order`, () => {
@@ -72,7 +72,7 @@ test(`getAllAsObject should return a sorted object`, () => {
         'test/a': {test: 'a'},
         'test': {test: 'c'}
     };
-    expect(testRegistry.getAllAsObject('test')).toEqual(expectedResult);
+    expect(testRegistry.getAllAsObject()).toEqual(expectedResult);
 });
 
 test(`getAllAsList should return a sorted list with ids`, () => {
@@ -82,7 +82,7 @@ test(`getAllAsList should return a sorted list with ids`, () => {
         {id: 'test/a', test: 'a'},
         {id: 'test', test: 'c'}
     ];
-    expect(testRegistry.getAllAsList('test')).toEqual(expectedResult);
+    expect(testRegistry.getAllAsList()).toEqual(expectedResult);
 });
 
 test(`has should work`, () => {

@@ -172,9 +172,9 @@ manifest('main', {}, globalRegistry => {
 
         store.dispatch(actions.UI.FlashMessages.add(id, message, severity, timeout));
     };
-    serverFeedbackHandlers.set('Neos.Neos.Ui:Success', flashMessageFeedbackHandler);
-    serverFeedbackHandlers.set('Neos.Neos.Ui:Error', flashMessageFeedbackHandler);
-    serverFeedbackHandlers.set('Neos.Neos.Ui:Info', feedbackPayload => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:Success/Main', flashMessageFeedbackHandler);
+    serverFeedbackHandlers.set('Neos.Neos.Ui:Error/Main', flashMessageFeedbackHandler);
+    serverFeedbackHandlers.set('Neos.Neos.Ui:Info/Main', feedbackPayload => {
         switch (feedbackPayload.severity) {
             case 'ERROR':
                 console.error(feedbackPayload.message);
@@ -189,21 +189,21 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server advices to update the workspace information, dispatch the action to do so
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateWorkspaceInfo', (feedbackPayload, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateWorkspaceInfo/Main', (feedbackPayload, {store}) => {
         store.dispatch(actions.CR.Workspaces.update(feedbackPayload));
     });
 
     //
     // When the server advices to reload the children of a document node, dispatch the action to do so.
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:DocumentNodeCreated', (feedbackPayload, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:DocumentNodeCreated/Main', (feedbackPayload, {store}) => {
         store.dispatch(actions.UI.Remote.documentNodeCreated(feedbackPayload.contextPath));
     });
 
     //
     // When the server advices to reload the document, just reload it
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument', (feedbackPayload, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/Main', (feedbackPayload, {store}) => {
         const currentIframeUrl = $get('ui.contentCanvas.src', store.getState());
 
         [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
@@ -222,14 +222,14 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server has updated node info, apply it to the store
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodeInfo', (feedbackPayload, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodeInfo/Main', (feedbackPayload, {store}) => {
         store.dispatch(actions.CR.Nodes.add(feedbackPayload.byContextPath));
     });
 
     //
     // When the server has removed a node, remove it as well from the store amd the dom
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:RemoveNode', ({contextPath, parentContextPath}, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:RemoveNode/Main', ({contextPath, parentContextPath}, {store}) => {
         const state = store.getState();
 
         if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
@@ -264,7 +264,7 @@ manifest('main', {}, globalRegistry => {
     // When the server advices to render a new node, put the delivered html to the
     // corrent place inside the DOM
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:RenderContentOutOfBand', (feedbackPayload, {store, globalRegistry}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:RenderContentOutOfBand/Main', (feedbackPayload, {store, globalRegistry}) => {
         const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
         const parentElement = parentDomAddress && findNodeInGuestFrame(
             parentDomAddress.contextPath,

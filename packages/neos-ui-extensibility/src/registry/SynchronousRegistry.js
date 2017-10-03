@@ -15,6 +15,9 @@ export default class SynchronousRegistry extends AbstractRegistry {
         if (typeof position !== 'string' && typeof position !== 'number') {
             throw new Error('Position must be a string or a number');
         }
+        if (this.has(key)) {
+            throw new Error(`Key "${key}" already set`);
+        }
         const entry = {key, value};
         if (position) {
             entry.position = position;

@@ -26,6 +26,16 @@ test(`Set should return the value`, () => {
     expect(testRegistry.set('test', testObject)).toEqual(testObject);
 });
 
+test(`Should not be able to set the same key twice`, () => {
+    const testRegistry = new SynchronousRegistry('# Test registry');
+    const testObject = {test: 'test'};
+    const shouldThrow = () => {
+        testRegistry.set('test', testObject);
+        testRegistry.set('test', testObject);
+    };
+    expect(shouldThrow).toThrow();
+});
+
 test(`getChildren should return unsorted children in the same order`, () => {
     const testRegistry = new SynchronousRegistry('# Test registry');
     testRegistry.set('test/a', {test: 'a'});

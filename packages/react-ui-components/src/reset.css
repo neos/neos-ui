@@ -1,6 +1,6 @@
 .reset {
-    font-family: '\var(--brandFontsCopyFamily)', sans-serif;
-    font-weight: var(--brandFontsCopyCssWeight);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
     color: #FFF;
     margin: 0;
     padding: 0;

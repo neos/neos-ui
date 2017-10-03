@@ -252,6 +252,7 @@ export default class Node extends PureComponent {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     dragAndDropContext={this.getDragAndDropContext()}
+                    dragForbidden={$get('isAutoCreated', node)}
                     />
                 {this.isCollapsed() ? null : (
                     <Tree.Node.Contents>

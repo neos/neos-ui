@@ -9,8 +9,8 @@ import {calculateChangeTypeFromMode, calculateDomAddressesFromMode} from './help
 
 export default function * copyAndPasteNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const canBeInsertedAlongsideSelector = selectors.CR.Nodes.makeCanBeInsertedAlongsideSelector(nodeTypesRegistry);
-    const canBeInsertedIntoSelector = selectors.CR.Nodes.makeCanBeInsertedIntoSelector(nodeTypesRegistry);
+    const canBeInsertedAlongsideSelector = selectors.CR.Nodes.makeCanBeCopiedAlongsideSelector(nodeTypesRegistry);
+    const canBeInsertedIntoSelector = selectors.CR.Nodes.makeCanBeCopiedIntoSelector(nodeTypesRegistry);
 
     yield * takeEvery(actionTypes.CR.Nodes.COPY, function * waitForPaste() {
         const subject = yield select($get('cr.nodes.clipboard'));

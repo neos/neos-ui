@@ -207,7 +207,7 @@ export const makeIsAllowedToAddChildOrSiblingNodes = nodeTypesRegistry => create
         Boolean(allowedChildNodeTypes.length + allowedSiblingNodeTypes.length)
 );
 
-export const makeCanBeInsertedAlongsideSelector = nodeTypesRegistry => createSelector(
+export const makeCanBeCopiedAlongsideSelector = nodeTypesRegistry => createSelector(
     [
         (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
         makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
@@ -215,7 +215,7 @@ export const makeCanBeInsertedAlongsideSelector = nodeTypesRegistry => createSel
     (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
 );
 
-export const makeCanBeInsertedIntoSelector = nodeTypesRegistry => createSelector(
+export const makeCanBeCopiedIntoSelector = nodeTypesRegistry => createSelector(
     [
         (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
         makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry)
@@ -225,10 +225,10 @@ export const makeCanBeInsertedIntoSelector = nodeTypesRegistry => createSelector
 
 export const makeCanBeMovedIntoSelector = nodeTypesRegistry => createSelector(
     [
-        makeCanBeInsertedIntoSelector(nodeTypesRegistry),
+        makeCanBeCopiedIntoSelector(nodeTypesRegistry),
         (state, {subject, reference}) => {
             const subjectPath = subject && subject.split('@')[0];
-            return reference.indexOf(subjectPath) === 0;
+            return subjectPath ? reference.indexOf(subjectPath) === 0 : false;
         }
     ],
     (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject
@@ -236,19 +236,19 @@ export const makeCanBeMovedIntoSelector = nodeTypesRegistry => createSelector(
 
 export const makeCanBeMovedAlongsideSelector = nodeTypesRegistry => createSelector(
     [
-        makeCanBeInsertedIntoSelector(nodeTypesRegistry),
+        makeCanBeCopiedAlongsideSelector(nodeTypesRegistry),
         (state, {subject, reference}) => {
             const subjectPath = subject && subject.split('@')[0];
-            return parentNodeContextPath(reference).indexOf(subjectPath) === 0;
+            return subjectPath ? parentNodeContextPath(reference).indexOf(subjectPath) === 0 : false;
         }
     ],
     (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject
 );
 
-export const makeCanBeInsertedSelector = nodeTypesRegistry => createSelector(
+export const makeCanBeCopiedSelector = nodeTypesRegistry => createSelector(
     [
-        makeCanBeInsertedAlongsideSelector(nodeTypesRegistry),
-        makeCanBeInsertedIntoSelector(nodeTypesRegistry)
+        makeCanBeCopiedAlongsideSelector(nodeTypesRegistry),
+        makeCanBeCopiedIntoSelector(nodeTypesRegistry)
     ],
     (canBeInsertedAlongside, canBeInsertedInto) => (canBeInsertedAlongside || canBeInsertedInto)
 );
@@ -264,10 +264,10 @@ export const makeCanBeMovedSelector = nodeTypesRegistry => createSelector(
 export const makeCanBePastedSelector = nodeTypesRegistry => createSelector(
     [
         makeCanBeMovedSelector(nodeTypesRegistry),
-        makeCanBeInsertedSelector(nodeTypesRegistry),
+        makeCanBeCopiedSelector(nodeTypesRegistry),
         $get('cr.nodes.clipboardMode')
     ],
-    (canBeMoved, canBePasted, mode) => mode === 'Copy' ? canBePasted : canBeMoved
+    (canBeMoved, canBeCopied, mode) => mode === 'Copy' ? canBeCopied : canBeMoved
 );
 
 export const destructiveOperationsAreDisabledSelector = createSelector(

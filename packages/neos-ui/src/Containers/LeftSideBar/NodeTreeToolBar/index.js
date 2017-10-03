@@ -164,7 +164,7 @@ const withNodeTypesRegistry = neos(globalRegistry => ({
 
 export const PageTreeToolbar = withNodeTypesRegistry(connect(
     (state, {nodeTypesRegistry}) => {
-        const canBePastedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const canBePastedSelector = selectors.CR.Nodes.makeCanBePastedSelector(nodeTypesRegistry);
         const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
 
         return state => {
@@ -216,7 +216,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
 
 export const ContentTreeToolbar = withNodeTypesRegistry(connect(
     (state, {nodeTypesRegistry}) => {
-        const canBePastedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const canBePastedSelector = selectors.CR.Nodes.makeCanBePastedSelector(nodeTypesRegistry);
         const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
 
         return state => {

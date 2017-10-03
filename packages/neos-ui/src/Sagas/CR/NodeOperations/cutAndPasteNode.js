@@ -9,8 +9,8 @@ import {calculateChangeTypeFromMode, calculateDomAddressesFromMode} from './help
 
 export default function * cutAndPasteNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    const canBeInsertedAlongsideSelector = selectors.CR.Nodes.makeCanBeInsertedAlongsideSelector(nodeTypesRegistry);
-    const canBeInsertedIntoSelector = selectors.CR.Nodes.makeCanBeInsertedIntoSelector(nodeTypesRegistry);
+    const canBeMovedAlongsideSelector = selectors.CR.Nodes.makeCanBeMovedAlongsideSelector(nodeTypesRegistry);
+    const canBeMovedIntoSelector = selectors.CR.Nodes.makeCanBeMovedIntoSelector(nodeTypesRegistry);
 
     yield * takeEvery(actionTypes.CR.Nodes.CUT, function * waitForPaste() {
         const subject = yield select($get('cr.nodes.clipboard'));
@@ -32,15 +32,15 @@ export default function * cutAndPasteNode({globalRegistry}) {
 
         if (nextAction.type === actionTypes.CR.Nodes.PASTE) {
             const {contextPath: reference, fusionPath} = nextAction.payload;
-            const canBeInsertedAlongside = yield select(canBeInsertedAlongsideSelector, {subject, reference});
-            const canBeInsertedInto = yield select(canBeInsertedIntoSelector, {subject, reference});
+            const canBeMovedAlongside = yield select(canBeMovedAlongsideSelector, {subject, reference});
+            const canBeMovedInto = yield select(canBeMovedIntoSelector, {subject, reference});
 
             const mode = yield call(
                 determineInsertMode,
                 subject,
                 reference,
-                canBeInsertedAlongside,
-                canBeInsertedInto,
+                canBeMovedAlongside,
+                canBeMovedInto,
                 actionTypes.CR.Nodes.CUT
             );
 

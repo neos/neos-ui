@@ -223,12 +223,51 @@ export const makeCanBeInsertedIntoSelector = nodeTypesRegistry => createSelector
     (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
 );
 
+export const makeCanBeMovedIntoSelector = nodeTypesRegistry => createSelector(
+    [
+        makeCanBeInsertedIntoSelector(nodeTypesRegistry),
+        (state, {subject, reference}) => {
+            const subjectPath = subject && subject.split('@')[0];
+            return reference.indexOf(subjectPath) === 0;
+        }
+    ],
+    (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject
+);
+
+export const makeCanBeMovedAlongsideSelector = nodeTypesRegistry => createSelector(
+    [
+        makeCanBeInsertedIntoSelector(nodeTypesRegistry),
+        (state, {subject, reference}) => {
+            const subjectPath = subject && subject.split('@')[0];
+            return parentNodeContextPath(reference).indexOf(subjectPath) === 0;
+        }
+    ],
+    (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject
+);
+
 export const makeCanBeInsertedSelector = nodeTypesRegistry => createSelector(
     [
         makeCanBeInsertedAlongsideSelector(nodeTypesRegistry),
         makeCanBeInsertedIntoSelector(nodeTypesRegistry)
     ],
     (canBeInsertedAlongside, canBeInsertedInto) => (canBeInsertedAlongside || canBeInsertedInto)
+);
+
+export const makeCanBeMovedSelector = nodeTypesRegistry => createSelector(
+    [
+        makeCanBeMovedAlongsideSelector(nodeTypesRegistry),
+        makeCanBeMovedIntoSelector(nodeTypesRegistry)
+    ],
+    (canBeMovedAlongside, canBeMovedInto) => (canBeMovedAlongside || canBeMovedInto)
+);
+
+export const makeCanBePastedSelector = nodeTypesRegistry => createSelector(
+    [
+        makeCanBeMovedSelector(nodeTypesRegistry),
+        makeCanBeInsertedSelector(nodeTypesRegistry),
+        $get('cr.nodes.clipboardMode')
+    ],
+    (canBeMoved, canBePasted, mode) => mode === 'Copy' ? canBePasted : canBeMoved
 );
 
 export const destructiveOperationsAreDisabledSelector = createSelector(

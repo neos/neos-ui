@@ -47,7 +47,7 @@ class NodeDropTarget extends PureComponent {
         mode: PropTypes.string.isRequired
     };
     render() {
-        const {connectDropTarget, isOver, mode, theme} = this.props;
+        const {connectDropTarget, isOver, canDrop, mode, theme} = this.props;
         const classNames = mergeClassNames({
             [theme.dropTarget]: true,
             [theme['dropTarget--before']]: mode === 'before',
@@ -55,7 +55,7 @@ class NodeDropTarget extends PureComponent {
         });
         const classNamesInner = mergeClassNames({
             [theme.dropTarget__inner]: true,
-            [theme['dropTarget__inner--acceptsDrop']]: isOver
+            [theme['dropTarget__inner--acceptsDrop']]: isOver && canDrop
         });
         return connectDropTarget(
             <div className={classNames}>

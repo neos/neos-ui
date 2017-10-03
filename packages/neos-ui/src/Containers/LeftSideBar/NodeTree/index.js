@@ -86,6 +86,7 @@ export default class NodeTree extends PureComponent {
                     ChildRenderer={ChildRenderer}
                     nodeDndType={dndTypes.NODE}
                     node={rootNode}
+                    level={1}
                     onNodeToggle={this.handleToggle}
                     onNodeClick={this.handleClick}
                     onNodeFocus={this.handleFocus}

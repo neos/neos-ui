@@ -93,6 +93,7 @@ export class Header extends PureComponent {
         hasError: PropTypes.bool.isRequired,
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
+        level: PropTypes.number.isRequired,
         dragAndDropContext: PropTypes.shape({
             accepts: PropTypes.func.isRequired,
             onDrag: PropTypes.func.isRequired,
@@ -142,6 +143,7 @@ export class Header extends PureComponent {
             isDirty,
             label,
             icon,
+            level,
             onClick,
             onLabelClick,
             theme,
@@ -170,7 +172,6 @@ export class Header extends PureComponent {
         return connectDragSource(
             <div>
                 <div className={theme.header}>
-                    {hasChildren ? this.renderCollapseControl() : null}
                     <NodeDropTarget
                         id={id}
                         theme={theme}
@@ -183,6 +184,7 @@ export class Header extends PureComponent {
                             role="button"
                             className={dataClassNames}
                             onClick={onClick}
+                            style={{paddingLeft: (level * 15) + 'px'}}
                             >
                             <IconComponent icon={icon || 'question'} padded="right" role="button" className={theme.header__icon}/>
                             <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
@@ -199,6 +201,7 @@ export class Header extends PureComponent {
                             mode="after"
                             />
                     )}
+                    {hasChildren ? this.renderCollapseControl() : null}
                 </div>
             </div>
         );
@@ -213,7 +216,8 @@ export class Header extends PureComponent {
             isHiddenInIndex,
             isHidden,
             onToggle,
-            theme
+            theme,
+            level
         } = this.props;
         const classnames = mergeClassNames({
             [theme.header__chevron]: true,
@@ -236,8 +240,9 @@ export class Header extends PureComponent {
                 break;
         }
 
+        const marginLeft = ((level - 1) * 15) + 5;
         return (
-            <a role="button" onClick={onToggle} className={classnames} data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle">
+            <a style={{marginLeft: marginLeft + 'px'}} role="button" onClick={onToggle} className={classnames} data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle">
                 {icon}
             </a>
         );

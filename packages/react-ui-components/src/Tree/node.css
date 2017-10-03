@@ -3,7 +3,6 @@
     margin: 0;
     position: relative;
     line-height: 20px;
-    padding-left: 15px;
 }
 .header__chevron {
     composes: reset from './../reset.css';
@@ -45,6 +44,8 @@
     white-space: nowrap;
     overflow: hidden;
     padding: .2em 0;
+
+    border-left: 3px solid rgba(0, 0, 0, 0);
 }
 
 .header__data--isHiddenInIndex {
@@ -85,7 +86,6 @@
 
 .contents {
     composes: reset from './../reset.css';
-    margin-left: var(--spacing);
 }
 
 .dropTarget {

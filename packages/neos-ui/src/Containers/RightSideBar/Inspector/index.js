@@ -26,20 +26,24 @@ import style from './style.css';
         const isDirty = selectors.UI.Inspector.isDirty(state);
         const shouldPromptToHandleUnappliedChanges = selectors.UI.Inspector.shouldPromptToHandleUnappliedChanges(state);
         const shouldShowUnappliedChangesOverlay = isDirty && !shouldPromptToHandleUnappliedChanges;
+        const shouldShowSecondaryInspector = selectors.UI.Inspector.shouldShowSecondaryInspector(state);
 
         return {
             focusedNode: selectors.CR.Nodes.focusedSelector(state),
             node: selectors.CR.Nodes.focusedSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
             isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
-            shouldShowUnappliedChangesOverlay
+            shouldShowUnappliedChangesOverlay,
+            shouldShowSecondaryInspector
         };
     };
 }, {
     apply: actions.UI.Inspector.apply,
     discard: actions.UI.Inspector.discard,
     escape: actions.UI.Inspector.escape,
-    commit: actions.UI.Inspector.commit
+    commit: actions.UI.Inspector.commit,
+    openSecondaryInspector: actions.UI.Inspector.openSecondaryInspector,
+    closeSecondaryInspector: actions.UI.Inspector.closeSecondaryInspector
 })
 export default class Inspector extends PureComponent {
     static propTypes = {
@@ -50,22 +54,31 @@ export default class Inspector extends PureComponent {
         isApplyDisabled: PropTypes.bool,
         isDiscardDisabled: PropTypes.bool,
         shouldShowUnappliedChangesOverlay: PropTypes.bool,
+        shouldShowSecondaryInspector: PropTypes.bool,
 
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
         escape: PropTypes.func.isRequired,
-        commit: PropTypes.func.isRequired
+        commit: PropTypes.func.isRequired,
+        openSecondaryInspector: PropTypes.func.isRequired,
+        closeSecondaryInspector: PropTypes.func.isRequired
     };
 
     state = {
         secondaryInspectorComponent: null
     };
 
+    componentWillReceiveProps({shouldShowSecondaryInspector}) {
+        if (!shouldShowSecondaryInspector) {
+            this.setState({
+                secondaryInspectorName: undefined,
+                secondaryInspectorComponent: undefined
+            });
+        }
+    }
+
     handleCloseSecondaryInspector = () => {
-        this.setState({
-            secondaryInspectorName: undefined,
-            secondaryInspectorComponent: undefined
-        });
+        this.props.closeSecondaryInspector();
     }
 
     handleDiscard = () => {
@@ -84,7 +97,7 @@ export default class Inspector extends PureComponent {
 
     closeSecondaryInspectorIfNeeded = () => {
         if (this.state.secondaryInspectorComponent) {
-            this.renderSecondaryInspector(undefined);
+            this.props.closeSecondaryInspector();
         }
     }
 
@@ -103,6 +116,7 @@ export default class Inspector extends PureComponent {
             if (secondaryInspectorComponentFactory) {
                 // Hint: we directly resolve the factory function here, to ensure the object is not re-created on every render but stays the same for its whole lifetime.
                 secondaryInspectorComponent = secondaryInspectorComponentFactory();
+                this.props.openSecondaryInspector();
             }
             this.setState({
                 secondaryInspectorName,
@@ -123,7 +137,8 @@ export default class Inspector extends PureComponent {
             commit,
             isApplyDisabled,
             isDiscardDisabled,
-            shouldShowUnappliedChangesOverlay
+            shouldShowUnappliedChangesOverlay,
+            shouldShowSecondaryInspector
         } = this.props;
 
         if (!focusedNode) {
@@ -188,7 +203,15 @@ export default class Inspector extends PureComponent {
                         </Grid.Col>
                     </Grid>
                 </Bar>
-                {this.state.secondaryInspectorComponent ? <SecondaryInspector onClose={this.handleCloseSecondaryInspector}>{this.state.secondaryInspectorComponent}</SecondaryInspector> : null}
+                {
+                    shouldShowSecondaryInspector &&
+                    this.state.secondaryInspectorComponent &&
+                    <SecondaryInspector
+                        onClose={this.handleCloseSecondaryInspector}
+                        >
+                            {this.state.secondaryInspectorComponent}
+                    </SecondaryInspector>
+                }
             </div>
         );
     }

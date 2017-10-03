@@ -108,6 +108,13 @@ manifest('main', {}, globalRegistry => {
 
     `));
 
+    inspector.set('secondaryEditors', new SynchronousRegistry(`
+        Contains all secondary inspector editors, which can be used to provide additional, more complex functionality
+        that needs more space of the UI than the inspector panel can provide itself.
+
+        Use it like the registry for editors.
+    `));
+
     inspector.set('views', new SynchronousRegistry(`
         Contains all inspector views.
 

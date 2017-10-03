@@ -1,22 +1,36 @@
-import TextField from './TextField/index';
-import TextArea from './TextArea/index';
-import Boolean from './Boolean/index';
-import DateTime from './DateTime/index';
-import Image from './Image/index';
-import SelectBox from './SelectBox/index';
-import Link from './Link/index';
-import Reference from './Reference/index';
-import References from './References/index';
-import NodeType from './NodeType/index';
-import CodeMirror from './CodeMirror/index';
+import {
+    TextField,
+    TextArea,
+    Boolean,
+    DateTime,
+    Image,
+    SelectBox,
+    Link,
+    Reference,
+    References,
+    NodeType,
+    CodeMirror
+} from './Editors/index';
+
+import {
+    CodeMirrorWrap,
+    ImageCropper,
+    MediaDetailsScreen,
+    MediaSelectionScreen
+} from './SecondaryEditors/index';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 import backend from '@neos-project/neos-ui-backend-connector';
 
 manifest('inspectorEditors', {}, globalRegistry => {
     const editorsRegistry = globalRegistry.get('inspector').get('editors');
+    const secondaryEditorsRegistry = globalRegistry.get('inspector').get('secondaryEditors');
     const saveHooksRegistry = globalRegistry.get('inspector').get('saveHooks');
     const {createImageVariant} = backend.get().endpoints;
+
+    //
+    // Primary inspector editors
+    //
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/TextFieldEditor', {
         component: TextField
@@ -62,6 +76,26 @@ manifest('inspectorEditors', {}, globalRegistry => {
     editorsRegistry.set('Neos.Neos/Inspector/Editors/CodeEditor', {
         component: CodeMirror,
         hasOwnLabel: true
+    });
+
+    //
+    // Secondary inspector editors
+    //
+
+    secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/CodeMirrorWrap', {
+        component: CodeMirrorWrap
+    });
+
+    secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/ImageCropper', {
+        component: ImageCropper
+    });
+
+    secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/MediaDetailsScreen', {
+        component: MediaDetailsScreen
+    });
+
+    secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen', {
+        component: MediaSelectionScreen
     });
 
     //

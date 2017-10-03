@@ -217,7 +217,8 @@ export const reducer = handleActions({
                 fusionPath: ''
             }),
             toBeRemoved: '',
-            clipboard: ''
+            clipboard: '',
+            clipboardMode: ''
         })
     ),
     [ADD]: ({nodeMap}) => $all(
@@ -314,8 +315,14 @@ export const reducer = handleActions({
         })),
         $merge('cr.nodes.byContextPath', Immutable.fromJS(nodes))
     ),
-    [COPY]: contextPath => $set('cr.nodes.clipboard', contextPath),
-    [CUT]: contextPath => $set('cr.nodes.clipboard', contextPath),
+    [COPY]: contextPath => $all(
+        $set('cr.nodes.clipboard', contextPath),
+        $set('cr.nodes.clipboardMode', 'Copy')
+    ),
+    [CUT]: contextPath => $all(
+        $set('cr.nodes.clipboard', contextPath),
+        $set('cr.nodes.clipboardMode', 'Move')
+    ),
     [PASTE]: () => $set('cr.nodes.clipboard', ''),
     [HIDE]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], true),
     [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false),

@@ -283,7 +283,18 @@ export const reducer = handleActions({
                 //
                 JSON.parse(JSON.stringify(nodeMap[contextPath]))
             )
-        ))
+        )),
+        ...Object.keys(nodeMap).map(contextPath => $set(
+            ['cr', 'nodes', 'byContextPath', contextPath, 'children'],
+            Immutable.fromJS(
+                //
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
+                // the data, to scope it relative to *this* frame.
+                //
+                JSON.parse(JSON.stringify(nodeMap[contextPath].children))
+            )
+        )),
     ),
     [FOCUS]: ({contextPath, fusionPath}) => $set('cr.nodes.focused', new Map({contextPath, fusionPath})),
     [UNFOCUS]: () => $set('cr.nodes.focused', new Map({

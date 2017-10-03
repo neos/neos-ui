@@ -22,14 +22,14 @@ manifest('main', {}, globalRegistry => {
     //
     // Create edit preview mode registry
     //
-    globalRegistry.add('editPreviewModes', new SynchronousRegistry(`
+    globalRegistry.set('editPreviewModes', new SynchronousRegistry(`
         # Edit/Preview Mode specific registry
     `));
 
     //
     // Create inline editor registry
     //
-    globalRegistry.add('inlineEditors', new SynchronousRegistry(`
+    globalRegistry.set('inlineEditors', new SynchronousRegistry(`
         # Registry for inline editors
 
         Each key in this registry should be a unique identifier for an inline editor, that can be referenced in a node type configuration.
@@ -66,7 +66,7 @@ manifest('main', {}, globalRegistry => {
     //
     // Create Inspector meta registry
     //
-    const inspector = globalRegistry.add('inspector', new SynchronousMetaRegistry(`
+    const inspector = globalRegistry.set('inspector', new SynchronousMetaRegistry(`
         # Inspector specific registries
 
         - 'editors' for inspector editors
@@ -74,7 +74,7 @@ manifest('main', {}, globalRegistry => {
         - 'saveHooks' for configured side-effects after apply
     `));
 
-    inspector.add('editors', new SynchronousRegistry(`
+    inspector.set('editors', new SynchronousRegistry(`
         Contains all inspector editors.
 
         The key is an editor name (such as Neos.Neos/Inspector/Editors/SelectBoxEditor), and the values
@@ -108,20 +108,20 @@ manifest('main', {}, globalRegistry => {
 
     `));
 
-    inspector.add('secondaryEditors', new SynchronousRegistry(`
+    inspector.set('secondaryEditors', new SynchronousRegistry(`
         Contains all secondary inspector editors, which can be used to provide additional, more complex functionality
         that needs more space of the UI than the inspector panel can provide itself.
 
         Use it like the registry for editors.
     `));
 
-    inspector.add('views', new SynchronousRegistry(`
+    inspector.set('views', new SynchronousRegistry(`
         Contains all inspector views.
 
         Use it like the registry for editors.
     `));
 
-    inspector.add('saveHooks', new SynchronousRegistry(`
+    inspector.set('saveHooks', new SynchronousRegistry(`
         Sometimes, it is needed to run code when the user presses "Apply" inside the Inspector.
 
         Example: When the user cropped a new image, on Apply, a new imageVariant must be created on the server,
@@ -144,7 +144,7 @@ manifest('main', {}, globalRegistry => {
     //
     // Create validators registry
     //
-    globalRegistry.add('validators', new SynchronousRegistry(`
+    globalRegistry.set('validators', new SynchronousRegistry(`
         Contains all validators.
 
         The key is a validator name (such as Neos.Neos/Validation/NotEmptyValidator) and the values
@@ -155,7 +155,7 @@ manifest('main', {}, globalRegistry => {
     // Create server feedback handlers registry
     //
 
-    const serverFeedbackHandlers = globalRegistry.add('serverFeedbackHandlers', new SynchronousRegistry(`
+    const serverFeedbackHandlers = globalRegistry.set('serverFeedbackHandlers', new SynchronousRegistry(`
         Contains all server feedback handlers.
 
         The key is the server-feedback-handler-type, and the value is a function with the following signature:
@@ -179,9 +179,9 @@ manifest('main', {}, globalRegistry => {
 
         store.dispatch(actions.UI.FlashMessages.add(id, message, severity, timeout));
     };
-    serverFeedbackHandlers.add('Neos.Neos.Ui:Success', flashMessageFeedbackHandler);
-    serverFeedbackHandlers.add('Neos.Neos.Ui:Error', flashMessageFeedbackHandler);
-    serverFeedbackHandlers.add('Neos.Neos.Ui:Info', feedbackPayload => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:Success/Main', flashMessageFeedbackHandler);
+    serverFeedbackHandlers.set('Neos.Neos.Ui:Error/Main', flashMessageFeedbackHandler);
+    serverFeedbackHandlers.set('Neos.Neos.Ui:Info/Main', feedbackPayload => {
         switch (feedbackPayload.severity) {
             case 'ERROR':
                 console.error(feedbackPayload.message);
@@ -196,21 +196,21 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server advices to update the workspace information, dispatch the action to do so
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:UpdateWorkspaceInfo', (feedbackPayload, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateWorkspaceInfo/Main', (feedbackPayload, {store}) => {
         store.dispatch(actions.CR.Workspaces.update(feedbackPayload));
     });
 
     //
     // When the server advices to reload the children of a document node, dispatch the action to do so.
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:DocumentNodeCreated', (feedbackPayload, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:DocumentNodeCreated/Main', (feedbackPayload, {store}) => {
         store.dispatch(actions.UI.Remote.documentNodeCreated(feedbackPayload.contextPath));
     });
 
     //
     // When the server advices to reload the document, just reload it
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:ReloadDocument', (feedbackPayload, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/Main', (feedbackPayload, {store}) => {
         const currentIframeUrl = $get('ui.contentCanvas.src', store.getState());
 
         [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
@@ -229,14 +229,14 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server has updated node info, apply it to the store
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:UpdateNodeInfo', (feedbackPayload, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodeInfo/Main', (feedbackPayload, {store}) => {
         store.dispatch(actions.CR.Nodes.add(feedbackPayload.byContextPath));
     });
 
     //
     // When the server has removed a node, remove it as well from the store amd the dom
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:RemoveNode', ({contextPath, parentContextPath}, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:RemoveNode/Main', ({contextPath, parentContextPath}, {store}) => {
         const state = store.getState();
 
         if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
@@ -271,7 +271,7 @@ manifest('main', {}, globalRegistry => {
     // When the server advices to render a new node, put the delivered html to the
     // corrent place inside the DOM
     //
-    serverFeedbackHandlers.add('Neos.Neos.Ui:RenderContentOutOfBand', (feedbackPayload, {store, globalRegistry}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:RenderContentOutOfBand/Main', (feedbackPayload, {store, globalRegistry}) => {
         const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
         const parentElement = parentDomAddress && findNodeInGuestFrame(
             parentDomAddress.contextPath,
@@ -347,7 +347,7 @@ manifest('main', {}, globalRegistry => {
     //
     // Create container registry
     //
-    globalRegistry.add('containers', new SynchronousRegistry(`
+    globalRegistry.set('containers', new SynchronousRegistry(`
         # Container Registry
     `));
 });

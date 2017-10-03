@@ -63,13 +63,14 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     }
 
     getNodeType(nodeTypeName) {
-        return this._registry[nodeTypeName] || false;
+        return this.get(nodeTypeName);
     }
 
     getGroupedNodeTypeList(nodeTypeFilter) {
-        const nodeTypes = nodeTypeFilter ? Object.values(this._registry).filter(nodeType => {
-            return nodeTypeFilter.indexOf(nodeType.name) !== -1;
-        }) : Object.values(this._registry);
+        const nodeTypesWrapped = nodeTypeFilter ? this._registry.filter(nodeType => {
+            return nodeTypeFilter.indexOf(nodeType.value.name) !== -1;
+        }) : this._registry;
+        const nodeTypes = nodeTypesWrapped.map(item => item.value);
 
         // It's important to preserve the ordering of `this._groups` as we can't sort them again by position in JS (sorting logic is too complex)
         return Object.keys(this._groups).map(groupName => {
@@ -103,7 +104,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     }
 
     getInspectorViewConfigurationFor(nodeTypeName) {
-        const nodeType = this._registry[nodeTypeName];
+        const nodeType = this.get(nodeTypeName);
 
         if (!nodeType) {
             return undefined;

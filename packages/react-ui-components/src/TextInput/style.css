@@ -14,7 +14,8 @@
     }
 }
 .textInput::-webkit-input-placeholder {
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
     color: var(--brandColorsContrastBright);
 }
 .textInput--invalid {

@@ -13,8 +13,8 @@ module.exports = {
                 loader: 'json-loader'
             },
             {
-                test: /\.(woff|woff2)$/,
-                loader: 'url?limit=100000'
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                loader: 'url?limit=10000'
             },
             {
                 test: /\.css$/,

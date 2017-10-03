@@ -15,7 +15,7 @@
 }
 .textInput::-webkit-input-placeholder {
     font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+    font-weight: normal;
     color: var(--brandColorsContrastBright);
 }
 .textInput--invalid {

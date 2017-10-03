@@ -1,4 +1,5 @@
 .contentCanvas {
+    position: relative;
     float: left;
     height: 100%;
     width: 100%;
@@ -6,6 +7,11 @@
     transition: .2s ease padding;
     will-change: padding;
     background-color: var(--brandColorsContrastDarker);
+
+    &::after {
+        content: '';
+        position: absolute;
+    }
 }
 .contentCanvas--isFringeLeft {
     padding-left: 0;
@@ -18,6 +24,15 @@
 }
 .contentCanvas--isFullScreen {
     padding: 0;
+}
+.contentCanvas--isHidden {
+    &::after {
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: white;
+    }
 }
 .contentCanvas__itemWrapper {
     width: 100%;

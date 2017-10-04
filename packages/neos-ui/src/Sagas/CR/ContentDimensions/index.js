@@ -101,8 +101,8 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
         const {nodeFrontendUri, nodeContextPath} = yield adoptNodeToOtherDimension({
             identifier: nodeIdentifier,
             workspaceName: currentWorkspaceName,
-            targetDimensions,
-            sourceDimensions,
+            targetDimensions: targetDimensions.toJS(),
+            sourceDimensions: sourceDimensions.toJS(),
             copyContent
         });
 

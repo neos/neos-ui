@@ -24,6 +24,39 @@ fixture `Content Module`
         await t.useRole(adminUser);
     });
 
+test.only('Switching dimensions', async t => {
+    subSection('Navigate to some inner page and switch dimension');
+    await t
+        .click(page.treeNode.withText('Multiple columns'))
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            return !reduxState.ui.contentCanvas.isLoading;
+        })).ok('Loading stopped')
+        .click(ReactSelector('DimensionSwitcher'))
+        .click(ReactSelector('DimensionSwitcher SelectBox'))
+        .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('Latvian'))
+        .click('#neos-nodeVariantCreationDialog-createEmpty')
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            const isLoading = reduxState.ui.contentCanvas.isLoading;
+            const activeDimension = reduxState.cr.contentDimensions.active.language[0];
+            return !isLoading && activeDimension === 'lv';
+        })).ok('Loading stopped and dimension switched to Latvian')
+        .expect(page.treeNode.withText('Navigation elements').exists).notOk('Untranslated node gone from the tree')
+        .click(ReactSelector('DimensionSwitcher'))
+        .click(ReactSelector('DimensionSwitcher SelectBox'))
+        .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('English (US)'))
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            const isLoading = reduxState.ui.contentCanvas.isLoading;
+            const activeDimension = reduxState.cr.contentDimensions.active.language[0];
+            return !isLoading && activeDimension === 'en_US';
+        })).ok('Loading stopped and dimension back to English')
+        .expect(page.treeNode.withText('Navigation elements').exists).ok('Untranslated node back in the tree')
+        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'));
+});
+
 test('Discarding: create a document node and then discard it', async t => {
     const pageTitleToCreate = 'DiscardTest';
     subSection('Create a document node');

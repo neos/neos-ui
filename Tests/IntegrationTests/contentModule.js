@@ -36,7 +36,10 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
             return !reduxState.ui.contentCanvas.isLoading;
-        })).ok('Loading stopped')
+        })).ok('Loading stopped');
+
+    subSection('Create another node inside it');
+    await t
         .click(ReactSelector('AddNode Button'))
         .click(ReactSelector('InsertModeSelector').find('#into'))
         .click(ReactSelector('NodeTypeItem'))
@@ -45,14 +48,16 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
             return !reduxState.ui.contentCanvas.isLoading;
-        })).ok('Loading stopped')
+        })).ok('Loading stopped');
+
+    subSection('Discard all nodes and hope to be redirected to root');
+    await t
         .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
         .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'))
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
             return !reduxState.ui.contentCanvas.isLoading && reduxState.ui.contentCanvas.contextPath === '/sites/neosdemo@user-admin;language=en_US';
         })).ok('After discarding we are back to the main page');
-    subSection('Discard that node');
 });
 
 test('Discarding: create a document node and then discard it', async t => {

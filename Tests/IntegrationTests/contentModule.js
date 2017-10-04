@@ -42,7 +42,10 @@ test('Switching dimensions', async t => {
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'lv';
         })).ok('Loading stopped and dimension switched to Latvian')
-        .expect(page.treeNode.withText('Navigation elements').exists).notOk('Untranslated node gone from the tree')
+        .expect(page.treeNode.withText('Navigation elements').exists).notOk('Untranslated node gone from the tree');
+
+    subSection('Switch back to original dimension');
+    await t
         .click(ReactSelector('DimensionSwitcher'))
         .click(ReactSelector('DimensionSwitcher SelectBox'))
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('English (US)'))
@@ -52,7 +55,10 @@ test('Switching dimensions', async t => {
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'en_US';
         })).ok('Loading stopped and dimension back to English')
-        .expect(page.treeNode.withText('Navigation elements').exists).ok('Untranslated node back in the tree')
+        .expect(page.treeNode.withText('Navigation elements').exists).ok('Untranslated node back in the tree');
+
+    subSection('Cleanup: Discard the changes');
+    await t
         .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
         .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'));
 });

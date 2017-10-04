@@ -2,8 +2,10 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import DropDown from '../DropDown/index';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
+import keydown from 'react-keydown';
 import mergeClassNames from 'classnames';
 
+@keydown
 export default class SelectBox extends PureComponent {
 
     static defaultProps = {
@@ -116,7 +118,47 @@ export default class SelectBox extends PureComponent {
     constructor(...args) {
         super(...args);
 
-        this.state = {isOpen: false};
+        this.state = {
+            isOpen: false,
+            selectedIndex: 0
+        };
+    }
+
+    componentWillReceiveProps({keydown}) {
+        if (this.state.isOpen && keydown.event) {
+            const {options} = this.props;
+            const currentIndex = this.state.selectedIndex;
+
+            if (keydown.event.key === 'ArrowDown') {
+                this.setState({
+                    selectedIndex: currentIndex + 1 >= options.length ? currentIndex : currentIndex + 1
+                });
+            } else if (keydown.event.key === 'ArrowUp') {
+                this.setState({
+                    selectedIndex: currentIndex - 1 < 0 ? 0 : currentIndex - 1
+                });
+            } else if (keydown.event.key === 'Enter') {
+                this.props.onValueChange(options[currentIndex].value);
+                this.setState({
+                    isOpen: false
+                });
+            }
+        }
+    }
+
+    componentDidUpdate() {
+        const listener = e => {
+            // Up and down arrow
+            if ([38, 40].indexOf(e.keyCode) > -1) {
+                e.preventDefault();
+            }
+        };
+
+        if (this.state.isOpen) {
+            window.addEventListener('keydown', listener);
+        } else {
+            window.removeEventListener('keydown', listener);
+        }
     }
 
     handleDropdownToggle = e => {
@@ -271,14 +313,16 @@ export default class SelectBox extends PureComponent {
      * @returns {JSX} option element
      */
     renderOption = (option, index) => {
+        const selectedIndex = this.state.selectedIndex;
         const value = option[this.props.optionValueField];
         const {theme, IconComponent, optionComponent} = this.props;
         const onClick = () => {
             this.props.onValueChange(value);
         };
+        const className = index === selectedIndex ? theme['selectBox__item--isSelectable--active'] : '';
 
         const OptionComponent = optionComponent;
-        return <OptionComponent option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
+        return <OptionComponent className={className} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
     }
 
     handleDeleteClick = () => {

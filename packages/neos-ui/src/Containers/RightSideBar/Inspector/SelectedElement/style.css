@@ -16,5 +16,5 @@
 }
 
 .content {
-    padding-bottom: var(--spacing);
+    padding: 0 var(--spacing) var(--spacing);
 }

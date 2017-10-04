@@ -24,7 +24,7 @@ fixture `Content Module`
         await t.useRole(adminUser);
     });
 
-test.only('Switching dimensions', async t => {
+test('Switching dimensions', async t => {
     subSection('Navigate to some inner page and switch dimension');
     await t
         .click(page.treeNode.withText('Multiple columns'))

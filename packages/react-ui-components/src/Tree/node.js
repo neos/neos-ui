@@ -184,9 +184,9 @@ export class Header extends PureComponent {
                             role="button"
                             className={dataClassNames}
                             onClick={onClick}
-                            style={{paddingLeft: (level * 15) + 'px'}}
+                            style={{paddingLeft: (level * 18) + 'px'}}
                             >
-                            <IconComponent icon={icon || 'question'} padded="right" role="button" className={theme.header__icon}/>
+                            <IconComponent icon={icon || 'question'} role="button" className={theme.header__icon}/>
                             <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                                 {label}
                             </span>
@@ -240,7 +240,7 @@ export class Header extends PureComponent {
                 break;
         }
 
-        const marginLeft = ((level - 1) * 15) + 5;
+        const marginLeft = ((level - 1) * 18) + 5;
         return (
             <a style={{marginLeft: marginLeft + 'px'}} role="button" onClick={onToggle} className={classnames} data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle">
                 {icon}

@@ -67,11 +67,6 @@ prototype(Neos.Neos:Page) {
     newNeosBackendWrappingElement.@if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
 
     //
-    // Disable memorizing last visited node
-    //
-    lastVisitedNodeScript.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
-
-    //
     // Do not render the Neos backend footer
     //
     neosBackendFooter.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}

@@ -315,9 +315,4 @@ test('Can create content node from inside InlineUI', async t => {
 
     subSection('Discard all at the end');
     await discardAll(t);
-    await t
-        .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
-            return !reduxState.ui.contentCanvas.isLoading && reduxState.ui.contentCanvas.contextPath === '/sites/neosdemo@user-admin;language=en_US';
-        })).ok('After discarding we are back to the main page');
 });

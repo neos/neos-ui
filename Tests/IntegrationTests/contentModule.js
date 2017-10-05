@@ -3,20 +3,6 @@ import ReactSelector from 'testcafe-react-selectors';
 
 import Page from './pageModel';
 
-async function waitForIframeLoading(t) {
-    await t.expect(ReactSelector('Provider').getReact(({props}) => {
-        const reduxState = props.store.getState().toJS();
-        return !reduxState.ui.contentCanvas.isLoading;
-    })).ok('Loading stopped');
-}
-
-async function discardAll(t) {
-    await t
-        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
-        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'));
-    await waitForIframeLoading(t);
-}
-
 const subSection = name => console.log('\x1b[33m%s\x1b[0m', ' - ' + name);
 
 /* global fixture:true */
@@ -33,16 +19,35 @@ const adminUser = Role(adminUrl, async t => {
         .click('button.neos-login-btn');
 }, {preserveUrl: true});
 
+async function waitForIframeLoading(t) {
+    await t.expect(ReactSelector('Provider').getReact(({props}) => {
+        const reduxState = props.store.getState().toJS();
+        return !reduxState.ui.contentCanvas.isLoading;
+    })).ok('Loading stopped');
+}
+
+async function discardAll(t) {
+    await t
+        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'));
+    await waitForIframeLoading(t);
+}
+
+async function goToPage(t, pageTitle) {
+    await t.click(page.treeNode.withText(pageTitle));
+    await waitForIframeLoading(t);
+}
+
 fixture `Content Module`
     .beforeEach(async t => {
         await t.useRole(adminUser);
+        await discardAll(t);
+        await goToPage(t, 'Home');
     });
 
 test('Switching dimensions', async t => {
     subSection('Navigate to some inner page and switch dimension');
-    await t
-        .click(page.treeNode.withText('Multiple columns'));
-    await waitForIframeLoading(t);
+    await goToPage(t, 'Multiple columns');
     await t
         .click(ReactSelector('DimensionSwitcher'))
         .click(ReactSelector('DimensionSwitcher SelectBox'))
@@ -68,9 +73,6 @@ test('Switching dimensions', async t => {
             return !isLoading && activeDimension === 'en_US';
         })).ok('Loading stopped and dimension back to English')
         .expect(page.treeNode.withText('Navigation elements').exists).ok('Untranslated node back in the tree');
-
-    subSection('Cleanup: Discard the changes');
-    await discardAll(t);
 });
 
 test('Discarding: create multiple nodes nested within each other and then discard them', async t => {
@@ -135,9 +137,7 @@ test('Discarding: delete a document node and then discard deletion', async t => 
     const pageTitleToDelete = 'Try me';
 
     subSection('Navigate via the page tree');
-    await t
-        .click(page.treeNode.withText(pageTitleToDelete));
-    await waitForIframeLoading(t);
+    await goToPage(t, pageTitleToDelete);
     await t
         .switchToIframe('[name="neos-content-main"]')
         .expect(Selector('.neos-nodetypes-headline h1').withText(pageTitleToDelete).exists).ok('Navigated to the page and see the headline inline')
@@ -312,7 +312,4 @@ test('Can create content node from inside InlineUI', async t => {
         .typeText(Selector('.neos-inline-editable h1'), headlineTitle)
         .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok()
         .switchToMainWindow();
-
-    subSection('Discard all at the end');
-    await discardAll(t);
 });

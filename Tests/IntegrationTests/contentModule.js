@@ -24,6 +24,45 @@ fixture `Content Module`
         await t.useRole(adminUser);
     });
 
+test('Switching dimensions', async t => {
+    subSection('Navigate to some inner page and switch dimension');
+    await t
+        .click(page.treeNode.withText('Multiple columns'))
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            return !reduxState.ui.contentCanvas.isLoading;
+        })).ok('Loading stopped')
+        .click(ReactSelector('DimensionSwitcher'))
+        .click(ReactSelector('DimensionSwitcher SelectBox'))
+        .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('Latvian'))
+        .click('#neos-nodeVariantCreationDialog-createEmpty')
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            const isLoading = reduxState.ui.contentCanvas.isLoading;
+            const activeDimension = reduxState.cr.contentDimensions.active.language[0];
+            return !isLoading && activeDimension === 'lv';
+        })).ok('Loading stopped and dimension switched to Latvian')
+        .expect(page.treeNode.withText('Navigation elements').exists).notOk('Untranslated node gone from the tree');
+
+    subSection('Switch back to original dimension');
+    await t
+        .click(ReactSelector('DimensionSwitcher'))
+        .click(ReactSelector('DimensionSwitcher SelectBox'))
+        .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('English (US)'))
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            const isLoading = reduxState.ui.contentCanvas.isLoading;
+            const activeDimension = reduxState.cr.contentDimensions.active.language[0];
+            return !isLoading && activeDimension === 'en_US';
+        })).ok('Loading stopped and dimension back to English')
+        .expect(page.treeNode.withText('Navigation elements').exists).ok('Untranslated node back in the tree');
+
+    subSection('Cleanup: Discard the changes');
+    await t
+        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'));
+});
+
 test('Discarding: create multiple nodes nested within each other and then discard them', async t => {
     const pageTitleToCreate = 'DiscardTest';
     subSection('Create a document node');

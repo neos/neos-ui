@@ -14,6 +14,7 @@ export default class CutSelectedNode extends PureComponent {
         className: PropTypes.string,
         contextPath: PropTypes.string,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
+        isActive: PropTypes.bool.isRequired,
         cutNode: PropTypes.func.isRequired
     };
 
@@ -26,12 +27,14 @@ export default class CutSelectedNode extends PureComponent {
     render() {
         const {
             destructiveOperationsAreDisabled,
+            isActive,
             className
         } = this.props;
 
         return (
             <IconButton
                 className={className}
+                isActive={isActive}
                 isDisabled={destructiveOperationsAreDisabled}
                 onClick={this.handleCutSelectedNodeClick}
                 icon="cut"

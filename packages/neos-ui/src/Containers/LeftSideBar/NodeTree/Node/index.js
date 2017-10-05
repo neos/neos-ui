@@ -255,6 +255,7 @@ export default class Node extends PureComponent {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     dragAndDropContext={this.getDragAndDropContext()}
+                    dragForbidden={$get('isAutoCreated', node)}
                     />
                 {this.isCollapsed() ? null : (
                     <Tree.Node.Contents>
@@ -303,8 +304,8 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
 
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
-        const canBeInsertedAlongsideSelector = selectors.CR.Nodes.makeCanBeInsertedAlongsideSelector(nodeTypesRegistry);
-        const canBeInsertedIntoSelector = selectors.CR.Nodes.makeCanBeInsertedIntoSelector(nodeTypesRegistry);
+        const canBeMovedAlongsideSelector = selectors.CR.Nodes.makeCanBeMovedAlongsideSelector(nodeTypesRegistry);
+        const canBeMovedIntoSelector = selectors.CR.Nodes.makeCanBeMovedIntoSelector(nodeTypesRegistry);
         const isDocumentNodeDirtySelector = selectors.CR.Workspaces.makeIsDocumentNodeDirtySelector();
 
         return (state, {node, currentlyDraggedNode}) => ({
@@ -322,11 +323,11 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
             loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
             errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
             isNodeDirty: isDocumentNodeDirtySelector(state, $get('contextPath', node)),
-            canBeInsertedAlongside: canBeInsertedAlongsideSelector(state, {
+            canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
             }),
-            canBeInsertedInto: canBeInsertedIntoSelector(state, {
+            canBeInsertedInto: canBeMovedIntoSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
             })
@@ -345,8 +346,8 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
 
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
-        const canBeInsertedAlongsideSelector = selectors.CR.Nodes.makeCanBeInsertedAlongsideSelector(nodeTypesRegistry);
-        const canBeInsertedIntoSelector = selectors.CR.Nodes.makeCanBeInsertedIntoSelector(nodeTypesRegistry);
+        const canBeMovedAlongsideSelector = selectors.CR.Nodes.makeCanBeMovedAlongsideSelector(nodeTypesRegistry);
+        const canBeMovedIntoSelector = selectors.CR.Nodes.makeCanBeMovedIntoSelector(nodeTypesRegistry);
         const isContentNodeDirtySelector = selectors.CR.Workspaces.makeIsContentNodeDirtySelector();
 
         return (state, {node, currentlyDraggedNode}) => ({
@@ -360,11 +361,11 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
             focusedNodeContextPath: $get('cr.nodes.focused.contextPath', state),
             toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
             isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
-            canBeInsertedAlongside: canBeInsertedAlongsideSelector(state, {
+            canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
             }),
-            canBeInsertedInto: canBeInsertedIntoSelector(state, {
+            canBeInsertedInto: canBeMovedIntoSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
             })

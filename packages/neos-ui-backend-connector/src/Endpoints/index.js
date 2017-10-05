@@ -162,8 +162,10 @@ const parseGetSingleNodeResult = requestPromise => {
 
             const nodeFrontendUri = d.querySelector('.node-frontend-uri').getAttribute('href');
 
+            // Hackish way to get context string from uri
+            const contextString = nodeFrontendUri.split('@')[1].split('.')[0];
             // TODO: Temporary hack due to missing contextPath in the API response
-            const nodeContextPath = `${d.querySelector('.node-path').innerHTML}@${nodeFrontendUri.split('@')[1]}`;
+            const nodeContextPath = `${d.querySelector('.node-path').innerHTML}@${contextString}`;
 
             return {
                 nodeFound: true,

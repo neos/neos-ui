@@ -47,7 +47,7 @@ class NodeDropTarget extends PureComponent {
         mode: PropTypes.string.isRequired
     };
     render() {
-        const {connectDropTarget, isOver, mode, theme} = this.props;
+        const {connectDropTarget, isOver, canDrop, mode, theme} = this.props;
         const classNames = mergeClassNames({
             [theme.dropTarget]: true,
             [theme['dropTarget--before']]: mode === 'before',
@@ -55,7 +55,7 @@ class NodeDropTarget extends PureComponent {
         });
         const classNamesInner = mergeClassNames({
             [theme.dropTarget__inner]: true,
-            [theme['dropTarget__inner--acceptsDrop']]: isOver
+            [theme['dropTarget__inner--acceptsDrop']]: isOver && canDrop
         });
         return connectDropTarget(
             <div className={classNames}>
@@ -71,6 +71,9 @@ class NodeDropTarget extends PureComponent {
         return {
             contextPath: props.id
         };
+    },
+    canDrag({dragForbidden}) {
+        return !dragForbidden;
     }
 }, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
@@ -104,6 +107,7 @@ export class Header extends PureComponent {
         canDrop: PropTypes.bool.isRequired,
         isDragging: PropTypes.bool,
         isOver: PropTypes.bool,
+        dragForbidden: PropTypes.bool,
 
         onToggle: PropTypes.func,
         onClick: PropTypes.func,
@@ -155,7 +159,7 @@ export class Header extends PureComponent {
             canDrop,
             ...restProps
         } = this.props;
-        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError', 'isDragging']);
+        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError', 'isDragging', 'dragForbidden']);
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,

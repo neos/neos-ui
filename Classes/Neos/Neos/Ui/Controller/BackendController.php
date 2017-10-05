@@ -16,6 +16,7 @@ use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\ContentContext;
+use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Fusion\View\FusionView;
@@ -84,6 +85,12 @@ class BackendController extends ActionController
     protected $menuHelper;
 
     /**
+     * @Flow\Inject(lazy=false)
+     * @var BackendRedirectionService
+     */
+    protected $backendRedirectionService;
+
+    /**
      * @Flow\Inject
      * @var StyleAndJavascriptInclusionService
      */
@@ -107,6 +114,12 @@ class BackendController extends ActionController
 
         if ($user = $this->userService->getBackendUser()) {
             $workspaceName = $this->userService->getPersonalWorkspaceName();
+            if ($node === null) {
+                $reflectionMethod = new \ReflectionMethod($this->backendRedirectionService, 'getLastVisitedNode');
+                $reflectionMethod->setAccessible(true);
+                $node = $reflectionMethod->invoke($this->backendRedirectionService, $workspaceName);
+            }
+
             $contentContext = ($node ? $node->getContext() : $this->createContext($workspaceName));
 
             $contentContext->getWorkspace();

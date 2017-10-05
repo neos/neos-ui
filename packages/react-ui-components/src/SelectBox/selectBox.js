@@ -5,7 +5,9 @@ import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import keydown from 'react-keydown';
 import mergeClassNames from 'classnames';
 
-@keydown
+const KEYS = ['down', 'up', 'enter'];
+
+@keydown(KEYS)
 export default class SelectBox extends PureComponent {
 
     static defaultProps = {

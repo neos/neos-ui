@@ -3,24 +3,27 @@
     margin: 0;
     position: relative;
     line-height: 20px;
-    padding-left: 15px;
 }
 .header__chevron {
     composes: reset from './../reset.css';
     position: absolute;
-    top: 35%;
+    top: 0;
     left: 0;
-    transform: translateY(-50%);
-    margin-top: 1px;
-    cursor: pointer;
+    height: 100%;
+    width: 18px;
+
     color: var(--brandColorsContrastBrighter);
+    line-height: 20px;
+    text-align: center;
+
+    cursor: pointer;
 
     &:hover {
         color: var(--brandColorsPrimaryBlue);
     }
 }
-.header__chevron--isCollapsed {
-    transform: translateY(-35%) translateX(-25%) rotate(-90deg);
+.header__chevron--isCollapsed > i {
+    transform: translateY(3px) translateX(-2px) rotate(-90deg);
 }
 .header__chevron--isHiddenInIndex,
 .header__data--isHidden {
@@ -32,6 +35,10 @@
     color: var(--brandColorsContrastBrighter) !important;
 }
 
+.header__chevron--isLoading > i {
+    margin-top: 6px;
+}
+
 .header__icon {
     padding: 0 .4em;
 }
@@ -40,11 +47,15 @@
     composes: reset from './../reset.css';
     position: relative;
     display: block;
-    cursor: pointer;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
     padding: .2em 0;
+
+    border-left: 2px solid transparent;
+
+    white-space: nowrap;
+
+    cursor: pointer;
 }
 
 .header__data--isHiddenInIndex {
@@ -58,8 +69,9 @@
     opacity: .2;
 }
 .header__data--isDirty {
-    border-left: 3px solid var(--brandColorsWarn);
+    border-left: 2px solid var(--brandColorsWarn);
 }
+
 .header__data--isFocused {
     background: var(--brandColorsContrastNeutral);
 
@@ -85,7 +97,6 @@
 
 .contents {
     composes: reset from './../reset.css';
-    margin-left: var(--spacing);
 }
 
 .dropTarget {

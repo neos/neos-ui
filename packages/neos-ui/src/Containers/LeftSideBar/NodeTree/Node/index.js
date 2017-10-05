@@ -48,6 +48,7 @@ export default class Node extends PureComponent {
         hasChildren: PropTypes.bool,
         isLastChild: PropTypes.bool,
         childNodes: PropTypes.object,
+        level: PropTypes.number.isRequired,
         currentDocumentNodeContextPath: PropTypes.string,
         focusedNodeContextPath: PropTypes.string,
         toggledNodeContextPaths: PropTypes.object,
@@ -215,6 +216,7 @@ export default class Node extends PureComponent {
             childNodes,
             hasChildren,
             isLastChild,
+            level,
             onNodeToggle,
             onNodeClick,
             onNodeFocus,
@@ -249,6 +251,7 @@ export default class Node extends PureComponent {
                     hasError={this.hasError()}
                     label={decodeLabel($get('label', node))}
                     icon={this.getIcon()}
+                    level={level}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     dragAndDropContext={this.getDragAndDropContext()}
@@ -270,6 +273,7 @@ export default class Node extends PureComponent {
                                 onNodeDrop={onNodeDrop}
                                 currentlyDraggedNode={currentlyDraggedNode}
                                 isLastChild={index + 1 === childNodesCount}
+                                level={level + 1}
                                 />
                         )}
                     </Tree.Node.Contents>

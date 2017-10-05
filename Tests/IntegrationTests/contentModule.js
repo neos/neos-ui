@@ -232,6 +232,7 @@ test('Can create a new page', async t => {
 
 test('Can create content node from inside InlineUI', async t => {
     const headlineTitle = 'Helloworld!';
+    subSection('Create a headline node');
     await t
         .switchToIframe('[name="neos-content-main"]')
         .click(Selector('.neos-contentcollection'))
@@ -240,9 +241,19 @@ test('Can create content node from inside InlineUI', async t => {
         .click(Selector('button#into'))
         // TODO: this selector will only work with English translation.
         // Change to `withProps` when implemented: https://github.com/DevExpress/testcafe-react-selectors/issues/14
-        .click(ReactSelector('NodeTypeItem').find('button').withText('Headline'))
+        .click(ReactSelector('NodeTypeItem').find('button').withText('Headline'));
+    subSection('Type something inside of it');
+    await t
         .switchToIframe('[name="neos-content-main"]')
         .typeText(Selector('.neos-inline-editable h1'), headlineTitle)
         .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok()
         .switchToMainWindow();
+    subSection('Discard all at the end');
+    await t
+        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'))
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            return !reduxState.ui.contentCanvas.isLoading && reduxState.ui.contentCanvas.contextPath === '/sites/neosdemo@user-admin;language=en_US';
+        })).ok('After discarding we are back to the main page');
 });

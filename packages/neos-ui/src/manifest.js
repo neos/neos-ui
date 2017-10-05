@@ -4,6 +4,8 @@ import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
+import {parentNodeContextPath} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
+
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
@@ -238,7 +240,6 @@ manifest('main', {}, globalRegistry => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:RemoveNode/Main', ({contextPath, parentContextPath}, {store}) => {
         const state = store.getState();
-
         if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
             store.dispatch(actions.CR.Nodes.unFocus());
         }
@@ -247,11 +248,24 @@ manifest('main', {}, globalRegistry => {
             store.dispatch(actions.UI.PageTree.focus(parentContextPath));
         }
 
+        // If we are removing current document node...
         if ($get('ui.contentCanvas.contextPath', state) === contextPath) {
-            const parentNodeUri = $get(['cr', 'nodes', 'byContextPath', parentContextPath, 'uri'], state);
+            let redirectContextPath = contextPath;
+            let redirectUri = null;
+            // Determine closest parent that is not being removed
+            while (!redirectUri) {
+                redirectContextPath = parentNodeContextPath(redirectContextPath);
+                // This is an extreme case when even the top node does not exist in the given dimension
+                // TODO: still find a nicer way to break out of this situation
+                if (redirectContextPath === false) {
+                    window.location = '/neos!';
+                    break;
+                }
+                redirectUri = $get(['cr', 'nodes', 'byContextPath', redirectContextPath, 'uri'], state);
+            }
 
-            store.dispatch(actions.UI.ContentCanvas.setSrc(parentNodeUri));
-            store.dispatch(actions.UI.ContentCanvas.setContextPath(parentContextPath));
+            store.dispatch(actions.UI.ContentCanvas.setSrc(redirectUri));
+            store.dispatch(actions.UI.ContentCanvas.setContextPath(redirectContextPath));
         }
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));

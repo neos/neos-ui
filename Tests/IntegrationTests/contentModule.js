@@ -44,10 +44,6 @@ test('Switching dimensions', async t => {
         .click(page.treeNode.withText('Multiple columns'));
     await waitForIframeLoading(t);
     await t
-        .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
-            return !reduxState.ui.contentCanvas.isLoading;
-        })).ok('Loading stopped')
         .click(ReactSelector('DimensionSwitcher'))
         .click(ReactSelector('DimensionSwitcher SelectBox'))
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('Latvian'))
@@ -85,11 +81,8 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .click(ReactSelector('InsertModeSelector').find('#into'))
         .click(ReactSelector('NodeTypeItem'))
         .typeText(Selector('#neos-nodeCreationDialog-body input'), pageTitleToCreate)
-        .click(Selector('#neos-nodeCreationDialog-createNew'))
-        .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
-            return !reduxState.ui.contentCanvas.isLoading;
-        })).ok('Loading stopped');
+        .click(Selector('#neos-nodeCreationDialog-createNew'));
+    await waitForIframeLoading(t);
 
     subSection('Create another node inside it');
     await t
@@ -97,19 +90,16 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .click(ReactSelector('InsertModeSelector').find('#into'))
         .click(ReactSelector('NodeTypeItem'))
         .typeText(Selector('#neos-nodeCreationDialog-body input'), pageTitleToCreate)
-        .click(Selector('#neos-nodeCreationDialog-createNew'))
-        .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
-            return !reduxState.ui.contentCanvas.isLoading;
-        })).ok('Loading stopped');
+        .click(Selector('#neos-nodeCreationDialog-createNew'));
+    await waitForIframeLoading(t);
 
     subSection('Discard all nodes and hope to be redirected to root');
     await discardAll(t);
     await t
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
-            return reduxState.ui.contentCanvas.contextPath === '/sites/neosdemo@user-admin;language=en_US';
-        })).ok('After discarding we are back to the main page');
+            return reduxState.ui.contentCanvas.contextPath;
+        })).eql('/sites/neosdemo@user-admin;language=en_US', 'After discarding we are back to the main page');
 });
 
 test('Discarding: create a document node and then discard it', async t => {
@@ -125,6 +115,7 @@ test('Discarding: create a document node and then discard it', async t => {
             const reduxState = props.store.getState().toJS();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).gt(0, 'There are some unpublished nodes');
+
     subSection('Discard that node');
     await discardAll(t);
     await t

@@ -48,7 +48,6 @@ test(`should export selectors`, () => {
     expect(typeof (selectors.transientValues)).toBe('function');
     expect(typeof (selectors.isDirty)).toBe('function');
     expect(typeof (selectors.shouldPromptToHandleUnappliedChanges)).toBe('function');
-    expect(typeof (selectors.viewConfiguration)).toBe('function');
 });
 
 test(`The reducer should return an Immutable.Map as the initial state.`, () => {

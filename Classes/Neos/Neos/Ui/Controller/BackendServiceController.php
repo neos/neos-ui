@@ -276,7 +276,8 @@ class BackendServiceController extends ActionController
         $this->view->assign('value', $this->feedbackCollection);
     }
 
-    public function getWorkspaceInfoAction() {
+    public function getWorkspaceInfoAction()
+    {
         $workspaceHelper = new WorkspaceHelper();
         $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace();
         $this->view->assign('value', $personalWorkspaceInfo);

@@ -125,6 +125,34 @@ test(`The "commit" action should store the last modification on the currently fo
     });
 });
 
+test(`The "commit" action should ignore the last modification, if it doesn't differ from the current node state`, () => {
+    const state = Immutable.fromJS({
+        cr: {
+            nodes: {
+                byContextPath: {
+                    '/my/path@user-foo': {
+                        contextPath: '/my/path@user-foo',
+                        properties: {
+                            title: 'Foo'
+                        }
+                    }
+                },
+                focused: {
+                    contextPath: '/my/path@user-foo'
+                }
+            }
+        },
+        ui: {
+            inspector: {
+                valuesByNodePath: {}
+            }
+        }
+    });
+    const nextState = reducer(state, actions.commit('title', 'Foo'));
+
+    expect(nextState.get('ui').get('inspector').get('valuesByNodePath').toJS()).toEqual({});
+});
+
 test(`The "clear" action should remove pending changes for the currently focused node.`, () => {
     const state = Immutable.fromJS({
         cr: {
@@ -263,6 +291,19 @@ test(`The "discard" action should reset the shouldPromptToHandleUnappliedChanges
     expect(nextState.get('ui').get('inspector').get('shouldPromptToHandleUnappliedChanges')).toBe(false);
 });
 
+test(`The "escape" action should reset the shouldPromptToHandleUnappliedChanges state to true`, () => {
+    const state = Immutable.fromJS({
+        ui: {
+            inspector: {
+                shouldPromptToHandleUnappliedChanges: false
+            }
+        }
+    });
+    const nextState = reducer(state, actions.escape());
+
+    expect(nextState.get('ui').get('inspector').get('shouldPromptToHandleUnappliedChanges')).toBe(true);
+});
+
 test(`The "resume" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
     const state = Immutable.fromJS({
         ui: {
@@ -274,4 +315,45 @@ test(`The "resume" action should reset the shouldPromptToHandleUnappliedChanges 
     const nextState = reducer(state, actions.resume());
 
     expect(nextState.get('ui').get('inspector').get('shouldPromptToHandleUnappliedChanges')).toBe(false);
+});
+
+test(`The "openSecondaryInspector" action should set the secondaryInspectorIsOpen state to true`, () => {
+    const state = Immutable.fromJS({
+        ui: {
+            inspector: {
+                secondaryInspectorIsOpen: false
+            }
+        }
+    });
+    const nextState = reducer(state, actions.openSecondaryInspector());
+
+    expect(nextState.get('ui').get('inspector').get('secondaryInspectorIsOpen')).toBe(true);
+});
+
+test(`The "closeSecondaryInspector" action should set the secondaryInspectorIsOpen state to false`, () => {
+    const state = Immutable.fromJS({
+        ui: {
+            inspector: {
+                secondaryInspectorIsOpen: true
+            }
+        }
+    });
+    const nextState = reducer(state, actions.closeSecondaryInspector());
+
+    expect(nextState.get('ui').get('inspector').get('secondaryInspectorIsOpen')).toBe(false);
+});
+
+test(`The "toggleSecondaryInspector" action should negate the secondaryInspectorIsOpen state`, () => {
+    const state = Immutable.fromJS({
+        ui: {
+            inspector: {
+                secondaryInspectorIsOpen: true
+            }
+        }
+    });
+    const nextState1 = reducer(state, actions.toggleSecondaryInspector());
+    const nextState2 = reducer(nextState1, actions.toggleSecondaryInspector());
+
+    expect(nextState1.get('ui').get('inspector').get('secondaryInspectorIsOpen')).toBe(false);
+    expect(nextState2.get('ui').get('inspector').get('secondaryInspectorIsOpen')).toBe(true);
 });

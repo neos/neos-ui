@@ -122,23 +122,21 @@ const fullyRenderToggablePanel = isOpen => {
     </ToggablePanel>);
 };
 
-const getHeaderDomNode = panelDomNode => panelDomNode;
+const getHeaderDomNode = panelDomNode => panelDomNode[0].children[0];
 
 const getContentsDomNode = panelDomNode =>
     panelDomNode.children('section').children('div').first().next();
 
 test('open ToggablePanel should render a <ToggablePanel.Header/> with an "aria-expanded" attribute of "true".', () => {
     const wrapper = fullyRenderToggablePanel(true);
-    console.error(getHeaderDomNode(wrapper).html());
-    console.error(getHeaderDomNode(wrapper).equals('<div />'));
 
-    expect(getHeaderDomNode(wrapper).attr('aria-expanded')).toBeTruthy();
+    expect(getHeaderDomNode(wrapper).attribs['aria-expanded']).toBeTruthy();
 });
 
 test('closed ToggablePanel should render a <ToggablePanel.Header/> with an "aria-expanded" attribute of "false".', () => {
     const wrapper = fullyRenderToggablePanel(false);
 
-    expect(getHeaderDomNode(wrapper).attr('aria-expanded')).toBe('false');
+    expect(getHeaderDomNode(wrapper).attribs['aria-expanded']).toBe('false');
 });
 
 test('<ToggablePanel.Header/> should render a "HeadlineComponent" and "IconButtonComponent" component.', () => {
@@ -151,25 +149,25 @@ test('<ToggablePanel.Header/> should render a "HeadlineComponent" with the theme
     const wrapper = fullyRenderToggablePanel(false);
 
     expect(
-        getHeaderDomNode(wrapper).find('[data-component-name=HeadlineComponent]').attr('class')
+        getHeaderDomNode(wrapper.find('[data-component-name=HeadlineComponent]')).parent.attribs.class
     ).toBe(defaultThemeProps.theme.panel__headline);
 });
 test('<ToggablePanel.Header/> should render all children within the "HeadlineComponent".', () => {
     const wrapper = fullyRenderToggablePanel(false);
-    expect(getHeaderDomNode(wrapper).text()).toBe('My Header');
+    expect(getHeaderDomNode(wrapper).children[0].children[0].data).toBe('My Header');
 });
 
 test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-down" if the "isOpen" context is falsy.', () => {
     const wrapper = fullyRenderToggablePanel(false);
     expect(
-        getHeaderDomNode(wrapper).find('[data-component-name=IconButtonComponent]').attr('icon')
+        wrapper.find('[data-component-name=IconButtonComponent]')[0].attribs['icon']
     ).toBe('chevron-down');
 });
 
 test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon of "chevron-up" if the "isOpen" context is truthy.', () => {
     const wrapper = fullyRenderToggablePanel(true);
     expect(
-        getHeaderDomNode(wrapper).find('[data-component-name=IconButtonComponent]').attr('icon')
+        wrapper.find('[data-component-name=IconButtonComponent]')[0].attribs['icon']
     ).toBe('chevron-up');
 });
 

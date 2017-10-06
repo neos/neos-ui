@@ -125,7 +125,7 @@ const fullyRenderToggablePanel = isOpen => {
 const getHeaderDomNode = panelDomNode => panelDomNode[0].children[0];
 
 const getContentsDomNode = panelDomNode =>
-    panelDomNode.children('section').children('div').first().next();
+    panelDomNode[0].children[1].children[0].children[0]
 
 test('open ToggablePanel should render a <ToggablePanel.Header/> with an "aria-expanded" attribute of "true".', () => {
     const wrapper = fullyRenderToggablePanel(true);
@@ -174,15 +174,15 @@ test('<ToggablePanel.Header/> should render a "IconButtonComponent" with an icon
 test('<ToggablePanel.Contents/> should render the themes "panel__contents" className.', () => {
     const wrapper = fullyRenderToggablePanel(true);
     expect(
-        getContentsDomNode(wrapper).find('[aria-hidden]').hasClass(defaultThemeProps.theme.panel__contents)
-    ).toBeTruthy();
+        getContentsDomNode(wrapper).attribs['class']
+    ).toBe(defaultThemeProps.theme.panel__contents)
 });
 
 test('<ToggablePanel.Contents/> should render a falsy "aria-hidden" attribute if the "isOpen" context is truthy.', () => {
     const wrapper = fullyRenderToggablePanel(true);
-    expect(getContentsDomNode(wrapper).find('[aria-hidden]').attr('aria-hidden')).toBe('false');
+    expect(getContentsDomNode(wrapper).attribs['aria-hidden']).toBe('false');
 });
 test('<ToggablePanel.Contents/> should render a truthy "aria-hidden" attribute if the "isOpen" context is falsy.', () => {
     const wrapper = fullyRenderToggablePanel(false);
-    expect(getContentsDomNode(wrapper).find('[aria-hidden]').attr('aria-hidden')).toBe('true');
+    expect(getContentsDomNode(wrapper).attribs['aria-hidden']).toBe('true');
 });

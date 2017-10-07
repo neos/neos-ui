@@ -116,12 +116,13 @@ backend = Neos.Fusion:Template {
                         }
                         isActive = true
                         target = 'Window'
+                        @if.isAvailable = ${Neos.Ui.Modules.isAvailable(submoduleName)}
                     }
                 }
 
                 @if {
                     isNotHiddenInMenu = ${!module.hideInMenu}
-                    isAvailable = ${Neos.Neos.Ui.Modules.isAvailable(moduleName)}
+                    isAvailable = ${Neos.Ui.Modules.isAvailable(moduleName)}
                 }
             }
         }

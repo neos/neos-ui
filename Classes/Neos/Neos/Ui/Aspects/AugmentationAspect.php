@@ -262,7 +262,7 @@ class AugmentationAspect
      */
     protected function switchToUILocale($reset = false)
     {
-        if ($reset === TRUE) {
+        if ($reset === true) {
             // Reset the locale
             $this->i18nService->getConfiguration()->setCurrentLocale($this->rememberedContentLocale);
         } else {

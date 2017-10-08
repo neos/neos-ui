@@ -48,7 +48,7 @@ backend = Neos.Fusion:Template {
 
     nodeTypes = Neos.Fusion:RawArray {
         roles = ${Configuration.setting('Neos.Neos.Ui.nodeTypeRoles')}
-        groups = ${Configuration.setting('Neos.Neos.nodeTypes.groups')}
+        groups = ${Neos.Ui.PositionalArraySorter.sort(Configuration.setting('Neos.Neos.nodeTypes.groups'))}
 
         @process.json = ${Json.stringify(value)}
     }

@@ -98,9 +98,6 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
     const nextAction = Object.values(waitForNextAction)[0];
 
     if (nextAction.type !== actionTypes.UI.NodeVariantCreationDialog.CANCEL) {
-        const workspaceInfo = yield call(getWorkspaceInfo);
-        yield put(actions.CR.Workspaces.update(workspaceInfo));
-
         const copyContent = nextAction.type === actionTypes.UI.NodeVariantCreationDialog.CREATE_AND_COPY;
         const {nodeFrontendUri, nodeContextPath} = yield adoptNodeToOtherDimension({
             identifier: nodeIdentifier,
@@ -109,6 +106,9 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
             sourceDimensions: sourceDimensions.toJS(),
             copyContent
         });
+
+        const workspaceInfo = yield call(getWorkspaceInfo);
+        yield put(actions.CR.Workspaces.update(workspaceInfo));
 
         return {nodeFrontendUri, nodeContextPath};
     }

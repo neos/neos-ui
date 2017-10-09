@@ -10,6 +10,8 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Utility\Arrays;
+use Neos\Neos\Security\Authorization\Privilege\ModulePrivilege;
+use Neos\Neos\Security\Authorization\Privilege\ModulePrivilegeSubject;
 
 class ModulesHelper implements ProtectedContextAwareInterface
 {
@@ -20,7 +22,7 @@ class ModulesHelper implements ProtectedContextAwareInterface
     protected $privilegeManager;
 
     /**
-     * @Flow\InjectConfiguration(path="Neos.Neos.modules")
+     * @Flow\InjectConfiguration(path="modules", package="Neos.Neos")
      * @var array
      */
     protected $modules;
@@ -52,19 +54,24 @@ class ModulesHelper implements ProtectedContextAwareInterface
     /**
      * Checks whether the current user has access to a module
      *
-     * @param string $moduleName
+     * @param string $modulePath
      * @return boolean
      */
-    public function isAllowed($moduleName)
+    public function isAllowed($modulePath)
     {
-        $moduleConfiguration = $this->modules[$moduleName];
-        if (isset($moduleConfiguration['privilegeTarget']) &&
-            !$this->privilegeManager->isPrivilegeTargetGranted($moduleConfiguration['privilegeTarget'])
-        ) {
-            return true;
+        $modulePathSegments = explode('/', $modulePath);
+        $moduleConfiguration = Arrays::getValueByPath($this->modules, implode('.submodules.', $modulePathSegments));
+
+        if (!$this->privilegeManager->isGranted(ModulePrivilege::class, new ModulePrivilegeSubject($modulePath))) {
+            return false;
         }
 
-        return false;
+        // @deprecated since Neos 3.2, use the ModulePrivilegeTarget instead!
+        if (isset($moduleConfiguration['privilegeTarget']) && !$this->privilegeManager->isPrivilegeTargetGranted($moduleConfiguration['privilegeTarget'])) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

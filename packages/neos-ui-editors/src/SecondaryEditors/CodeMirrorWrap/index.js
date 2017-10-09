@@ -26,13 +26,16 @@ export default class CodeMirrorWrap extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount() {
-        const codeMirrorDomElement = document.querySelector('div.ReactCodeMirror > .CodeMirror');
-        const offsetTop = codeMirrorDomElement.getBoundingClientRect().top;
+    editorRefCallback = ref => {
+        if (!ref) {
+            return;
+        }
+        const codeMirrorRef = ref.getCodeMirror();
+        const codeMirrorWrapperDomElement = codeMirrorRef.display.wrapper;
+        const offsetTop = codeMirrorWrapperDomElement.getBoundingClientRect().top;
         const clientHeight = window.innerHeight || document.clientHeight || document.getElementByTagName('body').clientHeight;
         const height = clientHeight - offsetTop;
-
-        codeMirrorDomElement.style.height = `${height}px`;
+        codeMirrorRef.setSize(null, height);
     }
 
     render() {
@@ -46,7 +49,7 @@ export default class CodeMirrorWrap extends PureComponent {
         };
 
         return (
-            <CodeMirror value={this.props.value} onChange={this.handleChange} options={options}/>
+            <CodeMirror value={this.props.value} onChange={this.handleChange} options={options} ref={this.editorRefCallback}/>
         );
     }
 

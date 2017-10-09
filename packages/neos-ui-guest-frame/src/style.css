@@ -21,6 +21,11 @@
     outline: none;
 }
 
+:global(.neos-inline-editable:hover) {
+    outline-offset: .5em;
+    outline: 2px dashed var(--brandColorsPrimaryBlue);
+}
+
 .notInlineEditableOverlay {
     position: absolute;
     top: 0;

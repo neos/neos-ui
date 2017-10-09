@@ -61,7 +61,7 @@ test('Switching dimensions', async t => {
         })).ok('Loading stopped and dimension switched to Latvian')
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
-            return reduxState.cr.workspaces.publishableNodes;
+            return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).gt(0, 'There are some unpublished nodes after adoption')
         .expect(page.treeNode.withText('Navigation elements').exists).notOk('Untranslated node gone from the tree');
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Dropzone from 'react-dropzone';
 import mergeClassNames from 'classnames';
-import {AssetUpload} from '../../../Library/index';
+import {AssetUpload} from '../../../../Library/index';
 
 import {Thumbnail} from '../../Utils/index';
 import style from './style.css';

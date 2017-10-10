@@ -5,3 +5,8 @@
 .editor {
     margin-bottom: var(--spacing);
 }
+
+.modalContents {
+    padding: 0 var(--spacing) var(--spacing) var(--spacing);
+    color: var(--brandColorsContrastBrighter);
+}

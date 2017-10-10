@@ -220,21 +220,16 @@ export default class ImageEditor extends Component {
     }
 
     upload(files) {
-        const {uploadAsset} = backend.get().endpoints;
-        const {commit, siteNodePath} = this.props;
+        const {commit} = this.props;
         const {isImageCropperOpen} = this.state;
 
-        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
+        this.setState({image: res}, () => {
+            commit(res.object);
 
-        return uploadAsset(files[0], siteNodeName).then(res => {
-            this.setState({image: res}, () => {
-                commit(res.object);
-
-                if (isImageCropperOpen) {
-                    this.handleCloseSecondaryScreen();
-                    this.handleOpenImageCropper();
-                }
-            });
+            if (isImageCropperOpen) {
+                this.handleCloseSecondaryScreen();
+                this.handleOpenImageCropper();
+            }
         });
     }
 

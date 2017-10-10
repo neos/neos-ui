@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Dropzone from 'react-dropzone';
 import mergeClassNames from 'classnames';
+import {AssetUpload} from '../../../Library/index';
 
 import {Thumbnail} from '../../Utils/index';
 import style from './style.css';
@@ -18,12 +19,11 @@ export default class PreviewScreen extends PureComponent {
 
     constructor(props) {
         super(props);
-
-        this.setDropDownRef = this.setDropDownRef.bind(this);
+        this.setAssetUploadReference = this.setAssetUploadReference.bind(this);
     }
 
     chooseFromLocalFileSystem() {
-        this.dropzone.open();
+        this.assetUpload.chooseFromLocalFileSystem();
     }
 
     render() {
@@ -44,15 +44,7 @@ export default class PreviewScreen extends PureComponent {
         const thumbnail = image ? Thumbnail.fromImageData(image, 273, 216) : null;
 
         return (
-            <Dropzone
-                ref={this.setDropDownRef}
-                onDropAccepted={onDrop}
-                className={style.dropzone}
-                activeClassName={style['dropzone--isActive']}
-                rejectClassName={style['dropzone--isRejecting']}
-                disableClick={true}
-                multiple={false}
-                >
+            <AssetUpload onAfterUpload={onDrop} isLoading={isLoading} highlight={highlight} ref={this.setAssetUploadReference}>
                 <div
                     className={classNames}
                     onClick={onClick}
@@ -66,11 +58,11 @@ export default class PreviewScreen extends PureComponent {
                             />
                     </div>
                 </div>
-            </Dropzone>
+            </AssetUpload>
         );
     }
 
-    setDropDownRef(ref) {
-        this.dropzone = ref;
+    setAssetUploadReference(ref) {
+        this.assetUpload = ref.getWrappedInstance();
     }
 }

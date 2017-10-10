@@ -4,7 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
 const brand = require('@neos-project/brand');
-
+const styles = require('./styleConfig');
 //
 // Prevent from failing, when NEOS_BUILD_ROOT env variable isn't set
 // (e.g. when extending this config from storybook)
@@ -12,10 +12,13 @@ const brand = require('@neos-project/brand');
 const rootPath = env.rootPath || __dirname;
 
 //
-// Create the vars object for brand vars like colors and font settings
+// Create the vars object for:
+//    - brand vars like colors and font settings
+//    - global css variables for Neos.Ui
 // for the `postcss-css-variables` plugin.
 //
 const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
+const styleVars = styles.generateCssVarsObject(styles.config);
 
 const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
@@ -70,7 +73,7 @@ const webpackConfig = {
                 // Font sizes
                 //
                 '--baseFontSize': '14px'
-            }, brandVars)
+            }, styleVars, brandVars)
         }),
         require('postcss-import')(),
         require('postcss-nested')(),

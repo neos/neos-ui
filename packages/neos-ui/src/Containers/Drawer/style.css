@@ -2,7 +2,7 @@
     position: fixed;
     top: 41px;
     left: 0;
-    z-index: 8000;
+    z-index: var(--zIndexDrawer);
     height: 100%;
     width: var(--sidebarWidth);
     background: var(--brandColorsContrastDarker);

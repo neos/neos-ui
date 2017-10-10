@@ -43,7 +43,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: var(--zIndexCalendarFakeInputMirror);
     cursor: pointer;
 }
 .calendarFakeInput {
@@ -118,7 +118,7 @@
             width: 250px;
             padding: 4px;
             margin-top: 1px;
-            z-index: 99999 !important;
+            z-index: var(--zIndexRdtPicker);
             background: #fff;
             box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
             border: 1px solid var(--brandColorsContrastNeutral);

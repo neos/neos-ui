@@ -8,7 +8,7 @@
         clear: both;
     }
 
-    z-index: 9999;
+    z-index: var(--zIndexPrimaryToolbar);
 }
 .primaryToolbar--isHidden {
     display: none;

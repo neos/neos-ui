@@ -14,6 +14,7 @@ export default class CopySelectedNode extends PureComponent {
         className: PropTypes.string,
         contextPath: PropTypes.string,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
+        isActive: PropTypes.bool.isRequired,
         copyNode: PropTypes.func.isRequired
     };
 
@@ -24,12 +25,13 @@ export default class CopySelectedNode extends PureComponent {
     }
 
     render() {
-        const {destructiveOperationsAreDisabled, className} = this.props;
+        const {destructiveOperationsAreDisabled, className, isActive} = this.props;
 
         return (
             <IconButton
                 className={className}
                 isDisabled={destructiveOperationsAreDisabled}
+                isActive={isActive}
                 onClick={this.handleCopySelectedNodeClick}
                 icon="copy"
                 hoverStyle="clean"

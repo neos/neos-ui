@@ -12,6 +12,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 import {InsertModeSelector} from '@neos-project/neos-ui-containers';
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
+import NodeTypeFilter from './nodeTypeFilter';
+import style from './style.css';
 
 const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) => {
     if (allowedSiblingNodeTypes.length) {
@@ -59,19 +61,27 @@ export default class SelectNodeType extends PureComponent {
         apply: PropTypes.func.isRequired
     };
 
-    componentDidMount() {
-        this.setState({
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            filterSearchTerm: '',
             insertMode: calculateInitialMode(
                 this.props.allowedSiblingNodeTypes,
                 this.props.allowedChildNodeTypes
             )
-        });
+        };
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.allowedSiblingNodeTypes !== this.props.allowedSiblingNodeTypes ||
-            prevProps.allowedChildNodeTypes !== this.props.allowedChildNodeTypes) {
-            this.componentDidMount();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.allowedSiblingNodeTypes !== nextProps.allowedSiblingNodeTypes ||
+            this.props.allowedChildNodeTypes !== nextProps.allowedChildNodeTypes) {
+            this.setState({
+                insertMode: calculateInitialMode(
+                    nextProps.allowedSiblingNodeTypes,
+                    nextProps.allowedChildNodeTypes
+                )
+            });
         }
     }
 
@@ -79,7 +89,9 @@ export default class SelectNodeType extends PureComponent {
 
     handleCancel = () => {
         const {cancel} = this.props;
-
+        this.setState({
+            filterSearchTerm: ''
+        });
         cancel();
     }
 
@@ -107,20 +119,6 @@ export default class SelectNodeType extends PureComponent {
         }
     }
 
-    renderInsertModeSelector() {
-        const {insertMode} = this.state;
-        const {allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
-
-        return (
-            <InsertModeSelector
-                mode={insertMode}
-                onSelect={this.handleModeChange}
-                enableAlongsideModes={Boolean(allowedSiblingNodeTypes.length)}
-                enableIntoMode={Boolean(allowedChildNodeTypes.length)}
-                />
-        );
-    }
-
     renderCancelAction() {
         return (
             <Button
@@ -134,6 +132,28 @@ export default class SelectNodeType extends PureComponent {
         );
     }
 
+    renderSelectNodeTypeDialogHeader() {
+        const {insertMode, filterSearchTerm} = this.state;
+        const {allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
+
+        return (
+            <div className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
+                <InsertModeSelector
+                    mode={insertMode}
+                    onSelect={this.handleModeChange}
+                    enableAlongsideModes={Boolean(allowedSiblingNodeTypes.length)}
+                    enableIntoMode={Boolean(allowedChildNodeTypes.length)}
+                    />
+                <NodeTypeFilter
+                    filterSearchTerm={filterSearchTerm}
+                    onChange={this.handleNodeTypeFilterChange}
+                    />
+            </div>
+        );
+    }
+
+    handleNodeTypeFilterChange = filterSearchTerm => this.setState({filterSearchTerm});
+
     render() {
         const {isOpen} = this.props;
 
@@ -144,7 +164,7 @@ export default class SelectNodeType extends PureComponent {
         return (
             <Dialog
                 actions={[this.renderCancelAction()]}
-                title={this.renderInsertModeSelector()}
+                title={[this.renderSelectNodeTypeDialogHeader()]}
                 onRequestClose={this.handleCancel}
                 isOpen
                 style="wide"
@@ -153,6 +173,7 @@ export default class SelectNodeType extends PureComponent {
                     <div key={key}>
                         <NodeTypeGroupPanel
                             group={group}
+                            filterSearchTerm={this.state.filterSearchTerm}
                             onSelect={this.handleApply}
                             />
                     </div>

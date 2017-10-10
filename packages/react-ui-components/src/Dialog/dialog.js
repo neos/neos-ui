@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
 import Portal from 'react-portal';
+import CloseOnEscape from 'react-close-on-escape';
 
 const validStyleKeys = ['wide', 'narrow'];
 
-const Dialog = props => {
+export const DialogWithoutEscape = props => {
     const {
         className,
         title,
@@ -56,7 +57,7 @@ const Dialog = props => {
         </Portal>
     );
 };
-Dialog.propTypes = {
+DialogWithoutEscape.propTypes = {
     /**
      * This prop controls the rendered state of the Dialog, when falsy, nothing gets rendered into the DOM.
      */
@@ -117,4 +118,14 @@ Dialog.propTypes = {
     IconButtonComponent: PropTypes.any.isRequired
 };
 
-export default Dialog;
+const DialogWithEscape = props => {
+    const onEscape = () => props.onRequestClose();
+    return (
+        <CloseOnEscape onEscape={onEscape}><DialogWithoutEscape {...props}/></CloseOnEscape>
+    );
+};
+DialogWithEscape.propTypes = {
+    onRequestClose: PropTypes.func.isRequired
+};
+
+export default DialogWithEscape;

@@ -16,10 +16,13 @@ import style from './style.css';
     isFringeRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
+    backgroundColor: $get('ui.contentCanvas.backgroundColor'),
     src: $get('ui.contentCanvas.src'),
     currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {
-    stopLoading: actions.UI.ContentCanvas.stopLoading
+    startLoading: actions.UI.ContentCanvas.startLoading,
+    stopLoading: actions.UI.ContentCanvas.stopLoading,
+    requestRegainControl: actions.UI.ContentCanvas.requestRegainControl
 })
 @neos(globalRegistry => ({
     editPreviewModesRegistry: globalRegistry.get('editPreviewModes'),
@@ -31,12 +34,20 @@ export default class ContentCanvas extends PureComponent {
         isFringeRight: PropTypes.bool.isRequired,
         isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
-        src: PropTypes.string.isRequired,
+        backgroundColor: PropTypes.string,
+        src: PropTypes.string,
+        startLoading: PropTypes.func.isRequired,
         stopLoading: PropTypes.func.isRequired,
+        requestRegainControl: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
 
         editPreviewModesRegistry: PropTypes.object.isRequired,
         guestFrameRegistry: PropTypes.object.isRequired
+    };
+
+    state = {
+        isVisible: true,
+        loadedSrc: ''
     };
 
     constructor(props) {
@@ -54,14 +65,17 @@ export default class ContentCanvas extends PureComponent {
             src,
             currentEditPreviewMode,
             editPreviewModesRegistry,
-            guestFrameRegistry
+            guestFrameRegistry,
+            backgroundColor
         } = this.props;
+        const {isVisible} = this.state;
         const classNames = mergeClassNames({
             [style.contentCanvas]: true,
             [style['contentCanvas--isFringeLeft']]: isFringeLeft,
             [style['contentCanvas--isFringeRight']]: isFringeRight,
             [style['contentCanvas--isMovedDown']]: !isEditModePanelHidden,
-            [style['contentCanvas--isFullScreen']]: isFullScreen
+            [style['contentCanvas--isFullScreen']]: isFullScreen,
+            [style['contentCanvas--isHidden']]: !isVisible
         });
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
         const currentEditPreviewModeConfiguration = editPreviewModesRegistry.get(currentEditPreviewMode);
@@ -76,21 +90,33 @@ export default class ContentCanvas extends PureComponent {
             inlineStyles.height = height;
         }
 
+        const canvasContentStyle = {};
+        if (backgroundColor) {
+            canvasContentStyle.background = backgroundColor;
+        }
+
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
             <div className={classNames}>
                 <div id="centerArea"/>
-                <div className={style.contentCanvas__itemWrapper} style={inlineStyles} data-__neos__hook="contentCanvas">
-                    <Frame
+                <div
+                    className={style.contentCanvas__itemWrapper}
+                    style={inlineStyles}
+                    data-__neos__hook="contentCanvas"
+                    >
+                    (src && <Frame
                         src={src}
                         frameBorder="0"
                         name="neos-content-main"
                         className={style.contentCanvas__contents}
+                        style={canvasContentStyle}
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
+                        onLoad={this.handleFrameAccess}
+                        sandbox="allow-same-origin allow-scripts"
                         >
                         {InlineUI && <InlineUI/>}
-                    </Frame>
+                    </Frame>)
                 </div>
             </div>
         );
@@ -106,5 +132,39 @@ export default class ContentCanvas extends PureComponent {
         iframeDocument.__isInitialized = true;
 
         stopLoading();
+    }
+
+    handleFrameAccess = iframe => {
+        const {startLoading, requestRegainControl} = this.props;
+
+        try {
+            if (iframe) {
+                iframe.contentWindow.addEventListener('beforeunload', event => {
+                    //
+                    // If we cannot guess the link that is responsible for
+                    // the unload, we should better hide the frame, until we're
+                    // sure that it ends up in a consistent state.
+                    //
+                    if (!event.target.activeElement.getAttribute('href')) {
+                        this.setState({isVisible: false});
+                    }
+
+                    startLoading();
+                });
+
+                this.setState({
+                    isVisible: true,
+                    loadedSrc: iframe.contentWindow.location.href
+                });
+            }
+        } catch (err) {
+            //
+            // We lost access to the frame. Now we should inform the user about that
+            // and take measures to restore a consistent state.
+            //
+            console.error(`Lost access to iframe: ${err}`);
+            this.setState({isVisible: false});
+            requestRegainControl(this.state.loadedSrc, err.toString());
+        }
     }
 }

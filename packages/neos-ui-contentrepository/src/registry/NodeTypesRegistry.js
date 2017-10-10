@@ -54,21 +54,23 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                 return [];
             }
             result = this.getAllowedGrandChildNodeTypes(referenceGrandParentNodeType, referenceParentName);
+        } else {
+            result = this.getAllowedChildNodeTypes(referenceParentNodeType);
         }
 
-        result = this.getAllowedChildNodeTypes(referenceParentNodeType);
         // If role is provided, filter by role, e.g. only "content" or "document" ndoetypes
         return role ? result.filter(nodeTypeName => this.hasRole(nodeTypeName, role)) : result;
     }
 
     getNodeType(nodeTypeName) {
-        return this._registry[nodeTypeName] || false;
+        return this.get(nodeTypeName);
     }
 
     getGroupedNodeTypeList(nodeTypeFilter) {
-        const nodeTypes = nodeTypeFilter ? Object.values(this._registry).filter(nodeType => {
-            return nodeTypeFilter.indexOf(nodeType.name) !== -1;
-        }) : Object.values(this._registry);
+        const nodeTypesWrapped = nodeTypeFilter ? this._registry.filter(nodeType => {
+            return nodeTypeFilter.indexOf(nodeType.value.name) !== -1;
+        }) : this._registry;
+        const nodeTypes = nodeTypesWrapped.map(item => item.value);
 
         // It's important to preserve the ordering of `this._groups` as we can't sort them again by position in JS (sorting logic is too complex)
         return Object.keys(this._groups).map(groupName => {
@@ -102,7 +104,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     }
 
     getInspectorViewConfigurationFor(nodeTypeName) {
-        const nodeType = this._registry[nodeTypeName];
+        const nodeType = this.get(nodeTypeName);
 
         if (!nodeType) {
             return undefined;
@@ -177,5 +179,23 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         //
         return $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType) ||
             $get(['properties', propertyName, 'ui', 'aloha'], nodeType);
+    }
+
+    isInlineEditable(nodeTypeName) {
+        const nodeType = this.get(nodeTypeName);
+
+        if ($get('ui.inlineEditable', nodeType)) {
+            return true;
+        }
+
+        const propertyDefinitions = $get('properties', nodeType);
+
+        if (!propertyDefinitions) {
+            return false;
+        }
+
+        return Object.keys(propertyDefinitions).some(
+            propertyName => $get('ui.inlineEditable', propertyDefinitions[propertyName])
+        );
     }
 }

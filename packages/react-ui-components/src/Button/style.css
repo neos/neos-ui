@@ -57,21 +57,25 @@
 }
 
 .btn--brandHover:hover,
+.btn--brandHover:hover i,
 .btn--brandHover.btn--isPressed,
 .btn--brandHover.btn--isPressed i {
     background-color: var(--brandColorsPrimaryBlue);
 }
 .btn--cleanHover.btn--isPressed,
+.btn--cleanHover.btn--isPressed i,
 .btn--cleanHover:hover,
 .btn--cleanHover:hover i {
     color: var(--brandColorsPrimaryBlue);
 }
 .btn--darkenHover.btn--isPressed,
+.btn--darkenHover.btn--isPressed i,
 .btn--darkenHover:hover,
 .btn--darkenHover:hover i {
     background-color: rgba(0, 0, 0, .1);
 }
 .btn--warnHover.btn--isPressed,
+.btn--warnHover.btn--isPressed i,
 .btn--warnHover:hover,
 .btn--warnHover:hover i {
     background-color: var(--brandColorsWarn);

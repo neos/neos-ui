@@ -28,3 +28,18 @@
 .gridItem {
     padding: 0;
 }
+
+.nodeTypeDialogHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nodeTypeDialogHeader__filter {
+    margin-right: var(--goldenUnit);
+    display: flex;
+    align-items: center;
+}
+
+.nodeTypeFilter__label {
+    margin-right: var(--halfSpacing);
+}

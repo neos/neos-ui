@@ -5,6 +5,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
 use Neos\Utility\ObjectAccess;
 
@@ -115,7 +116,7 @@ class Property extends AbstractChange
             if ($propertyName === '_nodeType') {
                 $nodeType = $this->nodeTypeManager->getNodeType($value);
                 ObjectAccess::setProperty($node, 'nodeType', $nodeType);
-            } else if ($propertyName{0} === '_') {
+            } elseif ($propertyName{0} === '_') {
                 ObjectAccess::setProperty($node, substr($propertyName, 1), $value);
             } else {
                 $node->setProperty($propertyName, $value);
@@ -127,6 +128,11 @@ class Property extends AbstractChange
             if ($node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
                 $this->reloadDocument();
             }
+
+            // This might be needed to update node label and other things that we can calculate only on the server
+            $updateNodeInfo = new UpdateNodeInfo();
+            $updateNodeInfo->setNode($node);
+            $this->feedbackCollection->add($updateNodeInfo);
         }
     }
 }

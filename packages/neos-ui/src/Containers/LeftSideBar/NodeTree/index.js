@@ -8,6 +8,7 @@ import Tree from '@neos-project/react-ui-components/src/Tree/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
+import dndTypes from './../../dndTypes';
 import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.css';
@@ -41,15 +42,14 @@ export default class NodeTree extends PureComponent {
         focus(contextPath);
     }
 
-    handleClick = (src, contextPath) => {
-        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView} = this.props;
+    handleClick = src => {
+        const {setActiveContentCanvasSrc, requestScrollIntoView} = this.props;
         // Set a flag that will imperatively tell ContentCanvas to scroll to focused node
         if (requestScrollIntoView) {
             requestScrollIntoView(true);
         }
-        if (setActiveContentCanvasSrc && setActiveContentCanvasContextPath) {
+        if (setActiveContentCanvasSrc) {
             setActiveContentCanvasSrc(src);
-            setActiveContentCanvasContextPath(contextPath);
         }
     }
 
@@ -59,11 +59,10 @@ export default class NodeTree extends PureComponent {
         });
     }
 
-    handleDrop = targetNode => {
+    handleDrop = (targetNode, position) => {
         const {currentlyDraggedNode} = this.state;
         const {moveNode} = this.props;
-
-        moveNode($get('contextPath', currentlyDraggedNode), $get('contextPath', targetNode));
+        moveNode($get('contextPath', currentlyDraggedNode), $get('contextPath', targetNode), position);
 
         this.setState({
             currentlyDraggedNode: null
@@ -85,7 +84,9 @@ export default class NodeTree extends PureComponent {
             <Tree className={classNames}>
                 <ChildRenderer
                     ChildRenderer={ChildRenderer}
+                    nodeDndType={dndTypes.NODE}
                     node={rootNode}
+                    level={1}
                     onNodeToggle={this.handleToggle}
                     onNodeClick={this.handleClick}
                     onNodeFocus={this.handleFocus}
@@ -105,7 +106,6 @@ export const PageTree = connect(state => ({
     toggle: actions.UI.PageTree.toggle,
     focus: actions.UI.PageTree.focus,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
-    setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath,
     moveNode: actions.CR.Nodes.move,
     requestScrollIntoView: null
 })(NodeTree);

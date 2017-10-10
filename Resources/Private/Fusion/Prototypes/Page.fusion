@@ -53,11 +53,6 @@ prototype(Neos.Neos:Page) {
     }
 
     //
-    // Do not add Neos backend clas
-    //
-    bodyTag.attributes.class.@process.addNeosBackendClass.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
-
-    //
     // Do not print document meta data
     //
     neosBackendDocumentNodeData.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
@@ -70,11 +65,6 @@ prototype(Neos.Neos:Page) {
     newNeosBackendWrappingElement = '<div id="neos-new-backend-container"></div>'
     newNeosBackendWrappingElement.@position = 'after neosBackendContainer'
     newNeosBackendWrappingElement.@if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
-
-    //
-    // Disable memorizing last visited node
-    //
-    lastVisitedNodeScript.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
     //
     // Do not render the Neos backend footer

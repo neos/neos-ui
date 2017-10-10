@@ -2,6 +2,9 @@
     display: table;
     width: 100%;
 }
+.calendarInputWrapper--highlight {
+    outline: 2px solid var(--brandColorsSuccess);
+}
 .closeCalendarIconBtn,
 .calendarIconBtn {
     composes: reset from './../reset.css';
@@ -88,7 +91,6 @@
 }
 .wrapper {
     composes: reset from './../reset.css';
-    width: 288px;
 
     input[type='text'] {
         display: none;

@@ -1,17 +1,17 @@
 @import 'normalize.css';
 
 @font-face {
-  font-family: 'Work Sans';
-  src: url('../../../Resources/Public/Fonts/WorkSans-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'Open Sans';
+    src: url('../../../Resources/Public/Fonts/OpenSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Work Sans';
-  src: url('../../../Resources/Public/Fonts/WorkSans-Bold.woff') format('woff');
-  font-weight: bold;
-  font-style: normal;
+    font-family: 'Open Sans';
+    src: url('../../../Resources/Public/Fonts/OpenSans-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
 }
 
 * {
@@ -19,7 +19,7 @@
 }
 
 body {
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 14px;
     line-height: 20px;

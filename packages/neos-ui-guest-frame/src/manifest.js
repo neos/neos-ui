@@ -30,7 +30,7 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
         consists of the Inline node toolbar that can be seen, if a node is selected inside the frame.
     `);
 
-    guestFrameRegistry.add('makeInitializeGuestFrame', makeInitializeGuestFrame);
-    guestFrameRegistry.add('InlineUIComponent', InlineUI);
-    globalRegistry.add('@neos-project/neos-ui-guest-frame', guestFrameRegistry);
+    guestFrameRegistry.set('makeInitializeGuestFrame', makeInitializeGuestFrame);
+    guestFrameRegistry.set('InlineUIComponent', InlineUI);
+    globalRegistry.set('@neos-project/neos-ui-guest-frame', guestFrameRegistry);
 });

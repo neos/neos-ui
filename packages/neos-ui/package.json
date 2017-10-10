@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui",
-  "version": "1.0.0-beta3",
+  "version": "1.0.0-beta4",
   "description": "Neos CMS UI written in ReactJS with Immutable data structures.",
   "main": "Resources/Public/JavaScript/Host.js",
   "private": true,
@@ -12,33 +12,32 @@
     "build:watch": "yarn build -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "lint:editorconfig": "editorconfig-checker",
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta3",
-    "@neos-project/debug-reason-for-rendering": "1.0.0-beta3"
+    "@neos-project/build-essentials": "1.0.0-beta4",
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta4"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
-    "@neos-project/neos-ui-backend-connector": "1.0.0-beta3",
-    "@neos-project/neos-ui-ckeditor-bindings": "1.0.0-beta3",
-    "@neos-project/neos-ui-containers": "1.0.0-beta3",
-    "@neos-project/neos-ui-contentrepository": "1.0.0-beta3",
-    "@neos-project/neos-ui-decorators": "1.0.0-beta3",
-    "@neos-project/neos-ui-editors": "1.0.0-beta3",
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta3",
-    "@neos-project/neos-ui-guest-frame": "1.0.0-beta3",
-    "@neos-project/neos-ui-i18n": "1.0.0-beta3",
-    "@neos-project/neos-ui-inspector": "1.0.0-beta3",
-    "@neos-project/neos-ui-redux-store": "1.0.0-beta3",
-    "@neos-project/neos-ui-validators": "1.0.0-beta3",
-    "@neos-project/neos-ui-views": "1.0.0-beta3",
-    "@neos-project/react-proptypes": "1.0.0-beta3",
-    "@neos-project/react-ui-components": "1.0.0-beta3",
-    "@neos-project/utils-helpers": "1.0.0-beta3",
-    "@neos-project/utils-logger": "1.0.0-beta3",
-    "@neos-project/utils-redux": "1.0.0-beta3"
+    "@neos-project/neos-ui-backend-connector": "1.0.0-beta4",
+    "@neos-project/neos-ui-ckeditor-bindings": "1.0.0-beta4",
+    "@neos-project/neos-ui-containers": "1.0.0-beta4",
+    "@neos-project/neos-ui-contentrepository": "1.0.0-beta4",
+    "@neos-project/neos-ui-decorators": "1.0.0-beta4",
+    "@neos-project/neos-ui-editors": "1.0.0-beta4",
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta4",
+    "@neos-project/neos-ui-guest-frame": "1.0.0-beta4",
+    "@neos-project/neos-ui-i18n": "1.0.0-beta4",
+    "@neos-project/neos-ui-inspector": "1.0.0-beta4",
+    "@neos-project/neos-ui-redux-store": "1.0.0-beta4",
+    "@neos-project/neos-ui-validators": "1.0.0-beta4",
+    "@neos-project/neos-ui-views": "1.0.0-beta4",
+    "@neos-project/react-proptypes": "1.0.0-beta4",
+    "@neos-project/react-ui-components": "1.0.0-beta4",
+    "@neos-project/utils-helpers": "1.0.0-beta4",
+    "@neos-project/utils-logger": "1.0.0-beta4",
+    "@neos-project/utils-redux": "1.0.0-beta4"
   },
   "license": "GNU GPLv3",
   "jest": {
@@ -49,7 +48,6 @@
     "setupFiles": [
       "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js"
     ],
-    "transformIgnorePatterns": [],
     "transform": {
       "neos-ui/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
       "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"

@@ -21,7 +21,7 @@ export default class MenuItemGroup extends PureComponent {
             PropTypes.shape({
                 icon: PropTypes.string,
                 label: PropTypes.string.isRequired,
-                uri: PropTypes.string.isRequired,
+                uri: PropTypes.string,
                 target: PropTypes.string,
                 isActive: PropTypes.bool.isReqired,
                 skipI18n: PropTypes.bool

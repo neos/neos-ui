@@ -16,6 +16,9 @@
 .secondaryInspector--isFringeRight {
     right: 0;
 }
+.secondaryInspector--isElevated {
+    z-index: 10001;
+}
 .secondaryInspector .close {
     position: absolute;
     top: 0;

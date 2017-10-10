@@ -11,11 +11,11 @@ export default class RichTextToolbarRegistry extends SynchronousRegistry {
     }
 
     hasFormattingRule = formattingRuleId =>
-        Object.values(this._registry).some(option => option.formattingRule === formattingRuleId);
+        this._registry.some(option => option.formattingRule === formattingRuleId);
 
     getEnabledFormattingRulesFromEditorOptions = memoize(
         editorOptions => [].concat(
-            ...['format', 'link', 'list', 'table']
+            ...['format', 'link', 'list', 'table', 'alignment']
                 .map(configurationKey => editorOptions[configurationKey])
                 .filter(i => i)
         ).filter(this.hasFormattingRule)

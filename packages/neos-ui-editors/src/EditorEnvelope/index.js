@@ -35,6 +35,7 @@ export default class EditorEnvelope extends PureComponent {
             return (
                 <EditorComponent
                     {...this.props}
+                    id={this.generateIdentifier()}
                     />
             );
         }

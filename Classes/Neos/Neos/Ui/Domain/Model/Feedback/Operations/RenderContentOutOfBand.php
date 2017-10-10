@@ -182,6 +182,7 @@ class RenderContentOutOfBand implements FeedbackInterface
     /**
      * Render the node
      *
+     * @param ControllerContext $controllerContext
      * @return string
      */
     protected function renderContent(ControllerContext $controllerContext)

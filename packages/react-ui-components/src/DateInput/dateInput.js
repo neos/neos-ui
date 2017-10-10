@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import enhanceWithClickOutside from 'react-click-outside';
 import moment from 'moment';
+import mergeClassNames from 'classnames';
 
 export class DateInput extends PureComponent {
     static propTypes = {
@@ -14,6 +15,11 @@ export class DateInput extends PureComponent {
          * An optional placeholder which will be rendered if no date was selected.
          */
         placeholder: PropTypes.string,
+
+        /**
+         * An optional id for the input.
+         */
+        id: PropTypes.string,
 
         /**
          * The label which will be displayed within the `Select Today` btn.
@@ -29,6 +35,21 @@ export class DateInput extends PureComponent {
          * The moment format string to use to format the passed value.
          */
         labelFormat: PropTypes.string,
+
+        /**
+         * Highlight input
+         */
+        highlight: PropTypes.bool,
+
+        /**
+         * Display only date picker
+         */
+        dateOnly: PropTypes.bool,
+
+        /**
+         * Display only time picker
+         */
+        timeOnly: PropTypes.bool,
 
         /**
          * The changehandler to call when the date changes.
@@ -85,15 +106,24 @@ export class DateInput extends PureComponent {
             placeholder,
             theme,
             value,
+            id,
             applyLabel,
             todayLabel,
-            labelFormat
+            labelFormat,
+            dateOnly,
+            timeOnly,
+            highlight
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
 
+        const calendarInputWrapper = mergeClassNames({
+            [theme.calendarInputWrapper]: true,
+            [theme['calendarInputWrapper--highlight']]: highlight
+        });
+
         return (
             <div className={theme.wrapper}>
-                <div className={theme.calendarInputWrapper}>
+                <div className={calendarInputWrapper}>
                     <button
                         onClick={this.handleCalendarIconClick}
                         className={theme.calendarIconBtn}
@@ -107,6 +137,7 @@ export class DateInput extends PureComponent {
                             className={theme.calendarFakeInputMirror}
                             />
                         <input
+                            id={id}
                             onFocus={this.handleInputClick}
                             type="datetime"
                             placeholder={placeholder}
@@ -132,6 +163,8 @@ export class DateInput extends PureComponent {
                     <DatePickerComponent
                         open={true}
                         defaultValue={value}
+                        dateFormat={!timeOnly}
+                        timeFormat={!dateOnly}
                         onChange={this.handleChange}
                         />
                     <ButtonComponent

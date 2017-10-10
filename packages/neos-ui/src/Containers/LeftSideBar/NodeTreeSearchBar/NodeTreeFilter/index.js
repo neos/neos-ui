@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {SelectBox} from '@neos-project/react-ui-components';
 
+import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/SelectBoxHelpers.js';
+
 import style from './style.css';
 
 @neos(globalRegistry => ({
@@ -17,6 +19,14 @@ export default class NodeTreeFilter extends PureComponent {
         nodeTypesRegistry: PropTypes.object.isRequired,
         onChange: PropTypes.func.isRequired,
         value: PropTypes.any
+    }
+
+    state = {
+        filterTerm: ''
+    };
+
+    handleFilterTermChange = filterTerm => {
+        this.setState({filterTerm});
     }
 
     render() {
@@ -40,8 +50,10 @@ export default class NodeTreeFilter extends PureComponent {
                     placeholderIcon={'filter'}
                     onValueChange={onChange}
                     value={value}
-                    options={options}
+                    options={searchOptions(this.state.filterTerm, options)}
                     displaySearchBox={true}
+                    searchTerm={this.state.filterTerm}
+                    onSearchTermChange={this.handleFilterTermChange}
                     />
             </div>
         );

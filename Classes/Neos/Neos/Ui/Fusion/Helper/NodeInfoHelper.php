@@ -2,14 +2,19 @@
 namespace Neos\Neos\Ui\Fusion\Helper;
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Media\Domain\Model\Asset;
+use Neos\Media\Domain\Model\ImageInterface;
 use Neos\Utility\ObjectAccess;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Utility\TypeHandling;
 
 /**
  * @Flow\Scope("singleton")
@@ -57,10 +62,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
      * @param bool $omitMostPropertiesForTreeState
+     * @param string $baseNodeTypeOverride
      * @return array
      */
-    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false)
+    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false, $baseNodeTypeOverride = null)
     {
+        $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
             'name' => $node->getName(),
@@ -81,7 +88,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         // child nodes for document tree, respecting the `baseNodeType` filter
-        $documentChildNodes = $node->getChildNodes($this->baseNodeType);
+        $documentChildNodes = $node->getChildNodes($baseNodeType);
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $node->getChildNodes('!' . $this->documentNodeTypeRole);
         $childNodes = array_merge($documentChildNodes, $contentChildNodes);
@@ -118,24 +125,26 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     public function renderNodesWithParents(array $nodes, ControllerContext $controllerContext): array
     {
+        // For search operation we want to include all nodes, not respecting the "baseNodeType" setting
+        $baseNodeTypeOverride = $this->documentNodeTypeRole;
         $renderedNodes = [];
 
         /** @var NodeInterface $node */
-        foreach($nodes as $node) {
+        foreach ($nodes as $node) {
             if (array_key_exists($node->getPath(), $renderedNodes)) {
                 $renderedNodes[$node->getPath()]['matched'] = true;
             } else {
-                $renderedNode = $this->renderNode($node, $controllerContext, true);
+                $renderedNode = $this->renderNode($node, $controllerContext, true, $baseNodeTypeOverride);
                 $renderedNode['matched'] = true;
                 $renderedNodes[$node->getPath()] = $renderedNode;
             }
 
             $parentNode = $node->getParent();
-            while($parentNode->getNodeType()->isOfType($this->baseNodeType)) {
+            while ($parentNode->getNodeType()->isOfType($baseNodeTypeOverride)) {
                 if (array_key_exists($parentNode->getPath(), $renderedNodes)) {
                     $renderedNodes[$parentNode->getPath()]['intermediate'] = true;
                 } else {
-                    $renderedParentNode = $this->renderNode($parentNode, $controllerContext, true);
+                    $renderedParentNode = $this->renderNode($parentNode, $controllerContext, true, $baseNodeTypeOverride);
                     $renderedParentNode['intermediate'] = true;
                     $renderedNodes[$parentNode->getPath()] = $renderedParentNode;
                 }
@@ -163,24 +172,15 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function defaultNodesForBackend(NodeInterface $site, NodeInterface $documentNode, ControllerContext $controllerContext)
     {
-        $nodes = [];
-        if ($site !== $documentNode) {
-            $this->renderNodeToList($nodes, $site, $controllerContext);
+        $flowQuery = new FlowQuery([$site, $documentNode]);
+        $nodes = $flowQuery->neosUiDefaultNodes($this->baseNodeType, $this->loadingDepth)->get();
+
+        $result = [];
+        foreach ($nodes as $node) {
+            $this->renderNodeToList($result, $node, $controllerContext);
         }
 
-        $renderNodesRecursively = function (&$nodes, $baseNode, $level = 0) use (&$renderNodesRecursively, $controllerContext) {
-            if ($level < $this->loadingDepth || $this->loadingDepth === 0) {
-                foreach ($baseNode->getChildNodes($this->baseNodeType) as $childNode) {
-                    $this->renderNodeToList($nodes, $childNode, $controllerContext);
-                    $renderNodesRecursively($nodes, $childNode, $level + 1);
-                }
-            }
-        };
-        $renderNodesRecursively($nodes, $site);
-
-        $this->renderNodeToList($nodes, $documentNode, $controllerContext);
-
-        return $nodes;
+        return $result;
     }
 
     public function uri(NodeInterface $node = null, ControllerContext $controllerContext)
@@ -233,7 +233,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     {
         if ($propertyName === '_nodeType') {
             $propertyValue = $node->getNodeType()->getName();
-        } else if (substr($propertyName, 0, 1) === '_') {
+        } elseif (substr($propertyName, 0, 1) === '_') {
             $propertyValue = ObjectAccess::getProperty($node, substr($propertyName, 1));
         } else {
             $propertyValue = $node->getProperty($propertyName);
@@ -284,25 +284,25 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             }
         }
 
-        if ($propertyValue instanceof \Neos\Media\Domain\Model\ImageInterface) {
-            $propertyMappingConfiguration = new \Neos\Flow\Property\PropertyMappingConfiguration();
+        if ($propertyValue instanceof ImageInterface) {
+            $propertyMappingConfiguration = new PropertyMappingConfiguration();
             return $this->entityToIdentityConverter->convertFrom($propertyValue, 'array', array(), $propertyMappingConfiguration);
         }
 
         // Serialize an Asset to JSON (the NodeConverter expects JSON for object type properties)
         if ($dataType === ltrim('Neos\Media\Domain\Model\Asset', '\\') && $propertyValue !== null) {
-            if ($propertyValue instanceof \Neos\Media\Domain\Model\Asset) {
+            if ($propertyValue instanceof Asset) {
                 return $this->persistenceManager->getIdentifierByObject($propertyValue);
             }
         }
 
         // Serialize an array of Assets to JSON
         if (is_array($propertyValue)) {
-            $parsedType = \Neos\Utility\TypeHandling::parseType($dataType);
+            $parsedType = TypeHandling::parseType($dataType);
             if ($parsedType['elementType'] === ltrim('Neos\Media\Domain\Model\Asset', '\\')) {
                 $convertedValues = array();
                 foreach ($propertyValue as $singlePropertyValue) {
-                    if ($singlePropertyValue instanceof \Neos\Media\Domain\Model\Asset) {
+                    if ($singlePropertyValue instanceof Asset) {
                         $convertedValues[] = $this->persistenceManager->getIdentifierByObject($singlePropertyValue);
                     }
                 }

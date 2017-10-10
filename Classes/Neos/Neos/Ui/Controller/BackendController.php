@@ -16,11 +16,9 @@ use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\ContentContext;
+use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\Service\NodeTypeSchemaBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Flow\I18n\Locale;
-use Neos\Fusion\Core\Cache\ContentCache;
 use Neos\Fusion\View\FusionView;
 use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
@@ -82,15 +80,15 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var ContentCache
-     */
-    protected $contentCache;
-
-    /**
-     * @Flow\Inject
      * @var MenuHelper
      */
     protected $menuHelper;
+
+    /**
+     * @Flow\Inject(lazy=false)
+     * @var BackendRedirectionService
+     */
+    protected $backendRedirectionService;
 
     /**
      * @Flow\Inject
@@ -111,13 +109,17 @@ class BackendController extends ActionController
      */
     public function indexAction(NodeInterface $node = null)
     {
-
-        $this->contentCache->flush();
         $this->session->start();
         $this->session->putData('__neosEnabled__', true);
 
         if ($user = $this->userService->getBackendUser()) {
             $workspaceName = $this->userService->getPersonalWorkspaceName();
+            if ($node === null) {
+                $reflectionMethod = new \ReflectionMethod($this->backendRedirectionService, 'getLastVisitedNode');
+                $reflectionMethod->setAccessible(true);
+                $node = $reflectionMethod->invoke($this->backendRedirectionService, $workspaceName);
+            }
+
             $contentContext = ($node ? $node->getContext() : $this->createContext($workspaceName));
 
             $contentContext->getWorkspace();
@@ -150,8 +152,6 @@ class BackendController extends ActionController
      */
     public function deactivateAction()
     {
-
-        $this->contentCache->flush();
         $this->session->start();
         $this->session->putData('__neosEnabled__', false);
 

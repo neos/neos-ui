@@ -5,6 +5,8 @@ export const activeDocumentContextPathSelector = $get('ui.contentCanvas.contextP
 
 export const baseWorkspaceSelector = $get('cr.workspaces.personalWorkspace.baseWorkspace');
 
+export const isWorkspaceReadOnlySelector = $get('cr.workspaces.personalWorkspace.readOnly');
+
 export const publishableNodesSelector = $get('cr.workspaces.personalWorkspace.publishableNodes');
 
 export const publishableNodesInDocumentSelector = createSelector(

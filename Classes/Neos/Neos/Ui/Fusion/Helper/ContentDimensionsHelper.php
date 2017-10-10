@@ -16,7 +16,8 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
     /**
      * @return array Dimensions indexed by name with presets indexed by name
      */
-    public function contentDimensionsByName() {
+    public function contentDimensionsByName()
+    {
         return $this->contentDimensionsPresetSource->getAllPresets();
     }
 
@@ -24,7 +25,8 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
      * @param array $dimensions Dimension values indexed by dimension name
      * @return array Allowed preset names for the given dimension combination indexed by dimension name
      */
-    public function allowedPresetsByName(array $dimensions) {
+    public function allowedPresetsByName(array $dimensions)
+    {
         $allowedPresets = array();
         $preselectedDimensionPresets = array();
         foreach ($dimensions as $dimensionName => $dimensionValues) {

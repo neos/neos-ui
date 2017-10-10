@@ -10,9 +10,12 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
+use Neos\Flow\I18n\Locale;
+use Neos\Flow\I18n\Service as I18nService;
 use Neos\Flow\Session\SessionInterface;
 use Neos\FluidAdaptor\Core\Rendering\FlowAwareRenderingContextInterface;
 use Neos\Neos\Domain\Service\ContentContext;
+use Neos\Neos\Domain\Service\UserService;
 use Neos\Neos\Service\HtmlAugmenter;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
@@ -37,6 +40,18 @@ class AugmentationAspect
      * @var HtmlAugmenter
      */
     protected $htmlAugmenter;
+
+    /**
+     * @Flow\Inject
+     * @var I18nService
+     */
+    protected $i18nService;
+
+    /**
+     * @Flow\Inject
+     * @var UserService
+     */
+    protected $userService;
 
     /**
      * @Flow\Inject
@@ -74,6 +89,13 @@ class AugmentationAspect
      * @var string
      */
     protected $nonRenderedContentNodeMetadata;
+
+    /**
+     * Remebered content locale for locale switching
+     *
+     * @var Locale
+     */
+    protected $rememberedContentLocale;
 
     /**
      * @Flow\Before("method(Neos\Neos\Fusion\ContentElementWrappingImplementation->evaluate())")
@@ -135,10 +157,15 @@ class AugmentationAspect
 
         $this->renderedNodes[$node->getIdentifier()] = $node;
 
+        $this->switchToUILocale();
+
         $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
 
+        $this->switchToUILocale(true);
+
         $wrappedContent = $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
-        $wrappedContent .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";;
+        $wrappedContent .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
+
         return $wrappedContent;
     }
 
@@ -202,8 +229,8 @@ class AugmentationAspect
             }
 
             if (isset($this->renderedNodes[$node->getIdentifier()]) === false) {
-              $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
-              $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
+                $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
+                $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
             }
 
             if ($node->hasChildNodes() === true) {
@@ -215,15 +242,36 @@ class AugmentationAspect
     /**
      * Clear rendered nodes helper array to prevent possible side effects.
      */
-    protected function clearRenderedNodesArray() {
+    protected function clearRenderedNodesArray()
+    {
         $this->renderedNodes = [];
     }
 
     /**
      * Clear non rendered content node metadata to prevent possible side effects.
      */
-    protected function clearNonRenderedContentNodeMetadata() {
+    protected function clearNonRenderedContentNodeMetadata()
+    {
         $this->nonRenderedContentNodeMetadata = '';
+    }
+
+    /**
+     * For serialization, we need to respect the UI locale, rather than the content locale
+     *
+     * @param boolean $reset Reset to remebered locale
+     */
+    protected function switchToUILocale($reset = false)
+    {
+        if ($reset === true) {
+            // Reset the locale
+            $this->i18nService->getConfiguration()->setCurrentLocale($this->rememberedContentLocale);
+        } else {
+            $this->rememberedContentLocale = $this->i18nService->getConfiguration()->getCurrentLocale();
+            $userLocalePreference = $this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage();
+            $defaultLocale = $this->i18nService->getConfiguration()->getDefaultLocale();
+            $userLocale = $userLocalePreference ? new Locale($userLocalePreference) : $defaultLocale;
+            $this->i18nService->getConfiguration()->setCurrentLocale($userLocale);
+        }
     }
 
     /**
@@ -232,10 +280,15 @@ class AugmentationAspect
      */
     public function getNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {
+        $this->switchToUILocale();
+
         $this->appendNonRenderedContentNodeMetadata($documentNode);
         $nonRenderedContentNodeMetadata = $this->nonRenderedContentNodeMetadata;
         $this->clearNonRenderedContentNodeMetadata();
         $this->clearRenderedNodesArray();
+
+        $this->switchToUILocale(true);
+
         return $nonRenderedContentNodeMetadata;
     }
 

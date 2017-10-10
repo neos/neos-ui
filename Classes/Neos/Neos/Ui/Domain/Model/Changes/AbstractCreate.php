@@ -8,9 +8,6 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
-use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
-use Neos\Neos\Ui\Domain\Model\AbstractChange;
-use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 
 abstract class AbstractCreate extends AbstractStructuralChange
 {
@@ -144,13 +141,14 @@ abstract class AbstractCreate extends AbstractStructuralChange
      * @throws InvalidNodeCreationHandlerException
      * @return void
      */
-    protected function applyNodeCreationHandlers(NodeInterface $node) {
+    protected function applyNodeCreationHandlers(NodeInterface $node)
+    {
         $data = $this->getData() ?: [];
         $nodeType = $node->getNodeType();
         if (isset($nodeType->getOptions()['nodeCreationHandlers'])) {
             $nodeCreationHandlers = $nodeType->getOptions()['nodeCreationHandlers'];
             if (is_array($nodeCreationHandlers)) {
-                foreach($nodeCreationHandlers as $nodeCreationHandlerConfiguration) {
+                foreach ($nodeCreationHandlers as $nodeCreationHandlerConfiguration) {
                     $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
                     if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
                         throw new InvalidNodeCreationHandlerException(sprintf('Expected NodeCreationHandlerInterface but got "%s"', get_class($nodeCreationHandler)), 1364759956);

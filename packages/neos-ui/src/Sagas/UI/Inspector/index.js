@@ -18,21 +18,31 @@ function * inspectorSaga({globalRegistry}) {
 
     while (true) { // eslint-disable-line no-constant-condition
         //
-        // Wait for the user to focus another node, to discard all transient
-        // changes or to apply his/her changes,
+        // Wait for the user to focus another node, to switch to another page,
+        // to discard all transient changes or to apply his/her changes,
         //
         while (true) { // eslint-disable-line no-constant-condition
             const waitForNextAction = yield race([
                 take(actionTypes.CR.Nodes.FOCUS),
+                take(actionTypes.UI.ContentCanvas.SET_SRC),
                 take(actionTypes.UI.Inspector.DISCARD),
                 take(actionTypes.UI.Inspector.APPLY)
             ]);
             const nextAction = Object.keys(waitForNextAction).map(k => waitForNextAction[k])[0];
 
             //
-            // If the user focused a different node, just continue
+            // If the user focused a different node, close the secondary inspector and continue
             //
             if (nextAction.type === actionTypes.CR.Nodes.FOCUS) {
+                yield put(actions.UI.Inspector.closeSecondaryInspector());
+                break;
+            }
+
+            //
+            // If the user switched to a different page, close the secondary inspector and continue
+            //
+            if (nextAction.type === actionTypes.UI.ContentCanvas.SET_SRC) {
+                yield put(actions.UI.Inspector.closeSecondaryInspector());
                 break;
             }
 

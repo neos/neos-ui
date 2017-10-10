@@ -1,7 +1,7 @@
 import CkEditorFormattingRulesRegistry from './registry/CkEditorFormattingRulesRegistry';
 
 export default ckEditorRegistry => {
-    const formattingRules = ckEditorRegistry.add('formattingRules', new CkEditorFormattingRulesRegistry(`
+    const formattingRules = ckEditorRegistry.set('formattingRules', new CkEditorFormattingRulesRegistry(`
         Contains the possible styles for CKeditor.
 
         ## Enabled Styles
@@ -32,21 +32,21 @@ export default ckEditorRegistry => {
         NOTE: one of "command" or "style" must be specified in all cases.
 
         - \`command\` (string, optional). If specified, this CKEditor command is triggered; so the command string
-          is known by CKeditor in the "commands" section:
-          http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getCommand
+            is known by CKeditor in the "commands" section:
+            http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getCommand
 
         - \`style\` (object, optional). If specified, this CKEditor style is applied. Expects a style description
-          adhering to CKEDITOR.style(...), so for example: \`{ style: {element: 'h1'}\`
+            adhering to CKEDITOR.style(...), so for example: \`{ style: {element: 'h1'}\`
 
         - \`config\` (function, optional): This function needs to adjust the CKEditor config to e.g. configure ACF
-          correctly. The function gets passed in the config so-far, and needs to return the modified config. See
-          "CKEditor Configuration Helpers" below for helper functions.
+            correctly. The function gets passed in the config so-far, and needs to return the modified config. See
+            "CKEditor Configuration Helpers" below for helper functions.
 
         - \`extractCurrentFormatFn\` (function, optional): If specified, this function will extract the current format.
-          The function gets passed the currend "editor" and "CKEDITOR".
+            The function gets passed the currend "editor" and "CKEDITOR".
 
         - \`applyStyleFn\` (function, optional): This function applies a style to CKEditor.
-          Arguments: formattingOptions, editor, CKEDITOR.
+            Arguments: formattingOptions, editor, CKEDITOR.
 
         ## CKEditor Configuration Helpers
 
@@ -54,8 +54,8 @@ export default ckEditorRegistry => {
           \`format_tags\` configuration option of CKEditor.
 
         - \`registry.ckEditor.formattingRules.config.add('Strong')\`: adds the passed-in *Button Definition Name*
-          to the ACF configuration (automatic mode). This means the button names are standard CKEditor config
-          buttons, like "Cut,Copy,Paste,Undo,Redo,Anchor".
+            to the ACF configuration (automatic mode). This means the button names are standard CKEditor config
+            buttons, like "Cut,Copy,Paste,Undo,Redo,Anchor".
     `));
 
     /**
@@ -63,37 +63,37 @@ export default ckEditorRegistry => {
      */
 
     // Bold
-    formattingRules.add('strong', {
+    formattingRules.set('strong', {
         command: 'bold',
         config: formattingRules.config.add('Bold')
     });
 
     // Italic
-    formattingRules.add('em', {
+    formattingRules.set('em', {
         command: 'italic',
         config: formattingRules.config.add('Italic')
     });
 
     // Underline
-    formattingRules.add('u', {
+    formattingRules.set('u', {
         command: 'underline',
         config: formattingRules.config.add('Underline')
     });
 
     // Subscript
-    formattingRules.add('sub', {
+    formattingRules.set('sub', {
         command: 'subscript',
         config: formattingRules.config.add('Subscript')
     });
 
     // Superscript
-    formattingRules.add('sup', {
+    formattingRules.set('sup', {
         command: 'superscript',
         config: formattingRules.config.add('Superscript')
     });
 
     // Strike-Through
-    formattingRules.add('del', {
+    formattingRules.set('del', {
         command: 'strike',
         config: formattingRules.config.add('Strike')
     });
@@ -103,49 +103,49 @@ export default ckEditorRegistry => {
      */
 
     // p tag
-    formattingRules.add('p', {
+    formattingRules.set('p', {
         style: {element: 'p'},
         config: formattingRules.config.addToFormatTags('p')
     });
 
     // h1
-    formattingRules.add('h1', {
+    formattingRules.set('h1', {
         style: {element: 'h1'},
         config: formattingRules.config.addToFormatTags('h1')
     });
 
     // h2
-    formattingRules.add('h2', {
+    formattingRules.set('h2', {
         style: {element: 'h2'},
         config: formattingRules.config.addToFormatTags('h2')
     });
 
     // h3
-    formattingRules.add('h3', {
+    formattingRules.set('h3', {
         style: {element: 'h3'},
         config: formattingRules.config.addToFormatTags('h3')
     });
 
     // h4
-    formattingRules.add('h4', {
+    formattingRules.set('h4', {
         style: {element: 'h4'},
         config: formattingRules.config.addToFormatTags('h4')
     });
 
     // h5
-    formattingRules.add('h5', {
+    formattingRules.set('h5', {
         style: {element: 'h5'},
         config: formattingRules.config.addToFormatTags('h5')
     });
 
     // h6
-    formattingRules.add('h6', {
+    formattingRules.set('h6', {
         style: {element: 'h6'},
         config: formattingRules.config.addToFormatTags('h6')
     });
 
     // pre
-    formattingRules.add('pre', {
+    formattingRules.set('pre', {
         style: {element: 'pre'},
         config: formattingRules.config.addToFormatTags('pre')
     });
@@ -155,31 +155,59 @@ export default ckEditorRegistry => {
      */
 
     // ordered list
-    formattingRules.add('ol', {
+    formattingRules.set('ol', {
         command: 'numberedlist',
         config: formattingRules.config.add('NumberedList')
     });
 
     // unordered list
-    formattingRules.add('ul', {
+    formattingRules.set('ul', {
         command: 'bulletedlist',
         config: formattingRules.config.add('BulletedList')
     });
 
     // Indent
-    formattingRules.add('indent', {
+    formattingRules.set('indent', {
         command: 'indent'
     });
 
     // Outdent
-    formattingRules.add('outdent', {
+    formattingRules.set('outdent', {
         command: 'outdent'
+    });
+
+    /**
+     * Alignment
+     */
+
+    // left
+    formattingRules.set('left', {
+        command: 'justifyleft',
+        config: formattingRules.config.add('JustifyLeft')
+    });
+
+    // center
+    formattingRules.set('center', {
+        command: 'justifycenter',
+        config: formattingRules.config.add('JustifyCenter')
+    });
+
+    // right
+    formattingRules.set('right', {
+        command: 'justifyright',
+        config: formattingRules.config.add('JustifyRight')
+    });
+
+    // justify
+    formattingRules.set('justify', {
+        command: 'justifyblock',
+        config: formattingRules.config.add('JustifyBlock')
     });
 
     /**
      * Tables
      */
-    formattingRules.add('table', {
+    formattingRules.set('table', {
         command: 'table',
         config: formattingRules.config.add('Table')
     });
@@ -187,14 +215,14 @@ export default ckEditorRegistry => {
     /**
      * Remove formatting
      */
-    formattingRules.add('removeFormat', {
+    formattingRules.set('removeFormat', {
         command: 'removeFormat'
     });
 
     /**
      * Links
      */
-    formattingRules.add('a', {
+    formattingRules.set('a', {
         config: formattingRules.config.addToExtraAllowedContent('a[href]'),
         applyStyleFn: (formattingOptions, editor, CKEDITOR) => {
             if (formattingOptions.remove) {

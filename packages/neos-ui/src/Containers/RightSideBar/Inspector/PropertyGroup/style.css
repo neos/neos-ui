@@ -2,5 +2,5 @@
     width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
-    padding: 0 40px 0 16px;
+    padding: 0 var(--goldenUnit) 0 var(--spacing);
 }

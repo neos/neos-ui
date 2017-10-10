@@ -152,7 +152,81 @@ test(`The reducer should paste nodes`, () => {
     expect(true).toBe(true);
 });
 
-test.only(`The "updateUri" action should update uris.`, () => {
+test(`The "move" action should move things right.`, () => {
+    const state = Immutable.fromJS({
+        cr: {
+            nodes: {
+                byContextPath: {
+                    'abc@user-admin;language=en_US': {
+                        contextPath: 'abc@user-admin;language=en_US',
+                        children: [
+                            {
+                                contextPath: 'abc/abc@user-admin;language=en_US'
+                            },
+                            {
+                                contextPath: 'abc/abc2@user-admin;language=en_US'
+                            }
+                        ]
+                    },
+                    'abc/abc@user-admin;language=en_US': {
+                        contextPath: 'abc/abc@user-admin;language=en_US',
+                        children: [
+                            {
+                                contextPath: 'abc/abc/abc@user-admin;language=en_US'
+                            }
+                        ]
+                    },
+                    'abc/abc2@user-admin;language=en_US': {
+                        contextPath: 'abc/abc@user-admin;language=en_US',
+                        children: []
+                    },
+                    'abc/abc/abc@user-admin;language=en_US': {
+                        contextPath: 'abc/abc/abc@user-admin;language=en_US',
+                        children: []
+                    }
+                }
+            }
+        }
+    });
+    const nextState = reducer(state, actions.move('abc/abc/abc@user-admin;language=en_US', 'abc@user-admin;language=en_US', 'into'));
+
+    expect(nextState.toJS()).toEqual({
+        cr: {
+            nodes: {
+                byContextPath: {
+                    'abc@user-admin;language=en_US': {
+                        contextPath: 'abc@user-admin;language=en_US',
+                        children: [
+                            {
+                                contextPath: 'abc/abc@user-admin;language=en_US'
+                            },
+                            {
+                                contextPath: 'abc/abc2@user-admin;language=en_US'
+                            },
+                            {
+                                contextPath: 'abc/abc/abc@user-admin;language=en_US'
+                            }
+                        ]
+                    },
+                    'abc/abc@user-admin;language=en_US': {
+                        contextPath: 'abc/abc@user-admin;language=en_US',
+                        children: []
+                    },
+                    'abc/abc2@user-admin;language=en_US': {
+                        contextPath: 'abc/abc@user-admin;language=en_US',
+                        children: []
+                    },
+                    'abc/abc/abc@user-admin;language=en_US': {
+                        contextPath: 'abc/abc/abc@user-admin;language=en_US',
+                        children: []
+                    }
+                }
+            }
+        }
+    });
+});
+
+test(`The "updateUri" action should update uris.`, () => {
     const state = Immutable.fromJS({
         cr: {
             nodes: {

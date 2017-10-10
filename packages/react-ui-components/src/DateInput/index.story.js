@@ -1,6 +1,6 @@
 import React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
-import {withKnobs, text} from '@kadira/storybook-addon-knobs';
+import {withKnobs, text, boolean} from '@kadira/storybook-addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import DateInput from './index.js';
 
@@ -14,6 +14,8 @@ storiesOf('DateInput', module)
                 <DateInput
                     placeholder={text('Placeholder', 'No date set')}
                     onChange={action('onChange')}
+                    dateOnly={boolean('Date only', false)}
+                    timeOnly={boolean('Time only', false)}
                     />
             </StoryWrapper>
         ),

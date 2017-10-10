@@ -1,5 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import mergeClassNames from 'classnames';
+
 export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {
@@ -63,6 +65,11 @@ export default class MultiSelectBox extends PureComponent {
          */
         displaySearchBox: PropTypes.bool,
 
+        /**
+         * Highlight input
+         */
+        highlight: PropTypes.bool,
+
         searchTerm: PropTypes.string,
 
         searchOptions: PropTypes.arrayOf(
@@ -83,6 +90,7 @@ export default class MultiSelectBox extends PureComponent {
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'selectedOptions': PropTypes.string,
+            'selectedOptions--highlight': PropTypes.string,
             'selectedOptions__item': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
@@ -107,15 +115,21 @@ export default class MultiSelectBox extends PureComponent {
             displaySearchBox,
             searchTerm,
             onSearchTermChange,
-            SelectBoxComponent
+            SelectBoxComponent,
+            highlight
         } = this.props;
 
         const filteredSearchOptions = (searchOptions || [])
             .filter(option => !(values && values.indexOf(option[optionValueField]) !== -1));
 
+        const selectedOptionsClassNames = mergeClassNames({
+            [theme.selectedOptions]: true,
+            [theme['selectedOptions--highlight']]: highlight
+        });
+
         return (
             <div className={theme.wrapper}>
-                <ul className={theme.selectedOptions}>
+                <ul className={selectedOptionsClassNames}>
                     {
                         (values || []).map(this.renderSelectedValue)
                     }

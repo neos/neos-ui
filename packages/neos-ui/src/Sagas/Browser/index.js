@@ -6,7 +6,7 @@ function * watchContentURIChange() {
     yield * takeEvery(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * reflectChangeInAddressBar(action) {
         const {contextPath} = action.payload;
 
-        yield history.pushState({}, '', `?node=${contextPath}`);
+        yield history.replaceState({}, '', `?node=${contextPath}`);
     });
 }
 

@@ -112,6 +112,11 @@ const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHa
     };
 }).then(response => response.json());
 
+const extractFileEndingFromUri = uri => {
+    const parts = uri.split('.');
+    return parts.length ? '.' + parts[parts.length - 1] : '';
+};
+
 const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
     url: urlWithParams('/neos/service/assets', {searchTerm}),
 
@@ -174,10 +179,16 @@ const searchNodes = options => fetchWithErrorHandling.withCsrfToken(() => ({
         d.innerHTML = result;
         const nodes = d.querySelector('.nodes');
 
-        return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => ({
+        return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => {
+            const uri = node.querySelector('.node-frontend-uri').innerText;
+            return {
             label: node.querySelector('.node-label').innerText,
-            identifier: node.querySelector('.node-identifier').innerText
-        }));
+                identifier: node.querySelector('.node-identifier').innerText,
+                nodeType: node.querySelector('.node-type').innerText,
+                uri,
+                uriInLiveWorkspace: uri.split('@')[0] + extractFileEndingFromUri(uri)
+            };
+        });
     });
 
 const parseGetSingleNodeResult = requestPromise => {
@@ -190,9 +201,15 @@ const parseGetSingleNodeResult = requestPromise => {
 
             const nodeFrontendUri = d.querySelector('.node-frontend-uri').getAttribute('href');
 
+            // Hackish way to get context string from uri
+            const contextString = nodeFrontendUri.split('@')[1].split('.')[0];
+            // TODO: Temporary hack due to missing contextPath in the API response
+            const nodeContextPath = `${d.querySelector('.node-path').innerHTML}@${contextString}`;
+
             return {
                 nodeFound: true,
-                nodeFrontendUri
+                nodeFrontendUri,
+                nodeContextPath
             };
         } else if (result.status === 404) {
             const nodeExistsInOtherDimensions = Boolean(result.headers.get('X-Neos-Node-Exists-In-Other-Dimensions'));

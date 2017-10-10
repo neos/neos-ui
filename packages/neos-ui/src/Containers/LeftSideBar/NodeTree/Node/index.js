@@ -27,9 +27,12 @@ const findScrollingParent = parentElement => {
     return null;
 };
 
+const getOrDefault = defaultValue => value => value || defaultValue;
+
 const decodeLabel = flowright(
     decodeHtml,
-    stripTags
+    stripTags,
+    getOrDefault('')
 );
 
 export default class Node extends PureComponent {
@@ -39,10 +42,13 @@ export default class Node extends PureComponent {
         loadingDepth: PropTypes.number,
         ChildRenderer: PropTypes.func.isRequired,
         node: PropTypes.object,
+        nodeDndType: PropTypes.string.isRequired,
         nodeTypeRole: PropTypes.string,
         currentlyDraggedNode: PropTypes.object,
         hasChildren: PropTypes.bool,
+        isLastChild: PropTypes.bool,
         childNodes: PropTypes.object,
+        level: PropTypes.number.isRequired,
         currentDocumentNodeContextPath: PropTypes.string,
         focusedNodeContextPath: PropTypes.string,
         toggledNodeContextPaths: PropTypes.object,
@@ -50,7 +56,8 @@ export default class Node extends PureComponent {
         intermediateContextPaths: PropTypes.object,
         loadingNodeContextPaths: PropTypes.object,
         errorNodeContextPaths: PropTypes.object,
-        canBeInserted: PropTypes.bool,
+        canBeInsertedAlongside: PropTypes.bool,
+        canBeInsertedInto: PropTypes.bool,
         isNodeDirty: PropTypes.bool.isRequired,
 
         nodeTypesRegistry: PropTypes.object.isRequired,
@@ -72,7 +79,15 @@ export default class Node extends PureComponent {
 
         this.handleNodeToggle = this.handleNodeToggle.bind(this);
         this.handleNodeClick = this.handleNodeClick.bind(this);
-        this.handleNodeLabelClick = this.handleNodeLabelClick.bind(this);
+    }
+
+    componentDidMount() {
+        // Always request scroll on first render if given node is focused
+        if (this.props.focusedNodeContextPath === $get('contextPath', this.props.node)) {
+            this.setState({
+                shouldScrollIntoView: true
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -102,7 +117,11 @@ export default class Node extends PureComponent {
                 const nodeIsNotInView = nodeTopPosition < scrollingElementPosition.top + offset || nodeTopPosition > scrollingElementPosition.bottom - offset;
                 if (nodeIsNotInView) {
                     const scrollTop = nodeTopPosition - scrollingElement.firstElementChild.getBoundingClientRect().top - offset;
-                    animate(scrollingElement, {scrollTop});
+                    animate({scrollTop: scrollingElement.scrollTop}, {scrollTop}, {
+                        step: ({scrollTop}) => {
+                            scrollingElement.scrollTop = scrollTop;
+                        }
+                    });
                 }
                 this.setState({
                     shouldScrollIntoView: false
@@ -111,8 +130,9 @@ export default class Node extends PureComponent {
         }
     }
 
-    accepts = () => {
-        const {node, currentlyDraggedNode, canBeInserted} = this.props;
+    accepts = mode => {
+        const {node, currentlyDraggedNode, canBeInsertedAlongside, canBeInsertedInto} = this.props;
+        const canBeInserted = mode === 'into' ? canBeInsertedInto : canBeInsertedAlongside;
 
         return canBeInserted && (getContextPath(currentlyDraggedNode) !== getContextPath(node));
     }
@@ -123,10 +143,10 @@ export default class Node extends PureComponent {
         onNodeDrag(node);
     }
 
-    handleNodeDrop = () => {
+    handleNodeDrop = position => {
         const {node, onNodeDrop} = this.props;
 
-        onNodeDrop(node);
+        onNodeDrop(node, position);
     }
 
     getIcon() {
@@ -191,9 +211,12 @@ export default class Node extends PureComponent {
         const {
             ChildRenderer,
             node,
+            nodeDndType,
             nodeTypeRole,
             childNodes,
             hasChildren,
+            isLastChild,
+            level,
             onNodeToggle,
             onNodeClick,
             onNodeFocus,
@@ -208,12 +231,16 @@ export default class Node extends PureComponent {
         const refHandler = div => {
             this.domNode = div;
         };
+        const childNodesCount = childNodes.count();
 
         return (
             <Tree.Node>
                 <span ref={refHandler}/>
                 <Tree.Node.Header
+                    id={$get('contextPath', node)}
                     hasChildren={hasChildren}
+                    nodeDndType={nodeDndType}
+                    isLastChild={isLastChild}
                     isCollapsed={this.isCollapsed()}
                     isActive={this.isActive()}
                     isFocused={this.isFocused()}
@@ -224,18 +251,20 @@ export default class Node extends PureComponent {
                     hasError={this.hasError()}
                     label={decodeLabel($get('label', node))}
                     icon={this.getIcon()}
+                    level={level}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
-                    onLabelClick={this.handleNodeLabelClick}
                     dragAndDropContext={this.getDragAndDropContext()}
+                    dragForbidden={$get('isAutoCreated', node)}
                     />
                 {this.isCollapsed() ? null : (
                     <Tree.Node.Contents>
-                        {childNodes.filter(n => n).map(node =>
+                        {childNodes.filter(n => n).map((node, index) =>
                             <ChildRenderer
                                 ChildRenderer={ChildRenderer}
                                 key={$get('contextPath', node)}
                                 node={node}
+                                nodeDndType={nodeDndType}
                                 nodeTypeRole={nodeTypeRole}
                                 onNodeToggle={onNodeToggle}
                                 onNodeClick={onNodeClick}
@@ -243,6 +272,8 @@ export default class Node extends PureComponent {
                                 onNodeDrag={onNodeDrag}
                                 onNodeDrop={onNodeDrop}
                                 currentlyDraggedNode={currentlyDraggedNode}
+                                isLastChild={index + 1 === childNodesCount}
+                                level={level + 1}
                                 />
                         )}
                     </Tree.Node.Contents>
@@ -261,12 +292,6 @@ export default class Node extends PureComponent {
         onNodeFocus($get('contextPath', node));
         onNodeClick($get('uri', node), $get('contextPath', node));
     }
-
-    handleNodeLabelClick() {
-        const {node, onNodeFocus, onNodeClick} = this.props;
-        onNodeFocus($get('contextPath', node));
-        onNodeClick($get('uri', node), $get('contextPath', node));
-    }
 }
 
 const withNodeTypeRegistry = neos(globalRegistry => ({
@@ -279,7 +304,8 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
 
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
-        const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const canBeMovedAlongsideSelector = selectors.CR.Nodes.makeCanBeMovedAlongsideSelector(nodeTypesRegistry);
+        const canBeMovedIntoSelector = selectors.CR.Nodes.makeCanBeMovedIntoSelector(nodeTypesRegistry);
         const isDocumentNodeDirtySelector = selectors.CR.Workspaces.makeIsDocumentNodeDirtySelector();
 
         return (state, {node, currentlyDraggedNode}) => ({
@@ -297,7 +323,11 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
             loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
             errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
             isNodeDirty: isDocumentNodeDirtySelector(state, $get('contextPath', node)),
-            canBeInserted: canBeInsertedSelector(state, {
+            canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {
+                subject: getContextPath(currentlyDraggedNode),
+                reference: getContextPath(node)
+            }),
+            canBeInsertedInto: canBeMovedIntoSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
             })
@@ -316,7 +346,8 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
 
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
         const hasChildrenSelector = selectors.CR.Nodes.makeHasChildrenSelector(allowedNodeTypes);
-        const canBeInsertedSelector = selectors.CR.Nodes.makeCanBeInsertedSelector(nodeTypesRegistry);
+        const canBeMovedAlongsideSelector = selectors.CR.Nodes.makeCanBeMovedAlongsideSelector(nodeTypesRegistry);
+        const canBeMovedIntoSelector = selectors.CR.Nodes.makeCanBeMovedIntoSelector(nodeTypesRegistry);
         const isContentNodeDirtySelector = selectors.CR.Workspaces.makeIsContentNodeDirtySelector();
 
         return (state, {node, currentlyDraggedNode}) => ({
@@ -330,7 +361,11 @@ export const ContentTreeNode = withNodeTypeRegistry(connect(
             focusedNodeContextPath: $get('cr.nodes.focused.contextPath', state),
             toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
             isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
-            canBeInserted: canBeInsertedSelector(state, {
+            canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {
+                subject: getContextPath(currentlyDraggedNode),
+                reference: getContextPath(node)
+            }),
+            canBeInsertedInto: canBeMovedIntoSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
             })

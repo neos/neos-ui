@@ -35,6 +35,9 @@ Neos:
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/HostOnlyStyles.css"}'
             position: 'start 900'
 
+      contentCanvas:
+        backgroundColor: '#ffffff'
+
       #################################
       # INTERNAL CONFIG (no API)
       #################################
@@ -86,6 +89,7 @@ Neos:
             contentCanvas:
               src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
               contextPath: '${q(documentNode).property(''_contextPath'')}'
+              backgroundColor: '${Configuration.setting(''Neos.Neos.Ui.contentCanvas.backgroundColor'')}'
             debugMode: false
             editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
             fullScreen:
@@ -155,3 +159,4 @@ Neos:
       Neos.Ui.Modules: Neos\Neos\Ui\Fusion\Helper\ModulesHelper
       Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
       Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
+      Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper

@@ -48,7 +48,7 @@ backend = Neos.Fusion:Template {
 
     nodeTypes = Neos.Fusion:RawArray {
         roles = ${Configuration.setting('Neos.Neos.Ui.nodeTypeRoles')}
-        groups = ${Configuration.setting('Neos.Neos.nodeTypes.groups')}
+        groups = ${Neos.Ui.PositionalArraySorter.sort(Configuration.setting('Neos.Neos.nodeTypes.groups'))}
 
         @process.json = ${Json.stringify(value)}
     }
@@ -116,12 +116,13 @@ backend = Neos.Fusion:Template {
                         }
                         isActive = true
                         target = 'Window'
+                        @if.isAvailable = ${Neos.Ui.Modules.isAvailable(submoduleName)}
                     }
                 }
 
                 @if {
                     isNotHiddenInMenu = ${!module.hideInMenu}
-                    isAvailable = ${Neos.Neos.Ui.Modules.isAvailable(moduleName)}
+                    isAvailable = ${Neos.Ui.Modules.isAvailable(moduleName)}
                 }
             }
         }

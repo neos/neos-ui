@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
-import Dropzone from 'react-dropzone';
 import mergeClassNames from 'classnames';
 import {AssetUpload} from '../../../../Library/index';
 

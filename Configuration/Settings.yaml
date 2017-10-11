@@ -61,6 +61,9 @@ Neos:
           Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
       frontendConfiguration:
         editPreviewModes: '${Configuration.setting(''Neos.Neos.userInterface.editPreviewModes'')}'
+        # You may use this place to deliver some configuration to your custom UI components, e.g.:
+        # 'Your.Own:Package':
+        #   someKey: someValue
       documentNodeInformation:
         metaData:
           contextPath: '${q(documentNode).property("_contextPath")}'

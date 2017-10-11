@@ -1,6 +1,6 @@
 include: resource://Neos.Fusion/Private/Fusion/Root.fusion
 include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.fusion
-include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderState.fusion
+include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderConfiguration.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/ArrayCollection.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/AppendAllToCollection.fusion
 
@@ -41,7 +41,7 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    frontendConfiguration = Neos.Neos.Ui:RenderState {
+    frontendConfiguration = Neos.Neos.Ui:RenderConfiguration {
         path = 'frontendConfiguration'
         @process.json = ${Json.stringify(value)}
     }
@@ -130,7 +130,7 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    initialState = Neos.Neos.Ui:RenderState {
+    initialState = Neos.Neos.Ui:RenderConfiguration {
         path = 'initialState'
         context {
             documentNode = ${documentNode}

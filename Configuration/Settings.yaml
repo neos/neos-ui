@@ -38,6 +38,12 @@ Neos:
       contentCanvas:
         backgroundColor: '#ffffff'
 
+      frontendConfiguration:
+        editPreviewModes: '${Configuration.setting(''Neos.Neos.userInterface.editPreviewModes'')}'
+        # You may use this place to deliver some configuration to your custom UI components, e.g.:
+        # 'Your.Own:Package':
+        #   someKey: someValue
+
       #################################
       # INTERNAL CONFIG (no API)
       #################################
@@ -46,24 +52,18 @@ Neos:
         document: 'Neos.Neos:Document'
         content: 'Neos.Neos:Content'
         contentCollection: 'Neos.Neos:ContentCollection'
-      state:
-        defaultEelContext:
-          String: Neos\Eel\Helper\StringHelper
-          Array: Neos\Eel\Helper\ArrayHelper
-          Date: Neos\Eel\Helper\DateHelper
-          Configuration: Neos\Eel\Helper\ConfigurationHelper
-          Math: Neos\Eel\Helper\MathHelper
-          Json: Neos\Eel\Helper\JsonHelper
-          I18n: Neos\Flow\I18n\EelHelper\TranslationHelper
-          Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
-          Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
-          Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
-          Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
-      frontendConfiguration:
-        editPreviewModes: '${Configuration.setting(''Neos.Neos.userInterface.editPreviewModes'')}'
-        # You may use this place to deliver some configuration to your custom UI components, e.g.:
-        # 'Your.Own:Package':
-        #   someKey: someValue
+      configurationDefaultEelContext:
+        String: Neos\Eel\Helper\StringHelper
+        Array: Neos\Eel\Helper\ArrayHelper
+        Date: Neos\Eel\Helper\DateHelper
+        Configuration: Neos\Eel\Helper\ConfigurationHelper
+        Math: Neos\Eel\Helper\MathHelper
+        Json: Neos\Eel\Helper\JsonHelper
+        I18n: Neos\Flow\I18n\EelHelper\TranslationHelper
+        Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
+        Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
+        Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
+        Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
       documentNodeInformation:
         metaData:
           contextPath: '${q(documentNode).property("_contextPath")}'

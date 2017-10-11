@@ -1,19 +1,19 @@
 <?php
 namespace Neos\Neos\Ui\Fusion;
 
-use Neos\Neos\Ui\Domain\Service\StateRenderingService;
+use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Exception;
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
 
-class RenderStateImplementation extends AbstractFusionObject
+class RenderConfigurationImplementation extends AbstractFusionObject
 {
 
     /**
      * @Flow\Inject
-     * @var StateRenderingService
+     * @var ConfigurationRenderingService
      */
-    protected $stateRenderingService;
+    protected $configurationRenderingService;
 
     /**
      * @Flow\InjectConfiguration()
@@ -48,6 +48,6 @@ class RenderStateImplementation extends AbstractFusionObject
             throw new Exception('The path "Neos.Neos.Ui.' . $pathToRender . '" was not found in the settings.', 1458814468);
         }
 
-        return $this->stateRenderingService->computeState($this->settings[$pathToRender], $context);
+        return $this->configurationRenderingService->computeConfiguration($this->settings[$pathToRender], $context);
     }
 }

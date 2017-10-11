@@ -21,7 +21,7 @@ prototype(Neos.Neos:Page) {
         neosBackendHeader.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
         neosBackendEndpoints.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
-        javascriptBackendInformation = Neos.Neos.Ui:RenderState {
+        javascriptBackendInformation = Neos.Neos.Ui:RenderConfiguration {
             path = 'documentNodeInformation'
             context {
                 documentNode = ${documentNode}

@@ -136,6 +136,11 @@ class FetchWithErrorHandling {
         });
     }
 
+    /**
+     * Every request that is supposed to show an error message on failure (i.e. any request),
+     * should end with this catch block:
+     * `.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason))`
+     */
     generalErrorHandler(reason) {
         let errorText;
         if (typeof reason === 'string') {

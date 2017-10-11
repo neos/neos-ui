@@ -22,7 +22,7 @@ prototype(Neos.Neos:Page) {
         neosBackendEndpoints.@if.oldBackend = ${!Neos.Ui.Activation.enableNewBackend()}
 
         javascriptBackendInformation = Neos.Neos.Ui:RenderState {
-            state = 'documentNode'
+            path = 'documentNodeInformation'
             context {
                 documentNode = ${documentNode}
                 site = ${site}

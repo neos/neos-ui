@@ -16,19 +16,19 @@ class RenderStateImplementation extends AbstractFusionObject
     protected $stateRenderingService;
 
     /**
-     * @Flow\InjectConfiguration(path="state")
+     * @Flow\InjectConfiguration()
      * @var array
      */
-    protected $stateInSettings;
+    protected $settings;
 
     protected function getContext()
     {
         return $this->fusionValue('context');
     }
 
-    protected function getState()
+    protected function getPath()
     {
-        return $this->fusionValue('state');
+        return $this->fusionValue('path');
     }
 
 
@@ -41,13 +41,13 @@ class RenderStateImplementation extends AbstractFusionObject
     public function evaluate()
     {
         $context = $this->getContext();
-        $stateNameToRender = $this->getState();
+        $pathToRender = $this->getPath();
         $context['controllerContext'] = $this->getruntime()->getControllerContext();
 
-        if (!isset($this->stateInSettings[$stateNameToRender])) {
-            throw new Exception('The state "Neos.Neos.Ui.state.' . $stateNameToRender . '" was not found in the settings.', 1458814468);
+        if (!isset($this->settings[$pathToRender])) {
+            throw new Exception('The path "Neos.Neos.Ui.' . $pathToRender . '" was not found in the settings.', 1458814468);
         }
 
-        return $this->stateRenderingService->computeState($this->stateInSettings[$stateNameToRender], $context);
+        return $this->stateRenderingService->computeState($this->settings[$pathToRender], $context);
     }
 }

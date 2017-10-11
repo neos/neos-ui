@@ -42,7 +42,7 @@ backend = Neos.Fusion:Template {
     }
 
     frontendConfiguration = Neos.Neos.Ui:RenderState {
-        state = 'frontendConfiguration'
+        path = 'frontendConfiguration'
         @process.json = ${Json.stringify(value)}
     }
 
@@ -131,7 +131,7 @@ backend = Neos.Fusion:Template {
     }
 
     initialState = Neos.Neos.Ui:RenderState {
-        state = 'backend'
+        path = 'initialState'
         context {
             documentNode = ${documentNode}
             site = ${site}

@@ -145,6 +145,10 @@ function * application() {
         store.dispatch(actions.System.authenticationTimeout());
     });
 
+    fetchWithErrorHandling.registerGeneralErrorHandler((message = 'unknown error') => {
+        store.dispatch(actions.UI.FlashMessages.add('fetch error', message, 'error'));
+    });
+
     const menu = yield system.getMenu;
 
     //

@@ -32,11 +32,11 @@ manifest('main', {}, globalRegistry => {
         Settings from each package should be prefixed to avoid collisions (unprefixed settings are reserved for the core UI itself), e.g.:
 
         Neos:
-          Neos:
-            Ui:
-              frontendConfiguration:
-                'Your.Own:Package':
-                  someKey: someValue
+            Neos:
+                Ui:
+                    frontendConfiguration:
+                        'Your.Own:Package':
+                            someKey: someValue
 
         Then it may be accessed as:
 

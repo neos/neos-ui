@@ -16,7 +16,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
     toggleEditModePanel: actions.UI.EditModePanel.toggle
 })
 @neos(globalRegistry => ({
-    editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
+    editPreviewModes: globalRegistry.get('frontendConfiguration').get('editPreviewModes')
 }))
 export default class EditModePanelToggler extends PureComponent {
     static propTypes = {
@@ -27,7 +27,7 @@ export default class EditModePanelToggler extends PureComponent {
 
         toggleEditModePanel: PropTypes.func.isRequired,
 
-        editPreviewModesRegistry: PropTypes.object.isRequired
+        editPreviewModes: PropTypes.object.isRequired
     };
 
     handleToggle = () => {
@@ -37,14 +37,14 @@ export default class EditModePanelToggler extends PureComponent {
     };
 
     render() {
-        const {className, isEditModePanelHidden, editPreviewMode, editPreviewModesRegistry} = this.props;
+        const {className, isEditModePanelHidden, editPreviewMode, editPreviewModes} = this.props;
         const isActive = !isEditModePanelHidden;
         const classNames = mergeClassNames({
             [className]: true,
             [style['btn--isActive']]: isActive
         });
 
-        const currentEditMode = editPreviewModesRegistry.get(editPreviewMode);
+        const currentEditMode = editPreviewModes[editPreviewMode];
 
         let editLabel = <I18n id="edit" fallback="Edit"/>;
         let previewLabel = <I18n id="preview" fallback="Preview"/>;

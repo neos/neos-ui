@@ -9,7 +9,7 @@ use Neos\Flow\Annotations as Flow;
 /**
  * @Flow\Scope("singleton")
  */
-class StateRenderingService
+class ConfigurationRenderingService
 {
 
     /**
@@ -19,24 +19,24 @@ class StateRenderingService
     protected $eelEvaluator;
 
     /**
-     * @Flow\InjectConfiguration(path="state.defaultEelContext")
+     * @Flow\InjectConfiguration(path="configurationDefaultEelContext")
      * @var array
      */
     protected $defaultContext;
 
-    public function computeState(array $state, $context)
+    public function computeConfiguration(array $configuration, $context)
     {
-        $adjustedState = $state;
-        $this->computeStateInternally($adjustedState, $context);
+        $adjustedConfiguration = $configuration;
+        $this->computeConfigurationInternally($adjustedConfiguration, $context);
 
-        return $adjustedState;
+        return $adjustedConfiguration;
     }
 
-    protected function computeStateInternally(&$adjustedState, $context)
+    protected function computeConfigurationInternally(&$adjustedConfiguration, $context)
     {
-        foreach ($adjustedState as $key => &$value) {
+        foreach ($adjustedConfiguration as $key => &$value) {
             if (is_array($value)) {
-                $this->computeStateInternally($value, $context);
+                $this->computeConfigurationInternally($value, $context);
             } elseif (is_string($value) && substr($value, 0, 2) === '${' && substr($value, -1) === '}') {
                 $value = Utility::evaluateEelExpression($value, $this->eelEvaluator, $context, $this->defaultContext);
             }

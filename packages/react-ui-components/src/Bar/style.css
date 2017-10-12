@@ -2,7 +2,7 @@
     composes: reset from './../reset.css';
     position: absolute;
     left: 0;
-    z-index: var(--zIndexBar);
+    z-index: var(--zIndexBarContext);
     width: 100%;
     background-color: var(--brandColorsContrastDarker);
     height: 41px;

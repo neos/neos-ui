@@ -27,7 +27,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: var(--zIndexWrapperDropdown);
+    z-index: var(--zIndexWrapperDropdownContext);
     display: none;
     background: var(--brandColorsContrastDarker);
     border: 1px solid var(--brandColorsContrastDark);

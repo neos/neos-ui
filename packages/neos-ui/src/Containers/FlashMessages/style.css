@@ -1,6 +1,6 @@
 .flashMessageContainer {
     position: fixed;
-    z-index: var(--zIndexFlashMessage);
+    z-index: var(--zIndexFlashMessageContainerContext);
     top: 0;
     left: 50%;
     width: 512px;

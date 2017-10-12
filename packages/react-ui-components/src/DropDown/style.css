@@ -41,7 +41,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: var(--zIndexDropdownContents);
+    z-index: var(--zIndexDropdownContentsContext);
     display: none;
     width: 100%;
     padding: 0;

@@ -1,0 +1,13 @@
+.hero {
+    line-height: 54px;
+	margin-bottom: var(--spacing);
+}
+
+.hero__value {
+    font-size: 54px;
+}
+
+.hero__label {
+    color: var(--brandColorsContrastBrighter);
+    margin-left: var(--halfSpacing);
+}

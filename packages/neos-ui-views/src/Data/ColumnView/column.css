@@ -1,0 +1,12 @@
+.column {
+    flex-grow: 1;
+}
+
+.column__value {
+    font-size: 20px;
+    margin-bottom: var(--halfSpacing);
+}
+
+.column__label {
+    color: var(--brandColorsContrastBrighter);
+}

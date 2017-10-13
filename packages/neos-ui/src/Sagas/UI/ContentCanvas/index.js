@@ -6,15 +6,6 @@ import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 
 /**
- * Observe the creation of a node
- */
-function * watchNodeCreate() {
-    yield * takeLatest(actionTypes.UI.NodeCreationDialog.APPLY, function * nodeCreationStarted() {
-        yield put(actions.UI.ContentCanvas.startLoading());
-    });
-}
-
-/**
  * Load newly created page into canvas
  */
 function * watchNodeCreated() {
@@ -71,7 +62,6 @@ function * watchControlOverIFrame() {
 }
 
 export const sagas = [
-    watchNodeCreate,
     watchNodeCreated,
     watchCanvasUpdateToChangeTitle,
     watchStopLoading,

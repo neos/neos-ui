@@ -181,6 +181,11 @@ export default class SelectBox extends PureComponent {
         this.setState({isOpen: false});
     }
 
+    handleSearchTermChange = (...args) => {
+        this.setState({isOpen: true});
+        this.props.onSearchTermChange(...args);
+    }
+
     render() {
         const {
             options,
@@ -194,7 +199,6 @@ export default class SelectBox extends PureComponent {
             placeholderIcon,
             displaySearchBox,
             searchTerm,
-            onSearchTermChange,
             scrollable,
             TextInputComponent,
             IconButtonComponent,
@@ -249,7 +253,7 @@ export default class SelectBox extends PureComponent {
                             <TextInputComponent
                                 placeholder={placeholder}
                                 value={searchTerm}
-                                onChange={onSearchTermChange}
+                                onChange={this.handleSearchTermChange}
                                 className={theme.selectBox__searchInput}
                                 setFocus={setFocus}
                                 containerClassName={theme.selectBox__searchInputContainer}

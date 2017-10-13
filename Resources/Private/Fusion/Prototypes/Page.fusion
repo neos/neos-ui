@@ -36,6 +36,28 @@ prototype(Neos.Neos:Page) {
                 inBackend = ${documentNode.context.inBackend}
                 newBackend = ${Neos.Ui.Activation.enableNewBackend()}
             }
+
+            // We need to ensure the JS backend information is always up to date, especially
+            // when child nodes change. Otherwise errors like the following might happen:
+            // - create a new child (document) node
+            // - again visit the parent node
+            // - the parent node still has the stale "children" infos (without the newly created child)
+            // - thus, the document tree will have the newly created node REMOVED again (visually).
+            //
+            // as a fix, we ensure that the JS backend information creates an own cache entry, which is flushed
+            // whenever children are modified.
+            @cache {
+                mode = 'cached'
+                entryIdentifier {
+                    jsBackendInfo = 'javascriptBackendInformation'
+                    documentNode = ${documentNode}
+                    inBackend = ${documentNode.context.inBackend}
+                }
+                entryTags {
+                    1 = ${'Node_' + documentNode.identifier}
+                    2 = ${'DescendantOf_' + documentNode.identifier}
+                }
+            }
         }
 
         guestFrameApplication = Neos.Fusion:Template {

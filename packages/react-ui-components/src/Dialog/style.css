@@ -3,7 +3,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: var(--zIndexDialogContext);
+    z-index: var(--zIndex-Dialog-Context);
     width: 100vw;
     height: 100vh;
     background: rgba(#000, .35);

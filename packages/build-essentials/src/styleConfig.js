@@ -38,12 +38,12 @@ const generateCssVarsObject = (subject = config, predicate = '') => {
 
         if (Array.isArray(val)) {
             val.forEach((item, index) => {
-                target[`--${predicate}${camelKey}${upperFirst(item)}`] = `${index + 1}`;
+                target[`--${predicate}-${camelKey}-${upperFirst(item)}`] = `${index + 1}`;
             });
         } else if (typeof val === 'object') {
             target = Object.assign({}, target, generateCssVarsObject(val, nestedPredicate));
         } else {
-            target[`--${predicate}${camelKey}`] = val;
+            target[`--${predicate}-${camelKey}`] = val;
         }
     });
 

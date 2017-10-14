@@ -77,7 +77,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    z-index: var(--zIndexSelectBoxLoadingIconContext);
+    z-index: var(--zIndex-SelectBoxLoadingIcon-Context);
     display: block;
     width: var(--goldenUnit);
     height: var(--goldenUnit);
@@ -97,7 +97,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    z-index: var(--zIndexSelectBoxBtnDeleteContext);
+    z-index: var(--zIndex-SelectBoxBtnDelete-Context);
     display: block;
     width: var(--goldenUnit);
     height: var(--goldenUnit);
@@ -115,7 +115,7 @@
     composes: reset from './../reset.css';
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
-    z-index: var(--zIndexSelectBoxContentsContext);
+    z-index: var(--zIndex-SelectBoxContents-Context);
 }
 
 

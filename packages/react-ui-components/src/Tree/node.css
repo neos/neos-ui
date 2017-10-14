@@ -107,13 +107,13 @@
 }
 .dropTarget--before {
     top: -5px;
-    z-index: var(--zIndexSideBarDropTargetBefore);
+    z-index: var(--zIndex-SideBar-DropTargetBefore);
     padding-top: 4px;
     padding-bottom: 4px;
 }
 .dropTarget--after {
     bottom: 0;
-    z-index: var(--zIndexSideBarDropTargetAfter);
+    z-index: var(--zIndex-SideBar-DropTargetAfter);
     padding-top: 6px;
     padding-bottom: 0;
 }

@@ -10,7 +10,7 @@
     position: absolute;
     top: 50%;
     left: 0;
-    z-index: var(--zIndexCheckboxInputContext);
+    z-index: var(--zIndex-CheckboxInput-Context);
     transform: translateY(-50%);
     width: 20px;
     height: 20px;

@@ -58,17 +58,12 @@ export default () => WrappedComponent => {
                             error: 'Unknown datasource fetch error'
                         });
                     }
-                }).catch(reason => {
-                    this.setState({
-                        data: null,
-                        error: reason
-                    });
                 });
         }
 
         render() {
             if (this.state.error) {
-                return (<div>Datasource fetch error: {this.state.error}</div>);
+                return (<div>Datasource fetch error: {this.state.error.message}</div>);
             }
 
             if (!this.state.data) {

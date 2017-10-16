@@ -1,5 +1,6 @@
 import NodeInfoView from './NodeInfoView/index';
 import DataColumnView from './Data/ColumnView/index';
+import DataTableView from './Data/TableView/index';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 
@@ -9,7 +10,10 @@ manifest('inspectorViews', {}, globalRegistry => {
     viewsRegistry.set('Neos.Neos/Inspector/Views/NodeInfoView', {
         component: NodeInfoView
     });
-    viewsRegistry.set('Neos.Neos/Inspector/Views/Data/ColumnView', {
+    viewsRegistry.set('Content/Inspector/Views/Data/ColumnView', {
         component: DataColumnView
+    });
+    viewsRegistry.set('Content/Inspector/Views/Data/TableView', {
+        component: DataTableView
     });
 });

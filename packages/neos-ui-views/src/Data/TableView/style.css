@@ -1,0 +1,12 @@
+.table {
+    width: 100%;
+}
+.column {
+    padding-bottom: var(--halfSpacing);
+    &:last-child {
+        padding-bottom: 0;
+    }
+}
+.icon {
+    padding-right: var(--quarterSpacing);
+}

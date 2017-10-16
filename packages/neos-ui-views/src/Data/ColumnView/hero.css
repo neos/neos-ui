@@ -1,6 +1,6 @@
 .hero {
     line-height: 54px;
-	margin-bottom: var(--spacing);
+    margin-bottom: var(--spacing);
 }
 
 .hero__value {

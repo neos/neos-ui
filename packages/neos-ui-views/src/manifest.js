@@ -1,6 +1,7 @@
 import NodeInfoView from './NodeInfoView/index';
 import DataColumnView from './Data/ColumnView/index';
 import DataTableView from './Data/TableView/index';
+import TimeSeriesView from './Data/TimeSeriesView/index';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 
@@ -15,5 +16,8 @@ manifest('inspectorViews', {}, globalRegistry => {
     });
     viewsRegistry.set('Content/Inspector/Views/Data/TableView', {
         component: DataTableView
+    });
+    viewsRegistry.set('Content/Inspector/Views/Data/TimeSeriesView', {
+        component: TimeSeriesView
     });
 });

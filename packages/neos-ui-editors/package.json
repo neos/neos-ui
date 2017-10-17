@@ -28,6 +28,7 @@
     "@neos-project/neos-ui-i18n": "1.0.0-beta4",
     "@neos-project/neos-ui-inspector": "1.0.0-beta4",
     "@neos-project/neos-ui-redux-store": "1.0.0-beta4",
+    "@neos-project/neos-ui-constants": "1.0.0-beta4",
     "@neos-project/react-ui-components": "1.0.0-beta4"
   },
   "license": "GNU GPLv3",

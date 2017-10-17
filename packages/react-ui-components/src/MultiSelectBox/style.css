@@ -33,10 +33,30 @@
         line-height: 40px;
         vertical-align: middle;
     }
+
+    &:hover {
+      .selectedOptions__itemIcon {
+        display: none;
+      }
+
+      .selectedOptions__itemIcon--onHover {
+        display: inline;
+      }
+    }
 }
 .selectedOptions__item--draggable {
     cursor: move;
 }
-.selectedOptions__itemIcon {
+
+.selectedOptions__itemIconWrapper {
     margin-right: .5em;
+    display: inline;
+}
+
+.selectedOptions__itemIcon {
+    min-width: 14px;
+}
+
+.selectedOptions__itemIcon--onHover {
+  display: none;
 }

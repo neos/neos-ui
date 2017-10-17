@@ -8,6 +8,7 @@ export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {
         optionValueField: 'value',
+        dndType: 'multiselect-box-value',
         allowEmpty: true
     };
 
@@ -31,6 +32,11 @@ export default class MultiSelectBox extends PureComponent {
          * Field name specifying which field in a single "option" contains the "value"
          */
         optionValueField: PropTypes.string,
+
+        /**
+         * Specifying the dnd type. Defaults to 'multiselect-box-value'
+         */
+        dndType: PropTypes.string.isRequired,
 
         /**
          * if false, prevents removing the last element.
@@ -354,11 +360,10 @@ export class DraggableValue extends PureComponent {
         return connectDragSource(connectDropTarget(
             <li className={finalClassNames} ref={refName}>
                 <span>
-                    {
-                       icon ?
-                           <IconComponent className={theme.selectedOptions__itemIcon} icon={icon}/> :
-                           null
-                    }
+                    <div className={theme.selectedOptions__itemIconWrapper}>
+                        {icon ? <IconComponent className={theme.selectedOptions__itemIcon} icon={icon}/> : null}
+                        <IconComponent className={theme['selectedOptions__itemIcon--onHover']} icon={'arrows'}/>
+                    </div>
                     { label }
                 </span>
                 {

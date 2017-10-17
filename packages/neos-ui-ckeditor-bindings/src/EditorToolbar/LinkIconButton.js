@@ -193,7 +193,8 @@ class LinkOption extends PureComponent {
     static propTypes = {
         option: PropTypes.shape({
             label: PropTypes.string,
-            uriInLiveWorkspace: PropTypes.string
+            uriInLiveWorkspace: PropTypes.string,
+            nodeType: PropTypes.string
         }),
 
         nodeTypesRegistry: PropTypes.object.isRequired

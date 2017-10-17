@@ -25,7 +25,7 @@ import style from './style.css';
     requestRegainControl: actions.UI.ContentCanvas.requestRegainControl
 })
 @neos(globalRegistry => ({
-    editPreviewModesRegistry: globalRegistry.get('editPreviewModes'),
+    editPreviewModes: globalRegistry.get('frontendConfiguration').get('editPreviewModes'),
     guestFrameRegistry: globalRegistry.get('@neos-project/neos-ui-guest-frame')
 }))
 export default class ContentCanvas extends PureComponent {
@@ -41,7 +41,7 @@ export default class ContentCanvas extends PureComponent {
         requestRegainControl: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
 
-        editPreviewModesRegistry: PropTypes.object.isRequired,
+        editPreviewModes: PropTypes.object.isRequired,
         guestFrameRegistry: PropTypes.object.isRequired
     };
 
@@ -64,7 +64,7 @@ export default class ContentCanvas extends PureComponent {
             isEditModePanelHidden,
             src,
             currentEditPreviewMode,
-            editPreviewModesRegistry,
+            editPreviewModes,
             guestFrameRegistry,
             backgroundColor
         } = this.props;
@@ -78,7 +78,7 @@ export default class ContentCanvas extends PureComponent {
             [style['contentCanvas--isHidden']]: !isVisible
         });
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
-        const currentEditPreviewModeConfiguration = editPreviewModesRegistry.get(currentEditPreviewMode);
+        const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode];
 
         const inlineStyles = {};
         const width = $get('width', currentEditPreviewModeConfiguration);

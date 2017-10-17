@@ -29,5 +29,5 @@
     font-size: 18px;
     border-right-width: 0;
     border-top-width: 0;
-    z-index: var(--zIndexSecondaryInspectorClose);
+    z-index: var(--zIndex-SecondaryInspector-Close);
 }

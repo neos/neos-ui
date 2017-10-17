@@ -130,7 +130,7 @@ export default class TimeSeriesView extends PureComponent {
         const yMax = Math.max(...data.map(item => item.value));
         const numberOfDigits = String(yMax).length;
         // Roughly estimate width each digit takes
-        const digitWidth = 11;
+        const digitWidth = 8;
         return numberOfDigits * digitWidth;
     }
 
@@ -141,8 +141,8 @@ export default class TimeSeriesView extends PureComponent {
         const yLabelWidth = this.calculateYLabelWidth(lineData);
         return (
             <LineChart
-                width={280}
-                height={200}
+                width={248}
+                height={180}
                 data={lineData}
                 margin={{top: 0, right: 0, bottom: 0, left: 0}}
                 >

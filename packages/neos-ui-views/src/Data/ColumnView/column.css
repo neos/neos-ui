@@ -4,9 +4,9 @@
 
 .column__value {
     font-size: 20px;
-    margin-bottom: var(--halfSpacing);
 }
 
 .column__label {
     color: var(--brandColorsContrastBrighter);
+    text-align: right;
 }

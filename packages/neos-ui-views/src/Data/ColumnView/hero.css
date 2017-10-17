@@ -1,13 +1,17 @@
 .hero {
     line-height: 54px;
     margin-bottom: var(--spacing);
+    display: flex;
 }
 
 .hero__value {
     font-size: 54px;
+    flex-grow: 1;
 }
 
 .hero__label {
     color: var(--brandColorsContrastBrighter);
     margin-left: var(--halfSpacing);
+    flex-grow: 1;
+    text-align: right;
 }

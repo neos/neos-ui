@@ -12,12 +12,15 @@ manifest('inspectorViews', {}, globalRegistry => {
         component: NodeInfoView
     });
     viewsRegistry.set('Content/Inspector/Views/Data/ColumnView', {
-        component: DataColumnView
+        component: DataColumnView,
+        hasOwnLabel: true
     });
     viewsRegistry.set('Content/Inspector/Views/Data/TableView', {
-        component: DataTableView
+        component: DataTableView,
+        hasOwnLabel: true
     });
     viewsRegistry.set('Content/Inspector/Views/Data/TimeSeriesView', {
-        component: TimeSeriesView
+        component: TimeSeriesView,
+        hasOwnLabel: true
     });
 });

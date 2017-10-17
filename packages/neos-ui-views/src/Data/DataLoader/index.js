@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
+import Widget from '../../Widget/index';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
+import I18n from '@neos-project/neos-ui-i18n';
+import style from './style.css';
 
+/*
+ * This HOC is responsible for fetching data for Data views and wraping
+ * them into Widget presentational component.
+ */
 @connect(state => ({
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state)
@@ -17,10 +25,12 @@ export default () => WrappedComponent => {
             focusedNodeContextPath: PropTypes.string,
             getNodeByContextPath: PropTypes.func.isRequired,
 
+            label: PropTypes.string,
             options: PropTypes.shape({
                 arguments: PropTypes.object,
                 dataSource: PropTypes.string,
-                dataSourceUri: PropTypes.string
+                dataSourceUri: PropTypes.string,
+                subtitle: PropTypes.string
             }).isRequired,
             dataSourcesDataLoader: PropTypes.shape({
                 resolveValue: PropTypes.func.isRequired
@@ -55,23 +65,32 @@ export default () => WrappedComponent => {
                     } else {
                         this.setState({
                             data: null,
-                            error: 'Unknown datasource fetch error'
+                            error: new Error('Unknown datasource fetch error')
                         });
                     }
                 });
         }
 
-        render() {
+        getContent() {
             if (this.state.error) {
-                return (<div>Datasource fetch error: {this.state.error.message}</div>);
+                return (<div><Icon icon="exclamation-triangle" className={style.warnIcon}/> {this.state.error.message}</div>);
             }
 
             if (!this.state.data) {
-                return (<div>Loading...</div>);
+                return (<div><I18n id="Neos.Neos:Main:loading"/></div>);
             }
 
+            return (<WrappedComponent data={this.state.data} {...this.props}/>);
+        }
+
+        render() {
             return (
-                <WrappedComponent data={this.state.data} {...this.props}/>
+                <Widget
+                    label={this.props.label}
+                    subtitle={this.props.options.subtitle}
+                    >
+                    {this.getContent()}
+                </Widget>
             );
         }
     };

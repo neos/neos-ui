@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {DragSource, DropTarget} from 'react-dnd';
+import Types from './../_lib/dndTypes';
 import mergeClassNames from 'classnames';
 
 export default class MultiSelectBox extends PureComponent {
@@ -30,6 +31,11 @@ export default class MultiSelectBox extends PureComponent {
          * Field name specifying which field in a single "option" contains the "value"
          */
         optionValueField: PropTypes.string,
+
+        /**
+         * if false, prevents removing the last element.
+         */
+        allowEmpty: PropTypes.bool,
 
         /**
          * This prop represents the current selected value.
@@ -120,7 +126,11 @@ export default class MultiSelectBox extends PureComponent {
             searchTerm,
             onSearchTermChange,
             SelectBoxComponent,
-            highlight
+            highlight,
+            IconButtonComponent,
+            IconComponent,
+            allowEmpty,
+            options
         } = this.props;
 
         const {draggableValues} = this.state;
@@ -141,13 +151,18 @@ export default class MultiSelectBox extends PureComponent {
                                 <DraggableValue
                                     key={key}
                                     index={key}
-                                    dndType="multi-select-option"
+                                    dndType={Types.MULTISELECBOX}
                                     onSelectedValueWasMoved={this.handleSelectedValueWasMoved}
                                     onRemoveOption={this.handleRemoveOption}
                                     moveSelectedValue={this.moveSelectedValue}
                                     value={value}
+                                    theme={theme}
+                                    IconComponent={IconComponent}
+                                    IconButtonComponent={IconButtonComponent}
+                                    allowEmpty={allowEmpty}
+                                    options={options}
+                                    optionValueField={optionValueField}
                                     draggableValues={draggableValues}
-                                    {...this.props}
                                     />
                             );
                         })
@@ -240,8 +255,8 @@ const spec = {
             index: props.index
         };
     },
-    canDrag({values}) {
-        return values && values.length > 1;
+    canDrag({draggableValues}) {
+        return draggableValues && draggableValues.length > 1;
     }
 }, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
@@ -277,8 +292,6 @@ export class DraggableValue extends PureComponent {
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
-            'selectedOptions': PropTypes.string,
-            'selectedOptions--highlight': PropTypes.string,
             'selectedOptions__item': PropTypes.string,
             'selectedOptions__item--draggable': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */

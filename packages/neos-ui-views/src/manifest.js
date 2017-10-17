@@ -11,15 +11,15 @@ manifest('inspectorViews', {}, globalRegistry => {
     viewsRegistry.set('Neos.Neos/Inspector/Views/NodeInfoView', {
         component: NodeInfoView
     });
-    viewsRegistry.set('Content/Inspector/Views/Data/ColumnView', {
+    viewsRegistry.set('Neos.Neos/Inspector/Views/Data/ColumnView', {
         component: DataColumnView,
         hasOwnLabel: true
     });
-    viewsRegistry.set('Content/Inspector/Views/Data/TableView', {
+    viewsRegistry.set('Neos.Neos/Inspector/Views/Data/TableView', {
         component: DataTableView,
         hasOwnLabel: true
     });
-    viewsRegistry.set('Content/Inspector/Views/Data/TimeSeriesView', {
+    viewsRegistry.set('Neos.Neos/Inspector/Views/Data/TimeSeriesView', {
         component: TimeSeriesView,
         hasOwnLabel: true
     });

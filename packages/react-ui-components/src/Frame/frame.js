@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 
 export default class Frame extends PureComponent {
     static propTypes = {
+        src: PropTypes.string,
         mountTarget: PropTypes.string.isRequired,
         contentDidUpdate: PropTypes.func.isRequired,
         onLoad: PropTypes.func,
@@ -13,6 +14,26 @@ export default class Frame extends PureComponent {
 
     handleReference = ref => {
         this.ref = ref;
+    };
+
+    componentDidMount() {
+        this.updateIframeUrlIfNecessary();
+    }
+
+    componentDidUpdate() {
+        this.updateIframeUrlIfNecessary();
+    }
+
+    // we do not use react's magic to change to a different URL in the iFrame, but do it explicitely (in order to avoid reloads if we are already on the correct page)
+    updateIframeUrlIfNecessary() {
+        if (!this.ref) {
+            return;
+        }
+
+        const win = this.ref.contentWindow; // eslint-disable-line react/no-find-dom-node
+        if (win.location.href !== this.props.src) {
+            win.location = this.props.src;
+        }
     }
 
     render() {
@@ -21,7 +42,8 @@ export default class Frame extends PureComponent {
             'contentDidUpdate',
             'theme',
             'children',
-            'onLoad'
+            'onLoad',
+            'src'
         ]);
 
         return <iframe ref={this.handleReference} onLoad={this.handleLoad} {...rest}/>;

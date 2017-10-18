@@ -236,6 +236,15 @@ const setUserPreferences = (key, value) => fetchWithErrorHandling.withCsrfToken(
     };
 }).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+const getWorkspaceInfo = () => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: `neos!/service/get-workspace-info`,
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})).then(response => response.json());
+
 const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
     url: urlWithParams(dataSourceUri || '/neos/service/data-source/' + dataSourceIdentifier, params),
 
@@ -283,5 +292,6 @@ export default () => ({
     setUserPreferences,
     dataSource,
     getJsonResource,
+    getWorkspaceInfo,
     tryLogin
 });

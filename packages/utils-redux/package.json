@@ -19,6 +19,9 @@
   },
   "license": "GNU GPLv3",
   "jest": {
+    "setupFiles": [
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
+    ],
     "transformIgnorePatterns": [],
     "unmockedModulePathPatterns": [
       "sinon"

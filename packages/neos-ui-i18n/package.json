@@ -24,6 +24,9 @@
   },
   "license": "GNU GPLv3",
   "jest": {
+    "setupFiles": [
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
+    ],
     "transformIgnorePatterns": [],
     "transform": {
       "neos-ui-i18n/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

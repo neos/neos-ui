@@ -102,13 +102,7 @@ export const reducer = handleActions({
         return state;
     },
     [SET_PREVIEW_URL]: ({previewUrl}) => $set('ui.contentCanvas.previewUrl', previewUrl),
-    [SET_SRC]: ({src}) => state => {
-        if (src !== $get('ui.contentCanvas.src', state)) {
-            state = $set('ui.contentCanvas.src', src, state);
-            state = $set('ui.contentCanvas.isLoading', true, state);
-        }
-        return state;
-    },
+    [SET_SRC]: ({src}) => $set('ui.contentCanvas.src', src),
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
     [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
     [STOP_LOADING]: () => $set('ui.contentCanvas.isLoading', false),

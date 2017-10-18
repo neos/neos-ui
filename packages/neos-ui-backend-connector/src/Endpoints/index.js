@@ -130,6 +130,8 @@ const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(()
         const assetRoot = d.querySelector('.assets');
 
         return Array.prototype.map.call(assetRoot.querySelectorAll('.asset'), asset => ({
+            dataType: 'Neos.Media:Asset',
+            loaderUri: 'asset://' + asset.querySelector('.asset-identifier').innerText,
             label: asset.querySelector('.asset-label').innerText,
             preview: asset.querySelector('[rel=thumbnail]').getAttribute('href'),
             identifier: asset.querySelector('.asset-identifier').innerText
@@ -150,6 +152,8 @@ const assetDetail = (identifier) => fetchWithErrorHandling.withCsrfToken(() => (
         const asset = d.querySelector('.asset');
 
         return {
+            dataType: 'Neos.Media:Asset',
+            loaderUri: 'asset://' + asset.querySelector('.asset-identifier').innerText,
             label: asset.querySelector('.asset-label').innerText,
             preview: asset.querySelector('[rel=preview]').getAttribute('href'),
             identifier: asset.querySelector('.asset-identifier').innerText
@@ -182,7 +186,9 @@ const searchNodes = options => fetchWithErrorHandling.withCsrfToken(() => ({
         return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => {
             const uri = node.querySelector('.node-frontend-uri').innerText;
             return {
-            label: node.querySelector('.node-label').innerText,
+                dataType: 'Neos.ContentRepository:Node',
+                loaderUri: 'node://' + node.querySelector('.node-identifier').innerText,
+                label: node.querySelector('.node-label').innerText,
                 identifier: node.querySelector('.node-identifier').innerText,
                 nodeType: node.querySelector('.node-type').innerText,
                 uri,

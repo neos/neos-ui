@@ -158,7 +158,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
         }
     });
 
-    dataLoadersRegistry.add('AssetLookup', {
+    dataLoadersRegistry.set('AssetLookup', {
         description: `
             Look up assets:
 
@@ -181,10 +181,9 @@ manifest('main.dataloaders', {}, globalRegistry => {
 
             const assetDetailApi = backend.get().endpoints.assetDetail;
             const result = assetDetailApi(identifier);
-            const resultPromise = Promise.resolve(result);
+            const resultPromise = Promise.all([result]);
             this._lru().set(cacheKey, resultPromise);
-
-            return result;
+            return resultPromise;
         },
 
         resolveValues(options, identifiers) {
@@ -225,7 +224,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 resultPromise.then(results => {
                     results.forEach(result => {
                         const cacheKey = makeCacheKey('resolve', {options, identifier: result.identifier});
-                        this._lru().set(cacheKey, Promise.resolve(result));
+                        this._lru().set(cacheKey, Promise.all([result]));
                     });
                 });
                 return resultPromise;
@@ -276,6 +275,65 @@ manifest('main.dataloaders', {}, globalRegistry => {
         // "identifiers" is (currently un-used) 2nd parameter
         resolveValues(options) {
             return this._loadDataSourcesByOptions(options);
+        }
+    });
+
+    dataLoadersRegistry.set('LinkLookup', {
+        description: `
+            Joined lookup for nodes and assets:
+
+            - by identifier (UUID) (resolveValue())
+            - by searching (search())
+        `,
+
+        _appendPrefixBeforeIdentifier(identifier, prefix) {
+            return assetIdentifier && prefix + '://' + assetIdentifier;
+        },
+
+        _removePrefixFromIdentifier(identifier, prefix) {
+            return identifier && identifier.replace(prefix + '://', '');
+        },
+
+        _removeAnyPrefixFromIdentifier(identifierWithPrefix) {
+            return identifierWithPrefix && identifierWithPrefix.replace(/^[A-Za-z0-9_\-]*:\/\/(.*)/, '$1');
+        },
+
+        _splitPrefixAndIdentifier(identifierWithPrefix) {
+            return identifierWithPrefix && identifierWithPrefix.match(/^([A-Za-z0-9_\-]*):\/\/(.*)/);
+        },
+
+        dataLoaders() {
+            return [
+                {prefix: 'node', dataLoader: dataLoadersRegistry.get('NodeLookup')},
+                {prefix: 'asset', dataLoader: dataLoadersRegistry.get('AssetLookup')}
+            ];
+        },
+
+        resolveValue(options, identifierWithPrefix) {
+            const dataLoaders = this.dataLoaders();
+            const prefixAndIdentifier = this._splitPrefixAndIdentifier(identifierWithPrefix);
+            const prefix = prefixAndIdentifier[1];
+            const identifier = prefixAndIdentifier[2];
+
+            const dataLoader = this.dataLoaders().reduce((current, item) =>
+                (item.prefix === prefix) ? item.dataLoader : current
+            , null);
+
+            if (!dataLoader) {
+                return [{identifier: identifierWithPrefix, loaderUri: identifierWithPrefix, label: identifierWithPrefix}];
+            }
+
+            return dataLoader.resolveValue(options, identifier);
+        },
+
+        search(options, searchTerm) {
+            return Promise.all(this.dataLoaders().map(function (dataLoaderInfo) {
+                return dataLoaderInfo.dataLoader.search(options, searchTerm);
+            })).then(function (values) {
+                return values.reduce(function (runningValues, singleDataLoaderValues) {
+                    return runningValues.concat(singleDataLoaderValues);
+                }, []);
+            });
         }
     });
 });

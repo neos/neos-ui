@@ -139,8 +139,15 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 $renderedNodes[$node->getPath()] = $renderedNode;
             }
 
+            /* @var $contentContext ContentContext */
+            $contentContext = $node->getContext();
+            $siteNodePath = $contentContext->getCurrentSiteNode()->getPath();
             $parentNode = $node->getParent();
-            while ($parentNode->getNodeType()->isOfType($baseNodeTypeOverride)) {
+
+            // we additionally need to check that our parent nodes are underneath the site node; otherwise it might happen that
+            // we try to send the "/sites" node to the UI (which we cannot do, because this does not have an URL)
+            $parentNodeIsUnderneathSiteNode = (strpos($parentNode->getPath(), $siteNodePath) === 0);
+            while ($parentNode->getNodeType()->isOfType($baseNodeTypeOverride) && $parentNodeIsUnderneathSiteNode) {
                 if (array_key_exists($parentNode->getPath(), $renderedNodes)) {
                     $renderedNodes[$parentNode->getPath()]['intermediate'] = true;
                 } else {

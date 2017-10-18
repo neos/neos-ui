@@ -61,6 +61,10 @@
     "url": "https://github.com/neos/react-ui-components.git"
   },
   "jest": {
+    "setupFiles": [
+        "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js",
+        "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
+    ],
     "transformIgnorePatterns": [],
     "unmockedModulePathPatterns": [
       "sinon"

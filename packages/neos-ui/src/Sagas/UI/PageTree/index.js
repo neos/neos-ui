@@ -147,10 +147,18 @@ function * watchSearch({configuration}) {
         }
 
         yield put(actions.UI.PageTree.setAsLoading(contextPath));
+        let matchingNodes = [];
 
-        const {q} = backend.get();
-        const query = q(contextPath);
-        const matchingNodes = yield query.search(searchQuery, filterNodeType).getForTreeWithParents();
+        try {
+            const {q} = backend.get();
+            const query = q(contextPath);
+            matchingNodes = yield query.search(searchQuery, filterNodeType).getForTreeWithParents();
+        } catch (err) {
+            console.error('Error while executing a tree search: ', err);
+            yield put(actions.UI.PageTree.invalidate(contextPath));
+            yield put(actions.UI.FlashMessages.add('searchError', 'There was an error searching in the node tree. Contact your administrator for fixing this issue.', 'error'));
+            return;
+        }
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
         const loadingDepth = configuration.nodeTree.loadingDepth;
 

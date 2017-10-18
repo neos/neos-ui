@@ -135,18 +135,21 @@ export const markNodeAsVisible = contextPath => {
 
 //
 // Insert a placeholder element for content collections that don't have
-// any children yet
-//
+// any children yet and have a very small height (as they would not be clickable / selectable otherwise).
+// NOTE: If the element is "big enough" (i.e. more than 20 px), we do not render the placeholder either; as then
+// the user will very likely have created his own rendering.
 export const createEmptyContentCollectionPlaceholderIfMissing = collectionDomNode => {
     if (collectionDomNode) {
         const hasChildNodes = Boolean(
             collectionDomNode.querySelector('[data-__neos-node-contextpath]')
         );
+        const heightOfContentCollection = collectionDomNode.getBoundingClientRect().height;
+
         const hasEmptyContentCollectionOverlay = Boolean(
             collectionDomNode.querySelector(`.${style.addEmptyContentCollectionOverlay}`)
         );
 
-        if (!hasChildNodes && !hasEmptyContentCollectionOverlay) {
+        if (!hasChildNodes && !hasEmptyContentCollectionOverlay && heightOfContentCollection < 20) {
             const emptyContentCollectionOverlay = document.createElement('div');
             emptyContentCollectionOverlay.setAttribute('class', style.addEmptyContentCollectionOverlay);
             collectionDomNode.appendChild(emptyContentCollectionOverlay);

@@ -79,6 +79,11 @@ export default class SelectBox extends PureComponent {
         scrollable: PropTypes.bool,
 
         /**
+         * Set the focus to the input element after mount
+         */
+        setFocus: PropTypes.bool,
+
+        /**
          * search box related properties
          */
         displaySearchBox: PropTypes.bool,
@@ -176,6 +181,11 @@ export default class SelectBox extends PureComponent {
         this.setState({isOpen: false});
     }
 
+    handleSearchTermChange = (...args) => {
+        this.setState({isOpen: true});
+        this.props.onSearchTermChange(...args);
+    }
+
     render() {
         const {
             options,
@@ -184,11 +194,11 @@ export default class SelectBox extends PureComponent {
             displayLoadingIndicator,
             theme,
             highlight,
+            setFocus,
             placeholder,
             placeholderIcon,
             displaySearchBox,
             searchTerm,
-            onSearchTermChange,
             scrollable,
             TextInputComponent,
             IconButtonComponent,
@@ -243,8 +253,9 @@ export default class SelectBox extends PureComponent {
                             <TextInputComponent
                                 placeholder={placeholder}
                                 value={searchTerm}
-                                onChange={onSearchTermChange}
+                                onChange={this.handleSearchTermChange}
                                 className={theme.selectBox__searchInput}
+                                setFocus={setFocus}
                                 containerClassName={theme.selectBox__searchInputContainer}
                                 /> :
                             <span className={theme.dropDown__itemLabel}>{label}</span>

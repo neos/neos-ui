@@ -267,7 +267,7 @@ class AugmentationAspect
             $this->i18nService->getConfiguration()->setCurrentLocale($this->rememberedContentLocale);
         } else {
             $this->rememberedContentLocale = $this->i18nService->getConfiguration()->getCurrentLocale();
-            $userLocalePreference = $this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage();
+            $userLocalePreference = ($this->userService->getCurrentUser() ? $this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage() : null);
             $defaultLocale = $this->i18nService->getConfiguration()->getDefaultLocale();
             $userLocale = $userLocalePreference ? new Locale($userLocalePreference) : $defaultLocale;
             $this->i18nService->getConfiguration()->setCurrentLocale($userLocale);

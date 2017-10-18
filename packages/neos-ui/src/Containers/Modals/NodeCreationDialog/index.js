@@ -79,6 +79,7 @@ export default class NodeCreationDialog extends PureComponent {
         const {back} = this.props;
 
         back();
+        this.resetState();
     }
 
     handleApply = () => {

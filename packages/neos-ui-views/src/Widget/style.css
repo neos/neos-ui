@@ -1,0 +1,23 @@
+.widget {
+    background-color: var(--brandColorsContrastNeutral);
+}
+
+.header {
+    display: flex;
+    border-bottom: 1px solid var(--brandColorsContrastDarker);
+    padding: 0 var(--spacing);
+    line-height: var(--goldenUnit);
+}
+
+.body {
+    padding: var(--spacing);
+}
+
+.label {
+    flex-grow: 1;
+}
+
+.subtitle {
+    color: var(--brandColorsContrastBrighter);
+    text-align: right;
+}

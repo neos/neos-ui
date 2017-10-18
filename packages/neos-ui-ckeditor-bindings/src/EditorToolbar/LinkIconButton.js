@@ -179,6 +179,7 @@ class LinkTextField extends PureComponent {
                     placeholder="Paste a link, or search"
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
+                    setFocus={true}
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
                     optionComponent={LinkOption}

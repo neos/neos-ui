@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {DragSource, DropTarget} from 'react-dnd';
-import Types from './../_lib/dndTypes';
 import mergeClassNames from 'classnames';
 
 export default class MultiSelectBox extends PureComponent {
@@ -136,7 +135,8 @@ export default class MultiSelectBox extends PureComponent {
             IconButtonComponent,
             IconComponent,
             allowEmpty,
-            options
+            options,
+            dndType
         } = this.props;
 
         const {draggableValues} = this.state;
@@ -157,7 +157,7 @@ export default class MultiSelectBox extends PureComponent {
                                 <DraggableValue
                                     key={key}
                                     index={key}
-                                    dndType={Types.MULTISELECBOX}
+                                    dndType={dndType}
                                     onSelectedValueWasMoved={this.handleSelectedValueWasMoved}
                                     onRemoveOption={this.handleRemoveOption}
                                     moveSelectedValue={this.moveSelectedValue}

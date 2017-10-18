@@ -119,6 +119,7 @@ export default class ReferencesEditor extends PureComponent {
     render() {
         return (<MultiSelectBox
             options={this.state.options}
+            dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"
             values={this.props.value}
             highlight={this.props.highlight}

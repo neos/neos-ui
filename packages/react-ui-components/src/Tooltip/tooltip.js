@@ -1,93 +1,97 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactTooltip from 'react-tooltip';
+import React, {PureComponent} from 'react';
 import mergeClassNames from 'classnames';
+import PropTypes from 'prop-types';
 
-const Tooltip = props => {
-    const {children, type, className, theme} = props;
+export class Tooltip extends PureComponent {
 
-    const finalClassName = mergeClassNames({
-        [theme.tooltip]: true,
-        [theme['tooltip--error']]: type === 'error',
-        [theme['tooltip--validation-error']]: type === 'validation-error',
-        [theme['tooltip--warning']]: type === 'warning',
-        [theme['tooltip--success']]: type === 'success',
-        [theme['tooltip--info']]: type === 'info',
-        [theme['tooltip--light']]: type === 'light',
-        [className]: className && className.length > 0
-    });
+    static propTypes = {
+        children: PropTypes.any.isRequired,
 
-    if (children || type === 'validation-error') {
-        return (
-            <ReactTooltip className={finalClassName} {...props} >
-                {children}
-            </ReactTooltip>
-        );
+        theme: PropTypes.shape({
+            'tooltip__wrapper': PropTypes.string,
+            'tooltip__body': PropTypes.string,
+            'tooltip__content': PropTypes.string,
+            'tooltip__body--offsetLeft': PropTypes.string,
+            'tooltip__body--offsetRight': PropTypes.string
+        }).isRequired,
+
+        position: PropTypes.oneOf(['left', 'right']).isRequired,
+
+        tooltipLabel: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.array
+        ]).isRequired
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false
+        };
     }
 
-    return <ReactTooltip className={finalClassName} {...props}/>;
-};
+    show = () => this.setVisibility(true);
 
-Tooltip.propTypes = {
-    /**
-     * A unique ID to refenrence the node the tooltip belongs to. This ID
-     * must be set in a data-for attribute on the related node
-     */
-    id: PropTypes.string.isRequired,
+    hide = () => this.setVisibility(false);
 
-    /**
-     * The children to render within the tooltip node. If children are set
-     * the prop label is not rendered
-     */
-    children: PropTypes.node,
+    setVisibility = visible => {
+        this.setState(Object.assign({}, this.state, {
+            visible
+        }));
+    }
 
-    /**
-     * The positon where the Tooltip should be placed. Should be one of
-     * top, right, bottom or left
-     */
-    place: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
+    handleTouch = () => {
+        this.show();
+        this.assignOutsideTouchHandler();
+    }
 
-    /**
-     * The type of the tooltip. Will change the style of the tooltip
-     */
-    type: PropTypes.oneOf(['success', 'warning', 'error', 'validation-error', 'info', 'light', 'dark']).isRequired,
+    assignOutsideTouchHandler = () => {
+        const handler = e => {
+            let currentNode = e.target;
+            const componentNode = this.node.refs.instance();
+            while (currentNode.parentNode) {
+                if (currentNode === componentNode) {
+                    return;
+                }
+                currentNode = currentNode.parentNode;
+            }
+            if (currentNode !== document) {
+                return;
+            }
+            this.hide();
+            document.removeEventListener('touchstart', handler);
+        };
+        document.addEventListener('touchstart', handler);
+    }
 
-    /**
-     * Should the tooltop be sticky or float with the mouse cursor. Defaults
-     * to sticky,
-     */
-    effect: PropTypes.oneOf(['float', 'solid']),
+    render() {
+        const {show, hide, handleTouch, state} = this;
+        const {theme, tooltipLabel, children, position} = this.props;
 
-    /**
-     * Delay until the tooltip is displayed
-     */
-    delayShow: PropTypes.number,
+        const classNames = mergeClassNames({
+            [theme.tooltip__body]: true,
+            [theme['tooltip__body--offsetLeft']]: position === 'left',
+            [theme['tooltip__body--offsetRight']]: position === 'right'
+        });
 
-    /**
-     * Additonal class names can be injected in this prop
-     */
-    className: PropTypes.string,
-
-    /**
-     * An optional css theme to be injected.
-     */
-    theme: PropTypes.shape({
-        'tooltip': PropTypes.string,
-        'tooltip--error': PropTypes.string,
-        'tooltip--validation-error': PropTypes.string,
-        'tooltip--sticky': PropTypes.string,
-        'tooltip--warning': PropTypes.string,
-        'tooltip--info': PropTypes.string,
-        'tooltip--light': PropTypes.string,
-        'tooltip--success': PropTypes.string
-    }).isRequired
-};
-
-Tooltip.defaultProps = {
-    type: 'info',
-    place: 'top',
-    effect: 'solid',
-    delayShow: 500
-};
+        return (
+            <div
+                onMouseEnter={show}
+                onMouseLeave={hide}
+                onTouchStart={handleTouch}
+                ref={`wrapper`}
+                className={theme.tooltip__wrapper}
+                position={position}
+                >
+                {children}
+                { state.visible &&
+                <div ref={`tooltip`} className={classNames}>
+                    <div ref={`content`} className={theme.tooltip__content}>{tooltipLabel}</div>
+                </div>
+                }
+            </div>
+        );
+    }
+}
 
 export default Tooltip;

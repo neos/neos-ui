@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
-import Tooltip from './../Tooltip/index.js';
 
 export default class Tabs extends PureComponent {
     static propTypes = {
@@ -223,10 +222,8 @@ export class TabMenuItem extends PureComponent {
             [theme['tabNavigation__itemBtnIcon--hasLabel']]: title && title.length
         });
 
-        const tooltipData = {'data-tip': '', 'data-for': `tab-${index}`};
-
         return (
-            <li className={finalClassName} {...tooltipData} role="presentation" {...rest}>
+            <li className={finalClassName} role="presentation" {...rest}>
                 <button
                     className={theme.tabNavigation__itemBtn}
                     onClick={this.handleClick}
@@ -237,7 +234,6 @@ export class TabMenuItem extends PureComponent {
                     {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
                     {title}
                 </button>
-                <Tooltip place="bottom" id={`tab-${index}`}>{tooltipLabel}</Tooltip>
             </li>
         );
     }

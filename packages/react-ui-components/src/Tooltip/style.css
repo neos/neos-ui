@@ -1,43 +1,66 @@
-.tooltip {
+.tooltip__wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 988888;
+}
+
+.tooltip__wrapper:hover:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: solid transparent 5px;
+    border-right: solid transparent 5px;
+    border-bottom: solid #000 5px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    z-index: 999999999999;
+    transform: translate(-5px, 0);
+    animation: blendInTooltip 1s;
+}
+
+.tooltip__body {
+    min-width: 100%;
     max-width: 200px;
-    font-size: var(--baseFontSize);
-    color: var(--brandColorsContrastBrightest)!important;
-    text-align: center;
-    text-decoration: none;
-    white-space: normal;
-    text-shadow: none;
-    word-wrap: break-word;
-    border-radius: 4px!important;
-    padding: var(--halfSpacing)!important;
-    background-color: #000!important;
-    border-color: #000!important;
+    background: #000;
+    line-height: 1.5;
+    padding: 5px;
+    margin-top: 5px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    z-index: 9999999999999;
+    transform: translate(-50%);
+    animation: blendInTooltip 1s;
 }
 
-.tooltip--validation-error {
-    position: relative !important;
-    background-color: var(--brandColorsError)!important;
-    border-color: var(--brandColorsError)!important;
-    left: auto !important;
-    top: auto !important;
-    width: 100% !important;
-    max-width: none !important;
-    opacity: 0.9 !important;
-    margin-top: 0px !important;
-    margin-left: 0px !important;
-    visibility: visible !important;
+.tooltip__body--offsetLeft {
+  left: 0;
+  transform: translate(0);
 }
 
-.tooltip--error {
-    background: var(--brandColorsError)!important;
-    border-color: var(--brandColorsError)!important;
+.tooltip__body--offsetRight {
+  right: 0;
+  transform: translate(0);
 }
 
-.tooltip--warning {
-    background: var(--brandColorsWarn)!important;
-    border-color: var(--brandColorsWarn)!important;
+.tooltip__content {
+    background: #000;
+    color: #fff;
+    display: inline;
+    font-size: .8em;
+    font-weight: normal;
+    padding: .3em 1em;
+    white-space: nowrap;
 }
 
-.tooltip--success {
-    background: var(--brandColorsSuccess)!important;
-    border-color: var(--brandColorsSuccess)!important;
+@keyframes blendInTooltip {
+  0%, 40% {
+    opacity: 0
+  }
+
+  50%, 100% {
+    opacity: 1
+  }
 }

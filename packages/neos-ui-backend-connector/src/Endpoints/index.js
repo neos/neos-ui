@@ -63,7 +63,7 @@ const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCs
 .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfToken(() => ({
-    url: `neos/content/image-with-metadata?image=${imageVariantUuid}`,
+    url: `/neos/content/image-with-metadata?image=${imageVariantUuid}`,
 
     method: 'GET',
     credentials: 'include',
@@ -83,7 +83,7 @@ const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfTok
  * @param asset
  */
 const createImageVariant = (originalAssetUuid, adjustments) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-    url: 'neos/content/create-image-variant',
+    url: '/neos/content/create-image-variant',
 
     method: 'POST',
     credentials: 'include',
@@ -107,7 +107,7 @@ const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHa
     data.append('metadata', metadata);
 
     return {
-        url: 'neos/content/upload-asset',
+        url: '/neos/content/upload-asset',
 
         method: 'POST',
         credentials: 'include',
@@ -228,7 +228,7 @@ const setUserPreferences = (key, value) => fetchWithErrorHandling.withCsrfToken(
     data.set('value', value);
 
     return {
-        url: 'neos/service/user-preferences',
+        url: '/neos/service/user-preferences',
 
         method: 'PUT',
         credentials: 'include',
@@ -237,7 +237,7 @@ const setUserPreferences = (key, value) => fetchWithErrorHandling.withCsrfToken(
 }).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const getWorkspaceInfo = () => fetchWithErrorHandling.withCsrfToken(() => ({
-    url: `neos!/service/get-workspace-info`,
+    url: `/neos!/service/get-workspace-info`,
     method: 'GET',
     credentials: 'include',
     headers: {

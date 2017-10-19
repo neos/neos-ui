@@ -8,6 +8,7 @@ const IconButton = props => {
         IconComponent,
         ButtonComponent,
         tooltipLabel,
+        position,
         className,
         theme,
         icon,
@@ -22,15 +23,12 @@ const IconButton = props => {
         [theme['iconButton--disabled']]: disabled
     });
 
-    // generate a randon identifer for each tooltip wich is rendered
-    const tooltipIdentifier = Math.random().toString(36).substring(7);
-    const tooltipData = {'data-tip': '', 'data-for': tooltipIdentifier};
-
     return (
-        <ButtonComponent {...rest} {...tooltipData} size={size} className={finalClassName}>
-            <IconComponent icon={icon}/>
-            {tooltipIdentifier && <Tooltip id={tooltipIdentifier}>{tooltipLabel}</Tooltip>}
-        </ButtonComponent>
+        <Tooltip tooltipLabel={tooltipLabel} position={position}>
+            <ButtonComponent {...rest} size={size} className={finalClassName}>
+                <IconComponent icon={icon}/>
+            </ButtonComponent>
+        </Tooltip>
     );
 };
 IconButton.propTypes = {
@@ -67,6 +65,12 @@ IconButton.propTypes = {
      * either be a simple string or other components
      */
     tooltipLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+    /**
+     * The tooltip has to be aligned manually
+     * in case that tooltip is at the left or right end of the browser
+     */
+    position: PropTypes.oneOf(['left', 'right']).isRequired,
 
     /**
      * Optional disabled flag

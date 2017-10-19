@@ -25,6 +25,7 @@ export default class AddNode extends PureComponent {
             <span>
                 <IconButton
                     tooltipLabel={tooltipLabel}
+                    position="left"
                     isDisabled={Boolean(focusedNodeContextPath) === false}
                     className={className}
                     icon="plus"

@@ -178,6 +178,7 @@ export default class NodeCreationDialog extends PureComponent {
                                         validationErrors={validationErrorsForElement}
                                         value={this.state.values[elementName] || ''}
                                         onKeyPress={this.handleKeyPress}
+                                        onEnterKey={this.handleApply}
                                         />
                                 </div>
                             );

@@ -158,9 +158,6 @@
     height: var(--goldenUnit);
     line-height: var(--goldenUnit);
     padding: 0 var(--spacing);
-    &:hover {
-        background: var(--brandColorsPrimaryBlue);
-    }
 }
 
 .selectBox__item--isSelectable--active {

@@ -231,7 +231,7 @@ export class Header extends PureComponent {
                     {children}
                 </HeadlineComponent>
                 <IconButtonComponent
-                    tooltipLabel="Toogle the panel"
+                    tooltipLabel="Toggle the panel"
                     className={theme.panel__toggleBtn}
                     icon={isPanelOpen ? openedIcon : closedIcon}
                     onClick={onPanelToggle}

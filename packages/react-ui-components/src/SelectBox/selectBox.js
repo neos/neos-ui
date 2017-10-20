@@ -128,8 +128,6 @@ export default class SelectBox extends PureComponent {
         this.state = {
             isOpen: false,
             selectedIndex: -1,
-            // debouncing with lodash doesn't work as intended
-            // so I had to write my own debouncing function
             lastCall: Date.now()
         };
     }
@@ -158,20 +156,27 @@ export default class SelectBox extends PureComponent {
 
     componentDidUpdate() {
         const listener = e => {
-            // Up and down arrow, enter
-            if ([38, 40, 13].indexOf(e.keyCode) > -1) {
+            const UP_ARROW = 38;
+            const DOWN_ARROW = 40;
+            const ENTER = 13;
+
+            // debouncing with lodash doesn't work as intended
+            // so I had to write my own debouncing function
+            const debounced = () => Date.now() - this.state.lastCall > 50;
+
+            if (debounced() && [UP_ARROW, DOWN_ARROW, ENTER].indexOf(e.keyCode) > -1) {
                 // componentWillReceiveProps is not triggered when
                 // using arrow keys from an searchable selectbox
                 // so I have to do this
                 const {options, optionValueField, value, displaySearchBox, onValueChange} = this.props;
                 const selectedValue = (options || []).find(option => option[optionValueField] === value);
 
-                if (Date.now() - this.state.lastCall > 50 && displaySearchBox && !selectedValue) {
+                if (displaySearchBox && !selectedValue) {
                     const currentIndex = this.state.selectedIndex;
                     const optionsLength = options.length;
 
                     switch (e.keyCode) {
-                        case 38:
+                        case UP_ARROW:
                             if (currentIndex > 0) {
                                 this.setState({
                                     selectedIndex: this.state.selectedIndex - 1,
@@ -179,7 +184,7 @@ export default class SelectBox extends PureComponent {
                                 });
                             }
                             break;
-                        case 40:
+                        case DOWN_ARROW:
                             if (currentIndex < optionsLength - 1) {
                                 this.setState({
                                     selectedIndex: this.state.selectedIndex + 1,
@@ -187,11 +192,14 @@ export default class SelectBox extends PureComponent {
                                 });
                             }
                             break;
-                        case 13:
+                        case ENTER:
                             if (optionsLength !== 0) {
                                 onValueChange(options[currentIndex][optionValueField]);
                                 this.setState({
                                     isOpen: false,
+                                    // reset selected index to not get falsy preselected values
+                                    // if dropdown is opened more than once
+                                    selectedIndex: -1,
                                     lastCall: Date.now()
                                 });
                             }

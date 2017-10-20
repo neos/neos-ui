@@ -4,6 +4,7 @@ import DropDown from '../DropDown/index';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import keydown from 'react-keydown';
 import mergeClassNames from 'classnames';
+import debounce from 'lodash.debounce';
 
 const KEYS = ['down', 'up', 'enter'];
 
@@ -155,16 +156,53 @@ export default class SelectBox extends PureComponent {
 
     componentDidUpdate() {
         const listener = e => {
-            // Up and down arrow
-            if ([38, 40].indexOf(e.keyCode) > -1) {
+            const {options, optionValueField, value, displaySearchBox} = this.props;
+            const selectedValue = (options || []).find(option => option[optionValueField] === value);
+
+            // Up and down arrow, enter
+            console.log( e.keyCode );
+            if ([38, 40, 13].indexOf(e.keyCode) > -1) {
+                // componentWillReceiveProps is not triggered when
+                // using arrow keys from an searchable selectbox
+                // so I have to do this
+                if (displaySearchBox && !selectedValue) {
+                    const currentIndex = this.state.selectedIndex;
+                    const optionsLength = this.props.options.length;
+                    switch (e.keyCode) {
+                        case 38:
+                            if (currentIndex > 0) {
+                                this.setState({selectedIndex: this.state.selectedIndex - 1});
+                            }
+                            break;
+                        case 40:
+                            if (currentIndex + 1 !== optionsLength) {
+                                this.setState({selectedIndex: this.state.selectedIndex + 1});
+                            }
+                            break;
+                        case 13:
+                            // on the first run options has length 0, how is this even possible?
+                            console.log( currentIndex );
+                            console.log( optionsLength );
+                            this.props.onValueChange(options[currentIndex].value);
+                            this.setState({
+                                isOpen: false
+                            });
+                            break;
+                    }
+                }
+
                 e.preventDefault();
             }
         };
 
+        // debouncing it not working as intended :(
+        // will be triggered many times
+        const debouncedListener = debounce(listener, 200, {leading: true, trailing: false});
+
         if (this.state.isOpen) {
-            window.addEventListener('keydown', listener);
+            window.addEventListener('keydown', debouncedListener);
         } else {
-            window.removeEventListener('keydown', listener);
+            window.removeEventListener('keydown', debouncedListener);
         }
     }
 
@@ -357,10 +395,6 @@ export default class SelectBox extends PureComponent {
         if (index !== this.state.selectedIndex) {
             this.setState({selectedIndex: index});
         }
-    }
-
-    onKeyPress = () => {
-        console.log( 'keypress' );
     }
 
     handleDeleteClick = () => {

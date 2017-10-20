@@ -198,17 +198,18 @@ class LinkOption extends PureComponent {
             nodeType: PropTypes.string
         }),
 
-        nodeTypesRegistry: PropTypes.object.isRequired
+        nodeTypesRegistry: PropTypes.object.isRequired,
+        isActive: PropTypes.bool
     };
 
     render() {
-        const {option, nodeTypesRegistry, className} = this.props;
+        const {option, nodeTypesRegistry, isActive} = this.props;
         const {label, uriInLiveWorkspace, nodeType} = option;
         const nodeTypeDefinition = nodeTypesRegistry.getNodeType(nodeType);
         const icon = $get('ui.icon', nodeTypeDefinition);
         const mergedClassName = mergeClassNames({
             [style.linkIconButton__link]: true,
-            [className]: className
+            [style['linkIconButton__link--active']]: isActive
         });
 
         return (

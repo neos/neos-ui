@@ -266,6 +266,7 @@ export default class SelectBox extends PureComponent {
                                 className={theme.selectBox__searchInput}
                                 setFocus={setFocus}
                                 containerClassName={theme.selectBox__searchInputContainer}
+                                onKeyPress={this.onKeyPress}
                                 /> :
                             <span className={theme.dropDown__itemLabel}>{label}</span>
                         }
@@ -356,6 +357,10 @@ export default class SelectBox extends PureComponent {
         if (index !== this.state.selectedIndex) {
             this.setState({selectedIndex: index});
         }
+    }
+
+    onKeyPress = () => {
+        console.log( 'keypress' );
     }
 
     handleDeleteClick = () => {

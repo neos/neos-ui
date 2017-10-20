@@ -155,7 +155,7 @@ export default class MultiSelectBox extends PureComponent {
                         (draggableValues || []).map((value, key) => {
                             return (
                                 <DraggableValue
-                                    key={key}
+                                    key={value}
                                     index={key}
                                     dndType={dndType}
                                     onSelectedValueWasMoved={this.handleSelectedValueWasMoved}
@@ -284,6 +284,8 @@ export class DraggableValue extends PureComponent {
          */
         draggableValues: PropTypes.arrayOf(PropTypes.string),
 
+        isDragging: PropTypes.bool.isRequired,
+
         /**
          * Field name specifying which field in a single "option" contains the "value"
          */
@@ -343,7 +345,8 @@ export class DraggableValue extends PureComponent {
           IconButtonComponent,
           onRemoveOption,
           connectDragSource,
-          connectDropTarget
+          connectDropTarget,
+          isDragging
          } = this.props;
 
         const option = (options || []).find(option => option[optionValueField] === value);
@@ -353,16 +356,18 @@ export class DraggableValue extends PureComponent {
             [theme.selectedOptions__item]: true,
             [theme['selectedOptions__item--draggable']]: draggableValues && draggableValues.length > 1
         });
+        const opacity = isDragging ? 0 : 1;
 
         const refName = node => {
             this.node = node;
         };
+
         return connectDragSource(connectDropTarget(
-            <li className={finalClassNames} ref={refName}>
+            <li className={finalClassNames} ref={refName} style={{opacity}}>
                 <span>
                     <div className={theme.selectedOptions__itemIconWrapper}>
                         {icon ? <IconComponent className={theme.selectedOptions__itemIcon} icon={icon}/> : null}
-                        <IconComponent className={theme['selectedOptions__itemIcon--onHover']} icon={'arrows'}/>
+                        <IconComponent className={theme['selectedOptions__itemIcon--onHover']} icon={'arrows-v'}/>
                     </div>
                     { label }
                 </span>

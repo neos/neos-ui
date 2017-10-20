@@ -50,7 +50,9 @@
 
 .selectedOptions__itemIconWrapper {
     margin-right: .5em;
-    display: inline;
+    display: inline-block;
+    width: 14px;
+    text-align: center;
 }
 
 .selectedOptions__itemIcon {

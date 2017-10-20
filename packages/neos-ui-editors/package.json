@@ -18,7 +18,8 @@
   },
   "devDependencies": {
     "@neos-project/build-essentials": "1.0.0-beta4",
-    "@neos-project/debug-reason-for-rendering": "1.0.0-beta4"
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta4",
+    "react-dnd-test-backend": "^2.5.1"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",

@@ -155,69 +155,69 @@ export default class SelectBox extends PureComponent {
     }
 
     componentDidUpdate() {
-        const listener = e => {
-            const UP_ARROW = 38;
-            const DOWN_ARROW = 40;
-            const ENTER = 13;
-
-            // debouncing with lodash doesn't work as intended
-            // so I had to write my own debouncing function
-            const debounced = () => Date.now() - this.state.lastCall > 50;
-
-            if (debounced() && [UP_ARROW, DOWN_ARROW, ENTER].indexOf(e.keyCode) > -1) {
-                // componentWillReceiveProps is not triggered when
-                // using arrow keys from an searchable selectbox
-                // so I have to do this
-                const {options, optionValueField, value, displaySearchBox, onValueChange} = this.props;
-                const selectedValue = (options || []).find(option => option[optionValueField] === value);
-
-                if (displaySearchBox && !selectedValue) {
-                    const currentIndex = this.state.selectedIndex;
-                    const optionsLength = options.length;
-
-                    switch (e.keyCode) {
-                        case UP_ARROW:
-                            if (currentIndex > 0) {
-                                this.setState({
-                                    selectedIndex: this.state.selectedIndex - 1,
-                                    lastCall: Date.now()
-                                });
-                            }
-                            break;
-                        case DOWN_ARROW:
-                            if (currentIndex < optionsLength - 1) {
-                                this.setState({
-                                    selectedIndex: this.state.selectedIndex + 1,
-                                    lastCall: Date.now()
-                                });
-                            }
-                            break;
-                        case ENTER:
-                            if (optionsLength !== 0) {
-                                onValueChange(options[currentIndex][optionValueField]);
-                                this.setState({
-                                    isOpen: false,
-                                    // reset selected index to not get falsy preselected values
-                                    // if dropdown is opened more than once
-                                    selectedIndex: -1,
-                                    lastCall: Date.now()
-                                });
-                            }
-                            break;
-                        // eslint is saying so
-                        default:
-                            break;
-                    }
-                }
-
-                e.preventDefault();
-            }
-        };
-
         if (this.state.isOpen) {
-            window.addEventListener('keydown', listener);
+            window.addEventListener('keydown', this.keydownListener);
         } else {
-            window.removeEventListener('keydown', listener);
+            window.removeEventListener('keydown', this.keydownListener);
+        }
+    }
+
+    keydownListener = e => {
+        const UP_ARROW = 38;
+        const DOWN_ARROW = 40;
+        const ENTER = 13;
+
+        // debouncing with lodash doesn't work as intended
+        // so I had to write my own debouncing function
+        const debounced = () => Date.now() - this.state.lastCall > 50;
+
+        if (debounced() && [UP_ARROW, DOWN_ARROW, ENTER].indexOf(e.keyCode) > -1) {
+            // componentWillReceiveProps is not triggered when
+            // using arrow keys from an searchable selectbox
+            // so I have to do this
+            const {options, optionValueField, value, displaySearchBox, onValueChange} = this.props;
+            const selectedValue = (options || []).find(option => option[optionValueField] === value);
+
+            if (displaySearchBox && !selectedValue) {
+                const currentIndex = this.state.selectedIndex;
+                const optionsLength = options.length;
+
+                switch (e.keyCode) {
+                    case UP_ARROW:
+                        if (currentIndex > 0) {
+                            this.setState({
+                                selectedIndex: this.state.selectedIndex - 1,
+                                lastCall: Date.now()
+                            });
+                        }
+                        break;
+                    case DOWN_ARROW:
+                        if (currentIndex < optionsLength - 1) {
+                            this.setState({
+                                selectedIndex: this.state.selectedIndex + 1,
+                                lastCall: Date.now()
+                            });
+                        }
+                        break;
+                    case ENTER:
+                        if (optionsLength !== 0) {
+                            onValueChange(options[currentIndex][optionValueField]);
+                            this.setState({
+                                isOpen: false,
+                                // reset selected index to not get falsy preselected values
+                                // if dropdown is opened more than once
+                                selectedIndex: -1,
+                                lastCall: Date.now()
+                            });
+                        }
+                        break;
+                    // eslint is saying so
+                    default:
+                        break;
+                }
+            }
+
+            e.preventDefault();
         }
     }
 

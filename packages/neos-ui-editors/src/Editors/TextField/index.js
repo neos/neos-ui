@@ -23,6 +23,7 @@ export default class TextField extends PureComponent {
         highlight: PropTypes.bool,
         options: PropTypes.object,
         onKeyPress: PropTypes.func,
+        onEnterKey: PropTypes.func,
         id: PropTypes.string,
 
         i18nRegistry: PropTypes.object.isRequired
@@ -33,7 +34,7 @@ export default class TextField extends PureComponent {
     };
 
     render() {
-        const {id, value, commit, validationErrors, options, i18nRegistry, highlight, onKeyPress} = this.props;
+        const {id, value, commit, validationErrors, options, i18nRegistry, highlight, onKeyPress, onEnterKey} = this.props;
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
@@ -48,6 +49,7 @@ export default class TextField extends PureComponent {
             placeholder={placeholder}
             highlight={highlight}
             onKeyPress={onKeyPress}
+            onEnterKey={onEnterKey}
             disabled={finalOptions.disabled}
             maxLength={finalOptions.maxlength}
             readOnly={finalOptions.readonly}

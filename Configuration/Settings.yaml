@@ -73,6 +73,7 @@ Neos:
             active: '${documentNode.context.dimensions}'
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, controllerContext)}'
+          url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
       initialState:
         changes:
           pending: {  }

@@ -127,7 +127,7 @@ export default class SelectBox extends PureComponent {
 
         this.state = {
             isOpen: false,
-            selectedIndex: 0
+            selectedIndex: -1
         };
     }
 
@@ -172,8 +172,17 @@ export default class SelectBox extends PureComponent {
         if (e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'text') {
             // force dropdown open if the search-input-box is focused
             this.setState({isOpen: true});
+        } else if (this.state.isOpen) {
+            // reset selected index to not get falsy preselected values
+            // if dropdown is opened more than once
+            this.setState({
+                isOpen: false,
+                selectedIndex: -1
+            });
         } else {
-            this.setState({isOpen: !this.state.isOpen});
+            this.setState({
+                isOpen: true
+            });
         }
     }
 
@@ -334,8 +343,19 @@ export default class SelectBox extends PureComponent {
         };
         const className = index === selectedIndex ? theme['selectBox__item--isSelectable--active'] : '';
 
+        const setIndex = () => {
+            this.setIndex(index);
+        };
+
         const OptionComponent = optionComponent;
-        return <OptionComponent className={className} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
+        // onMouseEnter doesn't work on OptionComponent
+        return <div key={index} onMouseEnter={setIndex}><OptionComponent className={className} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/></div>;
+    }
+
+    setIndex = index => {
+        if (index !== this.state.selectedIndex) {
+            this.setState({selectedIndex: index});
+        }
     }
 
     handleDeleteClick = () => {

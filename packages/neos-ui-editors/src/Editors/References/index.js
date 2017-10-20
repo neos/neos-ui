@@ -40,6 +40,11 @@ export default class ReferencesEditor extends PureComponent {
         }).isRequired
     };
 
+    static defaultOptions = {
+        // start searching after 2 characters, as it was done in the old UI
+        threshold: 2
+    };
+
     constructor(props) {
         super(props);
 
@@ -91,7 +96,8 @@ export default class ReferencesEditor extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-        if (searchTerm) {
+        const threshold = $get('options.threshold', this.props) || this.defaultOptions.threshold;
+        if (searchTerm && searchTerm.length >= threshold) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {

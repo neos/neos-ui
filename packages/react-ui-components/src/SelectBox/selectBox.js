@@ -4,7 +4,6 @@ import DropDown from '../DropDown/index';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import keydown from 'react-keydown';
 import mergeClassNames from 'classnames';
-import debounce from 'lodash.debounce';
 
 const KEYS = ['down', 'up', 'enter'];
 
@@ -128,7 +127,10 @@ export default class SelectBox extends PureComponent {
 
         this.state = {
             isOpen: false,
-            selectedIndex: -1
+            selectedIndex: -1,
+            // debouncing with lodash doesn't work as intended
+            // so I had to write my own debouncing function
+            lastCall: Date.now()
         };
     }
 
@@ -164,23 +166,37 @@ export default class SelectBox extends PureComponent {
                 const {options, optionValueField, value, displaySearchBox, onValueChange} = this.props;
                 const selectedValue = (options || []).find(option => option[optionValueField] === value);
 
-                if (displaySearchBox && !selectedValue) {
+                if (Date.now() - this.state.lastCall > 50 && displaySearchBox && !selectedValue) {
                     const currentIndex = this.state.selectedIndex;
                     const optionsLength = options.length;
+
                     switch (e.keyCode) {
                         case 38:
                             if (currentIndex > 0) {
-                                this.setState({selectedIndex: this.state.selectedIndex - 1});
+                                this.setState({
+                                    selectedIndex: this.state.selectedIndex - 1,
+                                    lastCall: Date.now()
+                                });
                             }
                             break;
                         case 40:
                             if (currentIndex < optionsLength - 1) {
-                                this.setState({selectedIndex: this.state.selectedIndex + 1});
+                                this.setState({
+                                    selectedIndex: this.state.selectedIndex + 1,
+                                    lastCall: Date.now()
+                                });
                             }
                             break;
                         case 13:
-                            onValueChange(options[currentIndex].value);
+                            if (optionsLength !== 0) {
+                                onValueChange(options[currentIndex][optionValueField]);
+                                this.setState({
+                                    isOpen: false,
+                                    lastCall: Date.now()
+                                });
+                            }
                             break;
+                        // eslint is saying so
                         default:
                             break;
                     }
@@ -190,14 +206,10 @@ export default class SelectBox extends PureComponent {
             }
         };
 
-        // debouncing it not working as intended :(
-        // will be triggered many times
-        const debouncedListener = debounce(listener, 200, {leading: true, trailing: false});
-
         if (this.state.isOpen) {
-            window.addEventListener('keydown', debouncedListener);
+            window.addEventListener('keydown', listener);
         } else {
-            window.removeEventListener('keydown', debouncedListener);
+            window.removeEventListener('keydown', listener);
         }
     }
 

@@ -160,7 +160,6 @@ export default class SelectBox extends PureComponent {
             const selectedValue = (options || []).find(option => option[optionValueField] === value);
 
             // Up and down arrow, enter
-            console.log( e.keyCode );
             if ([38, 40, 13].indexOf(e.keyCode) > -1) {
                 // componentWillReceiveProps is not triggered when
                 // using arrow keys from an searchable selectbox
@@ -175,12 +174,13 @@ export default class SelectBox extends PureComponent {
                             }
                             break;
                         case 40:
-                            if (currentIndex + 1 !== optionsLength) {
+                            if (currentIndex < optionsLength - 1) {
                                 this.setState({selectedIndex: this.state.selectedIndex + 1});
                             }
                             break;
                         case 13:
-                            // on the first run options has length 0, how is this even possible?
+                            // options is length 0 don't know why
+                            // Cannot read property 'value' of undefined
                             console.log( currentIndex );
                             console.log( optionsLength );
                             this.props.onValueChange(options[currentIndex].value);

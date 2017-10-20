@@ -55,6 +55,8 @@ class TextInput extends PureComponent {
          */
         onEnterKey: PropTypes.func,
 
+        onKeyPress: PropTypes.func,
+
         /**
          * A prop of which type this input field is eg password
          */
@@ -84,7 +86,11 @@ class TextInput extends PureComponent {
         super(props);
 
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        if (typeof this.props.onKeyPress === 'function') {
+            this.stuff = this.props.onKeyPress;
+        } else {
+            this.stuff = this.handleKeyPress.bind(this);
+        }
     }
 
     componentDidMount() {
@@ -134,7 +140,7 @@ class TextInput extends PureComponent {
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={this.handleValueChange}
-                    onKeyPress={this.handleKeyPress}
+                    onKeyPress={this.stuff}
                     ref={inputRef}
                     />
                 {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}

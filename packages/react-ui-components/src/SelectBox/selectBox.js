@@ -156,17 +156,17 @@ export default class SelectBox extends PureComponent {
 
     componentDidUpdate() {
         const listener = e => {
-            const {options, optionValueField, value, displaySearchBox} = this.props;
-            const selectedValue = (options || []).find(option => option[optionValueField] === value);
-
             // Up and down arrow, enter
             if ([38, 40, 13].indexOf(e.keyCode) > -1) {
                 // componentWillReceiveProps is not triggered when
                 // using arrow keys from an searchable selectbox
                 // so I have to do this
+                const {options, optionValueField, value, displaySearchBox, onValueChange} = this.props;
+                const selectedValue = (options || []).find(option => option[optionValueField] === value);
+
                 if (displaySearchBox && !selectedValue) {
                     const currentIndex = this.state.selectedIndex;
-                    const optionsLength = this.props.options.length;
+                    const optionsLength = options.length;
                     switch (e.keyCode) {
                         case 38:
                             if (currentIndex > 0) {
@@ -179,14 +179,9 @@ export default class SelectBox extends PureComponent {
                             }
                             break;
                         case 13:
-                            // options is length 0 don't know why
-                            // Cannot read property 'value' of undefined
-                            console.log( currentIndex );
-                            console.log( optionsLength );
-                            this.props.onValueChange(options[currentIndex].value);
-                            this.setState({
-                                isOpen: false
-                            });
+                            onValueChange(options[currentIndex].value);
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -304,7 +299,6 @@ export default class SelectBox extends PureComponent {
                                 className={theme.selectBox__searchInput}
                                 setFocus={setFocus}
                                 containerClassName={theme.selectBox__searchInputContainer}
-                                onKeyPress={this.onKeyPress}
                                 /> :
                             <span className={theme.dropDown__itemLabel}>{label}</span>
                         }

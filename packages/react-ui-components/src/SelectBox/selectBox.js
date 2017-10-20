@@ -384,7 +384,8 @@ export default class SelectBox extends PureComponent {
         const onClick = () => {
             this.props.onValueChange(value);
         };
-        const className = index === selectedIndex ? theme['selectBox__item--isSelectable--active'] : '';
+        const isActive = index === selectedIndex;
+        const className = isActive ? theme['selectBox__item--isSelectable--active'] : '';
 
         const setIndex = () => {
             this.setIndex(index);
@@ -392,7 +393,7 @@ export default class SelectBox extends PureComponent {
 
         const OptionComponent = optionComponent;
         // onMouseEnter doesn't work on OptionComponent
-        return <div key={index} onMouseEnter={setIndex}><OptionComponent className={className} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/></div>;
+        return <div key={index} onMouseEnter={setIndex}><OptionComponent className={className} isActive={isActive} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/></div>;
     }
 
     setIndex = index => {

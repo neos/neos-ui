@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
+import mergeClassNames from 'classnames';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
@@ -201,14 +202,19 @@ class LinkOption extends PureComponent {
     };
 
     render() {
-        const {option, nodeTypesRegistry} = this.props;
+        const {option, nodeTypesRegistry, className} = this.props;
         const {label, uriInLiveWorkspace, nodeType} = option;
         const nodeTypeDefinition = nodeTypesRegistry.getNodeType(nodeType);
         const icon = $get('ui.icon', nodeTypeDefinition);
+        const mergedClassName = mergeClassNames({
+            [style.linkIconButton__link]: true,
+            [className]: className
+        });
+
         return (
             <SelectBoxOption {...this.props} className={style.linkIconButton__item} icon={icon}>
                 <span>{label}</span>
-                <span className={style.linkIconButton__link}>{uriInLiveWorkspace}</span>
+                <span className={mergedClassName}>{uriInLiveWorkspace}</span>
             </SelectBoxOption>
         );
     }

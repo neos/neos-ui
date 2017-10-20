@@ -6,7 +6,7 @@ import keydown, {Keys} from 'react-keydown';
 import mergeClassNames from 'classnames';
 import debounce from 'lodash.debounce';
 
-const { ENTER, UP, DOWN} = Keys;
+const {ENTER, UP, DOWN} = Keys;
 const KEYS = [ENTER, UP, DOWN];
 
 @keydown(KEYS)
@@ -163,7 +163,7 @@ export default class SelectBox extends PureComponent {
         }
     }
 
-    keydownListener = debounce((e) => {
+    keydownListener = debounce(e => {
         if (KEYS.indexOf(e.keyCode) > -1) {
             // componentWillReceiveProps is not triggered when
             // using arrow keys from an searchable selectbox
@@ -209,7 +209,7 @@ export default class SelectBox extends PureComponent {
 
             e.preventDefault();
         }
-    }, 50, {leading: true, trailing:false});
+    }, 50, {leading: true, trailing: false});
 
     handleDropdownToggle = e => {
         if (e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'text') {

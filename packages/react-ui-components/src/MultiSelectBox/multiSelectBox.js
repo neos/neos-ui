@@ -335,18 +335,18 @@ export class DraggableValue extends PureComponent {
 
     render() {
         const {
-          value,
-          draggableValues,
-          optionValueField,
-          options,
-          allowEmpty,
-          theme,
-          IconComponent,
-          IconButtonComponent,
-          onRemoveOption,
-          connectDragSource,
-          connectDropTarget,
-          isDragging
+            value,
+            draggableValues,
+            optionValueField,
+            options,
+            allowEmpty,
+            theme,
+            IconComponent,
+            IconButtonComponent,
+            onRemoveOption,
+            connectDragSource,
+            connectDropTarget,
+            isDragging
          } = this.props;
 
         const option = (options || []).find(option => option[optionValueField] === value);
@@ -371,14 +371,13 @@ export class DraggableValue extends PureComponent {
                     </div>
                     { label }
                 </span>
-                {
-                   draggableValues && draggableValues.length === 1 && !allowEmpty ?
-                   null :
-                   <IconButtonComponent
-                       icon={'close'}
-                       onClick={onRemoveOption(value)}
-                       />
-               }
+                { draggableValues && draggableValues.length === 1 && !allowEmpty ?
+                    null :
+                    <IconButtonComponent
+                        icon={'close'}
+                        onClick={onRemoveOption(value)}
+                        />
+                }
             </li>
         ));
     }

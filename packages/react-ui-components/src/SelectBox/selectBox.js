@@ -2,11 +2,12 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import DropDown from '../DropDown/index';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
-import keydown from 'react-keydown';
+import keydown, {Keys} from 'react-keydown';
 import mergeClassNames from 'classnames';
 import debounce from 'lodash.debounce';
 
-const KEYS = ['down', 'up', 'enter'];
+const { ENTER, UP, DOWN} = Keys;
+const KEYS = [ENTER, UP, DOWN];
 
 @keydown(KEYS)
 export default class SelectBox extends PureComponent {
@@ -163,11 +164,7 @@ export default class SelectBox extends PureComponent {
     }
 
     keydownListener = debounce((e) => {
-        const UP_ARROW = 38;
-        const DOWN_ARROW = 40;
-        const ENTER = 13;
-
-        if ([UP_ARROW, DOWN_ARROW, ENTER].indexOf(e.keyCode) > -1) {
+        if (KEYS.indexOf(e.keyCode) > -1) {
             // componentWillReceiveProps is not triggered when
             // using arrow keys from an searchable selectbox
             // so I have to do this
@@ -179,14 +176,14 @@ export default class SelectBox extends PureComponent {
                 const optionsLength = options.length;
 
                 switch (e.keyCode) {
-                    case UP_ARROW:
+                    case UP:
                         if (currentIndex > 0) {
                             this.setState({
                                 selectedIndex: this.state.selectedIndex - 1
                             });
                         }
                         break;
-                    case DOWN_ARROW:
+                    case DOWN:
                         if (currentIndex < optionsLength - 1) {
                             this.setState({
                                 selectedIndex: this.state.selectedIndex + 1

@@ -4,3 +4,8 @@
     text-overflow: ellipsis;
     padding: 0 40px 0 16px;
 }
+
+.propertyGroupIcon {
+  line-height: var(--goldenUnit);
+  padding-right: var(--spacing);
+}

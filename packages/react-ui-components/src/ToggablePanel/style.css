@@ -11,6 +11,12 @@
     line-height: var(--goldenUnit);
     font-weight: bold;
     font-size: var(--baseFontSize);
+    border-top: 1px solid var(--brandColorsContrastDark);
+    border-bottom: 1px solid var(--brandColorsContrastDark);
+    background: red;
+    display: grid;
+    display: inline-flex;
+    overflow: hidden;
 }
 
 .panel__headline--noPadding {
@@ -19,9 +25,6 @@
 
 .panel__toggleBtn {
     composes: reset from './../reset.css';
-    position: absolute;
-    top: 0;
-    right: 0;
 }
 .panel__contents {
     composes: reset from './../reset.css';

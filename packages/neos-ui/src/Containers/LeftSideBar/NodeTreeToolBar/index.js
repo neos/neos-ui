@@ -98,52 +98,50 @@ export default class NodeTreeToolBar extends PureComponent {
         } = this.props;
 
         return (
-            <div className={style.toolBar}>
-                <div className={style.toolBar__btnGroup}>
-                    <AddNode
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        onClick={this.handleAddNode}
-                        />
-                    <HideSelectedNode
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled}
-                        isHidden={isHidden}
-                        onHide={this.handleHideNode}
-                        onShow={this.handleShowNode}
-                        />
-                    <CopySelectedNode
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        onClick={this.handleCopyNode}
-                        isDisabled={destructiveOperationsAreDisabled}
-                        />
-                    <CutSelectedNode
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled}
-                        onClick={this.handleCutNode}
-                        />
-                    <PasteClipBoardNode
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        canBePasted={canBePasted}
-                        onClick={this.handlePasteNode}
-                        />
-                    <DeleteSelectedNode
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled}
-                        onClick={this.handleDeleteNode}
-                        />
-                    <RefreshPageTree
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isLoading={isLoading}
-                        onClick={this.handleReloadTree}
-                        />
-                </div>
+            <div className={style.toolBar__btnGroup}>
+                <AddNode
+                    className={style.toolBar__btnGroup__btn}
+                    focusedNodeContextPath={focusedNodeContextPath}
+                    onClick={this.handleAddNode}
+                    />
+                <HideSelectedNode
+                    className={style.toolBar__btnGroup__btn}
+                    focusedNodeContextPath={focusedNodeContextPath}
+                    isDisabled={destructiveOperationsAreDisabled}
+                    isHidden={isHidden}
+                    onHide={this.handleHideNode}
+                    onShow={this.handleShowNode}
+                    />
+                <CopySelectedNode
+                    className={style.toolBar__btnGroup__btn}
+                    focusedNodeContextPath={focusedNodeContextPath}
+                    onClick={this.handleCopyNode}
+                    isDisabled={destructiveOperationsAreDisabled}
+                    />
+                <CutSelectedNode
+                    className={style.toolBar__btnGroup__btn}
+                    focusedNodeContextPath={focusedNodeContextPath}
+                    isDisabled={destructiveOperationsAreDisabled}
+                    onClick={this.handleCutNode}
+                    />
+                <PasteClipBoardNode
+                    className={style.toolBar__btnGroup__btn}
+                    focusedNodeContextPath={focusedNodeContextPath}
+                    canBePasted={canBePasted}
+                    onClick={this.handlePasteNode}
+                    />
+                <DeleteSelectedNode
+                    className={style.toolBar__btnGroup__btn}
+                    focusedNodeContextPath={focusedNodeContextPath}
+                    isDisabled={destructiveOperationsAreDisabled}
+                    onClick={this.handleDeleteNode}
+                    />
+                <RefreshPageTree
+                    className={style.toolBar__btnGroup__btn}
+                    focusedNodeContextPath={focusedNodeContextPath}
+                    isLoading={isLoading}
+                    onClick={this.handleReloadTree}
+                    />
             </div>
         );
     }

@@ -229,13 +229,13 @@ export class Header extends PureComponent {
                     style="h4"
                     >
                     {children}
+                    <IconButtonComponent
+                        tooltipLabel="Toggle the panel"
+                        className={theme.panel__toggleBtn}
+                        icon={isPanelOpen ? openedIcon : closedIcon}
+                        onClick={onPanelToggle}
+                        />
                 </HeadlineComponent>
-                <IconButtonComponent
-                    tooltipLabel="Toggle the panel"
-                    className={theme.panel__toggleBtn}
-                    icon={isPanelOpen ? openedIcon : closedIcon}
-                    onClick={onPanelToggle}
-                    />
             </div>
         );
     }

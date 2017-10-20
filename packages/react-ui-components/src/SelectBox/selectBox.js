@@ -4,6 +4,7 @@ import DropDown from '../DropDown/index';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import keydown from 'react-keydown';
 import mergeClassNames from 'classnames';
+import debounce from 'lodash.debounce';
 
 const KEYS = ['down', 'up', 'enter'];
 
@@ -127,8 +128,7 @@ export default class SelectBox extends PureComponent {
 
         this.state = {
             isOpen: false,
-            selectedIndex: -1,
-            lastCall: Date.now()
+            selectedIndex: -1
         };
     }
 
@@ -162,16 +162,12 @@ export default class SelectBox extends PureComponent {
         }
     }
 
-    keydownListener = e => {
+    keydownListener = debounce((e) => {
         const UP_ARROW = 38;
         const DOWN_ARROW = 40;
         const ENTER = 13;
 
-        // debouncing with lodash doesn't work as intended
-        // so I had to write my own debouncing function
-        const debounced = () => Date.now() - this.state.lastCall > 50;
-
-        if (debounced() && [UP_ARROW, DOWN_ARROW, ENTER].indexOf(e.keyCode) > -1) {
+        if ([UP_ARROW, DOWN_ARROW, ENTER].indexOf(e.keyCode) > -1) {
             // componentWillReceiveProps is not triggered when
             // using arrow keys from an searchable selectbox
             // so I have to do this
@@ -186,16 +182,14 @@ export default class SelectBox extends PureComponent {
                     case UP_ARROW:
                         if (currentIndex > 0) {
                             this.setState({
-                                selectedIndex: this.state.selectedIndex - 1,
-                                lastCall: Date.now()
+                                selectedIndex: this.state.selectedIndex - 1
                             });
                         }
                         break;
                     case DOWN_ARROW:
                         if (currentIndex < optionsLength - 1) {
                             this.setState({
-                                selectedIndex: this.state.selectedIndex + 1,
-                                lastCall: Date.now()
+                                selectedIndex: this.state.selectedIndex + 1
                             });
                         }
                         break;
@@ -206,8 +200,7 @@ export default class SelectBox extends PureComponent {
                                 isOpen: false,
                                 // reset selected index to not get falsy preselected values
                                 // if dropdown is opened more than once
-                                selectedIndex: -1,
-                                lastCall: Date.now()
+                                selectedIndex: -1
                             });
                         }
                         break;
@@ -219,7 +212,7 @@ export default class SelectBox extends PureComponent {
 
             e.preventDefault();
         }
-    }
+    }, 50, {leading: true, trailing:false});
 
     handleDropdownToggle = e => {
         if (e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'text') {

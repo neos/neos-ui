@@ -23,6 +23,7 @@
     "@neos-project/neos-ui-backend-connector": "1.0.0-beta4",
     "@neos-project/neos-ui-ckeditor-bindings": "1.0.0-beta4",
     "@neos-project/neos-ui-containers": "1.0.0-beta4",
+    "@neos-project/neos-ui-constants": "1.0.0-beta4",
     "@neos-project/neos-ui-contentrepository": "1.0.0-beta4",
     "@neos-project/neos-ui-decorators": "1.0.0-beta4",
     "@neos-project/neos-ui-editors": "1.0.0-beta4",

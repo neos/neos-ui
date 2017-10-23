@@ -2,6 +2,8 @@ import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
+import TestBackend from 'react-dnd-test-backend';
+import {DragDropContextProvider} from 'react-dnd';
 import Immutable from 'immutable';
 
 import SelectBoxEditor from './index.js';
@@ -50,9 +52,12 @@ test(`SelectBox > single, no dataSource, preselected value`, () => {
 
 test(`SelectBox > multi, no dataSource, no preselected value`, () => {
     const component = mount(
-        <WrapWithMockGlobalRegistry>
-            <SelectBoxEditor commit={commit} options={{values: optionValues, multiple: true}}/>
-        </WrapWithMockGlobalRegistry>
+        <DragDropContextProvider backend={TestBackend}>
+            <WrapWithMockGlobalRegistry>
+                <SelectBoxEditor commit={commit} options={{values: optionValues, multiple: true}}/>
+            </WrapWithMockGlobalRegistry>
+        </DragDropContextProvider>
+
     );
 
     expect(multiselectLabels(component)).toEqual([]);
@@ -62,9 +67,12 @@ test(`SelectBox > multi, no dataSource, no preselected value`, () => {
 
 test(`SelectBox > multi, no dataSource, preselected value`, () => {
     const component = mount(
-        <WrapWithMockGlobalRegistry>
-            <SelectBoxEditor commit={commit} options={{values: optionValues, multiple: true}} value={['foo']}/>
-        </WrapWithMockGlobalRegistry>
+        <DragDropContextProvider backend={TestBackend}>
+            <WrapWithMockGlobalRegistry>
+                <SelectBoxEditor commit={commit} options={{values: optionValues, multiple: true}} value={['foo']}/>
+            </WrapWithMockGlobalRegistry>
+        </DragDropContextProvider>
+
     );
 
     expect(multiselectLabels(component)).toEqual(['fooLabel']);
@@ -148,11 +156,13 @@ test(`SelectBox > multi, dataSource, no preselected value`, () => {
 test(`SelectBox > multi, dataSource, preselected value`, () => {
     MockDataSourceDataLoader.reset();
     const component = mount(
-        <WrapWithMockGlobalRegistry>
-            <Provider store={store}>
-                <SelectBoxEditor commit={commit} options={{dataSourceIdentifier: 'ds1', multiple: true}} value={['foo']}/>
-            </Provider>
-        </WrapWithMockGlobalRegistry>
+        <DragDropContextProvider backend={TestBackend}>
+            <WrapWithMockGlobalRegistry>
+                <Provider store={store}>
+                    <SelectBoxEditor commit={commit} options={{dataSourceIdentifier: 'ds1', multiple: true}} value={['foo']}/>
+                </Provider>
+            </WrapWithMockGlobalRegistry>
+        </DragDropContextProvider>
     );
 
     expect(multiselectLabels(component)).toEqual(['[Loading foo]']);

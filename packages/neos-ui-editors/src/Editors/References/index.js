@@ -5,6 +5,7 @@ import {$get, $transform} from 'plow-js';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {dndTypes} from '@neos-project/neos-ui-constants';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
@@ -124,6 +125,7 @@ export default class ReferencesEditor extends PureComponent {
     render() {
         return (<MultiSelectBox
             options={this.state.options}
+            dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"
             values={this.props.value}
             highlight={this.props.highlight}

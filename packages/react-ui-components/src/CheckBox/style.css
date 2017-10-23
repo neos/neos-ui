@@ -25,7 +25,6 @@
     border: 1px solid var(--brandColorsContrastBrighter);
     vertical-align: text-bottom;
     background: var(--brandColorsContrastDark);
-    color: var(--brandColorsContrastBrightest);
     font-size: 20px;
     font-weight: bold;
     color: #5b5b5b;

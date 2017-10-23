@@ -4,7 +4,6 @@ import DropDown from '../DropDown/index';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import keydown, {Keys} from 'react-keydown';
 import mergeClassNames from 'classnames';
-import debounce from 'lodash.debounce';
 
 const {ENTER, UP, DOWN} = Keys;
 const KEYS = [ENTER, UP, DOWN];
@@ -134,82 +133,8 @@ export default class SelectBox extends PureComponent {
     }
 
     componentWillReceiveProps({keydown}) {
-        if (this.state.isOpen && keydown.event) {
-            const {options} = this.props;
-            const currentIndex = this.state.selectedIndex;
-
-            if (keydown.event.key === 'ArrowDown') {
-                this.setState({
-                    selectedIndex: currentIndex + 1 >= options.length ? currentIndex : currentIndex + 1
-                });
-            } else if (keydown.event.key === 'ArrowUp') {
-                this.setState({
-                    selectedIndex: currentIndex - 1 < 0 ? 0 : currentIndex - 1
-                });
-            } else if (keydown.event.key === 'Enter') {
-                this.props.onValueChange(options[currentIndex].value);
-                this.setState({
-                    isOpen: false
-                });
-            }
-        }
+        this.handleKeyDown(keydown.event);
     }
-
-    componentDidUpdate() {
-        if (this.state.isOpen) {
-            window.addEventListener('keydown', this.keydownListener);
-        } else {
-            window.removeEventListener('keydown', this.keydownListener);
-        }
-    }
-
-    keydownListener = debounce(e => {
-        if (KEYS.indexOf(e.keyCode) > -1) {
-            // componentWillReceiveProps is not triggered when
-            // using arrow keys from an searchable selectbox
-            // so I have to do this
-            const {options, optionValueField, value, displaySearchBox, onValueChange} = this.props;
-            const selectedValue = (options || []).find(option => option[optionValueField] === value);
-
-            if (displaySearchBox && !selectedValue) {
-                const currentIndex = this.state.selectedIndex;
-                const optionsLength = options.length;
-
-                switch (e.keyCode) {
-                    case UP:
-                        if (currentIndex > 0) {
-                            this.setState({
-                                selectedIndex: this.state.selectedIndex - 1
-                            });
-                        }
-                        break;
-                    case DOWN:
-                        if (currentIndex < optionsLength - 1) {
-                            this.setState({
-                                selectedIndex: this.state.selectedIndex + 1
-                            });
-                        }
-                        break;
-                    case ENTER:
-                        if (optionsLength !== 0) {
-                            onValueChange(options[currentIndex][optionValueField]);
-                            this.setState({
-                                isOpen: false,
-                                // reset selected index to not get falsy preselected values
-                                // if dropdown is opened more than once
-                                selectedIndex: -1
-                            });
-                        }
-                        break;
-                    // eslint is saying so
-                    default:
-                        break;
-                }
-            }
-
-            e.preventDefault();
-        }
-    }, 50, {leading: true, trailing: false});
 
     handleDropdownToggle = e => {
         if (e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'text') {
@@ -236,6 +161,32 @@ export default class SelectBox extends PureComponent {
     handleSearchTermChange = (...args) => {
         this.setState({isOpen: true});
         this.props.onSearchTermChange(...args);
+    }
+
+    handleKeyDown = e => {
+        if (this.state.isOpen && e) {
+            const {options, optionValueField} = this.props;
+            const currentIndex = this.state.selectedIndex;
+
+            if (e.key === 'ArrowDown') {
+                this.setState({
+                    selectedIndex: currentIndex + 1 >= options.length ? currentIndex : currentIndex + 1
+                });
+            } else if (e.key === 'ArrowUp') {
+                this.setState({
+                    selectedIndex: currentIndex - 1 < 0 ? 0 : currentIndex - 1
+                });
+            } else if (e.key === 'Enter') {
+                if (optionValueField === undefined) {
+                    this.props.onValueChange(options[currentIndex].value);
+                } else {
+                    this.props.onValueChange(options[currentIndex][optionValueField]);
+                }
+                this.setState({
+                    isOpen: false
+                });
+            }
+        }
     }
 
     render() {
@@ -308,6 +259,7 @@ export default class SelectBox extends PureComponent {
                                 onChange={this.handleSearchTermChange}
                                 className={theme.selectBox__searchInput}
                                 setFocus={setFocus}
+                                onKeyDown={this.handleKeyDown}
                                 containerClassName={theme.selectBox__searchInputContainer}
                                 /> :
                             <span className={theme.dropDown__itemLabel}>{label}</span>

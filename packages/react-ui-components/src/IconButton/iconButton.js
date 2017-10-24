@@ -24,17 +24,20 @@ const IconButton = props => {
         [theme['iconButton--disabled']]: disabled
     });
 
-    return tooltipLabel ? (
-        <Tooltip tooltipLabel={tooltipLabel} tooltipPosition={tooltipPosition} tooltipWrapperClassName={tooltipWrapperClassName}>
-            <ButtonComponent {...rest} size={size} className={finalClassName}>
-                <IconComponent icon={icon}/>
-            </ButtonComponent>
-        </Tooltip>
-    ) : (
+    const button = (
         <ButtonComponent {...rest} size={size} className={finalClassName}>
             <IconComponent icon={icon}/>
         </ButtonComponent>
     );
+
+    if (tooltipLabel) {
+        return (
+            <Tooltip tooltipLabel={tooltipLabel} tooltipPosition={tooltipPosition} tooltipWrapperClassName={tooltipWrapperClassName}>
+                {button}
+            </Tooltip>
+        );
+    }
+    return button;
 };
 
 IconButton.propTypes = {

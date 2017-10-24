@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
+import Tooltip from './../Tooltip/index.js';
 
 export default class Tabs extends PureComponent {
     static propTypes = {
@@ -207,9 +208,9 @@ export class TabMenuItem extends PureComponent {
             isActive,
             index,
             IconComponent,
+            tooltipLabel,
             icon,
             title,
-            tooltipLabel,
             ...restProps
         } = this.props;
         const rest = omit(restProps, ['onClick']);
@@ -224,16 +225,18 @@ export class TabMenuItem extends PureComponent {
 
         return (
             <li className={finalClassName} role="presentation" {...rest}>
-                <button
-                    className={theme.tabNavigation__itemBtn}
-                    onClick={this.handleClick}
-                    role="tab"
-                    aria-selected={isActive ? 'true' : 'false'}
-                    aria-controls={`section${index}`}
-                    >
-                    {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
-                    {title}
-                </button>
+                <Tooltip tooltipLabel={tooltipLabel} tooltipPosition="right">
+                    <button
+                        className={theme.tabNavigation__itemBtn}
+                        onClick={this.handleClick}
+                        role="tab"
+                        aria-selected={isActive ? 'true' : 'false'}
+                        aria-controls={`section${index}`}
+                        >
+                        {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
+                        {title}
+                    </button>
+                </Tooltip>
             </li>
         );
     }

@@ -1,7 +1,7 @@
 /* TODO: get rid of magick numbers here, they are not safe! */
 .pageTree {
     overflow-y: auto;
-    max-height: calc(50vh - 85px);
+    height: calc(50vh - 85px);
     transition: .5s ease max-height, overflow-y .5s;
 }
 .pageTree--expanded {

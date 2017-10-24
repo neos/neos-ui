@@ -8,7 +8,7 @@ const IconButton = props => {
         IconComponent,
         ButtonComponent,
         tooltipLabel,
-        position,
+        tooltipPosition,
         tooltipWrapperClassName,
         className,
         theme,
@@ -76,7 +76,7 @@ IconButton.propTypes = {
      * The tooltip has to be aligned manually
      * in case that tooltip is at the left or right end of the browser
      */
-    position: PropTypes.oneOf(['left', 'right']).isRequired,
+    tooltipPosition: PropTypes.oneOf(['left', 'right']).isRequired,
 
     /**
      * Optional disabled flag

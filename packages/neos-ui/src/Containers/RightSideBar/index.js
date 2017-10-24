@@ -49,6 +49,7 @@ export default class RightSideBar extends PureComponent {
             <IconButton
                 tooltipLabel={tooltipLabel}
                 tooltipWrapperClassName={style.rightSidebar__toggleBtnWrapper}
+                tooltipPosition="left"
                 icon={toggleIcon}
                 className={style.rightSideBar__toggleBtn}
                 onClick={this.handleToggle}

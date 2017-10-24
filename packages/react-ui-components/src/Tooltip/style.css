@@ -1,7 +1,7 @@
 .tooltip__wrapper {
     position: relative;
     display: inline-block;
-    z-index: 988888;
+    z-index: 999999;
 }
 
 .tooltip__wrapper:hover:after {
@@ -20,6 +20,18 @@
     animation: blendInTooltip 1s;
 }
 
+.tooltip__wrapper--alignRight {
+  float: right;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.tooltip__wrapper--alignRightSidebar {
+  position: absolute!important;
+  right: 0;
+  top: 41px;
+}
+
 .tooltip__body {
     min-width: 100%;
     max-width: 200px;
@@ -36,12 +48,13 @@
 }
 
 .tooltip__body--offsetLeft {
-  left: 0;
+  right: 0;
+  left: inherit;
   transform: translate(0);
 }
 
 .tooltip__body--offsetRight {
-  right: 0;
+  left: 0;
   transform: translate(0);
 }
 

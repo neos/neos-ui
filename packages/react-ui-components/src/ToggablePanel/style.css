@@ -27,6 +27,7 @@
 .panel__toggleBtnTooltip {
   flex: 0 0 auto;
   margin-left: auto;
+  z-index: 9;
 }
 
 .panel__contents {

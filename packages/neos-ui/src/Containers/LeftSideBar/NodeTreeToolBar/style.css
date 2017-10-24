@@ -1,4 +1,5 @@
 .toolBar__btnGroup {
+  display: flex;
     &:after {
         clear: both;
     }

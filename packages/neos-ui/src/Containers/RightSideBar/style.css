@@ -28,6 +28,17 @@
     .rightSideBar--isHidden & {
         transform: translateX(-var(--sidebarWidth));
     }
+
+    .rightSidebar__toggleBtnWrapper & {
+      position: static!important;
+    }
+}
+.rightSidebar__toggleBtnWrapper {
+  position: absolute!important;
+  right: 0;
+  top: 41px;
+  width: var(--goldenUnit);
+  height: var(--goldenUnit);
 }
 .rightSideBar__section {
     border-bottom: 1px solid var(--brandColorsContrastDark);

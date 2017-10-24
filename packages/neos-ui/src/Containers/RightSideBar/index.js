@@ -48,6 +48,7 @@ export default class RightSideBar extends PureComponent {
         const toggle = isFullScreen ? null : (
             <IconButton
                 tooltipLabel={tooltipLabel}
+                tooltipWrapperClassName={style.rightSidebar__toggleBtnWrapper}
                 icon={toggleIcon}
                 className={style.rightSideBar__toggleBtn}
                 onClick={this.handleToggle}

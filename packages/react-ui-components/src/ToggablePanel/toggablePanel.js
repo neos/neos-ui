@@ -171,7 +171,8 @@ export class Header extends PureComponent {
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'panel__headline': PropTypes.string,
             'panel__headline--noPadding': PropTypes.string,
-            'panel__toggleBtn': PropTypes.string
+            'panel__toggleBtn': PropTypes.string,
+            'panel__toggleBtnTooltip': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
         /**
@@ -231,6 +232,7 @@ export class Header extends PureComponent {
                     {children}
                     <IconButtonComponent
                         tooltipLabel="Toggle the panel"
+                        tooltipWrapperClassName={theme.panel__toggleBtnTooltip}
                         className={theme.panel__toggleBtn}
                         icon={isPanelOpen ? openedIcon : closedIcon}
                         onClick={onPanelToggle}

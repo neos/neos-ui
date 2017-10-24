@@ -11,11 +11,13 @@ export class Tooltip extends PureComponent {
             'tooltip__wrapper': PropTypes.string,
             'tooltip__body': PropTypes.string,
             'tooltip__content': PropTypes.string,
-            'tooltip__body--offsetLeft': PropTypes.string,
-            'tooltip__body--offsetRight': PropTypes.string
         }).isRequired,
 
-        position: PropTypes.oneOf(['left', 'right']).isRequired,
+        className: PropTypes.string,
+
+        tooltipWrapperClassName: PropTypes.string,
+
+        tooltipPosition: PropTypes.oneOf(['left', 'right']).isRequired,
 
         tooltipLabel: PropTypes.oneOfType([
             PropTypes.string,
@@ -66,12 +68,18 @@ export class Tooltip extends PureComponent {
 
     render() {
         const {show, hide, handleTouch, state} = this;
-        const {theme, tooltipLabel, children, position} = this.props;
+        const {theme, tooltipLabel, children, tooltipPosition, className, tooltipWrapperClassName} = this.props;
+
+        const wrapperClassNames = mergeClassNames({
+            [tooltipWrapperClassName]: tooltipWrapperClassName && tooltipWrapperClassName.length,
+            [theme.tooltip__wrapper]: true
+        });
 
         const classNames = mergeClassNames({
+            [className]: className && className.length,
             [theme.tooltip__body]: true,
-            [theme['tooltip__body--offsetLeft']]: position === 'left',
-            [theme['tooltip__body--offsetRight']]: position === 'right'
+            [theme['tooltip__body--offsetRight']]: tooltipPosition === 'right',
+            [theme['tooltip__body--offsetLeft']]: tooltipPosition === 'left'
         });
 
         return (
@@ -80,14 +88,15 @@ export class Tooltip extends PureComponent {
                 onMouseLeave={hide}
                 onTouchStart={handleTouch}
                 ref={`wrapper`}
-                className={theme.tooltip__wrapper}
-                position={position}
+                className={wrapperClassNames}
+                tooltipPosition={tooltipPosition}
                 >
                 {children}
-                { state.visible &&
-                <div ref={`tooltip`} className={classNames}>
-                    <div ref={`content`} className={theme.tooltip__content}>{tooltipLabel}</div>
-                </div>
+                {
+                  state.visible &&
+                  <div ref={`tooltip`} className={classNames}>
+                      <div ref={`content`} className={theme.tooltip__content}>{tooltipLabel}</div>
+                  </div>
                 }
             </div>
         );

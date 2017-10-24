@@ -9,6 +9,7 @@ const IconButton = props => {
         ButtonComponent,
         tooltipLabel,
         position,
+        tooltipWrapperClassName,
         className,
         theme,
         icon,
@@ -24,7 +25,7 @@ const IconButton = props => {
     });
 
     return (
-        <Tooltip tooltipLabel={tooltipLabel} position={position}>
+        <Tooltip tooltipLabel={tooltipLabel} tooltipPosition={tooltipPosition} tooltipWrapperClassName={tooltipWrapperClassName}>
             <ButtonComponent {...rest} size={size} className={finalClassName}>
                 <IconComponent icon={icon}/>
             </ButtonComponent>
@@ -41,6 +42,11 @@ IconButton.propTypes = {
      * An optional `className` to attach to the wrapper.
      */
     className: PropTypes.string,
+
+    /**
+     * An optional `className` to align tooltip item.
+     */
+    tooltipWrapperClassName: PropTypes.string,
 
     /**
      * Defines the size of the icon button.

@@ -180,6 +180,22 @@ select.cke_dialog_ui_input_select:focus {
     overflow-y: scroll;
 }
 
+.cke_dialog_contents > tbody > tr:first-child::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.cke_dialog_contents > tbody > tr:first-child::-webkit-scrollbar-track {
+    background-color: #3f3f3f;
+}
+.cke_dialog_contents > tbody > tr:first-child::-webkit-scrollbar-thumb {
+    background-color: #222;
+    border: 1px solid #3f3f3f;
+}
+.cke_dialog_contents > tbody > tr:first-child::-webkit-scrollbar-corner {
+    background-color: #3f3f3f;
+}
+
+
 /* ####### footer & buttons ####### */
 
 .cke_dialog_footer_buttons .cke_dialog_ui_hbox_first, .cke_dialog_footer_buttons .cke_dialog_ui_hbox_last {
@@ -218,8 +234,3 @@ select.cke_dialog_ui_input_select:focus {
 .cke_resizer {
     display: none;
 }
-
-
-
-
-

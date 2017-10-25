@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-constants",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta6",
   "description": "Container package to store Neos CMS UI constants",
   "private": true,
   "main": "./src/index.js",
@@ -15,7 +15,7 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta4"
+    "@neos-project/build-essentials": "1.0.0-beta6"
   },
   "license": "GNU GPLv3",
   "jest": {

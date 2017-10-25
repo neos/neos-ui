@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta6",
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
@@ -26,8 +26,8 @@
     "@kadira/react-storybook-addon-info": "^3.2.1",
     "@kadira/storybook": "^2.11.0",
     "@kadira/storybook-addon-knobs": "^1.2.0",
-    "@neos-project/build-essentials": "1.0.0-beta4",
-    "@neos-project/debug-reason-for-rendering": "1.0.0-beta4"
+    "@neos-project/build-essentials": "1.0.0-beta6",
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta6"
   },
   "peerDependencies": {
     "@neos-project/brand": "^1.1.0",
@@ -62,8 +62,8 @@
   },
   "jest": {
     "setupFiles": [
-        "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js",
-        "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js",
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
     ],
     "transformIgnorePatterns": [],
     "unmockedModulePathPatterns": [

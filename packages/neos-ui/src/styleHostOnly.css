@@ -1,5 +1,4 @@
 @import 'normalize.css';
-
 @font-face {
     font-family: 'Open Sans';
     src: url('../../../Resources/Public/Fonts/OpenSans-Regular.woff') format('woff');
@@ -33,4 +32,11 @@ body {
 hr {
     margin: 0;
     border: 1px solid #3f3f3f;
+}
+
+
+/* Chrome v62 adds border-radius: 4px by default on buttons in OS X. This resets it until normalize is updated */
+
+button {
+    border-radius: 0;
 }

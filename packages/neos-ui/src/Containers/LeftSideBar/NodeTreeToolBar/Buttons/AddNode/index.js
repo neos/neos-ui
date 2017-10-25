@@ -8,7 +8,8 @@ export default class AddNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
         onClick: PropTypes.func.isRequired,
-        focusedNodeContextPath: PropTypes.string.isRequired
+        focusedNodeContextPath: PropTypes.string.isRequired,
+        isAllowedToAddChildOrSiblingNodes: PropTypes.bool.isRequired
     };
 
     handleClick = () => {
@@ -18,7 +19,7 @@ export default class AddNode extends PureComponent {
     }
 
     render() {
-        const {focusedNodeContextPath, className} = this.props;
+        const {focusedNodeContextPath, isAllowedToAddChildOrSiblingNodes, className} = this.props;
         const tooltipLabel = <I18n id="Neos.Neos:Main:createNew" fallback="Create new"/>;
 
         return (
@@ -26,7 +27,7 @@ export default class AddNode extends PureComponent {
                 <IconButton
                     tooltipLabel={tooltipLabel}
                     tooltipPosition="right"
-                    isDisabled={Boolean(focusedNodeContextPath) === false}
+                    isDisabled={Boolean(focusedNodeContextPath) === false || !isAllowedToAddChildOrSiblingNodes}
                     className={className}
                     icon="plus"
                     onClick={this.handleClick}

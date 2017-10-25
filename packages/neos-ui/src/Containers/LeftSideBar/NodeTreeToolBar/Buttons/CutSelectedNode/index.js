@@ -10,6 +10,7 @@ export default class CutSelectedNode extends PureComponent {
 
         focusedNodeContextPath: PropTypes.string,
         isDisabled: PropTypes.bool.isRequired,
+        isActive: PropTypes.bool.isRequired,
 
         onClick: PropTypes.func.isRequired
     };
@@ -21,7 +22,7 @@ export default class CutSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, isDisabled} = this.props;
+        const {className, isDisabled, isActive} = this.props;
         const tooltipLabel = <I18n id="Neos.Neos:Main:cut" fallback="Cut"/>;
 
         return (
@@ -29,6 +30,7 @@ export default class CutSelectedNode extends PureComponent {
                 tooltipLabel={tooltipLabel}
                 className={className}
                 isDisabled={isDisabled}
+                isActive={isActive}
                 onClick={this.handleClick}
                 icon="cut"
                 hoverStyle="clean"

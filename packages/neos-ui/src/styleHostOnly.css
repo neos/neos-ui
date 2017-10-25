@@ -36,7 +36,6 @@ hr {
 
 
 /* Chrome v62 adds border-radius: 4px by default on buttons in OS X. This resets it until normalize is updated */
-
 button {
     border-radius: 0;
 }

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/build-essentials",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta6",
   "description": "Dependencies for building @neos-project packages",
   "main": "./src",
   "bin": {

@@ -78,7 +78,7 @@ export default class Tabs extends PureComponent {
         // If activeTab is out of bounds, choose the first tab
         const {activeTab} = this.state;
         const childrenCount = React.Children.count(this.props.children);
-        return childrenCount < activeTab ? 0 : activeTab;
+        return childrenCount < activeTab + 1 ? 0 : activeTab;
     }
 
     renderMenuItems() {

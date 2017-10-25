@@ -1,6 +1,7 @@
 import throttle from 'lodash.throttle';
 import debounce from 'lodash.debounce';
 import registerNeosCkeditorPlugins from './ckeditor/index';
+import removeTags from './ckeditor/removeTags';
 
 const noop = {
     initialize() {},
@@ -172,6 +173,25 @@ const createCKEditorAPI = CKEDITOR => {
         },
 
         createEditor(dom, finalOptions, propertyName, onChange) {
+            if (CKEDITOR.dtd.$inline[dom.tagName.toLowerCase()]) {
+                // if we are an inline element, CKEditor breaks if we contain block-level children
+                const containsBlockLevelChildren = [].slice.call(dom.childNodes).some(childNode => childNode.tagName && CKEDITOR.dtd.$block[childNode.tagName.toLowerCase()]);
+                if (containsBlockLevelChildren) {
+                    console.warn('The editable ', dom, ' of type <', dom.tagName.toLowerCase(), '> (which is an inline html element) contains block-level children (like p, div, ...). This is invalid markup and currently not supported by CKEditor; that is why we cannot edit it currently.');
+
+                    const onClickRemoveTags = () => {
+                        const text = removeTags(dom.innerHTML, CKEDITOR);
+                        dom.innerHTML = text;
+                        this.createEditor(dom, finalOptions, propertyName, onChange);
+
+                        dom.removeEventListener('click', onClickRemoveTags);
+                        // TODO FOCUS EDITOR directly - would be nice!
+                    };
+
+                    dom.addEventListener('click', onClickRemoveTags);
+                    return;
+                }
+            }
             dom.contentEditable = 'true';
 
             const editor = CKEDITOR.inline(dom, finalOptions);

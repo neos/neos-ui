@@ -1,0 +1,20 @@
+.label {
+    width: 100%;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    padding: 0 var(--goldenUnit) 0 var(--spacing);
+    height: var(--goldenUnit);
+    margin: 0;
+    line-height: var(--goldenUnit);
+    font-weight: bold;
+    font-size: 14px;
+
+    span {
+        display: inline-block;
+        margin-left: .1em;
+    }
+}
+
+.content {
+    padding: 0 var(--spacing) var(--spacing);
+}

@@ -58,7 +58,7 @@ test(`
 test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, () => {
     const nodeTypesRegistry = new NodeTypesRegistry(``);
 
-    nodeTypesRegistry.add('Neos.Neos.NodeTypes:Page', {
+    nodeTypesRegistry.set('Neos.Neos.NodeTypes:Page', {
         name: 'Neos.Neos.NodeTypes:Page',
         label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
         ui: {
@@ -66,7 +66,7 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, () 
             group: 'general'
         }
     });
-    nodeTypesRegistry.add('Test:Page', {
+    nodeTypesRegistry.set('Test:Page', {
         name: 'Test:Page',
         ui: {
             label: 'The test page type',
@@ -74,7 +74,7 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, () 
             position: 200
         }
     });
-    nodeTypesRegistry.add('Test:Page2', {
+    nodeTypesRegistry.set('Test:Page2', {
         name: 'Test:Page2',
         ui: {
             label: 'The test page type 2',
@@ -143,7 +143,7 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, () 
 test(`"getGroupedNodeTypeList" should take the given nodeType filter into account.`, () => {
     const nodeTypesRegistry = new NodeTypesRegistry(``);
 
-    nodeTypesRegistry.add('Neos.Neos.NodeTypes:Page', {
+    nodeTypesRegistry.set('Neos.Neos.NodeTypes:Page', {
         name: 'Neos.Neos.NodeTypes:Page',
         label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
         ui: {
@@ -151,7 +151,7 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
             group: 'general'
         }
     });
-    nodeTypesRegistry.add('Test:Page', {
+    nodeTypesRegistry.set('Test:Page', {
         name: 'Test:Page',
         ui: {
             label: 'The test page type',
@@ -159,7 +159,7 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
             position: 200
         }
     });
-    nodeTypesRegistry.add('Test:Page2', {
+    nodeTypesRegistry.set('Test:Page2', {
         name: 'Test:Page2',
         ui: {
             label: 'The test page type 2',

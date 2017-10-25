@@ -17,6 +17,7 @@ export default class EditorEnvelope extends PureComponent {
         renderSecondaryInspector: PropTypes.func,
         editorRegistry: PropTypes.object.isRequired,
         validationErrors: PropTypes.array,
+        onEnterKey: PropTypes.func,
 
         commit: PropTypes.func.isRequired
     };
@@ -35,6 +36,7 @@ export default class EditorEnvelope extends PureComponent {
             return (
                 <EditorComponent
                     {...this.props}
+                    id={this.generateIdentifier()}
                     />
             );
         }

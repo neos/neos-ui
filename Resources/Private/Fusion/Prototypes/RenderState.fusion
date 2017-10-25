@@ -1,5 +1,0 @@
-prototype(Neos.Neos.Ui:RenderState) {
-    @class = 'Neos\\Neos\\Ui\\Fusion\\RenderStateImplementation'
-
-    context = Neos.Fusion:RawArray
-}

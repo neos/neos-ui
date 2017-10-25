@@ -15,7 +15,7 @@ const IconButtonComponent = props => {
 // Create richtext editing toolbar registry
 //
 export default (ckEditorRegistry, nodeTypesRegistry) => {
-    const richtextToolbar = ckEditorRegistry.add('richtextToolbar', new RichTextToolbarRegistry(`
+    const richtextToolbar = ckEditorRegistry.set('richtextToolbar', new RichTextToolbarRegistry(`
         Contains the Rich Text Editing Toolbar components.
 
         The values are objects of the following form:
@@ -52,7 +52,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
      */
 
     // Bold
-    richtextToolbar.add('strong', {
+    richtextToolbar.set('strong', {
         formattingRule: 'strong',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -62,7 +62,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     // Italic
-    richtextToolbar.add('italic', {
+    richtextToolbar.set('italic', {
         formattingRule: 'em',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -72,7 +72,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     // Underline
-    richtextToolbar.add('underline', {
+    richtextToolbar.set('underline', {
         formattingRule: 'u',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -82,7 +82,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     // Subscript
-    richtextToolbar.add('subscript', {
+    richtextToolbar.set('subscript', {
         formattingRule: 'sub',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -92,7 +92,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     // Superscript
-    richtextToolbar.add('superscript', {
+    richtextToolbar.set('superscript', {
         formattingRule: 'sup',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -102,7 +102,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     // Strike-Through
-    richtextToolbar.add('strikethrough', {
+    richtextToolbar.set('strikethrough', {
         formattingRule: 'del',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -112,7 +112,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     // Strike-Through
-    richtextToolbar.add('link', {
+    richtextToolbar.set('link', {
         formattingRule: 'a',
         component: LinkIconButton,
         callbackPropName: 'onClick',
@@ -124,56 +124,56 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     /**
      * Basic Paragraph Styles (p, h1, h2, pre, ...)
      */
-    richtextToolbar.add('style', {
+    richtextToolbar.set('style', {
         component: StyleSelect,
         callbackPropName: 'onSelect',
         isVisibleWhen: () => true
     });
 
     // p tag
-    richtextToolbar.add('style/p', {
+    richtextToolbar.set('style/p', {
         formattingRule: 'p',
         label: 'Paragraph'
     });
 
     // h1
-    richtextToolbar.add('style/h1', {
+    richtextToolbar.set('style/h1', {
         formattingRule: 'h1',
         label: 'Headline 1'
     });
 
     // h2
-    richtextToolbar.add('style/h2', {
+    richtextToolbar.set('style/h2', {
         formattingRule: 'h2',
         label: 'Headline 2'
     });
 
     // h3
-    richtextToolbar.add('style/h3', {
+    richtextToolbar.set('style/h3', {
         formattingRule: 'h3',
         label: 'Headline 3'
     });
 
     // h4
-    richtextToolbar.add('style/h4', {
+    richtextToolbar.set('style/h4', {
         formattingRule: 'h4',
         label: 'Headline 4'
     });
 
     // h5
-    richtextToolbar.add('style/h5', {
+    richtextToolbar.set('style/h5', {
         formattingRule: 'h5',
         label: 'Headline 5'
     });
 
     // h6
-    richtextToolbar.add('style/h6', {
+    richtextToolbar.set('style/h6', {
         formattingRule: 'h6',
         label: 'Headline 6'
     });
 
     // pre
-    richtextToolbar.add('style/pre', {
+    richtextToolbar.set('style/pre', {
         formattingRule: 'pre',
         label: 'Preformatted'
     });
@@ -183,7 +183,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
      */
 
     // ordered list
-    richtextToolbar.add('orderedList', {
+    richtextToolbar.set('orderedList', {
         formattingRule: 'ol',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -193,7 +193,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     // unordered list
-    richtextToolbar.add('unorderedList', {
+    richtextToolbar.set('unorderedList', {
         formattingRule: 'ul',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -203,7 +203,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     // Indent
-    richtextToolbar.add('indent', {
+    richtextToolbar.set('indent', {
         formattingRule: 'indent',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -217,7 +217,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     });
 
     // Outdent
-    richtextToolbar.add('outdent', {
+    richtextToolbar.set('outdent', {
         formattingRule: 'outdent',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -233,7 +233,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     /**
      * Alignment
      */
-    richtextToolbar.add('alignleft', {
+    richtextToolbar.set('alignleft', {
         formattingRule: 'left',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -242,7 +242,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         hoverStyle: 'brand'
     });
 
-    richtextToolbar.add('aligncenter', {
+    richtextToolbar.set('aligncenter', {
         formattingRule: 'center',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -251,7 +251,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         hoverStyle: 'brand'
     });
 
-    richtextToolbar.add('alignright', {
+    richtextToolbar.set('alignright', {
         formattingRule: 'right',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -260,7 +260,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         hoverStyle: 'brand'
     });
 
-    richtextToolbar.add('alignjustify', {
+    richtextToolbar.set('alignjustify', {
         formattingRule: 'justify',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -272,7 +272,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     /**
      * Tables
      */
-    richtextToolbar.add('table', {
+    richtextToolbar.set('table', {
         formattingRule: 'table',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
@@ -284,7 +284,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
     /**
      * Remove formatting
      */
-    richtextToolbar.add('removeFormat', {
+    richtextToolbar.set('removeFormat', {
         formattingRule: 'removeFormat',
         component: IconButtonComponent,
         callbackPropName: 'onClick',

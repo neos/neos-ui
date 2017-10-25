@@ -1,16 +1,20 @@
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
+import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
+import SelectBoxOption from '@neos-project/react-ui-components/src/SelectBox/selectBoxOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
+
+/* eslint-disable prefer-const */
+let WrappedLinkOption;
 
 /**
  * The Actual StyleSelect component
@@ -95,8 +99,8 @@ class LinkTextField extends PureComponent {
         this.state = {
             searchTerm: '',
             isLoading: false,
-            searchResults: [],
-            results: []
+            searchOptions: [],
+            options: []
         };
     }
 
@@ -175,10 +179,41 @@ class LinkTextField extends PureComponent {
                     placeholder="Paste a link, or search"
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
+                    setFocus={true}
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
+                    optionComponent={WrappedLinkOption}
                     />
             </div>
         );
     }
 }
+
+class LinkOption extends PureComponent {
+    static propTypes = {
+        option: PropTypes.shape({
+            label: PropTypes.string,
+            uriInLiveWorkspace: PropTypes.string,
+            nodeType: PropTypes.string
+        }),
+
+        nodeTypesRegistry: PropTypes.object.isRequired
+    };
+
+    render() {
+        const {option, nodeTypesRegistry} = this.props;
+        const {label, uriInLiveWorkspace, nodeType} = option;
+        const nodeTypeDefinition = nodeTypesRegistry.getNodeType(nodeType);
+        const icon = $get('ui.icon', nodeTypeDefinition);
+        return (
+            <SelectBoxOption {...this.props} className={style.linkIconButton__item} icon={icon}>
+                <span>{label}</span>
+                <span className={style.linkIconButton__link}>{uriInLiveWorkspace}</span>
+            </SelectBoxOption>
+        );
+    }
+}
+
+WrappedLinkOption = neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+}))(LinkOption);

@@ -1,6 +1,6 @@
 include: resource://Neos.Fusion/Private/Fusion/Root.fusion
 include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.fusion
-include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderState.fusion
+include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderConfiguration.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/ArrayCollection.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/AppendAllToCollection.fusion
 
@@ -41,14 +41,14 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    frontendConfiguration = Neos.Neos.Ui:RenderState {
-        state = 'frontendConfiguration'
+    frontendConfiguration = Neos.Neos.Ui:RenderConfiguration {
+        path = 'frontendConfiguration'
         @process.json = ${Json.stringify(value)}
     }
 
     nodeTypes = Neos.Fusion:RawArray {
         roles = ${Configuration.setting('Neos.Neos.Ui.nodeTypeRoles')}
-        groups = ${Configuration.setting('Neos.Neos.nodeTypes.groups')}
+        groups = ${Neos.Ui.PositionalArraySorter.sort(Configuration.setting('Neos.Neos.nodeTypes.groups'))}
 
         @process.json = ${Json.stringify(value)}
     }
@@ -116,12 +116,13 @@ backend = Neos.Fusion:Template {
                         }
                         isActive = true
                         target = 'Window'
+                        @if.isAvailable = ${Neos.Ui.Modules.isAvailable(submoduleName)}
                     }
                 }
 
                 @if {
                     isNotHiddenInMenu = ${!module.hideInMenu}
-                    isAvailable = ${Neos.Neos.Ui.Modules.isAvailable(moduleName)}
+                    isAvailable = ${Neos.Ui.Modules.isAvailable(moduleName)}
                 }
             }
         }
@@ -129,8 +130,8 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    initialState = Neos.Neos.Ui:RenderState {
-        state = 'backend'
+    initialState = Neos.Neos.Ui:RenderConfiguration {
+        path = 'initialState'
         context {
             documentNode = ${documentNode}
             site = ${site}

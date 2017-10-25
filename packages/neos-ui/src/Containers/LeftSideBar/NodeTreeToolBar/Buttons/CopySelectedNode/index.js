@@ -12,7 +12,9 @@ export default class CopySelectedNode extends PureComponent {
 
         onClick: PropTypes.func.isRequired,
 
-        isDisabled: PropTypes.bool
+        isDisabled: PropTypes.bool,
+
+        isActive: PropTypes.bool
     };
 
     handleClick = () => {
@@ -24,7 +26,8 @@ export default class CopySelectedNode extends PureComponent {
     render() {
         const {
             className,
-            isDisabled
+            isDisabled,
+            isActive
         } = this.props;
 
         const tooltipLabel = <I18n id="Neos.Neos:Main:copy" fallback="Copy"/>;
@@ -34,6 +37,7 @@ export default class CopySelectedNode extends PureComponent {
                 tooltipLabel={tooltipLabel}
                 className={className}
                 isDisabled={isDisabled}
+                isActive={isActive}
                 onClick={this.handleClick}
                 icon="copy"
                 hoverStyle="clean"

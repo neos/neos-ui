@@ -1,4 +1,5 @@
 import {$get} from 'plow-js';
+import Immutable from 'immutable';
 import {createSelector, defaultMemoize} from 'reselect';
 
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
@@ -197,7 +198,16 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator
 export const makeGetAllowedSiblingNodeTypesSelector = nodeTypesRegistry =>
     makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, parentNodeContextPath);
 
-export const makeCanBeInsertedAlongsideSelector = nodeTypesRegistry => createSelector(
+export const makeIsAllowedToAddChildOrSiblingNodes = nodeTypesRegistry => createSelector(
+    [
+        makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry),
+        makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
+    ],
+    (allowedChildNodeTypes, allowedSiblingNodeTypes) =>
+        Boolean(allowedChildNodeTypes.length + allowedSiblingNodeTypes.length)
+);
+
+export const makeCanBeCopiedAlongsideSelector = nodeTypesRegistry => createSelector(
     [
         (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
         makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
@@ -205,7 +215,7 @@ export const makeCanBeInsertedAlongsideSelector = nodeTypesRegistry => createSel
     (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
 );
 
-export const makeCanBeInsertedIntoSelector = nodeTypesRegistry => createSelector(
+export const makeCanBeCopiedIntoSelector = nodeTypesRegistry => createSelector(
     [
         (state, {subject}) => getPathInNode(state, subject, 'nodeType'),
         makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry)
@@ -213,12 +223,51 @@ export const makeCanBeInsertedIntoSelector = nodeTypesRegistry => createSelector
     (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
 );
 
-export const makeCanBeInsertedSelector = nodeTypesRegistry => createSelector(
+export const makeCanBeMovedIntoSelector = nodeTypesRegistry => createSelector(
     [
-        makeCanBeInsertedAlongsideSelector(nodeTypesRegistry),
-        makeCanBeInsertedIntoSelector(nodeTypesRegistry)
+        makeCanBeCopiedIntoSelector(nodeTypesRegistry),
+        (state, {subject, reference}) => {
+            const subjectPath = subject && subject.split('@')[0];
+            return subjectPath ? reference.indexOf(subjectPath) === 0 : false;
+        }
+    ],
+    (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject
+);
+
+export const makeCanBeMovedAlongsideSelector = nodeTypesRegistry => createSelector(
+    [
+        makeCanBeCopiedAlongsideSelector(nodeTypesRegistry),
+        (state, {subject, reference}) => {
+            const subjectPath = subject && subject.split('@')[0];
+            return subjectPath ? parentNodeContextPath(reference).indexOf(subjectPath) === 0 : false;
+        }
+    ],
+    (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject
+);
+
+export const makeCanBeCopiedSelector = nodeTypesRegistry => createSelector(
+    [
+        makeCanBeCopiedAlongsideSelector(nodeTypesRegistry),
+        makeCanBeCopiedIntoSelector(nodeTypesRegistry)
     ],
     (canBeInsertedAlongside, canBeInsertedInto) => (canBeInsertedAlongside || canBeInsertedInto)
+);
+
+export const makeCanBeMovedSelector = nodeTypesRegistry => createSelector(
+    [
+        makeCanBeMovedAlongsideSelector(nodeTypesRegistry),
+        makeCanBeMovedIntoSelector(nodeTypesRegistry)
+    ],
+    (canBeMovedAlongside, canBeMovedInto) => (canBeMovedAlongside || canBeMovedInto)
+);
+
+export const makeCanBePastedSelector = nodeTypesRegistry => createSelector(
+    [
+        makeCanBeMovedSelector(nodeTypesRegistry),
+        makeCanBeCopiedSelector(nodeTypesRegistry),
+        $get('cr.nodes.clipboardMode')
+    ],
+    (canBeMoved, canBeCopied, mode) => mode === 'Copy' ? canBeCopied : canBeMoved
 );
 
 export const destructiveOperationsAreDisabledSelector = createSelector(
@@ -233,5 +282,26 @@ export const destructiveOperationsAreDisabledSelector = createSelector(
             $get('isAutoCreated', focusedNode) ||
             siteNodeContextPath === focusedNodeContextPath
         );
+    }
+);
+
+export const focusedNodeParentLineSelector = createSelector(
+    [
+        focusedSelector,
+        $get('cr.nodes.byContextPath'),
+        (_, highestConsideredParentNode) => highestConsideredParentNode
+    ],
+    (focusedNode, nodesByContextPath, highestConsideredParentNode) => {
+        let result = Immutable.fromJS([focusedNode]);
+        let currentNode = focusedNode;
+
+        while (currentNode && $get('contextPath', currentNode) !== $get('contextPath', highestConsideredParentNode)) {
+            currentNode = $get(parentNodeContextPath($get('contextPath', currentNode)), nodesByContextPath);
+            if (currentNode) {
+                result = result.push(currentNode);
+            }
+        }
+
+        return result;
     }
 );

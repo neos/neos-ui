@@ -7,8 +7,8 @@ import mergeClassNames from 'classnames';
 import Tree from '@neos-project/react-ui-components/src/Tree/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {dndTypes} from '@neos-project/neos-ui-constants';
 
-import dndTypes from './../../dndTypes';
 import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.css';
@@ -86,6 +86,7 @@ export default class NodeTree extends PureComponent {
                     ChildRenderer={ChildRenderer}
                     nodeDndType={dndTypes.NODE}
                     node={rootNode}
+                    level={1}
                     onNodeToggle={this.handleToggle}
                     onNodeClick={this.handleClick}
                     onNodeFocus={this.handleFocus}

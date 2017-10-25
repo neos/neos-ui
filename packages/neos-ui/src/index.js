@@ -93,7 +93,7 @@ function * application() {
     const nodeTypesSchema = yield getJsonResource(configuration.endpoints.nodeTypeSchema);
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     Object.keys(nodeTypesSchema.nodeTypes).forEach(nodeTypeName => {
-        nodeTypesRegistry.add(nodeTypeName, {
+        nodeTypesRegistry.set(nodeTypeName, {
             ...nodeTypesSchema.nodeTypes[nodeTypeName],
             name: nodeTypeName
         });
@@ -114,11 +114,11 @@ function * application() {
     // Load frontend configuration (edit/preview modes)
     //
     const frontendConfiguration = yield system.getFrontendConfiguration;
-    const editPreviewModesRegistry = globalRegistry.get('editPreviewModes');
+    const frontendConfigurationRegistry = globalRegistry.get('frontendConfiguration');
 
-    Object.keys(frontendConfiguration.editPreviewModes).forEach(editPreviewModeName => {
-        editPreviewModesRegistry.add(editPreviewModeName, {
-            ...frontendConfiguration.editPreviewModes[editPreviewModeName]
+    Object.keys(frontendConfiguration).forEach(key => {
+        frontendConfigurationRegistry.set(key, {
+            ...frontendConfiguration[key]
         });
     });
 
@@ -143,6 +143,10 @@ function * application() {
 
     fetchWithErrorHandling.registerAuthenticationErrorHandler(() => {
         store.dispatch(actions.System.authenticationTimeout());
+    });
+
+    fetchWithErrorHandling.registerGeneralErrorHandler((message = 'unknown error') => {
+        store.dispatch(actions.UI.FlashMessages.add('fetch error', message, 'error'));
     });
 
     const menu = yield system.getMenu;

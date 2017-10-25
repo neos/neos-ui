@@ -56,7 +56,7 @@ export default class RightSideBar extends PureComponent {
                 />
         );
 
-        const Inspector = containerRegistry.get('RightSideBar/Inspector');
+        const RightSideBarComponents = containerRegistry.getChildren('RightSideBar');
 
         return (
             <SideBar
@@ -65,7 +65,7 @@ export default class RightSideBar extends PureComponent {
                 aria-hidden={isSideBarHidden ? 'true' : 'false'}
                 >
                 {toggle}
-                <Inspector/>
+                {RightSideBarComponents.map((Item, key) => <Item key={key}/>)}
             </SideBar>
         );
     }

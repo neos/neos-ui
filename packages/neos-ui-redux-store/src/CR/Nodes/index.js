@@ -17,6 +17,7 @@ const COMMENCE_REMOVAL = '@neos/neos-ui/CR/Nodes/COMMENCE_REMOVAL';
 const REMOVAL_ABORTED = '@neos/neos-ui/CR/Nodes/REMOVAL_ABORTED';
 const REMOVAL_CONFIRMED = '@neos/neos-ui/CR/Nodes/REMOVAL_CONFIRMED';
 const REMOVE = '@neos/neos-ui/CR/Nodes/REMOVE';
+const SWITCH_DIMENSION = '@neos/neos-ui/CR/Nodes/SWITCH_DIMENSION';
 const COPY = '@neos/neos-ui/CR/Nodes/COPY';
 const CUT = '@neos/neos-ui/CR/Nodes/CUT';
 const MOVE = '@neos/neos-ui/CR/Nodes/MOVE';
@@ -38,6 +39,7 @@ export const actionTypes = {
     REMOVAL_ABORTED,
     REMOVAL_CONFIRMED,
     REMOVE,
+    SWITCH_DIMENSION,
     COPY,
     CUT,
     MOVE,
@@ -113,6 +115,18 @@ const confirmRemoval = createAction(REMOVAL_CONFIRMED);
 const remove = createAction(REMOVE, contextPath => contextPath);
 
 /**
+ * Switch to new site- and documentNodes, add initial nodes for the new dimension
+ */
+const switchDimension = createAction(
+    SWITCH_DIMENSION,
+    ({siteNodeContextPath, documentNodeContextPath, nodes}) => ({
+        siteNodeContextPath,
+        documentNodeContextPath,
+        nodes
+    })
+);
+
+/**
  * Mark a node for copy on paste
  *
  * @param {String} contextPath The context path of the node to be copied
@@ -179,6 +193,7 @@ export const actions = {
     abortRemoval,
     confirmRemoval,
     remove,
+    switchDimension,
     copy,
     cut,
     move,
@@ -202,7 +217,8 @@ export const reducer = handleActions({
                 fusionPath: ''
             }),
             toBeRemoved: '',
-            clipboard: ''
+            clipboard: '',
+            clipboardMode: ''
         })
     ),
     [ADD]: ({nodeMap}) => $all(
@@ -268,7 +284,18 @@ export const reducer = handleActions({
                 //
                 JSON.parse(JSON.stringify(nodeMap[contextPath]))
             )
-        ))
+        )),
+        ...Object.keys(nodeMap).map(contextPath => $set(
+            ['cr', 'nodes', 'byContextPath', contextPath, 'children'],
+            Immutable.fromJS(
+                //
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
+                // the data, to scope it relative to *this* frame.
+                //
+                JSON.parse(JSON.stringify(nodeMap[contextPath].children))
+            )
+        )),
     ),
     [FOCUS]: ({contextPath, fusionPath}) => $set('cr.nodes.focused', new Map({contextPath, fusionPath})),
     [UNFOCUS]: () => $set('cr.nodes.focused', new Map({
@@ -279,8 +306,23 @@ export const reducer = handleActions({
     [REMOVAL_ABORTED]: () => $set('cr.nodes.toBeRemoved', ''),
     [REMOVAL_CONFIRMED]: () => $set('cr.nodes.toBeRemoved', ''),
     [REMOVE]: contextPath => $drop(['cr', 'nodes', 'byContextPath', contextPath]),
-    [COPY]: contextPath => $set('cr.nodes.clipboard', contextPath),
-    [CUT]: contextPath => $set('cr.nodes.clipboard', contextPath),
+    [SWITCH_DIMENSION]: ({siteNodeContextPath, documentNodeContextPath, nodes}) => $all(
+        $set('cr.nodes.siteNode', siteNodeContextPath),
+        $set('ui.contentCanvas.contextPath', documentNodeContextPath),
+        $set('cr.nodes.focused', new Map({
+            contextPath: '',
+            fusionPath: ''
+        })),
+        $merge('cr.nodes.byContextPath', Immutable.fromJS(nodes))
+    ),
+    [COPY]: contextPath => $all(
+        $set('cr.nodes.clipboard', contextPath),
+        $set('cr.nodes.clipboardMode', 'Copy')
+    ),
+    [CUT]: contextPath => $all(
+        $set('cr.nodes.clipboard', contextPath),
+        $set('cr.nodes.clipboardMode', 'Move')
+    ),
     [PASTE]: () => $set('cr.nodes.clipboard', ''),
     [HIDE]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], true),
     [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false),

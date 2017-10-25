@@ -1,18 +1,9 @@
-import {takeLatest} from 'redux-saga';
-import {put, select} from 'redux-saga/effects';
+import {takeLatest, delay} from 'redux-saga';
+import {put, select, take, race} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
-
-/**
- * Observe the creation of a node
- */
-function * watchNodeCreate() {
-    yield * takeLatest(actionTypes.UI.NodeCreationDialog.APPLY, function * nodeCreationStarted() {
-        yield put(actions.UI.ContentCanvas.startLoading());
-    });
-}
 
 /**
  * Load newly created page into canvas
@@ -47,9 +38,32 @@ function * watchStopLoading({globalRegistry, store}) {
     );
 }
 
+function * watchControlOverIFrame() {
+    yield take(actionTypes.System.READY);
+
+    while (true) { //eslint-disable-line
+        const src = yield select($get('ui.contentCanvas.src'));
+        const waitForNextAction = yield race([
+            take(actionTypes.UI.ContentCanvas.SET_SRC),
+            take(actionTypes.UI.ContentCanvas.REQUEST_REGAIN_CONTROL)
+        ]);
+        const nextAction = Object.keys(waitForNextAction).map(k => waitForNextAction[k])[0];
+
+        if (nextAction.type === actionTypes.UI.ContentCanvas.REQUEST_REGAIN_CONTROL) {
+            yield put(actions.UI.FlashMessages.add('iframe access', nextAction.payload.errorMessage, 'error', 5000));
+
+            //
+            // We need to delay, so that the iframe gets cleared before we load a new src
+            //
+            yield delay(0);
+            yield put(actions.UI.ContentCanvas.setSrc(nextAction.payload.src || src));
+        }
+    }
+}
+
 export const sagas = [
-    watchNodeCreate,
     watchNodeCreated,
     watchCanvasUpdateToChangeTitle,
-    watchStopLoading
+    watchStopLoading,
+    watchControlOverIFrame
 ];

@@ -30,7 +30,7 @@ import style from './style.css';
 export default class NodeVariantCreationDialog extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
-        numberOfParentNodesToBeCreated: PropTypes.number.isRequired,
+        numberOfParentNodesToBeCreated: PropTypes.number,
         contentDimensions: PropTypes.object.isRequired,
         activePresets: PropTypes.object.isRequired,
         documentNode: PropTypes.object.isRequired,
@@ -87,8 +87,9 @@ export default class NodeVariantCreationDialog extends PureComponent {
     renderCreateEmpty() {
         return (
             <Button
+                id="neos-nodeVariantCreationDialog-createEmpty"
                 key="createEmpty"
-                style="warn"
+                style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleCreateEmpty}
                 >
@@ -100,8 +101,9 @@ export default class NodeVariantCreationDialog extends PureComponent {
     renderCreateAndCopy() {
         return (
             <Button
+                id="neos-nodeVariantCreationDialog-createAndCopy"
                 key="createAndCopy"
-                style="warn"
+                style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleCreateAndCopy}
                 >

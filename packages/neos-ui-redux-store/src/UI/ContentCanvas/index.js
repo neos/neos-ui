@@ -17,6 +17,7 @@ const START_LOADING = '@neos/neos-ui/UI/ContentCanvas/START_LOADING';
 const STOP_LOADING = '@neos/neos-ui/UI/ContentCanvas/STOP_LOADING';
 const FOCUS_PROPERTY = '@neos/neos-ui/UI/ContentCanvas/FOCUS_PROPERTY';
 const REQUEST_SCROLL_INTO_VIEW = '@neos/neos-ui/UI/ContentCanvas/REQUEST_SCROLL_INTO_VIEW';
+const REQUEST_REGAIN_CONTROL = '@neos/neos-ui/UI/ContentCanvas/REQUEST_REGAIN_CONTROL';
 
 //
 // Export the action types
@@ -30,7 +31,8 @@ export const actionTypes = {
     START_LOADING,
     STOP_LOADING,
     FOCUS_PROPERTY,
-    REQUEST_SCROLL_INTO_VIEW
+    REQUEST_SCROLL_INTO_VIEW,
+    REQUEST_REGAIN_CONTROL
 };
 
 const setContextPath = createAction(SET_CONTEXT_PATH, (contextPath, siteNode = null) => ({contextPath, siteNode}));
@@ -42,6 +44,8 @@ const startLoading = createAction(START_LOADING);
 const stopLoading = createAction(STOP_LOADING);
 // Set a flag to tell ContentCanvas to scroll the focused node into view
 const requestScrollIntoView = createAction(REQUEST_SCROLL_INTO_VIEW, activate => activate);
+// If we have lost controll over the iframe, we need to take action
+const requestRegainControl = createAction(REQUEST_REGAIN_CONTROL, (src, errorMessage) => ({src, errorMessage}));
 
 //
 // Export the actions
@@ -54,7 +58,8 @@ export const actions = {
     setCurrentlyEditedPropertyName,
     startLoading,
     stopLoading,
-    requestScrollIntoView
+    requestScrollIntoView,
+    requestRegainControl
 };
 
 //
@@ -97,18 +102,13 @@ export const reducer = handleActions({
         return state;
     },
     [SET_PREVIEW_URL]: ({previewUrl}) => $set('ui.contentCanvas.previewUrl', previewUrl),
-    [SET_SRC]: ({src}) => state => {
-        if (src !== $get('ui.contentCanvas.src', state)) {
-            state = $set('ui.contentCanvas.src', src, state);
-            state = $set('ui.contentCanvas.isLoading', true, state);
-        }
-        return state;
-    },
+    [SET_SRC]: ({src}) => $set('ui.contentCanvas.src', src),
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
     [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
     [STOP_LOADING]: () => $set('ui.contentCanvas.isLoading', false),
     [START_LOADING]: () => $set('ui.contentCanvas.isLoading', true),
-    [REQUEST_SCROLL_INTO_VIEW]: activate => $set('ui.contentCanvas.shouldScrollIntoView', activate)
+    [REQUEST_SCROLL_INTO_VIEW]: activate => $set('ui.contentCanvas.shouldScrollIntoView', activate),
+    [REQUEST_REGAIN_CONTROL]: () => $set('ui.contentCanvas.src', '')
 });
 
 //

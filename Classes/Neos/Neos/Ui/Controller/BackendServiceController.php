@@ -8,6 +8,7 @@ namespace Neos\Neos\Ui\Controller;
 
 use Neos\Flow\Mvc\View\JsonView;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
+use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;
@@ -273,6 +274,13 @@ class BackendServiceController extends ActionController
         }
 
         $this->view->assign('value', $this->feedbackCollection);
+    }
+
+    public function getWorkspaceInfoAction()
+    {
+        $workspaceHelper = new WorkspaceHelper();
+        $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace();
+        $this->view->assign('value', $personalWorkspaceInfo);
     }
 
     public function initializeLoadTreeAction()

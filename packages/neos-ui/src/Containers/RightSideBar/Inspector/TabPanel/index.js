@@ -4,6 +4,7 @@ import {Maybe} from 'monet';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
+import SelectedElement from '../SelectedElement/index';
 
 import style from './style.css';
 
@@ -20,6 +21,7 @@ export default class TabPanel extends PureComponent {
         const {groups, renderSecondaryInspector, node, commit} = this.props;
         const tabPanel = groups => (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
+                <SelectedElement/>
                 {
                     groups.filter(g => (g.properties && g.properties.length) || (g.views && g.views.length)).map(group => (
                         <PropertyGroup

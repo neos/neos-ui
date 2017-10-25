@@ -26,9 +26,9 @@ const App = ({globalRegistry, menu}) => {
             <FlashMessages/>
             <FullScreen/>
             <PrimaryToolbar/>
-            <EditModePanel/>
             <ContentCanvas/>
             <SecondaryToolbar/>
+            <EditModePanel/>
             <Drawer menuData={menu}/>
             <LeftSideBar/>
             <RightSideBar/>

@@ -1,74 +1,108 @@
-import TextField from './TextField/index';
-import TextArea from './TextArea/index';
-import Boolean from './Boolean/index';
-import DateTime from './DateTime/index';
-import Image from './Image/index';
-import SelectBox from './SelectBox/index';
-import Link from './Link/index';
-import Reference from './Reference/index';
-import References from './References/index';
-import NodeType from './NodeType/index';
-import CodeMirror from './CodeMirror/index';
+import {
+    TextField,
+    TextArea,
+    Boolean,
+    DateTime,
+    Image,
+    SelectBox,
+    Link,
+    Reference,
+    References,
+    NodeType,
+    CodeMirror
+} from './Editors/index';
+
+import {
+    CodeMirrorWrap,
+    ImageCropper,
+    MediaDetailsScreen,
+    MediaSelectionScreen
+} from './SecondaryEditors/index';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 import backend from '@neos-project/neos-ui-backend-connector';
 
 manifest('inspectorEditors', {}, globalRegistry => {
     const editorsRegistry = globalRegistry.get('inspector').get('editors');
+    const secondaryEditorsRegistry = globalRegistry.get('inspector').get('secondaryEditors');
     const saveHooksRegistry = globalRegistry.get('inspector').get('saveHooks');
     const {createImageVariant} = backend.get().endpoints;
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/TextFieldEditor', {
+    //
+    // Primary inspector editors
+    //
+
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/TextFieldEditor', {
         component: TextField
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/TextAreaEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/TextAreaEditor', {
         component: TextArea
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/BooleanEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/BooleanEditor', {
         component: Boolean,
         hasOwnLabel: true
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/DateTimeEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/DateTimeEditor', {
         component: DateTime
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/ImageEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/ImageEditor', {
         component: Image
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/SelectBoxEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/SelectBoxEditor', {
         component: SelectBox
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/LinkEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/LinkEditor', {
         component: Link
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/ReferenceEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/ReferenceEditor', {
         component: Reference
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/ReferencesEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/ReferencesEditor', {
         component: References
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/NodeTypeEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/NodeTypeEditor', {
         component: NodeType
     });
 
-    editorsRegistry.add('Neos.Neos/Inspector/Editors/CodeEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/CodeEditor', {
         component: CodeMirror,
         hasOwnLabel: true
+    });
+
+    //
+    // Secondary inspector editors
+    //
+
+    secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/CodeMirrorWrap', {
+        component: CodeMirrorWrap
+    });
+
+    secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/ImageCropper', {
+        component: ImageCropper
+    });
+
+    secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/MediaDetailsScreen', {
+        component: MediaDetailsScreen
+    });
+
+    secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen', {
+        component: MediaSelectionScreen
     });
 
     //
     // This hook will create an image variant right before changes to an image
     // are saved
     //
-    saveHooksRegistry.add(
+    saveHooksRegistry.set(
         'Neos.UI:Hook.BeforeSave.CreateImageVariant',
         (value, options) => {
             const {__identity, adjustments, originalAsset} = options.object;

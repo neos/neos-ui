@@ -17,6 +17,11 @@ export class DateInput extends PureComponent {
         placeholder: PropTypes.string,
 
         /**
+         * An optional id for the input.
+         */
+        id: PropTypes.string,
+
+        /**
          * The label which will be displayed within the `Select Today` btn.
          */
         todayLabel: PropTypes.string,
@@ -35,6 +40,16 @@ export class DateInput extends PureComponent {
          * Highlight input
          */
         highlight: PropTypes.bool,
+
+        /**
+         * Display only date picker
+         */
+        dateOnly: PropTypes.bool,
+
+        /**
+         * Display only time picker
+         */
+        timeOnly: PropTypes.bool,
 
         /**
          * The changehandler to call when the date changes.
@@ -91,9 +106,12 @@ export class DateInput extends PureComponent {
             placeholder,
             theme,
             value,
+            id,
             applyLabel,
             todayLabel,
             labelFormat,
+            dateOnly,
+            timeOnly,
             highlight
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
@@ -119,6 +137,7 @@ export class DateInput extends PureComponent {
                             className={theme.calendarFakeInputMirror}
                             />
                         <input
+                            id={id}
                             onFocus={this.handleInputClick}
                             type="datetime"
                             placeholder={placeholder}
@@ -144,6 +163,8 @@ export class DateInput extends PureComponent {
                     <DatePickerComponent
                         open={true}
                         defaultValue={value}
+                        dateFormat={!timeOnly}
+                        timeFormat={!dateOnly}
                         onChange={this.handleChange}
                         />
                     <ButtonComponent

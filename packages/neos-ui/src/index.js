@@ -71,7 +71,7 @@ function * application() {
     //
     manifests
         .map(manifest => manifest[Object.keys(manifest)[0]])
-        .forEach(({bootstrap}) => bootstrap(globalRegistry));
+        .forEach(({bootstrap}) => bootstrap(globalRegistry, store));
 
     const configuration = yield system.getConfiguration;
 

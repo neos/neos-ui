@@ -28,7 +28,8 @@
       "sinon"
     ],
     "setupFiles": [
-      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js"
+      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js",
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
     ],
     "transform": {
       "neos-ui-backend-connector/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

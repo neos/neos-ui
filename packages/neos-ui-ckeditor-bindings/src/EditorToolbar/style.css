@@ -34,3 +34,7 @@
     display: block;
     font-size: 12px;
 }
+
+.linkIconButton__link--active {
+    color: #fff;
+}

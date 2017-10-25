@@ -23,8 +23,9 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
             return ckEditorConfiguration;
         }, Object.assign(
             {
+                skin: 'neos-build',
                 extraPlugins: 'neos_placeholder,neos_fixPasteIntoInlineElements',
-                removePlugins: 'floatingspace,maximize,resize,contextmenu,liststyle,tabletools',
+                removePlugins: 'floatingspace,maximize,resize,liststyle',
                 autoParagraph: isAutoParagraphEnabled,
                 entities: false,
                 basicEntities: false

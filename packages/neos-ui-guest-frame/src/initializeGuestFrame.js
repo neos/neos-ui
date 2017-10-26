@@ -95,13 +95,11 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             nodes
         });
 
-        window.requestIdleCallback(() => {
-            // only of guest frame document did not change in the meantime, we continue initializing the node
-            if (getGuestFrameDocument() === node.ownerDocument) {
-                initializeCurrentNode(node);
-            }
-            initializeSubSequentNodes();
-        });
+        // only of guest frame document did not change in the meantime, we continue initializing the node
+        if (getGuestFrameDocument() === node.ownerDocument) {
+            initializeCurrentNode(node);
+        }
+        initializeSubSequentNodes();
     }, () => { /* This noop function is called right at the end of content inialization */ });
 
     initializeNodes();

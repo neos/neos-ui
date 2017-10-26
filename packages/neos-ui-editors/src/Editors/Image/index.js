@@ -226,8 +226,10 @@ export default class ImageEditor extends Component {
 
         const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
 
+        this.setState({isAssetLoading: true});
+
         return uploadAsset(files[0], siteNodeName).then(res => {
-            this.setState({image: res}, () => {
+            this.setState({isAssetLoading: false, image: res}, () => {
                 commit(res.object);
 
                 if (isImageCropperOpen) {

@@ -126,7 +126,6 @@
     "react-redux": "^5.0.5",
     "react-slick": "^0.14.11",
     "react-test-renderer": "^15.6.1",
-    "react-tooltip": "^3.3.0",
     "react-textarea-autosize": "^5.0.6",
     "recharts": "^1.0.0-alpha.6",
     "redux": "^3.4.0",

@@ -62,7 +62,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         const isInsideInlineUi = clickPath.some(domNode =>
             domNode &&
             domNode.getAttribute &&
-            domNode.getAttribute('data-__neos__inlineUI')
+            domNode.getAttribute('data-__neos__inline-ui')
         );
         const selectedDomNode = clickPath.find(domNode =>
             domNode &&

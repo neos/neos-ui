@@ -35,7 +35,7 @@ export default class InlineUI extends PureComponent {
         const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
 
         return (
-            <div className={style.inlineUi} data-__neos__inlineUI="TRUE">
+            <div className={style.inlineUi} data-__neos__inline-ui="TRUE">
                 <NodeToolbar
                     shouldScrollIntoView={shouldScrollIntoView}
                     requestScrollIntoView={requestScrollIntoView}

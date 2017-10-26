@@ -36,6 +36,7 @@
     border: 0;
     background: var(--brandColorsContrastNeutral);
     min-width: 160px;
+    text-overflow: ellipsis;
 }
 
 .selectBox__placeholder {

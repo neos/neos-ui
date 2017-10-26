@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import Tooltip from './../Tooltip/index.js';
 
 function withValidationResultsRendering(WrappedComponent) {
     class WithValidationResultsRendering extends PureComponent {
@@ -17,10 +18,9 @@ function withValidationResultsRendering(WrappedComponent) {
             });
 
             return (
-                <div className="validationResultsWrapper">
+                <Tooltip tooltipLabel={renderedErros} tooltipType="error">
                     <WrappedComponent {...rest}/>
-                    {renderedErros}
-                </div>
+                </Tooltip>
             );
         }
     }

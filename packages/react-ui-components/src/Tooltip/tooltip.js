@@ -19,6 +19,8 @@ export class Tooltip extends PureComponent {
 
         tooltipPosition: PropTypes.oneOf(['left', 'right']).isRequired,
 
+        tooltipType: PropTypes.oneOf(['default', 'error']).isRequired,
+
         tooltipLabel: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.array
@@ -30,6 +32,14 @@ export class Tooltip extends PureComponent {
         this.state = {
             visible: false
         };
+    }
+
+    componentDidMount() {
+        const {tooltipType} = this.props;
+
+        if (tooltipType) {
+            this.show();
+        }
     }
 
     show = () => this.setVisibility(true);
@@ -68,7 +78,7 @@ export class Tooltip extends PureComponent {
 
     render() {
         const {show, hide, handleTouch, state} = this;
-        const {theme, tooltipLabel, children, tooltipPosition, className, tooltipWrapperClassName} = this.props;
+        const {theme, children, className, tooltipLabel, tooltipPosition, tooltipWrapperClassName, tooltipType} = this.props;
 
         const wrapperClassNames = mergeClassNames({
             [tooltipWrapperClassName]: tooltipWrapperClassName && tooltipWrapperClassName.length,
@@ -79,19 +89,21 @@ export class Tooltip extends PureComponent {
             [className]: className && className.length,
             [theme.tooltip__body]: true,
             [theme['tooltip__body--offsetRight']]: tooltipPosition === 'right',
-            [theme['tooltip__body--offsetLeft']]: tooltipPosition === 'left'
+            [theme['tooltip__body--offsetLeft']]: tooltipPosition === 'left',
+            [theme['tooltip__body--error']]: tooltipType === 'error'
         });
 
         return (
             <div
                 onMouseEnter={show}
-                onMouseLeave={hide}
+                onMouseLeave={tooltipType ? null : hide}
                 onTouchStart={handleTouch}
                 ref={`wrapper`}
                 className={wrapperClassNames}
                 tooltipPosition={tooltipPosition}
+                tooltipType={tooltipType}
                 >
-                {children}
+                { children }
                 {
                   state.visible &&
                   <div ref={`tooltip`} className={classNames}>

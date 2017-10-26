@@ -1,7 +1,6 @@
 .tooltip__wrapper {
     position: relative;
     display: inline-block;
-    z-index: 999999;
 }
 
 .tooltip__wrapper:hover:after {
@@ -47,6 +46,10 @@
     animation: blendInTooltip 1s;
 }
 
+.tooltip__body--error {
+  background: var(--brandColorsError);
+}
+
 .tooltip__body--offsetLeft {
   right: 0;
   left: inherit;
@@ -59,9 +62,8 @@
 }
 
 .tooltip__content {
-    background: #000;
     color: #fff;
-    display: inline;
+    display: inline-block;
     font-size: .8em;
     font-weight: normal;
     padding: .3em 1em;

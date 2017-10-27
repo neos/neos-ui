@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-redux",
-  "version": "1.0.0-beta6",
+  "version": "1.0.0-beta8",
   "description": "Neos CMS UI written in ReactJS with Immutable data structures.",
   "private": true,
   "main": "./src/index.js",
@@ -15,7 +15,7 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta6"
+    "@neos-project/build-essentials": "1.0.0-beta8"
   },
   "license": "GNU GPLv3",
   "jest": {

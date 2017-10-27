@@ -34,6 +34,7 @@ export default class CopySelectedNode extends PureComponent {
                 isActive={isActive}
                 onClick={this.handleCopySelectedNodeClick}
                 icon="copy"
+                tooltipLabel="Copy"
                 hoverStyle="clean"
                 />
         );

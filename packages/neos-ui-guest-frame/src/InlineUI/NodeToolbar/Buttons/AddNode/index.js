@@ -55,6 +55,7 @@ export default class AddNode extends PureComponent {
                     isDisabled={!isAllowedToAddChildOrSiblingNodes}
                     className={this.props.className}
                     icon="plus"
+                    tooltipLabel="Create New"
                     onClick={this.handleCommenceNodeCreation}
                     hoverStyle="clean"
                     />

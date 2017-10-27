@@ -38,6 +38,7 @@ export default class CutSelectedNode extends PureComponent {
                 isDisabled={destructiveOperationsAreDisabled}
                 onClick={this.handleCutSelectedNodeClick}
                 icon="cut"
+                tooltipLabel="Cut"
                 hoverStyle="clean"
                 />
         );

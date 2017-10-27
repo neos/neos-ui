@@ -52,8 +52,9 @@ export default class PasteClipBoardNode extends PureComponent {
         return (
             <IconButton
                 className={className}
-                icon="paste"
                 onClick={this.handlePasteButtonClick}
+                icon="paste"
+                tooltipLabel="Paste"
                 hoverStyle="clean"
                 />
         );

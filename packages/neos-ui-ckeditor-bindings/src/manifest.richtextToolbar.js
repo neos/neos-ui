@@ -306,7 +306,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'clipboard',
         hoverStyle: 'brand',
-        tooltipLabel: 'removeFormat'
+        tooltipLabel: 'remove Format'
     });
 
     return richtextToolbar;

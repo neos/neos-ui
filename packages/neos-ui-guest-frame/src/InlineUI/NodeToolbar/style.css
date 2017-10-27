@@ -1,10 +1,12 @@
 .toolBar {
+    height: var(--goldenUnit);
     position: absolute;
     border-bottom: 1px solid var(--brandColorsContrastDark);
     background: #222;
     z-index: 2147483647;
 }
 .toolBar__btnGroup {
+    height: var(--goldenUnit);
     border-bottom: 1px solid var(--brandColorsContrastDark);
 
     &:before,

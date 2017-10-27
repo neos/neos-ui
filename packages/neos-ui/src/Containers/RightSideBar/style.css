@@ -40,6 +40,3 @@
   width: var(--goldenUnit);
   height: var(--goldenUnit);
 }
-.rightSideBar__section {
-    border-bottom: 1px solid var(--brandColorsContrastDark);
-}

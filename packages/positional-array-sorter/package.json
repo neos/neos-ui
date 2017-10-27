@@ -3,6 +3,7 @@
   "version": "1.0.0-beta6",
   "description": "Flexible array sorter that sorts an array according to a 'position' meta data.",
   "main": "./src/positionalArraySorter.js",
+  "license": "GNU GPLv3",
   "scripts": {
     "prebuild": "check-dependencies && yarn clean",
     "test": "yarn jest",

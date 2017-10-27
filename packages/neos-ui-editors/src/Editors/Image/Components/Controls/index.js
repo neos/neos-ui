@@ -74,9 +74,9 @@ export default class Controls extends PureComponent {
         if (onCrop) {
             return (
                 <IconButton
-                    tooltipLabel="Crop"
-                    alignItem="right"
                     icon="crop"
+                    tooltipLabel="Crop"
+                    tooltipWrapperClassName={style.cropButton}
                     size="small"
                     style="lighter"
                     onClick={onCrop}

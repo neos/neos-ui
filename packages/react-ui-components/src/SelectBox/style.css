@@ -70,6 +70,10 @@
 
 .dropDown__itemLabel {
     padding: 0 var(--halfSpacing);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    width: 100%;
 }
 
 .selectBox__loadingIcon {
@@ -90,6 +94,8 @@
 .selectBox__btnIcon {
     composes: reset from './../reset.css';
     margin-right: .5em;
+    float: left;
+    line-height: var(--goldenUnit);
 }
 
 .selectBox__btnDelete {

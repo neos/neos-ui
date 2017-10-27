@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-guest-frame",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta6",
   "description": "Guest frame initialization bindings",
   "private": true,
   "main": "./src/manifest.js",
@@ -15,15 +15,17 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta4"
+    "@neos-project/build-essentials": "1.0.0-beta6"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta4"
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta6",
+    "@neos-project/utils-helpers": "1.0.0-beta6"
   },
   "jest": {
     "transformIgnorePatterns": [],
     "setupFiles": [
-      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js"
+      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js",
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
     ],
     "transform": {
       "neos-ui-extensibility/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

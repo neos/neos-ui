@@ -18,7 +18,7 @@ import {dndTypes} from '@neos-project/neos-ui-constants';
 export default class ReferencesEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),
-        highlight: PropTypes.string,
+        highlight: PropTypes.bool,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),

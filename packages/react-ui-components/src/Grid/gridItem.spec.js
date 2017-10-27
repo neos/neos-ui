@@ -20,7 +20,7 @@ test('should add the passed "className" prop to the rendered div if passed.', ()
 test('should render a inline style matching the passed "width" prop.', () => {
     const grid = shallow({width: 'half'});
 
-    expect(grid.html().includes('style="width:50%;"')).toBeTruthy();
+    expect(grid.html().includes('style="width:50%"')).toBeTruthy();
 });
 test('should propagate the rest of the passed props to the wrapping node.', () => {
     const grid = shallow({

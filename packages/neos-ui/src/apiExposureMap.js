@@ -16,6 +16,7 @@ import ReactUiComponents from '@neos-project/react-ui-components';
 import * as NeosUiReduxStore from '@neos-project/neos-ui-redux-store';
 import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
 import NeosUiI18n from '@neos-project/neos-ui-i18n';
+import NeosUiBackendConnectorDefault, * as NeosUiBackendConnector from '@neos-project/neos-ui-backend-connector';
 
 export default {
     '@vendor': () => ({
@@ -35,7 +36,8 @@ export default {
     }),
 
     '@NeosProjectPackages': () => ({
-        // neos-ui-backend-connector
+        NeosUiBackendConnectorDefault,
+        NeosUiBackendConnector,
         NeosUiDecorators,
         NeosUiI18n,
         NeosUiReduxStore,

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-views",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta6",
   "description": "Neos CMS UI Views for use in the inspector.",
   "main": "src/manifest.js",
   "private": true,
@@ -15,19 +15,22 @@
     "postpublish": "greenkeeper-postpublish"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta4",
-    "@neos-project/debug-reason-for-rendering": "1.0.0-beta4"
+    "@neos-project/build-essentials": "1.0.0-beta6",
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta6"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta4",
-    "@neos-project/neos-ui-i18n": "1.0.0-beta4",
-    "@neos-project/neos-ui-inspector": "1.0.0-beta4",
-    "@neos-project/neos-ui-redux-store": "1.0.0-beta4",
-    "@neos-project/react-ui-components": "1.0.0-beta4"
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta6",
+    "@neos-project/neos-ui-i18n": "1.0.0-beta6",
+    "@neos-project/neos-ui-inspector": "1.0.0-beta6",
+    "@neos-project/neos-ui-redux-store": "1.0.0-beta6",
+    "@neos-project/react-ui-components": "1.0.0-beta6"
   },
   "license": "GNU GPLv3",
   "jest": {
+    "setupFiles": [
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
+    ],
     "transformIgnorePatterns": [],
     "transform": {
       "neos-ui-views/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

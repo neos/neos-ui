@@ -303,8 +303,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         formattingRule: 'removeFormat',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
-
-        icon: 'clipboard',
+        icon: 'eraser',
         hoverStyle: 'brand',
         tooltipLabel: 'remove Format'
     });

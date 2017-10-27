@@ -82,7 +82,8 @@ export class Tooltip extends PureComponent {
 
         const wrapperClassNames = mergeClassNames({
             [tooltipWrapperClassName]: tooltipWrapperClassName && tooltipWrapperClassName.length,
-            [theme.tooltip__wrapper]: true
+            [theme.tooltip__wrapper]: true,
+            [theme['tooltip__wrapper--error']]: tooltipType === 'error'
         });
 
         const classNames = mergeClassNames({

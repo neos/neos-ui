@@ -11,16 +11,19 @@ function withValidationResultsRendering(WrappedComponent) {
              */
             validationErrors: PropTypes.array
         }
+
         render() {
             const {validationErrors, ...rest} = this.props;
             const renderedErros = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
                 return <div key={key}>{validationError}</div>;
             });
 
-            return (
+            return renderedErros ? (
                 <Tooltip tooltipLabel={renderedErros} tooltipType="error">
                     <WrappedComponent {...rest}/>
                 </Tooltip>
+            ) : (
+                <WrappedComponent {...rest}/>
             );
         }
     }

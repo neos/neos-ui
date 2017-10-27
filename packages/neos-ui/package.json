@@ -36,6 +36,7 @@
     "@neos-project/neos-ui-views": "1.0.0-beta6",
     "@neos-project/react-proptypes": "1.0.0-beta6",
     "@neos-project/react-ui-components": "1.0.0-beta6",
+    "@neos-project/positional-array-sorter": "1.0.0-beta6",
     "@neos-project/utils-helpers": "1.0.0-beta6",
     "@neos-project/utils-logger": "1.0.0-beta6",
     "@neos-project/utils-redux": "1.0.0-beta6"

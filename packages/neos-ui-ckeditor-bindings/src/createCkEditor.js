@@ -5,6 +5,7 @@ import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOptions, globalRegistry, persistChange}) => {
     const formattingRulesRegistry = globalRegistry.get('ckEditor').get('formattingRules');
     const richtextToolbarRegistry = globalRegistry.get('ckEditor').get('richtextToolbar');
+    const pluginsRegistry = globalRegistry.get('ckEditor').get('plugins');
     const i18nRegistry = globalRegistry.get('i18n');
     const enabledFormattingRuleIds = richtextToolbarRegistry
         .getEnabledFormattingRulesForNodeTypeAndProperty(nodeType.name)(propertyName);
@@ -24,7 +25,7 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
         }, Object.assign(
             {
                 skin: 'neos-build',
-                extraPlugins: 'neos_placeholder,neos_fixPasteIntoInlineElements',
+                extraPlugins: pluginsRegistry.getExtraPluginsString(),
                 removePlugins: 'floatingspace,maximize,resize,liststyle',
                 autoParagraph: isAutoParagraphEnabled,
                 entities: false,

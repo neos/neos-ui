@@ -8,6 +8,7 @@ import boostrapCkEditorApi from './boostrapCkEditorApi';
 
 import initializeFormattingRulesRegistry from './manifest.formattingRules';
 import initializeRichtextToolbarRegistry from './manifest.richtextToolbar';
+import initializePluginsRegistry from './manifest.plugins';
 
 manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
     const ckEditorRegistry = globalRegistry.set(
@@ -20,6 +21,7 @@ manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
     );
 
     const formattingRulesRegistry = initializeFormattingRulesRegistry(ckEditorRegistry);
+    const pluginsRegistry = initializePluginsRegistry(ckEditorRegistry);
     initializeRichtextToolbarRegistry(ckEditorRegistry, globalRegistry.get('@neos-project/neos-ui-contentrepository'));
 
     //
@@ -27,7 +29,7 @@ manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
     //
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
     inlineEditorRegistry.set('ckeditor', {
-        bootstrap: boostrapCkEditorApi(formattingRulesRegistry),
+        bootstrap: boostrapCkEditorApi(formattingRulesRegistry, pluginsRegistry),
         createInlineEditor: createCkEditor,
         ToolbarComponent: EditorToolbar
     });

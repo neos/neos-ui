@@ -18,11 +18,11 @@ The expected format for the subject is:
 The <position-string> supports one of the following syntax:
 
 ```
- start (<weight>)
- end (<weight>)
- before <key> (<weight>)
- after <key> (<weight>)
- <numerical-order>
+start (<weight>)
+end (<weight>)
+before <key> (<weight>)
+after <key> (<weight>)
+<numerical-order>
 ```
 
 where "weight" is the priority that defines which of two conflicting positions overrules the other,

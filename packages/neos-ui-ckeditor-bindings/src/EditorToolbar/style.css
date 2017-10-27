@@ -13,22 +13,18 @@
 .toolBar__btnGroup__btn {
     float: left;
 }
-
-
 .linkIconButton__flyout {
     position: fixed;
     z-index: 1000;
     width: 460px;
     border: var(--halfSpacing) solid var(--brandColorsContrastDarker);
 }
-
 .linkIconButton__item {
     padding: var(--halfSpacing);
     box-sizing:content-box;
     height: var(--goldenUnit);
     line-height: 20px;
 }
-
 .linkIconButton__link {
     color: var(--brandColorsContrastBright);
     display: block;

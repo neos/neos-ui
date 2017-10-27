@@ -50,6 +50,7 @@ export default class LinkIconButton extends PureComponent {
                 <IconButton
                     isActive={Boolean(this.getHrefValue())}
                     icon="link"
+                    tooltipLabel="link"
                     onClick={this.handleLinkButtonClick}
                     />
                 {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} formattingRule={this.props.formattingRule}/> : null}

@@ -58,7 +58,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'bold',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'bold'
     });
 
     // Italic
@@ -68,7 +69,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'italic',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'italic'
     });
 
     // Underline
@@ -78,7 +80,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'underline',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'underline'
     });
 
     // Subscript
@@ -98,7 +101,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'superscript',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'subscript'
     });
 
     // Strike-Through
@@ -108,7 +112,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'strikethrough',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'strikethrough'
     });
 
     // Strike-Through
@@ -118,7 +123,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'link',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'link'
     });
 
     /**
@@ -189,7 +195,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'list-ol',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'orderedList'
     });
 
     // unordered list
@@ -199,7 +206,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'list-ul',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'unorderedList'
     });
 
     // Indent
@@ -210,6 +218,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'indent',
         hoverStyle: 'brand',
+        tooltipLabel: 'indent',
         isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
             return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
                 formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED;
@@ -224,6 +233,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'outdent',
         hoverStyle: 'brand',
+        tooltipLabel: 'outdent',
         isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
             return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
                 formattingUnderCursor.outdent !== richtextToolbar.TRISTATE_DISABLED;
@@ -239,7 +249,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'align-left',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'align left'
     });
 
     richtextToolbar.set('aligncenter', {
@@ -248,7 +259,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'align-center',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'align center'
     });
 
     richtextToolbar.set('alignright', {
@@ -257,7 +269,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'align-right',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'align right'
     });
 
     richtextToolbar.set('alignjustify', {
@@ -266,7 +279,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'align-justify',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'align justify'
     });
 
     /**
@@ -278,7 +292,8 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
 
         icon: 'table',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltipLabel: 'table'
     });
 
     /**
@@ -289,8 +304,9 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         component: IconButtonComponent,
         callbackPropName: 'onClick',
 
-        icon: 'table',
-        hoverStyle: 'brand'
+        icon: 'clipboard',
+        hoverStyle: 'brand',
+        tooltipLabel: 'removeFormat'
     });
 
     return richtextToolbar;

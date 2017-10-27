@@ -2,6 +2,7 @@ import {takeEvery} from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
+import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';
 import {
@@ -95,7 +96,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             nodes
         });
 
-        window.requestIdleCallback(() => {
+        requestIdleCallback(() => {
             // only of guest frame document did not change in the meantime, we continue initializing the node
             if (getGuestFrameDocument() === node.ownerDocument) {
                 initializeCurrentNode(node);

@@ -5,6 +5,8 @@ import loadScript from './loadScript';
 import positionalArraySorter from './positionalArraySorter';
 import {stripTags, stripTagsEncoded} from './stripTags';
 import {decodeHtml} from './decodeHtml';
+import requestIdleCallback from './requestIdleCallback';
+import cancelIdleCallback from './cancelIdleCallback';
 
 export {
     delay,
@@ -14,5 +16,7 @@ export {
     loadScript,
     positionalArraySorter,
     stripTags,
-    stripTagsEncoded
+    stripTagsEncoded,
+    cancelIdleCallback,
+    requestIdleCallback
 };

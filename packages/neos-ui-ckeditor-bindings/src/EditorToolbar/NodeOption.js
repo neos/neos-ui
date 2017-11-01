@@ -26,11 +26,13 @@ export default class NodeOption extends PureComponent {
         const nodeTypeLabel = $get('ui.label', nodeTypeDefinition);
         const icon = $get('ui.icon', nodeTypeDefinition);
         return (
-            <ComplexOption {...this.props}
+            <ComplexOption
+                {...this.props}
                 label={label}
                 secondaryLabel={uriInLiveWorkspace}
                 tertiaryLabel={nodeTypeLabel}
-                icon={icon} />
+                icon={icon}
+                />
         );
     }
 }

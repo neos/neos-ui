@@ -79,7 +79,6 @@ class LinkEditor extends PureComponent {
             this.setState({isLoading: true});
             this.props.linkLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.value)
                 .then(options => {
-                    console.log(options);
                     this.setState({
                         isLoading: false,
                         options

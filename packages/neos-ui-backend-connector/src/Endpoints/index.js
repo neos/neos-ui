@@ -145,8 +145,7 @@ const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(()
         }));
     });
 
-
-const assetDetail = (identifier) => fetchWithErrorHandling.withCsrfToken(() => ({
+const assetDetail = identifier => fetchWithErrorHandling.withCsrfToken(() => ({
     url: '/neos/service/assets/' + identifier,
 
     method: 'GET',

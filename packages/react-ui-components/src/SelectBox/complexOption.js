@@ -6,8 +6,8 @@ import style from './style.css';
 
 export default class ComplexOption extends PureComponent {
     static propTypes = {
-        option: PropTypes.object.required,
-        label: PropTypes.string.required,
+        option: PropTypes.object.isRequired,
+        label: PropTypes.string.isRequired,
         imageUri: PropTypes.string,
         secondaryLabel: PropTypes.string,
         tertiaryLabel: PropTypes.string,
@@ -15,9 +15,7 @@ export default class ComplexOption extends PureComponent {
     };
 
     render() {
-        const option = this.props.option;
-
-        const image = this.props.imageUri ? <img src={this.props.imageUri} className={style.complexOption__image} /> : '';
+        const image = this.props.imageUri ? <img src={this.props.imageUri} alt={this.props.label} className={style.complexOption__image}/> : '';
         const secondaryLabel = this.props.secondaryLabel ?
             <span className={style.complexOption__secondaryLabel}>{this.props.secondaryLabel}</span> :
             '';
@@ -28,7 +26,7 @@ export default class ComplexOption extends PureComponent {
         return (
             <SelectBoxOption {...this.props} icon={this.props.icon} className={style.complexOption__item}>
                 {image}
-                <span>{option.label}</span>
+                <span>{this.props.label}</span>
                 {secondaryLabel}
                 {tertiaryLabel}
             </SelectBoxOption>

@@ -177,7 +177,7 @@
 
 .complexOption__item {
     padding: var(--halfSpacing);
-    box-sizing:content-box;
+    box-sizing: content-box;
     height: calc(var(--goldenUnit) * 1.5);
     line-height: 20px;
 }

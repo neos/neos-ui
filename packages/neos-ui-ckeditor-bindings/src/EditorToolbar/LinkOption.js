@@ -7,23 +7,23 @@ import SelectBoxOption from '@neos-project/react-ui-components/src/SelectBox/sel
 export default class LinkOption extends PureComponent {
     static propTypes = {
         option: PropTypes.shape({
-            label: PropTypes.string.required,
-            loaderUri: PropTypes.string.required,
-            dataType: PropTypes.string.required
-        }),
+            label: PropTypes.string.isRequired,
+            loaderUri: PropTypes.string.isRequired,
+            dataType: PropTypes.string.isRequired
+        })
     };
 
     render() {
         const option = this.props.option;
 
         if (option.dataType === 'Neos.ContentRepository:Node') {
-            return <NodeOption {...this.props} />
+            return <NodeOption {...this.props}/>;
         }
 
         if (option.dataType === 'Neos.Media:Asset') {
-            return <AssetOption {...this.props} />
+            return <AssetOption {...this.props}/>;
         }
 
-        return <SelectBoxOption {...this.props}><span>{label}</span></SelectBoxOption>
+        return <SelectBoxOption {...this.props}><span>{this.props.option.label}</span></SelectBoxOption>;
     }
 }

@@ -171,3 +171,28 @@
     composes: reset from './../reset.css';
     padding-right: .5em;
 }
+
+.complexOption__item {
+    padding: var(--halfSpacing);
+    box-sizing:content-box;
+    height: calc(var(--goldenUnit) * 1.5);
+    line-height: 20px;
+}
+
+.complexOption__secondaryLabel {
+    color: var(--brandColorsContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.complexOption__tertiaryLabel {
+    color: var(--brandColorsContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.complexOption__image {
+    height: calc(var(--goldenUnit) * 1.5);
+    width: auto;
+    float: right;
+}

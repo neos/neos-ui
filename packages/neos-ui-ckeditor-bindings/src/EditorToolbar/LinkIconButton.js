@@ -5,7 +5,7 @@ import {$get, $transform} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import SelectBoxOption from '@neos-project/react-ui-components/src/SelectBox/selectBoxOption';
+import LinkOption from './LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
@@ -186,79 +186,5 @@ class LinkTextField extends PureComponent {
                     />
             </div>
         );
-    }
-}
-
-class ImageOption extends PureComponent {
-    static propTypes = {
-        option: PropTypes.shape({
-            label: PropTypes.string,
-            preview: PropTypes.string,
-            loaderUri: PropTypes.string
-        }),
-    };
-
-    render() {
-        const option = this.props.option;
-
-        return (
-            <SelectBoxOption {...this.props} className={style.linkIconButton__item}>
-                <img src={option.preview} className={style.linkIconButton__image} />
-                <span className={style.linkIconButton__line}>{option.label}</span>
-                <span className={style.linkIconButton__link}>{option.dataType}</span>
-            </SelectBoxOption>
-        );
-    }
-}
-
-
-class NodeOption extends PureComponent {
-    static propTypes = {
-        option: PropTypes.shape({
-            label: PropTypes.string,
-            uriInLiveWorkspace: PropTypes.string,
-            nodeType: PropTypes.string,
-            loaderUri: PropTypes.string
-        }),
-
-        nodeTypesRegistry: PropTypes.object.isRequired
-    };
-
-    render() {
-        const {option, nodeTypesRegistry} = this.props;
-        const {label, uriInLiveWorkspace, nodeType} = option;
-        const nodeTypeDefinition = nodeTypesRegistry.getNodeType(nodeType);
-        const icon = $get('ui.icon', nodeTypeDefinition);
-        return (
-            <SelectBoxOption {...this.props} className={style.linkIconButton__item} icon={icon}>
-                <span>{label}</span>
-                <span className={style.linkIconButton__link}>{uriInLiveWorkspace}</span>
-                <span className={style.linkIconButton__link}>{option.dataType}</span>
-            </SelectBoxOption>
-        );
-    }
-}
-
-const WrappedNodeOption = neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
-}))(NodeOption);
-
-class LinkOption extends PureComponent {
-    static propTypes = {
-        option: PropTypes.object
-    };
-
-    render() {
-        const option = this.props.option;
-
-        if (option.dataType === 'Neos.ContentRepository:Node') {
-            return <WrappedNodeOption {...this.props} />
-        }
-
-        if (option.dataType === 'Neos.Media:Asset') {
-            return <ImageOption {...this.props} />
-        }
-
-        return <SelectBoxOption {...this.props}><span>{label}</span></SelectBoxOption>
     }
 }

@@ -3,20 +3,9 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
+import LinkOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-
-const removePrefixFromNodeIdentifier = nodeIdentifierWithPrefix =>
-    nodeIdentifierWithPrefix && nodeIdentifierWithPrefix.replace('node://', '');
-
-const appendPrefixBeforeNodeIdentifier = nodeIdentifier =>
-    nodeIdentifier && 'node://' + nodeIdentifier;
-
-const removePrefixFromAssetIdentifier = assetIdentifierWithPrefix =>
-    assetIdentifierWithPrefix && assetIdentifierWithPrefix.replace('asset://', '');
-
-const appendPrefixBeforeAssetIdentifier = assetIdentifier =>
-    assetIdentifier && 'asset://' + assetIdentifier;
 
 const isUri = str =>
     str && Boolean(str.match('^https?://'));
@@ -26,9 +15,7 @@ const isUri = str =>
 }))
 @neos(globalRegistry => {
     return {
-        nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
-        assetLookupDataLoader: globalRegistry.get('dataLoaders').get('AssetLookup'),
-        nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+        linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
         i18nRegistry: globalRegistry.get('i18n')
     };
 })
@@ -46,17 +33,9 @@ class LinkEditor extends PureComponent {
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
         }).isRequired,
-        nodeTypeRegistry: PropTypes.shape({
-            getNodeType: PropTypes.func.isRequired
-        }),
         i18nRegistry: PropTypes.object.isRequired,
 
-        nodeLookupDataLoader: PropTypes.shape({
-            resolveValue: PropTypes.func.isRequired,
-            search: PropTypes.func.isRequired
-        }).isRequired,
-
-        assetLookupDataLoader: PropTypes.shape({
+        linkLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired
@@ -68,8 +47,8 @@ class LinkEditor extends PureComponent {
         this.state = {
             searchTerm: '',
             isLoading: false,
-            searchResults: [],
-            results: []
+            searchOptions: [],
+            options: []
         };
     }
 
@@ -81,6 +60,10 @@ class LinkEditor extends PureComponent {
     }
 
     componentDidMount() {
+        if (!this.props.value) {
+            return;
+        }
+
         if (isUri(this.props.value)) {
             const options = [{
                 icon: 'icon-external-link',
@@ -93,28 +76,15 @@ class LinkEditor extends PureComponent {
                 options
             });
         } else {
-            if (this.props.value) {
-                this.setState({isLoading: true});
-                this.props.assetLookupDataLoader.resolveValue({}, removePrefixFromAssetIdentifier(this.props.value))
-                    .then(asset => {
-                        options.forEach(option => {
-                            const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
-                            const icon = $get('ui.icon', nodeType);
-                            if (icon) {
-                                option.icon = icon;
-                            }
-                        });
-
-                        this.setState({
-                            isLoading: false,
-                            options: [asset]
-                        });
+            this.setState({isLoading: true});
+            this.props.linkLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.value)
+                .then(options => {
+                    console.log(options);
+                    this.setState({
+                        isLoading: false,
+                        options
                     });
-            }
-            this.setState({
-                searchTerm: '',
-                searchOptions: []
-            });
+                });
         }
     }
 
@@ -142,45 +112,41 @@ class LinkEditor extends PureComponent {
             this.props.commit('');
         } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
-            this.props.assetLookupDataLoader.search({}, searchTerm)
-                .then(searchOptions => {
-                    searchOptions.forEach(option => {
-                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
-                        const icon = $get('ui.icon', nodeType);
-                        if (icon) {
-                            option.icon = icon;
-                        }
-                    });
-
-                    this.setState({
-                        isLoading: false,
-                        searchOptions
-                    });
+            this.props.linkLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
+            .then(searchOptions => {
+                this.setState({
+                    isLoading: false,
+                    searchOptions
                 });
+            });
         }
     }
 
     handleValueChange = value => {
-        if (isUri(value)) {
-        this.props.commit(appendPrefixBeforeAssetIdentifier(value));
-        } else {
-            this.props.commit(appendPrefixBeforeNodeIdentifier(value));
+        if (!isUri(value)) {
+            const options = this.state.searchOptions.reduce((current, option) =>
+                (option.loaderUri === value) ? [Object.assign({}, option)] : current, []);
+
+            this.setState({options, searchOptions: []});
         }
+
+        this.props.commit(value);
     }
 
     render() {
         return (
             <SelectBox
                 options={this.props.value ? this.state.options : this.state.searchOptions}
-                optionValueField="identifier"
+                optionValueField="loaderUri"
                 highlight={this.props.highlight}
-                value={this.props.value && removePrefixFromAssetIdentifier(this.props.value)}
+                value={this.props.value}
                 onValueChange={this.handleValueChange}
                 placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
                 displayLoadingIndicator={this.state.isLoading}
                 displaySearchBox={true}
                 searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
+                optionComponent={LinkOption}
                 />
         );
     }

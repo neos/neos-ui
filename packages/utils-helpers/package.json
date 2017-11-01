@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-helpers",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta8",
   "description": "Helper functions for Neos CMS UI.",
   "private": true,
   "main": "./src/index.js",
@@ -15,10 +15,13 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta4"
+    "@neos-project/build-essentials": "1.0.0-beta8"
   },
   "license": "GNU GPLv3",
   "jest": {
+    "setupFiles": [
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
+    ],
     "transformIgnorePatterns": [],
     "transform": {
       "utils-helpers/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

@@ -5,6 +5,7 @@ import {$get, $transform} from 'plow-js';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {dndTypes} from '@neos-project/neos-ui-constants';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
@@ -17,7 +18,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 export default class ReferencesEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),
-        highlight: PropTypes.string,
+        highlight: PropTypes.bool,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -37,6 +38,11 @@ export default class ReferencesEditor extends PureComponent {
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
         }).isRequired
+    };
+
+    static defaultOptions = {
+        // start searching after 2 characters, as it was done in the old UI
+        threshold: 2
     };
 
     constructor(props) {
@@ -90,7 +96,8 @@ export default class ReferencesEditor extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-        if (searchTerm) {
+        const threshold = $get('options.threshold', this.props) || this.defaultOptions.threshold;
+        if (searchTerm && searchTerm.length >= threshold) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
@@ -118,6 +125,7 @@ export default class ReferencesEditor extends PureComponent {
     render() {
         return (<MultiSelectBox
             options={this.state.options}
+            dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"
             values={this.props.value}
             highlight={this.props.highlight}

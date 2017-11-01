@@ -119,6 +119,8 @@ manifest('main.dataloaders', {}, globalRegistry => {
             if (!searchTerm) {
                 return Promise.resolve([]);
             }
+            // remove NULL node types
+            options.nodeTypes = (options.nodeTypes || []).filter(Boolean);
 
             const cacheKey = makeCacheKey('search', {options, searchTerm});
             if (this._lru().has(cacheKey)) {

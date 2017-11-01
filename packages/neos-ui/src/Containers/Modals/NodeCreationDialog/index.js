@@ -157,29 +157,33 @@ export default class NodeCreationDialog extends PureComponent {
                 style="wide"
                 >
                 <div id="neos-nodeCreationDialog-body" className={style.body}>
-                    {Object.keys(configuration.elements).map((elementName, index) => {
-                        //
-                        // Only display errors after user input (isDirty)
-                        //
-                        const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
-                        const element = configuration.elements[elementName];
-                        const options = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
+                    {Object.keys(configuration.elements)
+                        .filter(elementName => Boolean(configuration.elements[elementName]))
+                        .map((elementName, index) => {
+                            //
+                            // Only display errors after user input (isDirty)
+                            //
+                            const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
+                            const element = configuration.elements[elementName];
+                            const options = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
 
-                        return (
-                            <div key={elementName} className={style.editor}>
-                                <EditorEnvelope
-                                    identifier={elementName}
-                                    label={$get('ui.label', element)}
-                                    editor={$get('ui.editor', element)}
-                                    options={options}
-                                    commit={this.handleDialogEditorValueChange(elementName)}
-                                    validationErrors={validationErrorsForElement}
-                                    value={this.state.values[elementName] || ''}
-                                    onKeyPress={this.handleKeyPress}
-                                    />
-                            </div>
-                        );
-                    })}
+                            return (
+                                <div key={elementName} className={style.editor}>
+                                    <EditorEnvelope
+                                        identifier={elementName}
+                                        label={$get('ui.label', element)}
+                                        editor={$get('ui.editor', element)}
+                                        options={options}
+                                        commit={this.handleDialogEditorValueChange(elementName)}
+                                        validationErrors={validationErrorsForElement}
+                                        value={this.state.values[elementName] || ''}
+                                        onKeyPress={this.handleKeyPress}
+                                        onEnterKey={this.handleApply}
+                                        />
+                                </div>
+                            );
+                        })
+                    }
                 </div>
             </Dialog>
         );

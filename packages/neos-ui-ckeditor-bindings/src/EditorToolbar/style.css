@@ -40,3 +40,7 @@
     width: auto;
     float: right;
 }
+
+.linkIconButton__link--active {
+    color: #fff;
+}

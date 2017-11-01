@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
+import mergeClassNames from 'classnames';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';

@@ -2,10 +2,11 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import DropDown from '../DropDown/index';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
-import keydown from 'react-keydown';
+import keydown, {Keys} from 'react-keydown';
 import mergeClassNames from 'classnames';
 
-const KEYS = ['down', 'up', 'enter'];
+const {ENTER, UP, DOWN} = Keys;
+const KEYS = [ENTER, UP, DOWN];
 
 @keydown(KEYS)
 export default class SelectBox extends PureComponent {
@@ -127,53 +128,29 @@ export default class SelectBox extends PureComponent {
 
         this.state = {
             isOpen: false,
-            selectedIndex: 0
+            selectedIndex: -1
         };
     }
 
     componentWillReceiveProps({keydown}) {
-        if (this.state.isOpen && keydown.event) {
-            const {options} = this.props;
-            const currentIndex = this.state.selectedIndex;
-
-            if (keydown.event.key === 'ArrowDown') {
-                this.setState({
-                    selectedIndex: currentIndex + 1 >= options.length ? currentIndex : currentIndex + 1
-                });
-            } else if (keydown.event.key === 'ArrowUp') {
-                this.setState({
-                    selectedIndex: currentIndex - 1 < 0 ? 0 : currentIndex - 1
-                });
-            } else if (keydown.event.key === 'Enter') {
-                this.props.onValueChange(options[currentIndex].value);
-                this.setState({
-                    isOpen: false
-                });
-            }
-        }
-    }
-
-    componentDidUpdate() {
-        const listener = e => {
-            // Up and down arrow
-            if ([38, 40].indexOf(e.keyCode) > -1) {
-                e.preventDefault();
-            }
-        };
-
-        if (this.state.isOpen) {
-            window.addEventListener('keydown', listener);
-        } else {
-            window.removeEventListener('keydown', listener);
-        }
+        this.handleKeyDown(keydown.event);
     }
 
     handleDropdownToggle = e => {
         if (e.target.nodeName.toLowerCase() === 'input' && e.target.type === 'text') {
             // force dropdown open if the search-input-box is focused
             this.setState({isOpen: true});
+        } else if (this.state.isOpen) {
+            // reset selected index to not get falsy preselected values
+            // if dropdown is opened more than once
+            this.setState({
+                isOpen: false,
+                selectedIndex: -1
+            });
         } else {
-            this.setState({isOpen: !this.state.isOpen});
+            this.setState({
+                isOpen: true
+            });
         }
     }
 
@@ -184,6 +161,32 @@ export default class SelectBox extends PureComponent {
     handleSearchTermChange = (...args) => {
         this.setState({isOpen: true});
         this.props.onSearchTermChange(...args);
+    }
+
+    handleKeyDown = e => {
+        if (this.state.isOpen && e) {
+            const {options, optionValueField} = this.props;
+            const currentIndex = this.state.selectedIndex;
+
+            if (e.key === 'ArrowDown') {
+                this.setState({
+                    selectedIndex: currentIndex + 1 >= options.length ? currentIndex : currentIndex + 1
+                });
+            } else if (e.key === 'ArrowUp') {
+                this.setState({
+                    selectedIndex: currentIndex - 1 < 0 ? 0 : currentIndex - 1
+                });
+            } else if (e.key === 'Enter') {
+                if (optionValueField === undefined) {
+                    this.props.onValueChange(options[currentIndex].value);
+                } else {
+                    this.props.onValueChange(options[currentIndex][optionValueField]);
+                }
+                this.setState({
+                    isOpen: false
+                });
+            }
+        }
     }
 
     render() {
@@ -256,6 +259,7 @@ export default class SelectBox extends PureComponent {
                                 onChange={this.handleSearchTermChange}
                                 className={theme.selectBox__searchInput}
                                 setFocus={setFocus}
+                                onKeyDown={this.handleKeyDown}
                                 containerClassName={theme.selectBox__searchInputContainer}
                                 /> :
                             <span className={theme.dropDown__itemLabel}>{label}</span>
@@ -332,10 +336,22 @@ export default class SelectBox extends PureComponent {
         const onClick = () => {
             this.props.onValueChange(value);
         };
-        const className = index === selectedIndex ? theme['selectBox__item--isSelectable--active'] : '';
+        const isActive = index === selectedIndex;
+        const className = isActive ? theme['selectBox__item--isSelectable--active'] : '';
+
+        const setIndex = () => {
+            this.setIndex(index);
+        };
 
         const OptionComponent = optionComponent;
-        return <OptionComponent className={className} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
+        // onMouseEnter doesn't work on OptionComponent
+        return <div key={index} onMouseEnter={setIndex}><OptionComponent className={className} isActive={isActive} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/></div>;
+    }
+
+    setIndex = index => {
+        if (index !== this.state.selectedIndex) {
+            this.setState({selectedIndex: index});
+        }
     }
 
     handleDeleteClick = () => {

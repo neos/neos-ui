@@ -64,9 +64,9 @@ class WorkspaceService
             }
         }, $publishableNodes);
 
-        return array_filter($publishableNodes, function ($item) {
+        return array_values(array_filter($publishableNodes, function ($item) {
             return (bool)$item;
-        });
+        }));
     }
 
     /**

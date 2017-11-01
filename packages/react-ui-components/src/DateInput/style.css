@@ -36,6 +36,7 @@
     composes: reset from './../reset.css';
     display: table-cell;
     position: relative;
+    width: 100%;
 }
 .calendarFakeInputMirror {
     position: absolute;

@@ -6,10 +6,11 @@ import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+import ReferenceOption from './ReferenceOption';
+
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
-    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
-    nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -30,13 +31,15 @@ export default class ReferenceEditor extends PureComponent {
             resolveValue: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
-        nodeTypeRegistry: PropTypes.shape({
-            getNodeType: PropTypes.func.isRequired
-        }),
 
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
         }).isRequired
+    };
+
+    static defaultOptions = {
+        // start searching after 2 characters, as it was done in the old UI
+        threshold: 2
     };
 
     constructor(props) {
@@ -62,14 +65,6 @@ export default class ReferenceEditor extends PureComponent {
             this.setState({isLoading: true});
             this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.value)
                 .then(options => {
-                    options.forEach(option => {
-                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
-                        const icon = $get('ui.icon', nodeType);
-                        if (icon) {
-                            option.icon = icon;
-                        }
-                    });
-
                     this.setState({
                         isLoading: false,
                         options
@@ -90,18 +85,11 @@ export default class ReferenceEditor extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-        if (searchTerm) {
+        const threshold = $get('options.threshold', this.props) || this.defaultOptions.threshold;
+        if (searchTerm && searchTerm.length >= threshold) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
-                    searchOptions.forEach(option => {
-                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
-                        const icon = $get('ui.icon', nodeType);
-                        if (icon) {
-                            option.icon = icon;
-                        }
-                    });
-
                     this.setState({
                         isLoading: false,
                         searchOptions
@@ -126,6 +114,7 @@ export default class ReferenceEditor extends PureComponent {
             displaySearchBox={true}
             searchTerm={this.state.searchTerm}
             onSearchTermChange={this.handleSearchTermChange}
+            optionComponent={ReferenceOption}
             />);
     }
 }

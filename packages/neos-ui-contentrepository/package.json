@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-contentrepository",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta8",
   "description": "Bindings for the Neos ContentRepository",
   "private": true,
   "main": "./src/manifest.js",
@@ -15,10 +15,10 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta4"
+    "@neos-project/build-essentials": "1.0.0-beta8"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "1.0.0-beta4"
+    "@neos-project/neos-ui-extensibility": "1.0.0-beta8"
   },
   "license": "GNU GPLv3",
   "jest": {
@@ -28,7 +28,8 @@
     ],
     "setupFiles": [
       "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js",
-      "./node_modules/@neos-project/build-essentials/src/setup-neos-ui-host-env.js"
+      "./node_modules/@neos-project/build-essentials/src/setup-neos-ui-host-env.js",
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
     ],
     "transform": {
       "neos-ui-contentrepository/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

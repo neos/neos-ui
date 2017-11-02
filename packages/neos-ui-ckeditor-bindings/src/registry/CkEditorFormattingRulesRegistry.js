@@ -88,7 +88,7 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
             addToExtraAllowedContent: extraExpression =>
                 config => {
                     if (config.extraAllowedContent) {
-                        config.extraAllowedContent += ' ' + extraExpression;
+                        config.extraAllowedContent += ';' + extraExpression;
                     } else {
                         config.extraAllowedContent = extraExpression;
                     }

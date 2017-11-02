@@ -72,9 +72,11 @@ export default CKEDITOR => {
                 }
 
                 // Set caret in position
-                const range = editor.createRange();
-                range.moveToElementEditablePosition(editable.getFirst(), true);
-                editor.getSelection().selectRanges([range]);
+                if (editable.getFirst()) {
+                    const range = editor.createRange();
+                    range.moveToElementEditablePosition(editable.getFirst(), true);
+                    editor.getSelection().selectRanges([range]);
+                }
                 editor.editable().$.click();
             } else {
                 // if we are inside an inline editable (e.g. a span), we have to set the selection
@@ -82,9 +84,11 @@ export default CKEDITOR => {
                 editable.setHtml(' ');
 
                 window.setTimeout(() => {
-                    const range = editor.createRange();
-                    range.moveToElementEditablePosition(editable.getFirst(), true);
-                    editor.getSelection().selectRanges([range]);
+                    if (editable.getFirst()) {
+                        const range = editor.createRange();
+                        range.moveToElementEditablePosition(editable.getFirst(), true);
+                        editor.getSelection().selectRanges([range]);
+                    }
                     editor.editable().$.click();
                 }, 5);
             }

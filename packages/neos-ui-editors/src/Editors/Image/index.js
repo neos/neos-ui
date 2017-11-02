@@ -223,7 +223,7 @@ export default class ImageEditor extends Component {
         const {commit} = this.props;
         const {isImageCropperOpen} = this.state;
 
-        this.setState({image: res}, () => {
+            this.setState({isAssetLoading: false, image: res}, () => {
             commit(res.object);
 
             if (isImageCropperOpen) {

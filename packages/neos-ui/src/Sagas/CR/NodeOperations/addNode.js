@@ -94,6 +94,10 @@ export default function * addNode({globalRegistry}) {
                 case STEP_FINISH: {
                     const {mode, nodeType, data} = workflowData;
 
+                    if (nodeTypesRegistry.hasRole(nodeType, 'document')) {
+                        yield put(actions.UI.ContentCanvas.startLoading());
+                    }
+
                     return yield put(actions.Changes.persistChanges([{
                         type: calculateChangeTypeFromMode(mode, 'Create'),
                         subject: referenceNodeContextPath,

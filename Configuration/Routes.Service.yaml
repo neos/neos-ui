@@ -45,3 +45,11 @@
     '@controller': 'BackendService'
     '@action': 'flowQuery'
   httpMethods: ['POST']
+
+-
+  name: 'Get Workspace Info'
+  uriPattern: 'get-workspace-info'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'getWorkspaceInfo'
+  httpMethods: ['GET']

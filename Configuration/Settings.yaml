@@ -38,6 +38,12 @@ Neos:
       contentCanvas:
         backgroundColor: '#ffffff'
 
+      frontendConfiguration:
+        editPreviewModes: '${Configuration.setting(''Neos.Neos.userInterface.editPreviewModes'')}'
+        # You may use this place to deliver some configuration to your custom UI components, e.g.:
+        # 'Your.Own:Package':
+        #   someKey: someValue
+
       #################################
       # INTERNAL CONFIG (no API)
       #################################
@@ -46,85 +52,83 @@ Neos:
         document: 'Neos.Neos:Document'
         content: 'Neos.Neos:Content'
         contentCollection: 'Neos.Neos:ContentCollection'
-      state:
-        defaultEelContext:
-          String: Neos\Eel\Helper\StringHelper
-          Array: Neos\Eel\Helper\ArrayHelper
-          Date: Neos\Eel\Helper\DateHelper
-          Configuration: Neos\Eel\Helper\ConfigurationHelper
-          Math: Neos\Eel\Helper\MathHelper
-          Json: Neos\Eel\Helper\JsonHelper
-          I18n: Neos\Flow\I18n\EelHelper\TranslationHelper
-          Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
-          Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
-          Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
-          Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
-        frontendConfiguration:
-          editPreviewModes: '${Configuration.setting(''Neos.Neos.userInterface.editPreviewModes'')}'
-        documentNode:
-          metaData:
-            contextPath: '${q(documentNode).property("_contextPath")}'
+      configurationDefaultEelContext:
+        String: Neos\Eel\Helper\StringHelper
+        Array: Neos\Eel\Helper\ArrayHelper
+        Date: Neos\Eel\Helper\DateHelper
+        Configuration: Neos\Eel\Helper\ConfigurationHelper
+        Math: Neos\Eel\Helper\MathHelper
+        Json: Neos\Eel\Helper\JsonHelper
+        I18n: Neos\Flow\I18n\EelHelper\TranslationHelper
+        Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
+        Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
+        Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
+        Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
+      documentNodeInformation:
+        metaData:
+          contextPath: '${q(documentNode).property("_contextPath")}'
+          siteNode: '${q(site).property(''_contextPath'')}'
+          previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: "live"}).get(0), controllerContext)}'
+          contentDimensions:
+            active: '${documentNode.context.dimensions}'
+            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
+          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, controllerContext)}'
+          url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+      initialState:
+        changes:
+          pending: {  }
+          processing: {  }
+          failed: {  }
+        cr:
+          nodes:
+            byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
             siteNode: '${q(site).property(''_contextPath'')}'
-            previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: "live"}).get(0), controllerContext)}'
-            contentDimensions:
-              active: '${documentNode.context.dimensions}'
-              allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
-            documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, controllerContext)}'
-        backend:
-          changes:
-            pending: {  }
-            processing: {  }
-            failed: {  }
-          cr:
-            nodes:
-              byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
-              siteNode: '${q(site).property(''_contextPath'')}'
-            contentDimensions:
-              byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
-              active: '${documentNode.context.dimensions}'
-              allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
-            workspaces:
-              personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
-          ui:
-            contentCanvas:
-              src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
-              contextPath: '${q(documentNode).property(''_contextPath'')}'
-              backgroundColor: '${Configuration.setting(''Neos.Neos.Ui.contentCanvas.backgroundColor'')}'
-            debugMode: false
-            editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
-            fullScreen:
-              isFullScreen: false
-            editModePanel:
-              isHidden: true
-            leftSideBar:
-              isHidden: false
-            rightSideBar:
-              isHidden: false
-            addNodeModal:
-              referenceNode: ''
-              mode: insert
-            drawer:
-              isHidden: true
-            pageTree:
-              isLoading: false
-              hasError: false
-              focused: '${q(documentNode).property(''_contextPath'')}'
-              active: '${q(documentNode).property(''_contextPath'')}'
-            remote:
-              isSaving: false
-              isPublishing: false
-              isDiscarding: false
-          user:
-            name:
-              title: '${q(user).property(''name.title'')}'
-              firstName: '${q(user).property(''name.firstName'')}'
-              middleName: '${q(user).property(''name.middleName'')}'
-              lastName: '${q(user).property(''name.lastName'')}'
-              otherName: '${q(user).property(''name.otherName'')}'
-              fullName: '${q(user).property(''name.fullName'')}'
-            settings:
-              isAutoPublishingEnabled: false
-              targetWorkspace: 'live'
+          contentDimensions:
+            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
+            active: '${documentNode.context.dimensions}'
+            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
+          workspaces:
+            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
+        ui:
+          contentCanvas:
+            src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+            contextPath: '${q(documentNode).property(''_contextPath'')}'
+            backgroundColor: '${Configuration.setting(''Neos.Neos.Ui.contentCanvas.backgroundColor'')}'
+          debugMode: false
+          editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
+          fullScreen:
+            isFullScreen: false
+          editModePanel:
+            isHidden: true
+          leftSideBar:
+            isHidden: false
+          rightSideBar:
+            isHidden: false
+          addNodeModal:
+            referenceNode: ''
+            mode: insert
+          drawer:
+            isHidden: true
+          pageTree:
+            isLoading: false
+            hasError: false
+            focused: '${q(documentNode).property(''_contextPath'')}'
+            active: '${q(documentNode).property(''_contextPath'')}'
+          remote:
+            isSaving: false
+            isPublishing: false
+            isDiscarding: false
+        user:
+          name:
+            title: '${q(user).property(''name.title'')}'
+            firstName: '${q(user).property(''name.firstName'')}'
+            middleName: '${q(user).property(''name.middleName'')}'
+            lastName: '${q(user).property(''name.lastName'')}'
+            otherName: '${q(user).property(''name.otherName'')}'
+            fullName: '${q(user).property(''name.fullName'')}'
+          settings:
+            isAutoPublishingEnabled: false
+            targetWorkspace: 'live'
       changes:
         types:
           'Neos.Neos.Ui:Property': Neos\Neos\Ui\Domain\Model\Changes\Property

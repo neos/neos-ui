@@ -1,21 +1,23 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$set, $drop, $get, $transform} from 'plow-js';
+import {$get, $transform} from 'plow-js';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import Dropzone from 'react-dropzone';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 import backend from '@neos-project/neos-ui-backend-connector';
 import style from './style.css';
 
 @connect($transform({
     siteNodePath: $get('cr.nodes.siteNode')
-}), null, null, {withRef: true})
+}), null, null, {withRef: true})
 export default class AssetUpload extends PureComponent {
     static propTypes = {
         isLoading: PropTypes.bool.isRequired,
         onAfterUpload: PropTypes.func.isRequired,
         siteNodePath: PropTypes.string.isRequired,
-        highlight: PropTypes.bool
+        highlight: PropTypes.bool,
+        children: PropTypes.any.isRequired
     };
 
     constructor(props) {

@@ -23,7 +23,7 @@ export default class AssetUpload extends PureComponent {
     constructor(props) {
         super(props);
 
-        this.upload = this.upload.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
         this.chooseFromLocalFileSystem = this.chooseFromLocalFileSystem.bind(this);
         this.setDropzoneReference = this.setDropzoneReference.bind(this);
     }
@@ -32,7 +32,7 @@ export default class AssetUpload extends PureComponent {
         this.dropzoneReference.open();
     }
 
-    upload(files) {
+    handleUpload(files) {
         const {uploadAsset} = backend.get().endpoints;
         const {onAfterUpload, siteNodePath} = this.props;
 
@@ -64,7 +64,7 @@ export default class AssetUpload extends PureComponent {
         return (
             <Dropzone
                 ref={this.setDropzoneReference}
-                onDropAccepted={this.upload}
+                onDropAccepted={this.handleUpload}
                 className={style.dropzone}
                 activeClassName={style['dropzone--isActive']}
                 rejectClassName={style['dropzone--isRejecting']}

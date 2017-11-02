@@ -219,20 +219,6 @@ export default class ImageEditor extends Component {
         this.previewScreen.chooseFromLocalFileSystem();
     }
 
-    upload(files) {
-        const {commit} = this.props;
-        const {isImageCropperOpen} = this.state;
-
-            this.setState({isAssetLoading: false, image: res}, () => {
-            commit(res.object);
-
-            if (isImageCropperOpen) {
-                this.handleCloseSecondaryScreen();
-                this.handleOpenImageCropper();
-            }
-        });
-    }
-
     handleChooseFromMedia() {
         const {secondaryEditorsRegistry} = this.props;
         const {component: MediaSelectionScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen');

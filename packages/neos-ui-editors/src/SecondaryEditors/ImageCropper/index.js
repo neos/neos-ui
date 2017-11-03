@@ -209,6 +209,7 @@ export default class ImageCropper extends PureComponent {
                     src={src}
                     crop={cropConfiguration.cropInformation}
                     onComplete={onComplete}
+                    onAspectRatioChange={onComplete}
                     />
             </div>
         );

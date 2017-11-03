@@ -9,6 +9,8 @@ import style from './style.css';
     editorRegistry: globalRegistry.get('inspector').get('editors')
 }))
 export default class EditorEnvelope extends PureComponent {
+    state = {};
+
     static propTypes = {
         identifier: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
@@ -22,11 +24,6 @@ export default class EditorEnvelope extends PureComponent {
 
         commit: PropTypes.func.isRequired
     };
-
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
 
     generateIdentifier() {
         return `#__neos__editor__property---${this.props.identifier}`;

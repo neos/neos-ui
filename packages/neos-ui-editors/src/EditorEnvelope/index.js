@@ -22,6 +22,11 @@ export default class EditorEnvelope extends PureComponent {
         commit: PropTypes.func.isRequired
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
     generateIdentifier() {
         return `#__neos__editor__property---${this.props.identifier}`;
     }
@@ -44,6 +49,14 @@ export default class EditorEnvelope extends PureComponent {
         return (<div>Missing Editor {editor}</div>);
     }
 
+    componentDidCatch(error, errorInfo) {
+        console.log(error);
+        console.log(errorInfo);
+        this.setState({
+            error
+        });
+    }
+
     renderLabel() {
         const {editor, editorRegistry} = this.props;
         const editorDefinition = editorRegistry.get(editor);
@@ -62,6 +75,10 @@ export default class EditorEnvelope extends PureComponent {
     }
 
     render() {
+        if (this.state.error) {
+            return <div>{this.state.error && this.state.error.toString()}</div>;
+        }
+
         return (
             <div>
                 {this.renderLabel()}

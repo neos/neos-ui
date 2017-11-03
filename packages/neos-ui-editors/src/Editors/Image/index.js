@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {$set, $drop, $get, $transform} from 'plow-js';
-import {connect} from 'react-redux';
+import {$set, $drop, $get} from 'plow-js';
 
 import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';

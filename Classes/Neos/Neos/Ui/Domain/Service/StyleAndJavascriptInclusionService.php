@@ -70,7 +70,7 @@ class StyleAndJavascriptInclusionService
             if (substr($resourceExpression, 0, 2) === '${' && substr($resourceExpression, -1) === '}') {
                 $resourceExpression = Utility::evaluateEelExpression($resourceExpression, $this->eelEvaluator, [], $this->defaultContext);
             }
-            
+
             $hash = null;
 
             if (strpos($resourceExpression, 'resource://') === 0) {

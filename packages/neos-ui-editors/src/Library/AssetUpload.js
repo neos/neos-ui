@@ -1,17 +1,14 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get, $transform} from 'plow-js';
-import {connect} from 'react-redux';
+import {$get} from 'plow-js';
+import {connectAdvanced} from 'react-redux';
 import mergeClassNames from 'classnames';
 import Dropzone from 'react-dropzone';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import backend from '@neos-project/neos-ui-backend-connector';
 import style from './style.css';
 
-@connect($transform({
-    siteNodePath: $get('cr.nodes.siteNode')
-}), null, null, {withRef: true})
-export default class AssetUpload extends PureComponent {
+class AssetUpload extends PureComponent {
     static propTypes = {
         isLoading: PropTypes.bool.isRequired,
         onAfterUpload: PropTypes.func.isRequired,
@@ -80,3 +77,9 @@ export default class AssetUpload extends PureComponent {
         this.dropzoneReference = ref;
     }
 }
+
+export default connectAdvanced(() => {
+    return (nextState, nextOwnProps) => {
+        return Object.assign({}, nextOwnProps, {siteNodePath: $get('cr.nodes.siteNode', nextState)});
+    };
+}, {withRef: true})(AssetUpload);

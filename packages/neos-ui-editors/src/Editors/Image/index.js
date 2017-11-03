@@ -19,9 +19,6 @@ const DEFAULT_FEATURES = {
 @neos(globalRegistry => ({
     secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')
 }))
-@connect($transform({
-    siteNodePath: $get('cr.nodes.siteNode')
-}))
 export default class ImageEditor extends Component {
     static propTypes = {
         value: PropTypes.oneOfType([
@@ -49,10 +46,7 @@ export default class ImageEditor extends Component {
             resize: PropTypes.bool
         }),
 
-        allowedFileTypes: PropTypes.string,
-
-        siteNode: PropTypes.string,
-        siteNodePath: PropTypes.string
+        allowedFileTypes: PropTypes.string
     };
 
     static defaultProps = {
@@ -64,11 +58,11 @@ export default class ImageEditor extends Component {
 
         this.setPreviewScreenRef = this.setPreviewScreenRef.bind(this);
         this.handleThumbnailClicked = this.handleThumbnailClicked.bind(this);
-        this.handleFilesDrop = this.upload.bind(this);
-        this.handleChooseFile = this.onChooseFile.bind(this);
-        this.handleRemoveFile = this.onRemoveFile.bind(this);
-        this.handleMediaSelected = this.onMediaSelected.bind(this);
-        this.handleMediaCrop = this.onCrop.bind(this);
+        this.afterUpload = this.afterUpload.bind(this);
+        this.handleChooseFile = this.handleChooseFile.bind(this);
+        this.handleRemoveFile = this.handleRemoveFile.bind(this);
+        this.handleMediaSelected = this.handleMediaSelected.bind(this);
+        this.handleMediaCrop = this.handleMediaCrop.bind(this);
         this.handleCloseSecondaryScreen = this.handleCloseSecondaryScreen.bind(this);
         this.handleChooseFromMedia = this.handleChooseFromMedia.bind(this);
         this.handleOpenImageCropper = this.handleOpenImageCropper.bind(this);
@@ -135,7 +129,18 @@ export default class ImageEditor extends Component {
         return features[featureName];
     }
 
-    onCrop(cropArea) {
+    afterUpload(uploadResult) {
+        const {commit} = this.props;
+        const {isImageCropperOpen} = this.state;
+
+        commit(uploadResult.object);
+        if (isImageCropperOpen) {
+            this.handleCloseSecondaryScreen();
+            this.handleOpenImageCropper();
+        }
+    }
+
+    handleMediaCrop(cropArea) {
         const {commit, value} = this.props;
         const {image} = this.state;
 
@@ -173,7 +178,7 @@ export default class ImageEditor extends Component {
         return this.props.value ? this.props.value : {};
     }
 
-    onRemoveFile() {
+    handleRemoveFile() {
         const {commit} = this.props;
 
         this.handleCloseSecondaryScreen();
@@ -184,7 +189,7 @@ export default class ImageEditor extends Component {
         });
     }
 
-    onMediaSelected(assetIdentifier) {
+    handleMediaSelected(assetIdentifier) {
         const {commit} = this.props;
         const value = this.getValue();
         const newAsset = $set('__identity', assetIdentifier, value);
@@ -215,7 +220,7 @@ export default class ImageEditor extends Component {
         }
     }
 
-    onChooseFile() {
+    handleChooseFile() {
         this.previewScreen.chooseFromLocalFileSystem();
     }
 
@@ -254,7 +259,7 @@ export default class ImageEditor extends Component {
                     ref={this.setPreviewScreenRef}
                     image={this.getUsedImage()}
                     isLoading={isAssetLoading}
-                    onDrop={this.handleFilesDrop}
+                    afterUpload={this.afterUpload}
                     highlight={highlight}
                     onClick={this.handleThumbnailClicked}
                     />

@@ -100,7 +100,7 @@ export default class PublishDropDown extends PureComponent {
             [style.dropDown__item]: true,
             [style['dropDown__item--noHover']]: true
         });
-        const {mainButtonLabel, mainButtonTarget} = this.getMainButtonLabeling();
+        const mainButton = this.getTranslatedMainButton(baseWorkspaceTitle);
         const dropDownBtnClassName = mergeClassNames({
             [style.dropDown__btn]: true,
             [style['dropDown__item--canPublish']]: canPublishGlobally
@@ -116,7 +116,7 @@ export default class PublishDropDown extends PureComponent {
                     isHighlighted={canPublishLocally || isSaving}
                     onClick={this.handlePublishClick}
                     >
-                    <I18n id={mainButtonLabel} fallback={mainButtonTarget}/> <I18n id="to" fallback="to"/> {isWorkspaceReadOnly ? (<Icon icon="lock"/>) : ''} {baseWorkspaceTitle}
+                    {mainButton} {isWorkspaceReadOnly ? (<Icon icon="lock"/>) : ''}
                     {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={String(publishableNodesInDocumentCount)}/>}
                 </AbstractButton>
 
@@ -193,7 +193,7 @@ export default class PublishDropDown extends PureComponent {
         );
     }
 
-    getMainButtonLabeling() {
+    getTranslatedMainButton(baseWorkspaceTitle = '') {
         const {
             publishableNodesInDocument,
             isSaving,
@@ -204,43 +204,25 @@ export default class PublishDropDown extends PureComponent {
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
 
         if (isSaving) {
-            return {
-                mainButtonLabel: 'Neos.Neos:Main:saving',
-                mainButtonTarget: 'Neos.Neos:Main:saving'
-            };
+            return <I18n id="Neos.Neos:Main:saving" fallback="saving"/>;
         }
 
         if (isPublishing) {
-            return {
-                mainButtonLabel: 'Neos.Neos:Main:publishing',
-                mainButtonTarget: 'Neos.Neos:Main:publishing'
-            };
+            return <I18n id="Neos.Neos:Main:publishTo" fallback="Publish to" params={{0: baseWorkspaceTitle}}/>;
         }
 
         if (isDiscarding) {
-            return {
-                mainButtonLabel: 'discarding',
-                mainButtonTarget: 'Discarding...'
-            };
+            return 'Discarding...';
         }
 
         if (isAutoPublishingEnabled) {
-            return {
-                mainButtonLabel: 'Neos.Neos:Main:autoPublish',
-                mainButtonTarget: 'Neos.Neos:Main:autoPublish'
-            };
+            return <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto publish"/>;
         }
 
         if (canPublishLocally) {
-            return {
-                mainButtonLabel: 'Neos.Neos:Main:publish',
-                mainButtonTarget: 'Neos.Neos:Main:publish'
-            };
+            return <I18n id="Neos.Neos:Main:publishTo" fallback="Publish to" params={{0: baseWorkspaceTitle}}/>;
         }
 
-        return {
-            mainButtonLabel: 'Neos.Neos:Main:published',
-            mainButtonTarget: 'Neos.Neos:Main:published'
-        };
+        return <I18n id="Neos.Neos:Main:published" fallback="Published"/>;
     }
 }

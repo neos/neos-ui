@@ -205,15 +205,15 @@ export default class PublishDropDown extends PureComponent {
 
         if (isSaving) {
             return {
-                mainButtonLabel: "Neos.Neos:Main:saving",
-                mainButtonTarget: "Neos.Neos:Main:saving"
+                mainButtonLabel: <I18n id='Neos.Neos:Main:saving' fallback='Workspaces'/>,
+                mainButtonTarget: 'Neos.Neos:Main:saving'
             };
         }
 
         if (isPublishing) {
             return {
-                mainButtonLabel: "Neos.Neos:Main:publishing",
-                mainButtonTarget: "Neos.Neos:Main:publishing"
+                mainButtonLabel: 'Neos.Neos:Main:publishing',
+                mainButtonTarget: 'Neos.Neos:Main:publishing'
             };
         }
 
@@ -226,21 +226,21 @@ export default class PublishDropDown extends PureComponent {
 
         if (isAutoPublishingEnabled) {
             return {
-                mainButtonLabel: "Neos.Neos:Main:autoPublish",
-                mainButtonTarget: "Neos.Neos:Main:autoPublish"
+                mainButtonLabel: 'Neos.Neos:Main:autoPublish',
+                mainButtonTarget: 'Neos.Neos:Main:autoPublish'
             };
         }
 
         if (canPublishLocally) {
             return {
-                mainButtonLabel: "Neos.Neos:Main:publish",
-                mainButtonTarget: "Neos.Neos:Main:publish"
+                mainButtonLabel: 'Neos.Neos:Main:publish',
+                mainButtonTarget: 'Neos.Neos:Main:publish'
             };
         }
 
         return {
-            mainButtonLabel: "Neos.Neos:Main:published",
-            mainButtonTarget: "Neos.Neos:Main:published"
+            mainButtonLabel: 'Neos.Neos:Main:published',
+            mainButtonTarget: 'Neos.Neos:Main:published'
         };
     }
 }

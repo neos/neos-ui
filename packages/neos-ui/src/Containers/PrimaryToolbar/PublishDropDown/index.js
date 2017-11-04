@@ -205,7 +205,7 @@ export default class PublishDropDown extends PureComponent {
 
         if (isSaving) {
             return {
-                mainButtonLabel: <I18n id='Neos.Neos:Main:saving' fallback='Workspaces'/>,
+                mainButtonLabel: 'Neos.Neos:Main:saving',
                 mainButtonTarget: 'Neos.Neos:Main:saving'
             };
         }

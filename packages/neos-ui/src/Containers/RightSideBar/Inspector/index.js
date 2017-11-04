@@ -193,12 +193,12 @@ export default class Inspector extends PureComponent {
                     <Grid gutter="micro">
                         <Grid.Col width="half">
                             <Button style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={style.discardBtn}>
-                                <I18n id="discard"/>
+                                <I18n id="Neos.Neos:Main:discard" fallback="discard"/>
                             </Button>
                         </Grid.Col>
                         <Grid.Col width="half">
                             <Button style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={style.publishBtn}>
-                                <I18n id="apply"/>
+                                <I18n id="Neos.Neos:Main:apply" fallback="apply"/>
                             </Button>
                         </Grid.Col>
                     </Grid>

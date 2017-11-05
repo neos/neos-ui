@@ -16,12 +16,6 @@ export default class PreviewScreen extends PureComponent {
         highlight: PropTypes.bool
     };
 
-    constructor(props) {
-        super(props);
-
-        this.setDropDownRef = this.setDropDownRef.bind(this);
-    }
-
     chooseFromLocalFileSystem() {
         this.dropzone.open();
     }
@@ -70,7 +64,7 @@ export default class PreviewScreen extends PureComponent {
         );
     }
 
-    setDropDownRef(ref) {
+    setDropDownRef = ref => {
         this.dropzone = ref;
     }
 }

@@ -2,6 +2,18 @@ import {discover} from '@neos-project/utils-helpers';
 import {initializeJsAPI} from '@neos-project/neos-ui-backend-connector';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling/index';
 
+const getInlinedData = dataName => {
+    return new Promise((resolve, reject) => {
+        const result = window['_NEOS_UI_' + dataName];
+        delete window['_NEOS_UI_' + dataName];
+        try {
+            resolve(result);
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+};
+
 export const getAppContainer = discover(function * () {
     const appContainer = yield new Promise(resolve => {
         document.addEventListener('DOMContentLoaded', () => {
@@ -24,35 +36,15 @@ export const getSystemEnv = discover(function * () {
     return appContainer.dataset.env;
 });
 
-export const getServerState = discover(function * () {
-    const appContainer = yield getAppContainer;
+export const getServerState = getInlinedData('initialState');
 
-    return JSON.parse(appContainer.querySelector('[data-json="initialState"]').textContent);
-});
+export const getConfiguration = getInlinedData('configuration');
 
-export const getConfiguration = discover(function * () {
-    const appContainer = yield getAppContainer;
+export const getNodeTypes = getInlinedData('nodeTypes');
 
-    return JSON.parse(appContainer.querySelector('[data-json="configuration"]').textContent);
-});
+export const getFrontendConfiguration = getInlinedData('frontendConfiguration');
 
-export const getNodeTypes = discover(function * () {
-    const appContainer = yield getAppContainer;
-
-    return JSON.parse(appContainer.querySelector('[data-json="nodeTypes"]').textContent);
-});
-
-export const getFrontendConfiguration = discover(function * () {
-    const appContainer = yield getAppContainer;
-
-    return JSON.parse(appContainer.querySelector('[data-json="frontendConfiguration"]').textContent);
-});
-
-export const getMenu = discover(function * () {
-    const appContainer = yield getAppContainer;
-
-    return JSON.parse(appContainer.querySelector('[data-json="menu"]').textContent);
-});
+export const getMenu = getInlinedData('menu');
 
 export const getNeos = discover(function * () {
     const csrfToken = yield getCsrfToken;

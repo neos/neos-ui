@@ -4,6 +4,13 @@ import mergeClassNames from 'classnames';
 import DropDownItem from './dropDownItem.js';
 
 export default class IconButtonDropDown extends PureComponent {
+    state = {
+        isOpen: false
+    };
+
+    _mouseHoldTimeout = null;
+    _mouseHoverTimeout = null;
+
     static propTypes = {
         /**
          * The key of the Icon which is always displayed.
@@ -74,19 +81,6 @@ export default class IconButtonDropDown extends PureComponent {
         isDisabled: false,
         directButtonProps: {}
     };
-
-    constructor(props) {
-        super(props);
-
-        this._mouseHoldTimeout = null;
-        this._mouseHoverTimeout = null;
-        this.handleClick = this.handleClick.bind(this);
-        this.handleMouseLeave = this.handleMouseLeave.bind(this);
-        this.handleHoldTimeout = this.createHoldTimeout.bind(this);
-        this.handleHoverTimeout = this.createHoverTimeout.bind(this);
-        this.handleItemSelected = this.handleItemSelected.bind(this);
-        this.state = {isOpen: false};
-    }
 
     render() {
         const {
@@ -159,7 +153,11 @@ export default class IconButtonDropDown extends PureComponent {
         clearTimeout(this._mouseHoverTimeout);
     }
 
-    handleClick() {
+    handleHoverTimeout = () => this.createHoverTimeout();
+
+    handleHoldTimeout = () => this.createHoldTimeout();
+
+    handleClick = () => {
         const {isOpen} = this.state;
 
         this.cancelHoldTimeout();
@@ -170,13 +168,13 @@ export default class IconButtonDropDown extends PureComponent {
         }
     }
 
-    handleMouseLeave() {
+    handleMouseLeave = () => {
         this.cancelHoldTimeout();
         this.cancelHoverTimeout();
         this.closeDropDown();
     }
 
-    handleItemSelected(ref) {
+    handleItemSelected = ref => {
         this.props.onItemSelect(ref);
         this.closeDropDown();
     }

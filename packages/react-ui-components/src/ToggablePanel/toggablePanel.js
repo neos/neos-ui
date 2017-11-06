@@ -6,6 +6,10 @@ import mergeClassNames from 'classnames';
 const validStyleKeys = ['condensed'];
 
 export default class ToggablePanel extends PureComponent {
+    state = {
+        isOpen: false
+    };
+
     static propTypes = {
         /**
          * This prop controls if the contents are visible or not.
@@ -33,15 +37,6 @@ export default class ToggablePanel extends PureComponent {
         isOpen: false
     };
 
-    constructor(props, context) {
-        super(props, context);
-
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-            isOpen: props.isOpen
-        };
-    }
-
     componentWillReceiveProps(newProps) {
         const {isOpen} = newProps;
         const isStateLess = Boolean(newProps.onPanelToggle);
@@ -49,6 +44,10 @@ export default class ToggablePanel extends PureComponent {
         if (isOpen !== this.state.isOpen && !isStateLess) {
             this.setState({isOpen});
         }
+    }
+
+    toggle = () => {
+        this.setState({isOpen: !this.state.isOpen});
     }
 
     render() {
@@ -69,10 +68,6 @@ export default class ToggablePanel extends PureComponent {
                 {this.props.children}
             </StatelessToggablePanel>
         );
-    }
-
-    toggle() {
-        this.setState({isOpen: !this.state.isOpen});
     }
 }
 

@@ -1,10 +1,11 @@
+import {$get} from 'plow-js';
 //
 // Used to contextually filter toolbar components
 //
-export default (enabledFormattingRuleIds, formattingUnderCursor) => componentDefinition => {
+export default (inlineEditorOptions, formattingUnderCursor) => componentDefinition => {
     if (componentDefinition.isVisibleWhen) {
-        return componentDefinition.isVisibleWhen(enabledFormattingRuleIds, formattingUnderCursor);
+        return componentDefinition.isVisibleWhen(inlineEditorOptions, formattingUnderCursor);
     }
 
-    return enabledFormattingRuleIds.indexOf(componentDefinition.formattingRule) !== -1;
+    return Boolean($get(['formatting', componentDefinition.formattingRule], inlineEditorOptions));
 };

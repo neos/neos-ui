@@ -7,19 +7,20 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
     const richtextToolbarRegistry = globalRegistry.get('ckEditor').get('richtextToolbar');
     const pluginsRegistry = globalRegistry.get('ckEditor').get('plugins');
     const i18nRegistry = globalRegistry.get('i18n');
-    const enabledFormattingRuleIds = richtextToolbarRegistry
-        .getEnabledFormattingRulesForNodeTypeAndProperty(nodeType.name)(propertyName);
+    const formattingEditorOptions = $get('formatting', editorOptions);
     const placeholder = unescape(i18nRegistry.translate($get('placeholder', editorOptions)));
     const isAutoParagraphEnabled = Boolean($get('autoparagraph', editorOptions));
     const interfaceLanguage = String($get('interfaceLanguage', userPreferences));
 
-    const ckEditorConfiguration = enabledFormattingRuleIds
-        .map(formattingRuleId => formattingRulesRegistry.get(formattingRuleId))
-        .reduce((ckEditorConfiguration, formattingDefinition) => {
-            const {config} = formattingDefinition;
+    const ckEditorConfiguration = Object.entries(formattingEditorOptions || {})
+        .reduce((ckEditorConfiguration, [formattingRuleId, isFormattingRuleEnabled]) => {
+            if (isFormattingRuleEnabled) {
+                const formattingDefinition = formattingRulesRegistry.get(formattingRuleId);
+                const {config} = formattingDefinition;
 
-            if (config) {
-                return Object.assign({}, ckEditorConfiguration, config(ckEditorConfiguration));
+                if (config) {
+                    ckEditorConfiguration = Object.assign({}, ckEditorConfiguration, config(ckEditorConfiguration, formattingEditorOptions[formattingRuleId]));
+                }
             }
 
             return ckEditorConfiguration;

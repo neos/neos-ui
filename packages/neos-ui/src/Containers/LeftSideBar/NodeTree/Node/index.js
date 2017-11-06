@@ -36,6 +36,10 @@ const decodeLabel = flowright(
 );
 
 export default class Node extends PureComponent {
+    state = {
+        shouldScrollIntoView: false
+    };
+
     static propTypes = {
         isContentTreeNode: PropTypes.bool,
         rootNode: PropTypes.object,
@@ -69,17 +73,6 @@ export default class Node extends PureComponent {
         onNodeDrag: PropTypes.func,
         onNodeDrop: PropTypes.func
     };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            shouldScrollIntoView: false
-        };
-
-        this.handleNodeToggle = this.handleNodeToggle.bind(this);
-        this.handleNodeClick = this.handleNodeClick.bind(this);
-    }
 
     componentDidMount() {
         // Always request scroll on first render if given node is focused
@@ -282,12 +275,12 @@ export default class Node extends PureComponent {
         );
     }
 
-    handleNodeToggle() {
+    handleNodeToggle = () => {
         const {node, onNodeToggle} = this.props;
         onNodeToggle($get('contextPath', node));
     }
 
-    handleNodeClick() {
+    handleNodeClick = () => {
         const {node, onNodeFocus, onNodeClick} = this.props;
         onNodeFocus($get('contextPath', node));
         onNodeClick($get('uri', node), $get('contextPath', node));

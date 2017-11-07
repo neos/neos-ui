@@ -26,12 +26,6 @@ const emptyFn = () => {};
     reauthenticationSucceeded: actions.System.reauthenticationSucceeded
 })
 export default class ReloginDialog extends PureComponent {
-    static propTypes = {
-        i18nRegistry: PropTypes.object.isRequired,
-        authenticationTimeout: PropTypes.bool.isRequired,
-        reauthenticationSucceeded: PropTypes.func.isRequired
-    };
-
     defaultState = {
         message: false,
         username: '',
@@ -39,10 +33,13 @@ export default class ReloginDialog extends PureComponent {
         isLoading: false
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {...this.defaultState};
-    }
+    state = {...this.defaultState};
+
+    static propTypes = {
+        i18nRegistry: PropTypes.object.isRequired,
+        authenticationTimeout: PropTypes.bool.isRequired,
+        reauthenticationSucceeded: PropTypes.func.isRequired
+    };
 
     handleUsernameChange = username => {
         this.setState({username});

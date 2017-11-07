@@ -50,12 +50,6 @@ export default class ContentCanvas extends PureComponent {
         loadedSrc: ''
     };
 
-    constructor(props) {
-        super(props);
-
-        this.onFrameChange = this.handleFrameChanges.bind(this);
-    }
-
     render() {
         const {
             isFringeLeft,
@@ -122,7 +116,7 @@ export default class ContentCanvas extends PureComponent {
         );
     }
 
-    handleFrameChanges(iframeWindow, iframeDocument) {
+    onFrameChange = (iframeWindow, iframeDocument) => {
         if (iframeDocument.__isInitialized) {
             return;
         }

@@ -29,7 +29,8 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
                 removePlugins: 'floatingspace,maximize,resize,liststyle',
                 autoParagraph: isAutoParagraphEnabled,
                 entities: false,
-                basicEntities: false
+                basicEntities: false,
+                title: propertyName
             },
             placeholder ? {neosPlaceholder: placeholder} : {}
         ));

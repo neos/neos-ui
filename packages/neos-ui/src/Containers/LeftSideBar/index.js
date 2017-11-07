@@ -24,10 +24,9 @@ import style from './style.css';
     documentNode: selectors.UI.ContentCanvas.documentNodeSelector
 }))
 export default class LeftSideBar extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {isBottomOpen: true};
-    }
+    state = {
+        isBottomOpen: true
+    };
 
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,

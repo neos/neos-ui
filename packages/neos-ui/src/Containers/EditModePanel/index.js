@@ -7,6 +7,7 @@ import {memoize} from 'ramda';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import I18n from '@neos-project/neos-ui-i18n';
 
 import Panel from './Panel';
 import style from './style.css';
@@ -69,7 +70,7 @@ export default class EditModePanel extends PureComponent {
             <div className={classNames}>
                 <div className={style.editModePanel__wrapper}>
                     <Panel
-                        title="Editing Mode"
+                        title={<I18n id="content.components.editPreviewPanel.modes" fallback="Editing Modes"/>}
                         className={style.editModePanel__editingModes}
                         modes={editPreviewModesList.filter(editPreviewMode => editPreviewMode.isEditingMode && editPreviewMode.id !== editPreviewMode)}
                         current={editPreviewMode}
@@ -78,7 +79,7 @@ export default class EditModePanel extends PureComponent {
                         onPreviewModeClick={this.handleEditPreviewModeClick}
                         />
                     <Panel
-                        title="Preview Central"
+                        title={<I18n id="content.components.editPreviewPanel.previewCentral" fallback="Preview Central"/>}
                         className={style.editModePanel__previewModes}
                         modes={editPreviewModesList.filter(editPreviewMode => editPreviewMode.isPreviewMode && editPreviewMode.id !== editPreviewMode)}
                         current={editPreviewMode}

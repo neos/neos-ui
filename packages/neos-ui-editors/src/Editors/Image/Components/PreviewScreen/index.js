@@ -16,11 +16,6 @@ export default class PreviewScreen extends PureComponent {
         highlight: PropTypes.bool
     };
 
-    constructor(props) {
-        super(props);
-        this.setAssetUploadReference = this.setAssetUploadReference.bind(this);
-    }
-
     chooseFromLocalFileSystem() {
         this.assetUpload.chooseFromLocalFileSystem();
     }
@@ -61,7 +56,7 @@ export default class PreviewScreen extends PureComponent {
         );
     }
 
-    setAssetUploadReference(ref) {
+    setAssetUploadReference = ref => {
         if (ref === null) {
             this.assetUpload = null;
             return;

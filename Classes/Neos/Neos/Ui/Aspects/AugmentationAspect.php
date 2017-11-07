@@ -133,12 +133,17 @@ class AugmentationAspect
      */
     public function contentElementAugmentation(JoinPointInterface $joinPoint)
     {
-        if (!$this->session->isStarted() || !$this->session->getData('__neosEnabled__')) {
+        /** @var NodeInterface $node */
+        $node = $joinPoint->getMethodArgument('node');
+
+        if (
+            !$this->session->isStarted()
+            || !$this->session->getData('__neosEnabled__')
+            || $node->getContext()->getWorkspace()->isPublicWorkspace()
+        ) {
             return $joinPoint->getAdviceChain()->proceed($joinPoint);
         }
 
-        /** @var NodeInterface $node */
-        $node = $joinPoint->getMethodArgument('node');
         $content = $joinPoint->getMethodArgument('content');
 
         // Stay compatible with Neos 3.0. When we remove this compatibility, we can convert everything to "fusionPath").
@@ -223,6 +228,10 @@ class AugmentationAspect
      */
     protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {
+        if ($documentNode->getContext()->getWorkspace()->isPublicWorkspace()) {
+            return;
+        }
+
         foreach ($documentNode->getChildNodes() as $node) {
             if ($node->getNodeType()->isOfType('Neos.Neos:Document') === true) {
                 continue;

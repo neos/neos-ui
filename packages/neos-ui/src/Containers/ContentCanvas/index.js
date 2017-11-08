@@ -91,7 +91,7 @@ export default class ContentCanvas extends PureComponent {
 
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
-            <div className={classNames}>
+            <div className={classNames} style={canvasContentStyle}>
                 <div id="centerArea"/>
                 <div
                     className={style.contentCanvas__itemWrapper}

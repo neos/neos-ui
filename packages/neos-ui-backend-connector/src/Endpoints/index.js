@@ -124,6 +124,48 @@ const extractFileEndingFromUri = uri => {
     return parts.length ? '.' + parts[parts.length - 1] : '';
 };
 
+const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: urlWithParams('/neos/service/assets', {searchTerm}),
+
+    method: 'GET',
+    credentials: 'include'
+}))
+    .then(result => result.text())
+    .then(result => {
+        const d = document.createElement('div');
+        d.innerHTML = result;
+        const assetRoot = d.querySelector('.assets');
+
+        return Array.prototype.map.call(assetRoot.querySelectorAll('.asset'), asset => ({
+            dataType: 'Neos.Media:Asset',
+            loaderUri: 'asset://' + asset.querySelector('.asset-identifier').innerText,
+            label: asset.querySelector('.asset-label').innerText,
+            preview: asset.querySelector('[rel=thumbnail]').getAttribute('href'),
+            identifier: asset.querySelector('.asset-identifier').innerText
+        }));
+    });
+
+const assetDetail = identifier => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: '/neos/service/assets/' + identifier,
+
+    method: 'GET',
+    credentials: 'include'
+}))
+    .then(result => result.text())
+    .then(result => {
+        const d = document.createElement('div');
+        d.innerHTML = result;
+        const asset = d.querySelector('.asset');
+
+        return {
+            dataType: 'Neos.Media:Asset',
+            loaderUri: 'asset://' + asset.querySelector('.asset-identifier').innerText,
+            label: asset.querySelector('.asset-label').innerText,
+            preview: asset.querySelector('[rel=preview]').getAttribute('href'),
+            identifier: asset.querySelector('.asset-identifier').innerText
+        };
+    });
+
 /**
  * searchTerm:se
  * nodeTypes[]:TYPO3.Neos.NodeTypes:Page
@@ -150,6 +192,8 @@ const searchNodes = options => fetchWithErrorHandling.withCsrfToken(() => ({
         return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => {
             const uri = node.querySelector('.node-frontend-uri').innerText;
             return {
+                dataType: 'Neos.ContentRepository:Node',
+                loaderUri: 'node://' + node.querySelector('.node-identifier').innerText,
                 label: node.querySelector('.node-label').innerText,
                 identifier: node.querySelector('.node-identifier').innerText,
                 nodeType: node.querySelector('.node-type').innerText,
@@ -286,6 +330,8 @@ export default () => ({
     changeBaseWorkspace,
     createImageVariant,
     uploadAsset,
+    assetSearch,
+    assetDetail,
     searchNodes,
     getSingleNode,
     adoptNodeToOtherDimension,

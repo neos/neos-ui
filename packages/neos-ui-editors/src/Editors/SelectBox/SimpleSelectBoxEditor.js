@@ -51,7 +51,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
 
     render() {
         const {commit, value, i18nRegistry, highlight} = this.props;
-        const options = Object.assign({}, this.defaultOptions, this.props.options);
+        const options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
 
         const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, options.values);
 

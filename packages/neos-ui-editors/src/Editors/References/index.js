@@ -96,7 +96,7 @@ export default class ReferencesEditor extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-        const threshold = $get('options.threshold', this.props) || this.defaultOptions.threshold;
+        const threshold = $get('options.threshold', this.props) || this.constructor.defaultOptions.threshold;
         if (searchTerm && searchTerm.length >= threshold) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)

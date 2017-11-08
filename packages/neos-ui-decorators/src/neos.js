@@ -11,7 +11,7 @@ const buildConfigurationAndGlobalRegistry = defaultMemoize((configuration, globa
 // configuration
 //
 export default mapRegistriesToProps => WrappedComponent => {
-    return class NeosDecorator extends PureComponent {
+    const Decorator = class NeosDecorator extends PureComponent {
         static Original = WrappedComponent;
 
         static contextTypes = {
@@ -34,4 +34,7 @@ export default mapRegistriesToProps => WrappedComponent => {
             );
         }
     };
+
+    Decorator.WrappedComponent = WrappedComponent;
+    return Decorator;
 };

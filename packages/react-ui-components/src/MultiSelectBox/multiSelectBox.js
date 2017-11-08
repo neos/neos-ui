@@ -118,6 +118,14 @@ export default class MultiSelectBox extends PureComponent {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.values !== nextProps.values) {
+            this.setState({
+                draggableValues: nextProps.values
+            });
+        }
+    }
+
     render() {
         const {
             searchOptions,

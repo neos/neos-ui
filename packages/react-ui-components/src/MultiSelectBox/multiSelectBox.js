@@ -101,6 +101,11 @@ export default class MultiSelectBox extends PureComponent {
         onSearchTermChange: PropTypes.func,
 
         /**
+         * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
+         */
+        optionComponent: PropTypes.any,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
@@ -152,7 +157,8 @@ export default class MultiSelectBox extends PureComponent {
             IconComponent,
             allowEmpty,
             options,
-            dndType
+            dndType,
+            optionComponent
         } = this.props;
 
         const {draggableValues} = this.state;
@@ -201,6 +207,7 @@ export default class MultiSelectBox extends PureComponent {
                     searchTerm={searchTerm}
                     onSearchTermChange={onSearchTermChange}
                     onValueChange={this.handleNewValueSelected}
+                    optionComponent={optionComponent}
                     />
             </div>
         );

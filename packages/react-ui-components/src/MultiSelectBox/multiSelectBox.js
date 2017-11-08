@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 import {DragSource, DropTarget} from 'react-dnd';
 import mergeClassNames from 'classnames';
 
+const ensureIsArray = v => {
+    if (Array.isArray(v)) {
+        return v;
+    }
+    console.warn('MultiSelectBox values were no array - falling back to empty list; the following was given: ', v);
+    return [];
+};
+
 export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {
@@ -114,8 +122,16 @@ export default class MultiSelectBox extends PureComponent {
         super(props);
 
         this.state = {
-            draggableValues: this.props.values
+            draggableValues: ensureIsArray(this.props.values)
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.values !== nextProps.values) {
+            this.setState({
+                draggableValues: ensureIsArray(nextProps.values)
+            });
+        }
     }
 
     render() {

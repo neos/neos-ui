@@ -6,6 +6,7 @@ import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {dndTypes} from '@neos-project/neos-ui-constants';
+import ReferenceOption from '../Reference/ReferenceOption';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
@@ -136,6 +137,7 @@ export default class ReferencesEditor extends PureComponent {
             searchTerm={this.state.searchTerm}
             searchOptions={this.state.searchOptions}
             onSearchTermChange={this.handleSearchTermChange}
+            optionComponent={ReferenceOption}
             />);
     }
 }

@@ -10,7 +10,8 @@ import ReferenceOption from './ReferenceOption';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
-    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
+    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
+    nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -18,7 +19,7 @@ import ReferenceOption from './ReferenceOption';
 export default class ReferenceEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.string,
-        highlight: PropTypes.string,
+        highlight: PropTypes.bool,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -31,6 +32,9 @@ export default class ReferenceEditor extends PureComponent {
             resolveValue: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
+        nodeTypeRegistry: PropTypes.shape({
+            getNodeType: PropTypes.func.isRequired
+        }),
 
         contextForNodeLinking: PropTypes.shape({
             toJS: PropTypes.func.isRequired
@@ -48,7 +52,7 @@ export default class ReferenceEditor extends PureComponent {
         this.state = {
             searchTerm: '',
             isLoading: false,
-            searchResults: [],
+            searchOptions: [],
             results: []
         };
     }
@@ -65,6 +69,14 @@ export default class ReferenceEditor extends PureComponent {
             this.setState({isLoading: true});
             this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.value)
                 .then(options => {
+                    options.forEach(option => {
+                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
+                        const icon = $get('ui.icon', nodeType);
+                        if (icon) {
+                            option.icon = icon;
+                        }
+                    });
+
                     this.setState({
                         isLoading: false,
                         options

@@ -52,7 +52,7 @@ export default class ReferencesEditor extends PureComponent {
         this.state = {
             searchTerm: '',
             isLoading: false,
-            searchResults: [],
+            searchOptions: [],
             results: []
         };
     }

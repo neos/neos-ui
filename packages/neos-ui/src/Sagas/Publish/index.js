@@ -9,6 +9,7 @@ import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 function * watchPublish() {
+    const {q} = backend.get();
     const {publish} = backend.get().endpoints;
 
     yield * takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
@@ -22,8 +23,18 @@ function * watchPublish() {
                 yield put(actions.UI.Remote.finishPublishing());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
-                // Reload the iframe to retrieve new preview uri
-                getGuestFrameDocument().location.reload();
+                //
+                // Reload the current content canvas document node, to retrieve a new preview uri,
+                // but only if the document is amongst the latest published nodes
+                //
+                const contentCanvasContextPath = yield select($get('ui.contentCanvas.contextPath'));
+
+                if (nodeContextPaths.contains(contentCanvasContextPath)) {
+                    const [contentCanvasNode] = yield q(contentCanvasContextPath).get();
+                    const previewUrl = $get('previewUri', contentCanvasNode);
+
+                    yield put(actions.UI.ContentCanvas.setPreviewUrl(previewUrl));
+                }
             } catch (error) {
                 console.error('Failed to publish', error);
             }

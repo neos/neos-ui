@@ -41,11 +41,19 @@ const Button = props => {
         attributes.disabled = 'disabled';
     }
 
-    return (
+    const button = (
         <button {...rest} {...attributes} className={finalClassName} role="button" ref={_refHandler(isFocused)}>
             {children}
         </button>
     );
+
+    if (isDisabled) {
+        return (
+            <div className={theme.disabledButtonOverlay}>{button}</div>
+        );
+    }
+
+    return button;
 };
 Button.propTypes = {
     /**

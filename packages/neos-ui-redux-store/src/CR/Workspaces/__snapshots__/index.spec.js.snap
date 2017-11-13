@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The reducer should create a valid initial state 1`] = `
+Object {
+  "cr": Object {
+    "workspaces": Object {
+      "personalWorkspace": Object {
+        "initial": "workspace-data",
+      },
+    },
+  },
+}
+`;
+
+exports[`UPDATE should set personal workspace data to given data 1`] = `
+Object {
+  "cr": Object {
+    "workspaces": Object {
+      "personalWorkspace": Object {
+        "totally": "different-workspace-data",
+      },
+    },
+  },
+}
+`;

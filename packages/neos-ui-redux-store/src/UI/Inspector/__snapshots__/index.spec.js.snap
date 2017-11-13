@@ -1,0 +1,257 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The "clear" action should remove pending changes for the currently focused node. 1`] = `
+Object {
+  "cr": Object {
+    "nodes": Object {
+      "byContextPath": Object {
+        "/my/path@user-foo": Object {
+          "contextPath": "/my/path@user-foo",
+        },
+      },
+      "focused": Object {
+        "contextPath": "/my/path@user-foo",
+      },
+    },
+  },
+  "ui": Object {
+    "inspector": Object {
+      "shouldPromptToHandleUnappliedChanges": false,
+      "valuesByNodePath": Object {
+        "/my/other/path@user-foo": Object {
+          "test4": Object {
+            "value": "value4",
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`The "clear" action should remove pending changes for the currently focused node. 2`] = `
+Object {
+  "cr": Object {
+    "nodes": Object {
+      "byContextPath": Object {
+        "/my/path@user-foo": Object {
+          "contextPath": "/my/path@user-foo",
+        },
+      },
+      "focused": Object {
+        "contextPath": "/my/path@user-foo",
+      },
+    },
+  },
+  "ui": Object {
+    "inspector": Object {
+      "shouldPromptToHandleUnappliedChanges": false,
+      "valuesByNodePath": Object {
+        "/my/other/path@user-foo": Object {
+          "test4": Object {
+            "value": "value4",
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`The "commit" action should ignore the last modification, if it doesn't differ from the current node state 1`] = `
+Object {
+  "cr": Object {
+    "nodes": Object {
+      "byContextPath": Object {
+        "/my/path@user-foo": Object {
+          "contextPath": "/my/path@user-foo",
+          "properties": Object {
+            "title": "Foo",
+          },
+        },
+      },
+      "focused": Object {
+        "contextPath": "/my/path@user-foo",
+      },
+    },
+  },
+  "ui": Object {
+    "inspector": Object {
+      "valuesByNodePath": Object {},
+    },
+  },
+}
+`;
+
+exports[`The "commit" action should store the last modification on the currently focused node. 1`] = `
+Object {
+  "cr": Object {
+    "nodes": Object {
+      "byContextPath": Object {
+        "/my/path@user-foo": Object {
+          "contextPath": "/my/path@user-foo",
+        },
+      },
+      "focused": Object {
+        "contextPath": "/my/path@user-foo",
+      },
+    },
+  },
+  "ui": Object {
+    "inspector": Object {
+      "valuesByNodePath": Object {
+        "/my/path@user-foo": Object {
+          "test": Object {
+            "value": "value",
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`The "commit" action should store the last modification on the currently focused node. 2`] = `
+Object {
+  "cr": Object {
+    "nodes": Object {
+      "byContextPath": Object {
+        "/my/path@user-foo": Object {
+          "contextPath": "/my/path@user-foo",
+        },
+      },
+      "focused": Object {
+        "contextPath": "/my/path@user-foo",
+      },
+    },
+  },
+  "ui": Object {
+    "inspector": Object {
+      "valuesByNodePath": Object {
+        "/my/path@user-foo": Object {
+          "test": Object {
+            "value": "another value",
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`The "commit" action should store the last modification on the currently focused node. 3`] = `
+Object {
+  "cr": Object {
+    "nodes": Object {
+      "byContextPath": Object {
+        "/my/path@user-foo": Object {
+          "contextPath": "/my/path@user-foo",
+        },
+      },
+      "focused": Object {
+        "contextPath": "/my/path@user-foo",
+      },
+    },
+  },
+  "ui": Object {
+    "inspector": Object {
+      "valuesByNodePath": Object {
+        "/my/path@user-foo": Object {
+          "test": Object {
+            "value": "another value",
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`The "commit" action should store the last modification on the currently focused node. 4`] = `
+Object {
+  "cr": Object {
+    "nodes": Object {
+      "byContextPath": Object {
+        "/my/path@user-foo": Object {
+          "contextPath": "/my/path@user-foo",
+        },
+      },
+      "focused": Object {
+        "contextPath": "/my/path@user-foo",
+      },
+    },
+  },
+  "ui": Object {
+    "inspector": Object {
+      "valuesByNodePath": Object {
+        "/my/path@user-foo": Object {
+          "test": Object {
+            "hooks": Object {
+              "some": "hook",
+            },
+            "value": "another value",
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`The "discard" action should remove pending changes for the currently focused node. 1`] = `
+Object {
+  "cr": Object {
+    "nodes": Object {
+      "byContextPath": Object {
+        "/my/path@user-foo": Object {
+          "contextPath": "/my/path@user-foo",
+        },
+      },
+      "focused": Object {
+        "contextPath": "/my/path@user-foo",
+      },
+    },
+  },
+  "ui": Object {
+    "inspector": Object {
+      "shouldPromptToHandleUnappliedChanges": false,
+      "valuesByNodePath": Object {
+        "/my/other/path@user-foo": Object {
+          "test4": Object {
+            "value": "value4",
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`The "discard" action should remove pending changes for the currently focused node. 2`] = `
+Object {
+  "cr": Object {
+    "nodes": Object {
+      "byContextPath": Object {
+        "/my/path@user-foo": Object {
+          "contextPath": "/my/path@user-foo",
+        },
+      },
+      "focused": Object {
+        "contextPath": "/my/path@user-foo",
+      },
+    },
+  },
+  "ui": Object {
+    "inspector": Object {
+      "shouldPromptToHandleUnappliedChanges": false,
+      "valuesByNodePath": Object {
+        "/my/other/path@user-foo": Object {
+          "test4": Object {
+            "value": "value4",
+          },
+        },
+      },
+    },
+  },
+}
+`;

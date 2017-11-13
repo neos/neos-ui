@@ -4,26 +4,26 @@ import toJson from 'enzyme-to-json';
 import Badge from './badge.js';
 
 describe('<Badge/>', () => {
-  let props;
+    let props;
 
-  beforeEach(() => {
-    props = {
-      theme: {
-          badge: 'badgeClassName'
-      },
-      label: 'Foo children'
-    };
-  });
+    beforeEach(() => {
+        props = {
+            theme: {
+                badge: 'badgeClassName'
+            },
+            label: 'Foo children'
+        };
+    });
 
-  it('should render correctly.', () => {
-    const wrapper = shallow(<Badge {...props} />);
+    it('should render correctly.', () => {
+        const wrapper = shallow(<Badge {...props}/>);
 
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 
-  it('should allow the propagation of "className" with the "className" prop.', () => {
-    const wrapper = shallow(<Badge {...props} className="fooClassName" />);
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<Badge {...props} className="fooClassName"/>);
 
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 });

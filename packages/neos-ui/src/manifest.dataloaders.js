@@ -160,6 +160,80 @@ manifest('main.dataloaders', {}, globalRegistry => {
         }
     });
 
+    dataLoadersRegistry.set('AssetLookup', {
+        description: `
+            Look up assets:
+
+            - by identifier (UUID) (resolveValue())
+            - by searching (search())
+        `,
+
+        _lru() {
+            if (!this._lruCache) {
+                this._lruCache = new HLRU(500);
+            }
+            return this._lruCache;
+        },
+
+        resolveValue(options, identifier) {
+            const cacheKey = makeCacheKey('resolve', {options, identifier});
+            if (this._lru().has(cacheKey)) {
+                return this._lru().get(cacheKey);
+            }
+
+            const assetDetailApi = backend.get().endpoints.assetDetail;
+            const result = assetDetailApi(identifier);
+            const resultPromise = Promise.all([result]);
+            this._lru().set(cacheKey, resultPromise);
+            return resultPromise;
+        },
+
+        resolveValues(options, identifiers) {
+            return Promise.all(
+                identifiers.map(identifier =>
+                    this.resolveValue(options, identifier)
+                ).filter(promise => Boolean(promise)) // remove "null" values
+            );
+        },
+
+        search(options, searchTerm) {
+            if (!searchTerm) {
+                return Promise.resolve([]);
+            }
+
+            const cacheKey = makeCacheKey('search', {options, searchTerm});
+
+            if (this._lru().has(cacheKey)) {
+                return this._lru().get(cacheKey);
+            }
+
+            // Debounce AJAX requests for 300 ms
+            return new Promise(resolve => {
+                if (this._debounceTimer) {
+                    window.clearTimeout(this._debounceTimer);
+                }
+                this._debounceTimer = window.setTimeout(resolve, 300);
+            }).then(() => {
+                // trigger query
+                const assetSearchApi = backend.get().endpoints.assetSearch;
+                const resultPromise = assetSearchApi(searchTerm);
+
+                this._lru().set(cacheKey, resultPromise);
+
+                // Next to storing the full result in the cache, we also store each individual result in the cache;
+                // in the same format as expected by resolveValue(); so that it is already loaded and does not need
+                // to be loaded once the element has been selected.
+                resultPromise.then(results => {
+                    results.forEach(result => {
+                        const cacheKey = makeCacheKey('resolve', {options, identifier: result.identifier});
+                        this._lru().set(cacheKey, Promise.all([result]));
+                    });
+                });
+                return resultPromise;
+            });
+        }
+    });
+
     dataLoadersRegistry.set('DataSources', {
         description: `
             Look up Data Source Values:
@@ -203,6 +277,60 @@ manifest('main.dataloaders', {}, globalRegistry => {
         // "identifiers" is (currently un-used) 2nd parameter
         resolveValues(options) {
             return this._loadDataSourcesByOptions(options);
+        }
+    });
+
+    dataLoadersRegistry.set('LinkLookup', {
+        description: `
+            Joined lookup for nodes and assets:
+
+            - by identifier (UUID) (resolveValue())
+            - by searching (search())
+        `,
+
+        _removePrefixFromIdentifier(identifier, prefix) {
+            return identifier && identifier.replace(prefix + '://', '');
+        },
+
+        _removeAnyPrefixFromIdentifier(identifierWithPrefix) {
+            return identifierWithPrefix && identifierWithPrefix.replace(/^[A-Za-z0-9_-]*:\/\/(.*)/, '$1');
+        },
+
+        _splitPrefixAndIdentifier(identifierWithPrefix) {
+            return identifierWithPrefix && identifierWithPrefix.match(/^([A-Za-z0-9_-]*):\/\/(.*)/);
+        },
+
+        dataLoaders() {
+            return [
+                {prefix: 'node', dataLoader: dataLoadersRegistry.get('NodeLookup')},
+                {prefix: 'asset', dataLoader: dataLoadersRegistry.get('AssetLookup')}
+            ];
+        },
+
+        resolveValue(options, identifierWithPrefix) {
+            const prefixAndIdentifier = this._splitPrefixAndIdentifier(identifierWithPrefix);
+            const prefix = prefixAndIdentifier[1];
+            const identifier = prefixAndIdentifier[2];
+
+            const dataLoader = this.dataLoaders().reduce((current, item) =>
+                (item.prefix === prefix) ? item.dataLoader : current
+            , null);
+
+            if (!dataLoader) {
+                return [{identifier: identifierWithPrefix, loaderUri: identifierWithPrefix, label: identifierWithPrefix}];
+            }
+
+            return dataLoader.resolveValue(options, identifier);
+        },
+
+        search(options, searchTerm) {
+            return Promise.all(this.dataLoaders().map(dataLoaderInfo =>
+                dataLoaderInfo.dataLoader.search(options, searchTerm)
+            )).then(values => {
+                return values.reduce((runningValues, singleDataLoaderValues) =>
+                    runningValues.concat(singleDataLoaderValues)
+                , []);
+            });
         }
     });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta8",
   "description": "Extensibility mechanisms for the Neos CMS UI",
   "main": "./src/index.js",
   "scripts": {
@@ -14,8 +14,8 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "dependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta4",
-    "@neos-project/utils-helpers": "1.0.0-beta4",
+    "@neos-project/build-essentials": "1.0.0-beta8",
+    "@neos-project/positional-array-sorter": "1.0.0-beta8",
     "babel-core": "^6.13.2",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.4",
@@ -39,7 +39,8 @@
   "jest": {
     "transformIgnorePatterns": [],
     "setupFiles": [
-      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js"
+      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js",
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
     ],
     "transform": {
       "neos-ui-extensibility/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

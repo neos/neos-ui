@@ -1,6 +1,7 @@
 import initializeUse from './Use/index';
 import initializeFlowQuery from './FlowQuery/index';
 import initializeEndpoints from './Endpoints/index';
+import fetchWithErrorHandling from './FetchWithErrorHandling/index';
 
 const createReadOnlyValue = value => ({
     value,
@@ -56,3 +57,8 @@ export const createPlugin = (identifier, factory) => {
     factory.identifier = identifier;
     return factory;
 };
+
+//
+// Expose fetchWithErrorHandling
+//
+export {fetchWithErrorHandling};

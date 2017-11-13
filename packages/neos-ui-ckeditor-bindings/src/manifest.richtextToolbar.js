@@ -289,7 +289,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         component: IconButtonComponent,
         callbackPropName: 'onClick',
 
-        icon: 'table',
+        icon: 'eraser',
         hoverStyle: 'brand'
     });
 

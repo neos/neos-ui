@@ -63,7 +63,7 @@ const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCs
 .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfToken(() => ({
-    url: `neos/content/image-with-metadata?image=${imageVariantUuid}`,
+    url: `/neos/content/image-with-metadata?image=${imageVariantUuid}`,
 
     method: 'GET',
     credentials: 'include',
@@ -83,7 +83,7 @@ const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfTok
  * @param asset
  */
 const createImageVariant = (originalAssetUuid, adjustments) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-    url: 'neos/content/create-image-variant',
+    url: '/neos/content/create-image-variant',
 
     method: 'POST',
     credentials: 'include',
@@ -107,7 +107,7 @@ const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHa
     data.append('metadata', metadata);
 
     return {
-        url: 'neos/content/upload-asset',
+        url: '/neos/content/upload-asset',
 
         method: 'POST',
         credentials: 'include',
@@ -123,6 +123,48 @@ const extractFileEndingFromUri = uri => {
     const parts = uri.split('.');
     return parts.length ? '.' + parts[parts.length - 1] : '';
 };
+
+const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: urlWithParams('/neos/service/assets', {searchTerm}),
+
+    method: 'GET',
+    credentials: 'include'
+}))
+    .then(result => result.text())
+    .then(result => {
+        const d = document.createElement('div');
+        d.innerHTML = result;
+        const assetRoot = d.querySelector('.assets');
+
+        return Array.prototype.map.call(assetRoot.querySelectorAll('.asset'), asset => ({
+            dataType: 'Neos.Media:Asset',
+            loaderUri: 'asset://' + asset.querySelector('.asset-identifier').innerText,
+            label: asset.querySelector('.asset-label').innerText,
+            preview: asset.querySelector('[rel=thumbnail]').getAttribute('href'),
+            identifier: asset.querySelector('.asset-identifier').innerText
+        }));
+    });
+
+const assetDetail = identifier => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: '/neos/service/assets/' + identifier,
+
+    method: 'GET',
+    credentials: 'include'
+}))
+    .then(result => result.text())
+    .then(result => {
+        const d = document.createElement('div');
+        d.innerHTML = result;
+        const asset = d.querySelector('.asset');
+
+        return {
+            dataType: 'Neos.Media:Asset',
+            loaderUri: 'asset://' + asset.querySelector('.asset-identifier').innerText,
+            label: asset.querySelector('.asset-label').innerText,
+            preview: asset.querySelector('[rel=preview]').getAttribute('href'),
+            identifier: asset.querySelector('.asset-identifier').innerText
+        };
+    });
 
 /**
  * searchTerm:se
@@ -150,6 +192,8 @@ const searchNodes = options => fetchWithErrorHandling.withCsrfToken(() => ({
         return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => {
             const uri = node.querySelector('.node-frontend-uri').innerText;
             return {
+                dataType: 'Neos.ContentRepository:Node',
+                loaderUri: 'node://' + node.querySelector('.node-identifier').innerText,
                 label: node.querySelector('.node-label').innerText,
                 identifier: node.querySelector('.node-identifier').innerText,
                 nodeType: node.querySelector('.node-type').innerText,
@@ -228,7 +272,7 @@ const setUserPreferences = (key, value) => fetchWithErrorHandling.withCsrfToken(
     data.set('value', value);
 
     return {
-        url: 'neos/service/user-preferences',
+        url: '/neos/service/user-preferences',
 
         method: 'PUT',
         credentials: 'include',
@@ -237,7 +281,7 @@ const setUserPreferences = (key, value) => fetchWithErrorHandling.withCsrfToken(
 }).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const getWorkspaceInfo = () => fetchWithErrorHandling.withCsrfToken(() => ({
-    url: `neos!/service/get-workspace-info`,
+    url: `/neos!/service/get-workspace-info`,
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -286,6 +330,8 @@ export default () => ({
     changeBaseWorkspace,
     createImageVariant,
     uploadAsset,
+    assetSearch,
+    assetDetail,
     searchNodes,
     getSingleNode,
     adoptNodeToOtherDimension,

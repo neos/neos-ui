@@ -37,12 +37,6 @@ class NodeTypeGroupPanel extends PureComponent {
         i18nRegistry: PropTypes.object.isRequired
     };
 
-    constructor(props) {
-        super(props);
-
-        this.handleToggleGroup = this.handleToggleGroup.bind(this);
-    }
-
     render() {
         const {
             group,
@@ -79,7 +73,7 @@ class NodeTypeGroupPanel extends PureComponent {
         );
     }
 
-    handleToggleGroup() {
+    handleToggleGroup = () => {
         const {
             toggleNodeTypeGroup,
             group

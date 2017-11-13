@@ -5,16 +5,13 @@ import {$get, $transform} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import SelectBoxOption from '@neos-project/react-ui-components/src/SelectBox/selectBoxOption';
+import LinkOption from './LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
-
-/* eslint-disable prefer-const */
-let WrappedLinkOption;
 
 /**
  * The Actual StyleSelect component
@@ -68,11 +65,8 @@ export default class LinkIconButton extends PureComponent {
 const isUri = str =>
     str && Boolean(str.match('^(https?://|mailto:|tel:)'));
 
-const stripNodePrefix = str =>
-    str && str.replace('node://', '');
-
 @neos(globalRegistry => ({
-    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
+    linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup')
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -83,7 +77,7 @@ class LinkTextField extends PureComponent {
         formattingRule: PropTypes.string,
         hrefValue: PropTypes.string,
 
-        nodeLookupDataLoader: PropTypes.shape({
+        linkLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
@@ -119,7 +113,7 @@ class LinkTextField extends PureComponent {
         } else {
             if (this.props.hrefValue) {
                 this.setState({isLoading: true});
-                this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), stripNodePrefix(this.props.hrefValue))
+                this.props.linkLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.hrefValue)
                     .then(options => {
                         this.setState({
                             isLoading: false,
@@ -147,7 +141,7 @@ class LinkTextField extends PureComponent {
                 .toggleFormat(this.props.formattingRule, {href: searchTerm});
         } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
-            this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
+            this.props.linkLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
                     this.setState({
                         isLoading: false,
@@ -159,13 +153,19 @@ class LinkTextField extends PureComponent {
 
     // A node has been selected
     handleValueChange = value => {
-        if (value) {
-            getGuestFrameWindow().NeosCKEditorApi
-                .toggleFormat(this.props.formattingRule, {href: 'node://' + value});
-        } else {
+        if (!value) {
             getGuestFrameWindow().NeosCKEditorApi
                 .toggleFormat(this.props.formattingRule, {href: ''});
         }
+
+        getGuestFrameWindow().NeosCKEditorApi
+        .toggleFormat(this.props.formattingRule, {href: value});
+
+        const options = this.state.searchOptions.reduce((current, option) =>
+            (option.loaderUri === value) ? [Object.assign({}, option)] : current
+        , []);
+
+        this.setState({options, searchOptions: []});
     }
 
     render() {
@@ -173,8 +173,8 @@ class LinkTextField extends PureComponent {
             <div className={style.linkIconButton__flyout}>
                 <SelectBox
                     options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
-                    optionValueField="identifier"
-                    value={this.props.hrefValue && stripNodePrefix(this.props.hrefValue)}
+                    optionValueField="loaderUri"
+                    value={this.props.hrefValue}
                     onValueChange={this.handleValueChange}
                     placeholder="Paste a link, or search"
                     displayLoadingIndicator={this.state.isLoading}
@@ -182,38 +182,9 @@ class LinkTextField extends PureComponent {
                     setFocus={true}
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
-                    optionComponent={WrappedLinkOption}
+                    optionComponent={LinkOption}
                     />
             </div>
         );
     }
 }
-
-class LinkOption extends PureComponent {
-    static propTypes = {
-        option: PropTypes.shape({
-            label: PropTypes.string,
-            uriInLiveWorkspace: PropTypes.string,
-            nodeType: PropTypes.string
-        }),
-
-        nodeTypesRegistry: PropTypes.object.isRequired
-    };
-
-    render() {
-        const {option, nodeTypesRegistry} = this.props;
-        const {label, uriInLiveWorkspace, nodeType} = option;
-        const nodeTypeDefinition = nodeTypesRegistry.getNodeType(nodeType);
-        const icon = $get('ui.icon', nodeTypeDefinition);
-        return (
-            <SelectBoxOption {...this.props} className={style.linkIconButton__item} icon={icon}>
-                <span>{label}</span>
-                <span className={style.linkIconButton__link}>{uriInLiveWorkspace}</span>
-            </SelectBoxOption>
-        );
-    }
-}
-
-WrappedLinkOption = neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
-}))(LinkOption);

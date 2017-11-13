@@ -21,11 +21,6 @@ export default class CodeMirrorWrap extends PureComponent {
         value: PropTypes.string
     };
 
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
     editorRefCallback = ref => {
         if (!ref) {
             return;
@@ -53,7 +48,7 @@ export default class CodeMirrorWrap extends PureComponent {
         );
     }
 
-    handleChange(newValue) {
+    handleChange = newValue => {
         this.props.onChange(newValue);
     }
 }

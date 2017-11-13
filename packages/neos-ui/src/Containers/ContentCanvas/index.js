@@ -50,12 +50,6 @@ export default class ContentCanvas extends PureComponent {
         loadedSrc: ''
     };
 
-    constructor(props) {
-        super(props);
-
-        this.onFrameChange = this.handleFrameChanges.bind(this);
-    }
-
     render() {
         const {
             isFringeLeft,
@@ -97,7 +91,7 @@ export default class ContentCanvas extends PureComponent {
 
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
-            <div className={classNames}>
+            <div className={classNames} style={canvasContentStyle}>
                 <div id="centerArea"/>
                 <div
                     className={style.contentCanvas__itemWrapper}
@@ -113,7 +107,7 @@ export default class ContentCanvas extends PureComponent {
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         onLoad={this.handleFrameAccess}
-                        sandbox="allow-same-origin allow-scripts"
+                        sandbox="allow-same-origin allow-scripts allow-forms"
                         >
                         {InlineUI && <InlineUI/>}
                     </Frame>)
@@ -122,7 +116,7 @@ export default class ContentCanvas extends PureComponent {
         );
     }
 
-    handleFrameChanges(iframeWindow, iframeDocument) {
+    onFrameChange = (iframeWindow, iframeDocument) => {
         if (iframeDocument.__isInitialized) {
             return;
         }

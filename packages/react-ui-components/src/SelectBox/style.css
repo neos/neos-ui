@@ -70,6 +70,10 @@
 
 .dropDown__itemLabel {
     padding: 0 var(--halfSpacing);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    width: 100%;
 }
 
 .selectBox__loadingIcon {
@@ -90,6 +94,8 @@
 .selectBox__btnIcon {
     composes: reset from './../reset.css';
     margin-right: .5em;
+    float: left;
+    line-height: var(--goldenUnit);
 }
 
 .selectBox__btnDelete {
@@ -167,4 +173,29 @@
 .selectBox__itemIcon {
     composes: reset from './../reset.css';
     padding-right: .5em;
+}
+
+.complexOption__item {
+    padding: var(--halfSpacing);
+    box-sizing: content-box;
+    height: calc(var(--goldenUnit) * 1.5);
+    line-height: 20px;
+}
+
+.complexOption__secondaryLabel {
+    color: var(--brandColorsContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.complexOption__tertiaryLabel {
+    color: var(--brandColorsContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.complexOption__image {
+    height: calc(var(--goldenUnit) * 1.5);
+    width: auto;
+    float: right;
 }

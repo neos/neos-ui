@@ -1,0 +1,4 @@
+.envelope__error {
+    padding: .5em;
+    border: 1px solid var(--brandColorsError);
+}

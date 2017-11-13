@@ -5,6 +5,8 @@ import {$get, $transform} from 'plow-js';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {dndTypes} from '@neos-project/neos-ui-constants';
+import ReferenceOption from '../Reference/ReferenceOption';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
@@ -17,7 +19,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 export default class ReferencesEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),
-        highlight: PropTypes.string,
+        highlight: PropTypes.bool,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -95,7 +97,7 @@ export default class ReferencesEditor extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-        const threshold = $get('options.threshold', this.props) || this.defaultOptions.threshold;
+        const threshold = $get('options.threshold', this.props) || this.constructor.defaultOptions.threshold;
         if (searchTerm && searchTerm.length >= threshold) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
@@ -124,6 +126,7 @@ export default class ReferencesEditor extends PureComponent {
     render() {
         return (<MultiSelectBox
             options={this.state.options}
+            dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"
             values={this.props.value}
             highlight={this.props.highlight}
@@ -134,6 +137,7 @@ export default class ReferencesEditor extends PureComponent {
             searchTerm={this.state.searchTerm}
             searchOptions={this.state.searchOptions}
             onSearchTermChange={this.handleSearchTermChange}
+            optionComponent={ReferenceOption}
             />);
     }
 }

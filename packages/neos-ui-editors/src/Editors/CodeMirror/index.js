@@ -26,12 +26,6 @@ export default class CodeMirror extends PureComponent {
         highlightingMode: 'htmlmixed'
     };
 
-    constructor(props) {
-        super(props);
-        this.handleOpenCodeEditor = this.handleOpenCodeEditor.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
     render() {
         const {label, identifier} = this.props;
 
@@ -47,11 +41,11 @@ export default class CodeMirror extends PureComponent {
         );
     }
 
-    handleChange(newValue) {
+    handleChange = newValue => {
         this.props.commit(newValue);
     }
 
-    handleOpenCodeEditor() {
+    handleOpenCodeEditor = () => {
         const {secondaryEditorsRegistry} = this.props;
         const {component: CodeMirrorWrap} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/CodeMirrorWrap');
 

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-decorators",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta8",
   "description": "Decorators for Neos CMS UI.",
   "private": true,
   "main": "./src/index.js",
@@ -15,17 +15,20 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta4"
+    "@neos-project/build-essentials": "1.0.0-beta8"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",
-    "react": "^15.6.1"
+    "react": "^16.0.0"
   },
   "dependencies": {
     "reselect": "^2.4.0"
   },
   "license": "GNU GPLv3",
   "jest": {
+    "setupFiles": [
+      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
+    ],
     "transformIgnorePatterns": [],
     "transform": {
       "neos-ui-decorators/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",

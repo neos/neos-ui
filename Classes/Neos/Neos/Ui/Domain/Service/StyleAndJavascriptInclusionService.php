@@ -71,11 +71,15 @@ class StyleAndJavascriptInclusionService
                 $resourceExpression = Utility::evaluateEelExpression($resourceExpression, $this->eelEvaluator, [], $this->defaultContext);
             }
 
+            $hash = null;
+
             if (strpos($resourceExpression, 'resource://') === 0) {
+                // Cache breaker
+                $hash = substr(md5_file($resourceExpression), 0, 8);
                 $resourceExpression = $this->resourceManager->getPublicPackageResourceUriByPath($resourceExpression);
             }
-
-            $result .= $builderForLine($resourceExpression);
+            $finalUri = $hash ? $resourceExpression . '?' . $hash : $resourceExpression;
+            $result .= $builderForLine($finalUri);
         }
 
         return $result;

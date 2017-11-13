@@ -17,6 +17,7 @@ import {renderToolbarComponents} from './Helpers/index';
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
 @neos(globalRegistry => ({
+    // ToDo: Just by searching I haven't found a reference to the `globalRegistry` prop within the Component, do we still need it?
     globalRegistry,
     toolbarRegistry: globalRegistry.get('ckEditor').get('richtextToolbar'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')

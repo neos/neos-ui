@@ -19,6 +19,7 @@ export default richtextToolbarRegistry => {
 
     return (onToggleFormat, enabledFormattingRuleIds, formattingUnderCursor) => {
         return toolbarComponents
+            // ToDo: Why chain two filter methods after each other? Can't we combine them into one to reduce unnecessary iterations?
             .filter(isTopLevelToolbarComponent)
             .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds, formattingUnderCursor))
             .map((componentDefinition, index) => {

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Badge/> should allow the propagation of "className" with the "className" prop. 1`] = `
+<div
+  className="badgeClassName fooClassName"
+>
+  Foo children
+</div>
+`;
+
+exports[`<Badge/> should render correctly. 1`] = `
+<div
+  className="badgeClassName"
+>
+  Foo children
+</div>
+`;

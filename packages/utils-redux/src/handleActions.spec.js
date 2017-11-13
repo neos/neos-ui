@@ -18,13 +18,13 @@ test(`
         type: 'test'
     };
 
-    expect(handler(state, action)).toBe(state);
+    expect(handler(state, action)).toMatchSnapshot();
 });
 
 test(`
     should call the associated handler of the action type with the payload and the returned curry
     function with the state.`, () => {
-    const actionReducer = sinon.spy();
+    const actionReducer = sinon.spy(state => ({...state, foo: 2}));
     const handlers = {
         test: sinon.spy(() => actionReducer)
     };
@@ -35,29 +35,27 @@ test(`
         payload: {}
     };
 
-    handler(state, action);
+    const newState = handler(state, action);
 
     expect(handlers.test.calledOnce).toBe(true);
     expect(handlers.test.calledWith(action.payload)).toBe(true);
 
     expect(actionReducer.calledOnce).toBe(true);
     expect(actionReducer.calledWith(state)).toBe(true);
+    expect(newState).toMatchSnapshot();
 });
 
 test(`should call the all handlers payload and the state if a list was provided as the first argument.`, () => {
-    const handlers = [sinon.spy(state => state), sinon.spy(state => state)];
+    const handlers = [sinon.spy(state => ({...state, foo: 2})), sinon.spy(state => ({...state, bar: 3}))];
     const handler = handleActions(handlers);
-    const state = {};
+    const state = {baz: 1};
     const action = {
         type: 'test',
         payload: {}
     };
-
-    handler(state, action);
+    const newState = handler(state, action);
 
     expect(handlers[0].calledOnce).toBe(true);
-    expect(handlers[0].calledWith(state, action)).toBe(true);
-
     expect(handlers[1].calledOnce).toBe(true);
-    expect(handlers[1].calledWith(state, action)).toBe(true);
+    expect(newState).toMatchSnapshot();
 });

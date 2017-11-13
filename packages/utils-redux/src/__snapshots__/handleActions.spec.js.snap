@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`
+    should call the associated handler of the action type with the payload and the returned curry
+    function with the state. 1`] = `
+Object {
+  "foo": 2,
+}
+`;
+
+exports[`
+    should check if the passed handlers contain the given action object name and return the
+    state if none was found. 1`] = `Object {}`;
+
+exports[`should call the all handlers payload and the state if a list was provided as the first argument. 1`] = `
+Object {
+  "bar": 3,
+  "baz": 1,
+  "foo": 2,
+}
+`;

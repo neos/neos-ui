@@ -2,6 +2,7 @@
 // Get a loaded manifest
 //
 export default function getManifest(manifestIdentifier) {
+    // ToDo: Write a getContext fn
     if (!window) {
         console.warn('Cannot retrieve manifests, because browser environment is missing!');
         return false;
@@ -17,5 +18,6 @@ export default function getManifest(manifestIdentifier) {
 
     const manifests = window.__neosTestManifests;
 
+    // ToDo: Why not use find()?
     return manifests.filter(entry => entry[manifestIdentifier])[0][manifestIdentifier];
 }

@@ -15,6 +15,7 @@
     "postpublish": "greenkeeper-postpublish"
   },
   "devDependencies": {
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
     "@neos-project/build-essentials": "1.0.0-beta8",
     "@neos-project/debug-reason-for-rendering": "1.0.0-beta8"
   },

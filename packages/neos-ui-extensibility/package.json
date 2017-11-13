@@ -13,6 +13,9 @@
     "lint": "eslint src",
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
+  "devDependencies": {
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8"
+  },
   "dependencies": {
     "@neos-project/build-essentials": "1.0.0-beta8",
     "@neos-project/positional-array-sorter": "1.0.0-beta8",

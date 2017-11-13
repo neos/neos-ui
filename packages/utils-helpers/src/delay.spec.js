@@ -4,6 +4,6 @@ test(`should export a function`, () => {
     expect(typeof (delay)).toBe('function');
 });
 
-test(`should resolve after given amount of time`, () => {
+test(`write tests`, () => {
     expect(true).toBe(true);
 });

@@ -2,6 +2,7 @@
 // Check if a manifest has been loaded
 //
 export default function isManifestLoaded(manifestIdentifier) {
+    // ToDo: Write a getContext fn
     if (!window) {
         console.warn('Cannot check manifests, because browser environment is missing!');
         return false;

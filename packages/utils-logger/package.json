@@ -15,6 +15,7 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
     "@neos-project/build-essentials": "1.0.0-beta8"
   },
   "license": "GNU GPLv3",

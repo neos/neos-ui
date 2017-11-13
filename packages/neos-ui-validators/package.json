@@ -13,6 +13,7 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "dependencies": {
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
     "@neos-project/build-essentials": "1.0.0-beta8",
     "@neos-project/neos-ui-extensibility": "1.0.0-beta8",
     "@neos-project/neos-ui-i18n": "1.0.0-beta8",

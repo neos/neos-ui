@@ -26,6 +26,7 @@
     "@kadira/react-storybook-addon-info": "^3.2.1",
     "@kadira/storybook": "^2.11.0",
     "@kadira/storybook-addon-knobs": "^1.2.0",
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
     "@neos-project/build-essentials": "1.0.0-beta8",
     "@neos-project/debug-reason-for-rendering": "1.0.0-beta8"
   },

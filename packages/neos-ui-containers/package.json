@@ -11,7 +11,7 @@
     "build": "exit 0",
     "build:watch": "exit 0",
     "lint": "eslint src",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
+    "jest": "PWD=$(pwd) NODE_ENV=test jest --coverage"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",

@@ -10,14 +10,12 @@
     "build:ui:watch": "yarn build:ui -- --watch",
     "build:ui:watch-poll": "yarn run build:ui -- --watch-poll --watch",
     "start-storybook": "lerna run --scope @neos-project/react-ui-components start",
-    "test": "lerna run test --concurrency 1",
+    "test": "lerna run test",
     "test:e2e": "yarn run testcafe -- chrome:headless Tests/IntegrationTests/* --selector-timeout=30000 --assertion-timeout=30000",
-    "lint": "lerna run lint --concurrency 1",
+    "lint": "lerna run lint",
     "lint:editorconfig": "editorconfig-checker --exclude-regexp 'LICENSE|\\.vanilla\\-css$|banner\\.js$' --exclude-pattern './{README.md,**/*{fontAwesome,Resources}/**/*}'"
   },
   "devDependencies": {
-    "@inkdpixels/commit-analyzer": "^1.0.0",
-    "@inkdpixels/release-notes-generator": "^1.0.0",
     "@neos-project/brand": "^1.1.0",
     "@neos-project/build-essentials": "*",
     "@neos-project/eslint-config-neos": "^1.1.1",

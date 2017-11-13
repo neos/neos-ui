@@ -20,18 +20,6 @@
     mkdirp "^0.5.1"
     os-homedir "^1.0.1"
 
-"@inkdpixels/commit-analyzer@^1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@inkdpixels/commit-analyzer/-/commit-analyzer-1.0.1.tgz#a54b1e92db44d847d2fa8c25b64f0fa1dcfad1c0"
-
-"@inkdpixels/release-notes-generator@^1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@inkdpixels/release-notes-generator/-/release-notes-generator-1.0.1.tgz#90a60cc0fea7260a696880dcf5423f1a82ea40c6"
-  dependencies:
-    concat-stream "^1.6.0"
-    conventional-changelog "^1.0.0"
-    github-url-from-git "^1.5.0"
-
 "@neos-project/brand@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@neos-project/brand/-/brand-1.1.0.tgz#13159ee7b330b1d7f969f70a5dea7fec03b7fb8a"
@@ -1976,7 +1964,7 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
 
-concat-stream@^1.4.10, concat-stream@^1.5.2, concat-stream@^1.6.0:
+concat-stream@^1.4.10, concat-stream@^1.5.2:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.0.tgz#0aac662fd52be78964d5532f694784e70110acf7"
   dependencies:
@@ -2130,7 +2118,7 @@ conventional-changelog@0.0.17:
     lodash "^3.6.0"
     normalize-package-data "^1.0.3"
 
-conventional-changelog@^1.0.0, conventional-changelog@^1.1.6:
+conventional-changelog@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/conventional-changelog/-/conventional-changelog-1.1.6.tgz#ebd9b1ab63766c715f903f654626b6b1c0da7762"
   dependencies:
@@ -3723,7 +3711,7 @@ gitconfiglocal@^1.0.0:
   dependencies:
     ini "^1.3.2"
 
-github-url-from-git@^1.3.0, github-url-from-git@^1.4.0, github-url-from-git@^1.5.0:
+github-url-from-git@^1.3.0, github-url-from-git@^1.4.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/github-url-from-git/-/github-url-from-git-1.5.0.tgz#f985fedcc0a9aa579dc88d7aff068d55cc6251a0"
 

@@ -10,7 +10,7 @@
     "test:watch": "yarn jest -- --watch",
     "lint": "eslint src",
     "clean": "rimraf ./lib ./dist",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
+    "jest": "PWD=$(pwd) NODE_ENV=test jest --coverage"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",

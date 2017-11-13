@@ -2,7 +2,7 @@
   "collectCoverageFrom": [
     "src/**/*.js"
   ],
-  "transformIgnorePatterns": [],
+  "transformIgnorePatterns": ["node_modules/(?!@neos-project)"],
   "unmockedModulePathPatterns": [
     "sinon"
   ],
@@ -10,9 +10,12 @@
     "<rootDir>/node_modules/@neos-project/jest-preset-neos-ui/src/setupBrowserEnv.js",
     "<rootDir>/node_modules/@neos-project/jest-preset-neos-ui/src/enzymeConfiguration.js"
   ],
+  "testEnvironment": "node",
+  "testMatch": [
+    "<rootDir>/src/**/?(*.)spec.js"
+  ],
   "transform": {
-    "<rootDir>/src/.+\\.jsx?$": "babel-jest",
-    "node_modules/@neos-project/.+\\.jsx?$": "babel-jest"
+    "^.+\\.js$": "babel-jest"
   },
   "moduleNameMapper": {
     "\\.css$": "identity-obj-proxy"

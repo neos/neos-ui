@@ -115,10 +115,10 @@ export class Tooltip extends PureComponent {
                 >
                 { children }
                 {
-                  state.visible &&
-                  <div ref={`tooltip`} className={classNames}>
-                      <div ref={`content`} className={theme.tooltip__content}>{tooltipLabel}</div>
-                  </div>
+                    state.visible &&
+                    <div ref={`tooltip`} className={classNames}>
+                        <div ref={`content`} className={theme.tooltip__content}>{tooltipLabel}</div>
+                    </div>
                 }
             </div>
         );

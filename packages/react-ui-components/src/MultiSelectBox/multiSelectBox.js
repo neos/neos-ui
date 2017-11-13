@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 import {DragSource, DropTarget} from 'react-dnd';
 import mergeClassNames from 'classnames';
 
+const ensureIsArray = v => {
+    if (Array.isArray(v)) {
+        return v;
+    }
+    console.warn('MultiSelectBox values were no array - falling back to empty list; the following was given: ', v);
+    return [];
+};
+
 export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {
@@ -93,6 +101,11 @@ export default class MultiSelectBox extends PureComponent {
         onSearchTermChange: PropTypes.func,
 
         /**
+         * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
+         */
+        optionComponent: PropTypes.any,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
@@ -114,8 +127,16 @@ export default class MultiSelectBox extends PureComponent {
         super(props);
 
         this.state = {
-            draggableValues: this.props.values
+            draggableValues: ensureIsArray(this.props.values)
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.values !== nextProps.values) {
+            this.setState({
+                draggableValues: ensureIsArray(nextProps.values)
+            });
+        }
     }
 
     render() {
@@ -136,7 +157,8 @@ export default class MultiSelectBox extends PureComponent {
             IconComponent,
             allowEmpty,
             options,
-            dndType
+            dndType,
+            optionComponent
         } = this.props;
 
         const {draggableValues} = this.state;
@@ -185,6 +207,7 @@ export default class MultiSelectBox extends PureComponent {
                     searchTerm={searchTerm}
                     onSearchTermChange={onSearchTermChange}
                     onValueChange={this.handleNewValueSelected}
+                    optionComponent={optionComponent}
                     />
             </div>
         );

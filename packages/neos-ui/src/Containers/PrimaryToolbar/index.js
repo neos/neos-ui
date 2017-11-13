@@ -24,8 +24,8 @@ export default class PrimaryToolbar extends PureComponent {
     render() {
         const {isHidden, containerRegistry} = this.props;
 
-        const PrimaryToolbalLeft = containerRegistry.getChildren('PrimaryToolbar/Left');
-        const PrimaryToolbalRight = containerRegistry.getChildren('PrimaryToolbar/Right');
+        const PrimaryToolbarLeft = containerRegistry.getChildren('PrimaryToolbar/Left');
+        const PrimaryToolbarRight = containerRegistry.getChildren('PrimaryToolbar/Right');
 
         const classNames = mergeClassNames({
             [style.primaryToolbar]: true,
@@ -33,10 +33,10 @@ export default class PrimaryToolbar extends PureComponent {
         });
         return (
             <Bar position="top" className={classNames}>
-                {PrimaryToolbalLeft.map((Item, key) => <Item className={style.primaryToolbar__btn} key={key}/>)}
+                {PrimaryToolbarLeft.map((Item, key) => <Item className={style.primaryToolbar__btn} key={key}/>)}
 
                 <div className={style.primaryToolbar__rightSidedActions}>
-                    {PrimaryToolbalRight.map((Item, key) => <Item key={key}/>)}
+                    {PrimaryToolbarRight.map((Item, key) => <Item key={key}/>)}
                 </div>
             </Bar>
         );

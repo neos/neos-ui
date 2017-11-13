@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-helpers",
-  "version": "1.0.0-beta6",
+  "version": "1.0.0-beta8",
   "description": "Helper functions for Neos CMS UI.",
   "private": true,
   "main": "./src/index.js",
@@ -15,7 +15,7 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta6"
+    "@neos-project/build-essentials": "1.0.0-beta8"
   },
   "license": "GNU GPLv3",
   "jest": {

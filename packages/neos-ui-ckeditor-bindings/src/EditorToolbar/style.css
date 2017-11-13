@@ -22,13 +22,19 @@
 .linkIconButton__item {
     padding: var(--halfSpacing);
     box-sizing:content-box;
-    height: var(--goldenUnit);
+    height: calc(var(--goldenUnit) * 1.5);
     line-height: 20px;
 }
 .linkIconButton__link {
     color: var(--brandColorsContrastBright);
     display: block;
     font-size: 12px;
+}
+
+.linkIconButton__image {
+    height: calc(var(--goldenUnit) * 1.5);
+    width: auto;
+    float: right;
 }
 
 .linkIconButton__link--active {

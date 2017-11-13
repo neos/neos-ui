@@ -46,8 +46,8 @@ export default class EditModePanelToggler extends PureComponent {
 
         const currentEditMode = editPreviewModes[editPreviewMode];
 
-        let editLabel = <I18n id="edit" fallback="Edit"/>;
-        let previewLabel = <I18n id="preview" fallback="Preview"/>;
+        let editLabel = <I18n id="Neos.Neos:Main:edit" fallback="Edit"/>;
+        let previewLabel = <I18n id="Neos.Neos:Main:preview" fallback="Preview"/>;
 
         const toBold = string => <b>{string}</b>;
 

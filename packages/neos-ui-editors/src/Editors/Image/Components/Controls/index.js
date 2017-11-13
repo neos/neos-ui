@@ -52,7 +52,7 @@ export default class Controls extends PureComponent {
                     style="lighter"
                     onClick={onChooseFromLocalFileSystem}
                     className={style.button}
-                    title={i18nRegistry.translate('Neos.Neos:Modules:media.chooseFile')}
+                    title={i18nRegistry.translate('Neos.Media.Browser:Main:chooseFile')}
                     />
                 <IconButton
                     tooltipLabel="Remove"

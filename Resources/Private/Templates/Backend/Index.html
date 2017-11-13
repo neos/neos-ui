@@ -3,16 +3,17 @@
 <html>
     <head>
         <title>Neos CMS</title>
+        <script>_NEOS_UI_configuration = {configuration -> f:format.raw()};</script>
+        <script>_NEOS_UI_nodeTypes = {nodeTypes -> f:format.raw()};</script>
+        <script>_NEOS_UI_frontendConfiguration = {frontendConfiguration -> f:format.raw()};</script>
+        <script>_NEOS_UI_menu = {menu -> f:format.raw()};</script>
+        <script>_NEOS_UI_initialState = {initialState -> f:format.raw()};</script>
+
         {headScripts -> f:format.raw()}
         {headStylesheets -> f:format.raw()}
     </head>
     <body>
         <div id="appContainer" data-csrf-token="{f:security.csrfToken()}" data-first-tab="{documentNodeUri}" data-env="{env}">
-            <div data-json="configuration">{configuration}</div>
-            <div data-json="menu">{menu}</div>
-            <div data-json="initialState">{initialState}</div>
-            <div data-json="nodeTypes">{nodeTypes}</div>
-            <div data-json="frontendConfiguration">{frontendConfiguration}</div>
         </div>
     </body>
 </html>

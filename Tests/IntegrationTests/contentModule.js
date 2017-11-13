@@ -29,7 +29,7 @@ async function waitForIframeLoading(t) {
 async function discardAll(t) {
     await t
         .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
-        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'));
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all'));
     await waitForIframeLoading(t);
 }
 

@@ -125,7 +125,7 @@ export default class ImageEditor extends Component {
         }
     }
 
-    handleMediaCrop(cropArea) {
+    handleMediaCrop = cropArea => {
         const {commit, value} = this.props;
         const {image} = this.state;
 

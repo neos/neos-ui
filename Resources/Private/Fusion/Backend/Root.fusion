@@ -41,6 +41,88 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
+    routes = Neos.Fusion:RawArray {
+        prototype(Neos.Fusion:UriBuilder) {
+            absolute = true
+        }
+
+        ui = Neos.Fusion:RawArray {
+            service = Neos.Fusion:RawArray {
+                prototype(Neos.Fusion:UriBuilder) {
+                    package = 'Neos.Neos.Ui'
+                    controller = 'BackendService'
+                }
+
+                change = Neos.Fusion:UriBuilder {
+                    action = 'change'
+                }
+                publish = Neos.Fusion:UriBuilder {
+                    action = 'publish'
+                }
+                discard = Neos.Fusion:UriBuilder {
+                    action = 'discard'
+                }
+                changeBaseWorkspace = Neos.Fusion:UriBuilder {
+                    action = 'changeBaseWorkspace'
+                }
+                loadTree = Neos.Fusion:UriBuilder {
+                    action = 'loadTree'
+                }
+                flowQuery = Neos.Fusion:UriBuilder {
+                    action = 'flowQuery'
+                }
+                getWorkspaceInfo = Neos.Fusion:UriBuilder {
+                    action = 'getWorkspaceInfo'
+                }
+            }
+        }
+        core = Neos.Fusion:RawArray {
+            prototype(Neos.Fusion:UriBuilder) {
+                package = 'Neos.Neos'
+            }
+
+            content = Neos.Fusion:RawArray {
+                prototype(Neos.Fusion:UriBuilder) {
+                    controller = 'Backend\\Content'
+                }
+
+                imageWithMetaData = Neos.Fusion:UriBuilder {
+                    action = 'imageWithMetaData'
+                }
+                createImageVariant = Neos.Fusion:UriBuilder {
+                    action = 'createImageVariant'
+                }
+                uploadAsset = Neos.Fusion:UriBuilder {
+                    action = 'uploadAsset'
+                }
+            }
+            service = Neos.Fusion:RawArray {
+                nodes = Neos.Fusion:UriBuilder {
+                    controller = 'Service\\Nodes'
+                    action = 'index'
+                }
+                userPreferences = Neos.Fusion:UriBuilder {
+                    subpackage = 'Service'
+                    controller = 'UserPreference'
+                    action = 'index'
+                    format = 'json'
+                }
+                dataSource = Neos.Fusion:UriBuilder {
+                    subpackage = 'Service'
+                    controller = 'DataSource'
+                    action = 'index'
+                    format = 'json'
+                }
+            }
+            login = Neos.Fusion:UriBuilder {
+                controller = 'Login'
+                action = 'index'
+                format = 'json'
+            }
+        }
+        @process.json = ${Json.stringify(value)}
+    }
+
     frontendConfiguration = Neos.Neos.Ui:RenderConfiguration {
         path = 'frontendConfiguration'
         @process.json = ${Json.stringify(value)}

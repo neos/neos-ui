@@ -48,6 +48,12 @@ export const getFrontendConfiguration = discover(function * () {
     return JSON.parse(appContainer.querySelector('[data-json="frontendConfiguration"]').textContent);
 });
 
+export const getRoutes = discover(function * () {
+    const appContainer = yield getAppContainer;
+
+    return JSON.parse(appContainer.querySelector('[data-json="routes"]').textContent);
+});
+
 export const getMenu = discover(function * () {
     const appContainer = yield getAppContainer;
 
@@ -60,9 +66,11 @@ export const getNeos = discover(function * () {
     fetchWithErrorHandling.setCsrfToken(csrfToken);
 
     const systemEnv = yield getSystemEnv;
+    const routes = yield getRoutes;
 
     const neos = initializeJsAPI(window, {
-        systemEnv
+        systemEnv,
+        routes
     });
 
     return neos;

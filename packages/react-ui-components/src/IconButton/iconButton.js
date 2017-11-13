@@ -94,7 +94,8 @@ IconButton.propTypes = {
 IconButton.defaultProps = {
     size: 'regular',
     style: 'transparent',
-    hoverStyle: 'brand'
+    hoverStyle: 'brand',
+    tooltipPosition: 'left'
 };
 
 export default IconButton;

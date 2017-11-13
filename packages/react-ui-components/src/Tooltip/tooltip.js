@@ -8,9 +8,9 @@ export class Tooltip extends PureComponent {
         children: PropTypes.any.isRequired,
 
         theme: PropTypes.shape({
-            'tooltip__wrapper': PropTypes.string,
-            'tooltip__body': PropTypes.string,
-            'tooltip__content': PropTypes.string,
+            tooltip__wrapper: PropTypes.string,
+            tooltip__body: PropTypes.string,
+            tooltip__content: PropTypes.string
         }).isRequired,
 
         className: PropTypes.string,
@@ -23,7 +23,8 @@ export class Tooltip extends PureComponent {
 
         tooltipLabel: PropTypes.oneOfType([
             PropTypes.string,
-            PropTypes.array
+            PropTypes.array,
+            PropTypes.element
         ]).isRequired
     };
 
@@ -37,7 +38,7 @@ export class Tooltip extends PureComponent {
     componentDidMount() {
         const {tooltipType} = this.props;
 
-        if (tooltipType) {
+        if (tooltipType === 'error') {
             this.show();
         }
     }
@@ -97,12 +98,10 @@ export class Tooltip extends PureComponent {
         return (
             <div
                 onMouseEnter={show}
-                onMouseLeave={tooltipType ? null : hide}
+                onMouseLeave={tooltipType === 'error' ? null : hide}
                 onTouchStart={handleTouch}
                 ref={`wrapper`}
                 className={wrapperClassNames}
-                tooltipPosition={tooltipPosition}
-                tooltipType={tooltipType}
                 >
                 { children }
                 {
@@ -115,5 +114,10 @@ export class Tooltip extends PureComponent {
         );
     }
 }
+
+Tooltip.defaultProps = {
+    tooltipType: 'default',
+    tooltipPosition: 'left'
+};
 
 export default Tooltip;

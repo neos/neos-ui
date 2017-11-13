@@ -35,6 +35,7 @@ export default class HideSelectedNode extends PureComponent {
         return (
             <IconButton
                 tooltipLabel={tooltipLabel}
+                tooltipPosition="right"
                 className={className}
                 isActive={isHidden}
                 isDisabled={isDisabled}

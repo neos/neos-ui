@@ -1,8 +1,8 @@
 .toolBar__btnGroup {
-  display: flex;
-  height: var(--goldenUnit);
-  justify-content: space-between;
-  
+    display: flex;
+    height: var(--goldenUnit);
+    justify-content: space-between;
+
     &:after {
         clear: both;
     }

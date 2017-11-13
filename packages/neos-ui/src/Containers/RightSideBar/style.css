@@ -30,13 +30,13 @@
     }
 
     .rightSidebar__toggleBtnWrapper & {
-      position: static!important;
+        position: static!important;
     }
 }
 .rightSidebar__toggleBtnWrapper {
-  position: absolute!important;
-  right: 0;
-  top: 41px;
-  width: var(--goldenUnit);
-  height: var(--goldenUnit);
+    position: absolute!important;
+    right: 0;
+    top: 41px;
+    width: var(--goldenUnit);
+    height: var(--goldenUnit);
 }

@@ -25,9 +25,9 @@
 }
 
 .panel__toggleBtnTooltip {
-  flex: 0 0 1em;
-  margin-left: auto;
-  z-index: inherit;
+    flex: 0 0 1em;
+    margin-left: auto;
+    z-index: inherit;
 }
 
 .panel__contents {

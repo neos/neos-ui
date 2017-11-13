@@ -59,7 +59,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'bold',
         hoverStyle: 'brand',
-        tooltipLabel: 'bold'
+        tooltipLabel: 'Bold'
     });
 
     // Italic
@@ -70,7 +70,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'italic',
         hoverStyle: 'brand',
-        tooltipLabel: 'italic'
+        tooltipLabel: 'Italic'
     });
 
     // Underline
@@ -81,7 +81,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'underline',
         hoverStyle: 'brand',
-        tooltipLabel: 'underline'
+        tooltipLabel: 'Underline'
     });
 
     // Subscript
@@ -102,7 +102,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'superscript',
         hoverStyle: 'brand',
-        tooltipLabel: 'subscript'
+        tooltipLabel: 'Subscript'
     });
 
     // Strike-Through
@@ -113,7 +113,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'strikethrough',
         hoverStyle: 'brand',
-        tooltipLabel: 'strikethrough'
+        tooltipLabel: 'Strikethrough'
     });
 
     // Strike-Through
@@ -124,7 +124,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'link',
         hoverStyle: 'brand',
-        tooltipLabel: 'link'
+        tooltipLabel: 'Link'
     });
 
     /**
@@ -196,7 +196,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'list-ol',
         hoverStyle: 'brand',
-        tooltipLabel: 'orderedList'
+        tooltipLabel: 'Ordered list'
     });
 
     // unordered list
@@ -207,7 +207,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'list-ul',
         hoverStyle: 'brand',
-        tooltipLabel: 'unorderedList'
+        tooltipLabel: 'Unordered List'
     });
 
     // Indent
@@ -218,7 +218,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'indent',
         hoverStyle: 'brand',
-        tooltipLabel: 'indent',
+        tooltipLabel: 'Indent',
         isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
             return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
                 formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED;
@@ -233,7 +233,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'outdent',
         hoverStyle: 'brand',
-        tooltipLabel: 'outdent',
+        tooltipLabel: 'Outdent',
         isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
             return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
                 formattingUnderCursor.outdent !== richtextToolbar.TRISTATE_DISABLED;
@@ -250,7 +250,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'align-left',
         hoverStyle: 'brand',
-        tooltipLabel: 'align left'
+        tooltipLabel: 'Align left'
     });
 
     richtextToolbar.set('aligncenter', {
@@ -260,7 +260,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'align-center',
         hoverStyle: 'brand',
-        tooltipLabel: 'align center'
+        tooltipLabel: 'Align center'
     });
 
     richtextToolbar.set('alignright', {
@@ -270,7 +270,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'align-right',
         hoverStyle: 'brand',
-        tooltipLabel: 'align right'
+        tooltipLabel: 'Align right'
     });
 
     richtextToolbar.set('alignjustify', {
@@ -280,7 +280,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'align-justify',
         hoverStyle: 'brand',
-        tooltipLabel: 'align justify'
+        tooltipLabel: 'Align justify'
     });
 
     /**
@@ -293,7 +293,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'table',
         hoverStyle: 'brand',
-        tooltipLabel: 'table'
+        tooltipLabel: 'Table'
     });
 
     /**
@@ -305,7 +305,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         callbackPropName: 'onClick',
         icon: 'eraser',
         hoverStyle: 'brand',
-        tooltipLabel: 'remove Format'
+        tooltipLabel: 'Remove Format'
     });
 
     return richtextToolbar;

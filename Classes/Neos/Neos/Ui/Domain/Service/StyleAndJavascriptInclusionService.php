@@ -27,7 +27,7 @@ class StyleAndJavascriptInclusionService
     protected $eelEvaluator;
 
     /**
-     * @Flow\InjectConfiguration(path="state.defaultEelContext")
+     * @Flow\InjectConfiguration(path="configurationDefaultEelContext")
      * @var array
      */
     protected $defaultContext;

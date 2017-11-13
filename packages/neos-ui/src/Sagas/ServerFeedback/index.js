@@ -10,13 +10,14 @@ function * watchServerFeedback({store, globalRegistry}) {
         const {feedbacks} = feedbackEnvelope;
 
         feedbacks.forEach(feedback => {
-            const feedbackHandler = serverFeedbackHandlers.get(feedback.type);
-
-            if (feedbackHandler) {
-                feedbackHandler(feedback.payload, {store, globalRegistry});
-            } else {
-                console.warn(`Feedback Handler ${feedback.type} is not defined.`);
-            }
+            const feedbackHandlers = serverFeedbackHandlers.getChildren(feedback.type);
+            feedbackHandlers.forEach(feedbackHandler => {
+                if (feedbackHandler) {
+                    feedbackHandler(feedback.payload, {store, globalRegistry});
+                } else {
+                    console.warn(`No Feedback Handlers defined for ${feedback.type}.`);
+                }
+            });
         });
     });
 }

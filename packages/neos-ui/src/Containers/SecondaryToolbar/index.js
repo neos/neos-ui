@@ -4,10 +4,8 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.css';
 
@@ -17,7 +15,6 @@ import style from './style.css';
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect($transform({
-    previewUrl: $get('ui.contentCanvas.previewUrl'),
     currentlyEditedPropertyName: $get('ui.contentCanvas.currentlyEditedPropertyName'),
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
@@ -25,9 +22,7 @@ import style from './style.css';
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     hasFocusedContentNode: selectors.CR.Nodes.hasFocusedContentNode,
     focusedNodeTypeName: selectors.CR.Nodes.focusedNodeTypeSelector
-}), {
-    toggleFullScreen: actions.UI.FullScreen.toggle
-})
+}))
 export default class SecondaryToolbar extends PureComponent {
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
@@ -36,20 +31,12 @@ export default class SecondaryToolbar extends PureComponent {
 
         focusedNodeTypeName: PropTypes.string,
         currentlyEditedPropertyName: PropTypes.string,
-        previewUrl: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
         isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
-        toggleFullScreen: PropTypes.func.isRequired,
         hasFocusedContentNode: PropTypes.bool.isRequired
     };
-
-    handleToggleFullScreen = () => {
-        const {toggleFullScreen} = this.props;
-
-        toggleFullScreen();
-    }
 
     getToolbarComponent() {
         const {containerRegistry, currentlyEditedPropertyName, hasFocusedContentNode} = this.props;
@@ -72,7 +59,6 @@ export default class SecondaryToolbar extends PureComponent {
     render() {
         const {
             containerRegistry,
-            previewUrl,
             isFringedLeft,
             isFringedRight,
             isEditModePanelHidden,
@@ -85,28 +71,17 @@ export default class SecondaryToolbar extends PureComponent {
             [style['secondaryToolbar--isMovedDown']]: !isEditModePanelHidden,
             [style['secondaryToolbar--isHidden']]: isFullScreen
         });
-        const previewButtonClassNames = mergeClassNames({
-            [style.secondaryToolbar__buttonLink]: true,
-            [style['secondaryToolbar__buttonLink--isDisabled']]: !previewUrl
-        });
 
         const Toolbar = this.getToolbarComponent();
         const LoadingIndicator = containerRegistry.get('SecondaryToolbar/LoadingIndicator');
+        const SecondaryToolbarRight = containerRegistry.getChildren('SecondaryToolbar/Right');
 
         return (
             <div className={classNames}>
                 <Toolbar/>
 
                 <div className={style.secondaryToolbar__rightHandedActions}>
-                    <a
-                        href={previewUrl ? previewUrl : ''}
-                        target="neosPreview"
-                        rel="noopener noreferrer"
-                        className={previewButtonClassNames}
-                        >
-                        <Icon icon="external-link"/>
-                    </a>
-                    <IconButton icon="expand" onClick={this.handleToggleFullScreen}/>
+                    {SecondaryToolbarRight.map((Item, key) => <Item key={key}/>)}
                 </div>
                 <LoadingIndicator/>
             </div>

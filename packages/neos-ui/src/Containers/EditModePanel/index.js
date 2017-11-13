@@ -23,7 +23,7 @@ import style from './style.css';
     setEditPreviewMode: actions.UI.EditPreviewMode.set
 })
 @neos(globalRegistry => ({
-    editPreviewModesRegistry: globalRegistry.get('editPreviewModes')
+    editPreviewModes: globalRegistry.get('frontendConfiguration').get('editPreviewModes')
 }))
 export default class EditModePanel extends PureComponent {
     static propTypes = {
@@ -33,7 +33,7 @@ export default class EditModePanel extends PureComponent {
         isHidden: PropTypes.bool.isRequired,
         setEditPreviewMode: PropTypes.func.isRequired,
 
-        editPreviewModesRegistry: PropTypes.object.isRequired
+        editPreviewModes: PropTypes.object.isRequired
     };
 
     handleEditPreviewModeClick = memoize(mode => () => {
@@ -48,7 +48,7 @@ export default class EditModePanel extends PureComponent {
             isFringedRight,
             editPreviewMode,
             isHidden,
-            editPreviewModesRegistry
+            editPreviewModes
         } = this.props;
         const classNames = mergeClassNames({
             [style.editModePanel]: true,
@@ -57,7 +57,13 @@ export default class EditModePanel extends PureComponent {
             [style['editModePanel--isHidden']]: isHidden
         });
 
-        const currentEditMode = editPreviewModesRegistry.get(editPreviewMode);
+        const currentEditMode = editPreviewModes[editPreviewMode];
+
+        const editPreviewModesList = Object.keys(editPreviewModes).map(key => {
+            const element = editPreviewModes[key];
+            element.id = key;
+            return element;
+        });
 
         return (
             <div className={classNames}>
@@ -65,7 +71,7 @@ export default class EditModePanel extends PureComponent {
                     <Panel
                         title="Editing Mode"
                         className={style.editModePanel__editingModes}
-                        modes={editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isEditingMode && editPreviewMode.id !== editPreviewMode)}
+                        modes={editPreviewModesList.filter(editPreviewMode => editPreviewMode.isEditingMode && editPreviewMode.id !== editPreviewMode)}
                         current={editPreviewMode}
                         currentMode={currentEditMode.isEditingMode ? currentEditMode : null}
                         style={style}
@@ -74,7 +80,7 @@ export default class EditModePanel extends PureComponent {
                     <Panel
                         title="Preview Central"
                         className={style.editModePanel__previewModes}
-                        modes={editPreviewModesRegistry.getAllAsList().filter(editPreviewMode => editPreviewMode.isPreviewMode && editPreviewMode.id !== editPreviewMode)}
+                        modes={editPreviewModesList.filter(editPreviewMode => editPreviewMode.isPreviewMode && editPreviewMode.id !== editPreviewMode)}
                         current={editPreviewMode}
                         currentMode={currentEditMode.isPreviewMode ? currentEditMode : null}
                         style={style}

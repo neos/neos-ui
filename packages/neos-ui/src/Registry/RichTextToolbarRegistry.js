@@ -11,7 +11,7 @@ export default class RichTextToolbarRegistry extends SynchronousRegistry {
     }
 
     hasFormattingRule = formattingRuleId =>
-        Object.values(this._registry).some(option => option.formattingRule === formattingRuleId);
+        this._registry.some(option => option.formattingRule === formattingRuleId);
 
     getEnabledFormattingRulesFromEditorOptions = memoize(
         editorOptions => [].concat(

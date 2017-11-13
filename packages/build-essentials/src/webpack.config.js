@@ -33,8 +33,8 @@ const webpackConfig = {
                 loader: 'json-loader'
             },
             {
-                test: /\.(woff|woff2)$/,
-                loader: 'url-loader?limit=100000'
+                test: /\.(woff|woff2|eot|ttf|svg)$/,
+                loader: 'url-loader?limit=10000&name=./Styles/Font-[hash].[ext]&publicPath=./../'
             },
             {
                 test: /\.css$/,

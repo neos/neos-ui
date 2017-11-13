@@ -8,6 +8,7 @@ export default class CutSelectedNode extends PureComponent {
 
         focusedNodeContextPath: PropTypes.string,
         isDisabled: PropTypes.bool.isRequired,
+        isActive: PropTypes.bool.isRequired,
 
         onClick: PropTypes.func.isRequired
     };
@@ -19,12 +20,13 @@ export default class CutSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, isDisabled} = this.props;
+        const {className, isDisabled, isActive} = this.props;
 
         return (
             <IconButton
                 className={className}
                 isDisabled={isDisabled}
+                isActive={isActive}
                 onClick={this.handleClick}
                 icon="cut"
                 hoverStyle="clean"

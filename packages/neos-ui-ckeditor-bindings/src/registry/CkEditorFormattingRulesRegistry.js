@@ -101,7 +101,7 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
      * Shorthand add* method to ease creation of custom styles
      */
     addCustomStyle(name, styleDefinition) {
-        this.add(name, {
+        this.set(name, {
             config: this.config.addCustomFormat(name, styleDefinition),
             style: styleDefinition
         });

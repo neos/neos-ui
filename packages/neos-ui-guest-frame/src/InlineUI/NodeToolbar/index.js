@@ -27,6 +27,8 @@ export default class NodeToolbar extends PureComponent {
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         // Flag triggered by content tree that tells inlineUI that it should scroll into view
         shouldScrollIntoView: PropTypes.bool.isRequired,
+        isCut: PropTypes.bool.isRequired,
+        isCopied: PropTypes.bool.isRequired,
         // Unsets the flag
         requestScrollIntoView: PropTypes.func.isRequired
     };
@@ -56,6 +58,7 @@ export default class NodeToolbar extends PureComponent {
     componentDidMount() {
         this.iframeWindow.addEventListener('resize', debounce(() => this.forceUpdate(), 20));
         this.iframeWindow.addEventListener('scroll', debounce(this.updateStickyness, 5));
+        this.iframeWindow.addEventListener('load', debounce(() => this.forceUpdate(), 5));
     }
 
     componentDidUpdate() {
@@ -77,7 +80,7 @@ export default class NodeToolbar extends PureComponent {
     }
 
     render() {
-        const {contextPath, fusionPath, destructiveOperationsAreDisabled} = this.props;
+        const {contextPath, fusionPath, destructiveOperationsAreDisabled, isCut, isCopied} = this.props;
 
         if (!contextPath) {
             return null;
@@ -104,8 +107,8 @@ export default class NodeToolbar extends PureComponent {
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...props}/>
                     <HideSelectedNode {...props}/>
-                    <CopySelectedNode {...props}/>
-                    <CutSelectedNode {...props}/>
+                    <CopySelectedNode {...props} isActive={isCopied}/>
+                    <CutSelectedNode {...props} isActive={isCut}/>
                     <PasteClipBoardNode {...props}/>
                     <DeleteSelectedNode {...props}/>
                 </div>

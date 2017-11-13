@@ -11,11 +11,16 @@ class FetchWithErrorHandling {
      *   - this._shouldEnqueueRequests is set to TRUE, to ensure upcoming requests (which rely on authentication) will not be executed, but parked.
      */
     _authenticationErrorHandlerFn = null;
+    _generalErrorHandlerFn = () => null;
     _shouldEnqueueRequests = false;
     _requestQueue = [];
 
     registerAuthenticationErrorHandler(handlerFn) {
         this._authenticationErrorHandlerFn = handlerFn;
+    }
+
+    registerGeneralErrorHandler(handlerFn) {
+        this._generalErrorHandlerFn = handlerFn;
     }
 
     setCsrfToken(csrfToken) {
@@ -86,13 +91,16 @@ class FetchWithErrorHandling {
                     if (this._authenticationErrorHandlerFn) {
                         this._authenticationErrorHandlerFn();
                     }
-                } else { // general error
-                    // TODO: show general error message!
+                } else if (response.status >= 500) { // 50x error
+                    response.text().then(text => {
+                        // rejected promise is caught later
+                        reject(text);
+                    });
+                } else { // Other cases like 404, not necessarily an error
                     resolve(response);
                 }
             }, reason => {
-                // network problems
-                // TODO: show general error
+                // network problems, rejected promise is caught later
                 reject(reason);
             })
         );
@@ -126,6 +134,25 @@ class FetchWithErrorHandling {
             return this._executeFetchRequest(makeFetchRequest)
                 .then(result => resolve(result), error => reject(error));
         });
+    }
+
+    /**
+     * Every request that is supposed to show an error message on failure (i.e. any request),
+     * should end with this catch block:
+     * `.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason))`
+     */
+    generalErrorHandler(reason) {
+        let errorText;
+        if (typeof reason === 'string') {
+            errorText = reason;
+        } else if (reason instanceof Error) {
+            errorText = reason.message;
+        } else {
+            errorText = String(reason);
+        }
+        this._generalErrorHandlerFn(errorText);
+        // Re-throw, so the promise chain would be interrupted
+        throw new Error(errorText);
     }
 }
 

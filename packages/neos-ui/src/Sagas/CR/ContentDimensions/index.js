@@ -67,6 +67,7 @@ function * watchSelectPreset({configuration}) {
  * If not: Ask the user to either create an empty node or to copy the given node.
  */
 function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targetDimensions}) {
+    const {getWorkspaceInfo} = backend.get().endpoints;
     const {
         getSingleNode,
         adoptNodeToOtherDimension
@@ -101,10 +102,13 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
         const {nodeFrontendUri, nodeContextPath} = yield adoptNodeToOtherDimension({
             identifier: nodeIdentifier,
             workspaceName: currentWorkspaceName,
-            targetDimensions,
-            sourceDimensions,
+            targetDimensions: targetDimensions.toJS(),
+            sourceDimensions: sourceDimensions.toJS(),
             copyContent
         });
+
+        const workspaceInfo = yield call(getWorkspaceInfo);
+        yield put(actions.CR.Workspaces.update(workspaceInfo));
 
         return {nodeFrontendUri, nodeContextPath};
     }

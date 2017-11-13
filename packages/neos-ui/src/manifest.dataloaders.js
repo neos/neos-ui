@@ -11,7 +11,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
     //
     // Create container registry
     //
-    globalRegistry.add('dataLoaders', new SynchronousRegistry(`
+    globalRegistry.set('dataLoaders', new SynchronousRegistry(`
         # A "Data Loader" controls asynchronous loading of secondary data, which is used in all kinds of Select / List boxes in the backend.
 
         Example of data which is loaded through a data loader:
@@ -38,7 +38,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
 
     const dataLoadersRegistry = globalRegistry.get('dataLoaders');
 
-    dataLoadersRegistry.add('NodeLookup', {
+    dataLoadersRegistry.set('NodeLookup', {
         description: `
             Look up ContentRepository Nodes:
 
@@ -119,6 +119,8 @@ manifest('main.dataloaders', {}, globalRegistry => {
             if (!searchTerm) {
                 return Promise.resolve([]);
             }
+            // remove NULL node types
+            options.nodeTypes = (options.nodeTypes || []).filter(Boolean);
 
             const cacheKey = makeCacheKey('search', {options, searchTerm});
             if (this._lru().has(cacheKey)) {
@@ -158,7 +160,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
         }
     });
 
-    dataLoadersRegistry.add('DataSources', {
+    dataLoadersRegistry.set('DataSources', {
         description: `
             Look up Data Source Values:
 

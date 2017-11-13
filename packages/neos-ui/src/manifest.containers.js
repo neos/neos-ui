@@ -25,6 +25,8 @@ import EditModePanel from './Containers/EditModePanel/index';
 import SecondaryToolbar from './Containers/SecondaryToolbar/index';
 import DimensionSwitcher from './Containers/SecondaryToolbar/DimensionSwitcher/index';
 import LoadingIndicator from './Containers/SecondaryToolbar/LoadingIndicator/index';
+import PreviewButton from './Containers/SecondaryToolbar/PreviewButton/index';
+import FullScreenButton from './Containers/SecondaryToolbar/FullScreenButton/index';
 
 import Drawer from './Containers/Drawer/index';
 
@@ -41,43 +43,45 @@ import Inspector from './Containers/RightSideBar/Inspector/index';
 manifest('main.containers', {}, globalRegistry => {
     const containerRegistry = globalRegistry.get('containers');
 
-    containerRegistry.add('App', App);
+    containerRegistry.set('App', App);
 
-    containerRegistry.add('Modals', Modals);
-    containerRegistry.add('Modals/DeleteNodeModal', DeleteNodeModal);
-    containerRegistry.add('Modals/InsertModeModal', InsertModeModal);
-    containerRegistry.add('Modals/SelectNodeTypeModal', SelectNodeTypeModal);
-    containerRegistry.add('Modals/NodeCreationDialog', NodeCreationDialog);
-    containerRegistry.add('Modals/NodeVariantCreationDialog', NodeVariantCreationDialog);
-    containerRegistry.add('Modals/ReloginDialog', ReloginDialog);
-    containerRegistry.add('Modals/UnappliedChangesDialog', UnappliedChangesDialog);
+    containerRegistry.set('Modals', Modals);
+    containerRegistry.set('Modals/DeleteNodeModal', DeleteNodeModal);
+    containerRegistry.set('Modals/InsertModeModal', InsertModeModal);
+    containerRegistry.set('Modals/SelectNodeTypeModal', SelectNodeTypeModal);
+    containerRegistry.set('Modals/NodeCreationDialog', NodeCreationDialog);
+    containerRegistry.set('Modals/NodeVariantCreationDialog', NodeVariantCreationDialog);
+    containerRegistry.set('Modals/ReloginDialog', ReloginDialog);
+    containerRegistry.set('Modals/UnappliedChangesDialog', UnappliedChangesDialog);
 
-    containerRegistry.add('FullScreen', FullScreen);
+    containerRegistry.set('FullScreen', FullScreen);
 
-    containerRegistry.add('PrimaryToolbar', PrimaryToolbar);
-    containerRegistry.add('PrimaryToolbar/UserDropDown', UserDropDown);
-    containerRegistry.add('PrimaryToolbar/PublishDropDown', PublishDropDown);
-    containerRegistry.add('PrimaryToolbar/MenuToggler', MenuToggler);
-    containerRegistry.add('PrimaryToolbar/LeftSideBarToggler', LeftSideBarToggler);
-    containerRegistry.add('PrimaryToolbar/EditModePanelToggler', EditModePanelToggler);
+    containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
+    containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
+    containerRegistry.set('PrimaryToolbar/Left/LeftSideBarToggler', LeftSideBarToggler);
+    containerRegistry.set('PrimaryToolbar/Left/EditModePanelToggler', EditModePanelToggler);
+    containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
+    containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
 
-    containerRegistry.add('EditModePanel', EditModePanel);
+    containerRegistry.set('EditModePanel', EditModePanel);
 
-    containerRegistry.add('SecondaryToolbar', SecondaryToolbar);
-    containerRegistry.add('SecondaryToolbar/DimensionSwitcher', DimensionSwitcher);
-    containerRegistry.add('SecondaryToolbar/LoadingIndicator', LoadingIndicator);
+    containerRegistry.set('SecondaryToolbar', SecondaryToolbar);
+    containerRegistry.set('SecondaryToolbar/DimensionSwitcher', DimensionSwitcher);
+    containerRegistry.set('SecondaryToolbar/LoadingIndicator', LoadingIndicator);
+    containerRegistry.set('SecondaryToolbar/Right/PreviewButton', PreviewButton);
+    containerRegistry.set('SecondaryToolbar/Right/FullScreenButton', FullScreenButton);
 
-    containerRegistry.add('Drawer', Drawer);
+    containerRegistry.set('Drawer', Drawer);
 
-    containerRegistry.add('LeftSideBar', LeftSideBar);
-    containerRegistry.add('LeftSideBar/PageTreeToolbar', PageTreeToolbar);
-    containerRegistry.add('LeftSideBar/PageTree', PageTree);
-    containerRegistry.add('LeftSideBar/PageTreeSearchbar', PageTreeSearchbar);
-    containerRegistry.add('LeftSideBar/ContentTreeToolbar', ContentTreeToolbar);
-    containerRegistry.add('LeftSideBar/ContentTree', ContentTree);
+    containerRegistry.set('LeftSideBar', LeftSideBar);
+    containerRegistry.set('LeftSideBar/Top/PageTreeToolbar', PageTreeToolbar);
+    containerRegistry.set('LeftSideBar/Top/PageTreeSearchbar', PageTreeSearchbar);
+    containerRegistry.set('LeftSideBar/Top/PageTree', PageTree);
+    containerRegistry.set('LeftSideBar/ContentTreeToolbar', ContentTreeToolbar);
+    containerRegistry.set('LeftSideBar/Bottom/ContentTree', ContentTree);
 
-    containerRegistry.add('ContentCanvas', ContentCanvas);
+    containerRegistry.set('ContentCanvas', ContentCanvas);
 
-    containerRegistry.add('RightSideBar', RightSideBar);
-    containerRegistry.add('RightSideBar/Inspector', Inspector);
+    containerRegistry.set('RightSideBar', RightSideBar);
+    containerRegistry.set('RightSideBar/Inspector', Inspector);
 });

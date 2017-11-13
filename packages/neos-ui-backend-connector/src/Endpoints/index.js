@@ -14,7 +14,8 @@ const change = changes => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
     body: JSON.stringify({
         changes
     })
-})).then(response => response.json());
+})).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const publish = (nodeContextPaths, targetWorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
     url: '/neos!/service/publish',
@@ -28,7 +29,8 @@ const publish = (nodeContextPaths, targetWorkspaceName) => fetchWithErrorHandlin
         nodeContextPaths,
         targetWorkspaceName
     })
-})).then(response => response.json());
+})).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const discard = nodeContextPaths => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
     url: '/neos!/service/discard',
@@ -42,7 +44,8 @@ const discard = nodeContextPaths => fetchWithErrorHandling.withCsrfToken(csrfTok
     body: JSON.stringify({
         nodeContextPaths
     })
-})).then(response => response.json());
+})).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
     url: '/neos!/service/changeBaseWorkspace',
@@ -56,7 +59,8 @@ const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCs
     body: JSON.stringify({
         targetWorkspaceName
     })
-})).then(response => response.json());
+})).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfToken(() => ({
     url: `neos/content/image-with-metadata?image=${imageVariantUuid}`,
@@ -66,7 +70,8 @@ const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfTok
     headers: {
         'Content-Type': 'application/json'
     }
-})).then(response => response.json());
+})).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 /**
  * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
@@ -92,7 +97,8 @@ const createImageVariant = (originalAssetUuid, adjustments) => fetchWithErrorHan
             adjustments
         }
     })
-})).then(response => response.json());
+})).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
     const data = new FormData();
@@ -110,7 +116,13 @@ const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHa
         },
         body: data
     };
-}).then(response => response.json());
+}).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+const extractFileEndingFromUri = uri => {
+    const parts = uri.split('.');
+    return parts.length ? '.' + parts[parts.length - 1] : '';
+};
 
 /**
  * searchTerm:se
@@ -135,12 +147,18 @@ const searchNodes = options => fetchWithErrorHandling.withCsrfToken(() => ({
         d.innerHTML = result;
         const nodes = d.querySelector('.nodes');
 
-        return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => ({
-            label: node.querySelector('.node-label').innerText,
-            identifier: node.querySelector('.node-identifier').innerText,
-            nodeType: node.querySelector('.node-type').innerText
-        }));
-    });
+        return Array.prototype.map.call(nodes.querySelectorAll('.node'), node => {
+            const uri = node.querySelector('.node-frontend-uri').innerText;
+            return {
+                label: node.querySelector('.node-label').innerText,
+                identifier: node.querySelector('.node-identifier').innerText,
+                nodeType: node.querySelector('.node-type').innerText,
+                uri,
+                uriInLiveWorkspace: uri.split('@')[0] + extractFileEndingFromUri(uri)
+            };
+        });
+    })
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const parseGetSingleNodeResult = requestPromise => {
     return requestPromise.then(result =>
@@ -152,8 +170,10 @@ const parseGetSingleNodeResult = requestPromise => {
 
             const nodeFrontendUri = d.querySelector('.node-frontend-uri').getAttribute('href');
 
+            // Hackish way to get context string from uri
+            const contextString = nodeFrontendUri.split('@')[1].split('.')[0];
             // TODO: Temporary hack due to missing contextPath in the API response
-            const nodeContextPath = `${d.querySelector('.node-path').innerHTML}@${nodeFrontendUri.split('@')[1]}`;
+            const nodeContextPath = `${d.querySelector('.node-path').innerHTML}@${contextString}`;
 
             return {
                 nodeFound: true,
@@ -184,7 +204,7 @@ const getSingleNode = (nodeIdentifier, params = {}) => parseGetSingleNodeResult(
 
     method: 'GET',
     credentials: 'include'
-})));
+}))).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const adoptNodeToOtherDimension = ({identifier, targetDimensions, sourceDimensions, workspaceName, copyContent = false}) => parseGetSingleNodeResult(fetchWithErrorHandling.withCsrfToken(csrfToken => ({
     url: '/neos/service/nodes',
@@ -199,7 +219,7 @@ const adoptNodeToOtherDimension = ({identifier, targetDimensions, sourceDimensio
         mode: (copyContent ? 'adoptFromAnotherDimensionAndCopyContent' : 'adoptFromAnotherDimension'),
         __csrfToken: csrfToken
     })
-})));
+}))).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const setUserPreferences = (key, value) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
     const data = new URLSearchParams();
@@ -214,20 +234,31 @@ const setUserPreferences = (key, value) => fetchWithErrorHandling.withCsrfToken(
         credentials: 'include',
         body: data
     };
-});
+}).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+const getWorkspaceInfo = () => fetchWithErrorHandling.withCsrfToken(() => ({
+    url: `neos!/service/get-workspace-info`,
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})).then(response => response.json());
 
 const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
     url: urlWithParams(dataSourceUri || '/neos/service/data-source/' + dataSourceIdentifier, params),
 
     method: 'GET',
     credentials: 'include'
-})).then(response => response.json());
+})).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const getJsonResource = resourceUri => fetchWithErrorHandling.withCsrfToken(() => ({
     url: resourceUri,
     method: 'GET',
     credentials: 'include'
-})).then(response => response.json());
+})).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
 const tryLogin = (username, password) => {
     const data = new URLSearchParams();
@@ -261,5 +292,6 @@ export default () => ({
     setUserPreferences,
     dataSource,
     getJsonResource,
+    getWorkspaceInfo,
     tryLogin
 });

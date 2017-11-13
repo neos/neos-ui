@@ -1,7 +1,7 @@
 .treeWrapper {
     composes: reset from './../reset.css';
 
-    padding: 5px;
+    padding: 5px 0;
 
     &:focus {
         outline: 0;

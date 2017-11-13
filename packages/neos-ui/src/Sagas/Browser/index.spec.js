@@ -7,7 +7,7 @@ describe('watchContentURIChange()', () => {
         expect(typeof watchContentURIChange().next).toBe('function');
     });
 
-    it('should takeEvery SET_CONTEXT_PATH actionType and execute the reflectChangeInAddressBar generator.', async function() {
+    it('should takeEvery SET_CONTEXT_PATH actionType and execute the reflectChangeInAddressBar generator.', async () => {
         const result = await expectSaga(watchContentURIChange).run();
 
         expect(result.toJSON()).toMatchSnapshot();
@@ -30,7 +30,7 @@ describe('reflectChangeInAddressBar()', () => {
         expect(typeof reflectChangeInAddressBar().next).toBe('function');
     });
 
-    it('should call the history.replaceState method with the actions payload "contextPath" property.', async function() {
+    it('should call the history.replaceState method with the actions payload "contextPath" property.', async () => {
         const result = await expectSaga(reflectChangeInAddressBar, {type: 'DATA', payload: {contextPath: 'fooContextPath'}}).run();
 
         expect(result.toJSON()).toMatchSnapshot();

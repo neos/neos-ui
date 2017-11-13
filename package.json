@@ -18,7 +18,7 @@
   "devDependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/build-essentials": "*",
-    "@neos-project/eslint-config-neos": "^1.1.1",
+    "@neos-project/eslint-config-neos": "^1.2.0",
     "babel-cli": "^6.8.0",
     "babel-core": "^6.13.2",
     "babel-eslint": "^7.1.1",

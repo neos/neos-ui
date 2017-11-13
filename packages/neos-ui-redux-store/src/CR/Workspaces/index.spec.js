@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import {$all, $set, $get} from 'plow-js';
+import {$set} from 'plow-js';
 
 import {actionTypes, actions, reducer, selectors} from './index.js';
 import {actionTypes as system} from '../../System/index';

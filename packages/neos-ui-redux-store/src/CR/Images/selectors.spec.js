@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import {$all, $set, $get} from 'plow-js';
+import {$all, $set} from 'plow-js';
 
 import * as selectors from './selectors.js';
 

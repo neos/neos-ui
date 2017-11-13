@@ -14,7 +14,8 @@
     "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8"
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
+    "@neos-project/jest-preset-neos-ui": "1.0.0-beta8"
   },
   "dependencies": {
     "@neos-project/build-essentials": "1.0.0-beta8",
@@ -40,14 +41,6 @@
     "neos-react-scripts": "./bin/neos-react-scripts.js"
   },
   "jest": {
-    "transformIgnorePatterns": [],
-    "setupFiles": [
-      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js",
-      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
-    ],
-    "transform": {
-      "neos-ui-extensibility/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
-      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
-    }
+    "preset": "@neos-project/jest-preset-neos-ui"
   }
 }

@@ -12,7 +12,7 @@
     "build:watch": "yarn build -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest --coverage"
+    "jest": "NODE_ENV=test jest --coverage"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",

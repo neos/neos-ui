@@ -18,7 +18,8 @@
     "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
     "@neos-project/jest-preset-neos-ui": "1.0.0-beta8",
     "@neos-project/build-essentials": "1.0.0-beta8",
-    "@neos-project/debug-reason-for-rendering": "1.0.0-beta8"
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta8",
+    "redux-saga-test-plan": "^3.1.0"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",

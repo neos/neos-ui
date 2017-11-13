@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reflectChangeInAddressBar() should call the history.replaceState method with the actions payload "contextPath" property. 1`] = `
+Object {
+  "call": Array [
+    Object {
+      "@@redux-saga/IO": true,
+      "CALL": Object {
+        "args": Array [
+          Object {},
+          "",
+          "?node=fooContextPath",
+        ],
+        "context": null,
+        "fn": "@@redux-saga-test-plan/json/function/mockConstructor",
+      },
+    },
+  ],
+}
+`;
+
+exports[`watchContentURIChange() should takeEvery SET_CONTEXT_PATH actionType and execute the reflectChangeInAddressBar generator. 1`] = `
+Object {
+  "take": Array [
+    Object {
+      "@@redux-saga/IO": true,
+      "TAKE": Object {
+        "pattern": "@neos/neos-ui/UI/ContentCanvas/SET_CONTEXT_PATH",
+      },
+    },
+  ],
+}
+`;

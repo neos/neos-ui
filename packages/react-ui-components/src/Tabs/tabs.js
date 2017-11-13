@@ -34,7 +34,7 @@ export default class Tabs extends PureComponent {
             'tabNavigation__itemBtnIcon': PropTypes.string
         }).isRequired,
 
-        /**
+        /*
          * Static component dependencies which are injected from the outside (index.js)
          */
         IconComponent: PropTypes.any.isRequired

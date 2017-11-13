@@ -83,10 +83,6 @@ export default class ReferenceEditor extends PureComponent {
                     });
                 });
         }
-        this.setState({
-            searchTerm: '',
-            searchOptions: []
-        });
     }
 
     componentDidUpdate(prevProps) {

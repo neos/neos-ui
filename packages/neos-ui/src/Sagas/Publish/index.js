@@ -24,7 +24,7 @@ function * watchPublish() {
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
                 //
-                // Reload the current content canvas document node, to retrieve a new preview uri,
+                // Fetch the current content canvas document node, to retrieve a new preview uri,
                 // but only if the document is amongst the latest published nodes
                 //
                 const contentCanvasContextPath = yield select($get('ui.contentCanvas.contextPath'));

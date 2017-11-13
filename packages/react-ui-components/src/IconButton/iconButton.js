@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import Tooltip from './../Tooltip/index.js';
 
 const IconButton = props => {
     const {
         IconComponent,
         ButtonComponent,
+        TooltipComponent,
         tooltipLabel,
         tooltipPosition,
         tooltipWrapperClassName,
@@ -32,9 +32,9 @@ const IconButton = props => {
 
     if (tooltipLabel) {
         return (
-            <Tooltip tooltipLabel={tooltipLabel} tooltipPosition={tooltipPosition} tooltipWrapperClassName={tooltipWrapperClassName}>
+            <TooltipComponent tooltipLabel={tooltipLabel} tooltipPosition={tooltipPosition} tooltipWrapperClassName={tooltipWrapperClassName}>
                 {button}
-            </Tooltip>
+            </TooltipComponent>
         );
     }
     return button;
@@ -73,6 +73,7 @@ IconButton.propTypes = {
      */
     IconComponent: PropTypes.any.isRequired,
     ButtonComponent: PropTypes.any.isRequired,
+    TooltipComponent: PropTypes.any.isRequired,
 
     /**
      * The content shwon inside the tooltip wich appears on mouse over. Can

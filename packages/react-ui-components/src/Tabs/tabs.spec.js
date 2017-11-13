@@ -5,6 +5,7 @@ import Tabs, {TabMenuItem} from './tabs.js';
 import Panel from './panel.js';
 
 const IconComponent = createStubComponent();
+const TooltipComponent = createStubComponent();
 
 const defaultProps = {
     theme: {
@@ -18,7 +19,8 @@ const defaultProps = {
         'tabNavigation__itemBtnIcon--hasLabel': 'baseTabsNavigationItemBtnIconWithLabelClassName'
     },
     children: 'Foo children',
-    IconComponent
+    IconComponent,
+    TooltipComponent
 };
 const defaultPanelProps = {
     theme: {

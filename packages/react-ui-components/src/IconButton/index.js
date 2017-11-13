@@ -11,8 +11,10 @@ const ThemedIconButton = themr(identifiers.iconButton, style)(IconButton);
 import injectProps from './../_lib/injectProps.js';
 import Icon from './../Icon/index';
 import Button from './../Button/index';
+import Tooltip from './../Tooltip/index';
 
 export default injectProps({
     IconComponent: Icon,
-    ButtonComponent: Button
+    ButtonComponent: Button,
+    TooltipComponent: Tooltip
 })(ThemedIconButton);

@@ -17,10 +17,18 @@ export class Tooltip extends PureComponent {
 
         tooltipWrapperClassName: PropTypes.string,
 
+        /**
+         * The tooltip has to be aligned manually
+         * in case that tooltip is at the left or right end of the browser
+         */
         tooltipPosition: PropTypes.oneOf(['left', 'right']).isRequired,
 
         tooltipType: PropTypes.oneOf(['default', 'error']).isRequired,
 
+        /**
+         * The content shwon inside the tooltip wich appears on mouse over. Can
+         * either be a simple string or other components
+         */
         tooltipLabel: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.array,

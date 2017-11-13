@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
-import Tooltip from './../Tooltip/index.js';
 
 export default class Tabs extends PureComponent {
     static propTypes = {
@@ -37,7 +36,8 @@ export default class Tabs extends PureComponent {
         /*
          * Static component dependencies which are injected from the outside (index.js)
          */
-        IconComponent: PropTypes.any.isRequired
+        IconComponent: PropTypes.any.isRequired,
+        TooltipComponent: PropTypes.any.isRequired
     };
 
     static defaultProps = {
@@ -84,6 +84,7 @@ export default class Tabs extends PureComponent {
     renderMenuItems() {
         const {
             IconComponent,
+            TooltipComponent,
             theme,
             children
         } = this.props;
@@ -97,6 +98,7 @@ export default class Tabs extends PureComponent {
                 onClick={this.handleTabNavItemClick}
                 isActive={activeTab === index}
                 IconComponent={IconComponent}
+                TooltipComponent={TooltipComponent}
                 theme={theme}
                 title={panel.props.title}
                 tooltipLabel={panel.props.tooltipLabel}
@@ -189,7 +191,8 @@ export class TabMenuItem extends PureComponent {
         /**
          * Static component dependencies which are injected from the outside (index.js)
          */
-        IconComponent: PropTypes.any.isRequired
+        IconComponent: PropTypes.any.isRequired,
+        TooltipComponent: PropTypes.any.isRequired
     };
 
     static defaultProps = {
@@ -208,6 +211,7 @@ export class TabMenuItem extends PureComponent {
             isActive,
             index,
             IconComponent,
+            TooltipComponent,
             tooltipLabel,
             icon,
             title,
@@ -225,7 +229,7 @@ export class TabMenuItem extends PureComponent {
 
         return (
             <li className={finalClassName} role="presentation" {...rest}>
-                <Tooltip tooltipLabel={tooltipLabel} tooltipPosition="right">
+                <TooltipComponent tooltipLabel={tooltipLabel} tooltipPosition="right">
                     <button
                         className={theme.tabNavigation__itemBtn}
                         onClick={this.handleClick}
@@ -236,7 +240,7 @@ export class TabMenuItem extends PureComponent {
                         {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
                         {title}
                     </button>
-                </Tooltip>
+                </TooltipComponent>
             </li>
         );
     }

@@ -3,9 +3,11 @@ import IconButton from './iconButton.js';
 
 const Icon = createStubComponent();
 const Button = createStubComponent();
+const Tooltip = createStubComponent();
 const defaultProps = {
     IconComponent: Icon,
     ButtonComponent: Button,
+    TooltipComponent: Tooltip,
     icon: 'fooIconName',
     tooltipPosition: 'left',
     theme: {/* eslint-disable quote-props */

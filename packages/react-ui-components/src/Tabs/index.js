@@ -11,9 +11,11 @@ const ThemedTabs = themr(identifiers.tabs, style)(Tabs);
 //
 import injectProps from './../_lib/injectProps.js';
 import Icon from './../Icon/index';
+import Tooltip from './../Tooltip/index.js';
 
 const FinalTabsComponent = injectProps({
-    IconComponent: Icon
+    IconComponent: Icon,
+    TooltipComponent: Tooltip
 })(ThemedTabs);
 FinalTabsComponent.Panel = themr(identifiers.tabsPanel, style)(Panel);
 

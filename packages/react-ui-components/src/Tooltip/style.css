@@ -1,61 +1,61 @@
 .tooltip__wrapper {
-    position: relative;
-    display: inline-block;
-    &:hover {
-        &:after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 0;
-            border-left: solid transparent 5px;
-            border-right: solid transparent 5px;
-            border-bottom: solid #000 5px;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            z-index: 999999999999;
-            transform: translate(-5px, 0);
-            animation: blendInTooltip 1s;
-        }
+  position: relative;
+  display: inline-block;
+  &:hover {
+    &:after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 0;
+      border-left: solid transparent 5px;
+      border-right: solid transparent 5px;
+      border-bottom: solid #000 5px;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      z-index: 999999999999;
+      transform: translate(-5px, 0);
+      animation: blendInTooltip 1s;
     }
+  }
 }
 
 .tooltip__wrapper--alignRight {
-    float: right;
-    flex: 0 0 auto;
-    margin-left: auto;
+  float: right;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .tooltip__wrapper--alignRightSidebar {
-    position: absolute!important;
-    right: 0;
-    top: 41px;
+  position: absolute!important;
+  right: 0;
+  top: 41px;
 }
 
 .tooltip__body {
-    max-width: 200px;
-    background: #000;
-    line-height: 1.5;
-    padding: 5px;
-    margin-top: 5px;
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    z-index: 9999999999999;
-    transform: translate(-50%);
-    animation: blendInTooltip 1s;
-    border-radius: 3px;
+  max-width: 200px;
+  background: #000;
+  line-height: 1.5;
+  padding: 5px;
+  margin-top: 5px;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 9999999999999;
+  transform: translate(-50%);
+  animation: blendInTooltip 1s;
+  border-radius: 3px;
 }
 
 .tooltip__body--offsetLeft {
-    right: 0;
-    left: inherit;
-    transform: translate(0);
+  right: 0;
+  left: inherit;
+  transform: translate(0);
 }
 
 .tooltip__body--offsetRight {
-    left: 0;
-    transform: translate(0);
+  left: 0;
+  transform: translate(0);
 }
 
 .tooltip__content {
@@ -68,53 +68,59 @@
 }
 
 @keyframes blendInTooltip {
-    0%, 40% {
-        opacity: 0;
-    }
-    50% 100% {
-        opacity: 1;
-    }
+  0%,
+  40% {
+    opacity: 0;
+  }
+
+  50%
+  100% {
+    opacity: 1;
+  }
 }
+
 
 /* error styles */
 
 .tooltip__wrapper--error {
-    width: 100%;
-    &:hover {
-        &:after {
-            display: none;
-        }
-    }
-    input {
-        outline: 2px solid var(--brandColorsError);
-    }
-}
+  width: 100%;
 
-.tooltip__body--error {
-    min-width: 100%;
-    background: var(--brandColorsError);
-    outline: 2px solid var(--brandColorsError);
-    position: relative;
-    left: 0;
-    transform: none;
-    animation: none;
-    margin-top: 10px;
-    border-radius: 0;
-}
-
-.tooltip__body--error {
+  &:hover {
     &:after {
-        content: '';
-        display: block;
-        width: 0;
-        height: 0;
-        border-left: solid transparent 10px;
-        border-right: solid transparent 10px;
-        border-bottom: solid var(--brandColorsError) 10px;
-        position: absolute;
-        top: -10px;
-        left: 50%;
-        z-index: 999999999999;
-        transform: translate(-10px, 0);
+      display: none;
     }
+  }
+
+  input {
+    outline: 2px solid var(--brandColorsError);
+  }
+}
+
+.tooltip__body--error {
+  min-width: 100%;
+  background: var(--brandColorsError);
+  outline: 2px solid var(--brandColorsError);
+  position: relative;
+  left: 0;
+  transform: none;
+  animation: none;
+  margin-top: 10px;
+  border-radius: 0;
+}
+
+.tooltip__body--error {
+  &:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: solid transparent 10px;
+    border-right: solid transparent 10px;
+    border-bottom: solid var(--brandColorsError) 10px;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    z-index: 999999999999;
+    transform: translate(-10px, 0);
+  }
 }

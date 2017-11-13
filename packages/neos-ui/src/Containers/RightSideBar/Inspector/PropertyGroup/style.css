@@ -3,6 +3,6 @@
 }
 
 .propertyGroupIcon {
-    line-height: var(--goldenUnit);
-    padding-right: var(--spacing);
+  line-height: var(--goldenUnit);
+  padding-right: var(--spacing);
 }

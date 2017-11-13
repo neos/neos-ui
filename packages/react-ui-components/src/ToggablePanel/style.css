@@ -25,15 +25,16 @@
 }
 
 .panel__toggleBtnTooltip {
-    flex: 0 0 1em;
-    margin-left: auto;
-    z-index: inherit;
+  flex: 0 0 1em;
+  margin-left: auto;
+  z-index: inherit;
 }
 
 .panel__contents {
     composes: reset from './../reset.css';
     padding: 0 var(--spacing);
     transition: .5s ease padding;
+
     .panel--isOpen & {
         padding-top: 5px;
         padding-bottom: 5px;

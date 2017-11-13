@@ -13,31 +13,36 @@
     cursor: pointer;
     background-color: var(--brandColorsContrastNeutral);
     font-size: var(--baseFontSize);
+
     &:focus {
         outline: unset;
     }
+
     &[disabled] {
         opacity: .5;
         cursor: not-allowed;
-        &:hover, &.btn--isPressed, &:hover i, i {
+
+        &:hover,
+        &.btn--isPressed,
+        &:hover i,
+        i {
             color: var(--brandColorsContrastBrightest);
         }
     }
 }
-
 .disabledButtonOverlay {
-    position: relative;
-    height: 100%;
-    &:after {
-        content: '';
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-}
+  position: relative;
+  height: 100%;
 
+  &:after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+  }
+}
 .btn--size-small {
     height: 32px;
     font-size: 13px;
@@ -47,36 +52,44 @@
 .btn--clean {
     background-color: var(--brandColorsContrastDarker);
 }
-
-.btn--lighter, .btn--lighter i {
+.btn--lighter,
+.btn--lighter i {
     background-color: var(--brandColorsContrastDark);
 }
-
 .btn--transparent {
     background: 0;
 }
-
-.btn--brand, .btn--brand i {
+.btn--brand,
+.btn--brand i {
     background-color: var(--brandColorsPrimaryBlue);
     color: white !important;
 }
-
-.btn--warn, .btn--warn i {
+.btn--warn,
+.btn--warn i {
     background-color: var(--brandColorsWarn);
 }
 
-.btn--brandHover:hover, .btn--brandHover:hover i, .btn--brandHover.btn--isPressed, .btn--brandHover.btn--isPressed i {
+.btn--brandHover:hover,
+.btn--brandHover:hover i,
+.btn--brandHover.btn--isPressed,
+.btn--brandHover.btn--isPressed i {
     background-color: var(--brandColorsPrimaryBlue);
 }
-
-.btn--cleanHover.btn--isPressed, .btn--cleanHover.btn--isPressed i, .btn--cleanHover:hover, .btn--cleanHover:hover i {
+.btn--cleanHover.btn--isPressed,
+.btn--cleanHover.btn--isPressed i,
+.btn--cleanHover:hover,
+.btn--cleanHover:hover i {
     color: var(--brandColorsPrimaryBlue);
 }
-
-.btn--darkenHover.btn--isPressed, .btn--darkenHover.btn--isPressed i, .btn--darkenHover:hover, .btn--darkenHover:hover i {
+.btn--darkenHover.btn--isPressed,
+.btn--darkenHover.btn--isPressed i,
+.btn--darkenHover:hover,
+.btn--darkenHover:hover i {
     background-color: rgba(0, 0, 0, .1);
 }
-
-.btn--warnHover.btn--isPressed, .btn--warnHover.btn--isPressed i, .btn--warnHover:hover, .btn--warnHover:hover i {
+.btn--warnHover.btn--isPressed,
+.btn--warnHover.btn--isPressed i,
+.btn--warnHover:hover,
+.btn--warnHover:hover i {
     background-color: var(--brandColorsWarn);
 }

@@ -2,7 +2,9 @@
     padding-top: 41px;
     padding-bottom: 41px;
     transition: .2s ease transform;
-    &:before, &:after {
+
+    &:before,
+    &:after {
         content: '';
         display: table;
     }
@@ -10,11 +12,9 @@
         clear: both;
     }
 }
-
 .rightSideBar--isHidden {
     transform: translateX(var(--sidebarWidth));
 }
-
 .rightSideBar__toggleBtn {
     width: 46px;
     position: absolute!important;
@@ -24,18 +24,19 @@
     background: var(--brandColorsContrastDarker);
     transition: .2s ease transform;
     will-change: transform;
+
     .rightSideBar--isHidden & {
         transform: translateX(-var(--sidebarWidth));
     }
+
     .rightSidebar__toggleBtnWrapper & {
-        position: static!important;
+      position: static!important;
     }
 }
-
 .rightSidebar__toggleBtnWrapper {
-    position: absolute!important;
-    right: 0;
-    top: 41px;
-    width: var(--goldenUnit);
-    height: var(--goldenUnit);
+  position: absolute!important;
+  right: 0;
+  top: 41px;
+  width: var(--goldenUnit);
+  height: var(--goldenUnit);
 }

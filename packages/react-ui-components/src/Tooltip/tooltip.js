@@ -7,11 +7,13 @@ export class Tooltip extends PureComponent {
     static propTypes = {
         children: PropTypes.any.isRequired,
 
-        theme: PropTypes.shape({// eslint-disable-line quote-prop
+        /* eslint-disable quote-props */
+        theme: PropTypes.shape({
             'tooltip__wrapper': PropTypes.string,
             'tooltip__body': PropTypes.string,
             'tooltip__content': PropTypes.string
         }).isRequired,
+        /* eslint-enable */
 
         className: PropTypes.string,
 

@@ -61,19 +61,21 @@
 .tooltip__content {
     color: #fff;
     display: inline-block;
-    font-size: 0.8em;
+    font-size: .8em;
     font-weight: normal;
     padding: .3em .25em;
     white-space: nowrap;
 }
 
 @keyframes blendInTooltip {
-  0%, 40% {
-    opacity: 0
+  0%,
+  40% {
+    opacity: 0;
   }
 
-  50%, 100% {
-    opacity: 1
+  50%
+  100% {
+    opacity: 1;
   }
 }
 

@@ -31,7 +31,7 @@ export default class PropertyGroup extends PureComponent {
         };
 
         const classNames = mergeClassNames({
-            [style['propertyGroupIcon']]: true
+            [style.propertyGroupIcon]: true
         });
 
         const propertyGroup = properties => (

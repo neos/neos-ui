@@ -100,11 +100,13 @@ const createImageVariant = (originalAssetUuid, adjustments) => fetchWithErrorHan
 })).then(response => response.json())
 .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+const uploadAsset = (file, siteNodeName, node, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
     const data = new FormData();
     data.append('__siteNodeName', siteNodeName);
     data.append('asset[resource]', file);
     data.append('metadata', metadata);
+    data.append('siteNodeName', siteNodeName);
+    data.append('node', node);
 
     return {
         url: '/neos/content/upload-asset',

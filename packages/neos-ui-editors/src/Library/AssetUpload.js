@@ -7,15 +7,18 @@ import Dropzone from 'react-dropzone';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import backend from '@neos-project/neos-ui-backend-connector';
 import style from './style.css';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
 @connect($transform({
-    siteNodePath: $get('cr.nodes.siteNode')
+    siteNodePath: $get('cr.nodes.siteNode'),
+    focusedNode: selectors.CR.Nodes.focusedNodePathSelector
 }), null, null, {withRef: true})
 export default class AssetUpload extends PureComponent {
     static propTypes = {
         isLoading: PropTypes.bool.isRequired,
         onAfterUpload: PropTypes.func.isRequired,
         siteNodePath: PropTypes.string.isRequired,
+        focusedNode: PropTypes.string.isRequired,
         highlight: PropTypes.bool,
         children: PropTypes.any.isRequired
     };
@@ -34,11 +37,11 @@ export default class AssetUpload extends PureComponent {
 
     handleUpload(files) {
         const {uploadAsset} = backend.get().endpoints;
-        const {onAfterUpload, siteNodePath} = this.props;
+        const {onAfterUpload, siteNodePath, focusedNode} = this.props;
 
         const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
 
-        return uploadAsset(files[0], siteNodeName).then(res => {
+        return uploadAsset(files[0], siteNodeName, focusedNode).then(res => {
             if (onAfterUpload) {
                 onAfterUpload(res);
             }

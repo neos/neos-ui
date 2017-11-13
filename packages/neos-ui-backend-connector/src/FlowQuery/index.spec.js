@@ -127,7 +127,7 @@ test(`
 });
 
 test(`"api.flowQuery > resolveChain" utility should make a fetch call.`, () => {
-    const result = resolveChain({});
+    const result = resolveChain({}, {ui: {service: {flowQuery: ''}}});
 
     expect(result.then).not.toBe(undefined);
     expect(typeof (result.then)).toBe('function');

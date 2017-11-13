@@ -4,7 +4,7 @@ import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 
 export default routes => {
     const change = changes => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: '/neos!/service/change',
+        url: routes.ui.service.change,
 
         method: 'POST',
         credentials: 'include',
@@ -19,7 +19,7 @@ export default routes => {
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const publish = (nodeContextPaths, targetWorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: '/neos!/service/publish',
+        url: routes.ui.service.publish,
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -34,7 +34,7 @@ export default routes => {
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const discard = nodeContextPaths => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: '/neos!/service/discard',
+        url: routes.ui.service.discard,
 
         method: 'POST',
         credentials: 'include',
@@ -49,7 +49,7 @@ export default routes => {
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: '/neos!/service/changeBaseWorkspace',
+        url: routes.ui.service.changeBaseWorkspace,
 
         method: 'POST',
         credentials: 'include',

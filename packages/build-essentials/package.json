@@ -4,7 +4,6 @@
   "description": "Dependencies for building @neos-project packages",
   "main": "./src",
   "bin": {
-    "babel": "./node_modules/.bin/babel",
     "check-dependencies": "./node_modules/.bin/check-dependencies",
     "cpx": "./node_modules/.bin/cpx",
     "cross-env": "./node_modules/.bin/cross-env",
@@ -23,7 +22,6 @@
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
-    "babel-cli": "^6.8.0",
     "babel-core": "^6.13.2",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.4.1",

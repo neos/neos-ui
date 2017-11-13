@@ -86,7 +86,7 @@ backend = Neos.Fusion:Template {
                     controller = 'Backend\\Content'
                 }
 
-                imageWithMetaData = Neos.Fusion:UriBuilder {
+                imageWithMetadata = Neos.Fusion:UriBuilder {
                     action = 'imageWithMetaData'
                 }
                 createImageVariant = Neos.Fusion:UriBuilder {
@@ -97,6 +97,10 @@ backend = Neos.Fusion:Template {
                 }
             }
             service = Neos.Fusion:RawArray {
+                assets = Neos.Fusion:UriBuilder {
+                    controller = 'Service\\Assets'
+                    action = 'index'
+                }
                 nodes = Neos.Fusion:UriBuilder {
                     controller = 'Service\\Nodes'
                     action = 'index'

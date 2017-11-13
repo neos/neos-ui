@@ -55,7 +55,7 @@ export const getNeos = discover(function * () {
 
     const systemEnv = yield getSystemEnv;
     const routes = yield getRoutes;
-
+    console.log({routes});
     const neos = initializeJsAPI(window, {
         systemEnv,
         routes

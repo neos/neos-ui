@@ -7,6 +7,7 @@ const defaultProps = {
     IconComponent: Icon,
     ButtonComponent: Button,
     icon: 'fooIconName',
+    tooltipPosition: 'left',
     theme: {/* eslint-disable quote-props */
         'iconButton': 'iconButtonClassName'
     }/* eslint-enable quote-props */

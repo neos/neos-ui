@@ -2,7 +2,7 @@ import {$get} from 'plow-js';
 
 import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
-export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOptions, globalRegistry, persistChange}) => {
+export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOptions, globalRegistry, userPreferences, persistChange}) => {
     const formattingRulesRegistry = globalRegistry.get('ckEditor').get('formattingRules');
     const richtextToolbarRegistry = globalRegistry.get('ckEditor').get('richtextToolbar');
     const pluginsRegistry = globalRegistry.get('ckEditor').get('plugins');
@@ -11,6 +11,7 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
         .getEnabledFormattingRulesForNodeTypeAndProperty(nodeType.name)(propertyName);
     const placeholder = unescape(i18nRegistry.translate($get('placeholder', editorOptions)));
     const isAutoParagraphEnabled = Boolean($get('autoparagraph', editorOptions));
+    const interfaceLanguage = String($get('interfaceLanguage', userPreferences));
 
     const ckEditorConfiguration = enabledFormattingRuleIds
         .map(formattingRuleId => formattingRulesRegistry.get(formattingRuleId))
@@ -30,7 +31,8 @@ export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOpt
                 autoParagraph: isAutoParagraphEnabled,
                 entities: false,
                 basicEntities: false,
-                title: propertyName
+                title: propertyName,
+                language: interfaceLanguage
             },
             placeholder ? {neosPlaceholder: placeholder} : {}
         ));

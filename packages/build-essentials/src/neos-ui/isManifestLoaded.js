@@ -1,6 +1,8 @@
 //
 // Check if a manifest has been loaded
 //
+// ToDo: 80% duplicate code as in `getManifest.js`.
+//
 export default function isManifestLoaded(manifestIdentifier) {
     // ToDo: Write a getContext fn
     if (!window) {

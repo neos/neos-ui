@@ -210,7 +210,11 @@ const createCKEditorAPI = CKEDITOR => {
 
             editor.on('contentDom', event => {
                 event.editor.editable().on('contextmenu', contextEvent => {
-                    contextEvent.cancel();
+                    const path = event.editor.elementPath();
+
+                    if (!path.contains('table')) {
+                        contextEvent.cancel();
+                    }
                 }, null, null, 5);
             });
 

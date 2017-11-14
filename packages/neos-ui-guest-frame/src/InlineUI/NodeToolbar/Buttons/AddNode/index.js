@@ -9,7 +9,8 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect((state, {nodeTypesRegistry}) => {
     const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
@@ -33,7 +34,8 @@ export default class AddNode extends PureComponent {
         fusionPath: PropTypes.string,
         className: PropTypes.string,
         commenceNodeCreation: PropTypes.func.isRequired,
-        isAllowedToAddChildOrSiblingNodes: PropTypes.bool
+        isAllowedToAddChildOrSiblingNodes: PropTypes.bool,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleCommenceNodeCreation = () => {
@@ -47,7 +49,7 @@ export default class AddNode extends PureComponent {
     }
 
     render() {
-        const {isAllowedToAddChildOrSiblingNodes} = this.props;
+        const {isAllowedToAddChildOrSiblingNodes, i18nRegistry} = this.props;
 
         return (
             <span>
@@ -55,7 +57,7 @@ export default class AddNode extends PureComponent {
                     isDisabled={!isAllowedToAddChildOrSiblingNodes}
                     className={this.props.className}
                     icon="plus"
-                    tooltipLabel="Create New"
+                    tooltipLabel={i18nRegistry.translate('createNew')}
                     onClick={this.handleCommenceNodeCreation}
                     hoverStyle="clean"
                     />

@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
+import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
 @connect($transform({
@@ -12,13 +13,17 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
     hideNode: actions.CR.Nodes.hide,
     showNode: actions.CR.Nodes.show
 })
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
 export default class HideSelectedNode extends PureComponent {
     static propTypes = {
         node: PropTypes.object,
         className: PropTypes.string,
         hideNode: PropTypes.func.isRequired,
         showNode: PropTypes.func.isRequired,
-        destructiveOperationsAreDisabled: PropTypes.bool.isRequired
+        destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleHideNode = () => {
@@ -34,7 +39,7 @@ export default class HideSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, node, destructiveOperationsAreDisabled} = this.props;
+        const {className, node, destructiveOperationsAreDisabled, i18nRegistry} = this.props;
         const isHidden = $get('properties._hidden', node);
 
         return (
@@ -44,7 +49,7 @@ export default class HideSelectedNode extends PureComponent {
                 isDisabled={destructiveOperationsAreDisabled}
                 onClick={isHidden ? this.handleShowNode : this.handleHideNode}
                 icon="eye-slash"
-                tooltipLabel="Hide / Unhide"
+                tooltipLabel={i18nRegistry.translate('hideUnhide')}
                 hoverStyle="clean"
                 />
         );

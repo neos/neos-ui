@@ -8,7 +8,8 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
 @neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect((state, {nodeTypesRegistry}) => {
     const canBePastedSelector = selectors.CR.Nodes.makeCanBePastedSelector(nodeTypesRegistry);
@@ -33,7 +34,8 @@ export default class PasteClipBoardNode extends PureComponent {
         contextPath: PropTypes.string,
         fusionPath: PropTypes.string,
 
-        pasteNode: PropTypes.func.isRequired
+        pasteNode: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handlePasteButtonClick = () => {
@@ -43,7 +45,7 @@ export default class PasteClipBoardNode extends PureComponent {
     }
 
     render() {
-        const {className, canBePasted} = this.props;
+        const {className, canBePasted, i18nRegistry} = this.props;
 
         if (!canBePasted) {
             return null;
@@ -54,7 +56,7 @@ export default class PasteClipBoardNode extends PureComponent {
                 className={className}
                 onClick={this.handlePasteButtonClick}
                 icon="paste"
-                tooltipLabel="Paste"
+                tooltipLabel={i18nRegistry.translate('paste')}
                 hoverStyle="clean"
                 />
         );

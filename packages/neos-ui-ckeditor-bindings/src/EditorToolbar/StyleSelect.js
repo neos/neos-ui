@@ -41,6 +41,7 @@ export default class StyleSelect extends PureComponent {
             PropTypes.object
         ])),
 
+        nodeTypesRegistry: PropTypes.object.isRequired,
         toolbarRegistry: PropTypes.object.isRequired
     };
 

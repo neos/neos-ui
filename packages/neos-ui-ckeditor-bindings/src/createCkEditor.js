@@ -2,9 +2,8 @@ import {$get} from 'plow-js';
 
 import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
-export default ({propertyDomNode, propertyName, contextPath, nodeType, editorOptions, globalRegistry, userPreferences, persistChange}) => {
+export default ({propertyDomNode, propertyName, contextPath, editorOptions, globalRegistry, userPreferences, persistChange}) => {
     const formattingRulesRegistry = globalRegistry.get('ckEditor').get('formattingRules');
-    const richtextToolbarRegistry = globalRegistry.get('ckEditor').get('richtextToolbar');
     const pluginsRegistry = globalRegistry.get('ckEditor').get('plugins');
     const i18nRegistry = globalRegistry.get('i18n');
     const formattingEditorOptions = $get('formatting', editorOptions);

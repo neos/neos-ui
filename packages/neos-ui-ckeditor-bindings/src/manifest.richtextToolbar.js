@@ -210,7 +210,7 @@ export default ckEditorRegistry => {
         icon: 'indent',
         hoverStyle: 'brand',
         isVisibleWhen: (inlineEditorOptions, formattingUnderCursor) => {
-            return (Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions)) &&
+            return ((Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions))) &&
                 formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED);
         }
     });
@@ -224,7 +224,7 @@ export default ckEditorRegistry => {
         icon: 'outdent',
         hoverStyle: 'brand',
         isVisibleWhen: (inlineEditorOptions, formattingUnderCursor) => {
-            return (Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions)) &&
+            return ((Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions))) &&
                 formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED);
         }
     });

@@ -77,7 +77,8 @@ class DocumentNodeCreated implements FeedbackInterface
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
-            'contextPath' => $this->getDocument()->getContextPath()
+            'contextPath' => $this->getDocument()->getContextPath(),
+            'identifier' => $this->getDocument()->getIdentifier()
         ];
     }
 }

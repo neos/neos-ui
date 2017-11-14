@@ -5,9 +5,8 @@ import {$get, $transform} from 'plow-js';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-export default isMulti => WrappedComponent => {
+export default ({isMulti}) => WrappedComponent => {
     @neos(globalRegistry => ({
-        i18nRegistry: globalRegistry.get('i18n'),
         nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
         nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
     }))
@@ -28,7 +27,6 @@ export default isMulti => WrappedComponent => {
                 threshold: PropTypes.number
             }),
 
-            i18nRegistry: PropTypes.object.isRequired,
             nodeLookupDataLoader: PropTypes.shape({
                 resolveValue: PropTypes.func.isRequired,
                 resolveValues: PropTypes.func.isRequired,
@@ -124,7 +122,7 @@ export default isMulti => WrappedComponent => {
                     searchOptions={this.state.searchOptions}
                     displayLoadingIndicator={this.state.isLoading}
                     onSearchTermChange={this.handleSearchTermChange}
-                    placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
+                    placeholder={this.props.options.placeholder}
                     />
             );
         }

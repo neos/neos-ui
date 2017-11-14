@@ -171,14 +171,44 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         return $get(['properties', propertyName, 'ui', 'inline', 'editor'], nodeType) || 'ckeditor';
     }
 
+    /**
+     * Inline Editor Configuration looks as follows:
+     *
+     * formatting: // what formatting is enabled / disabled
+     *   b: true
+     *   a: true
+     *   MyFormattingRule: {Configuration Object if needed}
+     * placeholder: "Placeholder text"
+     * autoparagraph: true/false
+     */
     getInlineEditorOptionsForProperty(nodeTypeName, propertyName) {
         const nodeType = this.get(nodeTypeName);
 
+        const inlineEditorOptions = $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType);
+
+        if (inlineEditorOptions) {
+            return inlineEditorOptions;
+        }
+
+        // OLD variant of configuration
+        const legacyConfiguration = $get(['properties', propertyName, 'ui', 'aloha'], nodeType);
+
+        const convertedLegacyFormatting = [].concat(
+            ...['format', 'link', 'list', 'table', 'alignment']
+                .map(configurationKey => (legacyConfiguration && legacyConfiguration[configurationKey]) || [])
+        ).reduce((acc, item) => {
+            acc[item] = true;
+            return acc;
+        }, {});
+
+        return {
+            formatting: convertedLegacyFormatting,
+            placeholder: $get('placeholder', legacyConfiguration),
+            autoparagraph: $get('autoparagraph', legacyConfiguration)
+        };
         //
         // TODO: Add documentation for this node type configuration, once it can be considered to be public API
         //
-        return $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType) ||
-            $get(['properties', propertyName, 'ui', 'aloha'], nodeType);
     }
 
     isInlineEditable(nodeTypeName) {

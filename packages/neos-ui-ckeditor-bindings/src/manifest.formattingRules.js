@@ -39,7 +39,8 @@ export default ckEditorRegistry => {
             adhering to CKEDITOR.style(...), so for example: \`{ style: {element: 'h1'}\`
 
         - \`config\` (function, optional): This function needs to adjust the CKEditor config to e.g. configure ACF
-            correctly. The function gets passed in the config so-far, and needs to return the modified config. See
+            correctly. The function gets passed in the config so-far, AND the configuration from the node type underneath
+            "ui.inline.editorOptions.formatting.[formatingRuleName]" and needs to return the modified config. See
             "CKEditor Configuration Helpers" below for helper functions.
 
         - \`extractCurrentFormatFn\` (function, optional): If specified, this function will extract the current format.

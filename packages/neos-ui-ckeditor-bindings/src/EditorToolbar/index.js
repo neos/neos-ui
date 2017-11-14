@@ -55,17 +55,17 @@ export default class EditorToolbar extends PureComponent {
             focusedNodeType,
             currentlyEditedPropertyName,
             formattingUnderCursor,
-            toolbarRegistry
+            nodeTypesRegistry
         } = this.props;
-        const enabledFormattingRuleIds = toolbarRegistry
-            .getEnabledFormattingRulesForNodeTypeAndProperty(focusedNodeType)(currentlyEditedPropertyName);
+        const inlineEditorOptions = nodeTypesRegistry
+            .getInlineEditorOptionsForProperty(focusedNodeType, currentlyEditedPropertyName);
 
         const classNames = mergeClassNames({
             [style.toolBar]: true
         });
         const renderedToolbarComponents = this.renderToolbarComponents(
             this.onToggleFormat,
-            enabledFormattingRuleIds || [],
+            inlineEditorOptions,
             formattingUnderCursor
         );
 

@@ -17,10 +17,10 @@ const isTopLevelToolbarComponent = componentDefinition =>
 export default richtextToolbarRegistry => {
     const toolbarComponents = richtextToolbarRegistry.getAllAsList();
 
-    return (onToggleFormat, enabledFormattingRuleIds, formattingUnderCursor) => {
+    return (onToggleFormat, inlineEditorOptions, formattingUnderCursor) => {
         return toolbarComponents
             .filter(isTopLevelToolbarComponent)
-            .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds, formattingUnderCursor))
+            .filter(hideDisallowedToolbarComponents(inlineEditorOptions, formattingUnderCursor))
             .map((componentDefinition, index) => {
                 const {component, formattingRule, callbackPropName, ...props} = componentDefinition;
                 const restProps = omit(props, ['isVisibleWhen']);

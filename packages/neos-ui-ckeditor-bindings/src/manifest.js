@@ -22,7 +22,7 @@ manifest('@neos-project/neos-ui-ckeditor-bindings', {}, globalRegistry => {
 
     const formattingRulesRegistry = initializeFormattingRulesRegistry(ckEditorRegistry);
     const pluginsRegistry = initializePluginsRegistry(ckEditorRegistry);
-    initializeRichtextToolbarRegistry(ckEditorRegistry, globalRegistry.get('@neos-project/neos-ui-contentrepository'));
+    initializeRichtextToolbarRegistry(ckEditorRegistry);
 
     //
     // Add CK Editor to the list of inline editors

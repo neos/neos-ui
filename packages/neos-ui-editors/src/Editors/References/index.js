@@ -52,7 +52,7 @@ export default class ReferencesEditor extends PureComponent {
         this.state = {
             searchTerm: '',
             isLoading: false,
-            searchResults: [],
+            searchOptions: [],
             results: []
         };
     }
@@ -83,10 +83,6 @@ export default class ReferencesEditor extends PureComponent {
                     });
                 });
         }
-        this.setState({
-            searchTerm: '',
-            searchOptions: []
-        });
     }
 
     componentDidUpdate(prevProps) {
@@ -108,7 +104,6 @@ export default class ReferencesEditor extends PureComponent {
                         if (icon) {
                             option.icon = icon;
                         }
-                        option.isNew = true;
                     });
 
                     this.setState({

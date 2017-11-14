@@ -48,6 +48,8 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         }
 
         try {
+            const userPreferences = $get('user.preferences', store.getState());
+
             createInlineEditor({
                 propertyDomNode,
                 propertyName,
@@ -55,6 +57,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                 nodeType,
                 editorOptions,
                 globalRegistry,
+                userPreferences,
                 persistChange: change => store.dispatch(
                     actions.Changes.persistChanges([change])
                 )

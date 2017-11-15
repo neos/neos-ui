@@ -1,4 +1,4 @@
-import {takeEvery} from 'redux-saga';
+import {takeEvery} from 'redux-saga/effects';
 
 import {actionTypes} from '@neos-project/neos-ui-redux-store';
 

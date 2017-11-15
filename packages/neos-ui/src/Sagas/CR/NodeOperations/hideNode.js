@@ -1,5 +1,4 @@
-import {takeLatest} from 'redux-saga';
-import {put} from 'redux-saga/effects';
+import {takeLatest, put} from 'redux-saga/effects';
 
 import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 

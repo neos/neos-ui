@@ -1,4 +1,4 @@
-import {takeLatest} from 'redux-saga';
+import {takeLatest} from 'redux-saga/effects';
 
 import {actionTypes} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';

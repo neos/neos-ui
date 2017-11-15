@@ -1,5 +1,4 @@
-import {takeLatest} from 'redux-saga';
-import {put, select} from 'redux-saga/effects';
+import {takeLatest, put, select} from 'redux-saga/effects';
 import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';

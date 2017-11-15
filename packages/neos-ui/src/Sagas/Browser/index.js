@@ -1,5 +1,4 @@
-import {takeEvery} from 'redux-saga';
-import {call} from 'redux-saga/effects';
+import {call, takeEvery} from 'redux-saga/effects';
 import {actionTypes} from '@neos-project/neos-ui-redux-store';
 
 export function * reflectChangeInAddressBar(action) {

@@ -1,5 +1,5 @@
-import {takeLatest, delay} from 'redux-saga';
-import {put, select, take, race} from 'redux-saga/effects';
+import {delay} from 'redux-saga';
+import {takeLatest, put, select, take, race} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 

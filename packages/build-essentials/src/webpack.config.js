@@ -126,4 +126,15 @@ if (env.isProduction) {
     }));
 }
 
+// the webpack.config.js in @neos-project/neos-ui-extensibility makes use of the ExtractTextPlugin.
+// however, if for some reasons, the instances used in "module.loaders" and "plugins" are not the same
+// ones, you get the folllowing error message when building plugins which need to load CSS:
+//   "Module build failed: Error: "extract-text-webpack-plugin" loader is used without the corresponding plugin"
+//
+// As a workaround, we need to pass on the ExtractTextPlugin *instance* from here to the webpack.config.js on 
+// @neos-project/neos-ui-extensibility
+webpackConfig.__neos = {
+    ExtractTextPlugin: ExtractTextPlugin
+};
+
 module.exports = webpackConfig;

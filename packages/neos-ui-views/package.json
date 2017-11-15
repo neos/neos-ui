@@ -7,11 +7,11 @@
   "scripts": {
     "prepublish": "exit 0",
     "prebuild": "check-dependencies && yarn clean",
-    "test": "yarn jest",
+    "test": "yarn jest -- --w 1 --coverage",
     "test:watch": "yarn jest -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "jest": "NODE_ENV=test jest --coverage",
+    "jest": "NODE_ENV=test jest",
     "postpublish": "greenkeeper-postpublish"
   },
   "devDependencies": {

@@ -6,13 +6,13 @@
   "main": "./src/index.js",
   "scripts": {
     "prebuild": "check-dependencies && yarn clean",
-    "test": "yarn jest",
+    "test": "yarn jest -- --w 1 --coverage",
     "test:watch": "yarn jest -- --watch",
     "build": "exit 0",
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "jest": "NODE_ENV=test jest --coverage"
+    "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",

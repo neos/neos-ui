@@ -11,7 +11,9 @@ Object {
           "",
           "?node=fooContextPath",
         ],
-        "context": null,
+        "context": Object {
+          "replaceState": "@@redux-saga-test-plan/json/function/mockConstructor",
+        },
         "fn": "@@redux-saga-test-plan/json/function/mockConstructor",
       },
     },

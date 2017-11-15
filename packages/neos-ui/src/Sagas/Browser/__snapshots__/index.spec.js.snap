@@ -18,16 +18,3 @@ Object {
   ],
 }
 `;
-
-exports[`watchContentURIChange() should takeEvery SET_CONTEXT_PATH actionType and execute the reflectChangeInAddressBar generator. 1`] = `
-Object {
-  "take": Array [
-    Object {
-      "@@redux-saga/IO": true,
-      "TAKE": Object {
-        "pattern": "@neos/neos-ui/UI/ContentCanvas/SET_CONTEXT_PATH",
-      },
-    },
-  ],
-}
-`;

@@ -80,7 +80,7 @@ In order to start contributing, follow the following steps:
    npm install -g yarn
    yarn
 
-   npm run build:ui:watch
+   yarn run build:ui:watch
    ```
 
 5) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which

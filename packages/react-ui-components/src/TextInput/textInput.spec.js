@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import TextInput from './textInput.js';
 
@@ -20,7 +19,7 @@ test('should add the passed "className" prop to the rendered button if passed.',
     expect(input.hasClass('testClassName')).toBeTruthy();
 });
 test('should call the passed "onChange" prop with the value of the input when changing it.', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const input = shallow({onChange}).find('input');
 
     input.simulate('change', {
@@ -29,8 +28,8 @@ test('should call the passed "onChange" prop with the value of the input when ch
         }
     });
 
-    expect(onChange.callCount).toBe(1);
-    expect(onChange.args[0][0]).toBe('my value');
+    expect(onChange.mock.calls.length).toBe(1);
+    expect(onChange.mock.calls[0][0]).toBe('my value');
 });
 test('should throw no error if no "onChange" prop was passed when changing the value of the input.', () => {
     const input = shallow().find('input');

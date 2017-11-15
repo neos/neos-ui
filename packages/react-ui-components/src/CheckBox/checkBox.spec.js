@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import CheckBox from './checkBox.js';
 
@@ -27,12 +26,12 @@ test('should throw no errors if no "onChange" prop was passed when clicking on t
     expect(fn).not.toThrow();
 });
 test('should call the passed "onChange" prop when clicking on the hidden checkbox.', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const cb = shallow({onChange});
 
     cb.find('[type="checkbox"]').simulate('change');
 
-    expect(onChange.callCount).toBe(1);
+    expect(onChange.mock.calls.length).toBe(1);
 });
 test('should set truthy aria and checked attribute when passing a truthy "isChecked" prop.', () => {
     const markup = shallow({isChecked: true}).find('[type="checkbox"]').html();

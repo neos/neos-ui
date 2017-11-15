@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import IconButtonDropDown from './iconButtonDropDown.js';
 import DropDownItem from './dropDownItem.js';
@@ -91,14 +90,14 @@ test('should abort the setting of the "isOpen" state to "true" when pressing and
 });
 test('should call the "onClick" prop when clicking on the "ButtonComponent".', () => {
     const props = {
-        onClick: sinon.spy()
+        onClick: jest.fn()
     };
     const dd = shallow(props);
     const btn = dd.find(Button);
 
     btn.simulate('click');
 
-    expect(props.onClick.calledOnce).toBeTruthy();
+    expect(props.onClick.mock.calls.length).toBe(1);
 });
 
 test('should render two "IconComponent"s within the "ButtonComponent".', () => {
@@ -133,12 +132,12 @@ test('should render a "DropDownItem" for each passed child and propagate the "dr
 });
 test('should call the "onItemSelect" prop when clicking on a "DropDownItem".', () => {
     const props = {
-        onItemSelect: sinon.spy()
+        onItemSelect: jest.fn()
     };
     const dd = shallow(props);
     const item = dd.find(DropDownItem).at(0);
 
     item.simulate('click');
 
-    expect(props.onItemSelect.calledOnce).toBeTruthy();
+    expect(props.onItemSelect.mock.calls.length).toBe(1);
 });

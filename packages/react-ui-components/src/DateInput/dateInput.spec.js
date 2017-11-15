@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import moment from 'moment';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import {DateInput} from './dateInput.js';
@@ -59,7 +58,7 @@ test('should render an remove icon within the second button.', () => {
     expect(btn.find(defaultProps.IconComponent).prop('icon')).toBe('remove');
 });
 test('should set the "isOpen" state to a falsy value and call the "onChange" prop with `null` when clicking on the second button.', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const wrapper = shallow({onChange});
     const btn = wrapper.find('button').at(1);
 
@@ -67,8 +66,8 @@ test('should set the "isOpen" state to a falsy value and call the "onChange" pro
     btn.simulate('click');
 
     expect(wrapper.state('isOpen')).toBe(false);
-    expect(onChange.callCount).toBe(1);
-    expect(onChange.args[0][0]).toBe(null);
+    expect(onChange.mock.calls.length).toBe(1);
+    expect(onChange.mock.calls[0][0]).toBe(null);
 });
 test('should render a "Collapse" Component which is opened depending on the "isOpen" state.', () => {
     const wrapper = shallow();
@@ -87,7 +86,7 @@ test('should render a "DatePicker" Component.', () => {
     expect(picker.prop('defaultValue')).toBe(value);
 });
 test('should call the "onChange" prop when triggering the change event on the "DatePicker" Component and clicking apply.', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const value = new Date();
     const wrapper = shallow({value, onChange});
     const picker = wrapper.find(defaultProps.DatePickerComponent);
@@ -97,11 +96,11 @@ test('should call the "onChange" prop when triggering the change event on the "D
     picker.simulate('change', newVal);
     applyButton.simulate('click');
 
-    expect(onChange.callCount).toBe(1);
-    expect(onChange.args[0][0].toTimeString()).toBe(newVal.toDate().toTimeString());
+    expect(onChange.mock.calls.length).toBe(1);
+    expect(onChange.mock.calls[0][0].toTimeString()).toBe(newVal.toDate().toTimeString());
 });
 test('should set the "isOpen" state to a falsy value and call the "onChange" prop with todays date when clicking on the third button.', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const wrapper = shallow({onChange});
     const btn = wrapper.find('button').at(2);
     const date = new Date();
@@ -110,6 +109,6 @@ test('should set the "isOpen" state to a falsy value and call the "onChange" pro
     btn.simulate('click');
 
     expect(wrapper.state('isOpen')).toBe(false);
-    expect(onChange.callCount).toBe(1);
-    expect(onChange.args[0][0].toTimeString()).toBe(date.toTimeString());
+    expect(onChange.mock.calls.length).toBe(1);
+    expect(onChange.mock.calls[0][0].toTimeString()).toBe(date.toTimeString());
 });

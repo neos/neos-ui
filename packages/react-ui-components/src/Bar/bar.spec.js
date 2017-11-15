@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import Bar from './bar.js';
 
@@ -20,10 +19,10 @@ test('should render the passed "children".', () => {
     expect(bar.html().includes('Foo children')).toBeTruthy();
 });
 test('should propagate the rest of the passed props to the wrapping node.', () => {
-    const props = {onDrop: sinon.spy()};
+    const props = {onDrop: jest.fn()};
     const bar = shallow(props);
 
     bar.simulate('drop');
 
-    expect(props.onDrop.calledOnce).toBeTruthy();
+    expect(props.onDrop.mock.calls.length).toBe(1);
 });

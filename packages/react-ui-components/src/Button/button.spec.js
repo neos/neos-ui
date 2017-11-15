@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import Button from './button.js';
 
@@ -65,13 +64,13 @@ test('should render the disabled attribute when passing a truthy "isDisabled" pr
 });
 test('should call the "_refHandler" prop with the current "isFocused" prop when rendering the node.', () => {
     const props = {
-        _refHandler: sinon.spy(),
+        _refHandler: jest.fn(),
         isFocused: false
     };
     shallow(props);
 
-    expect(props._refHandler.calledOnce).toBeTruthy();
-    expect(props._refHandler.args[0][0]).toBe(false);
+    expect(props._refHandler.mock.calls.length).toBe(1);
+    expect(props._refHandler.mock.calls[0][0]).toBe(false);
 });
 test('should propagate the rest of the passed props to the wrapping node.', () => {
     const btn = shallow({

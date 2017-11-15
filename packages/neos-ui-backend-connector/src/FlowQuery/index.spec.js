@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import factory, {
     isStartingOperation,
     isFinishingOperation,
@@ -180,24 +179,24 @@ test(`
     "api.flowQuery > api" should apply the the given middleware function and call it
     when executing an operation method.`, () => {
     const q = factory();
-    const middleware = sinon.spy();
+    const middleware = jest.fn();
 
     q.applyMiddleware(middleware);
 
     q('myContextPath').children('[instanceof Neos.Neos:Document]');
 
-    expect(middleware.calledOnce).toBe(true);
+    expect(middleware.mock.calls.length).toBe(1);
 });
 
 test(`
     "api.flowQuery > api" should apply the the given middleware function but ignore it
     when passing a truthy boolean as the second argument of the API.`, () => {
     const q = factory();
-    const middleware = sinon.spy();
+    const middleware = jest.fn();
 
     q.applyMiddleware(middleware);
 
     q('myContextPath', true).children('[instanceof Neos.Neos:Document]');
 
-    expect(middleware.called).toBe(false);
+    expect(middleware.mock.calls.length).toBe(0);
 });

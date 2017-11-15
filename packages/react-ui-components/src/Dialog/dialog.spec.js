@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import {DialogWithoutEscape as Dialog} from './dialog.js';
 import Portal from 'react-portal';
@@ -71,11 +70,11 @@ test('should render the actions if passed.', () => {
     expect(section.html().includes('Foo 2')).toBeTruthy();
 });
 test('should call the "onRequestClose" prop when clicking on the "IconButtonComponent" component.', () => {
-    const onRequestClose = sinon.spy();
+    const onRequestClose = jest.fn();
     const portal = shallow({onRequestClose}).find(Portal);
     const btn = portal.find(IconButtonComponent);
 
     btn.simulate('click');
 
-    expect(onRequestClose.calledOnce).toBeTruthy();
+    expect(onRequestClose.mock.calls.length).toBe(1);
 });

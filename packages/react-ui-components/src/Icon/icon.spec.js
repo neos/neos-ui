@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import Icon, {iconPropValidator} from './icon.js';
 
@@ -31,24 +30,24 @@ test('iconPropValidator() should call the "onDeprecate" in case a migration is n
     const props = {
         icon: 'fooIconClassName',
         _makeValidateId: () => id => ({isValid: false, isMigrationNeeded: true, iconName: id}),
-        onDeprecate: sinon.spy()
+        onDeprecate: jest.fn()
     };
 
     iconPropValidator(props, 'icon');
 
-    expect(props.onDeprecate.calledOnce).toBeTruthy();
+    expect(props.onDeprecate.mock.calls.length).toBe(1);
 });
 test('iconPropValidator() should not call the "onDeprecate" multiple times for the same icon id.', () => {
     const props = {
         icon: 'barIconClassName',
         _makeValidateId: () => id => ({isValid: false, isMigrationNeeded: true, iconName: id}),
-        onDeprecate: sinon.spy()
+        onDeprecate: jest.fn()
     };
 
     iconPropValidator(props, 'icon');
     iconPropValidator(props, 'icon');
 
-    expect(props.onDeprecate.callCount).toBe(1);
+    expect(props.onDeprecate.mock.calls.length).toBe(1);
 });
 test('iconPropValidator() should return an error if the iconName was not found.', () => {
     const props = {

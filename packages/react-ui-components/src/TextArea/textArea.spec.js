@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import TextareaAutoresize from 'react-textarea-autosize';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import {undecorated} from './textArea.js';
@@ -16,7 +15,7 @@ test('should render a "TextareaAutoresize" component.', () => {
     expect(input.length).toBe(1);
 });
 test('should call the passed "onChange" prop with the value of the input when changing it.', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const input = shallow({onChange}).find(TextareaAutoresize);
 
     input.simulate('change', {
@@ -25,6 +24,6 @@ test('should call the passed "onChange" prop with the value of the input when ch
         }
     });
 
-    expect(onChange.callCount).toBe(1);
-    expect(onChange.args[0][0]).toBe('my value');
+    expect(onChange.mock.calls.length).toBe(1);
+    expect(onChange.mock.calls[0][0]).toBe('my value');
 });

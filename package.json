@@ -59,7 +59,6 @@
     "regenerator-runtime": "^0.10.3",
     "rimraf": "^2.5.4",
     "semantic-release": "^6.3.2",
-    "sinon": "^2.1.0",
     "skin-deep": "^0.16.0",
     "style-loader": "^0.18.1",
     "stylelint": "^7.5.0",

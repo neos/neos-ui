@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import ShallowDropDownHeader from './header.js';
 
@@ -29,27 +28,27 @@ test('should render the "className" prop if passed.', () => {
 });
 test('should call the "toggleDropDown" prop when clicking on the wrapper.', () => {
     const props = {
-        toggleDropDown: sinon.spy()
+        toggleDropDown: jest.fn()
     };
     const header = shallow(props);
 
     header.simulate('click');
 
-    expect(props.toggleDropDown.calledOnce).toBeTruthy();
+    expect(props.toggleDropDown.mock.calls.length).toBe(1);
 });
 test('should call the "_refHandler" prop with the current "isOpen" prop when rendering the node.', () => {
     const props = {
-        _refHandler: sinon.spy(),
+        _refHandler: jest.fn(),
         isOpen: false
     };
     shallow(props);
 
-    expect(props._refHandler.calledOnce).toBeTruthy();
-    expect(props._refHandler.args[0][0]).toBe(false);
+    expect(props._refHandler.mock.calls.length).toBe(1);
+    expect(props._refHandler.mock.calls[0][0]).toBe(false);
 });
 test('should render a node with a aria-haspopup attribute.', () => {
     const props = {
-        _refHandler: sinon.spy(),
+        _refHandler: jest.fn(),
         isOpen: false
     };
     const header = shallow(props);

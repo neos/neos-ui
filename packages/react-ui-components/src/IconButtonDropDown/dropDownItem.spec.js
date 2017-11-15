@@ -1,5 +1,4 @@
 import React from 'react';
-import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import DropDownItem from './dropDownItem.js';
 
@@ -30,12 +29,12 @@ test('should render the children.', () => {
 });
 test('should call the "onClick" prop with the passed "id" when clicking on the anchor.', () => {
     const props = {
-        onClick: sinon.spy()
+        onClick: jest.fn()
     };
     const tag = shallow(props);
 
     tag.simulate('click');
 
-    expect(props.onClick.calledOnce).toBeTruthy();
-    expect(props.onClick.args[0][0]).toBe('fooId');
+    expect(props.onClick.mock.calls.length).toBe(1);
+    expect(props.onClick.mock.calls[0][0]).toBe('fooId');
 });

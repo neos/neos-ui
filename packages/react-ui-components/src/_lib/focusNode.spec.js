@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {makeFocusNode} from './focusNode.js';
 
 test('should return curried function.', () => {
@@ -13,23 +12,23 @@ test('should not throw an error when calling the curried function without argume
 });
 test('should call the "blur" method on the given node of the curried function depending.', () => {
     const node = {
-        blur: sinon.spy(),
-        focus: sinon.spy()
+        blur: jest.fn(),
+        focus: jest.fn()
     };
 
     makeFocusNode()(node);
 
-    expect(node.blur.calledOnce).toBeTruthy();
-    expect(node.focus.calledOnce).toBeFalsy();
+    expect(node.blur.mock.calls.length).toBe(1);
+    expect(node.focus.mock.calls.length).toBe(0);
 });
 test('should call the "focus" method on the given node of the curried function depending in case the first argument of the make function is truthy.', () => {
     const node = {
-        blur: sinon.spy(),
-        focus: sinon.spy()
+        blur: jest.fn(),
+        focus: jest.fn()
     };
 
     makeFocusNode(true)(node);
 
-    expect(node.blur.calledOnce).toBeFalsy();
-    expect(node.focus.calledOnce).toBeTruthy();
+    expect(node.blur.mock.calls.length).toBe(0);
+    expect(node.focus.mock.calls.length).toBe(1);
 });

@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import ShallowDropDownContents from './contents.js';
 
@@ -54,23 +53,23 @@ test('should render a aria-label="dropdown" and role="button" attribute in the w
 });
 test('should call the "closeDropDown" prop when clicking on the wrapper.', () => {
     const props = {
-        closeDropDown: sinon.spy()
+        closeDropDown: jest.fn()
     };
     const contents = shallow(props);
 
     contents.simulate('click');
 
-    expect(props.closeDropDown.calledOnce).toBeTruthy();
+    expect(props.closeDropDown.mock.calls.length).toBe(1);
 });
 test('should render the passed children.', () => {
     const contents = shallow();
 
-    expect(contents.html().includes('Foo children')).toBeTruthy();
+    expect(contents.html()).toContain('Foo children');
 });
 test('should propagate the rest of the passed props to the wrapping node.', () => {
     const contents = shallow({
         id: 'fooId'
     });
 
-    expect(contents.html().includes('id="fooId"')).toBeTruthy();
+    expect(contents.html()).toContain('id="fooId"');
 });

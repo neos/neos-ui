@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import debug from 'debug';
 import logger from './index';
 
@@ -15,13 +14,14 @@ test(`should export initialize method`, () => {
 });
 
 test(`should export call the debug.enable method when executing the initialize function.`, () => {
-    const enable = sinon.spy(debug, 'enable');
+    // ToDo: Move the mock setup in beforeEach/afterEach once we switch to the `describe` style of writing test suites.
+    const enable = jest.spyOn(debug, 'enable').mockImplementation(jest.fn());
 
     logger.initialize('Production');
     logger.initialize('Development');
 
-    expect(enable.calledTwice).toBe(true);
-    expect(enable.calledWith('Neos*')).toBe(true);
+    expect(enable.mock.calls.length).toBe(2);
+    expect(enable.mock.calls[0]).toEqual(['Neos*']);
 
-    enable.restore();
+    enable.mockRestore();
 });

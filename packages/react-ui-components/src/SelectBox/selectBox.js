@@ -5,10 +5,15 @@ import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import keydown, {Keys} from 'react-keydown';
 import mergeClassNames from 'classnames';
 
+import {neos} from '@neos-project/neos-ui-decorators';
+
 const {ENTER, UP, DOWN} = Keys;
 const KEYS = [ENTER, UP, DOWN];
 
 @keydown(KEYS)
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
 export default class SelectBox extends PureComponent {
 
     static defaultProps = {
@@ -206,7 +211,8 @@ export default class SelectBox extends PureComponent {
             TextInputComponent,
             IconButtonComponent,
             IconComponent,
-            withoutGroupLabel
+            withoutGroupLabel,
+            i18nRegistry
         } = this.props;
         const {isOpen} = this.state;
         let allowEmpty = this.props.allowEmpty;
@@ -233,7 +239,7 @@ export default class SelectBox extends PureComponent {
             label = selectedValue.label;
             icon = selectedValue.icon ? selectedValue.icon : icon;
         } else if (displayLoadingIndicator) {
-            label = '[Loading]'; // TODO: localize
+            label = i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main');
         } else if (placeholder) {
             label = (<span className={theme.selectBox__placeholder}>{placeholder}</span>);
             icon = placeholderIcon ? placeholderIcon : icon;

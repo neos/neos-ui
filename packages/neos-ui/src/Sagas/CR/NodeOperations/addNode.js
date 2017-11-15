@@ -12,7 +12,7 @@ const STEP_FINISH = Symbol('STEP_FINISH');
 export default function * addNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
 
-    yield * takeLatest(actionTypes.CR.Nodes.COMMENCE_CREATION, function * (action) {
+    yield takeLatest(actionTypes.CR.Nodes.COMMENCE_CREATION, function * (action) {
         const {referenceNodeContextPath, referenceNodeFusionPath} = action.payload;
 
         yield call(function * nodeCreationWorkflow(step = STEP_SELECT_NODETYPE, workflowData = {}) {

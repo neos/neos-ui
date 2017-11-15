@@ -11,7 +11,7 @@ export default function * copyAndPasteNode({globalRegistry}) {
     const canBeInsertedAlongsideSelector = selectors.CR.Nodes.makeCanBeCopiedAlongsideSelector(nodeTypesRegistry);
     const canBeInsertedIntoSelector = selectors.CR.Nodes.makeCanBeCopiedIntoSelector(nodeTypesRegistry);
 
-    yield * takeEvery(actionTypes.CR.Nodes.COPY, function * waitForPaste() {
+    yield takeEvery(actionTypes.CR.Nodes.COPY, function * waitForPaste() {
         const subject = yield select($get('cr.nodes.clipboard'));
 
         const waitForNextAction = yield race([

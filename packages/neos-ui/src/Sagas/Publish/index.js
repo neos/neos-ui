@@ -10,7 +10,7 @@ const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 function * watchPublish() {
     const {publish} = backend.get().endpoints;
 
-    yield * takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
+    yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
 
         if (nodeContextPaths.count() > 0) {
@@ -28,7 +28,7 @@ function * watchPublish() {
 }
 
 function * watchToggleAutoPublish() {
-    yield * takeEvery(actionTypes.User.Settings.TOGGLE_AUTO_PUBLISHING, function * publishInitially() {
+    yield takeEvery(actionTypes.User.Settings.TOGGLE_AUTO_PUBLISHING, function * publishInitially() {
         const state = yield select();
         const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
 
@@ -41,7 +41,7 @@ function * watchToggleAutoPublish() {
 
 function * watchChangeBaseWorkspace() {
     const {changeBaseWorkspace} = backend.get().endpoints;
-    yield * takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
+    yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
         try {
             const feedback = yield call(changeBaseWorkspace, action.payload);
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
@@ -54,7 +54,7 @@ function * watchChangeBaseWorkspace() {
 function * watchDiscard() {
     const {discard} = backend.get().endpoints;
 
-    yield * takeEvery(actionTypes.CR.Workspaces.DISCARD, function * discardNodes(action) {
+    yield takeEvery(actionTypes.CR.Workspaces.DISCARD, function * discardNodes(action) {
         yield put(actions.UI.Remote.startDiscarding());
 
         try {

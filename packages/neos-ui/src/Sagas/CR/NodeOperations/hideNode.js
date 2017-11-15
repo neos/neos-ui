@@ -5,7 +5,7 @@ import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 import {markNodeAsHidden} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 export default function * hideNode() {
-    yield * takeLatest(actionTypes.CR.Nodes.HIDE, function * performPropertyChange(action) {
+    yield takeLatest(actionTypes.CR.Nodes.HIDE, function * performPropertyChange(action) {
         const contextPath = action.payload;
 
         markNodeAsHidden(contextPath);

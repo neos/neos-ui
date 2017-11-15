@@ -11,7 +11,7 @@ export default function * cutAndPasteNode({globalRegistry}) {
     const canBeMovedAlongsideSelector = selectors.CR.Nodes.makeCanBeMovedAlongsideSelector(nodeTypesRegistry);
     const canBeMovedIntoSelector = selectors.CR.Nodes.makeCanBeMovedIntoSelector(nodeTypesRegistry);
 
-    yield * takeEvery(actionTypes.CR.Nodes.CUT, function * waitForPaste() {
+    yield takeEvery(actionTypes.CR.Nodes.CUT, function * waitForPaste() {
         const subject = yield select($get('cr.nodes.clipboard'));
 
         const waitForNextAction = yield race([

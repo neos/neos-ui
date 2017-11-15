@@ -8,7 +8,7 @@ import {parentNodeContextPath, isNodeCollapsed} from '@neos-project/neos-ui-redu
 
 function * watchToggle({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
+    yield takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
         const state = yield select();
         const {contextPath} = action.payload;
 
@@ -25,7 +25,7 @@ function * watchToggle({globalRegistry}) {
 }
 
 function * watchRequestChildrenForContextPath({configuration}) {
-    yield * takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
+    yield takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
         // ToDo Call yield put(actions.UI.PageTree.requestChildren(contextPath));
         const {contextPath, opts} = action.payload;
         const {activate} = opts;
@@ -71,7 +71,7 @@ function * watchRequestChildrenForContextPath({configuration}) {
 }
 
 function * watchNodeCreated() {
-    yield * takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
+    yield takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
         const {contextPath} = action.payload;
 
         yield put(actions.UI.PageTree.requestChildren(contextPath, {activate: true}));
@@ -80,7 +80,7 @@ function * watchNodeCreated() {
 
 function * watchReloadTree({globalRegistry, configuration}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    yield * takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
+    yield takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
         const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
         const {loadingDepth} = configuration.nodeTree;
         const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsed, {loadingDepth});
@@ -99,7 +99,7 @@ function * watchReloadTree({globalRegistry, configuration}) {
 }
 
 function * watchCurrentDocument({configuration}) {
-    yield * takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
+    yield takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
         const {contextPath} = action.payload;
         const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
         const {q} = backend.get();
@@ -138,7 +138,7 @@ function * watchCurrentDocument({configuration}) {
 }
 
 function * watchSearch({configuration}) {
-    yield * takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
+    yield takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
         const {contextPath, query: searchQuery, filterNodeType} = action.payload;
 
         if (!searchQuery && !filterNodeType) {

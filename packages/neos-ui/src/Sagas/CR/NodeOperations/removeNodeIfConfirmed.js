@@ -4,7 +4,7 @@ import {$get} from 'plow-js';
 import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
 export default function * removeNodeIfConfirmed() {
-    yield * takeLatest(actionTypes.CR.Nodes.COMMENCE_REMOVAL, function * waitForConfirmation() {
+    yield takeLatest(actionTypes.CR.Nodes.COMMENCE_REMOVAL, function * waitForConfirmation() {
         const state = yield select();
         const waitForNextAction = yield race([
             take(actionTypes.CR.Nodes.REMOVAL_ABORTED),

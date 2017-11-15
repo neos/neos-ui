@@ -2,11 +2,11 @@ import {call, takeEvery} from 'redux-saga/effects';
 import {actionTypes} from '@neos-project/neos-ui-redux-store';
 
 export function * reflectChangeInAddressBar(action) {
-    yield call(history.replaceState, {}, '', `?node=${action.payload.contextPath}`);
+    yield call([history, history.replaceState], {}, '', `?node=${action.payload.contextPath}`);
 }
 
 export function * watchContentURIChange() {
-    yield * takeEvery(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, reflectChangeInAddressBar);
+    yield takeEvery(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, reflectChangeInAddressBar);
 }
 
 export const sagas = [

@@ -5,7 +5,7 @@ import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 import {markNodeAsVisible} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 export default function * showNode() {
-    yield * takeLatest(actionTypes.CR.Nodes.SHOW, function * performPropertyChange(action) {
+    yield takeLatest(actionTypes.CR.Nodes.SHOW, function * performPropertyChange(action) {
         const contextPath = action.payload;
 
         markNodeAsVisible(contextPath);

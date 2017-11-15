@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelectBox/> should render correctly. 1`] = `
+<div
+  className="wrapperClassName"
+>
+  <ThemedEnhancedComponent
+    composeTheme="deeply"
+    isOpen={false}
+    mapThemrProps={[Function]}
+    onClose={[Function]}
+    onToggle={[Function]}
+  >
+    <ThemedContextDropDownHeader
+      shouldKeepFocusState={false}
+      showDropDownToggle={false}
+    >
+      <span />
+    </ThemedContextDropDownHeader>
+    <ThemedContextDropDownContents
+      composeTheme="deeply"
+      mapThemrProps={[Function]}
+      scrollable={true}
+    />
+  </ThemedEnhancedComponent>
+</div>
+`;

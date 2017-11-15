@@ -1,143 +1,148 @@
-import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
+import {createStubComponent} from './../_lib/testUtils.js';
 import IconButtonDropDown from './iconButtonDropDown.js';
 import DropDownItem from './dropDownItem.js';
 
-const Icon = createStubComponent();
-const Button = createStubComponent();
-const defaultProps = {
-    icon: 'barGeneralIcon',
-    children: [
-        createStubComponent()({dropDownId: 'foo1'}),
-        createStubComponent()({dropDownId: 'foo2'})
-    ],
-    modeIcon: 'fooModeIcon',
-    onClick: () => null,
-    onItemSelect: () => null,
-    theme: {
-        'wrapper': 'baseWrapperClassName',
-        'wrapper__btn': 'baseBtnClassName',
-        'wrapper__btnModeIcon': 'baseBtnIconClassName',
-        'wrapper__dropDown': 'baseDropDownClassName',
-        'wrapper__dropDown--isOpen': 'baseDropDownOpenClassName',
-        'wrapper__dropDownItem': 'baseDropDownItemClassName'
-    },
-    IconComponent: Icon,
-    ButtonComponent: Button
-};
-const shallow = createShallowRenderer(IconButtonDropDown, defaultProps);
+describe('<IconButtonDropDown/>', () => {
+    let props;
 
-test('should initialize with a state of "{isOpen: false}".', () => {
-    const dd = shallow();
-
-    expect(dd.state('isOpen')).toBe(false);
-});
-test('should render a "div" node with the themes "wrapper" className.', () => {
-    const dd = shallow();
-
-    expect(dd.type()).toBe('div');
-    expect(dd.hasClass('baseWrapperClassName')).toBeTruthy();
-});
-test('should render the "className" prop if passed.', () => {
-    const dd = shallow({
-        className: 'barClassName'
+    beforeEach(() => {
+        props = {
+            id: 'fooId',
+            icon: 'barGeneralIcon',
+            children: [
+                createStubComponent()({dropDownId: 'foo1'}),
+                createStubComponent()({dropDownId: 'foo2'})
+            ],
+            modeIcon: 'fooModeIcon',
+            onClick: () => null,
+            onItemSelect: () => null,
+            theme: {
+                'wrapper': 'baseWrapperClassName',
+                'wrapper__btn': 'baseBtnClassName',
+                'wrapper__btnModeIcon': 'baseBtnIconClassName',
+                'wrapper__dropDown': 'baseDropDownClassName',
+                'wrapper__dropDown--isOpen': 'baseDropDownOpenClassName',
+                'wrapper__dropDownItem': 'baseIconButtonDropDownClassName'
+            },
+            IconComponent: createStubComponent(),
+            ButtonComponent: createStubComponent()
+        };
     });
 
-    expect(dd.hasClass('barClassName')).toBeTruthy();
-});
-test('should render a "ButtonComponent" component with style="clean" and aria-haspopup="true" prop and a className which matches the themes "wrapper__btn".', () => {
-    const dd = shallow();
-    const btn = dd.find(Button);
+    it('should render correctly.', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props}/>);
 
-    expect(btn.prop('style')).toBe('clean');
-    expect(btn.prop('aria-haspopup')).toBe('true');
-    expect(btn.hasClass('baseBtnClassName')).toBeTruthy();
-});
-test('should render a "ButtonComponent" component which reflects the "isDisabled" prop.', () => {
-    const dd = shallow({
-        isDisabled: false
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
-    const btn = dd.find(Button);
 
-    expect(btn.prop('isDisabled')).toBe(false);
-});
-test('should set the "isOpen" state to "true" when pressing the "ButtonComponent" for more than 200 ms.', () => {
-    const dd = shallow();
-    const btn = dd.find(Button);
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props} className="fooClassName"/>);
 
-    return new Promise(resolve => {
-        btn.simulate('mouseDown');
-
-        setTimeout(() => {
-            expect(dd.state('isOpen')).toBe(true);
-            resolve();
-        }, 300);
+        expect(wrapper.prop('className')).toContain('fooClassName');
     });
-});
-test('should abort the setting of the "isOpen" state to "true" when pressing and afterwards clicking on the "ButtonComponent" within the 200 ms.', () => {
-    const dd = shallow();
-    const btn = dd.find(Button);
 
-    return new Promise(resolve => {
-        btn.simulate('mouseDown');
+    it('should initialize with a state of "{isOpen: false}".', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props}/>);
+
+        expect(wrapper.state('isOpen')).toBe(false);
+    });
+
+    it('should render a "ButtonComponent" component with style="clean" and aria-haspopup="true" prop and a className which matches the themes "wrapper__btn".', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props}/>);
+        const btn = wrapper.find(props.ButtonComponent);
+
+        expect(btn.prop('style')).toBe('clean');
+        expect(btn.prop('aria-haspopup')).toBe('true');
+        expect(btn.hasClass('baseBtnClassName')).toBeTruthy();
+    });
+
+    it('should render a "ButtonComponent" component which reflects the "isDisabled" prop.', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props} isDisabled={false}/>);
+        const btn = wrapper.find(props.ButtonComponent);
+
+        expect(btn.prop('isDisabled')).toBe(false);
+    });
+
+    it('should set the "isOpen" state to "true" when pressing the "ButtonComponent" for more than 200 ms.', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props}/>);
+        const btn = wrapper.find(props.ButtonComponent);
+
+        return new Promise(resolve => {
+            btn.simulate('mouseDown');
+
+            setTimeout(() => {
+                expect(wrapper.state('isOpen')).toBe(true);
+                resolve();
+            }, 300);
+        });
+    });
+
+    it('should abort the setting of the "isOpen" state to "true" when pressing and afterwards clicking on the "ButtonComponent" within the 200 ms.', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props}/>);
+        const btn = wrapper.find(props.ButtonComponent);
+
+        return new Promise(resolve => {
+            btn.simulate('mouseDown');
+
+            btn.simulate('click');
+
+            setTimeout(() => {
+                expect(wrapper.state('isOpen')).toBe(false);
+                resolve();
+            }, 300);
+        });
+    });
+
+    it('should call the "onClick" prop when clicking on the "ButtonComponent".', () => {
+        const onClick = jest.fn();
+        const wrapper = shallow(<IconButtonDropDown {...props} onClick={onClick}/>);
+        const btn = wrapper.find(props.ButtonComponent);
 
         btn.simulate('click');
 
-        setTimeout(() => {
-            expect(dd.state('isOpen')).toBe(false);
-            resolve();
-        }, 300);
+        expect(onClick.mock.calls.length).toBe(1);
     });
-});
-test('should call the "onClick" prop when clicking on the "ButtonComponent".', () => {
-    const props = {
-        onClick: jest.fn()
-    };
-    const dd = shallow(props);
-    const btn = dd.find(Button);
 
-    btn.simulate('click');
+    it('should render two "IconComponent"s within the "ButtonComponent".', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props}/>);
+        const btn = wrapper.find(props.ButtonComponent);
+        const icons = btn.find(props.IconComponent);
 
-    expect(props.onClick.mock.calls.length).toBe(1);
-});
+        expect(icons.length).toBe(2);
+    });
+    it('should propagate the "modeIcon" prop to the first "IconComponent".', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props}/>);
+        const btn = wrapper.find(props.ButtonComponent);
+        const icon = btn.find(props.IconComponent).at(0);
 
-test('should render two "IconComponent"s within the "ButtonComponent".', () => {
-    const dd = shallow();
-    const btn = dd.find(Button);
-    const icons = btn.find(Icon);
+        expect(icon.prop('icon')).toBe('fooModeIcon');
+    });
+    it('should propagate the "icon" prop to the second "IconComponent".', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props}/>);
+        const btn = wrapper.find(props.ButtonComponent);
+        const icon = btn.find(props.IconComponent).at(1);
 
-    expect(icons.length).toBe(2);
-});
-test('should propagate the "modeIcon" prop to the first "IconComponent".', () => {
-    const dd = shallow();
-    const btn = dd.find(Button);
-    const icon = btn.find(Icon).at(0);
+        expect(icon.prop('icon')).toBe('barGeneralIcon');
+    });
 
-    expect(icon.prop('icon')).toBe('fooModeIcon');
-});
-test('should propagate the "icon" prop to the second "IconComponent".', () => {
-    const dd = shallow();
-    const btn = dd.find(Button);
-    const icon = btn.find(Icon).at(1);
+    it('should render a "DropDownItem" for each passed child and propagate the "dropDownId" to it as "id".', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props}/>);
+        const items = wrapper.find(DropDownItem);
 
-    expect(icon.prop('icon')).toBe('barGeneralIcon');
-});
+        expect(items.length).toBe(2);
+        expect(items.at(0).prop('id')).toBe('foo1');
+        expect(items.at(1).prop('id')).toBe('foo2');
+    });
+    it('should call the "onItemSelect" prop when clicking on a "DropDownItem".', () => {
+        const onItemSelect = jest.fn();
+        const wrapper = shallow(<IconButtonDropDown {...props} onItemSelect={onItemSelect}/>);
+        const item = wrapper.find(DropDownItem).at(0);
 
-test('should render a "DropDownItem" for each passed child and propagate the "dropDownId" to it as "id".', () => {
-    const dd = shallow();
-    const items = dd.find(DropDownItem);
+        item.simulate('click');
 
-    expect(items.length).toBe(2);
-    expect(items.at(0).prop('id')).toBe('foo1');
-    expect(items.at(1).prop('id')).toBe('foo2');
-});
-test('should call the "onItemSelect" prop when clicking on a "DropDownItem".', () => {
-    const props = {
-        onItemSelect: jest.fn()
-    };
-    const dd = shallow(props);
-    const item = dd.find(DropDownItem).at(0);
-
-    item.simulate('click');
-
-    expect(props.onItemSelect.mock.calls.length).toBe(1);
+        expect(onItemSelect.mock.calls.length).toBe(1);
+    });
 });

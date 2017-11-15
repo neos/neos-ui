@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ComplexOption/> should render correctly. 1`] = `
+<SelectBoxOption
+  IconComponent={[Function]}
+  className="complexOption__item"
+  label="Foo label"
+  onClick={[Function]}
+  option={Object {}}
+  theme={Object {}}
+>
+  <span>
+    Foo label
+  </span>
+</SelectBoxOption>
+`;

@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DateInput/> should render correctly. 1`] = `
+<div>
+  <div
+    className=""
+  >
+    <button
+      onClick={[Function]}
+    >
+      <Component
+        icon="calendar"
+      />
+    </button>
+    <div>
+      <div
+        onClick={[Function]}
+        role="presentation"
+      />
+      <input
+        onFocus={[Function]}
+        readOnly={true}
+        type="datetime"
+        value=""
+      />
+    </div>
+    <button
+      onClick={[Function]}
+    >
+      <Component
+        icon="remove"
+      />
+    </button>
+  </div>
+  <Component
+    isOpened={false}
+  >
+    <button
+      onClick={[Function]}
+    >
+      Today
+    </button>
+    <Component
+      dateFormat={true}
+      onChange={[Function]}
+      open={true}
+      timeFormat={true}
+    />
+    <Component
+      onClick={[Function]}
+      style="brand"
+    >
+      Apply
+    </Component>
+  </Component>
+</div>
+`;

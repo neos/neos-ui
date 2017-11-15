@@ -1,34 +1,39 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Badge from './badge.js';
+import ButtonGroup from './buttonGroup.js';
 
-describe('<Badge/>', () => {
+describe('<ButtonGroup/>', () => {
     let props;
 
     beforeEach(() => {
         props = {
             theme: {
-                badge: 'badgeClassName'
+                btnGroup: 'cleanClassName'
             },
-            label: 'Foo children'
+            value: 'foo',
+            onSelect: jest.fn(),
+            children: [
+                <div key="foo" id="foo">Foo button</div>,
+                <div key="bar" id="bar">Bar button</div>
+            ]
         };
     });
 
     it('should render correctly.', () => {
-        const wrapper = shallow(<Badge {...props}/>);
+        const wrapper = shallow(<ButtonGroup {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should allow the propagation of "className" with the "className" prop.', () => {
-        const wrapper = shallow(<Badge {...props} className="fooClassName"/>);
+        const wrapper = shallow(<ButtonGroup {...props} className="fooClassName"/>);
 
         expect(wrapper.prop('className')).toContain('fooClassName');
     });
 
     it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<Badge {...props} foo="bar"/>);
+        const wrapper = shallow(<ButtonGroup {...props} foo="bar"/>);
 
         expect(wrapper.prop('foo')).toBe('bar');
     });

@@ -112,7 +112,7 @@ test(`SelectBox > single, dataSource, no preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
-    expect(dropdownHeader(component).text()).toBe('[Loading]');
+    expect(dropdownHeader(component).text()).toBe('[loading]');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
@@ -133,7 +133,7 @@ test(`SelectBox > single, dataSource, preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
-    expect(dropdownHeader(component).text()).toBe('[Loading]');
+    expect(dropdownHeader(component).text()).toBe('[loading]');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
@@ -155,7 +155,7 @@ test(`SelectBox > multi, dataSource, no preselected value`, () => {
     );
 
     expect(multiselectLabels(component)).toEqual([]);
-    expect(dropdownHeader(component).text()).toBe('[Loading]');
+    expect(dropdownHeader(component).text()).toBe('[loading]');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
@@ -179,8 +179,8 @@ test(`SelectBox > multi, dataSource, preselected value`, () => {
         </DragDropContextProvider>
     );
 
-    expect(multiselectLabels(component)).toEqual(['[Loading foo]']);
-    expect(dropdownHeader(component).text()).toBe('[Loading]');
+    expect(multiselectLabels(component)).toEqual(['[loading foo]']);
+    expect(dropdownHeader(component).text()).toBe('[loading]');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {

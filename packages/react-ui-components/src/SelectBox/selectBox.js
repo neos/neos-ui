@@ -5,15 +5,10 @@ import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import keydown, {Keys} from 'react-keydown';
 import mergeClassNames from 'classnames';
 
-import {neos} from '@neos-project/neos-ui-decorators';
-
 const {ENTER, UP, DOWN} = Keys;
 const KEYS = [ENTER, UP, DOWN];
 
 @keydown(KEYS)
-@neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
-}))
 export default class SelectBox extends PureComponent {
 
     static defaultProps = {
@@ -70,6 +65,11 @@ export default class SelectBox extends PureComponent {
         withoutGroupLabel: PropTypes.string,
 
         /**
+         * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
+         */
+        loadingLabel: PropTypes.string,
+
+        /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
@@ -107,8 +107,6 @@ export default class SelectBox extends PureComponent {
          * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
          */
         optionComponent: PropTypes.any,
-
-        i18nRegistry: PropTypes.object.isRequired,
 
         /**
          * An optional css theme to be injected.
@@ -201,6 +199,7 @@ export default class SelectBox extends PureComponent {
             options,
             value,
             optionValueField,
+            loadingLabel,
             displayLoadingIndicator,
             theme,
             highlight,
@@ -213,8 +212,7 @@ export default class SelectBox extends PureComponent {
             TextInputComponent,
             IconButtonComponent,
             IconComponent,
-            withoutGroupLabel,
-            i18nRegistry
+            withoutGroupLabel
         } = this.props;
         const {isOpen} = this.state;
         let allowEmpty = this.props.allowEmpty;
@@ -241,11 +239,12 @@ export default class SelectBox extends PureComponent {
             label = selectedValue.label;
             icon = selectedValue.icon ? selectedValue.icon : icon;
         } else if (displayLoadingIndicator) {
-            label = '[' + i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main') + ']';
+            label = loadingLabel ? '[' + loadingLabel + ']' : '[Loading]';
         } else if (placeholder) {
             label = (<span className={theme.selectBox__placeholder}>{placeholder}</span>);
             icon = placeholderIcon ? placeholderIcon : icon;
         }
+        console.log('label', label);
 
         const classNames = mergeClassNames({
             [theme.wrapper]: true,

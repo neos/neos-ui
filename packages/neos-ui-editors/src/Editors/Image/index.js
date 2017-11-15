@@ -46,11 +46,6 @@ export default class ImageEditor extends Component {
         // I18N key
         fileChooserLabel: PropTypes.string,
 
-        features: PropTypes.shape({
-            crop: PropTypes.bool,
-            resize: PropTypes.bool
-        }),
-
         allowedFileTypes: PropTypes.string
     };
 
@@ -110,7 +105,7 @@ export default class ImageEditor extends Component {
     }
 
     isFeatureEnabled(featureName) {
-        const features = Object.assign({}, DEFAULT_FEATURES, this.props.features);
+        const features = Object.assign({}, DEFAULT_FEATURES, this.props.options.features);
         return features[featureName];
     }
 

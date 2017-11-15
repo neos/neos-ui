@@ -13,7 +13,7 @@
     "test": "lerna run test",
     "test:e2e": "yarn run testcafe -- chrome:headless Tests/IntegrationTests/* --selector-timeout=30000 --assertion-timeout=30000",
     "lint": "lerna run lint",
-    "lint:editorconfig": "editorconfig-checker --exclude-regexp 'LICENSE|\\.vanilla\\-css$|banner\\.js$' --exclude-pattern './{README.md,**/*{fontAwesome,Resources}/**/*}'"
+    "lint:editorconfig": "editorconfig-checker --exclude-regexp 'LICENSE|\\.vanilla\\-css$|banner\\.js$' --exclude-pattern './{README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'"
   },
   "devDependencies": {
     "@neos-project/brand": "^1.1.0",

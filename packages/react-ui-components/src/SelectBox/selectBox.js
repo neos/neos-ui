@@ -241,7 +241,7 @@ export default class SelectBox extends PureComponent {
             label = selectedValue.label;
             icon = selectedValue.icon ? selectedValue.icon : icon;
         } else if (displayLoadingIndicator) {
-            label = i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main');
+            label = '[' + i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main') + ']';
         } else if (placeholder) {
             label = (<span className={theme.selectBox__placeholder}>{placeholder}</span>);
             icon = placeholderIcon ? placeholderIcon : icon;

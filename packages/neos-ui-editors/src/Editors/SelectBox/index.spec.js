@@ -179,7 +179,7 @@ test(`SelectBox > multi, dataSource, preselected value`, () => {
         </DragDropContextProvider>
     );
 
-    expect(multiselectLabels(component)).toEqual(['[loading foo]']);
+    expect(multiselectLabels(component)).toEqual(['[Loading foo]']);
     expect(dropdownHeader(component).text()).toBe('[loading]');
     expect(dropdownElementLabels(component)).toEqual([]);
 

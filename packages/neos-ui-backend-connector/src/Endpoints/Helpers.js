@@ -34,9 +34,6 @@ export const searchParams = (params = {}) => {
  * @return strinf
  */
 export const urlWithParams = (urlString, params = {}) => {
-    console.log(urlString.indexOf(window.location.origin) === 0 ?
-        window.location.origin + urlString :
-        urlString);
     const url = new URL(
         urlString.indexOf(window.location.origin) === 0 ?
             urlString :

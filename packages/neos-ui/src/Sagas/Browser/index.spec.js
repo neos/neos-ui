@@ -7,7 +7,7 @@ describe('watchContentURIChange()', () => {
         expect(typeof watchContentURIChange().next).toBe('function');
     });
 
-    it('should not throw an error when running the saga.', async () => {
+    it('should not throw an error when running the saga.', () => {
         // ToDo: Currently snapshot testing with takeEvery / takeLatest does not seem to work, investigate.
         expect(() => testSaga(watchContentURIChange).next().next().isDone()).not.toThrow();
     });
@@ -17,7 +17,7 @@ describe('reflectChangeInAddressBar()', () => {
     let replaceState;
 
     beforeEach(() => {
-        replaceState = jest.spyOn(history, 'replaceState').mockImplementation(jest.fn());
+        replaceState = jest.spyOn(history, 'replaceState').mockImplementation(jest.fn(() => Promise.resolve()));
     });
 
     afterEach(() => {

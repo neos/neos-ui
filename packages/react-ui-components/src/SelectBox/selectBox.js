@@ -108,6 +108,8 @@ export default class SelectBox extends PureComponent {
          */
         optionComponent: PropTypes.any,
 
+        i18nRegistry: PropTypes.object.isRequired,
+
         /**
          * An optional css theme to be injected.
          */

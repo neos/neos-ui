@@ -22,8 +22,6 @@ export default isMulti => WrappedComponent => {
 
         static propTypes = {
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-            highlight: PropTypes.bool,
-            commit: PropTypes.func.isRequired,
             options: PropTypes.shape({
                 nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
                 placeholder: PropTypes.string,
@@ -85,10 +83,6 @@ export default isMulti => WrappedComponent => {
             }
         }
 
-        handleValueChange = value => {
-            this.props.commit(value);
-        }
-
         handleSearchTermChange = searchTerm => {
             this.setState({searchTerm});
             const threshold = $get('options.threshold', this.props) || this.constructor.defaultOptions.threshold;
@@ -129,7 +123,6 @@ export default isMulti => WrappedComponent => {
                     searchTerm={this.state.searchTerm}
                     searchOptions={this.state.searchOptions}
                     displayLoadingIndicator={this.state.isLoading}
-                    onValueChange={this.handleValueChange}
                     onSearchTermChange={this.handleSearchTermChange}
                     placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
                     />

@@ -1,3 +1,4 @@
+import React from 'react';
 import sinon from 'sinon';
 import {createShallowRenderer} from './../_lib/testUtils.js';
 import DropDownItem from './dropDownItem.js';
@@ -5,7 +6,7 @@ import DropDownItem from './dropDownItem.js';
 const defaultProps = {
     onClick: () => null,
     id: 'fooId',
-    children: 'Foo children'
+    children: <div>Foo children</div>
 };
 const shallow = createShallowRenderer(DropDownItem, defaultProps);
 

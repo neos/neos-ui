@@ -66,12 +66,12 @@ test('should render the disabled attribute when passing a truthy "isDisabled" pr
 test('should call the "_refHandler" prop with the current "isFocused" prop when rendering the node.', () => {
     const props = {
         _refHandler: sinon.spy(),
-        isFocused: 'foo'
+        isFocused: false
     };
     shallow(props);
 
     expect(props._refHandler.calledOnce).toBeTruthy();
-    expect(props._refHandler.args[0][0]).toBe('foo');
+    expect(props._refHandler.args[0][0]).toBe(false);
 });
 test('should propagate the rest of the passed props to the wrapping node.', () => {
     const btn = shallow({

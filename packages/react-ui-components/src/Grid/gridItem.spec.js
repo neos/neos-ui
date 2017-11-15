@@ -3,7 +3,8 @@ import GridItem from './gridItem.js';
 
 const defaultProps = {
     theme: {},
-    width: 'third'
+    width: 'third',
+    children: 'Foo children'
 };
 const shallow = createShallowRenderer(GridItem, defaultProps);
 

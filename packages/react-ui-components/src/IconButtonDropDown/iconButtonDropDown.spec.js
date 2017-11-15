@@ -55,11 +55,11 @@ test('should render a "ButtonComponent" component with style="clean" and aria-ha
 });
 test('should render a "ButtonComponent" component which reflects the "isDisabled" prop.', () => {
     const dd = shallow({
-        isDisabled: 'fooDisabled'
+        isDisabled: false
     });
     const btn = dd.find(Button);
 
-    expect(btn.prop('isDisabled')).toBe('fooDisabled');
+    expect(btn.prop('isDisabled')).toBe(false);
 });
 test('should set the "isOpen" state to "true" when pressing the "ButtonComponent" for more than 200 ms.', () => {
     const dd = shallow();

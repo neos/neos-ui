@@ -1,11 +1,12 @@
 import sinon from 'sinon';
 import TextareaAutoresize from 'react-textarea-autosize';
-import {createShallowRenderer} from './../_lib/testUtils.js';
-
+import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import {undecorated} from './textArea.js';
 
+const TooltipComponent = createStubComponent();
 const defaultProps = {
-    theme: {}
+    theme: {},
+    TooltipComponent
 };
 const shallow = createShallowRenderer(undecorated, defaultProps);
 

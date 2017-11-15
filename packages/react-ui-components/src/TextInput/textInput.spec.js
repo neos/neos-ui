@@ -1,9 +1,11 @@
 import sinon from 'sinon';
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
 import TextInput from './textInput.js';
 
+const TooltipComponent = createStubComponent();
 const defaultProps = {
-    theme: {}
+    theme: {},
+    TooltipComponent
 };
 const shallow = createShallowRenderer(TextInput, defaultProps);
 

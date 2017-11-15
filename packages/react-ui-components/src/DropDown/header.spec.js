@@ -40,17 +40,17 @@ test('should call the "toggleDropDown" prop when clicking on the wrapper.', () =
 test('should call the "_refHandler" prop with the current "isOpen" prop when rendering the node.', () => {
     const props = {
         _refHandler: sinon.spy(),
-        isOpen: 'foo'
+        isOpen: false
     };
     shallow(props);
 
     expect(props._refHandler.calledOnce).toBeTruthy();
-    expect(props._refHandler.args[0][0]).toBe('foo');
+    expect(props._refHandler.args[0][0]).toBe(false);
 });
 test('should render a node with a aria-haspopup attribute.', () => {
     const props = {
         _refHandler: sinon.spy(),
-        isOpen: 'foo'
+        isOpen: false
     };
     const header = shallow(props);
 

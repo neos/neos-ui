@@ -111,6 +111,5 @@ test('should set the "isOpen" state to a falsy value and call the "onChange" pro
 
     expect(wrapper.state('isOpen')).toBe(false);
     expect(onChange.callCount).toBe(1);
-    console.log(onChange.args[0][0].toTimeString());
     expect(onChange.args[0][0].toTimeString()).toBe(date.toTimeString());
 });

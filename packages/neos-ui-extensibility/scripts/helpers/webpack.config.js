@@ -1,6 +1,6 @@
 const sharedWebPackConfig = require('@neos-project/build-essentials/src/webpack.config.js');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = sharedWebPackConfig.__neos.ExtractTextPlugin;
 
 module.exports = function (neosPackageJson) {
     return Object.assign({}, sharedWebPackConfig, {

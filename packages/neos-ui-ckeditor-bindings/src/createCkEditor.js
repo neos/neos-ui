@@ -30,7 +30,7 @@ export default ({propertyDomNode, propertyName, contextPath, editorOptions, glob
                 removePlugins: 'floatingspace,maximize,resize,liststyle',
                 autoParagraph: isAutoParagraphEnabled,
                 entities: false,
-                basicEntities: false,
+                basicEntities: true,
                 title: propertyName,
                 language: interfaceLanguage
             },

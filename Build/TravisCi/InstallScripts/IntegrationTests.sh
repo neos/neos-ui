@@ -60,8 +60,10 @@ mysql -e 'create database neos collate utf8_unicode_ci;'
 # Change into the repository directory where the environment based shell script will be executed.
 cd Packages/Application/Neos.Neos.Ui
 
+# Since all environments depend on the node dependencies, install and
+# afterwards prune them to remove extranous packages from previous/cached runs.
+yarn install
+yarn build
+
 # Deactivate the previous enabled handling of hidden files with the `mv` command.
 shopt -u dotglob
-
-# Build the UI
-yarn build

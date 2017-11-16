@@ -244,7 +244,6 @@ export default class SelectBox extends PureComponent {
             label = (<span className={theme.selectBox__placeholder}>{placeholder}</span>);
             icon = placeholderIcon ? placeholderIcon : icon;
         }
-        console.log('label', label);
 
         const classNames = mergeClassNames({
             [theme.wrapper]: true,

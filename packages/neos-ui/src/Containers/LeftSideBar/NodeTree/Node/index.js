@@ -308,7 +308,7 @@ const withNodeTypeRegistryAndI18nRegistry = neos(globalRegistry => ({
 }));
 
 export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
-    (state, {neos, nodeTypesRegistry, i18nRegistry}) => {
+    (state, {neos, nodeTypesRegistry}) => {
         const allowedNodeTypes = nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document'));
 
         const childrenOfSelector = selectors.CR.Nodes.makeChildrenOfSelector(allowedNodeTypes);
@@ -347,7 +347,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
 )(Node));
 
 export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
-    (state, {neos, nodeTypesRegistry, i18nRegistry}) => {
+    (state, {neos, nodeTypesRegistry}) => {
         const allowedNodeTypes = [].concat(
             nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('content')),
             nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('contentCollection'))

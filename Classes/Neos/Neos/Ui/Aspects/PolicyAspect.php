@@ -11,13 +11,13 @@ use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSubject;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\PropertyAwareNodePrivilegeSubject;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
 use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
-use Neos\Neos\Security\Authorization\Privilege\ReadNodePrivilege;
-use Neos\Neos\Security\Authorization\Privilege\EditNodePropertyPrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\RemoveNodePrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivilege;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePropertyPrivilege;
 
 /**
  * Add information to rendered nodes relevant to enforce the following privileges
@@ -27,7 +27,6 @@ use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivile
  * - CreateNodePrivilege
  * - RemoveNodePrivilege
  * - EditNodePrivilege
- * - ReadNodePrivilege
  * - EditNodePropertyPrivilege
  *
  * @Flow\Scope("singleton")
@@ -125,10 +124,28 @@ class PolicyAspect
     }
 
     /**
-     * @Flow\Around("method()")
+     * @Flow\Around("method(Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper->renderNode())")
      * @return void
      */
     public function enforceEditNodePropertyPrivilege(JoinPointInterface $joinPoint)
     {
+        $node = $joinPoint->getMethodArgument('node');
+        $nodeInfo = $joinPoint->getAdviceChain()->proceed($joinPoint);
+
+        $nodeInfo['policy'] = array_key_exists('policy', $nodeInfo) ? $nodeInfo['policy'] : [];
+        $nodeInfo['policy']['disallowedProperties'] = [];
+
+        foreach ($node->getNodeType()->getProperties() as $propertyName => $propertyConfiguration) {
+            $canEdit = $this->privilegeManager->isGranted(
+                EditNodePropertyPrivilege::class,
+                new PropertyAwareNodePrivilegeSubject($node, null, $propertyName)
+            );
+
+            if (!$canEdit) {
+                $nodeInfo['policy']['disallowedProperties'][] = $propertyName;
+            }
+        }
+
+        return $nodeInfo;
     }
 }

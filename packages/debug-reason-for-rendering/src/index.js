@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 const BOLD = 'font-weight: bold;';
 const RESET = 'font-weight: normal;';
 
+// ToDo: use lodash's upperFirst fn?
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }

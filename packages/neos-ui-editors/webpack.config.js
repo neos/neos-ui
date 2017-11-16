@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-const env = require('./../../Build/Utilities/').env;
+const env = require('@neos-project/build-essentials/src/environment.js');
 const brand = require('@neos-project/brand');
 
 //

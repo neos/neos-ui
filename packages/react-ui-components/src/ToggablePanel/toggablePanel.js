@@ -226,7 +226,6 @@ export class Header extends PureComponent {
                 <HeadlineComponent
                     className={finalClassName}
                     type="h1"
-                    style="h4"
                     >
                     {children}
                 </HeadlineComponent>

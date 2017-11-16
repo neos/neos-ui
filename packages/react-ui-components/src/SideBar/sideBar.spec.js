@@ -1,20 +1,34 @@
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import SideBar from './sideBar.js';
 
-const defaultProps = {
-    position: 'left',
-    children: 'Foo children',
-    theme: {}
-};
-const shallow = createShallowRenderer(SideBar, defaultProps);
+describe('<SideBar/>', () => {
+    let props;
 
-test('should render a "label" node.', () => {
-    const bar = shallow();
+    beforeEach(() => {
+        props = {
+            position: 'left',
+            children: 'Foo children',
+            theme: {}
+        };
+    });
 
-    expect(bar.type()).toBe('div');
-});
-test('should add the passed "className" prop to the rendered node if passed.', () => {
-    const bar = shallow({className: 'testClassName'});
+    it('should render correctly.', () => {
+        const wrapper = shallow(<SideBar {...props}/>);
 
-    expect(bar.hasClass('testClassName')).toBeTruthy();
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<SideBar {...props} className="fooClassName"/>);
+
+        expect(wrapper.prop('className')).toContain('fooClassName');
+    });
+
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<SideBar {...props} foo="bar"/>);
+
+        expect(wrapper.prop('foo')).toBe('bar');
+    });
 });

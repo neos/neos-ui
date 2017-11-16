@@ -1,26 +1,33 @@
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import Grid from './grid.js';
 
-const defaultProps = {
-    children: 'Foo children',
-    theme: {}
-};
-const shallow = createShallowRenderer(Grid, defaultProps);
+describe('<Grid/>', () => {
+    let props;
 
-test('should initially have a falsy "isOpen" state value.', () => {
-    const grid = shallow();
-
-    expect(grid.type()).toBe('div');
-});
-test('should add the passed "className" prop to the rendered div if passed.', () => {
-    const grid = shallow({className: 'testClassName'});
-
-    expect(grid.hasClass('testClassName')).toBeTruthy();
-});
-test('should propagate the rest of the passed props to the wrapping node.', () => {
-    const grid = shallow({
-        id: 'fooId'
+    beforeEach(() => {
+        props = {
+            children: 'Foo children',
+            theme: {}
+        };
     });
 
-    expect(grid.html().includes('id="fooId"')).toBeTruthy();
+    it('should render correctly.', () => {
+        const wrapper = shallow(<Grid {...props}/>);
+
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<Grid {...props} className="fooClassName"/>);
+
+        expect(wrapper.prop('className')).toContain('fooClassName');
+    });
+
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<Grid {...props} foo="bar"/>);
+
+        expect(wrapper.prop('foo')).toBe('bar');
+    });
 });

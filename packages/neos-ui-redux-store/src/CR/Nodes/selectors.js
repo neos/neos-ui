@@ -186,6 +186,7 @@ export const getPathInNode = (state, contextPath, propertyPath) => {
 
 export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator = id => id) => createSelector(
     [
+        (state, {reference}) => getPathInNode(state, elevator(reference), 'policy.canEdit'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'policy.disallowedNodeTypes'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'isAutoCreated'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'name'),
@@ -193,9 +194,11 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator
         (state, {reference}) => getPathInNode(state, elevator(parentNodeContextPath(reference)), 'nodeType'),
         (state, {role}) => role
     ],
-    (disallowedNodeTypes, ...args) => nodeTypesRegistry
-        .getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args)
-        .filter(nodeType => !disallowedNodeTypes.includes(nodeType))
+    (canEdit, disallowedNodeTypes, ...args) => canEdit ?
+        nodeTypesRegistry
+            .getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args)
+            .filter(nodeType => !disallowedNodeTypes.includes(nodeType)) :
+        []
 );
 
 export const makeGetAllowedSiblingNodeTypesSelector = nodeTypesRegistry =>

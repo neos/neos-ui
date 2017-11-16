@@ -18,30 +18,35 @@ export default class HideSelectedNode extends PureComponent {
         className: PropTypes.string,
         hideNode: PropTypes.func.isRequired,
         showNode: PropTypes.func.isRequired,
-        destructiveOperationsAreDisabled: PropTypes.bool.isRequired
+        destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
+        canBeEdited: PropTypes.bool.isRequired
     };
 
     handleHideNode = () => {
-        const {node, hideNode} = this.props;
+        const {node, hideNode, canBeEdited} = this.props;
 
-        hideNode($get('contextPath', node));
+        if (canBeEdited) {
+            hideNode($get('contextPath', node));
+        }
     }
 
     handleShowNode = () => {
-        const {node, showNode} = this.props;
+        const {node, showNode, canBeEdited} = this.props;
 
-        showNode($get('contextPath', node));
+        if (canBeEdited) {
+            showNode($get('contextPath', node));
+        }
     }
 
     render() {
-        const {className, node, destructiveOperationsAreDisabled} = this.props;
+        const {className, node, destructiveOperationsAreDisabled, canBeEdited} = this.props;
         const isHidden = $get('properties._hidden', node);
 
         return (
             <IconButton
                 className={className}
                 isActive={isHidden}
-                isDisabled={destructiveOperationsAreDisabled}
+                isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
                 onClick={isHidden ? this.handleShowNode : this.handleHideNode}
                 icon="eye-slash"
                 hoverStyle="clean"

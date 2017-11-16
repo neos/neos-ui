@@ -15,6 +15,7 @@ export default class DeleteSelectedNode extends PureComponent {
         className: PropTypes.string,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         canBeDeleted: PropTypes.bool.isRequired,
+        canBeEdited: PropTypes.bool.isRequired,
         commenceNodeRemoval: PropTypes.func.isRequired
     };
 
@@ -27,12 +28,12 @@ export default class DeleteSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, destructiveOperationsAreDisabled, canBeDeleted} = this.props;
+        const {className, destructiveOperationsAreDisabled, canBeDeleted, canBeEdited} = this.props;
 
         return (
             <IconButton
                 className={className}
-                isDisabled={destructiveOperationsAreDisabled || !canBeDeleted}
+                isDisabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
                 onClick={this.handleDeleteSelectedNodeClick}
                 icon="trash"
                 hoverStyle="clean"

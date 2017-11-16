@@ -36,6 +36,7 @@ export default class InlineUI extends PureComponent {
         const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
         const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
         const canBeDeleted = $get('policy.canRemove', this.props.focusedNode);
+        const canBeEdited = $get('policy.canEdit', this.props.focusedNode);
 
         return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">
@@ -46,6 +47,7 @@ export default class InlineUI extends PureComponent {
                     isCut={isCut}
                     isCopied={isCopied}
                     canBeDeleted={canBeDeleted}
+                    canBeEdited={canBeEdited}
                     {...focused}
                     />
             </div>

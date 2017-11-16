@@ -46,11 +46,9 @@ export default class NodeTreeToolBar extends PureComponent {
     };
 
     handleAddNode = contextPath => {
-        const {addNode, canBeEdited} = this.props;
+        const {addNode} = this.props;
 
-        if (canBeEdited) {
-            addNode(contextPath);
-        }
+        addNode(contextPath);
     }
 
     handleHideNode = contextPath => {
@@ -84,11 +82,9 @@ export default class NodeTreeToolBar extends PureComponent {
     }
 
     handlePasteNode = contextPath => {
-        const {pasteNode, canBeEdited} = this.props;
+        const {pasteNode} = this.props;
 
-        if (canBeEdited) {
-            pasteNode(contextPath);
-        }
+        pasteNode(contextPath);
     }
 
     handleDeleteNode = contextPath => {
@@ -125,7 +121,7 @@ export default class NodeTreeToolBar extends PureComponent {
                     <AddNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={!isAllowedToAddChildOrSiblingNodes || !canBeEdited}
+                        isDisabled={!isAllowedToAddChildOrSiblingNodes}
                         onClick={this.handleAddNode}
                         />
                     <HideSelectedNode
@@ -153,7 +149,7 @@ export default class NodeTreeToolBar extends PureComponent {
                     <PasteClipBoardNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={!canBePasted || !canBeEdited}
+                        isDisabled={!canBePasted}
                         onClick={this.handlePasteNode}
                         />
                     <DeleteSelectedNode

@@ -78,17 +78,21 @@
 
 .selectBox__loadingIcon {
     composes: reset from './../reset.css';
-    position: relative;
+    position: absolute;
     top: 0;
-    right: 79px;
+    right: 41px;
     z-index: 1;
-    display: inline-block;
+    display: block;
     width: var(--goldenUnit);
     height: var(--goldenUnit);
     text-align: center;
     background: transparent;
     color: #FFF;
     line-height: 40px;
+}
+
+.selectBox__deleteIcon {
+    composes: selectBox__loadingIcon;
 }
 
 .selectBox__btnIcon {

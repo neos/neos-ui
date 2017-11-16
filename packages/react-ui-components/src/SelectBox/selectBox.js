@@ -313,7 +313,7 @@ export default class SelectBox extends PureComponent {
                             null
                         }
                         {!displayLoadingIndicator && allowEmpty && selectedValue ?
-                            <IconButtonComponent className={theme.selectBox__loadingIcon} icon="times" onClick={this.handleDeleteClick}/> :
+                            <IconButtonComponent className={theme.selectBox__deleteIcon} icon="times" onClick={this.handleDeleteClick}/> :
                             null
                         }
                     </DropDown.Header>

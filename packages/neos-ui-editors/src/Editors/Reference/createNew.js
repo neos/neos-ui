@@ -17,9 +17,11 @@ export default () => WrappedComponent => {
             displayLoadingIndicator: PropTypes.bool,
             handleServerFeedback: PropTypes.func.isRequired,
             options: PropTypes.shape({
-                createNewPath: PropTypes.string.isRequired,
-                createNewType: PropTypes.string.isRequired,
-                createNewTitleProperty: PropTypes.string
+                createNew: PropTypes.shape({
+                    path: PropTypes.string.isRequired,
+                    type: PropTypes.string.isRequired,
+                    titleProperty: PropTypes.string
+                })
             })
         };
 
@@ -33,17 +35,17 @@ export default () => WrappedComponent => {
             const {change} = backend.get().endpoints;
 
             const data = {};
-            const titleProperty = this.props.options.createNewTitleProperty || 'title';
+            const titleProperty = this.props.options.createNew.titleProperty || 'title';
             data[titleProperty] = title;
 
             const contextString = this.props.siteNodeContextPath.split('@')[1];
-            const subject = `${this.props.options.createNewPath}@${contextString}`;
+            const subject = `${this.props.options.createNew.path}@${contextString}`;
 
             const response = await change([{
                 type: 'Neos.Neos.Ui:CreateInto',
                 subject,
                 payload: {
-                    nodeType: this.props.options.createNewType,
+                    nodeType: this.props.options.createNew.type,
                     data
                 }
             }]);
@@ -61,7 +63,7 @@ export default () => WrappedComponent => {
         }
 
         render() {
-            const onCreateNew = this.props.options.createNewType && this.props.options.createNewPath ? this.handleCreateNew : null;
+            const onCreateNew = this.props.options.createNew.type && this.props.options.createNew.path ? this.handleCreateNew : null;
             return (
                 <WrappedComponent
                     {...this.props}

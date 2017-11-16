@@ -1,36 +1,37 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
-class DocumentNodeCreated implements FeedbackInterface
+class NodeCreated implements FeedbackInterface
 {
     /**
      * @var NodeInterface
      */
-    protected $document;
+    protected $node;
 
     /**
-     * Set the document
+     * Set the node
      *
-     * @param NodeInterface $document
+     * @param NodeInterface $node
      * @return void
      */
-    public function setDocumentNode(NodeInterface $document)
+    public function setNode(NodeInterface $node)
     {
-        $this->document = $document;
+        $this->node = $node;
     }
 
     /**
-     * Get the document
+     * Get the node
      *
      * @return NodeInterface
      */
-    public function getDocument()
+    public function getNode()
     {
-        return $this->document;
+        return $this->node;
     }
 
     /**
@@ -40,7 +41,7 @@ class DocumentNodeCreated implements FeedbackInterface
      */
     public function getType()
     {
-        return 'Neos.Neos.Ui:DocumentNodeCreated';
+        return 'Neos.Neos.Ui:NodeCreated';
     }
 
     /**
@@ -50,7 +51,7 @@ class DocumentNodeCreated implements FeedbackInterface
      */
     public function getDescription()
     {
-        return sprintf('Document Node "%s" created.', $this->getDocument()->getContextPath());
+        return sprintf('Document Node "%s" created.', $this->getNode()->getContextPath());
     }
 
     /**
@@ -61,11 +62,11 @@ class DocumentNodeCreated implements FeedbackInterface
      */
     public function isSimilarTo(FeedbackInterface $feedback)
     {
-        if (!$feedback instanceof DocumentNodeCreated) {
+        if (!$feedback instanceof NodeCreated) {
             return false;
         }
 
-        return $this->getDocument()->getContextPath() === $feedback->getDocument()->getContextPath();
+        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
     }
 
     /**
@@ -76,9 +77,11 @@ class DocumentNodeCreated implements FeedbackInterface
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
+        $nodeService = new NodeService();
         return [
-            'contextPath' => $this->getDocument()->getContextPath(),
-            'identifier' => $this->getDocument()->getIdentifier()
+            'contextPath' => $this->getNode()->getContextPath(),
+            'identifier' => $this->getNode()->getIdentifier(),
+            'isDocument' => $nodeService->isDocument($node)
         ];
     }
 }

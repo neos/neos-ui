@@ -48,10 +48,10 @@ export default () => WrappedComponent => {
                 }
             }]);
 
-            // Filter out DocumentNodeCreated feedback, as we don't want to be redirected
-            const feedbacks = response.feedbacks.filter(feedback => feedback.type !== 'Neos.Neos.Ui:DocumentNodeCreated');
+            // Filter out NodeCreated feedback, as we don't want to be redirected
+            const feedbacks = response.feedbacks.filter(feedback => feedback.type !== 'Neos.Neos.Ui:NodeCreated');
             this.props.handleServerFeedback({feedbacks});
-            const nodeCreatedFeedback = response.feedbacks.find(item => item.type === 'Neos.Neos.Ui:DocumentNodeCreated');
+            const nodeCreatedFeedback = response.feedbacks.find(item => item.type === 'Neos.Neos.Ui:NodeCreated');
             const identifier = $get('payload.identifier', nodeCreatedFeedback);
 
             const value = Array.isArray(this.props.value) ? this.props.value.concat(identifier) : identifier;

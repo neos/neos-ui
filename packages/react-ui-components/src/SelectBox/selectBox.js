@@ -70,6 +70,11 @@ export default class SelectBox extends PureComponent {
         withoutGroupLabel: PropTypes.string,
 
         /**
+         * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
+         */
+        loadingLabel: PropTypes.string,
+
+        /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
@@ -213,6 +218,7 @@ export default class SelectBox extends PureComponent {
             options,
             value,
             optionValueField,
+            loadingLabel,
             displayLoadingIndicator,
             theme,
             highlight,
@@ -252,7 +258,7 @@ export default class SelectBox extends PureComponent {
             label = selectedValue.label;
             icon = selectedValue.icon ? selectedValue.icon : icon;
         } else if (displayLoadingIndicator) {
-            label = '[Loading]'; // TODO: localize
+            label = loadingLabel ? '[' + loadingLabel + ']' : '[Loading]';
         } else if (placeholder) {
             label = (<span className={theme.selectBox__placeholder}>{placeholder}</span>);
             icon = placeholderIcon ? placeholderIcon : icon;

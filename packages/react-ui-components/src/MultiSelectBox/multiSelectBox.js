@@ -81,6 +81,11 @@ export default class MultiSelectBox extends PureComponent {
         placeholderIcon: PropTypes.string,
 
         /**
+         * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
+         */
+        loadingLabel: PropTypes.string,
+
+        /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
@@ -154,6 +159,7 @@ export default class MultiSelectBox extends PureComponent {
             searchOptions,
             values,
             optionValueField,
+            loadingLabel,
             displayLoadingIndicator,
             theme,
             placeholder,
@@ -212,6 +218,7 @@ export default class MultiSelectBox extends PureComponent {
                     options={filteredSearchOptions}
                     value=""
                     optionValueField={optionValueField}
+                    loadingLabel={loadingLabel}
                     displayLoadingIndicator={displayLoadingIndicator}
                     placeholder={placeholder}
                     placeholderIcon={placeholderIcon}

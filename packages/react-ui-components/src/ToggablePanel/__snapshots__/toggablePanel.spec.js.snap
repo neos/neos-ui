@@ -23,7 +23,6 @@ exports[`<Header/> should render correctly. 1`] = `
 >
   <Component
     className="panelHeadlineClassName"
-    style="h4"
     type="h1"
   >
     Foo children

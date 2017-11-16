@@ -2,13 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import DropDown from '../DropDown/index';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
-import keydown, {Keys} from 'react-keydown';
 import mergeClassNames from 'classnames';
 
-const {ENTER, UP, DOWN} = Keys;
-const KEYS = [ENTER, UP, DOWN];
-
-@keydown(KEYS)
 export default class SelectBox extends PureComponent {
 
     static defaultProps = {
@@ -48,6 +43,16 @@ export default class SelectBox extends PureComponent {
          * This prop gets called when an option was selected. It returns the new value.
          */
         onValueChange: PropTypes.func.isRequired,
+
+        /**
+         * This prop gets called when requested to create a new element
+         */
+        onCreateNew: PropTypes.func,
+
+        /**
+         * "Create new" label
+         */
+        createNewLabel: PropTypes.string,
 
         /**
          * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
@@ -163,6 +168,18 @@ export default class SelectBox extends PureComponent {
         this.props.onSearchTermChange(...args);
     }
 
+    createNewEnabled = () => this.props.onCreateNew && this.props.searchTerm;
+
+    optionsCount = () => {
+        const groupedOptions = this.groupOptions(this.props.options);
+        const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[this.props.withoutGroupLabel]);
+        let count = hasMultipleGroups ? groupedOptions.length : this.props.options.length;
+        if (this.createNewEnabled()) {
+            count++;
+        }
+        return count;
+    }
+
     handleKeyDown = e => {
         if (this.state.isOpen && e) {
             const {options, optionValueField} = this.props;
@@ -170,14 +187,16 @@ export default class SelectBox extends PureComponent {
 
             if (e.key === 'ArrowDown') {
                 this.setState({
-                    selectedIndex: currentIndex + 1 >= options.length ? currentIndex : currentIndex + 1
+                    selectedIndex: currentIndex + 1 >= this.optionsCount() ? currentIndex : currentIndex + 1
                 });
             } else if (e.key === 'ArrowUp') {
                 this.setState({
                     selectedIndex: currentIndex - 1 < 0 ? 0 : currentIndex - 1
                 });
             } else if (e.key === 'Enter') {
-                if (optionValueField === undefined) {
+                if (this.createNewEnabled() && currentIndex + 1 === this.optionsCount()) {
+                    this.props.onCreateNew(this.props.searchTerm);
+                } else if (optionValueField === undefined) {
                     this.props.onValueChange(options[currentIndex].value);
                 } else {
                     this.props.onValueChange(options[currentIndex][optionValueField]);
@@ -278,8 +297,37 @@ export default class SelectBox extends PureComponent {
                         {hasMultipleGroups ? // skip rendering of groups if there are none or only one group
                             Object.entries(groupedOptions).map(this.renderGroup) :
                             (options || []).map(this.renderOption)}
+                        {this.renderCreateNew()}
                     </DropDown.Contents>
                 </DropDown.Stateless>
+            </div>
+        );
+    }
+
+    renderCreateNew() {
+        const index = this.optionsCount() - 1;
+        if (!this.createNewEnabled()) {
+            return null;
+        }
+        const onClick = () => {
+            this.props.onCreateNew(this.props.searchTerm);
+        };
+        const {theme} = this.props;
+        const isActive = index === this.state.selectedIndex;
+        const className = isActive ? theme['selectBox__item--isSelectable--active'] : '';
+
+        const setIndex = () => {
+            this.setIndex(index);
+        };
+        return (
+            <div key={index} onMouseEnter={setIndex}>
+                <DefaultSelectBoxOption
+                    option={{value: this.props.searchTerm, label: `${this.props.createNewLabel} "${this.props.searchTerm}"`, icon: 'plus-circle'}}
+                    theme={this.props.theme}
+                    className={className}
+                    onClick={onClick}
+                    IconComponent={this.props.IconComponent}
+                    />
             </div>
         );
     }

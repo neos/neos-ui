@@ -1,56 +1,65 @@
-import sinon from 'sinon';
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import Icon, {iconPropValidator} from './icon.js';
 
-const defaultProps = {
+describe('<Icon/>', () => {
+    let props;
+
+    beforeEach(() => {
+        props = {
     theme: {},
     iconMap: {},
     _makeValidateId: () => id => ({isValid: true, isMigrationNeeded: false, iconName: id}),
     _makeGetClassName: () => id => id,
     onDeprecate: () => null
 };
-const shallow = createShallowRenderer(Icon, defaultProps);
+    });
 
-test('should render a "i" node.', () => {
-    const tag = shallow();
+    it('should render correctly.', () => {
+        const wrapper = shallow(<Icon {...props}/>);
 
-    expect(tag.type()).toBe('icon');
-});
-test('should add the passed "className" prop to the rendered node if passed.', () => {
-    const tag = shallow({className: 'testClassName'});
-
-    expect(tag.hasClass('testClassName')).toBeTruthy();
-});
-test('should call the "fontAwesome.getClassName" api method and render the returned className.', () => {
-    const tag = shallow({icon: 'fooIconClassName'});
-
-    expect(tag.hasClass('fooIconClassName')).toBeTruthy();
+        expect(toJson(wrapper)).toMatchSnapshot();
 });
 
-test('iconPropValidator() should call the "onDeprecate" in case a migration is needed.', () => {
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<Icon {...props} className="fooClassName"/>);
+
+        expect(wrapper.prop('className')).toContain('fooClassName');
+});
+
+    it('should call the "fontAwesome.getClassName" api method and render the returned className.', () => {
+        const wrapper = shallow(<Icon {...props} icon="fooIconClassName"/>);
+
+        expect(wrapper.hasClass('fooIconClassName')).toBeTruthy();
+    });
+});
+
+describe('iconPropValidator()', () => {
+    it('should call the "onDeprecate" in case a migration is needed.', () => {
     const props = {
         icon: 'fooIconClassName',
         _makeValidateId: () => id => ({isValid: false, isMigrationNeeded: true, iconName: id}),
-        onDeprecate: sinon.spy()
+            onDeprecate: jest.fn()
     };
 
     iconPropValidator(props, 'icon');
 
-    expect(props.onDeprecate.calledOnce).toBeTruthy();
+        expect(props.onDeprecate.mock.calls.length).toBe(1);
 });
-test('iconPropValidator() should not call the "onDeprecate" multiple times for the same icon id.', () => {
+    it('should not call the "onDeprecate" multiple times for the same icon id.', () => {
     const props = {
         icon: 'barIconClassName',
         _makeValidateId: () => id => ({isValid: false, isMigrationNeeded: true, iconName: id}),
-        onDeprecate: sinon.spy()
+            onDeprecate: jest.fn()
     };
 
     iconPropValidator(props, 'icon');
     iconPropValidator(props, 'icon');
 
-    expect(props.onDeprecate.callCount).toBe(1);
+        expect(props.onDeprecate.mock.calls.length).toBe(1);
 });
-test('iconPropValidator() should return an error if the iconName was not found.', () => {
+    it('should return an error if the iconName was not found.', () => {
     const props = {
         icon: 'bazIconClassName',
         _makeValidateId: () => () => ({isValid: false, isMigrationNeeded: false, iconName: null})
@@ -59,7 +68,7 @@ test('iconPropValidator() should return an error if the iconName was not found.'
 
     expect(result instanceof Error).toBeTruthy();
 });
-test('iconPropValidator() should not return an error if no condition was matched.', () => {
+    it('should not return an error if no condition was matched.', () => {
     const props = {
         icon: 'bazIconClassName',
         _makeValidateId: () => () => ({})
@@ -67,4 +76,5 @@ test('iconPropValidator() should not return an error if no condition was matched
     const result = iconPropValidator(props, 'icon');
 
     expect(result).toBe(undefined);
+    });
 });

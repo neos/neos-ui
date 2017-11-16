@@ -1,138 +1,53 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
-import {selectors} from '@neos-project/neos-ui-redux-store';
-import {neos} from '@neos-project/neos-ui-decorators';
-import {dndTypes} from '@neos-project/neos-ui-constants';
+import createNew from '../Reference/createNew';
+import dataLoader from '../Reference/referenceDataLoader';
 import ReferenceOption from '../Reference/ReferenceOption';
+import {dndTypes} from '@neos-project/neos-ui-constants';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n'),
-    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
-    nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
-@connect($transform({
-    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
-}))
+@createNew()
+@dataLoader({isMulti: true})
 export default class ReferencesEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),
+        options: PropTypes.array,
+        searchOptions: PropTypes.array,
         highlight: PropTypes.bool,
+        placeholder: PropTypes.string,
+        displayLoadingIndicator: PropTypes.bool,
+        searchTerm: PropTypes.string,
+        onSearchTermChange: PropTypes.func,
+        onCreateNew: PropTypes.func,
         commit: PropTypes.func.isRequired,
-        options: PropTypes.shape({
-            nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-            placeholder: PropTypes.string,
-            threshold: PropTypes.number
-        }),
-
-        i18nRegistry: PropTypes.object.isRequired,
-        nodeLookupDataLoader: PropTypes.shape({
-            resolveValues: PropTypes.func.isRequired,
-            search: PropTypes.func.isRequired
-        }).isRequired,
-        nodeTypeRegistry: PropTypes.shape({
-            getNodeType: PropTypes.func.isRequired
-        }),
-
-        contextForNodeLinking: PropTypes.shape({
-            toJS: PropTypes.func.isRequired
-        }).isRequired
+        i18nRegistry: PropTypes.object.isRequired
     };
 
-    static defaultOptions = {
-        // start searching after 2 characters, as it was done in the old UI
-        threshold: 2
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchTerm: '',
-            isLoading: false,
-            searchOptions: [],
-            results: []
-        };
-    }
-
-    getDataLoaderOptions() {
-        return {
-            nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
-            contextForNodeLinking: this.props.contextForNodeLinking.toJS()
-        };
-    }
-
-    componentDidMount() {
-        if (this.props.value && this.props.value.length) {
-            this.setState({isLoading: true});
-            this.props.nodeLookupDataLoader.resolveValues(this.getDataLoaderOptions(), this.props.value)
-                .then(options => {
-                    options.forEach(option => {
-                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
-                        const icon = $get('ui.icon', nodeType);
-                        if (icon) {
-                            option.icon = icon;
-                        }
-                    });
-
-                    this.setState({
-                        isLoading: false,
-                        options
-                    });
-                });
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.value !== this.props.value) {
-            this.componentDidMount();
-        }
-    }
-
-    handleSearchTermChange = searchTerm => {
-        this.setState({searchTerm});
-        const threshold = $get('options.threshold', this.props) || this.constructor.defaultOptions.threshold;
-        if (searchTerm && searchTerm.length >= threshold) {
-            this.setState({isLoading: true, searchOptions: []});
-            this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
-                .then(searchOptions => {
-                    searchOptions.forEach(option => {
-                        const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
-                        const icon = $get('ui.icon', nodeType);
-                        if (icon) {
-                            option.icon = icon;
-                        }
-                    });
-
-                    this.setState({
-                        isLoading: false,
-                        searchOptions
-                    });
-                });
-        }
-    }
-
-    handleValuesChange = value => {
+    handleValueChange = value => {
         this.props.commit(value);
     }
 
     render() {
         return (<MultiSelectBox
-            options={this.state.options}
             dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"
+            displaySearchBox={true}
+            optionComponent={ReferenceOption}
+            createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
+            placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
+            options={this.props.options}
             values={this.props.value}
             highlight={this.props.highlight}
-            onValuesChange={this.handleValuesChange}
-            placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
-            displayLoadingIndicator={this.state.isLoading}
-            displaySearchBox={true}
-            searchTerm={this.state.searchTerm}
-            searchOptions={this.state.searchOptions}
-            onSearchTermChange={this.handleSearchTermChange}
-            optionComponent={ReferenceOption}
+            onValuesChange={this.handleValueChange}
+            displayLoadingIndicator={this.props.displayLoadingIndicator}
+            searchTerm={this.props.searchTerm}
+            searchOptions={this.props.searchOptions}
+            onSearchTermChange={this.props.onSearchTermChange}
+            onCreateNew={this.props.onCreateNew}
             />);
     }
 }

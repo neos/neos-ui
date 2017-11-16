@@ -30,7 +30,7 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
 };
 
 const Icon = props => {
-    const {size, padded, theme, iconMap, label, _makeGetClassName, ...rest} = props;
+    const {size, padded, theme, iconMap, label, _makeGetClassName} = props;
     const getClassName = _makeGetClassName(iconMap);
     const iconClassName = getClassName(props.icon);
     const classNames = mergeClassNames({
@@ -46,7 +46,7 @@ const Icon = props => {
         [theme['icon--spin']]: props.spin
     });
 
-    return <icon {...rest} role="img" aria-label={label} className={classNames}/>;
+    return <icon role="img" aria-label={label} className={classNames}/>;
 };
 Icon.propTypes = {
     /**

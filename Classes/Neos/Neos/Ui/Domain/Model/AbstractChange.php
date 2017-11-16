@@ -2,12 +2,12 @@
 namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\NodeCreated;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\DocumentNodeCreated;
 
 abstract class AbstractChange implements ChangeInterface
 {
@@ -95,16 +95,11 @@ abstract class AbstractChange implements ChangeInterface
      * @param NodeInterface $subject
      * @return void
      */
-    protected function addDocumentNodeCreatedFeedback($subject = null)
+    protected function addNodeCreatedFeedback($subject = null)
     {
         $node = $subject ?: $this->getSubject();
-        $nodeService = new NodeService();
-
-        if ($nodeService->isDocument($node)) {
-            $documentNodeCreated = new DocumentNodeCreated();
-            $documentNodeCreated->setDocumentNode($node);
-
-            $this->feedbackCollection->add($documentNodeCreated);
-        }
+        $nodeCreated = new NodeCreated();
+        $nodeCreated->setNode($node);
+        $this->feedbackCollection->add($nodeCreated);
     }
 }

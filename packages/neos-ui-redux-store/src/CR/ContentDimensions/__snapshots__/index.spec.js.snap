@@ -1,0 +1,516 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SELECT_PRESET should add the selected preset's dimension values to the active state 1`] = `
+Object {
+  "cr": Object {
+    "contentDimensions": Object {
+      "active": Object {
+        "language": Array [
+          "fr",
+        ],
+        "topicfocus": Array [
+          "sports",
+        ],
+      },
+      "allowedPresets": Object {
+        "language": Array [
+          "en_US",
+          "en_UK",
+          "de",
+          "fr",
+        ],
+      },
+      "byName": Object {
+        "language": Object {
+          "default": "en_US",
+          "defaultPreset": "en_US",
+          "icon": "fa-language",
+          "label": "Language",
+          "presets": Object {
+            "de": Object {
+              "label": "German",
+              "uriSegment": "de",
+              "values": Array [
+                "de",
+              ],
+            },
+            "en_UK": Object {
+              "label": "English (UK)",
+              "uriSegment": "en-uk",
+              "values": Array [
+                "en_UK",
+              ],
+            },
+            "en_US": Object {
+              "label": "English (US)",
+              "uriSegment": "en",
+              "values": Array [
+                "en_US",
+              ],
+            },
+            "fr": Object {
+              "label": "French",
+              "uriSegment": "fr",
+              "values": Array [
+                "fr",
+              ],
+            },
+          },
+        },
+        "topicfocus": Object {
+          "default": "all",
+          "defaultPreset": "all",
+          "icon": "fa-user",
+          "label": "Topic focus",
+          "presets": Object {
+            "adventure": Object {
+              "label": "Adventure",
+              "uriSegment": "adventure",
+              "values": Array [
+                "adventure",
+              ],
+            },
+            "all": Object {
+              "label": "All",
+              "uriSegment": "all",
+              "values": Array [
+                "all",
+              ],
+            },
+            "family": Object {
+              "label": "Family",
+              "uriSegment": "family",
+              "values": Array [
+                "family",
+              ],
+            },
+            "sports": Object {
+              "label": "Sports",
+              "uriSegment": "sports",
+              "values": Array [
+                "sports",
+              ],
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`SELECT_PRESET should overwrite the currently selected dimension values 1`] = `
+Object {
+  "cr": Object {
+    "contentDimensions": Object {
+      "active": Object {
+        "language": Array [
+          "en_UK",
+        ],
+      },
+      "allowedPresets": Object {
+        "language": Array [
+          "en_US",
+          "en_UK",
+          "de",
+          "fr",
+        ],
+      },
+      "byName": Object {
+        "language": Object {
+          "default": "en_US",
+          "defaultPreset": "en_US",
+          "icon": "fa-language",
+          "label": "Language",
+          "presets": Object {
+            "de": Object {
+              "label": "German",
+              "uriSegment": "de",
+              "values": Array [
+                "de",
+              ],
+            },
+            "en_UK": Object {
+              "label": "English (UK)",
+              "uriSegment": "en-uk",
+              "values": Array [
+                "en_UK",
+              ],
+            },
+            "en_US": Object {
+              "label": "English (US)",
+              "uriSegment": "en",
+              "values": Array [
+                "en_US",
+              ],
+            },
+            "fr": Object {
+              "label": "French",
+              "uriSegment": "fr",
+              "values": Array [
+                "fr",
+              ],
+            },
+          },
+        },
+        "topicfocus": Object {
+          "default": "all",
+          "defaultPreset": "all",
+          "icon": "fa-user",
+          "label": "Topic focus",
+          "presets": Object {
+            "adventure": Object {
+              "label": "Adventure",
+              "uriSegment": "adventure",
+              "values": Array [
+                "adventure",
+              ],
+            },
+            "all": Object {
+              "label": "All",
+              "uriSegment": "all",
+              "values": Array [
+                "all",
+              ],
+            },
+            "family": Object {
+              "label": "Family",
+              "uriSegment": "family",
+              "values": Array [
+                "family",
+              ],
+            },
+            "sports": Object {
+              "label": "Sports",
+              "uriSegment": "sports",
+              "values": Array [
+                "sports",
+              ],
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`SET_ACTIVE should ignore dimensions that haven't been previously active 1`] = `
+Object {
+  "cr": Object {
+    "contentDimensions": Object {
+      "active": Object {
+        "language": Array [
+          "en_UK",
+        ],
+      },
+      "allowedPresets": Object {
+        "language": Array [
+          "en_US",
+          "en_UK",
+          "de",
+          "fr",
+        ],
+      },
+      "byName": Object {
+        "language": Object {
+          "default": "en_US",
+          "defaultPreset": "en_US",
+          "icon": "fa-language",
+          "label": "Language",
+          "presets": Object {
+            "de": Object {
+              "label": "German",
+              "uriSegment": "de",
+              "values": Array [
+                "de",
+              ],
+            },
+            "en_UK": Object {
+              "label": "English (UK)",
+              "uriSegment": "en-uk",
+              "values": Array [
+                "en_UK",
+              ],
+            },
+            "en_US": Object {
+              "label": "English (US)",
+              "uriSegment": "en",
+              "values": Array [
+                "en_US",
+              ],
+            },
+            "fr": Object {
+              "label": "French",
+              "uriSegment": "fr",
+              "values": Array [
+                "fr",
+              ],
+            },
+          },
+        },
+        "topicfocus": Object {
+          "default": "all",
+          "defaultPreset": "all",
+          "icon": "fa-user",
+          "label": "Topic focus",
+          "presets": Object {
+            "adventure": Object {
+              "label": "Adventure",
+              "uriSegment": "adventure",
+              "values": Array [
+                "adventure",
+              ],
+            },
+            "all": Object {
+              "label": "All",
+              "uriSegment": "all",
+              "values": Array [
+                "all",
+              ],
+            },
+            "family": Object {
+              "label": "Family",
+              "uriSegment": "family",
+              "values": Array [
+                "family",
+              ],
+            },
+            "sports": Object {
+              "label": "Sports",
+              "uriSegment": "sports",
+              "values": Array [
+                "sports",
+              ],
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`SET_ACTIVE should overwrite the currently selected dimension values 1`] = `
+Object {
+  "cr": Object {
+    "contentDimensions": Object {
+      "active": Object {
+        "language": Array [
+          "en_UK",
+        ],
+      },
+      "allowedPresets": Object {
+        "language": Array [
+          "en_US",
+          "en_UK",
+          "de",
+          "fr",
+        ],
+      },
+      "byName": Object {
+        "language": Object {
+          "default": "en_US",
+          "defaultPreset": "en_US",
+          "icon": "fa-language",
+          "label": "Language",
+          "presets": Object {
+            "de": Object {
+              "label": "German",
+              "uriSegment": "de",
+              "values": Array [
+                "de",
+              ],
+            },
+            "en_UK": Object {
+              "label": "English (UK)",
+              "uriSegment": "en-uk",
+              "values": Array [
+                "en_UK",
+              ],
+            },
+            "en_US": Object {
+              "label": "English (US)",
+              "uriSegment": "en",
+              "values": Array [
+                "en_US",
+              ],
+            },
+            "fr": Object {
+              "label": "French",
+              "uriSegment": "fr",
+              "values": Array [
+                "fr",
+              ],
+            },
+          },
+        },
+        "topicfocus": Object {
+          "default": "all",
+          "defaultPreset": "all",
+          "icon": "fa-user",
+          "label": "Topic focus",
+          "presets": Object {
+            "adventure": Object {
+              "label": "Adventure",
+              "uriSegment": "adventure",
+              "values": Array [
+                "adventure",
+              ],
+            },
+            "all": Object {
+              "label": "All",
+              "uriSegment": "all",
+              "values": Array [
+                "all",
+              ],
+            },
+            "family": Object {
+              "label": "Family",
+              "uriSegment": "family",
+              "values": Array [
+                "family",
+              ],
+            },
+            "sports": Object {
+              "label": "Sports",
+              "uriSegment": "sports",
+              "values": Array [
+                "sports",
+              ],
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`The reducer should create a valid initial state 1`] = `
+Object {
+  "cr": Object {
+    "contentDimensions": Object {
+      "active": Object {
+        "language": Array [
+          "fr",
+        ],
+      },
+      "allowedPresets": Object {
+        "language": Array [
+          "en_US",
+          "en_UK",
+          "de",
+          "fr",
+        ],
+      },
+      "byName": Object {
+        "language": Object {
+          "default": "en_US",
+          "defaultPreset": "en_US",
+          "icon": "fa-language",
+          "label": "Language",
+          "presets": Object {
+            "de": Object {
+              "label": "German",
+              "uriSegment": "de",
+              "values": Array [
+                "de",
+              ],
+            },
+            "en_UK": Object {
+              "label": "English (UK)",
+              "uriSegment": "en-uk",
+              "values": Array [
+                "en_UK",
+              ],
+            },
+            "en_US": Object {
+              "label": "English (US)",
+              "uriSegment": "en",
+              "values": Array [
+                "en_US",
+              ],
+            },
+            "fr": Object {
+              "label": "French",
+              "uriSegment": "fr",
+              "values": Array [
+                "fr",
+              ],
+            },
+          },
+        },
+        "topicfocus": Object {
+          "default": "all",
+          "defaultPreset": "all",
+          "icon": "fa-user",
+          "label": "Topic focus",
+          "presets": Object {
+            "adventure": Object {
+              "label": "Adventure",
+              "uriSegment": "adventure",
+              "values": Array [
+                "adventure",
+              ],
+            },
+            "all": Object {
+              "label": "All",
+              "uriSegment": "all",
+              "values": Array [
+                "all",
+              ],
+            },
+            "family": Object {
+              "label": "Family",
+              "uriSegment": "family",
+              "values": Array [
+                "family",
+              ],
+            },
+            "sports": Object {
+              "label": "Sports",
+              "uriSegment": "sports",
+              "values": Array [
+                "sports",
+              ],
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`active selector should return the active dimension values 1`] = `
+Object {
+  "language": Array [
+    "fr",
+  ],
+}
+`;
+
+exports[`activePresets selector should return the active dimensions configuration 1`] = `
+Object {
+  "language": Object {
+    "label": "French",
+    "name": "fr",
+    "uriSegment": "fr",
+    "values": Array [
+      "fr",
+    ],
+  },
+}
+`;
+
+exports[`allowedPresets selector should return the allowed Presets 1`] = `
+Object {
+  "language": Array [
+    "en_US",
+    "en_UK",
+    "de",
+    "fr",
+  ],
+}
+`;

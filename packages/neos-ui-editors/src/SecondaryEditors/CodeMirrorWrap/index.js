@@ -48,6 +48,7 @@ export default class CodeMirrorWrap extends PureComponent {
         );
     }
 
+    // ToDo: Why not directly passing the commit prop down if the argument just gets forwarded?
     handleChange = newValue => {
         this.props.onChange(newValue);
     }

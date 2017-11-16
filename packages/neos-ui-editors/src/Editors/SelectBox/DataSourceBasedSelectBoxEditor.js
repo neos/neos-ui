@@ -59,15 +59,11 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
         minimumResultsForSearch: 5
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchTerm: '',
-            isLoading: false,
-            selectBoxOptions: {}
-        };
-    }
+    state = {
+        searchTerm: '',
+        isLoading: false,
+        selectBoxOptions: {}
+    };
 
     getDataLoaderOptions() {
         return {

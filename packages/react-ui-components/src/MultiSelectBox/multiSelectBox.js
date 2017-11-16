@@ -133,13 +133,9 @@ export default class MultiSelectBox extends PureComponent {
         IconButtonComponent: PropTypes.any.isRequired
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            draggableValues: ensureIsArray(this.props.values)
-        };
-    }
+    state = {
+        draggableValues: ensureIsArray(this.props.values)
+    };
 
     componentWillReceiveProps(nextProps) {
         if (this.props.values !== nextProps.values) {

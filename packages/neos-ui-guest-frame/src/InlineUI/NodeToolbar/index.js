@@ -37,10 +37,7 @@ export default class NodeToolbar extends PureComponent {
         isSticky: false
     };
 
-    constructor() {
-        super();
-        this.iframeWindow = document.getElementsByName('neos-content-main')[0].contentWindow;
-    }
+    iframeWindow = document.getElementsByName('neos-content-main')[0].contentWindow;
 
     updateStickyness = () => {
         const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);

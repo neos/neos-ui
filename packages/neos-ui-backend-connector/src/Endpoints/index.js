@@ -119,6 +119,24 @@ const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHa
 }).then(response => response.json())
 .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+const loadMasterPlugins = (workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+    const data = new FormData();
+    data.append('workspaceName', workspaceName);
+    data.append('dimensions', dimensions);
+
+    return {
+        url: '/neos/content/master-plugins',
+
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken
+        },
+        body: data
+    };
+}).then(response => response.json())
+.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
 const extractFileEndingFromUri = uri => {
     const parts = uri.split('.');
     return parts.length ? '.' + parts[parts.length - 1] : '';
@@ -330,6 +348,7 @@ export default () => ({
     changeBaseWorkspace,
     createImageVariant,
     uploadAsset,
+    loadMasterPlugins,
     assetSearch,
     assetDetail,
     searchNodes,

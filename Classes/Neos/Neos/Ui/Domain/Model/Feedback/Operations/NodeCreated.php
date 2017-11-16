@@ -78,9 +78,10 @@ class NodeCreated implements FeedbackInterface
     public function serializePayload(ControllerContext $controllerContext)
     {
         $nodeService = new NodeService();
+        $node = $this->getNode();
         return [
-            'contextPath' => $this->getNode()->getContextPath(),
-            'identifier' => $this->getNode()->getIdentifier(),
+            'contextPath' => $node->getContextPath(),
+            'identifier' => $node->getIdentifier(),
             'isDocument' => $nodeService->isDocument($node)
         ];
     }

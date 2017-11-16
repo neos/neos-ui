@@ -99,7 +99,7 @@ abstract class AbstractChange implements ChangeInterface
     {
         $node = $subject ?: $this->getSubject();
         $nodeCreated = new NodeCreated();
-        $nodeCreated->setDocumentNode($node);
+        $nodeCreated->setNode($node);
         $this->feedbackCollection->add($nodeCreated);
     }
 }

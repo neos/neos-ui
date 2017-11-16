@@ -61,6 +61,16 @@ export default class MultiSelectBox extends PureComponent {
         onValuesChange: PropTypes.func.isRequired,
 
         /**
+         * This prop gets called when requested to create a new element
+         */
+        onCreateNew: PropTypes.func.isRequired,
+
+        /**
+         * "Create new" label
+         */
+        createNewLabel: PropTypes.string,
+
+        /**
          * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
          */
         placeholder: PropTypes.string,
@@ -151,6 +161,8 @@ export default class MultiSelectBox extends PureComponent {
             displaySearchBox,
             searchTerm,
             onSearchTermChange,
+            onCreateNew,
+            createNewLabel,
             SelectBoxComponent,
             highlight,
             IconButtonComponent,
@@ -207,6 +219,8 @@ export default class MultiSelectBox extends PureComponent {
                     searchTerm={searchTerm}
                     onSearchTermChange={onSearchTermChange}
                     onValueChange={this.handleNewValueSelected}
+                    onCreateNew={onCreateNew}
+                    createNewLabel={createNewLabel}
                     optionComponent={optionComponent}
                     />
             </div>

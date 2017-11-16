@@ -33,6 +33,19 @@ const optionsWithMultipleGroups = [
 storiesOf('SelectBox', module)
     .addDecorator(withKnobs)
     .addWithInfo(
+        'Create new option',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    options={optionsWithMultipleGroups}
+                    onValueChange={action('onValueChange')}
+                    onCreateNew={action('onCreateNew')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
+    .addWithInfo(
         'Grouping with multiple groups',
         () => (
             <StoryWrapper>

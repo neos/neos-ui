@@ -185,6 +185,24 @@ export default class SelectBox extends PureComponent {
         return count;
     }
 
+    clearSearch = () => {
+        if (this.props.onSearchTermChange) {
+            this.props.onSearchTermChange('');
+        }
+    }
+
+    handleValueChange = (...rest) => {
+        this.props.onValueChange(...rest);
+        // Clear search box after searching
+        this.clearSearch();
+    }
+
+    handleCreateNew = (...rest) => {
+        this.props.onCreateNew(...rest);
+        // Clear search box on creating new
+        this.clearSearch();
+    }
+
     handleKeyDown = e => {
         if (this.state.isOpen && e) {
             const {options, optionValueField} = this.props;
@@ -200,11 +218,11 @@ export default class SelectBox extends PureComponent {
                 });
             } else if (e.key === 'Enter') {
                 if (this.createNewEnabled() && currentIndex + 1 === this.optionsCount()) {
-                    this.props.onCreateNew(this.props.searchTerm);
+                    this.handleCreateNew(this.props.searchTerm);
                 } else if (optionValueField === undefined) {
-                    this.props.onValueChange(options[currentIndex].value);
+                    this.handleValueChange(options[currentIndex].value);
                 } else {
-                    this.props.onValueChange(options[currentIndex][optionValueField]);
+                    this.handleValueChange(options[currentIndex][optionValueField]);
                 }
                 this.setState({
                     isOpen: false
@@ -316,7 +334,7 @@ export default class SelectBox extends PureComponent {
             return null;
         }
         const onClick = () => {
-            this.props.onCreateNew(this.props.searchTerm);
+            this.handleCreateNew(this.props.searchTerm);
         };
         const {theme} = this.props;
         const isActive = index === this.state.selectedIndex;
@@ -388,7 +406,7 @@ export default class SelectBox extends PureComponent {
         const value = option[this.props.optionValueField];
         const {theme, IconComponent, optionComponent} = this.props;
         const onClick = () => {
-            this.props.onValueChange(value);
+            this.handleValueChange(value);
         };
         const isActive = index === selectedIndex;
         const className = isActive ? theme['selectBox__item--isSelectable--active'] : '';
@@ -409,6 +427,6 @@ export default class SelectBox extends PureComponent {
     }
 
     handleDeleteClick = () => {
-        this.props.onValueChange('');
+        this.handleValueChange('');
     }
 }

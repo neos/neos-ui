@@ -2,11 +2,12 @@
 namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\NodeCreated;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 
 abstract class AbstractChange implements ChangeInterface
 {

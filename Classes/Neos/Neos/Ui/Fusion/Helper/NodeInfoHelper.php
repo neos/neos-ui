@@ -22,7 +22,6 @@ use Neos\Utility\TypeHandling;
  */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {
-
     /**
      * @Flow\Inject
      * @var UserLocaleService
@@ -123,14 +122,18 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     protected function renderNodeToList(&$nodes, NodeInterface $node, ControllerContext $controllerContext)
     {
-        $nodes[$node->getContextPath()] = $this->renderNode($node, $controllerContext);
+        if ($nodeInfo = $this->renderNode($node, $controllerContext)) {
+            $nodes[$node->getContextPath()] = $nodeInfo;
+        }
     }
 
     public function renderNodes(array $nodes, ControllerContext $controllerContext, $omitMostPropertiesForTreeState = false)
     {
         $renderedNodes = [];
         foreach ($nodes as $node) {
-            $renderedNodes[] = $this->renderNode($node, $controllerContext, $omitMostPropertiesForTreeState);
+            if ($nodeInfo = $this->renderNode($node, $controllerContext, $omitMostPropertiesForTreeState)) {
+                $renderedNodes[] = $nodeInfo;
+            }
         }
         return $renderedNodes;
     }
@@ -150,10 +153,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         foreach ($nodes as $node) {
             if (array_key_exists($node->getPath(), $renderedNodes)) {
                 $renderedNodes[$node->getPath()]['matched'] = true;
-            } else {
-                $renderedNode = $this->renderNode($node, $controllerContext, true, $baseNodeTypeOverride);
+            } else if ($renderedNode = $this->renderNode($node, $controllerContext, true, $baseNodeTypeOverride)) {
                 $renderedNode['matched'] = true;
                 $renderedNodes[$node->getPath()] = $renderedNode;
+            } else {
+                continue;
             }
 
             /* @var $contentContext ContentContext */

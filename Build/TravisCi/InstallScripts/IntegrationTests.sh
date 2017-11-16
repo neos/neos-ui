@@ -25,13 +25,17 @@ if [ ! -d "Neos" ]; then mkdir Neos; fi;
 cp neos-ui/Build/TravisCi/composer* Neos/
 cd Neos
 
+# Move our repository and the configuration files into place.
+mkdir -p Packages/Application/Neos.Neos.Ui
+mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
+
+# Temporarily move the neos-ui package out so it doesn't get overwritten by composer
+mv Packages/Application/Neos.Neos.Ui temp
 # Install all dependencies for the neos instance.
 composer install -q -n
 
-# Move our repository and the configuration files into place.
 rm -rf Packages/Application/Neos.Neos.Ui
-mkdir -p Packages/Application/Neos.Neos.Ui
-mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
+mv temp Packages/Application/Neos.Neos.Ui
 
 # Move the configuration files into place.
 cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Settings.yaml

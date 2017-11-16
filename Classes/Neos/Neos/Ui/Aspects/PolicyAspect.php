@@ -13,11 +13,11 @@ use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSubject;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
 use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
-use Neos\Neos\Security\Authorization\Privilege\RemoveNodePrivilege;
 use Neos\Neos\Security\Authorization\Privilege\EditNodePrivilege;
 use Neos\Neos\Security\Authorization\Privilege\ReadNodePrivilege;
 use Neos\Neos\Security\Authorization\Privilege\EditNodePropertyPrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\RemoveNodePrivilege;
 
 /**
  * Add information to rendered nodes relevant to enforce the following privileges
@@ -91,11 +91,20 @@ class PolicyAspect
     }
 
     /**
-     * @Flow\Around("method()")
-     * @return void
+     * @Flow\Around("method(Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper->renderNode())")
+     * @return array
      */
     public function enforceRemoveNodePrivilege(JoinPointInterface $joinPoint)
     {
+        $node = $joinPoint->getMethodArgument('node');
+        $nodeInfo = $joinPoint->getAdviceChain()->proceed($joinPoint);
+
+        $canRemove = $this->privilegeManager->isGranted(RemoveNodePrivilege::class, new NodePrivilegeSubject($node));
+
+        $nodeInfo['policy'] = array_key_exists('policy', $nodeInfo) ? $nodeInfo['policy'] : [];
+        $nodeInfo['policy']['canRemove'] = $canRemove;
+
+        return $nodeInfo;
     }
 
     /**

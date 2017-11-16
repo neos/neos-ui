@@ -7,13 +7,35 @@
 
 set -e
 
-# Temporarily move the neos-ui package out so it doesn't get overwritten by composer
-mv Packages/Application/Neos.Neos.Ui temp
+# Add the oAuth token to git to avoid errors with composer because of https://github.com/composer/composer/issues/1314
+if [ -n "$GITHUB_OAUTH_TOKEN" ]; then composer config github-oauth.github.com ${GITHUB_OAUTH_TOKEN}; fi;
+
+# Disable xDebug
+phpenv config-rm xdebug.ini
+
+# Update composer.
+composer self-update -q
+
+# Since all environments depend on the node dependencies, install and
+# afterwards prune them to remove extranous packages from previous/cached runs.
+yarn install
+
+# Handle hidden files with the `mv` command.
+shopt -s dotglob
+
+# Create a separate working directory in which the neos instance can be installed in.
+cd ..
+if [ ! -d "Neos" ]; then mkdir Neos; fi;
+cp neos-ui/Build/TravisCi/composer* Neos/
+cd Neos
+
 # Install all dependencies for the neos instance.
 composer install -q -n
 
+# Move our repository and the configuration files into place.
 rm -rf Packages/Application/Neos.Neos.Ui
-mv temp Packages/Application/Neos.Neos.Ui
+mkdir -p Packages/Application/Neos.Neos.Ui
+mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
 
 # Move the configuration files into place.
 cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Settings.yaml
@@ -34,3 +56,12 @@ mysql -e 'create database neos collate utf8_unicode_ci;'
 
 # Start the development server on which the integration tests will act on.
 ./flow server:run --port 8081 > /dev/null 2> /dev/null &
+
+# Change into the repository directory where the environment based shell script will be executed.
+cd Packages/Application/Neos.Neos.Ui
+
+# Deactivate the previous enabled handling of hidden files with the `mv` command.
+shopt -u dotglob
+
+# Build the UI
+yarn build

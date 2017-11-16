@@ -180,20 +180,22 @@ export default class SelectBox extends PureComponent {
         return count;
     }
 
-    handleValueChange = (...rest) => {
-        this.props.onValueChange(...rest);
-        // Clear search box after searching
+    clearSearch = () => {
         if (this.props.onSearchTermChange) {
             this.props.onSearchTermChange('');
         }
     }
 
+    handleValueChange = (...rest) => {
+        this.props.onValueChange(...rest);
+        // Clear search box after searching
+        this.clearSearch();
+    }
+
     handleCreateNew = (...rest) => {
         this.props.onCreateNew(...rest);
         // Clear search box on creating new
-        if (this.props.onSearchTermChange) {
-            this.props.onSearchTermChange('');
-        }
+        this.clearSearch();
     }
 
     handleKeyDown = e => {

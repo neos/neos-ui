@@ -20,12 +20,6 @@
 			<trans-unit id="imageCropper__aspect-ratio-placeholder" xml:space="preserve">
 				<source>Choose an Aspect Ratio</source>
 			</trans-unit>
-			<trans-unit id="content.inspector.editors.masterPluginEditor.selectPlugin" xml:space="preserve">
-				<source>Select a Plugin</source>
-			</trans-unit>
-			<trans-unit id="content.inspector.editors.masterPluginEditor.noPluginConfigured" xml:space="preserve">
-				<source>No plugin configured</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -38,7 +38,7 @@ class MasterPluginEditor extends React.PureComponent {
     }
 
     renderPlaceholder() {
-        const placeholderPrefix = 'Neos.Neos.Ui:Main:content.inspector.editors.masterPluginEditor.',
+        const placeholderPrefix = 'Neos.Neos:Main:content.inspector.editors.masterPluginEditor.',
             placeholderLabel = placeholderPrefix + (this.state.options.length > 0 ?  'selectPlugin' : 'noPluginConfigured');
         return this.props.i18nRegistry.translate(placeholderLabel);
     }

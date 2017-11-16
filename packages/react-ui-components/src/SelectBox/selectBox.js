@@ -345,7 +345,7 @@ export default class SelectBox extends PureComponent {
 
         const OptionComponent = optionComponent;
         // onMouseEnter doesn't work on OptionComponent
-        return <div key={index} onMouseEnter={setIndex}><OptionComponent className={className} isActive={isActive} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/></div>;
+        return <div key={index} onMouseEnter={setIndex} role="option"><OptionComponent className={className} isActive={isActive} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/></div>;
     }
 
     setIndex = index => {

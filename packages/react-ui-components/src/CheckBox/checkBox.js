@@ -74,7 +74,6 @@ class CheckBox extends PureComponent {
                     {...rest}
                     className={theme.checkbox__input}
                     type="checkbox"
-                    role="checkbox"
                     checked={isChecked}
                     aria-checked={isChecked}
                     onChange={this.handleChange}

@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {connect} from 'react-redux';
+import {selectors} from '@neos-project/neos-ui-redux-store';
+import {$transform} from 'plow-js';
 
 @neos(globalRegistry => {
     return {
@@ -10,12 +13,17 @@ import {neos} from '@neos-project/neos-ui-decorators';
     };
 })
 
+@connect($transform({
+    activeContentDimensions: selectors.CR.ContentDimensions.active
+}))
+
 class MasterPluginEditor extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string,
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired,
+        activeContentDimensions: PropTypes.object.isRequired
     };
 
     constructor(...args) {
@@ -52,12 +60,12 @@ class MasterPluginEditor extends React.PureComponent {
             return;
         }
 
-        this.setState({isLoading: true});
         const {loadMasterPlugins} = backend.get().endpoints;
 
-        if (!this.props.options) {
+        if (!this.state.options.length) {
+            this.setState({isLoading: true});
             const workspace = Object.keys(this.props.neos.configuration.allowedTargetWorkspaces);
-            loadMasterPlugins(workspace[0], [])
+            loadMasterPlugins(workspace[0], this.props.activeContentDimensions.toJS())
                 .then(options => {
                     this.setState({
                         isLoading: false,

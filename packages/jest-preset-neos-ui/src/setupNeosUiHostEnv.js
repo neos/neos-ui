@@ -4,7 +4,7 @@
 // in the `jest` section of your package.json, add:
 //
 // {
-//   "ava": {
+//   "jest": {
 //      "preset": "@neos-project/jest-preset-neos-ui",
 //      "setupFiles": [
 //         "<rootDir>/node_modules/@neos-project/jest-preset-neos-ui/src/setupNeosUiHostEnv.js"

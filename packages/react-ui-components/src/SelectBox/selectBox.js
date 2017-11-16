@@ -171,6 +171,10 @@ export default class SelectBox extends PureComponent {
     createNewEnabled = () => this.props.onCreateNew && this.props.searchTerm;
 
     optionsCount = () => {
+        if (this.props.options === undefined) {
+            return 0;
+        }
+
         const groupedOptions = this.groupOptions(this.props.options);
         const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[this.props.withoutGroupLabel]);
         let count = hasMultipleGroups ? groupedOptions.length : this.props.options.length;

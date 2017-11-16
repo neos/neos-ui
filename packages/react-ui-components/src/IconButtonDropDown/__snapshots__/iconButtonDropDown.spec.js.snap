@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IconButtonDropDown/> should render correctly. 1`] = `
+<div
+  className="baseWrapperClassName"
+  onMouseLeave={[Function]}
+>
+  <Component
+    aria-haspopup="true"
+    className="baseBtnClassName"
+    hoverStyle="clean"
+    isDisabled={false}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onMouseDown={[Function]}
+    onMouseEnter={[Function]}
+    style="clean"
+  >
+    <Component
+      className="baseBtnIconClassName"
+      icon="fooModeIcon"
+    />
+    <Component
+      icon="barGeneralIcon"
+    />
+  </Component>
+  <div
+    aria-hidden="true"
+    className="baseDropDownClassName"
+  >
+    <DropDownItem
+      className="baseIconButtonDropDownClassName"
+      id="foo1"
+      key="0/.0"
+      onClick={[Function]}
+    >
+      <div
+        dropDownId="foo1"
+        style={Object {}}
+      />
+    </DropDownItem>
+    <DropDownItem
+      className="baseIconButtonDropDownClassName"
+      id="foo2"
+      key="1/.1"
+      onClick={[Function]}
+    >
+      <div
+        dropDownId="foo2"
+        style={Object {}}
+      />
+    </DropDownItem>
+  </div>
+</div>
+`;

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShallowDropDownContents/> should render correctly. 1`] = `
+<ul
+  aria-hidden="true"
+  aria-label="dropdown"
+  className="baseDropDownContentsClassName"
+  onClick={[Function]}
+  role="button"
+>
+  Foo children
+</ul>
+`;

@@ -13,14 +13,12 @@
     "test": "lerna run test --concurrency 1",
     "test:e2e": "yarn run testcafe -- chrome:headless Tests/IntegrationTests/* --selector-timeout=30000 --assertion-timeout=30000",
     "lint": "lerna run lint --concurrency 1",
-    "lint:editorconfig": "editorconfig-checker --exclude-regexp 'LICENSE|\\.vanilla\\-css$|banner\\.js$' --exclude-pattern './{README.md,**/*{fontAwesome,Resources}/**/*}'"
+    "lint:editorconfig": "editorconfig-checker --exclude-regexp 'LICENSE|\\.vanilla\\-css$|banner\\.js$' --exclude-pattern './{README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'"
   },
   "devDependencies": {
-    "@inkdpixels/commit-analyzer": "^1.0.0",
-    "@inkdpixels/release-notes-generator": "^1.0.0",
     "@neos-project/brand": "^1.1.0",
     "@neos-project/build-essentials": "*",
-    "@neos-project/eslint-config-neos": "^1.1.1",
+    "@neos-project/eslint-config-neos": "^1.2.0",
     "babel-cli": "^6.8.0",
     "babel-core": "^6.13.2",
     "babel-eslint": "^7.1.1",
@@ -61,7 +59,6 @@
     "regenerator-runtime": "^0.10.3",
     "rimraf": "^2.5.4",
     "semantic-release": "^6.3.2",
-    "sinon": "^2.1.0",
     "skin-deep": "^0.16.0",
     "style-loader": "^0.18.1",
     "stylelint": "^7.5.0",
@@ -131,7 +128,7 @@
     "recharts": "^1.0.0-alpha.6",
     "redux": "^3.4.0",
     "redux-actions": "^0.12.0",
-    "redux-saga": "^0.12.0",
+    "redux-saga": "^0.15.0",
     "regenerator": "^0.8.46",
     "reselect": "^2.4.0",
     "url-loader": "^0.5.9",

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`imageByUuid selector should return function that returns image data for a given uuid in the given state 1`] = `
+Object {
+  "some": "value",
+  "status": "LOADED",
+}
+`;
+
+exports[`imageLookup selector should return function that returns image data for the given state and uuid 1`] = `
+Object {
+  "some": "value",
+  "status": "LOADED",
+}
+`;

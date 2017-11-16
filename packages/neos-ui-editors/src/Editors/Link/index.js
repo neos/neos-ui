@@ -7,6 +7,7 @@ import LinkOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolba
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
+// ToDo: Move into re-usable fn - Maybe into `util-helpers`?
 const isUri = str =>
     str && Boolean(str.match('^https?://'));
 

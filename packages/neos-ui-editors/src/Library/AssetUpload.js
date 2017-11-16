@@ -36,6 +36,7 @@ export default class AssetUpload extends PureComponent {
         const {uploadAsset} = backend.get().endpoints;
         const {onAfterUpload, siteNodePath} = this.props;
 
+        // ToDo: Move into a re-usable util fn - Maybe util-helpers?
         const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
 
         return uploadAsset(files[0], siteNodeName).then(res => {

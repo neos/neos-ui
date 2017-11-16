@@ -208,6 +208,16 @@ const createCKEditorAPI = CKEDITOR => {
 
             const handleUserInteraction = handleUserInteractionCallbackFactory(editor);
 
+            editor.on('contentDom', event => {
+                event.editor.editable().on('contextmenu', contextEvent => {
+                    const path = event.editor.elementPath();
+
+                    if (!path.contains('table')) {
+                        contextEvent.cancel();
+                    }
+                }, null, null, 5);
+            });
+
             editor.once('contentDom', () => {
                 editor.on('focus', () => {
                     currentEditor = editor;

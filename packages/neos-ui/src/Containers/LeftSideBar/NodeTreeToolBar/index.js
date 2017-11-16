@@ -23,6 +23,7 @@ export default class NodeTreeToolBar extends PureComponent {
         focusedNodeContextPath: PropTypes.string,
         canBePasted: PropTypes.bool.isRequired,
         canBeDeleted: PropTypes.bool.isRequired,
+        canBeEdited: PropTypes.bool.isRequired,
         isLoading: PropTypes.bool.isRequired,
         isHidden: PropTypes.bool.isRequired,
         isCut: PropTypes.bool.isRequired,
@@ -45,21 +46,27 @@ export default class NodeTreeToolBar extends PureComponent {
     };
 
     handleAddNode = contextPath => {
-        const {addNode} = this.props;
+        const {addNode, canBeEdited} = this.props;
 
-        addNode(contextPath);
+        if (canBeEdited) {
+            addNode(contextPath);
+        }
     }
 
     handleHideNode = contextPath => {
-        const {hideNode} = this.props;
+        const {hideNode, canBeEdited} = this.props;
 
-        hideNode(contextPath);
+        if (canBeEdited) {
+            hideNode(contextPath);
+        }
     }
 
     handleShowNode = contextPath => {
-        const {showNode} = this.props;
+        const {showNode, canBeEdited} = this.props;
 
-        showNode(contextPath);
+        if (canBeEdited) {
+            showNode(contextPath);
+        }
     }
 
     handleCopyNode = contextPath => {
@@ -69,21 +76,25 @@ export default class NodeTreeToolBar extends PureComponent {
     }
 
     handleCutNode = contextPath => {
-        const {cutNode} = this.props;
+        const {cutNode, canBeEdited} = this.props;
 
-        cutNode(contextPath);
+        if (canBeEdited) {
+            cutNode(contextPath);
+        }
     }
 
     handlePasteNode = contextPath => {
-        const {pasteNode} = this.props;
+        const {pasteNode, canBeEdited} = this.props;
 
-        pasteNode(contextPath);
+        if (canBeEdited) {
+            pasteNode(contextPath);
+        }
     }
 
     handleDeleteNode = contextPath => {
-        const {deleteNode, canBeDeleted} = this.props;
+        const {deleteNode, canBeDeleted, canBeEdited} = this.props;
 
-        if (canBeDeleted) {
+        if (canBeDeleted && canBeEdited) {
             deleteNode(contextPath);
         }
     }
@@ -99,6 +110,7 @@ export default class NodeTreeToolBar extends PureComponent {
             focusedNodeContextPath,
             canBePasted,
             canBeDeleted,
+            canBeEdited,
             isHidden,
             isCut,
             isCopied,
@@ -113,13 +125,13 @@ export default class NodeTreeToolBar extends PureComponent {
                     <AddNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isAllowedToAddChildOrSiblingNodes={isAllowedToAddChildOrSiblingNodes}
+                        isDisabled={!isAllowedToAddChildOrSiblingNodes || !canBeEdited}
                         onClick={this.handleAddNode}
                         />
                     <HideSelectedNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled}
+                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
                         isHidden={isHidden}
                         onHide={this.handleHideNode}
                         onShow={this.handleShowNode}
@@ -135,19 +147,19 @@ export default class NodeTreeToolBar extends PureComponent {
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         isActive={isCut}
-                        isDisabled={destructiveOperationsAreDisabled}
+                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
                         onClick={this.handleCutNode}
                         />
                     <PasteClipBoardNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        canBePasted={canBePasted}
+                        isDisabled={!canBePasted || !canBeEdited}
                         onClick={this.handlePasteNode}
                         />
                     <DeleteSelectedNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled || !canBeDeleted}
+                        isDisabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
                         onClick={this.handleDeleteNode}
                         />
                     <RefreshPageTree
@@ -182,6 +194,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 reference: focusedNodeContextPath
             });
             const canBeDeleted = $get('policy.canRemove', focusedNode);
+            const canBeEdited = $get('policy.canEdit', focusedNode);
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
             const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
@@ -200,6 +213,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 focusedNodeContextPath,
                 canBePasted,
                 canBeDeleted,
+                canBeEdited,
                 isLoading,
                 isHidden,
                 destructiveOperationsAreDisabled,
@@ -235,6 +249,7 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
                 reference: focusedNodeContextPath
             });
             const canBeDeleted = $get('policy.canRemove', focusedNode);
+            const canBeEdited = $get('policy.canEdit', focusedNode);
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
             const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
@@ -249,6 +264,7 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
                 focusedNodeContextPath,
                 canBePasted,
                 canBeDeleted,
+                canBeEdited,
                 isLoading,
                 isHidden,
                 destructiveOperationsAreDisabled,

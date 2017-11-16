@@ -44,13 +44,13 @@ test('should render a aria-hidden="false" attribute in the wrapper in case the "
 
     expect(contents.html().includes('aria-hidden="false"')).toBeTruthy();
 });
-test('should render a aria-label="dropdown" and role="button" attribute in the wrapper.', () => {
+test('should render a aria-label="dropdown" and role="listbox" attribute in the wrapper.', () => {
     const contents = shallow({
         isOpen: true
     });
 
     expect(contents.html().includes('aria-label="dropdown"')).toBeTruthy();
-    expect(contents.html().includes('role="button"')).toBeTruthy();
+    expect(contents.html().includes('role="listbox"')).toBeTruthy();
 });
 test('should call the "closeDropDown" prop when clicking on the wrapper.', () => {
     const props = {

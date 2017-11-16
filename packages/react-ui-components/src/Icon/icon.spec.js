@@ -14,7 +14,7 @@ const shallow = createShallowRenderer(Icon, defaultProps);
 test('should render a "i" node.', () => {
     const tag = shallow();
 
-    expect(tag.type()).toBe('i');
+    expect(tag.type()).toBe('icon');
 });
 test('should add the passed "className" prop to the rendered node if passed.', () => {
     const tag = shallow({className: 'testClassName'});

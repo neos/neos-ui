@@ -23,6 +23,9 @@
 			<trans-unit id="createNew" xml:space="preserve">
 				<source>Create new</source>
 			</trans-unit>
+			<trans-unit id="noMatchesLabel" xml:space="preserve">
+				<source>No matches found</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

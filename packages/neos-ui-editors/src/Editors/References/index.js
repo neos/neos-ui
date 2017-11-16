@@ -39,6 +39,7 @@ export default class ReferencesEditor extends PureComponent {
             displaySearchBox={true}
             optionComponent={ReferenceOption}
             createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
+            noMatchesLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesLabel')}
             placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
             options={this.props.options}
             values={this.props.value}

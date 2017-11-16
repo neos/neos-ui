@@ -101,6 +101,11 @@ export default ({isMulti}) => WrappedComponent => {
                             searchOptions
                         });
                     });
+            } else {
+                // We should destinguish empty result from being under the threshold
+                this.setState({
+                    searchOptions: null
+                });
             }
         }
 
@@ -112,11 +117,10 @@ export default ({isMulti}) => WrappedComponent => {
         }
 
         render() {
-            const props = Object.assign({}, this.props, this.state);
             const options = isMulti ? this.state.options : (this.props.value ? this.state.options : this.state.searchOptions);
             return (
                 <WrappedComponent
-                    {...props}
+                    {...this.props}
                     options={options}
                     searchTerm={this.state.searchTerm}
                     searchOptions={this.state.searchOptions}

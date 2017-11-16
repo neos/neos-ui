@@ -75,6 +75,11 @@ export default class SelectBox extends PureComponent {
         loadingLabel: PropTypes.string,
 
         /**
+         * No matches found label
+         */
+        noMatchesLabel: PropTypes.string,
+
+        /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
@@ -176,9 +181,10 @@ export default class SelectBox extends PureComponent {
     createNewEnabled = () => this.props.onCreateNew && this.props.searchTerm;
 
     optionsCount = () => {
-        const groupedOptions = this.groupOptions(this.props.options);
-        const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[this.props.withoutGroupLabel]);
-        let count = hasMultipleGroups ? groupedOptions.length : this.props.options.length;
+        const {options, withoutGroupLabel} = this.props;
+        const groupedOptions = this.groupOptions(options);
+        const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[withoutGroupLabel]);
+        let count = hasMultipleGroups ? groupedOptions && groupedOptions.length : options && options.length;
         if (this.createNewEnabled()) {
             count++;
         }
@@ -303,11 +309,34 @@ export default class SelectBox extends PureComponent {
                         {hasMultipleGroups ? // skip rendering of groups if there are none or only one group
                             Object.entries(groupedOptions).map(this.renderGroup) :
                             (options || []).map(this.renderOption)}
+                        {this.renderNoSearchResults()}
                         {this.renderCreateNew()}
                     </DropDown.Contents>
                 </DropDown.Stateless>
             </div>
         );
+    }
+
+    renderNoSearchResults() {
+        const {options, displaySearchBox, displayLoadingIndicator, IconComponent, theme, searchTerm, noMatchesLabel} = this.props;
+        if (
+            displaySearchBox &&
+            !displayLoadingIndicator &&
+            options !== null && // options === null when search threshold hasn't been reached
+            options && options.length === 0 &&
+            searchTerm
+        ) {
+            const optionClassName = mergeClassNames({
+                [theme.selectBox__item]: true,
+                [theme['selectBox__item--isSelectable']]: true
+            });
+            return (
+                <li className={optionClassName}>
+                    {<IconComponent className={theme.selectBox__itemIcon} icon="ban"/>} {noMatchesLabel}
+                </li>
+            );
+        }
+        return null;
     }
 
     renderCreateNew() {

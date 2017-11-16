@@ -57,7 +57,6 @@ class MasterPluginEditor extends React.PureComponent {
 
         if (!this.props.options) {
             const workspace = Object.keys(this.props.neos.configuration.allowedTargetWorkspaces);
-            console.log(workspace[0]);
             loadMasterPlugins(workspace[0], [])
                 .then(options => {
                     this.setState({

@@ -8,7 +8,7 @@ notifications:
 jobs:
   include:
     - stage: code-style-unit-tests
-      language: node
+      language: node_js
       env:
         - NODE_ENV=test
       cache:

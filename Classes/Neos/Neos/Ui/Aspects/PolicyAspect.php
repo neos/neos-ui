@@ -9,6 +9,7 @@ namespace Neos\Neos\Ui\Aspects;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSubject;
 use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
 use Neos\Neos\Security\Authorization\Privilege\CreateNodePrivilege;
 use Neos\Neos\Security\Authorization\Privilege\RemoveNodePrivilege;
@@ -33,11 +34,25 @@ use Neos\Neos\Security\Authorization\Privilege\EditNodePropertyPrivilege;
 class PolicyAspect
 {
     /**
-     * @Flow\Around("method()")
+     * @Flow\Inject
+     * @var PrivilegeManagerInterface
+     */
+    protected $privilegeManager;
+    /**
+     * @Flow\Around("method(Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper->renderNode())")
      * @return void
      */
     public function enforceNodeTreePrivilege(JoinPointInterface $joinPoint)
     {
+        $node = $joinPoint->getMethodArgument('node');
+        $hasNodeTreePrivilege = $this->privilegeManager->isGranted(
+            NodeTreePrivilege::class,
+            new NodePrivilegeSubject($node)
+        );
+
+        if ($hasNodeTreePrivilege) {
+            return $joinPoint->getAdviceChain()->proceed($joinPoint);
+        }
     }
 
     /**

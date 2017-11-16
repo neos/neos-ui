@@ -9,7 +9,8 @@ import {
     Reference,
     References,
     NodeType,
-    CodeMirror
+    CodeMirror,
+    AssetEditor
 } from './Editors/index';
 
 import {
@@ -76,6 +77,10 @@ manifest('inspectorEditors', {}, globalRegistry => {
     editorsRegistry.set('Neos.Neos/Inspector/Editors/CodeEditor', {
         component: CodeMirror,
         hasOwnLabel: true
+    });
+
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/AssetEditor', {
+        component: AssetEditor
     });
 
     //

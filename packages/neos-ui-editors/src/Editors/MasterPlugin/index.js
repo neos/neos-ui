@@ -93,6 +93,7 @@ class MasterPluginEditor extends React.PureComponent {
                 displayLoadingIndicator={isLoading}
                 displaySearchBox={false}
                 placeholder={this.renderPlaceholder()}
+                allowEmpty
                 />
         );
     }

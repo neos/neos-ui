@@ -3,66 +3,90 @@ notifications:
   email: false
 
 #
-# Describe the overall env.
+# Describe the job matrix to run the code-style checks, unit and e2e tests in parallel.
 #
-language: php
-
-php:
-  - '7.1'
-
-services:
-  - mysql
-
-#
-# Cache the composer and node_modules directory to speed up the the installation of dependencies.
-#
-cache:
-  yarn: true
-  directories:
-    - ../Neos/Packages/Application/Neos.Neos.Ui/node_modules
-    - ../Neos/Packages/Framework
-    - ../Neos/Packages/Libraries
-    - ../Neos/Packages/Sites
-    - $HOME/.composer/cache
-    - $HOME/.nvm/versions/
-
-#
-# Parallel environments, the value represents the name of the shell script which needs to be placed in `Build/TravisCi/Scripts/[name].sh`.
-#
-env:
-  - TEST_SUITE=CodeStyle
-  - TEST_SUITE=UnitTests
-  - TEST_SUITE=IntegrationTests
-
-#
-# Install nvm, the node depdencies and setup the some env variables.
-#
-before_install:
-  # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
-  - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-  - nvm install
-  - nvm use
-  - export FLOW_CONTEXT=Production
-
-#
-# Install and setup the neos instance.
-#
-install:
-  # Execute the optional install shell script for the environment.
-  - if [ -f "Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
-
-  # Since all environments depend on the node dependencies, install and
-  # afterwards prune them to remove extranous packages from previous/cached runs.
-  - yarn install
-
-#
-# Execute the test environment specific shell script.
-#
-script:
-  - if [ -f "Build/TravisCi/Scripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/Scripts/$TEST_SUITE.sh; fi
-
-#
-# Execute the test environment specific after_script shell script.
-#
-after_script:
-  - if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi
+jobs:
+  include:
+    - stage: code-style-unit-tests
+      language: node
+      env:
+        - NODE_ENV=test
+      cache:
+        yarn: true
+        directories:
+          - node_modules
+      install:
+        - yarn install
+      script:
+        - yarn lint:editorconfig
+        - yarn lint
+        - yarn test
+    - stage: e2e-tests
+      language: php
+      php:
+        - '7.1'
+      env:
+        - NODE_ENV=test
+        - FLOW_CONTEXT=Production
+      services:
+        - mysql
+      cache:
+        yarn: true
+        directories:
+          - ../Neos/Packages/Application/Neos.Neos.Ui/node_modules
+          - ../Neos/Packages/Framework
+          - ../Neos/Packages/Libraries
+          - ../Neos/Packages/Sites
+          - $HOME/.composer/cache
+          - $HOME/.nvm/versions/
+      before_install:
+        # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
+        - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+        - nvm install
+        - nvm use
+        # Add the oAuth token to git to avoid errors with composer because of https://github.com/composer/composer/issues/1314
+        - if [ -n "$GITHUB_OAUTH_TOKEN" ]; then composer config github-oauth.github.com ${GITHUB_OAUTH_TOKEN}; fi;
+        # Disable xDebug
+        - phpenv config-rm xdebug.ini
+        # Update composer.
+        - composer self-update -q
+      install:
+        # Handle hidden files when moving them via the `mv` command.
+        - shopt -s dotglob
+        # Create a separate working directory in which the neos instance can be installed in.
+        - cd ..
+        - if [ ! -d "Neos" ]; then mkdir Neos; fi;
+        - cp neos-ui/Build/TravisCi/composer* Neos/
+        - cd Neos
+        # Move our repository and the configuration files into place.
+        - mkdir -p Packages/Application/Neos.Neos.Ui
+        - mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
+        # Temporarily move the neos-ui package out so it doesn't get overwritten by composer
+        - mv Packages/Application/Neos.Neos.Ui temp
+        # Install all dependencies for the neos instance.
+        - composer install -q -n
+        - rm -rf Packages/Application/Neos.Neos.Ui
+        - mv temp Packages/Application/Neos.Neos.Ui
+        # Move the configuration files into place.
+        - cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Settings.yaml
+        # Patch template to include script to fail on console.error.
+        # TODO: Can be removed when this is implemented: https://github.com/DevExpress/testcafe/issues/1738
+        - sed -i 's/<title>/<script><![CDATA[ const originalError = console.error; console.error = (msg, trace) => { if (msg === "uncaught") { throw new Error(trace);} else { throw new Error(msg);}};]]><\/script>\r\n<title>/g' Packages/Application/Neos.Neos.Ui/Resources/Private/Templates/Backend/Index.html
+        # Setup the database and import the demo site package.
+        - mysql -e 'create database neos collate utf8_unicode_ci;'
+        - ./flow cache:warmup
+        - ./flow doctrine:migrate
+        - ./flow site:import --package-key=Neos.Demo
+        - ./flow resource:publish
+        # Create the demo backend user.
+        - ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator &
+        # Start the development server on which the integration tests will act on.
+        - ./flow server:run --port 8081 > /dev/null 2> /dev/null &
+        # Change into the repository directory where the environment based shell script will be executed.
+        - cd Packages/Application/Neos.Neos.Ui
+        # Since all environments depend on the node dependencies, install and
+        # afterwards prune them to remove extranous packages from previous/cached runs.
+        - yarn install
+        - yarn build
+      script:
+        - yarn test:e2e

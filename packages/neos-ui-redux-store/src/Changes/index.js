@@ -47,7 +47,7 @@ export const reducer = handleActions({
                     );
                 }
                 return null;
-            }).filter(i => i),
+            }).filter(Boolean),
             state
         );
     }

@@ -1,48 +1,66 @@
-import sinon from 'sinon';
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import CheckBox from './checkBox.js';
 
-const defaultProps = {
-    isChecked: false,
-    theme: {}
-};
-const shallow = createShallowRenderer(CheckBox, defaultProps);
+describe('<CheckBox/>', () => {
+    let props;
 
-test('should render a "input" node with the role="button" attribute.', () => {
-    const input = shallow().find('[type="checkbox"]');
-
-    expect(input.length).toBe(1);
-});
-test('should render the "className" prop if passed.', () => {
-    const input = shallow({
-        className: 'barClassName'
+    beforeEach(() => {
+        props = {
+            isChecked: false,
+            theme: {}
+        };
     });
 
-    expect(input.hasClass('barClassName')).toBeTruthy();
-});
-test('should throw no errors if no "onChange" prop was passed when clicking on the hidden checkbox.', () => {
-    const cb = shallow();
-    const fn = () => cb.find('[type="checkbox"]').simulate('change');
+    it('should render correctly.', () => {
+        const wrapper = shallow(<CheckBox {...props}/>);
 
-    expect(fn).not.toThrow();
-});
-test('should call the passed "onChange" prop when clicking on the hidden checkbox.', () => {
-    const onChange = sinon.spy();
-    const cb = shallow({onChange});
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 
-    cb.find('[type="checkbox"]').simulate('change');
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<CheckBox {...props} className="fooClassName"/>);
 
-    expect(onChange.callCount).toBe(1);
-});
-test('should set truthy aria and checked attribute when passing a truthy "isChecked" prop.', () => {
-    const markup = shallow({isChecked: true}).find('[type="checkbox"]').html();
+        expect(wrapper.prop('className')).toContain('fooClassName');
+    });
 
-    expect(markup.includes('checked="true"')).toBeTruthy();
-    expect(markup.includes('aria-checked="true"')).toBeTruthy();
-});
-test('should set falsy aria and checked attribute when passing a falsy "isChecked" prop.', () => {
-    const markup = shallow({isChecked: false}).find('[type="checkbox"]').html();
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<CheckBox {...props} foo="bar"/>);
+        const input = wrapper.find('[type="checkbox"]');
 
-    expect(markup.includes('checked="false"')).toBeTruthy();
-    expect(markup.includes('aria-checked="false"')).toBeTruthy();
+        expect(input.prop('foo')).toBe('bar');
+    });
+
+    it('should throw no errors if no "onChange" prop was passed when clicking on the hidden checkbox.', () => {
+        const wrapper = shallow(<CheckBox {...props}/>);
+        const fn = () => wrapper.find('[type="checkbox"]').simulate('change');
+
+        expect(fn).not.toThrow();
+    });
+
+    it('should call the passed "onChange" prop when clicking on the hidden checkbox.', () => {
+        const onChange = jest.fn();
+        const wrapper = shallow(<CheckBox {...props} onChange={onChange}/>);
+
+        wrapper.find('[type="checkbox"]').simulate('change');
+
+        expect(onChange.mock.calls.length).toBe(1);
+    });
+
+    it('should set truthy aria and checked attribute when passing a truthy "isChecked" prop.', () => {
+        const wrapper = shallow(<CheckBox {...props} isChecked/>);
+        const input = wrapper.find('[type="checkbox"]');
+
+        expect(input.prop('checked')).toBe(true);
+        expect(input.prop('aria-checked')).toBe(true);
+    });
+
+    it('should set falsy aria and checked attribute when passing a falsy "isChecked" prop.', () => {
+        const wrapper = shallow(<CheckBox {...props} isChecked={false}/>);
+        const input = wrapper.find('[type="checkbox"]');
+
+        expect(input.prop('checked')).toBe(false);
+        expect(input.prop('aria-checked')).toBe(false);
+    });
 });

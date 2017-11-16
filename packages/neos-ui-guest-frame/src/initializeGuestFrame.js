@@ -1,5 +1,4 @@
-import {takeEvery} from 'redux-saga';
-import {put, select} from 'redux-saga/effects';
+import {takeEvery, put, select} from 'redux-saga/effects';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';

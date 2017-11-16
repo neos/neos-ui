@@ -1,24 +1,27 @@
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import Panel from './panel.js';
 
-const defaultProps = {
-    theme: {
-        panel: 'panelBaseClassName'
-    },
-    children: 'Foo children'
-};
-const shallow = createShallowRenderer(Panel, defaultProps);
+describe('<Panel/>', () => {
+    let props;
 
-test('should render the themes "panel" className.', () => {
-    const wrapper = shallow();
+    beforeEach(() => {
+        props = {
+            theme: {
+                panel: 'panelBaseClassName'
+            },
+            children: 'Foo children'
+        };
+    });
 
-    expect(wrapper.hasClass(defaultProps.theme.panel)).toBeTruthy();
-});
-test('should render its provided children.', () => {
-    const wrapper = shallow();
+    it('should render correctly.', () => {
+        const wrapper = shallow(<Panel {...props}/>);
 
-    expect(wrapper.html().includes('Foo children')).toBeTruthy();
-});
-test('should have a "displayName" of "Panel".', () => {
-    expect(Panel.displayName).toBe('Panel');
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+
+    it('should have a "displayName" of "Panel".', () => {
+        expect(Panel.displayName).toBe('Panel');
+    });
 });

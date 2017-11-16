@@ -23,6 +23,7 @@ export default mapRegistriesToProps => WrappedComponent => {
 
         render() {
             const {configuration, globalRegistry} = this.context;
+            // ToDo: Add a warning for the developer if he tries to return the whole `globalRegistry` into the component.
             const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(globalRegistry) : {};
 
             return (

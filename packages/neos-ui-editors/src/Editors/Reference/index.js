@@ -106,6 +106,7 @@ export default class ReferenceEditor extends PureComponent {
         }
     }
 
+    // ToDo: Why not directly passing the commit prop down if the argument just gets forwarded?
     handleValueChange = value => {
         this.props.commit(value);
     }

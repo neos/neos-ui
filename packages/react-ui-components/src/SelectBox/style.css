@@ -86,7 +86,7 @@
     width: var(--goldenUnit);
     height: var(--goldenUnit);
     text-align: center;
-    background: var(--brandColorsContrastNeutral);
+    background: transparent;
     color: #FFF;
     line-height: 40px;
 }

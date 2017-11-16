@@ -7,27 +7,25 @@
     "prebuild": "check-dependencies && yarn clean",
     "build": "exit 0",
     "build:watch": "exit 0",
-    "test": "yarn jest",
+    "test": "yarn jest -- --w 1 --coverage",
     "test:watch": "yarn jest -- --watch",
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "jest": "jest src/**/*.spec.js -w 1 --coverage",
+    "jest": "NODE_ENV=test jest",
     "start": "cross-env STORY=true start-storybook -p 9001",
-    "postpublish": "greenkeeper-postpublish",
-    "semantic-release": "semantic-release pre && yarn publish --access public && semantic-release post"
-  },
-  "release": {
-    "analyzeCommits": "@inkdpixels/commit-analyzer",
-    "generateNotes": "@inkdpixels/release-notes-generator"
+    "postpublish": "greenkeeper-postpublish"
   },
   "devDependencies": {
     "@kadira/react-storybook-addon-info": "^3.2.1",
     "@kadira/storybook": "^2.11.0",
     "@kadira/storybook-addon-knobs": "^1.2.0",
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
+    "@neos-project/jest-preset-neos-ui": "1.0.0-beta8",
     "@neos-project/build-essentials": "1.0.0-beta8",
-    "@neos-project/debug-reason-for-rendering": "1.0.0-beta8"
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta8",
+    "enzyme-to-json": "^3.1.3"
   },
   "peerDependencies": {
     "@neos-project/brand": "^1.1.0",
@@ -61,17 +59,6 @@
     "url": "https://github.com/neos/react-ui-components.git"
   },
   "jest": {
-    "setupFiles": [
-      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js",
-      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
-    ],
-    "transformIgnorePatterns": [],
-    "unmockedModulePathPatterns": [
-      "sinon"
-    ],
-    "transform": {
-      "react-ui-components/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
-      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
-    }
+    "preset": "@neos-project/jest-preset-neos-ui"
   }
 }

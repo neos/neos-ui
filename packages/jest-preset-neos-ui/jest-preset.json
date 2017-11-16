@@ -2,6 +2,9 @@
   "collectCoverageFrom": [
     "src/**/*.js"
   ],
+  "coveragePathIgnorePatterns": [
+    "\\.(story.js)$"
+  ],
   "transformIgnorePatterns": ["node_modules/(?!@neos-project)"],
   "unmockedModulePathPatterns": [
     "sinon"

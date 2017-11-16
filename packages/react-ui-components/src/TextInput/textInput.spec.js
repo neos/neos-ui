@@ -1,45 +1,64 @@
-import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
+import {createStubComponent} from './../_lib/testUtils.js';
 import TextInput from './textInput.js';
 
-const TooltipComponent = createStubComponent();
-const defaultProps = {
-    theme: {},
-    TooltipComponent
-};
-const shallow = createShallowRenderer(TextInput, defaultProps);
+describe('<TextInput/>', () => {
+    let props;
 
-test('should render an "input" node.', () => {
-    const input = shallow().find('input');
-
-    expect(input.type()).toBe('input');
-});
-test('should add the passed "className" prop to the rendered button if passed.', () => {
-    const input = shallow({className: 'testClassName'}).find('input');
-
-    expect(input.hasClass('testClassName')).toBeTruthy();
-});
-test('should call the passed "onChange" prop with the value of the input when changing it.', () => {
-    const onChange = jest.fn();
-    const input = shallow({onChange}).find('input');
-
-    input.simulate('change', {
-        target: {
-            value: 'my value'
-        }
+    beforeEach(() => {
+        props = {
+            theme: {},
+            TooltipComponent: createStubComponent()
+        };
     });
 
-    expect(onChange.mock.calls.length).toBe(1);
-    expect(onChange.mock.calls[0][0]).toBe('my value');
-});
-test('should throw no error if no "onChange" prop was passed when changing the value of the input.', () => {
-    const input = shallow().find('input');
-    const fn = () => {
+    it('should render correctly.', () => {
+        const wrapper = shallow(<TextInput {...props}/>);
+
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<TextInput {...props} className="fooClassName"/>);
+        const input = wrapper.find('input');
+
+        expect(input.prop('className')).toContain('fooClassName');
+    });
+
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<TextInput {...props} foo="bar"/>);
+        const input = wrapper.find('input');
+
+        expect(input.prop('foo')).toBe('bar');
+    });
+
+    it('should call the passed "onChange" prop with the value of the input when changing it.', () => {
+        const onChange = jest.fn();
+        const wrapper = shallow(<TextInput {...props} onChange={onChange}/>);
+        const input = wrapper.find('input');
+
         input.simulate('change', {
             target: {
                 value: 'my value'
             }
         });
-    };
 
-    expect(fn).not.toThrow();
+        expect(onChange.mock.calls.length).toBe(1);
+        expect(onChange.mock.calls[0][0]).toBe('my value');
+    });
+
+    it('should throw no error if no "onChange" prop was passed when changing the value of the input.', () => {
+        const wrapper = shallow(<TextInput {...props}/>);
+        const input = wrapper.find('input');
+
+        expect(() => {
+            input.simulate('change', {
+                target: {
+                    value: 'my value'
+                }
+            });
+        }).not.toThrow();
+    });
 });

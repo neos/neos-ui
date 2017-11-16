@@ -14,7 +14,8 @@ import {$transform} from 'plow-js';
 })
 
 @connect($transform({
-    activeContentDimensions: selectors.CR.ContentDimensions.active
+    activeContentDimensions: selectors.CR.ContentDimensions.active,
+    personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector
 }))
 
 class MasterPluginEditor extends React.PureComponent {
@@ -23,7 +24,8 @@ class MasterPluginEditor extends React.PureComponent {
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
-        activeContentDimensions: PropTypes.object.isRequired
+        activeContentDimensions: PropTypes.object.isRequired,
+        personalWorkspace: PropTypes.string
     };
 
     constructor(...args) {
@@ -60,12 +62,13 @@ class MasterPluginEditor extends React.PureComponent {
             return;
         }
 
-        const {loadMasterPlugins} = backend.get().endpoints;
+        const {loadMasterPlugins} = backend.get().endpoints,
+            {personalWorkspace, activeContentDimensions} = this.props;
 
         if (!this.state.options.length) {
             this.setState({isLoading: true});
-            const workspace = Object.keys(this.props.neos.configuration.allowedTargetWorkspaces);
-            loadMasterPlugins(workspace[0], this.props.activeContentDimensions.toJS())
+
+            loadMasterPlugins(personalWorkspace, activeContentDimensions.toJS())
                 .then(options => {
                     this.setState({
                         isLoading: false,

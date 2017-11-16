@@ -1,6 +1,8 @@
 import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
 
+export const personalWorkspaceNameSelector = $get('cr.workspaces.personalWorkspace.name');
+
 export const activeDocumentContextPathSelector = $get('ui.contentCanvas.contextPath');
 
 export const baseWorkspaceSelector = $get('cr.workspaces.personalWorkspace.baseWorkspace');

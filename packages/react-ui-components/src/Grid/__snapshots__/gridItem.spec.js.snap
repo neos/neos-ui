@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GridItem/> should render correctly. 1`] = `
+<div
+  className=""
+  style={
+    Object {
+      "width": "33.33%",
+    }
+  }
+>
+  Foo children
+</div>
+`;

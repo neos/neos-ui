@@ -7,7 +7,7 @@ const ensureIsArray = v => {
     if (Array.isArray(v)) {
         return v;
     }
-    console.warn('MultiSelectBox values were no array - falling back to empty list; the following was given: ', v);
+    console.warn('<MultiSelectBox/> Expected "values" to be an Array but found the following value (Falling back to an empty list): ', v);
     return [];
 };
 
@@ -59,6 +59,16 @@ export default class MultiSelectBox extends PureComponent {
          * This prop gets called when an option was selected. It returns the new values as array.
          */
         onValuesChange: PropTypes.func.isRequired,
+
+        /**
+         * This prop gets called when requested to create a new element
+         */
+        onCreateNew: PropTypes.func.isRequired,
+
+        /**
+         * "Create new" label
+         */
+        createNewLabel: PropTypes.string,
 
         /**
          * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
@@ -151,6 +161,8 @@ export default class MultiSelectBox extends PureComponent {
             displaySearchBox,
             searchTerm,
             onSearchTermChange,
+            onCreateNew,
+            createNewLabel,
             SelectBoxComponent,
             highlight,
             IconButtonComponent,
@@ -207,6 +219,8 @@ export default class MultiSelectBox extends PureComponent {
                     searchTerm={searchTerm}
                     onSearchTermChange={onSearchTermChange}
                     onValueChange={this.handleNewValueSelected}
+                    onCreateNew={onCreateNew}
+                    createNewLabel={createNewLabel}
                     optionComponent={optionComponent}
                     />
             </div>

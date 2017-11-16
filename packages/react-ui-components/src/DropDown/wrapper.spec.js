@@ -1,39 +1,58 @@
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import {DropDownWrapper} from './wrapper.js';
 
-const defaultProps = {
-    children: 'Foo children',
-    theme: {}
-};
-const shallow = createShallowRenderer(DropDownWrapper, defaultProps);
+describe('<DropDownWrapper/>', () => {
+    let props;
 
-test('should initially have a falsy "isOpen" state value.', () => {
-    const dd = shallow();
-
-    expect(dd.state('isOpen')).toBeFalsy();
-});
-test('should render the "className" prop if passed.', () => {
-    const dd = shallow({
-        className: 'barClassName'
+    beforeEach(() => {
+        props = {
+            children: 'Foo children',
+            theme: {}
+        };
     });
 
-    expect(dd.hasClass('barClassName')).toBeTruthy();
-});
-test('should set the "isOpen" state value to opposite when calling the toggle method.', () => {
-    const dd = shallow();
+    it('should render correctly.', () => {
+        const wrapper = shallow(<DropDownWrapper {...props}/>);
 
-    dd.instance().handleToggle();
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 
-    expect(dd.state('isOpen')).toBeTruthy();
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<DropDownWrapper {...props} className="fooClassName"/>);
 
-    dd.instance().handleToggle();
+        expect(wrapper.prop('className')).toContain('fooClassName');
+    });
 
-    expect(dd.state('isOpen')).toBeFalsy();
-});
-test('should set the "isOpen" state value to false when calling the close method.', () => {
-    const dd = shallow();
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<DropDownWrapper {...props} foo="bar"/>);
 
-    dd.instance().handleClose();
+        expect(wrapper.prop('foo')).toBe('bar');
+    });
 
-    expect(dd.state('isOpen')).toBeFalsy();
+    it('should initially have a falsy "isOpen" state value.', () => {
+        const wrapper = shallow(<DropDownWrapper {...props}/>);
+
+        expect(wrapper.state('isOpen')).toBeFalsy();
+    });
+
+    it('should set the "isOpen" state value to opposite when calling the toggle method.', () => {
+        const wrapper = shallow(<DropDownWrapper {...props}/>);
+
+        wrapper.instance().handleToggle();
+
+        expect(wrapper.state('isOpen')).toBeTruthy();
+
+        wrapper.instance().handleToggle();
+
+        expect(wrapper.state('isOpen')).toBeFalsy();
+    });
+    it('should set the "isOpen" state value to false when calling the close method.', () => {
+        const wrapper = shallow(<DropDownWrapper {...props}/>);
+
+        wrapper.instance().handleClose();
+
+        expect(wrapper.state('isOpen')).toBeFalsy();
+    });
 });

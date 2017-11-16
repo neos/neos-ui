@@ -94,6 +94,13 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         ];
         if ($controllerContext !== null && $node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
+
+            $nodeInLiveWorkspace = new FlowQuery([$node]);
+            $nodeInLiveWorkspace = $nodeInLiveWorkspace->context(['workspaceName' => 'live'])->get(0);
+
+            if ($nodeInLiveWorkspace !== null) {
+                $nodeInfo['previewUri'] = $this->uri($nodeInLiveWorkspace, $controllerContext);
+            }
         }
 
         // child nodes for document tree, respecting the `baseNodeType` filter

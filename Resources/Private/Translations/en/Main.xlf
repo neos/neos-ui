@@ -71,6 +71,9 @@
       <trans-unit id="ckeditor__toolbar__indent" xml:space="preserve">
         <source>Indent</source>
       </trans-unit>
+			<trans-unit id="createNew" xml:space="preserve">
+				<source>Create new</source>
+			</trans-unit>
     </body>
   </file>
 </xliff>

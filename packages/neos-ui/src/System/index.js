@@ -44,6 +44,8 @@ export const getNodeTypes = getInlinedData('nodeTypes');
 
 export const getFrontendConfiguration = getInlinedData('frontendConfiguration');
 
+export const getRoutes = getInlinedData('routes');
+
 export const getMenu = getInlinedData('menu');
 
 export const getNeos = discover(function * () {
@@ -52,9 +54,11 @@ export const getNeos = discover(function * () {
     fetchWithErrorHandling.setCsrfToken(csrfToken);
 
     const systemEnv = yield getSystemEnv;
+    const routes = yield getRoutes;
 
     const neos = initializeJsAPI(window, {
-        systemEnv
+        systemEnv,
+        routes
     });
 
     return neos;

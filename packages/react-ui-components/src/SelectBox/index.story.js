@@ -1,6 +1,6 @@
 import React from 'react';
-import {storiesOf, action} from '@kadira/storybook';
-import {withKnobs, text} from '@kadira/storybook-addon-knobs';
+import {storiesOf, action} from '@storybook/react';
+import {withKnobs, text} from '@storybook/addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import SelectBox from './index.js';
 import DropDown from './../DropDown/index.js';
@@ -32,6 +32,19 @@ const optionsWithMultipleGroups = [
 
 storiesOf('SelectBox', module)
     .addDecorator(withKnobs)
+    .addWithInfo(
+        'Create new option',
+        () => (
+            <StoryWrapper>
+                <SelectBox
+                    options={optionsWithMultipleGroups}
+                    onValueChange={action('onValueChange')}
+                    onCreateNew={action('onCreateNew')}
+                    />
+            </StoryWrapper>
+        ),
+        {inline: true}
+    )
     .addWithInfo(
         'Grouping with multiple groups',
         () => (

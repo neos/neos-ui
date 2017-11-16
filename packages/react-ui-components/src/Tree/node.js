@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {DragSource, DropTarget} from 'react-dnd';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
-import hashSum from 'hash-sum';
 
 const spec = {
     canDrop({dragAndDropContext, mode}) {

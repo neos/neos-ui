@@ -21,7 +21,7 @@ const urlWithParamsInner = (searchParams, prepend, params = {}) => {
 };
 
 const createUrlParameterString = (prepend, params = {}) => {
-    let urlParams = [];
+    const urlParams = [];
     Object.keys(params).forEach(key => {
         const value = params[key];
         if (Array.isArray(value)) {
@@ -31,7 +31,7 @@ const createUrlParameterString = (prepend, params = {}) => {
         } else if (typeof value === 'object') {
             urlParams.push(urlWithParamsInner(concatenatePrependAndKey(prepend, key), value));
         } else {
-            const prependedKey = prepend !== '' ? concatenatePrependAndKey(prepend, key) : key;
+            const prependedKey = prepend === '' ? key : concatenatePrependAndKey(prepend, key);
             urlParams.push(prependedKey + '=' + value);
         }
     });
@@ -46,7 +46,7 @@ export const searchParams = (params = {}) => {
 };
 
 export const dimensionParams = (params = {}) => {
-    return createUrlParameterString('dimensions', params);;
+    return createUrlParameterString('dimensions', params);
 };
 
 /**

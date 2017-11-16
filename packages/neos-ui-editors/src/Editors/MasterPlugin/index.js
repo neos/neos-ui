@@ -38,18 +38,18 @@ class MasterPluginEditor extends React.PureComponent {
     }
 
     renderPlaceholder() {
-        const placeholderPrefix = 'Neos.Neos:Main:content.inspector.editors.masterPluginEditor.',
-            placeholderLabel = placeholderPrefix + (this.state.options.length > 0 ?  'selectPlugin' : 'noPluginConfigured');
+        const placeholderPrefix = 'Neos.Neos:Main:content.inspector.editors.masterPluginEditor.';
+        const placeholderLabel = placeholderPrefix + (this.state.options.length > 0 ? 'selectPlugin' : 'noPluginConfigured');
         return this.props.i18nRegistry.translate(placeholderLabel);
     }
 
     transformMasterPluginStructure(plugins) {
         const pluginsList = [];
-        for (var property in plugins) {
-            if (plugins.hasOwnProperty(property)) {
+        for (const property in plugins) {
+            if (Object.prototype.hasOwnProperty.call(plugins, property)) {
                 pluginsList.push({
-                    'value': property,
-                    'label': plugins[property]
+                    value: property,
+                    label: plugins[property]
                 });
             }
         }
@@ -62,8 +62,8 @@ class MasterPluginEditor extends React.PureComponent {
             return;
         }
 
-        const {loadMasterPlugins} = backend.get().endpoints,
-            {personalWorkspace, activeContentDimensions} = this.props;
+        const {loadMasterPlugins} = backend.get().endpoints;
+        const {personalWorkspace, activeContentDimensions} = this.props;
 
         if (!this.state.options.length) {
             this.setState({isLoading: true});
@@ -84,13 +84,11 @@ class MasterPluginEditor extends React.PureComponent {
 
     render() {
         const {options, isLoading} = this.state;
-        const {highlight, value} = this.props;
 
         return (
             <SelectBox
                 options={options}
-                highlight={highlight}
-                value={value}
+                value={this.props.value}
                 onValueChange={this.handleValueChange}
                 displayLoadingIndicator={isLoading}
                 displaySearchBox={false}

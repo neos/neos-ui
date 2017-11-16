@@ -121,6 +121,7 @@ class LinkTextField extends PureComponent {
                         });
                     });
             }
+            // ToDo: Couldn't this lead to bugs in the future due to the async operation on top?
             this.setState({
                 searchTerm: ''
             });

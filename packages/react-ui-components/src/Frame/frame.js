@@ -48,9 +48,11 @@ export default class Frame extends PureComponent {
 
         return <iframe ref={this.handleReference} onLoad={this.handleLoad} {...rest}/>;
     }
+
     componentWillMount() {
         document.addEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
     }
+
     handleLoad = () => {
         const {onLoad} = this.props;
 
@@ -58,6 +60,7 @@ export default class Frame extends PureComponent {
             onLoad(this.ref);
         }
     }
+
     renderFrameContents = () => {
         const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
         const win = ReactDOM.findDOMNode(this).contentWindow; // eslint-disable-line react/no-find-dom-node
@@ -68,6 +71,7 @@ export default class Frame extends PureComponent {
             this.props.contentDidUpdate(win, doc, mountTarget);
         });
     }
+
     componentWillUnmount() {
         const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
         document.removeEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);

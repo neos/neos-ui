@@ -16,7 +16,8 @@ const Headline = props => {
         type,
         className,
         children,
-        theme
+        theme,
+        ...rest
     } = props;
     const classNames = mergeClassNames({
         [theme.heading]: true,
@@ -27,27 +28,27 @@ const Headline = props => {
 
     switch (type) {
         case 'h1':
-            heading = <h1 className={classNames}>{children}</h1>;
+            heading = <h1 {...rest} className={classNames}>{children}</h1>;
             break;
 
         case 'h2':
-            heading = <h2 className={classNames}>{children}</h2>;
+            heading = <h2 {...rest} className={classNames}>{children}</h2>;
             break;
 
         case 'h3':
-            heading = <h3 className={classNames}>{children}</h3>;
+            heading = <h3 {...rest} className={classNames}>{children}</h3>;
             break;
 
         case 'h4':
-            heading = <h4 className={classNames}>{children}</h4>;
+            heading = <h4 {...rest} className={classNames}>{children}</h4>;
             break;
 
         case 'h5':
-            heading = <h5 className={classNames}>{children}</h5>;
+            heading = <h5 {...rest} className={classNames}>{children}</h5>;
             break;
 
         default:
-            heading = <h6 className={classNames}>{children}</h6>;
+            heading = <h6 {...rest} className={classNames}>{children}</h6>;
             break;
     }
 

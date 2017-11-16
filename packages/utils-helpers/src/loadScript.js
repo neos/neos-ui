@@ -1,10 +1,10 @@
 const scriptCache = [];
 
-export default function loadScript(src) {
+export default function loadScript(src, doc = document) {
     if (scriptCache.indexOf(src) === -1) {
-        const script = document.createElement('script');
+        const script = doc.createElement('script');
         script.src = src;
-        document.getElementsByTagName('head')[0].appendChild(script);
+        doc.getElementsByTagName('head')[0].appendChild(script);
 
         scriptCache.push(src);
     }

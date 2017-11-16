@@ -1,5 +1,4 @@
-import {takeEvery} from 'redux-saga';
-import {put, call, select} from 'redux-saga/effects';
+import {takeEvery, put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -10,7 +9,7 @@ const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 function * watchPersist() {
     const {change} = backend.get().endpoints;
 
-    yield * takeEvery(actionTypes.Changes.PERSIST, function * persistChanges(action) {
+    yield takeEvery(actionTypes.Changes.PERSIST, function * persistChanges(action) {
         const changes = action.payload.changes;
 
         yield put(actions.UI.Remote.startSaving());

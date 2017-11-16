@@ -1,29 +1,34 @@
-import sinon from 'sinon';
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import Bar from './bar.js';
 
-const defaultProps = {
-    theme: {},
-    children: 'Foo children',
-    position: 'top'
-};
-const shallow = createShallowRenderer(Bar, defaultProps);
+describe('<Bar/>', () => {
+    let props;
 
-test('should render the passed "className" prop to the rendered wrapper if passed.', () => {
-    const bar = shallow({className: 'test'});
+    beforeEach(() => {
+        props = {
+            theme: {},
+            children: 'Foo children',
+            position: 'top'
+        };
+    });
 
-    expect(bar.hasClass('test')).toBeTruthy();
-});
-test('should render the passed "children".', () => {
-    const bar = shallow();
+    it('should render correctly.', () => {
+        const wrapper = shallow(<Bar {...props}/>);
 
-    expect(bar.html().includes('Foo children')).toBeTruthy();
-});
-test('should propagate the rest of the passed props to the wrapping node.', () => {
-    const props = {onDrop: sinon.spy()};
-    const bar = shallow(props);
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 
-    bar.simulate('drop');
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<Bar {...props} className="fooClassName"/>);
 
-    expect(props.onDrop.calledOnce).toBeTruthy();
+        expect(wrapper.prop('className')).toContain('fooClassName');
+    });
+
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<Bar {...props} foo="bar"/>);
+
+        expect(wrapper.prop('foo')).toBe('bar');
+    });
 });

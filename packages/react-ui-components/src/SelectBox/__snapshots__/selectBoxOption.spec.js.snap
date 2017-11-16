@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelectBoxOption/> should render correctly. 1`] = `
+<li
+  className="itemClassName itemSelectedClassName"
+  onClick={[Function]}
+  role="button"
+>
+  <div>
+    Foo
+  </div>
+</li>
+`;

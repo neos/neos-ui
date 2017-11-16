@@ -1,5 +1,4 @@
-import {takeEvery} from 'redux-saga';
-import {take, put, race, select, call} from 'redux-saga/effects';
+import {takeEvery, take, put, race, select, call} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
@@ -12,7 +11,7 @@ export default function * cutAndPasteNode({globalRegistry}) {
     const canBeMovedAlongsideSelector = selectors.CR.Nodes.makeCanBeMovedAlongsideSelector(nodeTypesRegistry);
     const canBeMovedIntoSelector = selectors.CR.Nodes.makeCanBeMovedIntoSelector(nodeTypesRegistry);
 
-    yield * takeEvery(actionTypes.CR.Nodes.CUT, function * waitForPaste() {
+    yield takeEvery(actionTypes.CR.Nodes.CUT, function * waitForPaste() {
         const subject = yield select($get('cr.nodes.clipboard'));
 
         const waitForNextAction = yield race([

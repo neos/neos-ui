@@ -7,7 +7,7 @@ const ensureIsArray = v => {
     if (Array.isArray(v)) {
         return v;
     }
-    console.warn('MultiSelectBox values were no array - falling back to empty list; the following was given: ', v);
+    console.warn('<MultiSelectBox/> Expected "values" to be an Array but found the following value (Falling back to an empty list): ', v);
     return [];
 };
 

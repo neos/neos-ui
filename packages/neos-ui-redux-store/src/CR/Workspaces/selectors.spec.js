@@ -1,8 +1,15 @@
+import Immutable from 'immutable';
+
 import {
     baseWorkspaceSelector,
     publishableNodesSelector,
-    publishableNodesInDocumentSelector
+    publishableNodesInDocumentSelector,
+    makeIsDocumentNodeDirtySelector,
+    makeIsContentNodeDirtySelector
 } from './selectors.js';
+
+const isDocumentNodeDirtySelector = makeIsDocumentNodeDirtySelector();
+const isContentNodeDirtySelector = makeIsContentNodeDirtySelector();
 
 const stateFixture = {
     cr: {
@@ -11,7 +18,8 @@ const stateFixture = {
                 name: 'user-text',
                 publishableNodes: [
                     {documentContextPath: '/sites/neosdemo@user-text;language=en_US'},
-                    {documentContextPath: '/sites/neosdemo/blah-blah@user-text;language=en_US'}
+                    {documentContextPath: '/sites/neosdemo/blah-blah@user-text;language=en_US'},
+                    {contextPath: '/sites/neosdemo/content@user-text;language=en_US'}
                 ],
                 baseWorkspace: 'live'
             }
@@ -33,7 +41,8 @@ test(`
     their respective document context paths attached`, () => {
     expect(publishableNodesSelector(stateFixture)).toEqual([
         {documentContextPath: '/sites/neosdemo@user-text;language=en_US'},
-        {documentContextPath: '/sites/neosdemo/blah-blah@user-text;language=en_US'}
+        {documentContextPath: '/sites/neosdemo/blah-blah@user-text;language=en_US'},
+        {contextPath: '/sites/neosdemo/content@user-text;language=en_US'}
     ]);
 });
 
@@ -43,4 +52,18 @@ test(`
     expect(publishableNodesInDocumentSelector(stateFixture)).toEqual([
         {documentContextPath: '/sites/neosdemo@user-text;language=en_US'}
     ]);
+});
+
+test(`isDocumentNodeDirtySelector should reflect the publishing state`, () => {
+    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo@user-text;language=en_US')).toBe(true);
+    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/blah-blah@user-text;language=en_US')).toBe(true);
+    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/content@user-text;language=en_US')).toBe(true);
+    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/some-page@user-text;language=en_US')).toBe(false);
+});
+
+test(`isContentNodeDirtySelector should reflect the publishing state`, () => {
+    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/content@user-text;language=en_US')).toBe(true);
+    expect(isContentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo@user-text;language=en_US')).toBe(false);
+    expect(isContentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/blah-blah@user-text;language=en_US')).toBe(false);
+    expect(isContentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/some-page@user-text;language=en_US')).toBe(false);
 });

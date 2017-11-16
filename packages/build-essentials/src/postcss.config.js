@@ -1,6 +1,3 @@
-// ToDo: Usually this file would be named `postcss.config.js`, but we had to
-// rename it since the postcss-loader of webpack expected to find it on a higher level(?),
-// revisit later on and name the file accordingly.
 const brand = require('@neos-project/brand');
 const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
 
@@ -34,4 +31,4 @@ module.exports = {
         require('postcss-nested')(),
         require('postcss-hexrgba')()
     ]
-}
+};

@@ -1,6 +1,6 @@
 import React from 'react';
-import {storiesOf, action} from '@kadira/storybook';
-import {withKnobs} from '@kadira/storybook-addon-knobs';
+import {storiesOf, action} from '@storybook/react';
+import {withKnobs} from '@storybook/addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import ButtonGroup from './index.js';
 import IconButton from './../IconButton/index.js';

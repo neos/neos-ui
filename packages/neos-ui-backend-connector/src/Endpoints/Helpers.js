@@ -20,10 +20,33 @@ const urlWithParamsInner = (searchParams, prepend, params = {}) => {
     });
 };
 
+const createUrlParameterString = (prepend, params = {}) => {
+    let urlParams = [];
+    Object.keys(params).forEach(key => {
+        const value = params[key];
+        if (Array.isArray(value)) {
+            value.forEach(v =>
+                urlParams.push(concatenatePrependAndKey(prepend, key) + '[]=' + v)
+            );
+        } else if (typeof value === 'object') {
+            urlParams.push(urlWithParamsInner(concatenatePrependAndKey(prepend, key), value));
+        } else {
+            const prependedKey = prepend !== '' ? concatenatePrependAndKey(prepend, key) : key;
+            urlParams.push(prependedKey + '=' + value);
+        }
+    });
+
+    return urlParams.join('&');
+};
+
 export const searchParams = (params = {}) => {
     const searchParams = new URLSearchParams();
     urlWithParamsInner(searchParams, '', params);
     return searchParams;
+};
+
+export const dimensionParams = (params = {}) => {
+    return createUrlParameterString('dimensions', params);;
 };
 
 /**

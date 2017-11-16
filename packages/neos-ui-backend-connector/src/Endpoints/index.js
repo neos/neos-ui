@@ -1,4 +1,4 @@
-import {urlWithParams, searchParams} from './Helpers';
+import {urlWithParams, searchParams, dimensionParams} from './Helpers';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 
@@ -98,6 +98,17 @@ export default routes => {
                 adjustments
             }
         })
+    })).then(response => response.json())
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const loadMasterPlugins = (workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: `${routes.core.content.loadMasterPlugins}?workspaceName=${workspaceName}&${dimensionParams(dimensions)}`,
+
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
@@ -330,6 +341,7 @@ export default routes => {
         discard,
         changeBaseWorkspace,
         createImageVariant,
+        loadMasterPlugins,
         uploadAsset,
         assetSearch,
         assetDetail,

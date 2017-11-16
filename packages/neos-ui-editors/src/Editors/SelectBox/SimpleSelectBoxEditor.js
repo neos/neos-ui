@@ -53,7 +53,8 @@ export default class SimpleSelectBoxEditor extends PureComponent {
         const {commit, value, i18nRegistry, highlight} = this.props;
         const options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
 
-        const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, options.values);
+        const hasStaticDataSource = Array.isArray(value);
+        const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, hasStaticDataSource ? value : options.values);
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
@@ -70,6 +71,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
                 searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
+                hasStaticDataSource={hasStaticDataSource}
                 />);
         }
 

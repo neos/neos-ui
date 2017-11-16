@@ -16,10 +16,6 @@ phpenv config-rm xdebug.ini
 # Update composer.
 composer self-update -q
 
-# Since all environments depend on the node dependencies, install and
-# afterwards prune them to remove extranous packages from previous/cached runs.
-yarn install
-
 # Handle hidden files with the `mv` command.
 shopt -s dotglob
 

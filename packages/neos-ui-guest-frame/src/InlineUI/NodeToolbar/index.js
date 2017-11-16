@@ -31,6 +31,7 @@ export default class NodeToolbar extends PureComponent {
         isCopied: PropTypes.bool.isRequired,
         canBeDeleted: PropTypes.bool.isRequired,
         canBeEdited: PropTypes.bool.isRequired,
+        visibilityCanBeToggled: PropTypes.bool.isRequired,
         // Unsets the flag
         requestScrollIntoView: PropTypes.func.isRequired
     };
@@ -82,7 +83,16 @@ export default class NodeToolbar extends PureComponent {
     }
 
     render() {
-        const {contextPath, fusionPath, destructiveOperationsAreDisabled, isCut, isCopied, canBeDeleted, canBeEdited} = this.props;
+        const {
+            contextPath,
+            fusionPath,
+            destructiveOperationsAreDisabled,
+            isCut,
+            isCopied,
+            canBeDeleted,
+            canBeEdited,
+            visibilityCanBeToggled
+        } = this.props;
 
         if (!contextPath) {
             return null;
@@ -94,6 +104,7 @@ export default class NodeToolbar extends PureComponent {
             destructiveOperationsAreDisabled,
             canBeDeleted,
             canBeEdited,
+            visibilityCanBeToggled,
             className: style.toolBar__btnGroup__btn
         };
 

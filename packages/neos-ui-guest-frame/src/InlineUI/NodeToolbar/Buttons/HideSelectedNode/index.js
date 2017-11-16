@@ -19,34 +19,35 @@ export default class HideSelectedNode extends PureComponent {
         hideNode: PropTypes.func.isRequired,
         showNode: PropTypes.func.isRequired,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
-        canBeEdited: PropTypes.bool.isRequired
+        canBeEdited: PropTypes.bool.isRequired,
+        visibilityCanBeToggled: PropTypes.bool.isRequired
     };
 
     handleHideNode = () => {
-        const {node, hideNode, canBeEdited} = this.props;
+        const {node, hideNode, canBeEdited, visibilityCanBeToggled} = this.props;
 
-        if (canBeEdited) {
+        if (canBeEdited && visibilityCanBeToggled) {
             hideNode($get('contextPath', node));
         }
     }
 
     handleShowNode = () => {
-        const {node, showNode, canBeEdited} = this.props;
+        const {node, showNode, canBeEdited, visibilityCanBeToggled} = this.props;
 
-        if (canBeEdited) {
+        if (canBeEdited && visibilityCanBeToggled) {
             showNode($get('contextPath', node));
         }
     }
 
     render() {
-        const {className, node, destructiveOperationsAreDisabled, canBeEdited} = this.props;
+        const {className, node, destructiveOperationsAreDisabled, canBeEdited, visibilityCanBeToggled} = this.props;
         const isHidden = $get('properties._hidden', node);
 
         return (
             <IconButton
                 className={className}
                 isActive={isHidden}
-                isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
+                isDisabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
                 onClick={isHidden ? this.handleShowNode : this.handleHideNode}
                 icon="eye-slash"
                 hoverStyle="clean"

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {$transform, $get, $contains} from 'plow-js';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 import NodeToolbar from './NodeToolbar/index';
@@ -37,6 +37,7 @@ export default class InlineUI extends PureComponent {
         const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
         const canBeDeleted = $get('policy.canRemove', this.props.focusedNode);
         const canBeEdited = $get('policy.canEdit', this.props.focusedNode);
+        const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode);
 
         return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">
@@ -48,6 +49,7 @@ export default class InlineUI extends PureComponent {
                     isCopied={isCopied}
                     canBeDeleted={canBeDeleted}
                     canBeEdited={canBeEdited}
+                    visibilityCanBeToggled={visibilityCanBeToggled}
                     {...focused}
                     />
             </div>

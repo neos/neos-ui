@@ -48,28 +48,8 @@ export default routes => {
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-const loadMasterPlugins = (workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
-    const data = new FormData();
-    data.append('workspaceName', workspaceName);
-    data.append('dimensions', dimensions);
-
-    return {
-        url: '/neos/content/master-plugins',
-
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'X-Flow-Csrftoken': csrfToken
-        },
-        body: data
-    };
-}).then(response => response.json())
-.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
-
-const extractFileEndingFromUri = uri => {
-    const parts = uri.split('.');
-    return parts.length ? '.' + parts[parts.length - 1] : '';
-};
+    const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.changeBaseWorkspace,
 
         method: 'POST',
         credentials: 'include',
@@ -343,23 +323,23 @@ const extractFileEndingFromUri = uri => {
         .then(result => result && result.csrfToken);
     };
 
-export default () => ({
-    loadImageMetadata,
-    change,
-    publish,
-    discard,
-    changeBaseWorkspace,
-    createImageVariant,
-    uploadAsset,
-    loadMasterPlugins,
-    assetSearch,
-    assetDetail,
-    searchNodes,
-    getSingleNode,
-    adoptNodeToOtherDimension,
-    setUserPreferences,
-    dataSource,
-    getJsonResource,
-    getWorkspaceInfo,
-    tryLogin
-});
+    return {
+        loadImageMetadata,
+        change,
+        publish,
+        discard,
+        changeBaseWorkspace,
+        createImageVariant,
+        uploadAsset,
+        assetSearch,
+        assetDetail,
+        searchNodes,
+        getSingleNode,
+        adoptNodeToOtherDimension,
+        setUserPreferences,
+        dataSource,
+        getJsonResource,
+        getWorkspaceInfo,
+        tryLogin
+    };
+};

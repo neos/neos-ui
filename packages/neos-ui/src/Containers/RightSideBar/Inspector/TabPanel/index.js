@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Maybe} from 'monet';
 import {$contains} from 'plow-js';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
@@ -26,7 +25,12 @@ export default class TabPanel extends PureComponent {
 
     render() {
         const {groups, renderSecondaryInspector, node, commit} = this.props;
-        const tabPanel = groups => (
+
+        if (!groups) {
+            return (<div>...</div>);
+        }
+
+        return (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 <SelectedElement/>
                 {
@@ -45,8 +49,5 @@ export default class TabPanel extends PureComponent {
                 }
             </Tabs.Panel>
         );
-        const fallback = () => (<div>...</div>);
-
-        return Maybe.fromNull(groups).map(tabPanel).orSome(fallback());
     }
 }

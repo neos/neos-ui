@@ -7,7 +7,7 @@
     "prebuild": "check-dependencies && yarn clean",
     "build": "exit 0",
     "build:watch": "exit 0",
-    "test": "yarn jest -- --w 1 --coverage",
+    "test": "yarn jest -- -w 2 --coverage",
     "test:watch": "yarn jest -- --watch",
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",

@@ -6,7 +6,7 @@
   "main": "./src/index.js",
   "scripts": {
     "prebuild": "check-dependencies",
-    "test": "yarn jest -- --w 1 --coverage",
+    "test": "yarn jest -- -w 2 --coverage",
     "test:watch": "yarn jest -- --watch",
     "build": "exit 0",
     "build:watch": "exit 0",

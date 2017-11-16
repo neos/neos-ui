@@ -6,7 +6,7 @@
   "main": "./src/manifest.js",
   "scripts": {
     "prebuild": "check-dependencies && yarn run clean",
-    "test": "yarn jest -- --w 1 --coverage",
+    "test": "yarn jest -- -w 2 --coverage",
     "test:watch": "yarn run jest -- --watch",
     "build": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
     "build:watch": "yarn run build -- --watch",

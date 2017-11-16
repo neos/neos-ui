@@ -234,6 +234,7 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
                 subject: clipboardNodeContextPath,
                 reference: focusedNodeContextPath
             });
+            const canBeDeleted = $get('policy.canRemove', focusedNode);
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
             const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
@@ -247,6 +248,7 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
             return {
                 focusedNodeContextPath,
                 canBePasted,
+                canBeDeleted,
                 isLoading,
                 isHidden,
                 destructiveOperationsAreDisabled,

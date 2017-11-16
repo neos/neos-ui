@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Maybe} from 'monet';
+import {$contains} from 'plow-js';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
@@ -17,18 +18,24 @@ export default class TabPanel extends PureComponent {
         commit: PropTypes.func.isRequired
     };
 
+    isPropertyEnabled = ({id}) => {
+        const {node} = this.props;
+
+        return !$contains(id, 'policy.disallowedProperties', node);
+    };
+
     render() {
         const {groups, renderSecondaryInspector, node, commit} = this.props;
         const tabPanel = groups => (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 <SelectedElement/>
                 {
-                    groups.filter(g => (g.properties && g.properties.length) || (g.views && g.views.length)).map(group => (
+                    groups.filter(g => (g.properties && g.properties.filter(this.isPropertyEnabled).length) || (g.views && g.views.length)).map(group => (
                         <PropertyGroup
                             key={group.id}
                             label={group.label}
                             icon={group.icon}
-                            properties={group.properties}
+                            properties={group.properties.filter(this.isPropertyEnabled)}
                             views={group.views}
                             renderSecondaryInspector={renderSecondaryInspector}
                             node={node}

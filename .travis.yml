@@ -53,16 +53,16 @@ install:
   - yarn install
 
   # Execute the optional install shell script for the environment.
-  - if [ -f "Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
+  - if [ -f "Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
 
 #
 # Execute the test environment specific shell script.
 #
 script:
-  - if [ -f "Build/TravisCi/Scripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/Scripts/$TEST_SUITE.sh; fi
+  - if [ -f "Build/TravisCi/Scripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/Scripts/$TEST_SUITE.sh; fi
 
 #
 # Execute the test environment specific after_script shell script.
 #
 after_script:
-  - if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi
+  - if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi

@@ -10,6 +10,7 @@ import style from './style.css';
 
 @connect($transform({
     focused: $get('cr.nodes.focused'),
+    focusedNode: selectors.CR.Nodes.focusedSelector,
     shouldScrollIntoView: selectors.UI.ContentCanvas.shouldScrollIntoView,
     destructiveOperationsAreDisabled: selectors.CR.Nodes.destructiveOperationsAreDisabledSelector,
     clipboardMode: $get('cr.nodes.clipboardMode'),
@@ -20,6 +21,7 @@ import style from './style.css';
 export default class InlineUI extends PureComponent {
     static propTypes = {
         focused: PropTypes.object,
+        focusedNode: PropTypes.object,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         requestScrollIntoView: PropTypes.func.isRequired,
         shouldScrollIntoView: PropTypes.bool.isRequired,
@@ -33,6 +35,7 @@ export default class InlineUI extends PureComponent {
         const {shouldScrollIntoView, requestScrollIntoView, destructiveOperationsAreDisabled, clipboardMode, clipboardNodeContextPath} = this.props;
         const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
         const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
+        const canBeDeleted = $get('policy.canRemove', this.props.focusedNode);
 
         return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">
@@ -42,6 +45,7 @@ export default class InlineUI extends PureComponent {
                     destructiveOperationsAreDisabled={destructiveOperationsAreDisabled}
                     isCut={isCut}
                     isCopied={isCopied}
+                    canBeDeleted={canBeDeleted}
                     {...focused}
                     />
             </div>

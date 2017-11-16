@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import initializeUse from './index.js';
 
 test(`"api.use" should return a function when called.`, () => {
@@ -9,15 +8,15 @@ test(`
     "api.use" should call the "addLibrary" function when initializing a plugin
     factory called.`, () => {
     const apiTarget = {};
-    const addLibrary = sinon.spy();
+    const addLibrary = jest.fn();
     const use = initializeUse(addLibrary, apiTarget);
     const pluginFactory = () => {};
     pluginFactory.identifier = 'myPlugin';
 
     use(pluginFactory);
 
-    expect(addLibrary.calledOnce).toBe(true);
-    expect(addLibrary.calledWith('myPlugin', pluginFactory())).toBe(true);
+    expect(addLibrary.mock.calls.length).toBe(1);
+    expect(addLibrary.mock.calls[0]).toEqual(['myPlugin', pluginFactory()]);
 });
 
 test(`
@@ -26,10 +25,10 @@ test(`
     const apiTarget = {};
     const addLibrary = () => {};
     const use = initializeUse(addLibrary, apiTarget);
-    const pluginFactory = sinon.spy();
+    const pluginFactory = jest.fn();
     pluginFactory.identifier = 'myPlugin';
 
     use(pluginFactory);
 
-    expect(pluginFactory.calledOnce).toBe(true);
+    expect(pluginFactory.mock.calls.length).toBe(1);
 });

@@ -9,6 +9,7 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\PropertyMappingConfiguration;
 use Neos\Media\Domain\Model\Asset;
 use Neos\Media\Domain\Model\ImageInterface;
+use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Utility\ObjectAccess;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\LinkingService;
@@ -21,6 +22,12 @@ use Neos\Utility\TypeHandling;
  */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {
+
+    /**
+     * @Flow\Inject
+     * @var UserLocaleService
+     */
+    protected $userLocaleService;
 
     /**
      * @Flow\Inject
@@ -67,6 +74,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false, $baseNodeTypeOverride = null)
     {
+        $this->userLocaleService->switchToUILocale();
+
         $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
@@ -85,6 +94,13 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         ];
         if ($controllerContext !== null && $node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
+
+            $nodeInLiveWorkspace = new FlowQuery([$node]);
+            $nodeInLiveWorkspace = $nodeInLiveWorkspace->context(['workspaceName' => 'live'])->get(0);
+
+            if ($nodeInLiveWorkspace !== null) {
+                $nodeInfo['previewUri'] = $this->uri($nodeInLiveWorkspace, $controllerContext);
+            }
         }
 
         // child nodes for document tree, respecting the `baseNodeType` filter
@@ -100,6 +116,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 'nodeType' => $childNode->getNodeType()->getName() // TODO: DUPLICATED; should NOT be needed!!!
             ];
         }
+        $this->userLocaleService->switchToUILocale(true);
 
         return $nodeInfo;
     }

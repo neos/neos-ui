@@ -28,12 +28,6 @@ class NodeTypeItem extends PureComponent {
         }).isRequired
     };
 
-    constructor(props) {
-        super(props);
-
-        this.handleNodeTypeClick = this.handleNodeTypeClick.bind(this);
-    }
-
     render() {
         const {ui} = this.props.nodeType;
         const icon = $get('icon', ui);
@@ -54,7 +48,7 @@ class NodeTypeItem extends PureComponent {
         );
     }
 
-    handleNodeTypeClick() {
+    handleNodeTypeClick = () => {
         this.props.onSelect(this.props.nodeType.name);
     }
 }

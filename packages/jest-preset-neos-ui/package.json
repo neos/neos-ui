@@ -1,0 +1,18 @@
+{
+  "name": "@neos-project/jest-preset-neos-ui",
+  "version": "1.0.0-beta8",
+  "description": "The jest preset for all packags of the neos-ui mono-repo.",
+  "main": "jest-preset.json",
+  "private": true,
+  "bin": {
+    "babel-jest": "./node_modules/babel-jest/build/index.js",
+    "jest": "./node_modules/.bin/jest"
+  },
+  "dependencies": {
+    "babel-core": "^6.13.2",
+    "babel-jest": "^19.0.0",
+    "jest": "^19.0.2",
+    "raf": "^3.4.0"
+  },
+  "license": "GNU GPLv3"
+}

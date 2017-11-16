@@ -7,14 +7,16 @@
   "scripts": {
     "prepublish": "exit 0",
     "prebuild": "check-dependencies && yarn clean",
-    "test": "yarn jest",
+    "test": "yarn jest -- --w 1 --coverage",
     "test:watch": "yarn jest -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage",
+    "jest": "NODE_ENV=test jest",
     "postpublish": "greenkeeper-postpublish"
   },
   "devDependencies": {
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
+    "@neos-project/jest-preset-neos-ui": "1.0.0-beta8",
     "@neos-project/build-essentials": "1.0.0-beta8",
     "@neos-project/debug-reason-for-rendering": "1.0.0-beta8"
   },
@@ -28,13 +30,6 @@
   },
   "license": "GNU GPLv3",
   "jest": {
-    "setupFiles": [
-      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
-    ],
-    "transformIgnorePatterns": [],
-    "transform": {
-      "neos-ui-views/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
-      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
-    }
+    "preset": "@neos-project/jest-preset-neos-ui"
   }
 }

@@ -1,5 +1,4 @@
-import {takeLatest} from 'redux-saga';
-import {take, put, race, call} from 'redux-saga/effects';
+import {takeLatest, take, put, race, call} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
@@ -13,7 +12,7 @@ const STEP_FINISH = Symbol('STEP_FINISH');
 export default function * addNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
 
-    yield * takeLatest(actionTypes.CR.Nodes.COMMENCE_CREATION, function * (action) {
+    yield takeLatest(actionTypes.CR.Nodes.COMMENCE_CREATION, function * (action) {
         const {referenceNodeContextPath, referenceNodeFusionPath} = action.payload;
 
         yield call(function * nodeCreationWorkflow(step = STEP_SELECT_NODETYPE, workflowData = {}) {

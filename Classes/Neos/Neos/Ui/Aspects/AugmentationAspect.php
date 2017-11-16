@@ -10,13 +10,12 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
-use Neos\Flow\I18n\Locale;
-use Neos\Flow\I18n\Service as I18nService;
 use Neos\Flow\Session\SessionInterface;
 use Neos\FluidAdaptor\Core\Rendering\FlowAwareRenderingContextInterface;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Domain\Service\UserService;
 use Neos\Neos\Service\HtmlAugmenter;
+use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 /**
@@ -37,21 +36,15 @@ class AugmentationAspect
 
     /**
      * @Flow\Inject
+     * @var UserLocaleService
+     */
+    protected $userLocaleService;
+
+    /**
+     * @Flow\Inject
      * @var HtmlAugmenter
      */
     protected $htmlAugmenter;
-
-    /**
-     * @Flow\Inject
-     * @var I18nService
-     */
-    protected $i18nService;
-
-    /**
-     * @Flow\Inject
-     * @var UserService
-     */
-    protected $userService;
 
     /**
      * @Flow\Inject
@@ -91,13 +84,6 @@ class AugmentationAspect
     protected $nonRenderedContentNodeMetadata;
 
     /**
-     * Remebered content locale for locale switching
-     *
-     * @var Locale
-     */
-    protected $rememberedContentLocale;
-
-    /**
      * @Flow\Before("method(Neos\Neos\Fusion\ContentElementWrappingImplementation->evaluate())")
      * @param JoinPointInterface $joinPoint
      * @return mixed
@@ -133,12 +119,17 @@ class AugmentationAspect
      */
     public function contentElementAugmentation(JoinPointInterface $joinPoint)
     {
-        if (!$this->session->isStarted() || !$this->session->getData('__neosEnabled__')) {
+        /** @var NodeInterface $node */
+        $node = $joinPoint->getMethodArgument('node');
+
+        if (
+            !$this->session->isStarted()
+            || !$this->session->getData('__neosEnabled__')
+            || $node->getContext()->getWorkspace()->isPublicWorkspace()
+        ) {
             return $joinPoint->getAdviceChain()->proceed($joinPoint);
         }
 
-        /** @var NodeInterface $node */
-        $node = $joinPoint->getMethodArgument('node');
         $content = $joinPoint->getMethodArgument('content');
 
         // Stay compatible with Neos 3.0. When we remove this compatibility, we can convert everything to "fusionPath").
@@ -157,14 +148,14 @@ class AugmentationAspect
 
         $this->renderedNodes[$node->getIdentifier()] = $node;
 
-        $this->switchToUILocale();
+        $this->userLocaleService->switchToUILocale();
 
         $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
 
-        $this->switchToUILocale(true);
+        $this->userLocaleService->switchToUILocale(true);
 
         $wrappedContent = $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
-        $wrappedContent .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
+        $wrappedContent .= "<script data-neos-nodedata>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
 
         return $wrappedContent;
     }
@@ -223,6 +214,10 @@ class AugmentationAspect
      */
     protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {
+        if ($documentNode->getContext()->getWorkspace()->isPublicWorkspace()) {
+            return;
+        }
+
         foreach ($documentNode->getChildNodes() as $node) {
             if ($node->getNodeType()->isOfType('Neos.Neos:Document') === true) {
                 continue;
@@ -256,38 +251,19 @@ class AugmentationAspect
     }
 
     /**
-     * For serialization, we need to respect the UI locale, rather than the content locale
-     *
-     * @param boolean $reset Reset to remebered locale
-     */
-    protected function switchToUILocale($reset = false)
-    {
-        if ($reset === true) {
-            // Reset the locale
-            $this->i18nService->getConfiguration()->setCurrentLocale($this->rememberedContentLocale);
-        } else {
-            $this->rememberedContentLocale = $this->i18nService->getConfiguration()->getCurrentLocale();
-            $userLocalePreference = ($this->userService->getCurrentUser() ? $this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage() : null);
-            $defaultLocale = $this->i18nService->getConfiguration()->getDefaultLocale();
-            $userLocale = $userLocalePreference ? new Locale($userLocalePreference) : $defaultLocale;
-            $this->i18nService->getConfiguration()->setCurrentLocale($userLocale);
-        }
-    }
-
-    /**
      * @param NodeInterface $documentNode
      * @return string
      */
     public function getNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {
-        $this->switchToUILocale();
+        $this->userLocaleService->switchToUILocale();
 
         $this->appendNonRenderedContentNodeMetadata($documentNode);
         $nonRenderedContentNodeMetadata = $this->nonRenderedContentNodeMetadata;
         $this->clearNonRenderedContentNodeMetadata();
         $this->clearRenderedNodesArray();
 
-        $this->switchToUILocale(true);
+        $this->userLocaleService->switchToUILocale(true);
 
         return $nonRenderedContentNodeMetadata;
     }

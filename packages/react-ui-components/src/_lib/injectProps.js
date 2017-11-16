@@ -18,7 +18,7 @@ import React from 'react';
 // their own styles.
 //
 export default dependencies => WrappedComponent => {
-    return props => {
+    const ComponentWithDependencies = props => {
         return (
             <WrappedComponent
                 {...dependencies}
@@ -26,4 +26,6 @@ export default dependencies => WrappedComponent => {
                 />
         );
     };
+    ComponentWithDependencies.displayName = WrappedComponent.displayName || WrappedComponent.name;
+    return ComponentWithDependencies;
 };

@@ -1,26 +1,47 @@
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import Headline from './headline.js';
 
-const defaultProps = {
-    children: 'Foo children',
-    theme: {}
-};
-const shallow = createShallowRenderer(Headline, defaultProps);
+describe('<Headline/>', () => {
+    let props;
 
-test('should render a "h1" node if no "type" prop was passed.', () => {
-    const headline = shallow();
+    beforeEach(() => {
+        props = {
+            children: 'Foo children',
+            theme: {}
+        };
+    });
 
-    expect(headline.type()).toBe('h1');
-});
-test('should add the passed "className" prop to the rendered node if passed.', () => {
-    const headline = shallow({className: 'testClassName'});
+    it('should render correctly.', () => {
+        const wrapper = shallow(<Headline {...props}/>);
 
-    expect(headline.hasClass('testClassName')).toBeTruthy();
-});
-test('should render a the appropriate node if a "type" prop was passed.', () => {
-    expect(shallow({type: 'h2'}).type()).toBe('h2');
-    expect(shallow({type: 'h3'}).type()).toBe('h3');
-    expect(shallow({type: 'h4'}).type()).toBe('h4');
-    expect(shallow({type: 'h5'}).type()).toBe('h5');
-    expect(shallow({type: 'h6'}).type()).toBe('h6');
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<Headline {...props} className="fooClassName"/>);
+
+        expect(wrapper.prop('className')).toContain('fooClassName');
+    });
+
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<Headline {...props} foo="bar"/>);
+
+        expect(wrapper.prop('foo')).toBe('bar');
+    });
+
+    it('should render a "h1" node if no "type" prop was passed.', () => {
+        const wrapper = shallow(<Headline {...props}/>);
+
+        expect(wrapper.type()).toBe('h1');
+    });
+
+    it('should render a the appropriate node if a "type" prop was passed.', () => {
+        expect(shallow(<Headline {...props} type="h2"/>).type()).toBe('h2');
+        expect(shallow(<Headline {...props} type="h3"/>).type()).toBe('h3');
+        expect(shallow(<Headline {...props} type="h4"/>).type()).toBe('h4');
+        expect(shallow(<Headline {...props} type="h5"/>).type()).toBe('h5');
+        expect(shallow(<Headline {...props} type="h6"/>).type()).toBe('h6');
+    });
 });

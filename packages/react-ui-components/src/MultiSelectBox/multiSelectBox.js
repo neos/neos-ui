@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 import {DragSource, DropTarget} from 'react-dnd';
 import mergeClassNames from 'classnames';
 
+const ensureIsArray = v => {
+    if (Array.isArray(v)) {
+        return v;
+    }
+    console.warn('<MultiSelectBox/> Expected "values" to be an Array but found the following value (Falling back to an empty list): ', v);
+    return [];
+};
+
 export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {
@@ -53,6 +61,16 @@ export default class MultiSelectBox extends PureComponent {
         onValuesChange: PropTypes.func.isRequired,
 
         /**
+         * This prop gets called when requested to create a new element
+         */
+        onCreateNew: PropTypes.func.isRequired,
+
+        /**
+         * "Create new" label
+         */
+        createNewLabel: PropTypes.string,
+
+        /**
          * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
          */
         placeholder: PropTypes.string,
@@ -93,6 +111,11 @@ export default class MultiSelectBox extends PureComponent {
         onSearchTermChange: PropTypes.func,
 
         /**
+         * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
+         */
+        optionComponent: PropTypes.any,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
@@ -114,8 +137,16 @@ export default class MultiSelectBox extends PureComponent {
         super(props);
 
         this.state = {
-            draggableValues: this.props.values
+            draggableValues: ensureIsArray(this.props.values)
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.values !== nextProps.values) {
+            this.setState({
+                draggableValues: ensureIsArray(nextProps.values)
+            });
+        }
     }
 
     render() {
@@ -130,13 +161,16 @@ export default class MultiSelectBox extends PureComponent {
             displaySearchBox,
             searchTerm,
             onSearchTermChange,
+            onCreateNew,
+            createNewLabel,
             SelectBoxComponent,
             highlight,
             IconButtonComponent,
             IconComponent,
             allowEmpty,
             options,
-            dndType
+            dndType,
+            optionComponent
         } = this.props;
 
         const {draggableValues} = this.state;
@@ -185,6 +219,9 @@ export default class MultiSelectBox extends PureComponent {
                     searchTerm={searchTerm}
                     onSearchTermChange={onSearchTermChange}
                     onValueChange={this.handleNewValueSelected}
+                    onCreateNew={onCreateNew}
+                    createNewLabel={createNewLabel}
+                    optionComponent={optionComponent}
                     />
             </div>
         );

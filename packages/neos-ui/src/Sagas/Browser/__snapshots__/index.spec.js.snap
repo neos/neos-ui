@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reflectChangeInAddressBar() should call the history.replaceState method with the actions payload "contextPath" property. 1`] = `
+Object {
+  "call": Array [
+    Object {
+      "@@redux-saga/IO": true,
+      "CALL": Object {
+        "args": Array [
+          Object {},
+          "",
+          "?node=fooContextPath",
+        ],
+        "context": Object {
+          "replaceState": "@@redux-saga-test-plan/json/function/mockConstructor",
+        },
+        "fn": "@@redux-saga-test-plan/json/function/mockConstructor",
+      },
+    },
+  ],
+}
+`;

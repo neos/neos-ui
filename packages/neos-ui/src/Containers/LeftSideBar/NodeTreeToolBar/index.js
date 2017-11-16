@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
+import {$get, $contains} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
@@ -24,6 +24,7 @@ export default class NodeTreeToolBar extends PureComponent {
         canBePasted: PropTypes.bool.isRequired,
         canBeDeleted: PropTypes.bool.isRequired,
         canBeEdited: PropTypes.bool.isRequired,
+        visibilityCanBeToggled: PropTypes.bool.isRequired,
         isLoading: PropTypes.bool.isRequired,
         isHidden: PropTypes.bool.isRequired,
         isCut: PropTypes.bool.isRequired,
@@ -52,17 +53,17 @@ export default class NodeTreeToolBar extends PureComponent {
     }
 
     handleHideNode = contextPath => {
-        const {hideNode, canBeEdited} = this.props;
+        const {hideNode, canBeEdited, visibilityCanBeToggled} = this.props;
 
-        if (canBeEdited) {
+        if (canBeEdited && visibilityCanBeToggled) {
             hideNode(contextPath);
         }
     }
 
     handleShowNode = contextPath => {
-        const {showNode, canBeEdited} = this.props;
+        const {showNode, canBeEdited, visibilityCanBeToggled} = this.props;
 
-        if (canBeEdited) {
+        if (canBeEdited && visibilityCanBeToggled) {
             showNode(contextPath);
         }
     }
@@ -107,6 +108,7 @@ export default class NodeTreeToolBar extends PureComponent {
             canBePasted,
             canBeDeleted,
             canBeEdited,
+            visibilityCanBeToggled,
             isHidden,
             isCut,
             isCopied,
@@ -127,7 +129,7 @@ export default class NodeTreeToolBar extends PureComponent {
                     <HideSelectedNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
+                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
                         isHidden={isHidden}
                         onHide={this.handleHideNode}
                         onShow={this.handleShowNode}
@@ -191,6 +193,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
             });
             const canBeDeleted = $get('policy.canRemove', focusedNode);
             const canBeEdited = $get('policy.canEdit', focusedNode);
+            const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
             const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
@@ -210,6 +213,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 canBePasted,
                 canBeDeleted,
                 canBeEdited,
+                visibilityCanBeToggled,
                 isLoading,
                 isHidden,
                 destructiveOperationsAreDisabled,
@@ -246,6 +250,7 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
             });
             const canBeDeleted = $get('policy.canRemove', focusedNode);
             const canBeEdited = $get('policy.canEdit', focusedNode);
+            const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
             const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
@@ -261,6 +266,7 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
                 canBePasted,
                 canBeDeleted,
                 canBeEdited,
+                visibilityCanBeToggled,
                 isLoading,
                 isHidden,
                 destructiveOperationsAreDisabled,

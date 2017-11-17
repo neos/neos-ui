@@ -83,9 +83,6 @@ export default class AssetEditor extends PureComponent {
         this.props.commit(value);
     }
 
-    handleCreateNew = () => {
-    }
-
     render() {
         return (<MultiSelectBox
             dndType={dndTypes.MULTISELECT}
@@ -93,7 +90,6 @@ export default class AssetEditor extends PureComponent {
             loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
             displaySearchBox={true}
             optionComponent={AssetOption}
-            createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
             placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
             options={this.state.options || []}
             values={this.props.value}
@@ -102,7 +98,6 @@ export default class AssetEditor extends PureComponent {
             displayLoadingIndicator={this.props.displayLoadingIndicator}
             searchTerm={this.state.searchTerm}
             searchOptions={this.state.searchOptions}
-            onCreateNew={this.handleCreateNew}
             onSearchTermChange={this.handleSearchTermChange}
             />);
     }

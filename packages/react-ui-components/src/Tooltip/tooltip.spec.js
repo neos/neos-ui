@@ -34,40 +34,40 @@ describe('<Tooltip/>', () => {
         expect(wrapper.prop('foo')).toBe('bar');
     });
 
-    it('should initialize with a state of {visible: false} if the "type" prop does not equal "error".', () => {
-        expect(shallow(<Tooltip {...props}/>).state('visible')).toBe(false);
-        expect(shallow(<Tooltip {...props} type="error"/>).state('visible')).toBe(true);
+    it('should initialize with a state of {isVisible: false} if the "type" prop does not equal "error".', () => {
+        expect(shallow(<Tooltip {...props}/>).state('isVisible')).toBe(false);
+        expect(shallow(<Tooltip {...props} type="error"/>).state('isVisible')).toBe(true);
     });
 
-    it('should set the "visible" state property to "true" when calling the show() method.', () => {
+    it('should set the "isVisible" state property to "true" when calling the show() method.', () => {
         const wrapper = shallow(<Tooltip {...props}/>);
 
         wrapper.instance().show();
 
-        expect(wrapper.state('visible')).toBe(true);
+        expect(wrapper.state('isVisible')).toBe(true);
     });
 
-    it('should set the "visible" state property to "false" when calling the hide() method.', () => {
+    it('should set the "isVisible" state property to "false" when calling the hide() method.', () => {
         const wrapper = shallow(<Tooltip {...props}/>);
 
         wrapper.instance().hide();
 
-        expect(wrapper.state('visible')).toBe(false);
+        expect(wrapper.state('isVisible')).toBe(false);
     });
 
-    it('should set the "visible" state property to "true" when calling the handleTouch() method.', () => {
+    it('should set the "isVisible" state property to "true" when calling the handleTouch() method.', () => {
         const wrapper = shallow(<Tooltip {...props}/>);
 
         wrapper.instance().handleTouch();
 
-        expect(wrapper.state('visible')).toBe(true);
+        expect(wrapper.state('isVisible')).toBe(true);
     });
 
-    it('should set the "visible" state property to "false" when calling the handleClickOutside() method.', () => {
+    it('should set the "isVisible" state property to "false" when calling the handleClickOutside() method.', () => {
         const wrapper = shallow(<Tooltip {...props}/>);
 
         wrapper.instance().handleClickOutside();
 
-        expect(wrapper.state('visible')).toBe(false);
+        expect(wrapper.state('isVisible')).toBe(false);
     });
 });

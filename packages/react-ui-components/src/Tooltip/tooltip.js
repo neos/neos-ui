@@ -44,16 +44,16 @@ export class Tooltip extends PureComponent {
     };
 
     state = {
-        visible: this.props.type === 'error'
+        isVisible: this.props.type === 'error'
     };
 
     show = () => this.setVisibility(true);
 
     hide = () => this.setVisibility(false);
 
-    setVisibility = visible => {
+    setVisibility = isVisible => {
         this.setState({
-            visible
+            isVisible
         });
     }
 
@@ -66,7 +66,8 @@ export class Tooltip extends PureComponent {
     }
 
     render() {
-        const {show, hide, handleTouch, state} = this;
+        const {show, hide, handleTouch} = this;
+        const {isVisible} = this.state;
         const {theme, children, className, label, position, wrapperClassName, type, ...rest} = this.props;
 
         const wrapperClassNames = mergeClassNames({
@@ -94,7 +95,7 @@ export class Tooltip extends PureComponent {
                 >
                 {children}
                 {
-                    state.visible &&
+                    isVisible &&
                     <div ref={`tooltip`} className={classNames}>
                         <div ref={`content`} className={theme.tooltip__content}>{label}</div>
                     </div>

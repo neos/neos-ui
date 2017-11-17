@@ -19,7 +19,7 @@ function withValidationResultsRendering(WrappedComponent) {
             });
 
             return renderedErros ? (
-                <Tooltip tooltipLabel={renderedErros} tooltipType="error">
+                <Tooltip label={renderedErros} type="error">
                     <WrappedComponent {...rest}/>
                 </Tooltip>
             ) : (

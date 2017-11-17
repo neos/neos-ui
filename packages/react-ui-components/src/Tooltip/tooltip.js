@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import mergeClassNames from 'classnames';
+import enhanceWithClickOutside from 'react-click-outside';
 import PropTypes from 'prop-types';
 
 export class Tooltip extends PureComponent {
@@ -16,21 +17,21 @@ export class Tooltip extends PureComponent {
 
         className: PropTypes.string,
 
-        tooltipWrapperClassName: PropTypes.string,
+        wrapperClassName: PropTypes.string,
 
         /**
          * The tooltip has to be aligned manually
          * in case that tooltip is at the left or right end of the browser
          */
-        tooltipPosition: PropTypes.oneOf(['left', 'right']).isRequired,
+        position: PropTypes.oneOf(['left', 'right']).isRequired,
 
-        tooltipType: PropTypes.oneOf(['default', 'error']).isRequired,
+        type: PropTypes.oneOf(['default', 'error']).isRequired,
 
         /**
          * The content shwon inside the tooltip wich appears on mouse over. Can
          * either be a simple string or other components
          */
-        tooltipLabel: PropTypes.oneOfType([
+        label: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.array,
             PropTypes.element
@@ -38,19 +39,13 @@ export class Tooltip extends PureComponent {
     };
 
     static defaultProps = {
-        tooltipType: 'default',
-        tooltipPosition: 'left'
+        type: 'default',
+        position: 'left'
     };
 
     state = {
-        visible: false
+        visible: this.props.type === 'error'
     };
-
-    componentDidMount() {
-        if (this.props.tooltipType === 'error') {
-            this.show();
-        }
-    }
 
     show = () => this.setVisibility(true);
 
@@ -64,51 +59,35 @@ export class Tooltip extends PureComponent {
 
     handleTouch = () => {
         this.show();
-        this.assignOutsideTouchHandler();
     }
 
-    assignOutsideTouchHandler = () => {
-        const handler = e => {
-            let currentNode = e.target;
-            const componentNode = this.node.refs.instance();
-            while (currentNode.parentNode) {
-                if (currentNode === componentNode) {
-                    return;
-                }
-                currentNode = currentNode.parentNode;
-            }
-            if (currentNode !== document) {
-                return;
-            }
-            this.hide();
-            document.removeEventListener('touchstart', handler);
-        };
-        document.addEventListener('touchstart', handler);
+    handleClickOutside = () => {
+        this.hide();
     }
 
     render() {
         const {show, hide, handleTouch, state} = this;
-        const {theme, children, className, tooltipLabel, tooltipPosition, tooltipWrapperClassName, tooltipType, ...rest} = this.props;
+        const {theme, children, className, label, position, wrapperClassName, type, ...rest} = this.props;
 
         const wrapperClassNames = mergeClassNames({
-            [tooltipWrapperClassName]: tooltipWrapperClassName && tooltipWrapperClassName.length,
+            [wrapperClassName]: wrapperClassName && wrapperClassName.length,
             [theme.tooltip__wrapper]: true,
-            [theme['tooltip__wrapper--error']]: tooltipType === 'error'
+            [theme['tooltip__wrapper--error']]: type === 'error'
         });
 
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.tooltip__body]: true,
-            [theme['tooltip__body--offsetRight']]: tooltipPosition === 'right',
-            [theme['tooltip__body--offsetLeft']]: tooltipPosition === 'left',
-            [theme['tooltip__body--error']]: tooltipType === 'error'
+            [theme['tooltip__body--offsetRight']]: position === 'right',
+            [theme['tooltip__body--offsetLeft']]: position === 'left',
+            [theme['tooltip__body--error']]: type === 'error'
         });
 
         return (
             <div
                 {...rest}
                 onMouseEnter={show}
-                onMouseLeave={tooltipType === 'error' ? null : hide}
+                onMouseLeave={type === 'error' ? null : hide}
                 onTouchStart={handleTouch}
                 ref={`wrapper`}
                 className={wrapperClassNames}
@@ -117,7 +96,7 @@ export class Tooltip extends PureComponent {
                 {
                     state.visible &&
                     <div ref={`tooltip`} className={classNames}>
-                        <div ref={`content`} className={theme.tooltip__content}>{tooltipLabel}</div>
+                        <div ref={`content`} className={theme.tooltip__content}>{label}</div>
                     </div>
                 }
             </div>
@@ -125,4 +104,4 @@ export class Tooltip extends PureComponent {
     }
 }
 
-export default Tooltip;
+export default enhanceWithClickOutside(Tooltip);

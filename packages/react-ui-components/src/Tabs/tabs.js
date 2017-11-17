@@ -224,7 +224,7 @@ export class TabMenuItem extends PureComponent {
 
         return (
             <li className={finalClassName} role="presentation" {...rest}>
-                <TooltipComponent tooltipLabel={tooltipLabel} tooltipPosition="right">
+                <TooltipComponent label={tooltipLabel} position="right">
                     <button
                         className={theme.tabNavigation__itemBtn}
                         onClick={this.handleClick}

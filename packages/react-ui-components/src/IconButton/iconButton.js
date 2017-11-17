@@ -32,7 +32,7 @@ const IconButton = props => {
 
     if (tooltipLabel) {
         return (
-            <TooltipComponent tooltipLabel={tooltipLabel} tooltipPosition={tooltipPosition} tooltipWrapperClassName={tooltipWrapperClassName}>
+            <TooltipComponent label={tooltipLabel} position={tooltipPosition} wrapperClassName={tooltipWrapperClassName}>
                 {button}
             </TooltipComponent>
         );

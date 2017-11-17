@@ -1,0 +1,25 @@
+.pluginViewContainer {
+    width: 100%;
+    list-style: none;
+    background: var(--brandColorsContrastNeutral);
+    margin: 0;
+    padding: 0;
+}
+
+.pluginViewContainer__listItem {
+    font-size: var(--smallFontSize);
+    line-height: var(--spacing);
+    margin-bottom: var(--halfSpacing);
+    padding: var(--spacing);
+}
+
+.pluginViewContainer__listItem b {
+    margin-right: calc(var(--halfSpacing) / 2)
+}
+
+.pluginViewContainer__listItem a {
+    font-size: var(--smallFontSize);
+    color: var(--brandColorsPrimaryBlue);
+    text-decoration: none;
+    margin-left: calc(var(--halfSpacing) / 2)
+}

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {$transform} from 'plow-js';
+import style from './style.css';
 
 @neos(globalRegistry => {
     return {
@@ -15,87 +15,89 @@ import {$transform} from 'plow-js';
 
 @connect($transform({
     activeContentDimensions: selectors.CR.ContentDimensions.active,
-    personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector
-}))
+    personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector,
+    focusedNodeIdentifier: selectors.CR.Nodes.focusedNodeIdentifierSelector
+}), {
+    setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc
+})
 
 class PluginViewsEditor extends React.PureComponent {
     static propTypes = {
-        id: PropTypes.string,
-        value: PropTypes.string,
-        commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
         activeContentDimensions: PropTypes.object.isRequired,
-        personalWorkspace: PropTypes.string
+        personalWorkspace: PropTypes.string,
+        focusedNodeIdentifier: PropTypes.string.isRequired,
+        setActiveContentCanvasSrc: PropTypes.func
     };
 
-    constructor(...args) {
-        super(...args);
-
-        this.state = {
-            isLoading: false,
-            options: []
-        };
-    }
-
-    renderPlaceholder() {
-        const placeholderPrefix = 'Neos.Neos:Main:content.inspector.editors.masterPluginEditor.';
-        const placeholderLabel = placeholderPrefix + (this.state.options.length > 0 ? 'selectPlugin' : 'noPluginConfigured');
-        return this.props.i18nRegistry.translate(placeholderLabel);
-    }
-
-    transformMasterPluginStructure(plugins) {
-        const pluginsList = [];
-        for (const property in plugins) {
-            if (Object.prototype.hasOwnProperty.call(plugins, property)) {
-                pluginsList.push({
-                    value: property,
-                    label: plugins[property]
-                });
-            }
-        }
-
-        return pluginsList;
-    }
+    state = {
+        isLoading: false,
+        views: []
+    };
 
     componentDidMount() {
-        if (!this.props.value) {
+        const {personalWorkspace, activeContentDimensions, focusedNodeIdentifier} = this.props;
+
+        if (!focusedNodeIdentifier) {
             return;
         }
 
         const {loadPluginViews} = backend.get().endpoints;
-        const {personalWorkspace, activeContentDimensions, id, value} = this.props;
 
-        console.log(personalWorkspace, activeContentDimensions, id, value);
-        if (!this.state.options.length) {
+        if (!this.state.views.length) {
             this.setState({isLoading: true});
 
-            loadPluginViews(value, personalWorkspace, activeContentDimensions.toJS())
-                .then(options => {
+            loadPluginViews(focusedNodeIdentifier, personalWorkspace, activeContentDimensions.toJS())
+                .then(views => {
+                    const viewsArray = [];
+                    for (const viewName in views) {
+                        if (views[viewName]) {
+                            viewsArray.push(views[viewName]);
+                        }
+                    }
+
                     this.setState({
                         isLoading: false,
-                        options: this.transformMasterPluginStructure(options)
+                        views: viewsArray
                     });
                 });
         }
     }
 
-    handleValueChange = value => {
-        this.props.commit(value);
+    handleClick(source) {
+        const {setActiveContentCanvasSrc} = this.props;
+        if (setActiveContentCanvasSrc) {
+            setActiveContentCanvasSrc(source);
+        }
+    }
+
+    renderViewListItems() {
+        const {isLoading, views} = this.state;
+
+        if (isLoading) {
+            return (
+                <li className={style.pluginViewContainer__listItem}>
+                    {this.props.i18nRegistry.translate('Neos.Neos:Main:loading', 'Loading')}
+                </li>
+            );
+        }
+
+        if (views.length > 0) {
+            return views.map(view =>
+                <li className={style.pluginViewContainer__listItem} key={view.label}>
+                    <b>{view.label}</b>
+                    {this.props.i18nRegistry.translate('content.inspector.editors.pluginViewsEditor.displayedOnPage')}
+                    <a href="#" className="neos-link-ajax" onClick={() => this.handleClick(view.pageNode.uri)}>{view.pageNode.title}</a>
+                </li>
+            );
+        }
     }
 
     render() {
-        const {options, isLoading} = this.state;
-
         return (
-            <SelectBox
-                options={options}
-                value={this.props.value}
-                onValueChange={this.handleValueChange}
-                displayLoadingIndicator={isLoading}
-                displaySearchBox={false}
-                placeholder={this.renderPlaceholder()}
-                allowEmpty
-                />
+            <ul className={style.pluginViewContainer}>
+                {this.renderViewListItems()}
+            </ul>
         );
     }
 }

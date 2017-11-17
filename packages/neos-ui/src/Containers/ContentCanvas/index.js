@@ -40,6 +40,7 @@ export default class ContentCanvas extends PureComponent {
         startLoading: PropTypes.func.isRequired,
         stopLoading: PropTypes.func.isRequired,
         requestRegainControl: PropTypes.func.isRequired,
+        requestLogin: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
 
         editPreviewModes: PropTypes.object.isRequired,

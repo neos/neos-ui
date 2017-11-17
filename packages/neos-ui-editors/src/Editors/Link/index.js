@@ -42,16 +42,12 @@ class LinkEditor extends PureComponent {
         }).isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-
-        this.state = {
-            searchTerm: '',
-            isLoading: false,
-            searchOptions: [],
-            options: []
-        };
-    }
+    state = {
+        searchTerm: '',
+        isLoading: false,
+        searchOptions: [],
+        options: []
+    };
 
     getDataLoaderOptions() {
         return {
@@ -142,6 +138,7 @@ class LinkEditor extends PureComponent {
                 value={this.props.value}
                 onValueChange={this.handleValueChange}
                 placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
+                loadingLabel={this.props.i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main')}
                 displayLoadingIndicator={this.state.isLoading}
                 displaySearchBox={true}
                 searchTerm={this.state.searchTerm}

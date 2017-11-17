@@ -59,15 +59,11 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
         minimumResultsForSearch: 5
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchTerm: '',
-            isLoading: false,
-            selectBoxOptions: {}
-        };
-    }
+    state = {
+        searchTerm: '',
+        isLoading: false,
+        selectBoxOptions: {}
+    };
 
     getDataLoaderOptions() {
         return {
@@ -97,12 +93,14 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
+        const loadingLabel = i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main');
 
         if (options.multiple) {
             return (<MultiSelectBox
                 options={processedSelectBoxOptions}
                 values={value || []}
                 onValuesChange={commit}
+                loadingLabel={loadingLabel}
                 displayLoadingIndicator={this.state.isLoading}
                 placeholder={placeholder}
                 highlight={highlight}
@@ -119,6 +117,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             options={this.state.searchTerm ? searchOptions(this.state.searchTerm, processedSelectBoxOptions) : processedSelectBoxOptions}
             value={value}
             onValueChange={commit}
+            loadingLabel={loadingLabel}
             displayLoadingIndicator={this.state.isLoading}
             placeholder={placeholder}
             highlight={highlight}

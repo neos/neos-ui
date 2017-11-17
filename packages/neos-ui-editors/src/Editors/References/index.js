@@ -35,6 +35,7 @@ export default class ReferencesEditor extends PureComponent {
         return (<MultiSelectBox
             dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"
+            loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
             displaySearchBox={true}
             optionComponent={ReferenceOption}
             createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}

@@ -45,12 +45,7 @@ export default class StyleSelect extends PureComponent {
         toolbarRegistry: PropTypes.object.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-        this.handleOnSelect = this.handleOnSelect.bind(this);
-    }
-
-    handleOnSelect(selectedStyleId) {
+    handleOnSelect = selectedStyleId => {
         const {toolbarRegistry} = this.props;
         const style = toolbarRegistry.get(selectedStyleId);
         if (style && style.formattingRule) {

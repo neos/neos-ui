@@ -70,6 +70,11 @@ export default class SelectBox extends PureComponent {
         withoutGroupLabel: PropTypes.string,
 
         /**
+         * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
+         */
+        loadingLabel: PropTypes.string,
+
+        /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
@@ -128,14 +133,10 @@ export default class SelectBox extends PureComponent {
         TextInputComponent: PropTypes.any.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-
-        this.state = {
-            isOpen: false,
-            selectedIndex: -1
-        };
-    }
+    state = {
+        isOpen: false,
+        selectedIndex: -1
+    };
 
     componentWillReceiveProps({keydown}) {
         this.handleKeyDown(keydown.event);
@@ -180,6 +181,24 @@ export default class SelectBox extends PureComponent {
         return count;
     }
 
+    clearSearch = () => {
+        if (this.props.onSearchTermChange) {
+            this.props.onSearchTermChange('');
+        }
+    }
+
+    handleValueChange = (...rest) => {
+        this.props.onValueChange(...rest);
+        // Clear search box after searching
+        this.clearSearch();
+    }
+
+    handleCreateNew = (...rest) => {
+        this.props.onCreateNew(...rest);
+        // Clear search box on creating new
+        this.clearSearch();
+    }
+
     handleKeyDown = e => {
         if (this.state.isOpen && e) {
             const {options, optionValueField} = this.props;
@@ -195,11 +214,11 @@ export default class SelectBox extends PureComponent {
                 });
             } else if (e.key === 'Enter') {
                 if (this.createNewEnabled() && currentIndex + 1 === this.optionsCount()) {
-                    this.props.onCreateNew(this.props.searchTerm);
+                    this.handleCreateNew(this.props.searchTerm);
                 } else if (optionValueField === undefined) {
-                    this.props.onValueChange(options[currentIndex].value);
+                    this.handleValueChange(options[currentIndex].value);
                 } else {
-                    this.props.onValueChange(options[currentIndex][optionValueField]);
+                    this.handleValueChange(options[currentIndex][optionValueField]);
                 }
                 this.setState({
                     isOpen: false
@@ -213,6 +232,7 @@ export default class SelectBox extends PureComponent {
             options,
             value,
             optionValueField,
+            loadingLabel,
             displayLoadingIndicator,
             theme,
             highlight,
@@ -252,7 +272,7 @@ export default class SelectBox extends PureComponent {
             label = selectedValue.label;
             icon = selectedValue.icon ? selectedValue.icon : icon;
         } else if (displayLoadingIndicator) {
-            label = '[Loading]'; // TODO: localize
+            label = loadingLabel ? '[' + loadingLabel + ']' : '[Loading]';
         } else if (placeholder) {
             label = (<span className={theme.selectBox__placeholder}>{placeholder}</span>);
             icon = placeholderIcon ? placeholderIcon : icon;
@@ -310,7 +330,7 @@ export default class SelectBox extends PureComponent {
             return null;
         }
         const onClick = () => {
-            this.props.onCreateNew(this.props.searchTerm);
+            this.handleCreateNew(this.props.searchTerm);
         };
         const {theme} = this.props;
         const isActive = index === this.state.selectedIndex;
@@ -382,7 +402,7 @@ export default class SelectBox extends PureComponent {
         const value = option[this.props.optionValueField];
         const {theme, IconComponent, optionComponent} = this.props;
         const onClick = () => {
-            this.props.onValueChange(value);
+            this.handleValueChange(value);
         };
         const isActive = index === selectedIndex;
         const className = isActive ? theme['selectBox__item--isSelectable--active'] : '';
@@ -403,6 +423,6 @@ export default class SelectBox extends PureComponent {
     }
 
     handleDeleteClick = () => {
-        this.props.onValueChange('');
+        this.handleValueChange('');
     }
 }

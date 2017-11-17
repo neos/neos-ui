@@ -41,6 +41,7 @@ export default class ReferenceEditor extends PureComponent {
             value={this.props.value}
             highlight={this.props.highlight}
             onValueChange={this.handleValueChange}
+            loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
             displayLoadingIndicator={this.props.displayLoadingIndicator}
             searchTerm={this.props.searchTerm}
             onSearchTermChange={this.props.onSearchTermChange}

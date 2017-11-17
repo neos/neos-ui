@@ -95,16 +95,12 @@ class LinkTextField extends PureComponent {
         }).isRequired
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchTerm: '',
-            isLoading: false,
-            searchOptions: [],
-            options: []
-        };
-    }
+    state = {
+        searchTerm: '',
+        isLoading: false,
+        searchOptions: [],
+        options: []
+    };
 
     getDataLoaderOptions() {
         return {

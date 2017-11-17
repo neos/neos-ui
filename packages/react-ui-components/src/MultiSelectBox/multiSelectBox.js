@@ -86,6 +86,11 @@ export default class MultiSelectBox extends PureComponent {
         loadingLabel: PropTypes.string,
 
         /**
+         * No matches found label
+         */
+        noMatchesLabel: PropTypes.string,
+
+        /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
@@ -172,11 +177,12 @@ export default class MultiSelectBox extends PureComponent {
             allowEmpty,
             options,
             dndType,
-            optionComponent
+            optionComponent,
+            noMatchesLabel
         } = this.props;
 
         const {draggableValues} = this.state;
-        const filteredSearchOptions = (searchOptions || [])
+        const filteredSearchOptions = searchOptions === null ? null : (searchOptions || [])
             .filter(option => !(values && values.indexOf(option[optionValueField]) !== -1));
 
         const selectedOptionsClassNames = mergeClassNames({
@@ -225,6 +231,7 @@ export default class MultiSelectBox extends PureComponent {
                     onCreateNew={onCreateNew}
                     createNewLabel={createNewLabel}
                     optionComponent={optionComponent}
+                    noMatchesLabel={noMatchesLabel}
                     />
             </div>
         );

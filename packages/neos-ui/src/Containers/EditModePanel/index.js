@@ -7,7 +7,6 @@ import {memoize} from 'ramda';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import I18n from '@neos-project/neos-ui-i18n';
 
 import Panel from './Panel';
 import style from './style.css';
@@ -24,7 +23,8 @@ import style from './style.css';
     setEditPreviewMode: actions.UI.EditPreviewMode.set
 })
 @neos(globalRegistry => ({
-    editPreviewModes: globalRegistry.get('frontendConfiguration').get('editPreviewModes')
+    editPreviewModes: globalRegistry.get('frontendConfiguration').get('editPreviewModes'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class EditModePanel extends PureComponent {
     static propTypes = {
@@ -33,6 +33,7 @@ export default class EditModePanel extends PureComponent {
         editPreviewMode: PropTypes.string.isRequired,
         isHidden: PropTypes.bool.isRequired,
         setEditPreviewMode: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
 
         editPreviewModes: PropTypes.object.isRequired
     };
@@ -49,7 +50,8 @@ export default class EditModePanel extends PureComponent {
             isFringedRight,
             editPreviewMode,
             isHidden,
-            editPreviewModes
+            editPreviewModes,
+            i18nRegistry
         } = this.props;
         const classNames = mergeClassNames({
             [style.editModePanel]: true,
@@ -70,7 +72,7 @@ export default class EditModePanel extends PureComponent {
             <div className={classNames}>
                 <div className={style.editModePanel__wrapper}>
                     <Panel
-                        title={<I18n id="content.components.editPreviewPanel.modes" fallback="Editing Modes"/>}
+                        title={i18nRegistry.translate('content.components.editPreviewPanel.modes', 'Editing Modes')}
                         className={style.editModePanel__editingModes}
                         modes={editPreviewModesList.filter(editPreviewMode => editPreviewMode.isEditingMode && editPreviewMode.id !== editPreviewMode)}
                         current={editPreviewMode}
@@ -79,7 +81,7 @@ export default class EditModePanel extends PureComponent {
                         onPreviewModeClick={this.handleEditPreviewModeClick}
                         />
                     <Panel
-                        title={<I18n id="content.components.editPreviewPanel.previewCentral" fallback="Preview Central"/>}
+                        title={i18nRegistry.translate('content.components.editPreviewPanel.previewCentral', 'Preview Central')}
                         className={style.editModePanel__previewModes}
                         modes={editPreviewModesList.filter(editPreviewMode => editPreviewMode.isPreviewMode && editPreviewMode.id !== editPreviewMode)}
                         current={editPreviewMode}

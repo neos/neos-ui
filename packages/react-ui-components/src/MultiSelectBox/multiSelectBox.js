@@ -131,7 +131,7 @@ export default class MultiSelectBox extends PureComponent {
         SelectBoxComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
-        hasStaticDataSource: PropTypes.bool
+        hasStaticArrayValue: PropTypes.bool
     };
 
     constructor(props) {
@@ -172,7 +172,7 @@ export default class MultiSelectBox extends PureComponent {
             options,
             dndType,
             optionComponent,
-            hasStaticDataSource
+            hasStaticArrayValue
         } = this.props;
 
         const {draggableValues} = this.state;
@@ -205,7 +205,7 @@ export default class MultiSelectBox extends PureComponent {
                                     options={options}
                                     optionValueField={optionValueField}
                                     draggableValues={draggableValues}
-                                    hasStaticDataSource={hasStaticDataSource}
+                                    hasStaticArrayValue={hasStaticArrayValue}
                                     />
                             );
                         })

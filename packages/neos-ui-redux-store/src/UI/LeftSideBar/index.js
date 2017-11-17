@@ -1,6 +1,5 @@
 import {createAction} from 'redux-actions';
-// import Immutable from 'immutable';
-import {Map, Set} from 'immutable';
+import {Map} from 'immutable';
 import {$get, $set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -35,10 +34,6 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    // [system.INIT]: payload => $set(
-    //     'ui.leftSideBar',
-    //     Immutable.fromJS($get('ui.leftSideBar', payload) ? $get('ui.leftSideBar', payload) : {isHidden: false, contentTree: {isHidden: false}})
-    // ),
     [system.INIT]: state => $set(
         'ui.leftSideBar',
         new Map({

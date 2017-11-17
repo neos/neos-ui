@@ -11,6 +11,7 @@ const localStorageMiddleware = ({getState}) => {
     const debounceLocalStorageTimeout = 1000;
     const persistentActionsPatterns = [
         '@neos/neos-ui/UI/LeftSideBar/TOGGLE',
+        '@neos/neos-ui/UI/LeftSideBar/TOGGLE_CONTENT_TREE',
         '@neos/neos-ui/UI/RightSidebar/TOGGLE'
     ];
 
@@ -29,7 +30,8 @@ const localStorageMiddleware = ({getState}) => {
                 const persistentStateSubset = {
                     ui: {
                         leftSideBar: {
-                            isHidden: $get('ui.leftSideBar.isHidden', state)
+                            isHidden: $get('ui.leftSideBar.isHidden', state),
+                            isHiddenContentTree: $get('ui.leftSideBar.isHiddenContentTree', state)
                         },
                         rightSideBar: {
                             isHidden: $get('ui.rightSideBar.isHidden', state)

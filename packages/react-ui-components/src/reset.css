@@ -12,7 +12,10 @@
     }
 
     // some browsers set a font-size in their user stylesheets
-    input, textarea, select, button {
+    input,
+    textarea,
+    select,
+    button {
         font-size: var(--baseFontSize);
     }
 }

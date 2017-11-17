@@ -170,21 +170,21 @@ export default class SelectBox extends PureComponent {
         this.props.onSearchTermChange(...args);
     }
 
-    createNewEnabled = () => this.props.onCreateNew && this.props.searchTerm;
+    isCreateNewEnabled = () => this.props.onCreateNew && this.props.searchTerm;
 
     getOptionsCount = () => {
         const {options, withoutGroupLabel} = this.props;
 
-        const groupedOptions = this.groupOptions(options);
+        const groupedOptions = this.getGroupedOptions(options);
         const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[withoutGroupLabel]);
         let count = hasMultipleGroups ? groupedOptions.length : options.length;
-        if (this.createNewEnabled()) {
+        if (this.isCreateNewEnabled()) {
             count++;
         }
         return count;
     }
 
-    clearSearch = () => {
+    handleClearSearch = () => {
         const {onSearchTermChange} = this.props;
 
         if (onSearchTermChange) {
@@ -195,13 +195,13 @@ export default class SelectBox extends PureComponent {
     handleValueChange = (...rest) => {
         this.props.onValueChange(...rest);
         // Clear search box after searching
-        this.clearSearch();
+        this.handleClearSearch();
     }
 
     handleCreateNew = (...rest) => {
         this.props.onCreateNew(...rest);
         // Clear search box on creating new
-        this.clearSearch();
+        this.handleClearSearch();
     }
 
     handleKeyDown = e => {
@@ -218,7 +218,7 @@ export default class SelectBox extends PureComponent {
                     selectedIndex: currentIndex - 1 < 0 ? 0 : currentIndex - 1
                 });
             } else if (e.key === 'Enter') {
-                if (this.createNewEnabled() && currentIndex + 1 === this.getOptionsCount()) {
+                if (this.isCreateNewEnabled() && currentIndex + 1 === this.getOptionsCount()) {
                     this.handleCreateNew(searchTerm);
                 } else if (optionValueField === undefined) {
                     this.handleValueChange(options[currentIndex].value);
@@ -257,7 +257,7 @@ export default class SelectBox extends PureComponent {
 
         const selectedValue = options.find(option => option[optionValueField] === value);
 
-        const groupedOptions = this.groupOptions(options);
+        const groupedOptions = this.getGroupedOptions(options);
 
         const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[withoutGroupLabel]);
 
@@ -332,7 +332,7 @@ export default class SelectBox extends PureComponent {
     renderCreateNew() {
         const {theme, searchTerm, IconComponent, createNewLabel} = this.props;
         const index = this.getOptionsCount() - 1;
-        if (!this.createNewEnabled()) {
+        if (!this.isCreateNewEnabled()) {
             return null;
         }
         const onClick = () => {
@@ -342,7 +342,7 @@ export default class SelectBox extends PureComponent {
         const className = isActive ? theme['selectBox__item--isSelectable--active'] : '';
 
         const setIndex = () => {
-            this.setIndex(index);
+            this.setSelectedIndex(index);
         };
         return (
             <div key={index} onMouseEnter={setIndex}>
@@ -362,7 +362,7 @@ export default class SelectBox extends PureComponent {
      * as key and an array of options as values.
      * Options without a group-attribute assigned will receive the key specified in props.withoutGroupLabel.
      */
-    groupOptions = options => {
+    getGroupedOptions = options => {
         return options.reduce((accumulator, currentOpt) => {
             const groupLabel = currentOpt.group ? currentOpt.group : this.props.withoutGroupLabel;
             accumulator[groupLabel] = accumulator[groupLabel] || [];
@@ -413,7 +413,7 @@ export default class SelectBox extends PureComponent {
         const className = isActive ? theme['selectBox__item--isSelectable--active'] : '';
 
         const setIndex = () => {
-            this.setIndex(index);
+            this.setSelectedIndex(index);
         };
 
         const OptionComponent = optionComponent;
@@ -421,9 +421,9 @@ export default class SelectBox extends PureComponent {
         return <div key={index} onMouseEnter={setIndex}><OptionComponent className={className} isActive={isActive} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/></div>;
     }
 
-    setIndex = index => {
-        if (index !== this.state.selectedIndex) {
-            this.setState({selectedIndex: index});
+    setSelectedIndex = selectedIndex => {
+        if (selectedIndex !== this.state.selectedIndex) {
+            this.setState({selectedIndex});
         }
     }
 

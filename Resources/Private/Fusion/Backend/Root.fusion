@@ -95,6 +95,9 @@ backend = Neos.Fusion:Template {
                 loadMasterPlugins = Neos.Fusion:UriBuilder {
                     action = 'masterPlugins'
                 }
+                loadPluginViews = Neos.Fusion:UriBuilder {
+                    action = 'pluginViews'
+                }
                 uploadAsset = Neos.Fusion:UriBuilder {
                     action = 'uploadAsset'
                 }

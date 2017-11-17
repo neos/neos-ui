@@ -63,7 +63,7 @@ export default class MultiSelectBox extends PureComponent {
         /**
          * This prop gets called when requested to create a new element
          */
-        onCreateNew: PropTypes.func.isRequired,
+        onCreateNew: PropTypes.func,
 
         /**
          * "Create new" label

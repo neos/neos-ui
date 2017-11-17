@@ -63,7 +63,7 @@ export default () => WrappedComponent => {
         }
 
         render() {
-            const onCreateNew = this.props.options.createNew.type && this.props.options.createNew.path ? this.handleCreateNew : null;
+            const onCreateNew = $get('options.createNew.type', this.props) && $get('options.createNew.path', this.props) ? this.handleCreateNew : null;
             return (
                 <WrappedComponent
                     {...this.props}

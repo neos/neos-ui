@@ -8,7 +8,7 @@ export default class PasteClipBoardNode extends PureComponent {
         className: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string.isRequired,
-        canBePasted: PropTypes.bool.isRequired,
+        isDisabled: PropTypes.bool.isRequired,
 
         onClick: PropTypes.func.isRequired
     };
@@ -22,12 +22,12 @@ export default class PasteClipBoardNode extends PureComponent {
     render() {
         const {
             className,
-            canBePasted
+            isDisabled
         } = this.props;
 
         return (
             <IconButton
-                isDisabled={!canBePasted}
+                isDisabled={isDisabled}
                 className={className}
                 icon="paste"
                 onClick={this.handleClick}

@@ -4,6 +4,7 @@
   defaults:
     '@controller': 'Backend'
     '@action': 'index'
+  appendExceedingArguments: true
 -
   name: 'Deactivate'
   uriPattern: 'deactivate'

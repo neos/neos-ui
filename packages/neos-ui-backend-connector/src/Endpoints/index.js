@@ -1,4 +1,4 @@
-import {urlWithParams, searchParams, dimensionParams} from './Helpers';
+import {urlWithParams, searchParams} from './Helpers';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 
@@ -102,8 +102,7 @@ export default routes => {
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadMasterPlugins = (workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: `${routes.core.content.loadMasterPlugins}?workspaceName=${workspaceName}&${dimensionParams(dimensions)}`,
-
+        url: urlWithParams(routes.core.content.loadMasterPlugins, {workspaceName, dimensions}),
         method: 'GET',
         credentials: 'include',
         headers: {

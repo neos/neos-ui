@@ -12,6 +12,7 @@ import CodeMirror from './CodeMirror/index';
 import AssetEditor from './AssetEditor/index';
 import MasterPlugin from './MasterPlugin/index';
 import PluginViews from './PluginViews/index';
+import PluginView from './PluginView/index';
 
 export {
     TextField,
@@ -25,7 +26,8 @@ export {
     References,
     NodeType,
     CodeMirror,
-    MasterPlugin,
     AssetEditor,
-    PluginViews
+    MasterPlugin,
+    PluginViews,
+    PluginView
 };

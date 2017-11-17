@@ -12,7 +12,8 @@ import {
     CodeMirror,
     MasterPlugin,
     AssetEditor,
-    PluginViews
+    PluginViews,
+    PluginView
 } from './Editors/index';
 
 import {
@@ -92,6 +93,10 @@ manifest('inspectorEditors', {}, globalRegistry => {
     editorsRegistry.set('Neos.Neos/Inspector/Editors/PluginViewsEditor', {
         component: PluginViews,
         hasOwnLabel: true
+    });
+
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/PluginViewEditor', {
+        component: PluginView
     });
 
     //

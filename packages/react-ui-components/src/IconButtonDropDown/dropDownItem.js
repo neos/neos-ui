@@ -19,10 +19,10 @@ export default class DropDownItem extends PureComponent {
         children: PropTypes.element.isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleClick = () => {
+        const {onClick, id} = this.props;
 
-        this.handleClick = this.handleClick.bind(this);
+        onClick(id);
     }
 
     render() {
@@ -39,9 +39,4 @@ export default class DropDownItem extends PureComponent {
         );
     }
 
-    handleClick() {
-        const {onClick, id} = this.props;
-
-        onClick(id);
-    }
 }

@@ -133,14 +133,10 @@ export default class SelectBox extends PureComponent {
         TextInputComponent: PropTypes.any.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-
-        this.state = {
-            isOpen: false,
-            selectedIndex: -1
-        };
-    }
+    state = {
+        isOpen: false,
+        selectedIndex: -1
+    };
 
     componentWillReceiveProps({keydown}) {
         this.handleKeyDown(keydown.event);

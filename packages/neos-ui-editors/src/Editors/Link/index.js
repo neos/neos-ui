@@ -42,16 +42,12 @@ class LinkEditor extends PureComponent {
         }).isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-
-        this.state = {
-            searchTerm: '',
-            isLoading: false,
-            searchOptions: [],
-            options: []
-        };
-    }
+    state = {
+        searchTerm: '',
+        isLoading: false,
+        searchOptions: [],
+        options: []
+    };
 
     getDataLoaderOptions() {
         return {

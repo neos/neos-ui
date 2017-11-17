@@ -37,17 +37,12 @@ export default class EditorToolbar extends PureComponent {
         nodeTypesRegistry: PropTypes.object.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-        this.onToggleFormat = this.onToggleFormat.bind(this);
-    }
-
     componentWillMount() {
         const {toolbarRegistry} = this.props;
         this.renderToolbarComponents = renderToolbarComponents(toolbarRegistry);
     }
 
-    onToggleFormat(formattingRule) {
+    onToggleFormat = formattingRule => {
         getGuestFrameWindow().NeosCKEditorApi.toggleFormat(formattingRule);
     }
 

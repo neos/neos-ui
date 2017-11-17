@@ -7,7 +7,8 @@ import {
     findNodeInGuestFrame,
     getAbsolutePositionOfElementInGuestFrame,
     isElementVisibleInGuestFrame,
-    animateScrollToElementInGuestFrame
+    animateScrollToElementInGuestFrame,
+    getGuestFrameWindow
 } from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {
@@ -37,10 +38,7 @@ export default class NodeToolbar extends PureComponent {
         isSticky: false
     };
 
-    constructor() {
-        super();
-        this.iframeWindow = document.getElementsByName('neos-content-main')[0].contentWindow;
-    }
+    iframeWindow = getGuestFrameWindow();
 
     updateStickyness = () => {
         const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);

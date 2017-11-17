@@ -61,17 +61,13 @@ export default class SelectNodeType extends PureComponent {
         apply: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            filterSearchTerm: '',
-            insertMode: calculateInitialMode(
-                this.props.allowedSiblingNodeTypes,
-                this.props.allowedChildNodeTypes
-            )
-        };
-    }
+    state = {
+        filterSearchTerm: '',
+        insertMode: calculateInitialMode(
+            this.props.allowedSiblingNodeTypes,
+            this.props.allowedChildNodeTypes
+        )
+    };
 
     componentWillReceiveProps(nextProps) {
         if (this.props.allowedSiblingNodeTypes !== nextProps.allowedSiblingNodeTypes ||

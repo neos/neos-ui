@@ -24,7 +24,8 @@ module.exports = {
                 //
                 // Font sizes
                 //
-                '--baseFontSize': '14px'
+                '--baseFontSize': '14px',
+                '--smallFontSize': '12px'
             }, brandVars)
         }),
         require('postcss-import')(),

@@ -10,6 +10,7 @@ import References from './References/index';
 import NodeType from './NodeType/index';
 import CodeMirror from './CodeMirror/index';
 import AssetEditor from './AssetEditor/index';
+import MasterPlugin from './MasterPlugin/index';
 
 export {
     TextField,
@@ -23,5 +24,6 @@ export {
     References,
     NodeType,
     CodeMirror,
-    AssetEditor
+    AssetEditor,
+    MasterPlugin
 };

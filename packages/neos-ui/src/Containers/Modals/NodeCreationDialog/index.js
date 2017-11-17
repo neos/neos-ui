@@ -40,17 +40,12 @@ export default class NodeCreationDialog extends PureComponent {
         apply: PropTypes.func.isRequired
     };
 
-    constructor() {
-        super();
-
-        this.state = {...this.defaultState};
-    }
-
     defaultState = {
         values: {},
         validationErrors: false,
         isDirty: false
     };
+    state = this.defaultState;
 
     resetState() {
         this.setState(this.defaultState);

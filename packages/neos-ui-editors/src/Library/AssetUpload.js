@@ -20,19 +20,11 @@ export default class AssetUpload extends PureComponent {
         children: PropTypes.any.isRequired
     };
 
-    constructor(props) {
-        super(props);
-
-        this.handleUpload = this.handleUpload.bind(this);
-        this.chooseFromLocalFileSystem = this.chooseFromLocalFileSystem.bind(this);
-        this.setDropzoneReference = this.setDropzoneReference.bind(this);
-    }
-
-    chooseFromLocalFileSystem() {
+    chooseFromLocalFileSystem = () => {
         this.dropzoneReference.open();
     }
 
-    handleUpload(files) {
+    handleUpload = files => {
         const {uploadAsset} = backend.get().endpoints;
         const {onAfterUpload, siteNodePath} = this.props;
 
@@ -77,7 +69,7 @@ export default class AssetUpload extends PureComponent {
         );
     }
 
-    setDropzoneReference(ref) {
+    setDropzoneReference = ref => {
         this.dropzoneReference = ref;
     }
 }

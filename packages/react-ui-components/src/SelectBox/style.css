@@ -91,6 +91,10 @@
     line-height: var(--goldenUnit);
 }
 
+.selectBox__twoIconIndention {
+    padding: 0 calc(var(--spacing) + var(--goldenUnit) + var(--goldenUnit)) 0 var(--spacing);
+}
+
 .selectBox__deleteIcon {
     composes: selectBox__loadingIcon;
 }

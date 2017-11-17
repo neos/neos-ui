@@ -10,6 +10,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
   >
     <TabMenuItem
       IconComponent={[Function]}
+      TooltipComponent={[Function]}
       icon="icon 1"
       index={0}
       isActive={true}
@@ -31,6 +32,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
     />
     <TabMenuItem
       IconComponent={[Function]}
+      TooltipComponent={[Function]}
       icon="icon 2"
       index={1}
       isActive={false}
@@ -52,6 +54,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
     />
     <TabMenuItem
       IconComponent={[Function]}
+      TooltipComponent={[Function]}
       icon="icon 3"
       index={2}
       isActive={false}

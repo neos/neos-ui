@@ -3,6 +3,7 @@
 exports[`<TextArea/> should render correctly. 1`] = `
 <div>
   <TextareaAutosize
+    TooltipComponent={[Function]}
     className=""
     minRows={2}
     onChange={[Function]}

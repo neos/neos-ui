@@ -26,12 +26,14 @@ exports[`<Header/> should render correctly. 1`] = `
     type="h1"
   >
     Foo children
+    <Component
+      className="panelToggleBtnClassName"
+      icon="closed-icon-prop"
+      onClick={[Function]}
+      tooltipLabel="Toggle the panel"
+      tooltipPosition="left"
+    />
   </Component>
-  <Component
-    className="panelToggleBtnClassName"
-    icon="closed-icon-prop"
-    onClick={[Function]}
-  />
 </div>
 `;
 

@@ -3,7 +3,6 @@ import mergeClassNames from 'classnames';
 import PropTypes from 'prop-types';
 
 export class Tooltip extends PureComponent {
-
     static propTypes = {
         children: PropTypes.any.isRequired,
 
@@ -38,17 +37,17 @@ export class Tooltip extends PureComponent {
         ]).isRequired
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            visible: false
-        };
-    }
+    static defaultProps = {
+        tooltipType: 'default',
+        tooltipPosition: 'left'
+    };
+
+    state = {
+        visible: false
+    };
 
     componentDidMount() {
-        const {tooltipType} = this.props;
-
-        if (tooltipType === 'error') {
+        if (this.props.tooltipType === 'error') {
             this.show();
         }
     }
@@ -58,9 +57,9 @@ export class Tooltip extends PureComponent {
     hide = () => this.setVisibility(false);
 
     setVisibility = visible => {
-        this.setState(Object.assign({}, this.state, {
+        this.setState({
             visible
-        }));
+        });
     }
 
     handleTouch = () => {
@@ -89,7 +88,7 @@ export class Tooltip extends PureComponent {
 
     render() {
         const {show, hide, handleTouch, state} = this;
-        const {theme, children, className, tooltipLabel, tooltipPosition, tooltipWrapperClassName, tooltipType} = this.props;
+        const {theme, children, className, tooltipLabel, tooltipPosition, tooltipWrapperClassName, tooltipType, ...rest} = this.props;
 
         const wrapperClassNames = mergeClassNames({
             [tooltipWrapperClassName]: tooltipWrapperClassName && tooltipWrapperClassName.length,
@@ -107,13 +106,14 @@ export class Tooltip extends PureComponent {
 
         return (
             <div
+                {...rest}
                 onMouseEnter={show}
                 onMouseLeave={tooltipType === 'error' ? null : hide}
                 onTouchStart={handleTouch}
                 ref={`wrapper`}
                 className={wrapperClassNames}
                 >
-                { children }
+                {children}
                 {
                     state.visible &&
                     <div ref={`tooltip`} className={classNames}>
@@ -124,10 +124,5 @@ export class Tooltip extends PureComponent {
         );
     }
 }
-
-Tooltip.defaultProps = {
-    tooltipType: 'default',
-    tooltipPosition: 'left'
-};
 
 export default Tooltip;

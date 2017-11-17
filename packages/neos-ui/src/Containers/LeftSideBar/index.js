@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
 import SideBar from '@neos-project/react-ui-components/src/SideBar/';
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
@@ -20,22 +21,30 @@ import style from './style.css';
         $get('ui.leftSideBar.isHidden'),
         $get('ui.fullScreen.isFullScreen')
     ),
+    isHiddenContentTree: $get('ui.leftSideBar.isHiddenContentTree'),
+    // isHiddenContentTree: $get('ui.leftSideBar.isHidden'),
     siteNode: selectors.CR.Nodes.siteNodeSelector,
     documentNode: selectors.UI.ContentCanvas.documentNodeSelector
-}))
+}), {
+    toggleContentTree: actions.UI.LeftSideBar.toggleContentTree
+})
 export default class LeftSideBar extends PureComponent {
-    state = {
-        isBottomOpen: true
-    };
-
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
 
-        isHidden: PropTypes.bool.isRequired
+        isHidden: PropTypes.bool.isRequired,
+        isHiddenContentTree: PropTypes.bool.isRequired,
+        toggleContentTree: PropTypes.func.isRequired
     };
 
+    toggleBottom = () => {
+        const {toggleContentTree} = this.props;
+
+        toggleContentTree();
+    }
+
     render() {
-        const {isHidden, containerRegistry} = this.props;
+        const {isHidden, isHiddenContentTree, containerRegistry} = this.props;
 
         const classNames = mergeClassNames({
             [style.leftSideBar]: true,
@@ -44,7 +53,7 @@ export default class LeftSideBar extends PureComponent {
 
         const bottomClassNames = mergeClassNames({
             [style.leftSideBar__bottom]: true,
-            [style['leftSideBar__bottom--isCollapsed']]: !this.state.isBottomOpen
+            [style['leftSideBar__bottom--isCollapsed']]: !isHiddenContentTree
         });
 
         const LeftSideBarTop = containerRegistry.getChildren('LeftSideBar/Top');
@@ -55,12 +64,6 @@ export default class LeftSideBar extends PureComponent {
         const openedIcon = 'chevron-down';
         const closedIcon = 'chevron-up';
 
-        const toggleBottom = () => {
-            this.setState({
-                isBottomOpen: !this.state.isBottomOpen
-            });
-        };
-
         return (
             <SideBar
                 position="left"
@@ -68,12 +71,12 @@ export default class LeftSideBar extends PureComponent {
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 <div className={style.leftSideBar__top}>
-                    {LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!this.state.isBottomOpen}/>)}
+                    {LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
                 </div>
 
                 <hr/>
 
-                <ToggablePanel className={bottomClassNames} onPanelToggle={toggleBottom} isOpen={this.state.isBottomOpen} closesToBottom={true}>
+                <ToggablePanel className={bottomClassNames} onPanelToggle={this.toggleBottom} isOpen={isHiddenContentTree} closesToBottom={true}>
                     <ToggablePanel.Header noPadding={true} openedIcon={openedIcon} closedIcon={closedIcon}>
                         <ContentTreeToolbar/>
                     </ToggablePanel.Header>

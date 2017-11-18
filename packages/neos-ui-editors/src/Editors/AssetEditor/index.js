@@ -46,7 +46,9 @@ export default class AssetEditor extends PureComponent {
             resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
-        siteNodePath: PropTypes.string.isRequired
+        siteNodePath: PropTypes.string.isRequired,
+        secondaryEditorsRegistry: PropTypes.object.isRequired,
+        renderSecondaryInspector: PropTypes.object.isRequired
     };
 
     componentDidMount() {
@@ -104,7 +106,8 @@ export default class AssetEditor extends PureComponent {
 
     handleMediaSelected = assetIdentifier => {
         const {value} = this.props;
-        let values = value ? value.slice() : [];
+        const values = value ? value.slice() : [];
+
         values.push(assetIdentifier);
         this.handleValueChange(values);
     }
@@ -114,7 +117,7 @@ export default class AssetEditor extends PureComponent {
     }
 
     handleUpload = files => {
-        let index = files.length;
+        const index = files.length;
         const {value} = this.props;
         const values = value ? value.slice() : [];
 
@@ -130,7 +133,7 @@ export default class AssetEditor extends PureComponent {
 
         if (index < 0) {
             this.handleValueChange(values);
-            return
+            return;
         }
         uploadAsset(files[index], siteNodeName).then(res => {
             values.push(res.object.__identity);
@@ -145,7 +148,7 @@ export default class AssetEditor extends PureComponent {
                 disableClick={true}
                 onDropAccepted={this.handleUpload}
                 className={style.assetEditor}
-            >
+                >
                 <MultiSelectBox
                     dndType={dndTypes.MULTISELECT}
                     optionValueField="identifier"
@@ -161,11 +164,11 @@ export default class AssetEditor extends PureComponent {
                     searchTerm={this.state.searchTerm}
                     searchOptions={this.state.searchOptions}
                     onSearchTermChange={this.handleSearchTermChange}
-                />
+                    />
                 <Controls
                     onChooseFromMedia={this.handleChooseFromMedia}
                     onChooseFromLocalFileSystem={this.handleChooseFile}
-                />
+                    />
             </Dropzone>
         );
     }

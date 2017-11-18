@@ -11,7 +11,6 @@ export default class Controls extends PureComponent {
     static propTypes = {
         onChooseFromMedia: PropTypes.func.isRequired,
         onChooseFromLocalFileSystem: PropTypes.func.isRequired,
-
         i18nRegistry: PropTypes.object.isRequired
     };
 
@@ -25,7 +24,7 @@ export default class Controls extends PureComponent {
                     onClick={this.props.onChooseFromMedia}
                     className={style.button}
                     title={this.props.i18nRegistry.translate('Neos.Neos:Main:media')}
-                />
+                    />
                 <IconButton
                     icon="upload"
                     size="small"
@@ -33,7 +32,7 @@ export default class Controls extends PureComponent {
                     onClick={this.props.onChooseFromLocalFileSystem}
                     className={style.button}
                     title={this.props.i18nRegistry.translate('Neos.Media.Browser:Main:chooseFile')}
-                />
+                    />
             </div>
         );
     }

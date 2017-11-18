@@ -4,12 +4,21 @@ import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox
 import AssetOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/AssetOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {$get} from 'plow-js';
+import {$get, $transform} from 'plow-js';
+import Controls from './Components/Controls/index';
+import Dropzone from 'react-dropzone';
+import backend from '@neos-project/neos-ui-backend-connector';
+import {connect} from 'react-redux';
+import style from './style.css';
 
 @neos(globalRegistry => ({
     assetLookupDataLoader: globalRegistry.get('dataLoaders').get('AssetLookup'),
-    i18nRegistry: globalRegistry.get('i18n')
+    i18nRegistry: globalRegistry.get('i18n'),
+    secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')
 }))
+@connect($transform({
+    siteNodePath: $get('cr.nodes.siteNode')
+}), null, null, {withRef: true})
 export default class AssetEditor extends PureComponent {
     state = {
         options: [],
@@ -36,7 +45,8 @@ export default class AssetEditor extends PureComponent {
         assetLookupDataLoader: PropTypes.shape({
             resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
-        }).isRequired
+        }).isRequired,
+        siteNodePath: PropTypes.string.isRequired
     };
 
     componentDidMount() {
@@ -83,22 +93,83 @@ export default class AssetEditor extends PureComponent {
         this.props.commit(value);
     }
 
+    handleChooseFromMedia = () => {
+        const {secondaryEditorsRegistry} = this.props;
+        const {component: MediaSelectionScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen');
+
+        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () =>
+            <MediaSelectionScreen onComplete={this.handleMediaSelected}/>
+        );
+    }
+
+    handleMediaSelected = assetIdentifier => {
+        const {value} = this.props;
+        let values = value ? value.slice() : [];
+        values.push(assetIdentifier);
+        this.handleValueChange(values);
+    }
+
+    handleChooseFile = () => {
+        this.dropzoneReference.open();
+    }
+
+    handleUpload = files => {
+        let index = files.length;
+        const {value} = this.props;
+        const values = value ? value.slice() : [];
+
+        this.uploadFile(index, values, files);
+    }
+
+    uploadFile(index, values, files) {
+        index--;
+        const {uploadAsset} = backend.get().endpoints;
+        const {siteNodePath} = this.props;
+
+        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
+
+        if (index < 0) {
+            this.handleValueChange(values);
+            return
+        }
+        uploadAsset(files[index], siteNodeName).then(res => {
+            values.push(res.object.__identity);
+            this.uploadFile(index, values, files);
+        });
+    }
+
     render() {
-        return (<MultiSelectBox
-            dndType={dndTypes.MULTISELECT}
-            optionValueField="identifier"
-            loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
-            displaySearchBox={true}
-            optionComponent={AssetOption}
-            placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
-            options={this.state.options || []}
-            values={this.props.value}
-            highlight={this.props.highlight}
-            onValuesChange={this.handleValueChange}
-            displayLoadingIndicator={this.props.displayLoadingIndicator}
-            searchTerm={this.state.searchTerm}
-            searchOptions={this.state.searchOptions}
-            onSearchTermChange={this.handleSearchTermChange}
-            />);
+        return (
+            <Dropzone
+                ref={this.setDropzoneReference}
+                disableClick={true}
+                onDropAccepted={this.handleUpload}
+                className={style.assetEditor}
+            >
+                <MultiSelectBox
+                    dndType={dndTypes.MULTISELECT}
+                    optionValueField="identifier"
+                    loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
+                    displaySearchBox={true}
+                    optionComponent={AssetOption}
+                    placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
+                    options={this.state.options || []}
+                    values={this.props.value}
+                    highlight={this.props.highlight}
+                    onValuesChange={this.handleValueChange}
+                    displayLoadingIndicator={this.props.displayLoadingIndicator}
+                    searchTerm={this.state.searchTerm}
+                    searchOptions={this.state.searchOptions}
+                    onSearchTermChange={this.handleSearchTermChange}
+                />
+                <Controls
+                    onChooseFromMedia={this.handleChooseFromMedia}
+                    onChooseFromLocalFileSystem={this.handleChooseFile}
+                />
+            </Dropzone>
+        );
+    }
+    setDropzoneReference = ref => {
+        this.dropzoneReference = ref;
     }
 }

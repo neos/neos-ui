@@ -64,7 +64,7 @@ class PluginViewsEditor extends React.PureComponent {
         }
     }
 
-    handleClick(source) {
+    handleClick = source => () => {
         const {setActiveContentCanvasSrc} = this.props;
         if (setActiveContentCanvasSrc) {
             setActiveContentCanvasSrc(source);
@@ -87,7 +87,7 @@ class PluginViewsEditor extends React.PureComponent {
                 <li className={style.pluginViewContainer__listItem} key={view.label}>
                     <b>{view.label}</b>
                     {this.props.i18nRegistry.translate('content.inspector.editors.pluginViewsEditor.displayedOnPage')}
-                    <a href="#" className="neos-link-ajax" onClick={() => this.handleClick(view.pageNode.uri)}>{view.pageNode.title}</a>
+                    <a href="#" className="neos-link-ajax" onClick={this.handleClick(view.pageNode.uri)}>{view.pageNode.title}</a>
                 </li>
             );
         }

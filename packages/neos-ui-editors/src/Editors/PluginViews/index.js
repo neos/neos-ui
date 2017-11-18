@@ -64,13 +64,6 @@ class PluginViewsEditor extends React.PureComponent {
         }
     }
 
-    handleClick = source => () => {
-        const {setActiveContentCanvasSrc} = this.props;
-        if (setActiveContentCanvasSrc) {
-            setActiveContentCanvasSrc(source);
-        }
-    }
-
     renderViewListItems() {
         const {isLoading, views} = this.state;
 
@@ -86,10 +79,29 @@ class PluginViewsEditor extends React.PureComponent {
             return views.map(view =>
                 <li className={style.pluginViewContainer__listItem} key={view.label}>
                     <b>{view.label}</b>
-                    {this.props.i18nRegistry.translate('content.inspector.editors.pluginViewsEditor.displayedOnPage')}
-                    <a href="#" className="neos-link-ajax" onClick={this.handleClick(view.pageNode.uri)}>{view.pageNode.title}</a>
+                    {this.renderLocationLabel(Object.prototype.hasOwnProperty.call(view, 'pageNode'))}
+                    {this.renderLink(view.pageNode)}
                 </li>
             );
+        }
+    }
+
+    renderLocationLabel(onPage) {
+        let label = 'content.inspector.editors.pluginViewsEditor.';
+        label += onPage ? 'displayedOnPage' : 'displayedOnCurrentPage';
+        return this.props.i18nRegistry.translate(label);
+    }
+
+    renderLink(pageNode) {
+        return (
+            pageNode ? <a href="#" onClick={this.handleClick(pageNode.uri)}>{pageNode.title}</a> : null
+        );
+    }
+
+    handleClick = source => () => {
+        const {setActiveContentCanvasSrc} = this.props;
+        if (setActiveContentCanvasSrc) {
+            setActiveContentCanvasSrc(source);
         }
     }
 

@@ -14,12 +14,12 @@
 }
 
 .pluginViewContainer__listItem b {
-    margin-right: calc(var(--halfSpacing) / 2)
+    margin-right: calc(var(--halfSpacing) / 2);
 }
 
 .pluginViewContainer__listItem a {
     font-size: var(--smallFontSize);
     color: var(--brandColorsPrimaryBlue);
     text-decoration: none;
-    margin-left: calc(var(--halfSpacing) / 2)
+    margin-left: calc(var(--halfSpacing) / 2);
 }

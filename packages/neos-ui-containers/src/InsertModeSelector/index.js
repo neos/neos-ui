@@ -49,12 +49,7 @@ export default class InsertModeSelector extends PureComponent {
         i18nRegistry: PropTypes.object.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-
-        this.handleSelect = this.handleSelect.bind(this);
-        this.options = [];
-    }
+    options = [];
 
     selectPreferredInitialModeIfModeIsEmpty(props) {
         const {mode, onSelect} = props;
@@ -125,7 +120,7 @@ export default class InsertModeSelector extends PureComponent {
         );
     }
 
-    handleSelect(mode) {
+    handleSelect = mode => {
         const {onSelect} = this.props;
 
         onSelect(mode);

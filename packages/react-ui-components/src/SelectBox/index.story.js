@@ -141,7 +141,6 @@ storiesOf('SelectBox', module)
             <StoryWrapper>
                 <SelectBox
                     value={'opt1'}
-
                     onValueChange={action('onValueChange')}
                     displayLoadingIndicator={true}
                     placeholder={text('Placeholder', 'Select')}

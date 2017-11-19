@@ -16,7 +16,7 @@ import {$transform} from 'plow-js';
 @connect($transform({
     activeContentDimensions: selectors.CR.ContentDimensions.active,
     personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector,
-    focusedNodeIdentifier: selectors.CR.Nodes.focusedNodeIdentifierSelector
+    focusedNode: selectors.CR.Nodes.focusedSelector
 }))
 
 class PluginViewEditor extends React.PureComponent {
@@ -27,7 +27,7 @@ class PluginViewEditor extends React.PureComponent {
         i18nRegistry: PropTypes.object.isRequired,
         activeContentDimensions: PropTypes.object.isRequired,
         personalWorkspace: PropTypes.string,
-        focusedNodeIdentifier: PropTypes.string.isRequired
+        focusedNode: PropTypes.instanceOf(PluginViewEditor).isRequired
     };
 
     state = {
@@ -41,36 +41,37 @@ class PluginViewEditor extends React.PureComponent {
         return this.props.i18nRegistry.translate(placeholderLabel);
     }
 
-    state = {
-        isLoading: false,
-        views: []
-    };
+    transformPluginStructure(plugins) {
+        const pluginsList = [];
+        for (const key in plugins) {
+            if (plugins[key] === undefined || plugins[key].label === undefined) {
+                continue;
+            }
+            pluginsList.push({value: key, label: plugins[key].label});
+        }
+
+        return pluginsList;
+    }
 
     componentDidMount() {
-        const {personalWorkspace, activeContentDimensions, focusedNodeIdentifier} = this.props;
+        const {personalWorkspace, activeContentDimensions, focusedNode} = this.props;
 
-        console.log(focusedNodeIdentifier);
-        if (!focusedNodeIdentifier) {
+        if (!focusedNode) {
             return;
         }
 
         const {loadPluginViews} = backend.get().endpoints;
+        const pluginNode = focusedNode.get('properties');
 
-        if (!this.state.views.length) {
+        if (!this.state.views.length && pluginNode.size > 0) {
+            const pluginNodeIdentifier = pluginNode.get('plugin');
             this.setState({isLoading: true});
 
-            loadPluginViews(focusedNodeIdentifier, personalWorkspace, activeContentDimensions.toJS())
+            loadPluginViews(pluginNodeIdentifier, personalWorkspace, activeContentDimensions.toJS())
                 .then(views => {
-                    const viewsArray = [];
-                    for (const viewName in views) {
-                        if (views[viewName]) {
-                            viewsArray.push(views[viewName]);
-                        }
-                    }
-
                     this.setState({
                         isLoading: false,
-                        views: viewsArray
+                        views: this.transformPluginStructure(views)
                     });
                 });
         }
@@ -83,7 +84,6 @@ class PluginViewEditor extends React.PureComponent {
     render() {
         const {views, isLoading} = this.state;
 
-        console.log(views);
         return (
             <SelectBox
                 options={views}

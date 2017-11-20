@@ -92,6 +92,21 @@
 }
 
 .selectBox__twoIconIndention {
+    .selectBox__loadingIcon::after {
+        display: block;
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 24px;
+        top: 0;
+        right: 0;
+        background-color: #fff;
+        opacity: .15;
+        margin-top: var(--halfSpacing);
+    }
+}
+
+.selectBox__twoIconIndention {
     padding: 0 calc(var(--spacing) + var(--goldenUnit) + var(--goldenUnit)) 0 var(--spacing);
 }
 

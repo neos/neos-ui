@@ -3,7 +3,7 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 40px;
+    height: var(--goldenUnit);
     vertical-align: top;
 }
 .wrapper--highlight {
@@ -31,8 +31,8 @@
     position: relative;
     display: inline-block;
     text-overflow: clip;
-    height: 40px;
-    line-height: 40px;
+    height: var(--goldenUnit);
+    line-height: var(--goldenUnit);
     border: 0;
     background: var(--brandColorsContrastNeutral);
     min-width: 160px;
@@ -80,7 +80,7 @@
     composes: reset from './../reset.css';
     position: absolute;
     top: 0;
-    right: 0;
+    right: 41px;
     z-index: 1;
     display: block;
     width: var(--goldenUnit);
@@ -88,7 +88,15 @@
     text-align: center;
     background: transparent;
     color: #FFF;
-    line-height: 40px;
+    line-height: var(--goldenUnit);
+}
+
+.selectBox__twoIconIndention {
+    padding: 0 calc(var(--spacing) + var(--goldenUnit) + var(--goldenUnit)) 0 var(--spacing);
+}
+
+.selectBox__deleteIcon {
+    composes: selectBox__loadingIcon;
 }
 
 .selectBox__btnIcon {

@@ -13,7 +13,7 @@
     color: white;
     cursor: pointer;
     font-size: var(--baseFontSize);
-    padding: 0 38px 0 var(--spacing);
+    padding: 0 calc(var(--spacing) + var(--goldenUnit)) 0 var(--spacing);
     border: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -35,6 +35,18 @@
     right: 16px;
     top: 50%;
     transform: translateY(-50%);
+}
+.dropDown__chevron::after {
+    display: block;
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 24px;
+    top: 0;
+    right: 25px;
+    background-color: #fff;
+    opacity: .15;
+    margin-top: -5px;
 }
 .dropDown__contents {
     composes: reset from './../reset.css';

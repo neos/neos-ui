@@ -288,10 +288,17 @@ export default class SelectBox extends PureComponent {
             [theme['wrapper--highlight']]: (highlight && !isOpen)
         });
 
+        const showResetButton = !displayLoadingIndicator && allowEmpty && selectedValue;
+
+        let headerClass = theme.selectBox__btn;
+        if (showResetButton || displayLoadingIndicator) {
+            headerClass += ' ' + theme.selectBox__twoIconIndention;
+        }
+
         return (
             <div className={classNames}>
                 <DropDown.Stateless className={theme.selectBox} isOpen={isOpen} onToggle={this.handleDropdownToggle} onClose={this.handleDropdownClose}>
-                    <DropDown.Header className={theme.selectBox__btn} shouldKeepFocusState={false} showDropDownToggle={Boolean(options.length)}>
+                    <DropDown.Header className={headerClass} shouldKeepFocusState={false} showDropDownToggle={Boolean(options.length)}>
                         {icon ?
                             <IconComponent className={theme.selectBox__btnIcon} icon={icon}/> :
                             null
@@ -313,8 +320,8 @@ export default class SelectBox extends PureComponent {
                             <IconComponent className={theme.selectBox__loadingIcon} spin={true} icon="spinner"/> :
                             null
                         }
-                        {!displayLoadingIndicator && allowEmpty && selectedValue ?
-                            <IconButtonComponent className={theme.selectBox__loadingIcon} icon="times" onClick={this.handleDeleteClick}/> :
+                        {showResetButton ?
+                            <IconButtonComponent className={theme.selectBox__deleteIcon} icon="times" onClick={this.handleDeleteClick}/> :
                             null
                         }
                     </DropDown.Header>

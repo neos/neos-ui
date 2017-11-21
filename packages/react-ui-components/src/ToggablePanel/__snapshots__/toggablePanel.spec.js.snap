@@ -47,7 +47,7 @@ exports[`<ToggablePanel/> should render correctly. 1`] = `
 <StatelessToggablePanel
   HeadlineComponent={[Function]}
   IconButtonComponent={[Function]}
-  isOpen={false}
+  isOpen={true}
   onPanelToggle={[Function]}
   theme={
     Object {

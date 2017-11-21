@@ -49,17 +49,17 @@ describe('<ToggablePanel/>', () => {
     it('should initialize with a state of {isOpen: props.isOpen}.', () => {
         const wrapper = shallow(<ToggablePanel {...props}/>);
 
-        expect(wrapper.state('isOpen')).toBe(false);
+        expect(wrapper.state('isOpen')).toBe(true);
     });
 
     it('should toggle the "isOpen" state when calling the instance "toggle" method.', () => {
         const wrapper = shallow(<ToggablePanel {...props}/>);
 
-        expect(wrapper.state('isOpen')).toBe(false);
+        expect(wrapper.state('isOpen')).toBe(true);
 
         wrapper.instance().toggle();
 
-        expect(wrapper.state('isOpen')).toBe(true);
+        expect(wrapper.state('isOpen')).toBe(false);
     });
 
     it('should propagate the "isOpen" prop to the the "StatelessToggablePanel" component in case a "onPanelToggle" prop was provided.', () => {

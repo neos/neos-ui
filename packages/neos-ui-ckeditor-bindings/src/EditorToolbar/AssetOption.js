@@ -15,7 +15,7 @@ export default class AssetOption extends PureComponent {
         const option = this.props.option;
 
         return (
-            <ComplexOption {...this.props} imageUri={option.preview} label={option.label} secondaryLabel={option.loaderUri}/>
+            <ComplexOption {...this.props} imageUri={option.preview} label={option.label}/>
         );
     }
 }

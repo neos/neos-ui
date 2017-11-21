@@ -22,12 +22,14 @@
 
 .selectBox {
     composes: reset from './../reset.css';
+    composes: dropDown from './../DropDown/style.css';
     position: static;
     display: inline-block;
 }
 
 .selectBox__btn {
     composes: reset from './../reset.css';
+    composes: dropDown__btn from './../DropDown/style.css';
     position: relative;
     display: inline-block;
     text-overflow: clip;
@@ -218,7 +220,8 @@
 }
 
 .complexOption__image {
-    height: calc(var(--goldenUnit) * 1.5);
-    width: auto;
-    float: right;
+    max-height: 1.5em;
+    max-width: 1.5em;
+    margin-right: .75em;
+    float: left;
 }

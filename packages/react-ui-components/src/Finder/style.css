@@ -1,0 +1,38 @@
+.searchInput {
+    flex-grow: 1;
+}
+
+.searchInput {
+    /* magic number, sorry */
+    padding-left: 32px;
+}
+.searchInput--focused {
+    padding-left: 0;
+}
+
+.clearButton {
+    background: var(--brandColorsContrastNeutral);
+}
+
+.clearButton--focused {
+    background: white;
+}
+
+.clearButton--focused > i {
+    color: var(--brandColorsContrastNeutral);
+}
+
+.wrapper {
+    display: flex;
+    background: var(--brandColorsContrastNeutral);
+}
+
+.hidden {
+    display: none;
+}
+
+.placeholderIcon {
+    position: absolute;
+    left: var(--spacing);
+    line-height: 40px;
+}

@@ -35,7 +35,7 @@ export default class UserDropDown extends PureComponent {
                                 <input type="hidden" name="__csrfToken" value={csrfToken}/>
                                 <button type="submit" name="" value="logout">
                                     <Icon icon="power-off" aria-hidden="true" className={style.dropDown__itemIcon}/>
-                                    <I18n id="logout" fallback="Logout"/>
+                                    <I18n id="logout" sourceName="Main" packageKey="Neos.Neos" fallback="Logout"/>
                                 </button>
                             </form>
                         </li>
@@ -48,7 +48,7 @@ export default class UserDropDown extends PureComponent {
                         <li className={style.dropDown__item}>
                             <a title="User Settings" href="/neos/user/usersettings">
                                 <Icon icon="wrench" aria-hidden="true" className={style.dropDown__itemIcon}/>
-                                <I18n id="userSettings_label" sourceName="Modules" fallback="User Settings"/>
+                                <I18n id="userSettings.label" sourceName="Modules" packageKey="Neos.Neos" fallback="User Settings"/>
                             </a>
                         </li>
                     </DropDown.Contents>

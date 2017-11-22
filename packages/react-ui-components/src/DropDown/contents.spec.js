@@ -8,21 +8,21 @@ describe('<ShallowDropDownContents/>', () => {
 
     beforeEach(() => {
         props = {
-    children: 'Foo children',
-    isOpen: false,
-    closeDropDown: () => null,
-    theme: {
-        'dropDown__contents': 'baseDropDownContentsClassName',
-        'dropDown__contents--isOpen': 'openDropDownContentsClassName'
-    }
-};
+            children: 'Foo children',
+            isOpen: false,
+            closeDropDown: () => null,
+            theme: {
+                'dropDown__contents': 'baseDropDownContentsClassName',
+                'dropDown__contents--isOpen': 'openDropDownContentsClassName'
+            }
+        };
     });
 
     it('should render correctly.', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
-});
+    });
 
     it('should allow the propagation of "className" with the "className" prop.', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} className="fooClassName"/>);
@@ -34,7 +34,7 @@ describe('<ShallowDropDownContents/>', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} foo="bar"/>);
 
         expect(wrapper.prop('foo')).toBe('bar');
-});
+    });
 
     it('should render the themes "dropDown__contents--isOpen" className in case the "isOpen" prop is truthy.', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} isOpen/>);
@@ -46,13 +46,13 @@ describe('<ShallowDropDownContents/>', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} isOpen/>);
 
         expect(wrapper.html().includes('aria-hidden="false"')).toBeTruthy();
-});
+    });
 
     it('should render a aria-label="dropdown" and role="button" attribute in the wrapper in case the "isOpen" prop is truthy.', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} isOpen/>);
 
         expect(wrapper.html().includes('aria-label="dropdown"')).toBeTruthy();
-});
+    });
 
     it('should call the "closeDropDown" prop when clicking on the wrapper.', () => {
         const closeDropDown = jest.fn();

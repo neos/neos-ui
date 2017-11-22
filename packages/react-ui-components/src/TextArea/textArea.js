@@ -5,6 +5,10 @@ import TextareaAutoresize from 'react-textarea-autosize';
 import enhanceWithClickOutside from 'react-click-outside';
 
 class TextArea extends PureComponent {
+    state = {
+        isFocused: false
+    };
+
     static propTypes = {
         /**
          * Array of validation errors
@@ -65,25 +69,22 @@ class TextArea extends PureComponent {
         expandedRows: 6
     };
 
-    constructor(props) {
-        super(props);
+    handleValueChange = e => {
+        const value = e.target.value;
+        const {onChange} = this.props;
 
-        this.state = {
-            isFocused: false
-        };
-
-        this.handleValueChange = this.handleValueChange.bind(this);
-        this.handleClickOutside = this.handleClickOutside.bind(this);
-        this.handleOnClick = this.handleOnClick.bind(this);
+        if (onChange) {
+            onChange(value);
+        }
     }
 
-    handleOnClick() {
+    handleOnClick = () => {
         this.setState({
             isFocused: true
         });
     }
 
-    handleClickOutside() {
+    handleClickOutside = () => {
         this.setState({
             isFocused: false
         });
@@ -130,15 +131,6 @@ class TextArea extends PureComponent {
                 {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>
         );
-    }
-
-    handleValueChange(e) {
-        const value = e.target.value;
-        const {onChange} = this.props;
-
-        if (onChange) {
-            onChange(value);
-        }
     }
 }
 

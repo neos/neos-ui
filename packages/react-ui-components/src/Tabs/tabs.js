@@ -4,6 +4,10 @@ import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 
 export default class Tabs extends PureComponent {
+    state = {
+        activeTab: 0
+    };
+
     static propTypes = {
         /**
          * The index of the active tab, defaults to 0.
@@ -43,13 +47,6 @@ export default class Tabs extends PureComponent {
         activeTab: 0
     };
 
-    constructor(props) {
-        super(props);
-
-        this.handleTabNavItemClick = this.activateTabForIndex.bind(this);
-        this.state = {activeTab: props.activeTab};
-    }
-
     componentWillReceiveProps(newProps) {
         const newActiveTab = newProps.activeTab;
         const {activeTab} = this.state;
@@ -59,18 +56,6 @@ export default class Tabs extends PureComponent {
                 activeTab: newActiveTab
             });
         }
-    }
-
-    render() {
-        const {theme, className} = this.props;
-        const finalClassName = mergeClassNames(theme.tabs, className);
-
-        return (
-            <div className={finalClassName} role="tablist">
-                {this.renderMenuItems()}
-                {this.renderPanels()}
-            </div>
-        );
     }
 
     getActiveTab() {
@@ -109,7 +94,7 @@ export default class Tabs extends PureComponent {
         );
     }
 
-    activateTabForIndex(index) {
+    handleTabNavItemClick = index => {
         this.setState({activeTab: index});
     }
 
@@ -136,6 +121,18 @@ export default class Tabs extends PureComponent {
                         </div>
                     );
                 })}
+            </div>
+        );
+    }
+
+    render() {
+        const {theme, className} = this.props;
+        const finalClassName = mergeClassNames(theme.tabs, className);
+
+        return (
+            <div className={finalClassName} role="tablist">
+                {this.renderMenuItems()}
+                {this.renderPanels()}
             </div>
         );
     }
@@ -188,10 +185,8 @@ export class TabMenuItem extends PureComponent {
         isActive: false
     };
 
-    constructor(props) {
-        super(props);
-
-        this.handleClick = this.handleClick.bind(this);
+    handleClick = () => {
+        this.props.onClick(this.props.index);
     }
 
     render() {
@@ -228,9 +223,5 @@ export class TabMenuItem extends PureComponent {
                 </button>
             </li>
         );
-    }
-
-    handleClick() {
-        this.props.onClick(this.props.index);
     }
 }

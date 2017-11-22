@@ -62,24 +62,6 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
         closeDropDown: PropTypes.func.isRequired
     };
 
-    constructor(props, context) {
-        super(props, context);
-
-        this.handleToggle = event => {
-            if (event) {
-                event.stopPropagation();
-            }
-
-            this.props.onToggle(event);
-        };
-        this.handleClose = event => {
-            if (event) {
-                event.stopPropagation();
-            }
-            this.props.onClose(event);
-        };
-    }
-
     getChildContext() {
         return {
             toggleDropDown: this.handleToggle,
@@ -87,9 +69,24 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
         };
     }
 
-    handleClickOutside() {
+    handleToggle = event => {
+        if (event) {
+            event.stopPropagation();
+        }
+
+        this.props.onToggle(event);
+    };
+
+    handleClickOutside = () => {
         this.handleClose();
     }
+
+    handleClose = event => {
+        if (event) {
+            event.stopPropagation();
+        }
+        this.props.onClose(event);
+    };
 
     render() {
         const {children, className, theme, style, padded, ...restProps} = this.props;
@@ -122,10 +119,9 @@ export class DropDownWrapper extends PureComponent {
     static propTypes = wrapperPropTypes;
     static defaultProps = defaultProps;
 
-    constructor(props) {
-        super(props);
-        this.state = {isOpen: Boolean(props.isOpen)};
-    }
+    state = {
+        isOpen: Boolean(this.props.isOpen)
+    };
 
     handleToggle = () => {
         if (this.props.onToggle) {

@@ -11,7 +11,8 @@ const env = require('./environment');
 const rootPath = env.rootPath || __dirname;
 
 const extractCss = new ExtractTextPlugin({
-    filename: '[name].[contenthash].css'
+    publicPath: './../',
+    filename: 'Styles/[name].css'
 });
 
 const webpackConfig = {
@@ -67,7 +68,7 @@ const webpackConfig = {
             },
             {
                 test: /\.vanilla-css$/,
-                loader: extractCss.extract({
+                use: extractCss.extract({
                     use: [{
                         loader: 'css-loader'
                     }],
@@ -78,6 +79,7 @@ const webpackConfig = {
     },
 
     plugins: [
+        extractCss,
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)

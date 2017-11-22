@@ -21,7 +21,7 @@
     outline: none;
 }
 
-:global(.neos-inline-editable:hover) {
+.inlineEditorIsInitialized:hover {
     outline-offset: .5em;
     outline: 2px dashed var(--brandColorsPrimaryBlue);
 }

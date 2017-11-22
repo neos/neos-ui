@@ -6,6 +6,10 @@ import mergeClassNames from 'classnames';
 const validStyleKeys = ['condensed'];
 
 export default class ToggablePanel extends PureComponent {
+    state = {
+        isOpen: true
+    };
+
     static propTypes = {
         /**
          * This prop controls if the contents are visible or not.
@@ -30,17 +34,8 @@ export default class ToggablePanel extends PureComponent {
     };
 
     static defaultProps = {
-        isOpen: false
+        isOpen: true
     };
-
-    constructor(props, context) {
-        super(props, context);
-
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-            isOpen: props.isOpen
-        };
-    }
 
     componentWillReceiveProps(newProps) {
         const {isOpen} = newProps;
@@ -49,6 +44,10 @@ export default class ToggablePanel extends PureComponent {
         if (isOpen !== this.state.isOpen && !isStateLess) {
             this.setState({isOpen});
         }
+    }
+
+    toggle = () => {
+        this.setState({isOpen: !this.state.isOpen});
     }
 
     render() {
@@ -69,10 +68,6 @@ export default class ToggablePanel extends PureComponent {
                 {this.props.children}
             </StatelessToggablePanel>
         );
-    }
-
-    toggle() {
-        this.setState({isOpen: !this.state.isOpen});
     }
 }
 
@@ -134,11 +129,11 @@ export class StatelessToggablePanel extends PureComponent {
     }
 
     render() {
-        const {children, className, theme, style} = this.props;
+        const {children, className, theme, style, isOpen} = this.props;
         const finalClassName = mergeClassNames({
             [className]: className && className.length,
             [theme.panel]: true,
-            [theme['panel--isOpen']]: this.props.isOpen,
+            [theme['panel--isOpen']]: isOpen,
             [theme[`panel--${style}`]]: validStyleKeys.includes(style)
         });
 
@@ -146,7 +141,7 @@ export class StatelessToggablePanel extends PureComponent {
             <section className={finalClassName}>
                 {React.Children.map(
                     children,
-                    child => child.type ? <child.type {...child.props} isPanelOpen={this.props.isOpen}/> : child
+                    child => child.type ? <child.type {...child.props} isPanelOpen={isOpen}/> : child
                 )}
             </section>
         );

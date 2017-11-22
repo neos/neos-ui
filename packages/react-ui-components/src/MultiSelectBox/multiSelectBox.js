@@ -63,7 +63,7 @@ export default class MultiSelectBox extends PureComponent {
         /**
          * This prop gets called when requested to create a new element
          */
-        onCreateNew: PropTypes.func.isRequired,
+        onCreateNew: PropTypes.func,
 
         /**
          * "Create new" label
@@ -79,6 +79,11 @@ export default class MultiSelectBox extends PureComponent {
          * This prop is an icon for the placeholder.
          */
         placeholderIcon: PropTypes.string,
+
+        /**
+         * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
+         */
+        loadingLabel: PropTypes.string,
 
         /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
@@ -133,13 +138,9 @@ export default class MultiSelectBox extends PureComponent {
         IconButtonComponent: PropTypes.any.isRequired
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            draggableValues: ensureIsArray(this.props.values)
-        };
-    }
+    state = {
+        draggableValues: ensureIsArray(this.props.values)
+    };
 
     componentWillReceiveProps(nextProps) {
         if (this.props.values !== nextProps.values) {
@@ -154,6 +155,7 @@ export default class MultiSelectBox extends PureComponent {
             searchOptions,
             values,
             optionValueField,
+            loadingLabel,
             displayLoadingIndicator,
             theme,
             placeholder,
@@ -212,6 +214,7 @@ export default class MultiSelectBox extends PureComponent {
                     options={filteredSearchOptions}
                     value=""
                     optionValueField={optionValueField}
+                    loadingLabel={loadingLabel}
                     displayLoadingIndicator={displayLoadingIndicator}
                     placeholder={placeholder}
                     placeholderIcon={placeholderIcon}

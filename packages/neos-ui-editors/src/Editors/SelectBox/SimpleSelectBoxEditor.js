@@ -41,13 +41,9 @@ export default class SimpleSelectBoxEditor extends PureComponent {
         minimumResultsForSearch: 5
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchTerm: ''
-        };
-    }
+    state = {
+        searchTerm: ''
+    };
 
     render() {
         const {commit, value, i18nRegistry, highlight} = this.props;

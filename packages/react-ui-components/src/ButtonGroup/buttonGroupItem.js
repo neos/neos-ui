@@ -9,12 +9,7 @@ export default class ButtonGroupItem extends PureComponent {
         element: PropTypes.any.isRequired
     };
 
-    constructor(props) {
-        super(props);
-        this.handleButtonClick = this.handleButtonClick.bind(this);
-    }
-
-    handleButtonClick() {
+    handleButtonClick = () => {
         this.props.onClick(this.props.id);
     }
 

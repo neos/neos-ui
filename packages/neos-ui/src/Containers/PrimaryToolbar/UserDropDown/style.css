@@ -12,11 +12,13 @@
     height: var(--goldenUnit);
     border: 0;
     background-color: var(--brandColorsContrastDarker);
+    text-align: right;
 }
 .dropDown__btnIcon {
     margin-right: .5em;
 }
 .dropDown__contents {
+    position: relative;
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
 }

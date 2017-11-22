@@ -136,6 +136,14 @@ export const focusedNodeTypeSelector = createSelector(
         $get('nodeType', focused)
 );
 
+export const focusedNodeIdentifierSelector = createSelector(
+    [
+        focusedSelector
+    ],
+    focused =>
+        $get('identifier', focused)
+);
+
 export const focusedParentSelector = createSelector(
     [
         focusedSelector,

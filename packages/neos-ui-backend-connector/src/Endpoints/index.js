@@ -111,6 +111,16 @@ export default routes => {
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const loadPluginViews = (identifier, workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: urlWithParams(routes.core.content.loadPluginViews, {identifier, workspaceName, dimensions}),
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })).then(response => response.json())
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         const data = new FormData();
         data.append('__siteNodeName', siteNodeName);
@@ -341,6 +351,7 @@ export default routes => {
         changeBaseWorkspace,
         createImageVariant,
         loadMasterPlugins,
+        loadPluginViews,
         uploadAsset,
         assetSearch,
         assetDetail,

@@ -185,7 +185,8 @@ export class Header extends PureComponent {
          * If not provided defaults are chevron-up and chevron-down
          */
         openedIcon: PropTypes.string,
-        closedIcon: PropTypes.string
+        closedIcon: PropTypes.string,
+        toggleButtonId: PropTypes.string
     };
 
     static defaultProps = {
@@ -208,6 +209,7 @@ export class Header extends PureComponent {
             closedIcon,
             theme,
             noPadding,
+            toggleButtonId,
             ...rest
         } = this.props;
         const {onPanelToggle} = this.context;
@@ -228,6 +230,7 @@ export class Header extends PureComponent {
                     className={theme.panel__toggleBtn}
                     icon={isPanelOpen ? openedIcon : closedIcon}
                     onClick={onPanelToggle}
+                    id={toggleButtonId}
                     />
             </div>
         );

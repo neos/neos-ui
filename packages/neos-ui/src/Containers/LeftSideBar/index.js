@@ -69,7 +69,7 @@ export default class LeftSideBar extends PureComponent {
                 <hr/>
 
                 <ToggablePanel className={bottomClassNames} onPanelToggle={toggleContentTree} isOpen={isHiddenContentTree} closesToBottom={true}>
-                    <ToggablePanel.Header noPadding={true} openedIcon={openedIcon} closedIcon={closedIcon}>
+                    <ToggablePanel.Header noPadding={true} openedIcon={openedIcon} closedIcon={closedIcon} toggleButtonId="neos-contentTree-toggle">
                         <ContentTreeToolbar/>
                     </ToggablePanel.Header>
                     <ToggablePanel.Contents noPadding={true}>

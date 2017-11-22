@@ -50,7 +50,7 @@ storiesOf('ToggablePanel', module)
         'ToggablePanel - Stateless',
         () => (
             <StoryWrapper>
-                <ToggablePanel isOpen={boolean('Is Open?', true)} togglePanel={action('toggle')}>
+                <ToggablePanel isOpen={boolean('Is Open?', true)} onTogglePanel={action('toggle')}>
                     <ToggablePanel.Header>
                         Header
                     </ToggablePanel.Header>

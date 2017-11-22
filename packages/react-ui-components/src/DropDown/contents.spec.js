@@ -52,7 +52,6 @@ describe('<ShallowDropDownContents/>', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} isOpen/>);
 
         expect(wrapper.html().includes('aria-label="dropdown"')).toBeTruthy();
-        expect(wrapper.html().includes('role="button"')).toBeTruthy();
     });
 
     it('should call the "closeDropDown" prop when clicking on the wrapper.', () => {

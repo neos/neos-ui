@@ -31,23 +31,23 @@ export default class UserDropDown extends PureComponent {
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
                         <li className={style.dropDown__item}>
-                            <form title="Logout" action="/neos/logout" method="post">
+                            <form title="Logout" action="/neos/logout" method="post" role="presentation">
                                 <input type="hidden" name="__csrfToken" value={csrfToken}/>
                                 <button type="submit" name="" value="logout">
-                                    <Icon icon="power-off" className={style.dropDown__itemIcon}/>
+                                    <Icon icon="power-off" aria-hidden="true" className={style.dropDown__itemIcon}/>
                                     <I18n id="logout" sourceName="Main" packageKey="Neos.Neos" fallback="Logout"/>
                                 </button>
                             </form>
                         </li>
                         <li className={style.dropDown__item}>
                             <a title="User Settings" href="/neos!/deactivate">
-                                <Icon icon="frown-o" className={style.dropDown__itemIcon}/>
+                                <Icon icon="frown-o" aria-hidden="true" className={style.dropDown__itemIcon}/>
                                 <I18n id="userSettings_swtichUi" sourceName="Modules" fallback="Switch to old UI"/>
                             </a>
                         </li>
                         <li className={style.dropDown__item}>
                             <a title="User Settings" href="/neos/user/usersettings">
-                                <Icon icon="wrench" className={style.dropDown__itemIcon}/>
+                                <Icon icon="wrench" aria-hidden="true" className={style.dropDown__itemIcon}/>
                                 <I18n id="userSettings.label" sourceName="Modules" packageKey="Neos.Neos" fallback="User Settings"/>
                             </a>
                         </li>

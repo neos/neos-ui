@@ -6,7 +6,7 @@ exports[`<ShallowDropDownContents/> should render correctly. 1`] = `
   aria-label="dropdown"
   className="baseDropDownContentsClassName"
   onClick={[Function]}
-  role="button"
+  role="listbox"
 >
   Foo children
 </ul>

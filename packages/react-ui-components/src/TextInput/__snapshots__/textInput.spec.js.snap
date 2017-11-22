@@ -3,6 +3,8 @@
 exports[`<TextInput/> should render correctly. 1`] = `
 <div>
   <input
+    aria-disabled="false"
+    aria-multiline="false"
     className=""
     onChange={[Function]}
     onKeyPress={[Function]}

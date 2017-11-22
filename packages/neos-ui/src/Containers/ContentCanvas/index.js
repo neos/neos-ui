@@ -108,6 +108,8 @@ export default class ContentCanvas extends PureComponent {
                         contentDidUpdate={this.onFrameChange}
                         onLoad={this.handleFrameAccess}
                         sandbox="allow-same-origin allow-scripts allow-forms"
+                        role="region"
+                        aria-live="assertive"
                         >
                         {InlineUI && <InlineUI/>}
                     </Frame>)

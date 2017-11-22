@@ -25,7 +25,7 @@ const ShallowDropDownContents = props => {
             className={finalClassName}
             aria-hidden={isOpen ? 'false' : 'true'}
             aria-label="dropdown"
-            role="button"
+            role="listbox"
             onClick={closeDropDown}
             >
             {children}

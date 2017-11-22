@@ -5,6 +5,7 @@ exports[`<Tree/> should render correctly. 1`] = `
   className="undefined"
   horizontalStrength={[Function]}
   onScrollChange={[Function]}
+  role="tree"
   strengthMultiplier={20}
   tabIndex="0"
   verticalStrength={[Function]}

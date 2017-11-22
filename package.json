@@ -80,6 +80,7 @@
     "d3-time": "^1.0.7",
     "debug": "^3.1.0",
     "file-loader": "^0.10.0",
+    "hash-sum": "^1.0.2",
     "hashlru": "2.2.0",
     "he": "^1.1.1",
     "immutable": "^3.8.0",

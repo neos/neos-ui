@@ -40,6 +40,7 @@ export class Tree extends PureComponent {
                 verticalStrength={verticalStrength}
                 className={classNames}
                 tabIndex="0"
+                role="tree"
                 >
                 <NodeComponent {...rest}>
                     {this.props.children}

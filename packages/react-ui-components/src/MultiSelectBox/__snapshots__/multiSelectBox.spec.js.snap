@@ -6,6 +6,7 @@ exports[`<MultiSelectBox/> should render correctly. 1`] = `
     className=""
   />
   <Component
+    onCreateNew={[Function]}
     onValueChange={[Function]}
     optionValueField="value"
     options={Array []}

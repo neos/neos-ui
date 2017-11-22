@@ -120,6 +120,8 @@ class TextArea extends PureComponent {
                     {...rest}
                     className={classNames}
                     role="textbox"
+                    aria-multiline="true"
+                    aria-disabled={disabled ? 'true' : 'false'}
                     placeholder={placeholder}
                     disabled={disabled}
                     onChange={this.handleValueChange}

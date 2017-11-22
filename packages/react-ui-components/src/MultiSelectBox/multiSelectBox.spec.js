@@ -10,6 +10,7 @@ describe('<MultiSelectBox/>', () => {
     beforeEach(() => {
         props = {
             onValuesChange: jest.fn(),
+            onCreateNew: jest.fn(),
             theme: {},
             values: [],
             SelectBoxComponent: createStubComponent(),

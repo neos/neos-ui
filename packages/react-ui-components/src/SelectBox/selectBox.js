@@ -316,6 +316,7 @@ export default class SelectBox extends PureComponent {
                             <span className={theme.dropDown__itemLabel}>{label}</span>
                         }
 
+                        {showResetButton || displayLoadingIndicator ? <span className={theme.selectBox__iconSeparator}/> : null}
                         {displayLoadingIndicator ?
                             <IconComponent className={theme.selectBox__loadingIcon} spin={true} icon="spinner"/> :
                             null

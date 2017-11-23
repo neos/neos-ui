@@ -232,6 +232,15 @@ export default class SelectBox extends PureComponent {
         }
     }
 
+    getAmountofColumns(showResetButton) {
+        const {
+            options,
+            displayLoadingIndicator
+        } = this.props;
+
+        return options.length > 0 && (showResetButton || displayLoadingIndicator) ? 2 : 1;
+    }
+
     render() {
         const {
             options,
@@ -289,9 +298,10 @@ export default class SelectBox extends PureComponent {
         });
 
         const showResetButton = !displayLoadingIndicator && allowEmpty && selectedValue;
+        const amountOfIconColumns = this.getAmountofColumns(showResetButton);
 
         let headerClass = theme.selectBox__btn;
-        if (showResetButton || displayLoadingIndicator) {
+        if (amountOfIconColumns > 1) {
             headerClass += ' ' + theme.selectBox__twoIconIndention;
         }
 
@@ -316,7 +326,7 @@ export default class SelectBox extends PureComponent {
                             <span className={theme.dropDown__itemLabel}>{label}</span>
                         }
 
-                        {showResetButton || displayLoadingIndicator ? <span className={theme.selectBox__iconSeparator}/> : null}
+                        {amountOfIconColumns > 1 ? <span className={theme.selectBox__iconSeparator}/> : null}
                         {displayLoadingIndicator ?
                             <IconComponent className={theme.selectBox__loadingIcon} spin={true} icon="spinner"/> :
                             null

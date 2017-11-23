@@ -60,7 +60,8 @@ export default ({isMulti}) => WrappedComponent => {
         }
 
         resolveValue = () => {
-            if (this.props.value) {
+            const valueProvided = isMulti ? Array.isArray(this.props.value) : this.props.value;
+            if (valueProvided) {
                 this.setState({isLoading: true});
                 const resolver = isMulti ? this.props.nodeLookupDataLoader.resolveValues.bind(this.props.nodeLookupDataLoader) : this.props.nodeLookupDataLoader.resolveValue.bind(this.props.nodeLookupDataLoader);
                 resolver(this.getDataLoaderOptions(), this.props.value)

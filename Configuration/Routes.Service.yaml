@@ -24,7 +24,7 @@
 
 -
   name: 'Change Base Workspace'
-  uriPattern: 'changeBaseWorkspace'
+  uriPattern: 'change-base-workspace'
   defaults:
     '@controller': 'BackendService'
     '@action': 'changeBaseWorkspace'

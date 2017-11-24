@@ -22,7 +22,8 @@ import style from './style.css';
 }), {
     startLoading: actions.UI.ContentCanvas.startLoading,
     stopLoading: actions.UI.ContentCanvas.stopLoading,
-    requestRegainControl: actions.UI.ContentCanvas.requestRegainControl
+    requestRegainControl: actions.UI.ContentCanvas.requestRegainControl,
+    requestLogin: actions.UI.ContentCanvas.requestLogin
 })
 @neos(globalRegistry => ({
     editPreviewModes: globalRegistry.get('frontendConfiguration').get('editPreviewModes'),
@@ -39,6 +40,7 @@ export default class ContentCanvas extends PureComponent {
         startLoading: PropTypes.func.isRequired,
         stopLoading: PropTypes.func.isRequired,
         requestRegainControl: PropTypes.func.isRequired,
+        requestLogin: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
 
         editPreviewModes: PropTypes.object.isRequired,
@@ -131,10 +133,20 @@ export default class ContentCanvas extends PureComponent {
     }
 
     handleFrameAccess = iframe => {
-        const {startLoading, requestRegainControl} = this.props;
+        const {startLoading, requestRegainControl, requestLogin} = this.props;
 
         try {
             if (iframe) {
+                // TODO: Find a more reliable way to determine login page
+                if (iframe.contentWindow.document.querySelector('.neos-login-main')) {
+                    //
+                    // We're on the login page:
+                    // Request login dialog and prevent loop
+                    //
+                    requestLogin();
+                    return;
+                }
+
                 iframe.contentWindow.addEventListener('beforeunload', event => {
                     //
                     // If we cannot guess the link that is responsible for

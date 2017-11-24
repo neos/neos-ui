@@ -45,7 +45,8 @@ function * watchControlOverIFrame() {
         const src = yield select($get('ui.contentCanvas.src'));
         const waitForNextAction = yield race([
             take(actionTypes.UI.ContentCanvas.SET_SRC),
-            take(actionTypes.UI.ContentCanvas.REQUEST_REGAIN_CONTROL)
+            take(actionTypes.UI.ContentCanvas.REQUEST_REGAIN_CONTROL),
+            take(actionTypes.UI.ContentCanvas.REQUEST_LOGIN)
         ]);
         const nextAction = Object.keys(waitForNextAction).map(k => waitForNextAction[k])[0];
 
@@ -57,6 +58,20 @@ function * watchControlOverIFrame() {
             //
             yield delay(0);
             yield put(actions.UI.ContentCanvas.setSrc(nextAction.payload.src || src));
+            continue;
+        }
+
+        if (nextAction.type === actionTypes.UI.ContentCanvas.REQUEST_LOGIN) {
+            yield put(actions.System.authenticationTimeout());
+            yield take(actionTypes.System.REAUTHENTICATION_SUCCEEDED);
+
+            //
+            // We need to delay, so that the iframe gets cleared before we load a new src
+            //
+            yield put(actions.UI.ContentCanvas.setSrc(''));
+            yield delay(0);
+            yield put(actions.UI.ContentCanvas.setSrc(src));
+            continue;
         }
     }
 }

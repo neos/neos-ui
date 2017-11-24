@@ -22,7 +22,7 @@
         color: var(--brandColorsPrimaryBlue);
     }
 }
-.header__chevron--isCollapsed > i {
+.header__chevron--isCollapsed > span {
     transform: translateY(3px) translateX(-2px) rotate(-90deg);
 }
 .header__chevron--isHiddenInIndex,

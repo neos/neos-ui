@@ -46,7 +46,7 @@ const Icon = props => {
         [theme['icon--spin']]: props.spin
     });
 
-    return <span role="img" aria-label={label} className={classNames}/>;
+    return <i role="img" aria-label={label} className={classNames}/>;
 };
 Icon.propTypes = {
     /**

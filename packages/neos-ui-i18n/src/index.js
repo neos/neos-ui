@@ -27,12 +27,6 @@ export default class I18n extends PureComponent {
         i18nRegistry: PropTypes.object.isRequired
     };
 
-    static defaultProps = {
-        packageKey: null,
-        sourceName: null,
-        params: {}
-    };
-
     render() {
         const {i18nRegistry, packageKey, sourceName, params, id, fallback} = this.props;
 

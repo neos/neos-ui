@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {$get} from 'plow-js';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import mergeClassNames from 'classnames';
 import SearchInput from '../Finder/SearchInput';
@@ -134,7 +135,7 @@ export default class SelectBox extends PureComponent {
 
     state = {
         hasFocus: false,
-        selectedIndex: -1
+        focusedValue: ''
     };
 
     isCreateNewEnabled = () => this.props.onCreateNew && this.props.searchTerm;
@@ -180,6 +181,7 @@ export default class SelectBox extends PureComponent {
     }
 
     prepareOptions() {
+        // TODO remove
         const {
             options,
             optionValueField
@@ -199,17 +201,25 @@ export default class SelectBox extends PureComponent {
             displaySearchBox,
             TextInputComponent,
             IconButtonComponent,
-            IconComponent
+            IconComponent,
+            optionValueField,
+            optionComponent
         } = this.props;
+
+        const {
+            focusedValue
+        } = this.state;
 
         const selectWrapperClassNames = mergeClassNames({
             [theme['wrapper--highlight']]: highlight
         });
 
         const preparedOptions = this.prepareOptions();
-        const selectedOption = value ? preparedOptions.reduce((selected, current) => {
-            return (current.__value === value ? current : selected);
-        }, null) : {__value: value, label: value};
+        //const selectedOption = value ? preparedOptions.reduce((selected, current) => {
+        //    return (current.__value === value ? current : selected);
+        //}, null) : {__value: value, label: value};
+
+        const optionValueAccessor = $get([optionValueField]);
 
         if (displaySearchBox && !value) {
             return (
@@ -238,9 +248,12 @@ export default class SelectBox extends PureComponent {
             <div className={selectWrapperClassNames}>
                 <Selector
                     options={preparedOptions}
-                    previewRenderer={this.renderOption}
-                    selectedValue={value}
+                    preview={optionComponent}
+                    value={value}
+                    focusedValue={focusedValue}
                     onChange={this.handleValueChange}
+                    optionValueAccessor={optionValueAccessor}
+                    onOptionFocus={this.handleOptionFocusChange}
                     theme={theme}
                     IconComponent={IconComponent}
                     TextInputComponent={TextInputComponent}
@@ -297,25 +310,27 @@ export default class SelectBox extends PureComponent {
      * @returns {JSX} option element
      */
     renderOption = (wrappingClickHandler, option, index) => {
-        const {theme, IconComponent, optionComponent, optionValueField} = this.props;
+        throw new Error("NOT USED ANYMORE!!!");
+        const {theme, optionComponent, optionValueField} = this.props;
         const selectedIndex = this.state.selectedIndex;
         const value = option[optionValueField];
         const onClick = () => {
             wrappingClickHandler(value);
         };
         const isActive = index === selectedIndex;
-        const className = isActive ? theme['selectBox__item--isSelectable--active'] : '';
+        //
 
         const setIndex = () => {
-            this.setSelectedIndex(index);
+            
         };
 
         const OptionComponent = optionComponent;
         // onMouseEnter doesn't work on OptionComponent
-        return <div key={index} onMouseEnter={setIndex} role="option"><OptionComponent className={className} isActive={isActive} option={option} key={index} onClick={onClick} /></div>;
+        return <OptionComponent key={index} className={className} isActive={isActive} option={option} onClick={onClick} onMouseEnter={setIndex}/>;
     }
 
     setSelectedIndex = selectedIndex => {
+        // TODO remove
         if (selectedIndex !== this.state.selectedIndex) {
             this.setState({selectedIndex});
         }
@@ -323,5 +338,13 @@ export default class SelectBox extends PureComponent {
 
     handleDeleteClick = () => {
         this.handleValueChange('');
+    }
+
+    handleOptionFocusChange = option => {
+        const {optionValueField} = this.props;
+        const optionValueAccessor = $get([optionValueField]);
+        this.setState({
+            focusedValue: optionValueAccessor(option)
+        });
     }
 }

@@ -22,15 +22,35 @@ export default class Selector extends PureComponent {
                 group: PropTypes.string
             })
         ),
-
-        previewRenderer: PropTypes.func.isRequired,
-
         /**
          * This prop represents the current selected value.
          */
-        selectedValue: PropTypes.string,
+        value: PropTypes.string,
+        
+
+        // TODO: must be a react component CLASS
+        // TODO: "Preview" (rename as it is react cmp.)
+        preview: PropTypes.any.isRequired,
+
+
+        // empty option list handling should happen inside here
+
+
+
+        // TODO: must be a react component CLASS
+        ActionRenderer: PropTypes.any,
+        onAction: PropTypes.func,
+
+
+        
+        /**
+         * The value the user has not yet selected, but has hovered over with his mouse.
+         */
+        focusedValue: PropTypes.string,
 
         onChange: PropTypes.func.isRequired,
+        onOptionFocus: PropTypes.func.isRequired,
+
         theme: PropTypes.object.isRequired,
         IconComponent: PropTypes.any.isRequired,
         TextInputComponent: PropTypes.any.isRequired,
@@ -38,8 +58,7 @@ export default class Selector extends PureComponent {
     };
 
     state = {
-        isOpen: false,
-        selectedIndex: -1
+        isOpen: false
     };
 
     handleChange = newValue => {
@@ -47,17 +66,16 @@ export default class Selector extends PureComponent {
         this.props.onChange(newValue);
     }
 
-    wrappedPreviewRenderer = (item, index) => {
+    /*wrappedPreviewRenderer = (item, index) => {
         return this.props.previewRenderer(this.handleChange, item, index);
-    }
+    }*/
 
     handleDropdownToggle = () => {
         if (this.state.isOpen) {
             // reset selected index to not get falsy preselected values
             // if dropdown is opened more than once
             this.setState({
-                isOpen: false,
-                selectedIndex: -1
+                isOpen: false
             });
         } else {
             this.setState({
@@ -114,15 +132,16 @@ export default class Selector extends PureComponent {
     render() {
         const {
             options,
-            selectedValue,
+            optionValueAccessor,
+            value,
             theme,
             IconComponent
         } = this.props;
 
         const {isOpen} = this.state;
 
-        const selectedOption = options.find(option => option.__value === selectedValue);
-        const loading = selectedValue && !selectedOption;
+        const selectedOption = options.find(option => optionValueAccessor(option) === value);
+        const loading = value && !selectedOption;
 
         const groupedOptions = this.getGroupedOptions(options);
 
@@ -137,9 +156,46 @@ export default class Selector extends PureComponent {
                 <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
                     {hasMultipleGroups ? // skip rendering of groups if there are none or only one group
                         Object.entries(groupedOptions).map(this.renderGroup) :
-                        options.map(this.wrappedPreviewRenderer)}
+                        options.map(this.renderOption)}
                 </DropDown.Contents>
             </DropDown.Stateless>
         );
+    }
+
+    renderOption = (option, index) => {
+        const {
+            preview,
+            value,
+            focusedValue,
+            optionValueAccessor
+        } = this.props;
+
+        console.log("RENDER OPTION", focusedValue, value);
+        const Preview = preview;
+        const isHighlighted = optionValueAccessor(option) === (focusedValue || value);
+
+        if (!Preview) {
+            throw new Error("Preview component was undefined in Selector");
+        }
+
+        return (
+            <Preview
+                key={index}
+                isHighlighted={isHighlighted}
+                option={option}
+                onClick={this.handlePreviewClick(option)}
+                onMouseEnter={this.handlePreviewMouseEnter(option)}/>
+        );
+    }
+
+    handlePreviewClick = option => () => {
+        this.setState({
+            isOpen: false
+        });
+        this.props.onChange(option);
+    }
+
+    handlePreviewMouseEnter = option => () => {
+        this.props.onOptionFocus(option);
     }
 }

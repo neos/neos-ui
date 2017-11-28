@@ -13,7 +13,10 @@ export default class Preview extends PureComponent {
 
         className: PropTypes.string,
 
-        isActive: PropTypes.bool,
+        isHighlighted: PropTypes.bool,
+
+        onMouseEnter: PropTypes.func,
+        role: PropTypes.string,
 
         /**
          * An optional css theme to be injected.
@@ -31,6 +34,10 @@ export default class Preview extends PureComponent {
         IconComponent: PropTypes.any.isRequired
     }
 
+    static defaultProps = {
+        role: 'option'
+    }
+
     render() {
         const {
             onClick,
@@ -39,28 +46,32 @@ export default class Preview extends PureComponent {
             className,
             theme,
             IconComponent,
-            isActive
+            isHighlighted,
+            onMouseEnter,
+            role
         } = this.props;
         const optionClassName = mergeClassNames({
             [theme.selectBox__item]: true,
             [theme['selectBox__item--isSelectable']]: true,
-            [theme['selectBox__item--isSelectable--active']]: isActive,
+            [theme['selectBox__item--isSelectable--active']]: isHighlighted,
             [className]: className
         });
 
         return (
-            <li
-                onClick={onClick}
-                role="button"
-                className={optionClassName}
-                >
-                {
-                    icon ?
-                        <IconComponent className={theme.selectBox__itemIcon} icon={icon}/> :
-                        null
-                }
-                {children}
-            </li>
+            <div onMouseEnter={onMouseEnter} role={role}>
+                <li
+                    onClick={onClick}
+                    role="button"
+                    className={optionClassName}
+                    >
+                    {
+                        icon ?
+                            <IconComponent className={theme.selectBox__itemIcon} icon={icon}/> :
+                            null
+                    }
+                    {children}
+                </li>
+            </div>
         );
     }
 }

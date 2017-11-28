@@ -7,7 +7,7 @@
     height: calc(100% - 82px);
     border: 1px solid var(--brandColorsContrastDark);
     border-bottom-width: 0;
-    transition: .2s ease left, .2s ease right;
+    transition: var(--transition-Default)  ease left, var(--transition-Default)  ease right;
     will-change: left, right;
 }
 .secondaryInspector--isFringeLeft {

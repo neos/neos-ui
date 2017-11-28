@@ -4,7 +4,7 @@
     height: 100%;
     width: 100%;
     padding: 82px var(--sidebarWidth) 0;
-    transition: .2s ease padding;
+    transition: var(--transition-Default)  ease padding;
     will-change: padding;
     background-color: var(--brandColorsContrastDarker);
 
@@ -40,7 +40,7 @@
     position: relative;
     margin-left: auto;
     margin-right: auto;
-    transition: .2s ease width, .2s ease height;
+    transition: var(--transition-Default)  ease width, var(--transition-Default)  ease height;
 }
 .contentCanvas__contents {
     position: absolute;

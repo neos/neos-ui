@@ -12,6 +12,8 @@ export default class SelectBoxOption extends PureComponent {
 
         className: PropTypes.string,
 
+        isActive: PropTypes.bool,
+
         /**
          * An optional css theme to be injected.
          */
@@ -35,11 +37,13 @@ export default class SelectBoxOption extends PureComponent {
             icon,
             className,
             theme,
-            IconComponent
+            IconComponent,
+            isActive
         } = this.props;
         const optionClassName = mergeClassNames({
             [theme.selectBox__item]: true,
             [theme['selectBox__item--isSelectable']]: true,
+            [theme['selectBox__item--isSelectable--active']]: isActive,
             [className]: className
         });
 

@@ -26,12 +26,6 @@ const emptyFn = () => {};
     reauthenticationSucceeded: actions.System.reauthenticationSucceeded
 })
 export default class ReloginDialog extends PureComponent {
-    static propTypes = {
-        i18nRegistry: PropTypes.object.isRequired,
-        authenticationTimeout: PropTypes.bool.isRequired,
-        reauthenticationSucceeded: PropTypes.func.isRequired
-    };
-
     defaultState = {
         message: false,
         username: '',
@@ -39,10 +33,13 @@ export default class ReloginDialog extends PureComponent {
         isLoading: false
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {...this.defaultState};
-    }
+    state = {...this.defaultState};
+
+    static propTypes = {
+        i18nRegistry: PropTypes.object.isRequired,
+        authenticationTimeout: PropTypes.bool.isRequired,
+        reauthenticationSucceeded: PropTypes.func.isRequired
+    };
 
     handleUsernameChange = username => {
         this.setState({username});
@@ -87,6 +84,7 @@ export default class ReloginDialog extends PureComponent {
                     <TextInput
                         className={style.inputField}
                         value={this.state.username}
+                        name="__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][username]"
                         placeholder={i18nRegistry.translate('Neos.Neos:Main:username', 'Username')}
                         onChange={this.handleUsernameChange}
                         onEnterKey={this.handleTryLogin}
@@ -96,6 +94,7 @@ export default class ReloginDialog extends PureComponent {
                         type="password"
                         className={style.inputField}
                         value={this.state.password}
+                        name="__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][password]"
                         placeholder={i18nRegistry.translate('Neos.Neos:Main:password', 'Password')}
                         onChange={this.handlePasswordChange}
                         onEnterKey={this.handleTryLogin}

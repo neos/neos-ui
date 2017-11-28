@@ -1,6 +1,6 @@
 include: resource://Neos.Fusion/Private/Fusion/Root.fusion
 include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.fusion
-include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderState.fusion
+include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderConfiguration.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/ArrayCollection.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/AppendAllToCollection.fusion
 
@@ -41,14 +41,106 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    frontendConfiguration = Neos.Neos.Ui:RenderState {
-        state = 'frontendConfiguration'
+    routes = Neos.Fusion:RawArray {
+        prototype(Neos.Fusion:UriBuilder) {
+            absolute = true
+        }
+
+        ui = Neos.Fusion:RawArray {
+            service = Neos.Fusion:RawArray {
+                prototype(Neos.Fusion:UriBuilder) {
+                    package = 'Neos.Neos.Ui'
+                    controller = 'BackendService'
+                }
+
+                change = Neos.Fusion:UriBuilder {
+                    action = 'change'
+                }
+                publish = Neos.Fusion:UriBuilder {
+                    action = 'publish'
+                }
+                discard = Neos.Fusion:UriBuilder {
+                    action = 'discard'
+                }
+                changeBaseWorkspace = Neos.Fusion:UriBuilder {
+                    action = 'changeBaseWorkspace'
+                }
+                loadTree = Neos.Fusion:UriBuilder {
+                    action = 'loadTree'
+                }
+                flowQuery = Neos.Fusion:UriBuilder {
+                    action = 'flowQuery'
+                }
+                getWorkspaceInfo = Neos.Fusion:UriBuilder {
+                    action = 'getWorkspaceInfo'
+                }
+            }
+        }
+        core = Neos.Fusion:RawArray {
+            prototype(Neos.Fusion:UriBuilder) {
+                package = 'Neos.Neos'
+            }
+
+            content = Neos.Fusion:RawArray {
+                prototype(Neos.Fusion:UriBuilder) {
+                    controller = 'Backend\\Content'
+                }
+
+                imageWithMetadata = Neos.Fusion:UriBuilder {
+                    action = 'imageWithMetaData'
+                }
+                createImageVariant = Neos.Fusion:UriBuilder {
+                    action = 'createImageVariant'
+                }
+                loadMasterPlugins = Neos.Fusion:UriBuilder {
+                    action = 'masterPlugins'
+                }
+                loadPluginViews = Neos.Fusion:UriBuilder {
+                    action = 'pluginViews'
+                }
+                uploadAsset = Neos.Fusion:UriBuilder {
+                    action = 'uploadAsset'
+                }
+            }
+            service = Neos.Fusion:RawArray {
+                assets = Neos.Fusion:UriBuilder {
+                    controller = 'Service\\Assets'
+                    action = 'index'
+                }
+                nodes = Neos.Fusion:UriBuilder {
+                    controller = 'Service\\Nodes'
+                    action = 'index'
+                }
+                userPreferences = Neos.Fusion:UriBuilder {
+                    subpackage = 'Service'
+                    controller = 'UserPreference'
+                    action = 'index'
+                    format = 'json'
+                }
+                dataSource = Neos.Fusion:UriBuilder {
+                    subpackage = 'Service'
+                    controller = 'DataSource'
+                    action = 'index'
+                    format = 'json'
+                }
+            }
+            login = Neos.Fusion:UriBuilder {
+                controller = 'Login'
+                action = 'index'
+                format = 'json'
+            }
+        }
+        @process.json = ${Json.stringify(value)}
+    }
+
+    frontendConfiguration = Neos.Neos.Ui:RenderConfiguration {
+        path = 'frontendConfiguration'
         @process.json = ${Json.stringify(value)}
     }
 
     nodeTypes = Neos.Fusion:RawArray {
         roles = ${Configuration.setting('Neos.Neos.Ui.nodeTypeRoles')}
-        groups = ${Configuration.setting('Neos.Neos.nodeTypes.groups')}
+        groups = ${Neos.Ui.PositionalArraySorter.sort(Configuration.setting('Neos.Neos.nodeTypes.groups'))}
 
         @process.json = ${Json.stringify(value)}
     }
@@ -116,12 +208,13 @@ backend = Neos.Fusion:Template {
                         }
                         isActive = true
                         target = 'Window'
+                        @if.isAvailable = ${Neos.Ui.Modules.isAvailable(submoduleName)}
                     }
                 }
 
                 @if {
                     isNotHiddenInMenu = ${!module.hideInMenu}
-                    isAvailable = ${Neos.Neos.Ui.Modules.isAvailable(moduleName)}
+                    isAvailable = ${Neos.Ui.Modules.isAvailable(moduleName)}
                 }
             }
         }
@@ -129,8 +222,8 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    initialState = Neos.Neos.Ui:RenderState {
-        state = 'backend'
+    initialState = Neos.Neos.Ui:RenderConfiguration {
+        path = 'initialState'
         context {
             documentNode = ${documentNode}
             site = ${site}

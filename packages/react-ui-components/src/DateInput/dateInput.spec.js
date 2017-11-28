@@ -1,116 +1,87 @@
-import sinon from 'sinon';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import moment from 'moment';
-import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
+import {createStubComponent} from './../_lib/testUtils.js';
 import {DateInput} from './dateInput.js';
 
-const defaultProps = {
-    onChange: () => null,
-    IconComponent: createStubComponent(),
-    DatePickerComponent: createStubComponent(),
-    ButtonComponent: createStubComponent(),
-    CollapseComponent: createStubComponent(),
-    theme: {
-        'dropDown__contents': 'baseDropDownContentsClassName',
-        'dropDown__contents--isOpen': 'openDropDownContentsClassName'
-    }
-};
-const shallow = createShallowRenderer(DateInput, defaultProps);
+describe('<DateInput/>', () => {
+    let props;
 
-test('should initialize with a state of {isOpen = false}.', () => {
-    const wrapper = shallow();
+    beforeEach(() => {
+        props = {
+            onChange: () => null,
+            IconComponent: createStubComponent(),
+            DatePickerComponent: createStubComponent(),
+            ButtonComponent: createStubComponent(),
+            CollapseComponent: createStubComponent(),
+            theme: {
+                'dropDown__contents': 'baseDropDownContentsClassName',
+                'dropDown__contents--isOpen': 'openDropDownContentsClassName'
+            }
+        };
+    });
 
-    expect(wrapper.state('isOpen')).toBe(false);
-});
-test('should render 3 buttons.', () => {
-    const wrapper = shallow();
-    const btns = wrapper.find('button');
+    it('should render correctly.', () => {
+        const wrapper = shallow(<DateInput {...props}/>);
 
-    expect(btns.length).toBe(3);
-});
-test('should render an calendar icon within the first button.', () => {
-    const wrapper = shallow();
-    const btn = wrapper.find('button').at(0);
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 
-    expect(btn.find(defaultProps.IconComponent).length).toBe(1);
-    expect(btn.find(defaultProps.IconComponent).prop('icon')).toBe('calendar');
-});
-test('should set the "isOpen" state to a truthy value when clicking on the first button.', () => {
-    const wrapper = shallow();
-    const btn = wrapper.find('button').at(0);
+    it('should initialize with a state of {isOpen = false}.', () => {
+        const wrapper = shallow(<DateInput {...props}/>);
 
-    btn.simulate('click');
+        expect(wrapper.state('isOpen')).toBe(false);
+    });
 
-    expect(wrapper.state('isOpen')).toBe(true);
-});
-test('should render a input[type="datetime"].', () => {
-    const wrapper = shallow();
-    const input = wrapper.find('input[type="datetime"]');
+    it('should set the "isOpen" state to a truthy value when clicking on the first button.', () => {
+        const wrapper = shallow(<DateInput {...props}/>);
+        const btn = wrapper.find('button').at(0);
 
-    input.simulate('focus');
+        btn.simulate('click');
 
-    expect(input.length).toBe(1);
-    expect(wrapper.state('isOpen')).toBe(true);
-});
-test('should render an remove icon within the second button.', () => {
-    const wrapper = shallow();
-    const btn = wrapper.find('button').at(1);
+        expect(wrapper.state('isOpen')).toBe(true);
+    });
 
-    expect(btn.find(defaultProps.IconComponent).length).toBe(1);
-    expect(btn.find(defaultProps.IconComponent).prop('icon')).toBe('remove');
-});
-test('should set the "isOpen" state to a falsy value and call the "onChange" prop with `null` when clicking on the second button.', () => {
-    const onChange = sinon.spy();
-    const wrapper = shallow({onChange});
-    const btn = wrapper.find('button').at(1);
+    it('should set the "isOpen" state to a falsy value and call the "onChange" prop with `null` when clicking on the second button.', () => {
+        const onChange = jest.fn();
+        const wrapper = shallow(<DateInput {...props} onChange={onChange}/>);
+        const btn = wrapper.find('button').at(1);
 
-    wrapper.setState({isOpen: true});
-    btn.simulate('click');
+        wrapper.setState({isOpen: true});
+        btn.simulate('click');
 
-    expect(wrapper.state('isOpen')).toBe(false);
-    expect(onChange.callCount).toBe(1);
-    expect(onChange.args[0][0]).toBe(null);
-});
-test('should render a "Collapse" Component which is opened depending on the "isOpen" state.', () => {
-    const wrapper = shallow();
-    const collapse = wrapper.find(defaultProps.CollapseComponent);
+        expect(wrapper.state('isOpen')).toBe(false);
+        expect(onChange.mock.calls.length).toBe(1);
+        expect(onChange.mock.calls[0][0]).toBe(null);
+    });
 
-    expect(collapse.length).toBe(1);
-    expect(collapse.prop('isOpened')).toBe(wrapper.state('isOpen'));
-});
-test('should render a "DatePicker" Component.', () => {
-    const value = new Date();
-    const wrapper = shallow({value});
-    const picker = wrapper.find(defaultProps.DatePickerComponent);
+    it('should call the "onChange" prop when triggering the change event on the "DatePicker" Component and clicking apply.', () => {
+        const onChange = jest.fn();
+        const value = new Date();
+        const wrapper = shallow(<DateInput {...props} value={value} onChange={onChange}/>);
+        const picker = wrapper.find(props.DatePickerComponent);
+        const applyButton = wrapper.find(props.ButtonComponent);
+        const newVal = moment();
 
-    expect(picker.length).toBe(1);
-    expect(picker.prop('open')).toBe(true);
-    expect(picker.prop('defaultValue')).toBe(value);
-});
-test('should call the "onChange" prop when triggering the change event on the "DatePicker" Component and clicking apply.', () => {
-    const onChange = sinon.spy();
-    const value = new Date();
-    const wrapper = shallow({value, onChange});
-    const picker = wrapper.find(defaultProps.DatePickerComponent);
-    const applyButton = wrapper.find(defaultProps.ButtonComponent);
-    const newVal = moment();
+        picker.simulate('change', newVal);
+        applyButton.simulate('click');
 
-    picker.simulate('change', newVal);
-    applyButton.simulate('click');
+        expect(onChange.mock.calls.length).toBe(1);
+        expect(onChange.mock.calls[0][0].toTimeString()).toBe(newVal.toDate().toTimeString());
+    });
 
-    expect(onChange.callCount).toBe(1);
-    expect(onChange.args[0][0].toTimeString()).toBe(newVal.toDate().toTimeString());
-});
-test('should set the "isOpen" state to a falsy value and call the "onChange" prop with todays date when clicking on the third button.', () => {
-    const onChange = sinon.spy();
-    const wrapper = shallow({onChange});
-    const btn = wrapper.find('button').at(2);
-    const date = new Date();
+    it('should set the "isOpen" state to a falsy value and call the "onChange" prop with todays date when clicking on the third button.', () => {
+        const onChange = jest.fn();
+        const wrapper = shallow(<DateInput {...props} onChange={onChange}/>);
+        const btn = wrapper.find('button').at(2);
+        const date = new Date();
 
-    wrapper.setState({isOpen: true});
-    btn.simulate('click');
+        wrapper.setState({isOpen: true});
+        btn.simulate('click');
 
-    expect(wrapper.state('isOpen')).toBe(false);
-    expect(onChange.callCount).toBe(1);
-    console.log(onChange.args[0][0].toTimeString());
-    expect(onChange.args[0][0].toTimeString()).toBe(date.toTimeString());
+        expect(wrapper.state('isOpen')).toBe(false);
+        expect(onChange.mock.calls.length).toBe(1);
+        expect(onChange.mock.calls[0][0].toTimeString()).toBe(date.toTimeString());
+    });
 });

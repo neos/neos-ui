@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
+import {$get, $contains} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
@@ -22,6 +22,9 @@ export default class NodeTreeToolBar extends PureComponent {
         nodeTypesRegistry: PropTypes.object.isRequired,
         focusedNodeContextPath: PropTypes.string,
         canBePasted: PropTypes.bool.isRequired,
+        canBeDeleted: PropTypes.bool.isRequired,
+        canBeEdited: PropTypes.bool.isRequired,
+        visibilityCanBeToggled: PropTypes.bool.isRequired,
         isLoading: PropTypes.bool.isRequired,
         isHidden: PropTypes.bool.isRequired,
         isCut: PropTypes.bool.isRequired,
@@ -50,15 +53,19 @@ export default class NodeTreeToolBar extends PureComponent {
     }
 
     handleHideNode = contextPath => {
-        const {hideNode} = this.props;
+        const {hideNode, canBeEdited, visibilityCanBeToggled} = this.props;
 
-        hideNode(contextPath);
+        if (canBeEdited && visibilityCanBeToggled) {
+            hideNode(contextPath);
+        }
     }
 
     handleShowNode = contextPath => {
-        const {showNode} = this.props;
+        const {showNode, canBeEdited, visibilityCanBeToggled} = this.props;
 
-        showNode(contextPath);
+        if (canBeEdited && visibilityCanBeToggled) {
+            showNode(contextPath);
+        }
     }
 
     handleCopyNode = contextPath => {
@@ -68,9 +75,11 @@ export default class NodeTreeToolBar extends PureComponent {
     }
 
     handleCutNode = contextPath => {
-        const {cutNode} = this.props;
+        const {cutNode, canBeEdited} = this.props;
 
-        cutNode(contextPath);
+        if (canBeEdited) {
+            cutNode(contextPath);
+        }
     }
 
     handlePasteNode = contextPath => {
@@ -80,9 +89,11 @@ export default class NodeTreeToolBar extends PureComponent {
     }
 
     handleDeleteNode = contextPath => {
-        const {deleteNode} = this.props;
+        const {deleteNode, canBeDeleted, canBeEdited} = this.props;
 
-        deleteNode(contextPath);
+        if (canBeDeleted && canBeEdited) {
+            deleteNode(contextPath);
+        }
     }
 
     handleReloadTree = () => {
@@ -95,6 +106,9 @@ export default class NodeTreeToolBar extends PureComponent {
         const {
             focusedNodeContextPath,
             canBePasted,
+            canBeDeleted,
+            canBeEdited,
+            visibilityCanBeToggled,
             isHidden,
             isCut,
             isCopied,
@@ -109,13 +123,13 @@ export default class NodeTreeToolBar extends PureComponent {
                     <AddNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isAllowedToAddChildOrSiblingNodes={isAllowedToAddChildOrSiblingNodes}
+                        isDisabled={!isAllowedToAddChildOrSiblingNodes}
                         onClick={this.handleAddNode}
                         />
                     <HideSelectedNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled}
+                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
                         isHidden={isHidden}
                         onHide={this.handleHideNode}
                         onShow={this.handleShowNode}
@@ -131,19 +145,19 @@ export default class NodeTreeToolBar extends PureComponent {
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         isActive={isCut}
-                        isDisabled={destructiveOperationsAreDisabled}
+                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
                         onClick={this.handleCutNode}
                         />
                     <PasteClipBoardNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        canBePasted={canBePasted}
+                        isDisabled={!canBePasted}
                         onClick={this.handlePasteNode}
                         />
                     <DeleteSelectedNode
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled}
+                        isDisabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
                         onClick={this.handleDeleteNode}
                         />
                     <RefreshPageTree
@@ -177,6 +191,9 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 subject: clipboardNodeContextPath,
                 reference: focusedNodeContextPath
             });
+            const canBeDeleted = $get('policy.canRemove', focusedNode);
+            const canBeEdited = $get('policy.canEdit', focusedNode);
+            const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
             const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
@@ -194,6 +211,9 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
             return {
                 focusedNodeContextPath,
                 canBePasted,
+                canBeDeleted,
+                canBeEdited,
+                visibilityCanBeToggled,
                 isLoading,
                 isHidden,
                 destructiveOperationsAreDisabled,
@@ -228,6 +248,9 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
                 subject: clipboardNodeContextPath,
                 reference: focusedNodeContextPath
             });
+            const canBeDeleted = $get('policy.canRemove', focusedNode) || false;
+            const canBeEdited = $get('policy.canEdit', focusedNode) || false;
+            const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
             const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
@@ -241,6 +264,9 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
             return {
                 focusedNodeContextPath,
                 canBePasted,
+                canBeDeleted,
+                canBeEdited,
+                visibilityCanBeToggled,
                 isLoading,
                 isHidden,
                 destructiveOperationsAreDisabled,

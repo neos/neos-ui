@@ -8,6 +8,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';
 
+// ToDo: Move into re-usable fn - Maybe into `util-helpers`?
 const toBoolean = val => {
     if (typeof val === 'string') {
         switch (true) {

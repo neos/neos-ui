@@ -24,8 +24,23 @@ manifest('main', {}, globalRegistry => {
     //
     // Create edit preview mode registry
     //
-    globalRegistry.set('editPreviewModes', new SynchronousRegistry(`
-        # Edit/Preview Mode specific registry
+    globalRegistry.set('frontendConfiguration', new SynchronousRegistry(`
+        # Frontend configuration registry
+
+        Any settings under 'Neos.Neos.Ui.frontendConfiguration' would be available here.
+        Might be used also for third parth packages to deliver own settings to the UI, but this is still experimental.
+        Settings from each package should be prefixed to avoid collisions (unprefixed settings are reserved for the core UI itself), e.g.:
+
+        Neos:
+            Neos:
+                Ui:
+                    frontendConfiguration:
+                        'Your.Own:Package':
+                            someKey: someValue
+
+        Then it may be accessed as:
+
+        globalRegistry.get('frontendConfiguration').get('Your.Own:Package').someKey
     `));
 
     //
@@ -205,8 +220,10 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server advices to reload the children of a document node, dispatch the action to do so.
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:DocumentNodeCreated/Main', (feedbackPayload, {store}) => {
-        store.dispatch(actions.UI.Remote.documentNodeCreated(feedbackPayload.contextPath));
+    serverFeedbackHandlers.set('Neos.Neos.Ui:NodeCreated/Main', (feedbackPayload, {store}) => {
+        if (feedbackPayload.isDocument) {
+            store.dispatch(actions.UI.Remote.documentNodeCreated(feedbackPayload.contextPath));
+        }
     });
 
     //

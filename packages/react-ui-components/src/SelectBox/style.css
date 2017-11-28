@@ -3,7 +3,7 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 40px;
+    height: var(--goldenUnit);
     vertical-align: top;
 }
 .wrapper--highlight {
@@ -31,8 +31,8 @@
     position: relative;
     display: inline-block;
     text-overflow: clip;
-    height: 40px;
-    line-height: 40px;
+    height: var(--goldenUnit);
+    line-height: var(--goldenUnit);
     border: 0;
     background: var(--brandColorsContrastNeutral);
     min-width: 160px;
@@ -70,6 +70,10 @@
 
 .dropDown__itemLabel {
     padding: 0 var(--halfSpacing);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    width: 100%;
 }
 
 .selectBox__loadingIcon {
@@ -82,14 +86,42 @@
     width: var(--goldenUnit);
     height: var(--goldenUnit);
     text-align: center;
-    background: var(--brandColorsContrastNeutral);
+    background: transparent;
     color: #FFF;
-    line-height: 40px;
+    line-height: var(--goldenUnit);
+}
+
+.selectBox__deleteIcon {
+    composes: selectBox__loadingIcon;
+}
+
+.selectBox__twoIconIndention {
+    padding: 0 calc(var(--spacing) + var(--goldenUnit) + var(--goldenUnit)) 0 var(--spacing);
+}
+
+.selectBox__twoIconIndention .selectBox__iconSeparator {
+    display: block;
+    position: absolute;
+    right: calc(var(--goldenUnit) + 1px);
+    top: 0;
+    height: calc(var(--spacing) * 1.25);
+    width: 1px;
+    content: '';
+    background-color: #fff;
+    opacity: .15;
+    margin-top: var(--halfSpacing);
+}
+
+.selectBox__twoIconIndention .selectBox__deleteIcon,
+.selectBox__twoIconIndention .selectBox__loadingIcon {
+    right: calc(var(--goldenUnit) + 1px);
 }
 
 .selectBox__btnIcon {
     composes: reset from './../reset.css';
     margin-right: .5em;
+    float: left;
+    line-height: var(--goldenUnit);
 }
 
 .selectBox__btnDelete {
@@ -158,9 +190,6 @@
     height: var(--goldenUnit);
     line-height: var(--goldenUnit);
     padding: 0 var(--spacing);
-    &:hover {
-        background: var(--brandColorsPrimaryBlue);
-    }
 }
 
 .selectBox__item--isSelectable--active {
@@ -170,4 +199,29 @@
 .selectBox__itemIcon {
     composes: reset from './../reset.css';
     padding-right: .5em;
+}
+
+.complexOption__item {
+    padding: var(--halfSpacing);
+    box-sizing: content-box;
+    height: calc(var(--goldenUnit) * 1.5);
+    line-height: 20px;
+}
+
+.complexOption__secondaryLabel {
+    color: var(--brandColorsContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.complexOption__tertiaryLabel {
+    color: var(--brandColorsContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.complexOption__image {
+    height: calc(var(--goldenUnit) * 1.5);
+    width: auto;
+    float: right;
 }

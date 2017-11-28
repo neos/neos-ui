@@ -23,9 +23,15 @@ export default class ViewEnvelope extends PureComponent {
         return `#__neos__view---${this.props.identifier}`;
     }
 
-    renderViewComponent() {
+    getViewDefinition() {
         const {view, viewRegistry} = this.props;
-        const viewDefinition = viewRegistry.get(view);
+        // Support legacy view definitions
+        const viewName = view.replace('Content/Inspector/Views', 'Neos.Neos/Inspector/Views');
+        return viewRegistry.get(viewName);
+    }
+
+    renderViewComponent() {
+        const viewDefinition = this.getViewDefinition();
 
         if (viewDefinition && viewDefinition.component) {
             const ViewComponent = viewDefinition && viewDefinition.component;
@@ -37,13 +43,11 @@ export default class ViewEnvelope extends PureComponent {
             );
         }
 
-        return (<div>Missing View {view}</div>);
+        return (<div>Missing View {this.props.view}</div>);
     }
 
     renderLabel() {
-        const {view, viewRegistry} = this.props;
-        const viewDefinition = viewRegistry.get(view);
-
+        const viewDefinition = this.getViewDefinition();
         if (viewDefinition && viewDefinition.hasOwnLabel) {
             return null;
         }

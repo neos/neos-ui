@@ -24,15 +24,16 @@ class NodeTreeSearchBar extends PureComponent {
         commenceSearch: PropTypes.func.isRequired
     }
 
+    state = {
+        searchFocused: false,
+        searchValue: '',
+        filterNodeType: null
+    };
+
     constructor(props, ...args) {
         super(props, ...args);
 
         this.debouncedCommenceSearch = debounce(props.commenceSearch, searchDelay);
-        this.state = {
-            searchFocused: false,
-            searchValue: '',
-            filterNodeType: null
-        };
     }
 
     handleSearchChange = query => {

@@ -33,11 +33,13 @@ export const DialogWithoutEscape = props => {
             <section {...rest} className={finalClassName} role="dialog" tabIndex="0">
                 <div className={theme.dialog__contentsPosition}>
                     <div className={theme.dialog__contents}>
+                        {onRequestClose &&
                         <IconButtonComponent
                             icon="close"
                             className={theme.dialog__closeBtn}
                             onClick={onRequestClose}
                             />
+                          }
                         <div className={theme.dialog__title}>
                             {title}
                         </div>

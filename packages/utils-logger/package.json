@@ -1,28 +1,26 @@
 {
   "name": "@neos-project/utils-logger",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta8",
   "description": "Logger implementation for Neos CMS UI.",
   "private": true,
   "main": "./src/index.js",
   "scripts": {
     "prebuild": "check-dependencies && yarn clean",
-    "test": "yarn jest",
+    "test": "yarn jest -- -w 2 --coverage",
     "test:watch": "yarn jest -- --watch",
     "build": "exit 0",
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
+    "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "1.0.0-beta4"
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
+    "@neos-project/jest-preset-neos-ui": "1.0.0-beta8",
+    "@neos-project/build-essentials": "1.0.0-beta8"
   },
   "license": "GNU GPLv3",
   "jest": {
-    "transformIgnorePatterns": [],
-    "transform": {
-      "utils-logger/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
-      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
-    }
+    "preset": "@neos-project/jest-preset-neos-ui"
   }
 }

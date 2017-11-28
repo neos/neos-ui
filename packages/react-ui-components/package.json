@@ -1,46 +1,46 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta8",
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
     "prebuild": "check-dependencies && yarn clean",
     "build": "exit 0",
     "build:watch": "exit 0",
-    "test": "yarn jest",
+    "test": "yarn jest -- -w 2 --coverage",
     "test:watch": "yarn jest -- --watch",
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "jest": "jest src/**/*.spec.js -w 1 --coverage",
+    "jest": "NODE_ENV=test jest",
     "start": "cross-env STORY=true start-storybook -p 9001",
-    "postpublish": "greenkeeper-postpublish",
-    "semantic-release": "semantic-release pre && yarn publish --access public && semantic-release post"
-  },
-  "release": {
-    "analyzeCommits": "@inkdpixels/commit-analyzer",
-    "generateNotes": "@inkdpixels/release-notes-generator"
+    "postpublish": "greenkeeper-postpublish"
   },
   "devDependencies": {
-    "@kadira/react-storybook-addon-info": "^3.2.1",
-    "@kadira/storybook": "^2.11.0",
-    "@kadira/storybook-addon-knobs": "^1.2.0",
-    "@neos-project/build-essentials": "1.0.0-beta4",
-    "@neos-project/debug-reason-for-rendering": "1.0.0-beta4"
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
+    "@neos-project/jest-preset-neos-ui": "1.0.0-beta8",
+    "@neos-project/build-essentials": "1.0.0-beta8",
+    "@neos-project/debug-reason-for-rendering": "1.0.0-beta8",
+    "enzyme-to-json": "^3.1.3",
+    "normalize.css": "^5.0.0",
+    "webpack-merge": "^4.1.1",
+    "@storybook/react": "3.2.16",
+    "@storybook/addon-knobs": "3.2.16",
+    "@storybook/addon-info": "^3.2.16"
   },
   "peerDependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/utils-redux": "^4.4.8",
     "classnames": "^2.2.3",
     "lodash.debounce": "^4.0.8",
+    "lodash.escaperegexp": "^4.1.2",
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
-    "lodash.escaperegexp": "^4.1.2",
     "moment": "^2.14.1",
     "object-assign": "^4.1.0",
     "prop-types": "^15.5.10",
-    "react": "^15.6.1",
+    "react": "^16.0.0",
     "react-click-outside": "^2.3.1",
     "react-close-on-escape": "^2.0.0",
     "react-collapse": "^2.4.1",
@@ -49,7 +49,7 @@
     "react-dnd": "^2.5.1",
     "react-dnd-html5-backend": "^2.5.1",
     "react-dnd-scrollzone": "^4.0.0",
-    "react-dom": "^15.6.1",
+    "react-dom": "^16.0.0",
     "react-height": "^3.0.0",
     "react-motion": "^0.5.0",
     "react-portal": "^3.1.0",
@@ -61,13 +61,6 @@
     "url": "https://github.com/neos/react-ui-components.git"
   },
   "jest": {
-    "transformIgnorePatterns": [],
-    "unmockedModulePathPatterns": [
-      "sinon"
-    ],
-    "transform": {
-      "react-ui-components/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
-      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
-    }
+    "preset": "@neos-project/jest-preset-neos-ui"
   }
 }

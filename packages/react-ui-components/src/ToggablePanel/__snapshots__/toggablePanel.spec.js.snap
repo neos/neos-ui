@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Contents/> should render correctly. 1`] = `
+<Collapse
+  fixedHeight={-1}
+  isOpened={false}
+  keepCollapsedContent={false}
+  onHeightReady={[Function]}
+  style={Object {}}
+>
+  <div
+    aria-hidden="true"
+    className="panelContentsClassName"
+  >
+    Foo children
+  </div>
+</Collapse>
+`;
+
+exports[`<Header/> should render correctly. 1`] = `
+<div
+  aria-expanded={false}
+>
+  <Component
+    className="panelHeadlineClassName"
+    type="h1"
+  >
+    Foo children
+  </Component>
+  <Component
+    className="panelToggleBtnClassName"
+    icon="closed-icon-prop"
+    onClick={[Function]}
+  />
+</div>
+`;
+
+exports[`<StatelessToggablePanel/> should render correctly. 1`] = `
+<section
+  className="baseClassName"
+>
+  Foo children
+</section>
+`;
+
+exports[`<ToggablePanel/> should render correctly. 1`] = `
+<StatelessToggablePanel
+  HeadlineComponent={[Function]}
+  IconButtonComponent={[Function]}
+  isOpen={true}
+  onPanelToggle={[Function]}
+  theme={
+    Object {
+      "panel": "baseClassName",
+      "panel--isOpen": "isOpenClassName",
+      "panel__contents": "panelContentsClassName",
+      "panel__headline": "panelHeadlineClassName",
+    }
+  }
+>
+  <Header
+    HeadlineComponent={[Function]}
+    IconButtonComponent={[Function]}
+    closedIcon="chevron-down"
+    isPanelOpen={true}
+    key="header"
+    openedIcon="chevron-up"
+    theme={
+      Object {
+        "panel": "baseClassName",
+        "panel--isOpen": "isOpenClassName",
+        "panel__contents": "panelContentsClassName",
+        "panel__headline": "panelHeadlineClassName",
+      }
+    }
+  >
+    My Header
+  </Header>
+  <Contents
+    HeadlineComponent={[Function]}
+    IconButtonComponent={[Function]}
+    isPanelOpen={true}
+    key="contents"
+    theme={
+      Object {
+        "panel": "baseClassName",
+        "panel--isOpen": "isOpenClassName",
+        "panel__contents": "panelContentsClassName",
+        "panel__headline": "panelHeadlineClassName",
+      }
+    }
+  >
+    My my Content
+  </Contents>
+</StatelessToggablePanel>
+`;

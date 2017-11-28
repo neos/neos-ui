@@ -159,7 +159,7 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
                 //
                 // Read out aspect ratio options and filter them
                 //
-                values(options).filter(o => (o.width / o.height).toFixed(2) === aspectRatio.toFixed(2))[0]
+                values(options).filter(o => o && (o.width / o.height).toFixed(2) === aspectRatio.toFixed(2))[0]
             ))
             .map(o => new ConfiguredAspectRatioStrategy(o.width, o.height, o.label))
         )
@@ -190,7 +190,7 @@ export default class CropConfiguration {
             .concat(neosConfiguration.allowCustom ? new CustomAspectRatioOption() : [])
             .concat(neosConfiguration.allowOriginal ? new OriginalAspectRatioOption() : [])
             .concat(
-                values(neosConfiguration.options).map(
+                values(neosConfiguration.options).filter(i => i).map(
                     o => {
                         const strategy = new ConfiguredAspectRatioStrategy(o.width, o.height, o.label);
                         return new AspectRatioOption(strategy.label, () => strategy);

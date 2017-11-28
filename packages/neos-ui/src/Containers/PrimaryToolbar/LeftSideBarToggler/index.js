@@ -45,7 +45,7 @@ export default class LeftSideBarToggler extends PureComponent {
                 isFocused={isActive}
                 onClick={this.handleToggle}
                 >
-                <Icon className={style.icon} icon="location-arrow"/> <I18n id="navigate" fallback="Navigate"/>
+                <Icon className={style.icon} icon="location-arrow"/> <I18n id="Neos.Neos:Main:navigate" fallback="Navigate"/>
             </Button>
         );
     }

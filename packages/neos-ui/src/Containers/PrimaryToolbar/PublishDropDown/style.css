@@ -29,6 +29,8 @@
 }
 
 .dropDown__item {
+    border-top: 1px solid var(--brandColorsContrastDarker);
+
     &:hover {
         background: var(--brandColorsPrimaryBlue);
     }

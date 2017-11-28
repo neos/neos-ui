@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Tree/> should render correctly. 1`] = `
+<Scrolling(div)
+  className="undefined"
+  horizontalStrength={[Function]}
+  onScrollChange={[Function]}
+  role="tree"
+  strengthMultiplier={20}
+  tabIndex="0"
+  verticalStrength={[Function]}
+>
+  <Component>
+    Foo children
+  </Component>
+</Scrolling(div)>
+`;

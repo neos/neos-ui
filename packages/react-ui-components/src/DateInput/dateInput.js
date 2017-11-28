@@ -5,6 +5,11 @@ import moment from 'moment';
 import mergeClassNames from 'classnames';
 
 export class DateInput extends PureComponent {
+    state = {
+        isOpen: false,
+        transientDate: null
+    };
+
     static propTypes = {
         /**
          * The Date instance which represents the selected value.
@@ -80,22 +85,6 @@ export class DateInput extends PureComponent {
         applyLabel: 'Apply',
         labelFormat: 'DD-MM-YYYY hh:mm'
     };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isOpen: false,
-            transientDate: null
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleApply = this.handleApply.bind(this);
-        this.handleClearValueClick = this.handleClearValueClick.bind(this);
-        this.handleInputClick = this.open.bind(this);
-        this.handleCalendarIconClick = this.open.bind(this);
-        this.handleClickOutside = this.close.bind(this);
-        this.handleSelectTodayBtnClick = this.handleSelectTodayBtnClick.bind(this);
-    }
 
     render() {
         const {
@@ -179,14 +168,14 @@ export class DateInput extends PureComponent {
         );
     }
 
-    handleChange(momentVal) {
+    handleChange = momentVal => {
         const date = momentVal.toDate();
         this.setState({
             transientDate: date
         });
     }
 
-    handleApply() {
+    handleApply = () => {
         this.setState({
             isOpen: false
         }, () => {
@@ -194,7 +183,7 @@ export class DateInput extends PureComponent {
         });
     }
 
-    handleClearValueClick() {
+    handleClearValueClick = () => {
         this.setState({
             isOpen: false
         }, () => {
@@ -202,13 +191,19 @@ export class DateInput extends PureComponent {
         });
     }
 
-    handleSelectTodayBtnClick() {
+    handleSelectTodayBtnClick = () => {
         this.setState({
             isOpen: false
         }, () => {
             this.props.onChange(moment().toDate());
         });
     }
+
+    handleInputClick = () => this.open();
+
+    handleCalendarIconClick = () => this.open();
+
+    handleClickOutside = () => this.close();
 
     open() {
         this.setState({

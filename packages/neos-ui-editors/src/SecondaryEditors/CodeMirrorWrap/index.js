@@ -21,18 +21,16 @@ export default class CodeMirrorWrap extends PureComponent {
         value: PropTypes.string
     };
 
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    componentDidMount() {
-        const codeMirrorDomElement = document.querySelector('div.ReactCodeMirror > .CodeMirror');
-        const offsetTop = codeMirrorDomElement.getBoundingClientRect().top;
+    editorRefCallback = ref => {
+        if (!ref) {
+            return;
+        }
+        const codeMirrorRef = ref.getCodeMirror();
+        const codeMirrorWrapperDomElement = codeMirrorRef.display.wrapper;
+        const offsetTop = codeMirrorWrapperDomElement.getBoundingClientRect().top;
         const clientHeight = window.innerHeight || document.clientHeight || document.getElementByTagName('body').clientHeight;
         const height = clientHeight - offsetTop;
-
-        codeMirrorDomElement.style.height = `${height}px`;
+        codeMirrorRef.setSize(null, height);
     }
 
     render() {
@@ -46,11 +44,12 @@ export default class CodeMirrorWrap extends PureComponent {
         };
 
         return (
-            <CodeMirror value={this.props.value} onChange={this.handleChange} options={options}/>
+            <CodeMirror value={this.props.value} onChange={this.handleChange} options={options} ref={this.editorRefCallback}/>
         );
     }
 
-    handleChange(newValue) {
+    // ToDo: Why not directly passing the commit prop down if the argument just gets forwarded?
+    handleChange = newValue => {
         this.props.onChange(newValue);
     }
 }

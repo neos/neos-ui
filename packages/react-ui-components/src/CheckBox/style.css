@@ -25,15 +25,26 @@
     border: 1px solid var(--brandColorsContrastBrighter);
     vertical-align: text-bottom;
     background: var(--brandColorsContrastDark);
-    color: var(--brandColorsContrastBrightest);
+    font-size: 20px;
+    font-weight: bold;
+    color: #5b5b5b;
 
     .label:hover & {
         border-color: var(--brandColorsPrimaryBlue);
+    }
+
+    &:before {
+        content: '\2713';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
     }
 }
 .checkbox__inputMirror--active {
     background: var(--brandColorsPrimaryBlue);
     border-color: var(--brandColorsPrimaryBlue);
+    color: #fff;
 
     &:before {
         content: '\2713';
@@ -46,6 +57,7 @@
 .checkbox__inputMirror--highlight-checked {
     background: var(--brandColorsSuccess);
     border-color: var(--brandColorsSuccess);
+    color: #fff;
 }
 .checkbox__inputMirror--highlight-unchecked {
     border-color: var(--brandColorsSuccess);

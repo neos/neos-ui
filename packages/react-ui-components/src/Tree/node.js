@@ -29,7 +29,7 @@ export class Node extends PureComponent {
         const rest = omit(restProps, ['theme']);
 
         return (
-            <div {...rest}>
+            <div {...rest} role="treeitem">
                 {children}
             </div>
         );
@@ -83,6 +83,7 @@ class NodeDropTarget extends PureComponent {
 export class Header extends PureComponent {
     static propTypes = {
         id: PropTypes.string,
+        labelIdentifier: PropTypes.string,
         nodeDndType: PropTypes.string.isRequired,
         hasChildren: PropTypes.bool.isRequired,
         isLastChild: PropTypes.bool,
@@ -96,6 +97,7 @@ export class Header extends PureComponent {
         hasError: PropTypes.bool.isRequired,
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
+        iconLabel: PropTypes.string,
         level: PropTypes.number.isRequired,
         dragAndDropContext: PropTypes.shape({
             accepts: PropTypes.func.isRequired,
@@ -136,6 +138,7 @@ export class Header extends PureComponent {
     render() {
         const {
             id,
+            labelIdentifier,
             nodeDndType,
             IconComponent,
             hasChildren,
@@ -147,6 +150,7 @@ export class Header extends PureComponent {
             isDirty,
             label,
             icon,
+            iconLabel,
             level,
             onClick,
             onLabelClick,
@@ -190,8 +194,8 @@ export class Header extends PureComponent {
                             onClick={onClick}
                             style={{paddingLeft: (level * 18) + 'px'}}
                             >
-                            <IconComponent icon={icon || 'question'} role="button" className={theme.header__icon}/>
-                            <span {...rest} className={theme.header__label} role="button" onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                            <IconComponent icon={icon || 'question'} label={iconLabel} className={theme.header__icon}/>
+                            <span {...rest} id={labelIdentifier} className={theme.header__label} onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                                 {label}
                             </span>
                         </div>

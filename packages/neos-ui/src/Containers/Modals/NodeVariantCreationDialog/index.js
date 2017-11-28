@@ -89,7 +89,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
             <Button
                 id="neos-nodeVariantCreationDialog-createEmpty"
                 key="createEmpty"
-                style="warn"
+                style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleCreateEmpty}
                 >
@@ -103,7 +103,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
             <Button
                 id="neos-nodeVariantCreationDialog-createAndCopy"
                 key="createAndCopy"
-                style="warn"
+                style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleCreateAndCopy}
                 >

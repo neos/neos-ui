@@ -1,31 +1,40 @@
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import GridItem from './gridItem.js';
 
-const defaultProps = {
-    theme: {},
-    width: 'third'
-};
-const shallow = createShallowRenderer(GridItem, defaultProps);
+describe('<GridItem/>', () => {
+    let props;
 
-test('should render a "div" node.', () => {
-    const grid = shallow();
-
-    expect(grid.type()).toBe('div');
-});
-test('should add the passed "className" prop to the rendered div if passed.', () => {
-    const grid = shallow({className: 'testClassName'});
-
-    expect(grid.hasClass('testClassName')).toBeTruthy();
-});
-test('should render a inline style matching the passed "width" prop.', () => {
-    const grid = shallow({width: 'half'});
-
-    expect(grid.html().includes('style="width:50%;"')).toBeTruthy();
-});
-test('should propagate the rest of the passed props to the wrapping node.', () => {
-    const grid = shallow({
-        id: 'fooId'
+    beforeEach(() => {
+        props = {
+            theme: {},
+            width: 'third',
+            children: 'Foo children'
+        };
     });
 
-    expect(grid.html().includes('id="fooId"')).toBeTruthy();
+    it('should render correctly.', () => {
+        const wrapper = shallow(<GridItem {...props}/>);
+
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<GridItem {...props} className="fooClassName"/>);
+
+        expect(wrapper.prop('className')).toContain('fooClassName');
+    });
+
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<GridItem {...props} foo="bar"/>);
+
+        expect(wrapper.prop('foo')).toBe('bar');
+    });
+
+    it('should render a inline style matching the passed "width" prop.', () => {
+        const wrapper = shallow(<GridItem {...props} width="half"/>);
+
+        expect(wrapper.html()).toContain('style="width:50%"');
+    });
 });

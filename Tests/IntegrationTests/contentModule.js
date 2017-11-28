@@ -29,7 +29,7 @@ async function waitForIframeLoading(t) {
 async function discardAll(t) {
     await t
         .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
-        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard All'));
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all'));
     await waitForIframeLoading(t);
 }
 
@@ -59,6 +59,10 @@ test('Switching dimensions', async t => {
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'lv';
         })).ok('Loading stopped and dimension switched to Latvian')
+        .expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState().toJS();
+            return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
+        })).gt(0, 'There are some unpublished nodes after adoption')
         .expect(page.treeNode.withText('Navigation elements').exists).notOk('Untranslated node gone from the tree');
 
     subSection('Switch back to original dimension');
@@ -161,6 +165,7 @@ test('Discarding: create a content node and then discard it', async t => {
 
     subSection('Create a content node');
     await t
+        .click(Selector('#neos-contentTree-toggle'))
         .click(page.treeNode.withText('Content Collection (main)'))
         .click(ReactSelector('AddNode').nth(1).find('button'))
         .click(ReactSelector('NodeTypeItem').find('button').withText('Headline'));
@@ -195,6 +200,7 @@ test('Discarding: delete a content node and then discard deletion', async t => {
 
     subSection('Delete this headline');
     await t
+        .click(Selector('#neos-contentTree-toggle'))
         .click(page.treeNode.withText(headlineToDelete))
         .click(ReactSelector('DeleteSelectedNode').nth(1))
         .click(Selector('#neos-deleteNodeModal-confirm'))

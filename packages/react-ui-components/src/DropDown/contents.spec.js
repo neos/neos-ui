@@ -1,76 +1,65 @@
-import sinon from 'sinon';
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import ShallowDropDownContents from './contents.js';
 
-const defaultProps = {
-    children: 'Foo children',
-    isOpen: false,
-    closeDropDown: () => null,
-    theme: {
-        'dropDown__contents': 'baseDropDownContentsClassName',
-        'dropDown__contents--isOpen': 'openDropDownContentsClassName'
-    }
-};
-const shallow = createShallowRenderer(ShallowDropDownContents, defaultProps);
+describe('<ShallowDropDownContents/>', () => {
+    let props;
 
-test('should render the themes "dropDown__contents" className.', () => {
-    const contents = shallow();
-
-    expect(contents.hasClass('baseDropDownContentsClassName')).toBeTruthy();
-});
-test('should render the themes "dropDown__contents--isOpen" className in case the "isOpen" prop is truthy.', () => {
-    const contents = shallow({
-        isOpen: true
+    beforeEach(() => {
+        props = {
+            children: 'Foo children',
+            isOpen: false,
+            closeDropDown: () => null,
+            theme: {
+                'dropDown__contents': 'baseDropDownContentsClassName',
+                'dropDown__contents--isOpen': 'openDropDownContentsClassName'
+            }
+        };
     });
 
-    expect(contents.hasClass('openDropDownContentsClassName')).toBeTruthy();
-});
-test('should render the "className" prop if passed.', () => {
-    const contents = shallow({
-        className: 'barClassName'
+    it('should render correctly.', () => {
+        const wrapper = shallow(<ShallowDropDownContents {...props}/>);
+
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
-    expect(contents.hasClass('barClassName')).toBeTruthy();
-});
-test('should render a aria-hidden="true" attribute in the wrapper by default.', () => {
-    const contents = shallow();
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<ShallowDropDownContents {...props} className="fooClassName"/>);
 
-    expect(contents.html().includes('aria-hidden="true"')).toBeTruthy();
-});
-test('should render a aria-hidden="false" attribute in the wrapper in case the "isOpen" prop is truthy.', () => {
-    const contents = shallow({
-        isOpen: true
+        expect(wrapper.prop('className')).toContain('fooClassName');
     });
 
-    expect(contents.html().includes('aria-hidden="false"')).toBeTruthy();
-});
-test('should render a aria-label="dropdown" and role="button" attribute in the wrapper.', () => {
-    const contents = shallow({
-        isOpen: true
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<ShallowDropDownContents {...props} foo="bar"/>);
+
+        expect(wrapper.prop('foo')).toBe('bar');
     });
 
-    expect(contents.html().includes('aria-label="dropdown"')).toBeTruthy();
-    expect(contents.html().includes('role="button"')).toBeTruthy();
-});
-test('should call the "closeDropDown" prop when clicking on the wrapper.', () => {
-    const props = {
-        closeDropDown: sinon.spy()
-    };
-    const contents = shallow(props);
+    it('should render the themes "dropDown__contents--isOpen" className in case the "isOpen" prop is truthy.', () => {
+        const wrapper = shallow(<ShallowDropDownContents {...props} isOpen/>);
 
-    contents.simulate('click');
-
-    expect(props.closeDropDown.calledOnce).toBeTruthy();
-});
-test('should render the passed children.', () => {
-    const contents = shallow();
-
-    expect(contents.html().includes('Foo children')).toBeTruthy();
-});
-test('should propagate the rest of the passed props to the wrapping node.', () => {
-    const contents = shallow({
-        id: 'fooId'
+        expect(wrapper.hasClass('openDropDownContentsClassName')).toBeTruthy();
     });
 
-    expect(contents.html().includes('id="fooId"')).toBeTruthy();
+    it('should render a aria-hidden="false" attribute in the wrapper in case the "isOpen" prop is truthy.', () => {
+        const wrapper = shallow(<ShallowDropDownContents {...props} isOpen/>);
+
+        expect(wrapper.html().includes('aria-hidden="false"')).toBeTruthy();
+    });
+
+    it('should render a aria-label="dropdown" and role="button" attribute in the wrapper in case the "isOpen" prop is truthy.', () => {
+        const wrapper = shallow(<ShallowDropDownContents {...props} isOpen/>);
+
+        expect(wrapper.html().includes('aria-label="dropdown"')).toBeTruthy();
+    });
+
+    it('should call the "closeDropDown" prop when clicking on the wrapper.', () => {
+        const closeDropDown = jest.fn();
+        const wrapper = shallow(<ShallowDropDownContents {...props} closeDropDown={closeDropDown}/>);
+
+        wrapper.simulate('click');
+
+        expect(closeDropDown.mock.calls.length).toBe(1);
+    });
 });

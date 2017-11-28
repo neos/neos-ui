@@ -22,10 +22,11 @@ import style from './style.css';
 }), {
     startLoading: actions.UI.ContentCanvas.startLoading,
     stopLoading: actions.UI.ContentCanvas.stopLoading,
-    requestRegainControl: actions.UI.ContentCanvas.requestRegainControl
+    requestRegainControl: actions.UI.ContentCanvas.requestRegainControl,
+    requestLogin: actions.UI.ContentCanvas.requestLogin
 })
 @neos(globalRegistry => ({
-    editPreviewModesRegistry: globalRegistry.get('editPreviewModes'),
+    editPreviewModes: globalRegistry.get('frontendConfiguration').get('editPreviewModes'),
     guestFrameRegistry: globalRegistry.get('@neos-project/neos-ui-guest-frame')
 }))
 export default class ContentCanvas extends PureComponent {
@@ -39,9 +40,10 @@ export default class ContentCanvas extends PureComponent {
         startLoading: PropTypes.func.isRequired,
         stopLoading: PropTypes.func.isRequired,
         requestRegainControl: PropTypes.func.isRequired,
+        requestLogin: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
 
-        editPreviewModesRegistry: PropTypes.object.isRequired,
+        editPreviewModes: PropTypes.object.isRequired,
         guestFrameRegistry: PropTypes.object.isRequired
     };
 
@@ -49,12 +51,6 @@ export default class ContentCanvas extends PureComponent {
         isVisible: true,
         loadedSrc: ''
     };
-
-    constructor(props) {
-        super(props);
-
-        this.onFrameChange = this.handleFrameChanges.bind(this);
-    }
 
     render() {
         const {
@@ -64,7 +60,7 @@ export default class ContentCanvas extends PureComponent {
             isEditModePanelHidden,
             src,
             currentEditPreviewMode,
-            editPreviewModesRegistry,
+            editPreviewModes,
             guestFrameRegistry,
             backgroundColor
         } = this.props;
@@ -78,7 +74,7 @@ export default class ContentCanvas extends PureComponent {
             [style['contentCanvas--isHidden']]: !isVisible
         });
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
-        const currentEditPreviewModeConfiguration = editPreviewModesRegistry.get(currentEditPreviewMode);
+        const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode];
 
         const inlineStyles = {};
         const width = $get('width', currentEditPreviewModeConfiguration);
@@ -97,7 +93,7 @@ export default class ContentCanvas extends PureComponent {
 
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
-            <div className={classNames}>
+            <div className={classNames} style={canvasContentStyle}>
                 <div id="centerArea"/>
                 <div
                     className={style.contentCanvas__itemWrapper}
@@ -113,7 +109,9 @@ export default class ContentCanvas extends PureComponent {
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         onLoad={this.handleFrameAccess}
-                        sandbox="allow-same-origin allow-scripts"
+                        sandbox="allow-same-origin allow-scripts allow-forms"
+                        role="region"
+                        aria-live="assertive"
                         >
                         {InlineUI && <InlineUI/>}
                     </Frame>)
@@ -122,7 +120,7 @@ export default class ContentCanvas extends PureComponent {
         );
     }
 
-    handleFrameChanges(iframeWindow, iframeDocument) {
+    onFrameChange = (iframeWindow, iframeDocument) => {
         if (iframeDocument.__isInitialized) {
             return;
         }
@@ -135,10 +133,20 @@ export default class ContentCanvas extends PureComponent {
     }
 
     handleFrameAccess = iframe => {
-        const {startLoading, requestRegainControl} = this.props;
+        const {startLoading, requestRegainControl, requestLogin} = this.props;
 
         try {
             if (iframe) {
+                // TODO: Find a more reliable way to determine login page
+                if (iframe.contentWindow.document.querySelector('.neos-login-main')) {
+                    //
+                    // We're on the login page:
+                    // Request login dialog and prevent loop
+                    //
+                    requestLogin();
+                    return;
+                }
+
                 iframe.contentWindow.addEventListener('beforeunload', event => {
                     //
                     // If we cannot guess the link that is responsible for

@@ -1,5 +1,4 @@
-import {takeLatest, takeEvery} from 'redux-saga';
-import {put, select} from 'redux-saga/effects';
+import {takeLatest, takeEvery, put, select} from 'redux-saga/effects';
 import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -9,7 +8,7 @@ import {parentNodeContextPath, isNodeCollapsed} from '@neos-project/neos-ui-redu
 
 function * watchToggle({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    yield * takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
+    yield takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
         const state = yield select();
         const {contextPath} = action.payload;
 
@@ -26,7 +25,7 @@ function * watchToggle({globalRegistry}) {
 }
 
 function * watchRequestChildrenForContextPath({configuration}) {
-    yield * takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
+    yield takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
         // ToDo Call yield put(actions.UI.PageTree.requestChildren(contextPath));
         const {contextPath, opts} = action.payload;
         const {activate} = opts;
@@ -72,7 +71,7 @@ function * watchRequestChildrenForContextPath({configuration}) {
 }
 
 function * watchNodeCreated() {
-    yield * takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
+    yield takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
         const {contextPath} = action.payload;
 
         yield put(actions.UI.PageTree.requestChildren(contextPath, {activate: true}));
@@ -81,7 +80,7 @@ function * watchNodeCreated() {
 
 function * watchReloadTree({globalRegistry, configuration}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    yield * takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
+    yield takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
         const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
         const {loadingDepth} = configuration.nodeTree;
         const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsed, {loadingDepth});
@@ -100,7 +99,7 @@ function * watchReloadTree({globalRegistry, configuration}) {
 }
 
 function * watchCurrentDocument({configuration}) {
-    yield * takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
+    yield takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
         const {contextPath} = action.payload;
         const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
         const {q} = backend.get();
@@ -139,7 +138,7 @@ function * watchCurrentDocument({configuration}) {
 }
 
 function * watchSearch({configuration}) {
-    yield * takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
+    yield takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
         const {contextPath, query: searchQuery, filterNodeType} = action.payload;
 
         if (!searchQuery && !filterNodeType) {
@@ -147,10 +146,18 @@ function * watchSearch({configuration}) {
         }
 
         yield put(actions.UI.PageTree.setAsLoading(contextPath));
+        let matchingNodes = [];
 
-        const {q} = backend.get();
-        const query = q(contextPath);
-        const matchingNodes = yield query.search(searchQuery, filterNodeType).getForTreeWithParents();
+        try {
+            const {q} = backend.get();
+            const query = q(contextPath);
+            matchingNodes = yield query.search(searchQuery, filterNodeType).getForTreeWithParents();
+        } catch (err) {
+            console.error('Error while executing a tree search: ', err);
+            yield put(actions.UI.PageTree.invalidate(contextPath));
+            yield put(actions.UI.FlashMessages.add('searchError', 'There was an error searching in the node tree. Contact your administrator for fixing this issue.', 'error'));
+            return;
+        }
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
         const loadingDepth = configuration.nodeTree.loadingDepth;
 

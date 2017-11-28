@@ -10,7 +10,9 @@ import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
+
 import animate from 'amator';
+import hashSum from 'hash-sum';
 
 const getContextPath = $get('contextPath');
 
@@ -36,6 +38,10 @@ const decodeLabel = flowright(
 );
 
 export default class Node extends PureComponent {
+    state = {
+        shouldScrollIntoView: false
+    };
+
     static propTypes = {
         isContentTreeNode: PropTypes.bool,
         rootNode: PropTypes.object,
@@ -61,6 +67,7 @@ export default class Node extends PureComponent {
         isNodeDirty: PropTypes.bool.isRequired,
 
         nodeTypesRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
 
         getTreeNode: PropTypes.func,
         onNodeToggle: PropTypes.func,
@@ -69,17 +76,6 @@ export default class Node extends PureComponent {
         onNodeDrag: PropTypes.func,
         onNodeDrop: PropTypes.func
     };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            shouldScrollIntoView: false
-        };
-
-        this.handleNodeToggle = this.handleNodeToggle.bind(this);
-        this.handleNodeClick = this.handleNodeClick.bind(this);
-    }
 
     componentDidMount() {
         // Always request scroll on first render if given node is focused
@@ -156,6 +152,13 @@ export default class Node extends PureComponent {
         return $get('ui.icon', nodeTypesRegistry.get(nodeType));
     }
 
+    getNodeTypeLabel() {
+        const {node, nodeTypesRegistry, i18nRegistry} = this.props;
+        const nodeType = $get('nodeType', node);
+        const nodeTypeLabel = $get('ui.label', nodeTypesRegistry.get(nodeType));
+        return i18nRegistry.translate(nodeTypeLabel, nodeTypeLabel);
+    }
+
     isFocused() {
         const {node, focusedNodeContextPath} = this.props;
 
@@ -222,7 +225,8 @@ export default class Node extends PureComponent {
             onNodeFocus,
             onNodeDrag,
             onNodeDrop,
-            currentlyDraggedNode
+            currentlyDraggedNode,
+            isContentTreeNode
         } = this.props;
 
         if (this.isHidden()) {
@@ -233,10 +237,13 @@ export default class Node extends PureComponent {
         };
         const childNodesCount = childNodes.count();
 
+        const labelIdentifier = (isContentTreeNode ? 'content-' : '') + 'treeitem-' + hashSum($get('contextPath', node)) + '-label';
+
         return (
-            <Tree.Node>
+            <Tree.Node aria-expanded={this.isCollapsed() ? 'false' : 'true'} aria-labelledby={labelIdentifier}>
                 <span ref={refHandler}/>
                 <Tree.Node.Header
+                    labelIdentifier={labelIdentifier}
                     id={$get('contextPath', node)}
                     hasChildren={hasChildren}
                     nodeDndType={nodeDndType}
@@ -251,6 +258,7 @@ export default class Node extends PureComponent {
                     hasError={this.hasError()}
                     label={decodeLabel($get('label', node))}
                     icon={this.getIcon()}
+                    iconLabel={this.getNodeTypeLabel()}
                     level={level}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
@@ -282,23 +290,24 @@ export default class Node extends PureComponent {
         );
     }
 
-    handleNodeToggle() {
+    handleNodeToggle = () => {
         const {node, onNodeToggle} = this.props;
         onNodeToggle($get('contextPath', node));
     }
 
-    handleNodeClick() {
+    handleNodeClick = () => {
         const {node, onNodeFocus, onNodeClick} = this.props;
         onNodeFocus($get('contextPath', node));
         onNodeClick($get('uri', node), $get('contextPath', node));
     }
 }
 
-const withNodeTypeRegistry = neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+const withNodeTypeRegistryAndI18nRegistry = neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    i18nRegistry: globalRegistry.get('i18n')
 }));
 
-export const PageTreeNode = withNodeTypeRegistry(connect(
+export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
     (state, {neos, nodeTypesRegistry}) => {
         const allowedNodeTypes = nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document'));
 
@@ -337,7 +346,7 @@ export const PageTreeNode = withNodeTypeRegistry(connect(
     }
 )(Node));
 
-export const ContentTreeNode = withNodeTypeRegistry(connect(
+export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
     (state, {neos, nodeTypesRegistry}) => {
         const allowedNodeTypes = [].concat(
             nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('content')),

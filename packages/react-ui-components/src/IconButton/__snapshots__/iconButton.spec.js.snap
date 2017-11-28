@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IconButton/> should render correctly. 1`] = `
+<Component
+  className="iconButtonClassName"
+  hoverStyle="brand"
+  size="regular"
+  style="transparent"
+>
+  <Component
+    icon="fooIconName"
+  />
+</Component>
+`;

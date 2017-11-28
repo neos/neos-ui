@@ -1,6 +1,7 @@
 import initializeUse from './Use/index';
 import initializeFlowQuery from './FlowQuery/index';
 import initializeEndpoints from './Endpoints/index';
+import fetchWithErrorHandling from './FetchWithErrorHandling/index';
 
 const createReadOnlyValue = value => ({
     value,
@@ -20,7 +21,7 @@ export const define = parent => (name, value) => {
 //
 // Initializes the Neos API
 //
-export const initializeJsAPI = (parent, {alias = 'neos', systemEnv = 'Development'}) => {
+export const initializeJsAPI = (parent, {alias = 'neos', systemEnv = 'Development', routes}) => {
     if (parent[alias] !== undefined) {
         throw new Error(`Could not initialize Neos API, because ${alias} is already defined.`);
     }
@@ -29,8 +30,8 @@ export const initializeJsAPI = (parent, {alias = 'neos', systemEnv = 'Developmen
     const addLibrary = define(neos);
 
     addLibrary('use', initializeUse(addLibrary, neos));
-    addLibrary('q', initializeFlowQuery());
-    addLibrary('endpoints', initializeEndpoints());
+    addLibrary('q', initializeFlowQuery(routes));
+    addLibrary('endpoints', initializeEndpoints(routes));
 
     //
     // Attach Neos API to the parent object
@@ -56,3 +57,8 @@ export const createPlugin = (identifier, factory) => {
     factory.identifier = identifier;
     return factory;
 };
+
+//
+// Expose fetchWithErrorHandling
+//
+export {fetchWithErrorHandling};

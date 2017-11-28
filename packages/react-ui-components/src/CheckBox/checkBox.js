@@ -41,10 +41,12 @@ class CheckBox extends PureComponent {
         }).isRequired
     };
 
-    constructor(props) {
-        super(props);
+    handleChange = () => {
+        const {onChange, isChecked} = this.props;
 
-        this.handleChange = this.handleChange.bind(this);
+        if (onChange) {
+            onChange(!isChecked);
+        }
     }
 
     render() {
@@ -74,7 +76,6 @@ class CheckBox extends PureComponent {
                     {...rest}
                     className={theme.checkbox__input}
                     type="checkbox"
-                    role="checkbox"
                     checked={isChecked}
                     aria-checked={isChecked}
                     onChange={this.handleChange}
@@ -83,14 +84,6 @@ class CheckBox extends PureComponent {
                 <div className={mirrorClassNames}/>
             </div>
         );
-    }
-
-    handleChange() {
-        const {onChange, isChecked} = this.props;
-
-        if (onChange) {
-            onChange(!isChecked);
-        }
     }
 }
 

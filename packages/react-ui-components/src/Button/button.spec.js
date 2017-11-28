@@ -1,82 +1,88 @@
-import sinon from 'sinon';
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import Button from './button.js';
 
-const defaultProps = {
-    theme: {
-        'btn--clean': 'cleanClassName',
-        'btn--brand': 'brandClassName',
-        'btn--cleanHover': 'cleanHoverClassName',
-        'btn--brandHover': 'brandHoverClassName'
-    },
-    className: 'foo className',
-    children: 'Foo children',
-    onClick: () => null,
-    style: 'clean',
-    hoverStyle: 'clean'
-};
-const shallow = createShallowRenderer(Button, defaultProps);
+describe('<Button/>', () => {
+    let props;
 
-test('should render a "button" node with the role="button" attribute.', () => {
-    const btn = shallow();
-
-    expect(btn.type()).toBe('button');
-});
-test('should always render the "brand" and "brandHover" theme classNames in case the "isActive" prop is truthy.', () => {
-    const btn = shallow({
-        isActive: true
+    beforeEach(() => {
+        props = {
+            theme: {
+                'btn--clean': 'cleanClassName',
+                'btn--brand': 'brandClassName',
+                'btn--cleanHover': 'cleanHoverClassName',
+                'btn--brandHover': 'brandHoverClassName'
+            },
+            className: 'foo className',
+            children: 'Foo children',
+            onClick: () => null,
+            style: 'clean',
+            hoverStyle: 'clean',
+            type: 'button'
+        };
     });
 
-    expect(btn.hasClass(defaultProps.theme['btn--clean'])).toBeFalsy();
-    expect(btn.hasClass(defaultProps.theme['btn--cleanHover'])).toBeFalsy();
-    expect(btn.hasClass(defaultProps.theme['btn--brand'])).toBeTruthy();
-    expect(btn.hasClass(defaultProps.theme['btn--brandHover'])).toBeTruthy();
-});
-test('should render the "style" and "hoverStyle" theme classNames in case the "isActive" prop is falsy.', () => {
-    const btn = shallow({
-        isActive: false
+    it('should render correctly.', () => {
+        const wrapper = shallow(<Button {...props}/>);
+
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
-    expect(btn.hasClass(defaultProps.theme['btn--clean'])).toBeTruthy();
-    expect(btn.hasClass(defaultProps.theme['btn--cleanHover'])).toBeTruthy();
-    expect(btn.hasClass(defaultProps.theme['btn--brand'])).toBeFalsy();
-    expect(btn.hasClass(defaultProps.theme['btn--brandHover'])).toBeFalsy();
-});
-test('should render the "className" prop if passed.', () => {
-    const btn = shallow({
-        className: 'barClassName'
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<Button {...props} className="fooClassName"/>);
+
+        expect(wrapper.prop('className')).toContain('fooClassName');
     });
 
-    expect(btn.hasClass('barClassName')).toBeTruthy();
-});
-test('should not render the disabled attribute when passing a falsy "isDisabled" prop.', () => {
-    const btn = shallow({
-        isDisabled: false
+    it('should allow the propagation of "type" with the "type" prop.', () => {
+        const wrapper = shallow(<Button {...props} type="submit"/>);
+
+        expect(wrapper.prop('type')).toContain('submit');
     });
 
-    expect(btn.html().includes('disabled=""')).toBeFalsy();
-});
-test('should render the disabled attribute when passing a truthy "isDisabled" prop.', () => {
-    const btn = shallow({
-        isDisabled: true
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<Button {...props} foo="bar"/>);
+
+        expect(wrapper.prop('foo')).toBe('bar');
     });
 
-    expect(btn.html().includes('disabled=""')).toBeTruthy();
-});
-test('should call the "_refHandler" prop with the current "isFocused" prop when rendering the node.', () => {
-    const props = {
-        _refHandler: sinon.spy(),
-        isFocused: 'foo'
-    };
-    shallow(props);
+    it('should always render the "brand" and "brandHover" theme classNames in case the "isActive" prop is truthy.', () => {
+        const wrapper = shallow(<Button {...props} isActive/>);
 
-    expect(props._refHandler.calledOnce).toBeTruthy();
-    expect(props._refHandler.args[0][0]).toBe('foo');
-});
-test('should propagate the rest of the passed props to the wrapping node.', () => {
-    const btn = shallow({
-        id: 'fooId'
+        expect(wrapper.hasClass(props.theme['btn--clean'])).toBeFalsy();
+        expect(wrapper.hasClass(props.theme['btn--cleanHover'])).toBeFalsy();
+        expect(wrapper.hasClass(props.theme['btn--brand'])).toBeTruthy();
+        expect(wrapper.hasClass(props.theme['btn--brandHover'])).toBeTruthy();
     });
 
-    expect(btn.html().includes('id="fooId"')).toBeTruthy();
+    it('should render the "style" and "hoverStyle" theme classNames in case the "isActive" prop is falsy.', () => {
+        const wrapper = shallow(<Button {...props} isActive={false}/>);
+
+        expect(wrapper.hasClass(props.theme['btn--clean'])).toBeTruthy();
+        expect(wrapper.hasClass(props.theme['btn--cleanHover'])).toBeTruthy();
+        expect(wrapper.hasClass(props.theme['btn--brand'])).toBeFalsy();
+        expect(wrapper.hasClass(props.theme['btn--brandHover'])).toBeFalsy();
+    });
+
+    it('should not render the disabled attribute when passing a falsy "isDisabled" prop.', () => {
+        const wrapper = shallow(<Button {...props} isActive={false}/>);
+
+        expect(wrapper.html()).not.toContain('disabled=""');
+    });
+
+    it('should render the disabled attribute when passing a truthy "isDisabled" prop.', () => {
+        const wrapper = shallow(<Button {...props} isActive/>);
+
+        expect(wrapper.html()).not.toContain('disabled=""');
+    });
+
+    it('should call the "_refHandler" prop with the current "isFocused" prop when rendering the node.', () => {
+        const _refHandler = jest.fn();
+
+        shallow(<Button {...props} isFocused={false} _refHandler={_refHandler}/>);
+
+        expect(_refHandler.mock.calls.length).toBe(1);
+        expect(_refHandler.mock.calls[0][0]).toBe(false);
+    });
 });

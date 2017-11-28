@@ -1,5 +1,6 @@
 import React from 'react';
 import omit from 'lodash.omit';
+import {$get} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 import LinkIconButton from './EditorToolbar/LinkIconButton';
@@ -14,14 +15,14 @@ const IconButtonComponent = props => {
 //
 // Create richtext editing toolbar registry
 //
-export default (ckEditorRegistry, nodeTypesRegistry) => {
+export default ckEditorRegistry => {
     const richtextToolbar = ckEditorRegistry.set('richtextToolbar', new RichTextToolbarRegistry(`
         Contains the Rich Text Editing Toolbar components.
 
         The values are objects of the following form:
 
             {
-                formatting: 'h1' // References a key inside "formattingRules"
+                formattingRule: 'h1' // References a key inside "formattingRules"
                 component: Button // the React component being used for rendering
                 callbackPropName: 'onClick' // Name of the callback prop of the Component which is
                                             fired when the component's value changes.
@@ -31,7 +32,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         ## Component wiring
 
-        - Each toolbar component receives all properties except "formatting" and "component" directly as props.
+        - Each toolbar component receives all properties except "formattingRule" and "component" directly as props.
         - Furthermore, the "isActive" property is bound, which is a boolean flag defining whether the text style
             referenced by "formatting" is currently active or not.
         - Furthermore, the callback specified in "callbackPropName" is wired, which toggles the value.
@@ -40,8 +41,6 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         If you need this, you'll most likely need to listen to selectors.UI.ContentCanvas.formattingUnderCursor and extract
         your relevant information manually.
     `));
-
-    richtextToolbar.setNodeTypesRegistry(nodeTypesRegistry);
 
     //
     // Configure richtext editing toolbar
@@ -210,9 +209,9 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'indent',
         hoverStyle: 'brand',
-        isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
-            return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
-                formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED;
+        isVisibleWhen: (inlineEditorOptions, formattingUnderCursor) => {
+            return ((Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions))) &&
+                formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED);
         }
     });
 
@@ -224,9 +223,9 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
 
         icon: 'outdent',
         hoverStyle: 'brand',
-        isVisibleWhen: (enabledFormattingRuleIds, formattingUnderCursor) => {
-            return (enabledFormattingRuleIds.indexOf('ul') !== -1 || enabledFormattingRuleIds.indexOf('ol') !== -1) &&
-                formattingUnderCursor.outdent !== richtextToolbar.TRISTATE_DISABLED;
+        isVisibleWhen: (inlineEditorOptions, formattingUnderCursor) => {
+            return ((Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions))) &&
+                formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED);
         }
     });
 
@@ -289,7 +288,7 @@ export default (ckEditorRegistry, nodeTypesRegistry) => {
         component: IconButtonComponent,
         callbackPropName: 'onClick',
 
-        icon: 'table',
+        icon: 'eraser',
         hoverStyle: 'brand'
     });
 

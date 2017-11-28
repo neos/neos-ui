@@ -25,14 +25,6 @@ class AspectRatioItem extends PureComponent {
         isLocked: PropTypes.bool
     };
 
-    constructor(props) {
-        super(props);
-
-        this.handleWidthInputChange = this.handleInputChange.bind(this, 'width');
-        this.handleHeightInputChange = this.handleInputChange.bind(this, 'height');
-        this.handleFlipAspectRatio = this.props.onFlipAspectRatio.bind(this);
-    }
-
     render() {
         const {width, height, key, isLocked} = this.props;
 
@@ -48,7 +40,7 @@ class AspectRatioItem extends PureComponent {
                 <IconButton
                     icon="exchange"
                     disabled={isLocked}
-                    onClick={this.handleFlipAspectRatio}
+                    onClick={this.props.onFlipAspectRatio}
                     />
                 <TextInput
                     className={style.dimensionInput}
@@ -60,6 +52,9 @@ class AspectRatioItem extends PureComponent {
             </span>
         );
     }
+
+    handleWidthInputChange = val => this.handleInputChange('width', val);
+    handleHeightInputChange = val => this.handleInputChange('height', val);
 
     handleInputChange(type, val) {
         const width = type === 'width' ? val : this.props.width;
@@ -73,28 +68,19 @@ class AspectRatioItem extends PureComponent {
     i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class ImageCropper extends PureComponent {
+    state = {
+        cropConfiguration: CropConfiguration.fromNeosConfiguration(
+            this.props.sourceImage,
+            this.props.options.crop.aspectRatio
+        )
+    };
+
     static propTypes = {
         onComplete: PropTypes.func.isRequired,
         sourceImage: PropTypes.object.isRequired,
         options: PropTypes.object,
         i18nRegistry: PropTypes.object.isRequired
     };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            cropConfiguration: CropConfiguration.fromNeosConfiguration(
-                this.props.sourceImage,
-                this.props.options.crop.aspectRatio
-            )
-        };
-
-        this.handleSetAspectRatio = this.setAspectRatio.bind(this);
-        this.handleClearAspectRatio = this.clearAspectRatio.bind(this);
-        this.handleFlipAspectRatio = this.flipAspectRatio.bind(this);
-        this.handleSetCustomAspectRatioDimensions = this.setCustomAspectRatioDimensions.bind(this);
-    }
 
     componentDidMount() {
         //
@@ -118,14 +104,14 @@ export default class ImageCropper extends PureComponent {
         });
     }
 
-    setAspectRatio(aspectRatioOption) {
+    handleSetAspectRatio = aspectRatioOption => {
         const {cropConfiguration} = this.state;
         this.setState({
             cropConfiguration: cropConfiguration.selectAspectRatioOption(aspectRatioOption)
         });
     }
 
-    setCustomAspectRatioDimensions(width, height) {
+    handleSetCustomAspectRatioDimensions = (width, height) => {
         const {cropConfiguration} = this.state;
 
         this.setState({
@@ -133,7 +119,7 @@ export default class ImageCropper extends PureComponent {
         });
     }
 
-    flipAspectRatio() {
+    handleFlipAspectRatio = () => {
         const {cropConfiguration} = this.state;
 
         this.setState({
@@ -141,7 +127,7 @@ export default class ImageCropper extends PureComponent {
         });
     }
 
-    clearAspectRatio() {
+    handleClearAspectRatio = () => {
         const {cropConfiguration} = this.state;
 
         this.setState({
@@ -209,6 +195,7 @@ export default class ImageCropper extends PureComponent {
                     src={src}
                     crop={cropConfiguration.cropInformation}
                     onComplete={onComplete}
+                    onAspectRatioChange={onComplete}
                     />
             </div>
         );

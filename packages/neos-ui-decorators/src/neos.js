@@ -11,7 +11,7 @@ const buildConfigurationAndGlobalRegistry = defaultMemoize((configuration, globa
 // configuration
 //
 export default mapRegistriesToProps => WrappedComponent => {
-    return class NeosDecorator extends PureComponent {
+    const Decorator = class NeosDecorator extends PureComponent {
         static Original = WrappedComponent;
 
         static contextTypes = {
@@ -23,6 +23,7 @@ export default mapRegistriesToProps => WrappedComponent => {
 
         render() {
             const {configuration, globalRegistry} = this.context;
+            // ToDo: Add a warning for the developer if he tries to return the whole `globalRegistry` into the component.
             const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(globalRegistry) : {};
 
             return (
@@ -34,4 +35,7 @@ export default mapRegistriesToProps => WrappedComponent => {
             );
         }
     };
+
+    Decorator.WrappedComponent = WrappedComponent;
+    return Decorator;
 };

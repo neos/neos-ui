@@ -1,7 +1,7 @@
-import {takeEvery} from 'redux-saga';
-import {put, select} from 'redux-saga/effects';
+import {takeEvery, put, select} from 'redux-saga/effects';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
+import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';
 import {
@@ -51,16 +51,21 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
     yield put(actions.CR.Nodes.add(nodes));
 
+    // Remove the inline scripts after initialization
+    Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
+
     yield put(actions.UI.ContentCanvas.setContextPath(documentInformation.metaData.contextPath, documentInformation.metaData.siteNode));
     yield put(actions.UI.ContentCanvas.setPreviewUrl(documentInformation.metaData.previewUrl));
     yield put(actions.CR.ContentDimensions.setActive(documentInformation.metaData.contentDimensions.active));
+    // the user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content
+    yield put(actions.UI.ContentCanvas.setSrc(documentInformation.metaData.url));
 
     getGuestFrameDocument().addEventListener('click', e => {
         const clickPath = Array.prototype.slice.call(eventPath(e));
         const isInsideInlineUi = clickPath.some(domNode =>
             domNode &&
             domNode.getAttribute &&
-            domNode.getAttribute('data-__neos__inlineUI')
+            domNode.getAttribute('data-__neos__inline-ui')
         );
         const selectedDomNode = clickPath.find(domNode =>
             domNode &&
@@ -93,8 +98,11 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             nodes
         });
 
-        window.requestIdleCallback(() => {
-            initializeCurrentNode(node);
+        requestIdleCallback(() => {
+            // only of guest frame document did not change in the meantime, we continue initializing the node
+            if (getGuestFrameDocument() === node.ownerDocument) {
+                initializeCurrentNode(node);
+            }
             initializeSubSequentNodes();
         });
     }, () => { /* This noop function is called right at the end of content inialization */ });

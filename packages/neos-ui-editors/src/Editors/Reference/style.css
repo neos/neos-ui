@@ -1,0 +1,13 @@
+.referenceOption {
+    padding: var(--halfSpacing);
+    box-sizing: content-box;
+    height: var(--goldenUnit);
+    line-height: 20px;
+}
+
+.referenceOption__link {
+    color: var(--brandColorsContrastBrightest);
+    display: block;
+    font-size: 12px;
+    padding-left: calc(var(--spacing) * 1.25);
+}

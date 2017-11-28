@@ -80,16 +80,27 @@ class TextInput extends PureComponent {
         TooltipComponent: PropTypes.any.isRequired
     };
 
-    constructor(props) {
-        super(props);
-
-        this.handleValueChange = this.handleValueChange.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-    }
-
     componentDidMount() {
         if (this.props.setFocus) {
             this.inputRef.focus();
+        }
+    }
+
+    handleKeyPress = e => {
+        const enterKeyCode = 13;
+        const keyCode = e.keyCode || e.which;
+        const {onEnterKey} = this.props;
+        if (keyCode === enterKeyCode && typeof onEnterKey === 'function') {
+            onEnterKey();
+        }
+    }
+
+    handleValueChange = e => {
+        const value = e.target.value;
+        const {onChange} = this.props;
+
+        if (onChange) {
+            onChange(value);
         }
     }
 
@@ -130,6 +141,8 @@ class TextInput extends PureComponent {
                     {...rest}
                     className={classNames}
                     role="textbox"
+                    aria-multiline="false"
+                    aria-disabled={disabled ? 'true' : 'false'}
                     type={type}
                     placeholder={placeholder}
                     disabled={disabled}
@@ -140,24 +153,6 @@ class TextInput extends PureComponent {
                 {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>
         );
-    }
-
-    handleKeyPress(e) {
-        const enterKeyCode = 13;
-        const keyCode = e.keyCode || e.which;
-        const {onEnterKey} = this.props;
-        if (keyCode === enterKeyCode && typeof onEnterKey === 'function') {
-            onEnterKey();
-        }
-    }
-
-    handleValueChange(e) {
-        const value = e.target.value;
-        const {onChange} = this.props;
-
-        if (onChange) {
-            onChange(value);
-        }
     }
 }
 

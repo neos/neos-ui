@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import Label from '@neos-project/react-ui-components/src/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
+import style from './style.css';
 
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors')
 }))
 export default class EditorEnvelope extends PureComponent {
+    state = {};
+
     static propTypes = {
         identifier: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
@@ -17,6 +20,7 @@ export default class EditorEnvelope extends PureComponent {
         renderSecondaryInspector: PropTypes.func,
         editorRegistry: PropTypes.object.isRequired,
         validationErrors: PropTypes.array,
+        onEnterKey: PropTypes.func,
 
         commit: PropTypes.func.isRequired
     };
@@ -40,7 +44,14 @@ export default class EditorEnvelope extends PureComponent {
             );
         }
 
-        return (<div>Missing Editor {editor}</div>);
+        return (<div className={style.envelope__error}>Missing Editor {editor}</div>);
+    }
+
+    componentDidCatch(error, errorInfo) {
+        console.error(error, errorInfo);
+        this.setState({
+            error
+        });
     }
 
     renderLabel() {
@@ -61,6 +72,10 @@ export default class EditorEnvelope extends PureComponent {
     }
 
     render() {
+        if (this.state.error) {
+            return <div className={style.envelope__error}>{this.state.error.toString()}</div>;
+        }
+
         return (
             <div>
                 {this.renderLabel()}

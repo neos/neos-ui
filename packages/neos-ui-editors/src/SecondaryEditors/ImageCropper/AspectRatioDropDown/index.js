@@ -14,12 +14,6 @@ class AspectRatioDropDownitem extends PureComponent {
         onClick: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-
     render() {
         const {label} = this.props;
 
@@ -30,7 +24,7 @@ class AspectRatioDropDownitem extends PureComponent {
         );
     }
 
-    handleClick() {
+    handleClick = () => {
         const {value, onClick} = this.props;
 
         onClick(value);

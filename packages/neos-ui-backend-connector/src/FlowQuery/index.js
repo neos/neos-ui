@@ -26,8 +26,8 @@ export const createNodeEnvelope = (node = {}) => {
     return {$node: contextPath};
 };
 
-export const resolveChain = chain => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-    url: '/neos!/service/flow-query',
+export const resolveChain = (chain, routes) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    url: routes.ui.service.flowQuery,
 
     method: 'POST',
     credentials: 'include',
@@ -41,7 +41,7 @@ export const resolveChain = chain => fetchWithErrorHandling.withCsrfToken(csrfTo
 //
 // The core FlowQuery plugin
 //
-export default () => {
+export default routes => {
     const middlewares = [];
 
     //
@@ -68,7 +68,7 @@ export default () => {
                 }
 
                 if (isFinishingOperation(result)) {
-                    return resolveChain($add('chain', result, {chain}).chain);
+                    return resolveChain($add('chain', result, {chain}).chain, routes);
                 }
 
                 return createChainableApi(operations, $add('chain', result, {chain}).chain, ignoreMiddleware);

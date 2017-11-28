@@ -11,6 +11,7 @@
     width: var(--goldenUnit);
     color: var(--brandColorsContrastBrightest);
     text-align: center;
+    background: transparent;
 
     &:focus {
         outline: unset;

@@ -2,7 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
-export default class SelectBoxOption extends PureComponent {
+// TODO: rename: but how?
+export default class Preview extends PureComponent {
     static propTypes = {
         onClick: PropTypes.func.isRequired,
 
@@ -20,12 +21,12 @@ export default class SelectBoxOption extends PureComponent {
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'selectBox__item': PropTypes.string,
             'selectBox__item--isSelectable': PropTypes.string,
+            'selectBox__item--isSelectable--active': PropTypes.string,
             'selectBox__itemIcon': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
         //
         // Static component dependencies which are injected from the outside (index.js)
-        // Used in sub-components
         //
         IconComponent: PropTypes.any.isRequired
     }

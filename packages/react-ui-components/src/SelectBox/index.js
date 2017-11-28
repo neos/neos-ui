@@ -23,3 +23,4 @@ export default injectProps({
     IconButtonComponent: IconButton,
     TextInputComponent: TextInput
 })(WithKeys);
+

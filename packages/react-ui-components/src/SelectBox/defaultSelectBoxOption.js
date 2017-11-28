@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import SelectBoxOption from './selectBoxOption';
+import Preview from '../Preview/index';
 
 export default class DefaultSelectBoxOption extends PureComponent {
     static propTypes = {
@@ -14,9 +14,9 @@ export default class DefaultSelectBoxOption extends PureComponent {
         const {option} = this.props;
 
         return (
-            <SelectBoxOption {...this.props} icon={option.icon}>
+            <Preview {...this.props} icon={option.icon}>
                 <span>{option.label}</span>
-            </SelectBoxOption>
+            </Preview>
         );
     }
 }

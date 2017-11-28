@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
-import SelectBoxOption from '@neos-project/react-ui-components/src/SelectBox/selectBoxOption';
+//import SelectBoxOption from '@neos-project/react-ui-components/src/SelectBox/selectBoxOption';
 import style from './style.css';
 
 @neos(globalRegistry => ({
@@ -24,6 +24,8 @@ export default class ReferenceOption extends PureComponent {
         const {label, uriInLiveWorkspace, nodeType} = option;
         const nodeTypeDefinition = nodeTypesRegistry.getNodeType(nodeType);
         const icon = $get('ui.icon', nodeTypeDefinition);
+        // TODO FIXME
+        return null;
         return (
             <SelectBoxOption {...this.props} className={style.referenceOption} icon={icon}>
                 <span>{label}</span>

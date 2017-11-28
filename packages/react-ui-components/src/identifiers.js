@@ -37,5 +37,6 @@ export default {
     tree: '@neos-project/react-ui-components/tree',
     treeNode: '@neos-project/react-ui-components/treeNode',
     treeNodeHeader: '@neos-project/react-ui-components/treeNodeHeader',
-    treeNodeContents: '@neos-project/react-ui-components/treeNodeContents'
+    treeNodeContents: '@neos-project/react-ui-components/treeNodeContents',
+    preview: '@neos-project/react-ui-components/preview',
 };

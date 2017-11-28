@@ -1,0 +1,27 @@
+
+
+.selectBox__item {
+    composes: reset from './../reset.css';
+    background: var(--brandColorsContrastNeutral);
+    border-top: 1px solid var(--brandColorsContrastDarker);
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.selectBox__item--isSelectable {
+    height: var(--goldenUnit);
+    line-height: var(--goldenUnit);
+    padding: 0 var(--spacing);
+}
+
+.selectBox__item--isSelectable--active {
+        background: var(--brandColorsPrimaryBlue);
+}
+
+.selectBox__itemIcon {
+    composes: reset from './../reset.css';
+    padding-right: .5em;
+}

@@ -1,7 +1,7 @@
 
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import SelectBoxOption from './selectBoxOption';
+//import SelectBoxOption from './selectBoxOption';
 import style from './style.css';
 
 export default class ComplexOption extends PureComponent {
@@ -22,6 +22,9 @@ export default class ComplexOption extends PureComponent {
         const tertiaryLabel = this.props.tertiaryLabel ?
             <span className={style.complexOption__tertiaryLabel}>{this.props.tertiaryLabel}</span> :
             '';
+
+        // TODO fixme
+        return null;
 
         return (
             <SelectBoxOption {...this.props} icon={this.props.icon} className={style.complexOption__item}>

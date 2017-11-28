@@ -80,7 +80,7 @@
     composes: reset from './../reset.css';
     position: absolute;
     top: 0;
-    right: 41px;
+    right: 0;
     z-index: 1;
     display: block;
     width: var(--goldenUnit);
@@ -91,27 +91,30 @@
     line-height: var(--goldenUnit);
 }
 
-.selectBox__twoIconIndention {
-    .selectBox__loadingIcon::after {
-        display: block;
-        content: '';
-        position: absolute;
-        width: 1px;
-        height: 24px;
-        top: 0;
-        right: 0;
-        background-color: #fff;
-        opacity: .15;
-        margin-top: var(--halfSpacing);
-    }
+.selectBox__deleteIcon {
+    composes: selectBox__loadingIcon;
 }
 
 .selectBox__twoIconIndention {
     padding: 0 calc(var(--spacing) + var(--goldenUnit) + var(--goldenUnit)) 0 var(--spacing);
 }
 
-.selectBox__deleteIcon {
-    composes: selectBox__loadingIcon;
+.selectBox__twoIconIndention .selectBox__iconSeparator {
+    display: block;
+    position: absolute;
+    right: calc(var(--goldenUnit) + 1px);
+    top: 0;
+    height: calc(var(--spacing) * 1.25);
+    width: 1px;
+    content: '';
+    background-color: #fff;
+    opacity: .15;
+    margin-top: var(--halfSpacing);
+}
+
+.selectBox__twoIconIndention .selectBox__deleteIcon,
+.selectBox__twoIconIndention .selectBox__loadingIcon {
+    right: calc(var(--goldenUnit) + 1px);
 }
 
 .selectBox__btnIcon {

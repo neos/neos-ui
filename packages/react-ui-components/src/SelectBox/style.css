@@ -101,12 +101,12 @@
 
 .selectBox__twoIconIndention .selectBox__iconSeparator {
     display: block;
-    content: '';
     position: absolute;
-    width: 1px;
-    height: 24px;
+    right: calc(var(--goldenUnit) + 1px);
     top: 0;
-    right: 41px;
+    height: calc(var(--spacing) * 1.25);
+    width: 1px;
+    content: '';
     background-color: #fff;
     opacity: .15;
     margin-top: var(--halfSpacing);
@@ -114,7 +114,7 @@
 
 .selectBox__twoIconIndention .selectBox__deleteIcon,
 .selectBox__twoIconIndention .selectBox__loadingIcon {
-    right: 41px;
+    right: calc(var(--goldenUnit) + 1px);
 }
 
 .selectBox__btnIcon {

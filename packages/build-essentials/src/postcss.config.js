@@ -1,7 +1,6 @@
 const brand = require('@neos-project/brand');
 const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
 const transitions = require('./config/transitionConfig');
-
 const transitionVars = transitions.generateCssVarsObject(transitions.config);
 
 module.exports = {

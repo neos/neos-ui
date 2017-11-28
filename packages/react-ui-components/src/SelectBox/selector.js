@@ -26,6 +26,10 @@ export default class Selector extends PureComponent {
          * This prop represents the current selected value.
          */
         value: PropTypes.string,
+
+        // is the selector currently opened or closed?
+        isExpanded: PropTypes.bool.isRequired,
+        onToggleExpanded: PropTypes.func.isRequired,
         
 
         // TODO: must be a react component CLASS
@@ -57,32 +61,13 @@ export default class Selector extends PureComponent {
         IconButtonComponent: PropTypes.any.isRequired
     };
 
-    state = {
-        isOpen: false
-    };
-
     handleChange = newValue => {
-        this.setState({isOpen: false});
         this.props.onChange(newValue);
     }
 
     /*wrappedPreviewRenderer = (item, index) => {
         return this.props.previewRenderer(this.handleChange, item, index);
     }*/
-
-    handleDropdownToggle = () => {
-        if (this.state.isOpen) {
-            // reset selected index to not get falsy preselected values
-            // if dropdown is opened more than once
-            this.setState({
-                isOpen: false
-            });
-        } else {
-            this.setState({
-                isOpen: true
-            });
-        }
-    }
 
     handleClose = () => {
 
@@ -135,10 +120,11 @@ export default class Selector extends PureComponent {
             optionValueAccessor,
             value,
             theme,
-            IconComponent
+            IconComponent,
+            
+            isExpanded,
+            onToggleExpanded
         } = this.props;
-
-        const {isOpen} = this.state;
 
         const selectedOption = options.find(option => optionValueAccessor(option) === value);
         const loading = value && !selectedOption;
@@ -148,7 +134,7 @@ export default class Selector extends PureComponent {
         const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[this.withoutGroupLabel]);
 
         return (
-            <DropDown.Stateless className={theme.selectBox} isOpen={isOpen} onToggle={this.handleDropdownToggle} onClose={this.handleClose}>
+            <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={onToggleExpanded} onClose={this.handleClose}>
                 <DropDown.Header className={theme.selectBox__btn} shouldKeepFocusState={false} showDropDownToggle={Boolean(options.length)}>
                     {!loading && selectedOption.icon && <IconComponent className={theme.selectBox__btnIcon} icon={selectedOption.icon}/>}
                     {!loading && selectedOption && <span className={theme.dropDown__itemLabel}>{selectedOption.label}</span>}
@@ -170,7 +156,6 @@ export default class Selector extends PureComponent {
             optionValueAccessor
         } = this.props;
 
-        console.log("RENDER OPTION", focusedValue, value);
         const Preview = preview;
         const isHighlighted = optionValueAccessor(option) === (focusedValue || value);
 
@@ -189,9 +174,6 @@ export default class Selector extends PureComponent {
     }
 
     handlePreviewClick = option => () => {
-        this.setState({
-            isOpen: false
-        });
         this.props.onChange(option);
     }
 

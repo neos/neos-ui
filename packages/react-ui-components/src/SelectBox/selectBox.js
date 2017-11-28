@@ -134,6 +134,8 @@ export default class SelectBox extends PureComponent {
     };
 
     state = {
+        isExpanded: false,
+
         hasFocus: false,
         focusedValue: ''
     };
@@ -207,7 +209,8 @@ export default class SelectBox extends PureComponent {
         } = this.props;
 
         const {
-            focusedValue
+            focusedValue,
+            isExpanded
         } = this.state;
 
         const selectWrapperClassNames = mergeClassNames({
@@ -247,6 +250,9 @@ export default class SelectBox extends PureComponent {
         return (
             <div className={selectWrapperClassNames}>
                 <Selector
+                    isExpanded={isExpanded}
+                    onToggleExpanded={this.handleToggleExpanded}
+
                     options={preparedOptions}
                     preview={optionComponent}
                     value={value}
@@ -338,6 +344,12 @@ export default class SelectBox extends PureComponent {
 
     handleDeleteClick = () => {
         this.handleValueChange('');
+    }
+
+    handleToggleExpanded = () => {
+        this.setState({
+            isExpanded: !this.state.isExpanded
+        });
     }
 
     handleOptionFocusChange = option => {

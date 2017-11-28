@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import mergeClassNames from 'classnames';
-import SearchInput from '../Finder/SearchInput';
 import Selector from './selector';
 import GroupedPreviewList from '../Previews/GroupedPreviewList';
 import Finder from '../Finder/index';
@@ -166,10 +165,18 @@ export default class SelectBox extends PureComponent {
         this.props.onSearchTermChange(...args);
     }
 
-    handleValueChange = (...rest) => {
-        this.props.onValueChange(...rest);
+    handleValueChange = option => {
+        const {
+            onValueChange,
+            optionValueField
+        } = this.props;
+
+        const newValue = $get([optionValueField], option);
+
+        onValueChange(newValue);
         // Clear search box after searching
         this.handleClearSearch();
+        this.setState({isExpanded: false, focusedValue: ''});
     }
 
     handleCreateNew = (...rest) => {
@@ -182,21 +189,9 @@ export default class SelectBox extends PureComponent {
         this.setState({hasFocus});
     }
 
-    prepareOptions() {
-        // TODO remove
-        const {
-            options,
-            optionValueField
-        } = this.props;
-
-        return options.map(option => {
-            const identifier = option[optionValueField];
-            return Object.assign({__value: identifier}, option);
-        });
-    }
-
     render() {
         const {
+            options,
             value,
             theme,
             highlight,
@@ -213,24 +208,31 @@ export default class SelectBox extends PureComponent {
             isExpanded
         } = this.state;
 
+        const Preview = optionComponent;
+
         const selectWrapperClassNames = mergeClassNames({
             [theme['wrapper--highlight']]: highlight
         });
 
-        const preparedOptions = this.prepareOptions();
-        //const selectedOption = value ? preparedOptions.reduce((selected, current) => {
-        //    return (current.__value === value ? current : selected);
-        //}, null) : {__value: value, label: value};
+        const selectedOption = value ? options.reduce((selected, current) => {
+            return (current.__value === value ? current : selected);
+        }, null) : null;
 
         const optionValueAccessor = $get([optionValueField]);
 
         if (displaySearchBox && !value) {
             return (
                 <Finder
-                    options={preparedOptions}
-                    previewRenderer={this.renderOption}
+                    isExpanded={isExpanded}
+                    onToggleExpanded={this.handleToggleExpanded}
+
+                    options={options}
+                    Preview={Preview}
                     classNames={selectWrapperClassNames}
                     onValueChange={this.handleValueChange}
+                    focusedValue={focusedValue || value}
+                    onOptionFocus={this.handleOptionFocusChange}
+                    optionValueAccessor={optionValueAccessor}
                     onSearchTermChange={this.handleSearchTermChange}
                     theme={theme}
                     IconComponent={IconComponent}
@@ -242,7 +244,7 @@ export default class SelectBox extends PureComponent {
         if (displaySearchBox && selectedOption) {
             return (
                 <ul className={theme.selectBox__contents}>
-                    {this.renderOption(this.handleDeleteClick, selectedOption, null)}
+                    <Preview option={selectedOption} onClick={this.handleDeleteClick}/>
                 </ul>
             );
         }
@@ -253,10 +255,10 @@ export default class SelectBox extends PureComponent {
                     isExpanded={isExpanded}
                     onToggleExpanded={this.handleToggleExpanded}
 
-                    options={preparedOptions}
-                    preview={optionComponent}
+                    options={options}
+                    Preview={Preview}
                     value={value}
-                    focusedValue={focusedValue}
+                    focusedValue={focusedValue || value}
                     onChange={this.handleValueChange}
                     optionValueAccessor={optionValueAccessor}
                     onOptionFocus={this.handleOptionFocusChange}
@@ -309,30 +311,6 @@ export default class SelectBox extends PureComponent {
             accumulator[groupLabel].push(currentOpt);
             return accumulator;
         }, Object.create(null)); // <-- Initial value of the accumulator
-    }
-
-    /**
-     * Renders a single option (<li/>) for the select box
-     * @returns {JSX} option element
-     */
-    renderOption = (wrappingClickHandler, option, index) => {
-        throw new Error("NOT USED ANYMORE!!!");
-        const {theme, optionComponent, optionValueField} = this.props;
-        const selectedIndex = this.state.selectedIndex;
-        const value = option[optionValueField];
-        const onClick = () => {
-            wrappingClickHandler(value);
-        };
-        const isActive = index === selectedIndex;
-        //
-
-        const setIndex = () => {
-            
-        };
-
-        const OptionComponent = optionComponent;
-        // onMouseEnter doesn't work on OptionComponent
-        return <OptionComponent key={index} className={className} isActive={isActive} option={option} onClick={onClick} onMouseEnter={setIndex}/>;
     }
 
     setSelectedIndex = selectedIndex => {

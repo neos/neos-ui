@@ -13,7 +13,6 @@ export default class Selector extends PureComponent {
          */
         options: PropTypes.arrayOf(
             PropTypes.shape({
-                __value: PropTypes.any.isRequired,
                 label: PropTypes.oneOfType([
                     PropTypes.string,
                     PropTypes.object
@@ -26,15 +25,15 @@ export default class Selector extends PureComponent {
          * This prop represents the current selected value.
          */
         value: PropTypes.string,
+        optionValueAccessor: PropTypes.func.isRequired,
 
         // is the selector currently opened or closed?
         isExpanded: PropTypes.bool.isRequired,
         onToggleExpanded: PropTypes.func.isRequired,
-        
+
 
         // TODO: must be a react component CLASS
-        // TODO: "Preview" (rename as it is react cmp.)
-        preview: PropTypes.any.isRequired,
+        Preview: PropTypes.any.isRequired,
 
 
         // empty option list handling should happen inside here
@@ -46,7 +45,7 @@ export default class Selector extends PureComponent {
         onAction: PropTypes.func,
 
 
-        
+
         /**
          * The value the user has not yet selected, but has hovered over with his mouse.
          */
@@ -64,10 +63,6 @@ export default class Selector extends PureComponent {
     handleChange = newValue => {
         this.props.onChange(newValue);
     }
-
-    /*wrappedPreviewRenderer = (item, index) => {
-        return this.props.previewRenderer(this.handleChange, item, index);
-    }*/
 
     handleClose = () => {
 
@@ -108,7 +103,7 @@ export default class Selector extends PureComponent {
                     {groupLabel}
                 </span>
                 <ul>
-                    { optionsList.map(this.wrappedPreviewRenderer) }
+                    { optionsList.map(this.renderOption) }
                 </ul>
             </li>
         );
@@ -121,13 +116,12 @@ export default class Selector extends PureComponent {
             value,
             theme,
             IconComponent,
-            
+
             isExpanded,
             onToggleExpanded
         } = this.props;
 
-        const selectedOption = options.find(option => optionValueAccessor(option) === value);
-        const loading = value && !selectedOption;
+        const selectedOption = value && options.find(option => optionValueAccessor(option) === value);
 
         const groupedOptions = this.getGroupedOptions(options);
 
@@ -136,8 +130,8 @@ export default class Selector extends PureComponent {
         return (
             <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={onToggleExpanded} onClose={this.handleClose}>
                 <DropDown.Header className={theme.selectBox__btn} shouldKeepFocusState={false} showDropDownToggle={Boolean(options.length)}>
-                    {!loading && selectedOption.icon && <IconComponent className={theme.selectBox__btnIcon} icon={selectedOption.icon}/>}
-                    {!loading && selectedOption && <span className={theme.dropDown__itemLabel}>{selectedOption.label}</span>}
+                    {Boolean(selectedOption) && selectedOption.icon && <IconComponent className={theme.selectBox__btnIcon} icon={selectedOption.icon}/>}
+                    {Boolean(selectedOption) && <span className={theme.dropDown__itemLabel}>{selectedOption.label}</span>}
                 </DropDown.Header>
                 <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
                     {hasMultipleGroups ? // skip rendering of groups if there are none or only one group
@@ -150,14 +144,12 @@ export default class Selector extends PureComponent {
 
     renderOption = (option, index) => {
         const {
-            preview,
-            value,
+            Preview,
             focusedValue,
             optionValueAccessor
         } = this.props;
 
-        const Preview = preview;
-        const isHighlighted = optionValueAccessor(option) === (focusedValue || value);
+        const isHighlighted = optionValueAccessor(option) === focusedValue;
 
         if (!Preview) {
             throw new Error("Preview component was undefined in Selector");
@@ -169,7 +161,8 @@ export default class Selector extends PureComponent {
                 isHighlighted={isHighlighted}
                 option={option}
                 onClick={this.handlePreviewClick(option)}
-                onMouseEnter={this.handlePreviewMouseEnter(option)}/>
+                onMouseEnter={this.handlePreviewMouseEnter(option)}
+                />
         );
     }
 

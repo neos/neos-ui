@@ -13,7 +13,6 @@ export default class GroupedPreviewList extends PureComponent {
          */
         options: PropTypes.arrayOf(
             PropTypes.shape({
-                __value: PropTypes.any.isRequired,
                 label: PropTypes.oneOfType([
                     PropTypes.string,
                     PropTypes.object
@@ -23,15 +22,22 @@ export default class GroupedPreviewList extends PureComponent {
             })
         ),
 
-        previewRenderer: PropTypes.func.isRequired,
+        optionValueAccessor: PropTypes.func.isRequired,
+
+        // TODO: must be a react component CLASS
+        Preview: PropTypes.any.isRequired,
+
+        // empty option list handling should happen inside here
+
+        /**
+         * The value the user has not yet selected, but has hovered over with his mouse.
+         */
+        focusedValue: PropTypes.string,
 
         onChange: PropTypes.func.isRequired,
+        onOptionFocus: PropTypes.func.isRequired,
         theme: PropTypes.object.isRequired
     };
-
-    wrappedPreviewRenderer = (item, index) => {
-        return this.props.previewRenderer(this.props.onChange, item, index);
-    }
 
     /**
      * Groups the options of the selectBox by their group-attribute. Returns a javascript Map with the group names
@@ -68,7 +74,7 @@ export default class GroupedPreviewList extends PureComponent {
                     {groupLabel}
                 </span>
                 <ul>
-                    { optionsList.map(this.wrappedPreviewRenderer) }
+                    {optionsList.map(this.renderOption) }
                 </ul>
             </li>
         );
@@ -87,14 +93,47 @@ export default class GroupedPreviewList extends PureComponent {
         const groupedOptions = this.getGroupedOptions(options);
         const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[this.withoutGroupLabel]);
 
+        // TODO: Should be refactored and re-used in Selector
         return (
             <DropDown.Stateless className={theme.selectBox} isOpen={true} onToggle={this.handleNoop} onClose={this.handleNoop}>
                 <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
                     {hasMultipleGroups ? // skip rendering of groups if there are none or only one group
                         Object.entries(groupedOptions).map(this.renderGroup) :
-                        options.map(this.wrappedPreviewRenderer)}
+                        options.map(this.renderOption)}
                 </DropDown.Contents>
             </DropDown.Stateless>
         );
+    }
+
+    renderOption = (option, index) => {
+        const {
+            Preview,
+            focusedValue,
+            optionValueAccessor
+        } = this.props;
+
+        const isHighlighted = optionValueAccessor(option) === focusedValue;
+
+        if (!Preview) {
+            throw new Error("Preview component was undefined in Selector");
+        }
+
+        return (
+            <Preview
+                key={index}
+                isHighlighted={isHighlighted}
+                option={option}
+                onClick={this.handlePreviewClick(option)}
+                onMouseEnter={this.handlePreviewMouseEnter(option)}
+                />
+        );
+    }
+
+    handlePreviewClick = option => () => {
+        this.props.onChange(option);
+    }
+
+    handlePreviewMouseEnter = option => () => {
+        this.props.onOptionFocus(option);
     }
 }

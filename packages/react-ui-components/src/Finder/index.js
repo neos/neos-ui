@@ -16,7 +16,6 @@ export default class Finder extends PureComponent {
          */
         options: PropTypes.arrayOf(
             PropTypes.shape({
-                __value: PropTypes.string.isRequired,
                 icon: PropTypes.string,
                 label: PropTypes.oneOfType([
                     PropTypes.string,
@@ -25,7 +24,20 @@ export default class Finder extends PureComponent {
             })
         ),
 
-        previewRenderer: PropTypes.func.isRequired,
+        optionValueAccessor: PropTypes.func.isRequired,
+
+        // is the selector currently opened or closed?
+        isExpanded: PropTypes.bool.isRequired,
+        onToggleExpanded: PropTypes.func.isRequired,
+
+        // TODO: must be a react component CLASS
+        Preview: PropTypes.any.isRequired,
+
+        onOptionFocus: PropTypes.func.isRequired,
+        /**
+         * The value the user has not yet selected, but has hovered over with his mouse.
+         */
+        focusedValue: PropTypes.string,
 
         classNames: PropTypes.object.isRequired,
         onValueChange: PropTypes.func.isRequired,
@@ -49,7 +61,11 @@ export default class Finder extends PureComponent {
         const {
             classNames,
             options,
-            previewRenderer,
+            optionValueAccessor,
+            Preview,
+            focusedValue,
+            onOptionFocus,
+
             theme,
             IconComponent,
             TextInputComponent
@@ -71,7 +87,10 @@ export default class Finder extends PureComponent {
                 {this.state.searchTerm && this.props.options &&
                 <GroupedPreviewList
                     options={options}
-                    previewRenderer={previewRenderer}
+                    optionValueAccessor={optionValueAccessor}
+                    focusedValue={focusedValue}
+                    onOptionFocus={onOptionFocus}
+                    Preview={Preview}
                     onChange={this.handleValueChange}
                     theme={theme}
                     />

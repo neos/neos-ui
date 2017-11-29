@@ -1,0 +1,15 @@
+.selectBox__searchInput {
+    display: inline-block;
+    width: 100%;
+    color: #fff;
+    font-size: 14px;
+    &:focus {
+        background: transparent !important;
+        color: #fff !important;
+    }
+}
+
+.selectBox__searchInputContainer {
+    display: inline-block;
+    width: 100%;
+}

@@ -25,6 +25,7 @@ export default {
     label: '@neos-project/react-ui-components/label',
     selectBox: '@neos-project/react-ui-components/selectBox',
     selectBox_Header: '@neos-project/react-ui-components/selectBox_Header',
+    selectBox_HeaderWithSearchInput: '@neos-project/react-ui-components/selectBox_HeaderWithSearchInput',
     multiSelectBox: '@neos-project/react-ui-components/multiSelectBox',
     sideBar: '@neos-project/react-ui-components/sideBar',
     tabs: '@neos-project/react-ui-components/tabs',

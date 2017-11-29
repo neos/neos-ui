@@ -126,6 +126,7 @@ export default class SelectBox extends PureComponent {
         //
         DropDown: PropTypes.any.isRequired,
         SelectBox_Header: PropTypes.any.isRequired,
+        SelectBox_HeaderWithSearchInput: PropTypes.any.isRequired,
         SelectBox_ListPreview: PropTypes.any.isRequired,
     };
 
@@ -220,21 +221,17 @@ export default class SelectBox extends PureComponent {
             isExpanded
         } = this.state;
 
-        const optionValueAccessor = this.getOptionValueAccessor();
-        
-        const selectedOption = options.find(option => optionValueAccessor(option) === value);
-
         const headerClassName = mergeClassNames({
             [theme.selectBox__btn]: true,
             [theme['selectBox--highlight']]: highlight
         });
 
+        const optionValueAccessor = this.getOptionValueAccessor();
+
         return (
             <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
                 <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={Boolean(options.length)}>
-                    <SelectBox_Header
-                        option={selectedOption}
-                    />
+                    {this.renderHeader()}
                 </DropDown.Header>
                 <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
                     <SelectBox_ListPreview
@@ -303,6 +300,35 @@ export default class SelectBox extends PureComponent {
                     />
             </div>
         );*/
+    }
+
+    renderHeader() {
+        const {
+            displaySearchBox,
+            options,
+            value,
+
+            SelectBox_HeaderWithSearchInput,
+            SelectBox_Header
+        } = this.props;
+        const optionValueAccessor = this.getOptionValueAccessor();
+
+        const selectedOption = options.find(option => optionValueAccessor(option) === value);
+
+
+        if (displaySearchBox) {
+            return (
+                <SelectBox_HeaderWithSearchInput
+                    {...this.props}
+                />
+            );
+        } else {
+            return (
+                <SelectBox_Header
+                    option={selectedOption}
+                />
+            );
+        }
     }
 
     renderCreateNew() {

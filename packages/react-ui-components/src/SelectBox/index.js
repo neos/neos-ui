@@ -13,12 +13,14 @@ const WithKeys = keydown(keys)(ThemedSelectBox);
 //
 import injectProps from './../_lib/injectProps.js';
 import DropDown from './../DropDown/index';
-import SelectBox_ListPreview from './../SelectBox_ListPreview/index';
 import SelectBox_Header from './../SelectBox_Header/index';
+import SelectBox_HeaderWithSearchInput from './../SelectBox_HeaderWithSearchInput/index';
+import SelectBox_ListPreview from './../SelectBox_ListPreview/index';
 
 export default injectProps({
     DropDown,
     SelectBox_Header,
+    SelectBox_HeaderWithSearchInput,
     SelectBox_ListPreview
 })(WithKeys);
 

@@ -24,7 +24,7 @@ export default {
     iconButtonDropDown: '@neos-project/react-ui-components/iconButtonDropDown',
     label: '@neos-project/react-ui-components/label',
     selectBox: '@neos-project/react-ui-components/selectBox',
-    selectBoxSelector: '@neos-project/react-ui-components/selectBoxSelector',
+    selectBox_Header: '@neos-project/react-ui-components/selectBox_Header',
     multiSelectBox: '@neos-project/react-ui-components/multiSelectBox',
     sideBar: '@neos-project/react-ui-components/sideBar',
     tabs: '@neos-project/react-ui-components/tabs',

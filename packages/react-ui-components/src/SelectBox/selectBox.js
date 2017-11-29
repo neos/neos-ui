@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import mergeClassNames from 'classnames';
-import SelectBoxSelector from '../SelectBoxSelector/index';
 import GroupedPreviewList from '../Previews/GroupedPreviewList';
 import SelectBoxFinder from '../SelectBoxFinder/index';
 
@@ -124,12 +123,10 @@ export default class SelectBox extends PureComponent {
 
         //
         // Static component dependencies which are injected from the outside (index.js)
-        // Used in sub-components
         //
-        DropDownComponent: PropTypes.any.isRequired,
-        IconComponent: PropTypes.any.isRequired,
-        IconButtonComponent: PropTypes.any.isRequired,
-        TextInputComponent: PropTypes.any.isRequired
+        DropDown: PropTypes.any.isRequired,
+        SelectBox_Header: PropTypes.any.isRequired,
+        SelectBox_ListPreview: PropTypes.any.isRequired,
     };
 
     state = {
@@ -189,6 +186,17 @@ export default class SelectBox extends PureComponent {
         this.setState({hasFocus});
     }
 
+    handleChange = option => {
+        // NEW
+        const optionValueAccessor = this.getOptionValueAccessor();
+        this.props.onValueChange(optionValueAccessor(option));
+    }
+
+    getOptionValueAccessor() {
+        // NEW
+        return $get([this.props.optionValueField]);
+    }
+
     render() {
         const {
             options,
@@ -200,7 +208,11 @@ export default class SelectBox extends PureComponent {
             IconButtonComponent,
             IconComponent,
             optionValueField,
-            optionComponent
+            optionComponent,
+
+            DropDown,
+            SelectBox_Header,
+            SelectBox_ListPreview,
         } = this.props;
 
         const {
@@ -208,17 +220,39 @@ export default class SelectBox extends PureComponent {
             isExpanded
         } = this.state;
 
-        const Preview = optionComponent;
+        const optionValueAccessor = this.getOptionValueAccessor();
+        
+        const selectedOption = options.find(option => optionValueAccessor(option) === value);
 
-        const selectWrapperClassNames = mergeClassNames({
-            [theme['wrapper--highlight']]: highlight
+        const headerClassName = mergeClassNames({
+            [theme.selectBox__btn]: true,
+            [theme['selectBox--highlight']]: highlight
         });
 
-        const selectedOption = value ? options.reduce((selected, current) => {
-            return (current.__value === value ? current : selected);
-        }, null) : null;
+        return (
+            <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
+                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={Boolean(options.length)}>
+                    <SelectBox_Header
+                        option={selectedOption}
+                    />
+                </DropDown.Header>
+                <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
+                    <SelectBox_ListPreview
+                        {...this.props}
 
-        const optionValueAccessor = $get([optionValueField]);
+                        optionValueAccessor={optionValueAccessor}
+                        ListPreviewElement={optionComponent}
+                        focusedValue={this.state.focusedValue}
+                        onChange={this.handleChange}
+                        onOptionFocus={this.handleOptionFocusChange}
+                        />
+                </DropDown.Contents>
+            </DropDown.Stateless>
+        );
+
+
+        const Preview = optionComponent;
+
 
         if (displaySearchBox && !value) {
             return (
@@ -249,7 +283,7 @@ export default class SelectBox extends PureComponent {
             );
         }
 
-        return (
+        /*return (
             <div className={selectWrapperClassNames}>
                 <SelectBoxSelector
                     isExpanded={isExpanded}
@@ -268,7 +302,7 @@ export default class SelectBox extends PureComponent {
                     IconButtonComponent={IconButtonComponent}
                     />
             </div>
-        );
+        );*/
     }
 
     renderCreateNew() {
@@ -330,9 +364,15 @@ export default class SelectBox extends PureComponent {
         });
     }
 
+    handleClose = () => {
+        this.setState({
+            isExpanded: false
+        });
+    }
+
     handleOptionFocusChange = option => {
-        const {optionValueField} = this.props;
-        const optionValueAccessor = $get([optionValueField]);
+        // new
+        const optionValueAccessor = this.getOptionValueAccessor();
         this.setState({
             focusedValue: optionValueAccessor(option)
         });

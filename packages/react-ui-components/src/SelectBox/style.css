@@ -6,7 +6,7 @@
     height: var(--goldenUnit);
     vertical-align: top;
 }
-.wrapper--highlight {
+.selectBox--highlight {
     outline: 2px solid var(--brandColorsSuccess);
 }
 .selectedOptions {
@@ -70,13 +70,6 @@
     width: 100%;
 }
 
-.dropDown__itemLabel {
-    padding: 0 var(--halfSpacing);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    width: 100%;
-}
 
 .selectBox__loadingIcon {
     composes: reset from './../reset.css';
@@ -114,13 +107,6 @@
 
 .selectBox__deleteIcon {
     composes: selectBox__loadingIcon;
-}
-
-.selectBox__btnIcon {
-    composes: reset from './../reset.css';
-    margin-right: .5em;
-    float: left;
-    line-height: var(--goldenUnit);
 }
 
 .selectBox__btnDelete {

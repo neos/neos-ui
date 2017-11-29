@@ -1,0 +1,14 @@
+import SelectBox_ListPreview from './SelectBox_ListPreview';
+
+//
+// Dependency injection
+//
+import injectProps from './../_lib/injectProps.js';
+import SelectBox_ListPreviewUngrouped from './../SelectBox_ListPreviewUngrouped/index';
+
+export default injectProps({
+    SelectBox_ListPreviewUngrouped
+})(SelectBox_ListPreview);
+
+
+

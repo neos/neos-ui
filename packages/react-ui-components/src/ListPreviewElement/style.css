@@ -9,12 +9,11 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 14px;
-}
 
-.selectBox__item--isSelectable {
     height: var(--goldenUnit);
     line-height: var(--goldenUnit);
     padding: 0 var(--spacing);
+    
 }
 
 .selectBox__item--isSelectable--active {

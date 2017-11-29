@@ -111,7 +111,7 @@ export default class MultiSelectBox extends PureComponent {
         /**
          * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
          */
-        optionComponent: PropTypes.any,
+        ListPreviewElement: PropTypes.any,
 
         /**
          * An optional css theme to be injected.
@@ -187,15 +187,14 @@ export default class MultiSelectBox extends PureComponent {
      * @returns {JSX} option element
      */
     renderOption = (wrappingClickHandler, option, index) => {
-        const {theme, IconComponent, optionComponent, optionValueField} = this.props;
+        const {theme, IconComponent, ListPreviewElement, optionValueField} = this.props;
         const value = option[optionValueField];
         const onClick = () => {
             wrappingClickHandler(value);
         };
 
-        const OptionComponent = optionComponent;
-        // onMouseEnter doesn't work on OptionComponent
-        return <OptionComponent className="" isActive={false} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
+        // onMouseEnter doesn't work on ListPreviewElement??
+        return <ListPreviewElement className="" isActive={false} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
     }
 
     handleValuesChanged = values => {

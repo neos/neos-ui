@@ -183,7 +183,7 @@ export default class AssetEditor extends PureComponent {
                     optionValueField="identifier"
                     loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
                     displaySearchBox={true}
-                    optionComponent={AssetOption}
+                    ListPreviewElement={AssetOption}
                     placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                     options={this.state.options || []}
                     values={this.getValue()}
@@ -197,7 +197,7 @@ export default class AssetEditor extends PureComponent {
                         optionValueField="identifier"
                         loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
                         displaySearchBox={true}
-                        optionComponent={AssetOption}
+                        ListPreviewElement={AssetOption}
                         placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                         options={this.state.options || []}
                         value={this.getValue()}

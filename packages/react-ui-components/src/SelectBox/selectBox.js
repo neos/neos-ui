@@ -12,7 +12,7 @@ export default class SelectBox extends PureComponent {
         optionValueField: 'value',
         withoutGroupLabel: 'Without group',
         scrollable: true,
-        optionComponent: DefaultSelectBoxOption
+        ListPreviewElement: DefaultSelectBoxOption
     };
 
     static propTypes = {
@@ -106,9 +106,9 @@ export default class SelectBox extends PureComponent {
         highlight: PropTypes.bool,
 
         /**
-         * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
+         * Component used for rendering the individual option elements; Usually this component uses "ListPreviewElement" internally for common styling.
          */
-        optionComponent: PropTypes.any,
+        ListPreviewElement: PropTypes.any,
 
         /**
          * An optional css theme to be injected.
@@ -132,7 +132,6 @@ export default class SelectBox extends PureComponent {
     state = {
         isExpanded: false,
 
-        hasFocus: false,
         focusedValue: ''
     };
 
@@ -146,12 +145,8 @@ export default class SelectBox extends PureComponent {
             value,
             theme,
             highlight,
-            displaySearchBox,
-            TextInputComponent,
-            IconButtonComponent,
-            IconComponent,
             optionValueField,
-            optionComponent,
+            ListPreviewElement,
 
             DropDown,
             SelectBox_Header,
@@ -176,15 +171,17 @@ export default class SelectBox extends PureComponent {
                     {this.renderHeader()}
                 </DropDown.Header>
                 <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
-                    <SelectBox_ListPreview
-                        {...this.props}
+                    <ul className={theme.selectBox__list}>
+                        <SelectBox_ListPreview
+                            {...this.props}
 
-                        optionValueAccessor={optionValueAccessor}
-                        ListPreviewElement={optionComponent}
-                        focusedValue={this.state.focusedValue}
-                        onChange={this.handleChange}
-                        onOptionFocus={this.handleOptionFocusChange}
-                        />
+                            optionValueAccessor={optionValueAccessor}
+                            ListPreviewElement={ListPreviewElement}
+                            focusedValue={this.state.focusedValue}
+                            onChange={this.handleChange}
+                            onOptionFocus={this.handleOptionFocusChange}
+                            />
+                    </ul>
                 </DropDown.Contents>
             </DropDown.Stateless>
         );
@@ -223,6 +220,8 @@ export default class SelectBox extends PureComponent {
         } else {
             return (
                 <SelectBox_Header
+                    {...this.props}
+                    
                     option={selectedOption}
                     showResetButton={showResetButton}
                     onReset={this.handleDeleteClick}
@@ -265,10 +264,12 @@ export default class SelectBox extends PureComponent {
     componentWillReceiveProps({keydown}) {
         this.handleKeyDown(keydown.event);
     }
+
     handleKeyDown = e => {
         if (this.state.isExpanded && e) {
+            // do not scroll while we are doing keyboard interaction
             e.preventDefault();
-            console.log(e.key);
+
             const {options, searchTerm} = this.props;
             const optionValueAccessor = this.getOptionValueAccessor();
             const currentIndex = options.findIndex(option => optionValueAccessor(option) === this.state.focusedValue);
@@ -293,5 +294,5 @@ export default class SelectBox extends PureComponent {
                 });
             }
         }
-}
+    }
 }

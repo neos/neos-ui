@@ -25,7 +25,7 @@ export default class SelectBox_ListPreview extends PureComponent {
         return (
             <Fragment>
                 <SelectBox_ListPreviewUngrouped {...this.props} />
-                {isCreateNewEnabled && <SelectBox_CreateNew {...this.props} />}
+                {Boolean(isCreateNewEnabled) && <SelectBox_CreateNew {...this.props} />}
             </Fragment>
         );
     }

@@ -34,7 +34,6 @@ export default class SelectBox_CreateNew extends PureComponent {
         );
     }
 
-
     handleCreateNew = () => {
         const {
             onCreateNew,

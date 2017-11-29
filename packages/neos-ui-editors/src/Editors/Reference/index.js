@@ -34,7 +34,7 @@ export default class ReferenceEditor extends PureComponent {
         return (<SelectBox
             optionValueField="identifier"
             displaySearchBox={true}
-            optionComponent={ReferenceOption}
+            ListPreviewElement={ReferenceOption}
             createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
             placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
             options={this.props.options}

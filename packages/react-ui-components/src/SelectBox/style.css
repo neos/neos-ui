@@ -6,6 +6,11 @@
     height: var(--goldenUnit);
     vertical-align: top;
 }
+
+.selectBox__list {
+    padding: 0;
+}
+
 .selectBox--highlight {
     outline: 2px solid var(--brandColorsSuccess);
 }

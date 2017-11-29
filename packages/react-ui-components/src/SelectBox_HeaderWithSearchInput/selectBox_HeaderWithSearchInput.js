@@ -35,10 +35,6 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
             TextInput
         } = this.props;
 
-        // TODO
-        //onFocus={this.handleFocus}
-        //onBlur={this.handleBlur}
-        
         return (
             <Fragment>
                 <Icon

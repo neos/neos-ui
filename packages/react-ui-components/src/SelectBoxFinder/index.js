@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 import SearchInput from './SearchInput';
 import GroupedPreviewList from '../Previews/GroupedPreviewList';
 
-export default class Finder extends PureComponent {
+export default class SelectBoxFinder extends PureComponent {
     state = {
         searchTerm: ''
     };

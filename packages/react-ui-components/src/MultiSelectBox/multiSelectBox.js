@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import SortablePreviewList from '../Previews/SortablePreviewList';
-import Finder from '../Finder/index';
+import SelectBoxFinder from '../SelectBoxFinder/index';
 import {TextInput} from '@neos-project/react-ui-components';
 
 export default class MultiSelectBox extends PureComponent {
@@ -167,7 +167,7 @@ export default class MultiSelectBox extends PureComponent {
                     IconComponent={IconComponent}
                     IconButtonComponent={IconButtonComponent}
                     />
-                <Finder
+                <SelectBoxFinder
                     classNames={{}}
                     previewRenderer={this.renderOption}
                     options={filteredSearchOptions}

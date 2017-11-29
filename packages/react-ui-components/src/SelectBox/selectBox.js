@@ -5,7 +5,7 @@ import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import mergeClassNames from 'classnames';
 import Selector from './selector';
 import GroupedPreviewList from '../Previews/GroupedPreviewList';
-import Finder from '../Finder/index';
+import SelectBoxFinder from '../SelectBoxFinder/index';
 
 export default class SelectBox extends PureComponent {
 
@@ -222,7 +222,7 @@ export default class SelectBox extends PureComponent {
 
         if (displaySearchBox && !value) {
             return (
-                <Finder
+                <SelectBoxFinder
                     isExpanded={isExpanded}
                     onToggleExpanded={this.handleToggleExpanded}
 

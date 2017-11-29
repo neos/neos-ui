@@ -10,6 +10,7 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
         onSearchTermChange: PropTypes.func.isRequired,
         placeholder: PropTypes.string.isRequired,
         displayLoadingIndicator: PropTypes.bool,
+        setFocus: PropTypes.bool,
 
         theme: PropTypes.shape({
             selectBox__searchInputContainer: PropTypes.string.isRequired,
@@ -28,6 +29,7 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
             onSearchTermChange,
             placeholder,
             displayLoadingIndicator,
+            setFocus,
             theme,
             Icon,
             TextInput
@@ -48,6 +50,7 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
                     value={searchTerm}
                     onChange={onSearchTermChange}
                     placeholder={placeholder}
+                    setFocus={setFocus}
                     type="search"
                     />
                 {displayLoadingIndicator ?

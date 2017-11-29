@@ -88,7 +88,7 @@
 }
 
 .header__labelWrapper {
-    max-width: 300px;
+    max-width: 260px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;

@@ -1,9 +1,9 @@
 import {themr} from 'react-css-themr';
 import identifiers from './../identifiers.js';
 import style from './style.css';
-import Preview from './preview';
+import ListPreviewElement from './listPreviewElement';
 
-const ThemedPreview = themr(identifiers.preview, style)(Preview);
+const ThemedListPreviewElement = themr(identifiers.listPreviewElement, style)(ListPreviewElement);
 
 //
 // Dependency injection
@@ -13,5 +13,5 @@ import Icon from './../Icon/index';
 
 export default injectProps({
     IconComponent: Icon
-})(ThemedPreview);
+})(ThemedListPreviewElement);
 

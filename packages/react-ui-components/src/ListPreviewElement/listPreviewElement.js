@@ -2,8 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
-// TODO: rename: but how?
-export default class Preview extends PureComponent {
+export default class ListPreviewElement extends PureComponent {
     static propTypes = {
         onClick: PropTypes.func.isRequired,
 

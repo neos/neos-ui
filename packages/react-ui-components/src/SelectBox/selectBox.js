@@ -137,59 +137,7 @@ export default class SelectBox extends PureComponent {
         focusedValue: ''
     };
 
-    
-
-    getOptionsCount = () => {
-        const {options, withoutGroupLabel} = this.props;
-
-        const groupedOptions = this.getGroupedOptions(options);
-        const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[withoutGroupLabel]);
-        let count = hasMultipleGroups ? groupedOptions.length : options.length;
-        if (this.isCreateNewEnabled()) {
-            count++;
-        }
-        return count;
-    }
-
-    handleClearSearch = () => {
-        const {onSearchTermChange} = this.props;
-
-        if (onSearchTermChange) {
-            onSearchTermChange('');
-        }
-    }
-
-    handleSearchTermChange = (...args) => {
-        this.props.onSearchTermChange(...args);
-    }
-
-    handleValueChange = option => {
-        const {
-            onValueChange,
-            optionValueField
-        } = this.props;
-
-        const newValue = $get([optionValueField], option);
-
-        onValueChange(newValue);
-        // Clear search box after searching
-        this.handleClearSearch();
-        this.setState({isExpanded: false, focusedValue: ''});
-    }
-
-
-    handleFocusToggle = hasFocus => {
-        this.setState({hasFocus});
-    }
-
-    handleChange = option => {
-        // NEW
-        const optionValueAccessor = this.getOptionValueAccessor();
-        this.props.onValueChange(optionValueAccessor(option));
-    }
-
     getOptionValueAccessor() {
-        // NEW
         return $get([this.props.optionValueField]);
     }
 
@@ -241,60 +189,6 @@ export default class SelectBox extends PureComponent {
                 </DropDown.Contents>
             </DropDown.Stateless>
         );
-
-
-        const Preview = optionComponent;
-
-
-        if (displaySearchBox && !value) {
-            return (
-                <SelectBoxFinder
-                    isExpanded={isExpanded}
-                    onToggleExpanded={this.handleToggleExpanded}
-
-                    options={options}
-                    Preview={Preview}
-                    classNames={selectWrapperClassNames}
-                    onValueChange={this.handleValueChange}
-                    focusedValue={focusedValue || value}
-                    onOptionFocus={this.handleOptionFocusChange}
-                    optionValueAccessor={optionValueAccessor}
-                    onSearchTermChange={this.handleSearchTermChange}
-                    theme={theme}
-                    IconComponent={IconComponent}
-                    TextInputComponent={TextInputComponent}
-                    />
-            );
-        }
-
-        if (displaySearchBox && selectedOption) {
-            return (
-                <ul className={theme.selectBox__contents}>
-                    <Preview option={selectedOption} onClick={this.handleDeleteClick}/>
-                </ul>
-            );
-        }
-
-        /*return (
-            <div className={selectWrapperClassNames}>
-                <SelectBoxSelector
-                    isExpanded={isExpanded}
-                    onToggleExpanded={this.handleToggleExpanded}
-
-                    options={options}
-                    Preview={Preview}
-                    value={value}
-                    focusedValue={focusedValue || value}
-                    onChange={this.handleValueChange}
-                    optionValueAccessor={optionValueAccessor}
-                    onOptionFocus={this.handleOptionFocusChange}
-                    theme={theme}
-                    IconComponent={IconComponent}
-                    TextInputComponent={TextInputComponent}
-                    IconButtonComponent={IconButtonComponent}
-                    />
-            </div>
-        );*/
     }
 
     renderHeader() {
@@ -338,29 +232,13 @@ export default class SelectBox extends PureComponent {
         }
     }
 
-    /**
-     * Groups the options of the selectBox by their group-attribute. Returns a javascript Map with the group names
-     * as key and an array of options as values.
-     * Options without a group-attribute assigned will receive the key specified in props.withoutGroupLabel.
-     */
-    getGroupedOptions = options => {
-        return options.reduce((accumulator, currentOpt) => {
-            const groupLabel = currentOpt.group ? currentOpt.group : this.props.withoutGroupLabel;
-            accumulator[groupLabel] = accumulator[groupLabel] || [];
-            accumulator[groupLabel].push(currentOpt);
-            return accumulator;
-        }, Object.create(null)); // <-- Initial value of the accumulator
-    }
-
-    setSelectedIndex = selectedIndex => {
-        // TODO remove
-        if (selectedIndex !== this.state.selectedIndex) {
-            this.setState({selectedIndex});
-        }
+    handleChange = option => {
+        const optionValueAccessor = this.getOptionValueAccessor();
+        this.props.onValueChange(optionValueAccessor(option));
     }
 
     handleDeleteClick = () => {
-        this.handleValueChange('');
+        this.props.onValueChange('');
     }
 
     handleToggleExpanded = () => {
@@ -376,7 +254,6 @@ export default class SelectBox extends PureComponent {
     }
 
     handleOptionFocusChange = option => {
-        // new
         const optionValueAccessor = this.getOptionValueAccessor();
         this.setState({
             focusedValue: optionValueAccessor(option)

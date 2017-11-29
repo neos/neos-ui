@@ -4,7 +4,6 @@ import {$get} from 'plow-js';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import mergeClassNames from 'classnames';
 import GroupedPreviewList from '../Previews/GroupedPreviewList';
-import SelectBoxFinder from '../SelectBoxFinder/index';
 
 export default class SelectBox extends PureComponent {
 

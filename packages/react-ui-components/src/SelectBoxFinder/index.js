@@ -4,6 +4,7 @@ import mergeClassNames from 'classnames';
 import SearchInput from './SearchInput';
 import GroupedPreviewList from '../Previews/GroupedPreviewList';
 
+// TODO: deprecated -- only used in MultiSelectbox still
 export default class SelectBoxFinder extends PureComponent {
     state = {
         searchTerm: ''

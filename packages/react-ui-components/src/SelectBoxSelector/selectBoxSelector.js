@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import DropDown from '../DropDown/index';
 import mergeClassNames from 'classnames';
 
 export default class Selector extends PureComponent {
@@ -55,9 +54,8 @@ export default class Selector extends PureComponent {
         onOptionFocus: PropTypes.func.isRequired,
 
         theme: PropTypes.object.isRequired,
+        DropDownComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
-        TextInputComponent: PropTypes.any.isRequired,
-        IconButtonComponent: PropTypes.any.isRequired
     };
 
     handleChange = newValue => {
@@ -115,6 +113,7 @@ export default class Selector extends PureComponent {
             optionValueAccessor,
             value,
             theme,
+            DropDownComponent,
             IconComponent,
 
             isExpanded,
@@ -128,17 +127,17 @@ export default class Selector extends PureComponent {
         const hasMultipleGroups = Object.keys(groupedOptions).length > 1 || (Object.keys(groupedOptions).length === 1 && !groupedOptions[this.withoutGroupLabel]);
 
         return (
-            <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={onToggleExpanded} onClose={this.handleClose}>
-                <DropDown.Header className={theme.selectBox__btn} shouldKeepFocusState={false} showDropDownToggle={Boolean(options.length)}>
+            <DropDownComponent.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={onToggleExpanded} onClose={this.handleClose}>
+                <DropDownComponent.Header className={theme.selectBox__btn} shouldKeepFocusState={false} showDropDownToggle={Boolean(options.length)}>
                     {Boolean(selectedOption) && selectedOption.icon && <IconComponent className={theme.selectBox__btnIcon} icon={selectedOption.icon}/>}
                     {Boolean(selectedOption) && <span className={theme.dropDown__itemLabel}>{selectedOption.label}</span>}
-                </DropDown.Header>
-                <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
+                </DropDownComponent.Header>
+                <DropDownComponent.Contents className={theme.selectBox__contents} scrollable={true}>
                     {hasMultipleGroups ? // skip rendering of groups if there are none or only one group
                         Object.entries(groupedOptions).map(this.renderGroup) :
                         options.map(this.renderOption)}
-                </DropDown.Contents>
-            </DropDown.Stateless>
+                </DropDownComponent.Contents>
+            </DropDownComponent.Stateless>
         );
     }
 

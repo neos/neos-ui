@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import DefaultSelectBoxOption from './defaultSelectBoxOption';
 import mergeClassNames from 'classnames';
-import Selector from './selector';
+import SelectBoxSelector from '../SelectBoxSelector/index';
 import GroupedPreviewList from '../Previews/GroupedPreviewList';
 import SelectBoxFinder from '../SelectBoxFinder/index';
 
@@ -251,7 +251,7 @@ export default class SelectBox extends PureComponent {
 
         return (
             <div className={selectWrapperClassNames}>
-                <Selector
+                <SelectBoxSelector
                     isExpanded={isExpanded}
                     onToggleExpanded={this.handleToggleExpanded}
 

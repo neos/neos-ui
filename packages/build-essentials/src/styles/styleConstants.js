@@ -4,8 +4,7 @@ const upperFirst = require('lodash.upperfirst');
 const config = {
     transition: {
         fast: '.1s',
-        default: '.2s',
-        medium: '.3s',
+        default: '.3s',
         slow: '.5s'
     },
     zIndex: {

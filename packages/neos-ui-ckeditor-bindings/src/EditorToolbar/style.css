@@ -17,7 +17,7 @@
 
 .linkIconButton__flyout {
     position: fixed;
-    z-index: 1000;
+    z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
     width: 460px;
     border: var(--halfSpacing) solid var(--brandColorsContrastDarker);
 }

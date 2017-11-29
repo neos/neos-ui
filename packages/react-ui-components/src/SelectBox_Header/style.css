@@ -13,3 +13,18 @@
     display: inline-block;
     width: 100%;
 }
+
+.selectBox__deleteIcon {
+    composes: reset from './../reset.css';
+    position: absolute;
+    top: 0;
+    right: 41px;
+    z-index: 1;
+    display: block;
+    width: var(--goldenUnit);
+    height: var(--goldenUnit);
+    text-align: center;
+    background: transparent;
+    color: #FFF;
+    line-height: var(--goldenUnit);
+}

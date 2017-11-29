@@ -11,8 +11,10 @@ const ThemedSelectBox_Header = themr(identifiers.selectBox_Header, style)(Select
 //
 import injectProps from './../_lib/injectProps.js';
 import Icon from './../Icon/index';
+import IconButton from './../IconButton/index';
 
 export default injectProps({
     Icon,
+    IconButton,
 })(ThemedSelectBox_Header);
 

@@ -305,18 +305,28 @@ export default class SelectBox extends PureComponent {
     renderHeader() {
         const {
             displaySearchBox,
+            displayLoadingIndicator,
             options,
             value,
 
             SelectBox_HeaderWithSearchInput,
             SelectBox_Header
         } = this.props;
+        let allowEmpty = this.props.allowEmpty;
         const optionValueAccessor = this.getOptionValueAccessor();
 
         const selectedOption = options.find(option => optionValueAccessor(option) === value);
 
-
+        // if the search box should be shown, we *need* to force allowEmpty (to display the "clear" button if a value is selected),
+        // as the search box is only shown if nothing is selected.
+        // If we would not force this and allowEmpty=false, the user could not go back to the search box after he has initially selected a value.
         if (displaySearchBox) {
+            allowEmpty = true;
+        }
+
+        const showResetButton = !displayLoadingIndicator && allowEmpty && value;
+
+        if (displaySearchBox && !value) {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
@@ -326,6 +336,8 @@ export default class SelectBox extends PureComponent {
             return (
                 <SelectBox_Header
                     option={selectedOption}
+                    showResetButton={showResetButton}
+                    onReset={this.handleDeleteClick}
                 />
             );
         }

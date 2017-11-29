@@ -56,20 +56,6 @@
 
 
 
-.selectBox__loadingIcon {
-    composes: reset from './../reset.css';
-    position: absolute;
-    top: 0;
-    right: 41px;
-    z-index: 1;
-    display: block;
-    width: var(--goldenUnit);
-    height: var(--goldenUnit);
-    text-align: center;
-    background: transparent;
-    color: #FFF;
-    line-height: var(--goldenUnit);
-}
 
 .selectBox__twoIconIndention {
     .selectBox__loadingIcon::after {
@@ -90,28 +76,7 @@
     padding: 0 calc(var(--spacing) + var(--goldenUnit) + var(--goldenUnit)) 0 var(--spacing);
 }
 
-.selectBox__deleteIcon {
-    composes: selectBox__loadingIcon;
-}
 
-.selectBox__btnDelete {
-    composes: reset from './../reset.css';
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    display: block;
-    width: var(--goldenUnit);
-    height: var(--goldenUnit);
-    text-align: center;
-    background: var(--brandColorsContrastNeutral);
-    border-left: 1px solid var(--brandColorsContrastDarker);
-
-    &:hover {
-        background: var(--brandColorsPrimaryBlue);
-        color: var(--brandColorsContrastBrightest);
-    }
-}
 
 .selectBox__contents {
     composes: reset from './../reset.css';

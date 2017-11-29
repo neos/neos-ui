@@ -1,7 +1,7 @@
 
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-//import SelectBoxOption from './selectBoxOption';
+import ListPreviewElement from '../ListPreviewElement/index';
 import style from './style.css';
 
 export default class ComplexOption extends PureComponent {
@@ -23,16 +23,13 @@ export default class ComplexOption extends PureComponent {
             <span className={style.complexOption__tertiaryLabel}>{this.props.tertiaryLabel}</span> :
             '';
 
-        // TODO fixme
-        return null;
-
         return (
-            <SelectBoxOption {...this.props} icon={this.props.icon} className={style.complexOption__item}>
+            <ListPreviewElement {...this.props} icon={this.props.icon} className={style.complexOption__item}>
                 {image}
                 <span>{this.props.label}</span>
                 {secondaryLabel}
                 {tertiaryLabel}
-            </SelectBoxOption>
+            </ListPreviewElement>
         );
     }
 }

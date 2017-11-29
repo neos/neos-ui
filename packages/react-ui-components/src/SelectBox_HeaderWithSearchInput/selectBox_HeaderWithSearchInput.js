@@ -9,10 +9,12 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
         searchTerm: PropTypes.string.isRequired,
         onSearchTermChange: PropTypes.func.isRequired,
         placeholder: PropTypes.string.isRequired,
+        displayLoadingIndicator: PropTypes.bool,
 
         theme: PropTypes.shape({
             selectBox__searchInputContainer: PropTypes.string.isRequired,
-            selectBox__searchInput: PropTypes.string.isRequired
+            selectBox__searchInput: PropTypes.string.isRequired,
+            selectBox__loadingIcon: PropTypes.string.isRequired
         }).isRequired,
 
         // dependency injection
@@ -25,6 +27,7 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
             searchTerm,
             onSearchTermChange,
             placeholder,
+            displayLoadingIndicator,
             theme,
             Icon,
             TextInput
@@ -47,6 +50,10 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
                     placeholder={placeholder}
                     type="search"
                     />
+                {displayLoadingIndicator ?
+                    <Icon className={theme.selectBox__loadingIcon} spin={true} icon="spinner"/> :
+                    null
+                }
             </Fragment>
         );
     }

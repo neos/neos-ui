@@ -12,6 +12,7 @@ export default class SelectBox_ListPreview extends PureComponent {
             SelectBox_ListPreviewUngrouped
         } = this.props;
 
+        // TODO: check whether we have grouped elements in the list; then render <ListPreviewGrouped> instead!
         return <SelectBox_ListPreviewUngrouped {...this.props} />
     }
 }

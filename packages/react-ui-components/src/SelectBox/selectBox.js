@@ -137,7 +137,7 @@ export default class SelectBox extends PureComponent {
         focusedValue: ''
     };
 
-    isCreateNewEnabled = () => this.props.onCreateNew && this.props.searchTerm;
+    
 
     getOptionsCount = () => {
         const {options, withoutGroupLabel} = this.props;
@@ -177,11 +177,6 @@ export default class SelectBox extends PureComponent {
         this.setState({isExpanded: false, focusedValue: ''});
     }
 
-    handleCreateNew = (...rest) => {
-        this.props.onCreateNew(...rest);
-        // Clear search box on creating new
-        this.handleClearSearch();
-    }
 
     handleFocusToggle = hasFocus => {
         this.setState({hasFocus});
@@ -341,34 +336,6 @@ export default class SelectBox extends PureComponent {
                 />
             );
         }
-    }
-
-    renderCreateNew() {
-        const {theme, searchTerm, IconComponent, createNewLabel} = this.props;
-        const index = this.getOptionsCount() - 1;
-        if (!this.isCreateNewEnabled()) {
-            return null;
-        }
-        const onClick = () => {
-            this.handleCreateNew(searchTerm);
-        };
-        const isActive = index === this.state.selectedIndex;
-        const className = isActive ? theme['selectBox__item--isSelectable--active'] : '';
-
-        const setIndex = () => {
-            this.setSelectedIndex(index);
-        };
-        return (
-            <div key={index} onMouseEnter={setIndex}>
-                <DefaultSelectBoxOption
-                    option={{value: searchTerm, label: `${createNewLabel} "${searchTerm}"`, icon: 'plus-circle'}}
-                    theme={theme}
-                    className={className}
-                    onClick={onClick}
-                    IconComponent={IconComponent}
-                    />
-            </div>
-        );
     }
 
     /**

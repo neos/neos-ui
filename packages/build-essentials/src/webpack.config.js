@@ -3,7 +3,6 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
-
 //
 // Prevent from failing, when NEOS_BUILD_ROOT env variable isn't set
 // (e.g. when extending this config from storybook)

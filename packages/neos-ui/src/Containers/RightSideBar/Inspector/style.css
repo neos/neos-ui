@@ -19,7 +19,7 @@
     left: 0;
     width: calc(100% - var(--sidebarWidth));
     height: 100%;
-    z-index: 10000;
+    z-index: var(--zIndex-UnappliedChangesOverlay-Context);
     &,
     &::after {
         position: fixed;

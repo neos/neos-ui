@@ -46,9 +46,8 @@
 .header__data {
     composes: reset from './../reset.css';
     position: relative;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: inline-block;
+    min-width: 100%;
     padding: .2em 0;
 
     border-left: 2px solid transparent;
@@ -86,6 +85,15 @@
 .header__data--acceptsDrop *,
 .header__data--deniesDrop * {
     pointer-events: none;
+}
+
+.header__labelWrapper {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
 }
 .header__label {
     composes: reset from './../reset.css';

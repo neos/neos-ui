@@ -258,4 +258,40 @@ export default class SelectBox extends PureComponent {
             focusedValue: optionValueAccessor(option)
         });
     }
+
+    /**
+     * Keyboard handling
+     */
+    componentWillReceiveProps({keydown}) {
+        this.handleKeyDown(keydown.event);
+    }
+    handleKeyDown = e => {
+        if (this.state.isExpanded && e) {
+            e.preventDefault();
+            console.log(e.key);
+            const {options, searchTerm} = this.props;
+            const optionValueAccessor = this.getOptionValueAccessor();
+            const currentIndex = options.findIndex(option => optionValueAccessor(option) === this.state.focusedValue);
+            
+            if (e.key === 'ArrowDown') {
+                const newIndex = currentIndex + 1 >= options.length ? currentIndex : currentIndex + 1;
+                this.setState({
+                    focusedValue: optionValueAccessor(options[newIndex])
+                });
+            } else if (e.key === 'ArrowUp') {
+                const newIndex = currentIndex - 1 < 0 ? 0 : currentIndex - 1;
+                this.setState({
+                    focusedValue: optionValueAccessor(options[newIndex])
+                });
+            } else if (e.key === 'Enter') {
+                if (currentIndex < options.length) {
+                    this.handleChange(options[currentIndex]);
+                }
+
+                this.setState({
+                    isExpanded: false
+                });
+            }
+        }
+}
 }

@@ -58,10 +58,6 @@ export default class Selector extends PureComponent {
         IconComponent: PropTypes.any.isRequired,
     };
 
-    handleChange = newValue => {
-        this.props.onChange(newValue);
-    }
-
     handleClose = () => {
 
     }

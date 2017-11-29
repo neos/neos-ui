@@ -23,7 +23,7 @@
 .selectBox {
     composes: reset from './../reset.css';
     composes: dropDown from './../DropDown/style.css';
-    position: static;
+    position: relative;
     display: inline-block;
 }
 

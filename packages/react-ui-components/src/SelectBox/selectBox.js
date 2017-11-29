@@ -319,7 +319,7 @@ export default class SelectBox extends PureComponent {
             allowEmpty = true;
         }
 
-        const showResetButton = !displayLoadingIndicator && allowEmpty && value;
+        const showResetButton = Boolean(!displayLoadingIndicator && allowEmpty && value);
 
         if (displaySearchBox && !value) {
             return (

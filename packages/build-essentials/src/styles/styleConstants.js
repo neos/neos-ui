@@ -2,6 +2,12 @@ const upperFirst = require('lodash.upperfirst');
 
 // Global CSS variables for Neos.Ui
 const config = {
+    transition: {
+        fast: '.1s',
+        default: '.2s',
+        medium: '.3s',
+        slow: '.5s'
+    },
     zIndex: {
         secondaryToolbar: ['linkIconButtonFlyout'],
         flashMessageContainer: ['context'],

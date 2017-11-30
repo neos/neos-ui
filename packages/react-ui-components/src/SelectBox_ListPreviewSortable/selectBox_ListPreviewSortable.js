@@ -70,7 +70,6 @@ export default class SelectBox_ListPreviewSortable extends PureComponent {
     }
 
     renderOption = (option, index) => {
-        console.log("OPT", option, index);
         const DraggableListPreviewElement = this.DraggableListPreviewElement;
 
         return (

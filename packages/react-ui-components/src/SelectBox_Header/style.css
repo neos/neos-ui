@@ -1,12 +1,12 @@
 
-.selectBox__btnIcon {
+.selectBoxHeader__icon {
     composes: reset from './../reset.css';
     margin-right: .5em;
     float: left;
     line-height: var(--goldenUnit);
 }
 
-.dropDown__itemLabel {
+.selectBoxHeader__label {
     padding: 0 var(--halfSpacing);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -14,7 +14,7 @@
     width: 100%;
 }
 
-.selectBox__deleteIcon {
+.selectBoxHeader__deleteButton {
     composes: reset from './../reset.css';
     position: absolute;
     top: 0;

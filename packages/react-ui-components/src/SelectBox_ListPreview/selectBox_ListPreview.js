@@ -20,13 +20,13 @@ export default class SelectBox_ListPreview extends PureComponent {
             SelectBox_ListPreviewUngrouped
         } = this.props;
 
-        const isCreateNewEnabled = onCreateNew && searchTerm;
+        
 
         // TODO: check whether we have grouped elements in the list; then render <ListPreviewGrouped> instead!
         return (
             <Fragment>
                 <SelectBox_ListPreviewUngrouped {...this.props} />
-                {Boolean(isCreateNewEnabled) && <SelectBox_CreateNew {...this.props} />}
+                <SelectBox_CreateNew {...this.props} />
             </Fragment>
         );
     }

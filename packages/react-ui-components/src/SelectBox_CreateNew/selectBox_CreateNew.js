@@ -5,24 +5,38 @@ import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 
 const CREATE_NEW_IS_FOCUSED = 'NEOS_UI_CREATE_NEW_IS_FOCUSED';
 
-// TODO: document component usage && check code in detail
+/**
+ * **SelectBox_CreateNew is an internal implementation detail of SelectBox**, meant to improve code quality.
+ * 
+ * It is used inside SelectBox_ListPreview as the last list element; and it is rendered if the `onCreateNew`
+ * prop is specified.
+ */
 export default class SelectBox_CreateNew extends PureComponent {
     static propTypes = {
+        // For explanations of the PropTypes, see SelectBox.js
         searchTerm: PropTypes.string,
-        onCreateNew: PropTypes.func.isRequired,
         onSearchTermChange: PropTypes.func.isRequired,
+        onCreateNew: PropTypes.func.isRequired,
+        createNewLabel: PropTypes.string.isRequired,
         optionValueField: PropTypes.string.isRequired,
         focusedValue: PropTypes.string,
-        createNewLabel: PropTypes.string.isRequired,
-    }
+        onOptionFocus: PropTypes.func.isRequired
+    };
 
     render() {
         const {
-            createNewLabel,
             searchTerm,
-            focusedValue,
+            onCreateNew,
+            createNewLabel,
+            focusedValue
         } = this.props;
         const isHighlighted = focusedValue === CREATE_NEW_IS_FOCUSED;
+
+        const isCreateNewEnabled = onCreateNew && searchTerm;
+
+        if (!isCreateNewEnabled) {
+            return null;
+        }
 
         return (
             <SelectBox_Option_SingleLine
@@ -37,9 +51,9 @@ export default class SelectBox_CreateNew extends PureComponent {
 
     handleCreateNew = () => {
         const {
-            onCreateNew,
             searchTerm,
-            onSearchTermChange
+            onSearchTermChange,
+            onCreateNew
         } = this.props;
         onCreateNew(searchTerm);
         // Clear search box on creating new
@@ -48,8 +62,8 @@ export default class SelectBox_CreateNew extends PureComponent {
 
     handleMouseEnter = () => {
         const {
-            onOptionFocus,
-            optionValueField
+            optionValueField,
+            onOptionFocus
         } = this.props;
 
         const selectedOption = {
@@ -57,5 +71,4 @@ export default class SelectBox_CreateNew extends PureComponent {
         }
         onOptionFocus(selectedOption);
     }
-
 }

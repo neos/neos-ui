@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+/* eslint-disable camelcase, react/jsx-pascal-case */
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
 /**
  * **SelectBox_ListPreviewUngrouped is an internal implementation detail of SelectBox**, meant to improve code quality.
- * 
+ *
  * It is used inside SelectBox_ListPreview if the options do not contain group elements;
  * and inside MultiSelectBox_ListPreviewSortable (which, in turn, is inside MultiSelect).
  */
@@ -48,7 +49,7 @@ export default class SelectBox_ListPreviewUngrouped extends PureComponent {
         return (
             <li key={index} role="option">
                 <ListPreviewElement
-                    
+
                     isHighlighted={isHighlighted}
                     option={option}
                     onClick={this.handlePreviewElementClick(option)}

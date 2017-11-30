@@ -1,11 +1,12 @@
-import React, { PureComponent } from 'react';
+/* eslint-disable camelcase, react/jsx-pascal-case */
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 const Fragment = props => props.children;
 
 /**
  * **SelectBox_ListPreview is an internal implementation detail of SelectBox**, meant to improve code quality.
- * 
+ *
  * It is used inside SelectBox as the dropdown part.
  */
 export default class SelectBox_ListPreview extends PureComponent {

@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+/* eslint-disable camelcase, react/jsx-pascal-case */
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
@@ -6,7 +7,7 @@ const Fragment = props => props.children;
 
 /**
  * **SelectBox_HeaderWithSearchInput is an internal implementation detail of SelectBox**, meant to improve code quality.
- * 
+ *
  * It is used inside SelectBox as the header component when no value is selected, and a filter/search box is shown.
  */
 export default class SelectBox_HeaderWithSearchInput extends PureComponent {
@@ -18,9 +19,9 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
         onSearchTermChange: PropTypes.func.isRequired,
         setFocus: PropTypes.bool,
 
-        /*****************************
+        /*------------------------------*
          * Theme & Dependencies
-         *****************************/
+         *------------------------------*/
         theme: PropTypes.shape({
             selectBoxHeaderWithSearchInput__inputContainer: PropTypes.string.isRequired,
             selectBoxHeaderWithSearchInput__input: PropTypes.string.isRequired,

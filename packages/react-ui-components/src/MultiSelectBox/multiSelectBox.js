@@ -1,7 +1,7 @@
+/* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
-import {TextInput} from '@neos-project/react-ui-components';
 import mergeClassNames from 'classnames';
 
 // TODO: document component usage && check code in detail
@@ -14,9 +14,9 @@ export default class MultiSelectBox extends PureComponent {
     };
 
     static propTypes = {
-        /*****************************
-         * Basic Props for core functionality
-         *****************************/
+        // ------------------------------
+        // Basic Props for core functionality
+        // ------------------------------
         /**
          * This prop represents a set of options.
          * Each option must have a value and can have a label and an icon.
@@ -41,15 +41,15 @@ export default class MultiSelectBox extends PureComponent {
          * This prop represents the current selected value.
          */
         values: PropTypes.arrayOf(PropTypes.string),
-        
+
         /**
          * This prop gets called when an option was selected. It returns the new values as array.
          */
         onValuesChange: PropTypes.func.isRequired,
 
-        /*****************************
-         * Visual customization of the MultiSelect Box
-         *****************************/
+        // ------------------------------
+        // Visual customization of the MultiSelect Box
+        // ------------------------------
         /**
          * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
          */
@@ -59,7 +59,7 @@ export default class MultiSelectBox extends PureComponent {
          * This prop is an icon for the placeholder.
          */
         placeholderIcon: PropTypes.string,
-        
+
         /**
          * text for the group label of options without a group
          */
@@ -85,23 +85,23 @@ export default class MultiSelectBox extends PureComponent {
          */
         ListPreviewElement: PropTypes.any,
 
-        /*****************************
-         * Asynchronous loading of data
-         *****************************/
+        // ------------------------------
+        // Asynchronous loading of data
+        // ------------------------------
 
         /**
          * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
          */
         loadingLabel: PropTypes.string,
-        
+
         /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
 
-        /*****************************
-         * Search-As-You-Type related functionality
-         *****************************/
+        // ------------------------------
+        // Search-As-You-Type related functionality
+        // ------------------------------
         displaySearchBox: PropTypes.bool,
         searchTerm: PropTypes.string,
         onSearchTermChange: PropTypes.func,
@@ -122,9 +122,9 @@ export default class MultiSelectBox extends PureComponent {
          */
         setFocus: PropTypes.bool,
 
-        /*****************************
-         * "Create new if not exists" functionality
-         *****************************/
+        // ------------------------------
+        // "Create new if not exists" functionality
+        // ------------------------------
         /**
          * This prop gets called when requested to create a new element
          */
@@ -134,18 +134,18 @@ export default class MultiSelectBox extends PureComponent {
          * "Create new" label
          */
         createNewLabel: PropTypes.string,
-        
-        /*****************************
-         * Drag&Drop Reordering of Selected Values
-         *****************************/
+
+        // ------------------------------
+        // Drag&Drop Reordering of Selected Values
+        // ------------------------------
         /**
          * Specifying the dnd type. Defaults to 'multiselect-box-value'
          */
         dndType: PropTypes.string.isRequired,
 
-        /*****************************
-         * Theme & Dependencies
-         *****************************/
+        // ------------------------------
+        // Theme & Dependencies
+        // ------------------------------
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'selectedOptions': PropTypes.string,
             'selectedOptions--highlight': PropTypes.string,

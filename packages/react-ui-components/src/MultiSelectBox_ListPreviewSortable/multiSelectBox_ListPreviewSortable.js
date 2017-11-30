@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+/* eslint-disable camelcase, react/jsx-pascal-case */
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import injectProps from './../_lib/injectProps.js';
@@ -19,7 +20,7 @@ const makeDraggableListPreviewElement = ListPreviewElement =>
 
 /**
  * **MultiSelectBox_ListPreviewSortable is an internal implementation detail of MultiSelectBox**, meant to improve code quality.
- * 
+ *
  * It is used inside MultiSelectBox, to render the selected elements in the list.
  */
 export default class MultiSelectBox_ListPreviewSortable extends PureComponent {

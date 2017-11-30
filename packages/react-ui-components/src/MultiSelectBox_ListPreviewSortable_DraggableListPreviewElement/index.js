@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, react/jsx-pascal-case */
 import {themr} from 'react-css-themr';
 import identifiers from './../identifiers.js';
 import style from './style.css';
@@ -15,5 +16,5 @@ import IconButton from './../IconButton/index';
 
 export default injectProps({
     Icon,
-    IconButton,
+    IconButton
 })(ThemedMultiSelectBox_ListPreviewSortable_DraggableListPreviewElement);

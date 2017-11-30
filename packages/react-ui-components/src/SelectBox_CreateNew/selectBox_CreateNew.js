@@ -1,13 +1,13 @@
-import React, { PureComponent } from 'react';
+/* eslint-disable camelcase, react/jsx-pascal-case */
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import mergeClassNames from 'classnames';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 
 const CREATE_NEW_IS_FOCUSED = 'NEOS_UI_CREATE_NEW_IS_FOCUSED';
 
 /**
  * **SelectBox_CreateNew is an internal implementation detail of SelectBox**, meant to improve code quality.
- * 
+ *
  * It is used inside SelectBox_ListPreview as the last list element; and it is rendered if the `onCreateNew`
  * prop is specified.
  */
@@ -19,7 +19,7 @@ export default class SelectBox_CreateNew extends PureComponent {
         onSearchTermChange: PropTypes.func,
         onCreateNew: PropTypes.func,
         createNewLabel: PropTypes.string,
-        
+
         // API with SelectBox
         focusedValue: PropTypes.string,
         onOptionFocus: PropTypes.func.isRequired

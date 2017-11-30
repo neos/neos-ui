@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, react/jsx-pascal-case */
 import SelectBox_ListPreview from './SelectBox_ListPreview';
 
 //

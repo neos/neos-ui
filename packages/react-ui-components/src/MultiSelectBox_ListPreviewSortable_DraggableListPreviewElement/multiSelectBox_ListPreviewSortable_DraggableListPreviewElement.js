@@ -1,11 +1,12 @@
-import React, { PureComponent } from 'react';
+/* eslint-disable camelcase, react/jsx-pascal-case */
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import {DragSource, DropTarget} from 'react-dnd';
 
 /**
  * **MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement is an internal implementation detail of MultiSelectBox**, meant to improve code quality.
- * 
+ *
  * It is used inside MultiSelectBox_ListPreviewSortable for rendering an individual element and implementing drag&drop behavior.
  */
 const spec = {
@@ -88,21 +89,21 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
 
     render() {
         const {
-            values,
+            option,
             connectDragSource,
             connectDropTarget,
             isDragging,
             InnerListPreviewElement,
-            theme,            
+            theme,
             Icon,
             IconButton
          } = this.props;
 
-        //const {icon, label} = option || {label: `[Loading ${value}]`};
+        // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
 
         const finalClassNames = mergeClassNames({
-            //[theme.selectedOptions__item]: true,
-            //[theme['selectedOptions__item--draggable']]: values && values.length > 1
+            // TODO: [theme.selectedOptions__item]: true,
+            // TODO: [theme['selectedOptions__item--draggable']]: values && values.length > 1
         });
         const opacity = isDragging ? 0 : 1;
 
@@ -110,7 +111,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             this.node = node;
         };
 
-            
+
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
                 <div className={finalClassNames}>
@@ -121,8 +122,8 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                         option={option}
                         />
                     <IconButton
-                            icon={'close'}
-                            />
+                        icon={'close'}
+                        />
                 </div>
             </li>
         ));

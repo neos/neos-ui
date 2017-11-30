@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
@@ -16,9 +17,9 @@ export default class SelectBox extends PureComponent {
     };
 
     static propTypes = {
-        /*****************************
-         * Basic Props for core functionality
-         *****************************/
+        // ------------------------------
+        // Basic Props for core functionality
+        // ------------------------------
         /**
          * This prop represents the set of options to be chosen from
          * Each option must have a value and can have a label and an icon.
@@ -49,15 +50,15 @@ export default class SelectBox extends PureComponent {
          */
         onValueChange: PropTypes.func.isRequired,
 
-        /*****************************
-         * Visual customization of the Select Box
-         *****************************/
+        // ------------------------------
+        // Visual customization of the Select Box
+        // ------------------------------
 
         /**
          * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
          */
         placeholder: PropTypes.string,
-        
+
         /**
          * This prop is an icon for the placeholder.
          */
@@ -72,39 +73,39 @@ export default class SelectBox extends PureComponent {
          * if true, allows to clear the selected element completely (without choosing another one)
          */
         allowEmpty: PropTypes.bool,
-        
+
         /**
          * limit height and show scrollbars if needed, defaults to true
          */
         scrollable: PropTypes.bool,
-    
+
         /**
          * Should the SelectBox be highlighted? (e.g. if the property was modified)
          */
         highlight: PropTypes.bool,
-        
+
         /**
          * Component used for rendering the individual option elements; Usually this component uses "ListPreviewElement" internally for common styling.
          */
-        ListPreviewElement: PropTypes.any,        
+        ListPreviewElement: PropTypes.any,
 
-        /*****************************
-         * Asynchronous loading of data
-         *****************************/
+        // ------------------------------
+        // Asynchronous loading of data
+        // ------------------------------
 
         /**
          * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
          */
         loadingLabel: PropTypes.string,
-        
+
         /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
-        
-        /*****************************
-         * Search-As-You-Type related functionality
-         *****************************/
+
+        // ------------------------------
+        // Search-As-You-Type related functionality
+        // ------------------------------
         displaySearchBox: PropTypes.bool,
         searchTerm: PropTypes.string,
         onSearchTermChange: PropTypes.func,
@@ -115,9 +116,9 @@ export default class SelectBox extends PureComponent {
          */
         setFocus: PropTypes.bool,
 
-        /*****************************
-         * "Create new if not exists" functionality
-         *****************************/
+        // ------------------------------
+        // "Create new if not exists" functionality
+        // ------------------------------
         /**
          * This prop gets called when requested to create a new element
          */
@@ -128,9 +129,9 @@ export default class SelectBox extends PureComponent {
          */
         createNewLabel: PropTypes.string,
 
-        /*****************************
-         * Theme & Dependencies
-         *****************************/
+        // ------------------------------
+        // Theme & Dependencies
+        // ------------------------------
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'wrapper--highlight': PropTypes.string,
             'selectedOptions__item': PropTypes.string
@@ -139,7 +140,7 @@ export default class SelectBox extends PureComponent {
         DropDown: PropTypes.any.isRequired,
         SelectBox_Header: PropTypes.any.isRequired,
         SelectBox_HeaderWithSearchInput: PropTypes.any.isRequired,
-        SelectBox_ListPreview: PropTypes.any.isRequired,
+        SelectBox_ListPreview: PropTypes.any.isRequired
     };
 
     state = {
@@ -154,15 +155,12 @@ export default class SelectBox extends PureComponent {
     render() {
         const {
             options,
-            value,
             theme,
             highlight,
-            optionValueField,
             ListPreviewElement,
 
             DropDown,
-            SelectBox_Header,
-            SelectBox_ListPreview,
+            SelectBox_ListPreview
         } = this.props;
 
         const {
@@ -189,7 +187,7 @@ export default class SelectBox extends PureComponent {
 
                             optionValueAccessor={optionValueAccessor}
                             ListPreviewElement={ListPreviewElement}
-                            focusedValue={this.state.focusedValue}
+                            focusedValue={focusedValue}
                             onChange={this.handleChange}
                             onOptionFocus={this.handleOptionFocusChange}
                             />
@@ -233,7 +231,7 @@ export default class SelectBox extends PureComponent {
             return (
                 <SelectBox_Header
                     {...this.props}
-                    
+
                     option={selectedOption}
                     showResetButton={showResetButton}
                     onReset={this.handleDeleteClick}
@@ -285,7 +283,7 @@ export default class SelectBox extends PureComponent {
             const {options, searchTerm} = this.props;
             const optionValueAccessor = this.getOptionValueAccessor();
             const currentIndex = options.findIndex(option => optionValueAccessor(option) === this.state.focusedValue);
-            
+
             if (e.key === 'ArrowDown') {
                 const newIndex = currentIndex + 1 >= options.length ? currentIndex : currentIndex + 1;
                 this.setState({

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, react/jsx-pascal-case */
 import {themr} from 'react-css-themr';
 import keydown from 'react-keydown';
 import identifiers from './../identifiers.js';

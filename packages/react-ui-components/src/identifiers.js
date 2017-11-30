@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 //
 // Every component in this repository needs a uniquie identifier
 // to be used with `react-css-themr`, this opens up the possibility
@@ -43,5 +44,5 @@ export default {
     treeNode: '@neos-project/react-ui-components/treeNode',
     treeNodeHeader: '@neos-project/react-ui-components/treeNodeHeader',
     treeNodeContents: '@neos-project/react-ui-components/treeNodeContents',
-    listPreviewElement: '@neos-project/react-ui-components/listPreviewElement',
+    listPreviewElement: '@neos-project/react-ui-components/listPreviewElement'
 };

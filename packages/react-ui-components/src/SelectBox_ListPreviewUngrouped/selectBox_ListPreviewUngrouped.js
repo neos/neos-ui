@@ -6,7 +6,7 @@ import mergeClassNames from 'classnames';
  * **SelectBox_ListPreviewUngrouped is an internal implementation detail of SelectBox**, meant to improve code quality.
  * 
  * It is used inside SelectBox_ListPreview if the options do not contain group elements;
- * and inside SelectBox_ListPreviewSortable (which, in turn, is inside MultiSelect).
+ * and inside MultiSelectBox_ListPreviewSortable (which, in turn, is inside MultiSelect).
  */
 export default class SelectBox_ListPreviewUngrouped extends PureComponent {
     static propTypes = {

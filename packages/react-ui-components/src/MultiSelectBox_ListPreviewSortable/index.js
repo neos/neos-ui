@@ -1,4 +1,4 @@
-import SelectBox_ListPreviewSortable from './SelectBox_ListPreviewSortable';
+import MultiSelectBox_ListPreviewSortable from './multiSelectBox_ListPreviewSortable';
 //
 // Dependency injection
 //
@@ -7,7 +7,7 @@ import SelectBox_ListPreviewUngrouped from './../SelectBox_ListPreviewUngrouped/
 
 export default injectProps({
     SelectBox_ListPreviewUngrouped
-})(SelectBox_ListPreviewSortable);
+})(MultiSelectBox_ListPreviewSortable);
 
 
 

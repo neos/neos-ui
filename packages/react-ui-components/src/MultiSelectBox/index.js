@@ -10,7 +10,7 @@ const ThemedMultiSelectBox = themr(identifiers.multiSelectBox, style)(MultiSelec
 //
 import injectProps from './../_lib/injectProps.js';
 import SelectBox from './../SelectBox/index';
-import SelectBox_ListPreviewSortable from './../SelectBox_ListPreviewSortable/index';
+import MultiSelectBox_ListPreviewSortable from './../MultiSelectBox_ListPreviewSortable/index';
 import Icon from './../Icon/index';
 import IconButton from './../IconButton/index';
 
@@ -18,5 +18,5 @@ export default injectProps({
     IconComponent: Icon,
     IconButtonComponent: IconButton,
     SelectBox,
-    SelectBox_ListPreviewSortable
+    MultiSelectBox_ListPreviewSortable
 })(ThemedMultiSelectBox);

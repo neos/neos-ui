@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
-import SortablePreviewList from '../Previews/SortablePreviewList';
 import {TextInput} from '@neos-project/react-ui-components';
 import mergeClassNames from 'classnames';
 
@@ -156,7 +155,7 @@ export default class MultiSelectBox extends PureComponent {
             options,
             dndType,
             SelectBox,
-            SelectBox_ListPreviewSortable
+            MultiSelectBox_ListPreviewSortable
         } = this.props;
 
         const filteredSearchOptions = (searchOptions || [])
@@ -169,23 +168,10 @@ export default class MultiSelectBox extends PureComponent {
 
         const optionValueAccessor = this.getOptionValueAccessor();
 
-        /*
-        <SortablePreviewList
-                    options={preparedOptions}
-                    dndType={dndType}
-                    allowEmpty={allowEmpty}
-                    highlight={highlight}
-                    onValuesChange={this.handleValuesChanged}
-                    theme={theme}
-                    IconComponent={IconComponent}
-                    IconButtonComponent={IconButtonComponent}
-                    />
-                */
-
         return (
             <div className={theme.wrapper}>
                 <ul className={selectedOptionsClassNames}>
-                    <SelectBox_ListPreviewSortable
+                    <MultiSelectBox_ListPreviewSortable
                         {...this.props}
                         optionValueAccessor={optionValueAccessor}
                         />

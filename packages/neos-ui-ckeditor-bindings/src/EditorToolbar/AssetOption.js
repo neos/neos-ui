@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import ComplexOption from '@neos-project/react-ui-components/src/SelectBox/complexOption';
+import SelectBox_Option_MultiLineWithThumbnail from '@neos-project/react-ui-components/src/SelectBox_Option_MultiLineWithThumbnail';
 
 export default class AssetOption extends PureComponent {
     static propTypes = {
@@ -15,7 +15,7 @@ export default class AssetOption extends PureComponent {
         const option = this.props.option;
 
         return (
-            <ComplexOption {...this.props} imageUri={option.preview} label={option.label}/>
+            <SelectBox_Option_MultiLineWithThumbnail {...this.props} imageUri={option.preview} label={option.label}/>
         );
     }
 }

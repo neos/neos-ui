@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import ComplexOption from '@neos-project/react-ui-components/src/SelectBox/complexOption';
+import SelectBox_Option_MultiLineWithThumbnail from '@neos-project/react-ui-components/src/SelectBox_Option_MultiLineWithThumbnail';
 import {$get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -26,7 +26,7 @@ export default class NodeOption extends PureComponent {
         const nodeTypeLabel = $get('ui.label', nodeTypeDefinition);
         const icon = $get('ui.icon', nodeTypeDefinition);
         return (
-            <ComplexOption
+            <SelectBox_Option_MultiLineWithThumbnail
                 {...this.props}
                 label={label}
                 secondaryLabel={uriInLiveWorkspace}

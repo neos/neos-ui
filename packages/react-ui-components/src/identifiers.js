@@ -28,6 +28,7 @@ export default {
     selectBox_HeaderWithSearchInput: '@neos-project/react-ui-components/selectBox_HeaderWithSearchInput',
     selectBox_ListPreviewSortable: '@neos-project/react-ui-components/selectBox_ListPreviewSortable',
     selectBox_ListPreviewSortable_DraggableListPreviewElement: '@neos-project/react-ui-components/selectBox_ListPreviewSortable_DraggableListPreviewElement',
+    selectBox_Option_MultiLineWithThumbnail: '@neos-project/react-ui-components/selectBox_Option_MultiLineWithThumbnail',
     multiSelectBox: '@neos-project/react-ui-components/multiSelectBox',
     sideBar: '@neos-project/react-ui-components/sideBar',
     tabs: '@neos-project/react-ui-components/tabs',

@@ -131,7 +131,6 @@ export default class SelectBox extends PureComponent {
 
     state = {
         isExpanded: false,
-
         focusedValue: ''
     };
 

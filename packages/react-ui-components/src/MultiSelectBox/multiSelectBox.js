@@ -1,9 +1,10 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {$get} from 'plow-js';
 import SortablePreviewList from '../Previews/SortablePreviewList';
 import SelectBoxFinder from '../SelectBoxFinder/index';
 import {TextInput} from '@neos-project/react-ui-components';
-
+import mergeClassNames from 'classnames';
 export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {
@@ -126,10 +127,19 @@ export default class MultiSelectBox extends PureComponent {
         // Static component dependencies which are injected from the outside (index.js)
         // Used in sub-components
         //
-        SelectBoxComponent: PropTypes.any.isRequired,
+        SelectBox: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired
     };
+
+    state = {
+        isExpanded: false,
+        focusedValue: ''
+    };
+
+    getOptionValueAccessor() {
+        return $get([this.props.optionValueField]);
+    }
 
     render() {
         const {
@@ -143,21 +153,23 @@ export default class MultiSelectBox extends PureComponent {
             IconComponent,
             allowEmpty,
             options,
-            dndType
+            dndType,
+            SelectBox,
+            SelectBox_ListPreviewSortable
         } = this.props;
 
         const filteredSearchOptions = (searchOptions || [])
-            .filter(option => !(values && values.indexOf(option[optionValueField]) !== -1)).map(option => {
-                return Object.assign({}, option, {__value: option[optionValueField]});
-            });
+            .filter(option => !(values && values.indexOf(option[optionValueField]) !== -1));
 
-        const preparedOptions = options.map(option => {
-            return Object.assign({}, option, {__value: option[optionValueField]});
+        const selectedOptionsClassNames = mergeClassNames({
+            [theme.selectedOptions]: true,
+            [theme['selectedOptions--highlight']]: highlight
         });
 
-        return (
-            <div className={theme.wrapper}>
-                <SortablePreviewList
+        const optionValueAccessor = this.getOptionValueAccessor();
+
+        /*
+        <SortablePreviewList
                     options={preparedOptions}
                     dndType={dndType}
                     allowEmpty={allowEmpty}
@@ -167,16 +179,21 @@ export default class MultiSelectBox extends PureComponent {
                     IconComponent={IconComponent}
                     IconButtonComponent={IconButtonComponent}
                     />
-                <SelectBoxFinder
-                    classNames={{}}
-                    previewRenderer={this.renderOption}
+                */
+
+        return (
+            <div className={theme.wrapper}>
+                <ul className={selectedOptionsClassNames}>
+                    <SelectBox_ListPreviewSortable
+                        {...this.props}
+                        optionValueAccessor={optionValueAccessor}
+                        />
+                </ul>
+                <SelectBox
+                    {...this.props}
                     options={filteredSearchOptions}
                     value=""
-                    theme={theme}
-                    onSearchTermChange={onSearchTermChange}
                     onValueChange={this.handleNewValueSelected}
-                    IconComponent={IconComponent}
-                    TextInputComponent={TextInput}
                     />
             </div>
         );

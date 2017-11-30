@@ -95,15 +95,15 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             isDragging,
             InnerListPreviewElement,
             theme,
-            Icon,
+            values,
             IconButton
          } = this.props;
 
         // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
 
         const finalClassNames = mergeClassNames({
-            // TODO: [theme.selectedOptions__item]: true,
-            // TODO: [theme['selectedOptions__item--draggable']]: values && values.length > 1
+            [theme.selectedOptions__item]: true,
+            [theme['selectedOptions__item--draggable']]: values && values.length > 1
         });
         const opacity = isDragging ? 0 : 1;
 
@@ -111,13 +111,12 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             this.node = node;
         };
 
-
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
                 <div className={finalClassNames}>
-                    <Icon className={theme['selectedOptions__itemIcon--onHover']} icon={'arrows-v'}/>
                     <InnerListPreviewElement
                         {...this.props}
+                        className={theme['selectedOptions__item--draggable']}
                         isHighlighted={false}
                         option={option}
                         />

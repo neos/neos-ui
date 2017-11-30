@@ -1,9 +1,9 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import mergeClassNames from 'classnames';
 import injectProps from './../_lib/injectProps.js';
 import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement/index';
+
 
 const ensureIsArray = v => {
     if (Array.isArray(v)) {
@@ -71,7 +71,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         // sorted options by draggable value ordering
         const draggableOptions = draggableValues.map(value =>
             options.find(option => optionValueAccessor(option) === value)
-        ).filter(Boolean)
+        ).filter(Boolean);
 
         return draggableOptions.map(this.renderOption);
     }

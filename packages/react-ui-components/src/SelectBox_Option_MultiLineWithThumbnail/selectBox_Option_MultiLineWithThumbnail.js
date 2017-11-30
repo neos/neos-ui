@@ -2,6 +2,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import ListPreviewElement from '../ListPreviewElement/index';
+import mergeClassNames from 'classnames';
 
 export default class SelectBox_Option_MultiLineWithThumbnail extends PureComponent {
     static propTypes = {
@@ -11,11 +12,13 @@ export default class SelectBox_Option_MultiLineWithThumbnail extends PureCompone
         imageUri: PropTypes.string,
         icon: PropTypes.string,
 
+        className: PropTypes.string,
+
         theme: PropTypes.shape({
             multiLineWithThumbnail__item: PropTypes.string.isRequired,
             multiLineWithThumbnail__secondaryLabel: PropTypes.string.isRequired,
             multiLineWithThumbnail__tertiaryLabel: PropTypes.string.isRequired,
-            multiLineWithThumbnail__image: PropTypes.string.isRequired,
+            multiLineWithThumbnail__image: PropTypes.string.isRequired
         }).isRequired
     };
 
@@ -26,12 +29,18 @@ export default class SelectBox_Option_MultiLineWithThumbnail extends PureCompone
             tertiaryLabel,
             imageUri,
             icon,
-
-            theme
+            className,
+            theme,
+            ...rest
         } = this.props;
 
+        const finalClassNames = mergeClassNames({
+            [theme.multiLineWithThumbnail__item]: true,
+            [className]: className
+        });
+
         return (
-            <ListPreviewElement {...this.props} icon={icon} className={theme.multiLineWithThumbnail__item}>
+            <ListPreviewElement {...rest} icon={icon} className={finalClassNames}>
                 {Boolean(imageUri) && <img src={imageUri} alt={label} className={theme.multiLineWithThumbnail__image}/>}
                 <span>{label}</span>
                 {Boolean(secondaryLabel) && <span className={theme.multiLineWithThumbnail__secondaryLabel}>{secondaryLabel}</span>}

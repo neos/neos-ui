@@ -1,7 +1,5 @@
 .multiLineWithThumbnail__item {
-    padding: var(--halfSpacing);
     box-sizing: content-box;
-    height: calc(var(--goldenUnit) * 1.5);
     line-height: 20px;
 }
 
@@ -21,5 +19,6 @@
     max-height: 1.5em;
     max-width: 1.5em;
     margin-right: .75em;
-    float: left;
+    display: inline-block;
+    vertical-align: middle;
 }

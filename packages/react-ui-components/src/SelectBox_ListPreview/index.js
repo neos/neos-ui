@@ -1,5 +1,5 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import SelectBox_ListPreview from './SelectBox_ListPreview';
+import SelectBox_ListPreview from './selectBox_ListPreview';
 
 //
 // Dependency injection

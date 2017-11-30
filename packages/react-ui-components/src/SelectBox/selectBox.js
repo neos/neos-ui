@@ -280,7 +280,7 @@ export default class SelectBox extends PureComponent {
             // do not scroll while we are doing keyboard interaction
             e.preventDefault();
 
-            const {options, searchTerm} = this.props;
+            const {options} = this.props;
             const optionValueAccessor = this.getOptionValueAccessor();
             const currentIndex = options.findIndex(option => optionValueAccessor(option) === this.state.focusedValue);
 

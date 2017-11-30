@@ -24,7 +24,7 @@ const spec = {
             return;
         }
 
-        props.moveSelectedValue(dragIndex, hoverIndex);
+        props.onMoveSelectedValue(dragIndex, hoverIndex);
 
         // Note: we're mutating the monitor item here!
         // Generally it's better to avoid mutations,
@@ -37,14 +37,14 @@ const spec = {
     }
 };
 
-/*@DragSource(({dndType}) => dndType, {
+@DragSource(({dndType}) => dndType, {
     beginDrag(props) {
         return {
             index: props.index
         };
     },
-    canDrag({draggableValues}) {
-        return draggableValues && draggableValues.length > 1;
+    canDrag({values}) {
+        return values && values.length > 1;
     }
 }, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
@@ -52,7 +52,7 @@ const spec = {
 }))
 @DropTarget(({dndType}) => dndType, spec, connect => ({
     connectDropTarget: connect.dropTarget()
-}))*/
+}))
 export default class SelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent {
 
     static propTypes = {
@@ -62,7 +62,7 @@ export default class SelectBox_ListPreviewSortable_DraggableListPreviewElement e
         /**
          * This prop represents the current selected value.
          */
-        draggableValues: PropTypes.arrayOf(PropTypes.string),
+        values: PropTypes.arrayOf(PropTypes.string),
 
         isDragging: PropTypes.bool.isRequired,
 
@@ -106,7 +106,7 @@ export default class SelectBox_ListPreviewSortable_DraggableListPreviewElement e
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
 
-        moveSelectedValue: PropTypes.func.isRequired,
+        onMoveSelectedValue: PropTypes.func.isRequired,
 
         connectDragSource: PropTypes.func.isRequired,
         connectDropTarget: PropTypes.func.isRequired
@@ -116,59 +116,50 @@ export default class SelectBox_ListPreviewSortable_DraggableListPreviewElement e
     render() {
         const {
             value,
-            draggableValues,
+            values,
             optionValueField,
             option,
             allowEmpty,
             theme,
-            IconComponent,
-            IconButtonComponent,
             onRemoveOption,
             connectDragSource,
             connectDropTarget,
             isDragging,
-            InnerListPreviewElement
+            InnerListPreviewElement,
+
+            Icon,
+            IconButton
          } = this.props;
+
+         console.log("ELEMENT", this.props);
 
         //const option = (options || []).find(option => option[optionValueField] === value);
         //const {icon, label} = option || {label: `[Loading ${value}]`};
 
         const finalClassNames = mergeClassNames({
             [theme.selectedOptions__item]: true,
-            [theme['selectedOptions__item--draggable']]: draggableValues && draggableValues.length > 1
+            [theme['selectedOptions__item--draggable']]: values && values.length > 1
         });
         const opacity = isDragging ? 0 : 1;
 
-        /*const refName = node => {
+        const refName = node => {
             this.node = node;
-        };*/
+        };
 
-        //return connectDragSource(connectDropTarget(
-            // //onClick={this.handlePreviewElementClick(option)}
-            // onMouseEnter={this.handlePreviewElementMouseEnter(option)}
             
-        return    <InnerListPreviewElement
-                isHighlighted={false}
-                option={option}
-                />
-            
-        //));
-        /*
-        <li className={finalClassNames} ref={refName} style={{opacity}}>
-                <span>
-                    <div className={theme.selectedOptions__itemIconWrapper}>
-                        {icon ? <IconComponent className={theme.selectedOptions__itemIcon} icon={icon}/> : null}
-                        <IconComponent className={theme['selectedOptions__itemIcon--onHover']} icon={'arrows-v'}/>
-                    </div>
-                    { label }
-                </span>
-                { draggableValues && draggableValues.length === 1 && !allowEmpty ?
-                    null :
-                    <IconButtonComponent
-                        icon={'close'}
-                        onClick={onRemoveOption(value)}
+        return connectDragSource(connectDropTarget(
+            <li style={{opacity}} ref={refName}>
+                <div className={finalClassNames}>
+                    <Icon className={theme['selectedOptions__itemIcon--onHover']} icon={'arrows-v'}/>
+                    <InnerListPreviewElement
+                        isHighlighted={false}
+                        option={option}
                         />
-                }
-            </li>*/
+                    <IconButton
+                            icon={'close'}
+                            />
+                </div>
+            </li>
+        ));
     }
 }

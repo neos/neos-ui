@@ -55,7 +55,7 @@ export default class ListPreviewElement extends PureComponent {
         });
 
         return (
-            <li
+            <div
                 onMouseEnter={onMouseEnter}
                 role={role}
                 onClick={onClick}
@@ -67,7 +67,8 @@ export default class ListPreviewElement extends PureComponent {
                         null
                 }
                 {children}
-            </li>
+
+            </div>
         );
     }
 }

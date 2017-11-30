@@ -192,6 +192,7 @@ export default class MultiSelectBox extends PureComponent {
                 <SelectBox
                     {...this.props}
                     options={filteredSearchOptions}
+                    highlight={false}
                     value=""
                     onValueChange={this.handleNewValueSelected}
                     />

@@ -37,6 +37,8 @@ export default class SelectBox_ListPreviewSortable extends PureComponent {
         this.state = {
             draggableValues: ensureIsArray(this.props.values)
         };
+
+        this.DraggableListPreviewElement = makeDraggableListPreviewElement(props.ListPreviewElement);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -45,6 +47,8 @@ export default class SelectBox_ListPreviewSortable extends PureComponent {
                 draggableValues: ensureIsArray(nextProps.values)
             });
         }
+
+        this.DraggableListPreviewElement = makeDraggableListPreviewElement(nextProps.ListPreviewElement);
     }
 
     render() {
@@ -62,12 +66,38 @@ export default class SelectBox_ListPreviewSortable extends PureComponent {
             options.find(option => optionValueAccessor(option) === value)
         ).filter(Boolean)
 
+        return draggableOptions.map(this.renderOption);
+    }
+
+    renderOption = (option, index) => {
+        console.log("OPT", option, index);
+        const DraggableListPreviewElement = this.DraggableListPreviewElement;
+
         return (
-            <SelectBox_ListPreviewUngrouped
+            <DraggableListPreviewElement
                 {...this.props}
-                options={draggableOptions}
-                ListPreviewElement={makeDraggableListPreviewElement(ListPreviewElement)}
+                key={index}
+                index={index}
+                option={option}
+                onMoveSelectedValue={this.handleMoveSelectedValue}
+                onSelectedValueWasMoved={this.handleSelectedValueWasMoved}
                 />
         );
+    }
+
+    handleMoveSelectedValue = (dragIndex, hoverIndex) => {
+        const {draggableValues} = this.state;
+        const movedOption = draggableValues[dragIndex];
+
+        const reorderedValues = draggableValues.slice();
+
+        reorderedValues.splice(dragIndex, 1);
+        reorderedValues.splice(hoverIndex, 0, movedOption);
+
+        this.setState({draggableValues: reorderedValues});
+    }
+
+    handleSelectedValueWasMoved = () => {
+        this.props.onValuesChange(this.state.draggableValues);
     }
 }

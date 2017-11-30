@@ -45,13 +45,15 @@ export default class SelectBox_ListPreviewUngrouped extends PureComponent {
         }
 
         return (
-            <ListPreviewElement
-                key={index}
-                isHighlighted={isHighlighted}
-                option={option}
-                onClick={this.handlePreviewElementClick(option)}
-                onMouseEnter={this.handlePreviewElementMouseEnter(option)}
-                />
+            <li key={index}>
+                <ListPreviewElement
+                    
+                    isHighlighted={isHighlighted}
+                    option={option}
+                    onClick={this.handlePreviewElementClick(option)}
+                    onMouseEnter={this.handlePreviewElementMouseEnter(option)}
+                    />
+            </li>
         );
     }
 

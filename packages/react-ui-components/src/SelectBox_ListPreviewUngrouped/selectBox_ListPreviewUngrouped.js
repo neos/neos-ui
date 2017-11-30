@@ -15,16 +15,13 @@ export default class SelectBox_ListPreviewUngrouped extends PureComponent {
             PropTypes.shape({
             }),
         ),
+        ListPreviewElement: PropTypes.any.isRequired,
+
+        // API with SelectBox
         optionValueAccessor: PropTypes.func.isRequired,
         onChange: PropTypes.func.isRequired,
-
-        // Focus handling
         focusedValue: PropTypes.string,
         onOptionFocus: PropTypes.func,
-
-        // component class to be used for rendering the individual items.
-        // Fits well together with ListPreviewElement.
-        ListPreviewElement: PropTypes.any.isRequired,
     }
 
     render() {
@@ -37,9 +34,9 @@ export default class SelectBox_ListPreviewUngrouped extends PureComponent {
 
     renderOption = (option, index) => {
         const {
+            ListPreviewElement,
             optionValueAccessor,
-            focusedValue,
-            ListPreviewElement
+            focusedValue
         } = this.props;
 
         const isHighlighted = optionValueAccessor(option) === focusedValue;

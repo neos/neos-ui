@@ -11,7 +11,7 @@ const Fragment = props => props.children;
  */
 export default class SelectBox_Header extends PureComponent {
     static propTypes = {
-        // For explanations of the PropTypes, see SelectBox.js
+        // API with SelectBox
         option: PropTypes.shape({
             icon: PropTypes.string,
             label: PropTypes.string.isRequired

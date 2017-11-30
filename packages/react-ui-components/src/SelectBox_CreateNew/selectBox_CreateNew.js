@@ -14,11 +14,13 @@ const CREATE_NEW_IS_FOCUSED = 'NEOS_UI_CREATE_NEW_IS_FOCUSED';
 export default class SelectBox_CreateNew extends PureComponent {
     static propTypes = {
         // For explanations of the PropTypes, see SelectBox.js
-        searchTerm: PropTypes.string,
-        onSearchTermChange: PropTypes.func.isRequired,
-        onCreateNew: PropTypes.func.isRequired,
-        createNewLabel: PropTypes.string.isRequired,
         optionValueField: PropTypes.string.isRequired,
+        searchTerm: PropTypes.string,
+        onSearchTermChange: PropTypes.func,
+        onCreateNew: PropTypes.func,
+        createNewLabel: PropTypes.string,
+        
+        // API with SelectBox
         focusedValue: PropTypes.string,
         onOptionFocus: PropTypes.func.isRequired
     };

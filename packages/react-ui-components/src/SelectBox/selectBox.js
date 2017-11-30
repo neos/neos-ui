@@ -16,8 +16,11 @@ export default class SelectBox extends PureComponent {
     };
 
     static propTypes = {
+        /*****************************
+         * Basic Props for core functionality
+         *****************************/
         /**
-         * This prop represents a set of options.
+         * This prop represents the set of options to be chosen from
          * Each option must have a value and can have a label and an icon.
          */
         options: PropTypes.arrayOf(
@@ -37,7 +40,7 @@ export default class SelectBox extends PureComponent {
         optionValueField: PropTypes.string,
 
         /**
-         * This prop represents the current selected value.
+         * This prop represents the currently selected value.
          */
         value: PropTypes.string,
 
@@ -46,21 +49,15 @@ export default class SelectBox extends PureComponent {
          */
         onValueChange: PropTypes.func.isRequired,
 
-        /**
-         * This prop gets called when requested to create a new element
-         */
-        onCreateNew: PropTypes.func,
-
-        /**
-         * "Create new" label
-         */
-        createNewLabel: PropTypes.string,
+        /*****************************
+         * Visual customization of the Select Box
+         *****************************/
 
         /**
          * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
          */
         placeholder: PropTypes.string,
-
+        
         /**
          * This prop is an icon for the placeholder.
          */
@@ -72,55 +69,73 @@ export default class SelectBox extends PureComponent {
         withoutGroupLabel: PropTypes.string,
 
         /**
-         * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
-         */
-        loadingLabel: PropTypes.string,
-
-        /**
-         * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
-         */
-        displayLoadingIndicator: PropTypes.bool,
-
-        /**
          * if true, allows to clear the selected element completely (without choosing another one)
          */
         allowEmpty: PropTypes.bool,
-
+        
         /**
          * limit height and show scrollbars if needed, defaults to true
          */
         scrollable: PropTypes.bool,
-
+    
         /**
-         * search box related properties
-         */
-        displaySearchBox: PropTypes.bool,
-
-        searchTerm: PropTypes.string,
-
-        onSearchTermChange: PropTypes.func,
-
-        /**
-         * Highlight input
+         * Should the SelectBox be highlighted? (e.g. if the property was modified)
          */
         highlight: PropTypes.bool,
-
+        
         /**
          * Component used for rendering the individual option elements; Usually this component uses "ListPreviewElement" internally for common styling.
          */
-        ListPreviewElement: PropTypes.any,
+        ListPreviewElement: PropTypes.any,        
+
+        /*****************************
+         * Asynchronous loading of data
+         *****************************/
 
         /**
-         * An optional css theme to be injected.
+         * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
          */
+        loadingLabel: PropTypes.string,
+        
+        /**
+         * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
+         */
+        displayLoadingIndicator: PropTypes.bool,
+        
+        /*****************************
+         * Search-As-You-Type related functionality
+         *****************************/
+        displaySearchBox: PropTypes.bool,
+        searchTerm: PropTypes.string,
+        onSearchTermChange: PropTypes.func,
+
+        /**
+         * if set to true, the search box is directly focussed once the SelectBox is rendered;
+         * such that the user can start typing right away.
+         */
+        setFocus: PropTypes.bool,
+
+        /*****************************
+         * "Create new if not exists" functionality
+         *****************************/
+        /**
+         * This prop gets called when requested to create a new element
+         */
+        onCreateNew: PropTypes.func,
+
+        /**
+         * "Create new" label
+         */
+        createNewLabel: PropTypes.string,
+
+        /*****************************
+         * Theme & Dependencies
+         *****************************/
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'wrapper--highlight': PropTypes.string,
             'selectedOptions__item': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
-        //
-        // Static component dependencies which are injected from the outside (index.js)
-        //
         DropDown: PropTypes.any.isRequired,
         SelectBox_Header: PropTypes.any.isRequired,
         SelectBox_HeaderWithSearchInput: PropTypes.any.isRequired,

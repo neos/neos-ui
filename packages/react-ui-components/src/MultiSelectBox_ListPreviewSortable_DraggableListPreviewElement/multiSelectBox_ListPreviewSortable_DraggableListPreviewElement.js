@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import {DragSource, DropTarget} from 'react-dnd';
 
-// TODO: document component usage && check code in detail
+/**
+ * **MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement is an internal implementation detail of MultiSelectBox**, meant to improve code quality.
+ * 
+ * It is used inside MultiSelectBox_ListPreviewSortable for rendering an individual element and implementing drag&drop behavior.
+ */
 const spec = {
     hover(props, monitor, component) {
         const dragIndex = monitor.getItem().index;
@@ -57,89 +61,48 @@ const spec = {
 export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent {
 
     static propTypes = {
+        // For explanations of the PropTypes, see MultiSelectBox.js
         option: PropTypes.shape({
         }),
-
-        /**
-         * This prop represents the current selected value.
-         */
         values: PropTypes.arrayOf(PropTypes.string),
 
+        // Drag&Drop specific propTypes
+        dndType: PropTypes.string.isRequired,
+        connectDragSource: PropTypes.func.isRequired,
+        connectDropTarget: PropTypes.func.isRequired,
         isDragging: PropTypes.bool.isRequired,
 
-        /**
-         * Field name specifying which field in a single "option" contains the "value"
-         */
-        optionValueField: PropTypes.string,
+        // API with MultiSelectBox_ListPreviewSortable
+        InnerListPreviewElement: PropTypes.any.isRequired,
+        onMoveSelectedValue: PropTypes.func.isRequired,
+        onSelectedValueWasMoved: PropTypes.func.isRequired,
 
-        /**
-         * if false, prevents removing the last element.
-         */
-        allowEmpty: PropTypes.bool,
-
-        /**
-         * An optional css theme to be injected.
-         */
+        // Dependency Injection & Theme
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'selectedOptions__item': PropTypes.string,
             'selectedOptions__item--draggable': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
-
-        /**
-         * This prop represents a set of options.
-         * Each option must have a value and can have a label and an icon.
-         */
-        options: PropTypes.arrayOf(
-            PropTypes.shape({
-                icon: PropTypes.string,
-                // "value" is not part of PropTypes validation, as the "value field" is specified via the "optionValueField" property
-                label: PropTypes.oneOfType([
-                    PropTypes.string,
-                    PropTypes.object
-                ]).isRequired
-            })
-        ),
-        dndType: PropTypes.string.isRequired,
-
-        onSelectedValueWasMoved: PropTypes.func,
-        onRemoveOption: PropTypes.func,
-
-        IconComponent: PropTypes.any.isRequired,
-        IconButtonComponent: PropTypes.any.isRequired,
-
-        onMoveSelectedValue: PropTypes.func.isRequired,
-
-        connectDragSource: PropTypes.func.isRequired,
-        connectDropTarget: PropTypes.func.isRequired
-
+        Icon: PropTypes.any.isRequired,
+        IconButton: PropTypes.any.isRequired
     }
 
     render() {
         const {
-            value,
             values,
-            optionValueField,
-            option,
-            allowEmpty,
-            theme,
-            onRemoveOption,
             connectDragSource,
             connectDropTarget,
             isDragging,
             InnerListPreviewElement,
-
+            theme,            
             Icon,
             IconButton
          } = this.props;
 
-         console.log("ELEMENT", this.props);
-
-        //const option = (options || []).find(option => option[optionValueField] === value);
         //const {icon, label} = option || {label: `[Loading ${value}]`};
 
         const finalClassNames = mergeClassNames({
-            [theme.selectedOptions__item]: true,
-            [theme['selectedOptions__item--draggable']]: values && values.length > 1
+            //[theme.selectedOptions__item]: true,
+            //[theme['selectedOptions__item--draggable']]: values && values.length > 1
         });
         const opacity = isDragging ? 0 : 1;
 
@@ -153,6 +116,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                 <div className={finalClassNames}>
                     <Icon className={theme['selectedOptions__itemIcon--onHover']} icon={'arrows-v'}/>
                     <InnerListPreviewElement
+                        {...this.props}
                         isHighlighted={false}
                         option={option}
                         />

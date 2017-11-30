@@ -12,10 +12,10 @@ const Fragment = props => props.children;
 export default class SelectBox_HeaderWithSearchInput extends PureComponent {
     static propTypes = {
         // For explanations of the PropTypes, see SelectBox.js
-        searchTerm: PropTypes.string.isRequired,
-        onSearchTermChange: PropTypes.func.isRequired,
         placeholder: PropTypes.string.isRequired,
         displayLoadingIndicator: PropTypes.bool,
+        searchTerm: PropTypes.string.isRequired,
+        onSearchTermChange: PropTypes.func.isRequired,
         setFocus: PropTypes.bool,
 
         /*****************************

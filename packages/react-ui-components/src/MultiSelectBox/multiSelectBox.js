@@ -14,6 +14,9 @@ export default class MultiSelectBox extends PureComponent {
     };
 
     static propTypes = {
+        /*****************************
+         * Basic Props for core functionality
+         *****************************/
         /**
          * This prop represents a set of options.
          * Each option must have a value and can have a label and an icon.
@@ -35,35 +38,18 @@ export default class MultiSelectBox extends PureComponent {
         optionValueField: PropTypes.string,
 
         /**
-         * Specifying the dnd type. Defaults to 'multiselect-box-value'
-         */
-        dndType: PropTypes.string.isRequired,
-
-        /**
-         * if false, prevents removing the last element.
-         */
-        allowEmpty: PropTypes.bool,
-
-        /**
          * This prop represents the current selected value.
          */
         values: PropTypes.arrayOf(PropTypes.string),
-
+        
         /**
          * This prop gets called when an option was selected. It returns the new values as array.
          */
         onValuesChange: PropTypes.func.isRequired,
 
-        /**
-         * This prop gets called when requested to create a new element
-         */
-        onCreateNew: PropTypes.func,
-
-        /**
-         * "Create new" label
-         */
-        createNewLabel: PropTypes.string,
-
+        /*****************************
+         * Visual customization of the MultiSelect Box
+         *****************************/
         /**
          * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
          */
@@ -73,29 +59,52 @@ export default class MultiSelectBox extends PureComponent {
          * This prop is an icon for the placeholder.
          */
         placeholderIcon: PropTypes.string,
+        
+        /**
+         * text for the group label of options without a group
+         */
+        withoutGroupLabel: PropTypes.string,
+
+        /**
+         * if false, prevents removing the last element.
+         */
+        allowEmpty: PropTypes.bool,
+
+        /**
+         * limit height and show scrollbars if needed, defaults to true
+         */
+        scrollable: PropTypes.bool,
+
+        /**
+         * Should the MultiSelectBox be highlighted? (e.g. if the property was modified)
+         */
+        highlight: PropTypes.bool,
+
+        /**
+         * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
+         */
+        ListPreviewElement: PropTypes.any,
+
+        /*****************************
+         * Asynchronous loading of data
+         *****************************/
 
         /**
          * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
          */
         loadingLabel: PropTypes.string,
-
+        
         /**
          * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
 
-        /**
-         * search box related properties
-         */
+        /*****************************
+         * Search-As-You-Type related functionality
+         *****************************/
         displaySearchBox: PropTypes.bool,
-
-        /**
-         * Highlight input
-         */
-        highlight: PropTypes.bool,
-
         searchTerm: PropTypes.string,
-
+        onSearchTermChange: PropTypes.func,
         searchOptions: PropTypes.arrayOf(
             PropTypes.shape({
                 icon: PropTypes.string,
@@ -107,26 +116,42 @@ export default class MultiSelectBox extends PureComponent {
             })
         ),
 
-        onSearchTermChange: PropTypes.func,
+        /**
+         * if set to true, the search box is directly focussed once the SelectBox is rendered;
+         * such that the user can start typing right away.
+         */
+        setFocus: PropTypes.bool,
+
+        /*****************************
+         * "Create new if not exists" functionality
+         *****************************/
+        /**
+         * This prop gets called when requested to create a new element
+         */
+        onCreateNew: PropTypes.func,
 
         /**
-         * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
+         * "Create new" label
          */
-        ListPreviewElement: PropTypes.any,
-
+        createNewLabel: PropTypes.string,
+        
+        /*****************************
+         * Drag&Drop Reordering of Selected Values
+         *****************************/
         /**
-         * An optional css theme to be injected.
+         * Specifying the dnd type. Defaults to 'multiselect-box-value'
          */
+        dndType: PropTypes.string.isRequired,
+
+        /*****************************
+         * Theme & Dependencies
+         *****************************/
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'selectedOptions': PropTypes.string,
             'selectedOptions--highlight': PropTypes.string,
             'selectedOptions__item': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
-        //
-        // Static component dependencies which are injected from the outside (index.js)
-        // Used in sub-components
-        //
         SelectBox: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired

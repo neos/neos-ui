@@ -20,7 +20,7 @@ const makeDraggableListPreviewElement = ListPreviewElement =>
 /**
  * **MultiSelectBox_ListPreviewSortable is an internal implementation detail of MultiSelectBox**, meant to improve code quality.
  * 
- * It is used inside MultiSelectBox, to render the selected elements
+ * It is used inside MultiSelectBox, to render the selected elements in the list.
  */
 export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
     static propTypes = {
@@ -28,9 +28,12 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         options: PropTypes.arrayOf(
             PropTypes.shape({})
         ).isRequired,
-        optionValueAccessor: PropTypes.func.isRequired,
         values: PropTypes.arrayOf(PropTypes.string),
+        onValuesChange: PropTypes.func.isRequired,
         ListPreviewElement: PropTypes.any.isRequired,
+
+        // API with MultiSelectBox
+        optionValueAccessor: PropTypes.func.isRequired,
 
         // dependency injection
         SelectBox_ListPreviewUngrouped: PropTypes.any.isRequired

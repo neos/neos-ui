@@ -2,12 +2,12 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import ListPreviewElement from '../ListPreviewElement/index';
 
-export default class DefaultSelectBoxOption extends PureComponent {
+export default class SelectBox_Option_SingleLine extends PureComponent {
     static propTypes = {
         option: PropTypes.shape({
-            label: PropTypes.string,
+            label: PropTypes.string.isRequired,
             icon: PropTypes.string
-        })
+        }).isRequired
     };
 
     render() {

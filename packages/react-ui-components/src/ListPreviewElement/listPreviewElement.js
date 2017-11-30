@@ -8,6 +8,9 @@ import mergeClassNames from 'classnames';
  * 
  * It encapsulates basic styling and functionality needed by the SelectBox / MultiSelectBox.
  * 
+ * **Instead of directly using this component, you might want to use SelectBox_Option_SingleLine
+ * or SelectBox_Option_MultiLineWithThumbnail instead, as these provide default styling.**
+ * 
  * Often, you will create your own ListPreviewElements, taking this element as a basis like the following:
  * ```
  * const MySpecialPreviewElement = props => {

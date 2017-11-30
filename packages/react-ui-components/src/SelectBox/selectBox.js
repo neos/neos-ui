@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
-import DefaultSelectBoxOption from './defaultSelectBoxOption';
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 import mergeClassNames from 'classnames';
 import GroupedPreviewList from '../Previews/GroupedPreviewList';
 
@@ -12,7 +12,7 @@ export default class SelectBox extends PureComponent {
         optionValueField: 'value',
         withoutGroupLabel: 'Without group',
         scrollable: true,
-        ListPreviewElement: DefaultSelectBoxOption
+        ListPreviewElement: SelectBox_Option_SingleLine
     };
 
     static propTypes = {

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import DefaultSelectBoxOption from '../SelectBox/defaultSelectBoxOption';
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 
 const CREATE_NEW_IS_FOCUSED = 'NEOS_UI_CREATE_NEW_IS_FOCUSED';
 
@@ -24,7 +24,7 @@ export default class SelectBox_CreateNew extends PureComponent {
         const isHighlighted = focusedValue === CREATE_NEW_IS_FOCUSED;
 
         return (
-            <DefaultSelectBoxOption
+            <SelectBox_Option_SingleLine
                 option={{label: `${createNewLabel} "${searchTerm}"`, icon: 'plus-circle'}}
                 key={'___createNew'}
                 isHighlighted={isHighlighted}

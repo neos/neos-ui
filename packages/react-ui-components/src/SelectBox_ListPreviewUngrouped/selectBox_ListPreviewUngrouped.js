@@ -2,17 +2,19 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
-// TODO: document component usage && check code in detail
+/**
+ * **SelectBox_ListPreviewUngrouped is an internal implementation detail of SelectBox**, meant to improve code quality.
+ * 
+ * It is used inside SelectBox_ListPreview if the options do not contain group elements.
+ */
 export default class SelectBox_ListPreviewUngrouped extends PureComponent {
     static propTypes = {
-        // the options to display in the list
+        // For explanations of the PropTypes, see SelectBox.js
         options: PropTypes.arrayOf(
             PropTypes.shape({
             }),
         ),
         optionValueAccessor: PropTypes.func.isRequired,
-
-        // called with the "option" object which has been chosen
         onChange: PropTypes.func.isRequired,
 
         // Focus handling
@@ -34,9 +36,9 @@ export default class SelectBox_ListPreviewUngrouped extends PureComponent {
 
     renderOption = (option, index) => {
         const {
-            ListPreviewElement,
+            optionValueAccessor,
             focusedValue,
-            optionValueAccessor
+            ListPreviewElement
         } = this.props;
 
         const isHighlighted = optionValueAccessor(option) === focusedValue;

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import injectProps from './../_lib/injectProps.js';
-import SelectBox_ListPreviewSortable_DraggableListPreviewElement from '../SelectBox_ListPreviewSortable_DraggableListPreviewElement/index';
+import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement/index';
 
 const ensureIsArray = v => {
     if (Array.isArray(v)) {
@@ -15,7 +15,7 @@ const ensureIsArray = v => {
 const makeDraggableListPreviewElement = ListPreviewElement =>
     injectProps({
         InnerListPreviewElement: ListPreviewElement
-    })(SelectBox_ListPreviewSortable_DraggableListPreviewElement);
+    })(MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement);
 
 /**
  * **MultiSelectBox_ListPreviewSortable is an internal implementation detail of MultiSelectBox**, meant to improve code quality.

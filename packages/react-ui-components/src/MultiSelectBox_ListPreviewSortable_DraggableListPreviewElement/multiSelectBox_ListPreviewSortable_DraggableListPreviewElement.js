@@ -54,7 +54,7 @@ const spec = {
 @DropTarget(({dndType}) => dndType, spec, connect => ({
     connectDropTarget: connect.dropTarget()
 }))
-export default class SelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent {
+export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent {
 
     static propTypes = {
         option: PropTypes.shape({

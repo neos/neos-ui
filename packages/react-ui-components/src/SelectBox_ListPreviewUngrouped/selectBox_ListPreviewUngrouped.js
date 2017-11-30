@@ -45,7 +45,7 @@ export default class SelectBox_ListPreviewUngrouped extends PureComponent {
         }
 
         return (
-            <li key={index}>
+            <li key={index} role="option">
                 <ListPreviewElement
                     
                     isHighlighted={isHighlighted}

@@ -1,11 +1,8 @@
-
-
-.selectBox__item {
+.listPreviewElement {
     composes: reset from './../reset.css';
     background: var(--brandColorsContrastNeutral);
     border-top: 1px solid var(--brandColorsContrastDarker);
     cursor: pointer;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 14px;
@@ -16,11 +13,11 @@
     
 }
 
-.selectBox__item--isSelectable--active {
+.listPreviewElement--isHighlighted {
         background: var(--brandColorsPrimaryBlue);
 }
 
-.selectBox__itemIcon {
+.listPreviewElement__icon {
     composes: reset from './../reset.css';
     padding-right: .5em;
 }

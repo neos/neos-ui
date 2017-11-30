@@ -2,70 +2,77 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
+/**
+ * The ListPreviewElement is responsible for rendering a single element in a Select Box
+ * or a MultiSelectBox.
+ * 
+ * It encapsulates basic styling and functionality needed by the SelectBox / MultiSelectBox.
+ * 
+ * Often, you will create your own ListPreviewElements, taking this element as a basis like the following:
+ * ```
+ * const MySpecialPreviewElement = props => {
+ *      return (
+ *          <ListPreviewElement {...props} icon={props.yourIconHere}>
+ *               ... your content here ...
+ *          </ListPreviewElement>
+ *      );
+ * }
+ * ```
+ */
 export default class ListPreviewElement extends PureComponent {
     static propTypes = {
-        onClick: PropTypes.func.isRequired,
-
-        children: PropTypes.node.isRequired,
-
-        icon: PropTypes.string,
-
+        /*****************************
+         * API inside custom ListPreviewElements
+         *****************************/
+        icon: PropTypes.string,        
         className: PropTypes.string,
-
+        children: PropTypes.node.isRequired,
+        
+        /*****************************
+         * API as needed by SelectBox
+         *****************************/
+        onClick: PropTypes.func.isRequired,
         isHighlighted: PropTypes.bool,
-
         onMouseEnter: PropTypes.func,
-        role: PropTypes.string,
 
-        /**
-         * An optional css theme to be injected.
-         */
+        /*****************************
+         * Theme & Dependencies
+         *****************************/
         theme: PropTypes.shape({/* eslint-disable quote-props */
-            'selectBox__item': PropTypes.string,
-            'selectBox__item--isSelectable--active': PropTypes.string,
-            'selectBox__itemIcon': PropTypes.string
+            'listPreviewElement': PropTypes.string.isRequired,
+            'listPreviewElement--isHighlighted': PropTypes.string.isRequired,
+            'listPreviewElement__icon': PropTypes.string.isRequired
         }).isRequired, /* eslint-enable quote-props */
-
-        //
-        // Static component dependencies which are injected from the outside (index.js)
-        //
-        IconComponent: PropTypes.any.isRequired
-    }
-
-    static defaultProps = {
-        role: 'option'
+        Icon: PropTypes.any.isRequired
     }
 
     render() {
         const {
-            onClick,
-            children,
             icon,
             className,
-            theme,
-            IconComponent,
+            children,
+
+            onClick,
             isHighlighted,
             onMouseEnter,
-            role
+
+            theme,
+            Icon
         } = this.props;
+
         const optionClassName = mergeClassNames({
-            [theme.selectBox__item]: true,
-            [theme['selectBox__item--isSelectable--active']]: isHighlighted,
+            [theme.listPreviewElement]: true,
+            [theme['listPreviewElement--isHighlighted']]: isHighlighted,
             [className]: className
         });
 
         return (
             <div
                 onMouseEnter={onMouseEnter}
-                role={role}
                 onClick={onClick}
                 className={optionClassName}
                 >
-                {
-                    icon ?
-                        <IconComponent className={theme.selectBox__itemIcon} icon={icon}/> :
-                        null
-                }
+                {Boolean(icon) && <Icon className={theme.listPreviewElement__icon} icon={icon}/>}
                 {children}
 
             </div>

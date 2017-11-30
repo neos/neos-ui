@@ -12,6 +12,6 @@ import injectProps from './../_lib/injectProps.js';
 import Icon from './../Icon/index';
 
 export default injectProps({
-    IconComponent: Icon
+    Icon
 })(ThemedListPreviewElement);
 

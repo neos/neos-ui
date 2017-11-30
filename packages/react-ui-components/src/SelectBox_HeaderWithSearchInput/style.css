@@ -1,21 +1,22 @@
-.selectBox__searchInput {
+.selectBoxHeaderWithSearchInput__inputContainer {
+    display: inline-block;
+    width: 100%;
+}
+
+.selectBoxHeaderWithSearchInput__input {
     display: inline-block;
     width: 100%;
     color: #fff;
     font-size: 14px;
+
     &:focus {
         background: transparent !important;
         color: #fff !important;
     }
 }
 
-.selectBox__searchInputContainer {
-    display: inline-block;
-    width: 100%;
-}
 
-
-.selectBox__loadingIcon {
+.selectBoxHeaderWithSearchInput__loader {
     composes: reset from './../reset.css';
     position: absolute;
     top: 0;

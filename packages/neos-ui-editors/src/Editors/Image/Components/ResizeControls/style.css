@@ -1,9 +1,13 @@
 .resizeControls {
     display: flex;
 }
+.resizeControls__label {
+    margin-top: var(--spacing);
+    margin-bottom: var(--quarterSpacing);
+}
 .resizeControls__before {
-    height: 40px;
-    width: 40px;
+    height: var(--goldenUnit);
+    width: var(--goldenUnit);
     border-right: 1px solid var(--brandColorsContrastDarker);
     display: flex;
     align-items: center;
@@ -15,11 +19,15 @@
     flex-grow: 1;
 }
 .resizeControls__after {
-    height: 40px;
-    width: 40px;
+    height: var(--goldenUnit);
+    width: var(--goldenUnit);
     background: var(--brandColorsContrastNeutral);
     border-left: 1px solid var(--brandColorsContrastDarker);
     text-align: center;
 
-    line-height: 40px;
+    line-height: var(--goldenUnit);
+}
+
+.resizeControls__checkbox {
+    margin-right: 0 !important;
 }

@@ -4,6 +4,8 @@ import {$get} from 'plow-js';
 import SortablePreviewList from '../Previews/SortablePreviewList';
 import {TextInput} from '@neos-project/react-ui-components';
 import mergeClassNames from 'classnames';
+
+// TODO: document component usage && check code in detail
 export default class MultiSelectBox extends PureComponent {
 
     static defaultProps = {

@@ -5,6 +5,7 @@ import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 import mergeClassNames from 'classnames';
 import GroupedPreviewList from '../Previews/GroupedPreviewList';
 
+// TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
 
     static defaultProps = {

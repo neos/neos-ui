@@ -4,6 +4,7 @@ import mergeClassNames from 'classnames';
 
 const Fragment = props => props.children;
 
+// TODO: document component usage && check code in detail
 export default class SelectBox_HeaderWithSearchInput extends PureComponent {
     static propTypes = {
         searchTerm: PropTypes.string.isRequired,

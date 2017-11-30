@@ -5,6 +5,7 @@ import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 
 const CREATE_NEW_IS_FOCUSED = 'NEOS_UI_CREATE_NEW_IS_FOCUSED';
 
+// TODO: document component usage && check code in detail
 export default class SelectBox_CreateNew extends PureComponent {
     static propTypes = {
         searchTerm: PropTypes.string,

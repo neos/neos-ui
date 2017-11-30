@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 const Fragment = props => props.children;
 
+// TODO: document component usage && check code in detail
 export default class SelectBox_ListPreview extends PureComponent {
     static propTypes = {
         onCreateNew: PropTypes.func,

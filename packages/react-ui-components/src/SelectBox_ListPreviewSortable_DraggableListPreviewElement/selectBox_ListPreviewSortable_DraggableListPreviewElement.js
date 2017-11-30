@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import {DragSource, DropTarget} from 'react-dnd';
 
+// TODO: document component usage && check code in detail
 const spec = {
     hover(props, monitor, component) {
         const dragIndex = monitor.getItem().index;

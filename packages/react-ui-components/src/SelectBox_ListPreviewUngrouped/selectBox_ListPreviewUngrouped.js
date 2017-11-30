@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
+// TODO: document component usage && check code in detail
 export default class SelectBox_ListPreviewUngrouped extends PureComponent {
     static propTypes = {
         // the options to display in the list

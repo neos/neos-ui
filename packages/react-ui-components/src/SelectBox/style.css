@@ -1,11 +1,3 @@
-.wrapper {
-    composes: reset from './../reset.css';
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: var(--goldenUnit);
-    vertical-align: top;
-}
 
 .selectBox__list {
     padding: 0;
@@ -14,16 +6,7 @@
 .selectBox--highlight {
     outline: 2px solid var(--brandColorsSuccess);
 }
-.selectedOptions {
-    position: relative;
-    width: 100%;
-    list-style: none;
-}
 
-.selectedOptions__item {
-    width: 100%;
-    position: relative;
-}
 
 .selectBox {
     composes: reset from './../reset.css';
@@ -45,41 +28,11 @@
     min-width: 160px;
 }
 
-.selectBox__placeholder {
+/*.selectBox__placeholder {
     color: var(--brandColorsContrastBright);
-}
-
-.selectBox__searchInputWrapper {
-    display: inline-block;
-    width: 100%;
-
-    > div {
-        display: inline-block;
-        width: 100%;
-    }
-}
+}*/
 
 
-
-
-.selectBox__twoIconIndention {
-    .selectBox__loadingIcon::after {
-        display: block;
-        content: '';
-        position: absolute;
-        width: 1px;
-        height: 24px;
-        top: 0;
-        right: 0;
-        background-color: #fff;
-        opacity: .15;
-        margin-top: var(--halfSpacing);
-    }
-}
-
-.selectBox__twoIconIndention {
-    padding: 0 calc(var(--spacing) + var(--goldenUnit) + var(--goldenUnit)) 0 var(--spacing);
-}
 
 
 
@@ -88,55 +41,4 @@
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
     z-index: 10;
-}
-
-
-.selectBox__contents li input {
-    width: 100%;
-    height: 100%;
-    background: #FFF;
-}
-
-.selectBox__item {
-    composes: reset from './../reset.css';
-    background: var(--brandColorsContrastNeutral);
-    border-top: 1px solid var(--brandColorsContrastDarker);
-    cursor: pointer;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 14px;
-}
-
-.selectBox__item--isGroup {
-    ul {
-        list-style-type: none;
-        padding: 0;
-
-        li.selectBox__item--isSelectable {
-            padding-left: calc(var(--spacing) * 2);
-        }
-    }
-    > span {
-        color: var(--brandColorsContrastBright);
-        display: block;
-        height: var(--goldenUnit);
-        line-height: var(--goldenUnit);
-        padding: 0 var(--spacing);
-    }
-}
-
-.selectBox__item--isSelectable {
-    height: var(--goldenUnit);
-    line-height: var(--goldenUnit);
-    padding: 0 var(--spacing);
-}
-
-.selectBox__item--isSelectable--active {
-        background: var(--brandColorsPrimaryBlue);
-}
-
-.selectBox__itemIcon {
-    composes: reset from './../reset.css';
-    padding-right: .5em;
 }

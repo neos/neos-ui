@@ -115,9 +115,7 @@ export default class SelectBox extends PureComponent {
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({/* eslint-disable quote-props */
-            'wrapper': PropTypes.string,
             'wrapper--highlight': PropTypes.string,
-            'selectedOptions': PropTypes.string,
             'selectedOptions__item': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 

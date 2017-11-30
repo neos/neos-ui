@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import SortablePreviewList from '../Previews/SortablePreviewList';
-import SelectBoxFinder from '../SelectBoxFinder/index';
 import {TextInput} from '@neos-project/react-ui-components';
 import mergeClassNames from 'classnames';
 export default class MultiSelectBox extends PureComponent {

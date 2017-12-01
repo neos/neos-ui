@@ -2,7 +2,7 @@
 .pageTree {
     overflow-y: auto;
     height: calc(50vh - 85px);
-    transition: .5s ease height, overflow-y .5s;
+    transition: var(--transition-Slow) ease height, overflow-y var(--transition-Slow);
 }
 .pageTree--expanded {
     height: calc(100vh - 164px);

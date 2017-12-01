@@ -26,7 +26,7 @@
 .panel__contents {
     composes: reset from './../reset.css';
     padding: 0 var(--spacing);
-    transition: .5s ease padding;
+    transition: var(--transition-Slow) ease padding;
 
     .panel--isOpen & {
         padding-top: 5px;

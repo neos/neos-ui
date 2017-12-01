@@ -172,12 +172,7 @@ export default class AssetEditor extends PureComponent {
 
     render() {
         return (
-            <Dropzone
-                ref={this.setDropzoneReference}
-                disableClick={true}
-                onDropAccepted={this.handleUpload}
-                className={style.assetEditor}
-                >
+            <div>
                 {this.props.options.multiple ? (<MultiSelectBox
                     dndType={dndTypes.MULTISELECT}
                     optionValueField="identifier"
@@ -208,11 +203,18 @@ export default class AssetEditor extends PureComponent {
                         searchOptions={this.state.searchOptions}
                         onSearchTermChange={this.handleSearchTermChange}
                         />)}
-                <Controls
-                    onChooseFromMedia={this.handleChooseFromMedia}
-                    onChooseFromLocalFileSystem={this.handleChooseFile}
-                    />
-            </Dropzone>
+                <Dropzone
+                    ref={this.setDropzoneReference}
+                    disableClick = { true}
+                    onDropAccepted = { this.handleUpload }
+                    className = { style.assetEditor }
+                    >
+                    <Controls
+                        onChooseFromMedia={this.handleChooseFromMedia}
+                        onChooseFromLocalFileSystem={this.handleChooseFile}
+                        />
+                </Dropzone>
+            </div>
         );
     }
     setDropzoneReference = ref => {

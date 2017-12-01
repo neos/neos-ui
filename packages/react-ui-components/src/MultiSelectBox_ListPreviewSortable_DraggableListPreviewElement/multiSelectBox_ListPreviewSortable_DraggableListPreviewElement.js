@@ -21,7 +21,7 @@ const spec = {
         const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
         const clientOffset = monitor.getClientOffset();
         const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
+        console.log(hoverMiddleY, hoverClientY, clientOffset, hoverBoundingRect);
         if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
             return;
         }

@@ -77,12 +77,16 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
     }
 
     renderOption = (option, index) => {
+        const {
+            optionValueAccessor
+        } = this.props;
+
         const DraggableListPreviewElement = this.DraggableListPreviewElement;
 
         return (
             <DraggableListPreviewElement
                 {...this.props}
-                key={index}
+                key={optionValueAccessor(option)}
                 index={index}
                 option={option}
                 onMoveSelectedValue={this.handleMoveSelectedValue}

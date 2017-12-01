@@ -122,7 +122,7 @@ class BackendController extends ActionController
 
             $contentContext = ($node ? $node->getContext() : $this->createContext($workspaceName));
 
-            $contentContext->getWorkspace();
+            $contentContext->getWorkspace(true, $user);
             $this->persistenceManager->persistAll();
 
             $siteNode = $contentContext->getCurrentSiteNode();

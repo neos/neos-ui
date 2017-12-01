@@ -4,7 +4,7 @@ const upperFirst = require('lodash.upperfirst');
 const config = {
     zIndex: {
         secondaryToolbar: ['linkIconButtonFlyout'],
-        flashMessageContainer: ['context'],
+        flashMessageContainer: '2',
         secondaryInspector: ['context', 'close'],
         secondaryInspectorElevated: ['context', 'dropdownContents'],
         dialog: ['context'],

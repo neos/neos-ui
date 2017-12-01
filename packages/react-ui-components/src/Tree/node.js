@@ -119,6 +119,7 @@ export class Header extends PureComponent {
             'header__data--isActive': PropTypes.string,
             'header__data--isFocused': PropTypes.string,
             'header': PropTypes.string,
+            'header__labelWrapper': PropTypes.string,
             'header__label': PropTypes.string,
             'header__chevron': PropTypes.string,
             'header__chevron--isCollapsed': PropTypes.string,
@@ -194,10 +195,12 @@ export class Header extends PureComponent {
                             onClick={onClick}
                             style={{paddingLeft: (level * 18) + 'px'}}
                             >
-                            <IconComponent icon={icon || 'question'} label={iconLabel} className={theme.header__icon}/>
-                            <span {...rest} id={labelIdentifier} className={theme.header__label} onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
-                                {label}
-                            </span>
+                            <div className={theme.header__labelWrapper}>
+                                <IconComponent icon={icon || 'question'} label={iconLabel} className={theme.header__icon}/>
+                                <span {...rest} id={labelIdentifier} className={theme.header__label} onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                                    {label}
+                                </span>
+                            </div>
                         </div>
                     )}
                     {isLastChild && (

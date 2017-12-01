@@ -1083,7 +1083,7 @@ main .grid-container.freed-width {
 #toolbar .editors-container {
   overflow: hidden;
   height: 0;
-  transition: height 200ms;
+  transition: height var(--transition-Default);
 }
 #toolbar .editors-container.active {
   height: auto;
@@ -1133,7 +1133,7 @@ main .grid-container.freed-width {
   overflow: hidden;
   height: 0;
   opacity: 0;
-  transition: height 200ms;
+  transition: height var(--transition-Default);
 }
 #toolbarModifierWrapper.active {
   height: auto;

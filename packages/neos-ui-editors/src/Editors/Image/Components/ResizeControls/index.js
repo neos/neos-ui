@@ -36,34 +36,63 @@ const onChangeValue = (props, heightOrWidth) => changedValue => {
 
     if (heightOrWidth === 'height') {
         height = changedValue;
-        width = height / aspectRatio;
+        width = Math.round(height / aspectRatio);
     } else {
         width = changedValue;
-        height = width * aspectRatio;
+        height = Math.round(width * aspectRatio);
     }
 
     props.onChange(buildResizeAdjustment(width, height));
 };
 
 const ResizeControls = props => {
+    if (!props.imageDimensions.width) {
+        return null;
+    }
     return (
         <div>
-            <div>
-                <span><I18n id="width" fallback="Width"/>:</span>
+            <div className={style.resizeControls__item}>
+                <div className={style.resizeControls__label}><I18n id="width" fallback="Width"/>:</div>
                 <div className={style.resizeControls}>
-                    <span className={style.resizeControls__before}><CheckBox onChange={toggleResizeAdjustment(props)} isChecked={props.resizeAdjustment}/></span>
+                    <span className={style.resizeControls__before}>
+                        <CheckBox
+                            onChange={toggleResizeAdjustment(props)}
+                            isChecked={Boolean(props.resizeAdjustment)}
+                            className={style.resizeControls__checkbox}
+                            />
+                    </span>
                     <span className={style.resizeControls__main}>
-                        <TextInput type="number" pattern="\d*" step="1" min="0" placeholder={$get('width', props.imageDimensions)} value={$get('width', props.resizeAdjustment)} onChange={onChangeValue(props, 'width')}/>
+                        <TextInput
+                            type="number"
+                            pattern="\d*"
+                            step="1"
+                            min="0"
+                            value={$get('width', props.resizeAdjustment) || $get('width', props.imageDimensions) || 0}
+                            onChange={onChangeValue(props, 'width')}
+                            />
                     </span>
                     <span className={style.resizeControls__after}>px</span>
                 </div>
             </div>
             <div>
-                <span><I18n id="height" fallback="Height"/>:</span>
+                <div className={style.resizeControls__label}><I18n id="height" fallback="Height"/>:</div>
                 <div className={style.resizeControls}>
-                    <span className={style.resizeControls__before}><CheckBox onChange={toggleResizeAdjustment(props)} isChecked={props.resizeAdjustment}/></span>
+                    <span className={style.resizeControls__before}>
+                        <CheckBox
+                            onChange={toggleResizeAdjustment(props)}
+                            isChecked={Boolean(props.resizeAdjustment)}
+                            className={style.resizeControls__checkbox}
+                            />
+                    </span>
                     <span className={style.resizeControls__main}>
-                        <TextInput type="number" pattern="\d*" step="1" min="0" placeholder={$get('height', props.imageDimensions)} value={$get('height', props.resizeAdjustment)} onChange={onChangeValue(props, 'height')}/>
+                        <TextInput
+                            type="number"
+                            pattern="\d*"
+                            step="1"
+                            min="0"
+                            value={$get('height', props.resizeAdjustment) || $get('height', props.imageDimensions) || 0}
+                            onChange={onChangeValue(props, 'height')}
+                            />
                     </span>
                     <span className={style.resizeControls__after}>px</span>
                 </div>

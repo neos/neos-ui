@@ -6,7 +6,7 @@
     height: 100%;
     width: var(--sidebarWidth);
     background: var(--brandColorsContrastDarker);
-    transition: .3s ease transform;
+    transition: var(--transition-Default) ease transform;
     padding-bottom: 41px;
     overflow: scroll;
 }

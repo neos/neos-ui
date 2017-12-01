@@ -24,15 +24,21 @@ export default class Frame extends PureComponent {
         this.updateIframeUrlIfNecessary();
     }
 
-    // we do not use react's magic to change to a different URL in the iFrame, but do it explicitely (in order to avoid reloads if we are already on the correct page)
+    // we do not use react's magic to change to a different URL in the iFrame, but do it
+    // explicitely (in order to avoid reloads if we are already on the correct page)
     updateIframeUrlIfNecessary() {
         if (!this.ref) {
             return;
         }
 
-        const win = this.ref.contentWindow; // eslint-disable-line react/no-find-dom-node
-        if (win.location.href !== this.props.src) {
-            win.location = this.props.src;
+        try {
+            const win = this.ref.contentWindow; // eslint-disable-line react/no-find-dom-node
+            if (win.location.href !== this.props.src) {
+                win.location = this.props.src;
+            }
+        } catch (err) {
+            console.error(`Could not update iFrame Url from within. Trying to set src attribute manually...`);
+            this.ref.setAttribute('src', this.props.src);
         }
     }
 

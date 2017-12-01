@@ -109,7 +109,6 @@ export default class ContentCanvas extends PureComponent {
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         onLoad={this.handleFrameAccess}
-                        sandbox="allow-same-origin allow-scripts allow-forms"
                         role="region"
                         aria-live="assertive"
                         >
@@ -133,7 +132,7 @@ export default class ContentCanvas extends PureComponent {
     }
 
     handleFrameAccess = iframe => {
-        const {startLoading, requestRegainControl, requestLogin} = this.props;
+        const {requestRegainControl, requestLogin} = this.props;
 
         try {
             if (iframe) {
@@ -146,19 +145,6 @@ export default class ContentCanvas extends PureComponent {
                     requestLogin();
                     return;
                 }
-
-                iframe.contentWindow.addEventListener('beforeunload', event => {
-                    //
-                    // If we cannot guess the link that is responsible for
-                    // the unload, we should better hide the frame, until we're
-                    // sure that it ends up in a consistent state.
-                    //
-                    if (!event.target.activeElement.getAttribute('href')) {
-                        this.setState({isVisible: false});
-                    }
-
-                    startLoading();
-                });
 
                 this.setState({
                     isVisible: true,

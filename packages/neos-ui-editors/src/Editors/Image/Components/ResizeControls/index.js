@@ -67,8 +67,7 @@ const ResizeControls = props => {
                             pattern="\d*"
                             step="1"
                             min="0"
-                            placeholder={String($get('width', props.imageDimensions))}
-                            value={$get('width', props.resizeAdjustment) || $get('width', props.imageDimensions) || ''}
+                            value={$get('width', props.resizeAdjustment) || $get('width', props.imageDimensions) || 0}
                             onChange={onChangeValue(props, 'width')}
                             />
                     </span>
@@ -91,8 +90,7 @@ const ResizeControls = props => {
                             pattern="\d*"
                             step="1"
                             min="0"
-                            placeholder={String($get('height', props.imageDimensions))}
-                            value={$get('height', props.resizeAdjustment) || $get('height', props.imageDimensions) || ''}
+                            value={$get('height', props.resizeAdjustment) || $get('height', props.imageDimensions) || 0}
                             onChange={onChangeValue(props, 'height')}
                             />
                     </span>

@@ -1,17 +1,10 @@
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import AssetOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/AssetOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {$get, $transform} from 'plow-js';
-import Controls from './Components/Controls/index';
-import Dropzone from 'react-dropzone';
-import backend from '@neos-project/neos-ui-backend-connector';
-import {connect} from 'react-redux';
-import style from './style.css';
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {$get} from 'plow-js';
 
 const DEFAULT_FEATURES = {
     mediaBrowser: true,
@@ -23,10 +16,6 @@ const DEFAULT_FEATURES = {
     i18nRegistry: globalRegistry.get('i18n'),
     secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')
 }))
-@connect($transform({
-    siteNodePath: $get('cr.nodes.siteNode'),
-    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector
-}), null, null, {withRef: true})
 export default class AssetEditor extends PureComponent {
     state = {
         options: [],
@@ -52,7 +41,6 @@ export default class AssetEditor extends PureComponent {
             resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
-        siteNodePath: PropTypes.string.isRequired,
         secondaryEditorsRegistry: PropTypes.object.isRequired,
         renderSecondaryInspector: PropTypes.func.isRequired
     };
@@ -143,49 +131,7 @@ export default class AssetEditor extends PureComponent {
     }
 
     handleChooseFile = () => {
-        this.dropzoneReference.open();
-    }
-
-    handleUpload = files => {
-        this.setState({
-            isLoading: true
-        });
-        if (this.props.options.multiple) {
-            const index = files.length;
-            const {value} = this.props;
-            const values = value ? value.slice() : [];
-            this.uploadFile(index, values, files);
-        } else {
-            const {uploadAsset} = backend.get().endpoints;
-            const {siteNodePath, focusedNodePath} = this.props;
-            const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
-
-            uploadAsset(files[0], this.props.identifier, focusedNodePath, siteNodeName, 'Asset').then(res => {
-                this.handleValueChange(res.assetUuid);
-                this.setState({
-                    isLoading: false
-                });
-            });
-        }
-    }
-
-    uploadFile(index, values, files) {
-        index--;
-        const {uploadAsset} = backend.get().endpoints;
-        const {siteNodePath, focusedNodePath} = this.props;
-        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
-
-        if (index < 0) {
-            this.handleValueChange(values);
-            this.setState({
-                isLoading: false
-            });
-            return;
-        }
-        uploadAsset(files[index], this.props.identifier, focusedNodePath, siteNodeName, 'Asset').then(res => {
-            values.push(res.assetUuid);
-            this.uploadFile(index, values, files);
-        });
+        this.assetUpload.chooseFromLocalFileSystem();
     }
 
     renderControls() {
@@ -201,7 +147,14 @@ export default class AssetEditor extends PureComponent {
 
     render() {
         return (
-            <div>
+            {this.isFeatureEnabled('upload') ? (<AssetUpload
+                highlight={this.props.highlight}
+                multiple={true}
+                multipleData={this.props.value}
+                onAfterUpload={this.handleValueChange}
+                ref={this.setAssetUploadReference}
+                isLoading={false}
+                >
                 {this.props.options.multiple ? (<MultiSelectBox
                     dndType={dndTypes.MULTISELECT}
                     optionValueField="identifier"
@@ -236,18 +189,16 @@ export default class AssetEditor extends PureComponent {
                         searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                         threshold={$get('options.threshold', this.props)}
                         />)}
-                {this.isFeatureEnabled('upload') ? (<Dropzone
-                    ref={this.setDropzoneReference}
-                    disableClick={true}
-                    onDropAccepted={this.handleUpload}
-                    className={style.assetEditor}
-                    >
-                    {this.renderControls()}
-                </Dropzone>) : this.renderControls()}
-            </div>
-        );
+                {this.renderControls()}
+            </AssetUpload>) : this.renderControls()}
+        )
     }
-    setDropzoneReference = ref => {
-        this.dropzoneReference = ref;
+
+    setAssetUploadReference = ref => {
+        if (ref === null) {
+            this.assetUpload = null;
+            return;
+        }
+        this.assetUpload = ref.getWrappedInstance();
     }
 }

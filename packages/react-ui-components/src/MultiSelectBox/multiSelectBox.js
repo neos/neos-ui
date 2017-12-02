@@ -135,7 +135,8 @@ export default class MultiSelectBox extends PureComponent {
         //
         SelectBoxComponent: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
-        IconButtonComponent: PropTypes.any.isRequired
+        IconButtonComponent: PropTypes.any.isRequired,
+        hasStaticArrayValue: PropTypes.bool
     };
 
     state = {
@@ -172,7 +173,8 @@ export default class MultiSelectBox extends PureComponent {
             allowEmpty,
             options,
             dndType,
-            optionComponent
+            optionComponent,
+            hasStaticArrayValue
         } = this.props;
 
         const {draggableValues} = this.state;
@@ -205,6 +207,7 @@ export default class MultiSelectBox extends PureComponent {
                                     options={options}
                                     optionValueField={optionValueField}
                                     draggableValues={draggableValues}
+                                    hasStaticArrayValue={hasStaticArrayValue}
                                     />
                             );
                         })
@@ -369,8 +372,8 @@ export class DraggableValue extends PureComponent {
         moveSelectedValue: PropTypes.func.isRequired,
 
         connectDragSource: PropTypes.func.isRequired,
-        connectDropTarget: PropTypes.func.isRequired
-
+        connectDropTarget: PropTypes.func.isRequired,
+        hasStaticDataSource: PropTypes.bool
     }
 
     render() {
@@ -386,11 +389,12 @@ export class DraggableValue extends PureComponent {
             onRemoveOption,
             connectDragSource,
             connectDropTarget,
-            isDragging
+            isDragging,
+            hasStaticDataSource
          } = this.props;
 
         const option = (options || []).find(option => option[optionValueField] === value);
-        const {icon, label} = option || {label: `[Loading ${value}]`};
+        const {icon, label} = option || (hasStaticDataSource ? {label: value} : {label: `[Loading ${value}]`});
 
         const finalClassNames = mergeClassNames({
             [theme.selectedOptions__item]: true,

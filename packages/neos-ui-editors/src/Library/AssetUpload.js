@@ -25,7 +25,9 @@ export default class AssetUpload extends PureComponent {
         siteNodePath: PropTypes.string.isRequired,
         focusedNode: PropTypes.string.isRequired,
         highlight: PropTypes.bool,
-        children: PropTypes.any.isRequired
+        children: PropTypes.any.isRequired,
+        multiple: PropTypes.bool,
+        multipleData: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.array])
     };
 
     chooseFromLocalFileSystem = () => {
@@ -40,6 +42,37 @@ export default class AssetUpload extends PureComponent {
             if (onAfterUpload) {
                 onAfterUpload(res);
             }
+        });
+    }
+
+    handleMultiUpload = files => {
+        this.setState({
+            isLoading: true
+        });
+        const index = files.length;
+        const {multipleData} = this.props;
+        const values = multipleData ? multipleData.slice() : [];
+        this.uploadMultipleFiles(index, values, files);
+    }
+
+    uploadMultipleFiles(index, values, files) {
+        index--;
+        const {uploadAsset} = backend.get().endpoints;
+        const {onAfterUpload, siteNodePath} = this.props;
+        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
+
+        if (index < 0) {
+            if (onAfterUpload) {
+                onAfterUpload(values);
+            }
+            this.setState({
+                isLoading: false
+            });
+            return;
+        }
+        uploadAsset(files[index], siteNodeName, 'Asset').then(res => {
+            values.push(res.assetUuid);
+            this.uploadMultipleFiles(index, values, files);
         });
     }
 
@@ -62,12 +95,12 @@ export default class AssetUpload extends PureComponent {
         return (
             <Dropzone
                 ref={this.setDropzoneReference}
-                onDropAccepted={this.handleUpload}
+                onDropAccepted={this.props.multiple ? this.handleMultiUpload : this.handleUpload}
                 className={style.dropzone}
                 activeClassName={style['dropzone--isActive']}
                 rejectClassName={style['dropzone--isRejecting']}
                 disableClick={true}
-                multiple={false}
+                multiple={!!this.props.multiple}
                 >
                 {this.props.children}
             </Dropzone>

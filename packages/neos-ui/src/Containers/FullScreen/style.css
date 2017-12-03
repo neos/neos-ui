@@ -2,7 +2,7 @@
     position: fixed;
     top: var(--spacing);
     right: calc(2 * var(--spacing));
-    z-index: var(--zIndex-FlashMessageContainer-Context);
+    z-index: var(--zIndex-FullScreenClose-Context);
     background-color: var(--brandColorsPrimaryBlue);
     box-shadow: 0 0 8px rgba(#000, .25);
 }

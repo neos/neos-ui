@@ -80,6 +80,8 @@ function * application() {
 
     const configuration = yield system.getConfiguration;
 
+    const routes = yield system.getRoutes;
+
     //
     // Bootstrap the saga middleware with initial sagas
     //
@@ -160,6 +162,7 @@ function * application() {
             globalRegistry={globalRegistry}
             menu={menu}
             configuration={configuration}
+            routes={routes}
             store={store}
             />,
         appContainer

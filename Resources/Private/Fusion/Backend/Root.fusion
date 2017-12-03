@@ -124,10 +124,39 @@ backend = Neos.Fusion:Template {
                     format = 'json'
                 }
             }
+            modules = Neos.Fusion:RawArray {
+                prototype(Neos.Fusion:UriBuilder) {
+                    controller = 'Backend\\Module'
+                }
+                workspaces = Neos.Fusion:UriBuilder {
+                    action = 'index'
+                    arguments {
+                        module = 'workspaces'
+                    }
+                }
+                userSettings = Neos.Fusion:UriBuilder {
+                    controller = 'Backend\\Module'
+                    action = 'index'
+                    arguments {
+                        module = 'user/usersettings'
+                    }
+                }
+                mediaBrowser = Neos.Fusion:UriBuilder {
+                    controller = 'Backend\\Module'
+                    action = 'index'
+                    arguments {
+                        module = 'media/browser'
+                    }
+                }
+            }
             login = Neos.Fusion:UriBuilder {
                 controller = 'Login'
                 action = 'index'
                 format = 'json'
+            }
+            logout = Neos.Fusion:UriBuilder {
+                controller = 'Login'
+                action = 'logout'
             }
         }
         @process.json = ${Json.stringify(value)}

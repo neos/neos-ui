@@ -7,6 +7,7 @@
     display: inline-block;
     width: 100%;
     color: #fff;
+    /* TODO: move to reset / use var */
     font-size: 14px;
 
     &:focus {
@@ -19,13 +20,13 @@
     composes: reset from './../reset.css';
     position: absolute;
     top: 0;
-    right: 41px;
+    right: calc(var(--goldenUnit) + 1px);
     z-index: var(--zIndex-selectBoxLoadingIcon-Context);
     display: block;
     width: var(--goldenUnit);
     height: var(--goldenUnit);
     text-align: center;
     background: transparent;
-    color: #FFF;
+    color: #fff;
     line-height: var(--goldenUnit);
 }

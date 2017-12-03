@@ -7,10 +7,9 @@
     white-space: nowrap;
     font-size: 14px;
 
-    height: var(--goldenUnit);
     line-height: var(--goldenUnit);
-    padding: 0 var(--spacing);
-    
+    padding: 5px var(--spacing);
+
 }
 
 .listPreviewElement--isHighlighted {

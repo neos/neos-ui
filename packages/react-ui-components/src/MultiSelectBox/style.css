@@ -29,7 +29,7 @@
     span {
         height: 40px;
         box-sizing: border-box;
-        padding-right: 50px;
+        padding-right: calc(var(--goldenUnit) + 10px);
         padding-left: 10px;
         white-space: nowrap;
         overflow: hidden;

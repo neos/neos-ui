@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AssetOption from './AssetOption';
 import NodeOption from './NodeOption';
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import SelectBox_Option_SingleLine from '@react-ui-components/SelectBox_Option_SingleLine/index';
+import SelectBox_Option_SingleLine from '@neos-project/react-ui-components/src/SelectBox_Option_SingleLine/index';
 
 export default class LinkOption extends PureComponent {
     static propTypes = {

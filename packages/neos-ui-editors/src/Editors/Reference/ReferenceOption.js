@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
-import ListPreviewElement from '@react-ui-components/ListPreviewElement/index';
+import ListPreviewElement from '@neos-project/react-ui-components/src/ListPreviewElement/index';
 import style from './style.css';
 
 @neos(globalRegistry => ({

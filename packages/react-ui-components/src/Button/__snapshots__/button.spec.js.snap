@@ -5,6 +5,7 @@ exports[`<Button/> should render correctly. 1`] = `
   className="cleanClassName cleanHoverClassName foo className"
   onClick={[Function]}
   role="button"
+  type="button"
 >
   Foo children
 </button>

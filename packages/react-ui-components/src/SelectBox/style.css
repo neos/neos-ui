@@ -29,5 +29,5 @@
     composes: reset from './../reset.css';
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
-    z-index: 10;
+    z-index: var(--zIndex-SelectBoxContents-Context);
 }

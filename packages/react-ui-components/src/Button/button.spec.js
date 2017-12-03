@@ -18,7 +18,8 @@ describe('<Button/>', () => {
             children: 'Foo children',
             onClick: () => null,
             style: 'clean',
-            hoverStyle: 'clean'
+            hoverStyle: 'clean',
+            type: 'button'
         };
     });
 
@@ -32,6 +33,12 @@ describe('<Button/>', () => {
         const wrapper = shallow(<Button {...props} className="fooClassName"/>);
 
         expect(wrapper.prop('className')).toContain('fooClassName');
+    });
+
+    it('should allow the propagation of "type" with the "type" prop.', () => {
+        const wrapper = shallow(<Button {...props} type="submit"/>);
+
+        expect(wrapper.prop('type')).toContain('submit');
     });
 
     it('should allow the propagation of additional props to the wrapper.', () => {

@@ -20,7 +20,7 @@
     position: absolute;
     top: 0;
     right: 41px;
-    z-index: 1;
+    z-index: var(--zIndex-selectBoxLoadingIcon-Context);
     display: block;
     width: var(--goldenUnit);
     height: var(--goldenUnit);

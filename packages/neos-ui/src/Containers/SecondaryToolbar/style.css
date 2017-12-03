@@ -10,7 +10,7 @@
     will-change: padding;
     border-bottom: 1px solid var(--brandColorsContrastDark);
     transform: translateY(0);
-    transition: 100ms ease-in-out;
+    transition: var(--transition-Fast) ease-in-out;
 }
 .secondaryToolbar--isMovedDown {
     transform: translateY(110px);  /* height of EditModePanel - 41px added */

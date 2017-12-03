@@ -43,6 +43,14 @@ export default () => WrappedComponent => {
         };
 
         componentDidMount() {
+            this.fetchData();
+        }
+        componentDidUpdate(prevProps) {
+            if (prevProps.focusedNodeContextPath !== this.props.focusedNodeContextPath) {
+                this.fetchData();
+            }
+        }
+        fetchData() {
             const dataSourceAdditionalData = Object.assign({node: this.props.focusedNodeContextPath}, this.props.options.arguments);
 
             this.props.dataSourcesDataLoader.resolveValue(

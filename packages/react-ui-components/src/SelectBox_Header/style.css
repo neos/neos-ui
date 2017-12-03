@@ -19,7 +19,7 @@
     position: absolute;
     top: 0;
     right: 41px;
-    z-index: 1;
+    z-index: var(--zIndex-selectBoxBtnDelete-Context);
     display: block;
     width: var(--goldenUnit);
     height: var(--goldenUnit);

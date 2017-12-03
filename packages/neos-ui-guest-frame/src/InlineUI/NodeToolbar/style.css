@@ -2,7 +2,7 @@
     position: absolute;
     border-bottom: 1px solid var(--brandColorsContrastDark);
     background: #222;
-    z-index: var(--zIndexNodeToolBar);
+    z-index: var(--zIndex-NodeToolBar);
 }
 .toolBar__btnGroup {
     border-bottom: 1px solid var(--brandColorsContrastDark);

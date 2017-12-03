@@ -205,9 +205,9 @@ export default class AssetEditor extends PureComponent {
                         />)}
                 <Dropzone
                     ref={this.setDropzoneReference}
-                    disableClick = { true}
-                    onDropAccepted = { this.handleUpload }
-                    className = { style.assetEditor }
+                    disableClick={true}
+                    onDropAccepted={this.handleUpload}
+                    className={style.assetEditor}
                     >
                     <Controls
                         onChooseFromMedia={this.handleChooseFromMedia}

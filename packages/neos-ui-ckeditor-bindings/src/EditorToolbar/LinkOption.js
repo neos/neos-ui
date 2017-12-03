@@ -2,7 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import AssetOption from './AssetOption';
 import NodeOption from './NodeOption';
-//import SelectBoxOption from '@neos-project/react-ui-components/src/SelectBox/selectBoxOption';
+/* eslint-disable camelcase, react/jsx-pascal-case */
+import SelectBox_Option_SingleLine from '@react-ui-components/SelectBox_Option_SingleLine/index';
 
 export default class LinkOption extends PureComponent {
     static propTypes = {
@@ -24,8 +25,6 @@ export default class LinkOption extends PureComponent {
             return <AssetOption {...this.props}/>;
         }
 
-        // TODO FIXME
-        return null;
-        //return <SelectBoxOption {...this.props}><span>{this.props.option.label}</span></SelectBoxOption>;
+        return <SelectBox_Option_SingleLine {...this.props}/>;
     }
 }

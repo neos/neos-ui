@@ -154,7 +154,8 @@ export default class MultiSelectBox extends PureComponent {
 
         SelectBox: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
-        IconButtonComponent: PropTypes.any.isRequired
+        IconButtonComponent: PropTypes.any.isRequired,
+        MultiSelectBox_ListPreviewSortable: PropTypes.any.isRequired
     };
 
     state = {
@@ -172,13 +173,7 @@ export default class MultiSelectBox extends PureComponent {
             values,
             optionValueField,
             theme,
-            onSearchTermChange,
             highlight,
-            IconButtonComponent,
-            IconComponent,
-            allowEmpty,
-            options,
-            dndType,
             SelectBox,
             MultiSelectBox_ListPreviewSortable
         } = this.props;

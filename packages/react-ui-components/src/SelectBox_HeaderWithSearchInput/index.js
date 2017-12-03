@@ -16,6 +16,5 @@ import TextInput from './../TextInput/index';
 
 export default injectProps({
     Icon,
-    TextInput,
+    TextInput
 })(ThemedSelectBox_HeaderWithSearchInput);
-

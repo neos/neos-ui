@@ -24,4 +24,3 @@ export default injectProps({
     SelectBox_HeaderWithSearchInput,
     SelectBox_ListPreview
 })(WithKeys);
-

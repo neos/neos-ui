@@ -185,6 +185,7 @@ export default class SelectBox extends PureComponent {
                         <SelectBox_ListPreview
                             {...this.props}
 
+                            theme={theme}
                             optionValueAccessor={optionValueAccessor}
                             ListPreviewElement={ListPreviewElement}
                             focusedValue={focusedValue}
@@ -225,19 +226,19 @@ export default class SelectBox extends PureComponent {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
-                />
-            );
-        } else {
-            return (
-                <SelectBox_Header
-                    {...this.props}
-
-                    option={selectedOption}
-                    showResetButton={showResetButton}
-                    onReset={this.handleDeleteClick}
-                />
+                    />
             );
         }
+
+        return (
+            <SelectBox_Header
+                {...this.props}
+
+                option={selectedOption}
+                showResetButton={showResetButton}
+                onReset={this.handleDeleteClick}
+                />
+        );
     }
 
     handleChange = option => {

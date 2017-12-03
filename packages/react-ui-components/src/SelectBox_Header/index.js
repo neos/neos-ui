@@ -16,6 +16,5 @@ import IconButton from './../IconButton/index';
 
 export default injectProps({
     Icon,
-    IconButton,
+    IconButton
 })(ThemedSelectBox_Header);
-

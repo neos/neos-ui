@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import injectProps from './../_lib/injectProps.js';
 import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement/index';
 
-
 const ensureIsArray = v => {
     if (Array.isArray(v)) {
         return v;
@@ -34,10 +33,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         ListPreviewElement: PropTypes.any.isRequired,
 
         // API with MultiSelectBox
-        optionValueAccessor: PropTypes.func.isRequired,
-
-        // dependency injection
-        SelectBox_ListPreviewUngrouped: PropTypes.any.isRequired
+        optionValueAccessor: PropTypes.func.isRequired
     }
 
     constructor(props) {

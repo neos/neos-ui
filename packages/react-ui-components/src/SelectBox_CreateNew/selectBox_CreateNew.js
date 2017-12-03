@@ -70,7 +70,8 @@ export default class SelectBox_CreateNew extends PureComponent {
 
         const selectedOption = {
             [optionValueField]: CREATE_NEW_IS_FOCUSED
-        }
+        };
+
         onOptionFocus(selectedOption);
     }
 }

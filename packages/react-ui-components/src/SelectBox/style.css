@@ -7,17 +7,14 @@
     outline: 2px solid var(--brandColorsSuccess);
 }
 
-
 .selectBox {
-    composes: reset from './../reset.css';
-    composes: dropDown from './../DropDown/style.css';
+    composes: reset from './../reset.css', dropDown from './../DropDown/style.css';
     position: relative;
     display: inline-block;
 }
 
 .selectBox__btn {
-    composes: reset from './../reset.css';
-    composes: dropDown__btn from './../DropDown/style.css';
+    composes: reset from './../reset.css', dropDown__btn from './../DropDown/style.css';
     position: relative;
     display: inline-block;
     text-overflow: clip;
@@ -27,14 +24,6 @@
     background: var(--brandColorsContrastNeutral);
     min-width: 160px;
 }
-
-/*.selectBox__placeholder {
-    color: var(--brandColorsContrastBright);
-}*/
-
-
-
-
 
 .selectBox__contents {
     composes: reset from './../reset.css';

@@ -11,22 +11,33 @@ const Fragment = props => props.children;
  */
 export default class SelectBox_ListPreview extends PureComponent {
     static propTypes = {
+        // For explanations of the PropTypes, see SelectBox.js
+        options: PropTypes.arrayOf(
+            PropTypes.shape({
+            }),
+        ),
+
         // dependency injection
         SelectBox_CreateNew: PropTypes.any.isRequired,
-        SelectBox_ListPreviewUngrouped: PropTypes.any.isRequired
+        SelectBox_ListPreviewFlat: PropTypes.any.isRequired,
+        SelectBox_ListPreviewGrouped: PropTypes.any.isRequired
     };
 
     render() {
         const {
+            options,
             SelectBox_CreateNew,
-            SelectBox_ListPreviewUngrouped
+            SelectBox_ListPreviewFlat,
+            SelectBox_ListPreviewGrouped
         } = this.props;
+
+        const ListPreviewComponent = options.some(option => option.group) ? SelectBox_ListPreviewGrouped : SelectBox_ListPreviewFlat;
 
         // TODO: check whether we have grouped elements in the list; then render <ListPreviewGrouped> instead!
         return (
             <Fragment>
-                <SelectBox_ListPreviewUngrouped {...this.props} />
-                <SelectBox_CreateNew {...this.props} />
+                <ListPreviewComponent {...this.props}/>
+                <SelectBox_CreateNew {...this.props}/>
             </Fragment>
         );
     }

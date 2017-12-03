@@ -7,10 +7,12 @@
     padding-left: 0;
 
 }
+
 .selectedOptions--highlight {
     outline: 2px solid var(--brandColorsSuccess);
     margin-bottom: 2px;
 }
+
 .selectedOptions__item {
     width: 100%;
     position: relative;
@@ -47,9 +49,6 @@
         display: inline;
       }
     }
-}
-.selectedOptions__item--draggable {
-    cursor: move;
 }
 
 .selectedOptions__itemIconWrapper {

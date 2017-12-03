@@ -15,7 +15,6 @@
     }
 }
 
-
 .selectBoxHeaderWithSearchInput__loader {
     composes: reset from './../reset.css';
     position: absolute;

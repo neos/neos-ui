@@ -34,7 +34,7 @@ export default class ListPreviewElement extends PureComponent {
         // ------------------------------
         // API as needed by SelectBox
         // ------------------------------
-        onClick: PropTypes.func.isRequired,
+        onClick: PropTypes.func,
         isHighlighted: PropTypes.bool,
         onMouseEnter: PropTypes.func,
 

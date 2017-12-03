@@ -1,7 +1,6 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import mergeClassNames from 'classnames';
 
 const Fragment = props => props.children;
 
@@ -11,17 +10,22 @@ const Fragment = props => props.children;
  * It is used inside SelectBox as the header component when no value is selected, and a filter/search box is shown.
  */
 export default class SelectBox_HeaderWithSearchInput extends PureComponent {
+
+    static defaultProps = {
+        placeholder: ''
+    };
+
     static propTypes = {
         // For explanations of the PropTypes, see SelectBox.js
-        placeholder: PropTypes.string.isRequired,
+        placeholder: PropTypes.string,
         displayLoadingIndicator: PropTypes.bool,
         searchTerm: PropTypes.string.isRequired,
         onSearchTermChange: PropTypes.func.isRequired,
         setFocus: PropTypes.bool,
 
-        /*------------------------------*
+        /* ------------------------------
          * Theme & Dependencies
-         *------------------------------*/
+         * ------------------------------ */
         theme: PropTypes.shape({
             selectBoxHeaderWithSearchInput__inputContainer: PropTypes.string.isRequired,
             selectBoxHeaderWithSearchInput__input: PropTypes.string.isRequired,

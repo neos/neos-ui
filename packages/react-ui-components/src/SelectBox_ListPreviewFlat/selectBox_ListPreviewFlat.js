@@ -1,15 +1,14 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import mergeClassNames from 'classnames';
 
 /**
- * **SelectBox_ListPreviewUngrouped is an internal implementation detail of SelectBox**, meant to improve code quality.
+ * **SelectBox_ListPreviewFlat is an internal implementation detail of SelectBox**, meant to improve code quality.
  *
  * It is used inside SelectBox_ListPreview if the options do not contain group elements;
  * and inside MultiSelectBox_ListPreviewSortable (which, in turn, is inside MultiSelect).
  */
-export default class SelectBox_ListPreviewUngrouped extends PureComponent {
+export default class SelectBox_ListPreviewFlat extends PureComponent {
     static propTypes = {
         // For explanations of the PropTypes, see SelectBox.js
         options: PropTypes.arrayOf(
@@ -22,7 +21,7 @@ export default class SelectBox_ListPreviewUngrouped extends PureComponent {
         optionValueAccessor: PropTypes.func.isRequired,
         onChange: PropTypes.func.isRequired,
         focusedValue: PropTypes.string,
-        onOptionFocus: PropTypes.func,
+        onOptionFocus: PropTypes.func
     }
 
     render() {
@@ -43,7 +42,7 @@ export default class SelectBox_ListPreviewUngrouped extends PureComponent {
         const isHighlighted = optionValueAccessor(option) === focusedValue;
 
         if (!ListPreviewElement) {
-            throw new Error("Preview component was undefined in Selector");
+            throw new Error('Preview component was undefined in Selector');
         }
 
         return (

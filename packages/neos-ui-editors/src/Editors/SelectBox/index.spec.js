@@ -28,7 +28,7 @@ const dropdownHeader = component =>
     component.find('ShallowDropDownHeader');
 
 const multiselectLabels = component =>
-    component.find('ReferenceOption').map(node => node.text());
+    component.find('MultiSelectBox_ListPreviewSortable').find('ListPreviewElement').map(node => node.text());
 
 const commit = () => {};
 
@@ -112,9 +112,7 @@ test(`SelectBox > single, dataSource, no preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
-    console.log(component.html())
-
-    expect(dropdownHeader(component).text()).toBe('[loading]');
+    expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
@@ -135,7 +133,7 @@ test(`SelectBox > single, dataSource, preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
-    expect(dropdownHeader(component).text()).toBe('[loading]');
+    expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
@@ -157,7 +155,7 @@ test(`SelectBox > multi, dataSource, no preselected value`, () => {
     );
 
     expect(multiselectLabels(component)).toEqual([]);
-    expect(dropdownHeader(component).text()).toBe('[loading]');
+    expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
@@ -181,8 +179,8 @@ test(`SelectBox > multi, dataSource, preselected value`, () => {
         </DragDropContextProvider>
     );
 
-    expect(multiselectLabels(component)).toEqual(['[Loading foo]']);
-    expect(dropdownHeader(component).text()).toBe('[loading]');
+    expect(multiselectLabels(component)).toEqual([]);
+    expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {

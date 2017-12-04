@@ -1,10 +1,13 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import AssetOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/AssetOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {$get} from 'plow-js';
+import Controls from './Components/Controls/index';
+import {AssetUpload} from '../../Library/index';
 
 const DEFAULT_FEATURES = {
     mediaBrowser: true,

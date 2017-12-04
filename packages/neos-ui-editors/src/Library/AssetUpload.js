@@ -100,7 +100,7 @@ export default class AssetUpload extends PureComponent {
                 activeClassName={style['dropzone--isActive']}
                 rejectClassName={style['dropzone--isRejecting']}
                 disableClick={true}
-                multiple={!!this.props.multiple}
+                multiple={Boolean(this.props.multiple)}
                 >
                 {this.props.children}
             </Dropzone>

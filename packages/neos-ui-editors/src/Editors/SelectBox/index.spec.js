@@ -20,15 +20,15 @@ const optionValues = {
 const dropdownElementLabels = (component, count = 0) => {
     const countArray = Array.from(Array(count).keys());
     return countArray.map(index => {
-        return component.find('SelectBox').find('ShallowDropDownContents').children().childAt(index).text();
+        return component.find('SelectBox_Option_SingleLine').at(index).text();
     });
 };
 
 const dropdownHeader = component =>
-    component.find('SelectBox').find('ShallowDropDownHeader');
+    component.find('ShallowDropDownHeader');
 
 const multiselectLabels = component =>
-    component.find('ul').first().children().map(node => node.text());
+    component.find('ReferenceOption').map(node => node.text());
 
 const commit = () => {};
 
@@ -111,6 +111,8 @@ test(`SelectBox > single, dataSource, no preselected value`, () => {
             </Provider>
         </WrapWithMockGlobalRegistry>
     );
+
+    console.log(component.html())
 
     expect(dropdownHeader(component).text()).toBe('[loading]');
     expect(dropdownElementLabels(component)).toEqual([]);

@@ -8,9 +8,3 @@ export function * reflectChangeInAddressBar(action) {
 export function * watchContentURIChange() {
     yield takeEvery(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, reflectChangeInAddressBar);
 }
-
-export const sagas = [
-    watchContentURIChange
-];
-
-export default sagas;

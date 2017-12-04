@@ -14,7 +14,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
  *
  * 3. Load all default nodes needed for the tree
  */
-function * watchSelectPreset({configuration}) {
+export function * watchSelectPreset({configuration}) {
     yield take(actionTypes.System.READY);
 
     let sourceDimensions = yield select(selectors.CR.ContentDimensions.active);
@@ -114,6 +114,3 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
     }
 }
 
-export const sagas = [
-    watchSelectPreset
-];

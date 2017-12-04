@@ -6,7 +6,7 @@ import moveDroppedNode from './moveDroppedNode';
 import hideNode from './hideNode';
 import showNode from './showNode';
 
-export const sagas = [
+export {
     addNode,
     removeNodeIfConfirmed,
     copyAndPasteNode,
@@ -14,4 +14,4 @@ export const sagas = [
     moveDroppedNode,
     hideNode,
     showNode
-];
+};

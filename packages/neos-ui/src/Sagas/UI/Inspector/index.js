@@ -11,7 +11,7 @@ const getTransientInspectorValues = state => {
     return values.toJS ? values.toJS() : values;
 };
 
-function * inspectorSaga({globalRegistry}) {
+export function * inspectorSaga({globalRegistry}) {
     yield take(actionTypes.System.READY);
 
     const inspectorRegistry = globalRegistry.get('inspector');
@@ -152,7 +152,3 @@ function * flushInspector(inspectorRegistry) {
     // TODO: Handle reloadPageIfChanged
     //
 }
-
-export const sagas = [
-    inspectorSaga
-];

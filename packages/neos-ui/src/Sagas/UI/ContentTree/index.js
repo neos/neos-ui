@@ -6,7 +6,7 @@ import {parentNodeContextPath, isNodeCollapsed} from '@neos-project/neos-ui-redu
 
 import backend from '@neos-project/neos-ui-backend-connector';
 
-function * watchReloadTree({globalRegistry}) {
+export function * watchReloadTree({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     const {q} = backend.get();
 
@@ -31,7 +31,7 @@ function * watchReloadTree({globalRegistry}) {
     });
 }
 
-function * watchNodeFocus({configuration}) {
+export function * watchNodeFocus({configuration}) {
     yield takeLatest(actionTypes.CR.Nodes.FOCUS, function * loadContentNodeRootLine(action) {
         const {contextPath} = action.payload;
         const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
@@ -60,7 +60,3 @@ function * watchNodeFocus({configuration}) {
     });
 }
 
-export const sagas = [
-    watchReloadTree,
-    watchNodeFocus
-];

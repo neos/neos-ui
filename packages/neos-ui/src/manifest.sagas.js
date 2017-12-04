@@ -1,5 +1,5 @@
 import manifest from '@neos-project/neos-ui-extensibility';
-import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
+import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 import * as browser from './Sagas/Browser/index';
 import * as changes from './Sagas/Changes/index';
@@ -12,8 +12,6 @@ import * as uiContentTree from './Sagas/UI/ContentTree/index';
 import * as uiEditPreviewMode from './Sagas/UI/EditPreviewMode/index';
 import * as uiInspector from './Sagas/UI/Inspector/index';
 import * as uiPageTree from './Sagas/UI/PageTree/index';
-
-
 
 manifest('main.sagas', {}, globalRegistry => {
     //

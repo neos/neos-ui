@@ -131,7 +131,7 @@ backend = Neos.Fusion:Template {
                 workspaces = Neos.Fusion:UriBuilder {
                     action = 'index'
                     arguments {
-                        module = 'workspaces'
+                        module = 'management/workspaces'
                     }
                 }
                 userSettings = Neos.Fusion:UriBuilder {

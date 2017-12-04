@@ -7,7 +7,7 @@ import style from './style.css';
 
 import Neos from './Neos/index';
 
-const Root = ({store, globalRegistry, configuration, menu}) => {
+const Root = ({store, globalRegistry, configuration, menu, routes}) => {
     const containerRegistry = globalRegistry.get('containers');
 
     const App = containerRegistry.get('App');
@@ -19,6 +19,7 @@ const Root = ({store, globalRegistry, configuration, menu}) => {
                     <Neos
                         globalRegistry={globalRegistry}
                         configuration={configuration}
+                        routes={routes}
                         >
                         <App globalRegistry={globalRegistry} menu={menu}/>
                     </Neos>
@@ -31,7 +32,8 @@ Root.propTypes = {
     store: PropTypes.object.isRequired,
     globalRegistry: PropTypes.object.isRequired,
     configuration: PropTypes.object.isRequired,
-    menu: PropTypes.object.isRequired
+    menu: PropTypes.object.isRequired,
+    routes: PropTypes.object.isRequired
 };
 
 export default Root;

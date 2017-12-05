@@ -18,7 +18,7 @@ const optionValues = {
     }
 };
 const dropdownElementLabels = component =>
-    component.find('SelectBox_Option_SingleLine').map(node => node.text());
+    component.find('SelectBox_ListPreview').find('SelectBox_Option_SingleLine').map(node => node.text());
 
 const dropdownHeader = component =>
     component.find('ShallowDropDownHeader');

@@ -3,7 +3,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
-import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 
 // TODO: document component usage && check code in detail
 export default class MultiSelectBox extends PureComponent {
@@ -11,8 +10,7 @@ export default class MultiSelectBox extends PureComponent {
     static defaultProps = {
         optionValueField: 'value',
         dndType: 'multiselect-box-value',
-        allowEmpty: true,
-        ListPreviewElement: SelectBox_Option_SingleLine
+        allowEmpty: true
     };
 
     static propTypes = {
@@ -207,25 +205,6 @@ export default class MultiSelectBox extends PureComponent {
                     />
             </div>
         );
-    }
-
-    /**
-     * Renders a single option (<li/>) for the select box
-     * @returns {JSX} option element
-     */
-    renderOption = (wrappingClickHandler, option, index) => {
-        const {theme, IconComponent, ListPreviewElement, optionValueField} = this.props;
-        const value = option[optionValueField];
-        const onClick = () => {
-            wrappingClickHandler(value);
-        };
-
-        // onMouseEnter doesn't work on ListPreviewElement??
-        return <ListPreviewElement className="" isActive={false} option={option} key={index} onClick={onClick} theme={theme} IconComponent={IconComponent}/>;
-    }
-
-    handleValuesChanged = values => {
-        this.props.onValuesChange(values);
     }
 
     handleNewValueSelected = value => {

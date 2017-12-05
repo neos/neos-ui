@@ -21,7 +21,7 @@ manifest('main.sagas', {}, globalRegistry => {
         # Saga Registry
 
         Registry for all sagas.
-        
+
         NOTE: This is UNPLANNED EXTENSIBILITY, do not modify unless you know what you are doing!
     `));
 

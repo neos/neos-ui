@@ -1,0 +1,32 @@
+.selectBoxHeaderWithSearchInput__inputContainer {
+    display: inline-block;
+    width: 100%;
+}
+
+.selectBoxHeaderWithSearchInput__input {
+    display: inline-block;
+    width: 100%;
+    color: #fff;
+    /* TODO: move to reset / use var */
+    font-size: 14px;
+
+    &:focus {
+        background: transparent !important;
+        color: #fff !important;
+    }
+}
+
+.selectBoxHeaderWithSearchInput__loader {
+    composes: reset from './../reset.css';
+    position: absolute;
+    top: 0;
+    right: calc(var(--goldenUnit) + 1px);
+    z-index: var(--zIndex-selectBoxLoadingIcon-Context);
+    display: block;
+    width: var(--goldenUnit);
+    height: var(--goldenUnit);
+    text-align: center;
+    background: transparent;
+    color: #fff;
+    line-height: var(--goldenUnit);
+}

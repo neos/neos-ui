@@ -1,0 +1,24 @@
+.multiLineWithThumbnail__item {
+    box-sizing: content-box;
+    line-height: 20px;
+}
+
+.multiLineWithThumbnail__secondaryLabel {
+    color: var(--brandColorsContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.multiLineWithThumbnail__tertiaryLabel {
+    color: var(--brandColorsContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.multiLineWithThumbnail__image {
+    max-height: 1.5em;
+    max-width: 1.5em;
+    margin-right: .75em;
+    display: inline-block;
+    vertical-align: middle;
+}

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, react/jsx-pascal-case */
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -13,9 +14,10 @@ describe('<MultiSelectBox/>', () => {
             onCreateNew: jest.fn(),
             theme: {},
             values: [],
-            SelectBoxComponent: createStubComponent(),
+            SelectBox: createStubComponent(),
             IconComponent: createStubComponent(),
-            IconButtonComponent: createStubComponent()
+            IconButtonComponent: createStubComponent(),
+            MultiSelectBox_ListPreviewSortable: createStubComponent()
         };
     });
 

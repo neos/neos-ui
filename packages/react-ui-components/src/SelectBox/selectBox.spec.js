@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, react/jsx-pascal-case */
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -17,10 +18,10 @@ describe('<SelectBox/>', () => {
             },
             onValueChange: jest.fn(),
             options: [],
-            DropDownComponent: createStubComponent(),
-            IconComponent: createStubComponent(),
-            IconButtonComponent: createStubComponent(),
-            TextInputComponent: createStubComponent()
+            DropDown: createStubComponent(),
+            SelectBox_Header: createStubComponent(),
+            SelectBox_HeaderWithSearchInput: createStubComponent(),
+            SelectBox_ListPreview: createStubComponent()
         };
     });
 

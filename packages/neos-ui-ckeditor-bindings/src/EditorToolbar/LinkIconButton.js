@@ -179,7 +179,7 @@ class LinkTextField extends PureComponent {
                     setFocus={true}
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
-                    optionComponent={LinkOption}
+                    ListPreviewElement={LinkOption}
                     />
             </div>
         );

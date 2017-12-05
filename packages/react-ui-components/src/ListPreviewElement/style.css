@@ -1,0 +1,22 @@
+.listPreviewElement {
+    composes: reset from './../reset.css';
+    background: var(--brandColorsContrastNeutral);
+    border-top: 1px solid var(--brandColorsContrastDarker);
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+
+    line-height: var(--goldenUnit);
+    padding: 5px var(--spacing);
+
+}
+
+.listPreviewElement--isHighlighted {
+        background: var(--brandColorsPrimaryBlue);
+}
+
+.listPreviewElement__icon {
+    composes: reset from './../reset.css';
+    padding-right: .5em;
+}

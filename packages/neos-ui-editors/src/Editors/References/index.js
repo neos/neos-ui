@@ -37,7 +37,7 @@ export default class ReferencesEditor extends PureComponent {
             optionValueField="identifier"
             loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
             displaySearchBox={true}
-            optionComponent={ReferenceOption}
+            ListPreviewElement={ReferenceOption}
             createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
             placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
             options={this.props.options}

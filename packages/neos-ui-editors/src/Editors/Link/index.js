@@ -143,7 +143,7 @@ class LinkEditor extends PureComponent {
                 displaySearchBox={true}
                 searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
-                optionComponent={LinkOption}
+                ListPreviewElement={LinkOption}
                 />
         );
     }

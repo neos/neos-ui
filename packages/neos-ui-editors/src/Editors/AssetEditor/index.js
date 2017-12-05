@@ -172,18 +172,13 @@ export default class AssetEditor extends PureComponent {
 
     render() {
         return (
-            <Dropzone
-                ref={this.setDropzoneReference}
-                disableClick={true}
-                onDropAccepted={this.handleUpload}
-                className={style.assetEditor}
-                >
+            <div>
                 {this.props.options.multiple ? (<MultiSelectBox
                     dndType={dndTypes.MULTISELECT}
                     optionValueField="identifier"
                     loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
                     displaySearchBox={true}
-                    optionComponent={AssetOption}
+                    ListPreviewElement={AssetOption}
                     placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                     options={this.state.options || []}
                     values={this.getValue()}
@@ -197,7 +192,7 @@ export default class AssetEditor extends PureComponent {
                         optionValueField="identifier"
                         loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
                         displaySearchBox={true}
-                        optionComponent={AssetOption}
+                        ListPreviewElement={AssetOption}
                         placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                         options={this.state.options || []}
                         value={this.getValue()}
@@ -208,11 +203,18 @@ export default class AssetEditor extends PureComponent {
                         searchOptions={this.state.searchOptions}
                         onSearchTermChange={this.handleSearchTermChange}
                         />)}
-                <Controls
-                    onChooseFromMedia={this.handleChooseFromMedia}
-                    onChooseFromLocalFileSystem={this.handleChooseFile}
-                    />
-            </Dropzone>
+                <Dropzone
+                    ref={this.setDropzoneReference}
+                    disableClick={true}
+                    onDropAccepted={this.handleUpload}
+                    className={style.assetEditor}
+                    >
+                    <Controls
+                        onChooseFromMedia={this.handleChooseFromMedia}
+                        onChooseFromLocalFileSystem={this.handleChooseFile}
+                        />
+                </Dropzone>
+            </div>
         );
     }
     setDropzoneReference = ref => {

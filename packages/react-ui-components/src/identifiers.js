@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 //
 // Every component in this repository needs a uniquie identifier
 // to be used with `react-css-themr`, this opens up the possibility
@@ -24,6 +25,11 @@ export default {
     iconButtonDropDown: '@neos-project/react-ui-components/iconButtonDropDown',
     label: '@neos-project/react-ui-components/label',
     selectBox: '@neos-project/react-ui-components/selectBox',
+    selectBox_Header: '@neos-project/react-ui-components/selectBox_Header',
+    selectBox_HeaderWithSearchInput: '@neos-project/react-ui-components/selectBox_HeaderWithSearchInput',
+    multiSelectBox_ListPreviewSortable: '@neos-project/react-ui-components/multiSelectBox_ListPreviewSortable',
+    multiSelectBox_ListPreviewSortable_DraggableListPreviewElement: '@neos-project/react-ui-components/multiSelectBox_ListPreviewSortable_DraggableListPreviewElement',
+    selectBox_Option_MultiLineWithThumbnail: '@neos-project/react-ui-components/selectBox_Option_MultiLineWithThumbnail',
     multiSelectBox: '@neos-project/react-ui-components/multiSelectBox',
     sideBar: '@neos-project/react-ui-components/sideBar',
     tabs: '@neos-project/react-ui-components/tabs',
@@ -37,5 +43,6 @@ export default {
     tree: '@neos-project/react-ui-components/tree',
     treeNode: '@neos-project/react-ui-components/treeNode',
     treeNodeHeader: '@neos-project/react-ui-components/treeNodeHeader',
-    treeNodeContents: '@neos-project/react-ui-components/treeNodeContents'
+    treeNodeContents: '@neos-project/react-ui-components/treeNodeContents',
+    listPreviewElement: '@neos-project/react-ui-components/listPreviewElement'
 };

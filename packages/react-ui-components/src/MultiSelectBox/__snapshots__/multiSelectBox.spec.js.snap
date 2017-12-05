@@ -8,6 +8,7 @@ exports[`<MultiSelectBox/> should render correctly. 1`] = `
     <Component
       IconButtonComponent={[Function]}
       IconComponent={[Function]}
+      ListPreviewElement={[Function]}
       MultiSelectBox_ListPreviewSortable={[Function]}
       SelectBox={[Function]}
       allowEmpty={true}
@@ -23,6 +24,7 @@ exports[`<MultiSelectBox/> should render correctly. 1`] = `
   <Component
     IconButtonComponent={[Function]}
     IconComponent={[Function]}
+    ListPreviewElement={[Function]}
     MultiSelectBox_ListPreviewSortable={[Function]}
     SelectBox={[Function]}
     allowEmpty={true}

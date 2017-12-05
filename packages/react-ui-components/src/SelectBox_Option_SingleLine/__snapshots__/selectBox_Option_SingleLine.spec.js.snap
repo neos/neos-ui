@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelectBox_Option_SingleLine/> should render correctly. 1`] = `
+<ThemedListPreviewElement
+  ListPreviewElement={[Function]}
+  className=""
+  label="Foo label"
+  onClick={[Function]}
+  option={
+    Object {
+      "label": "",
+    }
+  }
+  theme={Object {}}
+>
+  <span />
+</ThemedListPreviewElement>
+`;

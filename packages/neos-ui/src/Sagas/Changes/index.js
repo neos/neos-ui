@@ -6,7 +6,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
 
 const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
-function * watchPersist() {
+export function * watchPersist() {
     const {change} = backend.get().endpoints;
 
     yield takeEvery(actionTypes.Changes.PERSIST, function * persistChanges(action) {
@@ -31,7 +31,3 @@ function * watchPersist() {
         }
     });
 }
-
-export const sagas = [
-    watchPersist
-];

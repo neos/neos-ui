@@ -1,13 +1,14 @@
 const sharedWebPackConfig = require('@neos-project/build-essentials/src/webpack.config.js');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = sharedWebPackConfig.__internalDependencies.ExtractTextPlugin;
+delete sharedWebPackConfig.__internalDependencies;
 
 module.exports = function (neosPackageJson) {
     return Object.assign({}, sharedWebPackConfig, {
         module: {
-            loaders: sharedWebPackConfig.module.loaders.map(loaderConfig => {
-                if (loaderConfig.loader === 'babel') {
-                    loaderConfig.query = {
+            rules: sharedWebPackConfig.module.rules.map(loaderConfig => {
+                if (loaderConfig.use[0].loader === 'babel-loader') {
+                    loaderConfig.use[0].options = {
                         babelrc: false,
                         presets: [
                             require.resolve('babel-preset-react'),
@@ -31,11 +32,11 @@ module.exports = function (neosPackageJson) {
             new ExtractTextPlugin('./[name].css', {allChunks: true})
         ],
         output: {
-            path: neosPackageJson.buildTargetDirectory,
+            path: path.resolve(process.cwd(), neosPackageJson.buildTargetDirectory),
             filename: 'Plugin.js'
         },
         resolveLoader: {
-            modulesDirectories: [
+            modules: [
                 // not sure if we need this path still.
                 path.resolve(__dirname, '../../node_modules'),
 
@@ -63,7 +64,8 @@ module.exports = function (neosPackageJson) {
                 '@neos-project/neos-ui-backend-connector': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/neos-ui-backend-connector/index',
                 '@neos-project/neos-ui-decorators': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/neos-ui-decorators/index',
                 '@neos-project/neos-ui-i18n': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/neos-ui-i18n/index',
-                '@neos-project/neos-ui-redux-store': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/neos-ui-redux-store/index'
+                '@neos-project/neos-ui-redux-store': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/neos-ui-redux-store/index',
+                '@neos-project/utils-redux': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/utils-redux/index'
             }
         }
     });

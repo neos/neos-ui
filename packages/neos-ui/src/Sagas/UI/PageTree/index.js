@@ -6,7 +6,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
 
 import {parentNodeContextPath, isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 
-function * watchToggle({globalRegistry}) {
+export function * watchToggle({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     yield takeLatest(actionTypes.UI.PageTree.TOGGLE, function * toggleTreeNode(action) {
         const state = yield select();
@@ -24,7 +24,7 @@ function * watchToggle({globalRegistry}) {
     });
 }
 
-function * watchRequestChildrenForContextPath({configuration}) {
+export function * watchRequestChildrenForContextPath({configuration}) {
     yield takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
         // ToDo Call yield put(actions.UI.PageTree.requestChildren(contextPath));
         const {contextPath, opts} = action.payload;
@@ -70,7 +70,7 @@ function * watchRequestChildrenForContextPath({configuration}) {
     });
 }
 
-function * watchNodeCreated() {
+export function * watchNodeCreated() {
     yield takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
         const {contextPath} = action.payload;
 
@@ -78,7 +78,7 @@ function * watchNodeCreated() {
     });
 }
 
-function * watchReloadTree({globalRegistry, configuration}) {
+export function * watchReloadTree({globalRegistry, configuration}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     yield takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
         const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
@@ -98,7 +98,7 @@ function * watchReloadTree({globalRegistry, configuration}) {
     });
 }
 
-function * watchCurrentDocument({configuration}) {
+export function * watchCurrentDocument({configuration}) {
     yield takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
         const {contextPath} = action.payload;
         const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
@@ -137,7 +137,7 @@ function * watchCurrentDocument({configuration}) {
     });
 }
 
-function * watchSearch({configuration}) {
+export function * watchSearch({configuration}) {
     yield takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
         const {contextPath, query: searchQuery, filterNodeType} = action.payload;
 
@@ -204,12 +204,3 @@ function * watchSearch({configuration}) {
         yield put(actions.UI.PageTree.setAsLoaded(contextPath));
     });
 }
-
-export const sagas = [
-    watchSearch,
-    watchToggle,
-    watchRequestChildrenForContextPath,
-    watchNodeCreated,
-    watchReloadTree,
-    watchCurrentDocument
-];

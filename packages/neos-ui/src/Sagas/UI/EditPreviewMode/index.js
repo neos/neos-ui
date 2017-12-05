@@ -7,7 +7,7 @@ import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 /**
  * Save currently-chosen EditPreviewMode, and refresh the UI
  */
-function * watchEditPreviewModesChanged() {
+export function * watchEditPreviewModesChanged() {
     yield takeLatest(actionTypes.UI.EditPreviewMode.SET, function * editPreviewModeSet(action) {
         const {editPreviewMode} = action.payload;
 
@@ -15,7 +15,3 @@ function * watchEditPreviewModesChanged() {
         getGuestFrameWindow().location.reload();
     });
 }
-
-export const sagas = [
-    watchEditPreviewModesChanged
-];

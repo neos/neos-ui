@@ -15,7 +15,6 @@ import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/r
 import {delay} from '@neos-project/utils-helpers';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-import allSagas from './Sagas/index';
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
 import Root from './Containers/Root';
@@ -85,7 +84,7 @@ function * application() {
     //
     // Bootstrap the saga middleware with initial sagas
     //
-    allSagas.forEach(saga => sagaMiddleWare.run(saga, {store, globalRegistry, configuration}));
+    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration}));
 
     //
     // Tell everybody, that we're booting now

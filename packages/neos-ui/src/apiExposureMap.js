@@ -15,6 +15,7 @@ import * as reactCssThemr from 'react-css-themr';
 import ReactUiComponents from '@neos-project/react-ui-components';
 import * as NeosUiReduxStore from '@neos-project/neos-ui-redux-store';
 import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
+import * as UtilsRedux from '@neos-project/utils-redux';
 import NeosUiI18n from '@neos-project/neos-ui-i18n';
 import NeosUiBackendConnectorDefault, * as NeosUiBackendConnector from '@neos-project/neos-ui-backend-connector';
 
@@ -42,7 +43,8 @@ export default {
         NeosUiI18n,
         NeosUiReduxStore,
         // react-proptypes (optional)
-        ReactUiComponents
+        ReactUiComponents,
+        UtilsRedux
 
         // TODO: how to write new reducers?
         // TODO: how to write new sagas? -> Registry --> CUSTOM PACKAGE

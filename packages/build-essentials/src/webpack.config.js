@@ -127,4 +127,8 @@ if (env.isProduction) {
     }));
 }
 
+webpackConfig.__internalDependencies = {
+    ExtractTextPlugin
+};
+
 module.exports = webpackConfig;

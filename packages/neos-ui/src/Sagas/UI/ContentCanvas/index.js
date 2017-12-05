@@ -8,7 +8,7 @@ import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 /**
  * Load newly created page into canvas
  */
-function * watchNodeCreated() {
+export function * watchNodeCreated() {
     yield takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
         const {contextPath} = action.payload;
         const node = yield select($get(['cr', 'nodes', 'byContextPath', contextPath]));
@@ -19,7 +19,7 @@ function * watchNodeCreated() {
 /**
  * Load newly created page into canvas
  */
-function * watchCanvasUpdateToChangeTitle() {
+export function * watchCanvasUpdateToChangeTitle() {
     yield takeLatest(actionTypes.UI.ContentCanvas.STOP_LOADING, () => {
         document.title = getGuestFrameDocument().title;
     });
@@ -28,7 +28,7 @@ function * watchCanvasUpdateToChangeTitle() {
 /**
  * Run initialization sequence, after a new document has been loaded
  */
-function * watchStopLoading({globalRegistry, store}) {
+export function * watchStopLoading({globalRegistry, store}) {
     const guestFrameRegistry = globalRegistry.get('@neos-project/neos-ui-guest-frame');
     const makeInitializeGuestFrame = guestFrameRegistry.get('makeInitializeGuestFrame');
 
@@ -38,7 +38,7 @@ function * watchStopLoading({globalRegistry, store}) {
     );
 }
 
-function * watchControlOverIFrame() {
+export function * watchControlOverIFrame() {
     yield take(actionTypes.System.READY);
 
     while (true) { //eslint-disable-line
@@ -76,9 +76,3 @@ function * watchControlOverIFrame() {
     }
 }
 
-export const sagas = [
-    watchNodeCreated,
-    watchCanvasUpdateToChangeTitle,
-    watchStopLoading,
-    watchControlOverIFrame
-];

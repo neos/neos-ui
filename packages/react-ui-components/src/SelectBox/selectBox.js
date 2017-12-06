@@ -218,8 +218,6 @@ export default class SelectBox extends PureComponent {
 
         const selectedOption = options.find(option => optionValueAccessor(option) === value);
 
-        const showResetButton = Boolean(!displayLoadingIndicator && value);
-
         if (displaySearchBox && !value) {
             return (
                 <SelectBox_HeaderWithSearchInput
@@ -228,6 +226,8 @@ export default class SelectBox extends PureComponent {
                     />
             );
         }
+
+        const showResetButton = Boolean(!displayLoadingIndicator && value && !displaySearchBox);
 
         return (
             <SelectBox_Header
@@ -249,9 +249,22 @@ export default class SelectBox extends PureComponent {
     }
 
     handleToggleExpanded = () => {
-        // don't toggle dropdown when in searchbox mode
+        let isExpanded;
+        if (this.props.displaySearchBox) {
+            if (this.props.value) {
+                // When click on header in search mode with value selected, clear it
+                this.props.onValueChange('');
+                isExpanded = true;
+            } else {
+                // Force expanded dropdown unless has showDropDownToggle (e.g. for nodetypes filter in the PageTree)
+                isExpanded = this.props.showDropDownToggle ? !this.state.isExpanded : true;
+            }
+        } else {
+            // if simple SelectBox, just toggle it
+            isExpanded = !this.state.isExpanded;
+        }
         this.setState({
-            isExpanded: this.props.showDropDownToggle ? !this.state.isExpanded : true
+            isExpanded
         });
     }
 

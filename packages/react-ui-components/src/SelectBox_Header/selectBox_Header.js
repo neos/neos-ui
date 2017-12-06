@@ -2,8 +2,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
-const Fragment = props => props.children;
-
 /**
  * **SelectBox_Header is an internal implementation detail of SelectBox**, meant to improve code quality.
  *
@@ -25,6 +23,7 @@ export default class SelectBox_Header extends PureComponent {
          * Theme & Dependencies
          * ------------------------------ */
         theme: PropTypes.shape({
+            selectBoxHeader: PropTypes.string.isRequired,
             selectBoxHeader__icon: PropTypes.string.isRequired,
             selectBoxHeader__label: PropTypes.string.isRequired,
             selectBoxHeader__deleteButton: PropTypes.string.isRequired
@@ -49,11 +48,11 @@ export default class SelectBox_Header extends PureComponent {
 
         // TODO: lateron, use <ListPreviewElement> here
         return (
-            <Fragment>
+            <div className={theme.selectBoxHeader}>
                 {icon && <Icon className={theme.selectBoxHeader__icon} icon={icon}/>}
                 {label && <span className={theme.selectBoxHeader__label}>{label}</span>}
-                {Boolean(showResetButton) && <IconButton className={theme.selectBoxHeader__deleteButton} icon="times" onClick={this.props.onReset}/>}
-            </Fragment>
+                {Boolean(showResetButton) && <IconButton className={theme.selectBoxHeader__icon} icon="times" onClick={this.props.onReset}/>}
+            </div>
         );
     }
 }

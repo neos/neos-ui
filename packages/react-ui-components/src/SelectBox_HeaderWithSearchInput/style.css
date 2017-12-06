@@ -1,10 +1,12 @@
+.selectBoxHeaderWithSearchInput {
+    display: flex;
+}
+
 .selectBoxHeaderWithSearchInput__inputContainer {
-    display: inline-block;
     width: 100%;
 }
 
 .selectBoxHeaderWithSearchInput__input {
-    display: inline-block;
     width: 100%;
     color: #fff;
     /* TODO: move to reset / use var */
@@ -19,32 +21,7 @@
     }
 }
 
-.selectBoxHeaderWithSearchInput__loader {
+.selectBoxHeaderWithSearchInput__icon {
     composes: reset from './../reset.css';
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: var(--zIndex-SelectBoxLoadingIcon-Context);
-    display: block;
-    width: var(--goldenUnit);
-    height: var(--goldenUnit);
-    text-align: center;
-    background: transparent;
-    color: #fff;
-    line-height: var(--goldenUnit);
-}
-
-.selectBoxHeaderWithSearchInput__deleteButton {
-    composes: reset from './../reset.css';
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: var(--zIndex-SelectBoxBtnDelete-Context);
-    display: block;
-    width: var(--goldenUnit);
-    height: var(--goldenUnit);
-    text-align: center;
-    background: transparent;
-    color: #FFF;
     line-height: var(--goldenUnit);
 }

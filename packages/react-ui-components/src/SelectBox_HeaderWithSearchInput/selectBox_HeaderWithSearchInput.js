@@ -2,8 +2,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
-const Fragment = props => props.children;
-
 /**
  * **SelectBox_HeaderWithSearchInput is an internal implementation detail of SelectBox**, meant to improve code quality.
  *
@@ -27,10 +25,10 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
          * Theme & Dependencies
          * ------------------------------ */
         theme: PropTypes.shape({
+            selectBoxHeaderWithSearchInput: PropTypes.string.isRequired,
             selectBoxHeaderWithSearchInput__inputContainer: PropTypes.string.isRequired,
-            selectBoxHeaderWithSearchInput__input: PropTypes.string.isRequired,
-            selectBoxHeaderWithSearchInput__loader: PropTypes.string.isRequired,
-            selectBoxHeaderWithSearchInput__deleteButton: PropTypes.string.isRequired
+            selectBoxHeaderWithSearchInput__icon: PropTypes.string.isRequired,
+            selectBoxHeaderWithSearchInput__input: PropTypes.string.isRequired
         }).isRequired,
         Icon: PropTypes.any.isRequired,
         TextInput: PropTypes.any.isRequired,
@@ -56,9 +54,10 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
         };
 
         return (
-            <Fragment>
+            <div className={theme.selectBoxHeaderWithSearchInput}>
                 <Icon
                     icon="search"
+                    className={theme.selectBoxHeaderWithSearchInput__icon}
                     />
                 <TextInput
                     containerClassName={theme.selectBoxHeaderWithSearchInput__inputContainer}
@@ -69,9 +68,9 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
                     setFocus={setFocus}
                     type="search"
                     />
-                {searchTerm && <IconButton className={theme.selectBoxHeaderWithSearchInput__deleteButton} icon="times" onClick={clearSearch}/>}
-                {displayLoadingIndicator && <Icon className={theme.selectBoxHeaderWithSearchInput__loader} spin={true} icon="spinner"/>}
-            </Fragment>
+                {displayLoadingIndicator && <Icon className={theme.selectBoxHeaderWithSearchInput__icon} spin={true} icon="spinner"/>}
+                {searchTerm && <IconButton className={theme.selectBoxHeaderWithSearchInput__icon} icon="times" onClick={clearSearch}/>}
+            </div>
         );
     }
 }

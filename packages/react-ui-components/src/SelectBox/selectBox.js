@@ -212,6 +212,7 @@ export default class SelectBox extends PureComponent {
             displayLoadingIndicator,
             options,
             value,
+            allowEmpty,
 
             SelectBox_HeaderWithSearchInput,
             SelectBox_Header
@@ -230,7 +231,7 @@ export default class SelectBox extends PureComponent {
             );
         }
 
-        const showResetButton = Boolean(!displayLoadingIndicator && value && !displaySearchBox);
+        const showResetButton = Boolean(allowEmpty && !displayLoadingIndicator && value && !displaySearchBox);
 
         return (
             <SelectBox_Header

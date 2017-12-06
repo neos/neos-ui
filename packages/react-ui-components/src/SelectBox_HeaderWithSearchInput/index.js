@@ -13,8 +13,10 @@ const ThemedSelectBox_HeaderWithSearchInput = themr(identifiers.selectBox_Header
 import injectProps from './../_lib/injectProps.js';
 import Icon from './../Icon/index';
 import TextInput from './../TextInput/index';
+import IconButton from './../IconButton/index';
 
 export default injectProps({
     Icon,
-    TextInput
+    TextInput,
+    IconButton
 })(ThemedSelectBox_HeaderWithSearchInput);

@@ -45,6 +45,7 @@ export default class ReferencesEditor extends PureComponent {
             highlight={this.props.highlight}
             onValuesChange={this.handleValueChange}
             displayLoadingIndicator={this.props.displayLoadingIndicator}
+            showDropDownToggle={false}
             searchTerm={this.props.searchTerm}
             searchOptions={this.props.searchOptions}
             onSearchTermChange={this.props.onSearchTermChange}

@@ -13,6 +13,7 @@ export default class SelectBox extends PureComponent {
         optionValueField: 'value',
         withoutGroupLabel: 'Without group',
         scrollable: true,
+        showDropDownToggle: true,
         ListPreviewElement: SelectBox_Option_SingleLine
     };
 
@@ -73,6 +74,11 @@ export default class SelectBox extends PureComponent {
          * if true, allows to clear the selected element completely (without choosing another one)
          */
         allowEmpty: PropTypes.bool,
+
+        /**
+         * Shows dropdown toggle. Set by default. Useful in components that display search, where you don't want to let the user manually controll the collapsing of selectbox
+         */
+        showDropDownToggle: PropTypes.bool,
 
         /**
          * limit height and show scrollbars if needed, defaults to true
@@ -156,6 +162,7 @@ export default class SelectBox extends PureComponent {
             options,
             theme,
             highlight,
+            showDropDownToggle,
             ListPreviewElement,
 
             DropDown,
@@ -176,7 +183,7 @@ export default class SelectBox extends PureComponent {
 
         return (
             <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
-                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={Boolean(options.length)}>
+                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
                     {this.renderHeader()}
                 </DropDown.Header>
                 <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
@@ -207,24 +214,17 @@ export default class SelectBox extends PureComponent {
             SelectBox_HeaderWithSearchInput,
             SelectBox_Header
         } = this.props;
-        let allowEmpty = this.props.allowEmpty;
         const optionValueAccessor = this.getOptionValueAccessor();
 
         const selectedOption = options.find(option => optionValueAccessor(option) === value);
 
-        // if the search box should be shown, we *need* to force allowEmpty (to display the "clear" button if a value is selected),
-        // as the search box is only shown if nothing is selected.
-        // If we would not force this and allowEmpty=false, the user could not go back to the search box after he has initially selected a value.
-        if (displaySearchBox) {
-            allowEmpty = true;
-        }
-
-        const showResetButton = Boolean(!displayLoadingIndicator && allowEmpty && value);
+        const showResetButton = Boolean(!displayLoadingIndicator && value);
 
         if (displaySearchBox && !value) {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
+                    onSearchTermChange={this.handleSearchTermChange}
                     />
             );
         }
@@ -232,7 +232,6 @@ export default class SelectBox extends PureComponent {
         return (
             <SelectBox_Header
                 {...this.props}
-
                 option={selectedOption}
                 showResetButton={showResetButton}
                 onReset={this.handleDeleteClick}
@@ -250,8 +249,9 @@ export default class SelectBox extends PureComponent {
     }
 
     handleToggleExpanded = () => {
+        // don't toggle dropdown when in searchbox mode
         this.setState({
-            isExpanded: !this.state.isExpanded
+            isExpanded: this.props.displaySearchBox ? true : !this.state.isExpanded
         });
     }
 
@@ -266,6 +266,13 @@ export default class SelectBox extends PureComponent {
         this.setState({
             focusedValue: optionValueAccessor(option)
         });
+    }
+
+    handleSearchTermChange = value => {
+        this.setState({
+            isExpanded: Boolean(value)
+        });
+        this.props.onSearchTermChange(value);
     }
 
     /**

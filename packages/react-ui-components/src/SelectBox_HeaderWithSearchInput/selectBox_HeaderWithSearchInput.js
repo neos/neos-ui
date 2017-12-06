@@ -29,10 +29,12 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
         theme: PropTypes.shape({
             selectBoxHeaderWithSearchInput__inputContainer: PropTypes.string.isRequired,
             selectBoxHeaderWithSearchInput__input: PropTypes.string.isRequired,
-            selectBoxHeaderWithSearchInput__loader: PropTypes.string.isRequired
+            selectBoxHeaderWithSearchInput__loader: PropTypes.string.isRequired,
+            selectBoxHeaderWithSearchInput__deleteButton: PropTypes.string.isRequired
         }).isRequired,
         Icon: PropTypes.any.isRequired,
-        TextInput: PropTypes.any.isRequired
+        TextInput: PropTypes.any.isRequired,
+        IconButton: PropTypes.any.isRequired
     }
 
     render() {
@@ -44,8 +46,14 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
             setFocus,
             theme,
             Icon,
-            TextInput
+            TextInput,
+            IconButton
         } = this.props;
+
+        const clearSearch = event => {
+            event.stopPropagation();
+            onSearchTermChange('');
+        };
 
         return (
             <Fragment>
@@ -61,10 +69,8 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
                     setFocus={setFocus}
                     type="search"
                     />
-                {displayLoadingIndicator ?
-                    <Icon className={theme.selectBoxHeaderWithSearchInput__loader} spin={true} icon="spinner"/> :
-                    null
-                }
+                {searchTerm && <IconButton className={theme.selectBoxHeaderWithSearchInput__deleteButton} icon="times" onClick={clearSearch}/>}
+                {displayLoadingIndicator && <Icon className={theme.selectBoxHeaderWithSearchInput__loader} spin={true} icon="spinner"/>}
             </Fragment>
         );
     }

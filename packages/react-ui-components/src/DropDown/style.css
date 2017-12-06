@@ -13,7 +13,7 @@
     color: white;
     cursor: pointer;
     font-size: var(--baseFontSize);
-    padding: 0 calc(var(--spacing) + var(--goldenUnit)) 0 var(--spacing);
+    padding: 0 var(--spacing);
     border: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -24,6 +24,9 @@
     &:focus {
         outline: unset;
     }
+}
+.dropDown__btn--withChevron {
+    padding-right: calc(var(--spacing) + var(--goldenUnit));
 }
 .dropDown__btnLabel {
     composes: reset from './../reset.css';

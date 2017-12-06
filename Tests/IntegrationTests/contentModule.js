@@ -248,7 +248,7 @@ test('PageTree search and filter', async t => {
         .expect(page.treeNode.withText('Try me').exists).notOk('Top level "Try me" page should still be hidden');
 
     subSection('Clear filter');
-    const clearFilter = ReactSelector('NodeTreeFilter Button');
+    const clearFilter = ReactSelector('NodeTreeFilter SelectBox_Header');
     await t
         .click(clearFilter)
         .expect(page.treeNode.withText('Try me').exists).ok('Top level "Try me" page should shown again');

@@ -25,8 +25,7 @@ export default class SelectBox_Header extends PureComponent {
         theme: PropTypes.shape({
             selectBoxHeader: PropTypes.string.isRequired,
             selectBoxHeader__icon: PropTypes.string.isRequired,
-            selectBoxHeader__label: PropTypes.string.isRequired,
-            selectBoxHeader__deleteButton: PropTypes.string.isRequired
+            selectBoxHeader__label: PropTypes.string.isRequired
         }).isRequired,
         Icon: PropTypes.any.isRequired,
         IconButton: PropTypes.any.isRequired

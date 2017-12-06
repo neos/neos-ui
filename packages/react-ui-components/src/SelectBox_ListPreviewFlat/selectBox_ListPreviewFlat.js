@@ -21,7 +21,14 @@ export default class SelectBox_ListPreviewFlat extends PureComponent {
         optionValueAccessor: PropTypes.func.isRequired,
         onChange: PropTypes.func.isRequired,
         focusedValue: PropTypes.string,
-        onOptionFocus: PropTypes.func
+        onOptionFocus: PropTypes.func,
+
+        // ------------------------------
+        // Theme & Dependencies
+        // ------------------------------
+        theme: PropTypes.shape({
+            selectBox__item: PropTypes.string
+        }).isRequired
     }
 
     render() {
@@ -36,7 +43,8 @@ export default class SelectBox_ListPreviewFlat extends PureComponent {
         const {
             ListPreviewElement,
             optionValueAccessor,
-            focusedValue
+            focusedValue,
+            theme
         } = this.props;
 
         const isHighlighted = optionValueAccessor(option) === focusedValue;
@@ -46,7 +54,7 @@ export default class SelectBox_ListPreviewFlat extends PureComponent {
         }
 
         return (
-            <li key={index} role="option">
+            <li key={index} role="option" className={theme.selectBox__item}>
                 <ListPreviewElement
 
                     isHighlighted={isHighlighted}

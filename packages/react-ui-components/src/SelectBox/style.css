@@ -31,3 +31,7 @@
     box-shadow: 0 5px 10px rgba(#000, .2);
     z-index: var(--zIndex-SelectBoxContents-Context);
 }
+
+.selectBox__item {
+    border-top: 1px solid var(--brandColorsContrastDarker);
+}

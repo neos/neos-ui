@@ -119,12 +119,13 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
                 <div className={finalClassNames}>
-                    <InnerListPreviewElement
-                        {...this.props}
-                        className={theme['selectedOptions__item--draggable']}
-                        isHighlighted={false}
-                        option={option}
-                        />
+                    <div className={theme.selectedOptions__innerPreview}>
+                        <InnerListPreviewElement
+                            {...this.props}
+                            isHighlighted={false}
+                            option={option}
+                            />
+                    </div>
                     <IconButton
                         icon={'close'}
                         onClick={handleRemoveItem}

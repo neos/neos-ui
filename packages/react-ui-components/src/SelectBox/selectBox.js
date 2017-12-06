@@ -133,8 +133,7 @@ export default class SelectBox extends PureComponent {
         // Theme & Dependencies
         // ------------------------------
         theme: PropTypes.shape({/* eslint-disable quote-props */
-            'wrapper--highlight': PropTypes.string,
-            'selectedOptions__item': PropTypes.string
+            'wrapper--highlight': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
         DropDown: PropTypes.any.isRequired,

@@ -3,6 +3,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
+import omit from 'lodash.omit';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 
 // TODO: document component usage && check code in detail
@@ -194,12 +195,12 @@ export default class MultiSelectBox extends PureComponent {
             <div className={theme.wrapper}>
                 <ul className={selectedOptionsClassNames}>
                     <MultiSelectBox_ListPreviewSortable
-                        {...this.props}
+                        {...omit(this.props, ['theme'])}
                         optionValueAccessor={optionValueAccessor}
                         />
                 </ul>
                 <SelectBox
-                    {...this.props}
+                    {...omit(this.props, ['theme'])}
                     options={filteredSearchOptions}
                     highlight={false}
                     value=""

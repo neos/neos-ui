@@ -22,4 +22,7 @@
     li {
         display: block;
     }
+    input::-webkit-search-cancel-button {
+        display: none;
+    }
 }

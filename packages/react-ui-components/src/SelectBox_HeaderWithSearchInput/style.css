@@ -16,9 +16,6 @@
         background: transparent !important;
         color: #fff !important;
     }
-    &::-webkit-search-cancel-button {
-        display: none;
-    }
 }
 
 .selectBoxHeaderWithSearchInput__icon {

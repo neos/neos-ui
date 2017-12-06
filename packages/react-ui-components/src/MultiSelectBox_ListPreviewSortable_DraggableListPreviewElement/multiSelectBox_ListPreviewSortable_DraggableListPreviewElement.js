@@ -76,6 +76,8 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         InnerListPreviewElement: PropTypes.any.isRequired,
         onMoveSelectedValue: PropTypes.func.isRequired,
         onSelectedValueWasMoved: PropTypes.func.isRequired,
+        onRemoveItem: PropTypes.func.isRequired,
+        index: PropTypes.number.isRequired,
 
         // Dependency Injection & Theme
         theme: PropTypes.shape({/* eslint-disable quote-props */
@@ -95,6 +97,8 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             InnerListPreviewElement,
             theme,
             values,
+            onRemoveItem,
+            index,
             IconButton
          } = this.props;
 
@@ -110,6 +114,8 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             this.node = node;
         };
 
+        const handleRemoveItem = () => onRemoveItem(index);
+
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
                 <div className={finalClassNames}>
@@ -121,6 +127,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                         />
                     <IconButton
                         icon={'close'}
+                        onClick={handleRemoveItem}
                         />
                 </div>
             </li>

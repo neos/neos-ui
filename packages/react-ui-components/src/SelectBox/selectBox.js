@@ -251,7 +251,7 @@ export default class SelectBox extends PureComponent {
     handleToggleExpanded = () => {
         // don't toggle dropdown when in searchbox mode
         this.setState({
-            isExpanded: this.props.displaySearchBox ? true : !this.state.isExpanded
+            isExpanded: this.props.showDropDownToggle ? !this.state.isExpanded : true
         });
     }
 

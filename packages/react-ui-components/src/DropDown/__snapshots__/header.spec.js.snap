@@ -3,8 +3,9 @@
 exports[`<ShallowDropDownHeader/> should render correctly. 1`] = `
 <div
   aria-haspopup="true"
-  className="baseDropDownHeaderClassName"
+  className="baseDropDownHeaderClassName baseDropDownHeaderWithChevronClassName"
   onClick={[Function]}
+  role="button"
 >
   Foo children
   <Component

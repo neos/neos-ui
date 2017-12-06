@@ -14,6 +14,7 @@
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
     "jest": "NODE_ENV=test jest",
+    "jest:updateSnapshots": "NODE_ENV=test jest -u",
     "start": "cross-env STORY=true start-storybook -p 9001",
     "postpublish": "greenkeeper-postpublish"
   },

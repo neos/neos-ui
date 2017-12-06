@@ -12,9 +12,7 @@ describe('<SelectBox/>', () => {
         props = {
             theme: {
                 'wrapper': 'wrapperClassName',
-                'wrapper--highlight': 'wrapperHighlightClassName',
-                'selectedOptions': 'selectedOptionsClassName',
-                'selectedOptions__item': 'selectedOptionsItemClassName'
+                'wrapper--highlight': 'wrapperHighlightClassName'
             },
             onValueChange: jest.fn(),
             options: [],

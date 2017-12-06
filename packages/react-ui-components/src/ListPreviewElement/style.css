@@ -1,19 +1,19 @@
 .listPreviewElement {
     composes: reset from './../reset.css';
     background: var(--brandColorsContrastNeutral);
-    border-top: 1px solid var(--brandColorsContrastDarker);
     cursor: pointer;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 14px;
 
-    line-height: var(--goldenUnit);
+    /* subtract the size of padding */
+    line-height: calc(var(--goldenUnit) - 10px);
     padding: 5px var(--spacing);
-
 }
 
 .listPreviewElement--isHighlighted {
-        background: var(--brandColorsPrimaryBlue);
+    background: var(--brandColorsPrimaryBlue);
 }
 
 .listPreviewElement__icon {

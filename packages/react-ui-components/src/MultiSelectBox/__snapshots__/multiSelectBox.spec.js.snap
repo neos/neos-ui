@@ -17,7 +17,6 @@ exports[`<MultiSelectBox/> should render correctly. 1`] = `
       onValuesChange={[Function]}
       optionValueAccessor={[Function]}
       optionValueField="value"
-      theme={Object {}}
       values={Array []}
     />
   </ul>
@@ -35,7 +34,6 @@ exports[`<MultiSelectBox/> should render correctly. 1`] = `
     onValuesChange={[Function]}
     optionValueField="value"
     options={Array []}
-    theme={Object {}}
     value=""
     values={Array []}
   />

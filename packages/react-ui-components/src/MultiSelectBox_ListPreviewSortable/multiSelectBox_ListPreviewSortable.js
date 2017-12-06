@@ -87,6 +87,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
                 option={option}
                 onMoveSelectedValue={this.handleMoveSelectedValue}
                 onSelectedValueWasMoved={this.handleSelectedValueWasMoved}
+                onRemoveItem={this.handleRemoveItem}
                 />
         );
     }
@@ -105,5 +106,12 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
 
     handleSelectedValueWasMoved = () => {
         this.props.onValuesChange(this.state.draggableValues);
+    }
+
+    handleRemoveItem = removeIndex => {
+        const newValues = this.state.draggableValues.slice();
+        newValues.splice(removeIndex, 1);
+        this.setState({draggableValues: newValues});
+        this.props.onValuesChange(newValues);
     }
 }

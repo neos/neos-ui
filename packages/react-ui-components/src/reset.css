@@ -11,11 +11,18 @@
         box-sizing: border-box;
     }
 
-    // some browsers set a font-size in their user stylesheets
+    /* some browsers set a font-size in their user stylesheets */
     input,
     textarea,
     select,
     button {
         font-size: var(--baseFontSize);
+    }
+    /* webkit adds some weird spacing otherwise */
+    li {
+        display: block;
+    }
+    input::-webkit-search-cancel-button {
+        display: none;
     }
 }

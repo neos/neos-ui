@@ -27,7 +27,7 @@ export default class ReferenceOption extends PureComponent {
 
         return (
             <ListPreviewElement {...this.props} className={style.referenceOption} icon={icon}>
-                <span>{label}</span>
+                <span>{label}</span><br/>
                 <span className={style.referenceOption__link}>{uriInLiveWorkspace}</span>
             </ListPreviewElement>
         );

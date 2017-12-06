@@ -76,12 +76,15 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         InnerListPreviewElement: PropTypes.any.isRequired,
         onMoveSelectedValue: PropTypes.func.isRequired,
         onSelectedValueWasMoved: PropTypes.func.isRequired,
+        onRemoveItem: PropTypes.func.isRequired,
+        index: PropTypes.number.isRequired,
 
         // Dependency Injection & Theme
-        theme: PropTypes.shape({/* eslint-disable quote-props */
+        theme: PropTypes.shape({
             'selectedOptions__item': PropTypes.string,
-            'selectedOptions__item--draggable': PropTypes.string
-        }).isRequired, /* eslint-enable quote-props */
+            'selectedOptions__item--draggable': PropTypes.string,
+            'selectedOption__removeButton': PropTypes.string
+        }).isRequired,
         Icon: PropTypes.any.isRequired,
         IconButton: PropTypes.any.isRequired
     }
@@ -95,6 +98,8 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             InnerListPreviewElement,
             theme,
             values,
+            onRemoveItem,
+            index,
             IconButton
          } = this.props;
 
@@ -110,17 +115,22 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             this.node = node;
         };
 
+        const handleRemoveItem = () => onRemoveItem(index);
+
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
                 <div className={finalClassNames}>
-                    <InnerListPreviewElement
-                        {...this.props}
-                        className={theme['selectedOptions__item--draggable']}
-                        isHighlighted={false}
-                        option={option}
-                        />
+                    <div className={theme.selectedOptions__innerPreview}>
+                        <InnerListPreviewElement
+                            {...this.props}
+                            isHighlighted={false}
+                            option={option}
+                            />
+                    </div>
                     <IconButton
                         icon={'close'}
+                        onClick={handleRemoveItem}
+                        className={theme.selectedOption__removeButton}
                         />
                 </div>
             </li>

@@ -2,8 +2,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
-const Fragment = props => props.children;
-
 /**
  * **SelectBox_Header is an internal implementation detail of SelectBox**, meant to improve code quality.
  *
@@ -16,6 +14,8 @@ export default class SelectBox_Header extends PureComponent {
             icon: PropTypes.string,
             label: PropTypes.string.isRequired
         }),
+        placeholder: PropTypes.string,
+        placeholderIcon: PropTypes.string,
         showResetButton: PropTypes.bool.isRequired,
         onReset: PropTypes.func,
 
@@ -23,9 +23,9 @@ export default class SelectBox_Header extends PureComponent {
          * Theme & Dependencies
          * ------------------------------ */
         theme: PropTypes.shape({
+            selectBoxHeader: PropTypes.string.isRequired,
             selectBoxHeader__icon: PropTypes.string.isRequired,
-            selectBoxHeader__label: PropTypes.string.isRequired,
-            selectBoxHeader__deleteButton: PropTypes.string.isRequired
+            selectBoxHeader__label: PropTypes.string.isRequired
         }).isRequired,
         Icon: PropTypes.any.isRequired,
         IconButton: PropTypes.any.isRequired
@@ -37,16 +37,21 @@ export default class SelectBox_Header extends PureComponent {
             showResetButton,
             theme,
             Icon,
-            IconButton
+            IconButton,
+            placeholder,
+            placeholderIcon
         } = this.props;
+
+        const label = option ? option.label : placeholder;
+        const icon = option && option.icon ? option.icon : placeholderIcon;
 
         // TODO: lateron, use <ListPreviewElement> here
         return (
-            <Fragment>
-                {Boolean(option) && option.icon && <Icon className={theme.selectBoxHeader__icon} icon={option.icon}/>}
-                {Boolean(option) && <span className={theme.selectBoxHeader__label}>{option.label}</span>}
-                {Boolean(showResetButton) && <IconButton className={theme.selectBoxHeader__deleteButton} icon="times" onClick={this.props.onReset}/>}
-            </Fragment>
+            <div className={theme.selectBoxHeader}>
+                {icon && <Icon className={theme.selectBoxHeader__icon} icon={icon}/>}
+                {label && <span className={theme.selectBoxHeader__label}>{label}</span>}
+                {Boolean(showResetButton) && <IconButton className={theme.selectBoxHeader__icon} icon="times" onClick={this.props.onReset}/>}
+            </div>
         );
     }
 }

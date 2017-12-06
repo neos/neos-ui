@@ -10,4 +10,6 @@
     display: block;
     font-size: 12px;
     padding-left: calc(var(--spacing) * 1.25);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

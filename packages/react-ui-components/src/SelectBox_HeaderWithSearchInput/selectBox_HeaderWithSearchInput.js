@@ -2,8 +2,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
-const Fragment = props => props.children;
-
 /**
  * **SelectBox_HeaderWithSearchInput is an internal implementation detail of SelectBox**, meant to improve code quality.
  *
@@ -27,12 +25,14 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
          * Theme & Dependencies
          * ------------------------------ */
         theme: PropTypes.shape({
+            selectBoxHeaderWithSearchInput: PropTypes.string.isRequired,
             selectBoxHeaderWithSearchInput__inputContainer: PropTypes.string.isRequired,
-            selectBoxHeaderWithSearchInput__input: PropTypes.string.isRequired,
-            selectBoxHeaderWithSearchInput__loader: PropTypes.string.isRequired
+            selectBoxHeaderWithSearchInput__icon: PropTypes.string.isRequired,
+            selectBoxHeaderWithSearchInput__input: PropTypes.string.isRequired
         }).isRequired,
         Icon: PropTypes.any.isRequired,
-        TextInput: PropTypes.any.isRequired
+        TextInput: PropTypes.any.isRequired,
+        IconButton: PropTypes.any.isRequired
     }
 
     render() {
@@ -44,13 +44,20 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
             setFocus,
             theme,
             Icon,
-            TextInput
+            TextInput,
+            IconButton
         } = this.props;
 
+        const clearSearch = event => {
+            event.stopPropagation();
+            onSearchTermChange('');
+        };
+
         return (
-            <Fragment>
+            <div className={theme.selectBoxHeaderWithSearchInput}>
                 <Icon
                     icon="search"
+                    className={theme.selectBoxHeaderWithSearchInput__icon}
                     />
                 <TextInput
                     containerClassName={theme.selectBoxHeaderWithSearchInput__inputContainer}
@@ -61,11 +68,9 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
                     setFocus={setFocus}
                     type="search"
                     />
-                {displayLoadingIndicator ?
-                    <Icon className={theme.selectBoxHeaderWithSearchInput__loader} spin={true} icon="spinner"/> :
-                    null
-                }
-            </Fragment>
+                {displayLoadingIndicator && <Icon className={theme.selectBoxHeaderWithSearchInput__icon} spin={true} icon="spinner"/>}
+                {searchTerm && <IconButton className={theme.selectBoxHeaderWithSearchInput__icon} icon="times" onClick={clearSearch}/>}
+            </div>
         );
     }
 }

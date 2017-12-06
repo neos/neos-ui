@@ -24,3 +24,6 @@
     overflow: hidden;
     width: 100%;
 }
+.selectedOption__removeButton {
+    height: auto;
+}

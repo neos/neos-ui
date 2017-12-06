@@ -22,4 +22,5 @@
 .selectedOptions__innerPreview {
     border-right: 1px solid var(--brandColorsContrastDarker);
     overflow: hidden;
+    width: 100%;
 }

@@ -25,6 +25,10 @@
     min-width: 160px;
 }
 
+.selectBox__btn--noRightPadding {
+    padding-right: 0;
+}
+
 .selectBox__contents {
     composes: reset from './../reset.css';
     min-width: 160px;

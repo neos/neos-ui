@@ -19,9 +19,6 @@ import style from './style.css';
 @connect($transform({
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
-@neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
-}))
 export default class LinkIconButton extends PureComponent {
 
     static propTypes = {
@@ -69,7 +66,8 @@ const isUri = str =>
     str && Boolean(str.match('^(https?://|mailto:|tel:)'));
 
 @neos(globalRegistry => ({
-    linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup')
+    linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -77,6 +75,7 @@ const isUri = str =>
 class LinkTextField extends PureComponent {
 
     static propTypes = {
+        i18nRegistry: PropTypes.object,
         formattingRule: PropTypes.string,
         hrefValue: PropTypes.string,
 

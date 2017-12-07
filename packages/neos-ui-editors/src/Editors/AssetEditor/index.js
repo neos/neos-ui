@@ -24,13 +24,7 @@ export default class AssetEditor extends PureComponent {
     state = {
         options: [],
         isLoading: false,
-        searchOptions: [],
-        searchTerm: ''
-    };
-
-    static defaultOptions = {
-        // start searching after 2 characters, as it was done in the old UI
-        threshold: 2
+        searchOptions: []
     };
 
     static propTypes = {
@@ -86,9 +80,7 @@ export default class AssetEditor extends PureComponent {
     }
 
     handleSearchTermChange = searchTerm => {
-        this.setState({searchTerm});
-        const threshold = $get('options.threshold', this.props) || this.constructor.defaultOptions.threshold;
-        if (searchTerm && searchTerm.length >= threshold) {
+        if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
             this.props.assetLookupDataLoader.search({}, searchTerm)
                 .then(searchOptions => {
@@ -97,11 +89,16 @@ export default class AssetEditor extends PureComponent {
                         searchOptions
                     });
                 });
+        } else {
+            this.setState({
+                isLoading: false,
+                searchOptions: []
+            });
         }
     }
 
     handleValueChange = value => {
-        this.setState({searchOptions: [], searchTerm: ''});
+        this.setState({searchOptions: []});
         this.props.commit(value);
     }
 
@@ -185,9 +182,9 @@ export default class AssetEditor extends PureComponent {
                     highlight={this.props.highlight}
                     onValuesChange={this.handleValueChange}
                     displayLoadingIndicator={this.state.isLoading}
-                    searchTerm={this.state.searchTerm}
                     searchOptions={this.state.searchOptions}
                     onSearchTermChange={this.handleSearchTermChange}
+                    threshold={$get('options.threshold', this.props)}
                     />) : (<SelectBox
                         optionValueField="identifier"
                         loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
@@ -199,9 +196,9 @@ export default class AssetEditor extends PureComponent {
                         highlight={this.props.highlight}
                         onValueChange={this.handleValueChange}
                         displayLoadingIndicator={this.state.isLoading}
-                        searchTerm={this.state.searchTerm}
                         searchOptions={this.state.searchOptions}
                         onSearchTermChange={this.handleSearchTermChange}
+                        threshold={$get('options.threshold', this.props)}
                         />)}
                 <Dropzone
                     ref={this.setDropzoneReference}

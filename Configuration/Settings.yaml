@@ -10,7 +10,7 @@ Neos:
       inspector:
         dataTypes:
           Neos\Media\Domain\Model\ImageInterface:
-            typeConverter: Neos\Media\TypeConverter\ImageInterfaceArrayPresenter
+            typeConverter: Neos\Neos\Ui\TypeConverter\UiDependentImageSerializer
       translation:
         autoInclude:
           'Neos.Neos.Ui':

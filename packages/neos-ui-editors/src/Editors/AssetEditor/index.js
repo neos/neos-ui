@@ -184,6 +184,8 @@ export default class AssetEditor extends PureComponent {
                     displayLoadingIndicator={this.state.isLoading}
                     searchOptions={this.state.searchOptions}
                     onSearchTermChange={this.handleSearchTermChange}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                     threshold={$get('options.threshold', this.props)}
                     />) : (<SelectBox
                         optionValueField="identifier"
@@ -198,6 +200,8 @@ export default class AssetEditor extends PureComponent {
                         displayLoadingIndicator={this.state.isLoading}
                         searchOptions={this.state.searchOptions}
                         onSearchTermChange={this.handleSearchTermChange}
+                        noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                        searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                         threshold={$get('options.threshold', this.props)}
                         />)}
                 <Dropzone

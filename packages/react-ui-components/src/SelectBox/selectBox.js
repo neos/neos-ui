@@ -14,6 +14,7 @@ export default class SelectBox extends PureComponent {
         withoutGroupLabel: 'Without group',
         scrollable: true,
         showDropDownToggle: true,
+        threshold: 2,
         ListPreviewElement: SelectBox_Option_SingleLine
     };
 

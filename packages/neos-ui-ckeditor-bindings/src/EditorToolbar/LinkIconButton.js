@@ -19,6 +19,9 @@ import style from './style.css';
 @connect($transform({
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
 export default class LinkIconButton extends PureComponent {
 
     static propTypes = {
@@ -180,6 +183,8 @@ class LinkTextField extends PureComponent {
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
                     ListPreviewElement={LinkOption}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                     />
             </div>
         );

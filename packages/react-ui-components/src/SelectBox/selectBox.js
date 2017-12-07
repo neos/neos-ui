@@ -169,6 +169,7 @@ export default class SelectBox extends PureComponent {
             highlight,
             showDropDownToggle,
             threshold,
+            displaySearchBox,
             displayLoadingIndicator,
             ListPreviewElement,
 
@@ -191,7 +192,7 @@ export default class SelectBox extends PureComponent {
 
         const optionValueAccessor = this.getOptionValueAccessor();
 
-        const searchTermLeftToType = threshold - searchTerm.length;
+        const searchTermLeftToType = displaySearchBox ? threshold - searchTerm.length : 0;
         const noMatchesFound = searchTermLeftToType > 0 || displayLoadingIndicator ? false : !options.length;
 
         return (

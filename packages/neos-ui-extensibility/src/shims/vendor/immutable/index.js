@@ -1,3 +1,3 @@
 import readFromConsumerApi from '../../../readFromConsumerApi';
 
-module.exports = readFromConsumerApi('vendor')().React;
+module.exports = readFromConsumerApi('vendor')().Immutable;

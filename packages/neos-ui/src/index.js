@@ -8,21 +8,26 @@ import {put} from 'redux-saga/effects';
 import {Map} from 'immutable';
 import merge from 'lodash.merge';
 
-import {reducer, actions} from '@neos-project/neos-ui-redux-store';
+import {actions} from '@neos-project/neos-ui-redux-store';
 import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling';
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import {delay} from '@neos-project/utils-helpers';
 import backend from '@neos-project/neos-ui-backend-connector';
+import {handleActions} from '@neos-project/utils-redux';
 
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
 import Root from './Containers/Root';
 import apiExposureMap from './apiExposureMap';
+import DelegatingReducer from './DelegatingReducer';
+
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
 const sagaMiddleWare = createSagaMiddleware();
-const store = createStore(reducer, new Map(), compose(
+
+const delegatingReducer = new DelegatingReducer();
+const store = createStore(delegatingReducer.reducer(), new Map(), compose(
     applyMiddleware(sagaMiddleWare, localStorageMiddleware),
     devToolsStoreEnhancer()
 ));
@@ -76,6 +81,9 @@ function * application() {
     manifests
         .map(manifest => manifest[Object.keys(manifest)[0]])
         .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration}));
+
+    const reducers = globalRegistry.get('reducers').getAllAsList().map(element => element.reducer);
+    delegatingReducer.setReducer(handleActions(reducers));
 
     const configuration = yield system.getConfiguration;
 

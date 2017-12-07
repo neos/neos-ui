@@ -23,6 +23,12 @@
 			<trans-unit id="createNew" xml:space="preserve">
 				<source>Create new</source>
 			</trans-unit>
+			<trans-unit id="noMatchesFound" xml:space="preserve">
+				<source>No matches found</source>
+			</trans-unit>
+			<trans-unit id="searchBoxLeftToType" xml:space="preserve">
+				<source>Please enter ###CHARACTERS### more character</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

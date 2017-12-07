@@ -14,11 +14,6 @@ export default ({isMulti}) => WrappedComponent => {
         contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
     }))
     class ReferenceDataLoader extends PureComponent {
-        static defaultOptions = {
-            // start searching after 2 characters, as it was done in the old UI
-            threshold: 2
-        };
-
         static propTypes = {
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             options: PropTypes.shape({
@@ -42,7 +37,6 @@ export default ({isMulti}) => WrappedComponent => {
         };
 
         state = {
-            searchTerm: '',
             isLoading: false,
             options: [],
             searchOptions: [],
@@ -83,9 +77,7 @@ export default ({isMulti}) => WrappedComponent => {
         }
 
         handleSearchTermChange = searchTerm => {
-            this.setState({searchTerm});
-            const threshold = $get('options.threshold', this.props) || this.constructor.defaultOptions.threshold;
-            if (searchTerm && searchTerm.length >= threshold) {
+            if (searchTerm) {
                 this.setState({isLoading: true, searchOptions: []});
                 this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                     .then(searchOptions => {
@@ -102,6 +94,11 @@ export default ({isMulti}) => WrappedComponent => {
                             searchOptions
                         });
                     });
+            } else {
+                this.setState({
+                    isLoading: false,
+                    searchOptions: []
+                });
             }
         }
 
@@ -119,11 +116,11 @@ export default ({isMulti}) => WrappedComponent => {
                 <WrappedComponent
                     {...props}
                     options={options}
-                    searchTerm={this.state.searchTerm}
                     searchOptions={this.state.searchOptions}
                     displayLoadingIndicator={this.state.isLoading}
                     onSearchTermChange={this.handleSearchTermChange}
                     placeholder={this.props.options.placeholder}
+                    threshold={this.props.options.threshold}
                     />
             );
         }

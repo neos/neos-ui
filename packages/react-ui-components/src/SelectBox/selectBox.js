@@ -14,6 +14,7 @@ export default class SelectBox extends PureComponent {
         withoutGroupLabel: 'Without group',
         scrollable: true,
         showDropDownToggle: true,
+        threshold: 2,
         ListPreviewElement: SelectBox_Option_SingleLine
     };
 
@@ -113,8 +114,10 @@ export default class SelectBox extends PureComponent {
         // Search-As-You-Type related functionality
         // ------------------------------
         displaySearchBox: PropTypes.bool,
-        searchTerm: PropTypes.string,
         onSearchTermChange: PropTypes.func,
+        threshold: PropTypes.number,
+        searchBoxLeftToTypeLabel: PropTypes.string,
+        noMatchesFoundLabel: PropTypes.string,
 
         /**
          * if set to true, the search box is directly focussed once the SelectBox is rendered;
@@ -150,6 +153,7 @@ export default class SelectBox extends PureComponent {
     };
 
     state = {
+        searchTerm: '',
         isExpanded: false,
         focusedValue: ''
     };
@@ -164,11 +168,16 @@ export default class SelectBox extends PureComponent {
             theme,
             highlight,
             showDropDownToggle,
+            threshold,
+            displaySearchBox,
+            displayLoadingIndicator,
             ListPreviewElement,
 
             DropDown,
             SelectBox_ListPreview
         } = this.props;
+
+        const {searchTerm} = this.state;
 
         const {
             focusedValue,
@@ -182,6 +191,9 @@ export default class SelectBox extends PureComponent {
         });
 
         const optionValueAccessor = this.getOptionValueAccessor();
+
+        const searchTermLeftToType = displaySearchBox ? threshold - searchTerm.length : 0;
+        const noMatchesFound = searchTermLeftToType > 0 || displayLoadingIndicator ? false : !options.length;
 
         return (
             <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
@@ -199,6 +211,9 @@ export default class SelectBox extends PureComponent {
                             focusedValue={focusedValue}
                             onChange={this.handleChange}
                             onOptionFocus={this.handleOptionFocusChange}
+                            searchTermLeftToType={searchTermLeftToType}
+                            noMatchesFound={noMatchesFound}
+                            searchTerm={this.state.searchTerm}
                             />
                     </ul>
                 </DropDown.Contents>
@@ -212,6 +227,7 @@ export default class SelectBox extends PureComponent {
             displayLoadingIndicator,
             options,
             value,
+            allowEmpty,
 
             SelectBox_HeaderWithSearchInput,
             SelectBox_Header
@@ -225,12 +241,13 @@ export default class SelectBox extends PureComponent {
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
                     onSearchTermChange={this.handleSearchTermChange}
+                    searchTerm={this.state.searchTerm}
                     onKeyDown={this.handleKeyDown}
                     />
             );
         }
 
-        const showResetButton = Boolean(!displayLoadingIndicator && value && !displaySearchBox);
+        const showResetButton = Boolean(allowEmpty && !displayLoadingIndicator && value && !displaySearchBox);
 
         return (
             <SelectBox_Header
@@ -247,7 +264,9 @@ export default class SelectBox extends PureComponent {
         this.props.onValueChange(optionValueAccessor(option));
     }
 
-    handleDeleteClick = () => {
+    handleDeleteClick = event => {
+        // Don't open SelectBox on value clear
+        event.stopPropagation();
         this.props.onValueChange('');
     }
 
@@ -284,11 +303,17 @@ export default class SelectBox extends PureComponent {
         });
     }
 
-    handleSearchTermChange = value => {
+    handleSearchTermChange = searchTerm => {
+        if (searchTerm.length >= this.props.threshold) {
+            this.props.onSearchTermChange(searchTerm);
+        } else {
+            this.props.onSearchTermChange('');
+        }
         this.setState({
-            isExpanded: Boolean(value)
+            isExpanded: Boolean(searchTerm),
+            searchTerm
         });
-        this.props.onSearchTermChange(value);
+        this.props.onSearchTermChange(searchTerm);
     }
 
     /**

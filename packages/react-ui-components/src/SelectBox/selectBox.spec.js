@@ -12,8 +12,11 @@ describe('<SelectBox/>', () => {
         props = {
             theme: {
                 'wrapper': 'wrapperClassName',
-                'wrapper--highlight': 'wrapperHighlightClassName'
+                'wrapper--highlight': 'wrapperHighlightClassName',
+                'selectBoxHeader': 'selectBoxHeaderClassName'
             },
+            searchBoxLeftToTypeLabel: 'searchBoxLeftToTypeLabel',
+            noMatchesFoundLabel: 'noMatchesFoundLabel',
             onValueChange: jest.fn(),
             options: [],
             DropDown: createStubComponent(),

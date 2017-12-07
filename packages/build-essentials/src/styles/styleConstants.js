@@ -20,8 +20,6 @@ const config = {
         checkboxInput: ['context'],
         dropdownContents: ['context'],
         selectBoxContents: ['context'],
-        selectBoxLoadingIcon: ['context'],
-        selectBoxBtnDelete: ['context'],
         notInlineEditableOverlay: ['context'],
         calendarFakeInputMirror: ['context'],
         rdtPicker: ['context'],

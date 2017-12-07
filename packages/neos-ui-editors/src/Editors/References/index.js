@@ -20,7 +20,7 @@ export default class ReferencesEditor extends PureComponent {
         highlight: PropTypes.bool,
         placeholder: PropTypes.string,
         displayLoadingIndicator: PropTypes.bool,
-        searchTerm: PropTypes.string,
+        threshold: PropTypes.number,
         onSearchTermChange: PropTypes.func,
         onCreateNew: PropTypes.func,
         commit: PropTypes.func.isRequired,
@@ -40,13 +40,15 @@ export default class ReferencesEditor extends PureComponent {
             ListPreviewElement={ReferenceOption}
             createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
             placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
+            threshold={this.props.threshold}
+            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
             options={this.props.options}
             values={this.props.value}
             highlight={this.props.highlight}
             onValuesChange={this.handleValueChange}
             displayLoadingIndicator={this.props.displayLoadingIndicator}
             showDropDownToggle={false}
-            searchTerm={this.props.searchTerm}
             searchOptions={this.props.searchOptions}
             onSearchTermChange={this.props.onSearchTermChange}
             onCreateNew={this.props.onCreateNew}

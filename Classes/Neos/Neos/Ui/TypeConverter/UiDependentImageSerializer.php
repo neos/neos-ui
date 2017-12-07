@@ -5,7 +5,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Neos\Flow\Property\TypeConverter\AbstractTypeConverter;
-use Neos\Flow\Property\TypeConverter\PersistentObjectSerializer;
+use Neos\Media\TypeConverter\ImageInterfaceArrayPresenter;
 use Neos\Media\TypeConverter\ImageInterfaceJsonSerializer;
 use Neos\Neos\Ui\Fusion\Helper\ActivationHelper;
 
@@ -33,7 +33,7 @@ class UiDependentImageSerializer extends AbstractTypeConverter
     {
         $activationHelper = $this->objectManager->get(ActivationHelper::class);
 
-        $innerConverter = $this->objectManager->get(PersistentObjectSerializer::class);
+        $innerConverter = $this->objectManager->get(ImageInterfaceArrayPresenter::class);
         if (!$activationHelper->enableNewBackend()) {
             // Old UI is active so we need to deliver the JSON as string.
             $innerConverter = $this->objectManager->get(ImageInterfaceJsonSerializer::class);

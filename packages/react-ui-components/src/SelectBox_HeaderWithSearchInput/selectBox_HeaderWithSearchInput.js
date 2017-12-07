@@ -21,6 +21,9 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
         onSearchTermChange: PropTypes.func.isRequired,
         setFocus: PropTypes.bool,
 
+        // For keyboard handling
+        onKeyDown: PropTypes.func,
+
         /* ------------------------------
          * Theme & Dependencies
          * ------------------------------ */
@@ -39,6 +42,7 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
         const {
             searchTerm,
             onSearchTermChange,
+            onKeyDown,
             placeholder,
             displayLoadingIndicator,
             setFocus,
@@ -64,6 +68,7 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
                     className={theme.selectBoxHeaderWithSearchInput__input}
                     value={searchTerm}
                     onChange={onSearchTermChange}
+                    onKeyDown={onKeyDown}
                     placeholder={placeholder}
                     setFocus={setFocus}
                     type="search"

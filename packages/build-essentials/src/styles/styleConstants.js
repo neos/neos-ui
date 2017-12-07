@@ -10,6 +10,7 @@ const config = {
     zIndex: {
         secondaryToolbar: ['linkIconButtonFlyout'],
         flashMessageContainer: '2',
+        loadingIndicatorContainer: '2',
         secondaryInspector: ['context', 'close'],
         secondaryInspectorElevated: ['context', 'dropdownContents'],
         dialog: ['context'],

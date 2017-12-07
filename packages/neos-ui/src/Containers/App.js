@@ -15,6 +15,7 @@ const App = ({globalRegistry, menu}) => {
     const LeftSideBar = containerRegistry.get('LeftSideBar');
     const ContentCanvas = containerRegistry.get('ContentCanvas');
     const RightSideBar = containerRegistry.get('RightSideBar');
+    const LoadingIndicator = containerRegistry.get('SecondaryToolbar/LoadingIndicator');
 
     // HINT: the SecondaryToolbar must be *BELOW* the
     // ContentCanvas; to ensure the SecondaryToolbar is rendered
@@ -25,6 +26,7 @@ const App = ({globalRegistry, menu}) => {
             <Modals/>
             <FlashMessages/>
             <FullScreen/>
+            <LoadingIndicator/>
             <PrimaryToolbar/>
             <ContentCanvas/>
             <SecondaryToolbar/>

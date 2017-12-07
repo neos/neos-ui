@@ -173,8 +173,7 @@ export default class ImageEditor extends Component {
 
     handleMediaSelected = assetIdentifier => {
         const {commit} = this.props;
-        const value = this.getValue();
-        const newAsset = $set('__identity', assetIdentifier, value);
+        const newAsset = {__identity: assetIdentifier};
 
         this.setState({
             image: null,

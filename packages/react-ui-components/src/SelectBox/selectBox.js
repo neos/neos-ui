@@ -311,7 +311,7 @@ export default class SelectBox extends PureComponent {
             isExpanded: Boolean(searchTerm),
             searchTerm
         });
-        this.props.onSearchTermChange(value);
+        this.props.onSearchTermChange(searchTerm);
     }
 
     /**

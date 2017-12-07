@@ -225,6 +225,7 @@ export default class SelectBox extends PureComponent {
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
                     onSearchTermChange={this.handleSearchTermChange}
+                    onKeyDown={this.handleKeyDown}
                     />
             );
         }
@@ -298,7 +299,7 @@ export default class SelectBox extends PureComponent {
     }
 
     handleKeyDown = e => {
-        if (this.state.isExpanded && e) {
+        if (this.state.isExpanded && e && ['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
             // do not scroll while we are doing keyboard interaction
             e.preventDefault();
 
@@ -322,6 +323,11 @@ export default class SelectBox extends PureComponent {
                 }
 
                 this.setState({
+                    isExpanded: false
+                });
+            } else if (e.key === 'Escape') {
+                this.setState({
+                    focusedValue: '',
                     isExpanded: false
                 });
             }

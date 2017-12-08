@@ -10,7 +10,7 @@ export default class LinkOption extends PureComponent {
         option: PropTypes.shape({
             label: PropTypes.string.isRequired,
             loaderUri: PropTypes.string.isRequired,
-            dataType: PropTypes.string.isRequired
+            dataType: PropTypes.string
         })
     };
 

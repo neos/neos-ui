@@ -65,7 +65,8 @@ class LinkEditor extends PureComponent {
             const options = [{
                 icon: 'icon-external-link',
                 identifier: this.props.value,
-                label: this.props.value
+                label: this.props.value,
+                loaderUri: this.props.value
             }];
 
             this.setState({
@@ -96,7 +97,8 @@ class LinkEditor extends PureComponent {
             const searchOptions = [{
                 icon: 'icon-external-link',
                 identifier: searchTerm,
-                label: searchTerm
+                label: searchTerm,
+                loaderUri: searchTerm
             }];
 
             this.setState({
@@ -141,7 +143,6 @@ class LinkEditor extends PureComponent {
                 loadingLabel={this.props.i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main')}
                 displayLoadingIndicator={this.state.isLoading}
                 displaySearchBox={true}
-                searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
                 ListPreviewElement={LinkOption}
                 noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}

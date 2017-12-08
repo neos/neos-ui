@@ -1,0 +1,3 @@
+prototype(Neos.Fusion:GlobalCacheIdentifiers) {
+    uiVersion = ${Neos.Ui.Activation.enableNewBackend() ? 'new' : 'old'}
+}

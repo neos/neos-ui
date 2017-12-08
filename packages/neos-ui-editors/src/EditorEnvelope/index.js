@@ -31,7 +31,8 @@ export default class EditorEnvelope extends PureComponent {
 
     renderEditorComponent() {
         const {editor, editorRegistry} = this.props;
-        const editorDefinition = editorRegistry.get(editor);
+        const editorName = editor.replace('Content/Inspector/Editors', 'Neos.Neos/Inspector/Editors');
+        const editorDefinition = editorRegistry.get(editorName);
 
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;

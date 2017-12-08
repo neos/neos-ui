@@ -73,7 +73,6 @@ export default class SecondaryToolbar extends PureComponent {
         });
 
         const Toolbar = this.getToolbarComponent();
-        const LoadingIndicator = containerRegistry.get('SecondaryToolbar/LoadingIndicator');
         const SecondaryToolbarRight = containerRegistry.getChildren('SecondaryToolbar/Right');
 
         return (
@@ -83,7 +82,6 @@ export default class SecondaryToolbar extends PureComponent {
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     {SecondaryToolbarRight.map((Item, key) => <Item key={key}/>)}
                 </div>
-                <LoadingIndicator/>
             </div>
         );
     }

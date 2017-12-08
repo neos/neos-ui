@@ -1,10 +1,10 @@
 .loadingIndicator__container {
-    left: 50%;
-    top: 39px;
+    left: 0;
+    top: 0;
+    height: 2px;
     position: absolute;
-    transform: translateX(-50%);
-    padding: 0 320px;
-    width: 100%;
+    width: 100vw;
+    z-index: var(--zIndex-LoadingIndicatorContainer);
 }
 
 .loadingIndicator {

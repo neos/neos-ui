@@ -29,10 +29,15 @@ export default class EditorEnvelope extends PureComponent {
         return `#__neos__editor__property---${this.props.identifier}`;
     }
 
-    renderEditorComponent() {
+    getEditorDefinition() {
         const {editor, editorRegistry} = this.props;
+        // Support legacy view definitions
         const editorName = editor.replace('Content/Inspector/Editors', 'Neos.Neos/Inspector/Editors');
-        const editorDefinition = editorRegistry.get(editorName);
+        return editorRegistry.get(editorName);
+    }
+
+    renderEditorComponent() {
+        const editorDefinition = this.getEditorDefinition();
 
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;
@@ -45,7 +50,7 @@ export default class EditorEnvelope extends PureComponent {
             );
         }
 
-        return (<div className={style.envelope__error}>Missing Editor {editor}</div>);
+        return (<div className={style.envelope__error}>Missing Editor {this.props.editor}</div>);
     }
 
     componentDidCatch(error, errorInfo) {
@@ -56,8 +61,7 @@ export default class EditorEnvelope extends PureComponent {
     }
 
     renderLabel() {
-        const {editor, editorRegistry} = this.props;
-        const editorDefinition = editorRegistry.get(editor);
+        const editorDefinition = this.getEditorDefinition();
 
         if (editorDefinition && editorDefinition.hasOwnLabel) {
             return null;

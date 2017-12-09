@@ -59,16 +59,18 @@ export default class NodeType extends PureComponent {
         }
 
         // Show all nodetypes if is site root node
-        const rawOptions = isSiteNode ? nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document')) : allowedSiblingNodeTypesForFocusedNode;
-        const options = rawOptions
-            // Filter out system nodetypes (i.e. without groups)
-            // ToDo: move this logic to some more generic place, maybe nodeTypesRegistry
-            .filter(nodeType => $get('ui.group', nodeTypesRegistry.get(nodeType)))
-            .map(nodeType => ({
-                icon: $get('ui.icon', nodeTypesRegistry.get(nodeType)),
-                label: i18nRegistry.translate($get('ui.label', nodeTypesRegistry.get(nodeType))) || nodeType,
-                value: nodeType
-            }));
+        const nodeTypeFilter = isSiteNode ? nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document')) : allowedSiblingNodeTypesForFocusedNode;
+        const options = nodeTypesRegistry.getGroupedNodeTypeList(nodeTypeFilter).reduce((result, group) => {
+            group.nodeTypes.forEach(nodeType => {
+                result.push({
+                    icon: $get('ui.icon', nodeType),
+                    label: i18nRegistry.translate(nodeType.label) || nodeType.name,
+                    value: nodeType.name,
+                    group: i18nRegistry.translate(group.label)
+                });
+            });
+            return result;
+        }, []);
 
         if (options.length) {
             return <SelectBox options={options} highlight={highlight} value={value} onValueChange={commit}/>;

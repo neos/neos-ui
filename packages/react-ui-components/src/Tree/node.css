@@ -48,7 +48,7 @@
     position: relative;
     display: inline-block;
     min-width: 100%;
-    padding: .2em 0;
+    padding: .1em 0;
 
     border-left: 2px solid transparent;
 
@@ -92,7 +92,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
-    line-height: 1;
+    line-height: 1.5;
     vertical-align: middle;
 }
 .header__label {

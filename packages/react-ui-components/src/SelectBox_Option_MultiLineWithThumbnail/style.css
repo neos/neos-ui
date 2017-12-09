@@ -1,6 +1,7 @@
 .multiLineWithThumbnail__item {
     box-sizing: content-box;
     line-height: 20px;
+    padding: 0;
 }
 
 .multiLineWithThumbnail__secondaryLabel {
@@ -16,8 +17,10 @@
 }
 
 .multiLineWithThumbnail__image {
-    max-height: 1.5em;
-    max-width: 1.5em;
+    width: calc(1.33 * var(--goldenUnit));
+    height: var(--goldenUnit);
+    object-fit: contain;
+    background-color: var(--brandColorsContrastDarkest);
     margin-right: .75em;
     display: inline-block;
     vertical-align: middle;

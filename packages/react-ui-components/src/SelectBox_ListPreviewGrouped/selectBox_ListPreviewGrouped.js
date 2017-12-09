@@ -20,7 +20,8 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
 
         theme: PropTypes.shape({
             'selectBox__item': PropTypes.string,
-            'selectBox__item--isGroup': PropTypes.string
+            'selectBox__item--isGroup': PropTypes.string,
+            'selectBox__groupHeader': PropTypes.string
         }),
 
         // API with SelectBox
@@ -69,9 +70,9 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
         });
         return (
             <li key={groupLabel} className={groupClassName}>
-                <span>
+                <div className={theme.selectBox__groupHeader}>
                     {groupLabel}
-                </span>
+                </div>
                 <ul>
                     {optionsList.map(this.renderOption)}
                 </ul>
@@ -83,7 +84,8 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
         const {
             ListPreviewElement,
             optionValueAccessor,
-            focusedValue
+            focusedValue,
+            theme
         } = this.props;
 
         const isHighlighted = optionValueAccessor(option) === focusedValue;
@@ -93,7 +95,7 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
         }
 
         return (
-            <li key={index} role="option">
+            <li key={index} role="option" className={theme.selectBox__item}>
                 <ListPreviewElement
 
                     isHighlighted={isHighlighted}

@@ -18,6 +18,9 @@
     button {
         font-size: var(--baseFontSize);
     }
+    ul {
+        padding: 0;
+    }
     /* webkit adds some weird spacing otherwise */
     li {
         display: block;

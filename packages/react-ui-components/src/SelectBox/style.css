@@ -39,3 +39,10 @@
 .selectBox__item {
     border-top: 1px solid var(--brandColorsContrastDarker);
 }
+
+.selectBox__groupHeader {
+    background-color: var(--brandColorsContrastDark);
+    font-weight: bold;
+    padding-left: var(--spacing);
+    line-height: var(--goldenUnit);
+}

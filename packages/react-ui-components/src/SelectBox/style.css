@@ -11,6 +11,7 @@
     composes: reset from './../reset.css', dropDown from './../DropDown/style.css';
     position: relative;
     display: inline-block;
+    height: 40px;
 }
 
 .selectBox__btn {

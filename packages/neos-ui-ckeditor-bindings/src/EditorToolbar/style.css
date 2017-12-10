@@ -19,7 +19,6 @@
     position: fixed;
     z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
     width: 460px;
-    height: 56px;
     border: var(--halfSpacing) solid var(--brandColorsContrastDarker);
 }
 

@@ -20,6 +20,8 @@
     z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
     width: 460px;
     border: var(--halfSpacing) solid var(--brandColorsContrastDarker);
+    /* 8px border top and bottom */
+    height: calc(var(--goldenUnit) + 16px);
 }
 
 .linkIconButton__item {

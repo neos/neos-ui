@@ -3,33 +3,9 @@
     display: flex;
 }
 
-.selectBoxHeader:after {
-    display: block;
-    content: '';
-    position: absolute;
-    width: 1px;
-    height: 24px;
-    top: 8px;
-    right: 41px;
-    background-color: #fff;
-    opacity: .15;
-}
-
 .selectBoxHeader__icon {
     composes: reset from './../reset.css';
     line-height: var(--goldenUnit);
-}
-
-.selectBoxHeader__icon:before {
-    display: block;
-    content: '';
-    position: absolute;
-    width: 1px;
-    height: 24px;
-    top: 8px;
-    right: 41px;
-    background-color: #fff;
-    opacity: .15;
 }
 
 .selectBoxHeader__label {

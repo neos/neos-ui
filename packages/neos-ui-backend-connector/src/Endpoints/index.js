@@ -109,7 +109,7 @@ export default routes => {
             'Content-Type': 'application/json'
         }
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadPluginViews = (identifier, workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.content.loadPluginViews, {identifier, workspaceName, dimensions}),
@@ -139,7 +139,7 @@ export default routes => {
             body: data
         };
     }).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const extractFileEndingFromUri = uri => {
         const parts = uri.split('.');

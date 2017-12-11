@@ -16,7 +16,8 @@ export default class CutSelectedNode extends PureComponent {
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         isActive: PropTypes.bool.isRequired,
         canBeEdited: PropTypes.bool.isRequired,
-        cutNode: PropTypes.func.isRequired
+        cutNode: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleCutSelectedNodeClick = () => {
@@ -30,7 +31,8 @@ export default class CutSelectedNode extends PureComponent {
             destructiveOperationsAreDisabled,
             isActive,
             className,
-            canBeEdited
+            canBeEdited,
+            i18nRegistry
         } = this.props;
 
         return (
@@ -41,6 +43,7 @@ export default class CutSelectedNode extends PureComponent {
                 onClick={this.handleCutSelectedNodeClick}
                 icon="cut"
                 hoverStyle="clean"
+                title={i18nRegistry.translate('cut')}
                 />
         );
     }

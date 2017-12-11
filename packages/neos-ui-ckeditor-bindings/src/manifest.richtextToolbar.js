@@ -1,16 +1,27 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 import {$get} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import LinkIconButton from './EditorToolbar/LinkIconButton';
 import StyleSelect from './EditorToolbar/StyleSelect';
 import RichTextToolbarRegistry from './registry/RichTextToolbarRegistry';
 
-const IconButtonComponent = props => {
-    const finalProps = omit(props, ['formattingRule']);
-    return (<IconButton {...finalProps}/>);
-};
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
+class IconButtonComponent extends PureComponent {
+    static propTypes = {
+        i18nRegistry: PropTypes.object,
+        tooltip: PropTypes.string
+    };
+    render() {
+        const finalProps = omit(this.props, ['formattingRule', 'i18nRegistry', 'tooltip']);
+        return (<IconButton {...finalProps} title={this.props.i18nRegistry.translate(this.props.tooltip)}/>);
+    }
+}
 
 //
 // Create richtext editing toolbar registry
@@ -57,7 +68,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'bold',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__bold'
     });
 
     // Italic
@@ -67,7 +79,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'italic',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__italic'
     });
 
     // Underline
@@ -77,7 +90,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'underline',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__underline'
     });
 
     // Subscript
@@ -87,7 +101,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'subscript',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__subscript'
     });
 
     // Superscript
@@ -97,7 +112,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'superscript',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__superscript'
     });
 
     // Strike-Through
@@ -107,7 +123,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'strikethrough',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__strikethrough'
     });
 
     // Strike-Through
@@ -117,7 +134,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'link',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__link'
     });
 
     /**
@@ -188,7 +206,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'list-ol',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__ordered-list'
     });
 
     // unordered list
@@ -198,7 +217,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'list-ul',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__unordered-list'
     });
 
     // Indent
@@ -209,6 +229,7 @@ export default ckEditorRegistry => {
 
         icon: 'indent',
         hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__indent',
         isVisibleWhen: (inlineEditorOptions, formattingUnderCursor) => {
             return ((Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions))) &&
                 formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED);
@@ -223,6 +244,7 @@ export default ckEditorRegistry => {
 
         icon: 'outdent',
         hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__outdent',
         isVisibleWhen: (inlineEditorOptions, formattingUnderCursor) => {
             return ((Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions))) &&
                 formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED);
@@ -238,7 +260,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'align-left',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__align-left'
     });
 
     richtextToolbar.set('aligncenter', {
@@ -247,7 +270,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'align-center',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__align-center'
     });
 
     richtextToolbar.set('alignright', {
@@ -256,7 +280,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'align-right',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__align-right'
     });
 
     richtextToolbar.set('alignjustify', {
@@ -265,7 +290,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'align-justify',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__align-justify'
     });
 
     /**
@@ -277,7 +303,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'table',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__table'
     });
 
     /**
@@ -289,7 +316,8 @@ export default ckEditorRegistry => {
         callbackPropName: 'onClick',
 
         icon: 'eraser',
-        hoverStyle: 'brand'
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__remove-format'
     });
 
     return richtextToolbar;

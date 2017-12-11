@@ -15,7 +15,8 @@ export default class CopySelectedNode extends PureComponent {
         contextPath: PropTypes.string,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         isActive: PropTypes.bool.isRequired,
-        copyNode: PropTypes.func.isRequired
+        copyNode: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleCopySelectedNodeClick = () => {
@@ -25,7 +26,7 @@ export default class CopySelectedNode extends PureComponent {
     }
 
     render() {
-        const {destructiveOperationsAreDisabled, className, isActive} = this.props;
+        const {destructiveOperationsAreDisabled, className, isActive, i18nRegistry} = this.props;
 
         return (
             <IconButton
@@ -35,6 +36,7 @@ export default class CopySelectedNode extends PureComponent {
                 onClick={this.handleCopySelectedNodeClick}
                 icon="copy"
                 hoverStyle="clean"
+                title={i18nRegistry.translate('copy')}
                 />
         );
     }

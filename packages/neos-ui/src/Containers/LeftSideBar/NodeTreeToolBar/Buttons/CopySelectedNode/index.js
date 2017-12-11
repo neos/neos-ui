@@ -13,7 +13,9 @@ export default class CopySelectedNode extends PureComponent {
 
         isDisabled: PropTypes.bool,
 
-        isActive: PropTypes.bool
+        isActive: PropTypes.bool,
+
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleClick = () => {
@@ -26,7 +28,8 @@ export default class CopySelectedNode extends PureComponent {
         const {
             className,
             isDisabled,
-            isActive
+            isActive,
+            i18nRegistry
         } = this.props;
 
         return (
@@ -37,6 +40,7 @@ export default class CopySelectedNode extends PureComponent {
                 onClick={this.handleClick}
                 icon="copy"
                 hoverStyle="clean"
+                title={i18nRegistry.translate('copy')}
                 />
         );
     }

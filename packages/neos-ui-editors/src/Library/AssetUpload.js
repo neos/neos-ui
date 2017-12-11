@@ -58,8 +58,7 @@ export default class AssetUpload extends PureComponent {
     uploadMultipleFiles(index, values, files) {
         index--;
         const {uploadAsset} = backend.get().endpoints;
-        const {onAfterUpload, siteNodePath} = this.props;
-        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
+        const {onAfterUpload, focusedNode, siteNodePath} = this.props;
 
         if (index < 0) {
             if (onAfterUpload) {
@@ -70,7 +69,7 @@ export default class AssetUpload extends PureComponent {
             });
             return;
         }
-        uploadAsset(files[index], siteNodeName, 'Asset').then(res => {
+        uploadAsset(files[index], this.props.propertyName, focusedNode, siteNodePath).then(res => {
             values.push(res.assetUuid);
             this.uploadMultipleFiles(index, values, files);
         });

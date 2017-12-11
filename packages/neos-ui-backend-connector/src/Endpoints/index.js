@@ -102,7 +102,7 @@ export default routes => {
         .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadMasterPlugins = (workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: urlWithParams(routes.core.content.loadMasterPlugins, { workspaceName, dimensions }),
+        url: urlWithParams(routes.core.content.loadMasterPlugins, {workspaceName, dimensions}),
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -112,7 +112,7 @@ export default routes => {
         .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadPluginViews = (identifier, workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: urlWithParams(routes.core.content.loadPluginViews, { identifier, workspaceName, dimensions }),
+        url: urlWithParams(routes.core.content.loadPluginViews, {identifier, workspaceName, dimensions}),
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -148,7 +148,7 @@ export default routes => {
     };
 
     const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: urlWithParams(routes.core.service.assets, { searchTerm }),
+        url: urlWithParams(routes.core.service.assets, {searchTerm}),
 
         method: 'GET',
         credentials: 'include'
@@ -229,8 +229,8 @@ export default routes => {
 
     const parseGetSingleNodeResult = requestPromise => {
         return requestPromise.then(result =>
-            result.text().then(bodyAsString => ({ bodyAsString, result }))
-        ).then(({ bodyAsString, result }) => {
+            result.text().then(bodyAsString => ({bodyAsString, result}))
+        ).then(({bodyAsString, result}) => {
             if (result.status === 200) {
                 const d = document.createElement('div');
                 d.innerHTML = bodyAsString;
@@ -273,7 +273,7 @@ export default routes => {
         credentials: 'include'
     }))).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const adoptNodeToOtherDimension = ({ identifier, targetDimensions, sourceDimensions, workspaceName, copyContent = false }) => parseGetSingleNodeResult(fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    const adoptNodeToOtherDimension = ({identifier, targetDimensions, sourceDimensions, workspaceName, copyContent = false}) => parseGetSingleNodeResult(fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.core.service.nodes,
 
         method: 'POST',

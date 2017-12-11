@@ -36,19 +36,19 @@ class TextInput extends PureComponent {
         onBlur: PropTypes.func,
 
         /**
-         * An array of error messages
-         */
-        validationErrors: PropTypes.array,
-
-        /**
          * Highlight input
          */
         highlight: PropTypes.bool,
 
         /**
-         * This prop controls if the CheckBox is disabled or not.
+         * This prop controls if the TextInput is disabled or not.
          */
         disabled: PropTypes.bool,
+
+        /*
+         * This prop controls if the TextInput is marked as invalid or not.
+         */
+        invalid: PropTypes.bool,
 
         /**
          * This prob controls what function is triggered when the enter key is pressed
@@ -72,12 +72,7 @@ class TextInput extends PureComponent {
             'textInput': PropTypes.string,
             'textInput--invalid': PropTypes.string,
             'textInput--highlight': PropTypes.string
-        }).isRequired,
-
-        /**
-         * Static component dependencies which are injected from the outside (index.js)
-         */
-        TooltipComponent: PropTypes.any.isRequired
+        }).isRequired
     };
 
     componentDidMount() {
@@ -106,14 +101,13 @@ class TextInput extends PureComponent {
 
     render() {
         const {
-            TooltipComponent,
             placeholder,
             className,
-            validationErrors,
             theme,
             highlight,
             containerClassName,
             disabled,
+            invalid,
             type,
             ...restProps
         } = this.props;
@@ -122,19 +116,13 @@ class TextInput extends PureComponent {
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textInput]: true,
-            [theme['textInput--invalid']]: validationErrors && validationErrors.length > 0,
+            [theme['textInput--invalid']]: invalid,
             [theme['textInput--highlight']]: highlight,
             [theme['textInput--disabled']]: disabled
         });
-
-        const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
-            return <div key={key}>{validationError}</div>;
-        });
-
         const inputRef = el => {
             this.inputRef = el;
         };
-
         return (
             <div className={containerClassName}>
                 <input
@@ -150,7 +138,6 @@ class TextInput extends PureComponent {
                     onKeyPress={this.handleKeyPress}
                     ref={inputRef}
                     />
-                {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>
         );
     }

@@ -6,6 +6,10 @@ const IconButton = props => {
     const {
         IconComponent,
         ButtonComponent,
+        TooltipComponent,
+        tooltipLabel,
+        tooltipPosition,
+        tooltipWrapperClassName,
         className,
         theme,
         icon,
@@ -20,12 +24,22 @@ const IconButton = props => {
         [theme['iconButton--disabled']]: disabled
     });
 
-    return (
+    const button = (
         <ButtonComponent {...rest} size={size} className={finalClassName}>
             <IconComponent icon={icon}/>
         </ButtonComponent>
     );
+
+    if (tooltipLabel) {
+        return (
+            <TooltipComponent label={tooltipLabel} position={tooltipPosition} wrapperClassName={tooltipWrapperClassName}>
+                {button}
+            </TooltipComponent>
+        );
+    }
+    return button;
 };
+
 IconButton.propTypes = {
     /**
      * The icon key which gets passed to the Icon Component.
@@ -36,6 +50,11 @@ IconButton.propTypes = {
      * An optional `className` to attach to the wrapper.
      */
     className: PropTypes.string,
+
+    /**
+     * An optional `className` to align tooltip item.
+     */
+    tooltipWrapperClassName: PropTypes.string,
 
     /**
      * Defines the size of the icon button.
@@ -54,6 +73,19 @@ IconButton.propTypes = {
      */
     IconComponent: PropTypes.any.isRequired,
     ButtonComponent: PropTypes.any.isRequired,
+    TooltipComponent: PropTypes.any.isRequired,
+
+    /**
+     * The content shwon inside the tooltip wich appears on mouse over. Can
+     * either be a simple string or other components
+     */
+    tooltipLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+    /**
+     * The tooltip has to be aligned manually
+     * in case that tooltip is at the left or right end of the browser
+     */
+    tooltipPosition: PropTypes.oneOf(['left', 'right']).isRequired,
 
     /**
      * Optional disabled flag
@@ -63,7 +95,8 @@ IconButton.propTypes = {
 IconButton.defaultProps = {
     size: 'regular',
     style: 'transparent',
-    hoverStyle: 'brand'
+    hoverStyle: 'brand',
+    tooltipPosition: 'left'
 };
 
 export default IconButton;

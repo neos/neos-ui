@@ -1,6 +1,8 @@
 .propertyGroupLabel {
-    width: 100%;
-    overflow-x: hidden;
     text-overflow: ellipsis;
-    padding: 0 var(--goldenUnit) 0 var(--spacing);
+}
+
+.propertyGroupIcon {
+    line-height: var(--goldenUnit);
+    padding-right: var(--spacing);
 }

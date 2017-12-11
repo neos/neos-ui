@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ToolTip/> should render correctly. 1`] = `
+exports[`<Tooltip/> should render correctly. 1`] = `
 <div
-  className="tooltipClassName"
+  className=""
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  onTouchStart={[Function]}
 >
-  <div />
-  <div>
-    Foo children
-  </div>
+  Foo children
 </div>
 `;

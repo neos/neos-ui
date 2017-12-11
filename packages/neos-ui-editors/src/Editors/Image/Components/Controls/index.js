@@ -37,6 +37,8 @@ export default class Controls extends PureComponent {
         return (
             <span>
                 <IconButton
+                    tooltipLabel={i18nRegistry.translate('Neos.Neos:Main:media')}
+                    tooltipPosition="right"
                     icon="camera"
                     size="small"
                     style="lighter"
@@ -45,6 +47,8 @@ export default class Controls extends PureComponent {
                     title={i18nRegistry.translate('Neos.Neos:Main:media')}
                     />
                 <IconButton
+                    tooltipLabel={i18nRegistry.translate('Neos.Media.Browser:Main:chooseFile')}
+                    tooltipPosition="right"
                     icon="upload"
                     size="small"
                     style="lighter"
@@ -53,6 +57,7 @@ export default class Controls extends PureComponent {
                     title={i18nRegistry.translate('Neos.Media.Browser:Main:chooseFile')}
                     />
                 <IconButton
+                    tooltipLabel={i18nRegistry.translate('Neos.Neos:Main:remove')}
                     icon="remove"
                     size="small"
                     style="lighter"
@@ -72,9 +77,10 @@ export default class Controls extends PureComponent {
             return (
                 <IconButton
                     icon="crop"
+                    tooltipLabel={i18nRegistry.translate('Neos.Neos:Main:crop')}
+                    tooltipWrapperClassName={style.cropButton}
                     size="small"
                     style="lighter"
-                    className={style.cropButton}
                     onClick={onCrop}
                     title={i18nRegistry.translate('Neos.Neos:Main:crop')}
                     />

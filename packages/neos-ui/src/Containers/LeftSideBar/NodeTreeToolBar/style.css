@@ -1,16 +1,8 @@
-.toolBar {
-    border-top: 1px solid var(--brandColorsContrastDark);
-    border-bottom: 1px solid var(--brandColorsContrastDark);
-    &:first-child {
-        border-top: 0;
-    }
-}
 .toolBar__btnGroup {
-    &:before,
-    &:after {
-        content: '';
-        display: table;
-    }
+    display: flex;
+    height: var(--goldenUnit);
+    justify-content: space-between;
+
     &:after {
         clear: both;
     }

@@ -27,7 +27,8 @@ describe('<Tabs/>', () => {
                 'tabNavigation__itemBtnIcon--hasLabel': 'baseTabsNavigationItemBtnIconWithLabelClassName'
             },
             children: 'Foo children',
-            IconComponent: createStubComponent()
+            IconComponent: createStubComponent(),
+            TooltipComponent: createStubComponent(),
         };
     });
 

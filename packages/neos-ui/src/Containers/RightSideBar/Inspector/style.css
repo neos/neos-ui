@@ -28,9 +28,9 @@
     }
     &::after {
         content: '';
-        top: 0;
-        right: 0;
-        height: var(--goldenUnit);
-        width: var(--sidebarWidth);
+            top: 0;
+            right: 0;
+            height: var(--goldenUnit);
+            width: var(--sidebarWidth);
     }
 }

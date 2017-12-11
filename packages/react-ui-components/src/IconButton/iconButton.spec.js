@@ -11,6 +11,8 @@ describe('<IconButton/>', () => {
         props = {
             IconComponent: createStubComponent(),
             ButtonComponent: createStubComponent(),
+            TooltipComponent: createStubComponent(),
+
             icon: 'fooIconName',
             theme: {/* eslint-disable quote-props */
                 'iconButton': 'iconButtonClassName'

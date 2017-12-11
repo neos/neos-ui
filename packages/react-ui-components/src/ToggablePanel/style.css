@@ -7,10 +7,13 @@
     composes: reset from './../reset.css';
     height: var(--goldenUnit);
     margin: 0;
-    padding: 0 var(--spacing);
+    padding: 0 0 0 var(--spacing);
     line-height: var(--goldenUnit);
     font-weight: bold;
     font-size: var(--baseFontSize);
+    border-top: 1px solid var(--brandColorsContrastDark);
+    border-bottom: 1px solid var(--brandColorsContrastDark);
+    display: flex;
 }
 
 .panel__headline--noPadding {
@@ -19,10 +22,14 @@
 
 .panel__toggleBtn {
     composes: reset from './../reset.css';
-    position: absolute;
-    top: 0;
-    right: 0;
 }
+
+.panel__toggleBtnTooltip {
+    flex: 0 0 1em;
+    margin-left: auto;
+    z-index: inherit;
+}
+
 .panel__contents {
     composes: reset from './../reset.css';
     padding: 0 var(--spacing);

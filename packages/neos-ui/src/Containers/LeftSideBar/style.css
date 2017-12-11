@@ -2,8 +2,7 @@
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
-
-    padding-top: 41px;
+    padding-top: calc(var(--goldenUnit) + 1px);
     transition: var(--transition-Default)  ease transform;
     will-change: transform;
 

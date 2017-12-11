@@ -3,6 +3,7 @@
 exports[`<TextArea/> should render correctly. 1`] = `
 <div>
   <TextareaAutosize
+    TooltipComponent={[Function]}
     aria-disabled="false"
     aria-multiline="true"
     className=""

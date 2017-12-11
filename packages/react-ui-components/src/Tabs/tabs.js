@@ -37,10 +37,11 @@ export default class Tabs extends PureComponent {
             'tabNavigation__itemBtnIcon': PropTypes.string
         }).isRequired,
 
-        /**
+        /*
          * Static component dependencies which are injected from the outside (index.js)
          */
-        IconComponent: PropTypes.any.isRequired
+        IconComponent: PropTypes.any.isRequired,
+        TooltipComponent: PropTypes.any.isRequired
     };
 
     static defaultProps = {
@@ -68,6 +69,7 @@ export default class Tabs extends PureComponent {
     renderMenuItems() {
         const {
             IconComponent,
+            TooltipComponent,
             theme,
             children
         } = this.props;
@@ -81,8 +83,10 @@ export default class Tabs extends PureComponent {
                 onClick={this.handleTabNavItemClick}
                 isActive={activeTab === index}
                 IconComponent={IconComponent}
+                TooltipComponent={TooltipComponent}
                 theme={theme}
                 title={panel.props.title}
+                tooltipLabel={panel.props.tooltipLabel}
                 icon={panel.props.icon}
                 />
         ));
@@ -151,6 +155,12 @@ export class TabMenuItem extends PureComponent {
         title: PropTypes.string,
 
         /**
+         * An optional label to show in a tooltip. Can be either a string or
+         * any children/component
+         */
+        tooltipLabel: PropTypes.any,
+
+        /**
          * The click handler which will be called with the passed index as it's only argument.
          */
         onClick: PropTypes.func.isRequired,
@@ -178,7 +188,8 @@ export class TabMenuItem extends PureComponent {
         /**
          * Static component dependencies which are injected from the outside (index.js)
          */
-        IconComponent: PropTypes.any.isRequired
+        IconComponent: PropTypes.any.isRequired,
+        TooltipComponent: PropTypes.any.isRequired
     };
 
     static defaultProps = {
@@ -195,6 +206,8 @@ export class TabMenuItem extends PureComponent {
             isActive,
             index,
             IconComponent,
+            TooltipComponent,
+            tooltipLabel,
             icon,
             title,
             ...restProps
@@ -211,16 +224,18 @@ export class TabMenuItem extends PureComponent {
 
         return (
             <li className={finalClassName} role="presentation" {...rest}>
-                <button
-                    className={theme.tabNavigation__itemBtn}
-                    onClick={this.handleClick}
-                    role="tab"
-                    aria-selected={isActive ? 'true' : 'false'}
-                    aria-controls={`section${index}`}
-                    >
-                    {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
-                    {title}
-                </button>
+                <TooltipComponent label={tooltipLabel} position="right">
+                    <button
+                        className={theme.tabNavigation__itemBtn}
+                        onClick={this.handleClick}
+                        role="tab"
+                        aria-selected={isActive ? 'true' : 'false'}
+                        aria-controls={`section${index}`}
+                        >
+                        {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
+                        {title}
+                    </button>
+                </TooltipComponent>
             </li>
         );
     }

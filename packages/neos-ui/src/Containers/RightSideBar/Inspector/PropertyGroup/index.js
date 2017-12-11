@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import {Maybe} from 'monet';
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
+import mergeClassNames from 'classnames';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
 import InspectorEditorEnvelope from '../InspectorEditorEnvelope/index';
 import InspectorViewEnvelope from '../InspectorViewEnvelope/index';
 import sidebarStyle from '../../style.css';
+
 import style from './style.css';
 
 export default class PropertyGroup extends PureComponent {
@@ -18,7 +20,6 @@ export default class PropertyGroup extends PureComponent {
         properties: PropTypes.array,
         views: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
-
         node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired
     };
@@ -29,10 +30,14 @@ export default class PropertyGroup extends PureComponent {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
 
+        const classNames = mergeClassNames({
+            [style.propertyGroupIcon]: true
+        });
+
         const propertyGroup = properties => (
             <ToggablePanel isOpen={true} className={sidebarStyle.rightSideBar__section}>
                 <ToggablePanel.Header theme={headerTheme}>
-                    {icon && <Icon icon={icon}/>} <I18n id={label}/>
+                    {icon && <Icon className={classNames} icon={icon}/>} <I18n id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {properties.map(property => {

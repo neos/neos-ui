@@ -37,6 +37,7 @@ export default class TabPanel extends PureComponent {
                     groups.filter(g => (g.properties && g.properties.filter(this.isPropertyEnabled).length) || (g.views && g.views.length)).map(group => (
                         <PropertyGroup
                             key={group.id}
+                            tooltipLabel={group.icon.label}
                             label={group.label}
                             icon={group.icon}
                             properties={group.properties.filter(this.isPropertyEnabled)}

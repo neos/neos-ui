@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
+import I18n from '@neos-project/neos-ui-i18n';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 export default class AddNode extends PureComponent {
@@ -19,10 +20,13 @@ export default class AddNode extends PureComponent {
 
     render() {
         const {focusedNodeContextPath, isDisabled, className} = this.props;
+        const tooltipLabel = <I18n id="Neos.Neos:Main:createNew" fallback="Create new"/>;
 
         return (
             <span>
                 <IconButton
+                    tooltipLabel={tooltipLabel}
+                    tooltipPosition="right"
                     isDisabled={Boolean(focusedNodeContextPath) === false || isDisabled}
                     className={className}
                     icon="plus"

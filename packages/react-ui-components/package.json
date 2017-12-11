@@ -54,6 +54,7 @@
     "react-height": "^3.0.0",
     "react-motion": "^0.5.0",
     "react-portal": "^3.1.0",
+    "react-tooltip": "^3.3.0",
     "react-textarea-autosize": "^5.0.6"
   },
   "license": "GNU GPLv3",

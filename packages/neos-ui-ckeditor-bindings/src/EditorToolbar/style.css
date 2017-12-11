@@ -21,7 +21,7 @@
     width: 460px;
     border: var(--halfSpacing) solid var(--brandColorsContrastDarker);
     /* 8px border top and bottom */
-    height: calc(var(--goldenUnit) + 16px);
+    height: calc(var(--goldenUnit) + var(--spacing));
 }
 
 .linkIconButton__item {

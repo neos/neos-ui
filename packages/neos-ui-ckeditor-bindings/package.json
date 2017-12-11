@@ -6,15 +6,17 @@
   "main": "./src/manifest.js",
   "scripts": {
     "prebuild": "check-dependencies && yarn clean",
-    "test": "yarn jest",
+    "test": "yarn jest -- -w 2 --coverage",
     "test:watch": "yarn jest -- --watch",
     "build": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
     "build:watch": "yarn build -- --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "jest": "PWD=$(pwd) NODE_ENV=test jest -w 1 --coverage"
+    "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
+    "@neos-project/babel-preset-neos-ui": "1.0.0-beta8",
+    "@neos-project/jest-preset-neos-ui": "1.0.0-beta8",
     "@neos-project/build-essentials": "1.0.0-beta8"
   },
   "dependencies": {
@@ -27,21 +29,9 @@
   },
   "license": "GNU GPLv3",
   "jest": {
-    "transformIgnorePatterns": [],
-    "unmockedModulePathPatterns": [
-      "sinon"
-    ],
+    "preset": "@neos-project/jest-preset-neos-ui",
     "setupFiles": [
-      "./node_modules/@neos-project/build-essentials/src/setup-browser-env.js",
-      "./node_modules/@neos-project/build-essentials/src/setup-neos-ui-host-env.js",
-      "./node_modules/@neos-project/build-essentials/src/enzymeConfiguration.js"
-    ],
-    "transform": {
-      "neos-ui-ckeditor-bindings/src/.+\\.jsx?$": "./node_modules/.bin/babel-jest",
-      "node_modules/@neos-project/.+\\.jsx?$": "./node_modules/.bin/babel-jest"
-    },
-    "moduleNameMapper": {
-      "\\.css": "identity-obj-proxy"
-    }
+      "<rootDir>/node_modules/@neos-project/jest-preset-neos-ui/src/setupNeosUiHostEnv.js"
+    ]
   }
 }

@@ -24,15 +24,21 @@ export default class Frame extends PureComponent {
         this.updateIframeUrlIfNecessary();
     }
 
-    // we do not use react's magic to change to a different URL in the iFrame, but do it explicitely (in order to avoid reloads if we are already on the correct page)
+    // we do not use react's magic to change to a different URL in the iFrame, but do it
+    // explicitely (in order to avoid reloads if we are already on the correct page)
     updateIframeUrlIfNecessary() {
         if (!this.ref) {
             return;
         }
 
-        const win = this.ref.contentWindow; // eslint-disable-line react/no-find-dom-node
-        if (win.location.href !== this.props.src) {
-            win.location = this.props.src;
+        try {
+            const win = this.ref.contentWindow; // eslint-disable-line react/no-find-dom-node
+            if (win.location.href !== this.props.src) {
+                win.location = this.props.src;
+            }
+        } catch (err) {
+            console.error(`Could not update iFrame Url from within. Trying to set src attribute manually...`);
+            this.ref.setAttribute('src', this.props.src);
         }
     }
 
@@ -48,9 +54,11 @@ export default class Frame extends PureComponent {
 
         return <iframe ref={this.handleReference} onLoad={this.handleLoad} {...rest}/>;
     }
+
     componentWillMount() {
         document.addEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
     }
+
     handleLoad = () => {
         const {onLoad} = this.props;
 
@@ -58,6 +66,7 @@ export default class Frame extends PureComponent {
             onLoad(this.ref);
         }
     }
+
     renderFrameContents = () => {
         const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
         const win = ReactDOM.findDOMNode(this).contentWindow; // eslint-disable-line react/no-find-dom-node
@@ -68,6 +77,7 @@ export default class Frame extends PureComponent {
             this.props.contentDidUpdate(win, doc, mountTarget);
         });
     }
+
     componentWillUnmount() {
         const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
         document.removeEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);

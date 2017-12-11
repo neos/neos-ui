@@ -1,0 +1,29 @@
+.selectedOptions__item {
+    display: flex;
+    width: 100%;
+    position: relative;
+    background: var(--brandColorsContrastNeutral);
+    border-bottom: 1px solid var(--brandColorsContrastDarker);
+
+    &:hover {
+      .selectedOptions__itemIcon {
+        display: none;
+      }
+
+      .selectedOptions__itemIcon--onHover {
+        display: inline;
+      }
+    }
+}
+
+.selectedOptions__item--draggable {
+    cursor: move;
+}
+.selectedOptions__innerPreview {
+    border-right: 1px solid var(--brandColorsContrastDarker);
+    overflow: hidden;
+    width: 100%;
+}
+.selectedOption__removeButton {
+    height: auto;
+}

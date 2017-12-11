@@ -126,6 +126,8 @@ Neos:
             lastName: '${q(user).property(''name.lastName'')}'
             otherName: '${q(user).property(''name.otherName'')}'
             fullName: '${q(user).property(''name.fullName'')}'
+          preferences:
+            interfaceLanguage: '${q(user).property(''preferences.interfaceLanguage'')}'
           settings:
             isAutoPublishingEnabled: false
             targetWorkspace: 'live'

@@ -1,7 +1,7 @@
 import 'core-js/shim';
-import infoAddon from '@kadira/react-storybook-addon-info';
+import infoAddon from '@storybook/addon-info';
 
-import {configure, setAddon} from '@kadira/storybook';
+import {configure, setAddon} from '@storybook/react';
 
 const req = require.context('./../src', true, /story\.js$/);
 

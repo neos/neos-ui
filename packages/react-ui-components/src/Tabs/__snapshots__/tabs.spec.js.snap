@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Tabs/> should render correctly. 1`] = `
+<div
+  className="baseTabsClassName"
+  role="tablist"
+>
+  <ul
+    className="baseTabsNavigationClassName"
+  >
+    <TabMenuItem
+      IconComponent={[Function]}
+      icon="icon 1"
+      index={0}
+      isActive={true}
+      key="0/.0"
+      onClick={[Function]}
+      theme={
+        Object {
+          "tabNavigation": "baseTabsNavigationClassName",
+          "tabNavigation__item": "baseTabsNavigationItemClassName",
+          "tabNavigation__item--isActive": "activeTabsNavigationItemClassName",
+          "tabNavigation__itemBtn": "baseTabsNavigationItemBtnClassName",
+          "tabNavigation__itemBtnIcon": "baseTabsNavigationItemBtnIconClassName",
+          "tabNavigation__itemBtnIcon--hasLabel": "baseTabsNavigationItemBtnIconWithLabelClassName",
+          "tabs": "baseTabsClassName",
+          "tabs__content": "basTabsContentsClassName",
+        }
+      }
+      title="foo 1"
+    />
+    <TabMenuItem
+      IconComponent={[Function]}
+      icon="icon 2"
+      index={1}
+      isActive={false}
+      key="1/.1"
+      onClick={[Function]}
+      theme={
+        Object {
+          "tabNavigation": "baseTabsNavigationClassName",
+          "tabNavigation__item": "baseTabsNavigationItemClassName",
+          "tabNavigation__item--isActive": "activeTabsNavigationItemClassName",
+          "tabNavigation__itemBtn": "baseTabsNavigationItemBtnClassName",
+          "tabNavigation__itemBtnIcon": "baseTabsNavigationItemBtnIconClassName",
+          "tabNavigation__itemBtnIcon--hasLabel": "baseTabsNavigationItemBtnIconWithLabelClassName",
+          "tabs": "baseTabsClassName",
+          "tabs__content": "basTabsContentsClassName",
+        }
+      }
+      title="foo 2"
+    />
+    <TabMenuItem
+      IconComponent={[Function]}
+      icon="icon 3"
+      index={2}
+      isActive={false}
+      key="2/.2"
+      onClick={[Function]}
+      theme={
+        Object {
+          "tabNavigation": "baseTabsNavigationClassName",
+          "tabNavigation__item": "baseTabsNavigationItemClassName",
+          "tabNavigation__item--isActive": "activeTabsNavigationItemClassName",
+          "tabNavigation__itemBtn": "baseTabsNavigationItemBtnClassName",
+          "tabNavigation__itemBtnIcon": "baseTabsNavigationItemBtnIconClassName",
+          "tabNavigation__itemBtnIcon--hasLabel": "baseTabsNavigationItemBtnIconWithLabelClassName",
+          "tabs": "baseTabsClassName",
+          "tabs__content": "basTabsContentsClassName",
+        }
+      }
+      title="foo 3"
+    />
+  </ul>
+  <div
+    className="basTabsContentsClassName"
+  >
+    <div
+      aria-hidden="false"
+      key="0/.0"
+      role="tabpanel"
+      style={
+        Object {
+          "display": "block",
+        }
+      }
+    >
+      <Panel
+        icon="icon 1"
+        theme={
+          Object {
+            "panel": "panelBaseClassName",
+          }
+        }
+        title="foo 1"
+      >
+        Foo 1
+      </Panel>
+    </div>
+    <div
+      aria-hidden="true"
+      key="1/.1"
+      role="tabpanel"
+      style={
+        Object {
+          "display": "none",
+        }
+      }
+    >
+      <Panel
+        icon="icon 2"
+        theme={
+          Object {
+            "panel": "panelBaseClassName",
+          }
+        }
+        title="foo 2"
+      >
+        Foo 2
+      </Panel>
+    </div>
+    <div
+      aria-hidden="true"
+      key="2/.2"
+      role="tabpanel"
+      style={
+        Object {
+          "display": "none",
+        }
+      }
+    >
+      <Panel
+        icon="icon 3"
+        theme={
+          Object {
+            "panel": "panelBaseClassName",
+          }
+        }
+        title="foo 3"
+      >
+        Foo 3
+      </Panel>
+    </div>
+  </div>
+</div>
+`;

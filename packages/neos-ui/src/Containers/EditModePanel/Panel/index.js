@@ -11,7 +11,10 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 export default class Panel extends PureComponent {
     static propTypes = {
-        title: PropTypes.string.isRequired,
+        title: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.object
+        ]).isRequired,
         className: PropTypes.string.isRequired,
         modes: PropTypes.array.isRequired,
         style: PropTypes.object.isRequired,

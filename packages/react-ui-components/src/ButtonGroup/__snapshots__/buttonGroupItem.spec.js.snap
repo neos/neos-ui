@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ButtonGroupItem/> should render correctly. 1`] = `
+<div
+  id="foo"
+  onClick={[Function]}
+>
+  Foo button
+</div>
+`;

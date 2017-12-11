@@ -1,5 +1,4 @@
-import {takeEvery} from 'redux-saga';
-import {put, select} from 'redux-saga/effects';
+import {takeEvery, put, select} from 'redux-saga/effects';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
@@ -51,6 +50,9 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     });
 
     yield put(actions.CR.Nodes.add(nodes));
+
+    // Remove the inline scripts after initialization
+    Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
 
     yield put(actions.UI.ContentCanvas.setContextPath(documentInformation.metaData.contextPath, documentInformation.metaData.siteNode));
     yield put(actions.UI.ContentCanvas.setPreviewUrl(documentInformation.metaData.previewUrl));

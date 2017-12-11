@@ -80,7 +80,7 @@ In order to start contributing, follow the following steps:
    npm install -g yarn
    yarn
 
-   npm run build:ui:watch
+   yarn run build:ui:watch
    ```
 
 5) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
@@ -98,6 +98,7 @@ In order to start contributing, follow the following steps:
 | `yarn start-storybook` | Starts the storybook server on port 9001. |
 | `yarn lint`  | Lints all source files. |
 | `yarn test`  | Executes `yarn lint` to trigger tests via ava. |
+| `yarn test:e2e`  | Executes integration tests. |
 
 #### Code style
 Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `yarn lint` in your shell.

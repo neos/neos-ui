@@ -33,68 +33,36 @@ env:
   - TEST_SUITE=CodeStyle
   - TEST_SUITE=UnitTests
   - TEST_SUITE=IntegrationTests
-  - TEST_SUITE=Build
 
 #
 # Install nvm, the node depdencies and setup the some env variables.
 #
 before_install:
-  # Add the oAuth token to git to avoid errors with composer because of https://github.com/composer/composer/issues/1314
-
-  - if [ -n "$GITHUB_OAUTH_TOKEN" ]; then composer config github-oauth.github.com ${GITHUB_OAUTH_TOKEN}; fi;
-
   # Install `nvm` since we are running in a php infrastructure based VM on TravisCI.
   - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
   - nvm install
   - nvm use
-
   - export FLOW_CONTEXT=Production
-
-  # Disable xDebug
-  - phpenv config-rm xdebug.ini
-
-  # Update composer.
-  - composer self-update -q
 
 #
 # Install and setup the neos instance.
 #
 install:
-  # Handle hidden files with the `mv` command.
-  - shopt -s dotglob
-
-  # Create a separate working directory in which the neos instance can be installed in.
-  - cd ..
-  - if [ ! -d "Neos" ]; then mkdir Neos; fi;
-  - cp neos-ui/Build/TravisCi/composer* Neos/
-  - cd Neos
-
-  # Move our repository and the configuration files into place.
-  - mkdir -p Packages/Application/Neos.Neos.Ui
-  - mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
-
   # Execute the optional install shell script for the environment.
-  - if [ -f "Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then bash Packages/Application/Neos.Neos.Ui/Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
-
-  # Change into the repository directory where the environment based shell script will be executed.
-  - cd Packages/Application/Neos.Neos.Ui
+  - if [ -f "Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
 
   # Since all environments depend on the node dependencies, install and
   # afterwards prune them to remove extranous packages from previous/cached runs.
-  - yarn
-  - yarn build
-
-  # Deactivate the previous enabled handling of hidden files with the `mv` command.
-  - shopt -u dotglob
+  - yarn install
 
 #
 # Execute the test environment specific shell script.
 #
 script:
-  - if [ -f "Build/TravisCi/Scripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/Scripts/$TEST_SUITE.sh; fi
+  - if [ -f "Build/TravisCi/Scripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/Scripts/$TEST_SUITE.sh; fi
 
 #
 # Execute the test environment specific after_script shell script.
 #
 after_script:
-  - if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then bash Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi
+  - if [ -f "Build/TravisCi/AfterScripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/AfterScripts/$TEST_SUITE.sh; fi

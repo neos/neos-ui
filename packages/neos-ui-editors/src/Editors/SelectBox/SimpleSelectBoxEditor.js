@@ -41,19 +41,17 @@ export default class SimpleSelectBoxEditor extends PureComponent {
         minimumResultsForSearch: 5
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchTerm: ''
-        };
-    }
+    state = {
+        searchTerm: ''
+    };
 
     render() {
         const {commit, value, i18nRegistry, highlight} = this.props;
         const options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
 
         const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, options.values);
+
+        const allowEmpty = options.allowEmpty || Object.prototype.hasOwnProperty.call(options.values, '');
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
@@ -65,11 +63,13 @@ export default class SimpleSelectBoxEditor extends PureComponent {
                 onValuesChange={commit}
                 highlight={highlight}
                 placeholder={placeholder}
-                allowEmpty={options.allowEmpty}
+                allowEmpty={allowEmpty}
                 displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
                 searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
+                noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 />);
         }
 
@@ -80,10 +80,12 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             onValueChange={commit}
             placeholder={placeholder}
             highlight={highlight}
-            allowEmpty={options.allowEmpty}
+            allowEmpty={allowEmpty}
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
             searchTerm={this.state.searchTerm}
             onSearchTermChange={this.handleSearchTermChange}
+            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
             />);
     }
 

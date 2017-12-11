@@ -1,8 +1,10 @@
-import {$get} from 'plow-js';
+import {$get, $contains} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 import {getGuestFrameWindow, closestContextPathInGuestFrame} from './dom';
+
+import style from './style.css';
 
 export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => propertyDomNode => {
     const guestFrameWindow = getGuestFrameWindow();
@@ -15,7 +17,10 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
     const contextPath = closestContextPathInGuestFrame(propertyDomNode);
     const nodeTypeName = $get([contextPath, 'nodeType'], nodes);
     const nodeType = nodeTypesRegistry.get(nodeTypeName);
-    const isInlineEditable = $get(['properties', propertyName, 'ui', 'inlineEditable'], nodeType) !== false;
+    const isInlineEditable = (
+        $get(['properties', propertyName, 'ui', 'inlineEditable'], nodeType) !== false &&
+        !$contains(propertyName, [contextPath, 'policy', 'disallowedProperties'], nodes)
+    );
 
     if (isInlineEditable) {
         const editorIdentifier = nodeTypesRegistry.getInlineEditorIdentifierForProperty(nodeTypeName, propertyName);
@@ -48,6 +53,8 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         }
 
         try {
+            const userPreferences = $get('user.preferences', store.getState());
+
             createInlineEditor({
                 propertyDomNode,
                 propertyName,
@@ -55,10 +62,13 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                 nodeType,
                 editorOptions,
                 globalRegistry,
+                userPreferences,
                 persistChange: change => store.dispatch(
                     actions.Changes.persistChanges([change])
                 )
             });
+
+            propertyDomNode.classList.add(style.inlineEditorIsInitialized);
         } catch (err) {
             //
             // The entire function is executed in a saga-context. Since we're fiddeling with the guest

@@ -7,6 +7,7 @@ import LinkOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolba
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
+// ToDo: Move into re-usable fn - Maybe into `util-helpers`?
 const isUri = str =>
     str && Boolean(str.match('^https?://'));
 
@@ -41,16 +42,12 @@ class LinkEditor extends PureComponent {
         }).isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-
-        this.state = {
-            searchTerm: '',
-            isLoading: false,
-            searchOptions: [],
-            options: []
-        };
-    }
+    state = {
+        searchTerm: '',
+        isLoading: false,
+        searchOptions: [],
+        options: []
+    };
 
     getDataLoaderOptions() {
         return {
@@ -68,7 +65,8 @@ class LinkEditor extends PureComponent {
             const options = [{
                 icon: 'icon-external-link',
                 identifier: this.props.value,
-                label: this.props.value
+                label: this.props.value,
+                loaderUri: this.props.value
             }];
 
             this.setState({
@@ -99,7 +97,8 @@ class LinkEditor extends PureComponent {
             const searchOptions = [{
                 icon: 'icon-external-link',
                 identifier: searchTerm,
-                label: searchTerm
+                label: searchTerm,
+                loaderUri: searchTerm
             }];
 
             this.setState({
@@ -141,11 +140,13 @@ class LinkEditor extends PureComponent {
                 value={this.props.value}
                 onValueChange={this.handleValueChange}
                 placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
+                loadingLabel={this.props.i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main')}
                 displayLoadingIndicator={this.state.isLoading}
                 displaySearchBox={true}
-                searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
-                optionComponent={LinkOption}
+                ListPreviewElement={LinkOption}
+                noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 />
         );
     }

@@ -136,6 +136,14 @@ export const focusedNodeTypeSelector = createSelector(
         $get('nodeType', focused)
 );
 
+export const focusedNodeIdentifierSelector = createSelector(
+    [
+        focusedSelector
+    ],
+    focused =>
+        $get('identifier', focused)
+);
+
 export const focusedParentSelector = createSelector(
     [
         focusedSelector,
@@ -186,13 +194,19 @@ export const getPathInNode = (state, contextPath, propertyPath) => {
 
 export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry, elevator = id => id) => createSelector(
     [
+        (state, {reference}) => getPathInNode(state, elevator(reference), 'policy.canEdit'),
+        (state, {reference}) => getPathInNode(state, elevator(reference), 'policy.disallowedNodeTypes'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'isAutoCreated'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'name'),
         (state, {reference}) => getPathInNode(state, elevator(reference), 'nodeType'),
         (state, {reference}) => getPathInNode(state, elevator(parentNodeContextPath(reference)), 'nodeType'),
         (state, {role}) => role
     ],
-    (...args) => nodeTypesRegistry.getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args)
+    (canEdit, disallowedNodeTypes, ...args) => canEdit ?
+        nodeTypesRegistry
+            .getAllowedNodeTypesTakingAutoCreatedIntoAccount(...args)
+            .filter(nodeType => !disallowedNodeTypes.includes(nodeType)) :
+        []
 );
 
 export const makeGetAllowedSiblingNodeTypesSelector = nodeTypesRegistry =>

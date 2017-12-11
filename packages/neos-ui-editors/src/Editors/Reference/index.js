@@ -1,102 +1,30 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import dataLoader from './referenceDataLoader';
+import createNew from './createNew';
+import ReferenceOption from './ReferenceOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import ReferenceOption from './ReferenceOption';
-
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n'),
-    nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
-@connect($transform({
-    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
-}))
+@createNew()
+@dataLoader({isMulti: false})
 export default class ReferenceEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.string,
-        highlight: PropTypes.string,
+        options: PropTypes.array,
+        searchOptions: PropTypes.array,
+        highlight: PropTypes.bool,
+        placeholder: PropTypes.string,
+        displayLoadingIndicator: PropTypes.bool,
+        threshold: PropTypes.number,
+        onSearchTermChange: PropTypes.func,
+        onCreateNew: PropTypes.func,
         commit: PropTypes.func.isRequired,
-        options: PropTypes.shape({
-            nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-            placeholder: PropTypes.string,
-            threshold: PropTypes.number
-        }),
-
-        i18nRegistry: PropTypes.object.isRequired,
-        nodeLookupDataLoader: PropTypes.shape({
-            resolveValue: PropTypes.func.isRequired,
-            search: PropTypes.func.isRequired
-        }).isRequired,
-
-        contextForNodeLinking: PropTypes.shape({
-            toJS: PropTypes.func.isRequired
-        }).isRequired
+        i18nRegistry: PropTypes.object.isRequired
     };
-
-    static defaultOptions = {
-        // start searching after 2 characters, as it was done in the old UI
-        threshold: 2
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchTerm: '',
-            isLoading: false,
-            searchResults: [],
-            results: []
-        };
-    }
-
-    getDataLoaderOptions() {
-        return {
-            nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
-            contextForNodeLinking: this.props.contextForNodeLinking.toJS()
-        };
-    }
-
-    componentDidMount() {
-        if (this.props.value) {
-            this.setState({isLoading: true});
-            this.props.nodeLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.value)
-                .then(options => {
-                    this.setState({
-                        isLoading: false,
-                        options
-                    });
-                });
-        }
-        this.setState({
-            searchTerm: '',
-            searchOptions: []
-        });
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.value !== this.props.value) {
-            this.componentDidMount();
-        }
-    }
-
-    handleSearchTermChange = searchTerm => {
-        this.setState({searchTerm});
-        const threshold = $get('options.threshold', this.props) || this.constructor.defaultOptions.threshold;
-        if (searchTerm && searchTerm.length >= threshold) {
-            this.setState({isLoading: true, searchOptions: []});
-            this.props.nodeLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
-                .then(searchOptions => {
-                    this.setState({
-                        isLoading: false,
-                        searchOptions
-                    });
-                });
-        }
-    }
 
     handleValueChange = value => {
         this.props.commit(value);
@@ -104,17 +32,23 @@ export default class ReferenceEditor extends PureComponent {
 
     render() {
         return (<SelectBox
-            options={this.props.value ? this.state.options : this.state.searchOptions}
             optionValueField="identifier"
+            displaySearchBox={true}
+            ListPreviewElement={ReferenceOption}
+            createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
+            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+            placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
+            threshold={this.props.threshold}
+            options={this.props.options}
             value={this.props.value}
             highlight={this.props.highlight}
             onValueChange={this.handleValueChange}
-            placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
-            displayLoadingIndicator={this.state.isLoading}
-            displaySearchBox={true}
-            searchTerm={this.state.searchTerm}
-            onSearchTermChange={this.handleSearchTermChange}
-            optionComponent={ReferenceOption}
+            loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
+            displayLoadingIndicator={this.props.displayLoadingIndicator}
+            showDropDownToggle={false}
+            onSearchTermChange={this.props.onSearchTermChange}
+            onCreateNew={this.props.onCreateNew}
             />);
     }
 }

@@ -1,4 +1,11 @@
-const cancelIdleCallback = window.cancelIdleCallback || function (id) {
-    clearTimeout(id);
+const fallbackCancelIdleCallback = id => clearTimeout(id);
+const getCancelIdleCallback = (ctx = window) => {
+    return ctx.cancelIdleCallback || fallbackCancelIdleCallback;
 };
-export default cancelIdleCallback;
+const cancelIdleCallback = getCancelIdleCallback();
+
+export {
+    fallbackCancelIdleCallback,
+    getCancelIdleCallback,
+    cancelIdleCallback as default
+};

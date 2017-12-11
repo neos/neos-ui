@@ -2,9 +2,10 @@ import {map, keys} from 'ramda';
 import {handleActions} from '@neos-project/utils-redux';
 
 import * as Settings from './Settings/index';
+import * as Preferences from './Preferences/index';
 import * as Name from './Name/index';
 
-const all = {Settings, Name};
+const all = {Settings, Preferences, Name};
 
 //
 // Export the actionTypes

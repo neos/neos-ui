@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShallowDropDownHeader/> should render correctly. 1`] = `
+<div
+  aria-haspopup="true"
+  className="baseDropDownHeaderClassName baseDropDownHeaderWithChevronClassName"
+  onClick={[Function]}
+  role="button"
+>
+  Foo children
+  <Component
+    className="baseDropDownHeaderChevronClassName"
+    icon="chevron-down"
+  />
+</div>
+`;

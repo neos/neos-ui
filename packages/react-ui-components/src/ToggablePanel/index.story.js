@@ -1,6 +1,6 @@
 import React from 'react';
-import {storiesOf, action} from '@kadira/storybook';
-import {withKnobs, boolean} from '@kadira/storybook-addon-knobs';
+import {storiesOf, action} from '@storybook/react';
+import {withKnobs, boolean} from '@storybook/addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils.js';
 import ToggablePanel from './index.js';
 
@@ -50,7 +50,7 @@ storiesOf('ToggablePanel', module)
         'ToggablePanel - Stateless',
         () => (
             <StoryWrapper>
-                <ToggablePanel isOpen={boolean('Is Open?', true)} togglePanel={action('toggle')}>
+                <ToggablePanel isOpen={boolean('Is Open?', true)} onTogglePanel={action('toggle')}>
                     <ToggablePanel.Header>
                         Header
                     </ToggablePanel.Header>

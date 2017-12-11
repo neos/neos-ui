@@ -1,79 +1,80 @@
-import sinon from 'sinon';
-import {createShallowRenderer, createStubComponent} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
+import {createStubComponent} from './../_lib/testUtils.js';
 import ShallowDropDownHeader from './header.js';
 
-const Icon = createStubComponent();
-const defaultProps = {
-    children: 'Foo children',
-    IconComponent: Icon,
-    isOpen: false,
-    toggleDropDown: () => null,
-    theme: {/* eslint-disable quote-props */
-        'dropDown__btn': 'baseDropDownHeaderClassName',
-        'dropDown__chevron': 'baseDropDownHeaderChevronClassName'
-    }/* eslint-enable quote-props */
-};
-const shallow = createShallowRenderer(ShallowDropDownHeader, defaultProps);
+describe('<ShallowDropDownHeader/>', () => {
+    let props;
 
-test('should render the "dropDown__btn" prop of the theme.', () => {
-    const header = shallow();
-
-    expect(header.hasClass('baseDropDownHeaderClassName')).toBeTruthy();
-});
-test('should render the "className" prop if passed.', () => {
-    const header = shallow({
-        className: 'barClassName'
+    beforeEach(() => {
+        props = {
+            children: 'Foo children',
+            IconComponent: createStubComponent(),
+            isOpen: false,
+            toggleDropDown: () => null,
+            theme: {/* eslint-disable quote-props */
+                'dropDown__btn': 'baseDropDownHeaderClassName',
+                'dropDown__btn--withChevron': 'baseDropDownHeaderWithChevronClassName',
+                'dropDown__chevron': 'baseDropDownHeaderChevronClassName'
+            }/* eslint-enable quote-props */
+        };
     });
 
-    expect(header.hasClass('barClassName')).toBeTruthy();
-});
-test('should call the "toggleDropDown" prop when clicking on the wrapper.', () => {
-    const props = {
-        toggleDropDown: sinon.spy()
-    };
-    const header = shallow(props);
+    it('should render correctly.', () => {
+        const wrapper = shallow(<ShallowDropDownHeader {...props}/>);
 
-    header.simulate('click');
-
-    expect(props.toggleDropDown.calledOnce).toBeTruthy();
-});
-test('should call the "_refHandler" prop with the current "isOpen" prop when rendering the node.', () => {
-    const props = {
-        _refHandler: sinon.spy(),
-        isOpen: 'foo'
-    };
-    shallow(props);
-
-    expect(props._refHandler.calledOnce).toBeTruthy();
-    expect(props._refHandler.args[0][0]).toBe('foo');
-});
-test('should render a node with a aria-haspopup attribute.', () => {
-    const props = {
-        _refHandler: sinon.spy(),
-        isOpen: 'foo'
-    };
-    const header = shallow(props);
-
-    expect(header.html().includes('aria-haspopup')).toBeTruthy();
-});
-test('should propagate the rest of the passed props to the wrapping node.', () => {
-    const header = shallow({
-        id: 'fooId'
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
-    expect(header.html().includes('id="fooId"')).toBeTruthy();
-});
-test('should render the passed "IconComponent" with the themes "dropDown__chevron" className and a "chevron-down" icon prop.', () => {
-    const header = shallow();
-    const icon = header.find(Icon);
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<ShallowDropDownHeader {...props} className="fooClassName"/>);
 
-    expect(icon.hasClass('baseDropDownHeaderChevronClassName')).toBeTruthy();
-    expect(icon.prop('icon')).toBe('chevron-down');
-});
-test('should render the passed "IconComponent" with a "chevron-up" icon prop in case the "isOpen" prop is truthy.', () => {
-    const header = shallow({isOpen: true});
-    const icon = header.find(Icon);
+        expect(wrapper.prop('className')).toContain('fooClassName');
+    });
 
-    expect(icon.hasClass('baseDropDownHeaderChevronClassName')).toBeTruthy();
-    expect(icon.prop('icon')).toBe('chevron-up');
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<ShallowDropDownHeader {...props} foo="bar"/>);
+
+        expect(wrapper.prop('foo')).toBe('bar');
+    });
+
+    it('should call the "toggleDropDown" prop when clicking on the wrapper.', () => {
+        const toggleDropDown = jest.fn();
+        const wrapper = shallow(<ShallowDropDownHeader {...props} toggleDropDown={toggleDropDown}/>);
+
+        wrapper.simulate('click');
+
+        expect(toggleDropDown.mock.calls.length).toBe(1);
+    });
+
+    it('should call the "_refHandler" prop with the current "isOpen" prop when rendering the node.', () => {
+        const refHandler = jest.fn();
+        shallow(<ShallowDropDownHeader {...props} _refHandler={refHandler} itemScope={false}/>);
+
+        expect(refHandler.mock.calls.length).toBe(1);
+        expect(refHandler.mock.calls[0][0]).toBe(false);
+    });
+
+    it('should render a node with a aria-haspopup attribute if the "isOpen" prop is falsy.', () => {
+        const wrapper = shallow(<ShallowDropDownHeader {...props} isOpen={false}/>);
+
+        expect(wrapper.html().includes('aria-haspopup')).toBeTruthy();
+    });
+
+    it('should render the passed "IconComponent" with the themes "dropDown__chevron" className and a "chevron-down" icon prop.', () => {
+        const wrapper = shallow(<ShallowDropDownHeader {...props}/>);
+        const icon = wrapper.find(props.IconComponent);
+
+        expect(icon.hasClass('baseDropDownHeaderChevronClassName')).toBeTruthy();
+        expect(icon.prop('icon')).toBe('chevron-down');
+    });
+
+    it('should render the passed "IconComponent" with a "chevron-up" icon prop in case the "isOpen" prop is truthy.', () => {
+        const wrapper = shallow(<ShallowDropDownHeader {...props} isOpen/>);
+        const icon = wrapper.find(props.IconComponent);
+
+        expect(icon.hasClass('baseDropDownHeaderChevronClassName')).toBeTruthy();
+        expect(icon.prop('icon')).toBe('chevron-up');
+    });
 });

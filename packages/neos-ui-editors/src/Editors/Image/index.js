@@ -5,7 +5,7 @@ import {$set, $drop, $get} from 'plow-js';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import {PreviewScreen, Controls} from './Components/index';
+import {PreviewScreen, Controls, ResizeControls} from './Components/index';
 import {Image, CROP_IMAGE_ADJUSTMENT, RESIZE_IMAGE_ADJUSTMENT} from './Utils/index';
 
 import style from './style.css';
@@ -45,11 +45,6 @@ export default class ImageEditor extends Component {
         // Public API:
         // I18N key
         fileChooserLabel: PropTypes.string,
-
-        features: PropTypes.shape({
-            crop: PropTypes.bool,
-            resize: PropTypes.bool
-        }),
 
         allowedFileTypes: PropTypes.string
     };
@@ -110,7 +105,7 @@ export default class ImageEditor extends Component {
     }
 
     isFeatureEnabled(featureName) {
-        const features = Object.assign({}, DEFAULT_FEATURES, this.props.features);
+        const features = Object.assign({}, DEFAULT_FEATURES, this.props.options.features);
         return features[featureName];
     }
 
@@ -125,7 +120,7 @@ export default class ImageEditor extends Component {
         }
     }
 
-    handleMediaCrop(cropArea) {
+    handleMediaCrop = cropArea => {
         const {commit, value} = this.props;
         const {image} = this.state;
 
@@ -144,12 +139,14 @@ export default class ImageEditor extends Component {
         });
     }
 
-    onResize(resizeAdjustment) {
+    handleResize = resizeAdjustment => {
         const {commit, value} = this.props;
         const {image} = this.state;
         const nextimage = resizeAdjustment ?
             $set(RESIZE_IMAGE_ADJUSTMENT, resizeAdjustment, image) : $drop(RESIZE_IMAGE_ADJUSTMENT, image);
-
+        this.setState({
+            image: nextimage
+        });
         commit(value, {
             'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
         });
@@ -254,6 +251,14 @@ export default class ImageEditor extends Component {
                     onRemove={image ? this.handleRemoveFile : null}
                     onCrop={image ? this.isFeatureEnabled('crop') && this.handleOpenImageCropper : null}
                     />
+                {this.isFeatureEnabled('resize') && <ResizeControls
+                    onChange={this.handleResize}
+                    resizeAdjustment={$get(RESIZE_IMAGE_ADJUSTMENT, image)}
+                    imageDimensions={{
+                        width: $get('originalDimensions.width', image),
+                        height: $get('originalDimensions.height', image)
+                    }}
+                    />}
             </div>
         );
     }

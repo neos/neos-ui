@@ -24,6 +24,7 @@ const startsWith = prefix => element => element.id.startsWith(prefix);
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
 @neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
     toolbarRegistry: globalRegistry.get('ckEditor').get('richtextToolbar')
 }))
 export default class StyleSelect extends PureComponent {
@@ -40,15 +41,11 @@ export default class StyleSelect extends PureComponent {
             PropTypes.object
         ])),
 
+        nodeTypesRegistry: PropTypes.object.isRequired,
         toolbarRegistry: PropTypes.object.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-        this.handleOnSelect = this.handleOnSelect.bind(this);
-    }
-
-    handleOnSelect(selectedStyleId) {
+    handleOnSelect = selectedStyleId => {
         const {toolbarRegistry} = this.props;
         const style = toolbarRegistry.get(selectedStyleId);
         if (style && style.formattingRule) {
@@ -59,14 +56,13 @@ export default class StyleSelect extends PureComponent {
     }
 
     render() {
-        const {toolbarRegistry, currentlyEditedPropertyName, focusedNode} = this.props;
+        const {nodeTypesRegistry, toolbarRegistry, currentlyEditedPropertyName, focusedNode} = this.props;
         const nodeTypeName = $get('nodeType', focusedNode);
 
-        const enabledFormattingRuleIds = toolbarRegistry
-            .getEnabledFormattingRulesForNodeTypeAndProperty(nodeTypeName)(currentlyEditedPropertyName);
+        const inlineEditorOptions = nodeTypesRegistry.getInlineEditorOptionsForProperty(nodeTypeName, currentlyEditedPropertyName);
         const nestedStyles = toolbarRegistry.getAllAsList()
             .filter(startsWith(`${this.props.id}/`))
-            .filter(hideDisallowedToolbarComponents(enabledFormattingRuleIds || []));
+            .filter(hideDisallowedToolbarComponents(inlineEditorOptions || []));
 
         const options = nestedStyles.map(style => ({
             label: style.label,

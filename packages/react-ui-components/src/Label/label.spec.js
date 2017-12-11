@@ -1,24 +1,33 @@
-import {createShallowRenderer} from './../_lib/testUtils.js';
+import React from 'react';
+import {shallow} from 'enzyme';
+import toJson from 'enzyme-to-json';
 import Label from './label.js';
 
-const defaultProps = {
-    theme: {},
-    htmlFor: 'test for'
-};
-const shallow = createShallowRenderer(Label, defaultProps);
+describe('<Label/>', () => {
+    let props;
 
-test('should render a "label" node.', () => {
-    const label = shallow();
+    beforeEach(() => {
+        props = {
+            theme: {},
+            htmlFor: 'test for'
+        };
+    });
 
-    expect(label.type()).toBe('label');
-});
-test('should add the passed "className" prop to the rendered node if passed.', () => {
-    const label = shallow({className: 'testClassName'});
+    it('should render correctly.', () => {
+        const wrapper = shallow(<Label {...props}/>); // eslint-disable-line jsx-a11y/label-has-for
 
-    expect(label.hasClass('testClassName')).toBeTruthy();
-});
-test('should render the passed "children".', () => {
-    const label = shallow({children: 'Foo children'});
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 
-    expect(label.html().includes('Foo children')).toBeTruthy();
+    it('should allow the propagation of "className" with the "className" prop.', () => {
+        const wrapper = shallow(<Label {...props} className="fooClassName"/>); // eslint-disable-line jsx-a11y/label-has-for
+
+        expect(wrapper.prop('className')).toContain('fooClassName');
+    });
+
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<Label {...props} foo="bar"/>); // eslint-disable-line jsx-a11y/label-has-for
+
+        expect(wrapper.prop('foo')).toBe('bar');
+    });
 });

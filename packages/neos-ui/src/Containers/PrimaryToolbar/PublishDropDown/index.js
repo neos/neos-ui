@@ -15,7 +15,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector, isWorkspaceReadOnlySelector} = selectors.CR.Workspaces;
+const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector, isWorkspaceReadOnlySelector, personalWorkspaceNameSelector} = selectors.CR.Workspaces;
 
 import AbstractButton from './AbstractButton/index';
 import WorkspaceSelector from './WorkspaceSelector/index';
@@ -27,6 +27,7 @@ import style from './style.css';
     isDiscarding: $get('ui.remote.isDiscarding'),
     publishableNodes: publishableNodesSelector,
     publishableNodesInDocument: publishableNodesInDocumentSelector,
+    personalWorkspaceName: personalWorkspaceNameSelector,
     baseWorkspace: baseWorkspaceSelector,
     isWorkspaceReadOnly: isWorkspaceReadOnlySelector,
     isAutoPublishingEnabled: $get('user.settings.isAutoPublishingEnabled')
@@ -45,13 +46,15 @@ export default class PublishDropDown extends PureComponent {
         isWorkspaceReadOnly: PropTypes.bool,
         publishableNodes: ImmutablePropTypes.list,
         publishableNodesInDocument: ImmutablePropTypes.list,
+        personalWorkspaceName: PropTypes.string.isRequired,
         baseWorkspace: PropTypes.string.isRequired,
         neos: PropTypes.object.isRequired,
         isAutoPublishingEnabled: PropTypes.bool,
         toggleAutoPublishing: PropTypes.func.isRequired,
         publishAction: PropTypes.func.isRequired,
         discardAction: PropTypes.func.isRequired,
-        changeBaseWorkspaceAction: PropTypes.func.isRequired
+        changeBaseWorkspaceAction: PropTypes.func.isRequired,
+        routes: PropTypes.object
     };
 
     handlePublishClick = () => {
@@ -91,6 +94,7 @@ export default class PublishDropDown extends PureComponent {
             neos
         } = this.props;
 
+        const workspaceModuleUri = $get('routes.core.modules.workspaces', neos);
         const allowedWorkspaces = $get('configuration.allowedTargetWorkspaces', neos);
         const baseWorkspaceTitle = $get([baseWorkspace, 'title'], allowedWorkspaces);
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
@@ -171,6 +175,12 @@ export default class PublishDropDown extends PureComponent {
                                 {publishableNodesCount > 0 && ` (${publishableNodesCount})`}
                             </AbstractButton>
                         </li>
+                        {publishableNodesCount > 0 && (<li className={style.dropDown__item}>
+                            <a href={workspaceModuleUri + '/show?moduleArguments[workspace]=' + this.props.personalWorkspaceName}>
+                                <Icon icon="check-circle"/>
+                                <I18n id="Neos.Neos:Main:reviewChanges" fallback="Review changes"/>
+                            </a>
+                        </li>)}
                         <li className={autoPublishWrapperClassNames}>
                             <Label htmlFor="neos__primaryToolbar__publishDropDown__autoPublishingEnabledCheckbox">
                                 <CheckBox
@@ -182,7 +192,7 @@ export default class PublishDropDown extends PureComponent {
                             </Label>
                         </li>
                         <li className={style.dropDown__item}>
-                            <a href="/neos/management/workspaces">
+                            <a href={workspaceModuleUri}>
                                 <Icon icon="th-large"/>
                                 <I18n id="Neos.Neos:Main:workspaces" fallback="Workspaces"/>
                             </a>

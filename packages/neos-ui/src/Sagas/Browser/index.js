@@ -1,15 +1,10 @@
-import {takeEvery} from 'redux-saga';
-
+import {call, takeEvery} from 'redux-saga/effects';
 import {actionTypes} from '@neos-project/neos-ui-redux-store';
 
-function * watchContentURIChange() {
-    yield * takeEvery(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * reflectChangeInAddressBar(action) {
-        const {contextPath} = action.payload;
-
-        yield history.replaceState({}, '', `?node=${contextPath}`);
-    });
+export function * reflectChangeInAddressBar(action) {
+    yield call([history, history.replaceState], {}, '', `?node=${action.payload.contextPath}`);
 }
 
-export const sagas = [
-    watchContentURIChange
-];
+export function * watchContentURIChange() {
+    yield takeEvery(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, reflectChangeInAddressBar);
+}

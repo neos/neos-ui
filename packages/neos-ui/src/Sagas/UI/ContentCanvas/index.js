@@ -1,5 +1,5 @@
-import {takeLatest, delay} from 'redux-saga';
-import {put, select, take, race} from 'redux-saga/effects';
+import {delay} from 'redux-saga';
+import {takeLatest, put, select, take, race} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
@@ -8,8 +8,8 @@ import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 /**
  * Load newly created page into canvas
  */
-function * watchNodeCreated() {
-    yield * takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
+export function * watchNodeCreated() {
+    yield takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
         const {contextPath} = action.payload;
         const node = yield select($get(['cr', 'nodes', 'byContextPath', contextPath]));
         yield put(actions.UI.ContentCanvas.setContextPath(contextPath));
@@ -19,8 +19,8 @@ function * watchNodeCreated() {
 /**
  * Load newly created page into canvas
  */
-function * watchCanvasUpdateToChangeTitle() {
-    yield * takeLatest(actionTypes.UI.ContentCanvas.STOP_LOADING, () => {
+export function * watchCanvasUpdateToChangeTitle() {
+    yield takeLatest(actionTypes.UI.ContentCanvas.STOP_LOADING, () => {
         document.title = getGuestFrameDocument().title;
     });
 }
@@ -28,24 +28,25 @@ function * watchCanvasUpdateToChangeTitle() {
 /**
  * Run initialization sequence, after a new document has been loaded
  */
-function * watchStopLoading({globalRegistry, store}) {
+export function * watchStopLoading({globalRegistry, store}) {
     const guestFrameRegistry = globalRegistry.get('@neos-project/neos-ui-guest-frame');
     const makeInitializeGuestFrame = guestFrameRegistry.get('makeInitializeGuestFrame');
 
-    yield * takeLatest(
+    yield takeLatest(
         actionTypes.UI.ContentCanvas.STOP_LOADING,
         makeInitializeGuestFrame({globalRegistry, store})
     );
 }
 
-function * watchControlOverIFrame() {
+export function * watchControlOverIFrame() {
     yield take(actionTypes.System.READY);
 
     while (true) { //eslint-disable-line
         const src = yield select($get('ui.contentCanvas.src'));
         const waitForNextAction = yield race([
             take(actionTypes.UI.ContentCanvas.SET_SRC),
-            take(actionTypes.UI.ContentCanvas.REQUEST_REGAIN_CONTROL)
+            take(actionTypes.UI.ContentCanvas.REQUEST_REGAIN_CONTROL),
+            take(actionTypes.UI.ContentCanvas.REQUEST_LOGIN)
         ]);
         const nextAction = Object.keys(waitForNextAction).map(k => waitForNextAction[k])[0];
 
@@ -57,13 +58,21 @@ function * watchControlOverIFrame() {
             //
             yield delay(0);
             yield put(actions.UI.ContentCanvas.setSrc(nextAction.payload.src || src));
+            continue;
+        }
+
+        if (nextAction.type === actionTypes.UI.ContentCanvas.REQUEST_LOGIN) {
+            yield put(actions.System.authenticationTimeout());
+            yield take(actionTypes.System.REAUTHENTICATION_SUCCEEDED);
+
+            //
+            // We need to delay, so that the iframe gets cleared before we load a new src
+            //
+            yield put(actions.UI.ContentCanvas.setSrc(''));
+            yield delay(0);
+            yield put(actions.UI.ContentCanvas.setSrc(src));
+            continue;
         }
     }
 }
 
-export const sagas = [
-    watchNodeCreated,
-    watchCanvasUpdateToChangeTitle,
-    watchStopLoading,
-    watchControlOverIFrame
-];

@@ -8,22 +8,26 @@ import {put} from 'redux-saga/effects';
 import {Map} from 'immutable';
 import merge from 'lodash.merge';
 
-import {reducer, actions} from '@neos-project/neos-ui-redux-store';
+import {actions} from '@neos-project/neos-ui-redux-store';
 import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling';
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import {delay} from '@neos-project/utils-helpers';
 import backend from '@neos-project/neos-ui-backend-connector';
+import {handleActions} from '@neos-project/utils-redux';
 
-import allSagas from './Sagas/index';
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
 import Root from './Containers/Root';
 import apiExposureMap from './apiExposureMap';
+import DelegatingReducer from './DelegatingReducer';
+
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
 const sagaMiddleWare = createSagaMiddleware();
-const store = createStore(reducer, new Map(), compose(
+
+const delegatingReducer = new DelegatingReducer();
+const store = createStore(delegatingReducer.reducer(), new Map(), compose(
     applyMiddleware(sagaMiddleWare, localStorageMiddleware),
     devToolsStoreEnhancer()
 ));
@@ -67,18 +71,28 @@ function * application() {
     yield system.getNeos;
 
     //
+    // Load frontend configuration very early, as we want to make it available in manifests
+    //
+    const frontendConfiguration = yield system.getFrontendConfiguration;
+
+    //
     // Initialize extensions
     //
     manifests
         .map(manifest => manifest[Object.keys(manifest)[0]])
-        .forEach(({bootstrap}) => bootstrap(globalRegistry, store));
+        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration}));
+
+    const reducers = globalRegistry.get('reducers').getAllAsList().map(element => element.reducer);
+    delegatingReducer.setReducer(handleActions(reducers));
 
     const configuration = yield system.getConfiguration;
+
+    const routes = yield system.getRoutes;
 
     //
     // Bootstrap the saga middleware with initial sagas
     //
-    allSagas.forEach(saga => sagaMiddleWare.run(saga, {store, globalRegistry, configuration}));
+    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration}));
 
     //
     // Tell everybody, that we're booting now
@@ -110,10 +124,6 @@ function * application() {
     const i18nRegistry = globalRegistry.get('i18n');
     i18nRegistry.setTranslations(translations);
 
-    //
-    // Load frontend configuration (edit/preview modes)
-    //
-    const frontendConfiguration = yield system.getFrontendConfiguration;
     const frontendConfigurationRegistry = globalRegistry.get('frontendConfiguration');
 
     Object.keys(frontendConfiguration).forEach(key => {
@@ -159,6 +169,7 @@ function * application() {
             globalRegistry={globalRegistry}
             menu={menu}
             configuration={configuration}
+            routes={routes}
             store={store}
             />,
         appContainer

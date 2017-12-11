@@ -17,6 +17,7 @@ import {renderToolbarComponents} from './Helpers/index';
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
 @neos(globalRegistry => ({
+    // ToDo: Just by searching I haven't found a reference to the `globalRegistry` prop within the Component, do we still need it?
     globalRegistry,
     toolbarRegistry: globalRegistry.get('ckEditor').get('richtextToolbar'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
@@ -36,17 +37,12 @@ export default class EditorToolbar extends PureComponent {
         nodeTypesRegistry: PropTypes.object.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-        this.onToggleFormat = this.onToggleFormat.bind(this);
-    }
-
     componentWillMount() {
         const {toolbarRegistry} = this.props;
         this.renderToolbarComponents = renderToolbarComponents(toolbarRegistry);
     }
 
-    onToggleFormat(formattingRule) {
+    onToggleFormat = formattingRule => {
         getGuestFrameWindow().NeosCKEditorApi.toggleFormat(formattingRule);
     }
 
@@ -55,17 +51,17 @@ export default class EditorToolbar extends PureComponent {
             focusedNodeType,
             currentlyEditedPropertyName,
             formattingUnderCursor,
-            toolbarRegistry
+            nodeTypesRegistry
         } = this.props;
-        const enabledFormattingRuleIds = toolbarRegistry
-            .getEnabledFormattingRulesForNodeTypeAndProperty(focusedNodeType)(currentlyEditedPropertyName);
+        const inlineEditorOptions = nodeTypesRegistry
+            .getInlineEditorOptionsForProperty(focusedNodeType, currentlyEditedPropertyName);
 
         const classNames = mergeClassNames({
             [style.toolBar]: true
         });
         const renderedToolbarComponents = this.renderToolbarComponents(
             this.onToggleFormat,
-            enabledFormattingRuleIds || [],
+            inlineEditorOptions,
             formattingUnderCursor
         );
 

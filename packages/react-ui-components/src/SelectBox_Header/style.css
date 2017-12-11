@@ -1,0 +1,29 @@
+
+.selectBoxHeader {
+    display: flex;
+}
+
+.selectBoxHeader__icon {
+    composes: reset from './../reset.css';
+    line-height: var(--goldenUnit);
+}
+
+.selectBoxHeader__seperator {
+    display: block;
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 24px;
+    top: var(--halfSpacing);
+    right: calc(var(--goldenUnit) + 1px);
+    background-color: #fff;
+    opacity: .15;
+}
+
+.selectBoxHeader__label {
+    padding: 0 var(--halfSpacing);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    width: 100%;
+}

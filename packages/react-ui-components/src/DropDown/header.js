@@ -23,12 +23,13 @@ const ShallowDropDownHeader = props => {
     const finalClassName = mergeClassNames({
         [theme.dropDown__btn]: true,
         [className]: className && className.length,
-        [theme['dropDown__btn--open']]: isOpen
+        [theme['dropDown__btn--withChevron']]: showDropDownToggle
     });
 
     return (
         <div
             {...rest}
+            role="button"
             onClick={disabled ? null : toggleDropDown}
             ref={shouldKeepFocusState ? _refHandler(isOpen) : emptyFn}
             className={finalClassName}

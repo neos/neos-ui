@@ -25,4 +25,6 @@ yarn
 #
 # Copy githooks
 #
+# ToDo: We should use the npm module `husky` to do this for us instead of relying on native unix commands.
+#
 cd .git/hooks && ln -sf ../../Build/GitHooks/* . && cd -

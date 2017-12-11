@@ -5,17 +5,19 @@ export default class Neos extends PureComponent {
     static propTypes = {
         globalRegistry: PropTypes.object.isRequired,
         configuration: PropTypes.object.isRequired,
+        routes: PropTypes.object.isRequired,
         children: PropTypes.element.isRequired
     };
 
     static childContextTypes = {
         globalRegistry: PropTypes.object.isRequired,
-        configuration: PropTypes.object.isRequired
+        configuration: PropTypes.object.isRequired,
+        routes: PropTypes.object.isRequired
     };
 
     getChildContext() {
-        const {configuration, globalRegistry} = this.props;
-        return {configuration, globalRegistry};
+        const {configuration, globalRegistry, routes} = this.props;
+        return {configuration, globalRegistry, routes};
     }
 
     render() {

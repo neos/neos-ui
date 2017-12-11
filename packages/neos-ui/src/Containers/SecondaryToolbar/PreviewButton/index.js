@@ -22,15 +22,23 @@ export default class PreviewButton extends PureComponent {
             [style['secondaryToolbar__buttonLink--isDisabled']]: !previewUrl
         });
 
+        if (previewUrl) {
+            return (
+                <a
+                    href={previewUrl ? previewUrl : ''}
+                    target="neosPreview"
+                    rel="noopener noreferrer"
+                    className={previewButtonClassNames}
+                    >
+                    <Icon icon="external-link"/>
+                </a>
+            );
+        }
+
         return (
-            <a
-                href={previewUrl ? previewUrl : ''}
-                target="neosPreview"
-                rel="noopener noreferrer"
-                className={previewButtonClassNames}
-                >
+            <button className={previewButtonClassNames} disabled>
                 <Icon icon="external-link"/>
-            </a>
+            </button>
         );
     }
 }

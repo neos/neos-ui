@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$transform} from 'plow-js';
+import {$get, $transform} from 'plow-js';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import Dropzone from 'react-dropzone';
@@ -10,6 +10,7 @@ import style from './style.css';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 @connect($transform({
+    siteNodePath: $get('cr.nodes.siteNode'),
     focusedNode: selectors.CR.Nodes.focusedNodePathSelector
 }), null, null, {withRef: true})
 export default class AssetUpload extends PureComponent {
@@ -21,6 +22,7 @@ export default class AssetUpload extends PureComponent {
         propertyName: PropTypes.string,
         isLoading: PropTypes.bool.isRequired,
         onAfterUpload: PropTypes.func.isRequired,
+        siteNodePath: PropTypes.string.isRequired,
         focusedNode: PropTypes.string.isRequired,
         highlight: PropTypes.bool,
         children: PropTypes.any.isRequired
@@ -32,9 +34,9 @@ export default class AssetUpload extends PureComponent {
 
     handleUpload = files => {
         const {uploadAsset} = backend.get().endpoints;
-        const {onAfterUpload, focusedNode} = this.props;
+        const {onAfterUpload, focusedNode, siteNodePath} = this.props;
 
-        return uploadAsset(files[0], this.props.propertyName, focusedNode).then(res => {
+        return uploadAsset(files[0], this.props.propertyName, focusedNode, siteNodePath).then(res => {
             if (onAfterUpload) {
                 onAfterUpload(res);
             }

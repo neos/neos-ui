@@ -28,6 +28,9 @@ export default class AssetEditor extends PureComponent {
     };
 
     static propTypes = {
+        // The propertyName this editor is used for, coming from the inspector
+        identifier: PropTypes.string,
+
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.string)]),
         options: PropTypes.object,
         searchOptions: PropTypes.array,
@@ -44,6 +47,10 @@ export default class AssetEditor extends PureComponent {
         siteNodePath: PropTypes.string.isRequired,
         secondaryEditorsRegistry: PropTypes.object.isRequired,
         renderSecondaryInspector: PropTypes.func.isRequired
+    };
+
+    static defaultProps = {
+        identifier: ''
     };
 
     componentDidMount() {
@@ -139,7 +146,8 @@ export default class AssetEditor extends PureComponent {
             const {uploadAsset} = backend.get().endpoints;
             const {siteNodePath} = this.props;
             const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
-            uploadAsset(files[0], siteNodeName, 'Asset').then(res => {
+
+            uploadAsset(files[0], this.props.identifier, siteNodeName, 'Asset').then(res => {
                 this.handleValueChange(res.assetUuid);
                 this.setState({
                     isLoading: false
@@ -161,7 +169,7 @@ export default class AssetEditor extends PureComponent {
             });
             return;
         }
-        uploadAsset(files[index], siteNodeName, 'Asset').then(res => {
+        uploadAsset(files[index], this.props.identifier, siteNodeName, 'Asset').then(res => {
             values.push(res.assetUuid);
             this.uploadFile(index, values, files);
         });

@@ -121,11 +121,13 @@ export default routes => {
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const uploadAsset = (file, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+    const uploadAsset = (file, propertyName, node, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         const data = new FormData();
         data.append('__siteNodeName', siteNodeName);
         data.append('asset[resource]', file);
         data.append('metadata', metadata);
+        data.append('propertyName', propertyName);
+        data.append('node', node);
 
         return {
             url: routes.core.content.uploadAsset,

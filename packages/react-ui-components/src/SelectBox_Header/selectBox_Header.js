@@ -45,12 +45,25 @@ export default class SelectBox_Header extends PureComponent {
         const label = option ? option.label : placeholder;
         const icon = option && option.icon ? option.icon : placeholderIcon;
 
+        const resetButton = () => {
+            if (showResetButton) {
+                return (
+                    <span className={theme.selectBoxHeader__wrapperIconWrapper}>
+                        <IconButton className={theme.selectBoxHeader__icon} icon="times" onClick={this.props.onReset}/>
+                        <span className={theme.selectBoxHeader__seperator}/>
+                    </span>
+                );
+            }
+
+            return '';
+        };
+
         // TODO: lateron, use <ListPreviewElement> here
         return (
             <div className={theme.selectBoxHeader}>
                 {icon && <Icon className={theme.selectBoxHeader__icon} icon={icon}/>}
                 {label && <span className={theme.selectBoxHeader__label}>{label}</span>}
-                {Boolean(showResetButton) && <IconButton className={theme.selectBoxHeader__icon} icon="times" onClick={this.props.onReset}/>}
+                {resetButton()}
             </div>
         );
     }

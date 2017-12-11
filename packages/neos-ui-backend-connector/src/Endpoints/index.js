@@ -16,7 +16,7 @@ export default routes => {
             changes
         })
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const publish = (nodeContextPaths, targetWorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.publish,
@@ -31,7 +31,7 @@ export default routes => {
             targetWorkspaceName
         })
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const discard = nodeContextPaths => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.discard,
@@ -46,7 +46,7 @@ export default routes => {
             nodeContextPaths
         })
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.changeBaseWorkspace,
@@ -61,7 +61,7 @@ export default routes => {
             targetWorkspaceName
         })
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfToken(() => ({
         url: `${routes.core.content.imageWithMetadata}?image=${imageVariantUuid}`,
@@ -72,7 +72,7 @@ export default routes => {
             'Content-Type': 'application/json'
         }
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     /**
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
@@ -99,7 +99,7 @@ export default routes => {
             }
         })
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadMasterPlugins = (workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.content.loadMasterPlugins, {workspaceName, dimensions}),
@@ -119,14 +119,13 @@ export default routes => {
             'Content-Type': 'application/json'
         }
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const uploadAsset = (file, siteNodeName, node, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+    const uploadAsset = (file, propertyName, node, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         const data = new FormData();
-        data.append('__siteNodeName', siteNodeName);
         data.append('asset[resource]', file);
         data.append('metadata', metadata);
-        data.append('siteNodeName', siteNodeName);
+        data.append('propertyName', propertyName);
         data.append('node', node);
 
         return {
@@ -318,14 +317,14 @@ export default routes => {
         method: 'GET',
         credentials: 'include'
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const getJsonResource = resourceUri => fetchWithErrorHandling.withCsrfToken(() => ({
         url: resourceUri,
         method: 'GET',
         credentials: 'include'
     })).then(response => response.json())
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const tryLogin = (username, password) => {
         const data = new URLSearchParams();
@@ -337,12 +336,12 @@ export default routes => {
             body: data,
             credentials: 'same-origin'
         })
-            // parse the JSON if possible ...
-            .then(response => response.json())
-            // ... and if the JSON cannot be parsed, convert this to "false".
-            .then(result => result, () => false)
-            // return the new CSRF Protection token
-            .then(result => result && result.csrfToken);
+        // parse the JSON if possible ...
+        .then(response => response.json())
+        // ... and if the JSON cannot be parsed, convert this to "false".
+        .then(result => result, () => false)
+        // return the new CSRF Protection token
+        .then(result => result && result.csrfToken);
     };
 
     return {

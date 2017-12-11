@@ -26,6 +26,9 @@ export default class ImageEditor extends Component {
     };
 
     static propTypes = {
+        // The propertyName this editor is used for, coming from the inspector
+        identifier: PropTypes.string,
+
         value: PropTypes.oneOfType([
             PropTypes.shape({
                 __identifier: PropTypes.string
@@ -50,7 +53,8 @@ export default class ImageEditor extends Component {
     };
 
     static defaultProps = {
-        allowedFileTypes: 'jpg,jpeg,png,gif,svg'
+        allowedFileTypes: 'jpg,jpeg,png,gif,svg',
+        identifier: ''
     };
 
     componentDidMount() {
@@ -238,6 +242,7 @@ export default class ImageEditor extends Component {
         return (
             <div className={style.imageEditor}>
                 <PreviewScreen
+                    propertyName={this.props.identifier}
                     ref={this.setPreviewScreenRef}
                     image={this.getUsedImage()}
                     isLoading={isAssetLoading}

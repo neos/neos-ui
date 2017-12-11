@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get, $transform} from 'plow-js';
+import {$transform} from 'plow-js';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import Dropzone from 'react-dropzone';
@@ -10,14 +10,17 @@ import style from './style.css';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 @connect($transform({
-    siteNodePath: $get('cr.nodes.siteNode'),
     focusedNode: selectors.CR.Nodes.focusedNodePathSelector
 }), null, null, {withRef: true})
 export default class AssetUpload extends PureComponent {
+    static defaultProps = {
+        propertyName: ''
+    };
+
     static propTypes = {
+        propertyName: PropTypes.string,
         isLoading: PropTypes.bool.isRequired,
         onAfterUpload: PropTypes.func.isRequired,
-        siteNodePath: PropTypes.string.isRequired,
         focusedNode: PropTypes.string.isRequired,
         highlight: PropTypes.bool,
         children: PropTypes.any.isRequired
@@ -29,12 +32,9 @@ export default class AssetUpload extends PureComponent {
 
     handleUpload = files => {
         const {uploadAsset} = backend.get().endpoints;
-        const {onAfterUpload, siteNodePath, focusedNode} = this.props;
+        const {onAfterUpload, focusedNode} = this.props;
 
-        // ToDo: Move into a re-usable util fn - Maybe util-helpers?
-        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
-
-        return uploadAsset(files[0], siteNodeName, focusedNode).then(res => {
+        return uploadAsset(files[0], this.props.propertyName, focusedNode).then(res => {
             if (onAfterUpload) {
                 onAfterUpload(res);
             }

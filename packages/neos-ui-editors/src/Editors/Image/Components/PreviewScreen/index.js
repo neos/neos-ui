@@ -9,6 +9,7 @@ import style from './style.css';
 
 export default class PreviewScreen extends PureComponent {
     static propTypes = {
+        propertyName: PropTypes.string,
         image: PropTypes.object,
         afterUpload: PropTypes.func.isRequired,
         onClick: PropTypes.func.isRequired,
@@ -21,7 +22,7 @@ export default class PreviewScreen extends PureComponent {
     }
 
     render() {
-        const {image, afterUpload, onClick, isLoading, highlight} = this.props;
+        const {image, afterUpload, onClick, isLoading, highlight, propertyName} = this.props;
 
         const classNames = mergeClassNames({
             [style.thumbnail]: true,
@@ -38,7 +39,7 @@ export default class PreviewScreen extends PureComponent {
         const thumbnail = image ? Thumbnail.fromImageData(image, 273, 216) : null;
 
         return (
-            <AssetUpload onAfterUpload={afterUpload} isLoading={isLoading} highlight={highlight} ref={this.setAssetUploadReference}>
+            <AssetUpload onAfterUpload={afterUpload} isLoading={isLoading} propertyName={propertyName} highlight={highlight} ref={this.setAssetUploadReference}>
                 <div
                     className={classNames}
                     onClick={onClick}

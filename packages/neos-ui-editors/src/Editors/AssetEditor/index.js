@@ -5,11 +5,10 @@ import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import AssetOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/AssetOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {$get, $transform} from 'plow-js';
+import {$get} from 'plow-js';
 import Controls from './Components/Controls/index';
 import Dropzone from 'react-dropzone';
 import backend from '@neos-project/neos-ui-backend-connector';
-import {connect} from 'react-redux';
 import style from './style.css';
 
 @neos(globalRegistry => ({
@@ -17,9 +16,6 @@ import style from './style.css';
     i18nRegistry: globalRegistry.get('i18n'),
     secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')
 }))
-@connect($transform({
-    siteNodePath: $get('cr.nodes.siteNode')
-}), null, null, {withRef: true})
 export default class AssetEditor extends PureComponent {
     state = {
         options: [],
@@ -28,6 +24,9 @@ export default class AssetEditor extends PureComponent {
     };
 
     static propTypes = {
+        // The propertyName this editor is used for, coming from the inspector
+        identifier: PropTypes.string,
+
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.string)]),
         options: PropTypes.object,
         searchOptions: PropTypes.array,
@@ -41,9 +40,12 @@ export default class AssetEditor extends PureComponent {
             resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
-        siteNodePath: PropTypes.string.isRequired,
         secondaryEditorsRegistry: PropTypes.object.isRequired,
         renderSecondaryInspector: PropTypes.func.isRequired
+    };
+
+    static defaultProps = {
+        identifier: ''
     };
 
     componentDidMount() {
@@ -137,9 +139,7 @@ export default class AssetEditor extends PureComponent {
             this.uploadFile(index, values, files);
         } else {
             const {uploadAsset} = backend.get().endpoints;
-            const {siteNodePath} = this.props;
-            const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
-            uploadAsset(files[0], siteNodeName, 'Asset').then(res => {
+            uploadAsset(files[0], this.props.identifier, 'Asset').then(res => {
                 this.handleValueChange(res.assetUuid);
                 this.setState({
                     isLoading: false
@@ -151,9 +151,6 @@ export default class AssetEditor extends PureComponent {
     uploadFile(index, values, files) {
         index--;
         const {uploadAsset} = backend.get().endpoints;
-        const {siteNodePath} = this.props;
-        const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
-
         if (index < 0) {
             this.handleValueChange(values);
             this.setState({
@@ -161,7 +158,7 @@ export default class AssetEditor extends PureComponent {
             });
             return;
         }
-        uploadAsset(files[index], siteNodeName, 'Asset').then(res => {
+        uploadAsset(files[index], this.props.identifier, 'Asset').then(res => {
             values.push(res.assetUuid);
             this.uploadFile(index, values, files);
         });

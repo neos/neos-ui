@@ -74,7 +74,8 @@ const isUri = str =>
     str && Boolean(str.match('^(https?://|mailto:|tel:)'));
 
 @neos(globalRegistry => ({
-    linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup')
+    linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -82,6 +83,7 @@ const isUri = str =>
 class LinkTextField extends PureComponent {
 
     static propTypes = {
+        i18nRegistry: PropTypes.object,
         formattingRule: PropTypes.string,
         hrefValue: PropTypes.string,
 
@@ -187,7 +189,9 @@ class LinkTextField extends PureComponent {
                     setFocus={true}
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
-                    optionComponent={LinkOption}
+                    ListPreviewElement={LinkOption}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                     />
             </div>
         );

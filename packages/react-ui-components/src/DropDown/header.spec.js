@@ -15,6 +15,7 @@ describe('<ShallowDropDownHeader/>', () => {
             toggleDropDown: () => null,
             theme: {/* eslint-disable quote-props */
                 'dropDown__btn': 'baseDropDownHeaderClassName',
+                'dropDown__btn--withChevron': 'baseDropDownHeaderWithChevronClassName',
                 'dropDown__chevron': 'baseDropDownHeaderChevronClassName'
             }/* eslint-enable quote-props */
         };

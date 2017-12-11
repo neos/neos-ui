@@ -7,7 +7,7 @@ import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
-function * watchPublish() {
+export function * watchPublish() {
     const {q} = backend.get();
     const {publish} = backend.get().endpoints;
 
@@ -41,7 +41,7 @@ function * watchPublish() {
     });
 }
 
-function * watchToggleAutoPublish() {
+export function * watchToggleAutoPublish() {
     yield takeEvery(actionTypes.User.Settings.TOGGLE_AUTO_PUBLISHING, function * publishInitially() {
         const state = yield select();
         const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
@@ -53,7 +53,7 @@ function * watchToggleAutoPublish() {
     });
 }
 
-function * watchChangeBaseWorkspace() {
+export function * watchChangeBaseWorkspace() {
     const {changeBaseWorkspace} = backend.get().endpoints;
     yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
         try {
@@ -65,7 +65,7 @@ function * watchChangeBaseWorkspace() {
     });
 }
 
-function * watchDiscard() {
+export function * watchDiscard() {
     const {discard} = backend.get().endpoints;
 
     yield takeEvery(actionTypes.CR.Workspaces.DISCARD, function * discardNodes(action) {
@@ -92,10 +92,3 @@ function * watchDiscard() {
         }
     });
 }
-
-export const sagas = [
-    watchPublish,
-    watchToggleAutoPublish,
-    watchDiscard,
-    watchChangeBaseWorkspace
-];

@@ -129,6 +129,8 @@ class TextInput extends PureComponent {
                     {...rest}
                     className={classNames}
                     role="textbox"
+                    aria-multiline="false"
+                    aria-disabled={disabled ? 'true' : 'false'}
                     type={type}
                     placeholder={placeholder}
                     disabled={disabled}

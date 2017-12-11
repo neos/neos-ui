@@ -8,7 +8,6 @@ exports[`<CheckBox/> should render correctly. 1`] = `
     aria-checked={false}
     checked={false}
     onChange={[Function]}
-    role="checkbox"
     type="checkbox"
   />
   <div

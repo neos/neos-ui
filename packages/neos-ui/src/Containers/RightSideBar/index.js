@@ -62,6 +62,8 @@ export default class RightSideBar extends PureComponent {
             <SideBar
                 position="right"
                 className={classNames}
+                role="form"
+                aria-live="assertive"
                 aria-hidden={isSideBarHidden ? 'true' : 'false'}
                 >
                 {toggle}

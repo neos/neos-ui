@@ -46,10 +46,9 @@
 .header__data {
     composes: reset from './../reset.css';
     position: relative;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: .2em 0;
+    display: inline-block;
+    min-width: 100%;
+    padding: .1em 0;
 
     border-left: 2px solid transparent;
 
@@ -87,6 +86,15 @@
 .header__data--deniesDrop * {
     pointer-events: none;
 }
+
+.header__labelWrapper {
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    line-height: 1.5;
+    vertical-align: middle;
+}
 .header__label {
     composes: reset from './../reset.css';
 
@@ -107,13 +115,13 @@
 }
 .dropTarget--before {
     top: -5px;
-    z-index: 1;
+    z-index: var(--zIndex-SideBar-DropTargetBefore);
     padding-top: 4px;
     padding-bottom: 4px;
 }
 .dropTarget--after {
     bottom: 0;
-    z-index: 2;
+    z-index: var(--zIndex-SideBar-DropTargetAfter);
     padding-top: 6px;
     padding-bottom: 0;
 }

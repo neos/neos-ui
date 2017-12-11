@@ -18,6 +18,7 @@ const Button = props => {
         hoverStyle,
         size,
         theme,
+        type,
         _refHandler,
         ...rest
     } = props;
@@ -41,8 +42,8 @@ const Button = props => {
         attributes.disabled = 'disabled';
     }
 
-    const button = (
-        <button {...rest} {...attributes} className={finalClassName} role="button" ref={_refHandler(isFocused)}>
+    return (
+        <button {...rest} {...attributes} type={type} className={finalClassName} role="button" ref={_refHandler(isFocused)}>
             {children}
         </button>
     );
@@ -119,6 +120,11 @@ Button.propTypes = {
     }).isRequired,
 
     /**
+     * The HTML type of the button.
+     */
+    type: PropTypes.string,
+
+    /**
      * An interal prop for testing purposes, do not set this prop manually.
      */
     _refHandler: PropTypes.func
@@ -130,6 +136,7 @@ Button.defaultProps = {
     isFocused: false,
     isDisabled: false,
     isActive: false,
+    type: 'button',
     _refHandler: makeFocusNode
 };
 

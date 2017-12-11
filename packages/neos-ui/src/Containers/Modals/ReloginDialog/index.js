@@ -84,6 +84,7 @@ export default class ReloginDialog extends PureComponent {
                     <TextInput
                         className={style.inputField}
                         value={this.state.username}
+                        name="__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][username]"
                         placeholder={i18nRegistry.translate('Neos.Neos:Main:username', 'Username')}
                         onChange={this.handleUsernameChange}
                         onEnterKey={this.handleTryLogin}
@@ -93,6 +94,7 @@ export default class ReloginDialog extends PureComponent {
                         type="password"
                         className={style.inputField}
                         value={this.state.password}
+                        name="__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][password]"
                         placeholder={i18nRegistry.translate('Neos.Neos:Main:password', 'Password')}
                         onChange={this.handlePasswordChange}
                         onEnterKey={this.handleTryLogin}

@@ -3,5 +3,6 @@
 exports[`<Icon/> should render correctly. 1`] = `
 <i
   className=""
+  role="img"
 />
 `;

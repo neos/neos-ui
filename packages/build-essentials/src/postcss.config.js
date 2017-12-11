@@ -1,5 +1,7 @@
 const brand = require('@neos-project/brand');
 const brandVars = brand.generateCssVarsObject(brand.config, 'brand');
+const styles = require('./styles/styleConstants');
+const styleVars = styles.generateCssVarsObject(styles.config);
 
 module.exports = {
     plugins: [
@@ -24,8 +26,9 @@ module.exports = {
                 //
                 // Font sizes
                 //
-                '--baseFontSize': '14px'
-            }, brandVars)
+                '--baseFontSize': '14px',
+                '--smallFontSize': '12px'
+            }, styleVars, brandVars)
         }),
         require('postcss-import')(),
         require('postcss-nested')(),

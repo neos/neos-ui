@@ -17,18 +17,14 @@ const optionValues = {
         label: 'barLabel'
     }
 };
-const dropdownElementLabels = (component, count = 0) => {
-    const countArray = Array.from(Array(count).keys());
-    return countArray.map(index => {
-        return component.find('SelectBox').find('ShallowDropDownContents').children().childAt(index).text();
-    });
-};
+const dropdownElementLabels = component =>
+    component.find('SelectBox_ListPreview').find('SelectBox_Option_SingleLine').map(node => node.text());
 
 const dropdownHeader = component =>
-    component.find('SelectBox').find('ShallowDropDownHeader');
+    component.find('ShallowDropDownHeader');
 
 const multiselectLabels = component =>
-    component.find('ul').first().children().map(node => node.text());
+    component.find('MultiSelectBox_ListPreviewSortable').find('ListPreviewElement').map(node => node.text());
 
 const commit = () => {};
 
@@ -41,7 +37,7 @@ test(`SelectBox > single, no dataSource, no preselected value`, () => {
     );
 
     expect(dropdownHeader(component).text()).toBe('');
-    expect(dropdownElementLabels(component, expectedDropdownElementLabels.length)).toEqual(expectedDropdownElementLabels);
+    expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
 });
 
 test(`SelectBox > single, no dataSource, preselected value`, () => {
@@ -53,7 +49,7 @@ test(`SelectBox > single, no dataSource, preselected value`, () => {
     );
 
     expect(dropdownHeader(component).text()).toBe('barLabel');
-    expect(dropdownElementLabels(component, expectedDropdownElementLabels.length)).toEqual(expectedDropdownElementLabels);
+    expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
 });
 
 test(`SelectBox > multi, no dataSource, no preselected value`, () => {
@@ -69,7 +65,7 @@ test(`SelectBox > multi, no dataSource, no preselected value`, () => {
 
     expect(multiselectLabels(component)).toEqual([]);
     expect(dropdownHeader(component).text()).toBe('');
-    expect(dropdownElementLabels(component, expectedDropdownElementLabels.length)).toEqual(expectedDropdownElementLabels);
+    expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
 });
 
 test(`SelectBox > multi, no dataSource, preselected value`, () => {
@@ -86,7 +82,7 @@ test(`SelectBox > multi, no dataSource, preselected value`, () => {
     expect(multiselectLabels(component)).toEqual(['fooLabel']);
     expect(dropdownHeader(component).text()).toBe('');
     // already selected values should not be in the list to choose anymore
-    expect(dropdownElementLabels(component, expectedDropdownElementLabels.length)).toEqual(expectedDropdownElementLabels);
+    expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
 });
 
 /**
@@ -112,14 +108,14 @@ test(`SelectBox > single, dataSource, no preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
-    expect(dropdownHeader(component).text()).toBe('[loading]');
+    expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
         const expectedDropdownElementLabels = ['fooLabel', 'barLabel'];
         component.update();
         expect(dropdownHeader(component).text()).toBe('');
-        expect(dropdownElementLabels(component, expectedDropdownElementLabels.length)).toEqual(expectedDropdownElementLabels);
+        expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
     });
 });
 
@@ -133,14 +129,14 @@ test(`SelectBox > single, dataSource, preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
-    expect(dropdownHeader(component).text()).toBe('[loading]');
+    expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
         const expectedDropdownElementLabels = ['fooLabel', 'barLabel'];
         component.update();
         expect(dropdownHeader(component).text()).toBe('barLabel');
-        expect(dropdownElementLabels(component, expectedDropdownElementLabels.length)).toEqual(expectedDropdownElementLabels);
+        expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
     });
 });
 
@@ -155,7 +151,7 @@ test(`SelectBox > multi, dataSource, no preselected value`, () => {
     );
 
     expect(multiselectLabels(component)).toEqual([]);
-    expect(dropdownHeader(component).text()).toBe('[loading]');
+    expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
@@ -163,7 +159,7 @@ test(`SelectBox > multi, dataSource, no preselected value`, () => {
         component.update();
         expect(multiselectLabels(component)).toEqual([]);
         expect(dropdownHeader(component).text()).toBe('');
-        expect(dropdownElementLabels(component, expectedDropdownElementLabels.length)).toEqual(expectedDropdownElementLabels);
+        expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
     });
 });
 
@@ -179,16 +175,15 @@ test(`SelectBox > multi, dataSource, preselected value`, () => {
         </DragDropContextProvider>
     );
 
-    expect(multiselectLabels(component)).toEqual(['[Loading foo]']);
-    expect(dropdownHeader(component).text()).toBe('[loading]');
+    expect(multiselectLabels(component)).toEqual([]);
+    expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
         const expectedDropdownElementLabels = ['barLabel'];
         component.update();
         expect(multiselectLabels(component)).toEqual(['fooLabel']);
-        expect(dropdownHeader(component).text()).toBe('');
         // already selected values should not be in the list to choose anymore
-        expect(dropdownElementLabels(component, expectedDropdownElementLabels.length)).toEqual(expectedDropdownElementLabels);
+        expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
     });
 });

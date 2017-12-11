@@ -22,7 +22,8 @@ import style from './style.css';
 }), {
     startLoading: actions.UI.ContentCanvas.startLoading,
     stopLoading: actions.UI.ContentCanvas.stopLoading,
-    requestRegainControl: actions.UI.ContentCanvas.requestRegainControl
+    requestRegainControl: actions.UI.ContentCanvas.requestRegainControl,
+    requestLogin: actions.UI.ContentCanvas.requestLogin
 })
 @neos(globalRegistry => ({
     editPreviewModes: globalRegistry.get('frontendConfiguration').get('editPreviewModes'),
@@ -39,6 +40,7 @@ export default class ContentCanvas extends PureComponent {
         startLoading: PropTypes.func.isRequired,
         stopLoading: PropTypes.func.isRequired,
         requestRegainControl: PropTypes.func.isRequired,
+        requestLogin: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
 
         editPreviewModes: PropTypes.object.isRequired,
@@ -107,7 +109,8 @@ export default class ContentCanvas extends PureComponent {
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         onLoad={this.handleFrameAccess}
-                        sandbox="allow-same-origin allow-scripts allow-forms"
+                        role="region"
+                        aria-live="assertive"
                         >
                         {InlineUI && <InlineUI/>}
                     </Frame>)
@@ -129,22 +132,19 @@ export default class ContentCanvas extends PureComponent {
     }
 
     handleFrameAccess = iframe => {
-        const {startLoading, requestRegainControl} = this.props;
+        const {requestRegainControl, requestLogin} = this.props;
 
         try {
             if (iframe) {
-                iframe.contentWindow.addEventListener('beforeunload', event => {
+                // TODO: Find a more reliable way to determine login page
+                if (iframe.contentWindow.document.querySelector('.neos-login-main')) {
                     //
-                    // If we cannot guess the link that is responsible for
-                    // the unload, we should better hide the frame, until we're
-                    // sure that it ends up in a consistent state.
+                    // We're on the login page:
+                    // Request login dialog and prevent loop
                     //
-                    if (!event.target.activeElement.getAttribute('href')) {
-                        this.setState({isVisible: false});
-                    }
-
-                    startLoading();
-                });
+                    requestLogin();
+                    return;
+                }
 
                 this.setState({
                     isVisible: true,

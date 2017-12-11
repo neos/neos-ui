@@ -20,7 +20,8 @@ export default class CutSelectedNode extends PureComponent {
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         isActive: PropTypes.bool.isRequired,
         cutNode: PropTypes.func.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired,
+        canBeEdited: PropTypes.bool.isRequired
     };
 
     handleCutSelectedNodeClick = () => {
@@ -34,14 +35,15 @@ export default class CutSelectedNode extends PureComponent {
             destructiveOperationsAreDisabled,
             isActive,
             className,
-            i18nRegistry
+            i18nRegistry,
+            canBeEdited
         } = this.props;
 
         return (
             <IconButton
                 className={className}
                 isActive={isActive}
-                isDisabled={destructiveOperationsAreDisabled}
+                isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
                 onClick={this.handleCutSelectedNodeClick}
                 icon="cut"
                 tooltipLabel={i18nRegistry.translate('cut')}

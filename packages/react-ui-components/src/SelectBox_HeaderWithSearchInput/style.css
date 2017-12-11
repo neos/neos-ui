@@ -1,0 +1,24 @@
+.selectBoxHeaderWithSearchInput {
+    display: flex;
+}
+
+.selectBoxHeaderWithSearchInput__inputContainer {
+    width: 100%;
+}
+
+.selectBoxHeaderWithSearchInput__input {
+    width: 100%;
+    color: #fff;
+    /* TODO: move to reset / use var */
+    font-size: 14px;
+
+    &:focus {
+        background: transparent !important;
+        color: #fff !important;
+    }
+}
+
+.selectBoxHeaderWithSearchInput__icon {
+    composes: reset from './../reset.css';
+    line-height: var(--goldenUnit);
+}

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
+import {$get, $contains} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
 import Bar from '@neos-project/react-ui-components/src/Bar/';
 import Grid from '@neos-project/react-ui-components/src/Grid/';
@@ -101,6 +101,12 @@ export default class Inspector extends PureComponent {
         }
     }
 
+    isPropertyEnabled = ({id}) => {
+        const {focusedNode} = this.props;
+
+        return !$contains(id, 'policy.disallowedProperties', focusedNode);
+    };
+
     /**
      * API function called by nested Editors, to render a secondary inspector.
      *
@@ -169,9 +175,11 @@ export default class Inspector extends PureComponent {
                         //
                         // Only display tabs, that have groups and these groups have properties
                         //
-                        .filter(t => t.groups && t.groups.length && t.groups.reduce((acc, group) => {
-                            return acc || group.properties.length > 0 || group.views.length > 0;
-                        }, false))
+                        .filter(t => t.groups && t.groups.length && t.groups.reduce((acc, group) => (
+                            acc ||
+                            group.properties.filter(this.isPropertyEnabled).length > 0 ||
+                            group.views.length > 0
+                        ), false))
 
                         //
                         // Render each tab as a TabPanel

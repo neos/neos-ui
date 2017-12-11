@@ -7,7 +7,7 @@ const validStyleKeys = ['condensed'];
 
 export default class ToggablePanel extends PureComponent {
     state = {
-        isOpen: false
+        isOpen: true
     };
 
     static propTypes = {
@@ -34,7 +34,7 @@ export default class ToggablePanel extends PureComponent {
     };
 
     static defaultProps = {
-        isOpen: false
+        isOpen: true
     };
 
     componentWillReceiveProps(newProps) {
@@ -129,11 +129,11 @@ export class StatelessToggablePanel extends PureComponent {
     }
 
     render() {
-        const {children, className, theme, style} = this.props;
+        const {children, className, theme, style, isOpen} = this.props;
         const finalClassName = mergeClassNames({
             [className]: className && className.length,
             [theme.panel]: true,
-            [theme['panel--isOpen']]: this.props.isOpen,
+            [theme['panel--isOpen']]: isOpen,
             [theme[`panel--${style}`]]: validStyleKeys.includes(style)
         });
 
@@ -141,7 +141,7 @@ export class StatelessToggablePanel extends PureComponent {
             <section className={finalClassName}>
                 {React.Children.map(
                     children,
-                    child => child.type ? <child.type {...child.props} isPanelOpen={this.props.isOpen}/> : child
+                    child => child.type ? <child.type {...child.props} isPanelOpen={isOpen}/> : child
                 )}
             </section>
         );
@@ -186,7 +186,8 @@ export class Header extends PureComponent {
          * If not provided defaults are chevron-up and chevron-down
          */
         openedIcon: PropTypes.string,
-        closedIcon: PropTypes.string
+        closedIcon: PropTypes.string,
+        toggleButtonId: PropTypes.string
     };
 
     static defaultProps = {
@@ -209,6 +210,7 @@ export class Header extends PureComponent {
             closedIcon,
             theme,
             noPadding,
+            toggleButtonId,
             ...rest
         } = this.props;
         const {onPanelToggle} = this.context;
@@ -233,6 +235,12 @@ export class Header extends PureComponent {
                         onClick={onPanelToggle}
                         />
                 </HeadlineComponent>
+                <IconButtonComponent
+                    className={theme.panel__toggleBtn}
+                    icon={isPanelOpen ? openedIcon : closedIcon}
+                    onClick={onPanelToggle}
+                    id={toggleButtonId}
+                    />
             </div>
         );
     }

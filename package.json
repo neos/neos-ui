@@ -40,7 +40,6 @@
     "enzyme-adapter-react-16": "^1.0.0",
     "eslint": "^3.1.1",
     "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^1.1.5",
     "greenkeeper-postpublish": "^1.0.0",
     "identity-obj-proxy": "^3.0.0",
     "imports-loader": "^0.7.0",
@@ -64,11 +63,10 @@
     "stylelint": "^7.5.0",
     "testcafe": "^0.18.0",
     "testcafe-react-selectors": "^1.0.2",
-    "url-loader": "^0.6.2",
     "watch": "^1.0.2",
     "webpack": "^3.8.1",
-    "webpack-merge": "^4.1.1",
-    "webpack-livereload-plugin": "^1.0.0"
+    "webpack-livereload-plugin": "^1.0.0",
+    "webpack-merge": "^4.1.1"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
@@ -79,7 +77,8 @@
     "d3-scale": "^1.0.6",
     "d3-time": "^1.0.7",
     "debug": "^3.1.0",
-    "file-loader": "^0.10.0",
+    "file-loader": "^1.1.5",
+    "hash-sum": "^1.0.2",
     "hashlru": "2.2.0",
     "he": "^1.1.1",
     "immutable": "^3.8.0",
@@ -132,7 +131,7 @@
     "redux-saga": "^0.15.0",
     "regenerator": "^0.8.46",
     "reselect": "^2.4.0",
-    "url-loader": "^0.5.9",
+    "url-loader": "^0.6.2",
     "uuid": "^2.0.2",
     "whatwg-fetch": "^2.0.0"
   }

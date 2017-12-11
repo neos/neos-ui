@@ -109,6 +109,8 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
                 searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
+                noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 />);
         }
 
@@ -125,6 +127,8 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
             searchTerm={this.state.searchTerm}
             onSearchTermChange={this.handleSearchTermChange}
+            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
             />);
     }
 

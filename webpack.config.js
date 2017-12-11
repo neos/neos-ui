@@ -1,8 +1,10 @@
 const merge = require('webpack-merge');
 const path = require('path');
+const sharedWebpackConfig = require('./packages/build-essentials/src/webpack.config.js');
+delete sharedWebpackConfig.__internalDependencies;
 
 module.exports = merge(
-    require('./packages/build-essentials/src/webpack.config.js'),
+    sharedWebpackConfig,
     {
         entry: {
             Host: './packages/neos-ui/src/index.js',

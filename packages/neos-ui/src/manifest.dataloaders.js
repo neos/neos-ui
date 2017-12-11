@@ -192,8 +192,8 @@ manifest('main.dataloaders', {}, globalRegistry => {
             return Promise.all(
                 identifiers.map(identifier =>
                     this.resolveValue(options, identifier)
-                ).filter(promise => Boolean(promise)) // remove "null" values
-            );
+                )
+            ).then(results => [].concat(...results));
         },
 
         search(options, searchTerm) {

@@ -19,18 +19,12 @@ export default class I18n extends PureComponent {
         sourceName: PropTypes.string,
 
         // Additional parameters which are passed to the i18n service.
-        params: PropTypes.object.isRequired,
+        params: PropTypes.object,
 
         // Optional className which gets added to the translation span.
         className: PropTypes.string,
 
         i18nRegistry: PropTypes.object.isRequired
-    };
-
-    static defaultProps = {
-        packageKey: null,
-        sourceName: null,
-        params: {}
     };
 
     render() {

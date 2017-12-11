@@ -13,7 +13,7 @@
     color: white;
     cursor: pointer;
     font-size: var(--baseFontSize);
-    padding: 0 38px 0 var(--spacing);
+    padding: 0 var(--spacing);
     border: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -24,6 +24,9 @@
     &:focus {
         outline: unset;
     }
+}
+.dropDown__btn--withChevron {
+    padding-right: var(--goldenUnit);
 }
 .dropDown__btnLabel {
     composes: reset from './../reset.css';
@@ -41,13 +44,14 @@
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 1;
+    z-index: var(--zIndex-DropdownContents-Context);
     display: none;
     width: 100%;
     padding: 0;
     margin: 0;
     list-style: none;
     background: var(--brandColorsContrastNeutral);
+    box-shadow: 1px 2px 5px var(--brandColorsContrastDarker);
 }
 .dropDown__contents--scrollable {
     max-height: 80vh;

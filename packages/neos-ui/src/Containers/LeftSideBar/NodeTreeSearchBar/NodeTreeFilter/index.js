@@ -54,6 +54,9 @@ export default class NodeTreeFilter extends PureComponent {
                     displaySearchBox={true}
                     searchTerm={this.state.filterTerm}
                     onSearchTermChange={this.handleFilterTermChange}
+                    threshold={0}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                     />
             </div>
         );

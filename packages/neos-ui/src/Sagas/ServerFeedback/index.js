@@ -2,7 +2,7 @@ import {takeEvery} from 'redux-saga/effects';
 
 import {actionTypes} from '@neos-project/neos-ui-redux-store';
 
-function * watchServerFeedback({store, globalRegistry}) {
+export function * watchServerFeedback({store, globalRegistry}) {
     const serverFeedbackHandlers = globalRegistry.get('serverFeedbackHandlers');
 
     yield takeEvery(actionTypes.ServerFeedback.HANDLE_SERVER_FEEDBACK, action => {
@@ -21,7 +21,3 @@ function * watchServerFeedback({store, globalRegistry}) {
         });
     });
 }
-
-export const sagas = [
-    watchServerFeedback
-];

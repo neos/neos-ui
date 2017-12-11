@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import withScrolling, {createVerticalStrength} from 'react-dnd-scrollzone';
+import withScrolling, {createVerticalStrength, createHorizontalStrength} from 'react-dnd-scrollzone';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
@@ -38,8 +38,10 @@ export class Tree extends PureComponent {
             <ScrollingComponent
                 strengthMultiplier={20}
                 verticalStrength={verticalStrength}
+                horizontalStrength={createHorizontalStrength(50)}
                 className={classNames}
                 tabIndex="0"
+                role="tree"
                 >
                 <NodeComponent {...rest}>
                     {this.props.children}

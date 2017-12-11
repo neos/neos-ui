@@ -3,7 +3,7 @@
     position: absolute;
     border-bottom: 1px solid var(--brandColorsContrastDark);
     background: #222;
-    z-index: 2147483647;
+    z-index: var(--zIndex-NodeToolBar);
 }
 .toolBar__btnGroup {
     height: var(--goldenUnit);

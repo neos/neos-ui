@@ -1,201 +1,49 @@
-.wrapper {
-    composes: reset from './../reset.css';
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 40px;
-    vertical-align: top;
-}
-.wrapper--highlight {
-    outline: 2px solid var(--brandColorsSuccess);
-}
-.selectedOptions {
-    position: relative;
-    width: 100%;
-    list-style: none;
+
+.selectBox__list {
+    padding: 0;
 }
 
-.selectedOptions__item {
-    width: 100%;
-    position: relative;
+.selectBox--highlight {
+    outline: 2px solid var(--brandColorsSuccess);
 }
 
 .selectBox {
-    composes: reset from './../reset.css';
-    position: static;
+    composes: reset from './../reset.css', dropDown from './../DropDown/style.css';
+    position: relative;
     display: inline-block;
+    height: var(--goldenUnit);
 }
 
 .selectBox__btn {
-    composes: reset from './../reset.css';
+    composes: reset from './../reset.css', dropDown__btn from './../DropDown/style.css';
     position: relative;
     display: inline-block;
     text-overflow: clip;
-    height: 40px;
-    line-height: 40px;
+    height: var(--goldenUnit);
+    line-height: var(--goldenUnit);
     border: 0;
     background: var(--brandColorsContrastNeutral);
     min-width: 160px;
 }
 
-.selectBox__placeholder {
-    color: var(--brandColorsContrastBright);
-}
-
-.selectBox__searchInputWrapper {
-    display: inline-block;
-    width: 100%;
-
-    > div {
-        display: inline-block;
-        width: 100%;
-    }
-}
-
-.selectBox__searchInput {
-    display: inline-block;
-    width: 100%;
-    color: #fff;
-    font-size: 14px;
-    &:focus {
-        background: transparent !important;
-        color: #fff !important;
-    }
-}
-
-.selectBox__searchInputContainer {
-    display: inline-block;
-    width: 100%;
-}
-
-.dropDown__itemLabel {
-    padding: 0 var(--halfSpacing);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    width: 100%;
-}
-
-.selectBox__loadingIcon {
-    composes: reset from './../reset.css';
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    display: block;
-    width: var(--goldenUnit);
-    height: var(--goldenUnit);
-    text-align: center;
-    background: transparent;
-    color: #FFF;
-    line-height: 40px;
-}
-
-.selectBox__btnIcon {
-    composes: reset from './../reset.css';
-    margin-right: .5em;
-    float: left;
-    line-height: var(--goldenUnit);
-}
-
-.selectBox__btnDelete {
-    composes: reset from './../reset.css';
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    display: block;
-    width: var(--goldenUnit);
-    height: var(--goldenUnit);
-    text-align: center;
-    background: var(--brandColorsContrastNeutral);
-    border-left: 1px solid var(--brandColorsContrastDarker);
-
-    &:hover {
-        background: var(--brandColorsPrimaryBlue);
-        color: var(--brandColorsContrastBrightest);
-    }
+.selectBox__btn--noRightPadding {
+    padding-right: 0;
 }
 
 .selectBox__contents {
     composes: reset from './../reset.css';
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
-    z-index: 10;
-}
-
-
-.selectBox__contents li input {
-    width: 100%;
-    height: 100%;
-    background: #FFF;
+    z-index: var(--zIndex-SelectBoxContents-Context);
 }
 
 .selectBox__item {
-    composes: reset from './../reset.css';
-    background: var(--brandColorsContrastNeutral);
     border-top: 1px solid var(--brandColorsContrastDarker);
-    cursor: pointer;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 14px;
 }
 
-.selectBox__item--isGroup {
-    ul {
-        list-style-type: none;
-        padding: 0;
-
-        li.selectBox__item--isSelectable {
-            padding-left: calc(var(--spacing) * 2);
-        }
-    }
-    > span {
-        color: var(--brandColorsContrastBright);
-        display: block;
-        height: var(--goldenUnit);
-        line-height: var(--goldenUnit);
-        padding: 0 var(--spacing);
-    }
-}
-
-.selectBox__item--isSelectable {
-    height: var(--goldenUnit);
+.selectBox__groupHeader {
+    background-color: var(--brandColorsContrastDark);
+    font-weight: bold;
+    padding-left: var(--spacing);
     line-height: var(--goldenUnit);
-    padding: 0 var(--spacing);
-}
-
-.selectBox__item--isSelectable--active {
-        background: var(--brandColorsPrimaryBlue);
-}
-
-.selectBox__itemIcon {
-    composes: reset from './../reset.css';
-    padding-right: .5em;
-}
-
-.complexOption__item {
-    padding: var(--halfSpacing);
-    box-sizing: content-box;
-    height: calc(var(--goldenUnit) * 1.5);
-    line-height: 20px;
-}
-
-.complexOption__secondaryLabel {
-    color: var(--brandColorsContrastBright);
-    display: block;
-    font-size: 12px;
-}
-
-.complexOption__tertiaryLabel {
-    color: var(--brandColorsContrastBright);
-    display: block;
-    font-size: 12px;
-}
-
-.complexOption__image {
-    height: calc(var(--goldenUnit) * 1.5);
-    width: auto;
-    float: right;
 }

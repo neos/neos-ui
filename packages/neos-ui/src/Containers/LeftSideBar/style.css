@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
-    padding-top: var(--goldenUnit);
-    transition: .2s ease transform;
+    padding-top: calc(var(--goldenUnit) + 1px);
+    transition: var(--transition-Default)  ease transform;
     will-change: transform;
 
     &:before,
@@ -27,7 +27,7 @@
 .leftSideBar__bottom {
     height: auto;
     flex-basis: 100%;
-    transition: flex-basis .5s, height .5s, overflow-y .5s;
+    transition: flex-basis var(--transition-Slow), height var(--transition-Slow), overflow-y var(--transition-Slow);
 }
 
 .leftSideBar__bottom--isCollapsed {

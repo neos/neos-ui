@@ -47,14 +47,6 @@ const Button = props => {
             {children}
         </button>
     );
-
-    if (isDisabled) {
-        return (
-            <div className={theme.disabledButtonOverlay}>{button}</div>
-        );
-    }
-
-    return button;
 };
 Button.propTypes = {
     /**

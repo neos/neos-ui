@@ -233,14 +233,9 @@ export class Header extends PureComponent {
                         className={theme.panel__toggleBtn}
                         icon={isPanelOpen ? openedIcon : closedIcon}
                         onClick={onPanelToggle}
+                        id={toggleButtonId}
                         />
                 </HeadlineComponent>
-                <IconButtonComponent
-                    className={theme.panel__toggleBtn}
-                    icon={isPanelOpen ? openedIcon : closedIcon}
-                    onClick={onPanelToggle}
-                    id={toggleButtonId}
-                    />
             </div>
         );
     }

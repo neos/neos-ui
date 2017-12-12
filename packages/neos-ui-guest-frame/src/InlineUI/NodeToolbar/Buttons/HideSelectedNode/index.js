@@ -20,7 +20,8 @@ export default class HideSelectedNode extends PureComponent {
         showNode: PropTypes.func.isRequired,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         canBeEdited: PropTypes.bool.isRequired,
-        visibilityCanBeToggled: PropTypes.bool.isRequired
+        visibilityCanBeToggled: PropTypes.bool.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleHideNode = () => {
@@ -40,7 +41,7 @@ export default class HideSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, node, destructiveOperationsAreDisabled, canBeEdited, visibilityCanBeToggled} = this.props;
+        const {className, node, destructiveOperationsAreDisabled, canBeEdited, visibilityCanBeToggled, i18nRegistry} = this.props;
         const isHidden = $get('properties._hidden', node);
 
         return (
@@ -51,6 +52,7 @@ export default class HideSelectedNode extends PureComponent {
                 onClick={isHidden ? this.handleShowNode : this.handleHideNode}
                 icon="eye-slash"
                 hoverStyle="clean"
+                title={i18nRegistry.translate('hideUnhide')}
                 />
         );
     }

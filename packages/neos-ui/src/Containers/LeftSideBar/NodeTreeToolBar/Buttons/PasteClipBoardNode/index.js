@@ -10,7 +10,8 @@ export default class PasteClipBoardNode extends PureComponent {
         focusedNodeContextPath: PropTypes.string.isRequired,
         isDisabled: PropTypes.bool.isRequired,
 
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleClick = () => {
@@ -22,7 +23,8 @@ export default class PasteClipBoardNode extends PureComponent {
     render() {
         const {
             className,
-            isDisabled
+            isDisabled,
+            i18nRegistry
         } = this.props;
 
         return (
@@ -32,6 +34,7 @@ export default class PasteClipBoardNode extends PureComponent {
                 icon="paste"
                 onClick={this.handleClick}
                 hoverStyle="clean"
+                title={i18nRegistry.translate('paste')}
                 />
         );
     }

@@ -25,7 +25,8 @@
     "@neos-project/neos-ui-extensibility": "1.0.0-beta8",
     "@neos-project/neos-ui-guest-frame": "1.0.0-beta8",
     "@neos-project/neos-ui-redux-store": "1.0.0-beta8",
-    "@neos-project/react-ui-components": "1.0.0-beta8"
+    "@neos-project/react-ui-components": "1.0.0-beta8",
+    "@neos-project/neos-ui-i18n": "1.0.0-beta8"
   },
   "license": "GNU GPLv3",
   "jest": {

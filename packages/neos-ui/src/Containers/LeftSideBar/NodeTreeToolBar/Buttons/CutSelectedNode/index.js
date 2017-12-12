@@ -10,7 +10,8 @@ export default class CutSelectedNode extends PureComponent {
         isDisabled: PropTypes.bool.isRequired,
         isActive: PropTypes.bool.isRequired,
 
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleClick = () => {
@@ -20,7 +21,7 @@ export default class CutSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, isDisabled, isActive} = this.props;
+        const {className, isDisabled, isActive, i18nRegistry} = this.props;
 
         return (
             <IconButton
@@ -30,6 +31,7 @@ export default class CutSelectedNode extends PureComponent {
                 onClick={this.handleClick}
                 icon="cut"
                 hoverStyle="clean"
+                title={i18nRegistry.translate('cut')}
                 />
         );
     }

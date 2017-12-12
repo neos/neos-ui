@@ -11,7 +11,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.css';
 
 @neos(globalRegistry => ({
-    containerRegistry: globalRegistry.get('containers')
+    containerRegistry: globalRegistry.get('containers'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect($transform({
     isHidden: selectors.UI.RightSideBar.isHidden,
@@ -22,6 +23,7 @@ import style from './style.css';
 export default class RightSideBar extends PureComponent {
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
 
         isHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
@@ -35,7 +37,7 @@ export default class RightSideBar extends PureComponent {
     }
 
     render() {
-        const {isHidden, isFullScreen, containerRegistry} = this.props;
+        const {isHidden, isFullScreen, containerRegistry, i18nRegistry} = this.props;
         const isSideBarHidden = isHidden || isFullScreen;
         const classNames = mergeClassNames({
             [style.rightSideBar]: true,
@@ -47,6 +49,7 @@ export default class RightSideBar extends PureComponent {
                 icon={toggleIcon}
                 className={style.rightSideBar__toggleBtn}
                 onClick={this.handleToggle}
+                title={i18nRegistry.translate('Neos.Neos:Main:toggleInspector')}
                 />
         );
 

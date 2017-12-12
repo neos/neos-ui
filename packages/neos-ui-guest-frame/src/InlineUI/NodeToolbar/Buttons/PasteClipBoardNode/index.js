@@ -33,7 +33,8 @@ export default class PasteClipBoardNode extends PureComponent {
         contextPath: PropTypes.string,
         fusionPath: PropTypes.string,
 
-        pasteNode: PropTypes.func.isRequired
+        pasteNode: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handlePasteButtonClick = () => {
@@ -43,7 +44,7 @@ export default class PasteClipBoardNode extends PureComponent {
     }
 
     render() {
-        const {className, canBePasted} = this.props;
+        const {className, canBePasted, i18nRegistry} = this.props;
 
         if (!canBePasted) {
             return null;
@@ -55,6 +56,7 @@ export default class PasteClipBoardNode extends PureComponent {
                 icon="paste"
                 onClick={this.handlePasteButtonClick}
                 hoverStyle="clean"
+                title={i18nRegistry.translate('paste')}
                 />
         );
     }

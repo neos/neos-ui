@@ -17,7 +17,8 @@ import style from './style.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
-    validatorRegistry: globalRegistry.get('validators')
+    validatorRegistry: globalRegistry.get('validators'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect((state, {nodeTypesRegistry, validatorRegistry}) => {
     const isApplyDisabledSelector = selectors.UI.Inspector.makeIsApplyDisabledSelector(nodeTypesRegistry, validatorRegistry);
@@ -48,6 +49,7 @@ import style from './style.css';
 export default class Inspector extends PureComponent {
     static propTypes = {
         nodeTypesRegistry: PropTypes.object,
+        i18nRegistry: PropTypes.object.isRequired,
 
         focusedNode: PropTypes.object,
         node: PropTypes.object.isRequired,
@@ -144,7 +146,8 @@ export default class Inspector extends PureComponent {
             isApplyDisabled,
             isDiscardDisabled,
             shouldShowUnappliedChangesOverlay,
-            shouldShowSecondaryInspector
+            shouldShowSecondaryInspector,
+            i18nRegistry
         } = this.props;
 
         if (!focusedNode) {
@@ -190,6 +193,7 @@ export default class Inspector extends PureComponent {
                                     key={tab.id}
                                     icon={tab.icon}
                                     groups={tab.groups}
+                                    tooltip={i18nRegistry.translate(tab.label)}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
                                     node={node}
                                     commit={commit}

@@ -33,7 +33,8 @@ export default class AddNode extends PureComponent {
         fusionPath: PropTypes.string,
         className: PropTypes.string,
         commenceNodeCreation: PropTypes.func.isRequired,
-        isAllowedToAddChildOrSiblingNodes: PropTypes.bool
+        isAllowedToAddChildOrSiblingNodes: PropTypes.bool,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleCommenceNodeCreation = () => {
@@ -47,7 +48,7 @@ export default class AddNode extends PureComponent {
     }
 
     render() {
-        const {isAllowedToAddChildOrSiblingNodes} = this.props;
+        const {isAllowedToAddChildOrSiblingNodes, i18nRegistry} = this.props;
 
         return (
             <span>
@@ -57,6 +58,7 @@ export default class AddNode extends PureComponent {
                     icon="plus"
                     onClick={this.handleCommenceNodeCreation}
                     hoverStyle="clean"
+                    title={i18nRegistry.translate('createNew')}
                     />
             </span>
         );

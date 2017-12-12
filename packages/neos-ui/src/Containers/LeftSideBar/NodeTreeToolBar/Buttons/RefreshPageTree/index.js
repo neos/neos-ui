@@ -11,7 +11,9 @@ export default class RefreshPageTree extends PureComponent {
 
         isLoading: PropTypes.bool.isRequired,
 
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
+
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleClick = () => {
@@ -21,7 +23,7 @@ export default class RefreshPageTree extends PureComponent {
     }
 
     render() {
-        const {isLoading, className} = this.props;
+        const {isLoading, className, i18nRegistry} = this.props;
         const finalClassName = mergeClassNames({
             [style.spinning]: isLoading,
             [className]: className && className.length
@@ -34,6 +36,7 @@ export default class RefreshPageTree extends PureComponent {
                 onClick={this.handleClick}
                 icon="refresh"
                 hoverStyle="clean"
+                title={i18nRegistry.translate('refresh')}
                 />
         );
     }

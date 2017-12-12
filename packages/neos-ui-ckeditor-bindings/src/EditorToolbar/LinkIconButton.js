@@ -19,6 +19,9 @@ import style from './style.css';
 @connect($transform({
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
 export default class LinkIconButton extends PureComponent {
 
     static propTypes = {
@@ -27,7 +30,8 @@ export default class LinkIconButton extends PureComponent {
             PropTypes.bool,
             PropTypes.object
         ])),
-        formattingRule: PropTypes.string
+        formattingRule: PropTypes.string,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleLinkButtonClick = () => {
@@ -41,9 +45,12 @@ export default class LinkIconButton extends PureComponent {
     }
 
     render() {
+        const {i18nRegistry} = this.props;
+
         return (
             <div>
                 <IconButton
+                    title={`${i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link')}`}
                     isActive={Boolean(this.getHrefValue())}
                     icon="link"
                     onClick={this.handleLinkButtonClick}

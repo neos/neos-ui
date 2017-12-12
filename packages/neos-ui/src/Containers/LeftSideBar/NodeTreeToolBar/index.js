@@ -17,9 +17,13 @@ import {
 } from './Buttons/index';
 import style from './style.css';
 
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
 export default class NodeTreeToolBar extends PureComponent {
     static propTypes = {
         nodeTypesRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
         focusedNodeContextPath: PropTypes.string,
         canBePasted: PropTypes.bool.isRequired,
         canBeDeleted: PropTypes.bool.isRequired,
@@ -114,19 +118,22 @@ export default class NodeTreeToolBar extends PureComponent {
             isCopied,
             isLoading,
             destructiveOperationsAreDisabled,
-            isAllowedToAddChildOrSiblingNodes
+            isAllowedToAddChildOrSiblingNodes,
+            i18nRegistry
         } = this.props;
 
         return (
             <div className={style.toolBar}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode
+                        i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         isDisabled={!isAllowedToAddChildOrSiblingNodes}
                         onClick={this.handleAddNode}
                         />
                     <HideSelectedNode
+                        i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         isDisabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
@@ -135,6 +142,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         onShow={this.handleShowNode}
                         />
                     <CopySelectedNode
+                        i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         onClick={this.handleCopyNode}
@@ -142,6 +150,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         isDisabled={destructiveOperationsAreDisabled}
                         />
                     <CutSelectedNode
+                        i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         isActive={isCut}
@@ -149,18 +158,21 @@ export default class NodeTreeToolBar extends PureComponent {
                         onClick={this.handleCutNode}
                         />
                     <PasteClipBoardNode
+                        i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         isDisabled={!canBePasted}
                         onClick={this.handlePasteNode}
                         />
                     <DeleteSelectedNode
+                        i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         isDisabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
                         onClick={this.handleDeleteNode}
                         />
                     <RefreshPageTree
+                        i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         isLoading={isLoading}

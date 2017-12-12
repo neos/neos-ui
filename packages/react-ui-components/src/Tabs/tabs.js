@@ -84,6 +84,7 @@ export default class Tabs extends PureComponent {
                 theme={theme}
                 title={panel.props.title}
                 icon={panel.props.icon}
+                tooltip={panel.props.tooltip}
                 />
         ));
 
@@ -166,6 +167,11 @@ export class TabMenuItem extends PureComponent {
         icon: PropTypes.string,
 
         /**
+         * An optional tooltip for the given Panel.
+         */
+        tooltip: PropTypes.string,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({// eslint-disable-line quote-props
@@ -197,6 +203,7 @@ export class TabMenuItem extends PureComponent {
             IconComponent,
             icon,
             title,
+            tooltip,
             ...restProps
         } = this.props;
         const rest = omit(restProps, ['onClick']);
@@ -217,6 +224,7 @@ export class TabMenuItem extends PureComponent {
                     role="tab"
                     aria-selected={isActive ? 'true' : 'false'}
                     aria-controls={`section${index}`}
+                    title={tooltip}
                     >
                     {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
                     {title}

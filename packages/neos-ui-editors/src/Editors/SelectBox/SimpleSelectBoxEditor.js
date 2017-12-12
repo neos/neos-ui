@@ -38,7 +38,8 @@ export default class SimpleSelectBoxEditor extends PureComponent {
 
     static defaultOptions = {
         // Use "5" as minimum result for search default; same as with old UI
-        minimumResultsForSearch: 5
+        minimumResultsForSearch: 5,
+        threshold: 0
     };
 
     state = {
@@ -66,10 +67,10 @@ export default class SimpleSelectBoxEditor extends PureComponent {
                 allowEmpty={allowEmpty}
                 displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
-                searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
                 noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
                 searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+                threshold={options.threshold}
                 />);
         }
 
@@ -82,10 +83,10 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             highlight={highlight}
             allowEmpty={allowEmpty}
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
-            searchTerm={this.state.searchTerm}
             onSearchTermChange={this.handleSearchTermChange}
             noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
             searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+            threshold={options.threshold}
             />);
     }
 

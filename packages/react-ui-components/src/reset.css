@@ -30,6 +30,6 @@
     }
     /* webkit adds white box around search box */
     input {
-        -webkit-appearance: none;
+        appearance: none;
     }
 }

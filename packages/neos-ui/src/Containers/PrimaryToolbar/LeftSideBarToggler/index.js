@@ -34,6 +34,7 @@ export default class LeftSideBarToggler extends PureComponent {
         const isActive = !isSideBarHidden;
         const classNames = mergeClassNames({
             [className]: true,
+            [style.btn]: true,
             [style['btn--isActive']]: isActive
         });
 

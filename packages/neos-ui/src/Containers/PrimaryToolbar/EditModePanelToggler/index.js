@@ -41,6 +41,7 @@ export default class EditModePanelToggler extends PureComponent {
         const isActive = !isEditModePanelHidden;
         const classNames = mergeClassNames({
             [className]: true,
+            [style.btn]: true,
             [style['btn--isActive']]: isActive
         });
 

@@ -2,6 +2,11 @@
 Neos:
   Neos:
     userInterface:
+      routeAfterLogin:
+        values:
+          '@package': 'Neos.Neos.Ui'
+          '@controller': 'Backend'
+          '@action': 'index'
 # New support for width and height of the preview mode:
 #      editPreviewModes:
 #        rawContent:

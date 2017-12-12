@@ -111,6 +111,12 @@ Adding unit tests is fairly simple, just create a file on the same tree level as
 
 Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a specific test and not the whole test suite.
 
+#### Integration tests
+
+For end to end testing we use the headless chrome. So it is mandatory to install the chrome browser for integration tests.
+Since Chrome 59 the headless mode is integrated. So please install a Chome 59 or higher to execute the end to end tests.
+
+
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

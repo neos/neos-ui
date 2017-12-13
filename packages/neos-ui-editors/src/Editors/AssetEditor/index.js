@@ -38,14 +38,14 @@ export default class AssetEditor extends PureComponent {
         onSearchTermChange: PropTypes.func,
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
-        focusedNodePath: PropTypes.string.isRequired,
         assetLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
             resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
         secondaryEditorsRegistry: PropTypes.object.isRequired,
-        renderSecondaryInspector: PropTypes.func.isRequired
+        renderSecondaryInspector: PropTypes.func.isRequired,
+        imagesOnly: PropTypes.bool
     };
 
     static defaultProps = {
@@ -148,52 +148,65 @@ export default class AssetEditor extends PureComponent {
         );
     }
 
-    render() {
+    renderAssetUpload() {
+        if (!this.isFeatureEnabled('upload')) {
+            return null;
+        }
+
         return (
-            {this.isFeatureEnabled('upload') ? (<AssetUpload
+            <AssetUpload
                 highlight={this.props.highlight}
                 multiple={true}
                 multipleData={this.props.value}
                 onAfterUpload={this.handleValueChange}
                 ref={this.setAssetUploadReference}
                 isLoading={false}
-                >
+                imagesOnly={this.props.imagesOnly}
+            >
                 {this.props.options.multiple ? (<MultiSelectBox
-                    dndType={dndTypes.MULTISELECT}
-                    optionValueField="identifier"
-                    loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
-                    displaySearchBox={true}
-                    ListPreviewElement={AssetOption}
-                    placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
-                    options={this.state.options || []}
-                    values={this.getValue()}
-                    highlight={this.props.highlight}
-                    onValuesChange={this.handleValueChange}
-                    displayLoadingIndicator={this.state.isLoading}
-                    searchOptions={this.state.searchOptions}
-                    onSearchTermChange={this.handleSearchTermChange}
-                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
-                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
-                    threshold={$get('options.threshold', this.props)}
-                    />) : (<SelectBox
+                        dndType={dndTypes.MULTISELECT}
                         optionValueField="identifier"
                         loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
                         displaySearchBox={true}
                         ListPreviewElement={AssetOption}
                         placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                         options={this.state.options || []}
-                        value={this.getValue()}
+                        values={this.getValue()}
                         highlight={this.props.highlight}
-                        onValueChange={this.handleValueChange}
+                        onValuesChange={this.handleValueChange}
                         displayLoadingIndicator={this.state.isLoading}
                         searchOptions={this.state.searchOptions}
                         onSearchTermChange={this.handleSearchTermChange}
                         noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
                         searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                         threshold={$get('options.threshold', this.props)}
+                    />) : (<SelectBox
+                            optionValueField="identifier"
+                            loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
+                            displaySearchBox={true}
+                            ListPreviewElement={AssetOption}
+                            placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
+                            options={this.state.options || []}
+                            value={this.getValue()}
+                            highlight={this.props.highlight}
+                            onValueChange={this.handleValueChange}
+                            displayLoadingIndicator={this.state.isLoading}
+                            searchOptions={this.state.searchOptions}
+                            onSearchTermChange={this.handleSearchTermChange}
+                            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+                            threshold={$get('options.threshold', this.props)}
                         />)}
+            </AssetUpload>
+        )
+    }
+
+    render() {
+        return (
+            <div>
+                {this.renderAssetUpload()}
                 {this.renderControls()}
-            </AssetUpload>) : this.renderControls()}
+            </div>
         )
     }
 

@@ -32,7 +32,8 @@ export default ({propertyDomNode, propertyName, contextPath, editorOptions, glob
                 entities: false,
                 basicEntities: true,
                 title: propertyName,
-                language: interfaceLanguage
+                language: interfaceLanguage,
+                baseFloatZIndex: 3147483647
             },
             placeholder ? {neosPlaceholder: placeholder} : {}
         ));

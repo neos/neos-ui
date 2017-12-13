@@ -1455,7 +1455,7 @@ legend.cke_voice_label {
 .cke_bottom,
 .cke_dialog_body .cke_dialog_title,
 .cke_dialog_body .cke_dialog_footer {
-    background: none;
+    background: #222;
     border: none;
     box-shadow: none;
 }

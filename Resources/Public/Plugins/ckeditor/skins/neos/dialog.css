@@ -13,6 +13,7 @@
 
     font-size: 14px;
     color: #ffffff;
+    width: 400px;
 }
 
 .cke_dialog * {
@@ -145,6 +146,7 @@ select.cke_dialog_ui_input_select:focus {
     background-color: #222;
     overflow: auto;
     border-top: 1px solid #3f3f3f;
+    width: 100%;
 }
 
 .cke_dialog_contents_body {
@@ -163,7 +165,7 @@ select.cke_dialog_ui_input_select:focus {
 .cke_dialog_ui_hbox_first, .cke_dialog_ui_hbox_last {
     display: inline-block;
     /* important for manipulating the with of the two column */
-    width: 192px;
+    width: 192px !important;
     vertical-align: top;
 }
 
@@ -193,6 +195,10 @@ select.cke_dialog_ui_input_select:focus {
 }
 .cke_dialog_contents > tbody > tr:first-child::-webkit-scrollbar-corner {
     background-color: #3f3f3f;
+}
+
+.cke_dialog_ui_vbox table tr:nth-child(even) {
+    background: transparent;
 }
 
 

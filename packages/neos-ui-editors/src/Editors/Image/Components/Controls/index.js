@@ -14,6 +14,9 @@ export default class Controls extends PureComponent {
         onRemove: PropTypes.func,
         onCrop: PropTypes.func,
 
+        isUploadEnabled: PropTypes.bool.isRequired,
+        isMediaBrowserEnabled: PropTypes.bool.isRequired,
+
         i18nRegistry: PropTypes.object.isRequired
     };
 
@@ -30,12 +33,15 @@ export default class Controls extends PureComponent {
         const {
             onChooseFromMedia,
             onChooseFromLocalFileSystem,
+            isUploadEnabled,
+            isMediaBrowserEnabled,
             onRemove,
             i18nRegistry
         } = this.props;
 
         return (
             <span>
+                {isMediaBrowserEnabled &&
                 <IconButton
                     icon="camera"
                     size="small"
@@ -44,6 +50,8 @@ export default class Controls extends PureComponent {
                     className={style.button}
                     title={i18nRegistry.translate('Neos.Neos:Main:media')}
                     />
+                }
+                {isUploadEnabled &&
                 <IconButton
                     icon="upload"
                     size="small"
@@ -52,6 +60,7 @@ export default class Controls extends PureComponent {
                     className={style.button}
                     title={i18nRegistry.translate('Neos.Media.Browser:Main:chooseFile')}
                     />
+                }
                 <IconButton
                     icon="remove"
                     size="small"

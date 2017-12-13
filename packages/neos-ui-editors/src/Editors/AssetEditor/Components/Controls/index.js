@@ -11,28 +11,31 @@ export default class Controls extends PureComponent {
     static propTypes = {
         onChooseFromMedia: PropTypes.func.isRequired,
         onChooseFromLocalFileSystem: PropTypes.func.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired,
+        isUploadEnabled: PropTypes.bool.isRequired,
+        isMediaBrowserEnabled: PropTypes.bool.isRequired
     };
 
     render() {
+        const {isUploadEnabled, isMediaBrowserEnabled} = this.props;
         return (
             <div>
-                <IconButton
+                {isMediaBrowserEnabled && <IconButton
                     icon="camera"
                     size="small"
                     style="lighter"
                     onClick={this.props.onChooseFromMedia}
                     className={style.button}
                     title={this.props.i18nRegistry.translate('Neos.Neos:Main:media')}
-                    />
-                <IconButton
+                    />}
+                {isUploadEnabled && <IconButton
                     icon="upload"
                     size="small"
                     style="lighter"
                     onClick={this.props.onChooseFromLocalFileSystem}
                     className={style.button}
                     title={this.props.i18nRegistry.translate('Neos.Media.Browser:Main:chooseFile')}
-                    />
+                    />}
             </div>
         );
     }

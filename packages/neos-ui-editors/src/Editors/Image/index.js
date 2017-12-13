@@ -12,7 +12,9 @@ import style from './style.css';
 
 const DEFAULT_FEATURES = {
     crop: true,
-    resize: false
+    resize: false,
+    mediaBrowser: true,
+    upload: true
 };
 
 @neos(globalRegistry => ({
@@ -249,10 +251,13 @@ export default class ImageEditor extends Component {
                     afterUpload={this.afterUpload}
                     highlight={highlight}
                     onClick={this.handleThumbnailClicked}
+                    isUploadEnabled={this.isFeatureEnabled('upload')}
                     />
                 <Controls
                     onChooseFromMedia={this.handleChooseFromMedia}
                     onChooseFromLocalFileSystem={this.handleChooseFile}
+                    isUploadEnabled={this.isFeatureEnabled('upload')}
+                    isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')}
                     onRemove={image ? this.handleRemoveFile : null}
                     onCrop={image ? this.isFeatureEnabled('crop') && this.handleOpenImageCropper : null}
                     />

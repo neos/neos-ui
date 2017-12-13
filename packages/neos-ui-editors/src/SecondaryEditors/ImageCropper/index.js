@@ -8,7 +8,7 @@ import TextInput from '@neos-project/react-ui-components/src/TextInput/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import AspectRatioDropDown from './AspectRatioDropDown/index';
-import CropConfiguration from './model.js';
+import CropConfiguration, {LockedAspectRatioStrategy} from './model.js';
 import style from './style.css';
 
 /* eslint-disable no-unused-vars */
@@ -137,15 +137,9 @@ export default class ImageCropper extends PureComponent {
 
     render() {
         const {cropConfiguration} = this.state;
-        const {height, width} = this.props.options.crop.aspectRatio.locked;
-        const aspectRatioLocked = height > 0 && width > 0;
+        const aspectRatioLocked = cropConfiguration.aspectRatioStrategy instanceof LockedAspectRatioStrategy;
         const {sourceImage, onComplete, i18nRegistry} = this.props;
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
-
-        if (aspectRatioLocked) {
-            cropConfiguration.aspectRatioStrategy.__height = height;
-            cropConfiguration.aspectRatioStrategy.__width = width;
-        }
 
         const toolbarRef = el => {
             this.toolbarNode = el;
@@ -163,32 +157,30 @@ export default class ImageCropper extends PureComponent {
                                 <div key={index}>
                                     <Icon key={index} icon="crop"/>
                                     <span key={index} title={label}>{label}</span>
-                                    <span key={index}>{aspectRatioLocked ? <Icon icon="lock"/> : null}</span>
+                                    <span key={index}> {aspectRatioLocked ? <Icon icon="lock"/> : null}</span>
                                 </div>
                             )).orSome('')
                         }
                     </div>
 
-                    <AspectRatioDropDown
+                    {!aspectRatioLocked && <AspectRatioDropDown
                         placeholder={`${i18nRegistry.translate('Neos.Neos.Ui:Main:imageCropper__aspect-ratio-placeholder')}`}
                         current={cropConfiguration.aspectRatioStrategy}
                         options={cropConfiguration.aspectRatioOptions}
                         onSelect={this.handleSetAspectRatio}
                         onClear={this.handleClearAspectRatio}
-                        isLocked={aspectRatioLocked}
-                        />
+                        />}
 
-                    <div className={style.dimensions}>
+                    {!aspectRatioLocked && <div className={style.dimensions}>
                         {cropConfiguration.aspectRatioDimensions.map((props, index) => (
                             <AspectRatioItem
                                 {...props}
-                                isLocked={aspectRatioLocked}
                                 onFlipAspectRatio={this.handleFlipAspectRatio}
                                 onChange={this.handleSetCustomAspectRatioDimensions}
                                 key={index}
                                 />
                         )).orSome('')}
-                    </div>
+                    </div>}
                 </div>
 
                 <ReactCrop

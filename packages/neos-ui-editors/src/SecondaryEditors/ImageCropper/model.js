@@ -55,6 +55,12 @@ export class ConfiguredAspectRatioStrategy extends NullAspectRatioStrategy {
     }
 }
 
+export class LockedAspectRatioStrategy extends ConfiguredAspectRatioStrategy {
+    constructor(width, height) {
+        super(width, height, 'Locked');
+    }
+}
+
 export class CustomAspectRatioStrategy extends ConfiguredAspectRatioStrategy {
     constructor(width, height) {
         super(width, height, 'Custom');
@@ -137,6 +143,10 @@ const DEFAULT_BOUNDARIES = {
 
 const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
     const {options} = neosConfiguration;
+    const aspectRatioLocked = neosConfiguration.locked.height > 0 && neosConfiguration.locked.width > 0;
+    if (aspectRatioLocked) {
+        return new LockedAspectRatioStrategy(neosConfiguration.locked.width, neosConfiguration.locked.height);
+    }
     const when = condition => o => condition ? Some(o) : None();// eslint-disable-line babel/new-cap
     const whenAllowOriginal = when(neosConfiguration.allowOriginal && image.aspectRatio);
     const whenIsOriginal = o => whenAllowOriginal(o)

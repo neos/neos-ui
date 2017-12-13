@@ -1,3 +1,7 @@
+.btn {
+    vertical-align: top;
+}
+
 .btn--isActive {
     transform: translateY(1px);
     padding-bottom: 2px;

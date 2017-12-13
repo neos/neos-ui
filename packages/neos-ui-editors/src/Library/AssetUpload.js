@@ -11,7 +11,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 
 @connect($transform({
     siteNodePath: $get('cr.nodes.siteNode'),
-    focusedNode: selectors.CR.Nodes.focusedNodePathSelector
+    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector
 }), null, null, {withRef: true})
 export default class AssetUpload extends PureComponent {
     static defaultProps = {
@@ -23,11 +23,12 @@ export default class AssetUpload extends PureComponent {
         isLoading: PropTypes.bool.isRequired,
         onAfterUpload: PropTypes.func.isRequired,
         siteNodePath: PropTypes.string.isRequired,
-        focusedNode: PropTypes.string.isRequired,
+        focusedNodePath: PropTypes.string.isRequired,
         highlight: PropTypes.bool,
         children: PropTypes.any.isRequired,
         multiple: PropTypes.bool,
-        multipleData: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.array])
+        multipleData: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.array]),
+        imagesOnly: PropTypes.bool
     };
 
     chooseFromLocalFileSystem = () => {
@@ -36,9 +37,8 @@ export default class AssetUpload extends PureComponent {
 
     handleUpload = files => {
         const {uploadAsset} = backend.get().endpoints;
-        const {onAfterUpload, focusedNode, siteNodePath} = this.props;
-        // TODO: watch out, this will only handle image uploads!
-        return uploadAsset(files[0], this.props.propertyName, focusedNode, siteNodePath).then(res => {
+        const {onAfterUpload, focusedNodePath, siteNodePath} = this.props;
+        return uploadAsset(files[0], this.props.propertyName, focusedNodePath, siteNodePath, this.getUploadMetaData()).then(res => {
             if (onAfterUpload) {
                 onAfterUpload(res);
             }
@@ -58,7 +58,7 @@ export default class AssetUpload extends PureComponent {
     uploadMultipleFiles(index, values, files) {
         index--;
         const {uploadAsset} = backend.get().endpoints;
-        const {onAfterUpload, focusedNode, siteNodePath} = this.props;
+        const {onAfterUpload, focusedNodePath, siteNodePath} = this.props;
 
         if (index < 0) {
             if (onAfterUpload) {
@@ -69,10 +69,14 @@ export default class AssetUpload extends PureComponent {
             });
             return;
         }
-        uploadAsset(files[index], this.props.propertyName, focusedNode, siteNodePath).then(res => {
+        uploadAsset(files[index], this.props.propertyName, focusedNodePath, siteNodePath, this.getUploadMetaData()).then(res => {
             values.push(res.assetUuid);
             this.uploadMultipleFiles(index, values, files);
         });
+    }
+
+    getUploadMetaData() {
+        return this.props.imagesOnly ? 'Image' : 'Asset';
     }
 
     render() {

@@ -162,43 +162,43 @@ export default class AssetEditor extends PureComponent {
                 ref={this.setAssetUploadReference}
                 isLoading={false}
                 imagesOnly={this.props.imagesOnly}
-            >
+                >
                 {this.props.options.multiple ? (<MultiSelectBox
-                        dndType={dndTypes.MULTISELECT}
+                    dndType={dndTypes.MULTISELECT}
+                    optionValueField="identifier"
+                    loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
+                    displaySearchBox={true}
+                    ListPreviewElement={AssetOption}
+                    placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
+                    options={this.state.options || []}
+                    values={this.getValue()}
+                    highlight={this.props.highlight}
+                    onValuesChange={this.handleValueChange}
+                    displayLoadingIndicator={this.state.isLoading}
+                    searchOptions={this.state.searchOptions}
+                    onSearchTermChange={this.handleSearchTermChange}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+                    threshold={$get('options.threshold', this.props)}
+                    />) : (<SelectBox
                         optionValueField="identifier"
                         loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
                         displaySearchBox={true}
                         ListPreviewElement={AssetOption}
                         placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                         options={this.state.options || []}
-                        values={this.getValue()}
+                        value={this.getValue()}
                         highlight={this.props.highlight}
-                        onValuesChange={this.handleValueChange}
+                        onValueChange={this.handleValueChange}
                         displayLoadingIndicator={this.state.isLoading}
                         searchOptions={this.state.searchOptions}
                         onSearchTermChange={this.handleSearchTermChange}
                         noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
                         searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                         threshold={$get('options.threshold', this.props)}
-                    />) : (<SelectBox
-                            optionValueField="identifier"
-                            loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
-                            displaySearchBox={true}
-                            ListPreviewElement={AssetOption}
-                            placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
-                            options={this.state.options || []}
-                            value={this.getValue()}
-                            highlight={this.props.highlight}
-                            onValueChange={this.handleValueChange}
-                            displayLoadingIndicator={this.state.isLoading}
-                            searchOptions={this.state.searchOptions}
-                            onSearchTermChange={this.handleSearchTermChange}
-                            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
-                            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
-                            threshold={$get('options.threshold', this.props)}
                         />)}
             </AssetUpload>
-        )
+        );
     }
 
     render() {
@@ -207,7 +207,7 @@ export default class AssetEditor extends PureComponent {
                 {this.renderAssetUpload()}
                 {this.renderControls()}
             </div>
-        )
+        );
     }
 
     setAssetUploadReference = ref => {

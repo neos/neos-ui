@@ -12,6 +12,11 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {connect} from 'react-redux';
 import style from './style.css';
 
+const DEFAULT_FEATURES = {
+    mediaBrowser: true,
+    upload: true
+};
+
 @neos(globalRegistry => ({
     assetLookupDataLoader: globalRegistry.get('dataLoaders').get('AssetLookup'),
     i18nRegistry: globalRegistry.get('i18n'),
@@ -84,6 +89,11 @@ export default class AssetEditor extends PureComponent {
                     });
                 });
         }
+    }
+
+    isFeatureEnabled(featureName) {
+        const features = Object.assign({}, DEFAULT_FEATURES, this.props.options.features);
+        return features[featureName];
     }
 
     handleSearchTermChange = searchTerm => {
@@ -221,6 +231,8 @@ export default class AssetEditor extends PureComponent {
                     <Controls
                         onChooseFromMedia={this.handleChooseFromMedia}
                         onChooseFromLocalFileSystem={this.handleChooseFile}
+                        isUploadEnabled={this.isFeatureEnabled('upload')}
+                        isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')}
                         />
                 </Dropzone>
             </div>

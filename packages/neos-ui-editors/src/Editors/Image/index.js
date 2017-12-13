@@ -251,6 +251,7 @@ export default class ImageEditor extends Component {
                     afterUpload={this.afterUpload}
                     highlight={highlight}
                     onClick={this.handleThumbnailClicked}
+                    isUploadEnabled={this.isFeatureEnabled('upload')}
                     />
                 <Controls
                     onChooseFromMedia={this.handleChooseFromMedia}

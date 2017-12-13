@@ -14,8 +14,8 @@ export default class Controls extends PureComponent {
         onRemove: PropTypes.func,
         onCrop: PropTypes.func,
 
-        isUploadEnabled: PropTypes.bool,
-        isMediaBrowserEnabled: PropTypes.bool,
+        isUploadEnabled: PropTypes.bool.isRequired,
+        isMediaBrowserEnabled: PropTypes.bool.isRequired,
 
         i18nRegistry: PropTypes.object.isRequired
     };
@@ -93,8 +93,3 @@ export default class Controls extends PureComponent {
         return '';
     }
 }
-
-Controls.defaultProps = {
-    isCroppingEnabled: true,
-    isMediaBrowserEnabled: true
-};

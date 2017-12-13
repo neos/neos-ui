@@ -35,7 +35,7 @@ export default class AssetUpload extends PureComponent {
     handleUpload = files => {
         const {uploadAsset} = backend.get().endpoints;
         const {onAfterUpload, focusedNode, siteNodePath} = this.props;
-
+        // TODO: watch out, this will only handle image uploads!
         return uploadAsset(files[0], this.props.propertyName, focusedNode, siteNodePath).then(res => {
             if (onAfterUpload) {
                 onAfterUpload(res);

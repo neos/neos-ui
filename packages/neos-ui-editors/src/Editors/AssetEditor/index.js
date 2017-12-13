@@ -11,6 +11,7 @@ import Dropzone from 'react-dropzone';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {connect} from 'react-redux';
 import style from './style.css';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
 const DEFAULT_FEATURES = {
     mediaBrowser: true,
@@ -23,7 +24,8 @@ const DEFAULT_FEATURES = {
     secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')
 }))
 @connect($transform({
-    siteNodePath: $get('cr.nodes.siteNode')
+    siteNodePath: $get('cr.nodes.siteNode'),
+    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector
 }), null, null, {withRef: true})
 export default class AssetEditor extends PureComponent {
     state = {
@@ -44,6 +46,7 @@ export default class AssetEditor extends PureComponent {
         onSearchTermChange: PropTypes.func,
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
+        focusedNodePath: PropTypes.string.isRequired,
         assetLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
             resolveValues: PropTypes.func.isRequired,
@@ -154,10 +157,10 @@ export default class AssetEditor extends PureComponent {
             this.uploadFile(index, values, files);
         } else {
             const {uploadAsset} = backend.get().endpoints;
-            const {siteNodePath} = this.props;
+            const {siteNodePath, focusedNodePath} = this.props;
             const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
 
-            uploadAsset(files[0], this.props.identifier, siteNodeName, 'Asset').then(res => {
+            uploadAsset(files[0], this.props.identifier, focusedNodePath, siteNodeName, 'Asset').then(res => {
                 this.handleValueChange(res.assetUuid);
                 this.setState({
                     isLoading: false
@@ -169,7 +172,7 @@ export default class AssetEditor extends PureComponent {
     uploadFile(index, values, files) {
         index--;
         const {uploadAsset} = backend.get().endpoints;
-        const {siteNodePath} = this.props;
+        const {siteNodePath, focusedNodePath} = this.props;
         const siteNodeName = siteNodePath.match(/\/sites\/([^/@]*)/)[1];
 
         if (index < 0) {
@@ -179,7 +182,7 @@ export default class AssetEditor extends PureComponent {
             });
             return;
         }
-        uploadAsset(files[index], this.props.identifier, siteNodeName, 'Asset').then(res => {
+        uploadAsset(files[index], this.props.identifier, focusedNodePath, siteNodeName, 'Asset').then(res => {
             values.push(res.assetUuid);
             this.uploadFile(index, values, files);
         });

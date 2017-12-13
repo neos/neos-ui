@@ -68,7 +68,14 @@ export default class PreviewScreen extends PureComponent {
 
         if (isUploadEnabled) {
             return (
-                <AssetUpload onAfterUpload={afterUpload} isLoading={isLoading} propertyName={propertyName} highlight={highlight} ref={this.setAssetUploadReference}>
+                <AssetUpload
+                    onAfterUpload={afterUpload}
+                    isLoading={isLoading}
+                    propertyName={propertyName}
+                    highlight={highlight}
+                    ref={this.setAssetUploadReference}
+                    imagesOnly={true}
+                    >
                     {this.renderPreview()}
                 </AssetUpload>
             );

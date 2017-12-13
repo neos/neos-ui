@@ -29,4 +29,8 @@
     input::-webkit-search-cancel-button {
         display: none;
     }
+    /* webkit adds white box around search box */
+    input {
+        appearance: none;
+    }
 }

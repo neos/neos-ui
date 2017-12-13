@@ -185,6 +185,17 @@ export default class AssetEditor extends PureComponent {
         });
     }
 
+    renderControls() {
+        return (
+            <Controls
+                onChooseFromMedia={this.handleChooseFromMedia}
+                onChooseFromLocalFileSystem={this.handleChooseFile}
+                isUploadEnabled={this.isFeatureEnabled('upload')}
+                isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')}
+                />
+        );
+    }
+
     render() {
         return (
             <div>
@@ -222,19 +233,14 @@ export default class AssetEditor extends PureComponent {
                         searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                         threshold={$get('options.threshold', this.props)}
                         />)}
-                <Dropzone
+                {this.isFeatureEnabled('upload') ? (<Dropzone
                     ref={this.setDropzoneReference}
                     disableClick={true}
                     onDropAccepted={this.handleUpload}
                     className={style.assetEditor}
                     >
-                    <Controls
-                        onChooseFromMedia={this.handleChooseFromMedia}
-                        onChooseFromLocalFileSystem={this.handleChooseFile}
-                        isUploadEnabled={this.isFeatureEnabled('upload')}
-                        isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')}
-                        />
-                </Dropzone>
+                    {this.renderControls()}
+                </Dropzone>) : this.renderControls()}
             </div>
         );
     }

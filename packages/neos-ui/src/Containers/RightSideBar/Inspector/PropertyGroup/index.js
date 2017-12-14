@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Maybe} from 'monet';
+import {$get} from 'plow-js';
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 
@@ -39,7 +40,7 @@ export default class PropertyGroup extends PureComponent {
                         const propertyId = property.id;
                         return (
                             <InspectorEditorEnvelope
-                                key={propertyId}
+                                key={$get('contextPath', node) + propertyId}
                                 id={propertyId}
                                 label={property.label}
                                 editor={property.editor}
@@ -53,7 +54,7 @@ export default class PropertyGroup extends PureComponent {
                         const viewId = view.id;
                         return (
                             <InspectorViewEnvelope
-                                key={viewId}
+                                key={$get('contextPath', node) + viewId}
                                 id={viewId}
                                 label={view.label}
                                 view={view.view}

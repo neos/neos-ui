@@ -30,7 +30,7 @@ export default class AssetEditor extends PureComponent {
         // The propertyName this editor is used for, coming from the inspector
         identifier: PropTypes.string,
 
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.string)]),
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
         options: PropTypes.object,
         searchOptions: PropTypes.array,
         highlight: PropTypes.bool,
@@ -71,11 +71,17 @@ export default class AssetEditor extends PureComponent {
         return value;
     }
 
+    getValues() {
+        const value = this.props.value;
+        return value.map(item => item.__identity || item);
+    }
+
     resolveValue = () => {
         if (this.props.value) {
             this.setState({isLoading: true});
             const resolver = this.props.options.multiple ? this.props.assetLookupDataLoader.resolveValues.bind(this.props.assetLookupDataLoader) : this.props.assetLookupDataLoader.resolveValue.bind(this.props.assetLookupDataLoader);
-            resolver({}, this.getValue())
+            const value = this.props.options.multiple ? this.getValues() : this.getValue();
+            resolver({}, value)
                 .then(options => {
                     this.setState({
                         isLoading: false,
@@ -171,7 +177,7 @@ export default class AssetEditor extends PureComponent {
                     ListPreviewElement={AssetOption}
                     placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                     options={this.state.options || []}
-                    values={this.getValue()}
+                    values={this.getValues()}
                     highlight={this.props.highlight}
                     onValuesChange={this.handleValueChange}
                     displayLoadingIndicator={this.state.isLoading}

@@ -1,4 +1,4 @@
-import {mapObjIndexed, values, sort, compose, map, addIndex} from 'ramda';
+import {mapObjIndexed, values, sort, compose, map, addIndex, omit} from 'ramda';
 import {$get} from 'plow-js';
 
 const withId = mapObjIndexed((subject, id) => ({
@@ -11,6 +11,7 @@ const withOriginalSortingIndex = mapIndexed((item, index) => ({
     ...item,
     _originalSortingIndex: index
 }));
+const withoutOriginalSortingIndex = map(item => omit(['_originalSortingIndex'], item));
 
 const getPosition = subject => ($get(['ui', 'inspector', 'position'], subject) || $get(['ui', 'position'], subject) || $get('position', subject) || 0);
 const positionalArraySorter = sort((a, b) => {
@@ -31,6 +32,7 @@ const positionalArraySorter = sort((a, b) => {
 });
 
 const getNormalizedDeepStructureFromNodeType = path => compose(
+    withoutOriginalSortingIndex,
     positionalArraySorter,
     withOriginalSortingIndex,
     values,

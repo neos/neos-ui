@@ -237,6 +237,7 @@ export default ckEditorRegistry => {
                 if (selectedLink) {
                     // Link already exists; so we just modify it and set the href.
                     selectedLink.setAttribute('href', formattingOptions.href);
+                    selectedLink.setAttribute('data-cke-saved-href', formattingOptions.href);
                 } else {
                     // Possibly expand the selection to the parent word
                     formattingRules.expandCollapsedSelectionToCurrentWord(editor, CKEDITOR);

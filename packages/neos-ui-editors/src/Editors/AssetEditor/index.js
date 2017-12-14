@@ -64,7 +64,7 @@ export default class AssetEditor extends PureComponent {
 
     getValue() {
         const value = this.props.value;
-        if (value.__identity) {
+        if (value && value.__identity) {
             // Needed to handle Image assets
             return value.__identity;
         }
@@ -176,6 +176,7 @@ export default class AssetEditor extends PureComponent {
                     onValuesChange={this.handleValueChange}
                     displayLoadingIndicator={this.state.isLoading}
                     searchOptions={this.state.searchOptions}
+                    showDropDownToggle={false}
                     onSearchTermChange={this.handleSearchTermChange}
                     noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
                     searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
@@ -186,12 +187,13 @@ export default class AssetEditor extends PureComponent {
                         displaySearchBox={true}
                         ListPreviewElement={AssetOption}
                         placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
-                        options={this.state.options || []}
+                        options={this.props.value ? this.state.options : this.state.searchOptions}
                         value={this.getValue()}
                         highlight={this.props.highlight}
                         onValueChange={this.handleValueChange}
                         displayLoadingIndicator={this.state.isLoading}
-                        searchOptions={this.state.searchOptions}
+                        showDropDownToggle={false}
+                        allowEmpty={true}
                         onSearchTermChange={this.handleSearchTermChange}
                         noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
                         searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}

@@ -7,7 +7,10 @@ Neos:
 #        rawContent:
 #          width: 300px
 #          height: 600px
-
+      inspector:
+        dataTypes:
+          Neos\Media\Domain\Model\ImageInterface:
+            typeConverter: Neos\Neos\Ui\TypeConverter\UiDependentImageSerializer
       translation:
         autoInclude:
           'Neos.Neos.Ui':

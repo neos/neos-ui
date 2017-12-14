@@ -69,6 +69,7 @@ export default class LinkIconButton extends PureComponent {
     }
 }
 
+// ToDo: Move into re-usable fn - Maybe into `util-helpers`?
 const isUri = str =>
     str && Boolean(str.match('^(https?://|mailto:|tel:)'));
 

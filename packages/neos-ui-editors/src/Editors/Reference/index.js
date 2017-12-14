@@ -47,6 +47,7 @@ export default class ReferenceEditor extends PureComponent {
             loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
             displayLoadingIndicator={this.props.displayLoadingIndicator}
             showDropDownToggle={false}
+            allowEmpty={true}
             onSearchTermChange={this.props.onSearchTermChange}
             onCreateNew={this.props.onCreateNew}
             />);

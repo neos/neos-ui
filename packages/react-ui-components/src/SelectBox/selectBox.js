@@ -121,7 +121,7 @@ export default class SelectBox extends PureComponent {
         noMatchesFoundLabel: PropTypes.string,
 
         /**
-         * Turn SelectBox into a plain input field by not showing any search results. Useful in LinkEditor to be able to input links by hand.
+         * Turn SelectBox into a plain input field: not showing any search results and always showing the search input. Useful in LinkEditor to be able to input links by hand.
          */
         plainInputMode: PropTypes.bool,
 
@@ -182,6 +182,7 @@ export default class SelectBox extends PureComponent {
             displaySearchBox,
             displayLoadingIndicator,
             ListPreviewElement,
+            plainInputMode,
 
             DropDown,
             SelectBox_ListPreview
@@ -211,7 +212,7 @@ export default class SelectBox extends PureComponent {
                     {this.renderHeader()}
                 </DropDown.Header>
                 <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
-                    {!this.props.plainInputMode && <ul className={theme.selectBox__list}>
+                    {!plainInputMode && <ul className={theme.selectBox__list}>
                         <SelectBox_ListPreview
                             {...this.props}
 
@@ -238,6 +239,7 @@ export default class SelectBox extends PureComponent {
             options,
             value,
             allowEmpty,
+            plainInputMode,
 
             SelectBox_HeaderWithSearchInput,
             SelectBox_Header
@@ -247,7 +249,7 @@ export default class SelectBox extends PureComponent {
 
         const selectedOption = options.find(option => optionValueAccessor(option) === value);
 
-        if (displaySearchBox && !value) {
+        if (displaySearchBox && (!value || plainInputMode)) {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}

@@ -1,4 +1,5 @@
 .searchBar {
+    flex: 0 0 var(--spacing-GoldenUnit);
     display: flex;
     line-height: 0;
     border-bottom: 1px solid var(--colors-ContrastDark);

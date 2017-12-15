@@ -1,9 +1,6 @@
-/* TODO: get rid of magick numbers here, they are not safe! */
 .pageTree {
     overflow-y: auto;
-    height: calc(50vh - 85px);
+    /* Node Tree is expected to be rendered inside a display: flex container - and it will take up all remaining space */
+    flex: 1 0 0px;
     transition: var(--transition-Slow) ease height, overflow-y var(--transition-Slow);
-}
-.pageTree--expanded {
-    height: calc(100vh - 164px);
 }

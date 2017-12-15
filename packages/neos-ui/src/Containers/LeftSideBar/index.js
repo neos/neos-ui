@@ -23,20 +23,17 @@ import style from './style.css';
     isHiddenContentTree: $get('ui.leftSideBar.contentTree.isHidden'),
     siteNode: selectors.CR.Nodes.siteNodeSelector,
     documentNode: selectors.UI.ContentCanvas.documentNodeSelector
-}), {
-    toggleContentTree: actions.UI.LeftSideBar.toggleContentTree
-})
+}))
 export default class LeftSideBar extends PureComponent {
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
 
         isHidden: PropTypes.bool.isRequired,
         isHiddenContentTree: PropTypes.bool.isRequired,
-        toggleContentTree: PropTypes.func.isRequired
     };
 
     render() {
-        const {isHidden, isHiddenContentTree, containerRegistry, toggleContentTree} = this.props;
+        const {isHidden, isHiddenContentTree, containerRegistry} = this.props;
 
         const classNames = mergeClassNames({
             [style.leftSideBar]: true,
@@ -45,7 +42,7 @@ export default class LeftSideBar extends PureComponent {
 
         const bottomClassNames = mergeClassNames({
             [style.leftSideBar__bottom]: true,
-            [style['leftSideBar__bottom--isCollapsed']]: !isHiddenContentTree
+            [style['leftSideBar__bottom--isCollapsed']]: isHiddenContentTree
         });
 
         const LeftSideBarTop = containerRegistry.getChildren('LeftSideBar/Top');
@@ -68,15 +65,10 @@ export default class LeftSideBar extends PureComponent {
 
                 <hr/>
 
-                <ToggablePanel className={bottomClassNames} onPanelToggle={toggleContentTree} isOpen={isHiddenContentTree} closesToBottom={true}>
-                    <ToggablePanel.Header noPadding={true} openedIcon={openedIcon} closedIcon={closedIcon} toggleButtonId="neos-contentTree-toggle">
-                        <ContentTreeToolbar/>
-                    </ToggablePanel.Header>
-                    <ToggablePanel.Contents noPadding={true}>
-                        {LeftSideBarBottom.map((Item, key) => <Item key={key}/>)}
-                    </ToggablePanel.Contents>
-                </ToggablePanel>
-
+                <div className={bottomClassNames}>
+                    <ContentTreeToolbar/>
+                    {LeftSideBarBottom.map((Item, key) => <Item key={key}/>)}
+                </div>
             </SideBar>
         );
     }

@@ -4,6 +4,7 @@
     &:first-child {
         border-top: 0;
     }
+    flex: 0 0 var(--spacing-GoldenUnit);
 }
 .toolBar__btnGroup {
     &:before,
@@ -17,5 +18,5 @@
 }
 .toolBar__btnGroup__btn {
     float: left;
-    width: 40px;
+    width: var(--spacing-GoldenUnit);
 }

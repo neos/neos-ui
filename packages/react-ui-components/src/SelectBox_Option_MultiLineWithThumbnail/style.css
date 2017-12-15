@@ -4,7 +4,7 @@
 }
 
 .multiLineWithThumbnail__secondaryLabel {
-    color: var(--brandColorsContrastBright);
+    color: var(--colors-ContrastBright);
     display: block;
     font-size: 12px;
     text-overflow: ellipsis;
@@ -12,7 +12,7 @@
 }
 
 .multiLineWithThumbnail__tertiaryLabel {
-    color: var(--brandColorsContrastBright);
+    color: var(--colors-ContrastBright);
     display: block;
     font-size: 12px;
     text-overflow: ellipsis;
@@ -23,7 +23,7 @@
     width: calc(1.33 * (var(--spacing-GoldenUnit) + var(--spacing-Full)));
     height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
     object-fit: contain;
-    background-color: var(--brandColorsContrastDarkest);
+    background-color: var(--colors-ContrastDarkest);
     margin-right: .75em;
     display: inline-block;
     vertical-align: middle;

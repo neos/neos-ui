@@ -6,7 +6,7 @@
     padding: 82px var(--size-SidebarWidth) 0;
     transition: var(--transition-Default)  ease padding;
     will-change: padding;
-    background-color: var(--brandColorsContrastDarker);
+    background-color: var(--colors-ContrastDarker);
 
     &::after {
         content: '';

@@ -9,9 +9,9 @@
 }
 .discardBtn,
 .discardBtn:hover {
-    background: var(--brandColorsWarn) !important;
+    background: var(--colors-Warn) !important;
 }
 .publishBtn,
 .publishBtn:hover {
-    background: var(--brandColorsSuccess) !important;
+    background: var(--colors-Success) !important;
 }

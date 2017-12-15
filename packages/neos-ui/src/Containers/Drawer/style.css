@@ -5,7 +5,7 @@
     z-index: var(--zIndex-Drawer-Context);
     height: 100%;
     width: var(--size-SidebarWidth);
-    background: var(--brandColorsContrastDarker);
+    background: var(--colors-ContrastDarker);
     transition: var(--transition-Default) ease transform;
     padding-bottom: 41px;
     overflow: scroll;
@@ -14,7 +14,7 @@
     transform: translateX(-var(--size-SidebarWidth));
 }
 .drawer__menuItem {
-    border-top: 1px solid var(--brandColorsContrastDark);
+    border-top: 1px solid var(--colors-ContrastDark);
     cursor: pointer;
 
     &:first-child {

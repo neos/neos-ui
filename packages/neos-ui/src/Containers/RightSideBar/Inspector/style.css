@@ -10,7 +10,7 @@
 }
 .publishBtn,
 .publishBtn:hover {
-    background: var(--brandColorsSuccess) !important;
+    background: var(--colors-Success) !important;
 }
 .tabs > div {
     height: 100%;

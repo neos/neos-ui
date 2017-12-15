@@ -11,15 +11,15 @@
 }
 
 .flashMessage--success {
-    background-color: var(--brandColorsSuccess);
+    background-color: var(--colors-Success);
 }
 
 .flashMessage--error {
-    background-color: var(--brandColorsError);
+    background-color: var(--colors-Error);
 }
 
 .flashMessage--info {
-    background-color: var(--brandColorsPrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 }
 
 .flashMessage__icon {

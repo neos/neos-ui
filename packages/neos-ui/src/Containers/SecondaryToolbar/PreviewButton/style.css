@@ -9,7 +9,7 @@
     -webkit-font-smoothing: antialiased;
     vertical-align: top;
     width: var(--spacing-GoldenUnit);
-    color: var(--brandColorsContrastBrightest);
+    color: var(--colors-ContrastBrightest);
     text-align: center;
     background: transparent;
 
@@ -19,7 +19,7 @@
 }
 
 a.secondaryToolbar__buttonLink:hover {
-    background: var(--brandColorsPrimaryBlue);
+    background: var(--colors-PrimaryBlue);
 }
 
 .secondaryToolbar__buttonLink--isDisabled {

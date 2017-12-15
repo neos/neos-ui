@@ -22,17 +22,17 @@
     padding: 0 30px 0 var(--spacing-Full);
     border: 0;
     line-height: var(--spacing-GoldenUnit);
-    background: var(--brandColorsSuccess);
+    background: var(--colors-Success);
     text-align: center;
     vertical-align: top;
     cursor: pointer;
 }
 
 .dropDown__item {
-    border-top: 1px solid var(--brandColorsContrastDarker);
+    border-top: 1px solid var(--colors-ContrastDarker);
 
     &:hover {
-        background: var(--brandColorsPrimaryBlue);
+        background: var(--colors-PrimaryBlue);
     }
 
     > a,
@@ -66,7 +66,7 @@
     }
 }
 .dropDown__item--canPublish {
-    background: var(--brandColorsWarn);
+    background: var(--colors-Warn);
 }
 
 

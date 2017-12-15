@@ -9,6 +9,6 @@
 }
 
 .selectedOptions--highlight {
-    outline: 2px solid var(--brandColorsSuccess);
+    outline: 2px solid var(--colors-Success);
     margin-bottom: 2px;
 }

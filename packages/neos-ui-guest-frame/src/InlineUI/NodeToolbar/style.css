@@ -1,11 +1,11 @@
 .toolBar {
     position: absolute;
-    border-bottom: 1px solid var(--brandColorsContrastDark);
+    border-bottom: 1px solid var(--colors-ContrastDark);
     background: #222;
     z-index: var(--zIndex-NodeToolBar);
 }
 .toolBar__btnGroup {
-    border-bottom: 1px solid var(--brandColorsContrastDark);
+    border-bottom: 1px solid var(--colors-ContrastDark);
 
     &:before,
     &:after {

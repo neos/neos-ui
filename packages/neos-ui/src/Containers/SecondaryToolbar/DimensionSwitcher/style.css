@@ -1,6 +1,6 @@
 .dropDown {
     max-width: 352px;
-    border-right: 1px solid var(--brandColorsContrastDark);
+    border-right: 1px solid var(--colors-ContrastDark);
 }
 .dropDown__btnIcon {
     margin-right: .5em;

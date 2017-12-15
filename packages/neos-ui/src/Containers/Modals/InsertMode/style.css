@@ -5,5 +5,5 @@
     padding: var(--spacing-Full);
 }
 .applyBtn {
-    background: var(--brandColorsSuccess) !important;
+    background: var(--colors-Success) !important;
 }

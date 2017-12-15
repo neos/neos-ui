@@ -13,14 +13,14 @@
     position: absolute;
     right: 4px;
     bottom: 4px;
-    color: var(--brandColorsPrimaryBlue);
+    color: var(--colors-PrimaryBlue);
 
     [disabled] > & {
         opacity: 0;
     }
 }
 .wrapper:hover .wrapper__btnIcon {
-    color: var(--brandColorsPrimaryBlue);
+    color: var(--colors-PrimaryBlue);
 }
 .wrapper__dropDown {
     composes: reset from './../reset.css';
@@ -29,8 +29,8 @@
     left: 0;
     z-index: var(--zIndex-WrapperDropdown-Context);
     display: none;
-    background: var(--brandColorsContrastDarker);
-    border: 1px solid var(--brandColorsContrastDark);
+    background: var(--colors-ContrastDarker);
+    border: 1px solid var(--colors-ContrastDark);
     border-top: 0;
 }
 .wrapper__dropDown--isOpen {
@@ -48,7 +48,7 @@
 
     &:hover,
     &:hover > * {
-        color: var(--brandColorsPrimaryBlue);
+        color: var(--colors-PrimaryBlue);
     }
 
     > * {

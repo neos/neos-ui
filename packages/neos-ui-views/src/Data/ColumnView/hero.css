@@ -10,7 +10,7 @@
 }
 
 .hero__label {
-    color: var(--brandColorsContrastBrighter);
+    color: var(--colors-ContrastBrighter);
     margin-left: var(--spacing-Half);
     flex-grow: 1;
     text-align: right;

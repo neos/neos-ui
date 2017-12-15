@@ -6,26 +6,26 @@
     height: var(--spacing-GoldenUnit);
     padding: 0 14px;
     border: 0;
-    background: var(--brandColorsContrastNeutral);
+    background: var(--colors-ContrastNeutral);
     color: white;
 
     &:focus {
         outline: 0;
-        background: var(--brandColorsContrastBrightest);
-        color: var(--brandColorsContrastDarkest);
+        background: var(--colors-ContrastBrightest);
+        color: var(--colors-ContrastDarkest);
     }
 }
 .textInput::-webkit-input-placeholder {
     font-family: 'Open Sans', sans-serif;
     font-weight: normal;
-    color: var(--brandColorsContrastBright);
+    color: var(--colors-ContrastBright);
 }
 .textInput--invalid {
-    outline: 2px solid var(--brandColorsError) !important;
-    color: var(--brandColorsError) !important;
+    outline: 2px solid var(--colors-Error) !important;
+    color: var(--colors-Error) !important;
 }
 .textInput--highlight {
-    outline: 2px solid var(--brandColorsSuccess);
+    outline: 2px solid var(--colors-Success);
 }
 
 .textInput--disabled {

@@ -19,7 +19,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     line-height: var(--spacing-GoldenUnit);
-    background: var(--brandColorsContrastNeutral);
+    background: var(--colors-ContrastNeutral);
 
     &:focus {
         outline: unset;
@@ -50,8 +50,8 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    background: var(--brandColorsContrastNeutral);
-    box-shadow: 1px 2px 5px var(--brandColorsContrastDarker);
+    background: var(--colors-ContrastNeutral);
+    box-shadow: 1px 2px 5px var(--colors-ContrastDarker);
 }
 .dropDown__contents--scrollable {
     max-height: 80vh;
@@ -62,11 +62,11 @@
 }
 .dropDown--darker {
     > .dropDown__btn--open {
-        background-color: var(--brandColorsContrastDarker);
+        background-color: var(--colors-ContrastDarker);
     }
 
     > .dropDown__contents {
-        background-color: var(--brandColorsContrastDarker);
+        background-color: var(--colors-ContrastDarker);
     }
 }
 .dropDown--padded {

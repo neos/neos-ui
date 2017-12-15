@@ -19,7 +19,7 @@
     position: fixed;
     z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
     width: 460px;
-    border: var(--spacing-Half) solid var(--brandColorsContrastDarker);
+    border: var(--spacing-Half) solid var(--colors-ContrastDarker);
     /* 8px border top and bottom */
     height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
 }
@@ -32,7 +32,7 @@
 }
 
 .linkIconButton__link {
-    color: var(--brandColorsContrastBright);
+    color: var(--colors-ContrastBright);
     display: block;
     font-size: 12px;
 }

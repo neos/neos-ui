@@ -8,5 +8,5 @@
 
 .modalContents {
     padding: 0 var(--spacing-Full) var(--spacing-Full) var(--spacing-Full);
-    color: var(--brandColorsContrastBrighter);
+    color: var(--colors-ContrastBrighter);
 }

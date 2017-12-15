@@ -1,10 +1,10 @@
 .widget {
-    background-color: var(--brandColorsContrastNeutral);
+    background-color: var(--colors-ContrastNeutral);
 }
 
 .header {
     display: flex;
-    border-bottom: 1px solid var(--brandColorsContrastDarker);
+    border-bottom: 1px solid var(--colors-ContrastDarker);
     padding: 0 var(--spacing-Full);
     line-height: var(--spacing-GoldenUnit);
 }
@@ -18,6 +18,6 @@
 }
 
 .subtitle {
-    color: var(--brandColorsContrastBrighter);
+    color: var(--colors-ContrastBrighter);
     text-align: right;
 }

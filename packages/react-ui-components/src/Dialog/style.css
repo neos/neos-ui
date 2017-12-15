@@ -14,14 +14,14 @@
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    background: var(--brandColorsContrastDarker);
+    background: var(--colors-ContrastDarker);
 }
 .dialog__contents {
     composes: reset from './../reset.css';
     position: relative;
     width: calc(100vw - var(--spacing-GoldenUnit) * 2);
     max-width: calc(var(--spacing-GoldenUnit) * 16);
-    border: 1px solid var(--brandColorsContrastDark);
+    border: 1px solid var(--colors-ContrastDark);
 
     .dialog--wide & {
         max-width: calc(var(--spacing-GoldenUnit) * 24);
@@ -50,7 +50,7 @@
 .dialog__actions {
     composes: reset from './../reset.css';
     text-align: right;
-    border-top: 1px solid var(--brandColorsContrastDark);
+    border-top: 1px solid var(--colors-ContrastDark);
     padding: var(--spacing-Full);
 }
 .dialog__actions > * {

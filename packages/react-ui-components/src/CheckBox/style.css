@@ -22,15 +22,15 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 1px solid var(--brandColorsContrastBrighter);
+    border: 1px solid var(--colors-ContrastBrighter);
     vertical-align: text-bottom;
-    background: var(--brandColorsContrastDark);
+    background: var(--colors-ContrastDark);
     font-size: 20px;
     font-weight: bold;
     color: #5b5b5b;
 
     .label:hover & {
-        border-color: var(--brandColorsPrimaryBlue);
+        border-color: var(--colors-PrimaryBlue);
     }
 
     &:before {
@@ -42,8 +42,8 @@
     }
 }
 .checkbox__inputMirror--active {
-    background: var(--brandColorsPrimaryBlue);
-    border-color: var(--brandColorsPrimaryBlue);
+    background: var(--colors-PrimaryBlue);
+    border-color: var(--colors-PrimaryBlue);
     color: #fff;
 
     &:before {
@@ -55,12 +55,12 @@
     }
 }
 .checkbox__inputMirror--highlight-checked {
-    background: var(--brandColorsSuccess);
-    border-color: var(--brandColorsSuccess);
+    background: var(--colors-Success);
+    border-color: var(--colors-Success);
     color: #fff;
 }
 .checkbox__inputMirror--highlight-unchecked {
-    border-color: var(--brandColorsSuccess);
+    border-color: var(--colors-Success);
 }
 .checkbox__disabled {
     opacity: .65;

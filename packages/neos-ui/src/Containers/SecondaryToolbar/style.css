@@ -6,9 +6,9 @@
     padding: 0 var(--size-SidebarWidth);
     width: 100%;
     height: 41px;
-    background: var(--brandColorsContrastNeutral);
+    background: var(--colors-ContrastNeutral);
     will-change: padding;
-    border-bottom: 1px solid var(--brandColorsContrastDark);
+    border-bottom: 1px solid var(--colors-ContrastDark);
     transform: translateY(0);
     transition: var(--transition-Fast) ease-in-out;
 }

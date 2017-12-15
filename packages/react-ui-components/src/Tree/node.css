@@ -12,14 +12,14 @@
     height: 100%;
     width: 18px;
 
-    color: var(--brandColorsContrastBrighter);
+    color: var(--colors-ContrastBrighter);
     line-height: 20px;
     text-align: center;
 
     cursor: pointer;
 
     &:hover {
-        color: var(--brandColorsPrimaryBlue);
+        color: var(--colors-PrimaryBlue);
     }
 }
 .header__chevron--isCollapsed > i {
@@ -32,7 +32,7 @@
 
 .header__chevron--isLoading,
 .header__chevron--isLoading:hover {
-    color: var(--brandColorsContrastBrighter) !important;
+    color: var(--colors-ContrastBrighter) !important;
 }
 
 .header__chevron--isLoading > i {
@@ -68,11 +68,11 @@
     opacity: .2;
 }
 .header__data--isDirty {
-    border-left: 2px solid var(--brandColorsWarn);
+    border-left: 2px solid var(--colors-Warn);
 }
 
 .header__data--isFocused {
-    background: var(--brandColorsContrastNeutral);
+    background: var(--colors-ContrastNeutral);
 
     &.header__data--isHiddenInIndex,
     &.header__data--isHidden {
@@ -80,7 +80,7 @@
     }
 }
 .header__data--acceptsDrop {
-    background-color: var(--brandColorsPrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 }
 .header__data--acceptsDrop *,
 .header__data--deniesDrop * {
@@ -99,7 +99,7 @@
     composes: reset from './../reset.css';
 
     .header__data--isActive & {
-        color: var(--brandColorsPrimaryBlue);
+        color: var(--colors-PrimaryBlue);
     }
 }
 
@@ -129,5 +129,5 @@
     height: 2px;
 }
 .dropTarget__inner--acceptsDrop {
-    background-color: var(--brandColorsPrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 }

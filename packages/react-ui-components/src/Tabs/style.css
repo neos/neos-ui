@@ -15,8 +15,8 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    background: var(--brandColorsContrastDarkest);
-    border-bottom: 1px solid var(--brandColorsContrastDark);
+    background: var(--colors-ContrastDarkest);
+    border-bottom: 1px solid var(--colors-ContrastDark);
 
     &:before,
     &:after {
@@ -30,17 +30,17 @@
 .tabNavigation__item {
     composes: reset from './../reset.css';
     float: left;
-    border-right: 1px solid var(--brandColorsContrastDark);
-    color: var(--brandColorsContrastBrightest);
+    border-right: 1px solid var(--colors-ContrastDark);
+    color: var(--colors-ContrastBrightest);
 }
 .tabNavigation__item--isActive {
-    background-color: var(--brandColorsContrastDarker);
+    background-color: var(--colors-ContrastDarker);
     cursor: default;
-    border-bottom: 1px solid var(--brandColorsPrimaryBlue);
+    border-bottom: 1px solid var(--colors-PrimaryBlue);
     margin-bottom: -1px;
 
     > .tabNavigation__itemBtn {
-        color: var(--brandColorsPrimaryBlue);
+        color: var(--colors-PrimaryBlue);
     }
 }
 .tabNavigation__itemBtn {

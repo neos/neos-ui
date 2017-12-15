@@ -7,8 +7,8 @@
   appendExceedingArguments: true
 
 -
-  name: 'Deactivate'
-  uriPattern: 'deactivate'
+  name: 'Deactivate / return to legacy backend'
+  uriPattern: 'legacy'
   defaults:
     '@controller': 'Backend'
     '@action': 'deactivate'

@@ -9,7 +9,7 @@
 
     /* subtract the size of padding */
     line-height: calc(var(--goldenUnit) - 10px);
-    padding: 5px var(--spacing);
+    padding: 5px var(--spacing) !important;
 }
 
 .listPreviewElement--isHighlighted {

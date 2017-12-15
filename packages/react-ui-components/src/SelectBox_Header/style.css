@@ -28,9 +28,9 @@
 }
 
 .selectBoxHeader__label {
-    padding: 0 var(--spacing-Half);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    width: 100%;
+    padding: 0 var(--spacing-Full);
+}
+
+.selectBoxHeader__wrapperIconWrapper {
+    padding: 0 var(--spacing-Full);
 }

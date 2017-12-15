@@ -19,8 +19,10 @@
     position: relative;
     display: inline-block;
     text-overflow: clip;
-    height: var(--spacing-GoldenUnit);
+    height: auto;
+    min-height: var(--spacing-GoldenUnit);
     line-height: var(--spacing-GoldenUnit);
+    padding-left: 0;
     border: 0;
     background: var(--colors-ContrastNeutral);
     min-width: 160px;

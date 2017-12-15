@@ -18,6 +18,7 @@ export default class SelectBox_Header extends PureComponent {
         placeholderIcon: PropTypes.string,
         showResetButton: PropTypes.bool.isRequired,
         onReset: PropTypes.func,
+        displayLoadingIndicator: PropTypes.bool,
 
         /* ------------------------------
          * Theme & Dependencies
@@ -28,7 +29,8 @@ export default class SelectBox_Header extends PureComponent {
             selectBoxHeader__label: PropTypes.string.isRequired
         }).isRequired,
         Icon: PropTypes.any.isRequired,
-        IconButton: PropTypes.any.isRequired
+        IconButton: PropTypes.any.isRequired,
+        ListPreviewElement: PropTypes.any.isRequired
     }
 
     render() {
@@ -36,10 +38,12 @@ export default class SelectBox_Header extends PureComponent {
             option,
             showResetButton,
             theme,
-            Icon,
             IconButton,
             placeholder,
-            placeholderIcon
+            placeholderIcon,
+            displayLoadingIndicator,
+            Icon,
+            ListPreviewElement
         } = this.props;
 
         const label = option ? option.label : placeholder;
@@ -48,7 +52,7 @@ export default class SelectBox_Header extends PureComponent {
         const resetButton = () => {
             if (showResetButton) {
                 return (
-                    <span className={theme.selectBoxHeader__wrapperIconWrapper}>
+                    <span>
                         <IconButton className={theme.selectBoxHeader__icon} icon="times" onClick={this.props.onReset}/>
                         <span className={theme.selectBoxHeader__seperator}/>
                     </span>
@@ -58,11 +62,21 @@ export default class SelectBox_Header extends PureComponent {
             return '';
         };
 
-        // TODO: lateron, use <ListPreviewElement> here
         return (
             <div className={theme.selectBoxHeader}>
-                {icon && <Icon className={theme.selectBoxHeader__icon} icon={icon}/>}
-                {label && <span className={theme.selectBoxHeader__label}>{label}</span>}
+                {displayLoadingIndicator ? (
+                    <span className={theme.selectBoxHeader__wrapperIconWrapper}>
+                        <Icon className={theme.selectBoxHeader__icon} spin={true} icon="spinner"/>
+                    </span>
+                ) : (
+                    <div className={theme.selectBoxHeader__innerPreview}>
+                        {option ? <ListPreviewElement
+                            {...this.props}
+                            label={label}
+                            icon={icon}
+                            /> : <div className={theme.selectBoxHeader__label}>{label}</div>}
+                    </div>
+                )}
                 {resetButton()}
             </div>
         );

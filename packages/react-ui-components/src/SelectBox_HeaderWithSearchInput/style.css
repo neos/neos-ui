@@ -1,5 +1,6 @@
 .selectBoxHeaderWithSearchInput {
     display: flex;
+    padding-left: var(--spacing-Full);
 }
 
 .selectBoxHeaderWithSearchInput__inputContainer {

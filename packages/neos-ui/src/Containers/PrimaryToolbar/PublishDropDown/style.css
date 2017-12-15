@@ -71,5 +71,5 @@
 
 
 .badge {
-    margin-left: var(--halfSpacing);
+    margin-left: var(--spacing-Half);
 }

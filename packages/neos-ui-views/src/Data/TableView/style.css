@@ -2,7 +2,7 @@
     width: 100%;
 }
 .column {
-    padding-right: var(--halfSpacing);
+    padding-right: var(--spacing-Half);
 }
 .icon {
     padding-right: var(--quarterSpacing);

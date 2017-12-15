@@ -41,5 +41,5 @@
 }
 
 .nodeTypeFilter__label {
-    margin-right: var(--halfSpacing);
+    margin-right: var(--spacing-Half);
 }

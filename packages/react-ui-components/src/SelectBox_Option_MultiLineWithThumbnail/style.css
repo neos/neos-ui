@@ -28,8 +28,8 @@
     display: inline-block;
     vertical-align: middle;
     margin-left: -var(--spacing-Full);
-    margin-top: -var(--halfSpacing);
-    margin-bottom: -var(--halfSpacing);
+    margin-top: -var(--spacing-Half);
+    margin-bottom: -var(--spacing-Half);
 }
 
 .multiLineWithThumbnail__item:hover .multiLineWithThumbnail__secondaryLabel,

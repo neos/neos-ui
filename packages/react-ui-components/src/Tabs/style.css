@@ -61,7 +61,7 @@
     color: currentColor;
 }
 .tabNavigation__itemBtnIcon--hasLabel {
-    margin-right: var(--halfSpacing);
+    margin-right: var(--spacing-Half);
 }
 
 .panel {

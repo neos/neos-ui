@@ -11,7 +11,7 @@
 
 .hero__label {
     color: var(--brandColorsContrastBrighter);
-    margin-left: var(--halfSpacing);
+    margin-left: var(--spacing-Half);
     flex-grow: 1;
     text-align: right;
 }

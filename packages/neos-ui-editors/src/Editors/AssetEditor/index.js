@@ -62,18 +62,25 @@ export default class AssetEditor extends PureComponent {
         }
     }
 
-    getValue() {
-        const value = this.props.value;
+    getIdentity(value) {
         if (value && value.__identity) {
             // Needed to handle Image assets
             return value.__identity;
         }
+        if (value && value.assetUuid) {
+            // Needed to handle assets
+            return value.assetUuid;
+        }
         return value;
+    }
+
+    getValue() {
+        return this.getIdentity(this.props.value);
     }
 
     getValues() {
         const value = this.props.value;
-        return value.map(item => (item && item.__identity) || item);
+        return value.map(this.getIdentity);
     }
 
     resolveValue = () => {
@@ -160,52 +167,66 @@ export default class AssetEditor extends PureComponent {
             return null;
         }
 
-        return (
-            <AssetUpload
-                highlight={this.props.highlight}
-                multiple={true}
-                multipleData={this.props.value}
-                onAfterUpload={this.handleValueChange}
-                ref={this.setAssetUploadReference}
-                isLoading={false}
-                imagesOnly={this.props.imagesOnly}
-                >
-                {this.props.options.multiple ? (<MultiSelectBox
-                    dndType={dndTypes.MULTISELECT}
-                    optionValueField="identifier"
-                    loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
-                    displaySearchBox={true}
-                    ListPreviewElement={AssetOption}
-                    placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
-                    options={this.state.options || []}
-                    values={this.getValues()}
+        if (this.props.options.multiple) {
+            return (
+                <AssetUpload
                     highlight={this.props.highlight}
-                    onValuesChange={this.handleValueChange}
-                    displayLoadingIndicator={this.state.isLoading}
-                    searchOptions={this.state.searchOptions}
-                    showDropDownToggle={false}
-                    onSearchTermChange={this.handleSearchTermChange}
-                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
-                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
-                    threshold={$get('options.threshold', this.props)}
-                    />) : (<SelectBox
+                    multiple={true}
+                    multipleData={this.props.value}
+                    onAfterUpload={this.handleValueChange}
+                    ref={this.setAssetUploadReference}
+                    isLoading={false}
+                    imagesOnly={this.props.imagesOnly}
+                    >
+                    <MultiSelectBox
+                        dndType={dndTypes.MULTISELECT}
                         optionValueField="identifier"
                         loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
                         displaySearchBox={true}
                         ListPreviewElement={AssetOption}
                         placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
-                        options={this.props.value ? this.state.options : this.state.searchOptions}
-                        value={this.getValue()}
+                        options={this.state.options || []}
+                        values={this.getValues()}
                         highlight={this.props.highlight}
-                        onValueChange={this.handleValueChange}
+                        onValuesChange={this.handleValueChange}
                         displayLoadingIndicator={this.state.isLoading}
+                        searchOptions={this.state.searchOptions}
                         showDropDownToggle={false}
-                        allowEmpty={true}
                         onSearchTermChange={this.handleSearchTermChange}
                         noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
                         searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                         threshold={$get('options.threshold', this.props)}
-                        />)}
+                        />
+                </AssetUpload>
+            );
+        }
+        return (
+            <AssetUpload
+                highlight={this.props.highlight}
+                multiple={false}
+                onAfterUpload={this.handleValueChange}
+                ref={this.setAssetUploadReference}
+                isLoading={false}
+                imagesOnly={this.props.imagesOnly}
+                >
+                <SelectBox
+                    optionValueField="identifier"
+                    loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
+                    displaySearchBox={true}
+                    ListPreviewElement={AssetOption}
+                    placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
+                    options={this.props.value ? this.state.options : this.state.searchOptions}
+                    value={this.getValue()}
+                    highlight={this.props.highlight}
+                    onValueChange={this.handleValueChange}
+                    displayLoadingIndicator={this.state.isLoading}
+                    showDropDownToggle={false}
+                    allowEmpty={true}
+                    onSearchTermChange={this.handleSearchTermChange}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+                    threshold={$get('options.threshold', this.props)}
+                    />
             </AssetUpload>
         );
     }

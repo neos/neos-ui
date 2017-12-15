@@ -8,7 +8,7 @@
     composes: reset from './../reset.css';
     display: block;
     width: 100%;
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
     text-align: left;
     color: white;
     cursor: pointer;
@@ -18,7 +18,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    line-height: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
     background: var(--brandColorsContrastNeutral);
 
     &:focus {
@@ -26,7 +26,7 @@
     }
 }
 .dropDown__btn--withChevron {
-    padding-right: var(--goldenUnit);
+    padding-right: var(--spacing-GoldenUnit);
 }
 .dropDown__btnLabel {
     composes: reset from './../reset.css';

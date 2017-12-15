@@ -20,7 +20,7 @@
     padding-left: 0;
 }
 .editModePanel--isFringeRight {
-    padding-right: var(--goldenUnit);
+    padding-right: var(--spacing-GoldenUnit);
 }
 .editModePanel--isHidden {
     display: none;

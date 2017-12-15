@@ -35,7 +35,7 @@
 }
 
 .nodeTypeDialogHeader__filter {
-    margin-right: var(--goldenUnit);
+    margin-right: var(--spacing-GoldenUnit);
     display: flex;
     align-items: center;
 }

@@ -11,7 +11,7 @@
     composes: reset from './../reset.css', dropDown from './../DropDown/style.css';
     position: relative;
     display: inline-block;
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
 }
 
 .selectBox__btn {
@@ -19,8 +19,8 @@
     position: relative;
     display: inline-block;
     text-overflow: clip;
-    height: var(--goldenUnit);
-    line-height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
+    line-height: var(--spacing-GoldenUnit);
     border: 0;
     background: var(--brandColorsContrastNeutral);
     min-width: 160px;
@@ -45,5 +45,5 @@
     background-color: var(--brandColorsContrastDark);
     font-weight: bold;
     padding-left: var(--spacing);
-    line-height: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
 }

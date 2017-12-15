@@ -9,7 +9,7 @@
 }
 .dropDown__btn {
     position: relative;
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
     border: 0;
     background-color: var(--brandColorsContrastDarker);
     text-align: right;
@@ -23,7 +23,7 @@
     box-shadow: 0 5px 10px rgba(#000, .2);
 }
 .dropDown__item {
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
     background: var(--brandColorsContrastNeutral);
     border-top: 1px solid var(--brandColorsContrastDarker);
 
@@ -41,7 +41,7 @@
         color: #FFF;
         cursor: pointer;
         text-decoration: none;
-        line-height: var(--goldenUnit);
+        line-height: var(--spacing-GoldenUnit);
         text-align: left;
     }
 }

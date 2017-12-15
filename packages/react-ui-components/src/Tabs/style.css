@@ -46,9 +46,9 @@
 .tabNavigation__itemBtn {
     composes: reset from './../reset.css';
     display: inline-block;
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
     padding: 0 var(--spacing);
-    line-height: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
     cursor: pointer;
     border: 0;
     background: 0;

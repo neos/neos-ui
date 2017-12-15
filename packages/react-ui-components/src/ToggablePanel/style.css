@@ -5,10 +5,10 @@
 
 .panel__headline {
     composes: reset from './../reset.css';
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
     margin: 0;
     padding: 0 var(--spacing);
-    line-height: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
     font-weight: bold;
     font-size: var(--baseFontSize);
 }

@@ -20,8 +20,8 @@
 }
 
 .multiLineWithThumbnail__image {
-    width: calc(1.33 * (var(--goldenUnit) + var(--spacing)));
-    height: calc(var(--goldenUnit) + var(--spacing));
+    width: calc(1.33 * (var(--spacing-GoldenUnit) + var(--spacing)));
+    height: calc(var(--spacing-GoldenUnit) + var(--spacing));
     object-fit: contain;
     background-color: var(--brandColorsContrastDarkest);
     margin-right: .75em;

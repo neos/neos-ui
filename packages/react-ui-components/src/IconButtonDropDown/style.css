@@ -6,7 +6,7 @@
 .wrapper__btn {
     composes: reset from './../reset.css';
     position: relative;
-    width: var(--goldenUnit);
+    width: var(--spacing-GoldenUnit);
 }
 .wrapper__btnModeIcon {
     composes: reset from './../reset.css';
@@ -40,8 +40,8 @@
     composes: reset from './../reset.css';
     position: relative;
     display: block;
-    width: calc(var(--goldenUnit) - 2px);
-    height: calc(var(--goldenUnit) - 2px);
+    width: calc(var(--spacing-GoldenUnit) - 2px);
+    height: calc(var(--spacing-GoldenUnit) - 2px);
     text-align: center;
     vertical-align: middle;
     cursor: pointer;

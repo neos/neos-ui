@@ -19,12 +19,12 @@
 .dialog__contents {
     composes: reset from './../reset.css';
     position: relative;
-    width: calc(100vw - var(--goldenUnit) * 2);
-    max-width: calc(var(--goldenUnit) * 16);
+    width: calc(100vw - var(--spacing-GoldenUnit) * 2);
+    max-width: calc(var(--spacing-GoldenUnit) * 16);
     border: 1px solid var(--brandColorsContrastDark);
 
     .dialog--wide & {
-        max-width: calc(var(--goldenUnit) * 24);
+        max-width: calc(var(--spacing-GoldenUnit) * 24);
     }
 
     .dialog--narrow & {

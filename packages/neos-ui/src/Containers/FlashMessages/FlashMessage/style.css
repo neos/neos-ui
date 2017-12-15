@@ -27,8 +27,8 @@
     left: 0;
     top: 0;
     height: 100%;
-    line-height: var(--goldenUnit);
-    width: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit);
     text-align: center;
     font-size: 16px;
     padding: 0;

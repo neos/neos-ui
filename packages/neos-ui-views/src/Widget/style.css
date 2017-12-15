@@ -6,7 +6,7 @@
     display: flex;
     border-bottom: 1px solid var(--brandColorsContrastDarker);
     padding: 0 var(--spacing);
-    line-height: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
 }
 
 .body {

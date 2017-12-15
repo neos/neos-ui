@@ -3,7 +3,7 @@
     /* TODO: should eventually be moved to reset.css, but there maybe be plenty of side-effects */
     font-size: 14px;
     width: 100%;
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
     padding: 0 14px;
     border: 0;
     background: var(--brandColorsContrastNeutral);

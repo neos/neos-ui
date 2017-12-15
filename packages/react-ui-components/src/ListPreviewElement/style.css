@@ -8,7 +8,7 @@
     font-size: 14px;
 
     /* subtract the size of padding */
-    line-height: calc(var(--goldenUnit) - 10px);
+    line-height: calc(var(--spacing-GoldenUnit) - 10px);
     padding: 5px var(--spacing);
 }
 

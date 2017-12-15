@@ -6,8 +6,8 @@
     margin-bottom: var(--quarterSpacing);
 }
 .resizeControls__before {
-    height: var(--goldenUnit);
-    width: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit);
     border-right: 1px solid var(--brandColorsContrastDarker);
     display: flex;
     align-items: center;
@@ -19,13 +19,13 @@
     flex-grow: 1;
 }
 .resizeControls__after {
-    height: var(--goldenUnit);
-    width: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit);
     background: var(--brandColorsContrastNeutral);
     border-left: 1px solid var(--brandColorsContrastDarker);
     text-align: center;
 
-    line-height: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
 }
 
 .resizeControls__checkbox {

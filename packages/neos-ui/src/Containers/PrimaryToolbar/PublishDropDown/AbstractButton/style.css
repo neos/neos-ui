@@ -1,8 +1,8 @@
 .btn {
     display: inline-block;
     padding: 0 var(--spacing);
-    height: var(--goldenUnit);
-    line-height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
+    line-height: var(--spacing-GoldenUnit);
     border: 0;
     background: var(--brandColorsSuccess);
     text-align: center;

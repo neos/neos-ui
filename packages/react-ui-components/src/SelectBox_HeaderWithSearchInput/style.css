@@ -20,5 +20,5 @@
 
 .selectBoxHeaderWithSearchInput__icon {
     composes: reset from './../reset.css';
-    line-height: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
 }

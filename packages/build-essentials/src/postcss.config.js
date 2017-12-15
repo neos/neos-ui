@@ -13,7 +13,6 @@ module.exports = {
                 //
                 // Spacings
                 //
-                '--spacing': '16px',
                 '--halfSpacing': '8px',
                 '--quarterSpacing': '4px',
 

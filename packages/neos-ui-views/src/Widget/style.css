@@ -5,12 +5,12 @@
 .header {
     display: flex;
     border-bottom: 1px solid var(--brandColorsContrastDarker);
-    padding: 0 var(--spacing);
+    padding: 0 var(--spacing-Full);
     line-height: var(--spacing-GoldenUnit);
 }
 
 .body {
-    padding: var(--spacing);
+    padding: var(--spacing-Full);
 }
 
 .label {

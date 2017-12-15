@@ -7,7 +7,7 @@
     composes: reset from './../reset.css';
     height: var(--spacing-GoldenUnit);
     margin: 0;
-    padding: 0 var(--spacing);
+    padding: 0 var(--spacing-Full);
     line-height: var(--spacing-GoldenUnit);
     font-weight: bold;
     font-size: var(--baseFontSize);
@@ -25,7 +25,7 @@
 }
 .panel__contents {
     composes: reset from './../reset.css';
-    padding: 0 var(--spacing);
+    padding: 0 var(--spacing-Full);
     transition: var(--transition-Slow) ease padding;
 
     .panel--isOpen & {

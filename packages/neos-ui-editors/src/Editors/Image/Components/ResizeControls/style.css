@@ -2,7 +2,7 @@
     display: flex;
 }
 .resizeControls__label {
-    margin-top: var(--spacing);
+    margin-top: var(--spacing-Full);
     margin-bottom: var(--quarterSpacing);
 }
 .resizeControls__before {

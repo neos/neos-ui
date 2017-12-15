@@ -4,7 +4,7 @@
     display: inline-block;
     height: var(--spacing-GoldenUnit);
     min-width: var(--spacing-GoldenUnit);
-    padding: 0 var(--spacing);
+    padding: 0 var(--spacing-Full);
     border: 0;
     -webkit-font-smoothing: antialiased;
     vertical-align: middle;

@@ -8,9 +8,9 @@
 
 .pluginViewContainer__listItem {
     font-size: var(--smallFontSize);
-    line-height: var(--spacing);
+    line-height: var(--spacing-Full);
     margin-bottom: var(--halfSpacing);
-    padding: var(--spacing);
+    padding: var(--spacing-Full);
 }
 
 .pluginViewContainer__listItem b {

@@ -2,7 +2,7 @@
     width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
-    padding: 0 var(--spacing-GoldenUnit) 0 var(--spacing);
+    padding: 0 var(--spacing-GoldenUnit) 0 var(--spacing-Full);
     height: var(--spacing-GoldenUnit);
     margin: 0;
     line-height: var(--spacing-GoldenUnit);
@@ -16,5 +16,5 @@
 }
 
 .content {
-    padding: 0 var(--spacing) var(--spacing);
+    padding: 0 var(--spacing-Full) var(--spacing-Full);
 }

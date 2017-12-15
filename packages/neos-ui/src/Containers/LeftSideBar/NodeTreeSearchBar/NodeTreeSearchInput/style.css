@@ -33,6 +33,6 @@
 
 .placeholderIcon {
     position: absolute;
-    left: var(--spacing);
+    left: var(--spacing-Full);
     line-height: 40px;
 }

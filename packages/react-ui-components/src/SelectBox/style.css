@@ -44,6 +44,6 @@
 .selectBox__groupHeader {
     background-color: var(--brandColorsContrastDark);
     font-weight: bold;
-    padding-left: var(--spacing);
+    padding-left: var(--spacing-Full);
     line-height: var(--spacing-GoldenUnit);
 }

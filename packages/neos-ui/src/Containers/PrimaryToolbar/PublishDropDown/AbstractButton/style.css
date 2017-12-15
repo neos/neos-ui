@@ -1,6 +1,6 @@
 .btn {
     display: inline-block;
-    padding: 0 var(--spacing);
+    padding: 0 var(--spacing-Full);
     height: var(--spacing-GoldenUnit);
     line-height: var(--spacing-GoldenUnit);
     border: 0;

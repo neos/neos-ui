@@ -13,7 +13,7 @@
     color: white;
     cursor: pointer;
     font-size: var(--baseFontSize);
-    padding: 0 var(--spacing);
+    padding: 0 var(--spacing-Full);
     border: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -71,6 +71,6 @@
 }
 .dropDown--padded {
     > .dropDown__contents {
-        padding: var(--spacing);
+        padding: var(--spacing-Full);
     }
 }

@@ -20,14 +20,14 @@
 }
 
 .multiLineWithThumbnail__image {
-    width: calc(1.33 * (var(--spacing-GoldenUnit) + var(--spacing)));
-    height: calc(var(--spacing-GoldenUnit) + var(--spacing));
+    width: calc(1.33 * (var(--spacing-GoldenUnit) + var(--spacing-Full)));
+    height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
     object-fit: contain;
     background-color: var(--brandColorsContrastDarkest);
     margin-right: .75em;
     display: inline-block;
     vertical-align: middle;
-    margin-left: -var(--spacing);
+    margin-left: -var(--spacing-Full);
     margin-top: -var(--halfSpacing);
     margin-bottom: -var(--halfSpacing);
 }

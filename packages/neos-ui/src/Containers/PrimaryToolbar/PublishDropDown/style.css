@@ -19,7 +19,7 @@
     display: inline-block;
     width: auto;
     height: var(--spacing-GoldenUnit);
-    padding: 0 30px 0 var(--spacing);
+    padding: 0 30px 0 var(--spacing-Full);
     border: 0;
     line-height: var(--spacing-GoldenUnit);
     background: var(--brandColorsSuccess);
@@ -41,7 +41,7 @@
         display: block;
         width: 100%;
         border: 0;
-        padding: 0 var(--spacing);
+        padding: 0 var(--spacing-Full);
         background: 0;
         color: #FFF;
         text-decoration: none;

@@ -1,5 +1,5 @@
 .modalContents {
-    padding: var(--spacing);
+    padding: var(--spacing-Full);
 }
 .discardBtn,
 .resumeBtn,

@@ -35,7 +35,7 @@
     composes: reset from './../reset.css';
     font-size: 16px;
     line-height: 1.2;
-    padding: var(--spacing);
+    padding: var(--spacing-Full);
 }
 .dialog__closeBtn {
     composes: reset from './../reset.css';
@@ -51,8 +51,8 @@
     composes: reset from './../reset.css';
     text-align: right;
     border-top: 1px solid var(--brandColorsContrastDark);
-    padding: var(--spacing);
+    padding: var(--spacing-Full);
 }
 .dialog__actions > * {
-    margin-left: calc(var(--spacing) / 2);
+    margin-left: calc(var(--spacing-Full) / 2);
 }

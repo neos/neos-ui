@@ -47,7 +47,7 @@
     composes: reset from './../reset.css';
     display: inline-block;
     height: var(--spacing-GoldenUnit);
-    padding: 0 var(--spacing);
+    padding: 0 var(--spacing-Full);
     line-height: var(--spacing-GoldenUnit);
     cursor: pointer;
     border: 0;

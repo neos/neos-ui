@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
@@ -226,6 +226,9 @@ export default class PublishDropDown extends PureComponent {
         }
 
         if (isAutoPublishingEnabled) {
+            if (baseWorkspaceTitle) {
+                return <I18n id="Neos.Neos:Main:autoPublishTo" fallback={'Auto publish to ' + baseWorkspaceTitle} params={{0: baseWorkspaceTitle}}/>;
+            }
             return <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto publish"/>;
         }
 
@@ -233,6 +236,11 @@ export default class PublishDropDown extends PureComponent {
             return <I18n id="Neos.Neos:Main:publishTo" fallback="Publish to" params={{0: baseWorkspaceTitle}}/>;
         }
 
-        return <I18n id="Neos.Neos:Main:published" fallback="Published"/>;
+        return (
+            <Fragment>
+                <I18n id="Neos.Neos:Main:published" fallback="Published"/>
+                {(baseWorkspaceTitle ? ' - ' + baseWorkspaceTitle : '')}
+            </Fragment>
+        );
     }
 }

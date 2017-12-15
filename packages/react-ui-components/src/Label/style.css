@@ -2,7 +2,7 @@
     composes: reset from './../reset.css';
     display: block;
     -webkit-font-smoothing: antialiased;
-    font-size: var(--baseFontSize);
+    font-size: var(--fontSize-Base);
     cursor: pointer;
     overflow: hidden;
     white-space: nowrap;

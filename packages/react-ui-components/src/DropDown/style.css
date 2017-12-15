@@ -12,7 +12,7 @@
     text-align: left;
     color: white;
     cursor: pointer;
-    font-size: var(--baseFontSize);
+    font-size: var(--fontSize-Base);
     padding: 0 var(--spacing-Full);
     border: 0;
     overflow: hidden;

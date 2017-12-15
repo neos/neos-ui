@@ -13,7 +13,6 @@ module.exports = {
                 //
                 // Font sizes
                 //
-                '--baseFontSize': '14px',
                 '--smallFontSize': '12px'
             }, styleVars, brandVars)
         }),

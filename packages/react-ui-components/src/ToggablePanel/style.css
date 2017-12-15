@@ -10,7 +10,7 @@
     padding: 0 var(--spacing-Full);
     line-height: var(--spacing-GoldenUnit);
     font-weight: bold;
-    font-size: var(--baseFontSize);
+    font-size: var(--fontSize-Base);
 }
 
 .panel__headline--noPadding {

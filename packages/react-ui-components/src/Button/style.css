@@ -12,7 +12,7 @@
     color: var(--brandColorsContrastBrightest);
     cursor: pointer;
     background-color: var(--brandColorsContrastNeutral);
-    font-size: var(--baseFontSize);
+    font-size: var(--fontSize-Base);
 
     &:focus {
         outline: unset;

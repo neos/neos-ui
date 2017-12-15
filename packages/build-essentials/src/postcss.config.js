@@ -9,12 +9,7 @@ module.exports = {
             browsers: ['last 2 versions']
         }),
         require('postcss-css-variables')({
-            variables: Object.assign({
-                //
-                // Font sizes
-                //
-                '--smallFontSize': '12px'
-            }, styleVars, brandVars)
+            variables: Object.assign({ }, styleVars, brandVars)
         }),
         require('postcss-import')(),
         require('postcss-nested')(),

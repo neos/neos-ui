@@ -7,7 +7,7 @@
 }
 
 .pluginViewContainer__listItem {
-    font-size: var(--smallFontSize);
+    font-size: var(--fontSize-Small);
     line-height: var(--spacing-Full);
     margin-bottom: var(--spacing-Half);
     padding: var(--spacing-Full);
@@ -18,7 +18,7 @@
 }
 
 .pluginViewContainer__listItem a {
-    font-size: var(--smallFontSize);
+    font-size: var(--fontSize-Small);
     color: var(--brandColorsPrimaryBlue);
     text-decoration: none;
     margin-left: calc(var(--spacing-Half) / 2);

@@ -9,7 +9,7 @@ export default class ToggleContentTree extends PureComponent {
 
         isPanelOpen: PropTypes.bool.isRequired,
 
-        onClick: PropTypes.func.isRequired,
+        onClick: PropTypes.func.isRequired
     };
 
     handleClick = () => {

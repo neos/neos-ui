@@ -37,6 +37,7 @@ export default class NodeTreeToolBar extends PureComponent {
         isCopied: PropTypes.bool.isRequired,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         isAllowedToAddChildOrSiblingNodes: PropTypes.bool.isRequired,
+        isHiddenContentTree: PropTypes.bool,
 
         addNode: PropTypes.func.isRequired,
         copyNode: PropTypes.func.isRequired,
@@ -45,7 +46,8 @@ export default class NodeTreeToolBar extends PureComponent {
         hideNode: PropTypes.func.isRequired,
         showNode: PropTypes.func.isRequired,
         pasteNode: PropTypes.func.isRequired,
-        reloadTree: PropTypes.func.isRequired
+        reloadTree: PropTypes.func.isRequired,
+        toggleContentTree: PropTypes.func
     }
 
     static defaultProps = {

@@ -4,10 +4,9 @@ import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
 
-import {selectors, actions} from '@neos-project/neos-ui-redux-store';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import SideBar from '@neos-project/react-ui-components/src/SideBar/';
-import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.css';
@@ -29,7 +28,7 @@ export default class LeftSideBar extends PureComponent {
         containerRegistry: PropTypes.object.isRequired,
 
         isHidden: PropTypes.bool.isRequired,
-        isHiddenContentTree: PropTypes.bool.isRequired,
+        isHiddenContentTree: PropTypes.bool.isRequired
     };
 
     render() {
@@ -49,9 +48,6 @@ export default class LeftSideBar extends PureComponent {
         const LeftSideBarBottom = containerRegistry.getChildren('LeftSideBar/Bottom');
 
         const ContentTreeToolbar = containerRegistry.get('LeftSideBar/ContentTreeToolbar');
-
-        const openedIcon = 'chevron-down';
-        const closedIcon = 'chevron-up';
 
         return (
             <SideBar

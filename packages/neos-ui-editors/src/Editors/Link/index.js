@@ -9,7 +9,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 
 // ToDo: Move into re-usable fn - Maybe into `util-helpers`?
 const isUri = str =>
-    str && Boolean(str.match('^https?://'));
+    str && Boolean(str.match('^(https?://|mailto:|tel:)'));
 
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -125,7 +125,7 @@ class LinkEditor extends PureComponent {
             const options = this.state.searchOptions.reduce((current, option) =>
                 (option.loaderUri === value) ? [Object.assign({}, option)] : current, []);
 
-            this.setState({options, searchOptions: []});
+            this.setState({searchTerm: '', options, searchOptions: []});
         }
 
         this.props.commit(value);
@@ -143,6 +143,9 @@ class LinkEditor extends PureComponent {
                 loadingLabel={this.props.i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main')}
                 displayLoadingIndicator={this.state.isLoading}
                 displaySearchBox={true}
+                showDropDownToggle={false}
+                allowEmpty={true}
+                searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
                 ListPreviewElement={LinkOption}
                 noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}

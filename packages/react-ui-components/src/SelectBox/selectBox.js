@@ -116,8 +116,14 @@ export default class SelectBox extends PureComponent {
         displaySearchBox: PropTypes.bool,
         onSearchTermChange: PropTypes.func,
         threshold: PropTypes.number,
+        searchTerm: PropTypes.string,
         searchBoxLeftToTypeLabel: PropTypes.string,
         noMatchesFoundLabel: PropTypes.string,
+
+        /**
+         * Turn SelectBox into a plain input field: not showing any search results and always showing the search input. Useful in LinkEditor to be able to input links by hand.
+         */
+        plainInputMode: PropTypes.bool,
 
         /**
          * if set to true, the search box is directly focussed once the SelectBox is rendered;
@@ -162,6 +168,10 @@ export default class SelectBox extends PureComponent {
         return $get([this.props.optionValueField]);
     }
 
+    getSearchTerm() {
+        return this.props.searchTerm || this.state.searchTerm;
+    }
+
     render() {
         const {
             options,
@@ -172,12 +182,13 @@ export default class SelectBox extends PureComponent {
             displaySearchBox,
             displayLoadingIndicator,
             ListPreviewElement,
+            plainInputMode,
 
             DropDown,
             SelectBox_ListPreview
         } = this.props;
 
-        const {searchTerm} = this.state;
+        const searchTerm = this.getSearchTerm();
 
         const {
             focusedValue,
@@ -201,7 +212,7 @@ export default class SelectBox extends PureComponent {
                     {this.renderHeader()}
                 </DropDown.Header>
                 <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
-                    <ul className={theme.selectBox__list}>
+                    {!plainInputMode && <ul className={theme.selectBox__list}>
                         <SelectBox_ListPreview
                             {...this.props}
 
@@ -213,9 +224,9 @@ export default class SelectBox extends PureComponent {
                             onOptionFocus={this.handleOptionFocusChange}
                             searchTermLeftToType={searchTermLeftToType}
                             noMatchesFound={noMatchesFound}
-                            searchTerm={this.state.searchTerm}
+                            searchTerm={searchTerm}
                             />
-                    </ul>
+                    </ul>}
                 </DropDown.Contents>
             </DropDown.Stateless>
         );
@@ -228,26 +239,28 @@ export default class SelectBox extends PureComponent {
             options,
             value,
             allowEmpty,
+            plainInputMode,
 
             SelectBox_HeaderWithSearchInput,
             SelectBox_Header
         } = this.props;
+        const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
 
         const selectedOption = options.find(option => optionValueAccessor(option) === value);
 
-        if (displaySearchBox && !value) {
+        if (displaySearchBox && (!value || plainInputMode)) {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
                     onSearchTermChange={this.handleSearchTermChange}
-                    searchTerm={this.state.searchTerm}
+                    searchTerm={searchTerm}
                     onKeyDown={this.handleKeyDown}
                     />
             );
         }
 
-        const showResetButton = Boolean(allowEmpty && !displayLoadingIndicator && value && !displaySearchBox);
+        const showResetButton = Boolean(allowEmpty && !displayLoadingIndicator && value);
 
         return (
             <SelectBox_Header

@@ -69,6 +69,7 @@ export default class LinkIconButton extends PureComponent {
     }
 }
 
+// ToDo: Move into re-usable fn - Maybe into `util-helpers`?
 const isUri = str =>
     str && Boolean(str.match('^(https?://|mailto:|tel:)'));
 
@@ -110,7 +111,7 @@ class LinkTextField extends PureComponent {
         };
     }
 
-    componentDidMount() {
+    refreshState() {
         if (isUri(this.props.hrefValue)) {
             this.setState({
                 searchTerm: this.props.hrefValue
@@ -133,19 +134,29 @@ class LinkTextField extends PureComponent {
         }
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.hrefValue !== this.props.hrefValue) {
-            this.componentDidMount();
+    componentDidMount() {
+        this.refreshState();
+    }
+
+    componentDidUpdate(nextProps) {
+        if (nextProps.hrefValue !== this.props.hrefValue) {
+            this.refreshState();
         }
     }
+
+    // TODO: this should be debounced, but it's super hard to do, because then hrefValue would override searchTerm
+    commitValue = value => getGuestFrameWindow().NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: value});
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
             this.setState({isLoading: false});
-            getGuestFrameWindow().NeosCKEditorApi
-                .toggleFormat(this.props.formattingRule, {href: searchTerm});
+            this.commitValue(searchTerm);
         } else if (searchTerm) {
+            // when changing from uri mode to search mode, we should clear the value
+            if (isUri(this.state.searchTerm)) {
+                this.commitValue('');
+            }
             this.setState({isLoading: true, searchOptions: []});
             this.props.linkLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
@@ -159,19 +170,13 @@ class LinkTextField extends PureComponent {
 
     // A node has been selected
     handleValueChange = value => {
-        if (!value) {
-            getGuestFrameWindow().NeosCKEditorApi
-                .toggleFormat(this.props.formattingRule, {href: ''});
-        }
-
-        getGuestFrameWindow().NeosCKEditorApi
-        .toggleFormat(this.props.formattingRule, {href: value});
+        this.commitValue(value || '');
 
         const options = this.state.searchOptions.reduce((current, option) =>
             (option.loaderUri === value) ? [Object.assign({}, option)] : current
         , []);
 
-        this.setState({options, searchOptions: []});
+        this.setState({options, searchOptions: [], searchTerm: ''});
     }
 
     render() {
@@ -181,11 +186,14 @@ class LinkTextField extends PureComponent {
                     options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
                     optionValueField="loaderUri"
                     value={this.props.hrefValue}
+                    plainInputMode={isUri(this.props.hrefValue)}
                     onValueChange={this.handleValueChange}
                     placeholder="Paste a link, or search"
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
                     setFocus={true}
+                    showDropDownToggle={false}
+                    allowEmpty={true}
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
                     ListPreviewElement={LinkOption}

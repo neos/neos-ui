@@ -116,7 +116,8 @@ export default class AssetEditor extends PureComponent {
 
     handleValueChange = value => {
         this.setState({searchOptions: []});
-        this.props.commit(this.props.options.multiple ? value : (value[0] || ''));
+        const singleValue = Array.isArray(value) ? value[0] : value;
+        this.props.commit(this.props.options.multiple ? value : singleValue);
     }
 
     handleChooseFromMedia = () => {

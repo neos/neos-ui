@@ -62,18 +62,25 @@ export default class AssetEditor extends PureComponent {
         }
     }
 
-    getValue() {
-        const value = this.props.value;
+    getIdentity(value) {
+        // Information coming from metadata
         if (value && value.__identity) {
-            // Needed to handle Image assets
             return value.__identity;
+        }
+        // Information coming from upload endpoint
+        if (value && value.assetUuid) {
+            return value.assetUuid;
         }
         return value;
     }
 
+    getValue() {
+        return this.getIdentity(this.props.value);
+    }
+
     getValues() {
         const value = this.props.value;
-        return value.map(item => item.__identity || item);
+        return value.map(this.getIdentity);
     }
 
     resolveValue = () => {
@@ -116,7 +123,12 @@ export default class AssetEditor extends PureComponent {
 
     handleValueChange = value => {
         this.setState({searchOptions: []});
-        this.props.commit(value);
+        this.props.commit(Array.isArray(value) ? this.getIdentity(value[0]) : this.getIdentity(value));
+    }
+
+    handleValuesChange = value => {
+        this.setState({searchOptions: []});
+        this.props.commit(Array.isArray(value) ? value.map(this.getIdentity) : value);
     }
 
     handleChooseFromMedia = () => {
@@ -133,7 +145,7 @@ export default class AssetEditor extends PureComponent {
         if (this.props.options.multiple) {
             const values = value ? value.slice() : [];
             values.push(assetIdentifier);
-            this.handleValueChange(values);
+            this.handleValuesChange(values);
         } else {
             this.handleValueChange(assetIdentifier);
         }
@@ -159,52 +171,66 @@ export default class AssetEditor extends PureComponent {
             return null;
         }
 
-        return (
-            <AssetUpload
-                highlight={this.props.highlight}
-                multiple={true}
-                multipleData={this.props.value}
-                onAfterUpload={this.handleValueChange}
-                ref={this.setAssetUploadReference}
-                isLoading={false}
-                imagesOnly={this.props.imagesOnly}
-                >
-                {this.props.options.multiple ? (<MultiSelectBox
-                    dndType={dndTypes.MULTISELECT}
-                    optionValueField="identifier"
-                    loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
-                    displaySearchBox={true}
-                    ListPreviewElement={AssetOption}
-                    placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
-                    options={this.state.options || []}
-                    values={this.getValues()}
+        if (this.props.options.multiple) {
+            return (
+                <AssetUpload
                     highlight={this.props.highlight}
-                    onValuesChange={this.handleValueChange}
-                    displayLoadingIndicator={this.state.isLoading}
-                    searchOptions={this.state.searchOptions}
-                    showDropDownToggle={false}
-                    onSearchTermChange={this.handleSearchTermChange}
-                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
-                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
-                    threshold={$get('options.threshold', this.props)}
-                    />) : (<SelectBox
+                    multiple={true}
+                    multipleData={this.props.value}
+                    onAfterUpload={this.handleValuesChange}
+                    ref={this.setAssetUploadReference}
+                    isLoading={false}
+                    imagesOnly={this.props.imagesOnly}
+                    >
+                    <MultiSelectBox
+                        dndType={dndTypes.MULTISELECT}
                         optionValueField="identifier"
                         loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
                         displaySearchBox={true}
                         ListPreviewElement={AssetOption}
                         placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
-                        options={this.props.value ? this.state.options : this.state.searchOptions}
-                        value={this.getValue()}
+                        options={this.state.options || []}
+                        values={this.getValues()}
                         highlight={this.props.highlight}
-                        onValueChange={this.handleValueChange}
+                        onValuesChange={this.handleValuesChange}
                         displayLoadingIndicator={this.state.isLoading}
+                        searchOptions={this.state.searchOptions}
                         showDropDownToggle={false}
-                        allowEmpty={true}
                         onSearchTermChange={this.handleSearchTermChange}
                         noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
                         searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                         threshold={$get('options.threshold', this.props)}
-                        />)}
+                        />
+                </AssetUpload>
+            );
+        }
+        return (
+            <AssetUpload
+                highlight={this.props.highlight}
+                multiple={false}
+                onAfterUpload={this.handleValueChange}
+                ref={this.setAssetUploadReference}
+                isLoading={false}
+                imagesOnly={this.props.imagesOnly}
+                >
+                <SelectBox
+                    optionValueField="identifier"
+                    loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
+                    displaySearchBox={true}
+                    ListPreviewElement={AssetOption}
+                    placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
+                    options={this.props.value ? this.state.options : this.state.searchOptions}
+                    value={this.getValue()}
+                    highlight={this.props.highlight}
+                    onValueChange={this.handleValueChange}
+                    displayLoadingIndicator={this.state.isLoading}
+                    showDropDownToggle={false}
+                    allowEmpty={true}
+                    onSearchTermChange={this.handleSearchTermChange}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+                    threshold={$get('options.threshold', this.props)}
+                    />
             </AssetUpload>
         );
     }

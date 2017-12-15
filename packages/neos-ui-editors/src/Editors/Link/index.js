@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
+// TODO extract to some other location, maybe somewhere in the editors packages
 import LinkOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';

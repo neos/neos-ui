@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import dataLoader from './referenceDataLoader';
 import createNew from './createNew';
-import ReferenceOption from './ReferenceOption';
+import NodeOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/NodeOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
@@ -34,7 +34,7 @@ export default class ReferenceEditor extends PureComponent {
         return (<SelectBox
             optionValueField="identifier"
             displaySearchBox={true}
-            ListPreviewElement={ReferenceOption}
+            ListPreviewElement={NodeOption}
             createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
             noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
             searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}

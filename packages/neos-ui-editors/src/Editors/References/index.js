@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import createNew from '../Reference/createNew';
 import dataLoader from '../Reference/referenceDataLoader';
-import ReferenceOption from '../Reference/ReferenceOption';
+import NodeOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/NodeOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -37,7 +37,7 @@ export default class ReferencesEditor extends PureComponent {
             optionValueField="identifier"
             loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
             displaySearchBox={true}
-            ListPreviewElement={ReferenceOption}
+            ListPreviewElement={NodeOption}
             createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
             placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
             threshold={this.props.threshold}

@@ -91,6 +91,11 @@ class WorkspaceService
                 continue;
             }
 
+            if ($workspace->isPersonalWorkspace()) {
+                // Skip other personal workspaces
+                continue;
+            }
+
             $workspaceArray = [
                 'name' => $workspace->getName(),
                 'title' => $workspace->getTitle(),

@@ -7,7 +7,7 @@ export default ({propertyDomNode, propertyName, contextPath, editorOptions, glob
     const pluginsRegistry = globalRegistry.get('ckEditor').get('plugins');
     const i18nRegistry = globalRegistry.get('i18n');
     const formattingEditorOptions = $get('formatting', editorOptions);
-    const placeholder = unescape(i18nRegistry.translate($get('placeholder', editorOptions)));
+    const placeholder = unescape(i18nRegistry.translate($get('placeholder', editorOptions) || ''));
     const isAutoParagraphEnabled = Boolean($get('autoparagraph', editorOptions));
     const interfaceLanguage = String($get('interfaceLanguage', userPreferences));
 

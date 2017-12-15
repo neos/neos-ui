@@ -4,24 +4,24 @@
     height: 40px;
     padding: 10px 14px;
     border: 0;
-    background: var(--brandColorsContrastNeutral);
+    background: var(--colors-ContrastNeutral);
     resize: vertical;
 
     &:focus {
         outline: 0;
-        background: var(--brandColorsContrastBrightest);
-        color: var(--brandColorsContrastDarkest);
+        background: var(--colors-ContrastBrightest);
+        color: var(--colors-ContrastDarkest);
     }
 }
 .textArea::-webkit-input-placeholder {
     font-family: 'Open Sans', sans-serif;
-    color: var(--brandColorsContrastBright);
+    color: var(--colors-ContrastBright);
 }
 .textArea--invalid {
-    outline: 2px solid var(--brandColorsError) !important;
+    outline: 2px solid var(--colors-Error) !important;
 }
 .textArea--highlight {
-    outline: 2px solid var(--brandColorsSuccess);
+    outline: 2px solid var(--colors-Success);
 }
 .textArea--disabled {
     opacity: .65;

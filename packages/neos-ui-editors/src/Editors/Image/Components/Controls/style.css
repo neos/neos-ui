@@ -2,5 +2,5 @@
     float: right;
 }
 .button {
-    margin-right: var(--quarterSpacing);
+    margin-right: var(--spacing-Quarter);
 }

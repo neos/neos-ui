@@ -2,8 +2,8 @@
     display: flex;
     width: 100%;
     position: relative;
-    background: var(--brandColorsContrastNeutral);
-    border-bottom: 1px solid var(--brandColorsContrastDarker);
+    background: var(--colors-ContrastNeutral);
+    border-bottom: 1px solid var(--colors-ContrastDarker);
 
     &:hover {
       .selectedOptions__itemIcon {
@@ -20,7 +20,7 @@
     cursor: move;
 }
 .selectedOptions__innerPreview {
-    border-right: 1px solid var(--brandColorsContrastDarker);
+    border-right: 1px solid var(--colors-ContrastDarker);
     overflow: hidden;
     width: 100%;
 }

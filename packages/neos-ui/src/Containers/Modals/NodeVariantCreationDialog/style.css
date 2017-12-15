@@ -1,12 +1,12 @@
 .body {
-    padding: var(--spacing);
+    padding: var(--spacing-Full);
 }
 
 .editor {
-    margin-bottom: var(--spacing);
+    margin-bottom: var(--spacing-Full);
 }
 
 .modalContents {
-    padding: 0 var(--spacing) var(--spacing) var(--spacing);
-    color: var(--brandColorsContrastBrighter);
+    padding: 0 var(--spacing-Full) var(--spacing-Full) var(--spacing-Full);
+    color: var(--colors-ContrastBrighter);
 }

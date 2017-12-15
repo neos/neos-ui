@@ -8,15 +8,15 @@
     left: 50%;
     width: 0;
     height: 0;
-    margin-left: -var(--halfSpacing);
-    border-left: var(--halfSpacing) solid transparent;
-    border-right: var(--halfSpacing) solid transparent;
-    border-bottom: var(--halfSpacing) solid var(--brandColorsError);
+    margin-left: -var(--spacing-Half);
+    border-left: var(--spacing-Half) solid transparent;
+    border-right: var(--spacing-Half) solid transparent;
+    border-bottom: var(--spacing-Half) solid var(--colors-Error);
 }
 
 .tooltip--inner {
     position: relative;
-    padding: var(--halfSpacing);
-    background: var(--brandColorsError);
+    padding: var(--spacing-Half);
+    background: var(--colors-Error);
     color: white;
 }

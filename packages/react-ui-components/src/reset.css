@@ -16,7 +16,7 @@
     textarea,
     select,
     button {
-        font-size: var(--baseFontSize);
+        font-size: var(--fontSize-Base);
         margin: 0;
     }
     ul {

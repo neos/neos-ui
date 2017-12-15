@@ -5,7 +5,7 @@
 
 .selectBoxHeader__icon {
     composes: reset from './../reset.css';
-    line-height: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
 }
 
 .selectBoxHeader__seperator {
@@ -14,14 +14,14 @@
     position: absolute;
     width: 1px;
     height: 24px;
-    top: var(--halfSpacing);
-    right: calc(var(--goldenUnit) + 1px);
+    top: var(--spacing-Half);
+    right: calc(var(--spacing-GoldenUnit) + 1px);
     background-color: #fff;
     opacity: .15;
 }
 
 .selectBoxHeader__label {
-    padding: 0 var(--halfSpacing);
+    padding: 0 var(--spacing-Half);
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;

@@ -1,9 +1,9 @@
 .sideBar {
     composes: reset from './../reset.css';
     position: absolute;
-    width: var(--sidebarWidth);
+    width: var(--size-SidebarWidth);
     height: 100%;
-    background: var(--brandColorsContrastDarker);
+    background: var(--colors-ContrastDarker);
 }
 .sideBar--left {
     left: 0;

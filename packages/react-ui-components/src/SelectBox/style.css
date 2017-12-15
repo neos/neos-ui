@@ -4,14 +4,14 @@
 }
 
 .selectBox--highlight {
-    outline: 2px solid var(--brandColorsSuccess);
+    outline: 2px solid var(--colors-Success);
 }
 
 .selectBox {
     composes: reset from './../reset.css', dropDown from './../DropDown/style.css';
     position: relative;
     display: inline-block;
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
 }
 
 .selectBox__btn {
@@ -19,10 +19,10 @@
     position: relative;
     display: inline-block;
     text-overflow: clip;
-    height: var(--goldenUnit);
-    line-height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
+    line-height: var(--spacing-GoldenUnit);
     border: 0;
-    background: var(--brandColorsContrastNeutral);
+    background: var(--colors-ContrastNeutral);
     min-width: 160px;
 }
 
@@ -38,12 +38,12 @@
 }
 
 .selectBox__item {
-    border-top: 1px solid var(--brandColorsContrastDarker);
+    border-top: 1px solid var(--colors-ContrastDarker);
 }
 
 .selectBox__groupHeader {
-    background-color: var(--brandColorsContrastDark);
+    background-color: var(--colors-ContrastDark);
     font-weight: bold;
-    padding-left: var(--spacing);
-    line-height: var(--goldenUnit);
+    padding-left: var(--spacing-Full);
+    line-height: var(--spacing-GoldenUnit);
 }

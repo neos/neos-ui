@@ -7,7 +7,7 @@
 }
 
 .searchBar__clearButton {
-    background: var(--brandColorsContrastNeutral);
+    background: var(--colors-ContrastNeutral);
 }
 
 .searchBar__clearButton--focused {
@@ -15,5 +15,5 @@
 }
 
 .searchBar__clearButton--focused > i {
-    color: var(--brandColorsContrastNeutral);
+    color: var(--colors-ContrastNeutral);
 }

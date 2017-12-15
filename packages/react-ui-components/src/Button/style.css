@@ -2,17 +2,17 @@
     composes: reset from './../reset.css';
     position: relative;
     display: inline-block;
-    height: var(--goldenUnit);
-    min-width: var(--goldenUnit);
-    padding: 0 var(--spacing);
+    height: var(--spacing-GoldenUnit);
+    min-width: var(--spacing-GoldenUnit);
+    padding: 0 var(--spacing-Full);
     border: 0;
     -webkit-font-smoothing: antialiased;
     vertical-align: middle;
     width: auto;
-    color: var(--brandColorsContrastBrightest);
+    color: var(--colors-ContrastBrightest);
     cursor: pointer;
-    background-color: var(--brandColorsContrastNeutral);
-    font-size: var(--baseFontSize);
+    background-color: var(--colors-ContrastNeutral);
+    font-size: var(--fontSize-Base);
 
     &:focus {
         outline: unset;
@@ -26,7 +26,7 @@
         &.btn--isPressed,
         &:hover i,
         i {
-            color: var(--brandColorsContrastBrightest);
+            color: var(--colors-ContrastBrightest);
         }
     }
 }
@@ -37,36 +37,36 @@
 }
 
 .btn--clean {
-    background-color: var(--brandColorsContrastDarker);
+    background-color: var(--colors-ContrastDarker);
 }
 .btn--lighter,
 .btn--lighter i {
-    background-color: var(--brandColorsContrastDark);
+    background-color: var(--colors-ContrastDark);
 }
 .btn--transparent {
     background: 0;
 }
 .btn--brand,
 .btn--brand i {
-    background-color: var(--brandColorsPrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
     color: white !important;
 }
 .btn--warn,
 .btn--warn i {
-    background-color: var(--brandColorsWarn);
+    background-color: var(--colors-Warn);
 }
 
 .btn--brandHover:hover,
 .btn--brandHover:hover i,
 .btn--brandHover.btn--isPressed,
 .btn--brandHover.btn--isPressed i {
-    background-color: var(--brandColorsPrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 }
 .btn--cleanHover.btn--isPressed,
 .btn--cleanHover.btn--isPressed i,
 .btn--cleanHover:hover,
 .btn--cleanHover:hover i {
-    color: var(--brandColorsPrimaryBlue);
+    color: var(--colors-PrimaryBlue);
 }
 .btn--darkenHover.btn--isPressed,
 .btn--darkenHover.btn--isPressed i,
@@ -78,5 +78,5 @@
 .btn--warnHover.btn--isPressed i,
 .btn--warnHover:hover,
 .btn--warnHover:hover i {
-    background-color: var(--brandColorsWarn);
+    background-color: var(--colors-Warn);
 }

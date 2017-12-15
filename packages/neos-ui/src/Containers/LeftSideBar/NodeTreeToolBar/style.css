@@ -1,6 +1,6 @@
 .toolBar {
-    border-top: 1px solid var(--brandColorsContrastDark);
-    border-bottom: 1px solid var(--brandColorsContrastDark);
+    border-top: 1px solid var(--colors-ContrastDark);
+    border-bottom: 1px solid var(--colors-ContrastDark);
     &:first-child {
         border-top: 0;
     }

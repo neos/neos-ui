@@ -8,25 +8,25 @@
     composes: reset from './../reset.css';
     display: block;
     width: 100%;
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
     text-align: left;
     color: white;
     cursor: pointer;
-    font-size: var(--baseFontSize);
-    padding: 0 var(--spacing);
+    font-size: var(--fontSize-Base);
+    padding: 0 var(--spacing-Full);
     border: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    line-height: var(--goldenUnit);
-    background: var(--brandColorsContrastNeutral);
+    line-height: var(--spacing-GoldenUnit);
+    background: var(--colors-ContrastNeutral);
 
     &:focus {
         outline: unset;
     }
 }
 .dropDown__btn--withChevron {
-    padding-right: var(--goldenUnit);
+    padding-right: var(--spacing-GoldenUnit);
 }
 .dropDown__btnLabel {
     composes: reset from './../reset.css';
@@ -50,8 +50,8 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    background: var(--brandColorsContrastNeutral);
-    box-shadow: 1px 2px 5px var(--brandColorsContrastDarker);
+    background: var(--colors-ContrastNeutral);
+    box-shadow: 1px 2px 5px var(--colors-ContrastDarker);
 }
 .dropDown__contents--scrollable {
     max-height: 80vh;
@@ -62,15 +62,15 @@
 }
 .dropDown--darker {
     > .dropDown__btn--open {
-        background-color: var(--brandColorsContrastDarker);
+        background-color: var(--colors-ContrastDarker);
     }
 
     > .dropDown__contents {
-        background-color: var(--brandColorsContrastDarker);
+        background-color: var(--colors-ContrastDarker);
     }
 }
 .dropDown--padded {
     > .dropDown__contents {
-        padding: var(--spacing);
+        padding: var(--spacing-Full);
     }
 }

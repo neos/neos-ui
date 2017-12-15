@@ -1,15 +1,15 @@
 .secondaryToolbar__buttonLink {
     position: relative;
     display: inline-block;
-    height: var(--goldenUnit);
-    line-height: var(--goldenUnit);
-    min-width: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
+    line-height: var(--spacing-GoldenUnit);
+    min-width: var(--spacing-GoldenUnit);
     padding: 0;
     border: 0;
     -webkit-font-smoothing: antialiased;
     vertical-align: top;
-    width: var(--goldenUnit);
-    color: var(--brandColorsContrastBrightest);
+    width: var(--spacing-GoldenUnit);
+    color: var(--colors-ContrastBrightest);
     text-align: center;
     background: transparent;
 
@@ -19,7 +19,7 @@
 }
 
 a.secondaryToolbar__buttonLink:hover {
-    background: var(--brandColorsPrimaryBlue);
+    background: var(--colors-PrimaryBlue);
 }
 
 .secondaryToolbar__buttonLink--isDisabled {

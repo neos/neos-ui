@@ -6,21 +6,21 @@
 .wrapper__btn {
     composes: reset from './../reset.css';
     position: relative;
-    width: var(--goldenUnit);
+    width: var(--spacing-GoldenUnit);
 }
 .wrapper__btnModeIcon {
     composes: reset from './../reset.css';
     position: absolute;
     right: 4px;
     bottom: 4px;
-    color: var(--brandColorsPrimaryBlue);
+    color: var(--colors-PrimaryBlue);
 
     [disabled] > & {
         opacity: 0;
     }
 }
 .wrapper:hover .wrapper__btnIcon {
-    color: var(--brandColorsPrimaryBlue);
+    color: var(--colors-PrimaryBlue);
 }
 .wrapper__dropDown {
     composes: reset from './../reset.css';
@@ -29,8 +29,8 @@
     left: 0;
     z-index: var(--zIndex-WrapperDropdown-Context);
     display: none;
-    background: var(--brandColorsContrastDarker);
-    border: 1px solid var(--brandColorsContrastDark);
+    background: var(--colors-ContrastDarker);
+    border: 1px solid var(--colors-ContrastDark);
     border-top: 0;
 }
 .wrapper__dropDown--isOpen {
@@ -40,15 +40,15 @@
     composes: reset from './../reset.css';
     position: relative;
     display: block;
-    width: calc(var(--goldenUnit) - 2px);
-    height: calc(var(--goldenUnit) - 2px);
+    width: calc(var(--spacing-GoldenUnit) - 2px);
+    height: calc(var(--spacing-GoldenUnit) - 2px);
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
 
     &:hover,
     &:hover > * {
-        color: var(--brandColorsPrimaryBlue);
+        color: var(--colors-PrimaryBlue);
     }
 
     > * {

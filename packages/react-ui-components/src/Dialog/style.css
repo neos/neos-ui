@@ -14,17 +14,17 @@
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    background: var(--brandColorsContrastDarker);
+    background: var(--colors-ContrastDarker);
 }
 .dialog__contents {
     composes: reset from './../reset.css';
     position: relative;
-    width: calc(100vw - var(--goldenUnit) * 2);
-    max-width: calc(var(--goldenUnit) * 16);
-    border: 1px solid var(--brandColorsContrastDark);
+    width: calc(100vw - var(--spacing-GoldenUnit) * 2);
+    max-width: calc(var(--spacing-GoldenUnit) * 16);
+    border: 1px solid var(--colors-ContrastDark);
 
     .dialog--wide & {
-        max-width: calc(var(--goldenUnit) * 24);
+        max-width: calc(var(--spacing-GoldenUnit) * 24);
     }
 
     .dialog--narrow & {
@@ -35,7 +35,7 @@
     composes: reset from './../reset.css';
     font-size: 16px;
     line-height: 1.2;
-    padding: var(--spacing);
+    padding: var(--spacing-Full);
 }
 .dialog__closeBtn {
     composes: reset from './../reset.css';
@@ -50,9 +50,9 @@
 .dialog__actions {
     composes: reset from './../reset.css';
     text-align: right;
-    border-top: 1px solid var(--brandColorsContrastDark);
-    padding: var(--spacing);
+    border-top: 1px solid var(--colors-ContrastDark);
+    padding: var(--spacing-Full);
 }
 .dialog__actions > * {
-    margin-left: calc(var(--spacing) / 2);
+    margin-left: calc(var(--spacing-Full) / 2);
 }

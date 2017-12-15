@@ -13,22 +13,22 @@
     }
 }
 .rightSideBar--isHidden {
-    transform: translateX(var(--sidebarWidth));
+    transform: translateX(var(--size-SidebarWidth));
 }
 .rightSideBar__toggleBtn {
     width: 46px;
     position: absolute!important;
     right: 0;
     top: 41px;
-    border-left: 1px solid var(--brandColorsContrastDark);
-    background: var(--brandColorsContrastDarker);
+    border-left: 1px solid var(--colors-ContrastDark);
+    background: var(--colors-ContrastDarker);
     transition: var(--transition-Default)  ease transform;
     will-change: transform;
 
     .rightSideBar--isHidden & {
-        transform: translateX(-var(--sidebarWidth));
+        transform: translateX(-var(--size-SidebarWidth));
     }
 }
 .rightSideBar__section {
-    border-bottom: 1px solid var(--brandColorsContrastDark);
+    border-bottom: 1px solid var(--colors-ContrastDark);
 }

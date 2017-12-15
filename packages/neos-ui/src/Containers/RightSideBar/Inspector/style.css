@@ -10,14 +10,14 @@
 }
 .publishBtn,
 .publishBtn:hover {
-    background: var(--brandColorsSuccess) !important;
+    background: var(--colors-Success) !important;
 }
 .tabs > div {
     height: 100%;
 }
 .unappliedChangesOverlay {
     left: 0;
-    width: calc(100% - var(--sidebarWidth));
+    width: calc(100% - var(--size-SidebarWidth));
     height: 100%;
     z-index: var(--zIndex-UnappliedChangesOverlay-Context);
     &,
@@ -30,7 +30,7 @@
         content: '';
         top: 0;
         right: 0;
-        height: var(--goldenUnit);
-        width: var(--sidebarWidth);
+        height: var(--spacing-GoldenUnit);
+        width: var(--size-SidebarWidth);
     }
 }

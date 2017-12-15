@@ -1,10 +1,10 @@
 .btn {
     display: inline-block;
-    padding: 0 var(--spacing);
-    height: var(--goldenUnit);
-    line-height: var(--goldenUnit);
+    padding: 0 var(--spacing-Full);
+    height: var(--spacing-GoldenUnit);
+    line-height: var(--spacing-GoldenUnit);
     border: 0;
-    background: var(--brandColorsSuccess);
+    background: var(--colors-Success);
     text-align: center;
     vertical-align: top;
     color: white;
@@ -19,5 +19,5 @@
     }
  }
 .btn--highlighted {
-    background: var(--brandColorsWarn);
+    background: var(--colors-Warn);
 }

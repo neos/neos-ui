@@ -1,7 +1,7 @@
 .body {
-    padding: var(--spacing);
+    padding: var(--spacing-Full);
 }
 
 .editor {
-    margin-bottom: var(--spacing);
+    margin-bottom: var(--spacing-Full);
 }

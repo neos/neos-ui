@@ -9,9 +9,9 @@
 }
 .dropDown__btn {
     position: relative;
-    height: var(--goldenUnit);
+    height: var(--spacing-GoldenUnit);
     border: 0;
-    background-color: var(--brandColorsContrastDarker);
+    background-color: var(--colors-ContrastDarker);
     text-align: right;
 }
 .dropDown__btnIcon {
@@ -23,12 +23,12 @@
     box-shadow: 0 5px 10px rgba(#000, .2);
 }
 .dropDown__item {
-    height: var(--goldenUnit);
-    background: var(--brandColorsContrastNeutral);
-    border-top: 1px solid var(--brandColorsContrastDarker);
+    height: var(--spacing-GoldenUnit);
+    background: var(--colors-ContrastNeutral);
+    border-top: 1px solid var(--colors-ContrastDarker);
 
     &:hover {
-        background: var(--brandColorsPrimaryBlue);
+        background: var(--colors-PrimaryBlue);
     }
 
     > a,
@@ -36,12 +36,12 @@
         display: block;
         width: 100%;
         border: 0;
-        padding: 0 var(--spacing);
+        padding: 0 var(--spacing-Full);
         background: 0;
         color: #FFF;
         cursor: pointer;
         text-decoration: none;
-        line-height: var(--goldenUnit);
+        line-height: var(--spacing-GoldenUnit);
         text-align: left;
     }
 }

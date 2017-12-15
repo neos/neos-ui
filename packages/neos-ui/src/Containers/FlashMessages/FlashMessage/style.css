@@ -11,15 +11,15 @@
 }
 
 .flashMessage--success {
-    background-color: var(--brandColorsSuccess);
+    background-color: var(--colors-Success);
 }
 
 .flashMessage--error {
-    background-color: var(--brandColorsError);
+    background-color: var(--colors-Error);
 }
 
 .flashMessage--info {
-    background-color: var(--brandColorsPrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 }
 
 .flashMessage__icon {
@@ -27,8 +27,8 @@
     left: 0;
     top: 0;
     height: 100%;
-    line-height: var(--goldenUnit);
-    width: var(--goldenUnit);
+    line-height: var(--spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit);
     text-align: center;
     font-size: 16px;
     padding: 0;

@@ -9,12 +9,12 @@
 .addEmptyContentCollectionOverlay {
     height: 20px;
     width: 100%;
-    outline: 2px solid var(--brandColorsContrastBrighter);
+    outline: 2px solid var(--colors-ContrastBrighter);
 }
 
 .markActiveNodeAsFocused--focusedNode {
     outline-offset: .5em;
-    outline: 2px solid var(--brandColorsPrimaryBlue);
+    outline: 2px solid var(--colors-PrimaryBlue);
 }
 
 :global(.neos-inline-editable:focus) {
@@ -23,7 +23,7 @@
 
 .inlineEditorIsInitialized:hover {
     outline-offset: .5em;
-    outline: 2px dashed var(--brandColorsPrimaryBlue);
+    outline: 2px dashed var(--colors-PrimaryBlue);
 }
 
 .notInlineEditableOverlay {

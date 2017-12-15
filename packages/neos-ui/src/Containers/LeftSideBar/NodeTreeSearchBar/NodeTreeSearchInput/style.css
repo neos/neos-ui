@@ -11,7 +11,7 @@
 }
 
 .clearButton {
-    background: var(--brandColorsContrastNeutral);
+    background: var(--colors-ContrastNeutral);
 }
 
 .clearButton--focused {
@@ -19,12 +19,12 @@
 }
 
 .clearButton--focused > i {
-    color: var(--brandColorsContrastNeutral);
+    color: var(--colors-ContrastNeutral);
 }
 
 .wrapper {
     display: flex;
-    border-right: 1px solid var(--brandColorsContrastDark);
+    border-right: 1px solid var(--colors-ContrastDark);
 }
 
 .hidden {
@@ -33,6 +33,6 @@
 
 .placeholderIcon {
     position: absolute;
-    left: var(--spacing);
+    left: var(--spacing-Full);
     line-height: 40px;
 }

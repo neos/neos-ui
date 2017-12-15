@@ -19,26 +19,26 @@
     position: fixed;
     z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
     width: 460px;
-    border: var(--halfSpacing) solid var(--brandColorsContrastDarker);
+    border: var(--spacing-Half) solid var(--colors-ContrastDarker);
     /* 8px border top and bottom */
-    height: calc(var(--goldenUnit) + var(--spacing));
+    height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
 }
 
 .linkIconButton__item {
-    padding: var(--halfSpacing);
+    padding: var(--spacing-Half);
     box-sizing:content-box;
-    height: calc(var(--goldenUnit) * 1.5);
+    height: calc(var(--spacing-GoldenUnit) * 1.5);
     line-height: 20px;
 }
 
 .linkIconButton__link {
-    color: var(--brandColorsContrastBright);
+    color: var(--colors-ContrastBright);
     display: block;
     font-size: 12px;
 }
 
 .linkIconButton__image {
-    height: calc(var(--goldenUnit) * 1.5);
+    height: calc(var(--spacing-GoldenUnit) * 1.5);
     width: auto;
     float: right;
 }

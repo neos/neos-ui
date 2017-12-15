@@ -1,27 +1,38 @@
 .multiLineWithThumbnail__item {
     box-sizing: content-box;
     line-height: 20px;
-    padding: 0;
 }
 
 .multiLineWithThumbnail__secondaryLabel {
     color: var(--brandColorsContrastBright);
     display: block;
     font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .multiLineWithThumbnail__tertiaryLabel {
     color: var(--brandColorsContrastBright);
     display: block;
     font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .multiLineWithThumbnail__image {
-    width: calc(1.33 * var(--goldenUnit));
-    height: var(--goldenUnit);
+    width: calc(1.33 * (var(--goldenUnit) + var(--spacing)));
+    height: calc(var(--goldenUnit) + var(--spacing));
     object-fit: contain;
     background-color: var(--brandColorsContrastDarkest);
     margin-right: .75em;
     display: inline-block;
     vertical-align: middle;
+    margin-left: -var(--spacing);
+    margin-top: -var(--halfSpacing);
+    margin-bottom: -var(--halfSpacing);
+}
+
+.multiLineWithThumbnail__item:hover .multiLineWithThumbnail__secondaryLabel,
+.multiLineWithThumbnail__item:hover .multiLineWithThumbnail__tertiaryLabel {
+    color: white;
 }

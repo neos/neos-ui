@@ -5,5 +5,5 @@
     padding-right: var(--spacing-Half);
 }
 .icon {
-    padding-right: var(--quarterSpacing);
+    padding-right: var(--spacing-Quarter);
 }

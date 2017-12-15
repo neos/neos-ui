@@ -3,7 +3,7 @@
 }
 .resizeControls__label {
     margin-top: var(--spacing-Full);
-    margin-bottom: var(--quarterSpacing);
+    margin-bottom: var(--spacing-Quarter);
 }
 .resizeControls__before {
     height: var(--spacing-GoldenUnit);

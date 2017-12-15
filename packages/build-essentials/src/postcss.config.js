@@ -11,11 +11,6 @@ module.exports = {
         require('postcss-css-variables')({
             variables: Object.assign({
                 //
-                // Spacings
-                //
-                '--quarterSpacing': '4px',
-
-                //
                 // Sizes
                 //
                 '--sidebarWidth': '320px',

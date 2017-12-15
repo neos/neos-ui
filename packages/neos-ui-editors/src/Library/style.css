@@ -13,7 +13,7 @@
 .thumbnail {
     position: relative;
     border: 1px dashed var(--brandColorsContrastNeutral);
-    margin-bottom: calc(var(--spacing-Full) - var(--quarterSpacing));
+    margin-bottom: calc(var(--spacing-Full) - var(--spacing-Quarter));
     height: 216px;
     overflow: hidden;
     cursor: pointer;

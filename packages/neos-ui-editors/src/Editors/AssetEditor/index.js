@@ -73,7 +73,7 @@ export default class AssetEditor extends PureComponent {
 
     getValues() {
         const value = this.props.value;
-        return value.map(item => item.__identity || item);
+        return value.map(item => (item && item.__identity) || item);
     }
 
     resolveValue = () => {
@@ -116,7 +116,7 @@ export default class AssetEditor extends PureComponent {
 
     handleValueChange = value => {
         this.setState({searchOptions: []});
-        this.props.commit(value);
+        this.props.commit(this.props.options.multiple ? value : value[0]);
     }
 
     handleChooseFromMedia = () => {

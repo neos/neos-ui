@@ -11,11 +11,6 @@ module.exports = {
         require('postcss-css-variables')({
             variables: Object.assign({
                 //
-                // Sizes
-                //
-                '--sidebarWidth': '320px',
-
-                //
                 // Font sizes
                 //
                 '--baseFontSize': '14px',

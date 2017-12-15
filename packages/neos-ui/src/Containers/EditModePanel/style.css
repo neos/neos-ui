@@ -2,7 +2,7 @@
     position: absolute;
     top: 41px; /*-70px;*/
     left: 0;
-    padding: 0 370px; /*leave some space for slider button --sidebarWidth + 50px*/
+    padding: 0 370px; /*leave some space for slider button --size-SidebarWidth + 50px*/
     width: 100%;
     height: 110px;
     background: var(--brandColorsContrastDarkest);

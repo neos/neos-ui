@@ -4,14 +4,14 @@
     left: 0;
     z-index: var(--zIndex-Drawer-Context);
     height: 100%;
-    width: var(--sidebarWidth);
+    width: var(--size-SidebarWidth);
     background: var(--brandColorsContrastDarker);
     transition: var(--transition-Default) ease transform;
     padding-bottom: 41px;
     overflow: scroll;
 }
 .drawer--isHidden {
-    transform: translateX(-var(--sidebarWidth));
+    transform: translateX(-var(--size-SidebarWidth));
 }
 .drawer__menuItem {
     border-top: 1px solid var(--brandColorsContrastDark);

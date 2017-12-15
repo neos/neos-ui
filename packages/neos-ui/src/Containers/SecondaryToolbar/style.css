@@ -3,7 +3,7 @@
     position: absolute;
     top: 41px;
     left: 0;
-    padding: 0 var(--sidebarWidth);
+    padding: 0 var(--size-SidebarWidth);
     width: 100%;
     height: 41px;
     background: var(--brandColorsContrastNeutral);

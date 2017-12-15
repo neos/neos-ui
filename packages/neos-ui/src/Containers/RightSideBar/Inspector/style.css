@@ -17,7 +17,7 @@
 }
 .unappliedChangesOverlay {
     left: 0;
-    width: calc(100% - var(--sidebarWidth));
+    width: calc(100% - var(--size-SidebarWidth));
     height: 100%;
     z-index: var(--zIndex-UnappliedChangesOverlay-Context);
     &,
@@ -31,6 +31,6 @@
         top: 0;
         right: 0;
         height: var(--spacing-GoldenUnit);
-        width: var(--sidebarWidth);
+        width: var(--size-SidebarWidth);
     }
 }

@@ -1,8 +1,8 @@
 .secondaryInspector {
     position: absolute;
     top: 82px;
-    right: var(--sidebarWidth);
-    left: var(--sidebarWidth);
+    right: var(--size-SidebarWidth);
+    left: var(--size-SidebarWidth);
     background: var(--brandColorsContrastDarker);
     height: calc(100% - 82px);
     border: 1px solid var(--brandColorsContrastDark);

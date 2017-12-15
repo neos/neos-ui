@@ -18,7 +18,7 @@
 }
 
 .leftSideBar--isHidden {
-    transform: translateX(-var(--sidebarWidth));
+    transform: translateX(-var(--size-SidebarWidth));
 }
 
 .leftSideBar__top {

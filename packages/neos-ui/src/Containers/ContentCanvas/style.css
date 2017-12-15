@@ -3,7 +3,7 @@
     float: left;
     height: 100%;
     width: 100%;
-    padding: 82px var(--sidebarWidth) 0;
+    padding: 82px var(--size-SidebarWidth) 0;
     transition: var(--transition-Default)  ease padding;
     will-change: padding;
     background-color: var(--brandColorsContrastDarker);

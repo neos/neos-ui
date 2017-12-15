@@ -13,7 +13,7 @@
     }
 }
 .rightSideBar--isHidden {
-    transform: translateX(var(--sidebarWidth));
+    transform: translateX(var(--size-SidebarWidth));
 }
 .rightSideBar__toggleBtn {
     width: 46px;
@@ -26,7 +26,7 @@
     will-change: transform;
 
     .rightSideBar--isHidden & {
-        transform: translateX(-var(--sidebarWidth));
+        transform: translateX(-var(--size-SidebarWidth));
     }
 }
 .rightSideBar__section {

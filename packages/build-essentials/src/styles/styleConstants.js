@@ -2,6 +2,15 @@ const upperFirst = require('lodash.upperfirst');
 
 // Global CSS variables for Neos.Ui
 const config = {
+    spacing: {
+        goldenUnit: '40px',
+        full: '16px',
+        half: '8px',
+        quarter: '4px'
+    },
+    size: {
+        sidebarWidth: '320px'
+    },
     transition: {
         fast: '.1s',
         default: '.3s',
@@ -28,6 +37,37 @@ const config = {
         wrapperDropdown: ['context'],
         unappliedChangesOverlay: ['context'],
         nodeToolBar: '2147483647'
+    },
+    fontSize: {
+        base: '14px',
+        small: '12px'
+    },
+    fonts: {
+        headings: {
+            family: 'Open Sans',
+            style: 'Light',
+            cssWeight: '300'
+        },
+        copy: {
+            family: 'Open Sans',
+            style: 'Regular',
+            cssWeight: '400'
+        }
+    },
+    colors: {
+        primaryViolet: '#26224C',
+        primaryBlue: '#00ADEE',
+        contrastDarkest: '#141414',
+        contrastDarker: '#222',
+        contrastDark: '#3f3f3f',
+        contrastNeutral: '#323232',
+        contrastBright: '#999',
+        contrastBrighter: '#adadad',
+        contrastBrightest: '#FFF',
+        success: '#00a338',
+        warn: '#ff8700',
+        error: '#ff460d',
+        uncheckedCheckboxTick: '#5B5B5B'
     }
 };
 

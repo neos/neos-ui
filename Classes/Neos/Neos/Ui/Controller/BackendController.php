@@ -111,51 +111,76 @@ class BackendController extends ActionController
     {
         $this->session->start();
         $this->session->putData('__neosEnabled__', true);
+        $user = $this->userService->getBackendUser();
 
-        if ($user = $this->userService->getBackendUser()) {
-            $workspaceName = $this->userService->getPersonalWorkspaceName();
-            if ($node === null) {
-                $reflectionMethod = new \ReflectionMethod($this->backendRedirectionService, 'getLastVisitedNode');
-                $reflectionMethod->setAccessible(true);
-                $node = $reflectionMethod->invoke($this->backendRedirectionService, $workspaceName);
-            }
-
-            $contentContext = ($node ? $node->getContext() : $this->createContext($workspaceName));
-
-            $contentContext->getWorkspace();
-            $this->persistenceManager->persistAll();
-
-            $siteNode = $contentContext->getCurrentSiteNode();
-
-            if ($node === null) {
-                $node = $siteNode;
-            }
-
-            $this->view->assign('user', $user);
-            $this->view->assign('documentNode', $node);
-            $this->view->assign('site', $siteNode);
-            $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
-            $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
-            $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
-
-            $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
-            return;
+        if ($user === null) {
+            $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        $this->redirectToUri($this->uriBuilder->uriFor('index', array(), 'Login', 'Neos.Neos'));
+        if ($node === null) {
+            $node = $this->findNodeToEdit();
+        }
+
+        $siteNode = $node->getContext()->getCurrentSiteNode();
+
+        $this->view->assign('user', $user);
+        $this->view->assign('documentNode', $node);
+        $this->view->assign('site', $siteNode);
+        $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
+        $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
+        $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
+
+        $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
     }
 
     /**
      * Deactivates the new UI and redirects back to the old one
      *
+     * @param NodeInterface|null $node
      * @return void
      */
-    public function deactivateAction()
+    public function deactivateAction(NodeInterface $node = null)
     {
+        if ($node === null) {
+            $node = $this->findNodeToEdit();
+        }
+
         $this->session->start();
         $this->session->putData('__neosEnabled__', false);
 
-        $this->redirectToUri($this->uriBuilder->uriFor('index', array(), 'Backend\Backend', 'Neos.Neos'));
+        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
+    }
+
+    /**
+     * @return NodeInterface|null
+     */
+    protected function getSiteNodeForLoggedInUser()
+    {
+        $user = $this->userService->getBackendUser();
+        if ($user === null) {
+            return null;
+        }
+
+        $workspaceName = $this->userService->getPersonalWorkspaceName();
+        $contentContext = $this->createContext($workspaceName);
+        return $contentContext->getCurrentSiteNode();
+    }
+
+    /**
+     * @return NodeInterface|null
+     */
+    protected function findNodeToEdit()
+    {
+        $siteNode = $this->getSiteNodeForLoggedInUser();
+        $reflectionMethod = new \ReflectionMethod($this->backendRedirectionService, 'getLastVisitedNode');
+        $reflectionMethod->setAccessible(true);
+        $node = $reflectionMethod->invoke($this->backendRedirectionService, $siteNode->getContext()->getWorkspaceName());
+
+        if ($node === null) {
+            $node = $siteNode;
+        }
+
+        return $node;
     }
 
     /**

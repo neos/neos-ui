@@ -1,13 +1,14 @@
 -
   name: 'Hostframe'
-  uriPattern: ''
+  uriPattern: 'content'
   defaults:
     '@controller': 'Backend'
     '@action': 'index'
   appendExceedingArguments: true
+
 -
-  name: 'Deactivate'
-  uriPattern: 'deactivate'
+  name: 'Deactivate / return to legacy backend'
+  uriPattern: 'legacy'
   defaults:
     '@controller': 'Backend'
     '@action': 'deactivate'

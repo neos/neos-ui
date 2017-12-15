@@ -3,7 +3,7 @@
 
 -
   name:  'Backend'
-  uriPattern: 'neos!/<BackendSubRoutes>'
+  uriPattern: 'neos/<BackendSubRoutes>'
   defaults:
     '@package':    'Neos.Neos.Ui'
     '@action':     'index'
@@ -18,7 +18,7 @@
 
 -
   name:  'Backend'
-  uriPattern: 'neos!/service/<ServiceSubRoutes>'
+  uriPattern: 'neos/ui-services/<ServiceSubRoutes>'
   defaults:
     '@package':    'Neos.Neos.Ui'
     '@action':     'index'
@@ -27,3 +27,14 @@
     'ServiceSubRoutes':
       package: 'Neos.Neos.Ui'
       suffix:  'Service'
+
+##
+# Deprecated fallback for users used to that URI
+-
+  name: 'Backend Login New UI Route'
+  uriPattern: 'neos!'
+  defaults:
+    '@package':    'Neos.Neos.Ui'
+    '@controller': 'Backend'
+    '@action':     'index'
+    '@format':     'html'

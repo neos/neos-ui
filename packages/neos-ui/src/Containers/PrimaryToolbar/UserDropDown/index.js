@@ -42,7 +42,7 @@ export default class UserDropDown extends PureComponent {
                             </form>
                         </li>
                         <li className={style.dropDown__item}>
-                            <a title="User Settings" href="/neos!/deactivate">
+                            <a title="User Settings" href="/neos/legacy">
                                 <Icon icon="frown-o" aria-hidden="true" className={style.dropDown__itemIcon}/>
                                 <I18n id="userSettings_swtichUi" sourceName="Modules" fallback="Switch to old UI"/>
                             </a>

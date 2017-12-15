@@ -51,7 +51,7 @@ In order to start contributing, follow the following steps:
 
 1) Ensure you have the `dev-master` version installed (see above).
 
-2) We require [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` and `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
+2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html), [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` and `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
 
    If you've installed `nvm` make sure that the next node LTS version `6.10.0` is correctly installed - You can do so by executing `nvm install v6.10.0`.
    If you need help setting up `nvm`, `npm`, `yarn` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
@@ -110,6 +110,12 @@ To run the unit tests, execute `yarn test` in your shell.
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 
 Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a specific test and not the whole test suite.
+
+#### Integration tests
+
+For end to end testing we use the headless chrome. So it is mandatory to install the chrome browser for integration tests.
+Since Chrome 59 the headless mode is integrated. So please install a Chome 59 or higher to execute the end to end tests.
+
 
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR

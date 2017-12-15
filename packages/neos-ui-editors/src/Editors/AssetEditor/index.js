@@ -63,12 +63,12 @@ export default class AssetEditor extends PureComponent {
     }
 
     getIdentity(value) {
+        // Information coming from metadata
         if (value && value.__identity) {
-            // Needed to handle Image assets
             return value.__identity;
         }
+        // Information coming from upload endpoint
         if (value && value.assetUuid) {
-            // Needed to handle assets
             return value.assetUuid;
         }
         return value;
@@ -123,8 +123,12 @@ export default class AssetEditor extends PureComponent {
 
     handleValueChange = value => {
         this.setState({searchOptions: []});
-        const singleValue = Array.isArray(value) ? value[0] : value;
-        this.props.commit(this.props.options.multiple ? value : singleValue);
+        this.props.commit(Array.isArray(value) ? this.getIdentity(value[0]) : this.getIdentity(value));
+    }
+
+    handleValuesChange = value => {
+        this.setState({searchOptions: []});
+        this.props.commit(Array.isArray(value) ? value.map(this.getIdentity) : value);
     }
 
     handleChooseFromMedia = () => {
@@ -141,7 +145,7 @@ export default class AssetEditor extends PureComponent {
         if (this.props.options.multiple) {
             const values = value ? value.slice() : [];
             values.push(assetIdentifier);
-            this.handleValueChange(values);
+            this.handleValuesChange(values);
         } else {
             this.handleValueChange(assetIdentifier);
         }
@@ -173,7 +177,7 @@ export default class AssetEditor extends PureComponent {
                     highlight={this.props.highlight}
                     multiple={true}
                     multipleData={this.props.value}
-                    onAfterUpload={this.handleValueChange}
+                    onAfterUpload={this.handleValuesChange}
                     ref={this.setAssetUploadReference}
                     isLoading={false}
                     imagesOnly={this.props.imagesOnly}
@@ -188,7 +192,7 @@ export default class AssetEditor extends PureComponent {
                         options={this.state.options || []}
                         values={this.getValues()}
                         highlight={this.props.highlight}
-                        onValuesChange={this.handleValueChange}
+                        onValuesChange={this.handleValuesChange}
                         displayLoadingIndicator={this.state.isLoading}
                         searchOptions={this.state.searchOptions}
                         showDropDownToggle={false}

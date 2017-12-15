@@ -24,14 +24,12 @@ export default class NodeOption extends PureComponent {
         const {option, nodeTypesRegistry} = this.props;
         const {label, uriInLiveWorkspace, nodeType} = option;
         const nodeTypeDefinition = nodeTypesRegistry.getNodeType(nodeType);
-        const nodeTypeLabel = $get('ui.label', nodeTypeDefinition);
         const icon = $get('ui.icon', nodeTypeDefinition);
         return (
             <SelectBox_Option_MultiLineWithThumbnail
                 {...this.props}
                 label={label}
                 secondaryLabel={uriInLiveWorkspace}
-                tertiaryLabel={nodeTypeLabel}
                 icon={icon}
                 />
         );

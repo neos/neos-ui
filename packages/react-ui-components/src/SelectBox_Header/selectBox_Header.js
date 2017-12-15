@@ -28,7 +28,8 @@ export default class SelectBox_Header extends PureComponent {
             selectBoxHeader__label: PropTypes.string.isRequired
         }).isRequired,
         Icon: PropTypes.any.isRequired,
-        IconButton: PropTypes.any.isRequired
+        IconButton: PropTypes.any.isRequired,
+        ListPreviewElement: PropTypes.any.isRequired
     }
 
     render() {
@@ -36,11 +37,15 @@ export default class SelectBox_Header extends PureComponent {
             option,
             showResetButton,
             theme,
-            Icon,
             IconButton,
             placeholder,
-            placeholderIcon
+            placeholderIcon,
+            ListPreviewElement
         } = this.props;
+
+        if (!option) {
+            return null;
+        }
 
         const label = option ? option.label : placeholder;
         const icon = option && option.icon ? option.icon : placeholderIcon;
@@ -58,11 +63,15 @@ export default class SelectBox_Header extends PureComponent {
             return '';
         };
 
-        // TODO: lateron, use <ListPreviewElement> here
         return (
             <div className={theme.selectBoxHeader}>
-                {icon && <Icon className={theme.selectBoxHeader__icon} icon={icon}/>}
-                {label && <span className={theme.selectBoxHeader__label}>{label}</span>}
+                <div className={theme.selectBoxHeader__innerPreview}>
+                    <ListPreviewElement
+                        {...this.props}
+                        label={label}
+                        icon={icon}
+                        />
+                </div>
                 {resetButton()}
             </div>
         );

@@ -13,7 +13,8 @@ import {
     DeleteSelectedNode,
     HideSelectedNode,
     PasteClipBoardNode,
-    RefreshPageTree
+    RefreshPageTree,
+    ToggleContentTree
 } from './Buttons/index';
 import style from './style.css';
 
@@ -24,6 +25,7 @@ export default class NodeTreeToolBar extends PureComponent {
     static propTypes = {
         nodeTypesRegistry: PropTypes.object.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
+        displayToggleContentTreeButton: PropTypes.bool,
         focusedNodeContextPath: PropTypes.string,
         canBePasted: PropTypes.bool.isRequired,
         canBeDeleted: PropTypes.bool.isRequired,
@@ -35,6 +37,7 @@ export default class NodeTreeToolBar extends PureComponent {
         isCopied: PropTypes.bool.isRequired,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         isAllowedToAddChildOrSiblingNodes: PropTypes.bool.isRequired,
+        isHiddenContentTree: PropTypes.bool,
 
         addNode: PropTypes.func.isRequired,
         copyNode: PropTypes.func.isRequired,
@@ -43,7 +46,8 @@ export default class NodeTreeToolBar extends PureComponent {
         hideNode: PropTypes.func.isRequired,
         showNode: PropTypes.func.isRequired,
         pasteNode: PropTypes.func.isRequired,
-        reloadTree: PropTypes.func.isRequired
+        reloadTree: PropTypes.func.isRequired,
+        toggleContentTree: PropTypes.func
     }
 
     static defaultProps = {
@@ -106,9 +110,16 @@ export default class NodeTreeToolBar extends PureComponent {
         reloadTree();
     }
 
+    handleToggleContentTree = () => {
+        const {toggleContentTree} = this.props;
+
+        toggleContentTree();
+    }
+
     render() {
         const {
             focusedNodeContextPath,
+            displayToggleContentTreeButton,
             canBePasted,
             canBeDeleted,
             canBeEdited,
@@ -119,7 +130,8 @@ export default class NodeTreeToolBar extends PureComponent {
             isLoading,
             destructiveOperationsAreDisabled,
             isAllowedToAddChildOrSiblingNodes,
-            i18nRegistry
+            i18nRegistry,
+            isHiddenContentTree
         } = this.props;
 
         return (
@@ -178,6 +190,12 @@ export default class NodeTreeToolBar extends PureComponent {
                         isLoading={isLoading}
                         onClick={this.handleReloadTree}
                         />
+                    {Boolean(displayToggleContentTreeButton) && <ToggleContentTree
+                        i18nRegistry={i18nRegistry}
+                        className={style.toolBar__btnGroup__btn}
+                        isPanelOpen={!isHiddenContentTree}
+                        onClick={this.handleToggleContentTree}
+                        />}
                 </div>
             </div>
         );
@@ -272,9 +290,11 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
             const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
                 reference: focusedNodeContextPath
             });
+            const isHiddenContentTree = $get('ui.leftSideBar.contentTree.isHidden', state);
 
             return {
                 focusedNodeContextPath,
+                displayToggleContentTreeButton: true,
                 canBePasted,
                 canBeDeleted,
                 canBeEdited,
@@ -284,7 +304,8 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
                 destructiveOperationsAreDisabled,
                 isAllowedToAddChildOrSiblingNodes,
                 isCut,
-                isCopied
+                isCopied,
+                isHiddenContentTree
             };
         };
     }, {
@@ -295,6 +316,7 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
         hideNode: actions.CR.Nodes.hide,
         showNode: actions.CR.Nodes.show,
         pasteNode: actions.CR.Nodes.paste,
-        reloadTree: actions.UI.ContentTree.reloadTree
+        reloadTree: actions.UI.ContentTree.reloadTree,
+        toggleContentTree: actions.UI.LeftSideBar.toggleContentTree
     }
 )(NodeTreeToolBar));

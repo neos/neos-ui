@@ -15,7 +15,6 @@ import style from './style.css';
 
 export default class NodeTree extends PureComponent {
     static propTypes = {
-        isExpanded: PropTypes.bool,
         ChildRenderer: PropTypes.func,
         rootNode: PropTypes.object,
         nodeTypeRole: PropTypes.string,
@@ -70,14 +69,13 @@ export default class NodeTree extends PureComponent {
     }
 
     render() {
-        const {rootNode, ChildRenderer, isExpanded} = this.props;
+        const {rootNode, ChildRenderer} = this.props;
         if (!rootNode) {
             return (<div>...</div>);
         }
 
         const classNames = mergeClassNames({
-            [style.pageTree]: true,
-            [style['pageTree--expanded']]: isExpanded
+            [style.pageTree]: true
         });
 
         return (

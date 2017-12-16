@@ -23,16 +23,18 @@
 
 .leftSideBar__top {
     flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .leftSideBar__bottom {
-    height: auto;
-    flex-basis: 100%;
+    flex: 0 0 50%;
     transition: flex-basis var(--transition-Slow), height var(--transition-Slow), overflow-y var(--transition-Slow);
+    display: flex;
+    flex-direction: column;
 }
 
 .leftSideBar__bottom--isCollapsed {
-    flex-basis: 0%;
-    height: auto;
-    overflow-y: visible;
+    flex: 0 0 var(--spacing-GoldenUnit);
+    overflow-y: hidden;
 }

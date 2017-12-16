@@ -23,6 +23,7 @@ export default class ToggleContentTree extends PureComponent {
 
         return (
             <IconButton
+                id="neos-contentTree-toggle"
                 className={className}
                 onClick={this.handleClick}
                 icon={isPanelOpen ? 'chevron-down' : 'chevron-up'}

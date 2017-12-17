@@ -19,7 +19,7 @@ export default class Controls extends PureComponent {
     render() {
         const {isUploadEnabled, isMediaBrowserEnabled} = this.props;
         return (
-            <div>
+            <div className={style.controls}>
                 {isMediaBrowserEnabled && <IconButton
                     icon="camera"
                     size="small"

@@ -1,4 +1,7 @@
-.button {
+.controls {
     margin-top: var(--spacing-Quarter);
-    margin-right: var(--spacing-Quarter);
+}
+
+.button {
+    margin-right: var(--spacing-Quarter) !important;
 }

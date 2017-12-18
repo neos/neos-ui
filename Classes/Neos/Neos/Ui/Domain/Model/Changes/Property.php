@@ -1,6 +1,9 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeType;
+use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
@@ -26,6 +29,12 @@ class Property extends AbstractChange
      * @var NodeTypeManager
      */
     protected $nodeTypeManager;
+
+    /**
+     * @Flow\Inject
+     * @var NodeServiceInterface
+     */
+    protected $nodeService;
 
     /**
      * The name of the property to be changed
@@ -113,9 +122,10 @@ class Property extends AbstractChange
                 $node->getContext()
             );
 
+            // TODO: Make changing the node type a separated, specific/defined change operation.
             if ($propertyName === '_nodeType') {
                 $nodeType = $this->nodeTypeManager->getNodeType($value);
-                ObjectAccess::setProperty($node, 'nodeType', $nodeType);
+                $node = $this->changeNodeType($node, $nodeType);
             } elseif ($propertyName{0} === '_') {
                 ObjectAccess::setProperty($node, substr($propertyName, 1), $value);
             } else {
@@ -134,5 +144,21 @@ class Property extends AbstractChange
             $updateNodeInfo->setNode($node);
             $this->feedbackCollection->add($updateNodeInfo);
         }
+    }
+
+    /**
+     * @param NodeInterface $node
+     * @param NodeType $nodeType
+     * @return NodeInterface
+     */
+    protected function changeNodeType(NodeInterface $node, NodeType $nodeType)
+    {
+        $oldNodeType = $node->getNodeType();
+        ObjectAccess::setProperty($node, 'nodeType', $nodeType);
+        $this->nodeService->cleanUpProperties($node);
+        $this->nodeService->cleanUpAutoCreatedChildNodes($node, $oldNodeType);
+        $this->nodeService->createChildNodes($node);
+
+        return $node;
     }
 }

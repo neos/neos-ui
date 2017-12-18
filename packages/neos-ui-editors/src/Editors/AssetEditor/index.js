@@ -80,7 +80,7 @@ export default class AssetEditor extends PureComponent {
 
     getValues() {
         const value = this.props.value;
-        return value.map(this.getIdentity);
+        return Array.isArray(value) ? value.map(this.getIdentity) : [];
     }
 
     resolveValue = () => {

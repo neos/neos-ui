@@ -32,9 +32,13 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
         withoutGroupLabel: PropTypes.string.isRequired
     }
 
+    // scroll the sidebar if needed
     componentDidUpdate() {
         if (this.focusedElement !== null) {
-            this.focusedElement.scrollIntoViewIfNeeded();
+            const rect = this.focusedElement.getBoundingClientRect();
+            if (rect.bottom >= window.innerHeight) {
+                this.focusedElement.scrollIntoView();
+            }
         }
     }
 

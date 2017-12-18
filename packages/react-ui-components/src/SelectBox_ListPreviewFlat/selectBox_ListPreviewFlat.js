@@ -31,9 +31,13 @@ export default class SelectBox_ListPreviewFlat extends PureComponent {
         }).isRequired
     }
 
+    // scroll the sidebar if needed
     componentDidUpdate() {
         if (this.focusedElement !== null) {
-            this.focusedElement.scrollIntoViewIfNeeded();
+            const rect = this.focusedElement.getBoundingClientRect();
+            if (rect.bottom >= window.innerHeight) {
+                this.focusedElement.scrollIntoView();
+            }
         }
     }
 

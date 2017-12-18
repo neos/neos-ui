@@ -1,4 +1,4 @@
-/* eslint-disable camelcase, react/jsx-pascal-case */
+/* eslint-disable camelcase, react/jsx-pascal-case, react/jsx-no-bind */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
@@ -31,10 +31,18 @@ export default class SelectBox_ListPreviewFlat extends PureComponent {
         }).isRequired
     }
 
+    componentDidUpdate() {
+        if (this.focusedElement !== null) {
+            this.focusedElement.scrollIntoViewIfNeeded();
+        }
+    }
+
     render() {
         const {
             options
         } = this.props;
+
+        this.focusedElement = null;
 
         return options.map(this.renderOption);
     }
@@ -54,7 +62,16 @@ export default class SelectBox_ListPreviewFlat extends PureComponent {
         }
 
         return (
-            <li key={index} role="option" className={theme.selectBox__item}>
+            <li
+                key={index}
+                ref={ref => {
+                    if (ref !== null && isHighlighted) {
+                        this.focusedElement = ref;
+                    }
+                }}
+                role="option"
+                className={theme.selectBox__item}
+                >
                 <ListPreviewElement
 
                     isHighlighted={isHighlighted}

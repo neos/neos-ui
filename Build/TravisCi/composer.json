@@ -6,7 +6,7 @@
         "bin-dir": "bin"
     },
     "require": {
-        "neos/neos-development-collection": "@dev",
+        "neos/neos-development-collection": "~3.2@dev",
         "neos/flow-development-collection": "@dev",
         "neos/demo": "dev-master@dev",
 

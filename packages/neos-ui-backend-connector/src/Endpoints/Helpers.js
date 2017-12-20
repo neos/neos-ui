@@ -37,7 +37,7 @@ export const urlWithParams = (urlString, params = {}) => {
     const url = new URL(
         urlString.indexOf(window.location.origin) === 0 ?
             urlString :
-            window.location.origin
+            window.location.origin + urlString
     );
 
     url.search = searchParams(params).toString();

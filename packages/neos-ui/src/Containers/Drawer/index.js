@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
+import {getVersion} from '@neos-project/utils-helpers';
 
 import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.css';
@@ -102,6 +103,9 @@ export default class Drawer extends PureComponent {
             [style['drawer--isHidden']]: isHidden
         });
 
+        // Current version to enhance bugreports
+        const version = getVersion();
+
         return (
             <div
                 className={classNames}
@@ -117,6 +121,7 @@ export default class Drawer extends PureComponent {
                         {...item}
                         />
                 ))}
+                <div>{version}</div>
             </div>
         );
     }

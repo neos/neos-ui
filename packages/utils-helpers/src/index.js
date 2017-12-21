@@ -6,11 +6,13 @@ import {stripTags, stripTagsEncoded} from './stripTags';
 import decodeHtml from './decodeHtml';
 import requestIdleCallback from './requestIdleCallback';
 import cancelIdleCallback from './cancelIdleCallback';
+import getVersion from './getVersion';
 
 export {
     delay,
     discover,
     decodeHtml,
+    getVersion,
     isThenable,
     loadScript,
     stripTags,

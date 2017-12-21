@@ -14,7 +14,8 @@ if [[ -e $SOURCE_FILE && -e $TARGET_FILE ]]; then
         | grep version \
         | head -1 \
         | awk -F: '{ print $2 }' \
-        | sed 's/[",]//g')
+        | sed 's/[",]//g' \
+        | sed 's/\s//g')
 
     echo replace version in $TARGET_FILE with v$currentVersion
 

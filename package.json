@@ -5,7 +5,7 @@
   "scripts": {
     "clear": "rm -Rf node_modules; rm -rf packages/*/node_modules",
     "postinstall": "lerna bootstrap",
-    "build": "cross-env NODE_ENV=production yarn build:ui",
+    "build": "./Build/fillVersion.sh && cross-env NODE_ENV=production yarn build:ui",
     "build:ui": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
     "build:ui:watch": "yarn build:ui -- --watch",
     "build:ui:watch-poll": "yarn run build:ui -- --watch-poll --watch",

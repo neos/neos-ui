@@ -16,6 +16,10 @@
     background: var(--colors-PrimaryBlue);
 }
 
+.listPreviewElement--isHighlighted > span {
+    color: #fff;
+}
+
 .listPreviewElement__icon {
     composes: reset from './../reset.css';
     padding-right: .5em;

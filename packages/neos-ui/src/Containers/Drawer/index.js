@@ -121,7 +121,7 @@ export default class Drawer extends PureComponent {
                         {...item}
                         />
                 ))}
-                <div>{version}</div>
+                <div className={style.drawer__version}>{version}</div>
             </div>
         );
     }

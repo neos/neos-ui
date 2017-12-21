@@ -31,3 +31,9 @@
 .drawer__menuItemGroupBtn {
     font-weight: 700;
 }
+.drawer__version {
+    color: var(--colors-ContrastBright);
+    padding: var(--spacing-Full);
+    bottom: var(--spacing-GoldenUnit);
+    position: absolute;
+}

@@ -1,7 +1,7 @@
 import getVersion from './getVersion';
 import fs from 'fs';
 
-test(`should return the correct version`, () => {
+test(`should return the correct version, if this test fails try running ./Build/fillVersion.sh`, () => {
     const actual = getVersion();
     const current = `v${JSON.parse(fs.readFileSync('./package.json').toString()).version}`;
     console.error(current);

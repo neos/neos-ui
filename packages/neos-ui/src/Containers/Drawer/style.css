@@ -28,6 +28,12 @@
     text-align: left;
     font-size: 15px;
 }
+/* Set an explicit width for the icons so that the chars are starting */
+/* on the same place for every MenuItem */
+.drawer__menuItemGroupBtn i,
+.drawer__menuItemBtn i {
+    width: 2em;
+}
 .drawer__menuItemGroupBtn {
     font-weight: 700;
 }

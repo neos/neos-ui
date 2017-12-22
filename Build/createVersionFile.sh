@@ -17,9 +17,11 @@ if [[ -e $SOURCE_FILE && -e $TARGET_FILE ]]; then
         | sed 's/[",]//g' \
         | sed 's/\s//g')
 
+    commitHash=$(git rev-parse HEAD)
+
     # recreate file
     echo -e "const getVersion = () => {
-    return 'v$currentVersion';
+    return 'v$currentVersion $commitHash';
 };
 
 export default getVersion;" > $TARGET_FILE

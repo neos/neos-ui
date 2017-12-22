@@ -29,5 +29,7 @@ export default getVersion;" > $TARGET_FILE
 else
     # Print error message on stdout
     echo "ERROR: $SOURCE_FILE or $TARGET_FILE doesn't exist" 1>&2
+    exit 1
 fi
 
+exit 0

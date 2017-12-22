@@ -17,12 +17,15 @@ if [[ -e $SOURCE_FILE && -e $TARGET_FILE ]]; then
         | sed 's/[",]//g' \
         | sed 's/\s//g')
 
-    echo replace version in $TARGET_FILE with v$currentVersion
+    # recreate file
+    echo -e "const getVersion = () => {
+    return 'v$currentVersion';
+};
 
-    # -i.tmp creates a tmp file, needed for
-    # freebsd grep version (mac)
-    sed -i.tmp "s/'.*';/'v$currentVersion';/" $TARGET_FILE
+export default getVersion;" > $TARGET_FILE
 
-    # remove tmp file
-    rm $TARGET_FILE.tmp
+else
+    # Print error message on stdout
+    echo "ERROR: $SOURCE_FILE or $TARGET_FILE doesn't exist" 1>&2
 fi
+

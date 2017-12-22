@@ -21,7 +21,7 @@ if [[ -e $SOURCE_FILE && -e $TARGET_FILE ]]; then
 
     # recreate file
     echo -e "const getVersion = () => {
-    return 'v$currentVersion $commitHash';
+    return 'v$currentVersion';
 };
 
 export default getVersion;" > $TARGET_FILE

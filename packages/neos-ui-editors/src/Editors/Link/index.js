@@ -10,7 +10,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 
 // ToDo: Move into re-usable fn - Maybe into `util-helpers`?
 const isUri = str =>
-    str && Boolean(str.match('^(https?://|mailto:|tel:)'));
+    str && Boolean(str.match('^(https?://|mailto:|tel:|#)'));
 
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking

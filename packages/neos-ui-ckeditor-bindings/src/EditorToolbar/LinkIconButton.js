@@ -71,7 +71,7 @@ export default class LinkIconButton extends PureComponent {
 
 // ToDo: Move into re-usable fn - Maybe into `util-helpers`?
 const isUri = str =>
-    str && Boolean(str.match('^(https?://|mailto:|tel:)'));
+    str && Boolean(str.match('^(https?://|mailto:|tel:|#)'));
 
 @neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),

@@ -39,7 +39,7 @@ export const reducer = handleActions({
         new Map({
             isHidden: $get('ui.leftSideBar.isHidden', state) ? $get('ui.leftSideBar.isHidden', state) : false,
             contentTree: new Map({
-                isHidden: $get('ui.leftSideBar.contentTree.isHidden', state) ? $get('ui.leftSideBar.contentTree.isHidden', state) : true
+                isHidden: $get('ui.leftSideBar.contentTree.isHidden', state) ? $get('ui.leftSideBar.contentTree.isHidden', state) : false
             })
         })
     ),

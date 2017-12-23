@@ -110,6 +110,8 @@ Neos:
             isHidden: true
           leftSideBar:
             isHidden: false
+            contentTree:
+              isHidden: true
           rightSideBar:
             isHidden: false
           addNodeModal:

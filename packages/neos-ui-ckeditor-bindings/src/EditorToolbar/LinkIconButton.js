@@ -50,7 +50,7 @@ export default class LinkIconButton extends PureComponent {
         return (
             <div>
                 <IconButton
-                    title={`${i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link')}`}
+                    title={`${i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link')}`}
                     isActive={Boolean(this.getHrefValue())}
                     icon="link"
                     onClick={this.handleLinkButtonClick}
@@ -197,8 +197,8 @@ class LinkTextField extends PureComponent {
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
                     ListPreviewElement={LinkOption}
-                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
-                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                     />
             </div>
         );

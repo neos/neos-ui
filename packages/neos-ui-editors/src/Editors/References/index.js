@@ -38,11 +38,11 @@ export default class ReferencesEditor extends PureComponent {
             loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
             displaySearchBox={true}
             ListPreviewElement={NodeOption}
-            createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
+            createNewLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:createNew')}
             placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
             threshold={this.props.threshold}
-            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
-            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
             options={this.props.options}
             values={this.props.value}
             highlight={this.props.highlight}

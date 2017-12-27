@@ -19,7 +19,8 @@ export default ({isMulti}) => WrappedComponent => {
             options: PropTypes.shape({
                 nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
                 placeholder: PropTypes.string,
-                threshold: PropTypes.number
+                threshold: PropTypes.number,
+                startingPoint: PropTypes.string
             }),
 
             nodeLookupDataLoader: PropTypes.shape({
@@ -103,9 +104,13 @@ export default ({isMulti}) => WrappedComponent => {
         }
 
         getDataLoaderOptions() {
+            const contextNode = this.props.options.startingPoint ?
+                this.props.contextForNodeLinking.set('contextNode', this.props.options.startingPoint) :
+                this.props.contextForNodeLinking;
+
             return {
                 nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
-                contextForNodeLinking: this.props.contextForNodeLinking.toJS()
+                contextForNodeLinking: contextNode.toJS()
             };
         }
 

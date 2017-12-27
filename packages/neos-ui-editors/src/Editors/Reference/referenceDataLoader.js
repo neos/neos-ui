@@ -33,7 +33,8 @@ export default ({isMulti}) => WrappedComponent => {
             }),
 
             contextForNodeLinking: PropTypes.shape({
-                toJS: PropTypes.func.isRequired
+                toJS: PropTypes.func.isRequired,
+                set: PropTypes.func.isRequired
             }).isRequired
         };
 

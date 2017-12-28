@@ -89,7 +89,7 @@ export default class InsertModeSelector extends PureComponent {
 
         return (
             <div className={style.root}>
-                <I18n id="Neos.Neos.Ui:Main:insertMode"/>:&nbsp;
+                <I18n id="Neos.Neos:Main:insertMode"/>:&nbsp;
                 <ButtonGroup value={mode} onSelect={this.handleSelect}>
                     <IconButton
                         id={MODE_BEFORE}
@@ -97,7 +97,7 @@ export default class InsertModeSelector extends PureComponent {
                         style="lighter"
                         size="small"
                         icon="level-up"
-                        title={`${i18nRegistry.translate('Neos.Neos.Ui:Main:insert')} ${i18nRegistry.translate('before')}`}
+                        title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('before')}`}
                         />
                     <IconButton
                         id={MODE_INTO}
@@ -105,7 +105,7 @@ export default class InsertModeSelector extends PureComponent {
                         style="lighter"
                         size="small"
                         icon="long-arrow-right"
-                        title={`${i18nRegistry.translate('Neos.Neos.Ui:Main:insert')} ${i18nRegistry.translate('into')}`}
+                        title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('into')}`}
                         />
                     <IconButton
                         id={MODE_AFTER}
@@ -113,7 +113,7 @@ export default class InsertModeSelector extends PureComponent {
                         style="lighter"
                         size="small"
                         icon="level-down"
-                        title={`${i18nRegistry.translate('Neos.Neos.Ui:Main:insert')} ${i18nRegistry.translate('after')}`}
+                        title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('after')}`}
                         />
                 </ButtonGroup>
             </div>

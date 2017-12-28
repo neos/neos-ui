@@ -164,7 +164,7 @@ export default class ImageCropper extends PureComponent {
                     </div>
 
                     {!aspectRatioLocked && <AspectRatioDropDown
-                        placeholder={`${i18nRegistry.translate('Neos.Neos.Ui:Main:imageCropper__aspect-ratio-placeholder')}`}
+                        placeholder={`${i18nRegistry.translate('Neos.Neos:Main:imageCropper__aspect-ratio-placeholder')}`}
                         current={cropConfiguration.aspectRatioStrategy}
                         options={cropConfiguration.aspectRatioOptions}
                         onSelect={this.handleSetAspectRatio}

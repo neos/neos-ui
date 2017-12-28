@@ -91,7 +91,7 @@ export default class InsertModeModal extends PureComponent {
                     {operationType === actionTypes.CR.Nodes.COPY &&
                         <I18n
                             key="copy"
-                            id="Neos.Neos.Ui:Main:copy__from__to--title"
+                            id="Neos.Neos:Main:copy__from__to--title"
                             params={{
                                 source: this.renderNodeLabel(subjectContextPath),
                                 target: this.renderNodeLabel(referenceContextPath)
@@ -101,7 +101,7 @@ export default class InsertModeModal extends PureComponent {
                     {operationType === actionTypes.CR.Nodes.CUT &&
                         <I18n
                             key="move"
-                            id="Neos.Neos.Ui:Main:move__from__to--title"
+                            id="Neos.Neos:Main:move__from__to--title"
                             params={{
                                 source: this.renderNodeLabel(subjectContextPath),
                                 target: this.renderNodeLabel(referenceContextPath)
@@ -111,7 +111,7 @@ export default class InsertModeModal extends PureComponent {
                     {operationType === actionTypes.CR.Nodes.MOVE &&
                         <I18n
                             key="move"
-                            id="Neos.Neos.Ui:Main:move__from__to--title"
+                            id="Neos.Neos:Main:move__from__to--title"
                             params={{
                                 source: this.renderNodeLabel(subjectContextPath),
                                 target: this.renderNodeLabel(referenceContextPath)
@@ -173,7 +173,7 @@ export default class InsertModeModal extends PureComponent {
                 <div className={style.modalContents}>
                     <p>
                         <I18n
-                            id="Neos.Neos.Ui:Main:copy__from__to--description"
+                            id="Neos.Neos:Main:copy__from__to--description"
                             params={{
                                 source: this.renderNodeLabel(subjectContextPath),
                                 target: this.renderNodeLabel(referenceContextPath)

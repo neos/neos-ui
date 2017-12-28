@@ -35,9 +35,9 @@ export default class ReferenceEditor extends PureComponent {
             optionValueField="identifier"
             displaySearchBox={true}
             ListPreviewElement={NodeOption}
-            createNewLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:createNew')}
-            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
-            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+            createNewLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:createNew')}
+            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
             placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
             threshold={this.props.threshold}
             options={this.props.options}

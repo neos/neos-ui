@@ -149,8 +149,8 @@ class LinkEditor extends PureComponent {
                 searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
                 ListPreviewElement={LinkOption}
-                noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+                noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                 />
         );
     }

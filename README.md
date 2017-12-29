@@ -6,7 +6,7 @@
 
 ## Browser support
 
-The new interface supports all evergreen (i.e. self-updating) browsers, including: Chrome, Firefox, Safari, Edge, Opera and all webkit browsers. If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
+The new interface supports all evergreen (i.e. self-updating) browsers, including: Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers. If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
 
 ## Features
 

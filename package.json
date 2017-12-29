@@ -15,6 +15,9 @@
     "lint": "lerna run lint --concurrency 1",
     "lint:editorconfig": "editorconfig-checker --exclude-regexp 'LICENSE|\\.vanilla\\-css$|banner\\.js$' --exclude-pattern './{README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'"
   },
+  "resolutions": {
+    "moment": "^2.20.1"
+  },
   "devDependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/build-essentials": "*",

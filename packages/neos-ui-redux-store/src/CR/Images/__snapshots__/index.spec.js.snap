@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FINISH_LOADING should loaded data for the given image 1`] = `
-Object {
-  "cr": Object {
-    "images": Object {
-      "byUuid": Object {
-        "0db0937d-2ee2-4fce-a78f-17adbfdb2fbe": Object {
-          "another": "different value",
+Immutable.Map {
+  "cr": Immutable.Map {
+    "images": Immutable.Map {
+      "byUuid": Immutable.Map {
+        "0db0937d-2ee2-4fce-a78f-17adbfdb2fbe": Immutable.Map {
           "some": "value",
+          "another": "different value",
           "status": "LOADED",
         },
       },
@@ -17,10 +17,10 @@ Object {
 `;
 
 exports[`The reducer should create a valid initial state 1`] = `
-Object {
-  "cr": Object {
-    "images": Object {
-      "byUuid": Object {},
+Immutable.Map {
+  "cr": Immutable.Map {
+    "images": Immutable.Map {
+      "byUuid": Immutable.Map {},
     },
   },
 }

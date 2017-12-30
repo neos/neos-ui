@@ -1,95 +1,95 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SELECT_PRESET should add the selected preset's dimension values to the active state 1`] = `
-Object {
-  "cr": Object {
-    "contentDimensions": Object {
-      "active": Object {
-        "language": Array [
+Immutable.Map {
+  "cr": Immutable.Map {
+    "contentDimensions": Immutable.Map {
+      "active": Immutable.Map {
+        "language": Immutable.List [
           "fr",
         ],
-        "topicfocus": Array [
+        "topicfocus": Immutable.List [
           "sports",
         ],
       },
-      "allowedPresets": Object {
-        "language": Array [
+      "allowedPresets": Immutable.Map {
+        "language": Immutable.List [
           "en_US",
           "en_UK",
           "de",
           "fr",
         ],
       },
-      "byName": Object {
-        "language": Object {
+      "byName": Immutable.Map {
+        "language": Immutable.Map {
+          "label": "Language",
+          "icon": "fa-language",
           "default": "en_US",
           "defaultPreset": "en_US",
-          "icon": "fa-language",
-          "label": "Language",
-          "presets": Object {
-            "de": Object {
-              "label": "German",
-              "uriSegment": "de",
-              "values": Array [
-                "de",
-              ],
-            },
-            "en_UK": Object {
-              "label": "English (UK)",
-              "uriSegment": "en-uk",
-              "values": Array [
-                "en_UK",
-              ],
-            },
-            "en_US": Object {
+          "presets": Immutable.Map {
+            "en_US": Immutable.Map {
               "label": "English (US)",
-              "uriSegment": "en",
-              "values": Array [
+              "values": Immutable.List [
                 "en_US",
               ],
+              "uriSegment": "en",
             },
-            "fr": Object {
+            "en_UK": Immutable.Map {
+              "label": "English (UK)",
+              "values": Immutable.List [
+                "en_UK",
+              ],
+              "uriSegment": "en-uk",
+            },
+            "de": Immutable.Map {
+              "label": "German",
+              "values": Immutable.List [
+                "de",
+              ],
+              "uriSegment": "de",
+            },
+            "fr": Immutable.Map {
               "label": "French",
-              "uriSegment": "fr",
-              "values": Array [
+              "values": Immutable.List [
                 "fr",
               ],
+              "uriSegment": "fr",
             },
           },
         },
-        "topicfocus": Object {
+        "topicfocus": Immutable.Map {
+          "label": "Topic focus",
+          "icon": "fa-user",
           "default": "all",
           "defaultPreset": "all",
-          "icon": "fa-user",
-          "label": "Topic focus",
-          "presets": Object {
-            "adventure": Object {
-              "label": "Adventure",
-              "uriSegment": "adventure",
-              "values": Array [
-                "adventure",
-              ],
-            },
-            "all": Object {
+          "presets": Immutable.Map {
+            "all": Immutable.Map {
               "label": "All",
-              "uriSegment": "all",
-              "values": Array [
+              "values": Immutable.List [
                 "all",
               ],
+              "uriSegment": "all",
             },
-            "family": Object {
+            "family": Immutable.Map {
               "label": "Family",
-              "uriSegment": "family",
-              "values": Array [
+              "values": Immutable.List [
                 "family",
               ],
+              "uriSegment": "family",
             },
-            "sports": Object {
+            "sports": Immutable.Map {
               "label": "Sports",
-              "uriSegment": "sports",
-              "values": Array [
+              "values": Immutable.List [
                 "sports",
               ],
+              "uriSegment": "sports",
+            },
+            "adventure": Immutable.Map {
+              "label": "Adventure",
+              "values": Immutable.List [
+                "adventure",
+              ],
+              "uriSegment": "adventure",
             },
           },
         },
@@ -100,92 +100,92 @@ Object {
 `;
 
 exports[`SELECT_PRESET should overwrite the currently selected dimension values 1`] = `
-Object {
-  "cr": Object {
-    "contentDimensions": Object {
-      "active": Object {
-        "language": Array [
+Immutable.Map {
+  "cr": Immutable.Map {
+    "contentDimensions": Immutable.Map {
+      "active": Immutable.Map {
+        "language": Immutable.List [
           "en_UK",
         ],
       },
-      "allowedPresets": Object {
-        "language": Array [
+      "allowedPresets": Immutable.Map {
+        "language": Immutable.List [
           "en_US",
           "en_UK",
           "de",
           "fr",
         ],
       },
-      "byName": Object {
-        "language": Object {
+      "byName": Immutable.Map {
+        "language": Immutable.Map {
+          "label": "Language",
+          "icon": "fa-language",
           "default": "en_US",
           "defaultPreset": "en_US",
-          "icon": "fa-language",
-          "label": "Language",
-          "presets": Object {
-            "de": Object {
-              "label": "German",
-              "uriSegment": "de",
-              "values": Array [
-                "de",
-              ],
-            },
-            "en_UK": Object {
-              "label": "English (UK)",
-              "uriSegment": "en-uk",
-              "values": Array [
-                "en_UK",
-              ],
-            },
-            "en_US": Object {
+          "presets": Immutable.Map {
+            "en_US": Immutable.Map {
               "label": "English (US)",
-              "uriSegment": "en",
-              "values": Array [
+              "values": Immutable.List [
                 "en_US",
               ],
+              "uriSegment": "en",
             },
-            "fr": Object {
+            "en_UK": Immutable.Map {
+              "label": "English (UK)",
+              "values": Immutable.List [
+                "en_UK",
+              ],
+              "uriSegment": "en-uk",
+            },
+            "de": Immutable.Map {
+              "label": "German",
+              "values": Immutable.List [
+                "de",
+              ],
+              "uriSegment": "de",
+            },
+            "fr": Immutable.Map {
               "label": "French",
-              "uriSegment": "fr",
-              "values": Array [
+              "values": Immutable.List [
                 "fr",
               ],
+              "uriSegment": "fr",
             },
           },
         },
-        "topicfocus": Object {
+        "topicfocus": Immutable.Map {
+          "label": "Topic focus",
+          "icon": "fa-user",
           "default": "all",
           "defaultPreset": "all",
-          "icon": "fa-user",
-          "label": "Topic focus",
-          "presets": Object {
-            "adventure": Object {
-              "label": "Adventure",
-              "uriSegment": "adventure",
-              "values": Array [
-                "adventure",
-              ],
-            },
-            "all": Object {
+          "presets": Immutable.Map {
+            "all": Immutable.Map {
               "label": "All",
-              "uriSegment": "all",
-              "values": Array [
+              "values": Immutable.List [
                 "all",
               ],
+              "uriSegment": "all",
             },
-            "family": Object {
+            "family": Immutable.Map {
               "label": "Family",
-              "uriSegment": "family",
-              "values": Array [
+              "values": Immutable.List [
                 "family",
               ],
+              "uriSegment": "family",
             },
-            "sports": Object {
+            "sports": Immutable.Map {
               "label": "Sports",
-              "uriSegment": "sports",
-              "values": Array [
+              "values": Immutable.List [
                 "sports",
               ],
+              "uriSegment": "sports",
+            },
+            "adventure": Immutable.Map {
+              "label": "Adventure",
+              "values": Immutable.List [
+                "adventure",
+              ],
+              "uriSegment": "adventure",
             },
           },
         },
@@ -196,92 +196,92 @@ Object {
 `;
 
 exports[`SET_ACTIVE should ignore dimensions that haven't been previously active 1`] = `
-Object {
-  "cr": Object {
-    "contentDimensions": Object {
-      "active": Object {
-        "language": Array [
+Immutable.Map {
+  "cr": Immutable.Map {
+    "contentDimensions": Immutable.Map {
+      "active": Immutable.Map {
+        "language": Immutable.List [
           "en_UK",
         ],
       },
-      "allowedPresets": Object {
-        "language": Array [
+      "allowedPresets": Immutable.Map {
+        "language": Immutable.List [
           "en_US",
           "en_UK",
           "de",
           "fr",
         ],
       },
-      "byName": Object {
-        "language": Object {
+      "byName": Immutable.Map {
+        "language": Immutable.Map {
+          "label": "Language",
+          "icon": "fa-language",
           "default": "en_US",
           "defaultPreset": "en_US",
-          "icon": "fa-language",
-          "label": "Language",
-          "presets": Object {
-            "de": Object {
-              "label": "German",
-              "uriSegment": "de",
-              "values": Array [
-                "de",
-              ],
-            },
-            "en_UK": Object {
-              "label": "English (UK)",
-              "uriSegment": "en-uk",
-              "values": Array [
-                "en_UK",
-              ],
-            },
-            "en_US": Object {
+          "presets": Immutable.Map {
+            "en_US": Immutable.Map {
               "label": "English (US)",
-              "uriSegment": "en",
-              "values": Array [
+              "values": Immutable.List [
                 "en_US",
               ],
+              "uriSegment": "en",
             },
-            "fr": Object {
+            "en_UK": Immutable.Map {
+              "label": "English (UK)",
+              "values": Immutable.List [
+                "en_UK",
+              ],
+              "uriSegment": "en-uk",
+            },
+            "de": Immutable.Map {
+              "label": "German",
+              "values": Immutable.List [
+                "de",
+              ],
+              "uriSegment": "de",
+            },
+            "fr": Immutable.Map {
               "label": "French",
-              "uriSegment": "fr",
-              "values": Array [
+              "values": Immutable.List [
                 "fr",
               ],
+              "uriSegment": "fr",
             },
           },
         },
-        "topicfocus": Object {
+        "topicfocus": Immutable.Map {
+          "label": "Topic focus",
+          "icon": "fa-user",
           "default": "all",
           "defaultPreset": "all",
-          "icon": "fa-user",
-          "label": "Topic focus",
-          "presets": Object {
-            "adventure": Object {
-              "label": "Adventure",
-              "uriSegment": "adventure",
-              "values": Array [
-                "adventure",
-              ],
-            },
-            "all": Object {
+          "presets": Immutable.Map {
+            "all": Immutable.Map {
               "label": "All",
-              "uriSegment": "all",
-              "values": Array [
+              "values": Immutable.List [
                 "all",
               ],
+              "uriSegment": "all",
             },
-            "family": Object {
+            "family": Immutable.Map {
               "label": "Family",
-              "uriSegment": "family",
-              "values": Array [
+              "values": Immutable.List [
                 "family",
               ],
+              "uriSegment": "family",
             },
-            "sports": Object {
+            "sports": Immutable.Map {
               "label": "Sports",
-              "uriSegment": "sports",
-              "values": Array [
+              "values": Immutable.List [
                 "sports",
               ],
+              "uriSegment": "sports",
+            },
+            "adventure": Immutable.Map {
+              "label": "Adventure",
+              "values": Immutable.List [
+                "adventure",
+              ],
+              "uriSegment": "adventure",
             },
           },
         },
@@ -292,92 +292,92 @@ Object {
 `;
 
 exports[`SET_ACTIVE should overwrite the currently selected dimension values 1`] = `
-Object {
-  "cr": Object {
-    "contentDimensions": Object {
-      "active": Object {
-        "language": Array [
+Immutable.Map {
+  "cr": Immutable.Map {
+    "contentDimensions": Immutable.Map {
+      "active": Immutable.Map {
+        "language": Immutable.List [
           "en_UK",
         ],
       },
-      "allowedPresets": Object {
-        "language": Array [
+      "allowedPresets": Immutable.Map {
+        "language": Immutable.List [
           "en_US",
           "en_UK",
           "de",
           "fr",
         ],
       },
-      "byName": Object {
-        "language": Object {
+      "byName": Immutable.Map {
+        "language": Immutable.Map {
+          "label": "Language",
+          "icon": "fa-language",
           "default": "en_US",
           "defaultPreset": "en_US",
-          "icon": "fa-language",
-          "label": "Language",
-          "presets": Object {
-            "de": Object {
-              "label": "German",
-              "uriSegment": "de",
-              "values": Array [
-                "de",
-              ],
-            },
-            "en_UK": Object {
-              "label": "English (UK)",
-              "uriSegment": "en-uk",
-              "values": Array [
-                "en_UK",
-              ],
-            },
-            "en_US": Object {
+          "presets": Immutable.Map {
+            "en_US": Immutable.Map {
               "label": "English (US)",
-              "uriSegment": "en",
-              "values": Array [
+              "values": Immutable.List [
                 "en_US",
               ],
+              "uriSegment": "en",
             },
-            "fr": Object {
+            "en_UK": Immutable.Map {
+              "label": "English (UK)",
+              "values": Immutable.List [
+                "en_UK",
+              ],
+              "uriSegment": "en-uk",
+            },
+            "de": Immutable.Map {
+              "label": "German",
+              "values": Immutable.List [
+                "de",
+              ],
+              "uriSegment": "de",
+            },
+            "fr": Immutable.Map {
               "label": "French",
-              "uriSegment": "fr",
-              "values": Array [
+              "values": Immutable.List [
                 "fr",
               ],
+              "uriSegment": "fr",
             },
           },
         },
-        "topicfocus": Object {
+        "topicfocus": Immutable.Map {
+          "label": "Topic focus",
+          "icon": "fa-user",
           "default": "all",
           "defaultPreset": "all",
-          "icon": "fa-user",
-          "label": "Topic focus",
-          "presets": Object {
-            "adventure": Object {
-              "label": "Adventure",
-              "uriSegment": "adventure",
-              "values": Array [
-                "adventure",
-              ],
-            },
-            "all": Object {
+          "presets": Immutable.Map {
+            "all": Immutable.Map {
               "label": "All",
-              "uriSegment": "all",
-              "values": Array [
+              "values": Immutable.List [
                 "all",
               ],
+              "uriSegment": "all",
             },
-            "family": Object {
+            "family": Immutable.Map {
               "label": "Family",
-              "uriSegment": "family",
-              "values": Array [
+              "values": Immutable.List [
                 "family",
               ],
+              "uriSegment": "family",
             },
-            "sports": Object {
+            "sports": Immutable.Map {
               "label": "Sports",
-              "uriSegment": "sports",
-              "values": Array [
+              "values": Immutable.List [
                 "sports",
               ],
+              "uriSegment": "sports",
+            },
+            "adventure": Immutable.Map {
+              "label": "Adventure",
+              "values": Immutable.List [
+                "adventure",
+              ],
+              "uriSegment": "adventure",
             },
           },
         },
@@ -388,95 +388,95 @@ Object {
 `;
 
 exports[`The reducer should create a valid initial state 1`] = `
-Object {
-  "cr": Object {
-    "contentDimensions": Object {
-      "active": Object {
-        "language": Array [
+Immutable.Map {
+  "cr": Immutable.Map {
+    "contentDimensions": Immutable.Map {
+      "byName": Immutable.Map {
+        "language": Immutable.Map {
+          "label": "Language",
+          "icon": "fa-language",
+          "default": "en_US",
+          "defaultPreset": "en_US",
+          "presets": Immutable.Map {
+            "en_US": Immutable.Map {
+              "label": "English (US)",
+              "values": Immutable.List [
+                "en_US",
+              ],
+              "uriSegment": "en",
+            },
+            "en_UK": Immutable.Map {
+              "label": "English (UK)",
+              "values": Immutable.List [
+                "en_UK",
+              ],
+              "uriSegment": "en-uk",
+            },
+            "de": Immutable.Map {
+              "label": "German",
+              "values": Immutable.List [
+                "de",
+              ],
+              "uriSegment": "de",
+            },
+            "fr": Immutable.Map {
+              "label": "French",
+              "values": Immutable.List [
+                "fr",
+              ],
+              "uriSegment": "fr",
+            },
+          },
+        },
+        "topicfocus": Immutable.Map {
+          "label": "Topic focus",
+          "icon": "fa-user",
+          "default": "all",
+          "defaultPreset": "all",
+          "presets": Immutable.Map {
+            "all": Immutable.Map {
+              "label": "All",
+              "values": Immutable.List [
+                "all",
+              ],
+              "uriSegment": "all",
+            },
+            "family": Immutable.Map {
+              "label": "Family",
+              "values": Immutable.List [
+                "family",
+              ],
+              "uriSegment": "family",
+            },
+            "sports": Immutable.Map {
+              "label": "Sports",
+              "values": Immutable.List [
+                "sports",
+              ],
+              "uriSegment": "sports",
+            },
+            "adventure": Immutable.Map {
+              "label": "Adventure",
+              "values": Immutable.List [
+                "adventure",
+              ],
+              "uriSegment": "adventure",
+            },
+          },
+        },
+      },
+      "active": Immutable.Map {
+        "language": Immutable.List [
           "fr",
         ],
       },
-      "allowedPresets": Object {
-        "language": Array [
+      "allowedPresets": Immutable.Map {
+        "language": Immutable.List [
           "en_US",
           "en_UK",
           "de",
           "fr",
         ],
-      },
-      "byName": Object {
-        "language": Object {
-          "default": "en_US",
-          "defaultPreset": "en_US",
-          "icon": "fa-language",
-          "label": "Language",
-          "presets": Object {
-            "de": Object {
-              "label": "German",
-              "uriSegment": "de",
-              "values": Array [
-                "de",
-              ],
-            },
-            "en_UK": Object {
-              "label": "English (UK)",
-              "uriSegment": "en-uk",
-              "values": Array [
-                "en_UK",
-              ],
-            },
-            "en_US": Object {
-              "label": "English (US)",
-              "uriSegment": "en",
-              "values": Array [
-                "en_US",
-              ],
-            },
-            "fr": Object {
-              "label": "French",
-              "uriSegment": "fr",
-              "values": Array [
-                "fr",
-              ],
-            },
-          },
-        },
-        "topicfocus": Object {
-          "default": "all",
-          "defaultPreset": "all",
-          "icon": "fa-user",
-          "label": "Topic focus",
-          "presets": Object {
-            "adventure": Object {
-              "label": "Adventure",
-              "uriSegment": "adventure",
-              "values": Array [
-                "adventure",
-              ],
-            },
-            "all": Object {
-              "label": "All",
-              "uriSegment": "all",
-              "values": Array [
-                "all",
-              ],
-            },
-            "family": Object {
-              "label": "Family",
-              "uriSegment": "family",
-              "values": Array [
-                "family",
-              ],
-            },
-            "sports": Object {
-              "label": "Sports",
-              "uriSegment": "sports",
-              "values": Array [
-                "sports",
-              ],
-            },
-          },
-        },
       },
     },
   },
@@ -484,29 +484,29 @@ Object {
 `;
 
 exports[`active selector should return the active dimension values 1`] = `
-Object {
-  "language": Array [
+Immutable.Map {
+  "language": Immutable.List [
     "fr",
   ],
 }
 `;
 
 exports[`activePresets selector should return the active dimensions configuration 1`] = `
-Object {
-  "language": Object {
+Immutable.Map {
+  "language": Immutable.Map {
     "label": "French",
-    "name": "fr",
-    "uriSegment": "fr",
-    "values": Array [
+    "values": Immutable.List [
       "fr",
     ],
+    "uriSegment": "fr",
+    "name": "fr",
   },
 }
 `;
 
 exports[`allowedPresets selector should return the allowed Presets 1`] = `
-Object {
-  "language": Array [
+Immutable.Map {
+  "language": Immutable.List [
     "en_US",
     "en_UK",
     "de",

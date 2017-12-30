@@ -4,11 +4,9 @@
 
 > The next generation Neos CMS interface written in ReactJS with Immutable data structures.
 
-## Support the UI rewrite
+## Browser support
 
-We are currently raising funds to speed up the development. If you like what you see you can
-support us by chipping in and help us to reach our goal. Find more details
-[here](https://www.neos.io/blog/speeding-up-the-react-ui-development-with-your-support.html)
+The new interface supports all evergreen (i.e. self-updating) browsers, including: Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers. If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
 
 ## Features
 
@@ -20,14 +18,16 @@ support us by chipping in and help us to reach our goal. Find more details
 
 ## Installation and usage
 
-1. You need to have the latest release of Neos CMS (3.x) up & running.
+The new UI is [already included](https://github.com/neos/neos-base-distribution/blob/3.3/composer.json#L24) in the base Neos distribution. If you don't have it installed yet, follow these steps:
+
+1. You need to have Neos CMS 3.3 or newer up & running.
 
 2. Run the following command:
    ```
-   composer require "neos/neos-ui 1.0.*@beta" "neos/neos-ui-compiled 1.0.*@beta"
+   composer require neos/neos-ui neos/neos-ui-compiled
    ```
 
-3. Now you are all set up and can open the sub-route `/neos!` to login to the new interface.
+3. Now you are all set up and you can login to the new interface as usual via `/neos` route.
 
 ### Updating
 

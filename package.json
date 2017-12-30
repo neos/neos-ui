@@ -15,6 +15,9 @@
     "lint": "lerna run lint --concurrency 1",
     "lint:editorconfig": "editorconfig-checker --exclude-regexp 'LICENSE|\\.vanilla\\-css$|banner\\.js$' --exclude-pattern './{README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'"
   },
+  "resolutions": {
+    "moment": "^2.20.1"
+  },
   "devDependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/build-essentials": "*",
@@ -96,7 +99,7 @@
     "lodash.throttle": "^4.1.1",
     "lodash.unescape": "4.0.1",
     "mime-types": "^2.1.10",
-    "moment": "^2.14.1",
+    "moment": "^2.20.1",
     "monet": "^0.8.10",
     "normalize.css": "^5.0.0",
     "plow-js": "^2.1.0",

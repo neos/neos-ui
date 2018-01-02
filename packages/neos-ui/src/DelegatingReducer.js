@@ -1,7 +1,6 @@
 let _innerReducer = null;
 
 export default class DelegatingReducer {
-
     reducer() {
         return (state, action) => {
             if (action.type === '@@INIT' || action.type === '@@redux/INIT') {

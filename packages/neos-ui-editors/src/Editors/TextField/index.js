@@ -14,8 +14,8 @@ const defaultOptions = {
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-export default class TextField extends PureComponent {
 
+export default class TextField extends PureComponent {
     static propTypes = {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         commit: PropTypes.func.isRequired,

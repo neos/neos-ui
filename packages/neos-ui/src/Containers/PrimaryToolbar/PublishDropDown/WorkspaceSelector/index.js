@@ -8,8 +8,8 @@ import style from './style.css';
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-export default class WorkspaceSelector extends PureComponent {
 
+export default class WorkspaceSelector extends PureComponent {
     static propTypes = {
         baseWorkspace: PropTypes.string.isRequired,
         allowedWorkspaces: PropTypes.object.isRequired,

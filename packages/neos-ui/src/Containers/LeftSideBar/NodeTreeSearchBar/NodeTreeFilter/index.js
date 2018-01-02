@@ -12,8 +12,8 @@ import style from './style.css';
     i18nRegistry: globalRegistry.get('i18n'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class NodeTreeFilter extends PureComponent {
 
+export default class NodeTreeFilter extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,

@@ -16,8 +16,8 @@ const searchDelay = 300;
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-class NodeTreeSearchBar extends PureComponent {
 
+class NodeTreeSearchBar extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object.isRequired,
         rootNode: PropTypes.object,

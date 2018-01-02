@@ -59,7 +59,6 @@ const spec = {
     connectDropTarget: connect.dropTarget()
 }))
 export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent {
-
     static propTypes = {
         // For explanations of the PropTypes, see MultiSelectBox.js
         option: PropTypes.shape({

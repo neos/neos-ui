@@ -8,8 +8,8 @@ import convertPhpDateFormatToMoment, {hasDateFormat, hasTimeFormat} from './help
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-class DateTime extends PureComponent {
 
+class DateTime extends PureComponent {
     static propTypes = {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
         commit: PropTypes.func.isRequired,

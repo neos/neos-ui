@@ -22,8 +22,8 @@ import style from './style.css';
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-export default class LinkIconButton extends PureComponent {
 
+export default class LinkIconButton extends PureComponent {
     static propTypes = {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
@@ -80,8 +80,8 @@ const isUri = str =>
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }))
-class LinkTextField extends PureComponent {
 
+class LinkTextField extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
         formattingRule: PropTypes.string,

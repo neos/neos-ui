@@ -24,8 +24,12 @@
     line-height: var(--spacing-GoldenUnit);
     padding-left: 0;
     border: 0;
-    background: var(--colors-ContrastNeutral);
     min-width: 160px;
+}
+
+.selectBox--expanded {
+    background-color: var(--colors-PrimaryBlue);
+    box-shadow: -6px 0px 0px 0px var(--colors-PrimaryBlue), 6px 0px 0px 0px var(--colors-PrimaryBlue);
 }
 
 .selectBox__btn--noRightPadding {
@@ -41,6 +45,12 @@
 
 .selectBox__item {
     border-top: 1px solid var(--colors-ContrastDarker);
+}
+.selectBox__item:first-child {
+    border-top: 0;
+}
+.selectBox__item:last-child {
+    border-top: 0;
 }
 
 .selectBox__groupHeader {

@@ -4,7 +4,7 @@
 }
 
 .selectBox--highlight {
-    outline: 2px solid var(--colors-Success);
+    box-shadow: 0 0 0 2px var(--colors-Success);
 }
 
 .selectBox {

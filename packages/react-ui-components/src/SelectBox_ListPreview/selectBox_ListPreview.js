@@ -43,7 +43,7 @@ export default class SelectBox_ListPreview extends PureComponent {
             theme
         } = this.props;
 
-        const createNew = <SelectBox_CreateNew {...this.props}/>
+        const createNew = <SelectBox_CreateNew {...this.props}/>;
 
         const ListPreviewComponent = options.some(option => option.group) ? SelectBox_ListPreviewGrouped : SelectBox_ListPreviewFlat;
 

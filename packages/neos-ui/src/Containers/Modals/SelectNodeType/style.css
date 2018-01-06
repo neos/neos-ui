@@ -1,5 +1,6 @@
 .nodeType {
-    width: 100%;
+    flex: 0 1 auto;
+    width: calc(100% / 3);
     text-align: left;
 }
 .nodeType__icon {
@@ -20,13 +21,10 @@
     font-weight: normal;
 }
 .groupContents {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
     padding: 0 !important;
-}
-.grid {
-    margin: 0;
-}
-.gridItem {
-    padding: 0;
 }
 
 .nodeTypeDialogHeader {

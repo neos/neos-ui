@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
  * It is used inside SelectBox as the header component when no value is selected, and a filter/search box is shown.
  */
 export default class SelectBox_HeaderWithSearchInput extends PureComponent {
-
     static defaultProps = {
         placeholder: ''
     };

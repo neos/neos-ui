@@ -13,6 +13,7 @@ export default ({isMulti}) => WrappedComponent => {
     @connect($transform({
         contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
     }))
+
     class ReferenceDataLoader extends PureComponent {
         static propTypes = {
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -130,7 +131,6 @@ export default ({isMulti}) => WrappedComponent => {
                     />
             );
         }
-
     }
     return ReferenceDataLoader;
 };

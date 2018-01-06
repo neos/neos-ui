@@ -1,5 +1,4 @@
 class FetchWithErrorHandling {
-
     /**
      * The current CSRF token being used.
      */

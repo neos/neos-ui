@@ -27,8 +27,8 @@ const startsWith = prefix => element => element.id.startsWith(prefix);
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
     toolbarRegistry: globalRegistry.get('ckEditor').get('richtextToolbar')
 }))
-export default class StyleSelect extends PureComponent {
 
+export default class StyleSelect extends PureComponent {
     static propTypes = {
         // the Registry ID/Key of the Style-Select component itself.
         id: PropTypes.string.isRequired,
@@ -85,5 +85,4 @@ export default class StyleSelect extends PureComponent {
                 />
         );
     }
-
 }

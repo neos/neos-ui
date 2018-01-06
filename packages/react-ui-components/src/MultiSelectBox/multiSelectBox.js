@@ -8,7 +8,6 @@ import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 
 // TODO: document component usage && check code in detail
 export default class MultiSelectBox extends PureComponent {
-
     static defaultProps = {
         optionValueField: 'value',
         dndType: 'multiselect-box-value',

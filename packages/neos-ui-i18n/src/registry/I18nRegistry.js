@@ -60,7 +60,6 @@ const substitutePlaceholders = function (textWithPlaceholders, parameters) {
 };
 
 export default class I18nRegistry extends SynchronousRegistry {
-
     _translations = {};
 
     setTranslations(translations) {
@@ -91,5 +90,4 @@ export default class I18nRegistry extends SynchronousRegistry {
 
         return fallback;
     }
-
 }

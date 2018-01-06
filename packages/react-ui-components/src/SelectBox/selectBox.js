@@ -7,7 +7,6 @@ import mergeClassNames from 'classnames';
 
 // TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
-
     static defaultProps = {
         options: [],
         optionValueField: 'value',

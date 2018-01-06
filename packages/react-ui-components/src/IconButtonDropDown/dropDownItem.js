@@ -38,5 +38,4 @@ export default class DropDownItem extends PureComponent {
             </a>
         );
     }
-
 }

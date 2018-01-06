@@ -21,7 +21,7 @@
   "devDependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/build-essentials": "*",
-    "@neos-project/eslint-config-neos": "git://github.com/markusguenther/eslint-config-neos.git#update-eslint",
+    "@neos-project/eslint-config-neos": "^2.0.0",
     "babel-cli": "^6.8.0",
     "babel-core": "^6.13.2",
     "babel-eslint": "^8.1.2",

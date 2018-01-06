@@ -7,7 +7,6 @@ import DateInput from './DateInput/index';
 import Dialog from './Dialog/index';
 import DropDown from './DropDown/index';
 import Frame from './Frame/index';
-import Grid from './Grid/index';
 import Headline from './Headline/index';
 import Icon from './Icon/index';
 import IconButton from './IconButton/index';
@@ -32,7 +31,6 @@ export {
     Dialog,
     DropDown,
     Frame,
-    Grid,
     Headline,
     Icon,
     IconButton,
@@ -58,7 +56,6 @@ export default {
     Dialog,
     DropDown,
     Frame,
-    Grid,
     Headline,
     Icon,
     IconButton,

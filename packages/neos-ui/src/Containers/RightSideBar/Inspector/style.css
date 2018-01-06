@@ -7,9 +7,6 @@
     border-top: 2px solid var(--colors-ContrastDarker);
     display: flex;
 }
-.button {
-
-}
 .discardButton,
 .publishButton {
     width: 100%;

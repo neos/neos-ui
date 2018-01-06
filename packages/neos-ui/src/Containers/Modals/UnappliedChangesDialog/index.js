@@ -6,7 +6,6 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
-import Grid from '@neos-project/react-ui-components/src/Grid/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import I18n from '@neos-project/neos-ui-i18n';
 
@@ -77,37 +76,29 @@ export default class UnappliedChangesDialog extends PureComponent {
                 isOpen
                 >
                 <div className={style.modalContents}>
-                    <Grid gutter="regular">
-                        <Grid.Col width="third">
-                            <Button
-                                style="lighter"
-                                disabled={isDiscardDisabled}
-                                onClick={this.handleDiscard}
-                                className={style.discardBtn}
-                                >
-                                <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.danger"/>
-                            </Button>
-                        </Grid.Col>
-                        <Grid.Col width="third">
-                            <Button
-                                style="lighter"
-                                onClick={this.handleResume}
-                                className={style.resumeBtn}
-                                >
-                                <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.default"/>
-                            </Button>
-                        </Grid.Col>
-                        <Grid.Col width="third">
-                            <Button
-                                style="lighter"
-                                disabled={isApplyDisabled}
-                                onClick={this.handleApply}
-                                className={style.publishBtn}
-                                >
-                                <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.success"/>
-                            </Button>
-                        </Grid.Col>
-                    </Grid>
+                    <Button
+                        style="lighter"
+                        disabled={isDiscardDisabled}
+                        onClick={this.handleDiscard}
+                        className={`${style.button} ${style.discardButton}`}
+                        >
+                        <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.danger"/>
+                    </Button>
+                    <Button
+                        style="lighter"
+                        onClick={this.handleResume}
+                        className={`${style.button} ${style.resumeButton}`}
+                        >
+                        <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.default"/>
+                    </Button>
+                    <Button
+                        style="lighter"
+                        disabled={isApplyDisabled}
+                        onClick={this.handleApply}
+                        className={`${style.button} ${style.publishButton}`}
+                        >
+                        <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.success"/>
+                    </Button>
                 </div>
             </Dialog>
         );

@@ -104,9 +104,9 @@
     webpack "^3.8.1"
     webpack-livereload-plugin "^1.0.0"
 
-"@neos-project/eslint-config-neos@git://github.com/markusguenther/eslint-config-neos.git#0ec369b":
-  version "1.3.0-alpha"
-  resolved "git://github.com/markusguenther/eslint-config-neos.git#0ec369b8d1221faa5c3f0d2be68b216b4a3ed693"
+"@neos-project/eslint-config-neos@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@neos-project/eslint-config-neos/-/eslint-config-neos-2.0.0.tgz#339b43878274a7d3cf8cb0aaf21685969359da41"
   dependencies:
     babel-eslint "^8.1.2"
     eslint-config-xo-react "^0.9.0"

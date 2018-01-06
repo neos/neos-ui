@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {$get, $contains} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
 import Bar from '@neos-project/react-ui-components/src/Bar/';
-import Grid from '@neos-project/react-ui-components/src/Grid/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
@@ -201,19 +200,13 @@ export default class Inspector extends PureComponent {
                         })
                     }
                 </Tabs>
-                <Bar position="bottom">
-                    <Grid gutter="micro">
-                        <Grid.Col width="half">
-                            <Button style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={style.discardBtn}>
-                                <I18n id="Neos.Neos:Main:discard" fallback="discard"/>
-                            </Button>
-                        </Grid.Col>
-                        <Grid.Col width="half">
-                            <Button style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={style.publishBtn}>
-                                <I18n id="Neos.Neos:Main:apply" fallback="apply"/>
-                            </Button>
-                        </Grid.Col>
-                    </Grid>
+                <Bar position="bottom" className={style.actions}>
+                    <Button style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
+                        <I18n id="Neos.Neos:Main:discard" fallback="discard"/>
+                    </Button>
+                    <Button style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
+                        <I18n id="Neos.Neos:Main:apply" fallback="apply"/>
+                    </Button>
                 </Bar>
                 {
                     shouldShowSecondaryInspector &&

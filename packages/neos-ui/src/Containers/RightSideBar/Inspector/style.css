@@ -3,13 +3,20 @@
     width: 100%;
     overflow-x: hidden;
 }
-.discardBtn,
-.publishBtn {
+.actions {
+    border-top: 2px solid var(--colors-ContrastDarker);
+    display: flex;
+}
+.button {
+
+}
+.discardButton,
+.publishButton {
     width: 100%;
     text-align: center;
 }
-.publishBtn,
-.publishBtn:hover {
+.publishButton,
+.publishButton:hover {
     background: var(--colors-Success) !important;
 }
 .tabs > div {
@@ -20,6 +27,7 @@
     width: calc(100% - var(--size-SidebarWidth));
     height: 100%;
     z-index: var(--zIndex-UnappliedChangesOverlay-Context);
+    filter: blur(5px);
     &,
     &::after {
         position: fixed;

@@ -4,8 +4,7 @@
     "description": "NEOS CMS UI rewritten in React",
     "license": "GPL-3.0+",
     "require": {
-        "neos/flow": "*",
-        "neos/neos": "*",
+        "neos/neos": "^3.3",
         "neos/neos-ui-compiled": "dev-master"
     },
     "autoload": {

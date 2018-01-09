@@ -8,9 +8,6 @@
         "neos/neos": "*",
         "neos/neos-ui-compiled": "dev-master"
     },
-    "provide": {
-        "flowpack/neos-frontendlogin": "*"
-    },
     "autoload": {
         "psr-0": {
             "Neos\\Neos\\Ui": "Classes"

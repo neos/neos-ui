@@ -4,11 +4,15 @@ import DateInput from '@neos-project/react-ui-components/src/DateInput/';
 import moment from 'moment';
 import {neos} from '@neos-project/neos-ui-decorators';
 import convertPhpDateFormatToMoment, {hasDateFormat, hasTimeFormat} from './helpers';
+import {connect} from 'react-redux';
+import {$transform, $get} from 'plow-js';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-
+@connect($transform({
+    interfaceLanguage: $get('user.preferences.interfaceLanguage')
+}))
 class DateTime extends PureComponent {
     static propTypes = {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
@@ -17,7 +21,8 @@ class DateTime extends PureComponent {
         placeholder: PropTypes.string,
         options: PropTypes.object,
         id: PropTypes.string,
-        i18nRegistry: PropTypes.object
+        i18nRegistry: PropTypes.object,
+        interfaceLanguage: PropTypes.string
     }
 
     render() {
@@ -28,7 +33,8 @@ class DateTime extends PureComponent {
             placeholder,
             options,
             i18nRegistry,
-            highlight
+            highlight,
+            interfaceLanguage
         } = this.props;
         const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
 
@@ -46,6 +52,7 @@ class DateTime extends PureComponent {
                 dateOnly={!hasTimeFormat(options.format)}
                 timeOnly={!hasDateFormat(options.format)}
                 placeholder={placeholder || i18nRegistry.translate('content.inspector.editors.dateTimeEditor.noDateSet', '', {}, 'Neos.Neos', 'Main')}
+                locale={interfaceLanguage}
                 />
         );
     }

@@ -49,7 +49,6 @@
     "jest": "^19.0.2",
     "json-loader": "^0.5.4",
     "lerna": "2.0.0-rc.5",
-    "lolex": "^1.5.1",
     "object-assign": "^4.1.0",
     "postcss-css-variables": "^0.7.0",
     "postcss-hexrgba": "^0.2.0",

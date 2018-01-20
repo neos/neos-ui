@@ -62,5 +62,8 @@
   },
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"
+  },
+  "dependencies": {
+    "cross-env": "^5.1.3"
   }
 }

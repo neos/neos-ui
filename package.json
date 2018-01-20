@@ -63,7 +63,7 @@
     "semantic-release": "^6.3.2",
     "skin-deep": "^0.16.0",
     "style-loader": "^0.19.0",
-    "stylelint": "^7.5.0",
+    "stylelint": "^8.4.0",
     "testcafe": "^0.18.0",
     "testcafe-react-selectors": "^1.0.2",
     "watch": "^1.0.2",

@@ -36,7 +36,7 @@
     "postcss-loader": "^2.0.8",
     "postcss-nested": "^1.0.0",
     "rimraf": "^2.5.4",
-    "stylelint": "^7.5.0",
+    "stylelint": "^8.4.0",
     "url-loader": "^0.6.2",
     "watch": "^1.0.2",
     "webpack": "^3.8.1",

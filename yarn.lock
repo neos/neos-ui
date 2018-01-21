@@ -6069,10 +6069,6 @@ log-update-async-hook@^2.0.2:
     onetime "^2.0.1"
     wrap-ansi "^2.1.0"
 
-lolex@^1.5.1:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/lolex/-/lolex-1.6.0.tgz#3a9a0283452a47d7439e72731b9e07d7386e49f6"
-
 longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"

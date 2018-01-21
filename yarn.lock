@@ -8609,12 +8609,6 @@ simple-is@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/simple-is/-/simple-is-0.2.0.tgz#2abb75aade39deb5cc815ce10e6191164850baf0"
 
-skin-deep@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/skin-deep/-/skin-deep-0.16.0.tgz#21b085b8242c30c724077d269c66adc3a8592dae"
-  dependencies:
-    is-subset "^0.1.1"
-
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"

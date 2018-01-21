@@ -20,13 +20,15 @@
     z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
     width: 460px;
     border: var(--spacing-Half) solid var(--colors-ContrastDarker);
-    /* 8px border top and bottom */
-    height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
+    /* 8px border top and bottom (spacing-Full) */
+    /* the height of the SelectBox header is 50 px, GoldenUnit is 40px */
+    /* so I have to add 10px */
+    height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full) + 10px);
 }
 
 .linkIconButton__item {
     padding: var(--spacing-Half);
-    box-sizing:content-box;
+    box-sizing: content-box;
     height: calc(var(--spacing-GoldenUnit) * 1.5);
     line-height: 20px;
 }

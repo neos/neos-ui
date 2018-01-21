@@ -56,10 +56,6 @@
     "react-textarea-autosize": "^5.0.6"
   },
   "license": "GNU GPLv3",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/neos/react-ui-components.git"
-  },
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"
   }

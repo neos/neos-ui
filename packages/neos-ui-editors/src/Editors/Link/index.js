@@ -7,10 +7,7 @@ import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import LinkOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-
-// ToDo: Move into re-usable fn - Maybe into `util-helpers`?
-const isUri = str =>
-    str && Boolean(str.match('^(https?://|mailto:|tel:|#)'));
+import {isUri} from '@neos-project/utils-helpers';
 
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking

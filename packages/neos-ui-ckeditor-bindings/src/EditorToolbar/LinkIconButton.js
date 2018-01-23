@@ -10,6 +10,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
+import {isUri} from '@neos-project/utils-helpers';
 
 import style from './style.css';
 
@@ -68,10 +69,6 @@ export default class LinkIconButton extends PureComponent {
         return $get([this.props.formattingRule, 'href'], this.props.formattingUnderCursor);
     }
 }
-
-// ToDo: Move into re-usable fn - Maybe into `util-helpers`?
-const isUri = str =>
-    str && Boolean(str.match('^(https?://|mailto:|tel:|#)'));
 
 @neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),

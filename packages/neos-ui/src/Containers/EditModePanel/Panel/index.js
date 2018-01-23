@@ -42,6 +42,7 @@ export default class Panel extends PureComponent {
                     {modes.map(previewMode => (
                         <div key={previewMode.id} className={style.editModePanel__buttonWrapper}>
                             <Button
+                                isDisabled={previewMode.id === current}
                                 onClick={onPreviewModeClick(previewMode.id)}
                                 style={previewMode.id === current ? 'brand' : null}
                                 >

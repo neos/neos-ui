@@ -7,6 +7,7 @@ import decodeHtml from './decodeHtml';
 import requestIdleCallback from './requestIdleCallback';
 import cancelIdleCallback from './cancelIdleCallback';
 import getVersion from './getVersion';
+import {isUri} from './isUri';
 
 export {
     delay,
@@ -14,6 +15,7 @@ export {
     decodeHtml,
     getVersion,
     isThenable,
+    isUri,
     loadScript,
     stripTags,
     stripTagsEncoded,

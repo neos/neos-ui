@@ -26,7 +26,8 @@
     "@neos-project/neos-ui-guest-frame": "1.0.4",
     "@neos-project/neos-ui-i18n": "1.0.4",
     "@neos-project/neos-ui-redux-store": "1.0.4",
-    "@neos-project/react-ui-components": "1.0.4"
+    "@neos-project/react-ui-components": "1.0.4",
+    "@neos-project/utils-helpers": "1.0.4"
   },
   "license": "GNU GPLv3",
   "jest": {

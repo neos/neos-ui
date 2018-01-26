@@ -157,5 +157,19 @@ abstract class AbstractCreate extends AbstractStructuralChange
                 }
             }
         }
+
+        $this->emitNodeCreationHandlersApplied($node);
+    }
+
+    /**
+     * Signals, that all changes by node creation handlers are applied
+     *
+     * @Flow\Signal
+     *
+     * @param NodeInterface $node The node, the node creation handlers are applied to
+     * @return void
+     */
+    public function emitNodeCreationHandlersApplied(NodeInterface $node)
+    {
     }
 }

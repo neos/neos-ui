@@ -26,7 +26,7 @@
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui",
     "setupFiles": [
-      "<rootDir>/node_modules/@neos-project/jest-preset-neos-ui/src/setupNeosUiHostEnv.js"
+      "../../node_modules/@neos-project/jest-preset-neos-ui/src/setupNeosUiHostEnv.js"
     ]
   }
 }

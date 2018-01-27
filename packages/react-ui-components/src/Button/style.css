@@ -56,27 +56,27 @@
     background-color: var(--colors-Warn);
 }
 
-.btn--brandHover:hover,
-.btn--brandHover:hover i,
+.btn--brandHover:hover:enabled,
+.btn--brandHover:hover:enabled i,
 .btn--brandHover.btn--isPressed,
 .btn--brandHover.btn--isPressed i {
     background-color: var(--colors-PrimaryBlue);
 }
 .btn--cleanHover.btn--isPressed,
 .btn--cleanHover.btn--isPressed i,
-.btn--cleanHover:hover,
-.btn--cleanHover:hover i {
+.btn--cleanHover:hover:enabled,
+.btn--cleanHover:hover:enabled i {
     color: var(--colors-PrimaryBlue);
 }
 .btn--darkenHover.btn--isPressed,
 .btn--darkenHover.btn--isPressed i,
-.btn--darkenHover:hover,
-.btn--darkenHover:hover i {
+.btn--darkenHover:hover:enabled,
+.btn--darkenHover:hover:enabled i {
     background-color: rgba(0, 0, 0, .1);
 }
 .btn--warnHover.btn--isPressed,
 .btn--warnHover.btn--isPressed i,
-.btn--warnHover:hover,
-.btn--warnHover:hover i {
+.btn--warnHover:hover:enabled,
+.btn--warnHover:hover:enabled i {
     background-color: var(--colors-Warn);
 }

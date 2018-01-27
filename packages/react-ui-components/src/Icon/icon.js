@@ -20,11 +20,6 @@ export const iconPropValidator = (props, propName) => {// eslint-disable-line co
 Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
 
 https://github.com/FortAwesome/Font-Awesome/wiki/Upgrading-from-3.2.1-to-4`);
-        } else if (!iconName) {
-            return new Error(`Icon name "${id}" was not a found in Font-Awesome 4.5.
-Please use the icon names from the Font-Awesome website.
-
-http://fortawesome.github.io/Font-Awesome/icons/`);
         }
     }
 };
@@ -32,7 +27,8 @@ http://fortawesome.github.io/Font-Awesome/icons/`);
 const Icon = props => {
     const {size, padded, theme, iconMap, label, _makeGetClassName} = props;
     const getClassName = _makeGetClassName(iconMap);
-    const iconClassName = getClassName(props.icon);
+    const faIconClassName = getClassName(props.icon);
+    const iconClassName = faIconClassName ? faIconClassName : props.icon;
     const classNames = mergeClassNames({
         [theme.icon]: true,
         [iconClassName]: true,

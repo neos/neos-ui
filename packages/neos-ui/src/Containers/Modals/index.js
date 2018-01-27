@@ -31,7 +31,6 @@ export default class Modals extends PureComponent {
                 <ReloginDialog/>
                 <UnappliedChangesDialog/>
             </div>
-
         );
     }
 }

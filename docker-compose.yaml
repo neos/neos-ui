@@ -2,7 +2,7 @@ version: '2'
 
 services:
   app:
-    image: node:6.3
+    image: node:8
     command: Build/Docker/run.sh
     working_dir: /app
 

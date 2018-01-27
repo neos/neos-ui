@@ -52,7 +52,7 @@ export default class EditModePanelToggler extends PureComponent {
 
         const toBold = string => <b>{string}</b>;
 
-        if (currentEditMode.isEditingMode) {
+        if (currentEditMode && currentEditMode.isEditingMode) {
             editLabel = toBold(editLabel);
         } else {
             previewLabel = toBold(previewLabel);

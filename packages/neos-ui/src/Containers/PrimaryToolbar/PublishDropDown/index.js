@@ -111,7 +111,6 @@ export default class PublishDropDown extends PureComponent {
         });
         const publishableNodesInDocumentCount = publishableNodesInDocument ? publishableNodesInDocument.count() : 0;
         const publishableNodesCount = publishableNodes ? publishableNodes.count() : 0;
-
         return (
             <div className={style.wrapper}>
                 <AbstractButton
@@ -132,14 +131,14 @@ export default class PublishDropDown extends PureComponent {
                     <DropDown.Contents
                         className={style.dropDown__contents}
                         >
-                        <li className={style.dropDown__item}>
+                        { Object.keys(allowedWorkspaces).length > 1 && <li className={style.dropDown__item}>
                             <WorkspaceSelector
                                 baseWorkspace={baseWorkspace}
                                 allowedWorkspaces={allowedWorkspaces}
                                 changeBaseWorkspaceAction={changeBaseWorkspaceAction}
                                 changingWorkspaceAllowed={changingWorkspaceAllowed}
                                 />
-                        </li>
+                        </li> }
                         <li className={style.dropDown__item}>
                             <AbstractButton
                                 isEnabled={!isWorkspaceReadOnly && canPublishGlobally}

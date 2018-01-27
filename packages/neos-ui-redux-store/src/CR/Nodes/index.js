@@ -49,6 +49,23 @@ export const actionTypes = {
     UPDATE_URI
 };
 
+//
+// Build up parent to children relations
+//
+const populateChildren = nodes => {
+    Object.keys(nodes).forEach(contextPath => {
+        const node = nodes[contextPath];
+        const parentNode = nodes[node.parentContextPath];
+        if (parentNode && Array.isArray(parentNode.children)) {
+            parentNode.children.push({
+                contextPath,
+                nodeType: node.nodeType
+            });
+        }
+    });
+    return nodes;
+}
+
 /**
  * Adds nodes to the application state. Completely *replaces*
  * the nodes from the application state with the passed nodes.
@@ -210,7 +227,7 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'cr.nodes',
         new Map({
-            byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)) || new Map(),
+            byContextPath: Immutable.fromJS(populateChildren($get('cr.nodes.byContextPath', state))) || new Map(),
             siteNode: $get('cr.nodes.siteNode', state) || '',
             focused: new Map({
                 contextPath: '',
@@ -222,7 +239,7 @@ export const reducer = handleActions({
         })
     ),
     [ADD]: ({nodeMap}) => $all(
-        ...Object.keys(nodeMap).map(contextPath => $set(
+        ...Object.keys(populateChildren(nodeMap)).map(contextPath => $merge(
             ['cr', 'nodes', 'byContextPath', contextPath],
             Immutable.fromJS(
                 //
@@ -274,7 +291,7 @@ export const reducer = handleActions({
         return $all(...transformations, state);
     },
     [MERGE]: ({nodeMap}) => $all(
-        ...Object.keys(nodeMap).map(contextPath => $merge(
+        ...Object.keys(populateChildren(nodeMap)).map(contextPath => $merge(
             ['cr', 'nodes', 'byContextPath', contextPath],
             Immutable.fromJS(
                 //
@@ -313,7 +330,7 @@ export const reducer = handleActions({
             contextPath: '',
             fusionPath: ''
         })),
-        $merge('cr.nodes.byContextPath', Immutable.fromJS(nodes))
+        $merge('cr.nodes.byContextPath', Immutable.fromJS(populateChildren(nodes)))
     ),
     [COPY]: contextPath => $all(
         $set('cr.nodes.clipboard', contextPath),

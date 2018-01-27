@@ -80,6 +80,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
+            'parentContextPath' => $node->getParent()->getContextPath(),
             'name' => $node->getName(),
             'identifier' => $node->getIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
@@ -102,20 +103,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             if ($nodeInLiveWorkspace !== null) {
                 $nodeInfo['previewUri'] = $this->uri($nodeInLiveWorkspace, $controllerContext);
             }
-        }
-
-        // child nodes for document tree, respecting the `baseNodeType` filter
-        $documentChildNodes = $node->getChildNodes($baseNodeType);
-        // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
-        $contentChildNodes = $node->getChildNodes('!' . $this->documentNodeTypeRole);
-        $childNodes = array_merge($documentChildNodes, $contentChildNodes);
-
-        foreach ($childNodes as $childNode) {
-            /* @var NodeInterface $childNode */
-            $nodeInfo['children'][] = [
-                'contextPath' => $childNode->getContextPath(),
-                'nodeType' => $childNode->getNodeType()->getName() // TODO: DUPLICATED; should NOT be needed!!!
-            ];
         }
         $this->userLocaleService->switchToUILocale(true);
 

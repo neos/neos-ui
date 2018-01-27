@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Button from '@neos-project/react-ui-components/src/Button/';
-import Grid from '@neos-project/react-ui-components/src/Grid/';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 
@@ -34,17 +33,15 @@ class NodeTypeItem extends PureComponent {
         const label = $get('label', ui);
 
         return (
-            <Grid.Col className={style.gridItem} width="third">
-                <Button
-                    hoverStyle="brand"
-                    style="clean"
-                    className={style.nodeType}
-                    onClick={this.handleNodeTypeClick}
-                    >
-                    {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
-                    <I18n id={label} fallback={label}/>
-                </Button>
-            </Grid.Col>
+            <Button
+                hoverStyle="brand"
+                style="clean"
+                className={style.nodeType}
+                onClick={this.handleNodeTypeClick}
+                >
+                {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
+                <I18n id={label} fallback={label}/>
+            </Button>
         );
     }
 

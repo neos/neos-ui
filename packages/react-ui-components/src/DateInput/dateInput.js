@@ -86,8 +86,6 @@ export class DateInput extends PureComponent {
     };
 
     static defaultProps = {
-        todayLabel: 'Today',
-        applyLabel: 'Apply',
         labelFormat: 'DD-MM-YYYY hh:mm'
     };
 
@@ -101,8 +99,8 @@ export class DateInput extends PureComponent {
             theme,
             value,
             id,
-            applyLabel,
             todayLabel,
+            applyLabel,
             labelFormat,
             dateOnly,
             timeOnly,

@@ -274,6 +274,9 @@ export default class SelectBox extends PureComponent {
     handleChange = option => {
         const optionValueAccessor = this.getOptionValueAccessor();
         this.props.onValueChange(optionValueAccessor(option));
+        this.setState({
+            searchTerm: ''
+        });
     }
 
     handleDeleteClick = event => {

@@ -46,6 +46,8 @@ class DateTime extends PureComponent {
                 dateOnly={!hasTimeFormat(options.format)}
                 timeOnly={!hasDateFormat(options.format)}
                 placeholder={placeholder || i18nRegistry.translate('content.inspector.editors.dateTimeEditor.noDateSet', '', {}, 'Neos.Neos', 'Main')}
+                todayLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.today', 'Today', {}, 'Neos.Neos', 'Main')}
+                applyLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.apply', 'Apply', {}, 'Neos.Neos', 'Main')}
                 />
         );
     }

@@ -2,14 +2,10 @@
     "name": "neos/neos-ui",
     "type": "neos-package",
     "description": "NEOS CMS UI rewritten in React",
-    "license": "GPL-3.0+",
+    "license": ["GPL-3.0-or-later"],
     "require": {
-        "neos/flow": "*",
-        "neos/neos": "*",
+        "neos/neos": "^3.3",
         "neos/neos-ui-compiled": "dev-master"
-    },
-    "provide": {
-        "flowpack/neos-frontendlogin": "*"
     },
     "autoload": {
         "psr-0": {

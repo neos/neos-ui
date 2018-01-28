@@ -64,31 +64,38 @@ export default class EditModePanel extends PureComponent {
 
         const editPreviewModesList = Object.keys(editPreviewModes).map(key => {
             const element = editPreviewModes[key];
-            element.id = key;
+            if (element) {
+                element.id = key;
+            }
             return element;
         });
+
+        const editingModes = editPreviewModesList.filter(mode => mode !== null && mode.isEditingMode && mode.id !== mode);
+        const previewModes = editPreviewModesList.filter(mode => mode !== null && mode.isPreviewMode && mode.id !== mode);
 
         return (
             <div className={classNames}>
                 <div className={style.editModePanel__wrapper}>
-                    <Panel
-                        title={i18nRegistry.translate('content.components.editPreviewPanel.modes', 'Editing Modes')}
-                        className={style.editModePanel__editingModes}
-                        modes={editPreviewModesList.filter(editPreviewMode => editPreviewMode.isEditingMode && editPreviewMode.id !== editPreviewMode)}
-                        current={editPreviewMode}
-                        currentMode={currentEditMode.isEditingMode ? currentEditMode : null}
-                        style={style}
-                        onPreviewModeClick={this.handleEditPreviewModeClick}
-                        />
-                    <Panel
-                        title={i18nRegistry.translate('content.components.editPreviewPanel.previewCentral', 'Preview Central')}
-                        className={style.editModePanel__previewModes}
-                        modes={editPreviewModesList.filter(editPreviewMode => editPreviewMode.isPreviewMode && editPreviewMode.id !== editPreviewMode)}
-                        current={editPreviewMode}
-                        currentMode={currentEditMode.isPreviewMode ? currentEditMode : null}
-                        style={style}
-                        onPreviewModeClick={this.handleEditPreviewModeClick}
-                        />
+                    { editingModes.length ?
+                        <Panel
+                            title={i18nRegistry.translate('content.components.editPreviewPanel.modes', 'Editing Modes')}
+                            className={style.editModePanel__editingModes}
+                            modes={editingModes}
+                            current={editPreviewMode}
+                            currentMode={currentEditMode.isEditingMode ? currentEditMode : null}
+                            style={style}
+                            onPreviewModeClick={this.handleEditPreviewModeClick}
+                            /> : null }
+                    { previewModes.length ?
+                        <Panel
+                            title={i18nRegistry.translate('content.components.editPreviewPanel.previewCentral', 'Preview Central')}
+                            className={style.editModePanel__previewModes}
+                            modes={previewModes}
+                            current={editPreviewMode}
+                            currentMode={currentEditMode.isPreviewMode ? currentEditMode : null}
+                            style={style}
+                            onPreviewModeClick={this.handleEditPreviewModeClick}
+                            /> : null }
                 </div>
             </div>
         );

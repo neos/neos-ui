@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
-import Grid from '@neos-project/react-ui-components/src/Grid/';
 import {neos} from '@neos-project/neos-ui-decorators';
 import escaperegexp from 'lodash.escaperegexp';
 import {actions} from '@neos-project/neos-ui-redux-store';
@@ -65,9 +64,7 @@ class NodeTypeGroupPanel extends PureComponent {
                     <I18n className={style.groupTitle} fallback={label} id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
-                    <Grid className={style.grid}>
-                        {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect}/>)}
-                    </Grid>
+                    {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect}/>)}
                 </ToggablePanel.Contents>
             </ToggablePanel>
         );

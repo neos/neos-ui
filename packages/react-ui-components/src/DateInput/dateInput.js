@@ -57,6 +57,11 @@ export class DateInput extends PureComponent {
         timeOnly: PropTypes.bool,
 
         /**
+         * Locale for the date picker (determines time format)
+         */
+        locale: PropTypes.string,
+
+        /**
          * The changehandler to call when the date changes.
          */
         onChange: PropTypes.func.isRequired,
@@ -101,7 +106,8 @@ export class DateInput extends PureComponent {
             labelFormat,
             dateOnly,
             timeOnly,
-            highlight
+            highlight,
+            locale
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
 
@@ -153,6 +159,7 @@ export class DateInput extends PureComponent {
                         open={true}
                         defaultValue={value}
                         dateFormat={!timeOnly}
+                        locale={locale}
                         timeFormat={!dateOnly}
                         onChange={this.handleChange}
                         />

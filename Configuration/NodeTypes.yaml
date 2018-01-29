@@ -6,7 +6,7 @@
         title:
           type: string
           ui:
-            label: 'Node title'
+            label: i18n
             editor: 'Neos.Neos/Inspector/Editors/TextFieldEditor'
           validation:
             'Neos.Neos/Validation/NotEmptyValidator': []

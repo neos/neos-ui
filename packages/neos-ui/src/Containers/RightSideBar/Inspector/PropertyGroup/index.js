@@ -16,6 +16,7 @@ export default class PropertyGroup extends PureComponent {
     static propTypes = {
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
+        collapsed: PropTypes.bool,
         properties: PropTypes.array,
         views: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
@@ -24,14 +25,18 @@ export default class PropertyGroup extends PureComponent {
         commit: PropTypes.func.isRequired
     };
 
+    static defaultProps = {
+        collapsed: false
+    };
+
     render() {
-        const {properties, views, label, icon, renderSecondaryInspector, node, commit} = this.props;
+        const {properties, views, label, icon, collapsed, renderSecondaryInspector, node, commit} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
 
         const propertyGroup = properties => (
-            <ToggablePanel isOpen={true} className={sidebarStyle.rightSideBar__section}>
+            <ToggablePanel isOpen={!collapsed} className={sidebarStyle.rightSideBar__section}>
                 <ToggablePanel.Header theme={headerTheme}>
                     {icon && <Icon icon={icon}/>} <I18n id={label}/>
                 </ToggablePanel.Header>

@@ -16,7 +16,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
 }))
 export default class PreviewButton extends PureComponent {
     static propTypes = {
-        previewUrl: PropTypes.string
+        previewUrl: PropTypes.string,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     render() {

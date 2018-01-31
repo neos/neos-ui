@@ -13,7 +13,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
 })
 export default class FullScreenButton extends PureComponent {
     static propTypes = {
-        toggleFullScreen: PropTypes.func
+        toggleFullScreen: PropTypes.func,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     render() {
@@ -24,7 +25,7 @@ export default class FullScreenButton extends PureComponent {
                 icon="expand"
                 onClick={toggleFullScreen}
                 aria-label={i18nRegistry.translate('Neos.Neos:Main:fullscreen', 'Fullscreen')}
-            />
+                />
         );
     }
 }

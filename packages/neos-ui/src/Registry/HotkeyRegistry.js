@@ -1,7 +1,16 @@
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import Mousetrap from 'mousetrap';
 
+
 export default class HotkeyRegistry extends SynchronousRegistry {
+    constructor() {
+        super();
+        this.activeInGuest = true;
+    }
+
+    setActiveInGuest(value) {
+        this.activeInGuest = value;
+    }
 
     /*
      * Sets a key in a registry to the given value and bind keyboard event
@@ -21,6 +30,23 @@ export default class HotkeyRegistry extends SynchronousRegistry {
 
     unset(key) {
         const value = this.get(key);
-        Moustrap.unbind(value.defaultKey);
+        Mousetrap.unbind(value.defaultKey);
+        if (this.mousetrapGuest) {
+            this.mousetrapGuest.unbind(value.defaultKey);
+        }
+    }
+
+    bindAll(el) {
+        const items = this.getAllAsList();
+        this.mousetrapGuest = new Mousetrap(el);
+
+        for (let i=0; i<items.length; i++) {
+            let callback = items[i].callback;
+            this.mousetrapGuest.bind(items[i].defaultKey, () => {
+                if (this.activeInGuest) {
+                    callback();
+                }
+            });
+        }
     }
 }

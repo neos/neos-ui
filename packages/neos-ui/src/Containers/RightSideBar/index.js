@@ -25,7 +25,7 @@ export default class RightSideBar extends PureComponent {
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
-        hotKeyRegistry: PropTypes.object.isRequired,
+        hotkeyRegistry: PropTypes.object.isRequired,
 
         isHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,

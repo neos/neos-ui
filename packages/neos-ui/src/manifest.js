@@ -8,6 +8,7 @@ import {parentNodeContextPath} from '@neos-project/neos-ui-redux-store/src/CR/No
 
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
+import {HotkeyRegistry} from './Registry';
 
 import {
     getGuestFrameDocument,
@@ -166,6 +167,13 @@ manifest('main', {}, globalRegistry => {
 
         The key is a validator name (such as Neos.Neos/Validation/NotEmptyValidator) and the values
         are validator options.
+    `));
+
+    //
+    // Create hotkey registry
+    //
+    globalRegistry.set('hotkeys', new HotkeyRegistry(`
+        Contains all hot keys.
     `));
 
     //

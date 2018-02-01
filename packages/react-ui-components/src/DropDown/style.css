@@ -20,10 +20,6 @@
     white-space: nowrap;
     line-height: var(--spacing-GoldenUnit);
     background: var(--colors-ContrastNeutral);
-
-    &:focus {
-        outline: unset;
-    }
 }
 .dropDown__btn--withChevron {
     padding-right: var(--spacing-GoldenUnit);

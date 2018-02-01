@@ -14,10 +14,6 @@
     background-color: var(--colors-ContrastNeutral);
     font-size: var(--fontSize-Base);
 
-    &:focus {
-        outline: unset;
-    }
-
     &[disabled] {
         opacity: .5;
         cursor: not-allowed;

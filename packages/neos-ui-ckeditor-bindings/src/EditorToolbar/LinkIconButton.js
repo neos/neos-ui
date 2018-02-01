@@ -110,8 +110,16 @@ class LinkTextField extends PureComponent {
 
     refreshState() {
         if (isUri(this.props.hrefValue)) {
+            const options = [{
+                icon: 'icon-external-link',
+                identifier: this.props.hrefValue,
+                label: this.props.hrefValue,
+                loaderUri: this.props.hrefValue
+            }];
+
             this.setState({
-                searchTerm: this.props.hrefValue
+                searchTerm: this.props.hrefValue,
+                options
             });
         } else {
             if (this.props.hrefValue) {
@@ -147,8 +155,20 @@ class LinkTextField extends PureComponent {
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
-            this.setState({isLoading: false});
-            this.commitValue(searchTerm);
+            const searchOptions = [{
+                icon: 'icon-external-link',
+                identifier: searchTerm,
+                label: searchTerm,
+                loaderUri: searchTerm
+            }];
+
+            this.setState({
+                isLoading: false,
+                searchOptions
+            });
+        } else if (!searchTerm && isUri(this.props.hrefValue)) {
+            // the user emptied the URL value, so we need to reset it
+            this.commitValue('');
         } else if (searchTerm) {
             // when changing from uri mode to search mode, we should clear the value
             if (isUri(this.state.searchTerm)) {
@@ -169,11 +189,13 @@ class LinkTextField extends PureComponent {
     handleValueChange = value => {
         this.commitValue(value || '');
 
-        const options = this.state.searchOptions.reduce((current, option) =>
-            (option.loaderUri === value) ? [Object.assign({}, option)] : current
-        , []);
+        if (!isUri(value)) {
+            const options = this.state.searchOptions.reduce((current, option) =>
+                    (option.loaderUri === value) ? [Object.assign({}, option)] : current
+                , []);
 
-        this.setState({options, searchOptions: [], searchTerm: ''});
+            this.setState({options, searchOptions: [], searchTerm: ''});
+        }
     }
 
     render() {
@@ -183,7 +205,6 @@ class LinkTextField extends PureComponent {
                     options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
                     optionValueField="loaderUri"
                     value={this.props.hrefValue}
-                    plainInputMode={isUri(this.props.hrefValue)}
                     onValueChange={this.handleValueChange}
                     placeholder="Paste a link, or search"
                     displayLoadingIndicator={this.state.isLoading}

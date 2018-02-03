@@ -21,7 +21,7 @@ export function * watchPersist() {
 
             const state = yield select();
             const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
-            
+
             if (isAutoPublishingEnabled) {
                 const baseWorkspace = baseWorkspaceSelector(state);
                 const publishableNodesInDocument = publishableNodesInDocumentSelector(state);

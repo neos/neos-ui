@@ -21,10 +21,11 @@ export function * watchPersist() {
 
             const state = yield select();
             const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
-
+            
             if (isAutoPublishingEnabled) {
+                const baseWorkspace = baseWorkspaceSelector(state);
                 const publishableNodesInDocument = publishableNodesInDocumentSelector(state);
-                yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map($get('contextPath')), 'live'));
+                yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map($get('contextPath')), baseWorkspace));
             }
         } catch (error) {
             console.error('Failed to persist changes', error);

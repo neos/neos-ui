@@ -4,7 +4,7 @@ import {$get} from 'plow-js';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
+const {publishableNodesInDocumentSelector, baseWorkspaceSelector} = selectors.CR.Workspaces;
 
 export function * watchPersist() {
     const {change} = backend.get().endpoints;
@@ -23,8 +23,9 @@ export function * watchPersist() {
             const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
 
             if (isAutoPublishingEnabled) {
+                const baseWorkspace = baseWorkspaceSelector(state);
                 const publishableNodesInDocument = publishableNodesInDocumentSelector(state);
-                yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map($get('contextPath')), 'live'));
+                yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map($get('contextPath')), baseWorkspace));
             }
         } catch (error) {
             console.error('Failed to persist changes', error);

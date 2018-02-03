@@ -4,7 +4,7 @@ import {$get} from 'plow-js';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
+const {publishableNodesInDocumentSelector, baseWorkspaceSelector} = selectors.CR.Workspaces;
 
 export function * watchPersist() {
     const {change} = backend.get().endpoints;

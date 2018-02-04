@@ -62,7 +62,7 @@ function * application() {
     //
     ReactDOM.render(
         <div style={{width: '100vw', height: '100vh', backgroundColor: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '30px'}}>
-            <Icon icon="circle-o-notch" label="Loading..." spin="true" size="big"/>
+            <Icon icon="circle-o-notch" label="Loading..." spin={true} size="big"/>
         </div>,
         appContainer
     );

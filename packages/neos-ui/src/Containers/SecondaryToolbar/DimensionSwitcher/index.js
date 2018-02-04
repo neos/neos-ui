@@ -15,7 +15,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 const SelectedPreset = props => {
     const {icon, dimensionLabel, presetLabel, dimensionName} = props;
     return (
-        <span key={dimensionName}>
+        <span key={dimensionName} className={style.selectPreset}>
             <Icon className={style.dropDown__btnIcon} icon={icon} title={dimensionLabel}/>
             {presetLabel}
         </span>

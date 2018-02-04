@@ -110,16 +110,9 @@ class LinkTextField extends PureComponent {
 
     refreshState() {
         if (isUri(this.props.hrefValue)) {
-            const options = [{
-                icon: 'icon-external-link',
-                identifier: this.props.hrefValue,
-                label: this.props.hrefValue,
-                loaderUri: this.props.hrefValue
-            }];
-
             this.setState({
                 searchTerm: this.props.hrefValue,
-                options
+                options: []
             });
         } else {
             if (this.props.hrefValue) {
@@ -155,16 +148,11 @@ class LinkTextField extends PureComponent {
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
-            const searchOptions = [{
-                icon: 'icon-external-link',
-                identifier: searchTerm,
-                label: searchTerm,
-                loaderUri: searchTerm
-            }];
+            this.commitValue(searchTerm);
 
             this.setState({
                 isLoading: false,
-                searchOptions
+                searchOptions: []
             });
         } else if (!searchTerm && isUri(this.props.hrefValue)) {
             // the user emptied the URL value, so we need to reset it
@@ -204,7 +192,8 @@ class LinkTextField extends PureComponent {
                 <SelectBox
                     options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
                     optionValueField="loaderUri"
-                    value={this.props.hrefValue}
+                    value={isUri(this.props.hrefValue) ? '' : this.props.hrefValue}
+                    plainInputMode={isUri(this.props.hrefValue)}
                     onValueChange={this.handleValueChange}
                     placeholder="Paste a link, or search"
                     displayLoadingIndicator={this.state.isLoading}

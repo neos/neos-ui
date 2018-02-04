@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import Immutable, {List, Map} from 'immutable';
-import {$set, $get} from 'plow-js';
+import {$set, $get, $all} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
@@ -15,10 +15,9 @@ export const actionTypes = {
 };
 
 /**
- * Selects a preset for the given content dimension; optionally
- * with the previous preset name (as this is needed in the Saga; to be able to jump back to the old selection)
+ * Selects dimension presets
  */
-const selectPreset = createAction(SELECT_PRESET, (name, presetName, previousPresetName = null) => ({name, presetName, previousPresetName}));
+const selectPreset = createAction(SELECT_PRESET, targetPresets => ({targetPresets}));
 
 /**
  * Sets the currently active content dimensions
@@ -91,10 +90,11 @@ export const reducer = handleActions({
             allowedPresets: Immutable.fromJS(allowedPresets(state))
         })
     ),
-    [SELECT_PRESET]: ({name, presetName}) => state => {
-        const dimensionValues = $get(['cr', 'contentDimensions', 'byName', name, 'presets', presetName, 'values'], state);
-        return $set(['cr', 'contentDimensions', 'active', name], dimensionValues, state);
-    },
+    [SELECT_PRESET]: ({targetPresets}) => state => $all(...Object.keys(targetPresets).map(dimensionName => {
+        const presetName = targetPresets[dimensionName];
+        const dimensionValues = $get(['cr', 'contentDimensions', 'byName', dimensionName, 'presets', presetName, 'values'], state);
+        return $set(['cr', 'contentDimensions', 'active', dimensionName], dimensionValues);
+    }), state),
     [SET_ACTIVE]: ({dimensionValues}) => state => {
         const previousActive = active(state);
         const newActive = previousActive.toSeq().map((values, dimensionName) => new List(dimensionValues[dimensionName])).toMap();

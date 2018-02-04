@@ -165,14 +165,14 @@ export default class DimensionSwitcher extends PureComponent {
                             onClick={this.handleClose}
                             style="lighter"
                             className={style.cancelButton}
-                        >
-                            <I18n id="Neos.Neos:Main:cancel" fallback="Cancel" />
+                            >
+                            <I18n id="Neos.Neos:Main:cancel" fallback="Cancel"/>
                         </Button>
                         <Button
                             onClick={this.handleApplyPresets}
                             style="brand"
-                        >
-                            <I18n id="Neos.Neos:Main:apply" fallback="Apply" />
+                            >
+                            <I18n id="Neos.Neos:Main:apply" fallback="Apply"/>
                         </Button>
                     </div>}
                 </DropDown.Contents>

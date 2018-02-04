@@ -358,7 +358,7 @@ export default class SelectBox extends PureComponent {
                     focusedValue: optionValueAccessor(options[newIndex])
                 });
             } else if (e.key === 'Enter') {
-                if (0 >= currentIndex < options.length) {
+                if (currentIndex < options.length && currentIndex >= 0) {
                     this.handleChange(options[currentIndex]);
                 }
 

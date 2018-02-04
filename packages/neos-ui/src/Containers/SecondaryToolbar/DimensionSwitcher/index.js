@@ -185,7 +185,7 @@ export default class DimensionSwitcher extends PureComponent {
         const dimensionConfiguration = $get(dimensionName, contentDimensions);
 
         return dimensionConfiguration.get('presets').filter(
-            (presetConfiguration, presetName) => allowedPresets.get(dimensionName).contains(presetName)
+            (presetConfiguration, presetName) => allowedPresets.get(dimensionName) && allowedPresets.get(dimensionName).contains(presetName)
         );
     }
 }

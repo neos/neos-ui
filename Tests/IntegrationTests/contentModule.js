@@ -29,7 +29,8 @@ async function waitForIframeLoading(t) {
 async function discardAll(t) {
     await t
         .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
-        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all'));
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all'))
+        .click(Selector('#neos-DiscardDialog-confirm'));
     await waitForIframeLoading(t);
 }
 

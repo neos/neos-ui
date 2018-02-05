@@ -67,7 +67,7 @@ export function * watchChangeBaseWorkspace() {
 
 export function * discardIfConfirmed() {
     const {discard} = backend.get().endpoints;
-    yield takeLatest(actionTypes.CR.Workspaces.COMMENCE_DISCARD, function* waitForConfirmation() {
+    yield takeLatest(actionTypes.CR.Workspaces.COMMENCE_DISCARD, function * waitForConfirmation() {
         const state = yield select();
         const waitForNextAction = yield race([
             take(actionTypes.CR.Workspaces.DISCARD_ABORTED),
@@ -85,7 +85,7 @@ export function * discardIfConfirmed() {
 
             try {
                 const currentContentCanvasContextPath = yield select(selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath);
-                
+
                 const feedback = yield call(discard, nodesToBeDiscarded);
                 yield put(actions.UI.Remote.finishDiscarding());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));

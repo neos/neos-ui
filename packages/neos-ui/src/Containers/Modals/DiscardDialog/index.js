@@ -13,7 +13,7 @@ import {actions} from '@neos-project/neos-ui-redux-store';
 import style from './style.css';
 
 @connect($transform({
-    nodesToBeDiscarded: $get('cr.workspaces.toBeDiscarded'),
+    nodesToBeDiscarded: $get('cr.workspaces.toBeDiscarded')
 }), {
     confirm: actions.CR.Workspaces.confirmDiscard,
     abort: actions.CR.Workspaces.abortDiscard

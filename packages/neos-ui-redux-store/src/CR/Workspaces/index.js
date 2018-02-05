@@ -9,13 +9,17 @@ import * as selectors from './selectors';
 
 const UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE';
 const PUBLISH = '@neos/neos-ui/CR/Workspaces/PUBLISH';
-const DISCARD = '@neos/neos-ui/CR/Workspaces/DISCARD';
+const COMMENCE_DISCARD = '@neos/neos-ui/CR/Workspaces/COMMENCE_DISCARD';
+const DISCARD_ABORTED = '@neos/neos-ui/CR/Workspaces/DISCARD_ABORTED';
+const DISCARD_CONFIRMED = '@neos/neos-ui/CR/Workspaces/DISCARD_CONFIRMED';
 const CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE';
 
 export const actionTypes = {
     UPDATE,
     PUBLISH,
-    DISCARD,
+    COMMENCE_DISCARD,
+    DISCARD_ABORTED,
+    DISCARD_CONFIRMED,
     CHANGE_BASE_WORKSPACE
 };
 /**
@@ -29,9 +33,21 @@ const update = createAction(UPDATE, data => data);
 const publish = createAction(PUBLISH, (nodeContextPaths, targetWorkspaceName) => ({nodeContextPaths, targetWorkspaceName}));
 
 /**
- * Discard given nodes
+ * Start node discard workflow
+ *
+ * @param {String} contextPath The contexts paths of the nodes to be discarded
  */
-const discard = createAction(DISCARD, nodeContextPaths => nodeContextPaths);
+const commenceDiscard = createAction(COMMENCE_DISCARD, nodeContextPaths => nodeContextPaths);
+
+/**
+ * Abort the ongoing node discard workflow
+ */
+const abortDiscard = createAction(DISCARD_ABORTED);
+
+/**
+ * Confirm the ongoing discard
+ */
+const confirmDiscard = createAction(DISCARD_CONFIRMED);
 
 /**
  * Change base workspace
@@ -44,7 +60,9 @@ const changeBaseWorkspace = createAction(CHANGE_BASE_WORKSPACE, name => name);
 export const actions = {
     update,
     publish,
-    discard,
+    commenceDiscard,
+    abortDiscard,
+    confirmDiscard,
     changeBaseWorkspace
 };
 
@@ -58,6 +76,9 @@ export const reducer = handleActions({
             personalWorkspace: Immutable.fromJS($get('cr.workspaces.personalWorkspace', state))
         })
     ),
+    [COMMENCE_DISCARD]: nodeContextPaths => $set('cr.workspaces.toBeDiscarded', nodeContextPaths),
+    [DISCARD_ABORTED]: () => $set('cr.workspaces.toBeDiscarded', null),
+    [DISCARD_CONFIRMED]: () => $set('cr.workspaces.toBeDiscarded', null),
     [UPDATE]: data => $set('cr.workspaces.personalWorkspace', Immutable.fromJS(data))
 });
 

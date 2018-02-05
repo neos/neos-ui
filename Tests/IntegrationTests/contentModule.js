@@ -30,7 +30,10 @@ async function discardAll(t) {
     await t
         .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
         .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all'))
-        .click(Selector('#neos-DiscardDialog-confirm'));
+    const confirmButtonExists = await Selector('#neos-DiscardDialog-confirm').exists;
+    if (confirmButtonExists) {
+        await t.click(Selector('#neos-DiscardDialog-confirm'));
+    }
     await waitForIframeLoading(t);
 }
 

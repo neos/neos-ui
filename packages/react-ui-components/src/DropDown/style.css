@@ -55,6 +55,7 @@
 }
 .dropDown__contents--isOpen {
     display: block;
+    outline: 6px solid var(--colors-PrimaryBlue);
 }
 .dropDown--darker {
     > .dropDown__btn--open {

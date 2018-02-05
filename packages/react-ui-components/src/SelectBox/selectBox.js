@@ -197,6 +197,7 @@ export default class SelectBox extends PureComponent {
         const headerClassName = mergeClassNames({
             [theme.selectBox__btn]: true,
             [theme['selectBox--highlight']]: highlight,
+            [theme['selectBox--expanded']]: isExpanded,
             [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle
         });
 

@@ -1,6 +1,5 @@
 .listPreviewElement {
     composes: reset from './../reset.css';
-    background: var(--colors-ContrastNeutral);
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -12,12 +11,8 @@
     padding: 5px var(--spacing-Full);
 }
 
-.listPreviewElement--isHighlighted {
-    background: var(--colors-PrimaryBlue);
-}
-
 .listPreviewElement--isHighlighted > span {
-    color: #fff;
+    color: var(--colors-PrimaryBlue);
 }
 
 .listPreviewElement__icon {

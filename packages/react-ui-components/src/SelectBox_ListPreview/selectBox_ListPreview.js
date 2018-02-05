@@ -43,6 +43,8 @@ export default class SelectBox_ListPreview extends PureComponent {
             theme
         } = this.props;
 
+        const createNew = <SelectBox_CreateNew {...this.props}/>;
+
         const ListPreviewComponent = options.some(option => option.group) ? SelectBox_ListPreviewGrouped : SelectBox_ListPreviewFlat;
 
         // TODO: replace horible self-made I18n replace
@@ -66,9 +68,9 @@ export default class SelectBox_ListPreview extends PureComponent {
                             />
                     </div>
                 )}
-                <div className={theme.selectBox__item}>
-                    <SelectBox_CreateNew {...this.props}/>
-                </div>
+                { createNew ? <div className={theme.selectBox__item}>
+                    {createNew}
+                </div> : null }
             </Fragment>
         );
     }

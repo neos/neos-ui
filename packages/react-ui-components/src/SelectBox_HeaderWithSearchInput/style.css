@@ -10,11 +10,11 @@
 .selectBoxHeaderWithSearchInput__input {
     width: 100%;
     color: #fff;
+    background: transparent !important;
     /* TODO: move to reset / use var */
     font-size: 14px;
 
     &:focus {
-        background: transparent !important;
         color: #fff !important;
     }
 }

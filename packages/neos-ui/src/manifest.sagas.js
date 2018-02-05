@@ -40,7 +40,7 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/CR/NodeOperations/removeNodeIfConfirmed', {saga: crNodeOperations.removeNodeIfConfirmed});
 
     sagasRegistry.set('neos-ui/Publish/watchChangeBaseWorkspace', {saga: publish.watchChangeBaseWorkspace});
-    sagasRegistry.set('neos-ui/Publish/watchDiscard', {saga: publish.watchDiscard});
+    sagasRegistry.set('neos-ui/Publish/discardIfConfirmed', {saga: publish.discardIfConfirmed});
     sagasRegistry.set('neos-ui/Publish/watchPublish', {saga: publish.watchPublish});
     sagasRegistry.set('neos-ui/Publish/watchToggleAutoPublish', {saga: publish.watchToggleAutoPublish});
 

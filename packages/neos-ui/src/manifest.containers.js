@@ -3,6 +3,7 @@ import manifest from '@neos-project/neos-ui-extensibility';
 import App from './Containers/App';
 
 import Modals from './Containers/Modals/index';
+import DiscardDialog from './Containers/Modals/DiscardDialog/index';
 import DeleteNodeModal from './Containers/Modals/DeleteNode/index';
 import InsertModeModal from './Containers/Modals/InsertMode/index';
 import SelectNodeTypeModal from './Containers/Modals/SelectNodeType/index';
@@ -46,6 +47,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('App', App);
 
     containerRegistry.set('Modals', Modals);
+    containerRegistry.set('Modals/DiscardDialog', DiscardDialog);
     containerRegistry.set('Modals/DeleteNodeModal', DeleteNodeModal);
     containerRegistry.set('Modals/InsertModeModal', InsertModeModal);
     containerRegistry.set('Modals/SelectNodeTypeModal', SelectNodeTypeModal);

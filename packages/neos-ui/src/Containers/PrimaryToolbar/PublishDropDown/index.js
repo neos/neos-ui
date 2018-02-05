@@ -35,7 +35,7 @@ import style from './style.css';
     toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing,
     changeBaseWorkspaceAction: actions.CR.Workspaces.changeBaseWorkspace,
     publishAction: actions.CR.Workspaces.publish,
-    discardAction: actions.CR.Workspaces.discard
+    discardAction: actions.CR.Workspaces.commenceDiscard
 })
 @neos()
 export default class PublishDropDown extends PureComponent {

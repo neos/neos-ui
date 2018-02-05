@@ -1,4 +1,4 @@
-import {takeEvery, put, call, select} from 'redux-saga/effects';
+import {put, call, select, takeEvery, takeLatest, take, race} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -65,30 +65,44 @@ export function * watchChangeBaseWorkspace() {
     });
 }
 
-export function * watchDiscard() {
+export function * discardIfConfirmed() {
     const {discard} = backend.get().endpoints;
+    yield takeLatest(actionTypes.CR.Workspaces.COMMENCE_DISCARD, function* waitForConfirmation() {
+        const state = yield select();
+        const waitForNextAction = yield race([
+            take(actionTypes.CR.Workspaces.DISCARD_ABORTED),
+            take(actionTypes.CR.Workspaces.DISCARD_CONFIRMED)
+        ]);
+        const nextAction = Object.values(waitForNextAction)[0];
 
-    yield takeEvery(actionTypes.CR.Workspaces.DISCARD, function * discardNodes(action) {
-        yield put(actions.UI.Remote.startDiscarding());
+        if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_ABORTED) {
+            return;
+        }
 
-        try {
-            const currentContentCanvasContextPath = yield select(selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath);
-            const feedback = yield call(discard, action.payload);
-            yield put(actions.UI.Remote.finishDiscarding());
-            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+        if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_CONFIRMED) {
+            yield put(actions.UI.Remote.startDiscarding());
+            const nodesToBeDiscarded = $get('cr.workspaces.toBeDiscarded', state);
 
-            // check if the currently focused document node has been removed
-            const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
+            try {
+                const currentContentCanvasContextPath = yield select(selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath);
+                
+                const feedback = yield call(discard, nodesToBeDiscarded);
+                yield put(actions.UI.Remote.finishDiscarding());
+                yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
-            // if not, reload the document
-            if (contentCanvasNodeIsStillThere) {
-                getGuestFrameDocument().location.reload();
+                // check if the currently focused document node has been removed
+                const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
+
+                // if not, reload the document
+                if (contentCanvasNodeIsStillThere) {
+                    getGuestFrameDocument().location.reload();
+                }
+
+                // reload the page tree
+                yield put(actions.UI.PageTree.reloadTree());
+            } catch (error) {
+                console.error('Failed to discard', error);
             }
-
-            // reload the page tree
-            yield put(actions.UI.PageTree.reloadTree());
-        } catch (error) {
-            console.error('Failed to discard', error);
         }
     });
 }

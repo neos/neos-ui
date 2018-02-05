@@ -37,7 +37,10 @@ import style from './style.css';
     publishAction: actions.CR.Workspaces.publish,
     discardAction: actions.CR.Workspaces.discard
 })
-@neos()
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
+
 export default class PublishDropDown extends PureComponent {
     static propTypes = {
         isSaving: PropTypes.bool,
@@ -54,7 +57,8 @@ export default class PublishDropDown extends PureComponent {
         publishAction: PropTypes.func.isRequired,
         discardAction: PropTypes.func.isRequired,
         changeBaseWorkspaceAction: PropTypes.func.isRequired,
-        routes: PropTypes.object
+        routes: PropTypes.object,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handlePublishClick = () => {
@@ -91,6 +95,7 @@ export default class PublishDropDown extends PureComponent {
             toggleAutoPublishing,
             baseWorkspace,
             changeBaseWorkspaceAction,
+            i18nRegistry,
             neos
         } = this.props;
 
@@ -126,6 +131,7 @@ export default class PublishDropDown extends PureComponent {
                 <DropDown className={style.dropDown}>
                     <DropDown.Header
                         className={dropDownBtnClassName}
+                        aria-label={i18nRegistry.translate('Neos.Neos:Main:showPublishOptions', 'Show publishing options')}
                         />
 
                     <DropDown.Contents

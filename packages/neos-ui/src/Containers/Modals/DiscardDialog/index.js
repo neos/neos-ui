@@ -81,6 +81,7 @@ export default class DiscardDialog extends PureComponent {
         if (!nodesToBeDiscarded) {
             return null;
         }
+        const numberOfChanges = nodesToBeDiscarded.count();
 
         return (
             <Dialog
@@ -92,7 +93,8 @@ export default class DiscardDialog extends PureComponent {
                 <div className={style.modalContents}>
                     <I18n
                         id="Neos.Neos:Main:content.components.discardAllDialog.discardXChangesSubheader"
-                        params={{numberOfChanges: nodesToBeDiscarded.count()}}
+                        params={{numberOfChanges}}
+                        fallback={`Are you sure that you want to discard ${numberOfChanges} change(s) in this workspace?`}
                         />
                 </div>
             </Dialog>

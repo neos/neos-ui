@@ -42,7 +42,7 @@ export default class DiscardDialog extends PureComponent {
             <div>
                 <Icon icon="exclamation-triangle"/>
                 <span className={style.modalTitle}>
-                    <I18n id="content.components.discardAllDialog.discardAllChangesHeader" fallback="Delete"/>
+                    <I18n id="Neos.Neos:Main:discard" fallback="Discard"/>
                 </span>
             </div>
         );

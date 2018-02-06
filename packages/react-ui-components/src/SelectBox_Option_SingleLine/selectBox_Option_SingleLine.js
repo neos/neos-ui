@@ -8,7 +8,8 @@ export default class SelectBox_Option_SingleLine extends PureComponent {
     static propTypes = {
         option: PropTypes.shape({
             label: PropTypes.string.isRequired,
-            icon: PropTypes.string
+            icon: PropTypes.string,
+            disabled: PropTypes.bool
         }).isRequired,
 
         className: PropTypes.string
@@ -22,7 +23,7 @@ export default class SelectBox_Option_SingleLine extends PureComponent {
         });
 
         return (
-            <ListPreviewElement {...this.props} icon={option.icon} className={finalClassNames}>
+            <ListPreviewElement {...this.props} icon={option.icon} disabled={option.disabled} className={finalClassNames}>
                 <span>{option.label}</span>
             </ListPreviewElement>
         );

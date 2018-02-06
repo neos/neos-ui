@@ -69,6 +69,7 @@ DimensionSelector.propTypes = {
     presets: PropTypes.object.isRequired,
     activePreset: PropTypes.string.isRequired,
     dimensionName: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool,
     onSelect: PropTypes.func.isRequired
 };
 
@@ -105,7 +106,7 @@ export default class DimensionSwitcher extends PureComponent {
     // Merge active presets comming from redux with local transientPresets state (i.e. presents selected, but not yet applied)
     //
     getEffectivePresets = () => {
-        const activePresets = this.props.activePresets.map((dimensionPreset, dimensionName) => $get('name', dimensionPreset));
+        const activePresets = this.props.activePresets.map(dimensionPreset => $get('name', dimensionPreset));
         return Object.assign({}, activePresets.toJS(), this.state.transientPresets);
     };
 

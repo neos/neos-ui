@@ -9,6 +9,8 @@ use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadContentOutOfBand;
+use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
 use Neos\Utility\ObjectAccess;
 
@@ -69,6 +71,27 @@ class Property extends AbstractChange
     public function getPropertyName()
     {
         return $this->propertyName;
+    }
+
+    /**
+     * Set the node dom address
+     *
+     * @param RenderedNodeDomAddress $nodeDomAddress
+     * @return void
+     */
+    public function setNodeDomAddress(RenderedNodeDomAddress $nodeDomAddress = null)
+    {
+        $this->nodeDomAddress = $nodeDomAddress;
+    }
+
+    /**
+     * Get the node dom address
+     *
+     * @return RenderedNodeDomAddress
+     */
+    public function getNodeDomAddress()
+    {
+        return $this->nodeDomAddress;
     }
 
     /**
@@ -136,7 +159,10 @@ class Property extends AbstractChange
 
             $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
             if ($node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
-                $this->reloadDocument();
+                $reloadContentOutOfBand = new ReloadContentOutOfBand();
+                $reloadContentOutOfBand->setNode($node);
+                $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
+                $this->feedbackCollection->add($reloadContentOutOfBand);
             }
 
             // This might be needed to update node label and other things that we can calculate only on the server

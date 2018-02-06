@@ -81,6 +81,7 @@ export function * inspectorSaga({globalRegistry}) {
 function * flushInspector(inspectorRegistry) {
     const state = yield select();
     const focusedNode = getFocusedNode(state);
+    const focusedNodeFusionPath = $get('cr.nodes.focused.fusionPath', state);
     const transientInspectorValues = getTransientInspectorValues(state);
     const transientInspectorValuesForFocusedNodes = $get([$get('contextPath', focusedNode)], transientInspectorValues);
 
@@ -118,7 +119,14 @@ function * flushInspector(inspectorRegistry) {
         const change = {
             type: 'Neos.Neos.Ui:Property',
             subject: $get('contextPath', focusedNode),
-            payload: {propertyName, value}
+            payload: {
+                propertyName,
+                value,
+                nodeDomAddress: {
+                    contextPath: $get('contextPath', focusedNode),
+                    fusionPath: focusedNodeFusionPath
+                }
+            }
         };
 
         //

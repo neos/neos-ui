@@ -15,7 +15,7 @@ const urlWithParamsInner = (searchParams, prepend, params = {}) => {
         } else if (typeof value === 'object') {
             urlWithParamsInner(searchParams, concatenatePrependAndKey(prepend, key), value);
         } else {
-            searchParams.append(key, value);
+            searchParams.append(concatenatePrependAndKey(prepend, key), value);
         }
     });
 };

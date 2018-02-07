@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $contains} from 'plow-js';
@@ -13,6 +13,18 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import TabPanel from './TabPanel/index';
 import style from './style.css';
+
+const preprocessViewConfiguration = (currentObject, context = {}) => {
+    Object.keys(currentObject).forEach(property => {
+        if (currentObject[property] !== null && typeof currentObject[property] === 'object') {
+            preprocessViewConfiguration(currentObject[property], context);
+            return;
+        }
+        if (typeof currentObject[property] === 'string' && currentObject[property].indexOf('UI_eval:') === 0) {
+            currentObject[property] = eval(currentObject[property].replace('UI_eval:', ''));
+        }
+    });
+}
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
@@ -32,6 +44,7 @@ import style from './style.css';
             focusedNode: selectors.CR.Nodes.focusedSelector(state),
             node: selectors.CR.Nodes.focusedSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
+            transientValues: selectors.UI.Inspector.transientValues(state),
             isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
             shouldShowUnappliedChangesOverlay,
             shouldShowSecondaryInspector
@@ -45,7 +58,7 @@ import style from './style.css';
     openSecondaryInspector: actions.UI.Inspector.openSecondaryInspector,
     closeSecondaryInspector: actions.UI.Inspector.closeSecondaryInspector
 })
-export default class Inspector extends PureComponent {
+export default class Inspector extends Component {
     static propTypes = {
         nodeTypesRegistry: PropTypes.object,
         i18nRegistry: PropTypes.object.isRequired,
@@ -56,6 +69,7 @@ export default class Inspector extends PureComponent {
         isDiscardDisabled: PropTypes.bool,
         shouldShowUnappliedChangesOverlay: PropTypes.bool,
         shouldShowSecondaryInspector: PropTypes.bool,
+        transientValues: PropTypes.object,
 
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
@@ -146,14 +160,28 @@ export default class Inspector extends PureComponent {
             isDiscardDisabled,
             shouldShowUnappliedChangesOverlay,
             shouldShowSecondaryInspector,
-            i18nRegistry
+            i18nRegistry,
+            transientValues
         } = this.props;
 
         if (!focusedNode) {
             return this.renderFallback();
         }
 
-        const viewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', focusedNode));
+        const originalViewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', focusedNode));
+
+        // Preprocess viewConfiguration
+        const nodeForContext = focusedNode.toJS();
+        if (transientValues && transientValues.toJS) {
+            transientValues.map(item => item.value).toJS();
+            nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
+        }
+        const viewConfiguration = JSON.parse(JSON.stringify(originalViewConfiguration));
+        preprocessViewConfiguration(viewConfiguration, {
+            node: nodeForContext
+        });
+
+        const debouncedCommit = (...args) => debounce(throttle(() => commit(...args), 1500), 150)
 
         if (!viewConfiguration || !viewConfiguration.tabs) {
             return this.renderFallback();

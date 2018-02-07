@@ -16,8 +16,8 @@ export default class PropertyGroup extends PureComponent {
     static propTypes = {
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
-        properties: PropTypes.array,
-        views: PropTypes.array,
+        properties: PropTypes.object,
+        views: PropTypes.object,
         renderSecondaryInspector: PropTypes.func.isRequired,
 
         node: PropTypes.object.isRequired,
@@ -37,14 +37,14 @@ export default class PropertyGroup extends PureComponent {
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {properties.map(property => {
-                        const propertyId = property.id;
+                        const propertyId = $get('id', property);
                         return (
                             <InspectorEditorEnvelope
                                 key={$get('contextPath', node) + propertyId}
                                 id={propertyId}
-                                label={property.label}
-                                editor={property.editor}
-                                options={property.editorOptions}
+                                label={$get('label', property)}
+                                editor={$get('editor', property)}
+                                options={$get('editorOptions', property) && $get('editorOptions', property).toJS ? $get('editorOptions', property).toJS() : $get('editorOptions', property)}
                                 renderSecondaryInspector={renderSecondaryInspector}
                                 node={node}
                                 commit={commit}
@@ -56,9 +56,9 @@ export default class PropertyGroup extends PureComponent {
                             <InspectorViewEnvelope
                                 key={$get('contextPath', node) + viewId}
                                 id={viewId}
-                                label={view.label}
-                                view={view.view}
-                                options={view.viewOptions}
+                                label={$get('label', view)}
+                                view={$get('view', view)}
+                                options={$get('viewOptions', view) && $get('viewOptions', view).toJS ? $get('viewOptions', view).toJS() : $get('viewOptions', view)}
                                 renderSecondaryInspector={renderSecondaryInspector}
                                 node={node}
                                 commit={commit}

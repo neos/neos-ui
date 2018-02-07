@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $contains} from 'plow-js';
+import {$get, $contains, $set} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
 import Bar from '@neos-project/react-ui-components/src/Bar/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
+import Immutable from 'immutable';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -14,16 +15,26 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import TabPanel from './TabPanel/index';
 import style from './style.css';
 
-const preprocessViewConfiguration = (currentObject, context = {}) => {
-    Object.keys(currentObject).forEach(property => {
-        if (currentObject[property] !== null && typeof currentObject[property] === 'object') {
-            preprocessViewConfiguration(currentObject[property], context);
-            return;
-        }
-        if (typeof currentObject[property] === 'string' && currentObject[property].indexOf('UI_eval:') === 0) {
-            currentObject[property] = eval(currentObject[property].replace('UI_eval:', ''));
+const set = (path, value, object) => {
+    let property = object;
+    path.forEach(segment => property = property[segment]);
+}
+
+const preprocessViewConfiguration = (viewConfiguration, originalViewConfiguration, context = {}, path = []) => {
+    const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
+    let result = viewConfiguration;
+    currentLevel.forEach((propertyValue, propertyName) => {
+        const newPath = path.slice();
+        newPath.push(propertyName);
+        const originalValue = $get(newPath, originalViewConfiguration);
+        
+        if (propertyValue !== null && typeof propertyValue === 'object') {
+            preprocessViewConfiguration(viewConfiguration, originalViewConfiguration, context, newPath);
+        } else if (typeof originalValue === 'string' && originalValue.indexOf('UI_eval:') === 0) {
+            result = $set(newPath, eval(originalValue.replace('UI_eval:', '')), result);
         }
     });
+    return result;
 }
 
 @neos(globalRegistry => ({
@@ -83,8 +94,21 @@ export default class Inspector extends Component {
         secondaryInspectorComponent: null
     };
 
-    componentWillReceiveProps({shouldShowSecondaryInspector}) {
-        if (!shouldShowSecondaryInspector) {
+    cloneViewConfiguration = props => {
+        this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
+        this.originalViewConfiguration = this.viewConfiguration;
+    };
+
+    constructor(props) {
+        super(props);
+        this.cloneViewConfiguration(props);
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.focusedNode !== this.props.focusedNode) {
+            this.cloneViewConfiguration(newProps);
+        }
+        if (!newProps.shouldShowSecondaryInspector) {
             this.setState({
                 secondaryInspectorName: undefined,
                 secondaryInspectorComponent: undefined
@@ -168,22 +192,15 @@ export default class Inspector extends Component {
             return this.renderFallback();
         }
 
-        const originalViewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', focusedNode));
-
         // Preprocess viewConfiguration
-        const nodeForContext = focusedNode.toJS();
-        if (transientValues && transientValues.toJS) {
-            transientValues.map(item => item.value).toJS();
-            nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
-        }
-        const viewConfiguration = JSON.parse(JSON.stringify(originalViewConfiguration));
-        preprocessViewConfiguration(viewConfiguration, {
-            node: nodeForContext
-        });
-
-        const debouncedCommit = (...args) => debounce(throttle(() => commit(...args), 1500), 150)
-
-        if (!viewConfiguration || !viewConfiguration.tabs) {
+        // const nodeForContext = focusedNode.toJS();
+        // if (transientValues && transientValues.toJS) {
+        //     transientValues.map(item => item.value).toJS();
+        //     nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
+        // }
+        const viewConfiguration = Immutable.fromJS(this.props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', this.props.focusedNode)));
+        // const viewConfiguration = preprocessViewConfiguration(this.viewConfiguration, this.originalViewConfiguration, {node: nodeForContext});
+        if (!$get('tabs', viewConfiguration)) {
             return this.renderFallback();
         }
 
@@ -201,14 +218,14 @@ export default class Inspector extends Component {
                         tabs__content: style.tabs // eslint-disable-line camelcase
                     }}
                     >
-                    {viewConfiguration.tabs
+                    {$get('tabs', viewConfiguration)
                         //
                         // Only display tabs, that have groups and these groups have properties
                         //
-                        .filter(t => t.groups && t.groups.length && t.groups.reduce((acc, group) => (
+                        .filter(t => $get('groups', t) && $get('groups', t).count() > 0 && $get('groups', t).reduce((acc, group) => (
                             acc ||
-                            group.properties.filter(this.isPropertyEnabled).length > 0 ||
-                            group.views.length > 0
+                            $get('properties', group).filter(this.isPropertyEnabled).count() > 0 ||
+                            $get('views', group).count() > 0
                         ), false))
 
                         //
@@ -217,10 +234,10 @@ export default class Inspector extends Component {
                         .map(tab => {
                             return (
                                 <TabPanel
-                                    key={tab.id}
-                                    icon={tab.icon}
-                                    groups={tab.groups}
-                                    tooltip={i18nRegistry.translate(tab.label)}
+                                    key={$get('id', tab)}
+                                    icon={$get('icon', tab)}
+                                    groups={$get('groups', tab)}
+                                    tooltip={i18nRegistry.translate($get('label', tab))}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
                                     node={node}
                                     commit={commit}

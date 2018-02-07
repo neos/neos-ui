@@ -7,7 +7,7 @@
     "build": "./Build/createVersionFile.sh && cross-env NODE_ENV=production yarn build:ui",
     "build:ui": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
     "build:ui:watch": "yarn build:ui -- --watch",
-    "build:ui:watch-poll": "yarn run build:ui --watch-poll --watch",
+    "build:ui:watch-poll": "yarn run build:ui -- --watch-poll --watch",
     "start-storybook": "lerna run --scope @neos-project/react-ui-components start",
     "test": "lerna run test --concurrency 1",
     "test:e2e": "yarn run testcafe chrome:headless Tests/IntegrationTests/* --selector-timeout=30000 --assertion-timeout=30000",

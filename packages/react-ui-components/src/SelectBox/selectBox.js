@@ -32,7 +32,8 @@ export default class SelectBox extends PureComponent {
                 label: PropTypes.oneOfType([
                     PropTypes.string,
                     PropTypes.object
-                ]).isRequired
+                ]).isRequired,
+                disabled: PropTypes.bool
             })
         ),
 

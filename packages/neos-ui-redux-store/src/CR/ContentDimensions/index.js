@@ -8,10 +8,12 @@ import {createSelector} from 'reselect';
 
 const SELECT_PRESET = '@neos/neos-ui/CR/ContentDimensions/SELECT_PRESET';
 const SET_ACTIVE = '@neos/neos-ui/CR/ContentDimensions/SET_ACTIVE';
+const SET_ALLOWED = '@neos/neos-ui/CR/ContentDimensions/SET_ALLOWED';
 
 export const actionTypes = {
     SELECT_PRESET,
-    SET_ACTIVE
+    SET_ACTIVE,
+    SET_ALLOWED
 };
 
 /**
@@ -24,12 +26,18 @@ const selectPreset = createAction(SELECT_PRESET, targetPresets => ({targetPreset
  */
 const setActive = createAction(SET_ACTIVE, dimensionValues => ({dimensionValues}));
 
+/**
+ * Sets the currently allowed presets for dimension
+ */
+const setAllowed = createAction(SET_ALLOWED, (dimensionName, allowedPresets) => ({dimensionName, allowedPresets}));
+
 //
 // Export the actions
 //
 export const actions = {
     selectPreset,
-    setActive
+    setActive,
+    setAllowed
 };
 
 /**
@@ -99,7 +107,8 @@ export const reducer = handleActions({
         const previousActive = active(state);
         const newActive = previousActive.toSeq().map((values, dimensionName) => new List(dimensionValues[dimensionName])).toMap();
         return $set('cr.contentDimensions.active', newActive, state);
-    }
+    },
+    [SET_ALLOWED]: ({dimensionName, allowedPresets}) => $set(['cr', 'contentDimensions', 'allowedPresets', dimensionName], Immutable.fromJS(allowedPresets))
 });
 
 /**

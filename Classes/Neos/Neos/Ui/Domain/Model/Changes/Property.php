@@ -159,10 +159,19 @@ class Property extends AbstractChange
 
             $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
             if ($node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
-                $reloadContentOutOfBand = new ReloadContentOutOfBand();
-                $reloadContentOutOfBand->setNode($node);
-                $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
-                $this->feedbackCollection->add($reloadContentOutOfBand);
+                if ($this->getNodeDomAddress()->getFusionPath()) {
+                    $reloadContentOutOfBand = new ReloadContentOutOfBand();
+                    $reloadContentOutOfBand->setNode($node);
+                    $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
+                    $this->feedbackCollection->add($reloadContentOutOfBand);
+                } else {
+                    $this->reloadDocument();
+                }
+            }
+
+            $reloadDocumentIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadDocumentIfChanged', $propertyName);
+            if ($node->getNodeType()->getConfiguration($reloadDocumentIfChangedConfigurationPath)) {
+                $this->reloadDocument();
             }
 
             // This might be needed to update node label and other things that we can calculate only on the server

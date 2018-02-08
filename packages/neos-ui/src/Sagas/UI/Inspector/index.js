@@ -1,6 +1,7 @@
 import {take, race, put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 import escapeRegExp from 'lodash.escaperegexp';
+import {findNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 
@@ -81,7 +82,11 @@ export function * inspectorSaga({globalRegistry}) {
 function * flushInspector(inspectorRegistry) {
     const state = yield select();
     const focusedNode = getFocusedNode(state);
-    const focusedNodeFusionPath = $get('cr.nodes.focused.fusionPath', state);
+    let focusedNodeFusionPath = $get('cr.nodes.focused.fusionPath', state);
+    if (!focusedNodeFusionPath) {
+        const focusedDomNode = findNodeInGuestFrame($get('contextPath', focusedNode))
+        focusedNodeFusionPath = focusedDomNode && focusedDomNode.getAttribute('data-__neos-fusion-path');
+    }
     const transientInspectorValues = getTransientInspectorValues(state);
     const transientInspectorValuesForFocusedNodes = $get([$get('contextPath', focusedNode)], transientInspectorValues);
 

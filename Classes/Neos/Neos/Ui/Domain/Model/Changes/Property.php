@@ -169,8 +169,8 @@ class Property extends AbstractChange
                 }
             }
 
-            $reloadDocumentIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadDocumentIfChanged', $propertyName);
-            if ($node->getNodeType()->getConfiguration($reloadDocumentIfChangedConfigurationPath)) {
+            $reloadPageIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
+            if ($node->getNodeType()->getConfiguration($reloadPageIfChangedConfigurationPath)) {
                 $this->reloadDocument();
             }
 

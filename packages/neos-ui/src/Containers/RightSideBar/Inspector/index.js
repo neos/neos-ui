@@ -34,7 +34,6 @@ import style from './style.css';
             focusedNode: selectors.CR.Nodes.focusedSelector(state),
             node: selectors.CR.Nodes.focusedSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
-            transientValues: selectors.UI.Inspector.transientValues(state),
             isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
             shouldShowUnappliedChangesOverlay,
             shouldShowSecondaryInspector
@@ -59,7 +58,6 @@ export default class Inspector extends PureComponent {
         isDiscardDisabled: PropTypes.bool,
         shouldShowUnappliedChangesOverlay: PropTypes.bool,
         shouldShowSecondaryInspector: PropTypes.bool,
-        transientValues: PropTypes.object,
 
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
@@ -127,9 +125,7 @@ export default class Inspector extends PureComponent {
 
     preprocessViewConfigurationDebounced = debounce(() => {
         // Calculate node property values for context
-        const {focusedNode, transientValues} = this.props;
         const nodeForContext = focusedNode.toJS();
-        if (transientValues && transientValues.toJS) {
             transientValues.map(item => item.value).toJS();
             nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
         }
@@ -207,8 +203,7 @@ export default class Inspector extends PureComponent {
             isDiscardDisabled,
             shouldShowUnappliedChangesOverlay,
             shouldShowSecondaryInspector,
-            i18nRegistry,
-            transientValues
+            i18nRegistry
         } = this.props;
 
         if (!focusedNode) {

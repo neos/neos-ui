@@ -42,7 +42,7 @@ export default class EditorEnvelope extends PureComponent {
     debouncedCommit = throttle((...args) => this.props.commit(...args), 1000);
 
     onHandleChange = value => {
-        this.setState({ value });
+        this.setState({value});
         this.debouncedCommit(value);
     }
 
@@ -69,7 +69,7 @@ export default class EditorEnvelope extends PureComponent {
                     id={this.generateIdentifier()}
                     commit={this.onHandleChange}
                     value={this.state.value}
-                />
+                    />
             );
         }
 

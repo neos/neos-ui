@@ -7,6 +7,7 @@ import Bar from '@neos-project/react-ui-components/src/Bar/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 import Immutable from 'immutable';
+import debounce from 'lodash.debounce';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -89,8 +90,13 @@ export default class Inspector extends PureComponent {
         }
     }
 
+    componentWillUnmount() {
+        // Abort any debounced calls
+        this.preprocessViewConfigurationDebounced.cancel();
+    }
+
     //
-    // We fetch viewConfiguration and clone it once the focusedNode changes
+    // Fetch viewConfiguration and clone it once the focusedNode changes
     //
     cloneViewConfiguration = props => {
         this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
@@ -98,7 +104,7 @@ export default class Inspector extends PureComponent {
     };
 
     //
-    // We update viewConfiguration, while keeping originalViewConfiguration to read original property values from it
+    // Update viewConfiguration, while keeping originalViewConfiguration to read original property values from it
     //
     preprocessViewConfiguration = (context = {}, path = []) => {
         const currentLevel = path.length === 0 ? this.viewConfiguration : $get(path, this.viewConfiguration);
@@ -118,6 +124,21 @@ export default class Inspector extends PureComponent {
             }
         });
     };
+
+    preprocessViewConfigurationDebounced = debounce(() => {
+        // Calculate node property values for context
+        const {focusedNode, transientValues} = this.props;
+        const nodeForContext = focusedNode.toJS();
+        if (transientValues && transientValues.toJS) {
+            transientValues.map(item => item.value).toJS();
+            nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
+        }
+
+        // Eval the view configuration
+        this.preprocessViewConfiguration({node: nodeForContext});
+        // Force re-render, since we were debounced
+        this.setState({});
+    }, 250);
 
     handleCloseSecondaryInspector = () => {
         this.props.closeSecondaryInspector();
@@ -194,13 +215,7 @@ export default class Inspector extends PureComponent {
             return this.renderFallback();
         }
 
-        // Preprocess viewConfiguration
-        const nodeForContext = focusedNode.toJS();
-        if (transientValues && transientValues.toJS) {
-            transientValues.map(item => item.value).toJS();
-            nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
-        }
-        this.preprocessViewConfiguration({node: nodeForContext});
+        this.preprocessViewConfigurationDebounced();
         const viewConfiguration = this.viewConfiguration;
 
         if (!$get('tabs', viewConfiguration)) {

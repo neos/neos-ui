@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Label from '@neos-project/react-ui-components/src/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
-import throttle from 'lodash.throttle';
 import style from './style.css';
 
 @neos(globalRegistry => ({
@@ -26,26 +25,6 @@ export default class EditorEnvelope extends PureComponent {
         commit: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: props.value
-        };
-    }
-
-    componentWillReceiveProps(newProps) {
-        if (newProps.value !== this.props.value) {
-            this.setState({value: newProps.value});
-        }
-    }
-
-    debouncedCommit = throttle((...args) => this.props.commit(...args), 1000);
-
-    onHandleChange = value => {
-        this.setState({value});
-        this.debouncedCommit(value);
-    }
-
     generateIdentifier() {
         return `#__neos__editor__property---${this.props.identifier}`;
     }
@@ -67,8 +46,6 @@ export default class EditorEnvelope extends PureComponent {
                 <EditorComponent
                     {...this.props}
                     id={this.generateIdentifier()}
-                    commit={this.onHandleChange}
-                    value={this.state.value}
                     />
             );
         }

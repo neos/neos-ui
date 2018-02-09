@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $contains, $set} from 'plow-js';
@@ -14,28 +14,6 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import TabPanel from './TabPanel/index';
 import style from './style.css';
-
-const set = (path, value, object) => {
-    let property = object;
-    path.forEach(segment => property = property[segment]);
-}
-
-const preprocessViewConfiguration = (viewConfiguration, originalViewConfiguration, context = {}, path = []) => {
-    const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
-    let result = viewConfiguration;
-    currentLevel.forEach((propertyValue, propertyName) => {
-        const newPath = path.slice();
-        newPath.push(propertyName);
-        const originalValue = $get(newPath, originalViewConfiguration);
-        
-        if (propertyValue !== null && typeof propertyValue === 'object') {
-            preprocessViewConfiguration(viewConfiguration, originalViewConfiguration, context, newPath);
-        } else if (typeof originalValue === 'string' && originalValue.indexOf('UI_eval:') === 0) {
-            result = $set(newPath, eval(originalValue.replace('UI_eval:', '')), result);
-        }
-    });
-    return result;
-}
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
@@ -69,7 +47,7 @@ const preprocessViewConfiguration = (viewConfiguration, originalViewConfiguratio
     openSecondaryInspector: actions.UI.Inspector.openSecondaryInspector,
     closeSecondaryInspector: actions.UI.Inspector.closeSecondaryInspector
 })
-export default class Inspector extends Component {
+export default class Inspector extends PureComponent {
     static propTypes = {
         nodeTypesRegistry: PropTypes.object,
         i18nRegistry: PropTypes.object.isRequired,
@@ -94,11 +72,6 @@ export default class Inspector extends Component {
         secondaryInspectorComponent: null
     };
 
-    cloneViewConfiguration = props => {
-        this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
-        this.originalViewConfiguration = this.viewConfiguration;
-    };
-
     constructor(props) {
         super(props);
         this.cloneViewConfiguration(props);
@@ -115,6 +88,36 @@ export default class Inspector extends Component {
             });
         }
     }
+
+    //
+    // We fetch viewConfiguration and clone it once the focusedNode changes
+    //
+    cloneViewConfiguration = props => {
+        this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
+        this.originalViewConfiguration = this.viewConfiguration;
+    };
+
+    //
+    // We update viewConfiguration, while keeping originalViewConfiguration to read original property values from it
+    //
+    preprocessViewConfiguration = (context = {}, path = []) => {
+        const currentLevel = path.length === 0 ? this.viewConfiguration : $get(path, this.viewConfiguration);
+        currentLevel.forEach((propertyValue, propertyName) => {
+            const newPath = path.slice();
+            newPath.push(propertyName);
+            const originalPropertyValue = $get(newPath, this.originalViewConfiguration);
+
+            if (propertyValue !== null && typeof propertyValue === 'object') {
+                this.preprocessViewConfiguration(context, newPath);
+            } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
+                const {node} = context; // eslint-disable-line
+                const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
+                if (evaluatedValue !== propertyValue) {
+                    this.viewConfiguration = $set(newPath, evaluatedValue, this.viewConfiguration);
+                }
+            }
+        });
+    };
 
     handleCloseSecondaryInspector = () => {
         this.props.closeSecondaryInspector();
@@ -177,7 +180,6 @@ export default class Inspector extends Component {
     render() {
         const {
             focusedNode,
-            nodeTypesRegistry,
             node,
             commit,
             isApplyDisabled,
@@ -193,13 +195,14 @@ export default class Inspector extends Component {
         }
 
         // Preprocess viewConfiguration
-        // const nodeForContext = focusedNode.toJS();
-        // if (transientValues && transientValues.toJS) {
-        //     transientValues.map(item => item.value).toJS();
-        //     nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
-        // }
-        const viewConfiguration = Immutable.fromJS(this.props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', this.props.focusedNode)));
-        // const viewConfiguration = preprocessViewConfiguration(this.viewConfiguration, this.originalViewConfiguration, {node: nodeForContext});
+        const nodeForContext = focusedNode.toJS();
+        if (transientValues && transientValues.toJS) {
+            transientValues.map(item => item.value).toJS();
+            nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
+        }
+        this.preprocessViewConfiguration({node: nodeForContext});
+        const viewConfiguration = this.viewConfiguration;
+
         if (!$get('tabs', viewConfiguration)) {
             return this.renderFallback();
         }

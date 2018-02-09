@@ -51,7 +51,7 @@ export default class PropertyGroup extends PureComponent {
                                 />);
                     })}
                     {views.map(view => {
-                        const viewId = view.id;
+                        const viewId = $get('id', view);
                         return (
                             <InspectorViewEnvelope
                                 key={$get('contextPath', node) + viewId}

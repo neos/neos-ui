@@ -5,7 +5,3 @@
     border-bottom: 1px solid var(--colors-ContrastDark);
     background-color: var(--colors-ContrastNeutral);
 }
-
-.searchBar > * {
-    width: 50%;
-}

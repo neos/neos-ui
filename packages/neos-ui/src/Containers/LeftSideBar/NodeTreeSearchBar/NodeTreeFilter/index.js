@@ -49,6 +49,7 @@ export default class NodeTreeFilter extends PureComponent {
                     placeholder={label}
                     placeholderIcon={'filter'}
                     onValueChange={onChange}
+                    allowEmpty={true}
                     value={value}
                     options={searchOptions(this.state.filterTerm, options)}
                     displaySearchBox={true}

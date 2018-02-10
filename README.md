@@ -53,7 +53,7 @@ In order to start contributing, follow the following steps:
 
 2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html), [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` and `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
 
-   If you've installed `nvm` make sure that the next node LTS version `6.10.0` is correctly installed - You can do so by executing `nvm install v6.10.0`.
+   If you've installed `nvm` make sure that the next node LTS version `8.9.4` is correctly installed - You can do so by executing `nvm install v8.9.4`.
    If you need help setting up `nvm`, `npm`, `yarn` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
 
 3) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:

@@ -1,5 +1,6 @@
 import {Selector, Role} from 'testcafe';
 import ReactSelector from 'testcafe-react-selectors';
+import checkPropTypes from '../checkPropTypes';
 
 import Page from './pageModel';
 
@@ -47,7 +48,8 @@ fixture `Content Module`
         await t.useRole(adminUser);
         await discardAll(t);
         await goToPage(t, 'Home');
-    });
+    })
+    .afterEach(() => checkPropTypes());
 
 test('Switching dimensions', async t => {
     subSection('Navigate to some inner page and switch dimension');

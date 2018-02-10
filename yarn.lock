@@ -10794,9 +10794,9 @@ testcafe-legacy-api@3.1.2:
     pinkie "^2.0.1"
     strip-bom "^2.0.0"
 
-testcafe-react-selectors@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/testcafe-react-selectors/-/testcafe-react-selectors-1.0.2.tgz#700f9f0b9637440e2fb8c88ac0ee86f3c86ed971"
+testcafe-react-selectors@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/testcafe-react-selectors/-/testcafe-react-selectors-1.0.5.tgz#7794b6684152c164eeaedd24225bb4d956096def"
 
 testcafe-reporter-json@^2.1.0:
   version "2.1.0"
@@ -10818,7 +10818,7 @@ testcafe-reporter-xunit@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/testcafe-reporter-xunit/-/testcafe-reporter-xunit-2.1.0.tgz#e6d66c572ce15af266706af0fd610b2a841dd443"
 
-testcafe@^0.18.0:
+testcafe@^0.18.6:
   version "0.18.6"
   resolved "https://registry.yarnpkg.com/testcafe/-/testcafe-0.18.6.tgz#7dfd3467e5010c741ebf5e383cd5f82ad39fc5f2"
   dependencies:
@@ -11062,6 +11062,10 @@ trim@0.0.1:
 trough@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.1.tgz#a9fd8b0394b0ae8fff82e0633a0a36ccad5b5f86"
+
+"true@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/true/-/true-0.0.4.tgz#921ebfbd58122d3a66cfff6dc054daf269eb9f21"
 
 truncate-utf8-bytes@^1.0.0:
   version "1.0.2"

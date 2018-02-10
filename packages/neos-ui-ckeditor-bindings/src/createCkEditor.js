@@ -44,7 +44,8 @@ export default ({propertyDomNode, propertyName, contextPath, editorOptions, glob
             subject: contextPath,
             payload: {
                 propertyName,
-                value: contents
+                value: contents,
+                isInline: true
             }
         });
     });

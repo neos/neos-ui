@@ -53,6 +53,13 @@ class Property extends AbstractChange
     protected $value;
 
     /**
+     * The change has been initiated from the inline editing
+     *
+     * @var bool
+     */
+    protected $isInline;
+
+    /**
      * Set the property name
      *
      * @param string $propertyName
@@ -115,6 +122,26 @@ class Property extends AbstractChange
     }
 
     /**
+     * Set isInline
+     *
+     * @param bool $isInline
+     */
+    public function setIsInline($isInline)
+    {
+        $this->isInline = $isInline;
+    }
+
+    /**
+     * Get isInline
+     *
+     * @return bool
+     */
+    public function getIsInline()
+    {
+        return $this->isInline;
+    }
+
+    /**
      * Checks whether this change can be applied to the subject
      *
      * @return boolean
@@ -158,7 +185,7 @@ class Property extends AbstractChange
             $this->updateWorkspaceInfo();
 
             $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
-            if ($node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
+            if (!$this->getIsInline() && $node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
                 if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath() && $node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
                     $reloadContentOutOfBand = new ReloadContentOutOfBand();
                     $reloadContentOutOfBand->setNode($node);
@@ -170,7 +197,7 @@ class Property extends AbstractChange
             }
 
             $reloadPageIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
-            if ($node->getNodeType()->getConfiguration($reloadPageIfChangedConfigurationPath)) {
+            if (!$this->getIsInline() && $node->getNodeType()->getConfiguration($reloadPageIfChangedConfigurationPath)) {
                 $this->reloadDocument();
             }
 

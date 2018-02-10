@@ -58,6 +58,5 @@
   "license": "GNU GPLv3",
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"
-  },
-  "dependencies": {}
+  }
 }

@@ -105,7 +105,7 @@ class ReloadContentOutOfBand implements FeedbackInterface
 
         return (
             $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath() &&
-            $this->getReferenceData() == $feedback->getReferenceData()
+            $this->getNodeDomAddress() == $feedback->getNodeDomAddress()
         );
     }
 

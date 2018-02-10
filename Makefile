@@ -148,7 +148,7 @@ tag:
 # make a clean build from scratch
 # and make sure that every lint and test stage is running through
 release: called-with-version \
-	clean check-requirements build-production lint lint-editorconfig test test-e2e bump-version publish-npm tag
+	check-requirements build-production lint lint-editorconfig test test-e2e bump-version publish-npm tag
 	@echo
 	@echo
 	@echo

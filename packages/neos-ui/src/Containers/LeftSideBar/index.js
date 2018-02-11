@@ -60,7 +60,7 @@ export default class LeftSideBar extends PureComponent {
                 </div>
 
                 {/* Disable top border to get only a 1px combined border size */}
-                <hr style={{borderTop: 'none'}} />
+                <hr style={{borderTop: 'none'}}/>
 
                 <div className={bottomClassNames}>
                     <ContentTreeToolbar/>

@@ -131,23 +131,28 @@ endif
 
 bump-version: called-with-version
 	lerna publish \
-		--skip-git --exact --repo-version=$(VERSION) --yes --force-publish --skip-npm
+		--skip-git --exact --repo-version=$(VERSION) \
+		--yes --force-publish --skip-npm
 	./Build/createVersionFile.sh
 
 publish-npm: called-with-version
-	lerna publish --skip-git --exact --repo-version=$(VERSION) --yes --force-publish
+	lerna publish --skip-git --exact --repo-version=$(VERSION) \
+		--yes --force-publish
 
 tag: called-with-version
 	git tag $(VERSION)
 
 # make a clean build from scratch
 # and make sure that every lint and test stage is running through
-release: called-with-version \
-	check-requirements build-production lint lint-editorconfig test test-e2e bump-version publish-npm tag
+release: called-with-version check-requirements \
+	build-production \
+	lint lint-editorconfig \
+	test test-e2e \
+	bump-version publish-npm tag
 	@echo
 	@echo
 	@echo
-	@echo '#####################################################################'
+	@echo '####################################################################'
 	@echo
 	@echo You should look at the git diff carefully and commit your changes
 	@echo

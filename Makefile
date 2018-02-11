@@ -32,8 +32,6 @@
 # Add node_modules and composer binaries to $PATH
 export PATH := $(PATH):./node_modules/.bin:./bin
 
-#
-
 # Expected and used node version
 EXPECTED_NODE_VERSION = v8.9.4
 CURRENT_NODE_VERSION = $(shell node -v)
@@ -118,13 +116,10 @@ lint-editorconfig:
 		'./{README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'
 
 
-
 ################################################################################
 # Releasing
 ################################################################################
 
-
-# TODO: Parameterize version
 
 called-with-version:
 ifeq ($(VERSION),)
@@ -134,16 +129,16 @@ ifeq ($(VERSION),)
 	@false
 endif
 
-bump-version:
+bump-version: called-with-version
 	lerna publish \
-		--skip-git --exact --repo-version=1.0.6 --yes --force-publish --skip-npm
+		--skip-git --exact --repo-version=$(VERSION) --yes --force-publish --skip-npm
 	./Build/createVersionFile.sh
 
-publish-npm:
-	lerna publish --skip-git --exact --repo-version=1.0.6 --yes --force-publish
+publish-npm: called-with-version
+	lerna publish --skip-git --exact --repo-version=$(VERSION) --yes --force-publish
 
-tag:
-	git tag 1.0.6
+tag: called-with-version
+	git tag $(VERSION)
 
 # make a clean build from scratch
 # and make sure that every lint and test stage is running through
@@ -159,10 +154,10 @@ release: called-with-version \
 	@echo Then push your changes into the master and trigger the jenkins build.
 
 
-
 ################################################################################
 # Misc
 ################################################################################
+
 
 clean:
 	rm -Rf node_modules; rm -rf packages/*/node_modules

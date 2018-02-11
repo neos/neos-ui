@@ -59,7 +59,8 @@ export default class LeftSideBar extends PureComponent {
                     {LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
                 </div>
 
-                <hr/>
+                {/* Disable top border to get only a 1px combined border size */}
+                <hr style={{borderTop: 'none'}} />
 
                 <div className={bottomClassNames}>
                     <ContentTreeToolbar/>

@@ -143,9 +143,9 @@
   dependencies:
     lodash.upperfirst "^4.3.0"
 
-"@neos-project/eslint-config-neos@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@neos-project/eslint-config-neos/-/eslint-config-neos-2.1.1.tgz#dbd4dfa183f1e396c2dbf8aa8046e1bd0cd3750e"
+"@neos-project/eslint-config-neos@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@neos-project/eslint-config-neos/-/eslint-config-neos-2.1.2.tgz#cd4107bcca18e223dcc2af6cba5660c90d73dc5f"
   dependencies:
     babel-eslint "^8.2.1"
     eslint-config-xo-react "^0.16.0"

@@ -39,6 +39,7 @@ export default class TabPanel extends PureComponent {
                             key={group.id}
                             label={group.label}
                             icon={group.icon}
+                            collapsed={group.collapsed}
                             properties={group.properties.filter(this.isPropertyEnabled)}
                             views={group.views}
                             renderSecondaryInspector={renderSecondaryInspector}

@@ -51,10 +51,7 @@ In order to start contributing, follow the following steps:
 
 1) Ensure you have the `dev-master` version installed (see above).
 
-2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html), [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` and `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
-
-   If you've installed `nvm` make sure that the next node LTS version `8.9.4` is correctly installed - You can do so by executing `nvm install v8.9.4`.
-   If you need help setting up `nvm`, `npm`, `yarn` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
+2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(`<sudo> npm install -g yarn`, https://yarnpkg.com/en/) command to be installed on your system.
 
 3) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
@@ -69,14 +66,12 @@ In order to start contributing, follow the following steps:
 
    ```
    cd Packages/Application/Neos.Neos.Ui
-   source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps, copy githooks
+   source Build/init.sh # do NodeJS stuff ie. install npm deps, copy githooks
    yarn build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
    ```
 
    Alternatively, you can also run the initialization by hand; which will mean:
    ```
-   nvm install
-   nvm use
    npm install -g yarn
    yarn
 

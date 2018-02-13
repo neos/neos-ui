@@ -1,25 +1,19 @@
 #!/usr/bin/env bash
 
+set -xe
+
 if [ -z "$GIT_BRANCH" ]; then echo "\$GIT_BRANCH not set"; exit 1; fi
 
 # go to root directory of Neos.Neos.Ui
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/../../
 
-# load NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-nvm install
-nvm use
 npm install -g yarn
-# break on failures can only be applied AFTER nvm was loaded.
-set -xe
+
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`
 
-yarn install
-yarn build
+make build-production
 
 rm -Rf tmp_compiled_pkg
 git clone git@github.com:neos/neos-ui-compiled.git tmp_compiled_pkg

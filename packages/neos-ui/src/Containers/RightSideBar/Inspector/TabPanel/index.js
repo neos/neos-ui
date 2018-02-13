@@ -39,6 +39,7 @@ export default class TabPanel extends PureComponent {
                             key={$get('id', group)}
                             label={$get('label', group)}
                             icon={$get('icon', group)}
+                            collapsed={$get('collapsed', group)}
                             properties={$get('properties', group).filter(this.isPropertyEnabled)}
                             views={$get('views', group)}
                             renderSecondaryInspector={renderSecondaryInspector}

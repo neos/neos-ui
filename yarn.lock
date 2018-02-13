@@ -7666,6 +7666,10 @@ netrc@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/netrc/-/netrc-0.1.4.tgz#6be94fcaca8d77ade0a9670dc460914c94472444"
 
+node-bin-setup@^1.0.0:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/node-bin-setup/-/node-bin-setup-1.0.6.tgz#4b5c9bb937ece702d7069b36ca78af4684677528"
+
 node-dir@^0.1.10:
   version "0.1.17"
   resolved "https://registry.yarnpkg.com/node-dir/-/node-dir-0.1.17.tgz#5f5665d93351335caabef8f1c554516cf5f1e4e5"
@@ -7764,6 +7768,12 @@ node-uuid@~1.4.7:
 node-version@1.1.0, node-version@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/node-version/-/node-version-1.1.0.tgz#f437d7ba407e65e2c4eaef8887b1718ba523d4f0"
+
+node@8.9.4:
+  version "8.9.4"
+  resolved "https://registry.yarnpkg.com/node/-/node-8.9.4.tgz#5ab1e5ec49067a25e007e361b5f80de9dc0460fc"
+  dependencies:
+    node-bin-setup "^1.0.0"
 
 nomnom@~1.6.2:
   version "1.6.2"

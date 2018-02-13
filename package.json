@@ -101,6 +101,7 @@
     "mime-types": "^2.1.10",
     "moment": "^2.20.1",
     "monet": "^0.8.10",
+    "node": "8.9.4",
     "normalize.css": "^7.0.0",
     "plow-js": "^2.1.0",
     "prop-types": "^15.5.10",

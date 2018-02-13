@@ -30,11 +30,7 @@
 
 
 # Add node_modules and composer binaries to $PATH
-export PATH := $(PATH):./node_modules/.bin:./bin
-
-# Expected and used node version
-EXPECTED_NODE_VERSION = v8.9.4
-CURRENT_NODE_VERSION = $(shell node -v)
+export PATH := ./node_modules/.bin:./bin:$(PATH)
 
 
 ################################################################################
@@ -43,18 +39,13 @@ CURRENT_NODE_VERSION = $(shell node -v)
 
 
 check-requirements:
-ifneq ($(CURRENT_NODE_VERSION),$(EXPECTED_NODE_VERSION))
-	@echo Your node version differs from the one we expect.
-	@echo We expect $(EXPECTED_NODE_VERSION) \
-		and you are using $(CURRENT_NODE_VERSION)
-	@echo Please install the correct node version.
-	@echo consider using nvm: https://github.com/creationix/nvm
-	@false
-endif
-
 	@which yarn &>/dev/null || \
 		(echo yarn is not installed: https://github.com/yarnpkg/yarn && false)
 
+install:
+	yarn install
+
+setup: check-requirements install build
 	@echo Please remember to set frontendDevelopmentMode \
 		to true in your Settings.yaml.
 	@echo
@@ -63,10 +54,6 @@ endif
 	@echo '    Ui:'
 	@echo '      frontendDevelopmentMode: true'
 
-install:
-	yarn install
-
-setup: check-requirements install build
 
 
 ################################################################################

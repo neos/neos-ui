@@ -51,7 +51,7 @@ In order to start contributing, follow the following steps:
 
 1) Ensure you have the `dev-master` version installed (see above).
 
-2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(`<sudo> npm install -g yarn`, https://yarnpkg.com/en/) command to be installed on your system.
+2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(https://yarnpkg.com/en/) command and GNU Make(https://www.gnu.org/software/make/) to be installed on your system.
 
 3) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
@@ -65,17 +65,7 @@ In order to start contributing, follow the following steps:
 4) Run the initialization script:
 
    ```
-   cd Packages/Application/Neos.Neos.Ui
-   source Build/init.sh # do NodeJS stuff ie. install npm deps, copy githooks
-   yarn build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
-   ```
-
-   Alternatively, you can also run the initialization by hand; which will mean:
-   ```
-   npm install -g yarn
-   yarn
-
-   yarn run build:ui:watch
+   make setup
    ```
 
 5) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
@@ -85,22 +75,23 @@ In order to start contributing, follow the following steps:
 #### Development commands
 | Command         | Description                    |
 | --------------- | ------------------------------ |
-| `yarn clear` | delete all node_modules in every subdirectory. |
-| `yarn build:ui`  | Builds the ui via webpack. |
-| `yarn build` |  Runs `build:dev` optimised for production. |
-| `yarn build:ui:watch` | Watches the source files for changes and runs a build:ui in case. |
-| `yarn build:ui:watch-poll` | Watches (and polls) the source files on a file share. Should preferably be used when working an a VM for example. |
-| `yarn start-storybook` | Starts the storybook server on port 9001. |
-| `yarn lint`  | Lints all source files. |
-| `yarn test`  | Executes `yarn lint` to trigger tests via ava. |
-| `yarn test:e2e`  | Executes integration tests. |
+| `make clean` | delete all node_modules in every subdirectory. |
+| `make build` |  Runs the development build. |
+| `make build-watch` | Watches the source files for changes and runs a build in case. |
+| `make build-watch-poll` | Watches (and polls) the source files on a file share. Should preferably be used when working an a VM for example. |
+| `make storybook` | Starts the storybook server on port 9001. |
+| `make lint`  | Executes `make lint-js` and `make lint-editorconfig`. |
+| `make lint-js`  | Runs test in all subpackages via lerna. |
+| `make lint-editorconfig`  | Tests if all files respect the `.editorconfig`. |
+| `make test`  | Executes the test on all source files. |
+| `make test-e2e`  | Executes integration tests. |
 
 #### Code style
-Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `yarn lint` in your shell.
+Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `make lint` in your shell.
 
 #### Writing unit tests
 The unit tests are executed with [jest](https://facebook.github.io/jest/).
-To run the unit tests, execute `yarn test` in your shell.
+To run the unit tests, execute `make test` in your shell.
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 

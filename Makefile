@@ -55,7 +55,6 @@ setup: check-requirements install build
 	@echo '      frontendDevelopmentMode: true'
 
 
-
 ################################################################################
 # Builds
 ################################################################################
@@ -93,8 +92,11 @@ test-e2e:
 	yarn run testcafe chrome:headless Tests/IntegrationTests/* \
 		--selector-timeout=30000 --assertion-timeout=30000
 
-lint:
+lint: lint-js lint-editorconfig
+
+lint-js:
 	lerna run lint --concurrency 1
+
 
 lint-editorconfig:
 	editorconfig-checker \

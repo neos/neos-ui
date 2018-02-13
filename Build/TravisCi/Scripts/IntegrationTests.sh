@@ -7,4 +7,4 @@ set -e
 # The script will be executed in the package working directory.
 #
 
-yarn test:e2e
+make test-e2e

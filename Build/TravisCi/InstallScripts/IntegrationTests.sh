@@ -58,8 +58,7 @@ cd Packages/Application/Neos.Neos.Ui
 
 # Since all environments depend on the node dependencies, install and
 # afterwards prune them to remove extranous packages from previous/cached runs.
-yarn install
-yarn build
+make build-production
 
 # Deactivate the previous enabled handling of hidden files with the `mv` command.
 shopt -u dotglob

@@ -7769,7 +7769,7 @@ node-version@1.1.0, node-version@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/node-version/-/node-version-1.1.0.tgz#f437d7ba407e65e2c4eaef8887b1718ba523d4f0"
 
-node@8.9.4:
+node@8.9.4, node@^8.9.4:
   version "8.9.4"
   resolved "https://registry.yarnpkg.com/node/-/node-8.9.4.tgz#5ab1e5ec49067a25e007e361b5f80de9dc0460fc"
   dependencies:

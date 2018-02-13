@@ -2,12 +2,6 @@
 
 set -e
 
-#
-# Make sure the node & npm version matches our required constraints.
-#
-nvm install
-nvm use
-
 # check if yarn is installed, else install it
 which yarn &>/dev/null
 

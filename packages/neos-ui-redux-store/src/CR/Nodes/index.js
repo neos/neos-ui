@@ -64,7 +64,7 @@ const populateChildren = nodes => {
         }
     });
     return nodes;
-}
+};
 
 /**
  * Adds nodes to the application state. Completely *replaces*
@@ -302,7 +302,6 @@ export const reducer = handleActions({
     },
     [MERGE]: ({nodeMap}) => $all(
         ...Object.keys(populateChildren(nodeMap)).map(contextPath => state => {
-            
             const newNode = Immutable.fromJS(
                 //
                 // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;

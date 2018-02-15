@@ -239,17 +239,27 @@ export const reducer = handleActions({
         })
     ),
     [ADD]: ({nodeMap}) => $all(
-        ...Object.keys(populateChildren(nodeMap)).map(contextPath => $merge(
-            ['cr', 'nodes', 'byContextPath', contextPath],
-            Immutable.fromJS(
+        ...Object.keys(populateChildren(nodeMap)).map(contextPath => state => {
+            const newNode = Immutable.fromJS(
                 //
                 // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
                 // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
                 // the data, to scope it relative to *this* frame.
                 //
                 JSON.parse(JSON.stringify(nodeMap[contextPath]))
-            )
-        ))
+            );
+            // We need to make a union of children and not just overwrite original children
+            const originalChildren = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state) || Immutable.fromJS([]);
+            const newChildren = $get('children', newNode);
+            // The only way to make a union of to Lists it seems is to convert them into OrderedSet first
+            const mergedChildren = originalChildren.toOrderedSet().union(newChildren.toOrderedSet()).toList();
+            const newNodeWithUpdatedChildren = $set('children', mergedChildren, newNode);
+            return $set(
+                ['cr', 'nodes', 'byContextPath', contextPath],
+                newNodeWithUpdatedChildren,
+                state
+            );
+        })
     ),
     [MOVE]: ({nodeToBeMoved: sourceNodeContextPath, targetNode: targetNodeContextPath, position}) => state => {
         // Determine base node into which we'll be inserting
@@ -291,28 +301,28 @@ export const reducer = handleActions({
         return $all(...transformations, state);
     },
     [MERGE]: ({nodeMap}) => $all(
-        ...Object.keys(populateChildren(nodeMap)).map(contextPath => $merge(
-            ['cr', 'nodes', 'byContextPath', contextPath],
-            Immutable.fromJS(
+        ...Object.keys(populateChildren(nodeMap)).map(contextPath => state => {
+            
+            const newNode = Immutable.fromJS(
                 //
                 // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
                 // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
                 // the data, to scope it relative to *this* frame.
                 //
                 JSON.parse(JSON.stringify(nodeMap[contextPath]))
-            )
-        )),
-        ...Object.keys(nodeMap).map(contextPath => $set(
-            ['cr', 'nodes', 'byContextPath', contextPath, 'children'],
-            Immutable.fromJS(
-                //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
-                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
-                // the data, to scope it relative to *this* frame.
-                //
-                JSON.parse(JSON.stringify(nodeMap[contextPath].children))
-            )
-        )),
+            );
+            // We need to make a union of children and not just overwrite original children
+            const originalChildren = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state) || Immutable.fromJS([]);
+            const newChildren = $get('children', newNode);
+            // The only way to make a union of to Lists it seems is to convert them into OrderedSet first
+            const mergedChildren = originalChildren.toOrderedSet().union(newChildren.toOrderedSet()).toList();
+            const newNodeWithUpdatedChildren = $set('children', mergedChildren, newNode);
+            return $merge(
+                ['cr', 'nodes', 'byContextPath', contextPath],
+                newNodeWithUpdatedChildren,
+                state
+            );
+        })
     ),
     [FOCUS]: ({contextPath, fusionPath}) => $set('cr.nodes.focused', new Map({contextPath, fusionPath})),
     [UNFOCUS]: () => $set('cr.nodes.focused', new Map({

@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$contains} from 'plow-js';
+import {$get, $contains} from 'plow-js';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
@@ -11,7 +11,7 @@ import style from './style.css';
 export default class TabPanel extends PureComponent {
     static displayName = 'Inspector Tab Panel';
     static propTypes = {
-        groups: PropTypes.array,
+        groups: PropTypes.object,
         renderSecondaryInspector: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired
@@ -34,14 +34,14 @@ export default class TabPanel extends PureComponent {
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 <SelectedElement/>
                 {
-                    groups.filter(g => (g.properties && g.properties.filter(this.isPropertyEnabled).length) || (g.views && g.views.length)).map(group => (
+                    groups.filter(g => ($get('properties', g) && $get('properties', g).filter(this.isPropertyEnabled).count()) || $get('views', g)).map(group => (
                         <PropertyGroup
-                            key={group.id}
-                            label={group.label}
-                            icon={group.icon}
-                            collapsed={group.collapsed}
-                            properties={group.properties.filter(this.isPropertyEnabled)}
-                            views={group.views}
+                            key={$get('id', group)}
+                            label={$get('label', group)}
+                            icon={$get('icon', group)}
+                            collapsed={$get('collapsed', group)}
+                            properties={$get('properties', group).filter(this.isPropertyEnabled)}
+                            views={$get('views', group)}
                             renderSecondaryInspector={renderSecondaryInspector}
                             node={node}
                             commit={commit}

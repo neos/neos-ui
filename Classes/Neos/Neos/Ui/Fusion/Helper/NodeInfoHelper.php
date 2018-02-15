@@ -80,7 +80,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
-            'parentContextPath' => $node->getParent()->getContextPath(),
+            'parentContextPath' => $node->getParent() ? $node->getParent()->getContextPath() : null,
             'name' => $node->getName(),
             'identifier' => $node->getIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),

@@ -82,6 +82,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'contextPath' => $node->getContextPath(),
             'parentContextPath' => $node->getParent() ? $node->getParent()->getContextPath() : null,
             'name' => $node->getName(),
+            'index' => $node->getIndex(),
             'identifier' => $node->getIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
             'properties' => $omitMostPropertiesForTreeState ? [

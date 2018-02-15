@@ -53,19 +53,37 @@ export const actionTypes = {
 // Build up parent to children relations
 //
 const populateChildren = nodes => {
+    // Clear out initial children
     Object.keys(nodes).forEach(contextPath => {
         const node = nodes[contextPath];
         node.children = [];
     });
+    // Populate new children
     Object.keys(nodes).forEach(contextPath => {
         const node = nodes[contextPath];
         const parentNode = nodes[node.parentContextPath];
         if (parentNode && Array.isArray(parentNode.children)) {
             parentNode.children.push({
                 contextPath,
-                nodeType: node.nodeType
+                nodeType: node.nodeType,
+                index: node.index
             });
         }
+    });
+    // Re-sort new children
+    Object.keys(nodes).forEach(contextPath => {
+        const node = nodes[contextPath];
+        node.children.sort((a, b) => {
+            const aIndex = $get('index', a);
+            const bIndex = $get('index', b);
+            if (aIndex < bIndex) {
+                return -1;
+            }
+            if (aIndex > bIndex) {
+                return 1;
+            }
+            return 0;
+        });
     });
     return nodes;
 };

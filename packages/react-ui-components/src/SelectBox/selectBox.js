@@ -32,7 +32,8 @@ export default class SelectBox extends PureComponent {
                 label: PropTypes.oneOfType([
                     PropTypes.string,
                     PropTypes.object
-                ]).isRequired
+                ]).isRequired,
+                disabled: PropTypes.bool
             })
         ),
 
@@ -274,6 +275,9 @@ export default class SelectBox extends PureComponent {
     handleChange = option => {
         const optionValueAccessor = this.getOptionValueAccessor();
         this.props.onValueChange(optionValueAccessor(option));
+        this.setState({
+            searchTerm: ''
+        });
     }
 
     handleDeleteClick = event => {
@@ -355,7 +359,7 @@ export default class SelectBox extends PureComponent {
                     focusedValue: optionValueAccessor(options[newIndex])
                 });
             } else if (e.key === 'Enter') {
-                if (currentIndex < options.length) {
+                if (currentIndex < options.length && currentIndex >= 0) {
                     this.handleChange(options[currentIndex]);
                 }
 

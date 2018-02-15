@@ -5,3 +5,21 @@
 .dropDown__btnIcon {
     margin-right: .5em;
 }
+
+.cancelButton {
+    margin-right: var(--spacing-Quarter) !important;
+}
+
+.dimensionLabel {
+    margin-top: var(--spacing-Half);
+    margin-bottom: var(--spacing-Quarter);
+}
+
+.buttonGroup {
+    text-align: right;
+    margin-top: var(--spacing-Half);
+}
+
+.selectPreset {
+    margin-right: var(--spacing-Full);
+}

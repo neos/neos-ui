@@ -1,5 +1,6 @@
 import {Selector, Role} from 'testcafe';
 import ReactSelector from 'testcafe-react-selectors';
+import checkPropTypes from '../checkPropTypes';
 
 import Page from './pageModel';
 
@@ -29,7 +30,11 @@ async function waitForIframeLoading(t) {
 async function discardAll(t) {
     await t
         .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
-        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all'));
+        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all'))
+    const confirmButtonExists = await Selector('#neos-DiscardDialog-confirm').exists;
+    if (confirmButtonExists) {
+        await t.click(Selector('#neos-DiscardDialog-confirm'));
+    }
     await waitForIframeLoading(t);
 }
 
@@ -43,7 +48,8 @@ fixture `Content Module`
         await t.useRole(adminUser);
         await discardAll(t);
         await goToPage(t, 'Home');
-    });
+    })
+    .afterEach(() => checkPropTypes());
 
 test('Switching dimensions', async t => {
     subSection('Navigate to some inner page and switch dimension');
@@ -168,7 +174,7 @@ test('Discarding: create a content node and then discard it', async t => {
         .click(Selector('#neos-contentTree-toggle'))
         .click(page.treeNode.withText('Content Collection (main)'))
         .click(ReactSelector('AddNode').nth(1).find('button'))
-        .click(ReactSelector('NodeTypeItem').find('button').withText('Headline'));
+        .click(ReactSelector('NodeTypeItem').find('button>span').withText('Headline'));
     await waitForIframeLoading(t);
     await t
         .switchToIframe('[name="neos-content-main"]')
@@ -309,7 +315,7 @@ test('Can create content node from inside InlineUI', async t => {
         .click(Selector('button#into'))
         // TODO: this selector will only work with English translation.
         // Change to `withProps` when implemented: https://github.com/DevExpress/testcafe-react-selectors/issues/14
-        .click(ReactSelector('NodeTypeItem').find('button').withText('Headline'));
+        .click(ReactSelector('NodeTypeItem').find('button>span').withText('Headline'));
 
     subSection('Type something inside of it');
     await waitForIframeLoading(t);

@@ -33,6 +33,12 @@ describe('<Icon/>', () => {
 
         expect(wrapper.hasClass('fooIconClassName')).toBeTruthy();
     });
+
+    it('should allow the propagation of custom "icon" with the "icon" prop.', () => {
+        const wrapper = shallow(<Icon {...props} icon="bazIconClassName"/>);
+
+        expect(wrapper.hasClass('bazIconClassName')).toBeTruthy();
+    });
 });
 
 describe('iconPropValidator()', () => {
@@ -58,15 +64,6 @@ describe('iconPropValidator()', () => {
         iconPropValidator(props, 'icon');
 
         expect(props.onDeprecate.mock.calls.length).toBe(1);
-    });
-    it('should return an error if the iconName was not found.', () => {
-        const props = {
-            icon: 'bazIconClassName',
-            _makeValidateId: () => () => ({isValid: false, isMigrationNeeded: false, iconName: null})
-        };
-        const result = iconPropValidator(props, 'icon');
-
-        expect(result instanceof Error).toBeTruthy();
     });
     it('should not return an error if no condition was matched.', () => {
         const props = {

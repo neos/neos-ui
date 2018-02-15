@@ -9,6 +9,8 @@ use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadContentOutOfBand;
+use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
 use Neos\Utility\ObjectAccess;
 
@@ -51,6 +53,13 @@ class Property extends AbstractChange
     protected $value;
 
     /**
+     * The change has been initiated from the inline editing
+     *
+     * @var bool
+     */
+    protected $isInline;
+
+    /**
      * Set the property name
      *
      * @param string $propertyName
@@ -72,6 +81,27 @@ class Property extends AbstractChange
     }
 
     /**
+     * Set the node dom address
+     *
+     * @param RenderedNodeDomAddress $nodeDomAddress
+     * @return void
+     */
+    public function setNodeDomAddress(RenderedNodeDomAddress $nodeDomAddress = null)
+    {
+        $this->nodeDomAddress = $nodeDomAddress;
+    }
+
+    /**
+     * Get the node dom address
+     *
+     * @return RenderedNodeDomAddress
+     */
+    public function getNodeDomAddress()
+    {
+        return $this->nodeDomAddress;
+    }
+
+    /**
      * Set the value
      *
      * @param string $value
@@ -89,6 +119,26 @@ class Property extends AbstractChange
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Set isInline
+     *
+     * @param bool $isInline
+     */
+    public function setIsInline($isInline)
+    {
+        $this->isInline = $isInline;
+    }
+
+    /**
+     * Get isInline
+     *
+     * @return bool
+     */
+    public function getIsInline()
+    {
+        return $this->isInline;
     }
 
     /**
@@ -135,7 +185,19 @@ class Property extends AbstractChange
             $this->updateWorkspaceInfo();
 
             $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
-            if ($node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
+            if (!$this->getIsInline() && $node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
+                if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath() && $node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
+                    $reloadContentOutOfBand = new ReloadContentOutOfBand();
+                    $reloadContentOutOfBand->setNode($node);
+                    $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
+                    $this->feedbackCollection->add($reloadContentOutOfBand);
+                } else {
+                    $this->reloadDocument();
+                }
+            }
+
+            $reloadPageIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
+            if (!$this->getIsInline() && $node->getNodeType()->getConfiguration($reloadPageIfChangedConfigurationPath)) {
                 $this->reloadDocument();
             }
 

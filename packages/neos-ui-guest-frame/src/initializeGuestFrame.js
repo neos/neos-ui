@@ -60,8 +60,8 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // the user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content
     yield put(actions.UI.ContentCanvas.setSrc(documentInformation.metaData.url));
 
-    getGuestFrameDocument().addEventListener('click', e => {
-        const clickPath = Array.prototype.slice.call(eventPath(e));
+    const focusSelectedNode = event => {
+        const clickPath = Array.prototype.slice.call(eventPath(event));
         const isInsideInlineUi = clickPath.some(domNode =>
             domNode &&
             domNode.getAttribute &&
@@ -86,6 +86,16 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             store.dispatch(
                 actions.CR.Nodes.unFocus()
             );
+        }
+    };
+
+    getGuestFrameDocument().addEventListener('click', e => {
+        focusSelectedNode(e);
+    });
+
+    getGuestFrameDocument().addEventListener('keyup', e => {
+        if (e.key === 'Tab') {
+            focusSelectedNode(e);
         }
     });
 

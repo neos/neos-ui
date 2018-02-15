@@ -10,12 +10,12 @@
     "sinon"
   ],
   "setupFiles": [
-    "<rootDir>/node_modules/@neos-project/jest-preset-neos-ui/src/setupBrowserEnv.js",
-    "<rootDir>/node_modules/@neos-project/jest-preset-neos-ui/src/enzymeConfiguration.js"
+    "../../node_modules/@neos-project/jest-preset-neos-ui/src/setupBrowserEnv.js",
+    "../../node_modules/@neos-project/jest-preset-neos-ui/src/enzymeConfiguration.js"
   ],
   "testEnvironment": "node",
   "testMatch": [
-    "<rootDir>/src/**/?(*.)spec.js"
+    "./src/**/?(*.)spec.js"
   ],
   "transform": {
     "^.+\\.js$": "babel-jest"

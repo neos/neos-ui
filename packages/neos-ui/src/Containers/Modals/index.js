@@ -13,6 +13,7 @@ export default class Modals extends PureComponent {
     render() {
         const {containerRegistry} = this.props;
 
+        const DiscardDialog = containerRegistry.get('Modals/DiscardDialog');
         const DeleteNodeModal = containerRegistry.get('Modals/DeleteNodeModal');
         const InsertModeModal = containerRegistry.get('Modals/InsertModeModal');
         const SelectNodeTypeModal = containerRegistry.get('Modals/SelectNodeTypeModal');
@@ -23,6 +24,7 @@ export default class Modals extends PureComponent {
 
         return (
             <div>
+                <DiscardDialog/>
                 <DeleteNodeModal/>
                 <InsertModeModal/>
                 <SelectNodeTypeModal/>
@@ -31,7 +33,6 @@ export default class Modals extends PureComponent {
                 <ReloginDialog/>
                 <UnappliedChangesDialog/>
             </div>
-
         );
     }
 }

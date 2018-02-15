@@ -37,9 +37,7 @@ exports[`<DateInput/> should render correctly. 1`] = `
   >
     <button
       onClick={[Function]}
-    >
-      Today
-    </button>
+    />
     <Component
       dateFormat={true}
       onChange={[Function]}
@@ -49,9 +47,7 @@ exports[`<DateInput/> should render correctly. 1`] = `
     <Component
       onClick={[Function]}
       style="brand"
-    >
-      Apply
-    </Component>
+    />
   </Component>
 </div>
 `;

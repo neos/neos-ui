@@ -116,6 +116,7 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
 /* eslint camelcase: ["error", {properties: "never"}] */
 if (env.isProduction) {
     webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+        sourceMap: true,
         minimize: true,
         compress: {
             keep_fnames: true,

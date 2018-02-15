@@ -35,9 +35,12 @@ import style from './style.css';
     toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing,
     changeBaseWorkspaceAction: actions.CR.Workspaces.changeBaseWorkspace,
     publishAction: actions.CR.Workspaces.publish,
-    discardAction: actions.CR.Workspaces.discard
+    discardAction: actions.CR.Workspaces.commenceDiscard
 })
-@neos()
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
+
 export default class PublishDropDown extends PureComponent {
     static propTypes = {
         isSaving: PropTypes.bool,
@@ -54,7 +57,8 @@ export default class PublishDropDown extends PureComponent {
         publishAction: PropTypes.func.isRequired,
         discardAction: PropTypes.func.isRequired,
         changeBaseWorkspaceAction: PropTypes.func.isRequired,
-        routes: PropTypes.object
+        routes: PropTypes.object,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handlePublishClick = () => {
@@ -91,6 +95,7 @@ export default class PublishDropDown extends PureComponent {
             toggleAutoPublishing,
             baseWorkspace,
             changeBaseWorkspaceAction,
+            i18nRegistry,
             neos
         } = this.props;
 
@@ -111,7 +116,6 @@ export default class PublishDropDown extends PureComponent {
         });
         const publishableNodesInDocumentCount = publishableNodesInDocument ? publishableNodesInDocument.count() : 0;
         const publishableNodesCount = publishableNodes ? publishableNodes.count() : 0;
-
         return (
             <div className={style.wrapper}>
                 <AbstractButton
@@ -127,19 +131,20 @@ export default class PublishDropDown extends PureComponent {
                 <DropDown className={style.dropDown}>
                     <DropDown.Header
                         className={dropDownBtnClassName}
+                        aria-label={i18nRegistry.translate('Neos.Neos:Main:showPublishOptions', 'Show publishing options')}
                         />
 
                     <DropDown.Contents
                         className={style.dropDown__contents}
                         >
-                        <li className={style.dropDown__item}>
+                        { Object.keys(allowedWorkspaces).length > 1 && <li className={style.dropDown__item}>
                             <WorkspaceSelector
                                 baseWorkspace={baseWorkspace}
                                 allowedWorkspaces={allowedWorkspaces}
                                 changeBaseWorkspaceAction={changeBaseWorkspaceAction}
                                 changingWorkspaceAllowed={changingWorkspaceAllowed}
                                 />
-                        </li>
+                        </li> }
                         <li className={style.dropDown__item}>
                             <AbstractButton
                                 isEnabled={!isWorkspaceReadOnly && canPublishGlobally}

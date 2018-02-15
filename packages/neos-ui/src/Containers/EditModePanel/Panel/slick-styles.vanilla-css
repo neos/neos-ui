@@ -38,6 +38,7 @@
     top: 0;
     left: 0;
     display: block;
+    width: 5000px; /* Set initial width because Slick does not set it correct. (See https://github.com/neos/neos-ui/pull/1591) */
 }
 .slick-track:before,
 .slick-track:after

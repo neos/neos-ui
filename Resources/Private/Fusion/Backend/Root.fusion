@@ -123,6 +123,11 @@ backend = Neos.Fusion:Template {
                     action = 'index'
                     format = 'json'
                 }
+                contentDimensions = Neos.Fusion:UriBuilder {
+                    package = 'Neos.Neos'
+                    controller = 'Service\\ContentDimensions'
+                    action = 'index'
+                }
             }
             modules = Neos.Fusion:RawArray {
                 prototype(Neos.Fusion:UriBuilder) {

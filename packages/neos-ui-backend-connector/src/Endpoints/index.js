@@ -121,6 +121,16 @@ export default routes => {
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const contentDimensions = (dimensionName, chosenDimensionPresets) => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: urlWithParams(`${routes.core.service.contentDimensions}/${dimensionName}.json`, {chosenDimensionPresets}),
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })).then(response => response.json())
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     const uploadAsset = (file, propertyName, node, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         const data = new FormData();
         data.append('__siteNodeName', siteNodeName);
@@ -364,6 +374,7 @@ export default routes => {
         dataSource,
         getJsonResource,
         getWorkspaceInfo,
-        tryLogin
+        tryLogin,
+        contentDimensions
     };
 };

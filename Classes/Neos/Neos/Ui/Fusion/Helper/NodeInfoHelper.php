@@ -80,7 +80,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
+            'parentContextPath' => $node->getParent() ? $node->getParent()->getContextPath() : null,
             'name' => $node->getName(),
+            'index' => $node->getIndex(),
             'identifier' => $node->getIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
             'properties' => $omitMostPropertiesForTreeState ? [
@@ -102,20 +104,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             if ($nodeInLiveWorkspace !== null) {
                 $nodeInfo['previewUri'] = $this->uri($nodeInLiveWorkspace, $controllerContext);
             }
-        }
-
-        // child nodes for document tree, respecting the `baseNodeType` filter
-        $documentChildNodes = $node->getChildNodes($baseNodeType);
-        // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
-        $contentChildNodes = $node->getChildNodes('!' . $this->documentNodeTypeRole);
-        $childNodes = array_merge($documentChildNodes, $contentChildNodes);
-
-        foreach ($childNodes as $childNode) {
-            /* @var NodeInterface $childNode */
-            $nodeInfo['children'][] = [
-                'contextPath' => $childNode->getContextPath(),
-                'nodeType' => $childNode->getNodeType()->getName() // TODO: DUPLICATED; should NOT be needed!!!
-            ];
         }
         $this->userLocaleService->switchToUILocale(true);
 
@@ -202,13 +190,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function defaultNodesForBackend(NodeInterface $site, NodeInterface $documentNode, ControllerContext $controllerContext)
     {
-        $flowQuery = new FlowQuery([$site, $documentNode]);
-        $nodes = $flowQuery->neosUiDefaultNodes($this->baseNodeType, $this->loadingDepth)->get();
-
         $result = [];
-        foreach ($nodes as $node) {
-            $this->renderNodeToList($result, $node, $controllerContext);
-        }
+        $this->renderNodeToList($result, $site, $controllerContext);
+        $this->renderNodeToList($result, $documentNode, $controllerContext);
 
         return $result;
     }

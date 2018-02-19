@@ -9,7 +9,6 @@ import * as selectors from './selectors';
 import {parentNodeContextPath} from './helpers';
 
 const ADD = '@neos/neos-ui/CR/Nodes/ADD';
-const MERGE = '@neos/neos-ui/CR/Nodes/MERGE';
 const FOCUS = '@neos/neos-ui/CR/Nodes/FOCUS';
 const UNFOCUS = '@neos/neos-ui/CR/Nodes/UNFOCUS';
 const COMMENCE_CREATION = '@neos/neos-ui/CR/Nodes/COMMENCE_CREATION';
@@ -31,7 +30,6 @@ const UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI';
 //
 export const actionTypes = {
     ADD,
-    MERGE,
     FOCUS,
     UNFOCUS,
     COMMENCE_CREATION,
@@ -49,6 +47,45 @@ export const actionTypes = {
     UPDATE_URI
 };
 
+//
+// Build up parent to children relations
+//
+const populateChildren = nodes => {
+    // Clear out initial children
+    Object.keys(nodes).forEach(contextPath => {
+        const node = nodes[contextPath];
+        node.children = [];
+    });
+    // Populate new children
+    Object.keys(nodes).forEach(contextPath => {
+        const node = nodes[contextPath];
+        const parentNode = nodes[node.parentContextPath];
+        if (parentNode && Array.isArray(parentNode.children)) {
+            parentNode.children.push({
+                contextPath,
+                nodeType: node.nodeType,
+                index: node.index
+            });
+        }
+    });
+    // Re-sort new children
+    Object.keys(nodes).forEach(contextPath => {
+        const node = nodes[contextPath];
+        node.children.sort((a, b) => {
+            const aIndex = $get('index', a);
+            const bIndex = $get('index', b);
+            if (aIndex < bIndex) {
+                return -1;
+            }
+            if (aIndex > bIndex) {
+                return 1;
+            }
+            return 0;
+        });
+    });
+    return nodes;
+};
+
 /**
  * Adds nodes to the application state. Completely *replaces*
  * the nodes from the application state with the passed nodes.
@@ -56,14 +93,6 @@ export const actionTypes = {
  * @param {Object} nodeMap A map of nodes, with contextPaths as key
  */
 const add = createAction(ADD, nodeMap => ({nodeMap}));
-
-/**
- * Adds/Merges nodes to the application state. *Merges*
- * the nodes from the application state with the passed nodes.
- *
- * @param {Object} nodeMap A map of nodes, with contextPaths as key
- */
-const merge = createAction(MERGE, nodeMap => ({nodeMap}));
 
 /**
  * Marks a node as focused
@@ -185,7 +214,6 @@ const updateUri = createAction(UPDATE_URI, (oldUriFragment, newUriFragment) => (
 //
 export const actions = {
     add,
-    merge,
     focus,
     unFocus,
     commenceCreation,
@@ -210,7 +238,7 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'cr.nodes',
         new Map({
-            byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)) || new Map(),
+            byContextPath: Immutable.fromJS(populateChildren($get('cr.nodes.byContextPath', state))) || new Map(),
             siteNode: $get('cr.nodes.siteNode', state) || '',
             focused: new Map({
                 contextPath: '',
@@ -221,20 +249,26 @@ export const reducer = handleActions({
             clipboardMode: ''
         })
     ),
-    [ADD]: ({nodeMap}) => $all(
-        ...Object.keys(nodeMap).map(contextPath => $set(
-            ['cr', 'nodes', 'byContextPath', contextPath],
-            Immutable.fromJS(
-                //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
-                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
-                // the data, to scope it relative to *this* frame.
-                //
-                JSON.parse(JSON.stringify(nodeMap[contextPath]))
-            )
-        ))
-    ),
+    [ADD]: ({nodeMap}) => state => {
+        const updatedState = $merge(['cr', 'nodes', 'byContextPath'], Immutable.fromJS(JSON.parse(JSON.stringify(nodeMap))), state);
+        const crNodes = $get(['cr', 'nodes', 'byContextPath'], updatedState);
+        const processedCrNodes = populateChildren(crNodes.toJS());
+        return $set(['cr', 'nodes', 'byContextPath'], Immutable.fromJS(processedCrNodes), state);
+    },
     [MOVE]: ({nodeToBeMoved: sourceNodeContextPath, targetNode: targetNodeContextPath, position}) => state => {
+        // Determine new index
+        let newIndex;
+        const targetNodeIndex = $get(['cr', 'nodes', 'byContextPath', targetNodeContextPath, 'index'], state);
+        if (position === 'into') {
+            // push the node down below any possible node
+            newIndex = 9007199254740991;
+        } else if (position === 'before') {
+            newIndex = targetNodeIndex - 1;
+        } else {
+            newIndex = targetNodeIndex + 1;
+        }
+        state = $set(['cr', 'nodes', 'byContextPath', sourceNodeContextPath, 'index'], newIndex, state);
+
         // Determine base node into which we'll be inserting
         let baseNodeContextPath;
         if (position === 'into') {
@@ -242,61 +276,12 @@ export const reducer = handleActions({
         } else {
             baseNodeContextPath = parentNodeContextPath(targetNodeContextPath);
         }
+        state = $set(['cr', 'nodes', 'byContextPath', sourceNodeContextPath, 'parentContextPath'], baseNodeContextPath, state);
 
-        const sourceNodeParentContextPath = parentNodeContextPath(sourceNodeContextPath);
-        const originalSourceChildren = $get(['cr', 'nodes', 'byContextPath', sourceNodeParentContextPath, 'children'], state);
-        const sourceIndex = originalSourceChildren.findIndex(child => $get('contextPath', child) === sourceNodeContextPath);
-        const childRepresentationOfSourceNode = originalSourceChildren.get(sourceIndex);
-
-        let processedChildren = $get(['cr', 'nodes', 'byContextPath', baseNodeContextPath, 'children'], state);
-
-        const transformations = [];
-        if (sourceNodeParentContextPath === baseNodeContextPath) {
-            // If moving into the same parent, delete source node from it
-            processedChildren = processedChildren.delete(sourceIndex);
-        } else {
-            // Else add an extra transformation to delete the source node from its parent
-            const processedSourceChildren = originalSourceChildren.delete(sourceIndex);
-            transformations.push($set(['cr', 'nodes', 'byContextPath', sourceNodeParentContextPath, 'children'], processedSourceChildren));
-        }
-
-        // Add source node to the children of the base node, at the right position
-        if (position === 'into') {
-            processedChildren = processedChildren.push(childRepresentationOfSourceNode);
-        } else {
-            const targetIndex = processedChildren.findIndex(child => $get('contextPath', child) === targetNodeContextPath);
-            const insertIndex = position === 'before' ? targetIndex : targetIndex + 1;
-            processedChildren = processedChildren.insert(insertIndex, childRepresentationOfSourceNode);
-        }
-        transformations.push($set(['cr', 'nodes', 'byContextPath', baseNodeContextPath, 'children'], processedChildren));
-
-        // Run all transformations
-        return $all(...transformations, state);
+        const crNodes = $get(['cr', 'nodes', 'byContextPath'], state);
+        const processedCrNodes = populateChildren(crNodes.toJS());
+        return $set(['cr', 'nodes', 'byContextPath'], Immutable.fromJS(processedCrNodes), state);
     },
-    [MERGE]: ({nodeMap}) => $all(
-        ...Object.keys(nodeMap).map(contextPath => $merge(
-            ['cr', 'nodes', 'byContextPath', contextPath],
-            Immutable.fromJS(
-                //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
-                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
-                // the data, to scope it relative to *this* frame.
-                //
-                JSON.parse(JSON.stringify(nodeMap[contextPath]))
-            )
-        )),
-        ...Object.keys(nodeMap).map(contextPath => $set(
-            ['cr', 'nodes', 'byContextPath', contextPath, 'children'],
-            Immutable.fromJS(
-                //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
-                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
-                // the data, to scope it relative to *this* frame.
-                //
-                JSON.parse(JSON.stringify(nodeMap[contextPath].children))
-            )
-        )),
-    ),
     [FOCUS]: ({contextPath, fusionPath}) => $set('cr.nodes.focused', new Map({contextPath, fusionPath})),
     [UNFOCUS]: () => $set('cr.nodes.focused', new Map({
         contextPath: '',
@@ -313,7 +298,7 @@ export const reducer = handleActions({
             contextPath: '',
             fusionPath: ''
         })),
-        $merge('cr.nodes.byContextPath', Immutable.fromJS(nodes))
+        $merge('cr.nodes.byContextPath', Immutable.fromJS(populateChildren(nodes)))
     ),
     [COPY]: contextPath => $all(
         $set('cr.nodes.clipboard', contextPath),

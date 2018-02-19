@@ -53,12 +53,7 @@ export function * watchRequestChildrenForContextPath({configuration}) {
                 return nodeMap;
             }, {});
 
-            // the nodes loaded from the server for the tree representation are NOT the full
-            // nodes with all properties; but merely contain as little properties as needed
-            // for the tree.
-            // In order to not OVERRIDE the properties we already know, we need to merge
-            // the data which the nodes already in the system; and not override them completely.
-            yield put(actions.CR.Nodes.merge(nodes));
+            yield put(actions.CR.Nodes.add(nodes));
 
             //
             // ToDo: Set the ContentCanvas src / contextPath
@@ -98,11 +93,32 @@ export function * watchReloadTree({globalRegistry, configuration}) {
     });
 }
 
+//
+// Hackish way to keep the state if the default nodes had already been loaded.
+// Still I'm somehow reluctant to use Redux for such rubish.
+// Maybe it's possible to do it Saga-way?
+//
+let defaultNodesLoaded = false;
 export function * watchCurrentDocument({configuration}) {
     yield takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
         const {contextPath} = action.payload;
         const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
         const {q} = backend.get();
+
+        if (!defaultNodesLoaded) {
+            defaultNodesLoaded = true;
+            yield put(actions.UI.PageTree.setAsLoading(siteNodeContextPath));
+            const nodes = yield q([siteNodeContextPath, contextPath]).neosUiDefaultNodes(
+                configuration.nodeTree.presets.default.baseNodeType,
+                configuration.nodeTree.loadingDepth
+            ).getForTree();
+
+            yield put(actions.CR.Nodes.add(nodes.reduce((nodeMap, node) => {
+                nodeMap[$get('contextPath', node)] = node;
+                return nodeMap;
+            }, {})));
+            yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
+        }
 
         let parentContextPath = contextPath;
 
@@ -167,7 +183,7 @@ export function * watchSearch({configuration}) {
                 return map;
             }, {});
 
-            yield put(actions.CR.Nodes.merge(nodes));
+            yield put(actions.CR.Nodes.add(nodes));
 
             const resultContextPaths = new Set(Object.keys(nodes));
             const oldHidden = yield select($get('ui.pageTree.hidden'));

@@ -149,6 +149,7 @@ export class Header extends PureComponent {
             isHidden,
             isHiddenInIndex,
             isDirty,
+            isLoading,
             label,
             icon,
             iconLabel,
@@ -164,7 +165,7 @@ export class Header extends PureComponent {
             canDrop,
             ...restProps
         } = this.props;
-        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'isLoading', 'hasError', 'isDragging', 'dragForbidden']);
+        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'hasError', 'isDragging', 'dragForbidden']);
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,
@@ -212,7 +213,7 @@ export class Header extends PureComponent {
                             mode="after"
                             />
                     )}
-                    {hasChildren ? this.renderCollapseControl() : null}
+                    {hasChildren || isLoading ? this.renderCollapseControl() : null}
                 </div>
             </div>
         );

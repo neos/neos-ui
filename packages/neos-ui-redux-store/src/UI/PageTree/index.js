@@ -13,7 +13,6 @@ const INVALIDATE = '@neos/neos-ui/UI/PageTree/INVALIDATE';
 const SET_AS_LOADING = '@neos/neos-ui/UI/PageTree/SET_AS_LOADING';
 const SET_AS_LOADED = '@neos/neos-ui/UI/PageTree/SET_AS_LOADED';
 const REQUEST_CHILDREN = '@neos/neos-ui/UI/PageTree/REQUEST_CHILDREN';
-const RELOAD_TREE = '@neos/neos-ui/UI/PageTree/RELOAD_TREE';
 const COMMENCE_SEARCH = '@neos/neos-ui/UI/PageTree/COMMENCE_SEARCH';
 const SET_SEARCH_RESULT = '@neos/neos-ui/UI/PageTree/SET_SEARCH_RESULT';
 //
@@ -26,7 +25,6 @@ export const actionTypes = {
     SET_AS_LOADING,
     SET_AS_LOADED,
     REQUEST_CHILDREN,
-    RELOAD_TREE,
     COMMENCE_SEARCH,
     SET_SEARCH_RESULT
 };
@@ -37,7 +35,6 @@ const invalidate = createAction(INVALIDATE, contextPath => ({contextPath}));
 const requestChildren = createAction(REQUEST_CHILDREN, (contextPath, {unCollapse = true, activate = false} = {}) => ({contextPath, opts: {unCollapse, activate}}));
 const setAsLoading = createAction(SET_AS_LOADING, contextPath => ({contextPath}));
 const setAsLoaded = createAction(SET_AS_LOADED, contextPath => ({contextPath}));
-const reloadTree = createAction(RELOAD_TREE);
 const commenceSearch = createAction(COMMENCE_SEARCH, (contextPath, {query, filterNodeType}) => ({contextPath, query, filterNodeType}));
 const setSearchResult = createAction(SET_SEARCH_RESULT, result => (result));
 
@@ -51,7 +48,6 @@ export const actions = {
     setAsLoading,
     setAsLoaded,
     requestChildren,
-    reloadTree,
     commenceSearch,
     setSearchResult
 };

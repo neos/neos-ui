@@ -78,52 +78,11 @@ export function * watchNodeCreated() {
     });
 }
 
-export function * watchReloadTree({globalRegistry, configuration}) {
-    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    yield takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
-        const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
-        const {loadingDepth} = configuration.nodeTree;
-        const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsed, {loadingDepth});
-        const nodesToReload = documentNodes.toArray().filter(node =>
-            uncollapsedContextPaths.includes(node.get('contextPath')) &&
-            node.get('children').filter(child => nodeTypesRegistry.hasRole(child.get('nodeType'), 'document')).size
-        );
-
-        for (let i = 0; i < nodesToReload.length; i++) {
-            const node = nodesToReload[i];
-            const contextPath = node.get('contextPath');
-
-            yield put(actions.UI.PageTree.requestChildren(contextPath, {unCollapse: false}));
-        }
-    });
-}
-
-//
-// Hackish way to keep the state if the default nodes had already been loaded.
-// Still I'm somehow reluctant to use Redux for such rubish.
-// Maybe it's possible to do it Saga-way?
-//
-let defaultNodesLoaded = false;
 export function * watchCurrentDocument({configuration}) {
     yield takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
         const {contextPath} = action.payload;
         const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
         const {q} = backend.get();
-
-        if (!defaultNodesLoaded) {
-            defaultNodesLoaded = true;
-            yield put(actions.UI.PageTree.setAsLoading(siteNodeContextPath));
-            const nodes = yield q([siteNodeContextPath, contextPath]).neosUiDefaultNodes(
-                configuration.nodeTree.presets.default.baseNodeType,
-                configuration.nodeTree.loadingDepth
-            ).getForTree();
-
-            yield put(actions.CR.Nodes.add(nodes.reduce((nodeMap, node) => {
-                nodeMap[$get('contextPath', node)] = node;
-                return nodeMap;
-            }, {})));
-            yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
-        }
 
         let parentContextPath = contextPath;
 

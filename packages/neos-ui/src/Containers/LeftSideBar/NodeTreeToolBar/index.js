@@ -260,7 +260,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
         hideNode: actions.CR.Nodes.hide,
         showNode: actions.CR.Nodes.show,
         pasteNode: actions.CR.Nodes.paste,
-        reloadTree: actions.UI.PageTree.reloadTree
+        reloadTree: actions.CR.Nodes.reloadState
     }
 )(NodeTreeToolBar));
 

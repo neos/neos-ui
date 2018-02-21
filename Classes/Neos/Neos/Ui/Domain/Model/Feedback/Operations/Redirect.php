@@ -33,7 +33,7 @@ class Redirect implements FeedbackInterface
      * @param NodeInterface $node
      * @return void
      */
-    public function setNode(NodeInterface $node)
+    public function setNode(NodeInterface $node): void
     {
         $this->node = $node;
     }
@@ -43,7 +43,7 @@ class Redirect implements FeedbackInterface
      *
      * @return NodeInterface
      */
-    public function getNode()
+    public function getNode(): NodeInterface
     {
         return $this->node;
     }
@@ -53,7 +53,7 @@ class Redirect implements FeedbackInterface
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return 'Neos.Neos.Ui:Redirect';
     }
@@ -63,7 +63,7 @@ class Redirect implements FeedbackInterface
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return sprintf('Redirect to node "%s".', $this->getNode()->getContextPath());
     }
@@ -74,7 +74,7 @@ class Redirect implements FeedbackInterface
      * @param FeedbackInterface $feedback
      * @return boolean
      */
-    public function isSimilarTo(FeedbackInterface $feedback)
+    public function isSimilarTo(FeedbackInterface $feedback): boolean
     {
         if (!$feedback instanceof UpdateNodeInfo) {
             return false;
@@ -87,9 +87,9 @@ class Redirect implements FeedbackInterface
      * Serialize the payload for this feedback
      *
      * @param ControllerContext $controllerContext
-     * @return mixed
+     * @return array
      */
-    public function serializePayload(ControllerContext $controllerContext)
+    public function serializePayload(ControllerContext $controllerContext): array
     {
         $node = $this->getNode();
         $redirectUri = $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, array(), '', false, array(), false);

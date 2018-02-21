@@ -48,7 +48,7 @@ export default routes => {
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    const changeBaseWorkspace = (targetWorkspaceName, documentNode) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.changeBaseWorkspace,
 
         method: 'POST',
@@ -58,7 +58,8 @@ export default routes => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            targetWorkspaceName
+            targetWorkspaceName,
+            documentNode
         })
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));

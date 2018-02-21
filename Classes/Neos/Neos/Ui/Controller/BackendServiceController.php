@@ -14,14 +14,17 @@ use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;
 use Neos\Flow\Mvc\ResponseInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Neos\Domain\Service\ContentContextFactory;
 use Neos\Neos\Service\PublishingService;
 use Neos\Neos\Service\UserService;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\Redirect;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
@@ -33,6 +36,11 @@ use Neos\Eel\FlowQuery\FlowQuery;
 
 class BackendServiceController extends ActionController
 {
+    /**
+     * @Flow\Inject
+     * @var ContentContextFactory
+     */
+    protected $contextFactory;
 
     /**
      * @var array
@@ -237,10 +245,11 @@ class BackendServiceController extends ActionController
     /**
      * Change base workspace of current user workspace
      *
-     * @param string $targetWorkspaceName
+     * @param string $targetWorkspaceName,
+     * @param NodeInterface $documentNode
      * @return void
      */
-    public function changeBaseWorkspaceAction($targetWorkspaceName)
+    public function changeBaseWorkspaceAction($targetWorkspaceName, $documentNode)
     {
         try {
             $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
@@ -262,8 +271,35 @@ class BackendServiceController extends ActionController
             $updateWorkspaceInfo->setWorkspace($userWorkspace);
             $this->feedbackCollection->add($updateWorkspaceInfo);
 
-            $reloadDocument = new ReloadDocument();
-            $this->feedbackCollection->add($reloadDocument);
+            // Construct base workspace context
+            $originalContext = $documentNode->getContext();
+            $contextProperties = $documentNode->getContext()->getProperties();
+            $contextProperties['workspaceName'] = $targetWorkspaceName;
+            $contentContext = $this->contextFactory->create($contextProperties);
+
+            // If current document node doesn't exist in the base workspace, traverse its parents to find the one that exists
+            $redirectNode = $documentNode;
+            while (true) {
+                $redirectNodeInBaseWorkspace = $contentContext->getNodeByIdentifier($redirectNode->getIdentifier());
+                if ($redirectNodeInBaseWorkspace) {
+                    break;
+                } else {
+                    $redirectNode = $redirectNode->getParent();
+                    if (!$redirectNode) {
+                        throw new \Exception('Wasn\'t able to locate any valid node in rootline in the target workspace.');
+                    }
+                }
+            }
+
+            // If current document node exists in the base workspace, then reload, else redirect
+            if ($redirectNode === $documentNode) {
+                $reloadDocument = new ReloadDocument();
+                $this->feedbackCollection->add($reloadDocument);
+            } else {
+                $redirect = new Redirect();
+                $redirect->setNode($redirectNode);
+                $this->feedbackCollection->add($redirect);
+            }
 
             $this->persistenceManager->persistAll();
         } catch (\Exception $e) {

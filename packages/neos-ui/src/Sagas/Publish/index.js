@@ -57,7 +57,8 @@ export function * watchChangeBaseWorkspace() {
     const {changeBaseWorkspace} = backend.get().endpoints;
     yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
         try {
-            const feedback = yield call(changeBaseWorkspace, action.payload);
+            const documentNode = yield select($get('ui.contentCanvas.contextPath'));
+            const feedback = yield call(changeBaseWorkspace, action.payload, documentNode);
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
             // reload the page tree

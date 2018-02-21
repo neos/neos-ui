@@ -322,7 +322,7 @@ export const reducer = handleActions({
             contextPath: '',
             fusionPath: ''
         })),
-        merge ? $set('cr.nodes.byContextPath', Immutable.fromJS(nodes)) : $set('cr.nodes.byContextPath', Immutable.fromJS(nodes))
+        merge ? $merge('cr.nodes.byContextPath', Immutable.fromJS(nodes)) : $set('cr.nodes.byContextPath', Immutable.fromJS(nodes))
     ),
     [COPY]: contextPath => $all(
         $set('cr.nodes.clipboard', contextPath),

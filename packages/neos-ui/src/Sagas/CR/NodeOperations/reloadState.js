@@ -8,12 +8,14 @@ export default function * watchReloadState({configuration}) {
     yield takeLatest(actionTypes.CR.Nodes.RELOAD_STATE, function * reloadState(action) {
         const {q} = backend.get();
         const currentSiteNodeContextPath = yield select($get('cr.nodes.siteNode'));
+        const toggledNodes = yield select($get('ui.pageTree.toggled'));
         const siteNodeContextPath = $get('payload.siteNodeContextPath', action) || currentSiteNodeContextPath;
         const documentNodeContextPath = yield $get('payload.documentNodeContextPath', action) || select($get('ui.contentCanvas.contextPath'));
         yield put(actions.UI.PageTree.setAsLoading(currentSiteNodeContextPath));
         const nodes = yield q([siteNodeContextPath, documentNodeContextPath]).neosUiDefaultNodes(
             configuration.nodeTree.presets.default.baseNodeType,
-            configuration.nodeTree.loadingDepth
+            configuration.nodeTree.loadingDepth,
+            toggledNodes.toJS()
         ).getForTree();
         const nodeMap = nodes.reduce((nodeMap, node) => {
             nodeMap[$get('contextPath', node)] = node;

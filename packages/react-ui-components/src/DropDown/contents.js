@@ -28,7 +28,7 @@ const ShallowDropDownContents = props => {
             role="listbox"
             onClick={closeDropDown}
             >
-            {children}
+            {isOpen && children}
         </ul>
     );
 };

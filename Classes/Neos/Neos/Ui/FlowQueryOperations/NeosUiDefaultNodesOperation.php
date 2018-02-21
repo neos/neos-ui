@@ -66,10 +66,12 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         // Collect all parents of documentNode up to siteNode
         $parents = [];
         $currentNode = $documentNode->getParent();
-        $parentNodeIsUnderneathSiteNode = strpos($currentNode->getPath(), $siteNode->getPath()) === 0;
-        while ($currentNode !== $siteNode && $parentNodeIsUnderneathSiteNode) {
-            $parents[] = $currentNode->getContextPath();
-            $currentNode = $currentNode->getParent();
+        if ($currentNode) {
+            $parentNodeIsUnderneathSiteNode = strpos($currentNode->getPath(), $siteNode->getPath()) === 0;
+            while ($currentNode !== $siteNode && $parentNodeIsUnderneathSiteNode) {
+                $parents[] = $currentNode->getContextPath();
+                $currentNode = $currentNode->getParent();
+            }
         }
 
         $nodes = [$siteNode];

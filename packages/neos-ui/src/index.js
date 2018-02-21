@@ -102,11 +102,17 @@ function * application() {
     store.dispatch(actions.System.boot());
 
     const {getJsonResource} = backend.get().endpoints;
-    //
-    // Load node types
-    //
+
     const groupsAndRoles = yield system.getNodeTypes;
-    const nodeTypesSchema = yield getJsonResource(configuration.endpoints.nodeTypeSchema);
+
+    //
+    // Load json resources
+    //
+    const nodeTypesSchemaPromise = getJsonResource(configuration.endpoints.nodeTypeSchema);
+    const translationsPromise = getJsonResource(configuration.endpoints.translations);
+
+    // Fire multiple async requests in parallel
+    const [nodeTypesSchema, translations] = yield [nodeTypesSchemaPromise, translationsPromise];
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     Object.keys(nodeTypesSchema.nodeTypes).forEach(nodeTypeName => {
         nodeTypesRegistry.set(nodeTypeName, {

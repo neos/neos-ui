@@ -49,12 +49,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         [documentInformation.metaData.contextPath]: documentInformation.metaData.documentNodeSerialization
     });
 
-    yield put(actions.CR.Nodes.reloadState({
-        siteNodeContextPath: documentInformation.metaData.siteNode,
-        documentNodeContextPath: documentInformation.metaData.contextPath,
-        merge: true
-    }));
-
     yield put(actions.CR.Nodes.add(nodes));
 
     // Remove the inline scripts after initialization

@@ -4,9 +4,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import {put} from 'redux-saga/effects';
+import {put, select} from 'redux-saga/effects';
 import {Map} from 'immutable';
 import merge from 'lodash.merge';
+import {$get} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
@@ -128,7 +129,6 @@ function * application() {
     //
     // Load translations
     //
-    const translations = yield getJsonResource(configuration.endpoints.translations);
     const i18nRegistry = globalRegistry.get('i18n');
     i18nRegistry.setTranslations(translations);
 
@@ -182,6 +182,14 @@ function * application() {
             />,
         appContainer
     );
+
+    const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
+    const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
+    yield put(actions.CR.Nodes.reloadState({
+        siteNodeContextPath,
+        documentNodeContextPath,
+        merge: true
+    }));
 }
 
 sagaMiddleWare.run(application);

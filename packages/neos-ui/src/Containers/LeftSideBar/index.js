@@ -63,7 +63,7 @@ export default class LeftSideBar extends PureComponent {
                 <hr style={{borderTop: 'none'}}/>
 
                 <div className={bottomClassNames}>
-                    {!isHidden && !isHiddenContentTree && <ContentTreeToolbar/>}
+                    <ContentTreeToolbar/>
                     {!isHidden && !isHiddenContentTree && LeftSideBarBottom.map((Item, key) => <Item key={key}/>)}
                 </div>
             </SideBar>

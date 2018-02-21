@@ -56,7 +56,12 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
         list($siteNode, $documentNode) = $flowQuery->getContext();
-        list($baseNodeType, $loadingDepth, $toggledNodes) = $arguments;
+        // set default values for arguments
+        list($baseNodeType, $loadingDepth, $toggledNodes) = array_replace([
+            '',
+            0,
+            []
+        ], $arguments);
 
         // Collect all parents of documentNode up to siteNode
         $parents = [];

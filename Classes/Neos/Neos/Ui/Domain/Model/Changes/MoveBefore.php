@@ -28,7 +28,7 @@ class MoveBefore extends AbstractMove
     public function apply()
     {
         if ($this->canApply()) {
-            $before = clone $this->getSubject();
+            $before = self::cloneNodeWithNodeData($this->getSubject());
             $parent = $before->getParent();
 
             $this->getSubject()->moveBefore($this->getSiblingNode());

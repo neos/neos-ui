@@ -100,7 +100,7 @@ export default class ContentCanvas extends PureComponent {
                     style={inlineStyles}
                     data-__neos__hook="contentCanvas"
                     >
-                    (src && <Frame
+                    {src && (<Frame
                         src={src}
                         frameBorder="0"
                         name="neos-content-main"
@@ -113,7 +113,7 @@ export default class ContentCanvas extends PureComponent {
                         aria-live="assertive"
                         >
                         {InlineUI && <InlineUI/>}
-                    </Frame>)
+                    </Frame>)}
                 </div>
             </div>
         );

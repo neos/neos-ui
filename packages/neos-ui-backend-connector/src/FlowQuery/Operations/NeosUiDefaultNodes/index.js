@@ -1,4 +1,4 @@
-export default () => (baseNodeType, loadingDepth) => ({
+export default () => (baseNodeType, loadingDepth, toggledNodes) => ({
     type: 'neosUiDefaultNodes',
-    payload: [baseNodeType, loadingDepth]
+    payload: [baseNodeType, loadingDepth, toggledNodes]
 });

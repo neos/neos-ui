@@ -19,14 +19,17 @@ use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;
 use Neos\Flow\Mvc\ResponseInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Neos\Domain\Service\ContentContextFactory;
 use Neos\Neos\Service\PublishingService;
 use Neos\Neos\Service\UserService;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\Redirect;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
@@ -38,6 +41,11 @@ use Neos\Eel\FlowQuery\FlowQuery;
 
 class BackendServiceController extends ActionController
 {
+    /**
+     * @Flow\Inject
+     * @var ContentContextFactory
+     */
+    protected $contextFactory;
 
     /**
      * @var array
@@ -99,7 +107,7 @@ class BackendServiceController extends ActionController
      * @param ResponseInterface $response
      * @return void
      */
-    public function initializeController(RequestInterface $request, ResponseInterface $response)
+    public function initializeController(RequestInterface $request, ResponseInterface $response): void
     {
         parent::initializeController($request, $response);
         $this->feedbackCollection->setControllerContext($this->getControllerContext());
@@ -111,7 +119,7 @@ class BackendServiceController extends ActionController
      * @param string $documentNodeContextPath
      * @return void
      */
-    protected function updateWorkspaceInfo($documentNodeContextPath)
+    protected function updateWorkspaceInfo(string $documentNodeContextPath): void
     {
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();
         $documentNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath, null, null, true);
@@ -128,7 +136,7 @@ class BackendServiceController extends ActionController
      * @param ChangeCollection $changes
      * @return void
      */
-    public function changeAction(ChangeCollection $changes)
+    public function changeAction(ChangeCollection $changes): void
     {
         try {
             $count = $changes->count();
@@ -156,7 +164,7 @@ class BackendServiceController extends ActionController
      * @param string $targetWorkspaceName
      * @return void
      */
-    public function publishAction(array $nodeContextPaths, $targetWorkspaceName)
+    public function publishAction(array $nodeContextPaths, string $targetWorkspaceName): void
     {
         try {
             $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
@@ -189,7 +197,7 @@ class BackendServiceController extends ActionController
      * @param array $nodeContextPaths
      * @return void
      */
-    public function discardAction(array $nodeContextPaths)
+    public function discardAction(array $nodeContextPaths): void
     {
         try {
             foreach ($nodeContextPaths as $contextPath) {
@@ -242,10 +250,12 @@ class BackendServiceController extends ActionController
     /**
      * Change base workspace of current user workspace
      *
-     * @param string $targetWorkspaceName
+     * @param string $targetWorkspaceName,
+     * @param NodeInterface $documentNode
      * @return void
+     * @throws \Exception
      */
-    public function changeBaseWorkspaceAction($targetWorkspaceName)
+    public function changeBaseWorkspaceAction(string $targetWorkspaceName, NodeInterface $documentNode): void
     {
         try {
             $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
@@ -267,8 +277,35 @@ class BackendServiceController extends ActionController
             $updateWorkspaceInfo->setWorkspace($userWorkspace);
             $this->feedbackCollection->add($updateWorkspaceInfo);
 
-            $reloadDocument = new ReloadDocument();
-            $this->feedbackCollection->add($reloadDocument);
+            // Construct base workspace context
+            $originalContext = $documentNode->getContext();
+            $contextProperties = $documentNode->getContext()->getProperties();
+            $contextProperties['workspaceName'] = $targetWorkspaceName;
+            $contentContext = $this->contextFactory->create($contextProperties);
+
+            // If current document node doesn't exist in the base workspace, traverse its parents to find the one that exists
+            $redirectNode = $documentNode;
+            while (true) {
+                $redirectNodeInBaseWorkspace = $contentContext->getNodeByIdentifier($redirectNode->getIdentifier());
+                if ($redirectNodeInBaseWorkspace) {
+                    break;
+                } else {
+                    $redirectNode = $redirectNode->getParent();
+                    if (!$redirectNode) {
+                        throw new \Exception(sprintf('Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.', $documentNode->getContextPath(), $targetWorkspaceName), 1458814469);
+                    }
+                }
+            }
+
+            // If current document node exists in the base workspace, then reload, else redirect
+            if ($redirectNode === $documentNode) {
+                $reloadDocument = new ReloadDocument();
+                $this->feedbackCollection->add($reloadDocument);
+            } else {
+                $redirect = new Redirect();
+                $redirect->setNode($redirectNode);
+                $this->feedbackCollection->add($redirect);
+            }
 
             $this->persistenceManager->persistAll();
         } catch (\Exception $e) {
@@ -300,7 +337,7 @@ class BackendServiceController extends ActionController
      * @param boolean $includeRoot
      * @return void
      */
-    public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, $includeRoot = false)
+    public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, $includeRoot = false): void
     {
         $nodeTreeArguments->setControllerContext($this->controllerContext);
         $this->view->assign('value', $nodeTreeArguments->build($includeRoot));
@@ -312,7 +349,7 @@ class BackendServiceController extends ActionController
      * @param array $chain
      * @return string
      */
-    public function flowQueryAction(array $chain)
+    public function flowQueryAction(array $chain): string
     {
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);

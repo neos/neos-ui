@@ -5,6 +5,7 @@ import cutAndPasteNode from './cutAndPasteNode';
 import moveDroppedNode from './moveDroppedNode';
 import hideNode from './hideNode';
 import showNode from './showNode';
+import reloadState from './reloadState';
 
 export {
     addNode,
@@ -13,5 +14,6 @@ export {
     cutAndPasteNode,
     moveDroppedNode,
     hideNode,
-    showNode
+    showNode,
+    reloadState
 };

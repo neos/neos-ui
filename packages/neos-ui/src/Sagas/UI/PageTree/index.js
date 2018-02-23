@@ -78,26 +78,6 @@ export function * watchNodeCreated() {
     });
 }
 
-export function * watchReloadTree({globalRegistry, configuration}) {
-    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    yield takeLatest(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree() {
-        const documentNodes = yield select(selectors.CR.Nodes.makeGetDocumentNodes(nodeTypesRegistry));
-        const {loadingDepth} = configuration.nodeTree;
-        const uncollapsedContextPaths = yield select(selectors.UI.PageTree.getUncollapsed, {loadingDepth});
-        const nodesToReload = documentNodes.toArray().filter(node =>
-            uncollapsedContextPaths.includes(node.get('contextPath')) &&
-            node.get('children').filter(child => nodeTypesRegistry.hasRole(child.get('nodeType'), 'document')).size
-        );
-
-        for (let i = 0; i < nodesToReload.length; i++) {
-            const node = nodesToReload[i];
-            const contextPath = node.get('contextPath');
-
-            yield put(actions.UI.PageTree.requestChildren(contextPath, {unCollapse: false}));
-        }
-    });
-}
-
 export function * watchCurrentDocument({configuration}) {
     yield takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
         const {contextPath} = action.payload;
@@ -108,6 +88,7 @@ export function * watchCurrentDocument({configuration}) {
 
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
         const loadingDepth = configuration.nodeTree.loadingDepth;
+        let hasLoadedNodes = false;
         while (parentContextPath !== siteNodeContextPath) {
             parentContextPath = parentNodeContextPath(parentContextPath);
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
@@ -122,6 +103,7 @@ export function * watchCurrentDocument({configuration}) {
                     return nodeMap;
                 }, {})));
                 node = yield select(getNodeByContextPathSelector);
+                hasLoadedNodes = true;
             }
 
             // Calculate if the given node is collapsed, and if so the uncollapse it
@@ -133,7 +115,9 @@ export function * watchCurrentDocument({configuration}) {
         }
 
         yield put(actions.UI.PageTree.focus(contextPath));
-        yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
+        if (hasLoadedNodes) {
+            yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
+        }
     });
 }
 

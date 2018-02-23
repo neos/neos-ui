@@ -57,8 +57,12 @@ export function * watchChangeBaseWorkspace() {
     const {changeBaseWorkspace} = backend.get().endpoints;
     yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
         try {
-            const feedback = yield call(changeBaseWorkspace, action.payload);
+            const documentNode = yield select($get('ui.contentCanvas.contextPath'));
+            const feedback = yield call(changeBaseWorkspace, action.payload, documentNode);
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+
+            // reload the page tree
+            yield put(actions.CR.Nodes.reloadState());
         } catch (error) {
             console.error('Failed to change base workspace', error);
         }
@@ -99,7 +103,7 @@ export function * discardIfConfirmed() {
                 }
 
                 // reload the page tree
-                yield put(actions.UI.PageTree.reloadTree());
+                yield put(actions.CR.Nodes.reloadState());
             } catch (error) {
                 console.error('Failed to discard', error);
             }

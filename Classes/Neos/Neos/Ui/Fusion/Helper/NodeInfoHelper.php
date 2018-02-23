@@ -212,13 +212,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function defaultNodesForBackend(NodeInterface $site, NodeInterface $documentNode, ControllerContext $controllerContext)
     {
-        $flowQuery = new FlowQuery([$site, $documentNode]);
-        $nodes = $flowQuery->neosUiDefaultNodes($this->baseNodeType, $this->loadingDepth)->get();
-
         $result = [];
-        foreach ($nodes as $node) {
-            $this->renderNodeToList($result, $node, $controllerContext);
-        }
+        $this->renderNodeToList($result, $site, $controllerContext);
+        $this->renderNodeToList($result, $documentNode, $controllerContext);
 
         return $result;
     }

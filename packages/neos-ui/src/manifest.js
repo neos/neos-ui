@@ -246,6 +246,14 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
+    // Redirect to node
+    //
+    serverFeedbackHandlers.set('Neos.Neos.Ui:Redirect/Main', (feedbackPayload, {store}) => {
+        store.dispatch(actions.UI.ContentCanvas.setSrc(feedbackPayload.redirectUri));
+        store.dispatch(actions.UI.ContentCanvas.setContextPath(feedbackPayload.redirectContextPath));
+    });
+
+    //
     // When the server has updated node info, apply it to the store
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodeInfo/Main', (feedbackPayload, {store}) => {
@@ -275,7 +283,7 @@ manifest('main', {}, globalRegistry => {
                 // This is an extreme case when even the top node does not exist in the given dimension
                 // TODO: still find a nicer way to break out of this situation
                 if (redirectContextPath === false) {
-                    window.location = '/neos!';
+                    window.location = '/neos';
                     break;
                 }
                 redirectUri = $get(['cr', 'nodes', 'byContextPath', redirectContextPath, 'uri'], state);

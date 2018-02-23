@@ -17,7 +17,8 @@ const COMMENCE_REMOVAL = '@neos/neos-ui/CR/Nodes/COMMENCE_REMOVAL';
 const REMOVAL_ABORTED = '@neos/neos-ui/CR/Nodes/REMOVAL_ABORTED';
 const REMOVAL_CONFIRMED = '@neos/neos-ui/CR/Nodes/REMOVAL_CONFIRMED';
 const REMOVE = '@neos/neos-ui/CR/Nodes/REMOVE';
-const SWITCH_DIMENSION = '@neos/neos-ui/CR/Nodes/SWITCH_DIMENSION';
+const SET_STATE = '@neos/neos-ui/CR/Nodes/SET_STATE';
+const RELOAD_STATE = '@neos/neos-ui/CR/Nodes/RELOAD_STATE';
 const COPY = '@neos/neos-ui/CR/Nodes/COPY';
 const CUT = '@neos/neos-ui/CR/Nodes/CUT';
 const MOVE = '@neos/neos-ui/CR/Nodes/MOVE';
@@ -39,7 +40,8 @@ export const actionTypes = {
     REMOVAL_ABORTED,
     REMOVAL_CONFIRMED,
     REMOVE,
-    SWITCH_DIMENSION,
+    SET_STATE,
+    RELOAD_STATE,
     COPY,
     CUT,
     MOVE,
@@ -115,16 +117,22 @@ const confirmRemoval = createAction(REMOVAL_CONFIRMED);
 const remove = createAction(REMOVE, contextPath => contextPath);
 
 /**
- * Switch to new site- and documentNodes, add initial nodes for the new dimension
+ * Set CR state on page load or after dimensions or workspaces switch
  */
-const switchDimension = createAction(
-    SWITCH_DIMENSION,
-    ({siteNodeContextPath, documentNodeContextPath, nodes}) => ({
+const setState = createAction(
+    SET_STATE,
+    ({siteNodeContextPath, documentNodeContextPath, nodes, merge}) => ({
         siteNodeContextPath,
         documentNodeContextPath,
-        nodes
+        nodes,
+        merge
     })
 );
+
+/**
+ * Reload CR nodes state
+ */
+const reloadState = createAction(RELOAD_STATE, args => args);
 
 /**
  * Mark a node for copy on paste
@@ -193,7 +201,8 @@ export const actions = {
     abortRemoval,
     confirmRemoval,
     remove,
-    switchDimension,
+    setState,
+    reloadState,
     copy,
     cut,
     move,
@@ -306,14 +315,14 @@ export const reducer = handleActions({
     [REMOVAL_ABORTED]: () => $set('cr.nodes.toBeRemoved', ''),
     [REMOVAL_CONFIRMED]: () => $set('cr.nodes.toBeRemoved', ''),
     [REMOVE]: contextPath => $drop(['cr', 'nodes', 'byContextPath', contextPath]),
-    [SWITCH_DIMENSION]: ({siteNodeContextPath, documentNodeContextPath, nodes}) => $all(
+    [SET_STATE]: ({siteNodeContextPath, documentNodeContextPath, nodes, merge}) => $all(
         $set('cr.nodes.siteNode', siteNodeContextPath),
         $set('ui.contentCanvas.contextPath', documentNodeContextPath),
         $set('cr.nodes.focused', new Map({
             contextPath: '',
             fusionPath: ''
         })),
-        $merge('cr.nodes.byContextPath', Immutable.fromJS(nodes))
+        merge ? $merge('cr.nodes.byContextPath', Immutable.fromJS(nodes)) : $set('cr.nodes.byContextPath', Immutable.fromJS(nodes))
     ),
     [COPY]: contextPath => $all(
         $set('cr.nodes.clipboard', contextPath),

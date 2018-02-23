@@ -88,6 +88,7 @@ export function * watchCurrentDocument({configuration}) {
 
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
         const loadingDepth = configuration.nodeTree.loadingDepth;
+        let hasLoadedNodes = false;
         while (parentContextPath !== siteNodeContextPath) {
             parentContextPath = parentNodeContextPath(parentContextPath);
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
@@ -102,6 +103,7 @@ export function * watchCurrentDocument({configuration}) {
                     return nodeMap;
                 }, {})));
                 node = yield select(getNodeByContextPathSelector);
+                hasLoadedNodes = true;
             }
 
             // Calculate if the given node is collapsed, and if so the uncollapse it
@@ -113,7 +115,9 @@ export function * watchCurrentDocument({configuration}) {
         }
 
         yield put(actions.UI.PageTree.focus(contextPath));
-        yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
+        if (hasLoadedNodes) {
+            yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
+        }
     });
 }
 

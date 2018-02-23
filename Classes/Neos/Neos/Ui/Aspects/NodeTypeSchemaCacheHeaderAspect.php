@@ -49,7 +49,9 @@ class NodeTypeSchemaCacheHeaderAspect
         if ($this->session->isStarted() && $this->session->getData('__neosEnabled__')) {
             /** @var SchemaController $proxy */
             $proxy = $joinPoint->getProxy();
-            $proxy->getControllerContext()->getResponse()->setHeader('Cache-Control', 'max-age=3600');
+
+            // Cache for one week!
+            $proxy->getControllerContext()->getResponse()->setHeader('Cache-Control', 'max-age=' . (3600 * 24 * 7));
         }
     }
 }

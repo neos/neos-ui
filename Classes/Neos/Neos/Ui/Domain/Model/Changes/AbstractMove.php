@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Model\Node;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 
@@ -42,5 +43,18 @@ abstract class AbstractMove extends AbstractStructuralChange
         $this->feedbackCollection->add($removeNode);
 
         parent::finish($this->getSubject());
+    }
+
+    protected static function cloneNodeWithNodeData(NodeInterface $node)
+    {
+        if ($node instanceof Node) {
+            $originalNode = $node;
+            $node = clone $originalNode;
+            $node->setNodeData(clone $originalNode->getNodeData());
+            return $node;
+        } else {
+            // do a best-effort clone
+            return clone $node;
+        }
     }
 }

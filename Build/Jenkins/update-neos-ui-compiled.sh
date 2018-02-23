@@ -8,7 +8,11 @@ if [ -z "$GIT_BRANCH" ]; then echo "\$GIT_BRANCH not set"; exit 1; fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/../../
 
-npm install -g yarn
+path_to_yarn=$(which yarn)
+if [ -z "$path_to_yarn" ] ; then
+    echo "installing yarn:"
+    npm install -g yarn
+fi
 
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`

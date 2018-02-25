@@ -7,10 +7,16 @@ module.exports = merge(
     sharedWebpackConfig,
     {
         entry: {
-            Host: './packages/neos-ui/src/index.js',
+            Host: [
+                './packages/neos-ui/src/index.js'
+            ],
             HostOnlyStyles: './packages/neos-ui/src/styleHostOnly.css',
-            Guest: './packages/neos-ui-ckeditor-bindings/src/index.js',
+            Guest: [
+                './polyfills.js',
+                './packages/neos-ui-ckeditor-bindings/src/index.js'
+            ],
             Vendor: [
+                './polyfills.js',
                 'react',
                 'react-redux',
                 'plow-js',

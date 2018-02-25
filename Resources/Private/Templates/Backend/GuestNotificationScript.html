@@ -1,6 +1,6 @@
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", function () {
-        var event = new Event("Neos.Neos.Ui.ContentReady");
+        var event = new CustomEvent("Neos.Neos.Ui.ContentReady");
         window.parent.document.dispatchEvent(event);
     });
 </script>

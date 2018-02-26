@@ -15,7 +15,7 @@ notifications:
 language: php
 
 php:
-  - '7.1'
+  - '7.0'
 
 services:
   - mysql

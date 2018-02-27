@@ -13,21 +13,22 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\Repository\SiteRepository;
+use Neos\Neos\Domain\Projection\Site\SiteFinder;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Neos\Domain\ValueObject\NodeName;
 
 class SitesHelper implements ProtectedContextAwareInterface
 {
     /**
      * @Flow\Inject
-     * @var SiteRepository
+     * @var SiteFinder
      */
-    protected $siteRepository;
+    protected $siteFinder;
 
 
     public function isActive(NodeInterface $siteNode)
     {
-        if ($siteModel = $this->siteRepository->findOneByNodeName($siteNode->getName())) {
+        if ($siteModel = $this->siteFinder->findOneByNodeName(new NodeName($siteNode->getName()))) {
             return $siteModel->isOnline();
         }
 

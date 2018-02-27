@@ -11,6 +11,8 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
+use Neos\ContentGraph\DoctrineDbalAdapter\Domain\Repository\ContentGraph;
+use Neos\ContentRepository\Domain\ValueObject\NodeTypeName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\ResourceManagement\ResourceManager;
@@ -18,8 +20,9 @@ use Neos\Flow\Session\SessionInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Neos\Controller\Backend\MenuHelper;
+use Neos\Neos\Domain\Context\Content\ContentQuery;
+use Neos\Neos\Domain\Projection\Site\SiteFinder;
 use Neos\Neos\Domain\Repository\DomainRepository;
-use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
@@ -61,9 +64,9 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var SiteRepository
+     * @var SiteFinder
      */
-    protected $siteRepository;
+    protected $siteFinder;
 
     /**
      * @Flow\Inject
@@ -94,6 +97,12 @@ class BackendController extends ActionController
      * @var BackendRedirectionService
      */
     protected $backendRedirectionService;
+
+    /**
+     * @Flow\Inject
+     * @var ContentGraph
+     */
+    protected $contentGraph;
 
     /**
      * @Flow\Inject
@@ -134,6 +143,15 @@ class BackendController extends ActionController
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
+
+
+        $contentQuery = ContentQuery::fromNode($node, $this->getRootNodeIdentifier());
+
+        $this->view->assignMultiple([
+            'subgraph' => $node->getContext()->getContentSubgraph(),
+            'contextParameters' => $node->getContext()->getContextParameters(),
+            'contentQuery' => $contentQuery
+        ]);
 
         $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
     }
@@ -199,7 +217,8 @@ class BackendController extends ActionController
         $contextProperties = array(
             'workspaceName' => $workspaceName,
             'invisibleContentShown' => true,
-            'inaccessibleContentShown' => true
+            'inaccessibleContentShown' => true,
+            'rootNodeIdentifier' => $this->getRootNodeIdentifier()
         );
 
         $currentDomain = $this->domainRepository->findOneByActiveRequest();
@@ -208,9 +227,19 @@ class BackendController extends ActionController
             $contextProperties['currentSite'] = $currentDomain->getSite();
             $contextProperties['currentDomain'] = $currentDomain;
         } else {
-            $contextProperties['currentSite'] = $this->siteRepository->findFirstOnline();
+            $contextProperties['currentSite'] = $this->siteFinder->findFirstOnline();
         }
 
         return $this->contextFactory->create($contextProperties);
+    }
+
+    /**
+     * @return \Neos\ContentRepository\Domain\ValueObject\NodeIdentifier
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Exception
+     */
+    protected function getRootNodeIdentifier(): \Neos\ContentRepository\Domain\ValueObject\NodeIdentifier
+    {
+        return $this->contentGraph->findRootNodeByType(new NodeTypeName('Neos.Neos:Sites'))->getNodeIdentifier();
     }
 }

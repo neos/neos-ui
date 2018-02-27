@@ -19,8 +19,9 @@ use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Utility\NodePaths;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Neos\Domain\Model\Site;
-use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Model\Domain;
+use Neos\Neos\Domain\Projection\Domain\DomainFinder;
+use Neos\Neos\Domain\Projection\Site\SiteFinder;
 use Neos\Neos\Domain\Repository\DomainRepository;
 
 /**
@@ -36,15 +37,15 @@ class NodeService
 
     /**
      * @Flow\Inject
-     * @var SiteRepository
+     * @var SiteFinder
      */
-    protected $siteRepository;
+    protected $siteFinder;
 
     /**
      * @Flow\Inject
-     * @var DomainRepository
+     * @var DomainFinder
      */
-    protected $domainRepository;
+    protected $domainFinder;
 
     /**
      * Helper method to retrieve the closest document for a node
@@ -90,11 +91,11 @@ class NodeService
 
         if ($site === null) {
             list(, , $siteNodeName) = explode('/', $nodePath);
-            $site = $this->siteRepository->findOneByNodeName($siteNodeName);
+            $site = $this->siteFinder->findOneByNodeName($siteNodeName);
         }
 
         if ($domain === null) {
-            $domain = $this->domainRepository->findOneBySite($site);
+            $domain = $this->domainFinder->findActiveBySite($site)->getFirst();
         }
 
         $contextProperties['currentSite'] = $site;

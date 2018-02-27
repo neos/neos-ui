@@ -107,7 +107,7 @@ export default class DimensionSwitcher extends PureComponent {
     //
     getEffectivePresets = () => {
         const activePresets = this.props.activePresets.map(dimensionPreset => $get('name', dimensionPreset));
-        return Object.assign({}, activePresets.toJS(), this.state.transientPresets);
+        return Object.assign({}, activePresets.toJS()/*, this.state.transientPresets*/); // TODO: re-introduce transient presets
     };
 
     handleSelectPreset = (selectedDimensionName, presetName) => {
@@ -196,7 +196,7 @@ export default class DimensionSwitcher extends PureComponent {
                             dimensionName={dimensionName}
                             icon={icon}
                             dimensionLabel={$get('label', dimensionConfiguration)}
-                            presets={this.presetsForDimension(dimensionName)}
+                            presets={this.valuesForDimension(dimensionName)}
                             activePreset={activePreset}
                             onSelect={this.handleSelectPreset}
                             />
@@ -222,12 +222,12 @@ export default class DimensionSwitcher extends PureComponent {
         ) : null;
     }
 
-    presetsForDimension(dimensionName) {
+    valuesForDimension(dimensionName) {
         const {contentDimensions, allowedPresets} = this.props;
         const dimensionConfiguration = $get(dimensionName, contentDimensions);
 
-        return dimensionConfiguration.get('presets').map(
+        return dimensionConfiguration.get('values'); /*.map(
             (presetConfiguration, presetName) => allowedPresets.get(dimensionName) && allowedPresets.get(dimensionName).contains(presetName) ? presetConfiguration : presetConfiguration.set('disabled', true)
-        );
+        );*/ // TODO
     }
 }

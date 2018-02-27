@@ -128,13 +128,15 @@ const activePresets = createSelector([
     active,
     byName
 ], (active, byName) => {
-    // TODO We might want to use the selected preset values (pass from host frame or content canvas) instead of individual dimension values
-    return active.map((dimensionValues, name) => {
-        const dimensionConfiguration = $get(name, byName);
-        const presets = $get('presets', dimensionConfiguration);
-        const activePreset = presets.findKey(preset => preset.get('values').equals(dimensionValues));
-        const presetName = activePreset || $get('defaultPreset', dimensionConfiguration);
-        return presets.get(presetName).set('name', presetName);
+    return active.map((activeDimensionValue, activeDimensionName) => {
+        const activeDimensionValueConfiguration = $get([activeDimensionName, 'values', activeDimensionValue], byName);
+
+        if (!activeDimensionValueConfiguration) {
+            // load default dimension
+            const defaultDimensionValue = $get([activeDimensionName, 'defaultValue'], dimensionConfiguration);
+            return $get([activeDimensionName, 'values', defaultDimensionValue], byName);
+        }
+        return activeDimensionValueConfiguration;
     });
 });
 

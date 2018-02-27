@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*
@@ -11,6 +12,9 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Context\Dimension\ContentDimensionSourceInterface;
+use Neos\ContentRepository\Domain\Context\Dimension\ContentDimensionValue;
+use Neos\ContentRepository\Domain\ValueObject\DimensionSpacePoint;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
@@ -19,16 +23,35 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
 {
     /**
      * @Flow\Inject
-     * @var ContentDimensionPresetSourceInterface
+     * @var ContentDimensionSourceInterface
      */
-    protected $contentDimensionsPresetSource;
+    protected $contentDimensionSource;
 
     /**
      * @return array Dimensions indexed by name with presets indexed by name
      */
     public function contentDimensionsByName()
     {
-        return $this->contentDimensionsPresetSource->getAllPresets();
+        $dimensions = $this->contentDimensionSource->getContentDimensionsOrderedByPriority();
+
+        $result = [];
+        foreach ($dimensions as $dimension) {
+            $result[(string)$dimension->getIdentifier()] = [
+                'label' => $dimension->getConfigurationValue('label'),
+                'icon' => $dimension->getConfigurationValue('icon'),
+                'defaultValue' => $dimension->getDefaultValue()->getValue(),
+                'values' => []
+            ];
+
+            foreach ($dimension->getValues() as $value) {
+                // TODO: make certain values hidable
+                $result[(string)$dimension->getIdentifier()]['values'][$value->getValue()] = [
+                    'value' => $value->getValue(),
+                    'label' => $value->getConfigurationValue('label')
+                ];
+            }
+        }
+        return $result;
     }
 
     /**
@@ -37,16 +60,18 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
      */
     public function allowedPresetsByName(array $dimensions)
     {
+        // TODO: fix allowedPresetsByName
+        return [];
         $allowedPresets = array();
         $preselectedDimensionPresets = array();
         foreach ($dimensions as $dimensionName => $dimensionValues) {
-            $preset = $this->contentDimensionsPresetSource->findPresetByDimensionValues($dimensionName, $dimensionValues);
+            $preset = $this->contentDimensionSource->findPresetByDimensionValues($dimensionName, $dimensionValues);
             if ($preset !== null) {
                 $preselectedDimensionPresets[$dimensionName] = $preset['identifier'];
             }
         }
         foreach ($preselectedDimensionPresets as $dimensionName => $presetName) {
-            $presets = $this->contentDimensionsPresetSource->getAllowedDimensionPresetsAccordingToPreselection($dimensionName, $preselectedDimensionPresets);
+            $presets = $this->contentDimensionSource->getAllowedDimensionPresetsAccordingToPreselection($dimensionName, $preselectedDimensionPresets);
             $allowedPresets[$dimensionName] = array_keys($presets[$dimensionName]['presets']);
         }
         return $allowedPresets;

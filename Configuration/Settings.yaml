@@ -94,7 +94,7 @@ Neos:
             siteNode: '${q(site).property(''_contextPath'')}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
-            active: '${documentNode.context.dimensions}'
+            active: '${documentNode.context.dimensionSpacePoint.coordinates}'
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
           workspaces:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'

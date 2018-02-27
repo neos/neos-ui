@@ -36,7 +36,8 @@ TextAreaEditor.propTypes = {
     value: PropTypes.string,
     highlight: PropTypes.bool,
     commit: PropTypes.func.isRequired,
-    options: PropTypes.object
+    options: PropTypes.object,
+    validationErrors: PropTypes.array
 };
 
 export default TextAreaEditor;

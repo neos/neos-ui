@@ -5,7 +5,8 @@ import TextArea from '@neos-project/react-ui-components/src/TextArea/';
 const defaultOptions = {
     disabled: false,
     maxlength: null,
-    readonly: false
+    readonly: false,
+    placeholder: ''
 };
 
 const TextAreaEditor = props => {
@@ -21,6 +22,7 @@ const TextAreaEditor = props => {
         disabled={finalOptions.disabled}
         maxLength={finalOptions.maxlength}
         readOnly={finalOptions.readonly}
+        placeholder={finalOptions.placeholder}
         />
     );
 };

@@ -184,6 +184,7 @@ export default class SelectBox extends PureComponent {
             displayLoadingIndicator,
             ListPreviewElement,
             plainInputMode,
+            disabled,
 
             DropDown,
             SelectBox_ListPreview
@@ -191,15 +192,14 @@ export default class SelectBox extends PureComponent {
 
         const searchTerm = this.getSearchTerm();
 
-        const {
-            focusedValue,
-            isExpanded
-        } = this.state;
+        const focusedValue = this.state.focusedValue;
+        const isExpanded = disabled ? false : this.state.isExpanded;
 
         const headerClassName = mergeClassNames({
             [theme.selectBox__btn]: true,
             [theme['selectBox--highlight']]: highlight,
-            [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle
+            [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle,
+            [theme['selectBox--disabled']]: disabled
         });
 
         const optionValueAccessor = this.getOptionValueAccessor();

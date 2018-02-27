@@ -6,7 +6,9 @@ const defaultOptions = {
     disabled: false,
     maxlength: null,
     readonly: false,
-    placeholder: ''
+    placeholder: '',
+    minRows: 2,
+    expandedRows: 6
 };
 
 const TextAreaEditor = props => {
@@ -23,6 +25,8 @@ const TextAreaEditor = props => {
         maxLength={finalOptions.maxlength}
         readOnly={finalOptions.readonly}
         placeholder={finalOptions.placeholder}
+        minRows={finalOptions.minRows}
+        expandedRows={finalOptions.expandedRows}
         />
     );
 };

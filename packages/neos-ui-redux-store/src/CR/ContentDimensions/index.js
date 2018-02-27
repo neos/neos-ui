@@ -133,7 +133,7 @@ const activePresets = createSelector([
 
         if (!activeDimensionValueConfiguration) {
             // load default dimension
-            const defaultDimensionValue = $get([activeDimensionName, 'defaultValue'], dimensionConfiguration);
+            const defaultDimensionValue = $get([activeDimensionName, 'defaultValue'], byName);
             return $get([activeDimensionName, 'values', defaultDimensionValue], byName);
         }
         return activeDimensionValueConfiguration;

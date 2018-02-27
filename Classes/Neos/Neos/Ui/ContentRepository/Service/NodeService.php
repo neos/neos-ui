@@ -18,6 +18,7 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Utility\NodePaths;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
+use Neos\Flow\Property\PropertyMapper;
 use Neos\Neos\Domain\Model\Site;
 use Neos\Neos\Domain\Model\Domain;
 use Neos\Neos\Domain\Projection\Domain\DomainFinder;
@@ -46,6 +47,12 @@ class NodeService
      * @var DomainFinder
      */
     protected $domainFinder;
+
+    /**
+     * @Flow\Inject
+     * @var PropertyMapper
+     */
+    protected $propertyMapper;
 
     /**
      * Helper method to retrieve the closest document for a node
@@ -82,40 +89,8 @@ class NodeService
      */
     public function getNodeFromContextPath($contextPath, Site $site = null, Domain $domain = null, $includeAll = false)
     {
-        $nodePathAndContext = NodePaths::explodeContextPath($contextPath);
-        $nodePath = $nodePathAndContext['nodePath'];
-        $workspaceName = $nodePathAndContext['workspaceName'];
-        $dimensions = $nodePathAndContext['dimensions'];
-
-        $contextProperties = $this->prepareContextProperties($workspaceName, $dimensions);
-
-        if ($site === null) {
-            list(, , $siteNodeName) = explode('/', $nodePath);
-            $site = $this->siteFinder->findOneByNodeName($siteNodeName);
-        }
-
-        if ($domain === null) {
-            $domain = $this->domainFinder->findActiveBySite($site)->getFirst();
-        }
-
-        $contextProperties['currentSite'] = $site;
-        $contextProperties['currentDomain'] = $domain;
-        if ($includeAll === true) {
-            $contextProperties['invisibleContentShown'] = true;
-            $contextProperties['removedContentShown'] = true;
-        }
-
-        $context = $this->contextFactory->create(
-            $contextProperties
-        );
-
-        $workspace = $context->getWorkspace(false);
-        if (!$workspace) {
-            return new Error(
-                sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName), 1451392329);
-        }
-
-        return $context->getNode($nodePath);
+        // TODO check other arguments of function?
+        return $this->propertyMapper->convert($contextPath, NodeInterface::class);
     }
 
     /**

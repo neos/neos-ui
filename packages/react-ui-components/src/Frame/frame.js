@@ -76,6 +76,9 @@ export default class Frame extends PureComponent {
         const contents = React.createElement('div', undefined, this.props.children);
         const iframeHtml = doc.querySelector('html');
 
+        // Center iframe
+        iframeHtml.style.margin = '0 auto';
+
         // Set height and width inline to make the iframe scrollable if needed
         if (this.props.width !== undefined) {
             iframeHtml.style.width = this.props.width + 'px';

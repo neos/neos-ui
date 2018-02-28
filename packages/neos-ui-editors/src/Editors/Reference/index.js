@@ -50,6 +50,7 @@ export default class ReferenceEditor extends PureComponent {
             allowEmpty={true}
             onSearchTermChange={this.props.onSearchTermChange}
             onCreateNew={this.props.onCreateNew}
+            disabled={this.props.disabled}
             />);
     }
 }

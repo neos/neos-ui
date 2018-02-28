@@ -34,8 +34,7 @@ class PluginViewEditor extends React.PureComponent {
 
     state = {
         isLoading: false,
-        options: [],
-        views: []
+        options: []
     };
 
     renderPlaceholder() {
@@ -94,6 +93,7 @@ class PluginViewEditor extends React.PureComponent {
 
     render() {
         const {options, isLoading} = this.state;
+        const disabled = $get('options.disabled', this.props);
 
         return (
             <SelectBox
@@ -104,6 +104,7 @@ class PluginViewEditor extends React.PureComponent {
                 displaySearchBox={false}
                 placeholder={this.renderPlaceholder()}
                 allowEmpty
+                disabled={disabled}
                 />
         );
     }

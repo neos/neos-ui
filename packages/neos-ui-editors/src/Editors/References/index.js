@@ -32,10 +32,7 @@ export default class ReferencesEditor extends PureComponent {
         this.props.commit(value);
     }
 
-
     render() {
-    console.log( this.props.disabled );
-        console.log( this.props.options );
         return (<MultiSelectBox
             dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"

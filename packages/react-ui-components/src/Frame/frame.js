@@ -49,7 +49,9 @@ export default class Frame extends PureComponent {
             'theme',
             'children',
             'onLoad',
-            'src'
+            'src',
+            'height',
+            'width'
         ]);
 
         return <iframe ref={this.handleReference} onLoad={this.handleLoad} {...rest}/>;
@@ -72,6 +74,19 @@ export default class Frame extends PureComponent {
         const win = ReactDOM.findDOMNode(this).contentWindow; // eslint-disable-line react/no-find-dom-node
         const mountTarget = doc.querySelector(this.props.mountTarget);
         const contents = React.createElement('div', undefined, this.props.children);
+        const iframeHtml = doc.querySelector('html');
+
+        // Center iframe
+        iframeHtml.style.margin = '0 auto';
+
+        // Set height and width inline to make the iframe scrollable if needed
+        if (this.props.width !== undefined) {
+            iframeHtml.style.width = this.props.width + 'px';
+        }
+
+        if (this.props.height !== undefined) {
+            iframeHtml.style.height = this.props.height + 'px';
+        }
 
         ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, () => {
             this.props.contentDidUpdate(win, doc, mountTarget);

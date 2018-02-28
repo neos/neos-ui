@@ -82,15 +82,8 @@ export default class ContentCanvas extends PureComponent {
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
         const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode];
 
-        const inlineStyles = {};
         const width = $get('width', currentEditPreviewModeConfiguration);
         const height = $get('height', currentEditPreviewModeConfiguration);
-        if (width) {
-            inlineStyles.width = width;
-        }
-        if (height) {
-            inlineStyles.height = height;
-        }
 
         const canvasContentStyle = {};
         if (backgroundColor) {
@@ -103,7 +96,6 @@ export default class ContentCanvas extends PureComponent {
                 <div id="centerArea"/>
                 <div
                     className={style.contentCanvas__itemWrapper}
-                    style={inlineStyles}
                     data-__neos__hook="contentCanvas"
                     >
                     {src && (<Frame
@@ -117,6 +109,8 @@ export default class ContentCanvas extends PureComponent {
                         onLoad={this.handleFrameAccess}
                         role="region"
                         aria-live="assertive"
+                        height={height}
+                        width={width}
                         >
                         {InlineUI && <InlineUI/>}
                     </Frame>)}

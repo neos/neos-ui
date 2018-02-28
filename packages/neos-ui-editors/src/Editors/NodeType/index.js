@@ -32,7 +32,7 @@ export default class NodeType extends PureComponent {
         value: PropTypes.string.isRequired,
         commit: PropTypes.func.isRequired,
         highlight: PropTypes.bool,
-        options: PropTypes.array,
+        options: PropTypes.object,
 
         isSiteNode: PropTypes.bool,
         focusedNode: PropTypes.object,

@@ -34,7 +34,8 @@ class PluginViewEditor extends React.PureComponent {
 
     state = {
         isLoading: false,
-        options: []
+        options: [],
+        views: []
     };
 
     renderPlaceholder() {

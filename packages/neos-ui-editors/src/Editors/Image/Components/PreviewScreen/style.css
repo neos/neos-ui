@@ -19,6 +19,10 @@
     cursor: pointer;
     /* TODO: border-color: #fff; on hover */
 }
+.thumbnail--disabled {
+    cursor: not-allowed;
+    opacity: .5;
+}
 .thumbnail--highlight {
     outline: 2px solid var(--colors-Success);
 }

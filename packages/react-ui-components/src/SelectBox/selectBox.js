@@ -289,6 +289,11 @@ export default class SelectBox extends PureComponent {
     }
 
     handleToggleExpanded = () => {
+        // return earyl if disabled
+        if (this.props.disabled) {
+            return;
+        }
+
         let isExpanded;
         if (this.props.displaySearchBox) {
             if (this.props.value) {

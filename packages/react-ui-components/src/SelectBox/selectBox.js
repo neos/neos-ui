@@ -241,6 +241,7 @@ export default class SelectBox extends PureComponent {
             value,
             allowEmpty,
             plainInputMode,
+            disabled,
 
             SelectBox_HeaderWithSearchInput,
             SelectBox_Header
@@ -255,6 +256,7 @@ export default class SelectBox extends PureComponent {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
+                    disabled={disabled}
                     onSearchTermChange={this.handleSearchTermChange}
                     searchTerm={searchTerm}
                     onKeyDown={this.handleKeyDown}

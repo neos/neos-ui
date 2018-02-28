@@ -24,14 +24,18 @@ export default class ReferencesEditor extends PureComponent {
         onSearchTermChange: PropTypes.func,
         onCreateNew: PropTypes.func,
         commit: PropTypes.func.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired,
+        disabled: PropTypes.bool
     };
 
     handleValueChange = value => {
         this.props.commit(value);
     }
 
+
     render() {
+    console.log( this.props.disabled );
+        console.log( this.props.options );
         return (<MultiSelectBox
             dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"
@@ -53,6 +57,7 @@ export default class ReferencesEditor extends PureComponent {
             searchOptions={this.props.searchOptions}
             onSearchTermChange={this.props.onSearchTermChange}
             onCreateNew={this.props.onCreateNew}
+            disabled={this.props.disabled}
             />);
     }
 }

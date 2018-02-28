@@ -32,6 +32,7 @@ export default class NodeType extends PureComponent {
         value: PropTypes.string.isRequired,
         commit: PropTypes.func.isRequired,
         highlight: PropTypes.bool,
+        options: PropTypes.array,
 
         isSiteNode: PropTypes.bool,
         focusedNode: PropTypes.object,
@@ -51,7 +52,8 @@ export default class NodeType extends PureComponent {
     }
 
     render() {
-        const {value, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry, highlight, focusedNode, isSiteNode} = this.props;
+        const {value, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry, highlight, focusedNode, isSiteNode, options} = this.props;
+        const disabled = options.disabled;
 
         // Auto-created child nodes cannot change type
         if ($get('isAutoCreated', focusedNode) === true) {
@@ -60,7 +62,7 @@ export default class NodeType extends PureComponent {
 
         // Show all nodetypes if is site root node
         const nodeTypeFilter = isSiteNode ? nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document')) : allowedSiblingNodeTypesForFocusedNode;
-        const options = nodeTypesRegistry.getGroupedNodeTypeList(nodeTypeFilter).reduce((result, group) => {
+        const nodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(nodeTypeFilter).reduce((result, group) => {
             group.nodeTypes.forEach(nodeType => {
                 result.push({
                     icon: $get('ui.icon', nodeType),
@@ -72,8 +74,8 @@ export default class NodeType extends PureComponent {
             return result;
         }, []);
 
-        if (options.length) {
-            return <SelectBox options={options} highlight={highlight} value={value} onValueChange={commit}/>;
+        if (nodeTypes.length) {
+            return <SelectBox options={nodeTypes} disabled={disabled} highlight={highlight} value={value} onValueChange={commit}/>;
         }
 
         return this.renderNoOptionsAvailable();

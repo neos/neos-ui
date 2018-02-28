@@ -72,6 +72,11 @@ export class DateInput extends PureComponent {
         validationErrors: PropTypes.array,
 
         /**
+         * Disable the DateInput
+         */
+        disabled: PropTypes.bool,
+
+        /**
          * The changehandler to call when the date changes.
          */
         onChange: PropTypes.func.isRequired,
@@ -117,9 +122,21 @@ export class DateInput extends PureComponent {
             timeOnly,
             highlight,
             locale,
+<<<<<<< HEAD
             validationErrors
+=======
+            disabled
+>>>>>>> TASK: Disable Calendar Editor
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
+        const handleClick = () => disabled ? null : this.handleClick;
+        const handleFocus = () => disabled ? null : this.handleFocus;
+        const handleClearValueClick = () => disabled ? null : this.handleClearValueClick;
+
+        const wrapper = mergeClassNames({
+            [theme.wrapper]: true,
+            [theme.disabled]: disabled
+        });
 
         const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
             return <div key={key}>{validationError}</div>;
@@ -131,24 +148,39 @@ export class DateInput extends PureComponent {
             [theme['calendarInputWrapper--invalid']]: validationErrors && validationErrors.length > 0
         });
 
+        const calendarFakeInputMirror = mergeClassNames({
+            [theme.calendarFakeInputMirror]: true,
+            [theme['disabled-cursor']]: disabled
+        });
+
+        const calendarIconBtn = mergeClassNames({
+            [theme.calendarIconBtn]: true,
+            [theme['disabled-cursor']]: disabled
+        });
+
+        const closeCalendarIconBtn = mergeClassNames({
+            [theme.closeCalendarIconBtn]: true,
+            [theme['disabled-cursor']]: disabled
+        });
+
         return (
-            <div className={theme.wrapper}>
+            <div className={wrapper}>
                 <div className={calendarInputWrapper}>
                     <button
-                        onClick={this.handleClick}
-                        className={theme.calendarIconBtn}
+                        onClick={handleClick()}
+                        className={calendarIconBtn}
                         >
                         <IconComponent icon="calendar"/>
                     </button>
                     <div className={theme.calendarFakeInputWrapper}>
                         <div
                             role="presentation"
-                            onClick={this.handleClick}
-                            className={theme.calendarFakeInputMirror}
+                            onClick={handleClick()}
+                            className={calendarFakeInputMirror}
                             />
                         <input
                             id={id}
-                            onFocus={this.handleFocus}
+                            onFocus={handleFocus()}
                             type="datetime"
                             placeholder={placeholder}
                             className={theme.calendarFakeInput}
@@ -157,8 +189,8 @@ export class DateInput extends PureComponent {
                             />
                     </div>
                     <button
-                        onClick={this.handleClearValueClick}
-                        className={theme.closeCalendarIconBtn}
+                        onClick={handleClearValueClick()}
+                        className={closeCalendarIconBtn}
                         >
                         <IconComponent icon="remove"/>
                     </button>

@@ -396,3 +396,9 @@
         }
     }
 }
+.disabled {
+    opacity: .5;
+}
+.disabled-cursor {
+    cursor: not-allowed;
+}

@@ -135,7 +135,7 @@ export class DateInput extends PureComponent {
             <div className={theme.wrapper}>
                 <div className={calendarInputWrapper}>
                     <button
-                        onClick={this.handleCalendarIconClick}
+                        onClick={this.handleClick}
                         className={theme.calendarIconBtn}
                         >
                         <IconComponent icon="calendar"/>
@@ -143,12 +143,12 @@ export class DateInput extends PureComponent {
                     <div className={theme.calendarFakeInputWrapper}>
                         <div
                             role="presentation"
-                            onClick={this.handleInputClick}
+                            onClick={this.handleClick}
                             className={theme.calendarFakeInputMirror}
                             />
                         <input
                             id={id}
-                            onFocus={this.handleInputClick}
+                            onFocus={this.handleFocus}
                             type="datetime"
                             placeholder={placeholder}
                             className={theme.calendarFakeInput}
@@ -222,11 +222,17 @@ export class DateInput extends PureComponent {
         });
     }
 
-    handleInputClick = () => this.open();
+    handleFocus = () => this.open();
 
-    handleCalendarIconClick = () => this.open();
+    handleClick = () => this.toggle();
 
     handleClickOutside = () => this.close();
+
+    toggle() {
+        this.setState({
+            isOpen: !this.state.isOpen
+        });
+    }
 
     open() {
         this.setState({

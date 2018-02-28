@@ -156,12 +156,15 @@ export default class AssetEditor extends PureComponent {
     }
 
     renderControls() {
+        const disabled = this.props.options ? this.props.options.disabled : false;
+
         return (
             <Controls
                 onChooseFromMedia={this.handleChooseFromMedia}
                 onChooseFromLocalFileSystem={this.handleChooseFile}
                 isUploadEnabled={this.isFeatureEnabled('upload')}
                 isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')}
+                disabled={disabled}
                 />
         );
     }
@@ -170,6 +173,8 @@ export default class AssetEditor extends PureComponent {
         if (!this.isFeatureEnabled('upload')) {
             return null;
         }
+
+        const disabled = $get('options.disabled', this.props);
 
         if (this.props.options.multiple) {
             return (
@@ -200,6 +205,7 @@ export default class AssetEditor extends PureComponent {
                         noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                         searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                         threshold={$get('options.threshold', this.props)}
+                        disabled={disabled}
                         />
                 </AssetUpload>
             );
@@ -230,6 +236,7 @@ export default class AssetEditor extends PureComponent {
                     noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                     searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                     threshold={$get('options.threshold', this.props)}
+                    disabled={disabled}
                     />
             </AssetUpload>
         );

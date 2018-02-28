@@ -17,24 +17,26 @@ export default class Controls extends PureComponent {
     };
 
     render() {
-        const {isUploadEnabled, isMediaBrowserEnabled} = this.props;
+        const {isUploadEnabled, isMediaBrowserEnabled, disabled} = this.props;
         return (
             <div className={style.controls}>
                 {isMediaBrowserEnabled && <IconButton
                     icon="camera"
                     size="small"
                     style="lighter"
-                    onClick={this.props.onChooseFromMedia}
+                    onClick={disabled ? null : this.props.onChooseFromMedia}
                     className={style.button}
                     title={this.props.i18nRegistry.translate('Neos.Neos:Main:media')}
+                    disabled={disabled}
                     />}
                 {isUploadEnabled && <IconButton
                     icon="upload"
                     size="small"
                     style="lighter"
-                    onClick={this.props.onChooseFromLocalFileSystem}
+                    onClick={disabled ? null : this.props.onChooseFromLocalFileSystem}
                     className={style.button}
                     title={this.props.i18nRegistry.translate('Neos.Media.Browser:Main:chooseFile')}
+                    disabled={disabled}
                     />}
             </div>
         );

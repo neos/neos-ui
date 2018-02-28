@@ -80,6 +80,7 @@ class MasterPluginEditor extends React.PureComponent {
 
     render() {
         const {options, isLoading} = this.state;
+        const disabled = this.props.options ? this.props.options.disabled : false;
 
         return (
             <SelectBox
@@ -90,6 +91,7 @@ class MasterPluginEditor extends React.PureComponent {
                 displaySearchBox={false}
                 placeholder={this.renderPlaceholder()}
                 allowEmpty
+                disabled={disabled}
                 />
         );
     }

@@ -106,7 +106,7 @@ export default class DimensionSwitcher extends PureComponent {
     // Merge active presets comming from redux with local transientPresets state (i.e. presents selected, but not yet applied)
     //
     getEffectivePresets = () => {
-        const activePresets = this.props.activePresets.map(dimensionPreset => $get('name', dimensionPreset));
+        const activePresets = this.props.activePresets.map(dimensionPreset => $get('value', dimensionPreset));
         return Object.assign({}, activePresets.toJS()/*, this.state.transientPresets*/); // TODO: re-introduce transient presets
     };
 

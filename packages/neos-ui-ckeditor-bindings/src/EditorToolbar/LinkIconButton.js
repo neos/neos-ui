@@ -35,30 +35,19 @@ export default class LinkIconButton extends PureComponent {
         i18nRegistry: PropTypes.object.isRequired
     };
 
-    state = {
-        isOpen: false
-    };
-
     handleLinkButtonClick = () => {
         const {NeosCKEditorApi} = getGuestFrameWindow();
 
         if (this.isOpen()) {
             NeosCKEditorApi.toggleFormat(this.props.formattingRule, {remove: true});
-            this.setState({
-                isOpen: false
-            });
         } else {
             NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
-            this.setState({
-                isOpen: true
-            });
         }
     }
 
     close = () => {
-        this.setState({
-            isOpen: false
-        });
+        const {NeosCKEditorApi} = getGuestFrameWindow();
+        NeosCKEditorApi.toggleFormat(this.props.formattingRule, {remove: true});
     }
 
     render() {
@@ -72,13 +61,13 @@ export default class LinkIconButton extends PureComponent {
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />
-                {this.state.isOpen ? <LinkTextField hrefValue={this.getHrefValue()} formattingRule={this.props.formattingRule} onEnter={this.close}/> : null}
+                {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} formattingRule={this.props.formattingRule} onEnter={this.close}/> : null}
             </div>
         );
     }
 
     isOpen() {
-        return this.state.isOpen && (this.getHrefValue() === '' || this.getHrefValue());
+        return this.getHrefValue() === '' || this.getHrefValue();
     }
 
     getHrefValue() {

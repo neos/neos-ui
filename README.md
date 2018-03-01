@@ -90,7 +90,7 @@ In order to start contributing, follow the following steps:
 
 If you are developing inside a virtual machine and you are running the
 watch command on your local system it is may be needed for you to adjust
-the live reload optons.
+the live reload options.
 
 This can be done by putting an `.webpack.livereload.local.js` inside the
 repository root.

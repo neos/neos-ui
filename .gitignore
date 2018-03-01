@@ -13,6 +13,11 @@ lcov.info
 Build/Selenium/Settings.yaml
 
 #
+# Custom livereload settings
+#
+.webpack.livereload.local.js
+
+#
 # Application & development dependencies.
 #
 node_modules/

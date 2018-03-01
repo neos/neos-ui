@@ -37,7 +37,7 @@ class PluginViewEditor extends React.PureComponent {
 
     renderPlaceholder() {
         const placeholderPrefix = 'Neos.Neos:Main:content.inspector.editors.masterPluginEditor.';
-        const placeholderLabel = placeholderPrefix + (this.state.views.length > 0 ? 'selectPlugin' : 'noPluginConfigured');
+        const placeholderLabel = placeholderPrefix + (this.state.options.length > 0 ? 'selectPlugin' : 'noPluginConfigured');
         return this.props.i18nRegistry.translate(placeholderLabel);
     }
 
@@ -63,7 +63,7 @@ class PluginViewEditor extends React.PureComponent {
         const {loadPluginViews} = backend.get().endpoints;
         const pluginNode = focusedNode.get('properties');
 
-        if (!this.state.views.length && pluginNode.size > 0) {
+        if (!this.state.options.length && pluginNode.size > 0) {
             const pluginNodeIdentifier = pluginNode.get('plugin');
             this.setState({isLoading: true});
 
@@ -71,7 +71,7 @@ class PluginViewEditor extends React.PureComponent {
                 .then(views => {
                     this.setState({
                         isLoading: false,
-                        views: this.transformPluginStructure(views)
+                        options: this.transformPluginStructure(views)
                     });
                 });
         }
@@ -82,11 +82,11 @@ class PluginViewEditor extends React.PureComponent {
     }
 
     render() {
-        const {views, isLoading} = this.state;
+        const {options, isLoading} = this.state;
 
         return (
             <SelectBox
-                options={views}
+                options={options}
                 value={this.props.value}
                 onValueChange={this.handleValueChange}
                 displayLoadingIndicator={isLoading}

@@ -59,4 +59,3 @@ class CommandOverviewService
         return $unpublishedCommands;
     }
 }
-

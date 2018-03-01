@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
@@ -8,6 +9,18 @@ const env = require('./environment');
 // (e.g. when extending this config from storybook)
 //
 const rootPath = env.rootPath || __dirname;
+
+const liveReloadOptionsFileName = '.webpack.livereload.local.js';
+const liveReloadOptionsFile = path.join(rootPath, liveReloadOptionsFileName);
+
+const mandatoryLiveReloadOptions = {appendScriptTag: true};
+
+let finalLiveReloadOptions = Object.assign({}, mandatoryLiveReloadOptions);
+
+if (fs.existsSync(liveReloadOptionsFile) && fs.lstatSync(liveReloadOptionsFile).isFile()) {
+    const liveReloadOptions = require(liveReloadOptionsFile);
+    finalLiveReloadOptions = Object.assign({}, finalLiveReloadOptions, liveReloadOptions);
+}
 
 const extractCss = new ExtractTextPlugin({
     publicPath: './../',
@@ -110,7 +123,7 @@ const webpackConfig = {
 //
 if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
     // TODO: LIVE RELOADING DOES NOT WORK WITH CODE SPLITTING
-    webpackConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
+    webpackConfig.plugins.push(new LiveReloadPlugin(finalLiveReloadOptions));
 }
 
 /* eslint camelcase: ["error", {properties: "never"}] */

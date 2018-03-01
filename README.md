@@ -86,6 +86,25 @@ In order to start contributing, follow the following steps:
 | `make test`  | Executes the test on all source files. |
 | `make test-e2e`  | Executes integration tests. |
 
+##### Custom webpack live reload options
+
+If you are developing inside a virtual machine and you are running the
+watch command on your local system it is may be needed for you to adjust
+the live reload optons.
+
+This can be done by putting an `.webpack.livereload.local.js` inside the
+repository root.
+
+An example file would look like this:
+
+```
+module.exports = {
+       protocol: 'http',
+       port: '123',
+       hostname: 'localhost'
+};
+```
+
 #### Code style
 Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `make lint` in your shell.
 

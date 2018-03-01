@@ -1,8 +1,21 @@
 const webpack = require('webpack');
 const path = require('path');
+const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
+
+const liveReloadOptionsFile = './../../../.webpack.livereload.local';
+const mandatoryLiveReloadOptions = {appendScriptTag: true};
+
+let finalLiveReloadOptions = Object.assign({}, mandatoryLiveReloadOptions);
+
+
+if (fs.lstatSync('.webpack.livereload.local.js').isFile()) {
+    const liveReloadOptions = require(liveReloadOptionsFile);
+    finalLiveReloadOptions = Object.assign({}, finalLiveReloadOptions, liveReloadOptions);
+}
+
 //
 // Prevent from failing, when NEOS_BUILD_ROOT env variable isn't set
 // (e.g. when extending this config from storybook)
@@ -110,7 +123,7 @@ const webpackConfig = {
 //
 if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
     // TODO: LIVE RELOADING DOES NOT WORK WITH CODE SPLITTING
-    webpackConfig.plugins.push(new LiveReloadPlugin({appendScriptTag: true}));
+    webpackConfig.plugins.push(new LiveReloadPlugin(finalLiveReloadOptions));
 }
 
 /* eslint camelcase: ["error", {properties: "never"}] */

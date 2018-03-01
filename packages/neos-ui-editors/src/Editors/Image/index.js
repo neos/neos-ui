@@ -239,7 +239,7 @@ export default class ImageEditor extends Component {
             image
         } = this.state;
         const {highlight} = this.props;
-        const disabled = this.props.options ? this.props.options.disabled : false;
+        const disabled = $get('options.disabled', this.props);
 
         return (
             <div className={style.imageEditor}>

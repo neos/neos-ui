@@ -30,6 +30,7 @@ class PluginViewEditor extends React.PureComponent {
         personalWorkspace: PropTypes.string,
         focusedNode: PropTypes.object.isRequired,
         transientValues: PropTypes.object
+        // focusedNode: PropTypes.instanceOf(PluginViewEditor).isRequired
     };
 
     state = {

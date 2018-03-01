@@ -5,7 +5,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 @neos(globalRegistry => {
     return {
@@ -80,7 +80,7 @@ class MasterPluginEditor extends React.PureComponent {
 
     render() {
         const {options, isLoading} = this.state;
-        const disabled = this.props.options ? this.props.options.disabled : false;
+        const disabled = $get('options.disabled', this.props);
 
         return (
             <SelectBox

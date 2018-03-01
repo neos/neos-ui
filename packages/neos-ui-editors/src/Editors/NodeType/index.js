@@ -52,8 +52,8 @@ export default class NodeType extends PureComponent {
     }
 
     render() {
-        const {value, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry, highlight, focusedNode, isSiteNode, options} = this.props;
-        const disabled = options.disabled;
+        const {value, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry, highlight, focusedNode, isSiteNode} = this.props;
+        const disabled = $get('options.disabled', this.props);
 
         // Auto-created child nodes cannot change type
         if ($get('isAutoCreated', focusedNode) === true) {

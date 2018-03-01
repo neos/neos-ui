@@ -23,7 +23,8 @@ export default class ReferenceEditor extends PureComponent {
         onSearchTermChange: PropTypes.func,
         onCreateNew: PropTypes.func,
         commit: PropTypes.func.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired,
+        disabled: PropTypes.bool
     };
 
     handleValueChange = value => {

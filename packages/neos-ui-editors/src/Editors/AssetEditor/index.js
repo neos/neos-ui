@@ -156,7 +156,7 @@ export default class AssetEditor extends PureComponent {
     }
 
     renderControls() {
-        const disabled = this.props.options ? this.props.options.disabled : false;
+        const disabled = $get('options.disabled', this.props);
 
         return (
             <Controls

@@ -86,16 +86,30 @@ export default class ContentCanvas extends PureComponent {
         const height = $get('height', currentEditPreviewModeConfiguration);
 
         const canvasContentStyle = {};
+        const inlineStyles = {};
+        const canvasContentOnlyStyle = {};
+
+        if (width) {
+            inlineStyles.width = width;
+            canvasContentOnlyStyle.overflow = 'auto';
+        }
+
+        if (height) {
+            inlineStyles.height = height;
+            canvasContentOnlyStyle.overflow = 'auto';
+        }
+
         if (backgroundColor) {
             canvasContentStyle.background = backgroundColor;
         }
 
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
-            <div className={classNames} style={canvasContentStyle}>
+            <div className={classNames} style={{...canvasContentStyle, ...canvasContentOnlyStyle}}>
                 <div id="centerArea"/>
                 <div
                     className={style.contentCanvas__itemWrapper}
+                    style={inlineStyles}
                     data-__neos__hook="contentCanvas"
                     >
                     {src && (<Frame
@@ -109,8 +123,6 @@ export default class ContentCanvas extends PureComponent {
                         onLoad={this.handleFrameAccess}
                         role="region"
                         aria-live="assertive"
-                        height={height}
-                        width={width}
                         >
                         {InlineUI && <InlineUI/>}
                     </Frame>)}

@@ -35,14 +35,30 @@ export default class LinkIconButton extends PureComponent {
         i18nRegistry: PropTypes.object.isRequired
     };
 
+    state = {
+        isOpen: false
+    };
+
     handleLinkButtonClick = () => {
         const {NeosCKEditorApi} = getGuestFrameWindow();
 
         if (this.isOpen()) {
             NeosCKEditorApi.toggleFormat(this.props.formattingRule, {remove: true});
+            this.setState({
+                isOpen: false
+            });
         } else {
             NeosCKEditorApi.toggleFormat(this.props.formattingRule, {href: ''});
+            this.setState({
+                isOpen: true
+            });
         }
+    }
+
+    close = () => {
+        this.setState({
+            isOpen: false
+        });
     }
 
     render() {
@@ -56,13 +72,13 @@ export default class LinkIconButton extends PureComponent {
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />
-                {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} formattingRule={this.props.formattingRule}/> : null}
+                {this.state.isOpen ? <LinkTextField hrefValue={this.getHrefValue()} formattingRule={this.props.formattingRule} onEnter={this.close}/> : null}
             </div>
         );
     }
 
     isOpen() {
-        return this.getHrefValue() === '' || this.getHrefValue();
+        return this.state.isOpen && (this.getHrefValue() === '' || this.getHrefValue());
     }
 
     getHrefValue() {
@@ -83,6 +99,7 @@ class LinkTextField extends PureComponent {
         i18nRegistry: PropTypes.object,
         formattingRule: PropTypes.string,
         hrefValue: PropTypes.string,
+        onEnter: PropTypes.func,
 
         linkLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
@@ -186,9 +203,16 @@ class LinkTextField extends PureComponent {
         }
     }
 
+    handleKeyPress = event => {
+        if (event && event.charCode === 13 && isUri(this.state.searchTerm)) {
+            this.commitValue(this.state.searchTerm);
+            this.props.onEnter();
+        }
+    }
+
     render() {
         return (
-            <div className={style.linkIconButton__flyout}>
+            <div className={style.linkIconButton__flyout} role="textbox" onKeyPress={this.handleKeyPress}>
                 <SelectBox
                     options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
                     optionValueField="loaderUri"
@@ -206,6 +230,8 @@ class LinkTextField extends PureComponent {
                     ListPreviewElement={LinkOption}
                     noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                     searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                    customKeyDown={this.handleKeyPress}
+                    triggerCustomKeyDown={isUri(this.props.hrefValue)}
                     />
             </div>
         );

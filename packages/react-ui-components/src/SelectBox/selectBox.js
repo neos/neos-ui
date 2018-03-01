@@ -121,6 +121,13 @@ export default class SelectBox extends PureComponent {
         searchBoxLeftToTypeLabel: PropTypes.string,
         noMatchesFoundLabel: PropTypes.string,
 
+        // ------------------------------
+        // For triggering custom keydowns
+        // Currently used in CK-LinkEditor
+        // ------------------------------
+        customKeyDown: PropTypes.func,
+        triggerCustomKeyDown: PropTypes.bool,
+
         /**
          * Turn SelectBox into a plain input field: not showing any search results and always showing the search input. Useful in LinkEditor to be able to input links by hand.
          */
@@ -342,6 +349,12 @@ export default class SelectBox extends PureComponent {
     }
 
     handleKeyDown = e => {
+        const {customKeyDown, triggerCustomKeyDown} = this.props;
+        if (customKeyDown && triggerCustomKeyDown) {
+            customKeyDown();
+            return;
+        }
+
         if (this.state.isExpanded && e && ['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
             // do not scroll while we are doing keyboard interaction
             e.preventDefault();

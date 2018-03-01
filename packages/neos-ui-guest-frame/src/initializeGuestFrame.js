@@ -60,6 +60,10 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // the user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content
     yield put(actions.UI.ContentCanvas.setSrc(documentInformation.metaData.url));
 
+    // TODO: use one action instead of 5
+    yield put(actions.UI.ContentCanvas.loaded(documentInformation.metaData.workspaceName, documentInformation.metaData.dimensionSpacePoint, documentInformation.metaData.documentNodeAggregateIdentifier));
+
+
     const focusSelectedNode = event => {
         const clickPath = Array.prototype.slice.call(eventPath(event));
         const isInsideInlineUi = clickPath.some(domNode =>

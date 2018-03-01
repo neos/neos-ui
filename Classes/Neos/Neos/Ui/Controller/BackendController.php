@@ -12,7 +12,11 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentGraph\DoctrineDbalAdapter\Domain\Repository\ContentGraph;
+use Neos\ContentGraph\DoctrineDbalAdapter\Domain\Repository\NodeFactory;
+use Neos\ContentRepository\Domain\ValueObject\DimensionSpacePoint;
+use Neos\ContentRepository\Domain\ValueObject\NodeAggregateIdentifier;
 use Neos\ContentRepository\Domain\ValueObject\NodeTypeName;
+use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\ResourceManagement\ResourceManager;
@@ -104,6 +108,14 @@ class BackendController extends ActionController
      */
     protected $contentGraph;
 
+
+    /**
+     * @Flow\Inject
+     * @var NodeFactory
+     */
+    protected $nodeFactory;
+
+
     /**
      * @Flow\Inject
      * @var StyleAndJavascriptInclusionService
@@ -121,7 +133,7 @@ class BackendController extends ActionController
      * @param NodeInterface $node The node that will be displayed on the first tab
      * @return void
      */
-    public function indexAction(NodeInterface $node = null)
+    public function indexAction(string $workspaceName = null, string $dimensionSpacePoint = null, string $documentNodeAggregateIdentifier = null)
     {
         $this->session->start();
         $this->session->putData('__neosEnabled__', true);
@@ -131,8 +143,12 @@ class BackendController extends ActionController
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        if ($node === null) {
+        if ($documentNodeAggregateIdentifier === null) {
             $node = $this->findNodeToEdit();
+            $contentQuery = ContentQuery::fromNode($node, $this->getRootNodeIdentifier());
+        } else {
+            $contentQuery = new ContentQuery(new NodeAggregateIdentifier($documentNodeAggregateIdentifier), new WorkspaceName($workspaceName), DimensionSpacePoint::fromUriRepresentation($dimensionSpacePoint), $this->getSiteNodeForLoggedInUser()->getNodeAggregateIdentifier(), $this->getRootNodeIdentifier());
+            $node = $this->nodeFactory->findNodeForContentQuery($contentQuery);
         }
 
         $siteNode = $node->getContext()->getCurrentSiteNode();
@@ -143,9 +159,6 @@ class BackendController extends ActionController
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
-
-
-        $contentQuery = ContentQuery::fromNode($node, $this->getRootNodeIdentifier());
 
         $this->view->assignMultiple([
             'subgraph' => $node->getContext()->getContentSubgraph(),

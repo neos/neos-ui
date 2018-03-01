@@ -83,6 +83,9 @@ Neos:
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, controllerContext)}'
           url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+          dimensionSpacePoint: '${documentNode.context.contentSubgraph.dimensionSpacePoint.serializeForUri()}'
+          workspaceName: '${documentNode.context.workspaceName}'
+          documentNodeAggregateIdentifier: '${documentNode.nodeAggregateIdentifier}'
       initialState:
         changes:
           pending: {  }

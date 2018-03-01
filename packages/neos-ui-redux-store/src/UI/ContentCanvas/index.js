@@ -19,6 +19,7 @@ const FOCUS_PROPERTY = '@neos/neos-ui/UI/ContentCanvas/FOCUS_PROPERTY';
 const REQUEST_SCROLL_INTO_VIEW = '@neos/neos-ui/UI/ContentCanvas/REQUEST_SCROLL_INTO_VIEW';
 const REQUEST_REGAIN_CONTROL = '@neos/neos-ui/UI/ContentCanvas/REQUEST_REGAIN_CONTROL';
 const REQUEST_LOGIN = '@neos/neos-ui/UI/ContentCanvas/REQUEST_LOGIN';
+const LOADED = '@neos/neos-ui/UI/ContentCanvas/LOADED';
 
 //
 // Export the action types
@@ -34,7 +35,8 @@ export const actionTypes = {
     FOCUS_PROPERTY,
     REQUEST_SCROLL_INTO_VIEW,
     REQUEST_REGAIN_CONTROL,
-    REQUEST_LOGIN
+    REQUEST_LOGIN,
+    LOADED
 };
 
 const setContextPath = createAction(SET_CONTEXT_PATH, (contextPath, siteNode = null) => ({contextPath, siteNode}));
@@ -49,6 +51,11 @@ const requestScrollIntoView = createAction(REQUEST_SCROLL_INTO_VIEW, activate =>
 // If we have lost controll over the iframe, we need to take action
 const requestRegainControl = createAction(REQUEST_REGAIN_CONTROL, (src, errorMessage) => ({src, errorMessage}));
 const requestLogin = createAction(REQUEST_LOGIN);
+const loaded = createAction(LOADED, (workspaceName, dimensionSpacePoint, documentNodeAggregateIdentifier) => ({
+    workspaceName,
+    dimensionSpacePoint,
+    documentNodeAggregateIdentifier
+}));
 
 //
 // Export the actions
@@ -63,7 +70,8 @@ export const actions = {
     stopLoading,
     requestScrollIntoView,
     requestRegainControl,
-    requestLogin
+    requestLogin,
+    loaded
 };
 
 //

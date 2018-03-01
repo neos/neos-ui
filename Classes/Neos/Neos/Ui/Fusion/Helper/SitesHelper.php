@@ -15,7 +15,7 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Projection\Site\SiteFinder;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Neos\Domain\ValueObject\NodeName;
+use Neos\ContentRepository\Domain\ValueObject\NodeName;
 
 class SitesHelper implements ProtectedContextAwareInterface
 {

@@ -14,11 +14,19 @@ namespace Neos\Neos\Ui\Domain\Service;
 use Neos\ContentRepository\Domain\Context\ContentStream\ContentStreamCommandHandler;
 use Neos\ContentRepository\Domain\Projection\Workspace\WorkspaceFinder;
 use Neos\EventSourcing\EventStore\EventStoreManager;
+use Neos\Neos\Service\UserService;
+use Neos\EventSourcing\EventStore\StreamNameFilter;
 use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 
 class CommandOverviewService
 {
+    /**
+     * @Flow\Inject
+     * @var UserService
+     */
+    protected $userService;
+
     /**
      * @Flow\Inject
      * @var EventStoreManager
@@ -46,11 +54,11 @@ class CommandOverviewService
         $unpublishedCommands = [];
 
         foreach ($workspaceContentStream as $eventAndRawEvent) {
-            $identifier = $eventAndRawEvent->getSequenceNumber();
-            $unpublishedCommands[$identifier]['type'] = $eventAndRawEvent->gettype();
-
-            $metadata = $eventAndRawEvent->getRawEvent()->getMetadata();
+            $rawEvent = $eventAndRawEvent->getRawEvent();
+            $identifier = $rawEvent->getSequenceNumber();
+            $metadata = $rawEvent->getMetadata();
             if (isset($metadata['commandClass'])) {
+                $unpublishedCommands[$identifier]['type'] = $rawEvent->gettype();
                 $unpublishedCommands[$identifier]['commandClass'] = $metadata['commandClass'];
                 $unpublishedCommands[$identifier]['payload'] = $metadata['commandPayload'];
             }
@@ -59,3 +67,4 @@ class CommandOverviewService
         return $unpublishedCommands;
     }
 }
+

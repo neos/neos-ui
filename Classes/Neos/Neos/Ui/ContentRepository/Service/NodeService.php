@@ -87,9 +87,8 @@ class NodeService
      * @param string $contextPath
      * @return NodeInterface|Error
      */
-    public function getNodeFromContextPath($contextPath, Site $site = null, Domain $domain = null, $includeAll = false)
+    public function getNodeFromContextPath($contextPath)
     {
-        // TODO check other arguments of function?
         return $this->propertyMapper->convert($contextPath, NodeInterface::class);
     }
 

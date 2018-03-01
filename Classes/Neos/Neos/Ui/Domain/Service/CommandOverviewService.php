@@ -51,6 +51,7 @@ class CommandOverviewService
 
             $metadata = $eventAndRawEvent->getRawEvent()->getMetadata();
             if (isset($metadata['commandClass'])) {
+                $unpublishedCommands[$identifier]['commandClass'] = $metadata['commandClass'];
                 $unpublishedCommands[$identifier]['payload'] = $metadata['commandPayload'];
             }
         }

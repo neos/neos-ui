@@ -122,11 +122,8 @@ export class DateInput extends PureComponent {
             timeOnly,
             highlight,
             locale,
-<<<<<<< HEAD
-            validationErrors
-=======
+            validationErrors,
             disabled
->>>>>>> TASK: Disable Calendar Editor
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
         const handleClick = () => disabled ? null : this.handleClick;

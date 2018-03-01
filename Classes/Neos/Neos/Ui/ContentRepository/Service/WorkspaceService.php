@@ -66,12 +66,13 @@ class WorkspaceService
         $publishableNodes = $this->publishingService->getUnpublishedNodes($workspace);
 
         $publishableNodes = array_map(function ($node) {
-            if ($documentNode = $this->nodeService->getClosestDocument($node)) {
+            // TODO Get documentNode
+            #if ($documentNode = $this->nodeService->getClosestDocument($node)) {
                 return [
                     'contextPath' => $node->getContextPath(),
-                    'documentContextPath' => $documentNode->getContextPath()
+                    'documentContextPath' => $node->getContextPath()
                 ];
-            }
+            #}
         }, $publishableNodes);
 
         return array_values(array_filter($publishableNodes, function ($item) {

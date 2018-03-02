@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 import mergeClassNames from 'classnames';
+import isEqual from 'lodash.isequal';
 
 // TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
@@ -247,7 +248,7 @@ export default class SelectBox extends PureComponent {
         const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
 
-        const selectedOption = options.find(option => optionValueAccessor(option) === value);
+        const selectedOption = options.find(option => isEqual(optionValueAccessor(option), value));
 
         if (displaySearchBox && (!value || plainInputMode)) {
             return (

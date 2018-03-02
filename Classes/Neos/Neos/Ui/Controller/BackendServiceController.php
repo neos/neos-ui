@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
 use Neos\Flow\Mvc\View\JsonView;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
@@ -158,6 +159,26 @@ class BackendServiceController extends ActionController
     }
 
     /**
+     * Publish all nodes
+     *
+     * @param WorkspaceName $workspaceName
+     * @return void
+     */
+    public function publishAllAction()
+    {
+        $workspaceName = new WorkspaceName($this->userService->getPersonalWorkspaceName());
+        $this->publishingService->publishWorkspace($workspaceName);
+
+        $success = new Success();
+        $success->setMessage(sprintf('Published.'));
+
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo($workspaceName);
+        $this->feedbackCollection->add($success);
+        $this->feedbackCollection->add($updateWorkspaceInfo);
+        $this->view->assign('value', $this->feedbackCollection);
+    }
+
+    /**
      * Publish nodes
      *
      * @param array $nodeContextPaths
@@ -173,6 +194,8 @@ class BackendServiceController extends ActionController
                 $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
                 $this->publishingService->publishNode($node, $targetWorkspace);
             }
+
+            $this->publishingService->publishWorkspace($targetWorkspaceName);
 
             $success = new Success();
             $success->setMessage(sprintf('Published %d change(s) to %s.', count($nodeContextPaths), $targetWorkspaceName));

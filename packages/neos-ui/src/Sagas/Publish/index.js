@@ -9,7 +9,8 @@ const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 export function * watchPublish() {
     const {q} = backend.get();
-    const {publish} = backend.get().endpoints;
+    const {publishAll} = backend.get().endpoints;
+
 
     yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
@@ -18,7 +19,9 @@ export function * watchPublish() {
             yield put(actions.UI.Remote.startPublishing());
 
             try {
-                const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
+                const feedback = yield call(publishAll);
+                // TODO Replace ContentStreamIdentifier in UI
+                window.location.reload();
                 yield put(actions.UI.Remote.finishPublishing());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 

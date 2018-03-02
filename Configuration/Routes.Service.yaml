@@ -15,6 +15,14 @@
   httpMethods: ['POST']
 
 -
+  name: 'Publish'
+  uriPattern: 'publishall'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'publishAll'
+  httpMethods: ['POST']
+
+-
   name: 'Discard'
   uriPattern: 'discard'
   defaults:

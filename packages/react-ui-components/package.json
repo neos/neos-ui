@@ -38,6 +38,7 @@
     "lodash.escaperegexp": "^4.1.2",
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
+    "lodash.isequal": "^4.5.0",
     "moment": "^2.14.1",
     "object-assign": "^4.1.0",
     "prop-types": "^15.5.10",

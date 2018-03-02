@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 import mergeClassNames from 'classnames';
+import isEqual from 'lodash.isequal';
 
 // TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
@@ -45,7 +46,7 @@ export default class SelectBox extends PureComponent {
         /**
          * This prop represents the currently selected value.
          */
-        value: PropTypes.string,
+        value: PropTypes.any,
 
         /**
          * This prop gets called when an option was selected. It returns the new value.
@@ -247,7 +248,8 @@ export default class SelectBox extends PureComponent {
         const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
 
-        const selectedOption = options.find(option => optionValueAccessor(option) === value);
+        // compare selected value less strictly: allow loose comparision and deep equality of objects
+        const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
 
         if (displaySearchBox && (!value || plainInputMode)) {
             return (

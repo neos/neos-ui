@@ -17,6 +17,17 @@ const App = ({globalRegistry, menu}) => {
     const RightSideBar = containerRegistry.get('RightSideBar');
     const LoadingIndicator = containerRegistry.get('SecondaryToolbar/LoadingIndicator');
 
+    const isBackendModule = false;
+
+    if (isBackendModule) {
+        return (
+            <div>
+                <PrimaryToolbar isBackendModule={isBackendModule}/>
+                <Drawer menuData={menu}/>
+            </div>
+        );
+    }
+
     // HINT: the SecondaryToolbar must be *BELOW* the
     // ContentCanvas; to ensure the SecondaryToolbar is rendered
     // afterwards and can overlay the ContentCanvas

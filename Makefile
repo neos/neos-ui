@@ -86,6 +86,9 @@ build-production: clean install
 
 
 storybook:
+	@mkdir -p ./packages/react-ui-components/node_modules/@neos-project/ && \
+		ln -s ../../../build-essentials/src \
+		./packages/react-ui-components/node_modules/@neos-project/build-essentials
 	$(lerna) run --scope @neos-project/react-ui-components start
 
 test:

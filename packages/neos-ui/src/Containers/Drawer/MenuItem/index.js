@@ -21,9 +21,9 @@ export default class MenuItem extends PureComponent {
     };
 
     handleClick = () => {
-        const {uri, target, onClick} = this.props;
+        const {uri, onClick} = this.props;
 
-        onClick(target, uri);
+        onClick(uri);
     }
 
     render() {

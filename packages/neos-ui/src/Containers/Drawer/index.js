@@ -10,8 +10,6 @@ import {getVersion} from '@neos-project/utils-helpers';
 import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.css';
 
-const TARGET_WINDOW = 'Window';
-const TARGET_CONTENT_CANVAS = 'ContentCanvas';
 const THRESHOLD_MOUSE_LEAVE = 500;
 
 @connect($transform({
@@ -80,19 +78,15 @@ export default class Drawer extends PureComponent {
         }
     }
 
-    handleMenuItemClick = (target, uri) => {
+    handleMenuItemClick = uri => {
         const {setContentCanvasSrc, hideDrawer} = this.props;
+        const targetURL = new URL(uri);
 
-        switch (target) {
-            case TARGET_CONTENT_CANVAS:
-                setContentCanvasSrc(uri);
-                hideDrawer();
-                break;
-
-            case TARGET_WINDOW:
-            default:
-                window.location.href = uri;
-                break;
+        if (targetURL.pathname === '/neos') {
+            window.location = uri;
+        } else {
+            setContentCanvasSrc(uri);
+            hideDrawer();
         }
     }
 

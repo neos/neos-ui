@@ -17,13 +17,14 @@ const App = ({globalRegistry, menu}) => {
     const RightSideBar = containerRegistry.get('RightSideBar');
     const LoadingIndicator = containerRegistry.get('SecondaryToolbar/LoadingIndicator');
 
-    const isBackendModule = false;
+    const isBackendModule = true;
 
     if (isBackendModule) {
         return (
             <div>
                 <PrimaryToolbar isBackendModule={isBackendModule}/>
-                <Drawer menuData={menu}/>
+                <ContentCanvas isBackendModule={isBackendModule}/>
+                <Drawer menuData={menu} isBackendModule={isBackendModule}/>
             </div>
         );
     }

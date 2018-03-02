@@ -11,6 +11,8 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Workspace\WorkspaceFinder;
+use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
@@ -20,9 +22,9 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 class UpdateWorkspaceInfo implements FeedbackInterface
 {
     /**
-     * @var Workspace
+     * @var WorkspaceName
      */
-    protected $workspace;
+    protected $workspaceName;
 
     /**
      * @Flow\Inject
@@ -31,24 +33,41 @@ class UpdateWorkspaceInfo implements FeedbackInterface
     protected $workspaceService;
 
     /**
+     * @Flow\Inject
+     * @var WorkspaceFinder
+     */
+    protected $workspaceFinder;
+
+    /**
+     * UpdateWorkspaceInfo constructor.
+     *
+     * @param WorkspaceName $workspaceName
+     */
+    public function __construct(WorkspaceName $workspaceName = null)
+    {
+        $this->workspaceName = $workspaceName;
+    }
+
+    /**
      * Set the workspace
      *
      * @param Workspace $workspace
      * @return void
+     * @deprecated
      */
     public function setWorkspace(Workspace $workspace)
     {
-        $this->workspace = $workspace;
+        $this->workspaceName = new WorkspaceName($workspace->getName());
     }
 
     /**
-     * Get the document
+     * Getter for WorkspaceName
      *
-     * @return Workspace
+     * @return WorkspaceName
      */
-    public function getWorkspace()
+    public function getWorkspaceName(): WorkspaceName
     {
-        return $this->workspace;
+        return $this->workspaceName;
     }
 
     /**
@@ -83,7 +102,7 @@ class UpdateWorkspaceInfo implements FeedbackInterface
             return false;
         }
 
-        return $this->getWorkspace() === $feedback->getWorkspace();
+        return (string)$this->getWorkspaceName() === (string)$feedback->getWorkspaceName();
     }
 
     /**
@@ -93,12 +112,13 @@ class UpdateWorkspaceInfo implements FeedbackInterface
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
+        $workspace = $this->workspaceFinder->findOneByName($this->workspaceName);
         return [
-            'name' => $this->getWorkspace()->getName(),
+            'name' => (string)$this->workspaceName,
             'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
-                $this->getWorkspace()
+                $this->workspaceName
             ),
-            'baseWorkspace' => $this->getWorkspace()->getBaseWorkspace()->getName()
+            'baseWorkspace' => (string)$workspace->getBaseWorkspaceName()
         ];
     }
 }

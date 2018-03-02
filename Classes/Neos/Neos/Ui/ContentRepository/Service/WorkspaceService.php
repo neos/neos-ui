@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
@@ -58,12 +59,12 @@ class WorkspaceService
     /**
      * Get all publishable node context paths for a workspace
      *
-     * @param Workspace $workspace
+     * @param Workspace $workspaceName
      * @return array
      */
-    public function getPublishableNodeInfo(Workspace $workspace)
+    public function getPublishableNodeInfo(WorkspaceName $workspaceName)
     {
-        $publishableNodes = $this->publishingService->getUnpublishedNodes($workspace);
+        $publishableNodes = $this->publishingService->getUnpublishedNodes($workspaceName);
 
         $publishableNodes = array_map(function ($node) {
             // TODO Get documentNode

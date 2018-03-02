@@ -59,6 +59,9 @@ backend = Neos.Fusion:Template {
                 publish = Neos.Fusion:UriBuilder {
                     action = 'publish'
                 }
+                publishAll = Neos.Fusion:UriBuilder {
+                    action = 'publishAll'
+                }
                 discard = Neos.Fusion:UriBuilder {
                     action = 'discard'
                 }

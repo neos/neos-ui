@@ -33,6 +33,19 @@ export default routes => {
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const publishAll = () => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.publishAll,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+    })).then(response => response.json())
+        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+
+
     const discard = nodeContextPaths => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.discard,
 
@@ -360,6 +373,7 @@ export default routes => {
         loadImageMetadata,
         change,
         publish,
+        publishAll,
         discard,
         changeBaseWorkspace,
         createImageVariant,

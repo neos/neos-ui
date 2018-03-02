@@ -34,7 +34,7 @@ export default class TabPanel extends PureComponent {
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 <SelectedElement/>
                 {
-                    groups.filter(g => ($get('properties', g) && $get('properties', g).filter(this.isPropertyEnabled).count()) || $get('views', g)).map(group => (
+                    groups.filter(g => ($get('properties', g) && $get('properties', g).filter(this.isPropertyEnabled).count()) || ($get('views', g) && $get('views', g).count())).map(group => (
                         <PropertyGroup
                             key={$get('id', group)}
                             label={$get('label', group)}

@@ -80,14 +80,20 @@ export default class Drawer extends PureComponent {
 
     handleMenuItemClick = uri => {
         const {setContentCanvasSrc, hideDrawer} = this.props;
-        const targetURL = new URL(uri);
 
-        if (targetURL.pathname === '/neos') {
-            window.location = uri;
-        } else {
-            setContentCanvasSrc(uri);
-            hideDrawer();
+        try {
+            const targetURL = new URL(uri);
+            if (targetURL.pathname === '/neos') {
+                window.location = uri;
+                return;
+            }
+        } catch (e) {
+            // Move on, we need the next step not only
+            // when this fails, so I let the block empty
         }
+
+        setContentCanvasSrc(uri);
+        hideDrawer();
     }
 
     render() {

@@ -46,7 +46,7 @@ export default class SelectBox extends PureComponent {
         /**
          * This prop represents the currently selected value.
          */
-        value: PropTypes.string,
+        value: PropTypes.any,
 
         /**
          * This prop gets called when an option was selected. It returns the new value.
@@ -248,7 +248,8 @@ export default class SelectBox extends PureComponent {
         const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
 
-        const selectedOption = options.find(option => isEqual(optionValueAccessor(option), value));
+        // compare selected value less strictly: allow loose comparision and deep equality of objects
+        const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
 
         if (displaySearchBox && (!value || plainInputMode)) {
             return (

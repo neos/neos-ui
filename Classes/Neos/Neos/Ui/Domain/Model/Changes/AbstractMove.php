@@ -17,17 +17,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 
 abstract class AbstractMove extends AbstractStructuralChange
 {
-    /**
-     * Checks whether this change can be applied to the subject
-     *
-     * @return boolean
-     */
-    public function canApply()
-    {
-        $nodeType = $this->getSubject()->getNodeType();
-
-        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
-    }
 
     /**
      * Perform finish tasks - needs to be called from inheriting class on `apply`
@@ -42,6 +31,7 @@ abstract class AbstractMove extends AbstractStructuralChange
 
         $this->feedbackCollection->add($removeNode);
 
+        // $this->getSubject() is the moved node at the NEW location!
         parent::finish($this->getSubject());
     }
 

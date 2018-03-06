@@ -11,6 +11,10 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentGraph\DoctrineDbalAdapter\Domain\Repository\ContentSubgraph;
+use Neos\ContentRepository\Domain\Projection\Content\ContentSubgraphInterface;
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Domain\Service\NodeTypeConstraintService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\ProtectedContextAwareInterface;
@@ -21,7 +25,6 @@ use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * @Flow\Scope("singleton")
@@ -77,30 +80,55 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $documentNodeTypeRole;
 
     /**
+     * @Flow\Inject
+     * @var NodeTypeConstraintService
+     */
+    protected $nodeTypeConstraintService;
+
+    private static function getDepth(NodeInterface $node, ContentSubgraphInterface $subgraph)
+    {
+        // TODO: remove this method as it might be slow
+        $path = $subgraph->findNodePath($node->getNodeIdentifier());
+        return substr_count((string)$path, '/', 1);
+    }
+
+    private static function isAutoCreated(NodeInterface $node, ContentSubgraphInterface $subgraph)
+    {
+        $parent = $subgraph->findParentNode($node->getNodeIdentifier());
+        if ($parent) {
+            if (array_key_exists((string)$node->getNodeName(), $parent->getNodeType()->getAutoCreatedChildNodes())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param NodeInterface $node
+     * @param ContentSubgraph $subgraph
      * @param ControllerContext $controllerContext
      * @param bool $omitMostPropertiesForTreeState
      * @param string $baseNodeTypeOverride
      * @return array
+     * @throws \Neos\Eel\Exception
      */
-    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false, $baseNodeTypeOverride = null)
+    public function renderNode(NodeInterface $node, ContentSubgraph $subgraph, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false, $baseNodeTypeOverride = null)
     {
         $this->userLocaleService->switchToUILocale();
 
         $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
         $nodeInfo = [
             'contextPath' => $node->getContextPath(),
-            'name' => $node->getName(),
-            'identifier' => $node->getIdentifier(),
+            'name' => (string)$node->getNodeName(),
+            'identifier' => (string)$node->getNodeIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
             'properties' => $omitMostPropertiesForTreeState ? [
                 // if we are only rendering the tree state, ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
                 '_hidden' => $node->isHidden()
             ] : $this->nodePropertyConverterService->getPropertiesArray($node),
             'label' => $node->getLabel(),
-            'isAutoCreated' => $node->isAutoCreated(),
-            'depth' => $node->getDepth(),
-            // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
+            'isAutoCreated' => self::isAutoCreated($node, $subgraph),
+            'depth' => self::getDepth($node, $subgraph),
             'children' => [],
         ];
         if ($controllerContext !== null && $node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
@@ -115,9 +143,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         // child nodes for document tree, respecting the `baseNodeType` filter
-        $documentChildNodes = $node->getChildNodes($baseNodeType);
+        $documentNodeTypeFilters = $this->nodeTypeConstraintService->unserializeFilters($baseNodeType);
+        $documentChildNodes = $subgraph->findChildNodes($node->getNodeIdentifier(), $documentNodeTypeFilters);
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
-        $contentChildNodes = $node->getChildNodes('!' . $this->documentNodeTypeRole);
+
+        $contentNodeTypeFilters = $this->nodeTypeConstraintService->unserializeFilters('!' . $this->documentNodeTypeRole);
+        $contentChildNodes = $subgraph->findChildNodes($node->getNodeIdentifier(), $contentNodeTypeFilters);
         $childNodes = array_merge($documentChildNodes, $contentChildNodes);
 
         foreach ($childNodes as $childNode) {
@@ -152,10 +183,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @param array $nodes
+     * @param ContentSubgraphInterface $subgraph
      * @param ControllerContext $controllerContext
      * @return array
+     * @throws \Neos\Eel\Exception
      */
-    public function renderNodesWithParents(array $nodes, ControllerContext $controllerContext): array
+    public function renderNodesWithParents(array $nodes, ContentSubgraphInterface $subgraph, ControllerContext $controllerContext): array
     {
         // For search operation we want to include all nodes, not respecting the "baseNodeType" setting
         $baseNodeTypeOverride = $this->documentNodeTypeRole;
@@ -163,15 +196,17 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         /** @var NodeInterface $node */
         foreach ($nodes as $node) {
-            if (array_key_exists($node->getPath(), $renderedNodes)) {
-                $renderedNodes[$node->getPath()]['matched'] = true;
-            } elseif ($renderedNode = $this->renderNode($node, $controllerContext, true, $baseNodeTypeOverride)) {
+            $nodePathString = $subgraph->findNodePath($node);
+            if (array_key_exists($nodePathString, $renderedNodes)) {
+                $renderedNodes[$nodePathString]['matched'] = true;
+            } elseif ($renderedNode = $this->renderNode($node, $subgraph, $controllerContext, true, $baseNodeTypeOverride)) {
                 $renderedNode['matched'] = true;
-                $renderedNodes[$node->getPath()] = $renderedNode;
+                $renderedNodes[$nodePathString] = $renderedNode;
             } else {
                 continue;
             }
 
+            // TODO: the code below looks ugly and will break!!
             /* @var $contentContext ContentContext */
             $contentContext = $node->getContext();
             $siteNodePath = $contentContext->getCurrentSiteNode()->getPath();

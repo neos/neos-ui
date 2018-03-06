@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Fusion;
 use Neos\Flow\Annotations as Flow;
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
 use Neos\Neos\Ui\Aspects\AugmentationAspect;
+use Neos\Neos\Ui\Domain\Service\ContentElementWrappingService;
 
 /**
  * Implementation to return the metadata for non rendered nodes.
@@ -22,12 +23,12 @@ class RenderNonRenderedNodeMetadataImplementation extends AbstractFusionObject
 {
     /**
      * @Flow\Inject
-     * @var AugmentationAspect
+     * @var ContentElementWrappingService
      */
-    protected $augmentedAspect;
+    protected $contentElementWrappingService;
 
     public function evaluate()
     {
-        return $this->augmentedAspect->getNonRenderedContentNodeMetadata($this->fusionValue('node'));
+        return $this->contentElementWrappingService->getNonRenderedContentNodeMetadata($this->fusionValue('node'), $this->fusionValue('subgraph'));
     }
 }

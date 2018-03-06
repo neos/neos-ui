@@ -110,5 +110,6 @@ prototype(Neos.Neos:Page) {
         @class = 'Neos\\Neos\\Ui\\Fusion\\RenderNonRenderedNodeMetadataImplementation'
         @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
         node = ${node}
+        subgraph = ${node.subgraph}
     }
 }

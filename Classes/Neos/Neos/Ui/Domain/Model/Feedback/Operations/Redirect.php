@@ -33,7 +33,7 @@ class Redirect implements FeedbackInterface
      * @param NodeInterface $node
      * @return void
      */
-    public function setNode(NodeInterface $node): void
+    public function setNode(NodeInterface $node)
     {
         $this->node = $node;
     }

@@ -93,6 +93,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'name' => $node->getName(),
             'identifier' => $node->getIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
+            'isFullyLoaded' => !$omitMostPropertiesForTreeState,
             'properties' => $omitMostPropertiesForTreeState ? [
                 // if we are only rendering the tree state, ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
                 '_hidden' => $node->isHidden()

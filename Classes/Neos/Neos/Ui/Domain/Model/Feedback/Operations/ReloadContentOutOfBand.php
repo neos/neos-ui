@@ -12,6 +12,8 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Fusion\Exception\MissingFusionObjectException;
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\View\FusionView as FusionView;
@@ -19,7 +21,7 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Fusion\Core\Cache\ContentCache;
 
-class ReloadContentOutOfBand implements FeedbackInterface
+class ReloadContentOutOfBand extends AbstractFeedback
 {
     /**
      * @var NodeInterface
@@ -152,5 +154,16 @@ class ReloadContentOutOfBand implements FeedbackInterface
         $fusionView->setFusionPath($nodeDomAddress->getFusionPath());
 
         return $fusionView->render();
+    }
+
+    public function serialize(ControllerContext $controllerContext)
+    {
+        try {
+            return parent::serialize($controllerContext);
+        } catch (MissingFusionObjectException $e) {
+            // in case there was a rendering error, we just try to reload the document as fallback. Needed
+            // e.g. when adding validators to Neos.FormBuilder
+            return (new ReloadDocument())->serialize($controllerContext);
+        }
     }
 }

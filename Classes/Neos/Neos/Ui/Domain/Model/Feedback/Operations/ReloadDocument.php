@@ -11,10 +11,11 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
-class ReloadDocument implements FeedbackInterface
+class ReloadDocument extends AbstractFeedback
 {
 
     /**

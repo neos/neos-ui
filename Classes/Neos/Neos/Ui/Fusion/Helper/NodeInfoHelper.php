@@ -11,15 +11,21 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentGraph\DoctrineDbalAdapter\Domain\Repository\ContentGraph;
 use Neos\ContentGraph\DoctrineDbalAdapter\Domain\Repository\ContentSubgraph;
 use Neos\ContentRepository\Domain\Projection\Content\ContentSubgraphInterface;
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Domain\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\Domain\Service\NodeTypeConstraintService;
+use Neos\ContentRepository\Domain\ValueObject\NodeName;
+use Neos\ContentRepository\Domain\ValueObject\NodeTypeName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Neos\Domain\Context\Content\ContentQuery;
+use Neos\Neos\Domain\Projection\Site\SiteFinder;
 use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Domain\Service\ContentContext;
@@ -85,6 +91,27 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected $nodeTypeConstraintService;
 
+    /**
+     * @Flow\Inject
+     * @var WorkspaceFinder
+     */
+    protected $workspaceFinder;
+
+
+    /**
+     * @Flow\Inject
+     * @var ContentGraph
+     */
+    protected $contentGraph;
+
+    /**
+     * @Flow\Inject
+     * @var SiteFinder
+     */
+    protected $siteFinder;
+
+
+
     private static function getDepth(NodeInterface $node, ContentSubgraphInterface $subgraph)
     {
         // TODO: remove this method as it might be slow
@@ -112,7 +139,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @return array
      * @throws \Neos\Eel\Exception
      */
-    public function renderNode(NodeInterface $node, ContentSubgraph $subgraph, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false, $baseNodeTypeOverride = null)
+    public function renderNode(NodeInterface $node, ContentSubgraphInterface $subgraph, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false, $baseNodeTypeOverride = null)
     {
         $this->userLocaleService->switchToUILocale();
 
@@ -132,14 +159,22 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'children' => [],
         ];
         if ($controllerContext !== null && $node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
-            $nodeInfo['uri'] = $this->uri($node, $controllerContext);
+            $workspace = $this->workspaceFinder->findOneByCurrentContentStreamIdentifier($node->getContentStreamIdentifier());
+            if ($workspace) {
+                // TODO figure out current site, instead of just using default site!!
+                $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName($this->getRootNodeIdentifier(), new NodeName($this->siteFinder->findDefault()->nodeName));
+                $nodeInfo['uri'] = $this->uri(new ContentQuery($node->getNodeAggregateIdentifier(), $workspace->getWorkspaceName(), $node->getDimensionSpacePoint(), $siteNode->getNodeAggregateIdentifier(), $this->getRootNodeIdentifier()), $controllerContext);
+            }
 
+            // TODO
+            /*
             $nodeInLiveWorkspace = new FlowQuery([$node]);
             $nodeInLiveWorkspace = $nodeInLiveWorkspace->context(['workspaceName' => 'live'])->get(0);
 
             if ($nodeInLiveWorkspace !== null) {
                 $nodeInfo['previewUri'] = $this->uri($nodeInLiveWorkspace, $controllerContext);
             }
+            */
         }
 
         // child nodes for document tree, respecting the `baseNodeType` filter
@@ -163,18 +198,18 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return $nodeInfo;
     }
 
-    protected function renderNodeToList(&$nodes, NodeInterface $node, ControllerContext $controllerContext)
+    protected function renderNodeToList(&$nodes, NodeInterface $node, ContentSubgraphInterface $subgraph, ControllerContext $controllerContext)
     {
-        if ($nodeInfo = $this->renderNode($node, $controllerContext)) {
+        if ($nodeInfo = $this->renderNode($node, $subgraph, $controllerContext)) {
             $nodes[$node->getContextPath()] = $nodeInfo;
         }
     }
 
-    public function renderNodes(array $nodes, ControllerContext $controllerContext, $omitMostPropertiesForTreeState = false)
+    public function renderNodes(array $nodes, ContentSubgraphInterface $subgraph, ControllerContext $controllerContext, $omitMostPropertiesForTreeState = false)
     {
         $renderedNodes = [];
         foreach ($nodes as $node) {
-            if ($nodeInfo = $this->renderNode($node, $controllerContext, $omitMostPropertiesForTreeState)) {
+            if ($nodeInfo = $this->renderNode($node, $subgraph, $controllerContext, $omitMostPropertiesForTreeState)) {
                 $renderedNodes[] = $nodeInfo;
             }
         }
@@ -245,23 +280,31 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
     }
 
-    public function defaultNodesForBackend(NodeInterface $site, NodeInterface $documentNode, ControllerContext $controllerContext)
+    public function defaultNodesForBackend(NodeInterface $site, NodeInterface $documentNode, ContentSubgraphInterface $subgraph, ControllerContext $controllerContext)
     {
         $result = [];
-        $this->renderNodeToList($result, $site, $controllerContext);
-        $this->renderNodeToList($result, $documentNode, $controllerContext);
+        $this->renderNodeToList($result, $site, $subgraph, $controllerContext);
+        $this->renderNodeToList($result, $documentNode, $subgraph, $controllerContext);
 
         return $result;
     }
 
-    public function uri(NodeInterface $node = null, ControllerContext $controllerContext)
+    public function uri(ContentQuery $contentQuery = null, ControllerContext $controllerContext)
     {
-        if ($node === null) {
+        if ($contentQuery === null) {
             // This happens when the document node os not published yet
             return '';
         }
-        // Create an absolute URI without resolving shortcuts
-        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, array(), '', false, array(), false);
+        $request = $controllerContext->getRequest()->getMainRequest();
+
+        $uriBuilder = clone $controllerContext->getUriBuilder();
+        $uriBuilder->setRequest($request);
+        $uri = $uriBuilder
+            ->reset()
+            ->setFormat('html')
+            ->setCreateAbsoluteUri(true)
+            ->uriFor('show', array('node' => $contentQuery), 'Frontend\Node', 'Neos.Neos');
+        return $uri;
     }
 
     /**
@@ -272,4 +315,15 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     {
         return true;
     }
+
+    /**
+     * @return \Neos\ContentRepository\Domain\ValueObject\NodeIdentifier
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Exception
+     */
+    protected function getRootNodeIdentifier(): \Neos\ContentRepository\Domain\ValueObject\NodeIdentifier
+    {
+        return $this->contentGraph->findRootNodeByType(new NodeTypeName('Neos.Neos:Sites'))->getNodeIdentifier();
+    }
+
 }

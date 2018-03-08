@@ -265,6 +265,7 @@ backend = Neos.Fusion:Template {
             documentNode = ${documentNode}
             site = ${site}
             user = ${user}
+            subgraph = ${subgraph}
         }
 
         @process.json = ${Json.stringify(value)}

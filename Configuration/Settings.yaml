@@ -77,12 +77,14 @@ Neos:
         metaData:
           contextPath: '${q(documentNode).property("_contextPath")}'
           siteNode: '${q(site).property(''_contextPath'')}'
-          previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0), controllerContext)}'
+          # TODO Fix!
+          #previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0), controllerContext)}'
           contentDimensions:
             active: '${documentNode.context.dimensions}'
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, controllerContext)}'
-          url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+          # TODO fix!
+          #url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
           dimensionSpacePoint: '${documentNode.context.contentSubgraph.dimensionSpacePoint.serializeForUri()}'
           workspaceName: '${documentNode.context.workspaceName}'
           documentNodeAggregateIdentifier: '${documentNode.nodeAggregateIdentifier}'
@@ -93,7 +95,7 @@ Neos:
           failed: {  }
         cr:
           nodes:
-            byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
+            byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, subgraph, controllerContext)}'
             siteNode: '${q(site).property(''_contextPath'')}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
@@ -103,7 +105,8 @@ Neos:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
         ui:
           contentCanvas:
-            src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+            # TODO fix!
+            # src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
             contextPath: '${q(documentNode).property(''_contextPath'')}'
             backgroundColor: '${Configuration.setting(''Neos.Neos.Ui.contentCanvas.backgroundColor'')}'
           debugMode: false

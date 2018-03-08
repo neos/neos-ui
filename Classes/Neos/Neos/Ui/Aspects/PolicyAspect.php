@@ -36,7 +36,9 @@ use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePropert
  * - EditNodePropertyPrivilege
  *
  * @Flow\Scope("singleton")
- * @Flow\Aspect
+ *
+ * TODO - re-enable!!
+ * __Flow\Aspect
  */
 class PolicyAspect
 {

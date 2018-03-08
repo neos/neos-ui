@@ -58,7 +58,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
      * @param array $dimensions Dimension values indexed by dimension name
      * @return array Allowed preset names for the given dimension combination indexed by dimension name
      */
-    public function allowedPresetsByName(array $dimensions)
+    public function allowedPresetsByName(array $dimensions = null)
     {
         // TODO: fix allowedPresetsByName
         return [];

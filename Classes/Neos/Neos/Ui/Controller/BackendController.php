@@ -13,15 +13,20 @@ namespace Neos\Neos\Ui\Controller;
 
 use Neos\ContentGraph\DoctrineDbalAdapter\Domain\Repository\ContentGraph;
 use Neos\ContentGraph\DoctrineDbalAdapter\Domain\Repository\NodeFactory;
+use Neos\ContentRepository\Domain\Context\Dimension\ContentDimensionSourceInterface;
+use Neos\ContentRepository\Domain\Context\Parameters\ContextParameters;
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Domain\Projection\Content\TraversableNode;
+use Neos\ContentRepository\Domain\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\Domain\ValueObject\DimensionSpacePoint;
 use Neos\ContentRepository\Domain\ValueObject\NodeAggregateIdentifier;
+use Neos\ContentRepository\Domain\ValueObject\NodeName;
 use Neos\ContentRepository\Domain\ValueObject\NodeTypeName;
 use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Session\SessionInterface;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Context\Content\ContentQuery;
@@ -118,6 +123,12 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
+     * @var WorkspaceFinder
+     */
+    protected $workspaceFinder;
+
+    /**
+     * @Flow\Inject
      * @var StyleAndJavascriptInclusionService
      */
     protected $styleAndJavascriptInclusionService;
@@ -130,8 +141,16 @@ class BackendController extends ActionController
     /**
      * Displays the backend interface
      *
-     * @param NodeInterface $node The node that will be displayed on the first tab
+     * @param string|null $workspaceName
+     * @param string|null $dimensionSpacePoint
+     * @param string|null $documentNodeAggregateIdentifier
      * @return void
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Exception
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \Neos\Flow\Mvc\Routing\Exception\MissingActionNameException
+     * @throws \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function indexAction(string $workspaceName = null, string $dimensionSpacePoint = null, string $documentNodeAggregateIdentifier = null)
     {
@@ -143,48 +162,38 @@ class BackendController extends ActionController
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        if ($documentNodeAggregateIdentifier === null) {
+        /*if ($documentNodeAggregateIdentifier === null) {
             $node = $this->findNodeToEdit();
-            $contentQuery = ContentQuery::fromNode($node, $this->getRootNodeIdentifier());
+            //$contentQuery = ContentQuery::fromNode($node, $this->getRootNodeIdentifier());
         } else {
+            // TODO!!!
             $contentQuery = new ContentQuery(new NodeAggregateIdentifier($documentNodeAggregateIdentifier), new WorkspaceName($workspaceName), DimensionSpacePoint::fromUriRepresentation($dimensionSpacePoint), $this->getSiteNodeForLoggedInUser()->getNodeAggregateIdentifier(), $this->getRootNodeIdentifier());
             $node = $this->nodeFactory->findNodeForContentQuery($contentQuery);
+        }*/
+
+        $user = $this->userService->getBackendUser();
+        if ($user === null) {
+            return null;
         }
 
-        $siteNode = $node->getContext()->getCurrentSiteNode();
+        $workspaceName = $this->userService->getPersonalWorkspaceName();
+        $workspace = $this->workspaceFinder->findOneByName(new WorkspaceName($workspaceName));
+        $subgraph = $this->contentGraph->getSubgraphByIdentifier($workspace->getCurrentContentStreamIdentifier(), $this->findDefaultDimensionSpacePoint());
+        $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName($this->getRootNodeIdentifier(), new NodeName($this->siteFinder->findDefault()->nodeName));
 
         $this->view->assign('user', $user);
-        $this->view->assign('documentNode', $node);
+        $this->view->assign('documentNode', $siteNode); // TODO: document node handling
         $this->view->assign('site', $siteNode);
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
 
         $this->view->assignMultiple([
-            'subgraph' => $node->getContext()->getContentSubgraph(),
-            'contextParameters' => $node->getContext()->getContextParameters(),
-            'contentQuery' => $contentQuery
+            'subgraph' => $subgraph,
+            'contextParameters' => new ContextParameters(new \DateTimeImmutable(), [], true, true)
         ]);
 
         $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
-    }
-
-    /**
-     * Deactivates the new UI and redirects back to the old one
-     *
-     * @param NodeInterface|null $node
-     * @return void
-     */
-    public function deactivateAction(NodeInterface $node = null)
-    {
-        if ($node === null) {
-            $node = $this->findNodeToEdit();
-        }
-
-        $this->session->start();
-        $this->session->putData('__neosEnabled__', false);
-
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
     }
 
     /**
@@ -192,14 +201,22 @@ class BackendController extends ActionController
      */
     protected function getSiteNodeForLoggedInUser()
     {
-        $user = $this->userService->getBackendUser();
-        if ($user === null) {
-            return null;
+
+    }
+
+    /**
+     * @Flow\Inject
+     * @var ContentDimensionSourceInterface
+     */
+    protected $contentDimensionSource;
+
+    protected function findDefaultDimensionSpacePoint(): DimensionSpacePoint {
+        $coordinates = [];
+        foreach ($this->contentDimensionSource->getContentDimensionsOrderedByPriority() as $dimension) {
+            $coordinates[(string)$dimension->getIdentifier()] = (string)$dimension->getDefaultValue();
         }
 
-        $workspaceName = $this->userService->getPersonalWorkspaceName();
-        $contentContext = $this->createContext($workspaceName);
-        return $contentContext->getCurrentSiteNode();
+        return new DimensionSpacePoint($coordinates);
     }
 
     /**
@@ -207,7 +224,9 @@ class BackendController extends ActionController
      */
     protected function findNodeToEdit()
     {
+
         $siteNode = $this->getSiteNodeForLoggedInUser();
+        return $siteNode; // TODO
         $reflectionMethod = new \ReflectionMethod($this->backendRedirectionService, 'getLastVisitedNode');
         $reflectionMethod->setAccessible(true);
         $node = $reflectionMethod->invoke($this->backendRedirectionService, $siteNode->getContext()->getWorkspaceName());

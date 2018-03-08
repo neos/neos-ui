@@ -52,12 +52,6 @@ export default class ContentCanvas extends PureComponent {
         loadedSrc: ''
     };
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.src !== this.props.src) {
-            this.props.startLoading();
-        }
-    }
-
     render() {
         const {
             isFringeLeft,
@@ -121,6 +115,7 @@ export default class ContentCanvas extends PureComponent {
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         onLoad={this.handleFrameAccess}
+                        onUnload={this.handelLoadStart}
                         role="region"
                         aria-live="assertive"
                         >
@@ -130,6 +125,10 @@ export default class ContentCanvas extends PureComponent {
             </div>
         );
     }
+
+    handelLoadStart = () => {
+        this.props.startLoading();
+    };
 
     onFrameChange = (iframeWindow, iframeDocument) => {
         if (iframeDocument.__isInitialized) {

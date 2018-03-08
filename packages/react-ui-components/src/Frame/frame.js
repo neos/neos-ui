@@ -9,6 +9,7 @@ export default class Frame extends PureComponent {
         mountTarget: PropTypes.string.isRequired,
         contentDidUpdate: PropTypes.func.isRequired,
         onLoad: PropTypes.func,
+        onUnload: PropTypes.func,
         children: PropTypes.node
     };
 
@@ -49,6 +50,7 @@ export default class Frame extends PureComponent {
             'theme',
             'children',
             'onLoad',
+            'onUnload',
             'src'
         ]);
 
@@ -70,6 +72,7 @@ export default class Frame extends PureComponent {
     renderFrameContents = () => {
         const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
         const win = ReactDOM.findDOMNode(this).contentWindow; // eslint-disable-line react/no-find-dom-node
+        win.addEventListener('unload', this.props.onUnload);
         const mountTarget = doc.querySelector(this.props.mountTarget);
         const contents = React.createElement('div', undefined, this.props.children);
         const iframeHtml = doc.querySelector('html');

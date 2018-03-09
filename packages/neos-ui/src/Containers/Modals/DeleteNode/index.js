@@ -89,7 +89,7 @@ export default class DeleteNodeModal extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.handleConfirm}
                 >
-                <I18n id="Neos.Neos:Main:confirm" fallback="Confirm"/>
+                <I18n id="Neos.Neos:Main:deleteConfirm" fallback="Confirm"/>
             </Button>
         );
     }

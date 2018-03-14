@@ -16,6 +16,15 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 interface FeedbackInterface
 {
     /**
+     * main entry point for serializing the feedback before it is sent to the UI. Usually implemented
+     * in AbstractFeedback, but can be overridden to implement fallback logic in case of errors.
+     *
+     * @param ControllerContext $controllerContext
+     * @return array
+     */
+    public function serialize(ControllerContext $controllerContext);
+
+    /**
      * Get the type identifier
      *
      * @return string

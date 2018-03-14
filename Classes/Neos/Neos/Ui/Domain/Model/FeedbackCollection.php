@@ -67,11 +67,7 @@ class FeedbackCollection implements \JsonSerializable
         $feedbacks = [];
 
         foreach ($this->feedbacks as $feedback) {
-            $feedbacks[] = [
-                'type' => $feedback->getType(),
-                'description' => $feedback->getDescription(),
-                'payload' => $feedback->serializePayload($this->controllerContext)
-            ];
+            $feedbacks[]= $feedback->serialize($this->controllerContext);
         }
 
         return [

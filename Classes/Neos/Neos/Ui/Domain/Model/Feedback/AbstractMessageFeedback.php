@@ -11,10 +11,11 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback;
  * source code.
  */
 
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
-abstract class AbstractMessageFeedback implements FeedbackInterface
+abstract class AbstractMessageFeedback extends AbstractFeedback
 {
     /**
      * @var string

@@ -24,7 +24,7 @@ use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Domain\Context\Content\ContentQuery;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
 use Neos\Neos\Domain\Projection\Site\SiteFinder;
 use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
@@ -163,7 +163,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             if ($workspace) {
                 // TODO figure out current site, instead of just using default site!!
                 $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName($this->getRootNodeIdentifier(), new NodeName($this->siteFinder->findDefault()->nodeName));
-                $nodeInfo['uri'] = $this->uri(new ContentQuery($node->getNodeAggregateIdentifier(), $workspace->getWorkspaceName(), $node->getDimensionSpacePoint(), $siteNode->getNodeAggregateIdentifier(), $this->getRootNodeIdentifier()), $controllerContext);
+                $nodeInfo['uri'] = $this->uri(NodeAddress::fromNode($node), $controllerContext);
             }
 
             // TODO
@@ -289,9 +289,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return $result;
     }
 
-    public function uri(ContentQuery $contentQuery = null, ControllerContext $controllerContext)
+    public function uri(NodeAddress $nodeAddress = null, ControllerContext $controllerContext)
     {
-        if ($contentQuery === null) {
+        if ($nodeAddress === null) {
             // This happens when the document node os not published yet
             return '';
         }
@@ -303,7 +303,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             ->reset()
             ->setFormat('html')
             ->setCreateAbsoluteUri(true)
-            ->uriFor('show', array('node' => $contentQuery), 'Frontend\Node', 'Neos.Neos');
+            ->uriFor('show', array('node' => $nodeAddress), 'Frontend\Node', 'Neos.Neos');
         return $uri;
     }
 

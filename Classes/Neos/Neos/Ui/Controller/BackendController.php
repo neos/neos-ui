@@ -29,7 +29,6 @@ use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Session\SessionInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Neos\Controller\Backend\MenuHelper;
-use Neos\Neos\Domain\Context\Content\ContentQuery;
 use Neos\Neos\Domain\Projection\Site\SiteFinder;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Service\ContentContext;
@@ -180,6 +179,7 @@ class BackendController extends ActionController
         $workspace = $this->workspaceFinder->findOneByName(new WorkspaceName($workspaceName));
         $subgraph = $this->contentGraph->getSubgraphByIdentifier($workspace->getCurrentContentStreamIdentifier(), $this->findDefaultDimensionSpacePoint());
         $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName($this->getRootNodeIdentifier(), new NodeName($this->siteFinder->findDefault()->nodeName));
+        $siteNode = new TraversableNode($siteNode, $subgraph, new ContextParameters(new \DateTimeImmutable(), [], true, false));
 
         $this->view->assign('user', $user);
         $this->view->assign('documentNode', $siteNode); // TODO: document node handling

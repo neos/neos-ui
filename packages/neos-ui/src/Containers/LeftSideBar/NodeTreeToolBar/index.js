@@ -260,7 +260,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 isAllowedToAddChildOrSiblingNodes,
                 isCut,
                 isCopied,
-                treeType: 'DocumentTree'
+                treeType: 'PageTree'
             };
         };
     }, {

@@ -5,6 +5,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 export default class CutSelectedNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
+        id: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string,
         isDisabled: PropTypes.bool.isRequired,
@@ -21,11 +22,12 @@ export default class CutSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, isDisabled, isActive, i18nRegistry} = this.props;
+        const {className, id, isDisabled, isActive, i18nRegistry} = this.props;
 
         return (
             <IconButton
                 className={className}
+                id={id}
                 isDisabled={isDisabled}
                 isActive={isActive}
                 onClick={this.handleClick}

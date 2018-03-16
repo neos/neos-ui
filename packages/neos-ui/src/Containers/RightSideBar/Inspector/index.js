@@ -220,7 +220,7 @@ export default class Inspector extends PureComponent {
         }
 
         return (
-            <div className={style.inspector}>
+            <div id="neos-Inspector" className={style.inspector}>
                 {shouldShowUnappliedChangesOverlay &&
                     <div
                         role="button"
@@ -261,10 +261,10 @@ export default class Inspector extends PureComponent {
                     }
                 </Tabs>
                 <Bar position="bottom" className={style.actions}>
-                    <Button style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
+                    <Button id="neos-Inspector-Discard" style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
                         <I18n id="Neos.Neos:Main:discard" fallback="discard"/>
                     </Button>
-                    <Button style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
+                    <Button id="neos-Inspector-Apply" style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
                         <I18n id="Neos.Neos:Main:apply" fallback="apply"/>
                     </Button>
                 </Bar>

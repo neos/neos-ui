@@ -6,6 +6,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 export default class AddNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
+        id: PropTypes.string,
         onClick: PropTypes.func.isRequired,
         focusedNodeContextPath: PropTypes.string.isRequired,
         isDisabled: PropTypes.bool.isRequired,
@@ -19,13 +20,14 @@ export default class AddNode extends PureComponent {
     }
 
     render() {
-        const {focusedNodeContextPath, isDisabled, className, i18nRegistry} = this.props;
+        const {focusedNodeContextPath, isDisabled, className, id, i18nRegistry} = this.props;
 
         return (
             <span>
                 <IconButton
                     isDisabled={Boolean(focusedNodeContextPath) === false || isDisabled}
                     className={className}
+                    id={id}
                     icon="plus"
                     onClick={this.handleClick}
                     hoverStyle="clean"

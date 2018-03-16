@@ -40,6 +40,7 @@ export default class MenuToggler extends PureComponent {
         //
         return (
             <Button
+                id="neos-MenuToggler"
                 className={classNames}
                 style="clean"
                 hoverStyle="clean"

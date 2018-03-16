@@ -44,7 +44,7 @@ export default class NodeTreeFilter extends PureComponent {
         }));
 
         return (
-            <div className={style.searchBar}>
+            <div id="neos-NodeTreeFilter" className={style.searchBar}>
                 <SelectBox
                     placeholder={label}
                     placeholderIcon={'filter'}

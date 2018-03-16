@@ -169,6 +169,7 @@ export default class InsertModeModal extends PureComponent {
                 title={this.renderTitle()}
                 onRequestClose={this.handleCancel}
                 isOpen={isOpen}
+                id="neos-InsertModeDialog"
                 >
                 <div className={style.modalContents}>
                     <p>

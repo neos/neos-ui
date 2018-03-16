@@ -310,7 +310,7 @@ test('Can create content node from inside InlineUI', async t => {
     await t
         .switchToIframe('[name="neos-content-main"]')
         .click(Selector('.neos-contentcollection'))
-        .click(Selector('#neos-PageTree-AddNode'))
+        .click(ReactSelector('AddNode Button'))
         .switchToMainWindow()
         .click(Selector('button#into'))
         // TODO: this selector will only work with English translation.

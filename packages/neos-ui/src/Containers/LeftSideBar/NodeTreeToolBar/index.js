@@ -259,7 +259,8 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 destructiveOperationsAreDisabled,
                 isAllowedToAddChildOrSiblingNodes,
                 isCut,
-                isCopied
+                isCopied,
+                treeType: 'DocumentTree'
             };
         };
     }, {
@@ -270,8 +271,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
         hideNode: actions.CR.Nodes.hide,
         showNode: actions.CR.Nodes.show,
         pasteNode: actions.CR.Nodes.paste,
-        reloadTree: actions.CR.Nodes.reloadState,
-        treeType: 'DocumentTree'
+        reloadTree: actions.CR.Nodes.reloadState
     }
 )(NodeTreeToolBar));
 

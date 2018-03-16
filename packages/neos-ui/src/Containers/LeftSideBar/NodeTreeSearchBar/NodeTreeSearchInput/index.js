@@ -20,7 +20,7 @@ const NodeTreeSearchInput = ({
         [style['searchInput--focused']]: focused
     });
     return (
-        <div className={style.wrapper}>
+        <div className={style.wrapper} id="neos-NodeTreeSearchInput">
             <Icon
                 icon="search"
                 className={focused ? style.hidden : style.placeholderIcon}

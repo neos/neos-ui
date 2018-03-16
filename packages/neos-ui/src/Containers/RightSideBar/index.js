@@ -46,6 +46,7 @@ export default class RightSideBar extends PureComponent {
         const toggleIcon = isHidden ? 'chevron-left' : 'chevron-right';
         const toggle = isFullScreen ? null : (
             <IconButton
+                id="neos-ToggleInspector"
                 icon={toggleIcon}
                 className={style.rightSideBar__toggleBtn}
                 onClick={this.handleToggle}

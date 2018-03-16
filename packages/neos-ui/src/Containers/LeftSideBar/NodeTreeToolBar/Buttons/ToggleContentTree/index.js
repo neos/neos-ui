@@ -7,6 +7,8 @@ export default class ToggleContentTree extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
 
+        id: PropTypes.string,
+
         isPanelOpen: PropTypes.bool.isRequired,
 
         onClick: PropTypes.func.isRequired,
@@ -21,11 +23,11 @@ export default class ToggleContentTree extends PureComponent {
     }
 
     render() {
-        const {className, isPanelOpen, i18nRegistry} = this.props;
+        const {className, id, isPanelOpen, i18nRegistry} = this.props;
 
         return (
             <IconButton
-                id="neos-contentTree-toggle"
+                id={id}
                 className={className}
                 onClick={this.handleClick}
                 icon={isPanelOpen ? 'chevron-down' : 'chevron-up'}

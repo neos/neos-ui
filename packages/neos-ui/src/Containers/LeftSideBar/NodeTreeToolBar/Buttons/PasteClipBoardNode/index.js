@@ -6,6 +6,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 export default class PasteClipBoardNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
+        id: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string.isRequired,
         isDisabled: PropTypes.bool.isRequired,
@@ -23,6 +24,7 @@ export default class PasteClipBoardNode extends PureComponent {
     render() {
         const {
             className,
+            id,
             isDisabled,
             i18nRegistry
         } = this.props;
@@ -31,6 +33,7 @@ export default class PasteClipBoardNode extends PureComponent {
             <IconButton
                 isDisabled={isDisabled}
                 className={className}
+                id={id}
                 icon="paste"
                 onClick={this.handleClick}
                 hoverStyle="clean"

@@ -51,7 +51,7 @@ export default class DiscardDialog extends PureComponent {
     renderAbort() {
         return (
             <Button
-                id="neos-DiscardDialog-cancel"
+                id="neos-DiscardDialog-Cancel"
                 key="cancel"
                 style="lighter"
                 hoverStyle="brand"
@@ -65,7 +65,7 @@ export default class DiscardDialog extends PureComponent {
     renderConfirm() {
         return (
             <Button
-                id="neos-DiscardDialog-confirm"
+                id="neos-DiscardDialog-Confirm"
                 key="confirm"
                 style="warn"
                 hoverStyle="brand"
@@ -89,6 +89,7 @@ export default class DiscardDialog extends PureComponent {
                 title={this.renderTitle()}
                 onRequestClose={this.handleAbort}
                 isOpen
+                id="neos-DiscardDialog"
                 >
                 <div className={style.modalContents}>
                     <I18n

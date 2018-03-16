@@ -22,6 +22,7 @@ export default class FullScreenButton extends PureComponent {
 
         return (
             <IconButton
+                id="neos-FullScreenButton"
                 icon="expand"
                 onClick={toggleFullScreen}
                 aria-label={i18nRegistry.translate('Neos.Neos:Main:activateFullscreen', 'Activate Fullscreen edit mode')}

@@ -74,6 +74,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                 }
                 onRequestClose={this.handleResume}
                 isOpen
+                id="neos-UnappliedChangesDialog"
                 >
                 <div className={style.modalContents}>
                     <Button

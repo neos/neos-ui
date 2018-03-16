@@ -6,6 +6,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 export default class HideSelectedNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
+        id: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string.isRequired,
         isDisabled: PropTypes.bool.isRequired,
@@ -29,11 +30,12 @@ export default class HideSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, isDisabled, isHidden, i18nRegistry} = this.props;
+        const {className, id, isDisabled, isHidden, i18nRegistry} = this.props;
 
         return (
             <IconButton
                 className={className}
+                id={id}
                 isActive={isHidden}
                 isDisabled={isDisabled}
                 onClick={isHidden ? this.handleShow : this.handleHide}

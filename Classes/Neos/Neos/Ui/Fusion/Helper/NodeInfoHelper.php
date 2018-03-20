@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*
@@ -25,6 +26,7 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Context\Content\NodeAddress;
+use Neos\Neos\Domain\Context\Content\NodeAddressService;
 use Neos\Neos\Domain\Projection\Site\SiteFinder;
 use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
@@ -110,6 +112,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected $siteFinder;
 
+
+    /**
+     * @Flow\Inject
+     * @var NodeAddressService
+     */
+    protected $nodeAddressService;
 
 
     private static function getDepth(NodeInterface $node, ContentSubgraphInterface $subgraph)
@@ -291,6 +299,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return $result;
     }
 
+    public function nodeAddress(NodeInterface $node)
+    {
+        return NodeAddress::fromNode($node);
+    }
+
     public function uri(NodeAddress $nodeAddress = null, ControllerContext $controllerContext)
     {
         if ($nodeAddress === null) {
@@ -331,6 +344,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function getRootNodeIdentifier(): \Neos\ContentRepository\Domain\ValueObject\NodeIdentifier
     {
         return $this->contentGraph->findRootNodeByType(new NodeTypeName('Neos.Neos:Sites'))->getNodeIdentifier();
+    }
+
+
+    public function inBackend(NodeInterface $node)
+    {
+        return !$this->nodeAddressService->isInLiveWorkspace(NodeAddress::fromNode($node));
     }
 
 }

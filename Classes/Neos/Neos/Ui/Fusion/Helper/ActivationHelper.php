@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*
@@ -11,9 +12,12 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Session\SessionInterface;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
+use Neos\Neos\Domain\Context\Content\NodeAddressService;
 
 class ActivationHelper implements ProtectedContextAwareInterface
 {
@@ -22,7 +26,6 @@ class ActivationHelper implements ProtectedContextAwareInterface
      * @var SessionInterface
      */
     protected $session;
-
 
     public function enableNewBackend()
     {

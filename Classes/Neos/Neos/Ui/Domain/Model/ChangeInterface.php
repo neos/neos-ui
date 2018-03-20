@@ -11,7 +11,8 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
+
 
 /**
  * An interface to describe a change

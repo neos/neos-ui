@@ -49,7 +49,7 @@ class NodePropertyConversionService
      * @param Context $context
      * @return mixed
      */
-    public function convert(NodeType $nodeType, $propertyName, $rawValue, Context $context)
+    public function convert(NodeType $nodeType, $propertyName, $rawValue)
     {
         $propertyType = $nodeType->getPropertyType($propertyName);
 
@@ -58,9 +58,11 @@ class NodePropertyConversionService
                 return $rawValue;
 
             case 'reference':
+                throw new \Exception("TODO FIX");
                 return $this->convertReference($rawValue, $context);
 
             case 'references':
+                throw new \Exception("TODO FIX");
                 return $this->convertReferences($rawValue, $context);
 
             case 'DateTime':

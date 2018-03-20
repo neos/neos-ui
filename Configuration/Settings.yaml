@@ -82,9 +82,8 @@ Neos:
           contentDimensions:
             active: '${documentNode.dimensionSpacePoint.toLegacyDimensionArray()}'
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
-          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, controllerContext)}'
-          # TODO fix!
-          #url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, subgraph, controllerContext)}'
+          url: '${Neos.Ui.NodeInfo.uri(Neos.Ui.NodeInfo.nodeAddress(documentNode), controllerContext)}'
           dimensionSpacePoint: '${documentNode.context.contentSubgraph.dimensionSpacePoint.serializeForUri()}'
           workspaceName: '${documentNode.context.workspaceName}'
           documentNodeAggregateIdentifier: '${documentNode.nodeAggregateIdentifier}'
@@ -105,8 +104,7 @@ Neos:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
         ui:
           contentCanvas:
-            # TODO fix!
-            # src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+            src: '${Neos.Ui.NodeInfo.uri(Neos.Ui.NodeInfo.nodeAddress(documentNode), controllerContext)}'
             contextPath: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
             backgroundColor: '${Configuration.setting(''Neos.Neos.Ui.contentCanvas.backgroundColor'')}'
           debugMode: false
@@ -183,3 +181,4 @@ Neos:
       Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
       Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
       Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper
+      Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper

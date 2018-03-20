@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Domain\Model;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;

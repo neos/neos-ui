@@ -9,8 +9,7 @@ prototype(Neos.Neos:Page) {
             }
 
             @if {
-                inBackend = ${documentNode.context.inBackend}
-                newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+                inBackend = ${Neos.Ui.Activation.enableNewBackend()}
                 isShortcut = ${q(node).is('[instanceof Neos.Neos:Shortcut]')}
             }
         }

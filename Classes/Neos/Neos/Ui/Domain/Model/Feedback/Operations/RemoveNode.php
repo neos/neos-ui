@@ -11,8 +11,8 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
 class RemoveNode implements FeedbackInterface

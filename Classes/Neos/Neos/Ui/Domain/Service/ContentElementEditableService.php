@@ -18,6 +18,7 @@ use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\ContentRepository\Domain\Projection\Workspace\WorkspaceFinder;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Fusion\Service\HtmlAugmenter as FusionHtmlAugmenter;
@@ -71,7 +72,7 @@ class ContentElementEditableService implements ContentElementEditableServiceInte
 
         $attributes = [
             'data-__neos-property' => $property,
-            'data-__neos-editable-node-contextpath' => $node->getContextPath()
+            'data-__neos-editable-node-contextpath' => NodeAddress::fromNode($node)->serializeForUri()
         ];
 
         return $this->htmlAugmenter->addAttributes($content, $attributes, 'span');

@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Domain\Model\Node;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 
 abstract class AbstractMove extends AbstractStructuralChange

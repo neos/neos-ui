@@ -26,6 +26,7 @@ prototype(Neos.Neos:Page) {
             context {
                 documentNode = ${documentNode}
                 site = ${site}
+                subgraph = ${subgraph}
             }
 
             @position = 'after javascripts'
@@ -33,8 +34,7 @@ prototype(Neos.Neos:Page) {
             @process.json = ${Json.stringify(value)}
             @process.wrapInJsObject = ${'<script>window[\'@Neos.Neos.Ui:DocumentInformation\']=' + value + '</script>'}
             @if {
-                inBackend = ${documentNode.context.inBackend}
-                newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+                inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
             }
 
             // We need to ensure the JS backend information is always up to date, especially
@@ -51,7 +51,7 @@ prototype(Neos.Neos:Page) {
                 entryIdentifier {
                     jsBackendInfo = 'javascriptBackendInformation'
                     documentNode = ${documentNode}
-                    inBackend = ${documentNode.context.inBackend}
+                    inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
                 }
                 entryTags {
                     1 = ${'Node_' + documentNode.identifier}
@@ -68,8 +68,7 @@ prototype(Neos.Neos:Page) {
 
             sectionName = 'guestFrameApplication'
             @if {
-                inBackend = ${documentNode.context.inBackend}
-                newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+                inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
             }
         }
     }
@@ -97,8 +96,7 @@ prototype(Neos.Neos:Page) {
         @position = 'before closingBodyTag'
         templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/GuestNotificationScript.html'
         @if {
-            inBackend = ${documentNode.context.inBackend}
-            newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+            inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
         }
     }
 

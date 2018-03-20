@@ -11,9 +11,9 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Service as ContentRepository;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 abstract class AbstractCopy extends AbstractStructuralChange
 {
@@ -43,6 +43,7 @@ abstract class AbstractCopy extends AbstractStructuralChange
      */
     protected function generateUniqueNodeName(NodeInterface $parentNode)
     {
+        // TODO fix!!
         return $this->contentRepositoryNodeService
             ->generateUniqueNodeName($parentNode->getPath(), $this->getSubject()->getName());
     }

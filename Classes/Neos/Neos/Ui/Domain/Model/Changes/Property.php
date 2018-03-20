@@ -11,9 +11,12 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Context\Node\Command\SetNodeProperty;
+use Neos\ContentRepository\Domain\Context\Node\NodeCommandHandler;
 use Neos\ContentRepository\Domain\Model\NodeType;
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
+use Neos\ContentRepository\Domain\ValueObject\PropertyValue;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
@@ -68,6 +71,12 @@ class Property extends AbstractChange
      * @var bool
      */
     protected $isInline;
+
+    /**
+     * @Flow\Inject
+     * @var NodeCommandHandler
+     */
+    protected $nodeCommandHandler;
 
     /**
      * Set the property name
@@ -178,18 +187,26 @@ class Property extends AbstractChange
             $value = $this->nodePropertyConversionService->convert(
                 $node->getNodeType(),
                 $propertyName,
-                $this->getValue(),
-                $node->getContext()
+                $this->getValue()
             );
 
             // TODO: Make changing the node type a separated, specific/defined change operation.
             if ($propertyName === '_nodeType') {
+                throw new \Exception("TODO FIX");
                 $nodeType = $this->nodeTypeManager->getNodeType($value);
                 $node = $this->changeNodeType($node, $nodeType);
             } elseif ($propertyName{0} === '_') {
+                throw new \Exception("TODO FIX");
                 ObjectAccess::setProperty($node, substr($propertyName, 1), $value);
             } else {
-                $node->setProperty($propertyName, $value);
+                $propertyType = $this->nodeTypeManager->getNodeType((string)$node->getNodeType())->getPropertyType($propertyName);
+                $command = new SetNodeProperty(
+                    $node->getContentStreamIdentifier(),
+                    $node->getNodeIdentifier(),
+                    $propertyName,
+                    new PropertyValue($value, $propertyType)
+                );
+                $this->nodeCommandHandler->handleSetNodeProperty($command);
             }
 
             $this->updateWorkspaceInfo();

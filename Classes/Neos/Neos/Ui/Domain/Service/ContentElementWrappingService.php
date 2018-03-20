@@ -18,6 +18,7 @@ use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\ContentRepository\Domain\Projection\Workspace\WorkspaceFinder;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Session\SessionInterface;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
 use Neos\Neos\Service\ContentElementWrappingServiceInterface;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
@@ -124,7 +125,7 @@ class ContentElementWrappingService implements ContentElementWrappingServiceInte
         //}
 
         $attributes = [
-            'data-__neos-node-contextpath' => $node->getContextPath(),
+            'data-__neos-node-contextpath' => NodeAddress::fromNode($node)->serializeForUri(),
             'data-__neos-fusion-path' => $fusionPath
         ];
 
@@ -132,12 +133,13 @@ class ContentElementWrappingService implements ContentElementWrappingServiceInte
 
         $this->userLocaleService->switchToUILocale();
 
-        $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $subgraph, $this->controllerContext));
+        $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $subgraph));
 
         $this->userLocaleService->switchToUILocale(true);
 
         $wrappedContent = $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
-        $wrappedContent .= "<script data-neos-nodedata>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
+        $nodeContextPath = NodeAddress::fromNode($node)->serializeForUri();
+        $wrappedContent .= "<script data-neos-nodedata>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$nodeContextPath}'] = {$serializedNode}})()</script>";
 
         return $wrappedContent;
     }
@@ -165,8 +167,9 @@ class ContentElementWrappingService implements ContentElementWrappingServiceInte
             }
 
             if (isset($this->renderedNodes[(string)$node->getNodeIdentifier()]) === false) {
-                $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $subgraph, $this->controllerContext));
-                $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
+                $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $subgraph));
+                $nodeContextPath = NodeAddress::fromNode($node)->serializeForUri();
+                $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$nodeContextPath}'] = {$serializedNode}})()</script>";
             }
 
             if ($subgraph->countChildNodes($node->getNodeIdentifier()) > 0) {

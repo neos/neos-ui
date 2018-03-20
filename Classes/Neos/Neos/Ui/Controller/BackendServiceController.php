@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\ContentGraphInterface;
 use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
 use Neos\Flow\Mvc\View\JsonView;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
@@ -367,6 +368,12 @@ class BackendServiceController extends ActionController
     }
 
     /**
+     * @Flow\Inject
+     * @var ContentGraphInterface
+     */
+    protected $contentGraph;
+
+    /**
      * Build and execute a flow query chain
      *
      * @param array $chain
@@ -392,13 +399,23 @@ class BackendServiceController extends ActionController
         $result = [];
         switch ($finisher['type']) {
             case 'get':
-                $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext());
+                /* @var $firstNode \Neos\ContentRepository\Domain\Projection\Content\NodeInterface */
+                $firstNode = $flowQuery->get(0);
+                $subgraph = $this->contentGraph->getSubgraphByIdentifier($firstNode->getContentStreamIdentifier(), $firstNode->getDimensionSpacePoint());
+                $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $subgraph, $this->getControllerContext());
                 break;
             case 'getForTree':
-                $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext(), true);
+                /* @var $firstNode \Neos\ContentRepository\Domain\Projection\Content\NodeInterface */
+                $firstNode = $flowQuery->get(0);
+                $subgraph = $this->contentGraph->getSubgraphByIdentifier($firstNode->getContentStreamIdentifier(), $firstNode->getDimensionSpacePoint());
+
+                $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $subgraph, $this->getControllerContext(), true);
                 break;
             case 'getForTreeWithParents':
-                $result = $nodeInfoHelper->renderNodesWithParents($flowQuery->get(), $this->getControllerContext());
+                /* @var $firstNode \Neos\ContentRepository\Domain\Projection\Content\NodeInterface */
+                $firstNode = $flowQuery->get(0);
+                $subgraph = $this->contentGraph->getSubgraphByIdentifier($firstNode->getContentStreamIdentifier(), $firstNode->getDimensionSpacePoint());
+                $result = $nodeInfoHelper->renderNodesWithParents($flowQuery->get(), $subgraph, $this->getControllerContext());
                 break;
         }
 

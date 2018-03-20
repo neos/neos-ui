@@ -11,10 +11,12 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\ContentGraphInterface;
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Domain\Service\NodeTypeConstraintService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * Fetches all nodes needed for the given state of the UI
@@ -36,6 +38,18 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
     protected static $priority = 100;
 
     /**
+     * @Flow\Inject
+     * @var ContentGraphInterface
+     */
+    protected $contentGraph;
+
+    /**
+     * @Flow\Inject
+     * @var NodeTypeConstraintService
+     */
+    protected $nodeTypeConstraintsService;
+
+    /**
      * {@inheritdoc}
      *
      * @param array (or array-like object) $context onto which this operation should be applied
@@ -55,29 +69,33 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
      */
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
+        /* @var $documentNode \Neos\ContentRepository\Domain\Projection\Content\NodeInterface */
         list($siteNode, $documentNode) = $flowQuery->getContext();
         list($baseNodeType, $loadingDepth, $toggledNodes) = $arguments;
 
+        $baseNodeTypeConstraints = $this->nodeTypeConstraintsService->unserializeFilters($baseNodeType);
+
+
         // Collect all parents of documentNode up to siteNode
         $parents = [];
-        $currentNode = $documentNode->getParent();
+        $subgraph = $this->contentGraph->getSubgraphByIdentifier($documentNode->getContentStreamIdentifier(), $documentNode->getDimensionSpacePoint());
+        $currentNode = $subgraph->findParentNodeByNodeAggregateIdentifier($documentNode->getNodeAggregateIdentifier());
         if ($currentNode) {
-            $parentNodeIsUnderneathSiteNode = strpos($currentNode->getPath(), $siteNode->getPath()) === 0;
-            while ($currentNode !== $siteNode && $parentNodeIsUnderneathSiteNode) {
-                $parents[] = $currentNode->getContextPath();
-                $currentNode = $currentNode->getParent();
+            while ($currentNode !== $siteNode && $currentNode !== null) {
+                $parents[] = $currentNode->getNodeAggregateIdentifier();
+                $currentNode = $subgraph->findParentNodeByNodeAggregateIdentifier($currentNode->getNodeAggregateIdentifier());
             }
         }
 
         $nodes = [$siteNode];
-        $gatherNodesRecursively = function (&$nodes, $baseNode, $level = 0) use (&$gatherNodesRecursively, $baseNodeType, $loadingDepth, $toggledNodes, $parents) {
+        $gatherNodesRecursively = function (&$nodes, NodeInterface $baseNode, $level = 0) use (&$gatherNodesRecursively, $baseNodeTypeConstraints, $loadingDepth, $toggledNodes, $parents, $subgraph) {
             if (
                 $level < $loadingDepth || // load all nodes within loadingDepth
                 $loadingDepth === 0 || // unlimited loadingDepth
-                in_array($baseNode->getContextPath(), $toggledNodes) || // load toggled nodes
-                in_array($baseNode->getContextPath(), $parents) // load children of all parents of documentNode
+                in_array($baseNode->getNodeAggregateIdentifier(), $toggledNodes) || // load toggled nodes
+                in_array($baseNode->getNodeAggregateIdentifier(), $parents) // load children of all parents of documentNode
             ) {
-                foreach ($baseNode->getChildNodes($baseNodeType) as $childNode) {
+                foreach ($subgraph->findChildNodes($baseNode->getNodeIdentifier(), $baseNodeTypeConstraints) as $childNode) {
                     $nodes[] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);
                 }

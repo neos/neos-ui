@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  */
 
 use Neos\ContentRepository\Domain\Factory\NodeFactory;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\NodeDataRepository;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Eel\FlowQuery\FlowQuery;

@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\ContentGraphInterface;
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
@@ -19,6 +20,7 @@ use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Utility\NodePaths;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Flow\Property\PropertyMapper;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
 use Neos\Neos\Domain\Model\Site;
 use Neos\Neos\Domain\Model\Domain;
 use Neos\Neos\Domain\Projection\Domain\DomainFinder;
@@ -55,6 +57,12 @@ class NodeService
     protected $propertyMapper;
 
     /**
+     * @Flow\Inject
+     * @var ContentGraphInterface
+     */
+    protected $contentGraph;
+
+    /**
      * Helper method to retrieve the closest document for a node
      *
      * @param NodeInterface $node
@@ -89,7 +97,10 @@ class NodeService
      */
     public function getNodeFromContextPath($contextPath)
     {
-        return $this->propertyMapper->convert($contextPath, \Neos\ContentRepository\Domain\Projection\Content\NodeInterface::class);
+        $nodeAddress = NodeAddress::fromUriString($contextPath);
+        return $this->contentGraph
+            ->getSubgraphByIdentifier($nodeAddress->getContentStreamIdentifier(), $nodeAddress->getDimensionSpacePoint())
+            ->findNodeByNodeAggregateIdentifier($nodeAddress->getNodeAggregateIdentifier());
     }
 
     /**

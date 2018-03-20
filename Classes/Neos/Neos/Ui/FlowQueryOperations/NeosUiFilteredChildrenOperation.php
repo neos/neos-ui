@@ -11,10 +11,9 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * "children" operation working on ContentRepository nodes. It iterates over all

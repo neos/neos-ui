@@ -12,10 +12,10 @@ namespace Neos\Neos\Ui\Domain\Service;
  */
 
 use Neos\ContentGraph\DoctrineDbalAdapter\Domain\Repository\ContentSubgraph;
+use Neos\ContentRepository\Domain\Context\ContentStream\ContentStreamIdentifier;
 use Neos\ContentRepository\Domain\Projection\Content\ContentSubgraphInterface;
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\ContentRepository\Domain\Projection\Workspace\WorkspaceFinder;
-use Neos\ContentRepository\Domain\ValueObject\ContentStreamIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Neos\Service\ContentElementWrappingServiceInterface;
@@ -111,7 +111,7 @@ class ContentElementWrappingService implements ContentElementWrappingServiceInte
      * @return string
      * @throws \Neos\Eel\Exception
      */
-    public function wrapContentObject(NodeInterface $node, ContentSubgraphInterface $subgraph, $content, $fusionPath)
+    public function wrapContentObject(NodeInterface $node, ContentSubgraphInterface $subgraph, $content, $fusionPath): string
     {
         if ($this->isContentStreamOfLiveWorkspace($subgraph->getContentStreamIdentifier())) {
             return $content;
@@ -214,5 +214,10 @@ class ContentElementWrappingService implements ContentElementWrappingServiceInte
     private function isContentStreamOfLiveWorkspace(ContentStreamIdentifier $contentStreamIdentifier)
     {
         return $this->workspaceFinder->findOneByCurrentContentStreamIdentifier($contentStreamIdentifier)->getWorkspaceName()->isLive();
+    }
+
+    public function wrapCurrentDocumentMetadata(NodeInterface $node, ContentSubgraphInterface $subgraph, $content, $fusionPath, array $additionalAttributes = []): string {
+        // we do not need to implement this for the new UI
+        return $content;
     }
 }

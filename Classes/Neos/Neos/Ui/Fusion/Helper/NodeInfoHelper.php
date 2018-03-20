@@ -145,7 +145,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
         $nodeInfo = [
-            'contextPath' => $node->getContextPath(),
+            // contextPath == NodeAddress
+            'contextPath' => NodeAddress::fromNode($node)->serializeForUri(),
             'name' => (string)$node->getNodeName(),
             'identifier' => (string)$node->getNodeIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
@@ -189,7 +190,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         foreach ($childNodes as $childNode) {
             /* @var NodeInterface $childNode */
             $nodeInfo['children'][] = [
-                'contextPath' => $childNode->getContextPath(),
+                'contextPath' => NodeAddress::fromNode($childNode)->serializeForUri(),
                 'nodeType' => $childNode->getNodeType()->getName() // TODO: DUPLICATED; should NOT be needed!!!
             ];
         }
@@ -201,7 +202,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function renderNodeToList(&$nodes, NodeInterface $node, ContentSubgraphInterface $subgraph, ControllerContext $controllerContext)
     {
         if ($nodeInfo = $this->renderNode($node, $subgraph, $controllerContext)) {
-            $nodes[$node->getContextPath()] = $nodeInfo;
+            $nodeAddress = NodeAddress::fromNode($node)->serializeForUri();
+            $nodes[$nodeAddress] = $nodeInfo;
         }
     }
 
@@ -314,6 +316,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     public function allowsCallOfMethod($methodName)
     {
         return true;
+    }
+
+    public function serializedNodeAddress(NodeInterface $node): string
+    {
+        return NodeAddress::fromNode($node)->serializeForUri();
     }
 
     /**

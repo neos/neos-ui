@@ -11,10 +11,10 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Utility\NodePaths;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
@@ -89,7 +89,7 @@ class NodeService
      */
     public function getNodeFromContextPath($contextPath)
     {
-        return $this->propertyMapper->convert($contextPath, NodeInterface::class);
+        return $this->propertyMapper->convert($contextPath, \Neos\ContentRepository\Domain\Projection\Content\NodeInterface::class);
     }
 
     /**

@@ -4,3 +4,9 @@ Neos\Neos\Ui\View\BackendFusionView:
       object: Neos\Fusion\Core\Parser
     fallbackView:
       object: Neos\FluidAdaptor\View\TemplateView
+
+Neos\Neos\Service\ContentElementWrappingServiceInterface:
+  className: Neos\Neos\Ui\Domain\Service\ContentElementWrappingService
+
+Neos\Neos\Service\ContentElementEditableServiceInterface:
+  className: Neos\Neos\Ui\Domain\Service\ContentElementEditableService

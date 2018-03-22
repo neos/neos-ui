@@ -84,6 +84,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
                 actions.CR.Nodes.focus(contextPath, fusionPath)
             );
         } else {
+            store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
             store.dispatch(
                 actions.CR.Nodes.unFocus()
             );

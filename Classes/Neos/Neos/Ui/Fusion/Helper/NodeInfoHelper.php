@@ -93,7 +93,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'name' => $node->getName(),
             'identifier' => $node->getIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
-            'isFullyLoaded' => !$omitMostPropertiesForTreeState,
             'properties' => $omitMostPropertiesForTreeState ? [
                 // if we are only rendering the tree state, ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
                 '_hidden' => $node->isHidden()
@@ -104,6 +103,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
             'children' => [],
         ];
+        // It's important to not set `isFullyLoaded` to false by default, so the state would get merged correctly
+        if (!$omitMostPropertiesForTreeState) {
+            $nodeInfo['isFullyLoaded'] = true;
+        }
         if ($controllerContext !== null && $node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
 

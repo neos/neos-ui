@@ -20,31 +20,10 @@ import TextInput from './TextInput/index';
 import ToggablePanel from './ToggablePanel/index';
 import Tooltip from './Tooltip/index';
 import Tree from './Tree/index';
-
-export {
-    Badge,
-    Bar,
-    Button,
-    ButtonGroup,
-    CheckBox,
-    DateInput,
-    Dialog,
-    DropDown,
-    Frame,
-    Headline,
-    Icon,
-    IconButton,
-    IconButtonDropDown,
-    Label,
-    SelectBox,
-    SideBar,
-    Tabs,
-    TextArea,
-    TextInput,
-    ToggablePanel,
-    Tooltip,
-    Tree
-};
+import MultiSelectBox from './MultiSelectBox/index';
+import MultiSelectBox_ListPreviewSortable from './MultiSelectBox_ListPreviewSortable/index';
+import SelectBox_Option_SingleLine from './SelectBox_Option_SingleLine/index';
+import SelectBox_Option_MultiLineWithThumbnail from './SelectBox_Option_MultiLineWithThumbnail/index';
 
 export default {
     Badge,
@@ -68,5 +47,9 @@ export default {
     TextInput,
     ToggablePanel,
     Tooltip,
-    Tree
+    Tree,
+    MultiSelectBox,
+    MultiSelectBox_ListPreviewSortable,
+    SelectBox_Option_SingleLine,
+    SelectBox_Option_MultiLineWithThumbnail
 };

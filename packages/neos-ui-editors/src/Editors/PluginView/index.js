@@ -5,7 +5,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 @neos(globalRegistry => {
     return {
@@ -16,7 +16,8 @@ import {$transform} from 'plow-js';
 @connect($transform({
     activeContentDimensions: selectors.CR.ContentDimensions.active,
     personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector,
-    focusedNode: selectors.CR.Nodes.focusedSelector
+    focusedNode: selectors.CR.Nodes.focusedSelector,
+    transientValues: selectors.UI.Inspector.transientValues
 }))
 
 class PluginViewEditor extends React.PureComponent {
@@ -27,7 +28,8 @@ class PluginViewEditor extends React.PureComponent {
         i18nRegistry: PropTypes.object.isRequired,
         activeContentDimensions: PropTypes.object.isRequired,
         personalWorkspace: PropTypes.string,
-        focusedNode: PropTypes.instanceOf(PluginViewEditor).isRequired
+        focusedNode: PropTypes.object.isRequired,
+        transientValues: PropTypes.object
     };
 
     state = {
@@ -54,8 +56,16 @@ class PluginViewEditor extends React.PureComponent {
     }
 
     componentDidMount() {
-        const {personalWorkspace, activeContentDimensions, focusedNode} = this.props;
+        this.loadOptions(this.props);
+    }
+    componentWillReceiveProps(nextProps) {
+        if ($get('plugin.value', nextProps.transientValues) !== $get('plugin.value', this.props.transientValues)) {
+            this.loadOptions(nextProps);
+        }
+    }
 
+    loadOptions(props) {
+        const {personalWorkspace, activeContentDimensions, focusedNode, transientValues} = props;
         if (!focusedNode) {
             return;
         }
@@ -63,8 +73,8 @@ class PluginViewEditor extends React.PureComponent {
         const {loadPluginViews} = backend.get().endpoints;
         const pluginNode = focusedNode.get('properties');
 
-        if (!this.state.options.length && pluginNode.size > 0) {
-            const pluginNodeIdentifier = pluginNode.get('plugin');
+        if (pluginNode.size > 0) {
+            const pluginNodeIdentifier = $get('plugin.value', transientValues) === undefined ? pluginNode.get('plugin') : $get('plugin.value', transientValues);
             this.setState({isLoading: true});
 
             loadPluginViews(pluginNodeIdentifier, personalWorkspace, activeContentDimensions.toJS())

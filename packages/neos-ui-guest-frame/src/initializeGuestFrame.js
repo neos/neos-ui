@@ -69,6 +69,11 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             domNode.getAttribute &&
             domNode.getAttribute('data-__neos__inline-ui')
         );
+        const isInsideEditableProperty = clickPath.some(domNode =>
+            domNode &&
+            domNode.getAttribute &&
+            domNode.getAttribute('data-__neos-property')
+        );
         const selectedDomNode = clickPath.find(domNode =>
             domNode &&
             domNode.getAttribute &&
@@ -82,16 +87,15 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
             const state = store.getState();
             const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
-            if (focusedNodeContextPath !== contextPath) {
-                store.dispatch(
-                    actions.CR.Nodes.focus(contextPath, fusionPath)
-                );
+            if (!isInsideEditableProperty) {
+                store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
+            }
+            if (!isInsideEditableProperty || focusedNodeContextPath !== contextPath) {
+                store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
             }
         } else {
             store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
-            store.dispatch(
-                actions.CR.Nodes.unFocus()
-            );
+            store.dispatch(actions.CR.Nodes.unFocus());
         }
     };
 

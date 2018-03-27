@@ -24,7 +24,7 @@ export default class TabPanel extends PureComponent {
     };
 
     render() {
-        const {groups, renderSecondaryInspector, node, commit} = this.props;
+        const {handlePanelToggle, toggledPanels, groups, renderSecondaryInspector, node, commit} = this.props;
 
         if (!groups) {
             return (<div>...</div>);
@@ -36,10 +36,12 @@ export default class TabPanel extends PureComponent {
                 {
                     groups.filter(g => ($get('properties', g) && $get('properties', g).filter(this.isPropertyEnabled).count()) || ($get('views', g) && $get('views', g).count())).map(group => (
                         <PropertyGroup
+                            handlePanelToggle={() => handlePanelToggle([$get('id', group)])}
                             key={$get('id', group)}
                             label={$get('label', group)}
                             icon={$get('icon', group)}
-                            collapsed={$get('collapsed', group)}
+                            // overlay default collapsed state over current state
+                            collapsed={$get($get('id', group), toggledPanels) != $get('collapsed', group)} // eslint-disable-line eqeqeq
                             properties={$get('properties', group).filter(this.isPropertyEnabled)}
                             views={$get('views', group)}
                             renderSecondaryInspector={renderSecondaryInspector}

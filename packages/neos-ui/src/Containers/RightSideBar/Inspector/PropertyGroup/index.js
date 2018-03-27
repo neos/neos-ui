@@ -22,6 +22,7 @@ export default class PropertyGroup extends PureComponent {
         renderSecondaryInspector: PropTypes.func.isRequired,
 
         node: PropTypes.object.isRequired,
+        handlePanelToggle: PropTypes.func.isRequired,
         commit: PropTypes.func.isRequired
     };
 
@@ -30,13 +31,13 @@ export default class PropertyGroup extends PureComponent {
     };
 
     render() {
-        const {properties, views, label, icon, collapsed, renderSecondaryInspector, node, commit} = this.props;
+        const {properties, views, label, icon, collapsed, handlePanelToggle, renderSecondaryInspector, node, commit} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
 
         const propertyGroup = properties => (
-            <ToggablePanel isOpen={!collapsed} className={sidebarStyle.rightSideBar__section}>
+            <ToggablePanel onPanelToggle={handlePanelToggle} isOpen={!collapsed} className={sidebarStyle.rightSideBar__section}>
                 <ToggablePanel.Header theme={headerTheme}>
                     {icon && <Icon icon={icon}/>} <I18n id={label}/>
                 </ToggablePanel.Header>

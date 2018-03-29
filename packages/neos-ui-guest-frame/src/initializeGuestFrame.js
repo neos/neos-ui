@@ -1,4 +1,5 @@
 import {takeEvery, put, select} from 'redux-saga/effects';
+import {$get} from 'plow-js';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
@@ -68,6 +69,11 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             domNode.getAttribute &&
             domNode.getAttribute('data-__neos__inline-ui')
         );
+        const isInsideEditableProperty = clickPath.some(domNode =>
+            domNode &&
+            domNode.getAttribute &&
+            domNode.getAttribute('data-__neos-property')
+        );
         const selectedDomNode = clickPath.find(domNode =>
             domNode &&
             domNode.getAttribute &&
@@ -79,14 +85,17 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         } else if (selectedDomNode) {
             const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
             const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
-
-            store.dispatch(
-                actions.CR.Nodes.focus(contextPath, fusionPath)
-            );
+            const state = store.getState();
+            const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
+            if (!isInsideEditableProperty) {
+                store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
+            }
+            if (!isInsideEditableProperty || focusedNodeContextPath !== contextPath) {
+                store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
+            }
         } else {
-            store.dispatch(
-                actions.CR.Nodes.unFocus()
-            );
+            store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
+            store.dispatch(actions.CR.Nodes.unFocus());
         }
     };
 

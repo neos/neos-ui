@@ -69,7 +69,8 @@ export default class Inspector extends PureComponent {
     };
 
     state = {
-        secondaryInspectorComponent: null
+        secondaryInspectorComponent: null,
+        toggledPanels: Immutable.fromJS({})
     };
 
     constructor(props) {
@@ -197,6 +198,12 @@ export default class Inspector extends PureComponent {
         return (<div className={style.loader}><div><Icon icon="spinner" spin={true} size="big" /></div></div>);
     }
 
+    handlePanelToggle = path => {
+        const value = $get(path, this.state.toggledPanels);
+        const newState = $set(path, !value, this.state.toggledPanels);
+        this.setState({toggledPanels: newState});
+    };
+
     render() {
         const {
             focusedNode,
@@ -252,10 +259,14 @@ export default class Inspector extends PureComponent {
                                     key={$get('id', tab)}
                                     icon={$get('icon', tab)}
                                     groups={$get('groups', tab)}
+                                    toggledPanels={$get($get('id', tab), this.state.toggledPanels)}
                                     tooltip={i18nRegistry.translate($get('label', tab))}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
                                     node={focusedNode}
                                     commit={commit}
+                                    handlePanelToggle={path => {
+                                        this.handlePanelToggle([$get('id', tab), ...path]);
+                                    }}
                                     />);
                         })
                     }

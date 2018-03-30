@@ -90,6 +90,7 @@ export default class PublishDropDown extends PureComponent {
             publishableNodes,
             publishableNodesInDocument,
             isSaving,
+            isPublishing,
             isAutoPublishingEnabled,
             isWorkspaceReadOnly,
             toggleAutoPublishing,
@@ -102,8 +103,8 @@ export default class PublishDropDown extends PureComponent {
         const workspaceModuleUri = $get('routes.core.modules.workspaces', neos);
         const allowedWorkspaces = $get('configuration.allowedTargetWorkspaces', neos);
         const baseWorkspaceTitle = $get([baseWorkspace, 'title'], allowedWorkspaces);
-        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
-        const canPublishGlobally = publishableNodes && (publishableNodes.count() > 0);
+        const canPublishLocally = !isSaving && !isPublishing && publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
+        const canPublishGlobally = !isSaving && !isPublishing && publishableNodes && (publishableNodes.count() > 0);
         const changingWorkspaceAllowed = !canPublishGlobally;
         const autoPublishWrapperClassNames = mergeClassNames({
             [style.dropDown__item]: true,

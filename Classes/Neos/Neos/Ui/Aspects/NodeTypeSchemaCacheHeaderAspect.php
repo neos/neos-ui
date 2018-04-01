@@ -7,18 +7,10 @@ namespace Neos\Neos\Ui\Aspects;
  *                                                                        *
  *                                                                        */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Session\SessionInterface;
-use Neos\FluidAdaptor\Core\Rendering\FlowAwareRenderingContextInterface;
 use Neos\Neos\Controller\Backend\SchemaController;
-use Neos\Neos\Domain\Service\ContentContext;
-use Neos\Neos\Domain\Service\UserService;
-use Neos\Neos\Service\HtmlAugmenter;
-use Neos\Neos\Ui\Domain\Service\UserLocaleService;
-use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 /**
  * adds a Cache-Control: max-age=3600 header to the /schema/node-types endpoint; speeds up loading the new UI

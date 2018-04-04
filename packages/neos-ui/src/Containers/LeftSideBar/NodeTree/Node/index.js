@@ -55,8 +55,8 @@ export default class Node extends PureComponent {
         isLastChild: PropTypes.bool,
         childNodes: PropTypes.object,
         level: PropTypes.number.isRequired,
-        currentDocumentNodeContextPath: PropTypes.string,
-        focusedNodeContextPath: PropTypes.string,
+        isActive: PropTypes.bool,
+        isFocused: PropTypes.bool,
         toggledNodeContextPaths: PropTypes.object,
         hiddenContextPaths: PropTypes.object,
         intermediateContextPaths: PropTypes.object,
@@ -79,7 +79,7 @@ export default class Node extends PureComponent {
 
     componentDidMount() {
         // Always request scroll on first render if given node is focused
-        if (this.props.focusedNodeContextPath === $get('contextPath', this.props.node)) {
+        if (this.props.isFocused) {
             this.setState({
                 shouldScrollIntoView: true
             });
@@ -88,9 +88,9 @@ export default class Node extends PureComponent {
 
     componentWillReceiveProps(nextProps) {
         // If focused node changed
-        if (this.props.focusedNodeContextPath !== nextProps.focusedNodeContextPath) {
+        if (this.props.isFocused !== nextProps.isFocused) {
             // And it is the current node
-            if (nextProps.focusedNodeContextPath === $get('contextPath', nextProps.node)) {
+            if (nextProps.isFocused) {
                 // Request scrolling itself into view
                 this.setState({
                     shouldScrollIntoView: true
@@ -160,17 +160,17 @@ export default class Node extends PureComponent {
     }
 
     isFocused() {
-        const {node, focusedNodeContextPath} = this.props;
+        const {isFocused} = this.props;
 
-        return focusedNodeContextPath === $get('contextPath', node);
+        return isFocused;
     }
 
     isActive() {
-        const {node, currentDocumentNodeContextPath, isContentTreeNode} = this.props;
+        const {isActive, isContentTreeNode} = this.props;
         if (isContentTreeNode) {
             return this.isFocused();
         }
-        return currentDocumentNodeContextPath === $get('contextPath', node);
+        return isActive;
     }
 
     isCollapsed() {
@@ -323,9 +323,8 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             loadingDepth: neos.configuration.nodeTree.loadingDepth,
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
-            currentDocumentNodeContextPath: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state),
-            currentDocumentNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
-            focusedNodeContextPath: selectors.UI.PageTree.getFocused(state),
+            isActive: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state) === $get('contextPath', node),
+            isFocused: selectors.UI.PageTree.getFocused(state) === $get('contextPath', node),
             toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
             hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
             intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
@@ -365,9 +364,8 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             loadingDepth: neos.configuration.structureTree.loadingDepth,
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
-            currentDocumentNodeContextPath: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state),
-            currentDocumentNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
-            focusedNodeContextPath: $get('cr.nodes.focused.contextPath', state),
+            isActive: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state) === $get('contextPath', node),
+            isFocused: $get('cr.nodes.focused.contextPath', state) === $get('contextPath', node),
             toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
             isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
             canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {

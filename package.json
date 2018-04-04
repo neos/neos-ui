@@ -38,7 +38,7 @@
     "json-loader": "^0.5.4",
     "lerna": "^2.5.1",
     "lolex": "^1.5.1",
-    "node": "8.10.0",
+    "node": "8.11.0",
     "object-assign": "^4.1.0",
     "postcss-css-variables": "^0.8.0",
     "postcss-hexrgba": "^1.0.0",

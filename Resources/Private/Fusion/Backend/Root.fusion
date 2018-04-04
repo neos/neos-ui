@@ -35,6 +35,12 @@ backend = Neos.Fusion:Template {
                 absolute = true
                 arguments = Neos.Fusion:RawArray {
                     locale = ${interfaceLanguage}
+
+                    # TODO: dirty hack to not have to re-implement neos:backend.configurationCacheVersion VH
+                    version = Neos.Fusion:Template {
+                        templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/ConfigurationVersion.html'
+                        @process.trim = ${String.trim(value)}
+                    }
                 }
             }
         }

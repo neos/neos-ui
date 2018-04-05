@@ -231,8 +231,15 @@ export default ckEditorRegistry => {
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__indent',
         isVisibleWhen: (inlineEditorOptions, formattingUnderCursor) => {
-            return ((Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions))) &&
-                formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED);
+            // Indent possible at cursor position
+            return formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED && (
+                // Cursor in ol
+                formattingUnderCursor.ol === richtextToolbar.TRISTATE_ON ||
+                // Cursor in ul
+                formattingUnderCursor.ul === richtextToolbar.TRISTATE_ON ||
+                // Indent generally enabled
+                Boolean($get('formatting.indent', inlineEditorOptions))
+            );
         }
     });
 
@@ -246,8 +253,15 @@ export default ckEditorRegistry => {
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__outdent',
         isVisibleWhen: (inlineEditorOptions, formattingUnderCursor) => {
-            return ((Boolean($get('formatting.ul', inlineEditorOptions)) || Boolean($get('formatting.ol', inlineEditorOptions))) &&
-                formattingUnderCursor.indent !== richtextToolbar.TRISTATE_DISABLED);
+            // Outdent possible at cursor position
+            return formattingUnderCursor.outdent !== richtextToolbar.TRISTATE_DISABLED && (
+                // Cursor in ol
+                formattingUnderCursor.ol === richtextToolbar.TRISTATE_ON ||
+                // Cursor in ul
+                formattingUnderCursor.ul === richtextToolbar.TRISTATE_ON ||
+                // Outdent generally enabled
+                Boolean($get('formatting.outdent', inlineEditorOptions))
+            );
         }
     });
 

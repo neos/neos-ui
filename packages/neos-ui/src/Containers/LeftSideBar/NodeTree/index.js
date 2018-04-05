@@ -1,9 +1,10 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, unstable_AsyncMode as AsyncMode} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
 
+import {neos} from '@neos-project/neos-ui-decorators';
 import Tree from '@neos-project/react-ui-components/src/Tree/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -15,6 +16,8 @@ import style from './style.css';
 
 export default class NodeTree extends PureComponent {
     static propTypes = {
+        experimentalAsyncRendering: PropTypes.bool,
+
         ChildRenderer: PropTypes.func,
         rootNode: PropTypes.object,
         allowOpeningNodesInNewWindow: PropTypes.bool,
@@ -98,7 +101,7 @@ export default class NodeTree extends PureComponent {
             [style.pageTree]: true
         });
 
-        return (
+        const tree = (
             <Tree className={classNames}>
                 <ChildRenderer
                     ChildRenderer={ChildRenderer}
@@ -114,10 +117,18 @@ export default class NodeTree extends PureComponent {
                     />
             </Tree>
         );
+
+        if (this.props.experimentalAsyncRendering) {
+            return <AsyncMode>{tree}</AsyncMode>;
+        } else {
+            return tree;
+        }
     }
 }
 
-export const PageTree = connect(state => ({
+export const PageTree = neos(globalRegistry => ({
+    experimentalAsyncRendering: globalRegistry.get('frontendConfiguration').get('experimentalAsyncRenderingInPageTree')
+}))(connect(state => ({
     rootNode: selectors.CR.Nodes.siteNodeSelector(state),
     ChildRenderer: PageTreeNode,
     allowOpeningNodesInNewWindow: true,
@@ -130,9 +141,11 @@ export const PageTree = connect(state => ({
     setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath,
     moveNode: actions.CR.Nodes.move,
     requestScrollIntoView: null
-})(NodeTree);
+})(NodeTree));
 
-export const ContentTree = connect(state => ({
+export const ContentTree = neos(globalRegistry => ({
+    experimentalAsyncRendering: globalRegistry.get('frontendConfiguration').get('experimentalAsyncRenderingInContentTree')
+}))(connect(state => ({
     rootNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
     ChildRenderer: ContentTreeNode,
     allowOpeningNodesInNewWindow: false
@@ -141,4 +154,4 @@ export const ContentTree = connect(state => ({
     focus: actions.CR.Nodes.focus,
     moveNode: actions.CR.Nodes.move,
     requestScrollIntoView: actions.UI.ContentCanvas.requestScrollIntoView
-})(NodeTree);
+})(NodeTree));

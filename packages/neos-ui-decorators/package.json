@@ -21,7 +21,7 @@
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",
-    "react": "^16.0.0"
+    "react": "^16.3.0"
   },
   "dependencies": {
     "reselect": "^3.0.1"

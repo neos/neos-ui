@@ -94,6 +94,20 @@ Neos:
 
         defaultInlineEditor: 'ckeditor'
 
+        # ASYNC RENDERING
+        #
+        # for node trees with lots of nodes on a single level (>= 500), you can
+        # try to enable the experimental async rendering for the trees using the
+        # switches below. This enables React 16.3+ async rendering for these components.
+        #
+        # BENEFITS of async rendering:
+        # - the user can interact with the UI while the tree is still loading.
+        # DRAWBACKS of async rendering:
+        # - Dragging and dropping of nodes in the tree is flaky and not working
+        #   reliably; because react-dnd does not support async rendering yet.
+        experimentalAsyncRenderingInPageTree: false
+        experimentalAsyncRenderingInContentTree: false
+
       #################################
       # INTERNAL CONFIG (no API)
       #################################

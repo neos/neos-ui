@@ -122,7 +122,7 @@
     "react-dnd": "^2.5.1",
     "react-dnd-html5-backend": "^2.5.1",
     "react-dnd-scrollzone": "^4.0.0",
-    "react-dom": "^16.0.0",
+    "react-dom": "^16.3.0",
     "react-dropzone": "^3.13.2",
     "react-height": "^3.0.0",
     "react-image-crop": "^2.0.5",

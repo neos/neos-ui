@@ -24,18 +24,6 @@ abstract class AbstractCopy extends AbstractStructuralChange
     protected $contentRepositoryNodeService;
 
     /**
-     * Checks whether this change can be applied to the subject
-     *
-     * @return boolean
-     */
-    public function canApply()
-    {
-        $nodeType = $this->getSubject()->getNodeType();
-
-        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
-    }
-
-    /**
      * Generate a unique node name for the copied node
      *
      * @param NodeInterface $parentNode

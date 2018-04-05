@@ -11,13 +11,65 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 class MoveInto extends AbstractMove
 {
+
+    /**
+     * @var string
+     */
+    protected $parentContextPath;
+
+    /**
+     * @var NodeInterface
+     */
+    protected $cachedParentNode;
+
+    /**
+     * @param string $parentContextPath
+     */
+    public function setParentContextPath($parentContextPath)
+    {
+        $this->parentContextPath = $parentContextPath;
+    }
+
+
+    /**
+     * Get the insertion mode (before|after|into) that is represented by this change
+     *
+     * @return string
+     */
     public function getMode()
     {
         return 'into';
+    }
+
+    /**
+     * @return NodeInterface
+     */
+    public function getParentNode()
+    {
+        if ($this->cachedParentNode === null) {
+            $this->cachedParentNode = $this->nodeService->getNodeFromContextPath(
+                $this->parentContextPath
+            );
+        }
+
+        return $this->cachedParentNode;
+    }
+
+    /**
+     * "Subject" is the to-be-copied node; the "parent" node is the new parent
+     *
+     * @return boolean
+     */
+    public function canApply()
+    {
+        $nodeType = $this->getSubject()->getNodeType();
+
+        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
     }
 
     /**

@@ -3247,6 +3247,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
+custom-event-polyfill@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-0.3.0.tgz#99807839be62edb446b645832e0d80ead6fa1888"
+
 d3-array@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.1.tgz#d1ca33de2f6ac31efadb8e050a021d7e2396d5dc"
@@ -7769,7 +7773,13 @@ node-version@1.1.0, node-version@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/node-version/-/node-version-1.1.0.tgz#f437d7ba407e65e2c4eaef8887b1718ba523d4f0"
 
-node@8.9.4, node@^8.9.4:
+node@8.11.0:
+  version "8.11.0"
+  resolved "https://registry.yarnpkg.com/node/-/node-8.11.0.tgz#25f4fef2b16bf681f3314ae39eb39f68ee14f4a4"
+  dependencies:
+    node-bin-setup "^1.0.0"
+
+node@^8.9.4:
   version "8.9.4"
   resolved "https://registry.yarnpkg.com/node/-/node-8.9.4.tgz#5ab1e5ec49067a25e007e361b5f80de9dc0460fc"
   dependencies:

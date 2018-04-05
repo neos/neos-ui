@@ -95,7 +95,7 @@ export default class NodeCreationDialog extends PureComponent {
     renderBackAction() {
         return (
             <Button
-                id="neos-nodeCreationDialog-back"
+                id="neos-NodeCreationDialog-Back"
                 key="back"
                 style="lighter"
                 hoverStyle="brand"
@@ -122,7 +122,7 @@ export default class NodeCreationDialog extends PureComponent {
 
         return (
             <Button
-                id="neos-nodeCreationDialog-createNew"
+                id="neos-NodeCreationDialog-CreateNew"
                 disabled={Boolean(validationErrors || !isDirty)}
                 key="save"
                 style="lighter"
@@ -150,8 +150,9 @@ export default class NodeCreationDialog extends PureComponent {
                 onRequestClose={this.handleCancel}
                 isOpen
                 style="wide"
+                id="neos-NodeCreationDialog"
                 >
-                <div id="neos-nodeCreationDialog-body" className={style.body}>
+                <div id="neos-NodeCreationDialog-Body" className={style.body}>
                     {Object.keys(configuration.elements)
                         .filter(elementName => Boolean(configuration.elements[elementName]))
                         .map((elementName, index) => {

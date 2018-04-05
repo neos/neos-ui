@@ -40,6 +40,7 @@ export default class LeftSideBarToggler extends PureComponent {
 
         return (
             <Button
+                id="neos-LeftSideBarToggler"
                 className={classNames}
                 style="clean"
                 hoverStyle="clean"

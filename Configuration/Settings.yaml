@@ -47,7 +47,7 @@ Neos:
         backgroundColor: '#ffffff'
 
       frontendConfiguration:
-        editPreviewModes: '${Configuration.setting(''Neos.Neos.userInterface.editPreviewModes'')}'
+        editPreviewModes: '${Neos.Ui.PositionalArraySorter.sort(Configuration.setting(''Neos.Neos.userInterface.editPreviewModes''))}'
         # You may use this place to deliver some configuration to your custom UI components, e.g.:
         # 'Your.Own:Package':
         #   someKey: someValue
@@ -72,6 +72,7 @@ Neos:
         Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
         Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
         Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
+        Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper
       documentNodeInformation:
         metaData:
           contextPath: '${q(documentNode).property("_contextPath")}'

@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {Map} from 'immutable';
-import {$set, $get} from 'plow-js';
+import {$set, $get, $all} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 
@@ -78,6 +78,7 @@ export const reducer = handleActions({
             src: $get('ui.contentCanvas.src', state) || '',
             formattingUnderCursor: new Map(),
             currentlyEditedPropertyName: '',
+            currentlyEditedPropertyNameIntermediate: '',
             isLoading: true,
             focusedProperty: '',
             backgroundColor: $get('ui.contentCanvas.backgroundColor', state),
@@ -108,7 +109,11 @@ export const reducer = handleActions({
     [SET_PREVIEW_URL]: ({previewUrl}) => $set('ui.contentCanvas.previewUrl', previewUrl),
     [SET_SRC]: ({src}) => $set('ui.contentCanvas.src', src),
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
-    [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
+    [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $all(
+        $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
+        // See SET_FOCUS why it's needed
+        $set('ui.contentCanvas.currentlyEditedPropertyNameIntermediate', propertyName)
+    ),
     [STOP_LOADING]: () => $set('ui.contentCanvas.isLoading', false),
     [START_LOADING]: () => $set('ui.contentCanvas.isLoading', true),
     [REQUEST_SCROLL_INTO_VIEW]: activate => $set('ui.contentCanvas.shouldScrollIntoView', activate),

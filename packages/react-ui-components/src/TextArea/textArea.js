@@ -59,7 +59,7 @@ class TextArea extends PureComponent {
         minRows: PropTypes.number,
 
         /**
-         * Optional number to set the minRows of the TextArea if expanded
+         * Optional number to set the expandedRows of the TextArea if expanded
          */
         expandedRows: PropTypes.number
     };

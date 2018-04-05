@@ -13,11 +13,12 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\Workspace;
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
-class UpdateWorkspaceInfo implements FeedbackInterface
+class UpdateWorkspaceInfo extends AbstractFeedback
 {
     /**
      * @var Workspace

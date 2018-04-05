@@ -11,11 +11,12 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
-class RemoveNode implements FeedbackInterface
+class RemoveNode extends AbstractFeedback
 {
     /**
      * @var NodeInterface

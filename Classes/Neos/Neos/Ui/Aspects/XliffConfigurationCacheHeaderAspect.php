@@ -13,8 +13,7 @@ use Neos\Flow\Session\SessionInterface;
 use Neos\Neos\Controller\Backend\SchemaController;
 
 /**
- * adds a Cache-Control: max-age=3600 header to the /schema/node-types endpoint; speeds up loading the new UI
- * if having many node types.
+ * adds a Cache-Control: max-age=3600 header to the /xliff.json endpoint; speeds up loading the new UI.
  *
  * NOTE: we currently do this in an aspect, to also increase performance on older Neos versions (some people still
  * need time to upgrade to the latest Neos version...)
@@ -22,7 +21,7 @@ use Neos\Neos\Controller\Backend\SchemaController;
  * @Flow\Scope("singleton")
  * @Flow\Aspect
  */
-class NodeTypeSchemaCacheHeaderAspect
+class XliffConfigurationCacheHeaderAspect
 {
 
     /**
@@ -32,7 +31,7 @@ class NodeTypeSchemaCacheHeaderAspect
     protected $session;
 
     /**
-     * @Flow\Before("method(Neos\Neos\Controller\Backend\SchemaController->nodeTypeSchemaAction())")
+     * @Flow\Before("method(Neos\Neos\Controller\Backend\BackendController->xliffAsJsonAction())")
      * @param JoinPointInterface $joinPoint
      * @return mixed
      */
@@ -42,7 +41,7 @@ class NodeTypeSchemaCacheHeaderAspect
             /** @var SchemaController $proxy */
             $proxy = $joinPoint->getProxy();
 
-            // Cache for one week!
+            // Cache for one week; as cache busting is enabled.
             $proxy->getControllerContext()->getResponse()->setHeader('Cache-Control', 'max-age=' . (3600 * 24 * 7));
         }
     }

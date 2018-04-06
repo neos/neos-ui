@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, react/jsx-pascal-case */
 import Badge from './Badge/index';
 import Bar from './Bar/index';
 import Button from './Button/index';

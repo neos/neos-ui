@@ -7,6 +7,7 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from '../style.css';
+import {TARGET_WINDOW} from '../constants';
 
 export default class MenuItem extends PureComponent {
     static propTypes = {
@@ -27,9 +28,9 @@ export default class MenuItem extends PureComponent {
     }
 
     render() {
-        const {skipI18n, label, icon, uri} = this.props;
+        const {skipI18n, label, icon, uri, target} = this.props;
 
-        return (
+        const button = (
             <Button
                 className={style.drawer__menuItemBtn}
                 onClick={this.handleClick}
@@ -41,5 +42,10 @@ export default class MenuItem extends PureComponent {
                 {skipI18n ? label : <I18n id={label} fallback={label}/>}
             </Button>
         );
+
+        if (target === TARGET_WINDOW) {
+            return <a href={uri}>{button}</a>;
+        }
+        return button;
     }
 }

@@ -11,8 +11,10 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\ContentGraphInterface;
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
@@ -29,6 +31,12 @@ class UpdateNodeInfo implements FeedbackInterface
      * @var NodeInfoHelper
      */
     protected $nodeInfoHelper;
+
+    /**
+     * @Flow\Inject
+     * @var ContentGraphInterface
+     */
+    protected $contentGraph;
 
     protected $isRecursive = false;
 
@@ -80,7 +88,7 @@ class UpdateNodeInfo implements FeedbackInterface
      */
     public function getDescription()
     {
-        return sprintf('Updated info for node "%s" is available.', $this->getNode()->getContextPath());
+        return sprintf('Updated info for node "%s" is available.', $this->getNode()->getNodeIdentifier());
     }
 
     /**
@@ -95,7 +103,7 @@ class UpdateNodeInfo implements FeedbackInterface
             return false;
         }
 
-        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
+        return $this->getNode()->getNodeIdentifier() === $feedback->getNode()->getNodeIdentifier();
     }
 
     /**
@@ -120,12 +128,14 @@ class UpdateNodeInfo implements FeedbackInterface
      */
     public function serializeNodeRecursively(NodeInterface $node, ControllerContext $controllerContext)
     {
+        $subgraph = $this->contentGraph->getSubgraphByIdentifier($node->getContentStreamIdentifier(), $node->getDimensionSpacePoint());
+
         $result = [
-            $node->getContextPath() => $this->nodeInfoHelper->renderNode($node, $controllerContext)
+            NodeAddress::fromNode($node)->serializeForUri() => $this->nodeInfoHelper->renderNode($node, $subgraph, $controllerContext)
         ];
 
         if ($this->isRecursive === true) {
-            foreach ($node->getChildNodes() as $childNode) {
+            foreach ($subgraph->findChildNodes($node->getNodeIdentifier()) as $childNode) {
                 $result = array_merge($result, $this->serializeNodeRecursively($childNode, $controllerContext));
             }
         }

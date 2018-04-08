@@ -15,6 +15,7 @@ use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
 use Neos\Neos\Domain\Model\User;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
@@ -67,13 +68,12 @@ class WorkspaceService
         $publishableNodes = $this->publishingService->getUnpublishedNodes($workspaceName);
 
         $publishableNodes = array_map(function ($node) {
-            // TODO Get documentNode
-            #if ($documentNode = $this->nodeService->getClosestDocument($node)) {
+            if ($documentNode = $this->nodeService->getClosestDocument($node)) {
                 return [
-                    'contextPath' => $node->getContextPath(),
-                    'documentContextPath' => $node->getContextPath()
+                    'contextPath' => NodeAddress::fromNode($node)->serializeForUri(),
+                    'documentContextPath' => NodeAddress::fromNode($documentNode)->serializeForUri()
                 ];
-            #}
+            }
         }, $publishableNodes);
 
         return array_values(array_filter($publishableNodes, function ($item) {

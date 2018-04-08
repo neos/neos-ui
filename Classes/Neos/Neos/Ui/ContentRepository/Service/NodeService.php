@@ -75,7 +75,11 @@ class NodeService
         }
 
         $flowQuery = new FlowQuery(array($node));
-        return $flowQuery->closest('[instanceof Neos.Neos:Document]')->get(0);
+        $closestDocument = $flowQuery->closest('[instanceof Neos.Neos:Document]')->get(0);
+        if ($closestDocument === null) {
+            throw new \Exception('TODO: Closest document not found');
+        }
+        return $closestDocument;
     }
 
     /**

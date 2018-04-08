@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model;
  */
 
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Domain\Projection\Workspace\WorkspaceFinder;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
@@ -37,6 +38,12 @@ abstract class AbstractChange implements ChangeInterface
      * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
+
+    /**
+     * @Flow\Inject
+     * @var WorkspaceFinder
+     */
+    protected $workspaceFinder;
 
     /**
      * Inject the persistence manager
@@ -78,11 +85,10 @@ abstract class AbstractChange implements ChangeInterface
     protected function updateWorkspaceInfo()
     {
         $nodeService = new NodeService();
-        $updateWorkspaceInfo = new UpdateWorkspaceInfo();
+
         $documentNode = $nodeService->getClosestDocument($this->getSubject());
-        $updateWorkspaceInfo->setWorkspace(
-            $documentNode->getContext()->getWorkspace()
-        );
+        $workspace = $this->workspaceFinder->findOneByCurrentContentStreamIdentifier($documentNode->getContentStreamIdentifier());
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo($workspace->getWorkspaceName());
 
         $this->feedbackCollection->add($updateWorkspaceInfo);
     }

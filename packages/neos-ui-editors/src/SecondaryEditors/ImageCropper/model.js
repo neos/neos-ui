@@ -1,5 +1,6 @@
 import {values, merge, memoize} from 'ramda';
 import {Maybe, Some, None} from 'monet';
+import {$get} from 'plow-js';
 
 //
 // AspectRatioStrategies
@@ -175,7 +176,13 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
         )
 
         .orElse(
-            when(defaultOption)(new ConfiguredAspectRatioStrategy(options[defaultOption].width, options[defaultOption].height, options[defaultOption].label))
+            when(defaultOption)(
+                new ConfiguredAspectRatioStrategy(
+                    $get([defaultOption, 'width'], options),
+                    $get([defaultOption, 'height'], options),
+                    $get([defaultOption, 'label'], options)
+                )
+            )
         )
 
         //

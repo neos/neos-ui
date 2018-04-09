@@ -142,7 +142,7 @@ const DEFAULT_BOUNDARIES = {
 };
 
 const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
-    const {options} = neosConfiguration;
+    const {options, defaultOption} = neosConfiguration;
     const aspectRatioLocked = neosConfiguration.locked.height > 0 && neosConfiguration.locked.width > 0;
     if (aspectRatioLocked) {
         return new LockedAspectRatioStrategy(neosConfiguration.locked.width, neosConfiguration.locked.height);
@@ -172,6 +172,10 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
                 values(options).filter(o => o && (o.width / o.height).toFixed(2) === aspectRatio.toFixed(2))[0]
             ))
             .map(o => new ConfiguredAspectRatioStrategy(o.width, o.height, o.label))
+        )
+
+        .orElse(
+            when(defaultOption)(new ConfiguredAspectRatioStrategy(options[defaultOption].width, options[defaultOption].height, options[defaultOption].label))
         )
 
         //

@@ -118,6 +118,20 @@ export default class NodeToolbar extends PureComponent {
         const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
         const {top, right} = getAbsolutePositionOfElementInGuestFrame(nodeElement);
 
+        // TODO: hardcoded dimensions
+        const TOOLBAR_WIDTH = 200;
+        const TOOLBAR_HEIGHT = 50;
+
+        const rect = nodeElement.getBoundingClientRect();
+        const toolbarPosition = {
+            top: top - TOOLBAR_HEIGHT
+        };
+        if (rect.right < TOOLBAR_WIDTH) {
+            toolbarPosition.left = 0;
+        } else {
+            toolbarPosition.right = right;
+        }
+
         const {isSticky} = this.state;
         const classNames = mergeClassNames({
             [style.toolBar]: true,
@@ -125,7 +139,7 @@ export default class NodeToolbar extends PureComponent {
         });
 
         return (
-            <div className={classNames} style={{top: top - 50, right}}>
+            <div className={classNames} style={toolbarPosition}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...props}/>
                     <HideSelectedNode {...props}/>

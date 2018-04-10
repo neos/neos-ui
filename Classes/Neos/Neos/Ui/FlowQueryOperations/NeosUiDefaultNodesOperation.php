@@ -17,7 +17,7 @@ use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
- * Renders nodes that are initially required by the user interface
+ * Fetches all nodes needed for the given state of the UI
  */
 class NeosUiDefaultNodesOperation extends AbstractOperation
 {
@@ -55,28 +55,39 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
      */
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
-        list($site, $documentNode) = $flowQuery->getContext();
-        list($baseNodeType, $loadingDepth) = array_replace([
-            '',
-            0
-        ], $arguments);
+        list($siteNode, $documentNode) = $flowQuery->getContext();
+        list($baseNodeType, $loadingDepth, $toggledNodes) = $arguments;
 
-        $nodes = [];
-        if ($site !== $documentNode) {
-            $nodes[] = $site;
+        // Collect all parents of documentNode up to siteNode
+        $parents = [];
+        $currentNode = $documentNode->getParent();
+        if ($currentNode) {
+            $parentNodeIsUnderneathSiteNode = strpos($currentNode->getPath(), $siteNode->getPath()) === 0;
+            while ($currentNode !== $siteNode && $parentNodeIsUnderneathSiteNode) {
+                $parents[] = $currentNode->getContextPath();
+                $currentNode = $currentNode->getParent();
+            }
         }
 
-        $gatherNodesRecursively = function (&$nodes, $baseNode, $level = 0) use (&$gatherNodesRecursively, $baseNodeType, $loadingDepth) {
-            if ($level < $loadingDepth || $loadingDepth === 0) {
+        $nodes = [$siteNode];
+        $gatherNodesRecursively = function (&$nodes, $baseNode, $level = 0) use (&$gatherNodesRecursively, $baseNodeType, $loadingDepth, $toggledNodes, $parents) {
+            if (
+                $level < $loadingDepth || // load all nodes within loadingDepth
+                $loadingDepth === 0 || // unlimited loadingDepth
+                in_array($baseNode->getContextPath(), $toggledNodes) || // load toggled nodes
+                in_array($baseNode->getContextPath(), $parents) // load children of all parents of documentNode
+            ) {
                 foreach ($baseNode->getChildNodes($baseNodeType) as $childNode) {
                     $nodes[] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);
                 }
             }
         };
-        $gatherNodesRecursively($nodes, $site);
+        $gatherNodesRecursively($nodes, $siteNode);
 
-        $nodes[] = $documentNode;
+        if (!in_array($documentNode, $nodes)) {
+            $nodes[] = $documentNode;
+        }
 
         $flowQuery->setContext($nodes);
     }

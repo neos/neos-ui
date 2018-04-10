@@ -58,10 +58,6 @@ class MasterPluginEditor extends React.PureComponent {
     }
 
     componentDidMount() {
-        if (!this.props.value) {
-            return;
-        }
-
         const {loadMasterPlugins} = backend.get().endpoints;
         const {personalWorkspace, activeContentDimensions} = this.props;
 

@@ -56,14 +56,15 @@ export default class LeftSideBar extends PureComponent {
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 <div className={style.leftSideBar__top}>
-                    {LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
+                    {!isHidden && LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
                 </div>
 
-                <hr/>
+                {/* Disable top border to get only a 1px combined border size */}
+                <hr style={{borderTop: 'none'}}/>
 
                 <div className={bottomClassNames}>
                     <ContentTreeToolbar/>
-                    {LeftSideBarBottom.map((Item, key) => <Item key={key}/>)}
+                    {!isHidden && !isHiddenContentTree && LeftSideBarBottom.map((Item, key) => <Item key={key}/>)}
                 </div>
             </SideBar>
         );

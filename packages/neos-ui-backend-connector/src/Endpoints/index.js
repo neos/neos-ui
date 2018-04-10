@@ -48,7 +48,7 @@ export default routes => {
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const changeBaseWorkspace = targetWorkspaceName => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    const changeBaseWorkspace = (targetWorkspaceName, documentNode) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.changeBaseWorkspace,
 
         method: 'POST',
@@ -58,7 +58,8 @@ export default routes => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            targetWorkspaceName
+            targetWorkspaceName,
+            documentNode
         })
     })).then(response => response.json())
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
@@ -113,6 +114,16 @@ export default routes => {
 
     const loadPluginViews = (identifier, workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.content.loadPluginViews, {identifier, workspaceName, dimensions}),
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })).then(response => response.json())
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const contentDimensions = (dimensionName, chosenDimensionPresets) => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: urlWithParams(`${routes.core.service.contentDimensions}/${dimensionName}.json`, {chosenDimensionPresets}),
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -364,6 +375,7 @@ export default routes => {
         dataSource,
         getJsonResource,
         getWorkspaceInfo,
-        tryLogin
+        tryLogin,
+        contentDimensions
     };
 };

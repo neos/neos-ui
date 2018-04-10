@@ -38,9 +38,10 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/CR/NodeOperations/hideNode', {saga: crNodeOperations.hideNode});
     sagasRegistry.set('neos-ui/CR/NodeOperations/showNode', {saga: crNodeOperations.showNode});
     sagasRegistry.set('neos-ui/CR/NodeOperations/removeNodeIfConfirmed', {saga: crNodeOperations.removeNodeIfConfirmed});
+    sagasRegistry.set('neos-ui/CR/NodeOperations/reloadState', {saga: crNodeOperations.reloadState});
 
     sagasRegistry.set('neos-ui/Publish/watchChangeBaseWorkspace', {saga: publish.watchChangeBaseWorkspace});
-    sagasRegistry.set('neos-ui/Publish/watchDiscard', {saga: publish.watchDiscard});
+    sagasRegistry.set('neos-ui/Publish/discardIfConfirmed', {saga: publish.discardIfConfirmed});
     sagasRegistry.set('neos-ui/Publish/watchPublish', {saga: publish.watchPublish});
     sagasRegistry.set('neos-ui/Publish/watchToggleAutoPublish', {saga: publish.watchToggleAutoPublish});
 
@@ -60,7 +61,6 @@ manifest('main.sagas', {}, globalRegistry => {
 
     sagasRegistry.set('neos-ui/UI/PageTree/watchCurrentDocument', {saga: uiPageTree.watchCurrentDocument});
     sagasRegistry.set('neos-ui/UI/PageTree/watchNodeCreated', {saga: uiPageTree.watchNodeCreated});
-    sagasRegistry.set('neos-ui/UI/PageTree/watchReloadTree', {saga: uiPageTree.watchReloadTree});
     sagasRegistry.set('neos-ui/UI/PageTree/watchRequestChildrenForContextPath', {saga: uiPageTree.watchRequestChildrenForContextPath});
     sagasRegistry.set('neos-ui/UI/PageTree/watchSearch', {saga: uiPageTree.watchSearch});
     sagasRegistry.set('neos-ui/UI/PageTree/watchToggle', {saga: uiPageTree.watchToggle});

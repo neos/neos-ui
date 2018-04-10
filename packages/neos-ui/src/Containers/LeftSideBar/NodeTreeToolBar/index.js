@@ -38,6 +38,7 @@ export default class NodeTreeToolBar extends PureComponent {
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         isAllowedToAddChildOrSiblingNodes: PropTypes.bool.isRequired,
         isHiddenContentTree: PropTypes.bool,
+        treeType: PropTypes.string.isRequired,
 
         addNode: PropTypes.func.isRequired,
         copyNode: PropTypes.func.isRequired,
@@ -131,7 +132,8 @@ export default class NodeTreeToolBar extends PureComponent {
             destructiveOperationsAreDisabled,
             isAllowedToAddChildOrSiblingNodes,
             i18nRegistry,
-            isHiddenContentTree
+            isHiddenContentTree,
+            treeType
         } = this.props;
 
         return (
@@ -143,6 +145,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         focusedNodeContextPath={focusedNodeContextPath}
                         isDisabled={!isAllowedToAddChildOrSiblingNodes}
                         onClick={this.handleAddNode}
+                        id={`neos-${treeType}-AddNode`}
                         />
                     <HideSelectedNode
                         i18nRegistry={i18nRegistry}
@@ -152,6 +155,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         isHidden={isHidden}
                         onHide={this.handleHideNode}
                         onShow={this.handleShowNode}
+                        id={`neos-${treeType}-HideSelectedNode`}
                         />
                     <CopySelectedNode
                         i18nRegistry={i18nRegistry}
@@ -160,6 +164,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         onClick={this.handleCopyNode}
                         isActive={isCopied}
                         isDisabled={destructiveOperationsAreDisabled}
+                        id={`neos-${treeType}-CopySelectedNode`}
                         />
                     <CutSelectedNode
                         i18nRegistry={i18nRegistry}
@@ -168,6 +173,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         isActive={isCut}
                         isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
                         onClick={this.handleCutNode}
+                        id={`neos-${treeType}-CutSelectedNode`}
                         />
                     <PasteClipBoardNode
                         i18nRegistry={i18nRegistry}
@@ -175,6 +181,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         focusedNodeContextPath={focusedNodeContextPath}
                         isDisabled={!canBePasted}
                         onClick={this.handlePasteNode}
+                        id={`neos-${treeType}-PasteClipBoardNode`}
                         />
                     <DeleteSelectedNode
                         i18nRegistry={i18nRegistry}
@@ -182,6 +189,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         focusedNodeContextPath={focusedNodeContextPath}
                         isDisabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
                         onClick={this.handleDeleteNode}
+                        id={`neos-${treeType}-DeleteSelectedNode`}
                         />
                     <RefreshPageTree
                         i18nRegistry={i18nRegistry}
@@ -189,12 +197,14 @@ export default class NodeTreeToolBar extends PureComponent {
                         focusedNodeContextPath={focusedNodeContextPath}
                         isLoading={isLoading}
                         onClick={this.handleReloadTree}
+                        id={`neos-${treeType}-RefreshPageTree`}
                         />
                     {Boolean(displayToggleContentTreeButton) && <ToggleContentTree
                         i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         isPanelOpen={!isHiddenContentTree}
                         onClick={this.handleToggleContentTree}
+                        id={`neos-${treeType}-ToggleContentTree`}
                         />}
                 </div>
             </div>
@@ -249,7 +259,8 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 destructiveOperationsAreDisabled,
                 isAllowedToAddChildOrSiblingNodes,
                 isCut,
-                isCopied
+                isCopied,
+                treeType: 'PageTree'
             };
         };
     }, {
@@ -260,7 +271,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
         hideNode: actions.CR.Nodes.hide,
         showNode: actions.CR.Nodes.show,
         pasteNode: actions.CR.Nodes.paste,
-        reloadTree: actions.UI.PageTree.reloadTree
+        reloadTree: actions.CR.Nodes.reloadState
     }
 )(NodeTreeToolBar));
 
@@ -305,7 +316,8 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
                 isAllowedToAddChildOrSiblingNodes,
                 isCut,
                 isCopied,
-                isHiddenContentTree
+                isHiddenContentTree,
+                treeType: 'ContentTree'
             };
         };
     }, {

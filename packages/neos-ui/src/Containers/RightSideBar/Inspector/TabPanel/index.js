@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$contains} from 'plow-js';
+import {$get, $contains} from 'plow-js';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
@@ -11,7 +11,7 @@ import style from './style.css';
 export default class TabPanel extends PureComponent {
     static displayName = 'Inspector Tab Panel';
     static propTypes = {
-        groups: PropTypes.array,
+        groups: PropTypes.object,
         renderSecondaryInspector: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired
@@ -24,7 +24,7 @@ export default class TabPanel extends PureComponent {
     };
 
     render() {
-        const {groups, renderSecondaryInspector, node, commit} = this.props;
+        const {handlePanelToggle, toggledPanels, groups, renderSecondaryInspector, node, commit} = this.props;
 
         if (!groups) {
             return (<div>...</div>);
@@ -34,13 +34,16 @@ export default class TabPanel extends PureComponent {
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 <SelectedElement/>
                 {
-                    groups.filter(g => (g.properties && g.properties.filter(this.isPropertyEnabled).length) || (g.views && g.views.length)).map(group => (
+                    groups.filter(g => ($get('properties', g) && $get('properties', g).filter(this.isPropertyEnabled).count()) || ($get('views', g) && $get('views', g).count())).map(group => (
                         <PropertyGroup
-                            key={group.id}
-                            label={group.label}
-                            icon={group.icon}
-                            properties={group.properties.filter(this.isPropertyEnabled)}
-                            views={group.views}
+                            handlePanelToggle={() => handlePanelToggle([$get('id', group)])}
+                            key={$get('id', group)}
+                            label={$get('label', group)}
+                            icon={$get('icon', group)}
+                            // overlay default collapsed state over current state
+                            collapsed={Boolean($get($get('id', group), toggledPanels)) !== Boolean($get('collapsed', group))}
+                            properties={$get('properties', group).filter(this.isPropertyEnabled)}
+                            views={$get('views', group)}
                             renderSecondaryInspector={renderSecondaryInspector}
                             node={node}
                             commit={commit}

@@ -113,7 +113,7 @@ export default class Drawer extends PureComponent {
                 onMouseLeave={this.handleMouseLeave}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
-                {Object.values(menuData).map((item, index) => (
+                {!isHidden && Object.values(menuData).map((item, index) => (
                     <MenuItemGroup
                         key={index}
                         onClick={this.handleMenuItemClick}

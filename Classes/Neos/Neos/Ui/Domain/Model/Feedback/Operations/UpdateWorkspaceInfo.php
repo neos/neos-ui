@@ -1,13 +1,24 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\Workspace;
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
-class UpdateWorkspaceInfo implements FeedbackInterface
+class UpdateWorkspaceInfo extends AbstractFeedback
 {
     /**
      * @var Workspace

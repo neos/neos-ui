@@ -1,10 +1,15 @@
 <?php
 namespace Neos\Neos\Ui\Aspects;
 
-/*                                                                        *
- * This script belongs to the Neos Flow package "Neos.Neos.Ui".          *
- *                                                                        *
- *                                                                        */
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Service\AuthorizationService;
@@ -12,9 +17,8 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Session\SessionInterface;
 use Neos\FluidAdaptor\Core\Rendering\FlowAwareRenderingContextInterface;
+use Neos\Fusion\Service\HtmlAugmenter;
 use Neos\Neos\Domain\Service\ContentContext;
-use Neos\Neos\Domain\Service\UserService;
-use Neos\Neos\Service\HtmlAugmenter;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 

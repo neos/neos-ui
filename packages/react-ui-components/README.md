@@ -48,11 +48,10 @@ import identifiers from '@neos-project/react-ui-components/src/identifiers.js';
 
 ## Contributing
 #### Requirements
-* Node in version `^6.3.3`
 * yarn
 
 #### Setup
-Clone this repository, execute `nvm use` and afterwards `yarn` in the root directory of the project.
+Clone this repository, execute `yarn` in the root directory of the project.
 After the installation succeeded, execute `yarn start` to start the
 [development server of the styleguide](http://localhost:9001).
 

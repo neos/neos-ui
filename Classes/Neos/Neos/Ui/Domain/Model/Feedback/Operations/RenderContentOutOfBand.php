@@ -1,15 +1,27 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
-use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Neos\View\FusionView as FusionView;
-use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
-use Neos\Fusion\Core\Cache\ContentCache;
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
 
-class RenderContentOutOfBand implements FeedbackInterface
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Fusion\Core\Cache\ContentCache;
+use Neos\Fusion\Exception as FusionException;
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
+use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
+use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
+use Neos\Neos\View\FusionView as FusionView;
+
+class RenderContentOutOfBand extends AbstractFeedback
 {
     /**
      * @var NodeInterface
@@ -198,5 +210,16 @@ class RenderContentOutOfBand implements FeedbackInterface
         $fusionView->setFusionPath($parentDomAddress->getFusionPath());
 
         return $fusionView->render();
+    }
+
+    public function serialize(ControllerContext $controllerContext)
+    {
+        try {
+            return parent::serialize($controllerContext);
+        } catch (FusionException $e) {
+            // in case there was a rendering error, we just try to reload the document as fallback. Needed
+            // e.g. when adding validators to Neos.FormBuilder
+            return (new ReloadDocument())->serialize($controllerContext);
+        }
     }
 }

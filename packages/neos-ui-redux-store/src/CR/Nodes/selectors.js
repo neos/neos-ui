@@ -28,7 +28,15 @@ export const isDocumentNodeSelectedSelector = createSelector(
     }
 );
 
-export const hasFocusedContentNode = createSelector(focused, focused => Boolean(focused));
+export const hasFocusedContentNode = createSelector(
+    [
+        focused,
+        getCurrentContentCanvasContextPath
+    ],
+    (focused, currentContentCanvasContextPath) => {
+        return Boolean(focused && (focused !== currentContentCanvasContextPath));
+    }
+);
 
 export const nodeByContextPath = state => contextPath =>
     $get(['cr', 'nodes', 'byContextPath', contextPath], state);

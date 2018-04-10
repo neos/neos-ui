@@ -1,11 +1,14 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $contains} from 'plow-js';
+import {$get, $contains, $set} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
 import Bar from '@neos-project/react-ui-components/src/Bar/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
+import Immutable from 'immutable';
+import debounce from 'lodash.debounce';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -30,8 +33,8 @@ import style from './style.css';
 
         return {
             focusedNode: selectors.CR.Nodes.focusedSelector(state),
-            node: selectors.CR.Nodes.focusedSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
+            transientValues: selectors.UI.Inspector.transientValues(state),
             isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
             shouldShowUnappliedChangesOverlay,
             shouldShowSecondaryInspector
@@ -51,11 +54,11 @@ export default class Inspector extends PureComponent {
         i18nRegistry: PropTypes.object.isRequired,
 
         focusedNode: PropTypes.object,
-        node: PropTypes.object.isRequired,
         isApplyDisabled: PropTypes.bool,
         isDiscardDisabled: PropTypes.bool,
         shouldShowUnappliedChangesOverlay: PropTypes.bool,
         shouldShowSecondaryInspector: PropTypes.bool,
+        transientValues: PropTypes.object,
 
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
@@ -66,17 +69,76 @@ export default class Inspector extends PureComponent {
     };
 
     state = {
-        secondaryInspectorComponent: null
+        secondaryInspectorComponent: null,
+        toggledPanels: Immutable.fromJS({})
     };
 
-    componentWillReceiveProps({shouldShowSecondaryInspector}) {
-        if (!shouldShowSecondaryInspector) {
+    constructor(props) {
+        super(props);
+        this.cloneViewConfiguration(props);
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.focusedNode !== this.props.focusedNode) {
+            this.cloneViewConfiguration(newProps);
+        }
+        if (!newProps.shouldShowSecondaryInspector) {
             this.setState({
                 secondaryInspectorName: undefined,
                 secondaryInspectorComponent: undefined
             });
         }
     }
+
+    componentWillUnmount() {
+        // Abort any debounced calls
+        this.preprocessViewConfigurationDebounced.cancel();
+    }
+
+    //
+    // Fetch viewConfiguration and clone it once the focusedNode changes
+    //
+    cloneViewConfiguration = props => {
+        this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
+        this.originalViewConfiguration = this.viewConfiguration;
+    };
+
+    //
+    // Update viewConfiguration, while keeping originalViewConfiguration to read original property values from it
+    //
+    preprocessViewConfiguration = (context = {}, path = []) => {
+        const currentLevel = path.length === 0 ? this.viewConfiguration : $get(path, this.viewConfiguration);
+        currentLevel.forEach((propertyValue, propertyName) => {
+            const newPath = path.slice();
+            newPath.push(propertyName);
+            const originalPropertyValue = $get(newPath, this.originalViewConfiguration);
+
+            if (propertyValue !== null && typeof propertyValue === 'object') {
+                this.preprocessViewConfiguration(context, newPath);
+            } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
+                const {node} = context; // eslint-disable-line
+                const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
+                if (evaluatedValue !== propertyValue) {
+                    this.viewConfiguration = $set(newPath, evaluatedValue, this.viewConfiguration);
+                }
+            }
+        });
+    };
+
+    preprocessViewConfigurationDebounced = debounce(() => {
+        // Calculate node property values for context
+        const {focusedNode, transientValues} = this.props;
+        const nodeForContext = focusedNode.toJS();
+        if (transientValues && transientValues.toJS) {
+            transientValues.map(item => item.value).toJS();
+            nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
+        }
+
+        // Eval the view configuration
+        this.preprocessViewConfiguration({node: nodeForContext});
+        // Force re-render, since we were debounced
+        this.setState({});
+    }, 250);
 
     handleCloseSecondaryInspector = () => {
         this.props.closeSecondaryInspector();
@@ -133,14 +195,18 @@ export default class Inspector extends PureComponent {
     }
 
     renderFallback() {
-        return (<div>...</div>);
+        return (<div className={style.loader}><div><Icon icon="spinner" spin={true} size="big" /></div></div>);
     }
+
+    handlePanelToggle = path => {
+        const value = $get(path, this.state.toggledPanels);
+        const newState = $set(path, !value, this.state.toggledPanels);
+        this.setState({toggledPanels: newState});
+    };
 
     render() {
         const {
             focusedNode,
-            nodeTypesRegistry,
-            node,
             commit,
             isApplyDisabled,
             isDiscardDisabled,
@@ -149,18 +215,19 @@ export default class Inspector extends PureComponent {
             i18nRegistry
         } = this.props;
 
-        if (!focusedNode) {
+        if (!focusedNode || !$get('isFullyLoaded', focusedNode)) {
             return this.renderFallback();
         }
 
-        const viewConfiguration = nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', focusedNode));
+        this.preprocessViewConfigurationDebounced();
+        const viewConfiguration = this.viewConfiguration;
 
-        if (!viewConfiguration || !viewConfiguration.tabs) {
+        if (!$get('tabs', viewConfiguration)) {
             return this.renderFallback();
         }
 
         return (
-            <div className={style.inspector}>
+            <div id="neos-Inspector" className={style.inspector}>
                 {shouldShowUnappliedChangesOverlay &&
                     <div
                         role="button"
@@ -173,15 +240,17 @@ export default class Inspector extends PureComponent {
                         tabs__content: style.tabs // eslint-disable-line camelcase
                     }}
                     >
-                    {viewConfiguration.tabs
+                    {$get('tabs', viewConfiguration)
                         //
                         // Only display tabs, that have groups and these groups have properties
                         //
-                        .filter(t => t.groups && t.groups.length && t.groups.reduce((acc, group) => (
+                        .filter(t => $get('groups', t) && $get('groups', t).count() > 0 && $get('groups', t).reduce((acc, group) => (
                             acc ||
-                            group.properties.filter(this.isPropertyEnabled).length > 0 ||
-                            group.views.length > 0
+                            $get('properties', group).filter(this.isPropertyEnabled).count() > 0 ||
+                            $get('views', group).count() > 0
                         ), false))
+
+                        .sort((a, b) => $get('position', a) > $get('position', b))
 
                         //
                         // Render each tab as a TabPanel
@@ -189,22 +258,26 @@ export default class Inspector extends PureComponent {
                         .map(tab => {
                             return (
                                 <TabPanel
-                                    key={tab.id}
-                                    icon={tab.icon}
-                                    groups={tab.groups}
-                                    tooltip={i18nRegistry.translate(tab.label)}
+                                    key={$get('id', tab)}
+                                    icon={$get('icon', tab)}
+                                    groups={$get('groups', tab)}
+                                    toggledPanels={$get($get('id', tab), this.state.toggledPanels)}
+                                    tooltip={i18nRegistry.translate($get('label', tab))}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
-                                    node={node}
+                                    node={focusedNode}
                                     commit={commit}
+                                    handlePanelToggle={path => {
+                                        this.handlePanelToggle([$get('id', tab), ...path]);
+                                    }}
                                     />);
                         })
                     }
                 </Tabs>
                 <Bar position="bottom" className={style.actions}>
-                    <Button style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
+                    <Button id="neos-Inspector-Discard" style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
                         <I18n id="Neos.Neos:Main:discard" fallback="discard"/>
                     </Button>
-                    <Button style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
+                    <Button id="neos-Inspector-Apply" style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
                         <I18n id="Neos.Neos:Main:apply" fallback="apply"/>
                     </Button>
                 </Bar>

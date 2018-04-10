@@ -76,31 +76,37 @@ export default class ContentCanvas extends PureComponent {
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
         const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode];
 
-        const inlineStyles = {};
         const width = $get('width', currentEditPreviewModeConfiguration);
         const height = $get('height', currentEditPreviewModeConfiguration);
-        if (width) {
-            inlineStyles.width = width;
-        }
-        if (height) {
-            inlineStyles.height = height;
-        }
 
         const canvasContentStyle = {};
+        const inlineStyles = {};
+        const canvasContentOnlyStyle = {};
+
+        if (width) {
+            inlineStyles.width = width;
+            canvasContentOnlyStyle.overflow = 'auto';
+        }
+
+        if (height) {
+            inlineStyles.height = height;
+            canvasContentOnlyStyle.overflow = 'auto';
+        }
+
         if (backgroundColor) {
             canvasContentStyle.background = backgroundColor;
         }
 
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
-            <div className={classNames} style={canvasContentStyle}>
+            <div className={classNames} style={{...canvasContentStyle, ...canvasContentOnlyStyle}}>
                 <div id="centerArea"/>
                 <div
                     className={style.contentCanvas__itemWrapper}
                     style={inlineStyles}
                     data-__neos__hook="contentCanvas"
                     >
-                    (src && <Frame
+                    {src && (<Frame
                         src={src}
                         frameBorder="0"
                         name="neos-content-main"
@@ -109,15 +115,20 @@ export default class ContentCanvas extends PureComponent {
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         onLoad={this.handleFrameAccess}
+                        onUnload={this.handelLoadStart}
                         role="region"
                         aria-live="assertive"
                         >
                         {InlineUI && <InlineUI/>}
-                    </Frame>)
+                    </Frame>)}
                 </div>
             </div>
         );
     }
+
+    handelLoadStart = () => {
+        this.props.startLoading();
+    };
 
     onFrameChange = (iframeWindow, iframeDocument) => {
         if (iframeDocument.__isInitialized) {

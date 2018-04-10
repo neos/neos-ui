@@ -14,7 +14,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
  *
  * 3. Load all default nodes needed for the tree
  */
-export function * watchSelectPreset({configuration}) {
+export function * watchSelectPreset() {
     yield take(actionTypes.System.READY);
 
     let sourceDimensions = yield select(selectors.CR.ContentDimensions.active);
@@ -38,24 +38,15 @@ export function * watchSelectPreset({configuration}) {
 
         const {nodeFrontendUri, nodeContextPath} = informationAboutNodeInTargetDimension;
 
-        const {q} = backend.get();
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
         const siteNodeContextPath = $get('contextPath', siteNode);
         const targetSiteNodeContextPath = `${siteNodeContextPath.split('@')[0]}@${nodeContextPath.split('@')[1]}`;
 
         yield put(actions.UI.ContentCanvas.setSrc(nodeFrontendUri));
-        const nodes = yield q([targetSiteNodeContextPath, nodeContextPath]).neosUiDefaultNodes(
-            configuration.nodeTree.presets.default.baseNodeType,
-            configuration.nodeTree.loadingDepth
-        ).get();
 
-        yield put(actions.CR.Nodes.switchDimension({
+        yield put(actions.CR.Nodes.reloadState({
             siteNodeContextPath: targetSiteNodeContextPath,
-            documentNodeContextPath: nodeContextPath,
-            nodes: nodes.reduce((nodes, node) => {
-                nodes[node.contextPath] = node;
-                return nodes;
-            }, {})
+            documentNodeContextPath: nodeContextPath
         }));
 
         sourceDimensions = targetDimensions;
@@ -113,4 +104,3 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
         return {nodeFrontendUri, nodeContextPath};
     }
 }
-

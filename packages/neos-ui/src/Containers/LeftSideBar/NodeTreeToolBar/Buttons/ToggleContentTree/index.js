@@ -7,9 +7,13 @@ export default class ToggleContentTree extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
 
+        id: PropTypes.string,
+
         isPanelOpen: PropTypes.bool.isRequired,
 
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
+
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     handleClick = () => {
@@ -19,15 +23,16 @@ export default class ToggleContentTree extends PureComponent {
     }
 
     render() {
-        const {className, isPanelOpen} = this.props;
+        const {className, id, isPanelOpen, i18nRegistry} = this.props;
 
         return (
             <IconButton
-                id="neos-contentTree-toggle"
+                id={id}
                 className={className}
                 onClick={this.handleClick}
                 icon={isPanelOpen ? 'chevron-down' : 'chevron-up'}
                 hoverStyle="clean"
+                aria-label={i18nRegistry.translate('Neos.Neos:Main:toggleContentTree', 'Toggle content tree')}
                 />
         );
     }

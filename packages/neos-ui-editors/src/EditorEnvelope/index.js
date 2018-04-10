@@ -77,6 +77,9 @@ export default class EditorEnvelope extends PureComponent {
     }
 
     render() {
+        if (!this.props.editor) {
+            return <div className={style.envelope__error}>Missing editor definition</div>;
+        }
         if (this.state.error) {
             return <div className={style.envelope__error}>{this.state.error.toString()}</div>;
         }

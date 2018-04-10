@@ -79,6 +79,7 @@ export default class ReloginDialog extends PureComponent {
                 onRequestClose={emptyFn}
                 style="narrow"
                 isOpen
+                id="neos-ReloginDialog"
                 >
                 <div className={style.modalContents}>
                     <TextInput

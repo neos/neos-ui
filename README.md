@@ -51,10 +51,7 @@ In order to start contributing, follow the following steps:
 
 1) Ensure you have the `dev-master` version installed (see above).
 
-2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html), [nvm](https://github.com/creationix/nvm#install-script) as well as the `npm` and `yarn`(`<sudo> npm install -g yarn`) command to be installed on your system.
-
-   If you've installed `nvm` make sure that the next node LTS version `6.10.0` is correctly installed - You can do so by executing `nvm install v6.10.0`.
-   If you need help setting up `nvm`, `npm`, `yarn` or if you got any other problems, join our [Slack](https://neos-project.slack.com/) channel and we are most happy to help you with it. :).__
+2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(https://yarnpkg.com/en/) command and GNU Make(https://www.gnu.org/software/make/) to be installed on your system.
 
 3) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
@@ -68,19 +65,7 @@ In order to start contributing, follow the following steps:
 4) Run the initialization script:
 
    ```
-   cd Packages/Application/Neos.Neos.Ui
-   source Build/init.sh # do NodeJS stuff ie. install required node version using nvm, install npm deps, copy githooks
-   yarn build # build everything using webpack (you might see some webpack warnings, but you can ignore them)
-   ```
-
-   Alternatively, you can also run the initialization by hand; which will mean:
-   ```
-   nvm install
-   nvm use
-   npm install -g yarn
-   yarn
-
-   yarn run build:ui:watch
+   make setup
    ```
 
 5) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
@@ -90,22 +75,42 @@ In order to start contributing, follow the following steps:
 #### Development commands
 | Command         | Description                    |
 | --------------- | ------------------------------ |
-| `yarn clear` | delete all node_modules in every subdirectory. |
-| `yarn build:ui`  | Builds the ui via webpack. |
-| `yarn build` |  Runs `build:dev` optimised for production. |
-| `yarn build:ui:watch` | Watches the source files for changes and runs a build:ui in case. |
-| `yarn build:ui:watch-poll` | Watches (and polls) the source files on a file share. Should preferably be used when working an a VM for example. |
-| `yarn start-storybook` | Starts the storybook server on port 9001. |
-| `yarn lint`  | Lints all source files. |
-| `yarn test`  | Executes `yarn lint` to trigger tests via ava. |
-| `yarn test:e2e`  | Executes integration tests. |
+| `make clean` | delete all node_modules in every subdirectory. |
+| `make build` |  Runs the development build. |
+| `make build-watch` | Watches the source files for changes and runs a build in case. |
+| `make build-watch-poll` | Watches (and polls) the source files on a file share. Should preferably be used when working an a VM for example. |
+| `make storybook` | Starts the storybook server on port 9001. |
+| `make lint`  | Executes `make lint-js` and `make lint-editorconfig`. |
+| `make lint-js`  | Runs test in all subpackages via lerna. |
+| `make lint-editorconfig`  | Tests if all files respect the `.editorconfig`. |
+| `make test`  | Executes the test on all source files. |
+| `make test-e2e`  | Executes integration tests. |
+
+##### Custom webpack live reload options
+
+If you are developing inside a virtual machine and you are running the
+watch command on your local system it is may be needed for you to adjust
+the live reload optons.
+
+This can be done by putting an `.webpack.livereload.local.js` inside the
+repository root.
+
+An example file would look like this:
+
+```
+module.exports = {
+       protocol: 'http',
+       port: '123',
+       hostname: 'localhost'
+};
+```
 
 #### Code style
-Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `yarn lint` in your shell.
+Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `make lint` in your shell.
 
 #### Writing unit tests
 The unit tests are executed with [jest](https://facebook.github.io/jest/).
-To run the unit tests, execute `yarn test` in your shell.
+To run the unit tests, execute `make test` in your shell.
 
 Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 
@@ -115,6 +120,18 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 For end to end testing we use the headless chrome. So it is mandatory to install the chrome browser for integration tests.
 Since Chrome 59 the headless mode is integrated. So please install a Chome 59 or higher to execute the end to end tests.
+
+#### Releasing
+Run `VERSION=<VERSION_YOU_WANT_TO_RELEASE> make release`
+e.g `VERSION=1.0.2 make release`.
+This checks if you set the environment variable, reinstall all node_modules,
+builds a production release runs `make lint`, `make test` and `make test-e2e`,
+bumps the version locally via lerna and publish the version as a new npm tag.
+After that you should carefully revisit your local changes, commit then and
+open a pull request on Github. When travis runs through merge it an tag a new
+release on Github.
+
+After that trigger jenkins with the new version.
 
 
 ## License

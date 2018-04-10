@@ -29,6 +29,7 @@ export default class ListPreviewElement extends PureComponent {
         // ------------------------------
         icon: PropTypes.string,
         className: PropTypes.string,
+        disabled: PropTypes.bool,
         children: PropTypes.node.isRequired,
 
         // ------------------------------
@@ -44,6 +45,7 @@ export default class ListPreviewElement extends PureComponent {
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'listPreviewElement': PropTypes.string.isRequired,
             'listPreviewElement--isHighlighted': PropTypes.string.isRequired,
+            'listPreviewElement--isDisabled': PropTypes.string.isRequired,
             'listPreviewElement__icon': PropTypes.string.isRequired
         }).isRequired, /* eslint-enable quote-props */
         Icon: PropTypes.any.isRequired
@@ -53,6 +55,7 @@ export default class ListPreviewElement extends PureComponent {
         const {
             icon,
             className,
+            disabled,
             children,
 
             onClick,
@@ -66,13 +69,16 @@ export default class ListPreviewElement extends PureComponent {
         const optionClassName = mergeClassNames({
             [theme.listPreviewElement]: true,
             [theme['listPreviewElement--isHighlighted']]: isHighlighted,
+            [theme['listPreviewElement--isDisabled']]: disabled,
             [className]: className
         });
 
+        const noop = () => {};
+
         return (
             <div
-                onMouseEnter={onMouseEnter}
-                onClick={onClick}
+                onMouseEnter={disabled ? noop : onMouseEnter}
+                onClick={disabled ? noop : onClick}
                 className={optionClassName}
                 >
                 {Boolean(icon) && <Icon className={theme.listPreviewElement__icon} icon={icon}/>}

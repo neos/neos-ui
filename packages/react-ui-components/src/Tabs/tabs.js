@@ -118,7 +118,7 @@ export default class Tabs extends PureComponent {
                             role="tabpanel"
                             aria-hidden={isActive ? 'false' : 'true'}
                             >
-                            {panel}
+                            {isActive && panel}
                         </div>
                     );
                 })}

@@ -12,6 +12,10 @@
     padding: 5px var(--spacing-Full);
 }
 
+.listPreviewElement--isDisabled {
+    color: var(--colors-ContrastBright);
+    cursor: not-allowed;
+}
 .listPreviewElement--isHighlighted {
     background: var(--colors-PrimaryBlue);
 }

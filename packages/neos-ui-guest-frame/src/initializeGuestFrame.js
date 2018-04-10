@@ -1,4 +1,5 @@
 import {takeEvery, put, select} from 'redux-saga/effects';
+import {$get} from 'plow-js';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
@@ -58,15 +59,21 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     yield put(actions.UI.ContentCanvas.setContextPath(documentInformation.metaData.contextPath, documentInformation.metaData.siteNode));
     yield put(actions.UI.ContentCanvas.setPreviewUrl(documentInformation.metaData.previewUrl));
     yield put(actions.CR.ContentDimensions.setActive(documentInformation.metaData.contentDimensions.active));
-    // the user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content
-    yield put(actions.UI.ContentCanvas.setSrc(documentInformation.metaData.url));
+    // The user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content.
+    // We need to set the src to the actual src of the iframe, and not retrive it from documentInformation, as it may differ, e.g. contain additional arguments.
+    yield put(actions.UI.ContentCanvas.setSrc(guestFrameWindow.document.location.href));
 
-    getGuestFrameDocument().addEventListener('click', e => {
-        const clickPath = Array.prototype.slice.call(eventPath(e));
+    const focusSelectedNode = event => {
+        const clickPath = Array.prototype.slice.call(eventPath(event));
         const isInsideInlineUi = clickPath.some(domNode =>
             domNode &&
             domNode.getAttribute &&
             domNode.getAttribute('data-__neos__inline-ui')
+        );
+        const isInsideEditableProperty = clickPath.some(domNode =>
+            domNode &&
+            domNode.getAttribute &&
+            domNode.getAttribute('data-__neos-property')
         );
         const selectedDomNode = clickPath.find(domNode =>
             domNode &&
@@ -79,18 +86,27 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         } else if (selectedDomNode) {
             const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
             const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
-
-            hotkeyRegistry.setActiveInGuest(false);
-
-            store.dispatch(
-                actions.CR.Nodes.focus(contextPath, fusionPath)
-            );
+            const state = store.getState();
+            const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
+            if (!isInsideEditableProperty) {
+                store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
+            }
+            if (!isInsideEditableProperty || focusedNodeContextPath !== contextPath) {
+                store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
+            }
         } else {
-            hotkeyRegistry.setActiveInGuest(true);
+            store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
+            store.dispatch(actions.CR.Nodes.unFocus());
+        }
+    };
 
-            store.dispatch(
-                actions.CR.Nodes.unFocus()
-            );
+    getGuestFrameDocument().addEventListener('click', e => {
+        focusSelectedNode(e);
+    });
+
+    getGuestFrameDocument().addEventListener('keyup', e => {
+        if (e.key === 'Tab') {
+            focusSelectedNode(e);
         }
     });
 

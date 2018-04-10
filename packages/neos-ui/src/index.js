@@ -1,12 +1,11 @@
-import 'core-js/shim';
-import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import {put} from 'redux-saga/effects';
+import {put, select} from 'redux-saga/effects';
 import {Map} from 'immutable';
 import merge from 'lodash.merge';
+import {$get} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
@@ -62,7 +61,7 @@ function * application() {
     //
     ReactDOM.render(
         <div style={{width: '100vw', height: '100vh', backgroundColor: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '30px'}}>
-            <Icon icon="circle-o-notch" label="Loading..." spin="true" size="big"/>
+            <Icon icon="circle-o-notch" label="Loading..." spin={true} size="big"/>
         </div>,
         appContainer
     );
@@ -102,11 +101,17 @@ function * application() {
     store.dispatch(actions.System.boot());
 
     const {getJsonResource} = backend.get().endpoints;
-    //
-    // Load node types
-    //
+
     const groupsAndRoles = yield system.getNodeTypes;
-    const nodeTypesSchema = yield getJsonResource(configuration.endpoints.nodeTypeSchema);
+
+    //
+    // Load json resources
+    //
+    const nodeTypesSchemaPromise = getJsonResource(configuration.endpoints.nodeTypeSchema);
+    const translationsPromise = getJsonResource(configuration.endpoints.translations);
+
+    // Fire multiple async requests in parallel
+    const [nodeTypesSchema, translations] = yield [nodeTypesSchemaPromise, translationsPromise];
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     Object.keys(nodeTypesSchema.nodeTypes).forEach(nodeTypeName => {
         nodeTypesRegistry.set(nodeTypeName, {
@@ -122,7 +127,6 @@ function * application() {
     //
     // Load translations
     //
-    const translations = yield getJsonResource(configuration.endpoints.translations);
     const i18nRegistry = globalRegistry.get('i18n');
     i18nRegistry.setTranslations(translations);
 
@@ -176,6 +180,14 @@ function * application() {
             />,
         appContainer
     );
+
+    const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
+    const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
+    yield put(actions.CR.Nodes.reloadState({
+        siteNodeContextPath,
+        documentNodeContextPath,
+        merge: true
+    }));
 }
 
 sagaMiddleWare.run(application);

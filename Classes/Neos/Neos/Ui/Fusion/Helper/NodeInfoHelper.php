@@ -1,6 +1,16 @@
 <?php
 namespace Neos\Neos\Ui\Fusion\Helper;
 
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\ProtectedContextAwareInterface;
@@ -93,6 +103,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
             'children' => [],
         ];
+        // It's important to not set `isFullyLoaded` to false by default, so the state would get merged correctly
+        if (!$omitMostPropertiesForTreeState) {
+            $nodeInfo['isFullyLoaded'] = true;
+        }
         if ($controllerContext !== null && $node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
             $nodeInfo['uri'] = $this->uri($node, $controllerContext);
 
@@ -202,13 +216,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function defaultNodesForBackend(NodeInterface $site, NodeInterface $documentNode, ControllerContext $controllerContext)
     {
-        $flowQuery = new FlowQuery([$site, $documentNode]);
-        $nodes = $flowQuery->neosUiDefaultNodes($this->baseNodeType, $this->loadingDepth)->get();
-
         $result = [];
-        foreach ($nodes as $node) {
-            $this->renderNodeToList($result, $node, $controllerContext);
-        }
+        $this->renderNodeToList($result, $site, $controllerContext);
+        $this->renderNodeToList($result, $documentNode, $controllerContext);
 
         return $result;
     }

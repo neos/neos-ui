@@ -254,6 +254,14 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
+    // Redirect to node
+    //
+    serverFeedbackHandlers.set('Neos.Neos.Ui:Redirect/Main', (feedbackPayload, {store}) => {
+        store.dispatch(actions.UI.ContentCanvas.setSrc(feedbackPayload.redirectUri));
+        store.dispatch(actions.UI.ContentCanvas.setContextPath(feedbackPayload.redirectContextPath));
+    });
+
+    //
     // When the server has updated node info, apply it to the store
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodeInfo/Main', (feedbackPayload, {store}) => {
@@ -283,7 +291,7 @@ manifest('main', {}, globalRegistry => {
                 // This is an extreme case when even the top node does not exist in the given dimension
                 // TODO: still find a nicer way to break out of this situation
                 if (redirectContextPath === false) {
-                    window.location = '/neos!';
+                    window.location = '/neos';
                     break;
                 }
                 redirectUri = $get(['cr', 'nodes', 'byContextPath', redirectContextPath, 'uri'], state);
@@ -366,6 +374,62 @@ manifest('main', {}, globalRegistry => {
         if (parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`)) {
             parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`).remove();
         }
+
+        //
+        // Initialize the newly rendered node and all nodes that came with it
+        //
+        [contentElement, ...children].forEach(
+            initializeContentDomNode({
+                store,
+                globalRegistry,
+                nodeTypesRegistry,
+                inlineEditorRegistry,
+                nodes
+            })
+        );
+        store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
+        store.dispatch(actions.UI.ContentCanvas.requestScrollIntoView(true));
+    });
+
+    //
+    // When the server advices to replace a node (e.g. on property change), put the delivered html to the
+    // corrent place inside the DOM
+    //
+    serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadContentOutOfBand/Main', (feedbackPayload, {store, globalRegistry}) => {
+        const {contextPath, renderedContent, nodeDomAddress} = feedbackPayload;
+        const domNode = nodeDomAddress && findNodeInGuestFrame(
+            nodeDomAddress.contextPath,
+            nodeDomAddress.fusionPath
+        );
+        const contentElement = (new DOMParser())
+            .parseFromString(renderedContent, 'text/html')
+            .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
+
+        if (!contentElement) {
+            console.warn(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
+            console.log(renderedContent);
+
+            getGuestFrameDocument().location.reload();
+            return;
+        }
+
+        const fusionPath = contentElement.dataset.__neosFusionPath;
+
+        domNode.parentElement.replaceChild(contentElement, domNode);
+
+        const children = findAllChildNodes(contentElement);
+
+        const nodes = new Map(
+            Object.assign(
+                {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
+                ...children.map(el => {
+                    const contextPath = el.getAttribute('data-__neos-node-contextpath');
+                    return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
+                })
+            )
+        );
+        const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+        const inlineEditorRegistry = globalRegistry.get('inlineEditors');
 
         //
         // Initialize the newly rendered node and all nodes that came with it

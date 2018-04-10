@@ -1,5 +1,6 @@
 import {Selector, Role} from 'testcafe';
 import ReactSelector from 'testcafe-react-selectors';
+import checkPropTypes from '../checkPropTypes';
 
 import Page from './pageModel';
 
@@ -30,6 +31,10 @@ async function discardAll(t) {
     await t
         .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
         .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all'));
+    const confirmButtonExists = await Selector('#neos-DiscardDialog-Confirm').exists;
+    if (confirmButtonExists) {
+        await t.click(Selector('#neos-DiscardDialog-Confirm'));
+    }
     await waitForIframeLoading(t);
 }
 
@@ -38,12 +43,13 @@ async function goToPage(t, pageTitle) {
     await waitForIframeLoading(t);
 }
 
-fixture `Content Module`
+fixture`Content Module`
     .beforeEach(async t => {
         await t.useRole(adminUser);
         await discardAll(t);
         await goToPage(t, 'Home');
-    });
+    })
+    .afterEach(() => checkPropTypes());
 
 test('Switching dimensions', async t => {
     subSection('Navigate to some inner page and switch dimension');
@@ -52,7 +58,7 @@ test('Switching dimensions', async t => {
         .click(ReactSelector('DimensionSwitcher'))
         .click(ReactSelector('DimensionSwitcher SelectBox'))
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('Latvian'))
-        .click('#neos-nodeVariantCreationDialog-createEmpty')
+        .click('#neos-NodeVariantCreationDialog-CreateEmpty')
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
             const isLoading = reduxState.ui.contentCanvas.isLoading;
@@ -83,20 +89,20 @@ test('Discarding: create multiple nodes nested within each other and then discar
     const pageTitleToCreate = 'DiscardTest';
     subSection('Create a document node');
     await t
-        .click(ReactSelector('AddNode Button'))
+        .click(Selector('#neos-PageTree-AddNode'))
         .click(ReactSelector('InsertModeSelector').find('#into'))
         .click(ReactSelector('NodeTypeItem'))
-        .typeText(Selector('#neos-nodeCreationDialog-body input'), pageTitleToCreate)
-        .click(Selector('#neos-nodeCreationDialog-createNew'));
+        .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
+        .click(Selector('#neos-NodeCreationDialog-CreateNew'));
     await waitForIframeLoading(t);
 
     subSection('Create another node inside it');
     await t
-        .click(ReactSelector('AddNode Button'))
+        .click(Selector('#neos-PageTree-AddNode'))
         .click(ReactSelector('InsertModeSelector').find('#into'))
         .click(ReactSelector('NodeTypeItem'))
-        .typeText(Selector('#neos-nodeCreationDialog-body input'), pageTitleToCreate)
-        .click(Selector('#neos-nodeCreationDialog-createNew'));
+        .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
+        .click(Selector('#neos-NodeCreationDialog-CreateNew'));
     await waitForIframeLoading(t);
 
     subSection('Discard all nodes and hope to be redirected to root');
@@ -112,10 +118,10 @@ test('Discarding: create a document node and then discard it', async t => {
     const pageTitleToCreate = 'DiscardTest';
     subSection('Create a document node');
     await t
-        .click(ReactSelector('AddNode Button'))
+        .click(Selector('#neos-PageTree-AddNode'))
         .click(ReactSelector('NodeTypeItem'))
-        .typeText(Selector('#neos-nodeCreationDialog-body input'), pageTitleToCreate)
-        .click(Selector('#neos-nodeCreationDialog-createNew'))
+        .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
+        .click(Selector('#neos-NodeCreationDialog-CreateNew'))
         .expect(page.treeNode.withText(pageTitleToCreate).exists).ok('Node with the given title appeared in the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
@@ -150,7 +156,7 @@ test('Discarding: delete a document node and then discard deletion', async t => 
     subSection('Delete that page');
     await t
         .click(ReactSelector('DeleteSelectedNode'))
-        .click(Selector('#neos-deleteNodeModal-confirm'))
+        .click(Selector('#neos-DeleteNodeModal-Confirm'))
         .expect(page.treeNode.withText(pageTitleToDelete).exists).notOk('Deleted node gone from the tree')
         .expect(Selector('.neos-message-header').withText('Page Not Found').exists).notOk('Make sure we don\'t end up on 404 page');
 
@@ -165,7 +171,7 @@ test('Discarding: create a content node and then discard it', async t => {
 
     subSection('Create a content node');
     await t
-        .click(Selector('#neos-contentTree-toggle'))
+        .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(page.treeNode.withText('Content Collection (main)'))
         .click(ReactSelector('AddNode').nth(1).find('button'))
         .click(ReactSelector('NodeTypeItem').find('button>span').withText('Headline'));
@@ -200,10 +206,10 @@ test('Discarding: delete a content node and then discard deletion', async t => {
 
     subSection('Delete this headline');
     await t
-        .click(Selector('#neos-contentTree-toggle'))
+        .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(page.treeNode.withText(headlineToDelete))
         .click(ReactSelector('DeleteSelectedNode').nth(1))
-        .click(Selector('#neos-deleteNodeModal-confirm'))
+        .click(Selector('#neos-DeleteNodeModal-Confirm'))
         .expect(page.treeNode.withText(headlineToDelete).exists).notOk('Deleted node gone from the tree');
     await waitForIframeLoading(t);
     await t
@@ -282,13 +288,13 @@ test('Can create a new page', async t => {
     await t
         .expect(SelectNodeTypeModal.exists).ok()
         .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(false)
-        .click(ReactSelector('AddNode Button'))
+        .click(Selector('#neos-PageTree-AddNode'))
         .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(true)
         .click(ReactSelector('NodeTypeItem'))
-        .click(Selector('#neos-nodeCreationDialog-back'))
+        .click(Selector('#neos-NodeCreationDialog-Back'))
         .click(ReactSelector('NodeTypeItem'))
-        .typeText(Selector('#neos-nodeCreationDialog-body input'), newPageTitle)
-        .click(Selector('#neos-nodeCreationDialog-createNew'))
+        .typeText(Selector('#neos-NodeCreationDialog-Body input'), newPageTitle)
+        .click(Selector('#neos-NodeCreationDialog-CreateNew'))
         .expect(ReactSelector('NodeCreationDialog').getReact(({props}) => props.isOpen)).eql(false);
     await waitForIframeLoading(t);
     await t

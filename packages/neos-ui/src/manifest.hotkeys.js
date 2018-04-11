@@ -11,9 +11,8 @@ manifest('main.hotkeys', {}, globalRegistry => {
     `));
 
     hotkeyRegistry.set('UI.RightSideBar.toggle', {
-        'keys': 'g i',
-        'description': 'Toggle right sidebar',
-        'action': actions.UI.RightSideBar.toggle
+        keys: 'g i',
+        description: 'Toggle right sidebar',
+        action: actions.UI.RightSideBar.toggle
     });
-
 });

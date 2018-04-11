@@ -11,10 +11,13 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\ContentGraphInterface;
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
+use Neos\Neos\Domain\Context\Content\NodeAddressService;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\Neos\View\FusionView as FusionView;
+use Neos\Neos\View\FusionView;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Fusion\Core\Cache\ContentCache;
@@ -38,6 +41,18 @@ class ReloadContentOutOfBand implements FeedbackInterface
      * @var ContentCache
      */
     protected $contentCache;
+
+    /**
+     * @Flow\Inject
+     * @var NodeAddressService
+     */
+    protected $nodeAddressService;
+
+    /**
+     * @Flow\Inject
+     * @var ContentGraphInterface
+     */
+    protected $contentGraph;
 
     /**
      * Set the node
@@ -98,7 +113,7 @@ class ReloadContentOutOfBand implements FeedbackInterface
      */
     public function getDescription()
     {
-        return sprintf('Rendering of node "%s" required.', $this->getNode()->getPath());
+        return sprintf('Rendering of node "%s" required.', $this->getNode()->getNodeIdentifier());
     }
 
     /**
@@ -114,7 +129,7 @@ class ReloadContentOutOfBand implements FeedbackInterface
         }
 
         return (
-            $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath() &&
+            $this->getNode()->getNodeIdentifier() === $feedback->getNode()->getNodeIdentifier() &&
             $this->getNodeDomAddress() == $feedback->getNodeDomAddress()
         );
     }
@@ -127,7 +142,7 @@ class ReloadContentOutOfBand implements FeedbackInterface
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
-            'contextPath' => $this->getNode()->getContextPath(),
+            'contextPath' => NodeAddress::fromNode($this->getNode())->serializeForUri(),
             'nodeDomAddress' => $this->getNodeDomAddress(),
             'renderedContent' => $this->renderContent($controllerContext)
         ];
@@ -141,14 +156,18 @@ class ReloadContentOutOfBand implements FeedbackInterface
      */
     protected function renderContent(ControllerContext $controllerContext)
     {
-        $this->contentCache->flushByTag(sprintf('Node_%s', $this->getNode()->getIdentifier()));
+        $this->contentCache->flushByTag(sprintf('Node_%s', $this->getNode()->getNodeIdentifier()));
 
         $nodeDomAddress = $this->getNodeDomAddress();
 
         $fusionView = new FusionView();
+        $site = $this->nodeAddressService->findSiteNodeForNodeAddress(NodeAddress::fromNode($this->getNode()));
         $fusionView->setControllerContext($controllerContext);
 
+        $subgraph = $this->contentGraph->getSubgraphByIdentifier($site->getContentStreamIdentifier(), $site->getDimensionSpacePoint());
         $fusionView->assign('value', $this->getNode());
+        $fusionView->assign('site', $site);
+        $fusionView->assign('subgraph', $subgraph);
         $fusionView->setFusionPath($nodeDomAddress->getFusionPath());
 
         return $fusionView->render();

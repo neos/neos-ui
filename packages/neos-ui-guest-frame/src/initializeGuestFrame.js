@@ -44,7 +44,6 @@ const eventPath = event => {
 export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
-    const hotkeyRegistry = globalRegistry.get('hotkeys');
     const guestFrameWindow = getGuestFrameWindow();
     const documentInformation = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:DocumentInformation']);
     const nodes = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:Nodes'], {
@@ -109,8 +108,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             focusSelectedNode(e);
         }
     });
-
-    hotkeyRegistry.bindAll(getGuestFrameDocument());
 
     const initializeNodes = findAllNodesInGuestFrame().reduceRight((initializeSubSequentNodes, node) => () => {
         const initializeCurrentNode = initializeContentDomNode({

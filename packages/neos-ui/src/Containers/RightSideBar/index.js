@@ -12,8 +12,7 @@ import style from './style.css';
 
 @neos(globalRegistry => ({
     containerRegistry: globalRegistry.get('containers'),
-    i18nRegistry: globalRegistry.get('i18n'),
-    hotkeyRegistry: globalRegistry.get('hotkeys')
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect($transform({
     isHidden: selectors.UI.RightSideBar.isHidden,
@@ -25,7 +24,6 @@ export default class RightSideBar extends PureComponent {
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
-        hotkeyRegistry: PropTypes.object.isRequired,
 
         isHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
@@ -36,15 +34,6 @@ export default class RightSideBar extends PureComponent {
         const {toggleSidebar} = this.props;
 
         toggleSidebar();
-    }
-
-    componentDidMount() {
-        const {hotkeyRegistry} = this.props;
-        hotkeyRegistry.set('UI.RightSideBar.toggle', {
-            'defaultKey': 'g i',
-            'description': 'Toggle right sidebar',
-            'callback': this.handleToggle
-        });
     }
 
     render() {

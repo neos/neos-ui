@@ -10,8 +10,8 @@ export function * handleHotkeys({globalRegistry, store}) {
     const items = hotkeyRegistry.getAllAsList();
     let mousetrapPaused = false;
 
-    for (let i=0; i<items.length; i++) {
-        Mousetrap.bind(items[i].keys, function() {
+    for (let i = 0; i < items.length; i++) {
+        Mousetrap.bind(items[i].keys, () => {
             store.dispatch(items[i].action());
         });
     }
@@ -25,9 +25,9 @@ export function * handleHotkeys({globalRegistry, store}) {
 
         // Bind mousetrap to guest frame after content canvas stopped loading
         if (action.type === actionTypes.UI.ContentCanvas.STOP_LOADING) {
-            let mousetrapGuest = new Mousetrap(getGuestFrameDocument());
-            for (let i=0; i<items.length; i++) {
-                mousetrapGuest.bind(items[i].keys, function() {
+            const mousetrapGuest = new Mousetrap(getGuestFrameDocument());
+            for (let i = 0; i < items.length; i++) {
+                mousetrapGuest.bind(items[i].keys, () => {
                     if (mousetrapPaused === false) {
                         store.dispatch(items[i].action());
                     }
@@ -40,5 +40,4 @@ export function * handleHotkeys({globalRegistry, store}) {
             mousetrapPaused = action.payload.propertyName !== '';
         }
     }
-
 }

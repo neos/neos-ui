@@ -1,6 +1,6 @@
 import Mousetrap from 'mousetrap';
 import {take, race} from 'redux-saga/effects';
-import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
+import {actionTypes} from '@neos-project/neos-ui-redux-store';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 export function * handleHotkeys({globalRegistry, store}) {
@@ -19,7 +19,7 @@ export function * handleHotkeys({globalRegistry, store}) {
     while (true) {
         const waitForGuestFrameInteraction = yield race([
             take(actionTypes.UI.ContentCanvas.STOP_LOADING),
-            take(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName)
+            take(actionTypes.UI.ContentCanvas.SET_CURRENTLY_EDITED_PROPERTY_NAME)
         ]);
         const action = Object.values(waitForGuestFrameInteraction)[0];
 

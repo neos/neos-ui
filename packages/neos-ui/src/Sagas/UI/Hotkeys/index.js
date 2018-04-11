@@ -1,5 +1,5 @@
 import Mousetrap from 'mousetrap';
-import {takeLatest, take} from 'redux-saga/effects';
+import {take, race} from 'redux-saga/effects';
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
@@ -8,7 +8,6 @@ export function * handleHotkeys({globalRegistry, store}) {
 
     const hotkeyRegistry = globalRegistry.get('hotkeys');
     const items = hotkeyRegistry.getAllAsList();
-    let mousetrapGuest = null;
     let mousetrapPaused = false;
 
     for (let i=0; i<items.length; i++) {
@@ -17,22 +16,29 @@ export function * handleHotkeys({globalRegistry, store}) {
         });
     }
 
-    yield [
-        takeLatest(
-            actionTypes.UI.ContentCanvas.STOP_LOADING, function * () {
-                mousetrapGuest = new Mousetrap(getGuestFrameDocument());
-                for (let i=0; i<items.length; i++) {
-                    mousetrapGuest.bind(items[i].keys, function() {
-                        if (mousetrapPaused === false) {
-                            store.dispatch(items[i].action());
-                        }
-                    });
-                }}
-        ),
-        takeLatest(
-            actions.UI.ContentCanvas.setCurrentlyEditedPropertyName, function * (action) {
-                mousetrapPaused = action.payload.propertyName !== '';
+    while (true) {
+        const waitForGuestFrameInteraction = yield race([
+            take(actionTypes.UI.ContentCanvas.STOP_LOADING),
+            take(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName)
+        ]);
+        const action = Object.values(waitForGuestFrameInteraction)[0];
+
+        // Bind mousetrap to guest frame after content canvas stopped loading
+        if (action.type === actionTypes.UI.ContentCanvas.STOP_LOADING) {
+            let mousetrapGuest = new Mousetrap(getGuestFrameDocument());
+            for (let i=0; i<items.length; i++) {
+                mousetrapGuest.bind(items[i].keys, function() {
+                    if (mousetrapPaused === false) {
+                        store.dispatch(items[i].action());
+                    }
+                });
             }
-        )
-    ];
+        }
+
+        // Pause mousetrap during inline editing
+        if (action.type === actionTypes.UI.ContentCanvas.SET_CURRENTLY_EDITED_PROPERTY_NAME) {
+            mousetrapPaused = action.payload.propertyName !== '';
+        }
+    }
+
 }

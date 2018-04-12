@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
+import ReactDOM from 'react-dom';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+
+
 
 const cachedWarnings = [];
 export const iconPropValidator = (props, propName) => {// eslint-disable-line consistent-return
@@ -42,7 +46,15 @@ const Icon = props => {
         [theme['icon--spin']]: props.spin
     });
 
-    return <i role="img" aria-label={label} className={classNames}/>;
+    var test = props.icon.split(" ");
+    var icon = props.icon;
+    var prefix = 'fas';
+    if (test.length > 1){
+        prefix = test[0];
+        icon = test[1];
+    }
+
+    return <FontAwesomeIcon icon={[prefix, icon] || "question"} aria-label={label} className={classNames} />;
 };
 Icon.propTypes = {
     /**

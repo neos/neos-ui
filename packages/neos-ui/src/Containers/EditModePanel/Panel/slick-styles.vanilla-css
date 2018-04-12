@@ -140,15 +140,19 @@
 .slick-prev {
     left: 0px;
 }
-.slick-prev::after {
-    content: "\F053";
-    left: 0;
-}
 .slick-next {
     right: 0px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(20, 20, 20, 0.4) 13px, #141414 27px);
 }
-.slick-next::after {
-    content: "\F054";
+.slick-next svg,
+.slick-prev svg {
+    position: absolute;
+    height: 40px;
+    width: 1em;
+}
+.slick-next svg {
     right: 0;
+}
+.slick-prev svg {
+    left: 0;
 }

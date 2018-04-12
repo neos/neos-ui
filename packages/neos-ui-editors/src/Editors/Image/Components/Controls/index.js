@@ -62,7 +62,7 @@ export default class Controls extends PureComponent {
                     />
                 }
                 <IconButton
-                    icon="remove"
+                    icon="times"
                     size="small"
                     style="lighter"
                     onClick={onRemove}

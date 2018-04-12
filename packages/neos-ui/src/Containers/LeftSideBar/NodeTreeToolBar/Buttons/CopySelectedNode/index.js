@@ -42,7 +42,7 @@ export default class CopySelectedNode extends PureComponent {
                 isDisabled={isDisabled}
                 isActive={isActive}
                 onClick={this.handleClick}
-                icon="copy"
+                icon="far copy"
                 hoverStyle="clean"
                 title={i18nRegistry.translate('copy')}
                 />

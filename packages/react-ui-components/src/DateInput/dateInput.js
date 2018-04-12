@@ -121,7 +121,7 @@ export class DateInput extends PureComponent {
                         onClick={this.handleCalendarIconClick}
                         className={theme.calendarIconBtn}
                         >
-                        <IconComponent icon="calendar"/>
+                        <IconComponent icon="far calendar-alt"/>
                     </button>
                     <div className={theme.calendarFakeInputWrapper}>
                         <div
@@ -143,7 +143,7 @@ export class DateInput extends PureComponent {
                         onClick={this.handleClearValueClick}
                         className={theme.closeCalendarIconBtn}
                         >
-                        <IconComponent icon="remove"/>
+                        <IconComponent icon="times"/>
                     </button>
                 </div>
                 <CollapseComponent isOpened={this.state.isOpen}>

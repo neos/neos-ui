@@ -60,12 +60,7 @@ export default class NodeCreationDialog extends PureComponent {
     validateElements = newValues => {
         const {validatorRegistry, configuration} = this.props;
         const validationErrors = validate(newValues, configuration.elements, validatorRegistry);
-        this.setState({
-            values: newValues,
-            validationErrors: validationErrors,
-            isDirty: true
-        });
-
+        this.setState({values: newValues, isDirty: true, validationErrors});
         return validationErrors;
     }
 

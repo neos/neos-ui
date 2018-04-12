@@ -15,6 +15,7 @@ import {
     PluginViews,
     PluginView
 } from './Editors/index';
+import EditorEnvelope from './EditorEnvelope/index';
 
 import {
     CodeMirrorWrap,
@@ -25,6 +26,8 @@ import {
 
 import manifest from '@neos-project/neos-ui-extensibility';
 import backend from '@neos-project/neos-ui-backend-connector';
+
+export default EditorEnvelope;
 
 manifest('inspectorEditors', {}, globalRegistry => {
     const editorsRegistry = globalRegistry.get('inspector').get('editors');

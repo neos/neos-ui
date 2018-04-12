@@ -62,6 +62,16 @@ export class DateInput extends PureComponent {
         locale: PropTypes.string,
 
         /**
+         * Static component dependencies which are injected from the outside (index.js)
+         */
+        TooltipComponent: PropTypes.any.isRequired,
+
+        /**
+         * An array of error messages
+         */
+        validationErrors: PropTypes.array,
+
+        /**
          * The changehandler to call when the date changes.
          */
         onChange: PropTypes.func.isRequired,
@@ -95,6 +105,7 @@ export class DateInput extends PureComponent {
             IconComponent,
             DatePickerComponent,
             CollapseComponent,
+            TooltipComponent,
             placeholder,
             theme,
             value,
@@ -105,13 +116,20 @@ export class DateInput extends PureComponent {
             dateOnly,
             timeOnly,
             highlight,
-            locale
+            locale,
+            validationErrors
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
 
+        console.log(validationErrors);
+        const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
+            return <div key={key}>{validationError}</div>;
+        });
+
         const calendarInputWrapper = mergeClassNames({
             [theme.calendarInputWrapper]: true,
-            [theme['calendarInputWrapper--highlight']]: highlight
+            [theme['calendarInputWrapper--highlight']]: highlight,
+            [theme['calendarInputWrapper--invalid']]: validationErrors && validationErrors.length > 0
         });
 
         return (
@@ -169,6 +187,7 @@ export class DateInput extends PureComponent {
                         {applyLabel}
                     </ButtonComponent>
                 </CollapseComponent>
+                {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>
         );
     }

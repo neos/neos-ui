@@ -121,7 +121,6 @@ export class DateInput extends PureComponent {
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
 
-        console.log(validationErrors);
         const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
             return <div key={key}>{validationError}</div>;
         });

@@ -7,7 +7,7 @@ import flowright from 'lodash.flowright';
 import Tree from '@neos-project/react-ui-components/src/Tree/';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 

@@ -3674,9 +3674,9 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
-editorconfig-checker@^1.1.1:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/editorconfig-checker/-/editorconfig-checker-1.1.4.tgz#4fbf60ea5b28af72f96d458d5991dd026fc671df"
+editorconfig-checker@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/editorconfig-checker/-/editorconfig-checker-1.2.0.tgz#ab7f8dd848b407f65bd7612bf898699e831d5cfc"
   dependencies:
     glob "^7.1.2"
     glob-fs "^0.1.7"

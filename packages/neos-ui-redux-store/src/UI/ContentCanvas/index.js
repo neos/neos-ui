@@ -39,7 +39,7 @@ export const actionTypes = {
 
 const setContextPath = createAction(SET_CONTEXT_PATH, (contextPath, siteNode = null) => ({contextPath, siteNode}));
 const setPreviewUrl = createAction(SET_PREVIEW_URL, previewUrl => ({previewUrl}));
-const setSrc = createAction(SET_SRC, src => ({src}));
+const setSrc = createAction(SET_SRC, (src, openInNewWindow = false) => ({src, openInNewWindow}));
 const setFormattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formatting => ({formatting}));
 const setCurrentlyEditedPropertyName = createAction(SET_CURRENTLY_EDITED_PROPERTY_NAME, propertyName => ({propertyName}));
 const startLoading = createAction(START_LOADING);

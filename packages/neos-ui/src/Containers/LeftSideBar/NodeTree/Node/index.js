@@ -7,7 +7,7 @@ import flowright from 'lodash.flowright';
 import Tree from '@neos-project/react-ui-components/src/Tree/';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -295,10 +295,11 @@ export default class Node extends PureComponent {
         onNodeToggle($get('contextPath', node));
     }
 
-    handleNodeClick = () => {
+    handleNodeClick = e => {
         const {node, onNodeFocus, onNodeClick} = this.props;
-        onNodeFocus($get('contextPath', node));
-        onNodeClick($get('uri', node), $get('contextPath', node));
+        const openInNewWindow = e.metaKey || e.shiftKey || e.ctrlKey;
+        onNodeFocus($get('contextPath', node), openInNewWindow);
+        onNodeClick($get('uri', node), $get('contextPath', node), openInNewWindow);
     }
 }
 
@@ -340,8 +341,6 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
                 reference: getContextPath(node)
             })
         });
-    }, {
-        onNodeFocus: actions.UI.PageTree.focus
     }
 )(Node));
 
@@ -377,7 +376,5 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
                 reference: getContextPath(node)
             })
         });
-    }, {
-        onNodeFocus: actions.CR.Nodes.focus
     }
 )(Node));

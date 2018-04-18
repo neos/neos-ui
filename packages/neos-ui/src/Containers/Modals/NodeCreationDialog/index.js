@@ -73,7 +73,7 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     replenishValuesWithDefaults = () => {
-        // fill up the values that has not been edited at the moment
+        // Fill up the values that has not been edited at the moment
         Object.keys(this.props.configuration.elements).forEach(elementName => {
             this.defineDefaultValueForElementName(elementName);
         });

@@ -10,11 +10,11 @@ export function * handleHotkeys({globalRegistry, store}) {
     const items = hotkeyRegistry.getAllAsList();
     let mousetrapPaused = false;
 
-    for (let i = 0; i < items.length; i++) {
-        Mousetrap.bind(items[i].keys, () => {
-            store.dispatch(items[i].action());
+    items.forEach(item => {
+        Mousetrap.bind(item.keys, () => {
+            store.dispatch(item.action());
         });
-    }
+    });
 
     while (true) {
         const waitForGuestFrameInteraction = yield race([
@@ -26,13 +26,13 @@ export function * handleHotkeys({globalRegistry, store}) {
         // Bind mousetrap to guest frame after content canvas stopped loading
         if (action.type === actionTypes.UI.ContentCanvas.STOP_LOADING) {
             const mousetrapGuest = new Mousetrap(getGuestFrameDocument());
-            for (let i = 0; i < items.length; i++) {
-                mousetrapGuest.bind(items[i].keys, () => {
+            items.forEach(item => {
+                mousetrapGuest.bind(item.keys, () => {
                     if (mousetrapPaused === false) {
-                        store.dispatch(items[i].action());
+                        store.dispatch(item.action());
                     }
                 });
-            }
+            });
         }
 
         // Pause mousetrap during inline editing

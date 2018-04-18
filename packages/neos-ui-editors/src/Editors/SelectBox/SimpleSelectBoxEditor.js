@@ -74,7 +74,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
                 />);
         }
 
-        // multiple == FALSE
+        // Multiple == FALSE
         return (<SelectBox
             options={this.state.searchTerm ? searchOptions(this.state.searchTerm, processedSelectBoxOptions) : processedSelectBoxOptions}
             value={value}

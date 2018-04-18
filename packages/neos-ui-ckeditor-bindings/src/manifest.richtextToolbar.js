@@ -147,49 +147,49 @@ export default ckEditorRegistry => {
         isVisibleWhen: () => true
     });
 
-    // p tag
+    // P tag
     richtextToolbar.set('style/p', {
         formattingRule: 'p',
         label: 'Paragraph'
     });
 
-    // h1
+    // H1
     richtextToolbar.set('style/h1', {
         formattingRule: 'h1',
         label: 'Headline 1'
     });
 
-    // h2
+    // H2
     richtextToolbar.set('style/h2', {
         formattingRule: 'h2',
         label: 'Headline 2'
     });
 
-    // h3
+    // H3
     richtextToolbar.set('style/h3', {
         formattingRule: 'h3',
         label: 'Headline 3'
     });
 
-    // h4
+    // H4
     richtextToolbar.set('style/h4', {
         formattingRule: 'h4',
         label: 'Headline 4'
     });
 
-    // h5
+    // H5
     richtextToolbar.set('style/h5', {
         formattingRule: 'h5',
         label: 'Headline 5'
     });
 
-    // h6
+    // H6
     richtextToolbar.set('style/h6', {
         formattingRule: 'h6',
         label: 'Headline 6'
     });
 
-    // pre
+    // Pre
     richtextToolbar.set('style/pre', {
         formattingRule: 'pre',
         label: 'Preformatted'
@@ -210,7 +210,7 @@ export default ckEditorRegistry => {
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__ordered-list'
     });
 
-    // unordered list
+    // Unordered list
     richtextToolbar.set('unorderedList', {
         formattingRule: 'ul',
         component: IconButtonComponent,

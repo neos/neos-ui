@@ -26,7 +26,7 @@ export function * watchToggle({globalRegistry}) {
 
 export function * watchRequestChildrenForContextPath({configuration}) {
     yield takeEvery(actionTypes.UI.PageTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
-        // ToDo Call yield put(actions.UI.PageTree.requestChildren(contextPath));
+        // TODO: Call yield put(actions.UI.PageTree.requestChildren(contextPath));
         const {contextPath, opts} = action.payload;
         const {activate} = opts;
         const {q} = backend.get();
@@ -53,7 +53,7 @@ export function * watchRequestChildrenForContextPath({configuration}) {
                 return nodeMap;
             }, {});
 
-            // the nodes loaded from the server for the tree representation are NOT the full
+            // The nodes loaded from the server for the tree representation are NOT the full
             // nodes with all properties; but merely contain as little properties as needed
             // for the tree.
             // In order to not OVERRIDE the properties we already know, we need to merge

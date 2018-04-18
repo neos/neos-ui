@@ -43,7 +43,7 @@ export function * watchNodeFocus({configuration}) {
         while (parentContextPath !== documentNodeContextPath) {
             parentContextPath = parentNodeContextPath(parentContextPath);
             if (!parentContextPath) {
-                // in case our focused node is not on the current document, documentNodeContextPath
+                // In case our focused node is not on the current document, documentNodeContextPath
                 // can never be an anchestor of contextPath. In this case, we traverse the path until
                 // we reached the top level, where we need to abort the loop to avoid infinite spinning.
                 break;

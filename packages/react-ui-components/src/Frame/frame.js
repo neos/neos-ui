@@ -25,7 +25,7 @@ export default class Frame extends PureComponent {
         this.updateIframeUrlIfNecessary();
     }
 
-    // we do not use react's magic to change to a different URL in the iFrame, but do it
+    // We do not use react's magic to change to a different URL in the iFrame, but do it
     // explicitely (in order to avoid reloads if we are already on the correct page)
     updateIframeUrlIfNecessary() {
         if (!this.ref) {

@@ -44,7 +44,7 @@ export default {
         NeosUiEditors: EditorEnvelope,
         NeosUiI18n,
         NeosUiReduxStore,
-        // react-proptypes (optional)
+        // React-proptypes (optional)
         ReactUiComponents,
         UtilsRedux
 

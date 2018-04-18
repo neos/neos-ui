@@ -24,7 +24,7 @@ export default class SelectBox_ListPreview extends PureComponent {
         noMatchesFoundLabel: PropTypes.string,
         theme: PropTypes.object,
 
-        // dependency injection
+        // Dependency injection
         SelectBox_CreateNew: PropTypes.any.isRequired,
         SelectBox_ListPreviewFlat: PropTypes.any.isRequired,
         SelectBox_ListPreviewGrouped: PropTypes.any.isRequired

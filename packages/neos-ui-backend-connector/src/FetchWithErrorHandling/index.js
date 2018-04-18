@@ -48,7 +48,7 @@ class FetchWithErrorHandling {
      */
     withCsrfToken(makeFetchRequest) {
         if (this._shouldEnqueueRequests) {
-            // we are currently not authenticated anymore; so we know the request cannot work. Instead, we just enqueue it so that we can run it
+            // We are currently not authenticated anymore; so we know the request cannot work. Instead, we just enqueue it so that we can run it
             // once authentication is successful.
             return this._enqueueRequest(makeFetchRequest);
         }
@@ -58,19 +58,19 @@ class FetchWithErrorHandling {
 
     _enqueueRequest(makeFetchRequest) {
         return new Promise((resolve, reject) => {
-            // this promise is never resolved inside the function body here; but it is resolved after a successful
+            // This promise is never resolved inside the function body here; but it is resolved after a successful
             // re-login; when the requestQueue is executed (inside _executeSingleQueueElement)
             this._requestQueue.push({makeFetchRequest, resolve, reject});
         });
     }
 
     _executeFetchRequest(makeFetchRequest) {
-        // build the actual fetch request by passing in the current CSRF token
+        // Build the actual fetch request by passing in the current CSRF token
         const fetchOptions = makeFetchRequest(this._csrfToken);
         const url = fetchOptions.url;
         delete fetchOptions.url;
 
-        // we manually return a new promise (and do not reuse the promise returned from fetch()), because
+        // We manually return a new promise (and do not reuse the promise returned from fetch()), because
         // we need to be able to restart a new fetch() request on login failures; and make the outer promise
         // return only after the successful relogin.
         return new Promise((resolve, reject) =>
@@ -92,14 +92,14 @@ class FetchWithErrorHandling {
                     }
                 } else if (response.status >= 500) { // 50x error
                     response.text().then(text => {
-                        // rejected promise is caught later
+                        // Rejected promise is caught later
                         reject(text);
                     });
                 } else { // Other cases like 404, not necessarily an error
                     resolve(response);
                 }
             }, reason => {
-                // network problems, rejected promise is caught later
+                // Network problems, rejected promise is caught later
                 reject(reason);
             })
         );
@@ -113,12 +113,12 @@ class FetchWithErrorHandling {
     updateCsrfTokenAndWorkThroughQueue(newCsrfToken) {
         this.setCsrfToken(newCsrfToken);
 
-        // store the current request queue in a local variable (to ensure it is not modified while we replay them); and disable the queuing.
+        // Store the current request queue in a local variable (to ensure it is not modified while we replay them); and disable the queuing.
         const requestQueueToWorkThrough = this._requestQueue;
         this._shouldEnqueueRequests = false;
         this._requestQueue = [];
 
-        // execute the requests in the queue one-by-one (not in parallel), as there might be dependencies between the requests (unlikely, but
+        // Execute the requests in the queue one-by-one (not in parallel), as there might be dependencies between the requests (unlikely, but
         // might be possible).
         let currentPromise = Promise.resolve(true);
         for (let i = 0; i < requestQueueToWorkThrough.length; i++) {
@@ -129,7 +129,7 @@ class FetchWithErrorHandling {
     _executeSingleQueueElement(currentPromise, queueElement) {
         const {makeFetchRequest, resolve, reject} = queueElement;
         return currentPromise.then(() => {
-            // we execute our request; and if we were successful, resolve or reject the *original* promise (which is stored in the queueElement).
+            // We execute our request; and if we were successful, resolve or reject the *original* promise (which is stored in the queueElement).
             return this._executeFetchRequest(makeFetchRequest)
                 .then(result => resolve(result), error => reject(error));
         });

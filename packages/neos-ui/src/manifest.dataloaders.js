@@ -84,11 +84,11 @@ manifest('main.dataloaders', {}, globalRegistry => {
                     nodeIdentifiers: identifiersNotInCache
                 });
 
-                // trigger query
+                // Trigger query
                 const searchNodesApi = backend.get().endpoints.searchNodes;
 
                 result = searchNodesApi(searchNodesQuery).then(results => {
-                    // we store the result in the cache
+                    // We store the result in the cache
                     results.forEach(result => {
                         const cacheKey = makeCacheKey('resolve', {options, identifier: result.identifier});
                         const resultPromise = Promise.resolve(result);
@@ -96,19 +96,19 @@ manifest('main.dataloaders', {}, globalRegistry => {
                         resultPromisesByIdentifier[result.identifier] = resultPromise;
                     });
 
-                    // by know,all identifiers are in cache.
+                    // By know,all identifiers are in cache.
                     return Promise.all(
                         identifiers.map(identifier =>
                             resultPromisesByIdentifier[identifier]
-                        ).filter(promise => Boolean(promise)) // remove "null" values
+                        ).filter(promise => Boolean(promise)) // Remove "null" values
                     );
                 });
             } else {
-                // we know all identifiers are in cache.
+                // We know all identifiers are in cache.
                 result = Promise.all(
                     identifiers.map(identifier =>
                         resultPromisesByIdentifier[identifier]
-                    ).filter(promise => Boolean(promise)) // remove "null" values
+                    ).filter(promise => Boolean(promise)) // Remove "null" values
                 );
             }
 
@@ -119,7 +119,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
             if (!searchTerm) {
                 return Promise.resolve([]);
             }
-            // remove NULL node types
+            // Remove NULL node types
             options.nodeTypes = (options.nodeTypes || []).filter(Boolean);
 
             const cacheKey = makeCacheKey('search', {options, searchTerm});
@@ -140,7 +140,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
                     nodeTypes: options.nodeTypes
                 });
 
-                // trigger query
+                // Trigger query
                 const searchNodesApi = backend.get().endpoints.searchNodes;
                 const resultPromise = searchNodesApi(searchNodesQuery);
 
@@ -214,7 +214,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 }
                 this._debounceTimer = window.setTimeout(resolve, 300);
             }).then(() => {
-                // trigger query
+                // Trigger query
                 const assetSearchApi = backend.get().endpoints.assetSearch;
                 const resultPromise = assetSearchApi(searchTerm);
 

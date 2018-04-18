@@ -4,7 +4,7 @@ import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-u
 
 const globalRegistry = new SynchronousMetaRegistry();
 
-// i18n Registry
+// I18n Registry
 class FakeI18NRegistry extends SynchronousRegistry {
     translate(key) {
         return key;
@@ -40,7 +40,7 @@ export const MockDataSourceDataLoader = {
 globalRegistry.set('dataLoaders', new SynchronousRegistry());
 globalRegistry.get('dataLoaders').set('DataSources', MockDataSourceDataLoader);
 
-// wrapper
+// Wrapper
 export class WrapWithMockGlobalRegistry extends PureComponent {
     static propTypes = {
         children: PropTypes.element.isRequired

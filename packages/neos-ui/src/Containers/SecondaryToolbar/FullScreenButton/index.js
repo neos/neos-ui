@@ -19,7 +19,7 @@ export default class FullScreenButton extends PureComponent {
     static propTypes = {
         toggleFullScreen: PropTypes.func,
         i18nRegistry: PropTypes.object.isRequired,
-        isFullScreen: PropTypes.bool.isRequired,
+        isFullScreen: PropTypes.bool.isRequired
     };
 
     render() {
@@ -33,12 +33,12 @@ export default class FullScreenButton extends PureComponent {
                 aria-label={i18nRegistry.translate('Neos.Neos:Main:deactivateFullscreen', 'Deactivate Fullscreen edit mode')}
                 />
             ) : (
-            <IconButton
-                id="neos-FullScreenButton"
-                icon="expand"
-                onClick={toggleFullScreen}
-                aria-label={i18nRegistry.translate('Neos.Neos:Main:activateFullscreen', 'Activate Fullscreen edit mode')}
-                />
-        );
+                <IconButton
+                    id="neos-FullScreenButton"
+                    icon="expand"
+                    onClick={toggleFullScreen}
+                    aria-label={i18nRegistry.translate('Neos.Neos:Main:activateFullscreen', 'Activate Fullscreen edit mode')}
+                    />
+            );
     }
 }

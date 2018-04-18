@@ -21,8 +21,10 @@
 .secondaryToolbar--isFringeRight {
     padding-right: 46px;
 }
-.secondaryToolbar--isHidden {
-    display: none;
+.secondaryToolbar--fullScreen {
+    top: 0;
+    padding: 0 0;
+    transform: translateY(0);
 }
 .secondaryToolbar__rightHandedActions {
     margin-left: auto;

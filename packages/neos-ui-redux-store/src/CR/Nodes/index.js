@@ -357,9 +357,9 @@ export const reducer = handleActions({
                     return $set(
                         ['cr', 'nodes', 'byContextPath', contextPath, 'uri'],
                         nodeUri
-                            // node with changes uriPathSegment
+                            // Node with changes uriPathSegment
                             .replace(oldUriFragment + '@', newUriFragment + '@')
-                            // descendant of a node with changed uriPathSegment
+                            // Descendant of a node with changed uriPathSegment
                             .replace(oldUriFragment + '/', newUriFragment + '/')
                     );
                 }

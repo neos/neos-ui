@@ -80,7 +80,7 @@ ShallowDropDownHeader.propTypes = {
     _refHandler: PropTypes.func,
 
     /**
-     * if TRUE, will keep the focussed state of the element when re-drawing.
+     * If TRUE, will keep the focussed state of the element when re-drawing.
      * Must be set to FALSE when connected components want to manage the focus state themselves (e.g.
      * when this component is used to build a select box)
      */

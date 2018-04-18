@@ -34,7 +34,7 @@ export default CKEDITOR => {
         }
 
         if (editor.mode === 'wysiwyg') {
-            // we only support wysiwyg editor mode
+            // We only support wysiwyg editor mode
             // If the blur is due to a dialog, don't apply the placeholder
             if (CKEDITOR.dialog._.currentTop) {
                 return;
@@ -56,7 +56,7 @@ export default CKEDITOR => {
 
         if (editor.mode === 'wysiwyg') {
             if (!editable.hasClass('placeholder')) {
-                // no placeholder, so nothing to be removed.
+                // No placeholder, so nothing to be removed.
                 return;
             }
 
@@ -79,7 +79,7 @@ export default CKEDITOR => {
                 }
                 editor.editable().$.click();
             } else {
-                // if we are inside an inline editable (e.g. a span), we have to set the selection
+                // If we are inside an inline editable (e.g. a span), we have to set the selection
                 // *using a timeout*, otherwise it won't be selected in Firefox and Chrome.
                 editable.setHtml(' ');
 
@@ -128,7 +128,7 @@ export default CKEDITOR => {
                     }
 
                     if (htmlIsEmptyish(event.data.dataValue)) {
-                        // if data is empty, set it to the placeholder
+                        // If data is empty, set it to the placeholder
                         addPlaceholder(event);
                     } else if (editable.hasClass('placeholder')) {
                         // Remove the class if new data is not empty

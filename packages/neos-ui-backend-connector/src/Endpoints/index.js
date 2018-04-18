@@ -76,7 +76,7 @@ export default routes => {
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     /**
-     * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
+     * Asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][position]:10
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][width]:210
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][x]:0
@@ -201,7 +201,7 @@ export default routes => {
         });
 
     /**
-     * searchTerm:se
+     * SearchTerm:se
      * nodeTypes[]:TYPO3.Neos.NodeTypes:Page
      * workspaceName:user-admin
      * dimensions[language][]:en_US
@@ -342,17 +342,17 @@ export default routes => {
         const data = new URLSearchParams();
         data.set('__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][username]', username);
         data.set('__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][password]', password);
-        // here, we
+        // Here, we
         return fetch(routes.core.login, {
             method: 'POST',
             body: data,
             credentials: 'same-origin'
         })
-        // parse the JSON if possible ...
+        // Parse the JSON if possible ...
         .then(response => response.json())
         // ... and if the JSON cannot be parsed, convert this to "false".
         .then(result => result, () => false)
-        // return the new CSRF Protection token
+        // Return the new CSRF Protection token
         .then(result => result && result.csrfToken);
     };
 

@@ -38,11 +38,11 @@ test('getUncollapsed should return the context paths of nodes within the loading
             '/sites/site/deeper/context-path-2@some-user': {contextPath: '/sites/site/deeper/context-path-2@some-user', depth: 3}
         }),
         $set('ui.pageTree.toggled', [
-            // should be collapsed
+            // Should be collapsed
             '/sites/site/context-path-1@some-user',
             '/sites/site/context-path-2@some-user',
 
-            // should be uncollapsed
+            // Should be uncollapsed
             '/sites/site/deeper/context-path-2@some-user'
         ]),
         {}

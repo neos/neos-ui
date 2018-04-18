@@ -178,7 +178,7 @@ export default class Inspector extends PureComponent {
      */
     renderSecondaryInspector = (secondaryInspectorName, secondaryInspectorComponentFactory) => {
         if (this.state.secondaryInspectorName === secondaryInspectorName) {
-            // we toggle the secondary inspector if it is rendered a second time; so that's why we hide it here.
+            // We toggle the secondary inspector if it is rendered a second time; so that's why we hide it here.
             this.handleCloseSecondaryInspector();
         } else {
             let secondaryInspectorComponent = null;

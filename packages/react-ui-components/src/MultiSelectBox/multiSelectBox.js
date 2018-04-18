@@ -63,17 +63,17 @@ export default class MultiSelectBox extends PureComponent {
         placeholderIcon: PropTypes.string,
 
         /**
-         * text for the group label of options without a group
+         * Text for the group label of options without a group
          */
         withoutGroupLabel: PropTypes.string,
 
         /**
-         * if false, prevents removing the last element.
+         * If false, prevents removing the last element.
          */
         allowEmpty: PropTypes.bool,
 
         /**
-         * limit height and show scrollbars if needed, defaults to true
+         * Limit height and show scrollbars if needed, defaults to true
          */
         scrollable: PropTypes.bool,
 
@@ -97,7 +97,7 @@ export default class MultiSelectBox extends PureComponent {
         loadingLabel: PropTypes.string,
 
         /**
-         * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
+         * Helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
 
@@ -119,7 +119,7 @@ export default class MultiSelectBox extends PureComponent {
         ),
 
         /**
-         * if set to true, the search box is directly focussed once the SelectBox is rendered;
+         * If set to true, the search box is directly focussed once the SelectBox is rendered;
          * such that the user can start typing right away.
          */
         setFocus: PropTypes.bool,

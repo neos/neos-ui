@@ -50,7 +50,7 @@ const propertiesForValidationSelector = createSelector(
     }
 );
 
-// here, we use "defaultMemoize()", as validation errors are quasi-singletons; so we want all instances of the selector
+// Here, we use "defaultMemoize()", as validation errors are quasi-singletons; so we want all instances of the selector
 // to be shared for all fields. If we did not do this, the system would recompute the validation for each form field (which
 // is way too often.)
 export const makeValidationErrorsSelector = defaultMemoize((nodeTypesRegistry, validatorRegistry) => createSelector(

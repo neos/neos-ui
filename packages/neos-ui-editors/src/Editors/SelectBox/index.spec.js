@@ -81,7 +81,7 @@ test(`SelectBox > multi, no dataSource, preselected value`, () => {
 
     expect(multiselectLabels(component)).toEqual(['fooLabel']);
     expect(dropdownHeader(component).text()).toBe('');
-    // already selected values should not be in the list to choose anymore
+    // Already selected values should not be in the list to choose anymore
     expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
 });
 
@@ -183,7 +183,7 @@ test(`SelectBox > multi, dataSource, preselected value`, () => {
         const expectedDropdownElementLabels = ['barLabel'];
         component.update();
         expect(multiselectLabels(component)).toEqual(['fooLabel']);
-        // already selected values should not be in the list to choose anymore
+        // Already selected values should not be in the list to choose anymore
         expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
     });
 });

@@ -61,7 +61,7 @@ export function * watchChangeBaseWorkspace() {
             const feedback = yield call(changeBaseWorkspace, action.payload, documentNode);
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
-            // reload the page tree
+            // Reload the page tree
             yield put(actions.CR.Nodes.reloadState());
         } catch (error) {
             console.error('Failed to change base workspace', error);
@@ -94,15 +94,15 @@ export function * discardIfConfirmed() {
                 yield put(actions.UI.Remote.finishDiscarding());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
-                // check if the currently focused document node has been removed
+                // Check if the currently focused document node has been removed
                 const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
 
-                // if not, reload the document
+                // If not, reload the document
                 if (contentCanvasNodeIsStillThere) {
                     getGuestFrameDocument().location.reload();
                 }
 
-                // reload the page tree
+                // Reload the page tree
                 yield put(actions.CR.Nodes.reloadState());
             } catch (error) {
                 console.error('Failed to discard', error);

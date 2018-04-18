@@ -17,7 +17,7 @@ export const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode, parent
         );
     }
 
-    // not auto created
+    // Not auto created
     return nodeTypesRegistry.getAllowedChildNodeTypes($get('nodeType', baseNode));
 };
 
@@ -32,7 +32,7 @@ export const parentNodeContextPath = contextPath => {
     const [path, context] = contextPath.split('@');
 
     if (path.length === 0) {
-        // we are at top level; so there is no parent anymore!
+        // We are at top level; so there is no parent anymore!
         return false;
     }
 

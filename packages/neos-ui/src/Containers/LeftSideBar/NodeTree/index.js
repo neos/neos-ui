@@ -40,7 +40,7 @@ export default class NodeTree extends PureComponent {
     handleFocus = (contextPath, openInNewWindow) => {
         const {focus, allowOpeningNodesInNewWindow} = this.props;
         if (openInNewWindow && allowOpeningNodesInNewWindow) {
-            // we do not need to change focus if we open the clicked node in the new window.
+            // We do not need to change focus if we open the clicked node in the new window.
             return;
         }
 

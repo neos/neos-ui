@@ -68,12 +68,12 @@ export default class SelectBox extends PureComponent {
         placeholderIcon: PropTypes.string,
 
         /**
-         * text for the group label of options without a group
+         * Text for the group label of options without a group
          */
         withoutGroupLabel: PropTypes.string,
 
         /**
-         * if true, allows to clear the selected element completely (without choosing another one)
+         * If true, allows to clear the selected element completely (without choosing another one)
          */
         allowEmpty: PropTypes.bool,
 
@@ -83,7 +83,7 @@ export default class SelectBox extends PureComponent {
         showDropDownToggle: PropTypes.bool,
 
         /**
-         * limit height and show scrollbars if needed, defaults to true
+         * Limit height and show scrollbars if needed, defaults to true
          */
         scrollable: PropTypes.bool,
 
@@ -107,7 +107,7 @@ export default class SelectBox extends PureComponent {
         loadingLabel: PropTypes.string,
 
         /**
-         * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
+         * Helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
 
@@ -127,7 +127,7 @@ export default class SelectBox extends PureComponent {
         plainInputMode: PropTypes.bool,
 
         /**
-         * if set to true, the search box is directly focussed once the SelectBox is rendered;
+         * If set to true, the search box is directly focussed once the SelectBox is rendered;
          * such that the user can start typing right away.
          */
         setFocus: PropTypes.bool,
@@ -248,7 +248,7 @@ export default class SelectBox extends PureComponent {
         const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
 
-        // compare selected value less strictly: allow loose comparision and deep equality of objects
+        // Compare selected value less strictly: allow loose comparision and deep equality of objects
         const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
 
         if (displaySearchBox && (!value || plainInputMode)) {
@@ -300,7 +300,7 @@ export default class SelectBox extends PureComponent {
                 isExpanded = this.props.showDropDownToggle ? !this.state.isExpanded : true;
             }
         } else {
-            // if simple SelectBox, just toggle it
+            // If simple SelectBox, just toggle it
             isExpanded = !this.state.isExpanded;
         }
         this.setState({
@@ -343,7 +343,7 @@ export default class SelectBox extends PureComponent {
 
     handleKeyDown = e => {
         if (this.state.isExpanded && e && ['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
-            // do not scroll while we are doing keyboard interaction
+            // Do not scroll while we are doing keyboard interaction
             e.preventDefault();
 
             const {options} = this.props;

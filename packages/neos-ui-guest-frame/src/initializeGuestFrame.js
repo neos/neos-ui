@@ -119,7 +119,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         });
 
         requestIdleCallback(() => {
-            // only of guest frame document did not change in the meantime, we continue initializing the node
+            // Only of guest frame document did not change in the meantime, we continue initializing the node
             if (getGuestFrameDocument() === node.ownerDocument) {
                 initializeCurrentNode(node);
             }

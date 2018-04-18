@@ -72,7 +72,7 @@ export default class I18nRegistry extends SynchronousRegistry {
         const translation = [packageKey, sourceName, id]
         // Replace all dots with underscores
             .map(s => s ? s.replace(/\./g, '_') : '')
-            // traverse through translations and find us a fitting one
+            // Traverse through translations and find us a fitting one
             .reduce((prev, cur) => (prev ? prev[cur] || '' : ''), this._translations);
 
         if (translation && translation.length) {

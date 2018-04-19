@@ -32,7 +32,7 @@ mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
 # Temporarily move the neos-ui package out so it doesn't get overwritten by composer
 mv Packages/Application/Neos.Neos.Ui temp
 # Install all dependencies for the neos instance.
-composer install -q -n
+composer install --no-interaction
 
 rm -rf Packages/Application/Neos.Neos.Ui
 mv temp Packages/Application/Neos.Neos.Ui

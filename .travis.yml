@@ -17,8 +17,8 @@ language: php
 php:
   - '7.1'
 
-services:
-  - mysql
+addons:
+  mariadb: '10.2'
 
 #
 # Cache the composer and node_modules directory to speed up the the installation of dependencies.

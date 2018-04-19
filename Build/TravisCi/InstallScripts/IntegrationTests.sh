@@ -14,7 +14,7 @@ if [ -n "$GITHUB_OAUTH_TOKEN" ]; then composer config github-oauth.github.com ${
 phpenv config-rm xdebug.ini
 
 # Update composer.
-composer self-update -q
+composer self-update -q 1.6.3
 
 # Handle hidden files with the `mv` command.
 shopt -s dotglob

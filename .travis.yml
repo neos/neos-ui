@@ -17,9 +17,6 @@ language: php
 php:
   - '7.0'
 
-services:
-  - mysql
-
 #
 # Cache the composer and node_modules directory to speed up the the installation of dependencies.
 #

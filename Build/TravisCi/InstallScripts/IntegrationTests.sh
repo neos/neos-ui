@@ -41,7 +41,7 @@ mv temp Packages/Application/Neos.Neos.Ui
 cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Settings.yaml
 
 # Setup the database and import the demo site package.
-mysql -e 'create database neos collate utf8mb4_unicode_ci;'
+mysql -e 'create database neos collate utf8_unicode_ci;'
 ./flow cache:warmup
 ./flow doctrine:migrate
 ./flow site:import --package-key=Neos.Demo

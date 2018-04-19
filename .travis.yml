@@ -1,6 +1,7 @@
 dist: trusty
 sudo: required
 addons:
+  mariadb: '10.2'
   apt:
     sources:
      - google-chrome
@@ -16,9 +17,6 @@ language: php
 
 php:
   - '7.1'
-
-addons:
-  mariadb: '10.2'
 
 #
 # Cache the composer and node_modules directory to speed up the the installation of dependencies.

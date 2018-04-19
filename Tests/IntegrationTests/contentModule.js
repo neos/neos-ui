@@ -1,5 +1,5 @@
 import {Selector, Role} from 'testcafe';
-import ReactSelector from 'testcafe-react-selectors';
+import {ReactSelector} from 'testcafe-react-selectors';
 import checkPropTypes from '../checkPropTypes';
 
 import Page from './pageModel';

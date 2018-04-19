@@ -109,43 +109,43 @@ export default ckEditorRegistry => {
         config: formattingRules.config.addToFormatTags('p')
     });
 
-    // h1
+    // H1
     formattingRules.set('h1', {
         style: {element: 'h1'},
         config: formattingRules.config.addToFormatTags('h1')
     });
 
-    // h2
+    // H2
     formattingRules.set('h2', {
         style: {element: 'h2'},
         config: formattingRules.config.addToFormatTags('h2')
     });
 
-    // h3
+    // H3
     formattingRules.set('h3', {
         style: {element: 'h3'},
         config: formattingRules.config.addToFormatTags('h3')
     });
 
-    // h4
+    // H4
     formattingRules.set('h4', {
         style: {element: 'h4'},
         config: formattingRules.config.addToFormatTags('h4')
     });
 
-    // h5
+    // H5
     formattingRules.set('h5', {
         style: {element: 'h5'},
         config: formattingRules.config.addToFormatTags('h5')
     });
 
-    // h6
+    // H6
     formattingRules.set('h6', {
         style: {element: 'h6'},
         config: formattingRules.config.addToFormatTags('h6')
     });
 
-    // pre
+    // Pre
     formattingRules.set('pre', {
         style: {element: 'pre'},
         config: formattingRules.config.addToFormatTags('pre')
@@ -161,7 +161,7 @@ export default ckEditorRegistry => {
         config: formattingRules.config.add('NumberedList')
     });
 
-    // unordered list
+    // Unordered list
     formattingRules.set('ul', {
         command: 'bulletedlist',
         config: formattingRules.config.add('BulletedList')
@@ -187,19 +187,19 @@ export default ckEditorRegistry => {
         config: formattingRules.config.add('JustifyLeft')
     });
 
-    // center
+    // Center
     formattingRules.set('center', {
         command: 'justifycenter',
         config: formattingRules.config.add('JustifyCenter')
     });
 
-    // right
+    // Right
     formattingRules.set('right', {
         command: 'justifyright',
         config: formattingRules.config.add('JustifyRight')
     });
 
-    // justify
+    // Justify
     formattingRules.set('justify', {
         command: 'justifyblock',
         config: formattingRules.config.add('JustifyBlock')
@@ -227,7 +227,7 @@ export default ckEditorRegistry => {
         config: formattingRules.config.addToExtraAllowedContent('a[href]'),
         applyStyleFn: (formattingOptions, editor, CKEDITOR) => {
             if (formattingOptions.remove) {
-                // we shall remove the link, so we first find it and then remove it; while keeping the contents.
+                // We shall remove the link, so we first find it and then remove it; while keeping the contents.
                 const selectedLink = CKEDITOR.plugins.link.getSelectedLink(editor);
                 if (selectedLink) {
                     selectedLink.remove(true);

@@ -163,4 +163,6 @@ clean:
 	rm -Rf node_modules; rm -rf packages/*/node_modules
 
 
-.PHONY: $@
+# Make ALL targets phony targets
+# (Rebuild every time)
+.PHONY: *

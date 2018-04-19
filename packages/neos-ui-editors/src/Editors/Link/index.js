@@ -104,7 +104,7 @@ class LinkEditor extends PureComponent {
                 searchOptions
             });
         } else if (!searchTerm && isUri(this.props.value)) {
-            // the user emptied the URL value, so we need to reset it
+            // The user emptied the URL value, so we need to reset it
             this.props.commit('');
         } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});

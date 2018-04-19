@@ -52,16 +52,32 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     handleDialogEditorValueChange = memoize(elementName => value => {
-        const {validatorRegistry, configuration} = this.props;
         const {values} = this.state;
         const newValues = Object.assign({}, values, {[elementName]: value});
-
-        this.setState({
-            values: newValues,
-            validationErrors: validate(newValues, configuration.elements, validatorRegistry),
-            isDirty: true
-        });
+        this.validateElements(newValues);
     })
+
+    validateElements = newValues => {
+        const {validatorRegistry, configuration} = this.props;
+        const validationErrors = validate(newValues, configuration.elements, validatorRegistry);
+        this.setState({values: newValues, isDirty: true, validationErrors});
+        return validationErrors;
+    }
+
+    defineDefaultValueForElementName = elementName => {
+        const {values} = this.state;
+        if (!(elementName in values)) {
+            const defaultValues = Object.assign(values, {[elementName]: ''});
+            this.setState({values: defaultValues});
+        }
+    }
+
+    replenishValuesWithDefaults = () => {
+        // Fill up the values that has not been edited at the moment
+        Object.keys(this.props.configuration.elements).forEach(elementName => {
+            this.defineDefaultValueForElementName(elementName);
+        });
+    }
 
     handleCancel = () => {
         const {cancel} = this.props;
@@ -78,11 +94,14 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     handleApply = () => {
+        this.replenishValuesWithDefaults();
         const {apply} = this.props;
-        const {values} = this.state;
-
-        apply(values);
-        this.resetState();
+        const validationErrors = this.validateElements(this.state.values);
+        const {isDirty, values} = this.state;
+        if (!validationErrors && isDirty) {
+            apply(values);
+            this.resetState();
+        }
     }
 
     handleKeyPress = event => {
@@ -118,16 +137,15 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     renderSaveAction() {
-        const {validationErrors, isDirty} = this.state;
-
+        const {isDirty, validationErrors} = this.state;
         return (
             <Button
                 id="neos-NodeCreationDialog-CreateNew"
-                disabled={Boolean(validationErrors || !isDirty)}
                 key="save"
                 style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleApply}
+                disabled={validationErrors && isDirty}
                 >
                 <I18n id="Neos.Neos:Main:createNew" fallback="Create"/>
             </Button>
@@ -162,7 +180,6 @@ export default class NodeCreationDialog extends PureComponent {
                             const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
                             const element = configuration.elements[elementName];
                             const options = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
-
                             return (
                                 <div key={elementName} className={style.editor}>
                                     <EditorEnvelope

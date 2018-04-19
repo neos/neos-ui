@@ -178,7 +178,7 @@ export default class Inspector extends PureComponent {
      */
     renderSecondaryInspector = (secondaryInspectorName, secondaryInspectorComponentFactory) => {
         if (this.state.secondaryInspectorName === secondaryInspectorName) {
-            // we toggle the secondary inspector if it is rendered a second time; so that's why we hide it here.
+            // We toggle the secondary inspector if it is rendered a second time; so that's why we hide it here.
             this.handleCloseSecondaryInspector();
         } else {
             let secondaryInspectorComponent = null;
@@ -249,6 +249,8 @@ export default class Inspector extends PureComponent {
                             $get('properties', group).filter(this.isPropertyEnabled).count() > 0 ||
                             $get('views', group).count() > 0
                         ), false))
+
+                        .sort((a, b) => $get('position', a) > $get('position', b))
 
                         //
                         // Render each tab as a TabPanel

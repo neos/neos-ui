@@ -17,9 +17,8 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Session\SessionInterface;
 use Neos\FluidAdaptor\Core\Rendering\FlowAwareRenderingContextInterface;
+use Neos\Fusion\Service\HtmlAugmenter;
 use Neos\Neos\Domain\Service\ContentContext;
-use Neos\Neos\Domain\Service\UserService;
-use Neos\Neos\Service\HtmlAugmenter;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
@@ -146,10 +145,9 @@ class AugmentationAspect
             return $content;
         }
 
-        $attributes = [
-            'data-__neos-node-contextpath' => $node->getContextPath(),
-            'data-__neos-fusion-path' => $fusionPath
-        ];
+        $attributes = $joinPoint->isMethodArgument('additionalAttributes') ? $joinPoint->getMethodArgument('additionalAttributes') : [];
+        $attributes['data-__neos-node-contextpath'] = $node->getContextPath();
+        $attributes['data-__neos-fusion-path'] = $fusionPath;
 
         $this->renderedNodes[$node->getIdentifier()] = $node;
 

@@ -1,5 +1,6 @@
 import {values, merge, memoize} from 'ramda';
 import {Maybe, Some, None} from 'monet';
+import {$get} from 'plow-js';
 
 //
 // AspectRatioStrategies
@@ -142,7 +143,7 @@ const DEFAULT_BOUNDARIES = {
 };
 
 const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
-    const {options} = neosConfiguration;
+    const {options, defaultOption} = neosConfiguration;
     const aspectRatioLocked = neosConfiguration.locked.height > 0 && neosConfiguration.locked.width > 0;
     if (aspectRatioLocked) {
         return new LockedAspectRatioStrategy(neosConfiguration.locked.width, neosConfiguration.locked.height);
@@ -172,6 +173,16 @@ const determineInitialAspectRatioStrategy = (image, neosConfiguration) => {
                 values(options).filter(o => o && (o.width / o.height).toFixed(2) === aspectRatio.toFixed(2))[0]
             ))
             .map(o => new ConfiguredAspectRatioStrategy(o.width, o.height, o.label))
+        )
+
+        .orElse(
+            when(defaultOption)(
+                new ConfiguredAspectRatioStrategy(
+                    $get([defaultOption, 'width'], options),
+                    $get([defaultOption, 'height'], options),
+                    $get([defaultOption, 'label'], options)
+                )
+            )
         )
 
         //

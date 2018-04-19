@@ -40,8 +40,8 @@ export default class TabPanel extends PureComponent {
                             key={$get('id', group)}
                             label={$get('label', group)}
                             icon={$get('icon', group)}
-                            // overlay default collapsed state over current state
-                            collapsed={$get($get('id', group), toggledPanels) != $get('collapsed', group)} // eslint-disable-line eqeqeq
+                            // Overlay default collapsed state over current state
+                            collapsed={Boolean($get($get('id', group), toggledPanels)) !== Boolean($get('collapsed', group))}
                             properties={$get('properties', group).filter(this.isPropertyEnabled)}
                             views={$get('views', group)}
                             renderSecondaryInspector={renderSecondaryInspector}

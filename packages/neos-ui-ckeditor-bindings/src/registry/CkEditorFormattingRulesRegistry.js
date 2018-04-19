@@ -37,7 +37,7 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
         this.config = {
 
             /**
-             * add a tag name to the CKEditor block-level formatting config "format_tags",
+             * Add a tag name to the CKEditor block-level formatting config "format_tags",
              * and ensure the "Format" selector is visible
              */
             addToFormatTags: tagName =>
@@ -56,7 +56,7 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
                 },
 
             /**
-             * create a new `format_*` configuration key and add it to `format_tags`
+             * Create a new `format_*` configuration key and add it to `format_tags`
              * to enable custom styles
              */
             addCustomFormat: (name, styleDefinition) =>
@@ -69,7 +69,7 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
                 },
 
             /**
-             * adds the given "buttonName" to the list of enabled buttons, i.e. configuring ACF for them correctly
+             * Adds the given "buttonName" to the list of enabled buttons, i.e. configuring ACF for them correctly
              */
             add: buttonName =>
                 config => {
@@ -83,7 +83,7 @@ export default class CkEditorFormattingRulesRegistry extends SynchronousRegistry
                     return config;
                 },
             /**
-             * adds the given "expression" to the list of extraAllowedContent
+             * Adds the given "expression" to the list of extraAllowedContent
              */
             addToExtraAllowedContent: extraExpression =>
                 config => {

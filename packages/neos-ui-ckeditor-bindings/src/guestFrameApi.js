@@ -22,7 +22,7 @@ const createCKEditorAPI = CKEDITOR => {
         return noop;
     }
 
-    // an object with the following keys:
+    // An object with the following keys:
     // - globalRegistry
     // - setFormattingUnderCursor
     // - setCurrentlyEditedPropertyName
@@ -174,7 +174,7 @@ const createCKEditorAPI = CKEDITOR => {
 
         createEditor(dom, finalOptions, propertyName, onChange) {
             if (CKEDITOR.dtd.$inline[dom.tagName.toLowerCase()]) {
-                // if we are an inline element, CKEditor breaks if we contain block-level children
+                // If we are an inline element, CKEditor breaks if we contain block-level children
                 const containsBlockLevelChildren = [].slice.call(dom.childNodes).some(childNode => childNode.tagName && CKEDITOR.dtd.$block[childNode.tagName.toLowerCase()]);
                 if (containsBlockLevelChildren) {
                     console.warn('The editable ', dom, ' of type <', dom.tagName.toLowerCase(), '> (which is an inline html element) contains block-level children (like p, div, ...). This is invalid markup and currently not supported by CKEditor; that is why we cannot edit it currently.');

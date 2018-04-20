@@ -90,7 +90,7 @@ export const findAllChildNodes = el => [].slice.call(el.querySelectorAll('[data-
 //
 export const closestNodeInGuestFrame = el => {
     if (!el || !el.dataset) {
-        // El.dataset is not existing for window.document; and we need to prevent this case from happening.
+        // el.dataset is not existing for window.document; and we need to prevent this case from happening.
         return null;
     }
 

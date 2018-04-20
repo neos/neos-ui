@@ -29,7 +29,7 @@ class PluginViewEditor extends React.PureComponent {
         activeContentDimensions: PropTypes.object.isRequired,
         personalWorkspace: PropTypes.string,
         focusedNode: PropTypes.object.isRequired,
-        transientValues: PropTypes.object
+        transientValues: PropTypes.object,
         personalWorkspace: PropTypes.string
         // focusedNode: PropTypes.instanceOf(PluginViewEditor).isRequired TODO: This is currently broken and gives an error in console, needs to be fixed
     };

@@ -11,4 +11,4 @@ fontawesome.library.add(brands, solid, regular);
 
 const ThemedIcon = themr(identifiers.icon, style)(Icon);
 
-export default ThemedIcon
+export default ThemedIcon;

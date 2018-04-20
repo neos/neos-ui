@@ -19,12 +19,12 @@ const Icon = props => {
         [theme['icon--spin']]: props.spin
     });
 
-    let iconArray = props.icon.split(" ");
+    const iconArray = props.icon.split(' ');
     let icon = props.icon;
     let prefix = 'fas';
-    if (iconArray.length > 1){
+    if (iconArray.length > 1) {
         prefix = iconArray[0];
-        let iconClass = iconArray[1];
+        const iconClass = iconArray[1];
         if (iconClass.startsWith('fa-')) {
             icon = iconClass.substr(3);
         } else {
@@ -32,7 +32,7 @@ const Icon = props => {
         }
     }
 
-    return <FontAwesomeIcon icon={[prefix, icon] || "question"} aria-label={label} className={classNames} />;
+    return <FontAwesomeIcon icon={[prefix, icon] || 'question'} aria-label={label} className={classNames} />;
 };
 Icon.propTypes = {
     /**

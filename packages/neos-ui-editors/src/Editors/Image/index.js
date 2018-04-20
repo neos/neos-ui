@@ -239,6 +239,7 @@ export default class ImageEditor extends Component {
             image
         } = this.state;
         const {highlight} = this.props;
+        const disabled = $get('options.disabled', this.props);
 
         return (
             <div className={style.imageEditor}>
@@ -251,6 +252,7 @@ export default class ImageEditor extends Component {
                     highlight={highlight}
                     onClick={this.handleThumbnailClicked}
                     isUploadEnabled={this.isFeatureEnabled('upload')}
+                    disabled={disabled}
                     />
                 <Controls
                     onChooseFromMedia={this.handleChooseFromMedia}
@@ -259,6 +261,7 @@ export default class ImageEditor extends Component {
                     isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')}
                     onRemove={image ? this.handleRemoveFile : null}
                     onCrop={image ? this.isFeatureEnabled('crop') && this.handleOpenImageCropper : null}
+                    disabled={disabled}
                     />
                 {this.isFeatureEnabled('resize') && <ResizeControls
                     onChange={this.handleResize}
@@ -267,6 +270,7 @@ export default class ImageEditor extends Component {
                         width: $get('originalDimensions.width', image),
                         height: $get('originalDimensions.height', image)
                     }}
+                    disabled={disabled}
                     />}
             </div>
         );

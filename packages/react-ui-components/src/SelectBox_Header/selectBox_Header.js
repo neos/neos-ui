@@ -19,6 +19,7 @@ export default class SelectBox_Header extends PureComponent {
         showResetButton: PropTypes.bool.isRequired,
         onReset: PropTypes.func,
         displayLoadingIndicator: PropTypes.bool,
+        disabled: PropTypes.bool,
 
         /* ------------------------------
          * Theme & Dependencies
@@ -43,17 +44,19 @@ export default class SelectBox_Header extends PureComponent {
             placeholderIcon,
             displayLoadingIndicator,
             Icon,
-            ListPreviewElement
+            ListPreviewElement,
+            disabled
         } = this.props;
 
         const label = option ? option.label : placeholder;
         const icon = option && option.icon ? option.icon : placeholderIcon;
+        const onClick = () => disabled ? null : this.props.onReset;
 
         const resetButton = () => {
             if (showResetButton) {
                 return (
                     <span>
-                        <IconButton className={theme.selectBoxHeader__icon} icon="times" onClick={this.props.onReset}/>
+                        <IconButton className={theme.selectBoxHeader__icon} disabled={disabled} icon="times" onClick={onClick}/>
                         <span className={theme.selectBoxHeader__seperator}/>
                     </span>
                 );
@@ -74,6 +77,7 @@ export default class SelectBox_Header extends PureComponent {
                             {...this.props}
                             label={label}
                             icon={icon}
+                            disabled={disabled}
                             /> : <div className={theme.selectBoxHeader__label}>{label}</div>}
                     </div>
                 )}

@@ -58,6 +58,7 @@ class DateTime extends PureComponent {
                 applyLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.apply', 'Apply', {}, 'Neos.Neos', 'Main')}
                 locale={interfaceLanguage}
                 validationErrors={validationErrors}
+                disabled={options.disabled}
                 />
         );
     }

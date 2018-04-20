@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {$get} from 'plow-js';
 
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
@@ -19,7 +20,8 @@ export default class CodeMirror extends PureComponent {
         label: PropTypes.string.isRequired,
         highlightingMode: PropTypes.string,
         value: PropTypes.string,
-        secondaryEditorsRegistry: PropTypes.object.isRequired
+        secondaryEditorsRegistry: PropTypes.object.isRequired,
+        options: PropTypes.object
     };
 
     static defaultProps = {
@@ -28,11 +30,13 @@ export default class CodeMirror extends PureComponent {
 
     render() {
         const {label, identifier} = this.props;
+        const disabled = $get('options.disabled', this.props);
+        const handleClick = () => disabled ? null : this.handleOpenCodeEditor;
 
         return (
             <div>
                 <Label htmlFor={identifier}>
-                    <Button onClick={this.handleOpenCodeEditor} style="brand">
+                    <Button disabled={disabled} onClick={handleClick()} style="brand">
                         <Icon icon="pencil" padded="right" style="lighter" title="Edit"/>
                         <I18n id={label}/>
                     </Button>

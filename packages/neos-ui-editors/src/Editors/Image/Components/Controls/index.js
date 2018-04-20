@@ -13,6 +13,7 @@ export default class Controls extends PureComponent {
         onChooseFromLocalFileSystem: PropTypes.func.isRequired,
         onRemove: PropTypes.func,
         onCrop: PropTypes.func,
+        disabled: PropTypes.bool,
 
         isUploadEnabled: PropTypes.bool.isRequired,
         isMediaBrowserEnabled: PropTypes.bool.isRequired,
@@ -36,8 +37,13 @@ export default class Controls extends PureComponent {
             isUploadEnabled,
             isMediaBrowserEnabled,
             onRemove,
-            i18nRegistry
+            i18nRegistry,
+            disabled
         } = this.props;
+
+        const handleChooseFromMedia = () => disabled ? null : onChooseFromMedia;
+        const handleChooseFromLocalFileSystem = () => disabled ? null : onChooseFromLocalFileSystem;
+        const handleRemove = () => disabled ? null : onRemove;
 
         return (
             <span>
@@ -46,9 +52,10 @@ export default class Controls extends PureComponent {
                     icon="camera"
                     size="small"
                     style="lighter"
-                    onClick={onChooseFromMedia}
+                    onClick={handleChooseFromMedia()}
                     className={style.button}
                     title={i18nRegistry.translate('Neos.Neos:Main:media')}
+                    disabled={disabled}
                     />
                 }
                 {isUploadEnabled &&
@@ -56,17 +63,18 @@ export default class Controls extends PureComponent {
                     icon="upload"
                     size="small"
                     style="lighter"
-                    onClick={onChooseFromLocalFileSystem}
+                    onClick={handleChooseFromLocalFileSystem()}
                     className={style.button}
                     title={i18nRegistry.translate('Neos.Media.Browser:Main:chooseFile')}
+                    disabled={disabled}
                     />
                 }
                 <IconButton
                     icon="remove"
                     size="small"
                     style="lighter"
-                    onClick={onRemove}
-                    disabled={!onRemove}
+                    onClick={handleRemove()}
+                    disabled={!onRemove || disabled}
                     className={style.button}
                     title={i18nRegistry.translate('Neos.Neos:Main:remove')}
                     />
@@ -75,7 +83,9 @@ export default class Controls extends PureComponent {
     }
 
     renderisCropperVisibleButton() {
-        const {onCrop, i18nRegistry} = this.props;
+        const {onCrop, i18nRegistry, disabled} = this.props;
+
+        const handleCrop = () => disabled ? null : onCrop;
 
         if (onCrop) {
             return (
@@ -84,8 +94,9 @@ export default class Controls extends PureComponent {
                     size="small"
                     style="lighter"
                     className={style.cropButton}
-                    onClick={onCrop}
+                    onClick={handleCrop()}
                     title={i18nRegistry.translate('Neos.Neos:Main:crop')}
+                    disabled={disabled}
                     />
             );
         }

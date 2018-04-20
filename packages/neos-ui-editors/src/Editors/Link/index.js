@@ -26,7 +26,8 @@ class LinkEditor extends PureComponent {
         highlight: PropTypes.bool,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-            placeholder: PropTypes.string
+            placeholder: PropTypes.string,
+            disabled: PropTypes.bool
         }),
 
         contextForNodeLinking: PropTypes.shape({
@@ -148,6 +149,7 @@ class LinkEditor extends PureComponent {
                 ListPreviewElement={LinkOption}
                 noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                 searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                disabled={this.props.options.disabled}
                 />
         );
     }

@@ -49,3 +49,8 @@
     padding-left: var(--spacing-Full);
     line-height: var(--spacing-GoldenUnit);
 }
+
+.selectBox--disabled {
+    filter: opacity(50%);
+    cursor: not-allowed;
+}

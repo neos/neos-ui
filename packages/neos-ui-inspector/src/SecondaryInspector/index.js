@@ -58,7 +58,7 @@ export default class SecondaryInspector extends PureComponent {
                         className={style.close}
                         onClick={onClose}
                         >
-                        <Icon icon="close"/>
+                        <Icon icon="times"/>
                     </Button>
                     {children}
                 </div>

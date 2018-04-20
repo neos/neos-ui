@@ -248,7 +248,7 @@ export class Header extends PureComponent {
                 icon = <IconComponent icon="spinner" spin={true}/>;
                 break;
             default:
-                icon = <IconComponent icon="sort-desc"/>;
+                icon = <IconComponent icon="sort-down"/>;
                 break;
         }
 

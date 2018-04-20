@@ -7,7 +7,7 @@
     margin-right: 1em;
     display: inline-block;
 }
-.aspectRatioIndicator i {
+.aspectRatioIndicator svg {
     margin-right: .3em;
 }
 .dimensions {

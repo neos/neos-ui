@@ -38,7 +38,7 @@ class AspectRatioItem extends PureComponent {
                     disabled={isLocked}
                     />
                 <IconButton
-                    icon="exchange"
+                    icon="exchange-alt"
                     disabled={isLocked}
                     onClick={this.props.onFlipAspectRatio}
                     />

@@ -18,6 +18,10 @@
 }
 .toolBar__btnGroup__btn {
     float: left;
+
+    svg {
+        width: 1em;
+    }
 }
 
 .toolBar--isHidden {

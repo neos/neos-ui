@@ -53,7 +53,7 @@ export default class FlashMessage extends PureComponent {
                 <Icon icon={iconName} className={style.flashMessage__icon}/>
                 <div className={style.flashMessage__heading}>{message}</div>
                 <IconButton
-                    icon="close"
+                    icon="times"
                     className={style.flashMessage__btnClose}
                     style="transparent"
                     hoverStyle="darken"

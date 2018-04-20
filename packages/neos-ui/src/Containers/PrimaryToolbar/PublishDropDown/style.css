@@ -48,7 +48,7 @@
         line-height: var(--spacing-GoldenUnit);
         text-align: left;
 
-        > i,
+        > svg,
         > input {
             margin-right: .5em;
         }

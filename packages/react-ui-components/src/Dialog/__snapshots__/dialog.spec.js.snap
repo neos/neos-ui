@@ -15,7 +15,7 @@ exports[`<Dialog/> should render correctly. 1`] = `
     <div>
       <div>
         <Component
-          icon="close"
+          icon="times"
           onClick={[Function]}
         />
         <div />

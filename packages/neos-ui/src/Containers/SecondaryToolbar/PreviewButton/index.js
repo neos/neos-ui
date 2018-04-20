@@ -38,7 +38,7 @@ export default class PreviewButton extends PureComponent {
                     className={previewButtonClassNames}
                     aria-label={i18nRegistry.translate('Neos.Neos:Main:showPreview', 'Show Preview')}
                     >
-                    <Icon icon="external-link"/>
+                    <Icon icon="external-link-alt"/>
                 </a>
             );
         }
@@ -50,7 +50,7 @@ export default class PreviewButton extends PureComponent {
                 disabled
                 aria-label={i18nRegistry.translate('Neos.Neos:Main:showPreview', 'Show Preview')}
                 >
-                <Icon icon="external-link"/>
+                <Icon icon="external-link-alt"/>
             </button>
         );
     }

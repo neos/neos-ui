@@ -22,7 +22,7 @@
         color: var(--colors-PrimaryBlue);
     }
 }
-.header__chevron--isCollapsed > i {
+.header__chevron--isCollapsed > svg {
     transform: translateY(3px) translateX(-2px) rotate(-90deg);
 }
 .header__chevron--isHiddenInIndex,
@@ -35,12 +35,12 @@
     color: var(--colors-ContrastBrighter) !important;
 }
 
-.header__chevron--isLoading > i {
+.header__chevron--isLoading > svg {
     margin-top: 6px;
 }
 
 .header__icon {
-    padding: 0 .4em;
+    margin: 0 .4em;
 }
 
 .header__data {

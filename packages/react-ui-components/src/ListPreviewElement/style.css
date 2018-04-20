@@ -26,5 +26,5 @@
 
 .listPreviewElement__icon {
     composes: reset from './../reset.css';
-    padding-right: .5em;
+    margin-right: .5em;
 }

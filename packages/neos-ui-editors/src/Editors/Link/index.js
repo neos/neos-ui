@@ -62,7 +62,7 @@ class LinkEditor extends PureComponent {
 
         if (isUri(this.props.value)) {
             const options = [{
-                icon: 'icon-external-link',
+                icon: 'external-link-alt',
                 identifier: this.props.value,
                 label: this.props.value,
                 loaderUri: this.props.value
@@ -94,7 +94,7 @@ class LinkEditor extends PureComponent {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
             const searchOptions = [{
-                icon: 'icon-external-link',
+                icon: 'external-link-alt',
                 identifier: searchTerm,
                 label: searchTerm,
                 loaderUri: searchTerm

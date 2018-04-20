@@ -1,30 +1,28 @@
 {
     "name": "neos/neos-test-distribution",
-    "description" : "Neos Test Distribution",
+    "description": "Neos Test Distribution",
     "config": {
         "vendor-dir": "Packages/Libraries",
         "bin-dir": "bin"
     },
     "require": {
-        "neos/neos-development-collection": "@dev",
-        "neos/flow-development-collection": "@dev",
-        "neos/demo": "@dev",
-
-        "neos/neos-ui": "@dev",
-        "neos/neos-ui-compiled": "@dev",
-
-        "neos/party": "@dev",
-        "neos/seo": "@dev",
-        "neos/imagine": "@dev",
-        "neos/twitter-bootstrap": "@dev",
-        "neos/form": "@dev",
-        "neos/setup": "@dev",
-        "flowpack/neos-frontendlogin": "@dev",
-        "neos/buildessentials": "@dev",
+        "neos/neos-development-collection": "~3.3@dev",
+        "neos/flow-development-collection": "~4.3@dev",
+        "neos/demo": "~3.3.9",
+        "neos/neos-ui": "~1.0@dev",
+        "neos/neos-ui-compiled": "~1.0@dev",
+        "neos/party": "~4.0@dev",
+        "neos/seo": "~2.0@dev",
+        "neos/imagine": "~3.0.4@dev",
+        "neos/twitter-bootstrap": "~3.0.3@dev",
+        "neos/form": "~4.1.2@dev",
+        "neos/setup": "~4.0.2@dev",
+        "flowpack/neos-frontendlogin": "~3.0.2@dev",
+        "neos/buildessentials": "~4.3.1@dev",
         "mikey179/vfsstream": "~1.6",
-        "phpunit/phpunit": "^7.1",
+        "phpunit/phpunit": "~6.0.0",
         "symfony/css-selector": "~2.0",
-        "neos/behat": "dev-master"
+        "neos/behat": "4.1.x-dev"
     },
     "scripts": {
         "post-update-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",

@@ -177,7 +177,8 @@ export default class MultiSelectBox extends PureComponent {
             theme,
             highlight,
             SelectBox,
-            MultiSelectBox_ListPreviewSortable
+            MultiSelectBox_ListPreviewSortable,
+            disabled
         } = this.props;
 
         const filteredSearchOptions = (searchOptions || [])
@@ -196,6 +197,7 @@ export default class MultiSelectBox extends PureComponent {
                     <MultiSelectBox_ListPreviewSortable
                         {...omit(this.props, ['theme'])}
                         optionValueAccessor={optionValueAccessor}
+                        disabled={disabled}
                         />
                 </ul>
                 <SelectBox
@@ -204,6 +206,7 @@ export default class MultiSelectBox extends PureComponent {
                     highlight={false}
                     value=""
                     onValueChange={this.handleNewValueSelected}
+                    disabled={disabled}
                     />
             </div>
         );

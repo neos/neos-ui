@@ -37,7 +37,7 @@ export default class RefreshPageTree extends PureComponent {
                 id={id}
                 isDisabled={isLoading}
                 onClick={this.handleClick}
-                icon="refresh"
+                icon="sync"
                 hoverStyle="clean"
                 title={i18nRegistry.translate('refresh')}
                 />

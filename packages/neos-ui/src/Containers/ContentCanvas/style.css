@@ -23,7 +23,7 @@
     padding-top: 192px; /* height of EditModePanel added */
 }
 .contentCanvas--isFullScreen {
-    padding: 0;
+    padding: var(--spacing-GoldenUnit) 0 0 0;
 }
 .contentCanvas--isHidden {
     &::after {

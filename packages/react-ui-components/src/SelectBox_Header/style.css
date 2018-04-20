@@ -34,3 +34,7 @@
 .selectBoxHeader__wrapperIconWrapper {
     padding: 0 var(--spacing-Full);
 }
+
+.selectBoxHeader--disabled {
+    cursor: not-allowed;
+}

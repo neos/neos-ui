@@ -14,7 +14,7 @@ if [ -n "$GITHUB_OAUTH_TOKEN" ]; then composer config github-oauth.github.com ${
 phpenv config-rm xdebug.ini
 
 # Update composer.
-composer self-update -q
+composer self-update -q 1.6.3
 
 # Handle hidden files with the `mv` command.
 shopt -s dotglob
@@ -26,7 +26,7 @@ cp neos-ui/Build/TravisCi/composer* Neos/
 cd Neos
 
 # Install all dependencies for the neos instance.
-composer install -n
+composer install --no-interaction
 
 # Move our repository and the configuration files into place.
 rm -rf Packages/Application/Neos.Neos.Ui

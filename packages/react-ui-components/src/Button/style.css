@@ -14,6 +14,10 @@
     background-color: var(--colors-ContrastNeutral);
     font-size: var(--fontSize-Base);
 
+    &:focus {
+        outline: 1px solid var(--colors-PrimaryBlue);
+    }
+
     &[disabled] {
         opacity: .5;
         cursor: not-allowed;

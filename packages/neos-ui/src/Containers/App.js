@@ -7,7 +7,6 @@ const App = ({globalRegistry, menu}) => {
     const containerRegistry = globalRegistry.get('containers');
 
     const Modals = containerRegistry.get('Modals');
-    const FullScreen = containerRegistry.get('FullScreen');
     const PrimaryToolbar = containerRegistry.get('PrimaryToolbar');
     const EditModePanel = containerRegistry.get('EditModePanel');
     const SecondaryToolbar = containerRegistry.get('SecondaryToolbar');
@@ -25,7 +24,6 @@ const App = ({globalRegistry, menu}) => {
             <div id="dialog"/>
             <Modals/>
             <FlashMessages/>
-            <FullScreen/>
             <LoadingIndicator/>
             <PrimaryToolbar/>
             <ContentCanvas/>

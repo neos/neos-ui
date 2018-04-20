@@ -31,7 +31,7 @@ export default class DeleteSelectedNode extends PureComponent {
                 id={id}
                 isDisabled={isDisabled}
                 onClick={this.handleClick}
-                icon="trash"
+                icon="trash-alt"
                 hoverStyle="clean"
                 title={i18nRegistry.translate('delete')}
                 />

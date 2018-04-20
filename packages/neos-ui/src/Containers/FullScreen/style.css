@@ -1,8 +1,0 @@
-.fullScreenClose {
-    position: fixed;
-    top: var(--spacing-Full);
-    right: calc(2 * var(--spacing-Full));
-    z-index: var(--zIndex-FullScreenClose-Context);
-    background-color: var(--colors-PrimaryBlue);
-    box-shadow: 0 0 8px rgba(#000, .25);
-}

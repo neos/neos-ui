@@ -20,7 +20,7 @@ const NodeTypeFilter = ({onChange, filterSearchTerm, i18nRegistry}) => {
     return (
         <div className={style.nodeTypeDialogHeader__filter}>
             {filterSearchTerm ? (
-                <IconButton icon="close" onClick={handleResetFilter}/>
+                <IconButton icon="times" onClick={handleResetFilter}/>
             ) : (
                 <Icon icon="filter" padded="right"/>
             ) }

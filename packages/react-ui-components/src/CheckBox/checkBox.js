@@ -30,6 +30,11 @@ class CheckBox extends PureComponent {
         highlight: PropTypes.bool,
 
         /**
+         * Disable checkbox
+         */
+        disabled: PropTypes.bool,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({

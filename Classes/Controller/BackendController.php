@@ -27,6 +27,7 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Fusion\View\FusionView;
 use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
+use Neos\Neos\Ui\View\BackendFusionView;
 
 class BackendController extends ActionController
 {
@@ -34,7 +35,7 @@ class BackendController extends ActionController
     /**
      * @var string
      */
-    protected $defaultViewObjectName = 'Neos\Neos\Ui\View\BackendFusionView';
+    protected $defaultViewObjectName = BackendFusionView::class;
 
     /**
      * @var FusionView

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import mapper from './mapper';
 
 const Icon = props => {
     const {size, padded, theme, label} = props;
@@ -19,8 +20,9 @@ const Icon = props => {
         [theme['icon--spin']]: props.spin
     });
 
-    const iconArray = props.icon.split(' ');
-    let icon = props.icon;
+    const mappedIcon = mapper(props.icon);
+    const iconArray = mappedIcon.split(' ');
+    let icon = mappedIcon;
     let prefix = 'fas';
     if (iconArray.length > 1) {
         prefix = iconArray[0];

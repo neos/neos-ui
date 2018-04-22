@@ -486,20 +486,19 @@ const mapper = icon => {
         'youtube-square'
     ];
 
-    if (!icon.startsWith('icon-')) {
-        return icon;
+    if (icon.startsWith('icon-')) {
+        icon = icon.substr(5);
     }
 
-    const iconWithoutPrefix = icon.substr(5);
-    if (map[iconWithoutPrefix]) {
-        return map[iconWithoutPrefix];
+    if (map[icon]) {
+        return map[icon];
     }
 
-    if (brands.includes(iconWithoutPrefix)) {
-        return 'fab fa-' + iconWithoutPrefix;
+    if (brands.includes(icon)) {
+        return 'fab fa-' + icon;
     }
 
-    return 'fas fa-' + iconWithoutPrefix;
+    return 'fas fa-' + icon;
 };
 
 export default mapper;

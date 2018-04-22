@@ -498,7 +498,11 @@ const mapper = icon => {
         return 'fab fa-' + icon;
     }
 
-    return 'fas fa-' + icon;
+    if (!icon.includes(' ')) {
+        return 'fas fa-' + icon;
+    }
+
+    return icon;
 };
 
 export default mapper;

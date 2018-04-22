@@ -19,7 +19,7 @@
     "@neos-project/build-essentials": "1.0.11",
     "@neos-project/debug-reason-for-rendering": "1.0.11",
     "@neos-project/jest-preset-neos-ui": "1.0.11",
-    "redux-saga-test-plan": "^3.1.0"
+    "redux-saga-test-plan": "^3.6.0"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",

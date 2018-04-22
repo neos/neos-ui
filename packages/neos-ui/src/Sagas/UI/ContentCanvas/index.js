@@ -38,6 +38,27 @@ export function * watchStopLoading({globalRegistry, store}) {
     );
 }
 
+/**
+ * Reload content canvas when requested
+ */
+export function * watchReload() {
+    yield takeLatest(actionTypes.UI.ContentCanvas.RELOAD, function * () {
+        const currentIframeUrl = yield select($get('ui.contentCanvas.src'));
+
+        [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
+            const iframeWindow = iframe.contentWindow || iframe;
+
+            //
+            // Make sure href is still consistent before reloading - if not, some other process
+            // might be already handling this
+            //
+            if (iframeWindow.location.href === currentIframeUrl) {
+                iframeWindow.location.href = iframeWindow.location.href;
+            }
+        });
+    });
+}
+
 export function * watchControlOverIFrame() {
     yield take(actionTypes.System.READY);
 

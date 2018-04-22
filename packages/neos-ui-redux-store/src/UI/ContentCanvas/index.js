@@ -15,6 +15,7 @@ const FORMATTING_UNDER_CURSOR = '@neos/neos-ui/UI/ContentCanvas/FORMATTING_UNDER
 const SET_CURRENTLY_EDITED_PROPERTY_NAME = '@neos/neos-ui/UI/ContentCanvas/SET_CURRENTLY_EDITED_PROPERTY_NAME';
 const START_LOADING = '@neos/neos-ui/UI/ContentCanvas/START_LOADING';
 const STOP_LOADING = '@neos/neos-ui/UI/ContentCanvas/STOP_LOADING';
+const RELOAD = '@neos/neos-ui/UI/ContentCanvas/RELOAD';
 const FOCUS_PROPERTY = '@neos/neos-ui/UI/ContentCanvas/FOCUS_PROPERTY';
 const REQUEST_SCROLL_INTO_VIEW = '@neos/neos-ui/UI/ContentCanvas/REQUEST_SCROLL_INTO_VIEW';
 const REQUEST_REGAIN_CONTROL = '@neos/neos-ui/UI/ContentCanvas/REQUEST_REGAIN_CONTROL';
@@ -31,6 +32,7 @@ export const actionTypes = {
     SET_CURRENTLY_EDITED_PROPERTY_NAME,
     START_LOADING,
     STOP_LOADING,
+    RELOAD,
     FOCUS_PROPERTY,
     REQUEST_SCROLL_INTO_VIEW,
     REQUEST_REGAIN_CONTROL,
@@ -44,6 +46,7 @@ const setFormattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formattin
 const setCurrentlyEditedPropertyName = createAction(SET_CURRENTLY_EDITED_PROPERTY_NAME, propertyName => ({propertyName}));
 const startLoading = createAction(START_LOADING);
 const stopLoading = createAction(STOP_LOADING);
+const reload = createAction(RELOAD);
 // Set a flag to tell ContentCanvas to scroll the focused node into view
 const requestScrollIntoView = createAction(REQUEST_SCROLL_INTO_VIEW, activate => activate);
 // If we have lost controll over the iframe, we need to take action
@@ -61,6 +64,7 @@ export const actions = {
     setCurrentlyEditedPropertyName,
     startLoading,
     stopLoading,
+    reload,
     requestScrollIntoView,
     requestRegainControl,
     requestLogin

@@ -52,6 +52,7 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/UI/ContentCanvas/watchControlOverIFrame', {saga: uiContentCanvas.watchControlOverIFrame});
     sagasRegistry.set('neos-ui/UI/ContentCanvas/watchNodeCreated', {saga: uiContentCanvas.watchNodeCreated});
     sagasRegistry.set('neos-ui/UI/ContentCanvas/watchStopLoading', {saga: uiContentCanvas.watchStopLoading});
+    sagasRegistry.set('neos-ui/UI/ContentCanvas/watchReload', {saga: uiContentCanvas.watchReload});
 
     sagasRegistry.set('neos-ui/UI/ContentTree/watchNodeFocus', {saga: uiContentTree.watchNodeFocus});
     sagasRegistry.set('neos-ui/UI/ContentTree/watchReloadTree', {saga: uiContentTree.watchReloadTree});

@@ -51,8 +51,6 @@ class LoadTreeDto
      */
     public function getRoot()
     {
-        var_dump($this->active->geContext()->getCurrentSiteNode());
-        die;
         return $this->active->geContext()->getCurrentSiteNode();
     }
 

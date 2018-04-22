@@ -52,6 +52,13 @@ export default class ContentCanvas extends PureComponent {
         loadedSrc: ''
     };
 
+    componentDidUpdate(prevProps) {
+        // Start loading as soon as the src has changed
+        if (this.props.src !== prevProps.src) {
+            this.props.startLoading();
+        }
+    }
+
     render() {
         const {
             isFringeLeft,

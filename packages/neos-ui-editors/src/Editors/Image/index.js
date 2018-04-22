@@ -111,6 +111,9 @@ export default class ImageEditor extends Component {
                                 this.handleCloseSecondaryScreen();
                                 this.handleOpenImageCropper();
                                 this.setState({requestOpenImageCropper: false});
+                            } else if (this.state.isImageCropperOpen) {
+                                this.handleCloseSecondaryScreen();
+                                this.handleOpenImageCropper();
                             }
                         });
                     }
@@ -124,14 +127,7 @@ export default class ImageEditor extends Component {
     }
 
     afterUpload = uploadResult => {
-        const {commit} = this.props;
-        const {isImageCropperOpen} = this.state;
-
-        commit(uploadResult.object);
-        if (isImageCropperOpen) {
-            this.handleCloseSecondaryScreen();
-            this.handleOpenImageCropper();
-        }
+        this.props.commit(uploadResult.object);
         this.setState({requestOpenImageCropper: true});
     }
 

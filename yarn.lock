@@ -7942,9 +7942,9 @@ normalize.css@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-5.0.0.tgz#7cec875ce8178a5333c4de80b68ea9c18b9d7c37"
 
-normalize.css@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-7.0.0.tgz#abfb1dd82470674e0322b53ceb1aaf412938e4bf"
+normalize.css@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-8.0.0.tgz#14ac5e461612538a4ce9be90a7da23f86e718493"
 
 "npm-package-arg@^3.0.0 || ^4.0.0":
   version "4.2.1"

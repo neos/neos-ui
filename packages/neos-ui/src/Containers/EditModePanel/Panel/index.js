@@ -7,7 +7,7 @@ import SlickStyles from './slick-styles.vanilla-css';
 /* eslint-enable no-unused-vars */
 
 import Button from '@neos-project/react-ui-components/src/Button/index';
-import IconComponent from '@neos-project/react-ui-components/src/Icon/index';
+import Arrow from '@neos-project/react-ui-components/src/Arrow/index';
 import I18n from '@neos-project/neos-ui-i18n';
 
 export default class Panel extends PureComponent {
@@ -34,8 +34,8 @@ export default class Panel extends PureComponent {
             slidesToShow: Math.round(modes.length / 2), // https://github.com/kenwheeler/slick/issues/1207#issuecomment-105663300
             variableWidth: true,
             adaptiveHeight: true,
-            nextArrow: <div><IconComponent icon="angle-right" size="big" /></div>,
-            prevArrow: <div><IconComponent icon="angle-left" size="big" /></div>
+            nextArrow: <Arrow direction="right" size="big" />,
+            prevArrow: <Arrow direction="left" size="big" />
         };
 
         return (

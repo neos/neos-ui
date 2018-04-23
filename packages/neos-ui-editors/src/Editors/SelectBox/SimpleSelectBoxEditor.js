@@ -16,6 +16,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
         options: PropTypes.shape({
             allowEmpty: PropTypes.bool,
             placeholder: PropTypes.string,
+            disabled: PropTypes.bool,
 
             multiple: PropTypes.bool,
 
@@ -39,7 +40,8 @@ export default class SimpleSelectBoxEditor extends PureComponent {
     static defaultOptions = {
         // Use "5" as minimum result for search default; same as with old UI
         minimumResultsForSearch: 5,
-        threshold: 0
+        threshold: 0,
+        disabled: false
     };
 
     state = {
@@ -71,6 +73,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
                 noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                 searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                 threshold={options.threshold}
+                disabled={options.disabled}
                 />);
         }
 
@@ -87,6 +90,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
             searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
             threshold={options.threshold}
+            disabled={options.disabled}
             />);
     }
 

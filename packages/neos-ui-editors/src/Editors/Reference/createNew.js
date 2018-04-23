@@ -64,10 +64,13 @@ export default () => WrappedComponent => {
 
         render() {
             const onCreateNew = $get('options.createNew.type', this.props) && $get('options.createNew.path', this.props) ? this.handleCreateNew : null;
+            const disabled = $get('options.disabled', this.props);
+
             return (
                 <WrappedComponent
                     {...this.props}
                     onCreateNew={onCreateNew}
+                    disabled={disabled}
                     displayLoadingIndicator={this.state.isLoading || this.props.displayLoadingIndicator}
                     />
             );

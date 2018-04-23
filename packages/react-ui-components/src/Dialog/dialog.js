@@ -35,7 +35,7 @@ export const DialogWithoutEscape = props => {
                     <div className={theme.dialog__contents}>
                         {onRequestClose &&
                         <IconButtonComponent
-                            icon="close"
+                            icon="times"
                             className={theme.dialog__closeBtn}
                             onClick={onRequestClose}
                             />

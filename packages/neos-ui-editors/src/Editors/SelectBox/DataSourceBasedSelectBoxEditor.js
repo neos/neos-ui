@@ -115,7 +115,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
                 />);
         }
 
-        // Multiple = FALSE
+        // multiple = FALSE
         return (<SelectBox
             options={this.state.searchTerm ? searchOptions(this.state.searchTerm, processedSelectBoxOptions) : processedSelectBoxOptions}
             value={value}

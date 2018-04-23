@@ -30,6 +30,7 @@ class PluginViewEditor extends React.PureComponent {
         personalWorkspace: PropTypes.string,
         focusedNode: PropTypes.object.isRequired,
         transientValues: PropTypes.object
+        // focusedNode: PropTypes.instanceOf(PluginViewEditor).isRequired TODO: This is currently broken and gives an error in console, needs to be fixed
     };
 
     state = {
@@ -93,6 +94,7 @@ class PluginViewEditor extends React.PureComponent {
 
     render() {
         const {options, isLoading} = this.state;
+        const disabled = $get('options.disabled', this.props);
 
         return (
             <SelectBox
@@ -103,6 +105,7 @@ class PluginViewEditor extends React.PureComponent {
                 displaySearchBox={false}
                 placeholder={this.renderPlaceholder()}
                 allowEmpty
+                disabled={disabled}
                 />
         );
     }

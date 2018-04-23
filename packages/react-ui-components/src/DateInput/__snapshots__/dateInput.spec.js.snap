@@ -28,7 +28,7 @@ exports[`<DateInput/> should render correctly. 1`] = `
       onClick={[Function]}
     >
       <Component
-        icon="remove"
+        icon="times"
       />
     </button>
   </div>

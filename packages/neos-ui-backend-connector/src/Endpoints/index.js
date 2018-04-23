@@ -76,7 +76,7 @@ export default routes => {
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     /**
-     * Asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
+     * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][position]:10
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][width]:210
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][x]:0
@@ -201,7 +201,7 @@ export default routes => {
         });
 
     /**
-     * SearchTerm:se
+     * searchTerm:se
      * nodeTypes[]:TYPO3.Neos.NodeTypes:Page
      * workspaceName:user-admin
      * dimensions[language][]:en_US

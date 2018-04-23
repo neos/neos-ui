@@ -184,6 +184,7 @@ export default class SelectBox extends PureComponent {
             displayLoadingIndicator,
             ListPreviewElement,
             plainInputMode,
+            disabled,
 
             DropDown,
             SelectBox_ListPreview
@@ -191,15 +192,14 @@ export default class SelectBox extends PureComponent {
 
         const searchTerm = this.getSearchTerm();
 
-        const {
-            focusedValue,
-            isExpanded
-        } = this.state;
+        const focusedValue = this.state.focusedValue;
+        const isExpanded = disabled ? false : this.state.isExpanded;
 
         const headerClassName = mergeClassNames({
             [theme.selectBox__btn]: true,
             [theme['selectBox--highlight']]: highlight,
-            [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle
+            [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle,
+            [theme['selectBox--disabled']]: disabled
         });
 
         const optionValueAccessor = this.getOptionValueAccessor();
@@ -241,6 +241,7 @@ export default class SelectBox extends PureComponent {
             value,
             allowEmpty,
             plainInputMode,
+            disabled,
 
             SelectBox_HeaderWithSearchInput,
             SelectBox_Header
@@ -255,6 +256,7 @@ export default class SelectBox extends PureComponent {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
+                    disabled={disabled}
                     onSearchTermChange={this.handleSearchTermChange}
                     searchTerm={searchTerm}
                     onKeyDown={this.handleKeyDown}
@@ -289,6 +291,11 @@ export default class SelectBox extends PureComponent {
     }
 
     handleToggleExpanded = () => {
+        // Return earyl if disabled
+        if (this.props.disabled) {
+            return;
+        }
+
         let isExpanded;
         if (this.props.displaySearchBox) {
             if (this.props.value) {

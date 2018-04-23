@@ -3783,10 +3783,6 @@ emoji-regex@^6.1.0:
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-6.5.1.tgz#9baea929b155565c11ea41c6626eaa65cef992c2"
 
-emojify.js@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/emojify.js/-/emojify.js-1.1.0.tgz#079fff223307c9007f570785e8e4935d5c398beb"
-
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
@@ -4918,16 +4914,6 @@ git-semver-tags@^1.2.3:
   dependencies:
     meow "^3.3.0"
     semver "^5.0.1"
-
-gitbook-plugin-advanced-emoji@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/gitbook-plugin-advanced-emoji/-/gitbook-plugin-advanced-emoji-0.2.2.tgz#08bcc69f62a749cd69204435276518c941c319e3"
-  dependencies:
-    emojify.js "^1.1.0"
-
-gitbook-plugin-github@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/gitbook-plugin-github/-/gitbook-plugin-github-2.0.0.tgz#5166e763cfcc402d432880b7a6c85c1c54b56a8d"
 
 gitconfiglocal@^1.0.0:
   version "1.0.0"
@@ -9762,14 +9748,12 @@ redux-devtools@^3.4.0:
     prop-types "^15.5.7"
     redux-devtools-instrument "^1.0.1"
 
-redux-saga-test-plan@^3.1.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/redux-saga-test-plan/-/redux-saga-test-plan-3.3.0.tgz#f0c5563938459a841f219f5cac077087e5daa3c5"
+redux-saga-test-plan@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/redux-saga-test-plan/-/redux-saga-test-plan-3.6.0.tgz#ca316ce212efbddf4ffa532bb0e673bba8114b1d"
   dependencies:
     core-js "^2.4.1"
     fsm-iterator "^1.1.0"
-    gitbook-plugin-advanced-emoji "^0.2.2"
-    gitbook-plugin-github "^2.0.0"
     lodash.isequal "^4.5.0"
     lodash.ismatch "^4.4.0"
     object-assign "^4.1.0"

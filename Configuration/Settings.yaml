@@ -54,7 +54,7 @@ Neos:
         #   someKey: someValue
 
         legacy:
-          enableLegacyUiSwitch: false
+          enableUiSwitch: false
 
       #################################
       # INTERNAL CONFIG (no API)

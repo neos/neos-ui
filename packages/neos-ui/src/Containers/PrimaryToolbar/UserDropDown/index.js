@@ -14,7 +14,7 @@ import style from './style.css';
     userName: $get('user.name.fullName')
 }))
 @neos(globalRegistry => ({
-    enableLegacyUiSwitch: $get('enableLegacyUiSwitch', globalRegistry.get('frontendConfiguration').get('legacy'))
+    enableLegacyUiSwitch: $get('enableUiSwitch', globalRegistry.get('frontendConfiguration').get('legacy'))
 }))
 export default class UserDropDown extends PureComponent {
     static propTypes = {

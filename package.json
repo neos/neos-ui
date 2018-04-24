@@ -133,7 +133,7 @@
     "regenerator": "^0.8.46",
     "reselect": "^2.4.0",
     "url-loader": "^0.6.2",
-    "uuid": "^2.0.2",
+    "uuid": "^3.2.1",
     "whatwg-fetch": "^2.0.0"
   },
   "workspaces": [

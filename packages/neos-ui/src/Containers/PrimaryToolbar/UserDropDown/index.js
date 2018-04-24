@@ -14,13 +14,13 @@ import style from './style.css';
     userName: $get('user.name.fullName')
 }))
 @neos(globalRegistry => ({
-    disableLegacyUiSwitch: $get('disableLegacyUiSwitch', globalRegistry.get('frontendConfiguration').get('legacy'))
+    enableLegacyUiSwitch: $get('enableLegacyUiSwitch', globalRegistry.get('frontendConfiguration').get('legacy'))
 }))
 export default class UserDropDown extends PureComponent {
     static propTypes = {
         userName: PropTypes.string.isRequired,
         neos: PropTypes.object.isRequired,
-        disableLegacyUiSwitch: PropTypes.bool
+        enableLegacyUiSwitch: PropTypes.bool
     };
 
     render() {
@@ -28,9 +28,12 @@ export default class UserDropDown extends PureComponent {
         const userSettingsUri = $get('routes.core.modules.userSettings', this.props.neos);
         const csrfToken = document.getElementById('appContainer').dataset.csrfToken;
 
-        const switchToOldUiButton = () => {
-            const disableLegacyUiSwitch = this.props.disableLegacyUiSwitch;
-            if (disableLegacyUiSwitch === true) {
+        const legacyUiSwitch = () => {
+            const enableLegacyUiSwitch = this.props.enableLegacyUiSwitch;
+
+            // Don't show legacy ui switch only if
+            // explicitly set to false
+            if (enableLegacyUiSwitch === false) {
                 return null;
             }
 
@@ -61,7 +64,7 @@ export default class UserDropDown extends PureComponent {
                                 </button>
                             </form>
                         </li>
-                        {switchToOldUiButton()}
+                        {legacyUiSwitch()}
                         <li className={style.dropDown__item}>
                             <a title="User Settings" href={userSettingsUri}>
                                 <Icon icon="wrench" aria-hidden="true" className={style.dropDown__itemIcon}/>

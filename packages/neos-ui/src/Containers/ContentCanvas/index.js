@@ -52,10 +52,16 @@ export default class ContentCanvas extends PureComponent {
         loadedSrc: ''
     };
 
+    // Make sure we skip the loading bar update when triggered from inline
+    // We don't need to put this into state
+    skipNextLoaderStatusUpdate = false;
+
     componentDidUpdate(prevProps) {
-        // Start loading as soon as the src has changed
-        if (this.props.src !== prevProps.src) {
+        // Start loading as soon as the src has changed, but watch out for skipNextLoaderStatusUpdate
+        if (this.props.src !== prevProps.src && !this.skipNextLoaderStatusUpdate) {
             this.props.startLoading();
+        } else {
+            this.skipNextLoaderStatusUpdate = false;
         }
     }
 
@@ -143,9 +149,8 @@ export default class ContentCanvas extends PureComponent {
         }
 
         const {stopLoading} = this.props;
-
+        this.skipNextLoaderStatusUpdate = true;
         iframeDocument.__isInitialized = true;
-
         stopLoading();
     }
 

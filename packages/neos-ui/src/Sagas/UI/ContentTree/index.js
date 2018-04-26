@@ -10,7 +10,7 @@ export function * watchReloadTree({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     const {q} = backend.get();
 
-    yield takeLatest(actionTypes.UI.ContentTree.RELOAD_TREE, function * reloadTree() {
+    yield takeLatest(actionTypes.UI.ContentTree.RELOAD_TREE, function * () {
         const FILTER_COLLECTIONS = `[instanceof ${nodeTypesRegistry.getRole('contentCollection')}]`;
         const FILTER_CONTENT = `[instanceof ${nodeTypesRegistry.getRole('content')}]`;
         const FILTER_BOTH = `${FILTER_COLLECTIONS},${FILTER_CONTENT}`;
@@ -32,7 +32,7 @@ export function * watchReloadTree({globalRegistry}) {
 }
 
 export function * watchNodeFocus({configuration}) {
-    yield takeLatest(actionTypes.CR.Nodes.FOCUS, function * loadContentNodeRootLine(action) {
+    yield takeLatest(actionTypes.CR.Nodes.FOCUS, function * (action) {
         const {contextPath} = action.payload;
         const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
 

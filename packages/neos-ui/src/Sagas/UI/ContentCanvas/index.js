@@ -9,7 +9,7 @@ import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
  * Load newly created page into canvas
  */
 export function * watchNodeCreated() {
-    yield takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
+    yield takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * (action) {
         const {contextPath} = action.payload;
         const node = yield select($get(['cr', 'nodes', 'byContextPath', contextPath]));
         yield put(actions.UI.ContentCanvas.setContextPath(contextPath));

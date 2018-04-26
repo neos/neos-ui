@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-helpers",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Helper functions for Neos CMS UI.",
   "private": true,
   "main": "./src/index.js",
@@ -15,9 +15,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.0.12",
-    "@neos-project/build-essentials": "1.0.12",
-    "@neos-project/jest-preset-neos-ui": "1.0.12"
+    "@neos-project/babel-preset-neos-ui": "1.0.13",
+    "@neos-project/build-essentials": "1.0.13",
+    "@neos-project/jest-preset-neos-ui": "1.0.13"
   },
   "license": "GNU GPLv3",
   "jest": {

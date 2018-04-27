@@ -24,6 +24,7 @@ export default class ImageEditor extends Component {
     state = {
         image: null,
         isImageCropperOpen: false,
+        requestOpenImageCropper: false,
         isAssetLoading: false
     };
 
@@ -104,6 +105,16 @@ export default class ImageEditor extends Component {
                         this.setState({
                             image,
                             isAssetLoading: false
+                        }, () => {
+                            // When forceCrop option is enabled and we were requested to do the force cropping...
+                            if (this.state.requestOpenImageCropper && $get('crop.aspectRatio.forceCrop', this.props.options)) {
+                                this.handleCloseSecondaryScreen();
+                                this.handleOpenImageCropper();
+                                this.setState({requestOpenImageCropper: false});
+                            } else if (this.state.isImageCropperOpen) {
+                                this.handleCloseSecondaryScreen();
+                                this.handleOpenImageCropper();
+                            }
                         });
                     }
                 });
@@ -116,14 +127,8 @@ export default class ImageEditor extends Component {
     }
 
     afterUpload = uploadResult => {
-        const {commit} = this.props;
-        const {isImageCropperOpen} = this.state;
-
-        commit(uploadResult.object);
-        if (isImageCropperOpen) {
-            this.handleCloseSecondaryScreen();
-            this.handleOpenImageCropper();
-        }
+        this.props.commit(uploadResult.object);
+        this.setState({requestOpenImageCropper: true});
     }
 
     handleMediaCrop = cropArea => {
@@ -187,6 +192,7 @@ export default class ImageEditor extends Component {
         }, () => {
             commit(newAsset);
             this.handleCloseSecondaryScreen();
+            this.setState({requestOpenImageCropper: true});
         });
     }
 

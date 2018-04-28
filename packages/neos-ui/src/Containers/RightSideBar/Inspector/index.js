@@ -246,8 +246,7 @@ export default class Inspector extends PureComponent {
                         //
                         .filter(t => $get('groups', t) && $get('groups', t).count() > 0 && $get('groups', t).reduce((acc, group) => (
                             acc ||
-                            $get('properties', group).filter(this.isPropertyEnabled).count() > 0 ||
-                            $get('views', group).count() > 0
+                            $get('items', group).filter(this.isPropertyEnabled).count() > 0
                         ), false))
 
                         .sort((a, b) => $get('position', a) > $get('position', b))

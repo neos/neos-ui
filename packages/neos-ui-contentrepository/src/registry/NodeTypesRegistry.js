@@ -2,6 +2,7 @@ import {map} from 'ramda';
 import {$get, $transform} from 'plow-js';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import getNormalizedDeepStructureFromNodeType from './getNormalizedDeepStructureFromNodeType';
+import positionalArraySorter from '@neos-project/positional-array-sorter';
 
 export default class NodeTypesRegistry extends SynchronousRegistry {
     _constraints = [];
@@ -126,24 +127,30 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                     groups: map(
                         group => ({
                             ...group,
-                            properties: map(
-                                $transform({
-                                    id: $get('id'),
-                                    label: $get('ui.label'),
-                                    editor: $get('ui.inspector.editor'),
-                                    editorOptions: $get('ui.inspector.editorOptions')
-                                }),
-                                properties.filter(p => $get('ui.inspector.group', p) === group.id)
-                            ),
-                            views: map(
-                                $transform({
-                                    id: $get('id'),
-                                    label: $get('label'),
-                                    view: $get('view'),
-                                    viewOptions: $get('viewOptions')
-                                }),
-                                views.filter(v => $get('group', v) === group.id)
-                            )
+                            items: positionalArraySorter([
+                                ...map(
+                                    $transform({
+                                        type: 'editor',
+                                        id: $get('id'),
+                                        label: $get('ui.label'),
+                                        editor: $get('ui.inspector.editor'),
+                                        editorOptions: $get('ui.inspector.editorOptions'),
+                                        position: $get('ui.inspector.position')
+                                    }),
+                                    properties.filter(p => $get('ui.inspector.group', p) === group.id)
+                                ),
+                                ...map(
+                                    $transform({
+                                        type: 'view',
+                                        id: $get('id'),
+                                        label: $get('label'),
+                                        view: $get('view'),
+                                        viewOptions: $get('viewOptions'),
+                                        position: $get('position')
+                                    }),
+                                    views.filter(v => $get('group', v) === group.id)
+                                )
+                            ], 'position', 'id')
                         }),
                         groups.filter(g => {
                             const isMatch = g.tab === tab.id;

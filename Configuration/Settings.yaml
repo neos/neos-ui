@@ -65,6 +65,10 @@ Neos:
             keys: 't l'
             description: 'Toggle left sidebar'
             action: actions.UI.LeftSideBar.toggle
+          toggleFullscreen:
+            keys: 't f'
+            description: 'Toggle fullscreen'
+            action: actions.UI.FullScreen.toggle
 
       #################################
       # INTERNAL CONFIG (no API)

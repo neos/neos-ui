@@ -2,6 +2,7 @@ import positionalArraySorter from './positionalArraySorter';
 
 test(`Middle`, () => {
     const source = [
+        {},
         {position: '100'},
         {position: 10},
         {position: '1'},
@@ -11,7 +12,8 @@ test(`Middle`, () => {
         {position: '1'},
         {position: 10},
         {position: '100'},
-        {position: 1000}
+        {position: 1000},
+        {}
     ];
     expect(positionalArraySorter(source)).toEqual(result);
 });
@@ -144,6 +146,7 @@ test(`Corrupt keys go after the middle`, () => {
 });
 test(`Altogether`, () => {
     const source = [
+        {},
         {position: 'end 10'},
         {position: 'start', key: 'cba1'},
         {position: 'after abc3', key: 'abc2'},
@@ -169,6 +172,7 @@ test(`Altogether`, () => {
         {position: 0},
         {position: '10'},
         {position: 10},
+        {},
         {position: 'end', key: 'abc3'},
         {position: 'after abc3', key: 'abc2'},
         {position: 'after abc2', key: 'abc1'},

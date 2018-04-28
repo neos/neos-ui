@@ -79,10 +79,10 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             const nodesForGroup = nodeTypes
                 // Filter by current group
                 .filter(i => $get('ui.group', i) === groupName);
-
+            const nodesForGroupSorted = positionalArraySorter(nodesForGroup, $get('ui.position'), 'name');
             if (nodesForGroup.length > 0) {
                 const group = Object.assign({}, this._groups[groupName]);
-                group.nodeTypes = positionalArraySorter(nodesForGroup);
+                group.nodeTypes = nodesForGroupSorted;
                 group.name = groupName;
                 return group;
             }

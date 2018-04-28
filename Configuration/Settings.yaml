@@ -56,6 +56,16 @@ Neos:
         legacy:
           enableUiSwitch: false
 
+        keyboardShortcuts:
+          toggleRightSideBar:
+            keys: 't r'
+            description: 'Toggle right sidebar'
+            action: actions.UI.RightSideBar.toggle
+          toggleLeftSideBar:
+            keys: 't l'
+            description: 'Toggle left sidebar'
+            action: actions.UI.LeftSideBar.toggle
+
       #################################
       # INTERNAL CONFIG (no API)
       #################################

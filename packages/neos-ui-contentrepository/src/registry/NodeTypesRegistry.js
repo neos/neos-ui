@@ -78,13 +78,11 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             // If a nodetype does not have group defined it means it's a system nodetype like "unstrctured"
             const nodesForGroup = nodeTypes
                 // Filter by current group
-                .filter(i => $get('ui.group', i) === groupName)
-                // Sort nodetypes within group by position
-                .sort((a, b) => $get('ui.position', a) > $get('ui.position', b) ? 1 : -1);
+                .filter(i => $get('ui.group', i) === groupName);
 
             if (nodesForGroup.length > 0) {
                 const group = Object.assign({}, this._groups[groupName]);
-                group.nodeTypes = nodesForGroup;
+                group.nodeTypes = positionalArraySorter(nodesForGroup);
                 group.name = groupName;
                 return group;
             }
@@ -115,8 +113,8 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return this._inspectorViewConfigurationCache[nodeTypeName];
         }
 
-        const tabs = getNormalizedDeepStructureFromNodeType('ui.inspector.tabs')(nodeType);
-        const groups = getNormalizedDeepStructureFromNodeType('ui.inspector.groups')(nodeType);
+        const tabs = positionalArraySorter(getNormalizedDeepStructureFromNodeType('ui.inspector.tabs')(nodeType), 'position', 'id');
+        const groups = positionalArraySorter(getNormalizedDeepStructureFromNodeType('ui.inspector.groups')(nodeType), 'position', 'id');
         const views = getNormalizedDeepStructureFromNodeType('ui.inspector.views')(nodeType);
         const properties = getNormalizedDeepStructureFromNodeType('properties')(nodeType);
 

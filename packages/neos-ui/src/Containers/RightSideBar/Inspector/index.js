@@ -249,8 +249,6 @@ export default class Inspector extends PureComponent {
                             $get('items', group).filter(this.isPropertyEnabled).count() > 0
                         ), false))
 
-                        .sort((a, b) => $get('position', a) > $get('position', b))
-
                         //
                         // Render each tab as a TabPanel
                         //

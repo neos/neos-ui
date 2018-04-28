@@ -128,7 +128,7 @@ class AugmentationAspect
 
         if (
             !$this->session->isStarted()
-            || !$this->session->getData('__neosEnabled__')
+            || $this->session->getData('__neosLegacyUiEnabled__')
             || $node->getContext()->getWorkspace()->isPublicWorkspace()
         ) {
             return $joinPoint->getAdviceChain()->proceed($joinPoint);
@@ -170,7 +170,7 @@ class AugmentationAspect
      */
     public function editableElementAugmentation(JoinPointInterface $joinPoint)
     {
-        if (!$this->session->isStarted() || !$this->session->getData('__neosEnabled__')) {
+        if (!$this->session->isStarted() || $this->session->getData('__neosLegacyUiEnabled__')) {
             return $joinPoint->getAdviceChain()->proceed($joinPoint);
         }
 

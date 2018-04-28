@@ -38,7 +38,7 @@ class NodeTypeSchemaCacheHeaderAspect
      */
     public function setControllerContextFromContentElementWrappingImplementation(JoinPointInterface $joinPoint)
     {
-        if ($this->session->isStarted() && $this->session->getData('__neosEnabled__')) {
+        if ($this->session->isStarted() && !$this->session->getData('__neosLegacyUiEnabled__')) {
             /** @var SchemaController $proxy */
             $proxy = $joinPoint->getProxy();
 

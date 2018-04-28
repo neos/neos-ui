@@ -115,7 +115,7 @@ class BackendController extends ActionController
     public function indexAction(NodeInterface $node = null)
     {
         $this->session->start();
-        $this->session->putData('__neosEnabled__', true);
+        $this->session->putData('__neosLegacyUiEnabled__', false);
         $user = $this->userService->getBackendUser();
 
         if ($user === null) {
@@ -151,7 +151,7 @@ class BackendController extends ActionController
         }
 
         $this->session->start();
-        $this->session->putData('__neosEnabled__', false);
+        $this->session->putData('__neosLegacyUiEnabled__', true);
 
         $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
     }

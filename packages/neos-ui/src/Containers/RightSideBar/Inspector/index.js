@@ -99,8 +99,10 @@ export default class Inspector extends PureComponent {
     // Fetch viewConfiguration and clone it once the focusedNode changes
     //
     cloneViewConfiguration = props => {
-        this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
-        this.originalViewConfiguration = this.viewConfiguration;
+        if (props.focusedNode) {
+            this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
+            this.originalViewConfiguration = this.viewConfiguration;
+        }
     };
 
     //
@@ -215,7 +217,10 @@ export default class Inspector extends PureComponent {
             i18nRegistry
         } = this.props;
 
-        if (!focusedNode || !$get('isFullyLoaded', focusedNode)) {
+        if (!focusedNode) {
+            return null;
+        }
+        if (!$get('isFullyLoaded', focusedNode)) {
             return this.renderFallback();
         }
 

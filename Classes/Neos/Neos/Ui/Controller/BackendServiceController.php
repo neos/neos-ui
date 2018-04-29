@@ -218,7 +218,6 @@ class BackendServiceController extends ActionController
                     // (as we can't RenderContentOutOfBand from here, we don't know dom addresses)
                     if (!$this->nodeService->isDocument($node)) {
                         $reloadDocument = new ReloadDocument();
-                        $reloadDocument->setNode($node);
                         $this->feedbackCollection->add($reloadDocument);
                     }
                 } elseif (!$this->nodeService->nodeExistsInWorkspace($node, $node->getWorkSpace()->getBaseWorkspace())) {

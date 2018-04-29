@@ -55,7 +55,7 @@ Neos:
 
         hotkeys:
           'UI.RightSideBar.toggle': 't i'
-          'UI.FullScreen.toggle': 'f'
+          'UI.FullScreen.toggle': 't f'
 
         legacy:
           enableUiSwitch: false

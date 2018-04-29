@@ -230,7 +230,7 @@ manifest('main', {}, globalRegistry => {
     // When the server advices to reload the document, just reload it
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/Main', (feedbackPayload, {store}) => {
-        store.dispatch(actions.UI.ContentCanvas.reload());
+        store.dispatch(actions.UI.ContentCanvas.reload(feedbackPayload.uri || null));
     });
 
     //

@@ -164,6 +164,7 @@ abstract class AbstractStructuralChange extends AbstractChange
                 $this->feedbackCollection->add($renderContentOutOfBand);
             } else {
                 $reloadDocument = new ReloadDocument();
+                $reloadDocument->setNode($node);
 
                 $this->feedbackCollection->add($reloadDocument);
             }

@@ -218,6 +218,7 @@ class BackendServiceController extends ActionController
                     // (as we can't RenderContentOutOfBand from here, we don't know dom addresses)
                     if (!$this->nodeService->isDocument($node)) {
                         $reloadDocument = new ReloadDocument();
+                        $reloadDocument->setNode($node);
                         $this->feedbackCollection->add($reloadDocument);
                     }
                 } elseif (!$this->nodeService->nodeExistsInWorkspace($node, $node->getWorkSpace()->getBaseWorkspace())) {
@@ -300,6 +301,7 @@ class BackendServiceController extends ActionController
             // If current document node exists in the base workspace, then reload, else redirect
             if ($redirectNode === $documentNode) {
                 $reloadDocument = new ReloadDocument();
+                $reloadDocument->setNode($documentNode);
                 $this->feedbackCollection->add($reloadDocument);
             } else {
                 $redirect = new Redirect();

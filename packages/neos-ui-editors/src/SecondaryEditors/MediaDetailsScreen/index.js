@@ -13,12 +13,20 @@ class MediaDetailsScreen extends PureComponent {
         neos: PropTypes.object.isRequired
     };
 
+    iframe = null;
+
     render() {
         const {onClose, imageIdentity, neos} = this.props;
-        // TODO: Media package refactoring
+        let iframe;
+        const setRef = ref => {
+            iframe = ref;
+        };
         window.NeosMediaBrowserCallbacks = {
             close() {
-                onClose();
+                // Wait for iframe to finish saving
+                iframe.contentWindow.addEventListener('unload', () => {
+                    onClose();
+                });
             }
         };
 
@@ -27,7 +35,7 @@ class MediaDetailsScreen extends PureComponent {
         const uri = `${mediaBrowserUri}/images/edit.html?asset[__identity]=${imageIdentity}`;
 
         return (
-            <iframe src={uri} className={style.iframe}/>
+            <iframe ref={setRef} src={uri} className={style.iframe}/>
         );
     }
 }

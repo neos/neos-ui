@@ -128,7 +128,10 @@ export default class ImageEditor extends Component {
 
     afterUpload = uploadResult => {
         this.props.commit(uploadResult.object);
-        this.setState({requestOpenImageCropper: true});
+        this.setState({
+            requestOpenImageCropper: true,
+            isAssetLoading: false
+        });
     }
 
     handleMediaCrop = cropArea => {
@@ -215,6 +218,7 @@ export default class ImageEditor extends Component {
 
     handleChooseFile = () => {
         this.previewScreen.chooseFromLocalFileSystem();
+        this.setState({isAssetLoading: true});
     }
 
     handleChooseFromMedia = () => {

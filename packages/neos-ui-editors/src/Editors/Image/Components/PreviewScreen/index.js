@@ -56,19 +56,6 @@ export default class PreviewScreen extends PureComponent {
     render() {
         const {afterUpload, isLoading, highlight, propertyName, isUploadEnabled} = this.props;
 
-        const classNames = mergeClassNames({
-            [style.thumbnail]: true,
-            [style['thumbnail--highlight']]: highlight
-        });
-
-        if (isLoading) {
-            return (
-                <div className={classNames}>
-                    <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader}/>
-                </div>
-            );
-        }
-
         if (isUploadEnabled) {
             return (
                 <AssetUpload

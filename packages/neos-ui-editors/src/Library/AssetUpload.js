@@ -85,26 +85,31 @@ export default class AssetUpload extends PureComponent {
             [style['thumbnail--highlight']]: highlight
         });
 
-        if (isLoading) {
-            return (
-                <div className={classNames}>
-                    <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader}/>
-                </div>
-            );
-        }
-
         return (
-            <Dropzone
-                ref={this.setDropzoneReference}
-                onDropAccepted={this.props.multiple ? this.handleMultiUpload : this.handleUpload}
-                className={style.dropzone}
-                activeClassName={style['dropzone--isActive']}
-                rejectClassName={style['dropzone--isRejecting']}
-                disableClick={true}
-                multiple={Boolean(this.props.multiple)}
-                >
-                {this.props.children}
-            </Dropzone>
+            <React.Fragment>
+                {isLoading && (
+                    <div className={classNames}>
+                        {/* We should not put thumbnail__loader onto the icon, as animation would kill transform */}
+                        <div className={style.style.thumbnail__loader}>
+                            <Icon icon="spinner" spin={true} size="big"/>
+                        </div>
+                    </div>
+                )}
+                {/* We should not remove Dropzone element when loading, as that would kill the upload */}
+                <div style={{display: isLoading ? 'none' : 'block'}}>
+                    <Dropzone
+                        ref={this.setDropzoneReference}
+                        onDropAccepted={this.props.multiple ? this.handleMultiUpload : this.handleUpload}
+                        className={style.dropzone}
+                        activeClassName={style['dropzone--isActive']}
+                        rejectClassName={style['dropzone--isRejecting']}
+                        disableClick={true}
+                        multiple={Boolean(this.props.multiple)}
+                        >
+                        {this.props.children}
+                    </Dropzone>
+                </div>
+            </React.Fragment>
         );
     }
 

@@ -13,8 +13,6 @@ class MediaDetailsScreen extends PureComponent {
         neos: PropTypes.object.isRequired
     };
 
-    iframe = null;
-
     render() {
         const {onClose, imageIdentity, neos} = this.props;
         let iframe;

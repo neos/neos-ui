@@ -53,6 +53,10 @@ Neos:
         # 'Your.Own:Package':
         #   someKey: someValue
 
+        hotkeys:
+          'UI.RightSideBar.toggle': 't i'
+          'UI.FullScreen.toggle': 'f'
+
         legacy:
           enableUiSwitch: false
 

@@ -148,6 +148,7 @@ export default class ImageEditor extends Component {
         commit(value, {
             'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
         });
+        this.setState({isImageCropperOpen: false});
     }
 
     handleResize = resizeAdjustment => {

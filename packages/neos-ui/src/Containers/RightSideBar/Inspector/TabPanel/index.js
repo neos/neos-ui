@@ -34,7 +34,7 @@ export default class TabPanel extends PureComponent {
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 <SelectedElement/>
                 {
-                    groups.filter(g => ($get('properties', g) && $get('properties', g).filter(this.isPropertyEnabled).count()) || ($get('views', g) && $get('views', g).count())).map(group => (
+                    groups.filter(g => ($get('items', g) && $get('items', g).filter(this.isPropertyEnabled).count())).map(group => (
                         <PropertyGroup
                             handlePanelToggle={() => handlePanelToggle([$get('id', group)])}
                             key={$get('id', group)}
@@ -42,8 +42,7 @@ export default class TabPanel extends PureComponent {
                             icon={$get('icon', group)}
                             // Overlay default collapsed state over current state
                             collapsed={Boolean($get($get('id', group), toggledPanels)) !== Boolean($get('collapsed', group))}
-                            properties={$get('properties', group).filter(this.isPropertyEnabled)}
-                            views={$get('views', group)}
+                            items={$get('items', group).filter(this.isPropertyEnabled)}
                             renderSecondaryInspector={renderSecondaryInspector}
                             node={node}
                             commit={commit}

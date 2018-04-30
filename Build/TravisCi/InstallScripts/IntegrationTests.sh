@@ -42,16 +42,16 @@ cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/
 
 # Setup the database and import the demo site package.
 mysql -e 'create database neos collate utf8mb4_unicode_ci;'
-./flow cache:warmup
-./flow doctrine:migrate
-./flow site:import --package-key=Neos.Demo
-./flow resource:publish
+FLOW_CONTEXT=Production ./flow cache:warmup
+FLOW_CONTEXT=Production ./flow doctrine:migrate
+FLOW_CONTEXT=Production ./flow site:import --package-key=Neos.Demo
+FLOW_CONTEXT=Production ./flow resource:publish
 
 # Create the demo backend user.
-./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator &
+FLOW_CONTEXT=Production ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator &
 
 # Start the development server on which the integration tests will act on.
-./flow server:run --port 8081 > /dev/null 2> /dev/null &
+FLOW_CONTEXT=Production ./flow server:run --port 8081 > /dev/null 2> /dev/null &
 
 # Change into the repository directory where the environment based shell script will be executed.
 cd Packages/Application/Neos.Neos.Ui

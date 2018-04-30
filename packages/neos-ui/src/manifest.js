@@ -439,4 +439,3 @@ require('./manifest.containers');
 require('./manifest.dataloaders');
 require('./manifest.sagas');
 require('./manifest.reducer');
-require('./manifest.hotkeys');

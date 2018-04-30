@@ -300,6 +300,7 @@ class BackendServiceController extends ActionController
             // If current document node exists in the base workspace, then reload, else redirect
             if ($redirectNode === $documentNode) {
                 $reloadDocument = new ReloadDocument();
+                $reloadDocument->setNode($documentNode);
                 $this->feedbackCollection->add($reloadDocument);
             } else {
                 $redirect = new Redirect();

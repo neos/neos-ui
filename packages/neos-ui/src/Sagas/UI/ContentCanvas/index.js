@@ -42,7 +42,8 @@ export function * watchStopLoading({globalRegistry, store}) {
  * Reload content canvas when requested
  */
 export function * watchReload() {
-    yield takeLatest(actionTypes.UI.ContentCanvas.RELOAD, function * () {
+    yield takeLatest(actionTypes.UI.ContentCanvas.RELOAD, function * (action) {
+        const {uri} = action.payload;
         const currentIframeUrl = yield select($get('ui.contentCanvas.src'));
 
         [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
@@ -50,10 +51,11 @@ export function * watchReload() {
 
             //
             // Make sure href is still consistent before reloading - if not, some other process
-            // might be already handling this
+            // might be already handling this.
+            // If the new uri is provided in the action payload, use that
             //
             if (iframeWindow.location.href === currentIframeUrl) {
-                iframeWindow.location.href = iframeWindow.location.href;
+                iframeWindow.location.href = uri || iframeWindow.location.href;
             }
         });
     });

@@ -11,12 +11,25 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Service\LinkingService;
 
 class ReloadDocument extends AbstractFeedback
 {
+    /**
+     * @var NodeInterface
+     */
+    protected $node;
+
+    /**
+     * @Flow\Inject
+     * @var LinkingService
+     */
+    protected $linkingService;
 
     /**
      * Get the type identifier
@@ -26,6 +39,27 @@ class ReloadDocument extends AbstractFeedback
     public function getType()
     {
         return 'Neos.Neos.Ui:ReloadDocument';
+    }
+
+    /**
+     * Set the node
+     *
+     * @param NodeInterface $node
+     * @return void
+     */
+    public function setNode(NodeInterface $node)
+    {
+        $this->node = $node;
+    }
+
+    /**
+     * Get the node
+     *
+     * @return NodeInterface
+     */
+    public function getNode()
+    {
+        return $this->node;
     }
 
     /**
@@ -61,6 +95,11 @@ class ReloadDocument extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
+        if ($this->node) {
+            return [
+                'uri' => $this->linkingService->createNodeUri($controllerContext, $this->node, null, null, true, array(), '', false, array(), false)
+            ];
+        }
         return [];
     }
 }

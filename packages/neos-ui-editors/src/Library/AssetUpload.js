@@ -90,7 +90,7 @@ export default class AssetUpload extends PureComponent {
                 {isLoading && (
                     <div className={classNames}>
                         {/* We should not put thumbnail__loader onto the icon, as animation would kill transform */}
-                        <div className={style.style.thumbnail__loader}>
+                        <div className={style.thumbnail__loader}>
                             <Icon icon="spinner" spin={true} size="big"/>
                         </div>
                     </div>

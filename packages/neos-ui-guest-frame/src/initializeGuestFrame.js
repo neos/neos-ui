@@ -154,7 +154,8 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             if (nodeElement) {
                 nodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);
 
-                const node = yield select(contextPath);
+                const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
+                const node = yield select(getNodeByContextPathSelector);
                 dispatchCustomEvent('Neos.NodeSelected', 'Node was selected.', {
                     element: nodeElement,
                     node

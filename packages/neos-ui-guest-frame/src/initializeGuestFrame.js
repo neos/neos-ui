@@ -10,7 +10,8 @@ import {
     getGuestFrameDocument,
     findAllNodesInGuestFrame,
     findInGuestFrame,
-    findNodeInGuestFrame
+    findNodeInGuestFrame,
+    dispatchCustomEvent
 } from './dom';
 
 import style from './style.css';
@@ -138,7 +139,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         yield put(actions.UI.ContentCanvas.requestScrollIntoView(true));
     }
 
-    yield takeEvery(actionTypes.CR.Nodes.FOCUS, action => {
+    yield takeEvery(actionTypes.CR.Nodes.FOCUS, function * (action) {
         const oldNode = findInGuestFrame(`.${style['markActiveNodeAsFocused--focusedNode']}`);
 
         if (oldNode) {
@@ -152,6 +153,13 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
             if (nodeElement) {
                 nodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);
+
+                const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
+                const node = yield select(getNodeByContextPathSelector);
+                dispatchCustomEvent('Neos.NodeSelected', 'Node was selected.', {
+                    element: nodeElement,
+                    node
+                });
             }
         }
     });

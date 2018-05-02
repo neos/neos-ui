@@ -14,7 +14,8 @@ import {
     findNodeInGuestFrame,
     findAllOccurrencesOfNodeInGuestFrame,
     createEmptyContentCollectionPlaceholderIfMissing,
-    findAllChildNodes
+    findAllChildNodes,
+    dispatchCustomEvent
 } from '@neos-project/neos-ui-guest-frame/src/dom';
 import initializeContentDomNode from '@neos-project/neos-ui-guest-frame/src/initializeContentDomNode';
 
@@ -290,6 +291,10 @@ manifest('main', {}, globalRegistry => {
                 el.remove();
 
                 createEmptyContentCollectionPlaceholderIfMissing(closestContentCollection);
+
+                dispatchCustomEvent('Neos.NodeRemoved', 'Node was removed.', {
+                    element: el
+                });
             });
         }
     });
@@ -369,6 +374,10 @@ manifest('main', {}, globalRegistry => {
         );
         store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
         store.dispatch(actions.UI.ContentCanvas.requestScrollIntoView(true));
+
+        dispatchCustomEvent('Neos.NodeCreated', 'Node was created.', {
+            element: contentElement
+        });
     });
 
     //

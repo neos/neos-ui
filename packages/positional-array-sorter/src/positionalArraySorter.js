@@ -1,5 +1,5 @@
-const isOriginal = value => value.indexOf && value.indexOf('_original_') === 0;
-const getOriginal = value => value.substring && Number(value.substring(10));
+const isOriginal = value => value && value.indexOf && value.indexOf('_original_') === 0;
+const getOriginal = value => value && value.substring && Number(value.substring(10));
 
 /**
  * Flexible array sorter that sorts an array according to a "position" meta data.

@@ -140,10 +140,9 @@ tag: called-with-version
 # make a clean build from scratch
 # and make sure that every lint and test stage is running through
 release: called-with-version check-requirements \
-	# build-production \
-	# lint lint-editorconfig \
-	# test
-	# targets above currently disabled because it runs through travis anyway
+	build-production \
+	lint lint-editorconfig \
+	test \
 	bump-version publish-npm tag
 	@echo
 	@echo

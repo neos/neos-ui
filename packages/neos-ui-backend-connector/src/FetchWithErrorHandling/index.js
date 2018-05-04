@@ -56,6 +56,15 @@ class FetchWithErrorHandling {
         return this._executeFetchRequest(makeFetchRequest);
     }
 
+    /**
+     * Same as `withCsrfToken`, but with error handling and json parsing
+     */
+    withCsrfTokenAndErrorHandling(makeFetchRequest) {
+        return this.withCsrfToken(makeFetchRequest)
+            .then(response => this.parseJson(response))
+            .catch(reason => this.generalErrorHandler(reason));
+    }
+
     _enqueueRequest(makeFetchRequest) {
         return new Promise((resolve, reject) => {
             // This promise is never resolved inside the function body here; but it is resolved after a successful
@@ -152,6 +161,21 @@ class FetchWithErrorHandling {
         this._generalErrorHandlerFn(errorText);
         // Re-throw, so the promise chain would be interrupted
         throw new Error(errorText);
+    }
+
+    /**
+     * Safely parse JSON from response
+     */
+    parseJson(response) {
+        return response.text().then(response => {
+            try {
+                return JSON.parse(response);
+            } catch (e) {
+                const tmp = document.createElement('div');
+                tmp.innerHTML = response;
+                throw new Error(tmp.textContent || response);
+            }
+        });
     }
 }
 

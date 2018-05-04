@@ -59,7 +59,7 @@ class FetchWithErrorHandling {
     /**
      * Same as `withCsrfToken`, but with error handling and json parsing
      */
-    withCsrfTokenAndErrorHandling(makeFetchRequest) {
+    fetchJson(makeFetchRequest) {
         return this.withCsrfToken(makeFetchRequest)
             .then(response => this.parseJson(response))
             .catch(reason => this.generalErrorHandler(reason));

@@ -15,6 +15,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Service\LinkingService;
 
@@ -30,6 +31,12 @@ class ReloadDocument extends AbstractFeedback
      * @var LinkingService
      */
     protected $linkingService;
+
+    /**
+     * @Flow\Inject
+     * @var NodeService
+     */
+    protected $nodeService;
 
     /**
      * Get the type identifier
@@ -95,9 +102,12 @@ class ReloadDocument extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        if ($this->node) {
+        if (!$this->node) {
+            return [];
+        }
+        if ($documentNode = $this->nodeService->getClosestDocument($this->node)) {
             return [
-                'uri' => $this->linkingService->createNodeUri($controllerContext, $this->node, null, null, true, array(), '', false, array(), false)
+                'uri' => $this->linkingService->createNodeUri($controllerContext, $documentNode, null, null, true, array(), '', false, array(), false)
             ];
         }
         return [];

@@ -58,7 +58,24 @@ const webpackConfig = {
                 }]
             },
             {
+                test: /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
+                use: extractCss.extract({
+                    use: [{
+                        loader: 'css-loader'
+                    }, {
+                        loader: 'string-replace-loader',
+                        options: {
+                            search: 'svg-inline--fa',
+                            replace: 'neos-svg-inline--fa',
+                            flags: 'g'
+                        }
+                    }],
+                    fallback: 'style-loader'
+                })
+            },
+            {
                 test: /\.css$/,
+                exclude: /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
                 use: extractCss.extract({
                     use: [{
                         loader: 'css-loader',

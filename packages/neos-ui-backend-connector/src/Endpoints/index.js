@@ -3,7 +3,7 @@ import {urlWithParams, searchParams} from './Helpers';
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 
 export default routes => {
-    const change = changes => fetchWithErrorHandling.fetchJson(csrfToken => ({
+    const change = changes => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.change,
 
         method: 'POST',
@@ -15,9 +15,10 @@ export default routes => {
         body: JSON.stringify({
             changes
         })
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const publish = (nodeContextPaths, targetWorkspaceName) => fetchWithErrorHandling.fetchJson(csrfToken => ({
+    const publish = (nodeContextPaths, targetWorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.publish,
         method: 'POST',
         credentials: 'include',
@@ -29,9 +30,10 @@ export default routes => {
             nodeContextPaths,
             targetWorkspaceName
         })
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const discard = nodeContextPaths => fetchWithErrorHandling.fetchJson(csrfToken => ({
+    const discard = nodeContextPaths => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.discard,
 
         method: 'POST',
@@ -43,9 +45,10 @@ export default routes => {
         body: JSON.stringify({
             nodeContextPaths
         })
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const changeBaseWorkspace = (targetWorkspaceName, documentNode) => fetchWithErrorHandling.fetchJson(csrfToken => ({
+    const changeBaseWorkspace = (targetWorkspaceName, documentNode) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.changeBaseWorkspace,
 
         method: 'POST',
@@ -58,9 +61,10 @@ export default routes => {
             targetWorkspaceName,
             documentNode
         })
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.fetchJson(() => ({
+    const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfToken(() => ({
         url: `${routes.core.content.imageWithMetadata}?image=${imageVariantUuid}`,
 
         method: 'GET',
@@ -68,7 +72,8 @@ export default routes => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     /**
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
@@ -79,7 +84,7 @@ export default routes => {
      * asset[originalAsset]:56d183f2-ee66-c845-7e2d-40661fb27571
      * @param asset
      */
-    const createImageVariant = (originalAssetUuid, adjustments) => fetchWithErrorHandling.fetchJson(csrfToken => ({
+    const createImageVariant = (originalAssetUuid, adjustments) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.core.content.createImageVariant,
 
         method: 'POST',
@@ -94,36 +99,40 @@ export default routes => {
                 adjustments
             }
         })
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const loadMasterPlugins = (workspaceName, dimensions) => fetchWithErrorHandling.fetchJson(() => ({
+    const loadMasterPlugins = (workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.content.loadMasterPlugins, {workspaceName, dimensions}),
         method: 'GET',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const loadPluginViews = (identifier, workspaceName, dimensions) => fetchWithErrorHandling.fetchJson(() => ({
+    const loadPluginViews = (identifier, workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.content.loadPluginViews, {identifier, workspaceName, dimensions}),
         method: 'GET',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const contentDimensions = (dimensionName, chosenDimensionPresets) => fetchWithErrorHandling.fetchJson(() => ({
+    const contentDimensions = (dimensionName, chosenDimensionPresets) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(`${routes.core.service.contentDimensions}/${dimensionName}.json`, {chosenDimensionPresets}),
         method: 'GET',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const uploadAsset = (file, propertyName, node, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.fetchJson(csrfToken => {
+    const uploadAsset = (file, propertyName, node, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         const data = new FormData();
         data.append('__siteNodeName', siteNodeName);
         data.append('asset[resource]', file);
@@ -141,14 +150,15 @@ export default routes => {
             },
             body: data
         };
-    });
+    }).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const extractFileEndingFromUri = uri => {
         const parts = uri.split('.');
         return parts.length ? '.' + parts[parts.length - 1] : '';
     };
 
-    const assetSearch = (searchTerm = '') => fetchWithErrorHandling.fetchJson(() => ({
+    const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.service.assets, {searchTerm}),
 
         method: 'GET',
@@ -169,7 +179,7 @@ export default routes => {
             }));
         });
 
-    const assetDetail = identifier => fetchWithErrorHandling.fetchJson(() => ({
+    const assetDetail = identifier => fetchWithErrorHandling.withCsrfToken(() => ({
         url: `${routes.core.service.assets}/${identifier}`,
 
         method: 'GET',
@@ -201,7 +211,7 @@ export default routes => {
      *
      * returns an array of {label, value} objects
      */
-    const searchNodes = options => fetchWithErrorHandling.fetchJson(() => ({
+    const searchNodes = options => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.service.nodes, options),
 
         method: 'GET',
@@ -267,14 +277,14 @@ export default routes => {
      *
      * !! for params, use selectors.UI.NodeLinking.contextForNodeLinking and start modifying it!
      */
-    const getSingleNode = (nodeIdentifier, params = {}) => parseGetSingleNodeResult(fetchWithErrorHandling.fetchJson(() => ({
+    const getSingleNode = (nodeIdentifier, params = {}) => parseGetSingleNodeResult(fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(`${routes.core.service.nodes}/${nodeIdentifier}`, params),
 
         method: 'GET',
         credentials: 'include'
     }))).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const adoptNodeToOtherDimension = ({identifier, targetDimensions, sourceDimensions, workspaceName, copyContent = false}) => parseGetSingleNodeResult(fetchWithErrorHandling.fetchJson(csrfToken => ({
+    const adoptNodeToOtherDimension = ({identifier, targetDimensions, sourceDimensions, workspaceName, copyContent = false}) => parseGetSingleNodeResult(fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.core.service.nodes,
 
         method: 'POST',
@@ -289,7 +299,7 @@ export default routes => {
         })
     }))).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const setUserPreferences = (key, value) => fetchWithErrorHandling.fetchJson(csrfToken => {
+    const setUserPreferences = (key, value) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         const data = new URLSearchParams();
         data.set('__csrfToken', csrfToken);
         data.set('key', key);
@@ -304,27 +314,29 @@ export default routes => {
         };
     }).catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const getWorkspaceInfo = () => fetchWithErrorHandling.fetchJson(() => ({
+    const getWorkspaceInfo = () => fetchWithErrorHandling.withCsrfToken(() => ({
         url: routes.ui.service.getWorkspaceInfo,
         method: 'GET',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
-    })).then(response => response.json());
+    })).then(response => fetchWithErrorHandling.parseJson(response));
 
-    const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWithErrorHandling.fetchJson(() => ({
+    const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(dataSourceUri || `${routes.core.service.dataSource}/${dataSourceIdentifier}`, params),
 
         method: 'GET',
         credentials: 'include'
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const getJsonResource = resourceUri => fetchWithErrorHandling.fetchJson(() => ({
+    const getJsonResource = resourceUri => fetchWithErrorHandling.withCsrfToken(() => ({
         url: resourceUri,
         method: 'GET',
         credentials: 'include'
-    }));
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const tryLogin = (username, password) => {
         const data = new URLSearchParams();
@@ -337,7 +349,7 @@ export default routes => {
             credentials: 'same-origin'
         })
         // Parse the JSON if possible ...
-        .then(response => response.json())
+        .then(response => fetchWithErrorHandling.parseJson(response))
         // ... and if the JSON cannot be parsed, convert this to "false".
         .then(result => result, () => false)
         // Return the new CSRF Protection token

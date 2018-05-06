@@ -106,10 +106,10 @@ export default class ContentCanvas extends PureComponent {
             canvasContentOnlyStyle.overflow = 'auto';
         }
 
-        if (backgroundColor && !currentEditPreviewModeConfiguration.backgroundColor) {
-            canvasContentStyle.background = backgroundColor;
-        } else if (currentEditPreviewModeConfiguration.backgroundColor) {
+        if (currentEditPreviewModeConfiguration.backgroundColor) {
             canvasContentStyle.background = currentEditPreviewModeConfiguration.backgroundColor;
+        } else if (backgroundColor) {
+            canvasContentStyle.background = backgroundColor;
         }
 
         // ToDo: Is the `[data-__neos__hook]` attr used?

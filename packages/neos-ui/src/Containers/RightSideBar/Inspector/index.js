@@ -271,6 +271,7 @@ export default class Inspector extends PureComponent {
                                     handlePanelToggle={path => {
                                         this.handlePanelToggle([$get('id', tab), ...path]);
                                     }}
+                                    handleInspectorApply={this.handleApply}
                                     />);
                         })
                     }

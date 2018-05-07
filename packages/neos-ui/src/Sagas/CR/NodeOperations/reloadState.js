@@ -4,8 +4,8 @@ import backend from '@neos-project/neos-ui-backend-connector';
 
 import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
-export default function * watchReloadState({configuration}) {
-    yield takeLatest(actionTypes.CR.Nodes.RELOAD_STATE, function * reloadState(action) {
+export default function * ({configuration}) {
+    yield takeLatest(actionTypes.CR.Nodes.RELOAD_STATE, function * (action) {
         const {q} = backend.get();
         const currentSiteNodeContextPath = yield select($get('cr.nodes.siteNode'));
         const toggledNodes = yield select($get('ui.pageTree.toggled'));

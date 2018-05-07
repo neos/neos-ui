@@ -42,7 +42,7 @@ const eventPath = event => {
     return path;
 };
 
-export default ({globalRegistry, store}) => function * initializeGuestFrame() {
+export default ({globalRegistry, store}) => function * () {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
     const guestFrameWindow = getGuestFrameWindow();

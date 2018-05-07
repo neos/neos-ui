@@ -11,7 +11,7 @@ export function * watchPublish() {
     const {q} = backend.get();
     const {publish} = backend.get().endpoints;
 
-    yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
+    yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * (action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
 
         if (nodeContextPaths.count() > 0) {
@@ -42,7 +42,7 @@ export function * watchPublish() {
 }
 
 export function * watchToggleAutoPublish() {
-    yield takeEvery(actionTypes.User.Settings.TOGGLE_AUTO_PUBLISHING, function * publishInitially() {
+    yield takeEvery(actionTypes.User.Settings.TOGGLE_AUTO_PUBLISHING, function * () {
         const state = yield select();
         const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
 
@@ -55,7 +55,7 @@ export function * watchToggleAutoPublish() {
 
 export function * watchChangeBaseWorkspace() {
     const {changeBaseWorkspace} = backend.get().endpoints;
-    yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
+    yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * (action) {
         try {
             const documentNode = yield select($get('ui.contentCanvas.contextPath'));
             const feedback = yield call(changeBaseWorkspace, action.payload, documentNode);
@@ -71,7 +71,7 @@ export function * watchChangeBaseWorkspace() {
 
 export function * discardIfConfirmed() {
     const {discard} = backend.get().endpoints;
-    yield takeLatest(actionTypes.CR.Workspaces.COMMENCE_DISCARD, function * waitForConfirmation() {
+    yield takeLatest(actionTypes.CR.Workspaces.COMMENCE_DISCARD, function * () {
         const state = yield select();
         const waitForNextAction = yield race([
             take(actionTypes.CR.Workspaces.DISCARD_ABORTED),

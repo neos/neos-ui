@@ -9,7 +9,7 @@ const {publishableNodesInDocumentSelector, baseWorkspaceSelector} = selectors.CR
 export function * watchPersist() {
     const {change} = backend.get().endpoints;
 
-    yield takeEvery(actionTypes.Changes.PERSIST, function * persistChanges(action) {
+    yield takeEvery(actionTypes.Changes.PERSIST, function * (action) {
         const changes = action.payload.changes;
 
         yield put(actions.UI.Remote.startSaving());

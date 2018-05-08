@@ -86,7 +86,10 @@ prototype(Neos.Neos:Page) {
 
     newNeosBackendWrappingElement = '<div id="neos-new-backend-container"></div>'
     newNeosBackendWrappingElement.@position = 'after neosBackendContainer'
-    newNeosBackendWrappingElement.@if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+    newNeosBackendWrappingElement.@if {
+        inBackend = ${documentNode.context.inBackend}
+        newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+    }
 
     //
     // Do not render the Neos backend footer
@@ -108,7 +111,10 @@ prototype(Neos.Neos:Page) {
     neosUiNonRenderedNodeMetadata = Neos.Neos.Ui:RenderNonRenderedNodeMetadata {
         @position = 'before neosBackendNotification'
         @class = 'Neos\\Neos\\Ui\\Fusion\\RenderNonRenderedNodeMetadataImplementation'
-        @if.newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+        @if {
+            inBackend = ${documentNode.context.inBackend}
+            newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+        }
         node = ${node}
     }
 }

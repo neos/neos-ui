@@ -15,6 +15,9 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Session\SessionInterface;
 
+/**
+ * @Flow\Scope("singleton")
+ */
 class ActivationHelper implements ProtectedContextAwareInterface
 {
     /**
@@ -24,9 +27,9 @@ class ActivationHelper implements ProtectedContextAwareInterface
     protected $session;
 
 
-    public function enableNewBackend()
+    public function isLegacyBackendEnabled()
     {
-        return $this->session->isStarted() && $this->session->getData('__neosLegacyUiEnabled__') ? false : true;
+        return $this->session->isStarted() && $this->session->getData('__neosLegacyUiEnabled__') ? true : false;
     }
 
     /**

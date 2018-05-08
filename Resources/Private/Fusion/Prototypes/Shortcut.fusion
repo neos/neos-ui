@@ -10,7 +10,7 @@ prototype(Neos.Neos:Page) {
 
             @if {
                 inBackend = ${documentNode.context.inBackend}
-                newBackend = ${Neos.Ui.Activation.enableNewBackend()}
+                newBackend = ${!Neos.Ui.Activation.isLegacyBackendEnabled()}
                 isShortcut = ${q(node).is('[instanceof Neos.Neos:Shortcut]')}
             }
         }

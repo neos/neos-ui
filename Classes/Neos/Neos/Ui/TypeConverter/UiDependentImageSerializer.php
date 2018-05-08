@@ -44,7 +44,7 @@ class UiDependentImageSerializer extends AbstractTypeConverter
         $activationHelper = $this->objectManager->get(ActivationHelper::class);
 
         $innerConverter = $this->objectManager->get(ImageInterfaceArrayPresenter::class);
-        if (!$activationHelper->enableNewBackend()) {
+        if ($activationHelper->isLegacyBackendEnabled()) {
             // Old UI is active so we need to deliver the JSON as string.
             $innerConverter = $this->objectManager->get(ImageInterfaceJsonSerializer::class);
         }

@@ -50,7 +50,7 @@ export default class SelectBox_Header extends PureComponent {
 
         const label = option ? option.label : placeholder;
         const icon = option && option.icon ? option.icon : placeholderIcon;
-        const onClick = () => disabled ? null : this.props.onReset;
+        const onClick = event => disabled ? null : this.props.onReset(event);
 
         const resetButton = () => {
             if (showResetButton) {

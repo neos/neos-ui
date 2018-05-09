@@ -11,6 +11,7 @@ import {$map, $get, $transform} from 'plow-js';
 import {Map} from 'immutable';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
+import sortBy from 'lodash.sortby';
 
 // TODO Add title prop to Icon component
 const SelectedPreset = props => {
@@ -42,13 +43,9 @@ const DimensionSelector = props => {
         },
         [],
         presets
-    )
-        .toArray()
-        .sort((a, b) => {
-            const x = a.label.toLowerCase();
-            const y = b.label.toLowerCase();
-            return x < y ? -1 : x > y ? 1 : 0;
-        });
+    ).toArray();
+
+    const sortedPresetOptions = sortBy(presetOptions, ['label']);
 
     const onPresetSelect = presetName => {
         onSelect(dimensionName, presetName);
@@ -62,7 +59,7 @@ const DimensionSelector = props => {
             </div>
             <SelectBox
                 displayLoadingIndicator={isLoading}
-                options={presetOptions}
+                options={sortedPresetOptions}
                 onValueChange={onPresetSelect}
                 value={activePreset}
                 />

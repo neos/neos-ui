@@ -10,8 +10,8 @@
         "neos/neos-ui-compiled": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "Neos\\Neos\\Ui": "Classes"
+        "psr-4": {
+            "Neos\\Neos\\Ui\\": "Classes"
         }
     },
     "extra": {

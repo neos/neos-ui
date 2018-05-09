@@ -42,7 +42,13 @@ const DimensionSelector = props => {
         },
         [],
         presets
-    ).toArray();
+    )
+        .toArray()
+        .sort((a, b) => {
+            const x = a.label.toLowerCase();
+            const y = b.label.toLowerCase();
+            return x < y ? -1 : x > y ? 1 : 0;
+        });
 
     const onPresetSelect = presetName => {
         onSelect(dimensionName, presetName);

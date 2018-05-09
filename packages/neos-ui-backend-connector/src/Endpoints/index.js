@@ -15,7 +15,7 @@ export default routes => {
         body: JSON.stringify({
             changes
         })
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const publish = (nodeContextPaths, targetWorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
@@ -30,7 +30,7 @@ export default routes => {
             nodeContextPaths,
             targetWorkspaceName
         })
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const discard = nodeContextPaths => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
@@ -45,7 +45,7 @@ export default routes => {
         body: JSON.stringify({
             nodeContextPaths
         })
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const changeBaseWorkspace = (targetWorkspaceName, documentNode) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
@@ -61,7 +61,7 @@ export default routes => {
             targetWorkspaceName,
             documentNode
         })
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfToken(() => ({
@@ -72,7 +72,7 @@ export default routes => {
         headers: {
             'Content-Type': 'application/json'
         }
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     /**
@@ -99,7 +99,7 @@ export default routes => {
                 adjustments
             }
         })
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadMasterPlugins = (workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
@@ -109,7 +109,7 @@ export default routes => {
         headers: {
             'Content-Type': 'application/json'
         }
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadPluginViews = (identifier, workspaceName, dimensions) => fetchWithErrorHandling.withCsrfToken(() => ({
@@ -119,7 +119,7 @@ export default routes => {
         headers: {
             'Content-Type': 'application/json'
         }
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const contentDimensions = (dimensionName, chosenDimensionPresets) => fetchWithErrorHandling.withCsrfToken(() => ({
@@ -129,7 +129,7 @@ export default routes => {
         headers: {
             'Content-Type': 'application/json'
         }
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const uploadAsset = (file, propertyName, node, siteNodeName, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
@@ -150,7 +150,7 @@ export default routes => {
             },
             body: data
         };
-    }).then(response => response.json())
+    }).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const extractFileEndingFromUri = uri => {
@@ -321,21 +321,21 @@ export default routes => {
         headers: {
             'Content-Type': 'application/json'
         }
-    })).then(response => response.json());
+    })).then(response => fetchWithErrorHandling.parseJson(response));
 
     const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(dataSourceUri || `${routes.core.service.dataSource}/${dataSourceIdentifier}`, params),
 
         method: 'GET',
         credentials: 'include'
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const getJsonResource = resourceUri => fetchWithErrorHandling.withCsrfToken(() => ({
         url: resourceUri,
         method: 'GET',
         credentials: 'include'
-    })).then(response => response.json())
+    })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const tryLogin = (username, password) => {
@@ -349,7 +349,7 @@ export default routes => {
             credentials: 'same-origin'
         })
         // Parse the JSON if possible ...
-        .then(response => response.json())
+        .then(response => fetchWithErrorHandling.parseJson(response))
         // ... and if the JSON cannot be parsed, convert this to "false".
         .then(result => result, () => false)
         // Return the new CSRF Protection token

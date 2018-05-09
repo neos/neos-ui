@@ -153,6 +153,21 @@ class FetchWithErrorHandling {
         // Re-throw, so the promise chain would be interrupted
         throw new Error(errorText);
     }
+
+    /**
+     * Safely parse JSON from response
+     */
+    parseJson(response) {
+        return response.text().then(response => {
+            try {
+                return JSON.parse(response);
+            } catch (e) {
+                const tmp = document.createElement('div');
+                tmp.innerHTML = response;
+                throw new Error(tmp.textContent || response);
+            }
+        });
+    }
 }
 
 const fetchWithErrorHandling = new FetchWithErrorHandling();

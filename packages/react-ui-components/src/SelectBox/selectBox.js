@@ -285,8 +285,10 @@ export default class SelectBox extends PureComponent {
     }
 
     handleDeleteClick = event => {
-        // Don't open SelectBox on value clear
-        event.stopPropagation();
+        if (event) {
+            // Don't open SelectBox on value clear
+            event.stopPropagation();
+        }
         this.props.onValueChange('');
     }
 

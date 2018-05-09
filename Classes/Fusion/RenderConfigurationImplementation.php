@@ -11,10 +11,10 @@ namespace Neos\Neos\Ui\Fusion;
  * source code.
  */
 
-use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Exception;
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
+use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 
 class RenderConfigurationImplementation extends AbstractFusionObject
 {
@@ -40,7 +40,6 @@ class RenderConfigurationImplementation extends AbstractFusionObject
     {
         return $this->fusionValue('path');
     }
-
 
     /**
      * Appends an item to the given collection

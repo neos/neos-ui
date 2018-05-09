@@ -137,7 +137,7 @@ class AugmentationAspect
         $content = $joinPoint->getMethodArgument('content');
 
         // Stay compatible with Neos 3.0. When we remove this compatibility, we can convert everything to "fusionPath").
-        $fusionPath = ($joinPoint->isMethodArgument('typoScriptPath') ? $joinPoint->getMethodArgument('typoScriptPath'): $joinPoint->getMethodArgument('fusionPath'));
+        $fusionPath = ($joinPoint->isMethodArgument('typoScriptPath') ? $joinPoint->getMethodArgument('typoScriptPath') : $joinPoint->getMethodArgument('fusionPath'));
 
         if (!$this->needsMetadata($node, false)) {
             return $content;
@@ -203,6 +203,7 @@ class AugmentationAspect
     {
         /** @var $contentContext ContentContext */
         $contentContext = $node->getContext();
+
         return ($contentContext->isInBackend() === true && ($renderCurrentDocumentMetadata === true || $this->nodeAuthorizationService->isGrantedToEditNode($node) === true));
     }
 

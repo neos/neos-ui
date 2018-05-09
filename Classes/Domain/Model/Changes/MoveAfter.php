@@ -27,7 +27,6 @@ class MoveAfter extends AbstractMove
         return $this->getSiblingNode()->getParent()->isNodeTypeAllowedAsChildNode($nodeType);
     }
 
-
     public function getMode()
     {
         return 'after';

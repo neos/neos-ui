@@ -11,8 +11,8 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
 
 class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface

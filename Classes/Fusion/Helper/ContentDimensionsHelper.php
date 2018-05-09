@@ -11,8 +11,8 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
 
 class ContentDimensionsHelper implements ProtectedContextAwareInterface
@@ -37,8 +37,8 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
      */
     public function allowedPresetsByName(array $dimensions)
     {
-        $allowedPresets = array();
-        $preselectedDimensionPresets = array();
+        $allowedPresets = [];
+        $preselectedDimensionPresets = [];
         foreach ($dimensions as $dimensionName => $dimensionValues) {
             $preset = $this->contentDimensionsPresetSource->findPresetByDimensionValues($dimensionName, $dimensionValues);
             if ($preset !== null) {
@@ -49,6 +49,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
             $presets = $this->contentDimensionsPresetSource->getAllowedDimensionPresetsAccordingToPreselection($dimensionName, $preselectedDimensionPresets);
             $allowedPresets[$dimensionName] = array_keys($presets[$dimensionName]['presets']);
         }
+
         return $allowedPresets;
     }
 

@@ -22,7 +22,6 @@ class StaticResourcesHelper implements ProtectedContextAwareInterface
      */
     protected $frontendDevelopmentMode;
 
-
     public function compiledResourcePackage()
     {
         if ($this->frontendDevelopmentMode) {

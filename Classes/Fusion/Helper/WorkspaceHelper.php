@@ -11,11 +11,11 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
-use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\ContentRepository\Domain\Model\Workspace;
-use Neos\Neos\Service\UserService;
+use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
+use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 
 class WorkspaceHelper implements ProtectedContextAwareInterface
@@ -51,6 +51,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     {
         $personalWorkspace = $this->userService->getPersonalWorkspace();
         $baseWorkspace = $personalWorkspace->getBaseWorkspace();
+
         return [
             'name' => $personalWorkspace->getName(),
             'publishableNodes' => $this->getPublishableNodeInfo($personalWorkspace),

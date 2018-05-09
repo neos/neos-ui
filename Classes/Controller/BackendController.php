@@ -11,21 +11,21 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\ResourceManagement\ResourceManager;
-use Neos\Flow\Session\SessionInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Mvc\View\ViewInterface;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\ResourceManagement\ResourceManager;
+use Neos\Flow\Session\SessionInterface;
+use Neos\Fusion\View\FusionView;
 use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Fusion\View\FusionView;
-use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
 
 class BackendController extends ActionController
@@ -168,6 +168,7 @@ class BackendController extends ActionController
 
         $workspaceName = $this->userService->getPersonalWorkspaceName();
         $contentContext = $this->createContext($workspaceName);
+
         return $contentContext->getCurrentSiteNode();
     }
 
@@ -196,11 +197,11 @@ class BackendController extends ActionController
      */
     protected function createContext($workspaceName)
     {
-        $contextProperties = array(
+        $contextProperties = [
             'workspaceName' => $workspaceName,
             'invisibleContentShown' => true,
             'inaccessibleContentShown' => true
-        );
+        ];
 
         $currentDomain = $this->domainRepository->findOneByActiveRequest();
 

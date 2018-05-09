@@ -11,11 +11,11 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Flow\Mvc\Controller\ControllerContext;
 
 class NodeCreated extends AbstractFeedback
 {
@@ -90,6 +90,7 @@ class NodeCreated extends AbstractFeedback
     {
         $nodeService = new NodeService();
         $node = $this->getNode();
+
         return [
             'contextPath' => $node->getContextPath(),
             'identifier' => $node->getIdentifier(),

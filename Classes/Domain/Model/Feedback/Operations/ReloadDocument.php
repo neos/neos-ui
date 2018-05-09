@@ -11,13 +11,13 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
-use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Service\LinkingService;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
+use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
 class ReloadDocument extends AbstractFeedback
 {
@@ -107,9 +107,10 @@ class ReloadDocument extends AbstractFeedback
         }
         if ($documentNode = $this->nodeService->getClosestDocument($this->node)) {
             return [
-                'uri' => $this->linkingService->createNodeUri($controllerContext, $documentNode, null, null, true, array(), '', false, array(), false)
+                'uri' => $this->linkingService->createNodeUri($controllerContext, $documentNode, null, null, true, [], '', false, [], false)
             ];
         }
+
         return [];
     }
 }

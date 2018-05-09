@@ -21,7 +21,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\NodeSearchService;
 
 /**
-*/
+ */
 class SearchOperation extends AbstractOperation
 {
     /**
@@ -85,7 +85,7 @@ class SearchOperation extends AbstractOperation
         $term = isset($arguments[0]) ? $arguments[0] : null;
         $filterNodeTypeName = isset($arguments[1]) ? $arguments[1] : null;
 
-        $nodeTypes = strlen($filterNodeTypeName) > 0 ? array($filterNodeTypeName) : array_keys($this->nodeTypeManager->getSubNodeTypes('Neos.Neos:Document', false));
+        $nodeTypes = strlen($filterNodeTypeName) > 0 ? [$filterNodeTypeName] : array_keys($this->nodeTypeManager->getSubNodeTypes('Neos.Neos:Document', false));
 
         /** @var NodeInterface $contextNode */
         $contextNode = $flowQuery->getContext()[0];
@@ -95,7 +95,7 @@ class SearchOperation extends AbstractOperation
         if ($term) {
             $matchedNodes = $this->nodeSearchService->findByProperties($term, $nodeTypes, $context, $contextNode);
         } else {
-            $matchedNodes = array();
+            $matchedNodes = [];
             // Yep, an internal API. But that's what we used in the old UI.
             $nodeDataRecords = $this->nodeDataRepository->findByParentAndNodeTypeRecursively($contextNode->getPath(), implode(',', $nodeTypes), $context->getWorkspace(), $context->getDimensions());
             foreach ($nodeDataRecords as $nodeData) {

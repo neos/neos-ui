@@ -13,17 +13,17 @@ namespace Neos\Neos\Ui\TypeConverter;
 
 use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Property\TypeConverter\AbstractTypeConverter;
-use Neos\Flow\Property\PropertyMappingConfigurationInterface;
-use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
-use Neos\Utility\ObjectAccess;
-use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Property\PropertyMappingConfigurationInterface;
+use Neos\Flow\Property\TypeConverter\AbstractTypeConverter;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\Changes\Property;
+use Neos\Utility\ObjectAccess;
 
 /**
  * An Object Converter for ChangeCollections.
@@ -98,7 +98,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
      * @return mixed An object or \Neos\Error\Messages\Error if the input format is not supported or could not be converted for other reasons
      * @throws \Exception
      */
-    public function convertFrom($source, $targetType, array $subProperties = array(), PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $subProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
         if (!is_array($source)) {
             return new Error(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));

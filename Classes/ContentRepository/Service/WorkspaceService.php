@@ -11,14 +11,12 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
-use Neos\Neos\Domain\Model\User;
-use Neos\Neos\Service\UserService;
+use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
 use Neos\Neos\Service\PublishingService;
-use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\Neos\Service\UserService;
 
 /**
  * @Flow\Scope("singleton")

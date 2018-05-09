@@ -11,33 +11,33 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\Flow\Mvc\View\JsonView;
-use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
-use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
+use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;
 use Neos\Flow\Mvc\ResponseInterface;
+use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Service\ContentContextFactory;
 use Neos\Neos\Service\PublishingService;
 use Neos\Neos\Service\UserService;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
-use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\Redirect;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
-use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
-use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
+use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
 
 class BackendServiceController extends ActionController
 {
@@ -250,7 +250,7 @@ class BackendServiceController extends ActionController
     /**
      * Change base workspace of current user workspace
      *
-     * @param string $targetWorkspaceName,
+     * @param string $targetWorkspaceName ,
      * @param NodeInterface $documentNode
      * @return void
      * @throws \Exception
@@ -371,13 +371,13 @@ class BackendServiceController extends ActionController
         switch ($finisher['type']) {
             case 'get':
                 $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext());
-                break;
+            break;
             case 'getForTree':
                 $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext(), true);
-                break;
+            break;
             case 'getForTreeWithParents':
                 $result = $nodeInfoHelper->renderNodesWithParents($flowQuery->get(), $this->getControllerContext());
-                break;
+            break;
         }
 
         return json_encode($result);

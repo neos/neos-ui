@@ -35,7 +35,6 @@ class MoveInto extends AbstractMove
         $this->parentContextPath = $parentContextPath;
     }
 
-
     /**
      * Get the insertion mode (before|after|into) that is represented by this change
      *

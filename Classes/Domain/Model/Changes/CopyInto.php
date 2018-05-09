@@ -17,7 +17,6 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 class CopyInto extends AbstractCopy
 {
 
-
     /**
      * @var string
      */
@@ -61,7 +60,6 @@ class CopyInto extends AbstractCopy
 
         return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
     }
-
 
     public function getMode()
     {

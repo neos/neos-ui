@@ -11,10 +11,9 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * "children" operation working on ContentRepository nodes. It iterates over all
@@ -57,8 +56,8 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
      */
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
-        $output = array();
-        $outputNodePaths = array();
+        $output = [];
+        $outputNodePaths = [];
 
         $filter = isset($arguments[0]) ? $arguments[0] : null;
 

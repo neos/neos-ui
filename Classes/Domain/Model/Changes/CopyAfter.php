@@ -26,7 +26,6 @@ class CopyAfter extends AbstractCopy
         return $this->getSiblingNode()->getParent()->isNodeTypeAllowedAsChildNode($nodeType);
     }
 
-
     public function getMode()
     {
         return 'after';

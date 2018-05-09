@@ -11,17 +11,17 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
-use Neos\Error\Messages\Error;
-use Neos\Flow\Annotations as Flow;
-use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Model\Workspace;
-use Neos\ContentRepository\Domain\Utility\NodePaths;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
-use Neos\Neos\Domain\Model\Site;
-use Neos\Neos\Domain\Repository\SiteRepository;
+use Neos\ContentRepository\Domain\Utility\NodePaths;
+use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\Error\Messages\Error;
+use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Model\Domain;
+use Neos\Neos\Domain\Model\Site;
 use Neos\Neos\Domain\Repository\DomainRepository;
+use Neos\Neos\Domain\Repository\SiteRepository;
 
 /**
  * @Flow\Scope("singleton")
@@ -58,7 +58,8 @@ class NodeService
             return $node;
         }
 
-        $flowQuery = new FlowQuery(array($node));
+        $flowQuery = new FlowQuery([$node]);
+
         return $flowQuery->closest('[instanceof Neos.Neos:Document]')->get(0);
     }
 
@@ -141,11 +142,11 @@ class NodeService
      */
     protected function prepareContextProperties($workspaceName, array $dimensions = null)
     {
-        $contextProperties = array(
+        $contextProperties = [
             'workspaceName' => $workspaceName,
             'invisibleContentShown' => false,
             'removedContentShown' => false
-        );
+        ];
 
         if ($workspaceName !== 'live') {
             $contextProperties['invisibleContentShown'] = true;

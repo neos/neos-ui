@@ -11,9 +11,9 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\Service as ContentRepository;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Service as ContentRepository;
+use Neos\Flow\Annotations as Flow;
 
 abstract class AbstractCopy extends AbstractStructuralChange
 {

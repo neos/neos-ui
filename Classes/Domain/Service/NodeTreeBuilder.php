@@ -11,9 +11,9 @@ namespace Neos\Neos\Ui\Domain\Service;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 
@@ -141,6 +141,7 @@ class NodeTreeBuilder
 
     /**
      * Set the controller context
+     *
      * @param ControllerContext $controllerContext
      * @return void
      */

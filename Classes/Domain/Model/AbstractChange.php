@@ -11,12 +11,12 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\NodeCreated;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 
 abstract class AbstractChange implements ChangeInterface
@@ -90,6 +90,7 @@ abstract class AbstractChange implements ChangeInterface
      * Inform the client to reload the currently-displayed document, because the rendering has changed.
      *
      * This method will be triggered if [nodeType].properties.[propertyName].ui.reloadIfChanged is TRUE.
+     *
      * @param NodeInterface $node
      * @return void
      */
@@ -105,6 +106,7 @@ abstract class AbstractChange implements ChangeInterface
 
     /**
      * Inform the client that a node has been created, the client decides if and which tree should react to this change.
+     *
      * @param NodeInterface $subject
      * @return void
      */

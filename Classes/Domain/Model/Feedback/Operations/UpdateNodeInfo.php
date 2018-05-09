@@ -11,12 +11,12 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
-use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
-use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
+use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
+use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 class UpdateNodeInfo extends AbstractFeedback
 {

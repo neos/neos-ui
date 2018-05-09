@@ -12,22 +12,21 @@ namespace Neos\Neos\Ui\Aspects;
  * source code.
  */
 
-
+use Neos\ContentRepository\Domain\Service\NodeTypeManager;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivilege;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePropertyPrivilege;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSubject;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\PropertyAwareNodePrivilegeSubject;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\RemoveNodePrivilege;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
-use Neos\ContentRepository\Domain\Service\NodeTypeManager;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSubject;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\PropertyAwareNodePrivilegeSubject;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
 use Neos\Flow\Security\Policy\PolicyService;
 use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\RemoveNodePrivilege;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivilege;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePropertyPrivilege;
 
 /**
  * Add information to rendered nodes relevant to enforce the following privileges
@@ -82,7 +81,6 @@ class PolicyAspect
 
         return $usedPrivilegeClassNames;
     }
-
 
     /**
      * @Flow\Around("method(Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper->renderNode())")

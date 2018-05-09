@@ -11,13 +11,13 @@ namespace Neos\Neos\Ui\Domain\Service;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Model\NodeType;
+use Neos\ContentRepository\Domain\Service\Context;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
-use Neos\ContentRepository\Domain\Service\Context;
-use Neos\ContentRepository\Domain\Model\NodeType;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
 use Neos\Utility\Exception\InvalidTypeException;
 use Neos\Utility\TypeHandling;
@@ -92,6 +92,7 @@ class NodePropertyConversionService
                     $propertyMappingConfiguration->skipUnknownProperties();
                     $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
                     $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
+
                     return $this->propertyMapper->convert($rawValue, $propertyType, $propertyMappingConfiguration);
                 } else {
                     return $rawValue;
@@ -159,7 +160,7 @@ class NodePropertyConversionService
      */
     protected function convertInteger($rawValue)
     {
-        return (int) $rawValue;
+        return (int)$rawValue;
     }
 
     /**
@@ -171,10 +172,10 @@ class NodePropertyConversionService
     protected function convertBoolean($rawValue)
     {
         if (is_string($rawValue) && strtolower($rawValue) === 'false') {
-            return  false;
+            return false;
         }
 
-        return (bool) $rawValue;
+        return (bool)$rawValue;
     }
 
     /**
@@ -188,6 +189,7 @@ class NodePropertyConversionService
         if (is_string($rawValue)) {
             return json_decode($rawValue, true);
         }
+
         return $rawValue;
     }
 }

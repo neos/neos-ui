@@ -11,12 +11,11 @@ namespace Neos\Neos\Ui\View;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Fusion\View\FusionView;
 
 class BackendFusionView extends FusionView
 {
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
         $this->setFusionPathPattern('resource://Neos.Neos.Ui/Private/Fusion/Backend');

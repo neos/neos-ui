@@ -11,10 +11,10 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Repository\SiteRepository;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 class SitesHelper implements ProtectedContextAwareInterface
 {
@@ -23,7 +23,6 @@ class SitesHelper implements ProtectedContextAwareInterface
      * @var SiteRepository
      */
     protected $siteRepository;
-
 
     public function isActive(NodeInterface $siteNode)
     {

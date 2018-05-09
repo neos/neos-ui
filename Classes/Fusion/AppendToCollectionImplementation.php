@@ -11,7 +11,6 @@ namespace Neos\Neos\Ui\Fusion;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
 
 class AppendToCollectionImplementation extends AbstractFusionObject

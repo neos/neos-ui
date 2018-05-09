@@ -11,17 +11,17 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Service\Mapping\NodePropertyConverterService;
-use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\LinkingService;
+use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 
 /**
  * @Flow\Scope("singleton")
@@ -151,6 +151,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 $renderedNodes[] = $nodeInfo;
             }
         }
+
         return $renderedNodes;
     }
 
@@ -203,6 +204,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     {
         $nodes = [];
         $this->renderDocumentNodeAndChildContentInternal($nodes, $documentNode, $controllerContext);
+
         return $nodes;
     }
 
@@ -229,8 +231,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             // This happens when the document node os not published yet
             return '';
         }
+
         // Create an absolute URI without resolving shortcuts
-        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, array(), '', false, array(), false);
+        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, [], '', false, [], false);
     }
 
     /**

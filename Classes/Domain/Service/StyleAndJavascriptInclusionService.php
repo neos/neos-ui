@@ -41,7 +41,6 @@ class StyleAndJavascriptInclusionService
      */
     protected $defaultContext;
 
-
     /**
      * @Flow\InjectConfiguration(path="resources.javascript")
      * @var array
@@ -53,7 +52,6 @@ class StyleAndJavascriptInclusionService
      * @var array
      */
     protected $stylesheetResources;
-
 
     public function getHeadScripts()
     {

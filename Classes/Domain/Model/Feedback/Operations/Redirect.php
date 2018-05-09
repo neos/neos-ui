@@ -1,13 +1,13 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
-use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 class Redirect extends AbstractFeedback
 {
@@ -93,7 +93,8 @@ class Redirect extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         $node = $this->getNode();
-        $redirectUri = $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, array(), '', false, array(), false);
+        $redirectUri = $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, [], '', false, [], false);
+
         return [
             'redirectUri' => $redirectUri,
             'redirectContextPath' => $node->getContextPath()

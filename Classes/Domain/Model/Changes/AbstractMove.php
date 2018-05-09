@@ -41,6 +41,7 @@ abstract class AbstractMove extends AbstractStructuralChange
             $originalNode = $node;
             $node = clone $originalNode;
             $node->setNodeData(clone $originalNode->getNodeData());
+
             return $node;
         } else {
             // do a best-effort clone

@@ -26,7 +26,6 @@ class ActivationHelper implements ProtectedContextAwareInterface
      */
     protected $session;
 
-
     public function isLegacyBackendEnabled()
     {
         return $this->session->isStarted() && $this->session->getData('__neosLegacyUiEnabled__') ? true : false;

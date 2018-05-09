@@ -11,12 +11,12 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
-use Neos\Eel\ProtectedContextAwareInterface;
-use Neos\Utility\Arrays;
 use Neos\Neos\Security\Authorization\Privilege\ModulePrivilege;
 use Neos\Neos\Security\Authorization\Privilege\ModulePrivilegeSubject;
+use Neos\Utility\Arrays;
 
 class ModulesHelper implements ProtectedContextAwareInterface
 {

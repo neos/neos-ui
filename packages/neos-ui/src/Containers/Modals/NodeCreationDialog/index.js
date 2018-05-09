@@ -137,7 +137,6 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     renderSaveAction() {
-        const {isDirty, validationErrors} = this.state;
         return (
             <Button
                 id="neos-NodeCreationDialog-CreateNew"
@@ -145,7 +144,6 @@ export default class NodeCreationDialog extends PureComponent {
                 style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleApply}
-                disabled={validationErrors && isDirty}
                 >
                 <I18n id="Neos.Neos:Main:createNew" fallback="Create"/>
             </Button>

@@ -9223,11 +9223,11 @@ react-codemirror2@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-5.0.1.tgz#81eb8e17bfe859633a6855a9ce40307914d42891"
 
-react-collapse@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-4.0.3.tgz#b96de959ed0092a43534630b599a4753dd76d543"
+react-collapse@^5.0.0-alpha.0:
+  version "5.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-5.0.0-alpha.0.tgz#c71d95d427f4db336336dc9bcb74e94172cfc16a"
   dependencies:
-    prop-types "^15.5.8"
+    prop-types "^15.6.0"
 
 react-color@^2.11.4:
   version "2.13.8"

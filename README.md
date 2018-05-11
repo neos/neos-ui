@@ -13,7 +13,7 @@ The new interface supports all evergreen (i.e. self-updating) browsers, includin
 * Better editing experience for responsive websites.
 * Faster load times for the backend.
 * No reload constraint for the correct stylesheets on multi-site systems.
-* Updated Font-Awesome to v4.5.0 (old icon names are migrated on the fly).
+* Updated Font-Awesome to v5.0 (old icon names are migrated on the fly).
 
 
 ## Installation and usage

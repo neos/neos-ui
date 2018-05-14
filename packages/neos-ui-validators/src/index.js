@@ -17,8 +17,8 @@ const validate = (values, elementConfigurations, validatorRegistry) => {
     };
 
     const validateElement = (elementValue, elementConfiguration) => {
-        const validators = elementConfiguration.validation;
-        if (validators) {
+        if (elementConfiguration && elementConfiguration.validation) {
+            const validators = elementConfiguration.validation;
             const validationResults = Object.keys(validators).map(validatorName => {
                 const validatorConfiguration = validators[validatorName];
                 return checkValidator(elementValue, validatorName, validatorConfiguration);

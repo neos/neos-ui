@@ -34,7 +34,6 @@ export default class PreviewButton extends PureComponent {
                     id="neos-PreviewButton"
                     href={previewUrl ? previewUrl : ''}
                     target="neosPreview"
-                    rel="noopener noreferrer"
                     className={previewButtonClassNames}
                     aria-label={i18nRegistry.translate('Neos.Neos:Main:showPreview', 'Show Preview')}
                     >

@@ -75,9 +75,6 @@ Neos:
           'UI.Inspector.discard': 'd i'
           'UI.Inspector.escape': 'e i'
           'UI.Inspector.resume': 'r i'
-          'UI.Inspector.openSecondaryInspector': 'o s'
-          'UI.Inspector.closeSecondaryInspector': 'c s'
-          'UI.Inspector.toggleSecondaryInspector': 't s'
 
           'UI.NodeCreationDialog.back': 'b n'
           'UI.NodeCreationDialog.cancel': 'c n'

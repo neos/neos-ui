@@ -75,21 +75,6 @@ manifest('main.hotkeys', {}, (globalRegistry, {frontendConfiguration}) => {
         action: actions.UI.Inspector.resume
     });
 
-    hotkeyRegistry.set('UI.Inspector.openSecondaryInspector', {
-        description: 'Open Secondary Inspector',
-        action: actions.UI.Inspector.openSecondaryInspector
-    });
-
-    hotkeyRegistry.set('UI.Inspector.closeSecondaryInspector', {
-        description: 'Close Secondary Inspector',
-        action: actions.UI.Inspector.closeSecondaryInspector
-    });
-
-    hotkeyRegistry.set('UI.Inspector.toggleSecondaryInspector', {
-        description: 'Toggle Secondary Inspector',
-        action: actions.UI.Inspector.toggleSecondaryInspector
-    });
-
     hotkeyRegistry.set('UI.NodeCreationDialog.back', {
         description: 'NodeCreationDialog Back',
         action: actions.UI.NodeCreationDialog.back

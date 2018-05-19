@@ -90,6 +90,7 @@ Neos:
           'UI.SelectNodeTypeModal.cancel': 'c s'
           'UI.SelectNodeTypeModal.apply': 'a s'
 
+          'CR.Nodes.unfocus': 'u n'
 
         legacy:
           enableUiSwitch: false

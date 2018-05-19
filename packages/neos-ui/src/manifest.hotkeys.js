@@ -129,4 +129,9 @@ manifest('main.hotkeys', {}, (globalRegistry, {frontendConfiguration}) => {
         description: 'SelectNodeTypeModal Apply',
         action: actions.UI.SelectNodeTypeModal.apply
     });
+
+    hotkeyRegistry.set('CR.Nodes.unfocus', {
+        description: 'Unfocus Node',
+        action: actions.CR.Nodes.unFocus
+    });
 });

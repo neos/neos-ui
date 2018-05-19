@@ -54,8 +54,42 @@ Neos:
         #   someKey: someValue
 
         hotkeys:
+
           'UI.RightSideBar.toggle': 't i'
+
           'UI.FullScreen.toggle': 't f'
+          'UI.LeftSideBar.toggle': 't l'
+          'UI.LeftSideBar.toggleContentTree': 't c'
+
+          'UI.AddNodeModal.close': 'c m'
+
+          'UI.Drawer.toggle': 't d'
+
+          'UI.EditModePanel.toggle': 't e'
+
+          'UI.InsertionModeModal.cancel': 'c i'
+          'UI.InsertionModeModal.apply': 'a i'
+
+          'UI.ContentCanvas.reload': 'r c'
+
+          'UI.Inspector.discard': 'd i'
+          'UI.Inspector.escape': 'e i'
+          'UI.Inspector.resume': 'r i'
+          'UI.Inspector.openSecondaryInspector': 'o s'
+          'UI.Inspector.closeSecondaryInspector': 'c s'
+          'UI.Inspector.toggleSecondaryInspector': 't s'
+
+          'UI.NodeCreationDialog.back': 'b n'
+          'UI.NodeCreationDialog.cancel': 'c n'
+          'UI.NodeCreationDialog.apply': 'a n'
+
+          'UI.NodeVariantCreationDialog.cancel': 'c v'
+          'UI.NodeVariantCreationDialog.createEmpty': 'c e v'
+          'UI.NodeVariantCreationDialog.createAndCopy': 'c c v'
+
+          'UI.SelectNodeTypeModal.cancel': 'c s'
+          'UI.SelectNodeTypeModal.apply': 'a s'
+
 
         legacy:
           enableUiSwitch: false

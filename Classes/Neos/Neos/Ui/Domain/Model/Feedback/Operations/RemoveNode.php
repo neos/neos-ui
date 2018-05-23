@@ -12,10 +12,12 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  */
 
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
-class RemoveNode implements FeedbackInterface
+class RemoveNode extends AbstractFeedback
 {
     /**
      * @var NodeInterface
@@ -75,7 +77,7 @@ class RemoveNode implements FeedbackInterface
             return false;
         }
 
-        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
+        return $this->getNode()->getNodeIdentifier() === $feedback->getNode()->getNodeIdentifier();
     }
 
     /**
@@ -87,7 +89,7 @@ class RemoveNode implements FeedbackInterface
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
-            'contextPath' => $this->getNode()->getContextPath(),
+            'contextPath' => NodeAddress::fromNode($this->getNode())->serializeForUri(),
             'parentContextPath' => $this->getNode()->getParent()->getContextPath()
         ];
     }

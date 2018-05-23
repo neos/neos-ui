@@ -355,17 +355,17 @@ export default routes => {
         const data = new URLSearchParams();
         data.set('__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][username]', username);
         data.set('__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][password]', password);
-        // here, we
+        // Here, we
         return fetch(routes.core.login, {
             method: 'POST',
             body: data,
             credentials: 'same-origin'
         })
-        // parse the JSON if possible ...
+        // Parse the JSON if possible ...
         .then(response => response.json())
         // ... and if the JSON cannot be parsed, convert this to "false".
         .then(result => result, () => false)
-        // return the new CSRF Protection token
+        // Return the new CSRF Protection token
         .then(result => result && result.csrfToken);
     };
 

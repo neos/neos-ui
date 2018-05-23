@@ -20,10 +20,10 @@
     font-size: .5em;
 }
 .icon--paddedLeft {
-    padding-left: .75em;
+    margin-left: .75em;
 }
 .icon--paddedRight {
-    padding-right: .75em;
+    margin-right: .75em;
 }
 
 @keyframes fa-spin {

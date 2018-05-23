@@ -6,7 +6,7 @@ export default CKEDITOR => {
         const editor = event.editor;
         const editable = editor.editable();
         if (!CKEDITOR.dtd.$block[editable.getName()]) {
-            // for INLINE elements like SPANs, we need to do extra magic to make copy/paste behave well;
+            // For INLINE elements like SPANs, we need to do extra magic to make copy/paste behave well;
             // namely we can only insert plain text instead of styled markup; otherwise CKEditor breaks
             // the editable into two halves, resulting in markup such as:
             //     <span contenteditable="true" property="myProp">before caret</span>

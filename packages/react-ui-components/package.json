@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "1.0.7",
+  "version": "1.0.14",
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
@@ -19,10 +19,10 @@
     "postpublish": "greenkeeper-postpublish"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.0.7",
-    "@neos-project/build-essentials": "1.0.7",
-    "@neos-project/debug-reason-for-rendering": "1.0.7",
-    "@neos-project/jest-preset-neos-ui": "1.0.7",
+    "@neos-project/babel-preset-neos-ui": "1.0.14",
+    "@neos-project/build-essentials": "1.0.14",
+    "@neos-project/debug-reason-for-rendering": "1.0.14",
+    "@neos-project/jest-preset-neos-ui": "1.0.14",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/react": "3.2.16",
@@ -36,6 +36,7 @@
     "classnames": "^2.2.3",
     "lodash.debounce": "^4.0.8",
     "lodash.escaperegexp": "^4.1.2",
+    "lodash.isequal": "^4.5.0",
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
     "moment": "^2.14.1",
@@ -44,7 +45,7 @@
     "react": "^16.0.0",
     "react-click-outside": "^2.3.1",
     "react-close-on-escape": "^2.0.0",
-    "react-collapse": "^2.4.1",
+    "react-collapse": "^4.0.3",
     "react-css-themr": "^2.1.0",
     "react-datetime": "^2.8.10",
     "react-dnd": "^2.5.1",

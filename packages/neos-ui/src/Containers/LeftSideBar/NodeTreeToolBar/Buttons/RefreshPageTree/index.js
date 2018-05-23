@@ -9,6 +9,8 @@ export default class RefreshPageTree extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
 
+        id: PropTypes.string,
+
         isLoading: PropTypes.bool.isRequired,
 
         onClick: PropTypes.func.isRequired,
@@ -23,7 +25,7 @@ export default class RefreshPageTree extends PureComponent {
     }
 
     render() {
-        const {isLoading, className, i18nRegistry} = this.props;
+        const {isLoading, className, id, i18nRegistry} = this.props;
         const finalClassName = mergeClassNames({
             [style.spinning]: isLoading,
             [className]: className && className.length
@@ -32,9 +34,10 @@ export default class RefreshPageTree extends PureComponent {
         return (
             <IconButton
                 className={finalClassName}
+                id={id}
                 isDisabled={isLoading}
                 onClick={this.handleClick}
-                icon="refresh"
+                icon="sync"
                 hoverStyle="clean"
                 title={i18nRegistry.translate('refresh')}
                 />

@@ -13,10 +13,11 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
-class NodeCreated implements FeedbackInterface
+class NodeCreated extends AbstractFeedback
 {
     /**
      * @var NodeInterface

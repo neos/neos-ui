@@ -12,8 +12,6 @@ import NodeVariantCreationDialog from './Containers/Modals/NodeVariantCreationDi
 import ReloginDialog from './Containers/Modals/ReloginDialog/index';
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
 
-import FullScreen from './Containers/FullScreen/index';
-
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
 import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
@@ -55,8 +53,6 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('Modals/NodeVariantCreationDialog', NodeVariantCreationDialog);
     containerRegistry.set('Modals/ReloginDialog', ReloginDialog);
     containerRegistry.set('Modals/UnappliedChangesDialog', UnappliedChangesDialog);
-
-    containerRegistry.set('FullScreen', FullScreen);
 
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);

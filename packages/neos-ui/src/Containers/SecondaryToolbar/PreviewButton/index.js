@@ -31,24 +31,26 @@ export default class PreviewButton extends PureComponent {
         if (previewUrl) {
             return (
                 <a
+                    id="neos-PreviewButton"
                     href={previewUrl ? previewUrl : ''}
                     target="neosPreview"
                     rel="noopener noreferrer"
                     className={previewButtonClassNames}
                     aria-label={i18nRegistry.translate('Neos.Neos:Main:showPreview', 'Show Preview')}
                     >
-                    <Icon icon="external-link"/>
+                    <Icon icon="external-link-alt"/>
                 </a>
             );
         }
 
         return (
             <button
+                id="neos-PreviewButton"
                 className={previewButtonClassNames}
                 disabled
                 aria-label={i18nRegistry.translate('Neos.Neos:Main:showPreview', 'Show Preview')}
                 >
-                <Icon icon="external-link"/>
+                <Icon icon="external-link-alt"/>
             </button>
         );
     }

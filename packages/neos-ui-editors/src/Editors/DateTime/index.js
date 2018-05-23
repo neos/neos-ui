@@ -22,7 +22,8 @@ class DateTime extends PureComponent {
         options: PropTypes.object,
         id: PropTypes.string,
         i18nRegistry: PropTypes.object,
-        interfaceLanguage: PropTypes.string
+        interfaceLanguage: PropTypes.string,
+        validationErrors: PropTypes.array
     }
 
     render() {
@@ -34,7 +35,8 @@ class DateTime extends PureComponent {
             options,
             i18nRegistry,
             highlight,
-            interfaceLanguage
+            interfaceLanguage,
+            validationErrors
         } = this.props;
         const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
 
@@ -55,6 +57,8 @@ class DateTime extends PureComponent {
                 todayLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.today', 'Today', {}, 'Neos.Neos', 'Main')}
                 applyLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.apply', 'Apply', {}, 'Neos.Neos', 'Main')}
                 locale={interfaceLanguage}
+                validationErrors={validationErrors}
+                disabled={options.disabled}
                 />
         );
     }

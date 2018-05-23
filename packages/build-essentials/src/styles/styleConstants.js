@@ -20,7 +20,7 @@ const config = {
         secondaryToolbar: ['linkIconButtonFlyout'],
         flashMessageContainer: '2',
         loadingIndicatorContainer: '2',
-        secondaryInspector: ['context', 'close'],
+        secondaryInspector: ['context', 'iframe', 'close'],
         secondaryInspectorElevated: ['context', 'dropdownContents'],
         dialog: ['context'],
         fullScreenClose: ['context'],

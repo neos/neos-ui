@@ -6,9 +6,9 @@
         "bin-dir": "bin"
     },
     "require": {
-        "neos/neos-development-collection": "~3.2@dev",
+        "neos/neos-development-collection": "@dev",
         "neos/flow-development-collection": "@dev",
-        "neos/demo": "dev-master@dev",
+        "neos/demo": "@dev",
 
         "neos/neos-ui": "@dev",
         "neos/neos-ui-compiled": "@dev",
@@ -22,7 +22,7 @@
         "flowpack/neos-frontendlogin": "@dev",
         "neos/buildessentials": "@dev",
         "mikey179/vfsstream": "~1.6",
-        "phpunit/phpunit": "~6.0.0",
+        "phpunit/phpunit": "^7.1",
         "symfony/css-selector": "~2.0",
         "neos/behat": "dev-master"
     },

@@ -7,6 +7,8 @@ export default class CopySelectedNode extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
 
+        id: PropTypes.string,
+
         focusedNodeContextPath: PropTypes.string,
 
         onClick: PropTypes.func.isRequired,
@@ -27,6 +29,7 @@ export default class CopySelectedNode extends PureComponent {
     render() {
         const {
             className,
+            id,
             isDisabled,
             isActive,
             i18nRegistry
@@ -35,10 +38,11 @@ export default class CopySelectedNode extends PureComponent {
         return (
             <IconButton
                 className={className}
+                id={id}
                 isDisabled={isDisabled}
                 isActive={isActive}
                 onClick={this.handleClick}
-                icon="copy"
+                icon="far copy"
                 hoverStyle="clean"
                 title={i18nRegistry.translate('copy')}
                 />

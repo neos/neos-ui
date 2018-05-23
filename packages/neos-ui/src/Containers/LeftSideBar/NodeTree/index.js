@@ -17,7 +17,10 @@ export default class NodeTree extends PureComponent {
     static propTypes = {
         ChildRenderer: PropTypes.func,
         rootNode: PropTypes.object,
+        allowOpeningNodesInNewWindow: PropTypes.bool,
         nodeTypeRole: PropTypes.string,
+        contentCanvasSrc: PropTypes.string,
+        reload: PropTypes.func,
         toggle: PropTypes.func,
         focus: PropTypes.func,
         requestScrollIntoView: PropTypes.func,
@@ -36,19 +39,36 @@ export default class NodeTree extends PureComponent {
         toggle(contextPath);
     }
 
-    handleFocus = contextPath => {
-        const {focus} = this.props;
+    handleFocus = (contextPath, openInNewWindow) => {
+        const {focus, allowOpeningNodesInNewWindow} = this.props;
+        if (openInNewWindow && allowOpeningNodesInNewWindow) {
+            // We do not need to change focus if we open the clicked node in the new window.
+            return;
+        }
+
         focus(contextPath);
     }
 
-    handleClick = src => {
-        const {setActiveContentCanvasSrc, requestScrollIntoView} = this.props;
+    handleClick = (src, contextPath, openInNewWindow) => {
+        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView, allowOpeningNodesInNewWindow, reload, contentCanvasSrc} = this.props;
+        if (openInNewWindow && allowOpeningNodesInNewWindow) {
+            window.open(window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname + '?node=' + contextPath);
+            return;
+        }
+
         // Set a flag that will imperatively tell ContentCanvas to scroll to focused node
         if (requestScrollIntoView) {
             requestScrollIntoView(true);
         }
         if (setActiveContentCanvasSrc) {
             setActiveContentCanvasSrc(src);
+        }
+        if (setActiveContentCanvasContextPath) {
+            setActiveContentCanvasContextPath(contextPath);
+        }
+        // Trigger reload if clicking on the current document node
+        if (reload && contentCanvasSrc === src) {
+            reload();
         }
     }
 
@@ -99,18 +119,23 @@ export default class NodeTree extends PureComponent {
 
 export const PageTree = connect(state => ({
     rootNode: selectors.CR.Nodes.siteNodeSelector(state),
-    ChildRenderer: PageTreeNode
+    ChildRenderer: PageTreeNode,
+    allowOpeningNodesInNewWindow: true,
+    contentCanvasSrc: $get('ui.contentCanvas.src', state)
 }), {
     toggle: actions.UI.PageTree.toggle,
     focus: actions.UI.PageTree.focus,
+    reload: actions.UI.ContentCanvas.reload,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
+    setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath,
     moveNode: actions.CR.Nodes.move,
     requestScrollIntoView: null
 })(NodeTree);
 
 export const ContentTree = connect(state => ({
     rootNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
-    ChildRenderer: ContentTreeNode
+    ChildRenderer: ContentTreeNode,
+    allowOpeningNodesInNewWindow: false
 }), {
     toggle: actions.UI.ContentTree.toggle,
     focus: actions.CR.Nodes.focus,

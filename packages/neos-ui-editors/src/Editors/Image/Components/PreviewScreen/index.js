@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
 import mergeClassNames from 'classnames';
 import {AssetUpload} from '../../../../Library/index';
 
@@ -15,7 +14,8 @@ export default class PreviewScreen extends PureComponent {
         onClick: PropTypes.func.isRequired,
         isLoading: PropTypes.bool.isRequired,
         highlight: PropTypes.bool,
-        isUploadEnabled: PropTypes.bool.isRequired
+        isUploadEnabled: PropTypes.bool.isRequired,
+        disabled: PropTypes.bool
     };
 
     chooseFromLocalFileSystem() {
@@ -23,19 +23,21 @@ export default class PreviewScreen extends PureComponent {
     }
 
     renderPreview() {
-        const {image, onClick, highlight} = this.props;
+        const {image, onClick, highlight, disabled} = this.props;
 
         const classNames = mergeClassNames({
             [style.thumbnail]: true,
-            [style['thumbnail--highlight']]: highlight
+            [style['thumbnail--highlight']]: highlight,
+            [style['thumbnail--disabled']]: disabled
         });
 
         const thumbnail = image ? Thumbnail.fromImageData(image, 273, 216) : null;
+        const handleClick = () => disabled ? null : onClick;
 
         return (
             <div
                 className={classNames}
-                onClick={onClick}
+                onClick={handleClick()}
                 role="button"
                 >
                 <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
@@ -52,19 +54,6 @@ export default class PreviewScreen extends PureComponent {
 
     render() {
         const {afterUpload, isLoading, highlight, propertyName, isUploadEnabled} = this.props;
-
-        const classNames = mergeClassNames({
-            [style.thumbnail]: true,
-            [style['thumbnail--highlight']]: highlight
-        });
-
-        if (isLoading) {
-            return (
-                <div className={classNames}>
-                    <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader}/>
-                </div>
-            );
-        }
 
         if (isUploadEnabled) {
             return (

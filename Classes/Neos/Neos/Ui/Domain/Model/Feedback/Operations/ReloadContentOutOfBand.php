@@ -16,13 +16,15 @@ use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Context\Content\NodeAddress;
 use Neos\Neos\Domain\Context\Content\NodeAddressService;
-use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\View\FusionView;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Fusion\Core\Cache\ContentCache;
+use Neos\Fusion\Exception as FusionException;
+use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
+use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
+use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 
-class ReloadContentOutOfBand implements FeedbackInterface
+class ReloadContentOutOfBand extends AbstractFeedback
 {
     /**
      * @var NodeInterface
@@ -171,5 +173,16 @@ class ReloadContentOutOfBand implements FeedbackInterface
         $fusionView->setFusionPath($nodeDomAddress->getFusionPath());
 
         return $fusionView->render();
+    }
+
+    public function serialize(ControllerContext $controllerContext)
+    {
+        try {
+            return parent::serialize($controllerContext);
+        } catch (FusionException $e) {
+            // in case there was a rendering error, we just try to reload the document as fallback. Needed
+            // e.g. when adding validators to Neos.FormBuilder
+            return (new ReloadDocument())->serialize($controllerContext);
+        }
     }
 }

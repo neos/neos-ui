@@ -30,7 +30,7 @@ const startsWith = prefix => element => element.id.startsWith(prefix);
 
 export default class StyleSelect extends PureComponent {
     static propTypes = {
-        // the Registry ID/Key of the Style-Select component itself.
+        // The Registry ID/Key of the Style-Select component itself.
         id: PropTypes.string.isRequired,
 
         focusedNode: PropTypes.object,

@@ -164,6 +164,7 @@ export default class SelectNodeType extends PureComponent {
                 onRequestClose={this.handleCancel}
                 isOpen
                 style="wide"
+                id="neos-SelectNodeTypeDialog"
                 >
                 {this.getAllowedNodeTypesByCurrentInsertMode().map((group, key) => (
                     <div key={key}>

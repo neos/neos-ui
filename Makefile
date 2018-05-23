@@ -32,6 +32,9 @@
 # Add node_modules and composer binaries to $PATH
 export PATH := ./node_modules/.bin:./bin:$(PATH)
 
+# Add lerna alias as there are currently some MacOS problems
+# and putting it into the $PATH is simply not enough
+lerna = ./node_modules/.bin/lerna
 
 ################################################################################
 # Setup
@@ -83,10 +86,13 @@ build-production: clean install
 
 
 storybook:
-	lerna run --scope @neos-project/react-ui-components start
+	@mkdir -p ./packages/react-ui-components/node_modules/@neos-project/ && \
+		ln -s ../../../build-essentials/src \
+		./packages/react-ui-components/node_modules/@neos-project/build-essentials
+	$(lerna) run --scope @neos-project/react-ui-components start
 
 test:
-	lerna run test --concurrency 1
+	$(lerna) run test --concurrency 1
 
 test-e2e:
 	yarn run testcafe chrome:headless Tests/IntegrationTests/* \
@@ -95,7 +101,7 @@ test-e2e:
 lint: lint-js lint-editorconfig
 
 lint-js:
-	lerna run lint --concurrency 1
+	$(lerna) run lint --concurrency 1
 
 
 lint-editorconfig:
@@ -119,13 +125,13 @@ ifeq ($(VERSION),)
 endif
 
 bump-version: called-with-version
-	lerna publish \
+	$(lerna) publish \
 		--skip-git --exact --repo-version=$(VERSION) \
 		--yes --force-publish --skip-npm
 	./Build/createVersionFile.sh
 
 publish-npm: called-with-version
-	lerna publish --skip-git --exact --repo-version=$(VERSION) \
+	$(lerna) publish --skip-git --exact --repo-version=$(VERSION) \
 		--yes --force-publish
 
 tag: called-with-version
@@ -136,7 +142,7 @@ tag: called-with-version
 release: called-with-version check-requirements \
 	build-production \
 	lint lint-editorconfig \
-	test test-e2e \
+	test \
 	bump-version publish-npm tag
 	@echo
 	@echo
@@ -157,4 +163,6 @@ clean:
 	rm -Rf node_modules; rm -rf packages/*/node_modules
 
 
-.PHONY: $@
+# Make ALL targets phony targets
+# (Rebuild every time)
+.PHONY: *

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-contentrepository",
-  "version": "1.0.7",
+  "version": "1.0.14",
   "description": "Bindings for the Neos ContentRepository",
   "private": true,
   "main": "./src/manifest.js",
@@ -15,12 +15,12 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.0.7",
-    "@neos-project/build-essentials": "1.0.7",
-    "@neos-project/jest-preset-neos-ui": "1.0.7"
+    "@neos-project/babel-preset-neos-ui": "1.0.14",
+    "@neos-project/build-essentials": "1.0.14",
+    "@neos-project/jest-preset-neos-ui": "1.0.14"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "1.0.7"
+    "@neos-project/neos-ui-extensibility": "1.0.14"
   },
   "license": "GNU GPLv3",
   "jest": {

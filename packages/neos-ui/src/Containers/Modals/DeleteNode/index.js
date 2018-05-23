@@ -69,7 +69,7 @@ export default class DeleteNodeModal extends PureComponent {
     renderAbort() {
         return (
             <Button
-                id="neos-deleteNodeModal-cancel"
+                id="neos-DeleteNodeModal-Cancel"
                 key="cancel"
                 style="lighter"
                 hoverStyle="brand"
@@ -83,13 +83,13 @@ export default class DeleteNodeModal extends PureComponent {
     renderConfirm() {
         return (
             <Button
-                id="neos-deleteNodeModal-confirm"
+                id="neos-DeleteNodeModal-Confirm"
                 key="confirm"
                 style="warn"
                 hoverStyle="brand"
                 onClick={this.handleConfirm}
                 >
-                <I18n id="Neos.Neos:Main:confirm" fallback="Confirm"/>
+                <I18n id="Neos.Neos:Main:deleteConfirm" fallback="Confirm"/>
             </Button>
         );
     }
@@ -108,6 +108,7 @@ export default class DeleteNodeModal extends PureComponent {
                 title={this.renderTitle()}
                 onRequestClose={this.handleAbort}
                 isOpen
+                id="neos-DeleteNodeDialog"
                 >
                 <div className={style.modalContents}>
                     <I18n id="Neos.Neos:Main:content.navigate.deleteNodeDialog.header"/>

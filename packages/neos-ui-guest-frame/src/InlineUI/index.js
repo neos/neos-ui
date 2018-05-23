@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get, $contains} from 'plow-js';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import NodeToolbar from './NodeToolbar/index';
 
 import style from './style.css';
 
+@neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+}))
 @connect($transform({
     focused: $get('cr.nodes.focused'),
     focusedNode: selectors.CR.Nodes.focusedSelector,
@@ -22,6 +26,7 @@ export default class InlineUI extends PureComponent {
     static propTypes = {
         focused: PropTypes.object,
         focusedNode: PropTypes.object,
+        nodeTypesRegistry: PropTypes.object,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         requestScrollIntoView: PropTypes.func.isRequired,
         shouldScrollIntoView: PropTypes.bool.isRequired,
@@ -32,7 +37,12 @@ export default class InlineUI extends PureComponent {
     render() {
         const focused = this.props.focused.toJS();
         const focusedNodeContextPath = focused.contextPath;
-        const {shouldScrollIntoView, requestScrollIntoView, destructiveOperationsAreDisabled, clipboardMode, clipboardNodeContextPath} = this.props;
+        const {nodeTypesRegistry, focusedNode, shouldScrollIntoView, requestScrollIntoView, destructiveOperationsAreDisabled, clipboardMode, clipboardNodeContextPath} = this.props;
+        const isDocument = nodeTypesRegistry.hasRole($get('nodeType', focusedNode), 'document');
+        // Don't render toolbar for the document nodes
+        if (isDocument) {
+            return null;
+        }
         const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
         const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
         const canBeDeleted = $get('policy.canRemove', this.props.focusedNode);

@@ -97,12 +97,15 @@ abstract class AbstractChange implements ChangeInterface
      * Inform the client to reload the currently-displayed document, because the rendering has changed.
      *
      * This method will be triggered if [nodeType].properties.[propertyName].ui.reloadIfChanged is TRUE.
-     *
+     * @param NodeInterface $node
      * @return void
      */
-    protected function reloadDocument()
+    protected function reloadDocument($node = null)
     {
         $reloadDocument = new ReloadDocument();
+        if ($node) {
+            $reloadDocument->setNode($node);
+        }
 
         $this->feedbackCollection->add($reloadDocument);
     }

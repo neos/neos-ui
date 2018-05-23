@@ -12,6 +12,7 @@ import * as uiContentTree from './Sagas/UI/ContentTree/index';
 import * as uiEditPreviewMode from './Sagas/UI/EditPreviewMode/index';
 import * as uiInspector from './Sagas/UI/Inspector/index';
 import * as uiPageTree from './Sagas/UI/PageTree/index';
+import * as uiHotkeys from './Sagas/UI/Hotkeys/index';
 
 manifest('main.sagas', {}, globalRegistry => {
     //
@@ -51,6 +52,7 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/UI/ContentCanvas/watchControlOverIFrame', {saga: uiContentCanvas.watchControlOverIFrame});
     sagasRegistry.set('neos-ui/UI/ContentCanvas/watchNodeCreated', {saga: uiContentCanvas.watchNodeCreated});
     sagasRegistry.set('neos-ui/UI/ContentCanvas/watchStopLoading', {saga: uiContentCanvas.watchStopLoading});
+    sagasRegistry.set('neos-ui/UI/ContentCanvas/watchReload', {saga: uiContentCanvas.watchReload});
 
     sagasRegistry.set('neos-ui/UI/ContentTree/watchNodeFocus', {saga: uiContentTree.watchNodeFocus});
     sagasRegistry.set('neos-ui/UI/ContentTree/watchReloadTree', {saga: uiContentTree.watchReloadTree});
@@ -64,4 +66,6 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/UI/PageTree/watchRequestChildrenForContextPath', {saga: uiPageTree.watchRequestChildrenForContextPath});
     sagasRegistry.set('neos-ui/UI/PageTree/watchSearch', {saga: uiPageTree.watchSearch});
     sagasRegistry.set('neos-ui/UI/PageTree/watchToggle', {saga: uiPageTree.watchToggle});
+
+    sagasRegistry.set('neos-ui/UI/Hotkeys/handleHotkeys', {saga: uiHotkeys.handleHotkeys});
 });

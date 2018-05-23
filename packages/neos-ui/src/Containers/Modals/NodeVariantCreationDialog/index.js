@@ -87,7 +87,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
     renderCreateEmpty() {
         return (
             <Button
-                id="neos-nodeVariantCreationDialog-createEmpty"
+                id="neos-NodeVariantCreationDialog-CreateEmpty"
                 key="createEmpty"
                 style="lighter"
                 hoverStyle="brand"
@@ -101,7 +101,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
     renderCreateAndCopy() {
         return (
             <Button
-                id="neos-nodeVariantCreationDialog-createAndCopy"
+                id="neos-NodeVariantCreationDialog-CreateAndCopy"
                 key="createAndCopy"
                 style="lighter"
                 hoverStyle="brand"
@@ -144,6 +144,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 title={this.renderTitle()}
                 onRequestClose={this.handleAbort}
                 isOpen
+                id="neos-NodeVariantCreationDialog"
                 >
                 <div className={style.modalContents}>
                     <div>

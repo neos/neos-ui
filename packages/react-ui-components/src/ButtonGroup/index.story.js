@@ -16,20 +16,20 @@ storiesOf('ButtonGroup', module)
                     <IconButton
                         id="one"
                         style="lighter"
-                        icon="level-up"
+                        icon="level-up-alt"
                         title="One, active"
                         />
                     <IconButton
                         id="two"
                         style="lighter"
-                        icon="long-arrow-right"
+                        icon="long-arrow-alt-right"
                         isDisabled="true"
                         title="Two (disabled)"
                         />
                     <IconButton
                         id="three"
                         style="lighter"
-                        icon="level-down"
+                        icon="level-down-alt"
                         title="Three"
                         />
                 </ButtonGroup>

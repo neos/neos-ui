@@ -60,6 +60,7 @@ export default class EditModePanelToggler extends PureComponent {
 
         return (
             <Button
+                id="neos-EditModePanelToggler"
                 className={classNames}
                 style="clean"
                 hoverStyle="clean"

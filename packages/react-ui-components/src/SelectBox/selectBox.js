@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
 import mergeClassNames from 'classnames';
+import isEqual from 'lodash.isequal';
 
 // TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
@@ -45,7 +46,7 @@ export default class SelectBox extends PureComponent {
         /**
          * This prop represents the currently selected value.
          */
-        value: PropTypes.string,
+        value: PropTypes.any,
 
         /**
          * This prop gets called when an option was selected. It returns the new value.
@@ -67,12 +68,12 @@ export default class SelectBox extends PureComponent {
         placeholderIcon: PropTypes.string,
 
         /**
-         * text for the group label of options without a group
+         * Text for the group label of options without a group
          */
         withoutGroupLabel: PropTypes.string,
 
         /**
-         * if true, allows to clear the selected element completely (without choosing another one)
+         * If true, allows to clear the selected element completely (without choosing another one)
          */
         allowEmpty: PropTypes.bool,
 
@@ -82,7 +83,7 @@ export default class SelectBox extends PureComponent {
         showDropDownToggle: PropTypes.bool,
 
         /**
-         * limit height and show scrollbars if needed, defaults to true
+         * Limit height and show scrollbars if needed, defaults to true
          */
         scrollable: PropTypes.bool,
 
@@ -106,7 +107,7 @@ export default class SelectBox extends PureComponent {
         loadingLabel: PropTypes.string,
 
         /**
-         * helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
+         * Helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
          */
         displayLoadingIndicator: PropTypes.bool,
 
@@ -126,7 +127,7 @@ export default class SelectBox extends PureComponent {
         plainInputMode: PropTypes.bool,
 
         /**
-         * if set to true, the search box is directly focussed once the SelectBox is rendered;
+         * If set to true, the search box is directly focussed once the SelectBox is rendered;
          * such that the user can start typing right away.
          */
         setFocus: PropTypes.bool,
@@ -183,6 +184,7 @@ export default class SelectBox extends PureComponent {
             displayLoadingIndicator,
             ListPreviewElement,
             plainInputMode,
+            disabled,
 
             DropDown,
             SelectBox_ListPreview
@@ -190,15 +192,14 @@ export default class SelectBox extends PureComponent {
 
         const searchTerm = this.getSearchTerm();
 
-        const {
-            focusedValue,
-            isExpanded
-        } = this.state;
+        const focusedValue = this.state.focusedValue;
+        const isExpanded = disabled ? false : this.state.isExpanded;
 
         const headerClassName = mergeClassNames({
             [theme.selectBox__btn]: true,
             [theme['selectBox--highlight']]: highlight,
-            [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle
+            [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle,
+            [theme['selectBox--disabled']]: disabled
         });
 
         const optionValueAccessor = this.getOptionValueAccessor();
@@ -240,6 +241,7 @@ export default class SelectBox extends PureComponent {
             value,
             allowEmpty,
             plainInputMode,
+            disabled,
 
             SelectBox_HeaderWithSearchInput,
             SelectBox_Header
@@ -247,12 +249,14 @@ export default class SelectBox extends PureComponent {
         const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
 
-        const selectedOption = options.find(option => optionValueAccessor(option) === value);
+        // Compare selected value less strictly: allow loose comparision and deep equality of objects
+        const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
 
         if (displaySearchBox && (!value || plainInputMode)) {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
+                    disabled={disabled}
                     onSearchTermChange={this.handleSearchTermChange}
                     searchTerm={searchTerm}
                     onKeyDown={this.handleKeyDown}
@@ -287,6 +291,11 @@ export default class SelectBox extends PureComponent {
     }
 
     handleToggleExpanded = () => {
+        // Return earyl if disabled
+        if (this.props.disabled) {
+            return;
+        }
+
         let isExpanded;
         if (this.props.displaySearchBox) {
             if (this.props.value) {
@@ -298,7 +307,7 @@ export default class SelectBox extends PureComponent {
                 isExpanded = this.props.showDropDownToggle ? !this.state.isExpanded : true;
             }
         } else {
-            // if simple SelectBox, just toggle it
+            // If simple SelectBox, just toggle it
             isExpanded = !this.state.isExpanded;
         }
         this.setState({
@@ -341,7 +350,7 @@ export default class SelectBox extends PureComponent {
 
     handleKeyDown = e => {
         if (this.state.isExpanded && e && ['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
-            // do not scroll while we are doing keyboard interaction
+            // Do not scroll while we are doing keyboard interaction
             e.preventDefault();
 
             const {options} = this.props;

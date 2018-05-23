@@ -52,9 +52,16 @@ export default class ContentCanvas extends PureComponent {
         loadedSrc: ''
     };
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.src !== this.props.src) {
+    // Make sure we skip the loading bar update when triggered from inline
+    // We don't need to put this into state
+    skipNextLoaderStatusUpdate = false;
+
+    componentDidUpdate(prevProps) {
+        // Start loading as soon as the src has changed, but watch out for skipNextLoaderStatusUpdate
+        if (this.props.src !== prevProps.src && !this.skipNextLoaderStatusUpdate) {
             this.props.startLoading();
+        } else {
+            this.skipNextLoaderStatusUpdate = false;
         }
     }
 
@@ -82,24 +89,30 @@ export default class ContentCanvas extends PureComponent {
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
         const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode];
 
-        const inlineStyles = {};
         const width = $get('width', currentEditPreviewModeConfiguration);
         const height = $get('height', currentEditPreviewModeConfiguration);
-        if (width) {
-            inlineStyles.width = width;
-        }
-        if (height) {
-            inlineStyles.height = height;
-        }
 
         const canvasContentStyle = {};
+        const inlineStyles = {};
+        const canvasContentOnlyStyle = {};
+
+        if (width) {
+            inlineStyles.width = width;
+            canvasContentOnlyStyle.overflow = 'auto';
+        }
+
+        if (height) {
+            inlineStyles.height = height;
+            canvasContentOnlyStyle.overflow = 'auto';
+        }
+
         if (backgroundColor) {
             canvasContentStyle.background = backgroundColor;
         }
 
         // ToDo: Is the `[data-__neos__hook]` attr used?
         return (
-            <div className={classNames} style={canvasContentStyle}>
+            <div className={classNames} style={{...canvasContentStyle, ...canvasContentOnlyStyle}}>
                 <div id="centerArea"/>
                 <div
                     className={style.contentCanvas__itemWrapper}
@@ -115,6 +128,7 @@ export default class ContentCanvas extends PureComponent {
                         mountTarget="#neos-new-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         onLoad={this.handleFrameAccess}
+                        onUnload={this.handelLoadStart}
                         role="region"
                         aria-live="assertive"
                         >
@@ -125,15 +139,18 @@ export default class ContentCanvas extends PureComponent {
         );
     }
 
+    handelLoadStart = () => {
+        this.props.startLoading();
+    };
+
     onFrameChange = (iframeWindow, iframeDocument) => {
         if (iframeDocument.__isInitialized) {
             return;
         }
 
         const {stopLoading} = this.props;
-
+        this.skipNextLoaderStatusUpdate = true;
         iframeDocument.__isInitialized = true;
-
         stopLoading();
     }
 

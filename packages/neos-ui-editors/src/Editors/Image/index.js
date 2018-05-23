@@ -24,6 +24,7 @@ export default class ImageEditor extends Component {
     state = {
         image: null,
         isImageCropperOpen: false,
+        requestOpenImageCropper: false,
         isAssetLoading: false
     };
 
@@ -104,6 +105,16 @@ export default class ImageEditor extends Component {
                         this.setState({
                             image,
                             isAssetLoading: false
+                        }, () => {
+                            // When forceCrop option is enabled and we were requested to do the force cropping...
+                            if (this.state.requestOpenImageCropper && $get('crop.aspectRatio.forceCrop', this.props.options)) {
+                                this.handleCloseSecondaryScreen();
+                                this.handleOpenImageCropper();
+                                this.setState({requestOpenImageCropper: false});
+                            } else if (this.state.isImageCropperOpen) {
+                                this.handleCloseSecondaryScreen();
+                                this.handleOpenImageCropper();
+                            }
                         });
                     }
                 });
@@ -116,14 +127,11 @@ export default class ImageEditor extends Component {
     }
 
     afterUpload = uploadResult => {
-        const {commit} = this.props;
-        const {isImageCropperOpen} = this.state;
-
-        commit(uploadResult.object);
-        if (isImageCropperOpen) {
-            this.handleCloseSecondaryScreen();
-            this.handleOpenImageCropper();
-        }
+        this.props.commit(uploadResult.object);
+        this.setState({
+            requestOpenImageCropper: true,
+            isAssetLoading: false
+        });
     }
 
     handleMediaCrop = cropArea => {
@@ -143,6 +151,7 @@ export default class ImageEditor extends Component {
         commit(value, {
             'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
         });
+        this.setState({isImageCropperOpen: false});
     }
 
     handleResize = resizeAdjustment => {
@@ -187,6 +196,7 @@ export default class ImageEditor extends Component {
         }, () => {
             commit(newAsset);
             this.handleCloseSecondaryScreen();
+            this.setState({requestOpenImageCropper: true});
         });
     }
 
@@ -209,6 +219,7 @@ export default class ImageEditor extends Component {
 
     handleChooseFile = () => {
         this.previewScreen.chooseFromLocalFileSystem();
+        this.setState({isAssetLoading: true});
     }
 
     handleChooseFromMedia = () => {
@@ -239,6 +250,7 @@ export default class ImageEditor extends Component {
             image
         } = this.state;
         const {highlight} = this.props;
+        const disabled = $get('options.disabled', this.props);
 
         return (
             <div className={style.imageEditor}>
@@ -251,6 +263,7 @@ export default class ImageEditor extends Component {
                     highlight={highlight}
                     onClick={this.handleThumbnailClicked}
                     isUploadEnabled={this.isFeatureEnabled('upload')}
+                    disabled={disabled}
                     />
                 <Controls
                     onChooseFromMedia={this.handleChooseFromMedia}
@@ -259,6 +272,7 @@ export default class ImageEditor extends Component {
                     isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')}
                     onRemove={image ? this.handleRemoveFile : null}
                     onCrop={image ? this.isFeatureEnabled('crop') && this.handleOpenImageCropper : null}
+                    disabled={disabled}
                     />
                 {this.isFeatureEnabled('resize') && <ResizeControls
                     onChange={this.handleResize}
@@ -267,6 +281,7 @@ export default class ImageEditor extends Component {
                         width: $get('originalDimensions.width', image),
                         height: $get('originalDimensions.height', image)
                     }}
+                    disabled={disabled}
                     />}
             </div>
         );

@@ -96,7 +96,7 @@ export default class InsertModeSelector extends PureComponent {
                         isDisabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
-                        icon="level-up"
+                        icon="level-up-alt"
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('before')}`}
                         />
                     <IconButton
@@ -104,7 +104,7 @@ export default class InsertModeSelector extends PureComponent {
                         isDisabled={!enableIntoMode}
                         style="lighter"
                         size="small"
-                        icon="long-arrow-right"
+                        icon="long-arrow-alt-right"
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('into')}`}
                         />
                     <IconButton
@@ -112,7 +112,7 @@ export default class InsertModeSelector extends PureComponent {
                         isDisabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
-                        icon="level-down"
+                        icon="level-down-alt"
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('after')}`}
                         />
                 </ButtonGroup>

@@ -1,16 +1,14 @@
-import './fontAwesome/font-face.css';
-import icons from './fontAwesome/icons.css';
+import fontawesome from '@fortawesome/fontawesome';
+import brands from '@fortawesome/fontawesome-free-brands';
+import solid from '@fortawesome/fontawesome-free-solid';
+import regular from '@fortawesome/fontawesome-free-regular';
 import {themr} from 'react-css-themr';
 import identifiers from './../identifiers.js';
-import injectProps from './../_lib/injectProps.js';
-import {makeValidateId, makeGetClassName} from './../_lib/fontAwesome.js';
 import style from './style.css';
 import Icon from './icon.js';
 
+fontawesome.library.add(brands, solid, regular);
+
 const ThemedIcon = themr(identifiers.icon, style)(Icon);
 
-export default injectProps({
-    iconMap: icons,
-    _makeValidateId: makeValidateId,
-    _makeGetClassName: makeGetClassName
-})(ThemedIcon);
+export default ThemedIcon;

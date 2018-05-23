@@ -24,7 +24,8 @@ export default class ReferencesEditor extends PureComponent {
         onSearchTermChange: PropTypes.func,
         onCreateNew: PropTypes.func,
         commit: PropTypes.func.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired,
+        disabled: PropTypes.bool
     };
 
     handleValueChange = value => {
@@ -53,6 +54,7 @@ export default class ReferencesEditor extends PureComponent {
             searchOptions={this.props.searchOptions}
             onSearchTermChange={this.props.onSearchTermChange}
             onCreateNew={this.props.onCreateNew}
+            disabled={this.props.disabled}
             />);
     }
 }

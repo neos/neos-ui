@@ -167,6 +167,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'depth' => self::getDepth($node, $subgraph),
             'children' => [],
         ];
+        // It's important to not set `isFullyLoaded` to false by default, so the state would get merged correctly
+        if (!$omitMostPropertiesForTreeState) {
+            $nodeInfo['isFullyLoaded'] = true;
+        }
         if ($controllerContext !== null && $node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
             $workspace = $this->workspaceFinder->findOneByCurrentContentStreamIdentifier($node->getContentStreamIdentifier());
             if ($workspace) {

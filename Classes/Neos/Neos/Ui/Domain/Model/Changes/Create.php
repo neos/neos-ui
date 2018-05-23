@@ -13,6 +13,15 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class Create extends AbstractCreate
 {
+
+    /**
+     * @param string $parentContextPath
+     */
+    public function setParentContextPath($parentContextPath)
+    {
+        // this method needs to exist; otherwise the TypeConverter breaks.
+    }
+
     /**
      * Get the insertion mode (before|after|into) that is represented by this change
      *

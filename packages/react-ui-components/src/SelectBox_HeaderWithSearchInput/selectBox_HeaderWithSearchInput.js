@@ -19,6 +19,7 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
         searchTerm: PropTypes.string.isRequired,
         onSearchTermChange: PropTypes.func.isRequired,
         setFocus: PropTypes.bool,
+        disabled: PropTypes.bool,
 
         // For keyboard handling
         onKeyDown: PropTypes.func,
@@ -48,7 +49,8 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
             theme,
             Icon,
             TextInput,
-            IconButton
+            IconButton,
+            disabled
         } = this.props;
 
         const clearSearch = event => {
@@ -71,6 +73,7 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
                     placeholder={placeholder}
                     setFocus={setFocus}
                     type="search"
+                    disabled={disabled}
                     />
                 {displayLoadingIndicator && <Icon className={theme.selectBoxHeaderWithSearchInput__icon} spin={true} icon="spinner"/>}
                 {searchTerm && <IconButton className={theme.selectBoxHeaderWithSearchInput__icon} icon="times" onClick={clearSearch}/>}

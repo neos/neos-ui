@@ -61,7 +61,7 @@
     }
 }
 .dropDown__itemIcon {
-    padding-right: .5em;
+    margin-right: .5em;
 }
 .dropDown__clear {
     position: absolute;

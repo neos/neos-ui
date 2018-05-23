@@ -61,7 +61,7 @@ function * application() {
     //
     ReactDOM.render(
         <div style={{width: '100vw', height: '100vh', backgroundColor: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '30px'}}>
-            <Icon icon="circle-o-notch" label="Loading..." spin={true} size="big"/>
+            <Icon icon="circle-notch" label="Loading..." spin={true} size="big"/>
         </div>,
         appContainer
     );
@@ -76,19 +76,19 @@ function * application() {
     //
     const frontendConfiguration = yield system.getFrontendConfiguration;
 
+    const configuration = yield system.getConfiguration;
+
+    const routes = yield system.getRoutes;
+
     //
     // Initialize extensions
     //
     manifests
         .map(manifest => manifest[Object.keys(manifest)[0]])
-        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration}));
+        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration, configuration, routes}));
 
     const reducers = globalRegistry.get('reducers').getAllAsList().map(element => element.reducer);
     delegatingReducer.setReducer(handleActions(reducers));
-
-    const configuration = yield system.getConfiguration;
-
-    const routes = yield system.getRoutes;
 
     //
     // Bootstrap the saga middleware with initial sagas

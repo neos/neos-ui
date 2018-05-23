@@ -22,6 +22,7 @@ export default class PropertyGroup extends PureComponent {
         renderSecondaryInspector: PropTypes.func.isRequired,
 
         node: PropTypes.object.isRequired,
+        handlePanelToggle: PropTypes.func.isRequired,
         commit: PropTypes.func.isRequired
     };
 
@@ -30,50 +31,53 @@ export default class PropertyGroup extends PureComponent {
     };
 
     render() {
-        const {properties, views, label, icon, collapsed, renderSecondaryInspector, node, commit} = this.props;
+        const {items, label, icon, collapsed, handlePanelToggle, renderSecondaryInspector, node, commit} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
 
-        const propertyGroup = properties => (
-            <ToggablePanel isOpen={!collapsed} className={sidebarStyle.rightSideBar__section}>
+        const propertyGroup = items => (
+            <ToggablePanel onPanelToggle={handlePanelToggle} isOpen={!collapsed} className={sidebarStyle.rightSideBar__section}>
                 <ToggablePanel.Header theme={headerTheme}>
                     {icon && <Icon icon={icon}/>} <I18n id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
-                    {properties.map(property => {
-                        const propertyId = $get('id', property);
-                        return (
-                            <InspectorEditorEnvelope
-                                key={$get('contextPath', node) + propertyId}
-                                id={propertyId}
-                                label={$get('label', property)}
-                                editor={$get('editor', property)}
-                                options={$get('editorOptions', property) && $get('editorOptions', property).toJS ? $get('editorOptions', property).toJS() : $get('editorOptions', property)}
-                                renderSecondaryInspector={renderSecondaryInspector}
-                                node={node}
-                                commit={commit}
-                                />);
-                    })}
-                    {views.map(view => {
-                        const viewId = $get('id', view);
-                        return (
-                            <InspectorViewEnvelope
-                                key={$get('contextPath', node) + viewId}
-                                id={viewId}
-                                label={$get('label', view)}
-                                view={$get('view', view)}
-                                options={$get('viewOptions', view) && $get('viewOptions', view).toJS ? $get('viewOptions', view).toJS() : $get('viewOptions', view)}
-                                renderSecondaryInspector={renderSecondaryInspector}
-                                node={node}
-                                commit={commit}
-                                />);
+                    {items.map(item => {
+                        const itemId = $get('id', item);
+                        const itemType = $get('type', item);
+                        if (itemType === 'editor') {
+                            return (
+                                <InspectorEditorEnvelope
+                                    key={$get('contextPath', node) + itemId}
+                                    id={itemId}
+                                    label={$get('label', item)}
+                                    editor={$get('editor', item)}
+                                    options={$get('editorOptions', item) && $get('editorOptions', item).toJS ? $get('editorOptions', item).toJS() : $get('editorOptions', item)}
+                                    renderSecondaryInspector={renderSecondaryInspector}
+                                    node={node}
+                                    commit={commit}
+                                    />);
+                        }
+                        if (itemType === 'view') {
+                            return (
+                                <InspectorViewEnvelope
+                                    key={$get('contextPath', node) + itemId}
+                                    id={itemId}
+                                    label={$get('label', item)}
+                                    view={$get('view', item)}
+                                    options={$get('viewOptions', item) && $get('viewOptions', item).toJS ? $get('viewOptions', item).toJS() : $get('viewOptions', item)}
+                                    renderSecondaryInspector={renderSecondaryInspector}
+                                    node={node}
+                                    commit={commit}
+                                    />);
+                        }
+                        return null;
                     })}
                 </ToggablePanel.Contents>
             </ToggablePanel>
         );
         const fallback = () => (<div>...</div>);
 
-        return Maybe.fromNull(properties).map(propertyGroup).orSome(fallback());
+        return Maybe.fromNull(items).map(propertyGroup).orSome(fallback());
     }
 }

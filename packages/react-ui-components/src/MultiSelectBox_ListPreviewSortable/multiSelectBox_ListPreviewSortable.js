@@ -64,7 +64,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
 
         const {draggableValues} = this.state;
 
-        // sorted options by draggable value ordering
+        // Sorted options by draggable value ordering
         const draggableOptions = draggableValues.map(value =>
             options.find(option => optionValueAccessor(option) === value)
         ).filter(Boolean);

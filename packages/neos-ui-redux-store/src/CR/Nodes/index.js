@@ -306,7 +306,15 @@ export const reducer = handleActions({
             )
         )),
     ),
-    [FOCUS]: ({contextPath, fusionPath}) => $set('cr.nodes.focused', new Map({contextPath, fusionPath})),
+    [FOCUS]: ({contextPath, fusionPath}) => state => $all(
+        $set('cr.nodes.focused', new Map({contextPath, fusionPath})),
+        // Set currentlyEditedPropertyName to currentlyEditedPropertyNameIntermediate and clear out currentlyEditedPropertyNameIntermediate
+        // This is needed because SET_CURRENTLY_EDITED_PROPERTY_NAME if fired before SET_FOCUS, but we still want to clear out currentlyEditedPropertyName
+        // when SET_FOCUS is triggered not from inline
+        $set('ui.contentCanvas.currentlyEditedPropertyName', $get('ui.contentCanvas.currentlyEditedPropertyNameIntermediate', state)),
+        $set('ui.contentCanvas.currentlyEditedPropertyNameIntermediate', ''),
+        state
+    ),
     [UNFOCUS]: () => $set('cr.nodes.focused', new Map({
         contextPath: '',
         fusionPath: ''
@@ -349,9 +357,9 @@ export const reducer = handleActions({
                     return $set(
                         ['cr', 'nodes', 'byContextPath', contextPath, 'uri'],
                         nodeUri
-                            // node with changes uriPathSegment
+                            // Node with changes uriPathSegment
                             .replace(oldUriFragment + '@', newUriFragment + '@')
-                            // descendant of a node with changed uriPathSegment
+                            // Descendant of a node with changed uriPathSegment
                             .replace(oldUriFragment + '/', newUriFragment + '/')
                     );
                 }

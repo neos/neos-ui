@@ -38,7 +38,7 @@ class AspectRatioItem extends PureComponent {
                     disabled={isLocked}
                     />
                 <IconButton
-                    icon="exchange"
+                    icon="exchange-alt"
                     disabled={isLocked}
                     onClick={this.props.onFlipAspectRatio}
                     />
@@ -188,6 +188,7 @@ export default class ImageCropper extends PureComponent {
                     crop={cropConfiguration.cropInformation}
                     onComplete={onComplete}
                     onAspectRatioChange={onComplete}
+                    onImageLoaded={onComplete}
                     />
             </div>
         );

@@ -42,7 +42,7 @@ export default class SecondaryToolbar extends PureComponent {
         const {containerRegistry, currentlyEditedPropertyName, hasFocusedContentNode} = this.props;
         const DimensionSwitcher = containerRegistry.get('SecondaryToolbar/DimensionSwitcher');
 
-        if (!hasFocusedContentNode) {
+        if (!hasFocusedContentNode && !currentlyEditedPropertyName) {
             return DimensionSwitcher;
         }
 
@@ -69,7 +69,7 @@ export default class SecondaryToolbar extends PureComponent {
             [style['secondaryToolbar--isFringeLeft']]: isFringedLeft,
             [style['secondaryToolbar--isFringeRight']]: isFringedRight,
             [style['secondaryToolbar--isMovedDown']]: !isEditModePanelHidden,
-            [style['secondaryToolbar--isHidden']]: isFullScreen
+            [style['secondaryToolbar--fullScreen']]: isFullScreen
         });
 
         const Toolbar = this.getToolbarComponent();

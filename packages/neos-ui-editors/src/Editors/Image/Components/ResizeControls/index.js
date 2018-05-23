@@ -59,6 +59,7 @@ const ResizeControls = props => {
                             onChange={toggleResizeAdjustment(props)}
                             isChecked={Boolean(props.resizeAdjustment)}
                             className={style.resizeControls__checkbox}
+                            isDisabled={props.disabled}
                             />
                     </span>
                     <span className={style.resizeControls__main}>
@@ -69,6 +70,7 @@ const ResizeControls = props => {
                             min="0"
                             value={$get('width', props.resizeAdjustment) || $get('width', props.imageDimensions) || 0}
                             onChange={onChangeValue(props, 'width')}
+                            disabled={props.disabled}
                             />
                     </span>
                     <span className={style.resizeControls__after}>px</span>
@@ -82,6 +84,7 @@ const ResizeControls = props => {
                             onChange={toggleResizeAdjustment(props)}
                             isChecked={Boolean(props.resizeAdjustment)}
                             className={style.resizeControls__checkbox}
+                            isDisabled={props.disabled}
                             />
                     </span>
                     <span className={style.resizeControls__main}>
@@ -92,6 +95,7 @@ const ResizeControls = props => {
                             min="0"
                             value={$get('height', props.resizeAdjustment) || $get('height', props.imageDimensions) || 0}
                             onChange={onChangeValue(props, 'height')}
+                            disabled={props.disabled}
                             />
                     </span>
                     <span className={style.resizeControls__after}>px</span>

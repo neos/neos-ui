@@ -26,7 +26,8 @@ class LinkEditor extends PureComponent {
         highlight: PropTypes.bool,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-            placeholder: PropTypes.string
+            placeholder: PropTypes.string,
+            disabled: PropTypes.bool
         }),
 
         contextForNodeLinking: PropTypes.shape({
@@ -61,7 +62,7 @@ class LinkEditor extends PureComponent {
 
         if (isUri(this.props.value)) {
             const options = [{
-                icon: 'icon-external-link',
+                icon: 'external-link-alt',
                 identifier: this.props.value,
                 label: this.props.value,
                 loaderUri: this.props.value
@@ -93,7 +94,7 @@ class LinkEditor extends PureComponent {
         this.setState({searchTerm});
         if (isUri(searchTerm)) {
             const searchOptions = [{
-                icon: 'icon-external-link',
+                icon: 'external-link-alt',
                 identifier: searchTerm,
                 label: searchTerm,
                 loaderUri: searchTerm
@@ -104,7 +105,7 @@ class LinkEditor extends PureComponent {
                 searchOptions
             });
         } else if (!searchTerm && isUri(this.props.value)) {
-            // the user emptied the URL value, so we need to reset it
+            // The user emptied the URL value, so we need to reset it
             this.props.commit('');
         } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
@@ -148,6 +149,7 @@ class LinkEditor extends PureComponent {
                 ListPreviewElement={LinkOption}
                 noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                 searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                disabled={this.props.options.disabled}
                 />
         );
     }

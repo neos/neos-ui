@@ -19,7 +19,6 @@ use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\ContentRepository\Domain\Projection\Content\TraversableNode;
 use Neos\ContentRepository\Domain\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\Domain\ValueObject\DimensionSpacePoint;
-use Neos\ContentRepository\Domain\ValueObject\NodeAggregateIdentifier;
 use Neos\ContentRepository\Domain\ValueObject\NodeName;
 use Neos\ContentRepository\Domain\ValueObject\NodeTypeName;
 use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
@@ -154,7 +153,7 @@ class BackendController extends ActionController
     public function indexAction(string $workspaceName = null, string $dimensionSpacePoint = null, string $documentNodeAggregateIdentifier = null)
     {
         $this->session->start();
-        $this->session->putData('__neosEnabled__', true);
+        $this->session->putData('__neosLegacyUiEnabled__', false);
         $user = $this->userService->getBackendUser();
 
         if ($user === null) {
@@ -201,7 +200,6 @@ class BackendController extends ActionController
      */
     protected function getSiteNodeForLoggedInUser()
     {
-
     }
 
     /**

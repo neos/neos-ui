@@ -1,4 +1,5 @@
 import {takeEvery, put, select} from 'redux-saga/effects';
+import {$get} from 'plow-js';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
@@ -9,7 +10,8 @@ import {
     getGuestFrameDocument,
     findAllNodesInGuestFrame,
     findInGuestFrame,
-    findNodeInGuestFrame
+    findNodeInGuestFrame,
+    dispatchCustomEvent
 } from './dom';
 
 import style from './style.css';
@@ -57,8 +59,9 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     yield put(actions.UI.ContentCanvas.setContextPath(documentInformation.metaData.contextPath, documentInformation.metaData.siteNode));
     yield put(actions.UI.ContentCanvas.setPreviewUrl(documentInformation.metaData.previewUrl));
     yield put(actions.CR.ContentDimensions.setActive(documentInformation.metaData.contentDimensions.active));
-    // the user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content
-    yield put(actions.UI.ContentCanvas.setSrc(documentInformation.metaData.url));
+    // The user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content.
+    // We need to set the src to the actual src of the iframe, and not retrive it from documentInformation, as it may differ, e.g. contain additional arguments.
+    yield put(actions.UI.ContentCanvas.setSrc(guestFrameWindow.document.location.href));
 
     // TODO: use one action instead of 5
     yield put(actions.UI.ContentCanvas.loaded(documentInformation.metaData.workspaceName, documentInformation.metaData.dimensionSpacePoint, documentInformation.metaData.documentNodeAggregateIdentifier));
@@ -71,6 +74,11 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             domNode.getAttribute &&
             domNode.getAttribute('data-__neos__inline-ui')
         );
+        const isInsideEditableProperty = clickPath.some(domNode =>
+            domNode &&
+            domNode.getAttribute &&
+            domNode.getAttribute('data-__neos-property')
+        );
         const selectedDomNode = clickPath.find(domNode =>
             domNode &&
             domNode.getAttribute &&
@@ -82,14 +90,17 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         } else if (selectedDomNode) {
             const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
             const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
-
-            store.dispatch(
-                actions.CR.Nodes.focus(contextPath, fusionPath)
-            );
+            const state = store.getState();
+            const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
+            if (!isInsideEditableProperty) {
+                store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
+            }
+            if (!isInsideEditableProperty || focusedNodeContextPath !== contextPath) {
+                store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
+            }
         } else {
-            store.dispatch(
-                actions.CR.Nodes.unFocus()
-            );
+            store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
+            store.dispatch(actions.CR.Nodes.unFocus());
         }
     };
 
@@ -113,7 +124,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         });
 
         requestIdleCallback(() => {
-            // only of guest frame document did not change in the meantime, we continue initializing the node
+            // Only of guest frame document did not change in the meantime, we continue initializing the node
             if (getGuestFrameDocument() === node.ownerDocument) {
                 initializeCurrentNode(node);
             }
@@ -132,7 +143,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         yield put(actions.UI.ContentCanvas.requestScrollIntoView(true));
     }
 
-    yield takeEvery(actionTypes.CR.Nodes.FOCUS, action => {
+    yield takeEvery(actionTypes.CR.Nodes.FOCUS, function * (action) {
         const oldNode = findInGuestFrame(`.${style['markActiveNodeAsFocused--focusedNode']}`);
 
         if (oldNode) {
@@ -146,6 +157,13 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
             if (nodeElement) {
                 nodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);
+
+                const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
+                const node = yield select(getNodeByContextPathSelector);
+                dispatchCustomEvent('Neos.NodeSelected', 'Node was selected.', {
+                    element: nodeElement,
+                    node
+                });
             }
         }
     });

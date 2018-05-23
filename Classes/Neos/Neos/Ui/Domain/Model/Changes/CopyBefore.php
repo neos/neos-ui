@@ -13,6 +13,19 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class CopyBefore extends AbstractCopy
 {
+    /**
+     * "Subject" is the to-be-copied node; the "sibling" node is the node after which the "Subject" should be copied.
+     *
+     * @return boolean
+     */
+    public function canApply()
+    {
+        $nodeType = $this->getSubject()->getNodeType();
+
+        return $this->getSiblingNode()->getParent()->isNodeTypeAllowedAsChildNode($nodeType);
+    }
+
+
     public function getMode()
     {
         return 'before';
@@ -26,7 +39,7 @@ class CopyBefore extends AbstractCopy
     public function apply()
     {
         if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
+            $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
             $node = $this->getSubject()->copyBefore($this->getSiblingNode(), $nodeName);
             $this->finish($node);
         }

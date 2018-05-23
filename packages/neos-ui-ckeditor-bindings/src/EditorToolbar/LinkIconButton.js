@@ -155,10 +155,10 @@ class LinkTextField extends PureComponent {
                 searchOptions: []
             });
         } else if (!searchTerm && isUri(this.props.hrefValue)) {
-            // the user emptied the URL value, so we need to reset it
+            // The user emptied the URL value, so we need to reset it
             this.commitValue('');
         } else if (searchTerm) {
-            // when changing from uri mode to search mode, we should clear the value
+            // When changing from uri mode to search mode, we should clear the value
             if (isUri(this.state.searchTerm)) {
                 this.commitValue('');
             }

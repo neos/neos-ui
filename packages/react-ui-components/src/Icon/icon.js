@@ -1,34 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-
-const cachedWarnings = [];
-export const iconPropValidator = (props, propName) => {// eslint-disable-line consistent-return
-    const {onDeprecate, _makeValidateId, iconMap} = props;
-    const validateId = _makeValidateId(iconMap);
-    const id = props[propName];
-    const {isValid, isMigrationNeeded, iconName} = validateId(id);
-    const isInvalid = isValid === false;
-    const isNotAlreadyThrown = cachedWarnings.includes(iconName) === false;
-
-    if (isInvalid && isNotAlreadyThrown) {
-        cachedWarnings.push(iconName);
-
-        if (isMigrationNeeded && iconName && onDeprecate) {
-            onDeprecate(`Font-Awesome has been updated. The icon name "${id}" has been renamed.
-
-Please adjust the icon configurations in your .yaml files to the new icon name "${iconName}".
-
-https://github.com/FortAwesome/Font-Awesome/wiki/Upgrading-from-3.2.1-to-4`);
-        }
-    }
-};
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import mapper from './mapper';
 
 const Icon = props => {
-    const {size, padded, theme, iconMap, label, _makeGetClassName} = props;
-    const getClassName = _makeGetClassName(iconMap);
-    const faIconClassName = getClassName(props.icon);
-    const iconClassName = faIconClassName ? faIconClassName : props.icon;
+    const {size, padded, theme, label} = props;
+    const iconClassName = props.icon;
     const classNames = mergeClassNames({
         [theme.icon]: true,
         [iconClassName]: true,
@@ -42,13 +20,27 @@ const Icon = props => {
         [theme['icon--spin']]: props.spin
     });
 
-    return <i role="img" aria-label={label} className={classNames}/>;
+    const mappedIcon = mapper(props.icon);
+    const iconArray = mappedIcon.split(' ');
+    let icon = mappedIcon;
+    let prefix = 'fas';
+    if (iconArray.length > 1) {
+        prefix = iconArray[0];
+        const iconClass = iconArray[1];
+        if (iconClass.startsWith('fa-')) {
+            icon = iconClass.substr(3);
+        } else {
+            icon = iconClass;
+        }
+    }
+
+    return <FontAwesomeIcon icon={[prefix, icon] || 'question'} aria-label={label} className={classNames} />;
 };
 Icon.propTypes = {
     /**
      * The ID of the icon to render.
      */
-    icon: iconPropValidator,
+    icon: PropTypes.string,
 
     /**
      * The (accessibility) label for this icon
@@ -86,19 +78,7 @@ Icon.propTypes = {
         'icon--paddedLeft': PropTypes.string,
         'icon--paddedRight': PropTypes.string,
         'icon--spin': PropTypes.string
-    }).isRequired,
-
-    /**
-     * The css modules map of the Font-Awesome stylesheet.
-     */
-    iconMap: PropTypes.object.isRequired,
-
-    /**
-     * A function which gets called once a deprecation warning should be displayed.
-     */
-    onDeprecate: PropTypes.func,
-    _makeValidateId: PropTypes.func.isRequired,
-    _makeGetClassName: PropTypes.func.isRequired
+    }).isRequired
 };
 
 export default Icon;

@@ -13,9 +13,11 @@ import Button from './../Button/index';
 import Icon from './../Icon/index';
 import DatePicker from 'react-datetime';
 import Collapse from 'react-collapse';
+import Tooltip from '../Tooltip/index';
 
 export default injectProps({
     ButtonComponent: Button,
+    TooltipComponent: Tooltip,
     IconComponent: Icon,
     DatePickerComponent: DatePicker,
     CollapseComponent: Collapse

@@ -48,11 +48,6 @@ abstract class AbstractStructuralChange extends AbstractChange
     /**
      * @var NodeInterface
      */
-    protected $cachedParentNode = null;
-
-    /**
-     * @var NodeInterface
-     */
     protected $cachedSiblingNode = null;
 
     /**
@@ -74,33 +69,15 @@ abstract class AbstractStructuralChange extends AbstractChange
     }
 
     /**
-     * Get the parent node dom address
+     * Get the DOM address of the closest RENDERED node in the DOM tree.
+     *
+     * DOES NOT HAVE TO BE THE PARENT NODE!
      *
      * @return RenderedNodeDomAddress
      */
     public function getParentDomAddress()
     {
         return $this->parentDomAddress;
-    }
-
-    /**
-     * Get the parent node
-     *
-     * @return NodeInterface
-     */
-    public function getParentNode()
-    {
-        if ($this->parentDomAddress === null) {
-            return null;
-        }
-
-        if ($this->cachedParentNode === null) {
-            $this->cachedParentNode = $this->nodeService->getNodeFromContextPath(
-                $this->parentDomAddress->getContextPath()
-            );
-        }
-
-        return $this->cachedParentNode;
     }
 
     /**
@@ -167,9 +144,16 @@ abstract class AbstractStructuralChange extends AbstractChange
         $this->updateWorkspaceInfo();
 
         if ($node->getNodeType()->isOfType('Neos.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
+
+            // we can ONLY render out of band if:
+            // 1) the parent of our new (or copied or moved) node is a ContentCollection; so we can directly update an element of this content collection
             if ($node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection') &&
+
+                // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection; and
+                //    no other node in between
                 $this->getParentDomAddress() &&
-                $this->getParentDomAddress()->getFusionPath()
+                $this->getParentDomAddress()->getFusionPath() &&
+                $this->getParentDomAddress()->getContextPath() === $node->getParent()->getContextPath()
             ) {
                 $renderContentOutOfBand = new RenderContentOutOfBand();
                 $renderContentOutOfBand->setNode($node);
@@ -180,6 +164,7 @@ abstract class AbstractStructuralChange extends AbstractChange
                 $this->feedbackCollection->add($renderContentOutOfBand);
             } else {
                 $reloadDocument = new ReloadDocument();
+                $reloadDocument->setNode($node);
 
                 $this->feedbackCollection->add($reloadDocument);
             }

@@ -13,17 +13,40 @@ import style from './style.css';
 @connect($transform({
     userName: $get('user.name.fullName')
 }))
-@neos()
+@neos(globalRegistry => ({
+    enableLegacyUiSwitch: $get('enableUiSwitch', globalRegistry.get('frontendConfiguration').get('legacy'))
+}))
 export default class UserDropDown extends PureComponent {
     static propTypes = {
         userName: PropTypes.string.isRequired,
-        neos: PropTypes.object.isRequired
+        neos: PropTypes.object.isRequired,
+        enableLegacyUiSwitch: PropTypes.bool
     };
 
     render() {
         const logoutUri = $get('routes.core.logout', this.props.neos);
         const userSettingsUri = $get('routes.core.modules.userSettings', this.props.neos);
         const csrfToken = document.getElementById('appContainer').dataset.csrfToken;
+
+        const legacyUiSwitch = () => {
+            const enableLegacyUiSwitch = this.props.enableLegacyUiSwitch;
+
+            // Don't show legacy ui switch only if
+            // explicitly set to false
+            if (enableLegacyUiSwitch === false) {
+                return null;
+            }
+
+            return (
+                <li className={style.dropDown__item}>
+                    <a title="User Settings" href="/neos/legacy">
+                        <Icon icon="far frown" aria-hidden="true" className={style.dropDown__itemIcon}/>
+                        <I18n id="userSettings_swtichUi" sourceName="Modules" fallback="Switch to old UI"/>
+                    </a>
+                </li>
+            );
+        };
+
         return (
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>
@@ -35,18 +58,13 @@ export default class UserDropDown extends PureComponent {
                         <li className={style.dropDown__item}>
                             <form title="Logout" action={logoutUri} method="post" role="presentation">
                                 <input type="hidden" name="__csrfToken" value={csrfToken}/>
-                                <button type="submit" name="" value="logout">
+                                <button onClick={e => e.stopPropagation()} type="submit" name="" value="logout">
                                     <Icon icon="power-off" aria-hidden="true" className={style.dropDown__itemIcon}/>
                                     <I18n id="logout" sourceName="Main" packageKey="Neos.Neos" fallback="Logout"/>
                                 </button>
                             </form>
                         </li>
-                        <li className={style.dropDown__item}>
-                            <a title="User Settings" href="/neos/legacy">
-                                <Icon icon="frown-o" aria-hidden="true" className={style.dropDown__itemIcon}/>
-                                <I18n id="userSettings_swtichUi" sourceName="Modules" fallback="Switch to old UI"/>
-                            </a>
-                        </li>
+                        {legacyUiSwitch()}
                         <li className={style.dropDown__item}>
                             <a title="User Settings" href={userSettingsUri}>
                                 <Icon icon="wrench" aria-hidden="true" className={style.dropDown__itemIcon}/>

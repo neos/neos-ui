@@ -227,13 +227,13 @@ class Property extends AbstractChange
                     $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
                     $this->feedbackCollection->add($reloadContentOutOfBand);
                 } else {
-                    $this->reloadDocument();
+                    $this->reloadDocument($node);
                 }
             }
 
             $reloadPageIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
             if (!$this->getIsInline() && $node->getNodeType()->getConfiguration($reloadPageIfChangedConfigurationPath)) {
-                $this->reloadDocument();
+                $this->reloadDocument($node);
             }
 
             // This might be needed to update node label and other things that we can calculate only on the server

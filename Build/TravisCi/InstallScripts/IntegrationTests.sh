@@ -14,7 +14,7 @@ if [ -n "$GITHUB_OAUTH_TOKEN" ]; then composer config github-oauth.github.com ${
 phpenv config-rm xdebug.ini
 
 # Update composer.
-composer self-update -q
+composer self-update -q 1.6.3
 
 # Handle hidden files with the `mv` command.
 shopt -s dotglob
@@ -32,7 +32,7 @@ mv ../neos-ui/** Packages/Application/Neos.Neos.Ui/
 # Temporarily move the neos-ui package out so it doesn't get overwritten by composer
 mv Packages/Application/Neos.Neos.Ui temp
 # Install all dependencies for the neos instance.
-composer install -q -n
+composer install --no-interaction
 
 rm -rf Packages/Application/Neos.Neos.Ui
 mv temp Packages/Application/Neos.Neos.Ui
@@ -41,17 +41,17 @@ mv temp Packages/Application/Neos.Neos.Ui
 cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Settings.yaml
 
 # Setup the database and import the demo site package.
-mysql -e 'create database neos collate utf8_unicode_ci;'
-./flow cache:warmup
-./flow doctrine:migrate
-./flow site:import --package-key=Neos.Demo
-./flow resource:publish
+mysql -e 'create database neos collate utf8mb4_unicode_ci;'
+FLOW_CONTEXT=Production ./flow cache:warmup
+FLOW_CONTEXT=Production ./flow doctrine:migrate
+FLOW_CONTEXT=Production ./flow site:import --package-key=Neos.Demo
+FLOW_CONTEXT=Production ./flow resource:publish
 
 # Create the demo backend user.
-./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator &
+FLOW_CONTEXT=Production ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator &
 
 # Start the development server on which the integration tests will act on.
-./flow server:run --port 8081 > /dev/null 2> /dev/null &
+FLOW_CONTEXT=Production ./flow server:run --port 8081 > /dev/null 2> /dev/null &
 
 # Change into the repository directory where the environment based shell script will be executed.
 cd Packages/Application/Neos.Neos.Ui

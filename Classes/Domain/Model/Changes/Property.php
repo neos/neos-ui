@@ -48,6 +48,13 @@ class Property extends AbstractChange
     protected $nodeService;
 
     /**
+     * The node dom address
+     *
+     * @var RenderedNodeDomAddress
+     */
+    protected $nodeDomAddress;
+
+    /**
      * The name of the property to be changed
      *
      * @var string

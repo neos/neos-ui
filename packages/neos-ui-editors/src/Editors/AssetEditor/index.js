@@ -99,7 +99,7 @@ export default class AssetEditor extends PureComponent {
     }
 
     isFeatureEnabled(featureName) {
-        const features = Object.assign({}, DEFAULT_FEATURES, this.props.options.features);
+        const features = Object.assign({}, DEFAULT_FEATURES, (this.props.options ? this.props.options.features : {}));
         return features[featureName];
     }
 

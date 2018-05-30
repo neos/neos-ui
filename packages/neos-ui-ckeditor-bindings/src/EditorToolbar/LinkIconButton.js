@@ -70,6 +70,11 @@ export default class LinkIconButton extends PureComponent {
     }
 }
 
+// allow to insert node:// and asset:// links by pasting
+const isUriOrInternalLink = link => Boolean(isUri(link) || link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
+// If node links have a hash in them, treat them like normal links
+const isUriOrHasHash = link => Boolean(isUri(link) || link.includes('#'));
+
 @neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
     i18nRegistry: globalRegistry.get('i18n')
@@ -109,7 +114,7 @@ class LinkTextField extends PureComponent {
     }
 
     refreshState() {
-        if (isUri(this.props.hrefValue)) {
+        if (isUriOrHasHash(this.props.hrefValue)) {
             this.setState({
                 searchTerm: this.props.hrefValue,
                 options: []
@@ -147,19 +152,19 @@ class LinkTextField extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-        if (isUri(searchTerm)) {
+        if (isUriOrInternalLink(searchTerm)) {
             this.commitValue(searchTerm);
 
             this.setState({
                 isLoading: false,
                 searchOptions: []
             });
-        } else if (!searchTerm && isUri(this.props.hrefValue)) {
+        } else if (!searchTerm && isUriOrInternalLink(this.props.hrefValue)) {
             // The user emptied the URL value, so we need to reset it
             this.commitValue('');
         } else if (searchTerm) {
             // When changing from uri mode to search mode, we should clear the value
-            if (isUri(this.state.searchTerm)) {
+            if (isUriOrInternalLink(this.state.searchTerm)) {
                 this.commitValue('');
             }
             this.setState({isLoading: true, searchOptions: []});
@@ -177,7 +182,7 @@ class LinkTextField extends PureComponent {
     handleValueChange = value => {
         this.commitValue(value || '');
 
-        if (!isUri(value)) {
+        if (!isUriOrHasHash(value)) {
             const options = this.state.searchOptions.reduce((current, option) =>
                     (option.loaderUri === value) ? [Object.assign({}, option)] : current
                 , []);
@@ -192,8 +197,8 @@ class LinkTextField extends PureComponent {
                 <SelectBox
                     options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
                     optionValueField="loaderUri"
-                    value={isUri(this.props.hrefValue) ? '' : this.props.hrefValue}
-                    plainInputMode={isUri(this.props.hrefValue)}
+                    value={isUriOrHasHash(this.props.hrefValue) ? '' : this.props.hrefValue}
+                    plainInputMode={isUriOrHasHash(this.props.hrefValue)}
                     onValueChange={this.handleValueChange}
                     placeholder="Paste a link, or search"
                     displayLoadingIndicator={this.state.isLoading}

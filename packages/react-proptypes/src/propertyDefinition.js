@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import alohaConfiguration from './alohaConfiguration';
+import editorOptions from './editorOptions';
 
 export default PropTypes.shape({
     type: PropTypes.string.isRequired,
@@ -13,6 +14,10 @@ export default PropTypes.shape({
         reloadPageIfChanged: PropTypes.bool,
         inlineEditable: PropTypes.bool,
         aloha: alohaConfiguration,
+        inline: PropTypes.shape({
+            editor: PropTypes.string,
+            editorOptions: editorOptions
+        }),
         inspector: PropTypes.shape({
             group: PropTypes.string,
             position: PropTypes.number,

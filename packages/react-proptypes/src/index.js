@@ -4,6 +4,7 @@ import node from './node';
 import nodeType from './nodeType';
 import propertyDefinition from './propertyDefinition';
 import renderedNodeDomAddress from './renderedNodeDomAddress';
+import editorOptions from './editorOptions';
 
 export {
     alohaConfiguration,
@@ -11,5 +12,6 @@ export {
     node,
     nodeType,
     propertyDefinition,
-    renderedNodeDomAddress
+    renderedNodeDomAddress,
+    editorOptions
 };

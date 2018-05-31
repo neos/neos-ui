@@ -75,9 +75,9 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
 
         // It's important to preserve the ordering of `this._groups` as we can't sort them again by position in JS (sorting logic is too complex)
         return Object.keys(this._groups).map(groupName => {
-            // If a nodetype does not have group defined it means it's a system nodetype like "unstrctured"
+            // If a nodetype does not have group defined it means it's a system nodetype like "unstructured"
             const nodesForGroup = nodeTypes
-                // Filter by current group
+            // Filter by current group
                 .filter(i => $get('ui.group', i) === groupName);
             const nodesForGroupSorted = positionalArraySorter(nodesForGroup, $get('ui.position'), 'name');
             if (nodesForGroup.length > 0) {
@@ -211,9 +211,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             placeholder: $get('placeholder', legacyConfiguration),
             autoparagraph: $get('autoparagraph', legacyConfiguration)
         };
-        //
-        // TODO: Add documentation for this node type configuration, once it can be considered to be public API
-        //
     }
 
     isInlineEditable(nodeTypeName) {

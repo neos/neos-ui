@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Model\Node;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\ProtectedContextAwareInterface;
@@ -102,7 +103,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'depth' => $node->getDepth(),
             // TODO: 'uri' =>@if.onyRenderWhenNodeIsADocument = ${q(node).is('[instanceof Neos.Neos:Document]')}
             'children' => [],
+            'matchesCurrentDimensions' => $node instanceof Node && $node->dimensionsAreMatchingTargetDimensionValues(),
         ];
+
         // It's important to not set `isFullyLoaded` to false by default, so the state would get merged correctly
         if (!$omitMostPropertiesForTreeState) {
             $nodeInfo['isFullyLoaded'] = true;

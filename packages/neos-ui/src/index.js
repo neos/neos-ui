@@ -43,7 +43,7 @@ createConsumerApi(manifests, apiExposureMap);
 require('./manifest');
 require('@neos-project/neos-ui-contentrepository');
 require('@neos-project/neos-ui-editors');
-require('@neos-project/neos-ui-views');
+require('@neos-project/neos-ui-views/src/manifest');
 require('@neos-project/neos-ui-guest-frame');
 require('@neos-project/neos-ui-ckeditor-bindings');
 require('@neos-project/neos-ui-validators');

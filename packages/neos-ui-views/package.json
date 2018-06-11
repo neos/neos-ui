@@ -2,7 +2,7 @@
   "name": "@neos-project/neos-ui-views",
   "version": "1.1.0",
   "description": "Neos CMS UI Views for use in the inspector.",
-  "main": "src/manifest.js",
+  "main": "./src/index.js",
   "private": true,
   "scripts": {
     "prepublish": "exit 0",

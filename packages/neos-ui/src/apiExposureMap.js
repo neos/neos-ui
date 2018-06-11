@@ -19,6 +19,7 @@ import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/ind
 import * as UtilsRedux from '@neos-project/utils-redux';
 import NeosUiI18n from '@neos-project/neos-ui-i18n';
 import NeosUiBackendConnectorDefault, * as NeosUiBackendConnector from '@neos-project/neos-ui-backend-connector';
+import * as NeosUiViews from '@neos-project/neos-ui-views';
 
 export default {
     '@vendor': () => ({
@@ -44,6 +45,7 @@ export default {
         NeosUiEditors: EditorEnvelope,
         NeosUiI18n,
         NeosUiReduxStore,
+        NeosUiViews,
         // react-proptypes (optional)
         ReactUiComponents,
         UtilsRedux

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import ErrorBoundary from './ErrorBoundary/index';
 import FlashMessages from './FlashMessages/index';
 
 const App = ({globalRegistry, menu}) => {
@@ -16,6 +17,8 @@ const App = ({globalRegistry, menu}) => {
     const RightSideBar = containerRegistry.get('RightSideBar');
     const LoadingIndicator = containerRegistry.get('SecondaryToolbar/LoadingIndicator');
 
+    console.log('foo');
+
     // HINT: the SecondaryToolbar must be *BELOW* the
     // ContentCanvas; to ensure the SecondaryToolbar is rendered
     // afterwards and can overlay the ContentCanvas
@@ -24,14 +27,38 @@ const App = ({globalRegistry, menu}) => {
             <div id="dialog"/>
             <Modals/>
             <FlashMessages/>
-            <LoadingIndicator/>
-            <PrimaryToolbar/>
-            <ContentCanvas/>
-            <SecondaryToolbar/>
-            <EditModePanel/>
-            <Drawer menuData={menu}/>
-            <LeftSideBar/>
-            <RightSideBar/>
+
+            <ErrorBoundary>
+                <LoadingIndicator/>
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+                <PrimaryToolbar/>
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+                <ContentCanvas/>
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+                <SecondaryToolbar/>
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+                <EditModePanel/>
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+                <Drawer menuData={menu}/>
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+                <LeftSideBar/>
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+                <RightSideBar/>
+            </ErrorBoundary>
         </div>
     );
 };

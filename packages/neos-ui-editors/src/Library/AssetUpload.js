@@ -78,7 +78,7 @@ export default class AssetUpload extends PureComponent {
     }
 
     render() {
-        const {isLoading, highlight} = this.props;
+        const {isLoading, highlight, multiple, children} = this.props;
 
         const classNames = mergeClassNames({
             [style.thumbnail]: true,
@@ -99,14 +99,14 @@ export default class AssetUpload extends PureComponent {
                 <div style={{display: isLoading ? 'none' : 'block'}}>
                     <Dropzone
                         ref={this.setDropzoneReference}
-                        onDropAccepted={this.props.multiple ? this.handleMultiUpload : this.handleUpload}
+                        onDropAccepted={multiple ? this.handleMultiUpload : this.handleUpload}
                         className={style.dropzone}
                         activeClassName={style['dropzone--isActive']}
                         rejectClassName={style['dropzone--isRejecting']}
                         disableClick={true}
-                        multiple={Boolean(this.props.multiple)}
+                        multiple={Boolean(multiple)}
                         >
-                        {this.props.children}
+                        {children}
                     </Dropzone>
                 </div>
             </React.Fragment>

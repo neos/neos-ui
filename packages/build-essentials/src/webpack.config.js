@@ -34,10 +34,15 @@ const webpackConfig = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /node_modules\/((?!@neos-project).)*$/,
+                exclude: [/node_modules\/((?!@neos-project).)*$/],
                 use: [{
                     loader: 'babel-loader'
                 }]
+            },
+            {
+                test: /\.elm$/,
+                exclude: [/elm-stuff/, /node_modules/],
+                loader: 'elm-webpack-loader'
             },
             {
                 test: /\.json$/,

@@ -54,7 +54,7 @@ export default class AssetUpload extends PureComponent {
         this.uploadMultipleFiles(0, values, files);
     }
 
-    uploadMultipleFiles(index, values, files) {
+    uploadMultipleFiles = (index, values, files) => {
         const {uploadAsset} = backend.get().endpoints;
         const {onAfterUpload, focusedNodePath, siteNodePath} = this.props;
 
@@ -73,7 +73,7 @@ export default class AssetUpload extends PureComponent {
         });
     }
 
-    getUploadMetaData() {
+    getUploadMetaData = () => {
         return this.props.imagesOnly ? 'Image' : 'Asset';
     }
 

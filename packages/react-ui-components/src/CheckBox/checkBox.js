@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
+import Elm from 'react-elm-components';
+import ElmCheckBox from './ElmCheckBox.elm';
 
 class CheckBox extends PureComponent {
     static propTypes = {
@@ -30,11 +32,6 @@ class CheckBox extends PureComponent {
         highlight: PropTypes.bool,
 
         /**
-         * Disable checkbox
-         */
-        disabled: PropTypes.bool,
-
-        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({
@@ -46,8 +43,8 @@ class CheckBox extends PureComponent {
         }).isRequired
     };
 
-    handleChange = () => {
-        const {onChange, isChecked} = this.props;
+    handleChange = isChecked => {
+        const {onChange} = this.props;
 
         if (onChange) {
             onChange(!isChecked);
@@ -60,8 +57,7 @@ class CheckBox extends PureComponent {
             isDisabled,
             className,
             theme,
-            highlight,
-            ...rest
+            highlight
         } = this.props;
         const finalClassName = mergeClassNames({
             [className]: className && className.length,
@@ -75,17 +71,24 @@ class CheckBox extends PureComponent {
             [theme['checkbox__inputMirror--highlight-unchecked']]: highlight && !isChecked
         });
 
+        const flags = {
+            isChecked,
+            isDisabled: isDisabled || null,
+            highlight: highlight || null,
+            className: className ? className : null
+        };
+
+        const setupPorts = (ports => {
+            if (ports) {
+                ports.handleClick.subscribe(isChecked => {
+                    this.handleChange(isChecked);
+                });
+            }
+        });
+
         return (
             <div className={finalClassName}>
-                <input
-                    {...rest}
-                    className={theme.checkbox__input}
-                    type="checkbox"
-                    checked={isChecked}
-                    aria-checked={isChecked}
-                    onChange={this.handleChange}
-                    disabled={isDisabled}
-                    />
+                <Elm src={ElmCheckBox} flags={flags} ports={setupPorts} />
                 <div className={mirrorClassNames}/>
             </div>
         );

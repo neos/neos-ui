@@ -1,0 +1,32 @@
+{
+  "name": "react-elm-components",
+  "version": "1.0.0",
+  "description": "Write React components in Elm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evancz/react-elm-components.git"
+  },
+  "dependencies": {
+    "create-react-class": "^15.5.3"
+  },
+  "peerDependencies": {
+    "react": ">=0.14.0"
+  },
+  "author": "Evan Czaplicki <info@elm-lang.org> (http://elm-lang.org/)",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/evancz/react-elm-components/issues"
+  },
+  "homepage": "https://github.com/evancz/react-elm",
+  "directories": {
+    "example": "example"
+  },
+  "keywords": [
+    "react",
+    "elm"
+  ]
+}

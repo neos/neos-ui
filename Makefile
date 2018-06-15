@@ -106,9 +106,9 @@ lint-js:
 
 lint-editorconfig:
 	editorconfig-checker \
-		--exclude-regexp 'LICENSE|\.vanilla\-css$$|banner\.js$$' \
+		--exclude-regexp 'react-elm-components|LICENSE|\.vanilla\-css$$|banner\.js$$' \
 		--exclude-pattern \
-		'./{README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'
+		'./{elm-stuff/**/*,,README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'
 
 
 ################################################################################

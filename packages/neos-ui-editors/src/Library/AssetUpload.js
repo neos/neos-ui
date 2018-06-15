@@ -77,6 +77,16 @@ export default class AssetUpload extends PureComponent {
         return this.props.imagesOnly ? 'Image' : 'Asset';
     }
 
+    acceptedFileTypes = () => {
+        if (this.props.imagesOnly) {
+            return ['.jpg', '.jpeg', '.png'].reduce((fileTypeString, fileType) => {
+                return `${fileTypeString},${fileType}`;
+            }, '');
+        }
+
+        return '';
+    }
+
     render() {
         const {isLoading, highlight, multiple, children} = this.props;
 
@@ -99,6 +109,7 @@ export default class AssetUpload extends PureComponent {
                 <div style={{display: isLoading ? 'none' : 'block'}}>
                     <Dropzone
                         ref={this.setDropzoneReference}
+                        accept={this.acceptedFileTypes()}
                         onDropAccepted={multiple ? this.handleMultiUpload : this.handleUpload}
                         className={style.dropzone}
                         activeClassName={style['dropzone--isActive']}

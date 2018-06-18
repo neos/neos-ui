@@ -44,7 +44,7 @@ export function * watchPersist() {
         if (action) {
             changes.push(...action.payload.changes);
         }
-        
+
         const state = yield select();
         if (changes.length > 0 && !$get('ui.remote.isSaving', state)) {
             yield call(persistChanges, changes);

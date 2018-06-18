@@ -98,7 +98,9 @@ abstract class AbstractChange implements ChangeInterface
     {
         $reloadDocument = new ReloadDocument();
         if ($node) {
-            $reloadDocument->setNode($node);
+            $nodeService = new NodeService();
+            $documentNode = $nodeService->getClosestDocument($node);
+            $reloadDocument->setNode($documentNode);
         }
 
         $this->feedbackCollection->add($reloadDocument);

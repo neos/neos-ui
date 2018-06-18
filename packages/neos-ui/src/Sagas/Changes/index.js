@@ -36,6 +36,15 @@ export function * watchPersist() {
     let changes = [];
 
     while (true) {
+        const {action} = yield race({
+            action: take(actionTypes.Changes.PERSIST),
+            time: call(delay, 1500)
+        });
+
+        if (action) {
+            changes.push(...action.payload.changes);
+        }
+
         const action = yield take(actionTypes.Changes.PERSIST);
         changes.push(...action.payload.changes);
 

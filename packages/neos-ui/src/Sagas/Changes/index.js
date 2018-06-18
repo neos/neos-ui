@@ -7,8 +7,6 @@ import backend from '@neos-project/neos-ui-backend-connector';
 
 const {publishableNodesInDocumentSelector, baseWorkspaceSelector} = selectors.CR.Workspaces;
 
-const saveDelay = 2000;
-
 function * persistChanges(changes) {
     const {change} = backend.get().endpoints;
 
@@ -36,36 +34,15 @@ function * persistChanges(changes) {
 
 export function * watchPersist() {
     let changes = [];
-    let lastPush = Date.now();
-    let actionsTaken = 0;
 
     while (true) {
-        const now = Date.now();
-        const timeSinceLastPush = now - lastPush;
-
-        const {action} = yield race({
-            action: take(actionTypes.Changes.PERSIST),
-            time: call(delay, saveDelay)
-        });
-
-        if (action) {
-            changes.push(...action.payload.changes);
-            actionsTaken++;
-        }
+        const action = yield take(actionTypes.Changes.PERSIST);
+        changes.push(...action.payload.changes);
 
         const state = yield select();
-
-        /*
-         *  We actually persist IF:
-         *  - we have changes AND
-         *  - there is not another request running
-         *  - either the "saveDelay" time has passed OR we have taken 3 actions (to avoid huge change queues locally)
-         */
-        if (changes.length > 0 && !$get('ui.remote.isSaving', state) && (timeSinceLastPush > saveDelay || actionsTaken > 2)) {
+        if (changes.length > 0 && !$get('ui.remote.isSaving', state)) {
             yield call(persistChanges, changes);
             changes = [];
-            lastPush = now;
-            actionsTaken = 0;
         }
     }
 }

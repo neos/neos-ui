@@ -51,7 +51,7 @@ In order to start contributing, follow the following steps:
 
 1) Ensure you have the `dev-master` version installed (see above).
 
-2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(https://yarnpkg.com/en/) command and GNU Make(https://www.gnu.org/software/make/) to be installed on your system.
+2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the [`yarn`](https://yarnpkg.com/en/) command and [GNU Make](https://www.gnu.org/software/make/) to be installed on your system.
 
 3) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
@@ -62,13 +62,17 @@ In order to start contributing, follow the following steps:
          frontendDevelopmentMode: true
    ```
 
-4) Run the initialization script:
+4) Make sure you have the correct version of [nodeJS](https://nodejs.org/en/). The currently required version can be seen in the package.json file in "Neos.Neos.Ui" under "engines"; at the moment it is 8.11.0.
+
+
+5) Change into the "Neos.Neos.Ui" folder and run the initialization script:
 
    ```
+   cd Packages/Application/Neos.Neos.Ui
    make setup
    ```
 
-5) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
+6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
    gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the
    channel #project-ui-rewrite. We're eager to help you get started!
 

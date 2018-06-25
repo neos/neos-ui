@@ -49,7 +49,7 @@ NPM_EMAIL=hello@neos.io ./node_modules/.bin/npm-cli-login
 # release includes publishing to npm
 make release
 
-git add composer.json
-git commit -m "Updating composer dependency for release of $VERSION"
+git add .
+git commit -m "Updating composer dependency and npm versions for release of $VERSION"
 git tag -a -m "$VERSION" $VERSION
 git push origin $VERSION

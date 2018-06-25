@@ -34,6 +34,13 @@ jq ".require[\"neos/neos-ui-compiled\"] = \"$VERSION\"" composer.json > composer
 rm composer.json
 mv composer.json.new composer.json
 
+# install yarn if not already
+path_to_yarn=$(which yarn)
+if [ -z "$path_to_yarn" ] ; then
+    echo "installing yarn:"
+    npm install -g yarn
+fi
+
 # install dependencies and login to npm
 make setup
 npm-cli-login

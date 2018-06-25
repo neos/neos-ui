@@ -34,6 +34,13 @@ jq ".require[\"neos/neos-ui-compiled\"] = \"$VERSION\"" composer.json > composer
 rm composer.json
 mv composer.json.new composer.json
 
+# install dependencies and login to npm
+make setup
+npm-cli-login
+
+# release includes publishing to npm
+make release
+
 git add composer.json
 git commit -m "Updating composer dependency for release of $VERSION"
 git tag -a -m "$VERSION" $VERSION

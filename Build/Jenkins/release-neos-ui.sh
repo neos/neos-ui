@@ -42,7 +42,7 @@ if [ -z "$path_to_yarn" ] ; then
 fi
 
 # install dependencies and login to npm
-make setup
+make install
 npm-cli-login
 
 # release includes publishing to npm

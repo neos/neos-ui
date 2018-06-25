@@ -135,7 +135,7 @@ publish-npm: called-with-version
 		--yes --force-publish
 
 tag: called-with-version
-	git tag "$(VERSION)" $(VERSION)
+	git tag $(VERSION)
 
 # make a production-clean build
 # and make sure that every lint and test stage is running through

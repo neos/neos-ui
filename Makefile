@@ -75,7 +75,7 @@ build-watch-poll:
 		--progress --colors --watch-poll --watch
 
 # clean anything before building for production just to be sure
-build-production: clean install
+build-production:
 	cross-env NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
 		webpack --progress --colors
 
@@ -137,7 +137,7 @@ publish-npm: called-with-version
 tag: called-with-version
 	git tag $(VERSION)
 
-# make a clean build from scratch
+# make a production-clean build
 # and make sure that every lint and test stage is running through
 release: called-with-version check-requirements \
 	build-production \

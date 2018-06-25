@@ -33,6 +33,7 @@ fi
 jq ".require[\"neos/neos-ui-compiled\"] = \"$VERSION\"" composer.json > composer.json.new
 rm composer.json
 mv composer.json.new composer.json
+rm jq-linux64
 
 # install yarn if not already
 path_to_yarn=$(which yarn)

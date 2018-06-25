@@ -43,7 +43,7 @@ fi
 
 # install dependencies and login to npm
 make install
-npm-cli-login
+./node_modules/.bin/npm-cli-login
 
 # release includes publishing to npm
 make release

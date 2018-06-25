@@ -52,11 +52,10 @@ export default class ImageEditor extends Component {
         // I18N key
         fileChooserLabel: PropTypes.string,
 
-        allowedFileTypes: PropTypes.string
+        accept: PropTypes.string
     };
 
     static defaultProps = {
-        allowedFileTypes: 'jpg,jpeg,png,gif,svg',
         identifier: ''
     };
 
@@ -251,6 +250,7 @@ export default class ImageEditor extends Component {
         } = this.state;
         const {highlight} = this.props;
         const disabled = $get('options.disabled', this.props);
+        const accept = $get('options.accept', this.props);
 
         return (
             <div className={style.imageEditor}>
@@ -264,6 +264,7 @@ export default class ImageEditor extends Component {
                     onClick={this.handleThumbnailClicked}
                     isUploadEnabled={this.isFeatureEnabled('upload')}
                     disabled={disabled}
+                    accept={accept}
                     />
                 <Controls
                     onChooseFromMedia={this.handleChooseFromMedia}

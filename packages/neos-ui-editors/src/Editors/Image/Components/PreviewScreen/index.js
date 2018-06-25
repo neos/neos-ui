@@ -15,7 +15,8 @@ export default class PreviewScreen extends PureComponent {
         isLoading: PropTypes.bool.isRequired,
         highlight: PropTypes.bool,
         isUploadEnabled: PropTypes.bool.isRequired,
-        disabled: PropTypes.bool
+        disabled: PropTypes.bool,
+        accept: PropTypes.string
     };
 
     chooseFromLocalFileSystem() {
@@ -53,7 +54,7 @@ export default class PreviewScreen extends PureComponent {
     }
 
     render() {
-        const {afterUpload, isLoading, highlight, propertyName, isUploadEnabled} = this.props;
+        const {afterUpload, isLoading, highlight, propertyName, isUploadEnabled, accept} = this.props;
 
         if (isUploadEnabled) {
             return (
@@ -64,6 +65,7 @@ export default class PreviewScreen extends PureComponent {
                     highlight={highlight}
                     ref={this.setAssetUploadReference}
                     imagesOnly={true}
+                    accept={accept === undefined ? 'image/*' : accept}
                     >
                     {this.renderPreview()}
                 </AssetUpload>

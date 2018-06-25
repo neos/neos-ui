@@ -21,19 +21,19 @@ const Icon = props => {
 
     const mappedIcon = mapper(icon);
     const iconArray = mappedIcon.split(' ');
-    let theIcon = mappedIcon;
+    let processedIcon = mappedIcon;
     let prefix = 'fas';
     if (iconArray.length > 1) {
         prefix = iconArray[0];
         const iconClass = iconArray[1];
         if (iconClass.startsWith('fa-')) {
-            theIcon = iconClass.substr(3);
+            processedIcon = iconClass.substr(3);
         } else {
-            theIcon = iconClass;
+            processedIcon = iconClass;
         }
     }
 
-    return <FontAwesomeIcon icon={[prefix, theIcon] || 'question'} aria-label={label} className={classNames} {...rest} />;
+    return <FontAwesomeIcon icon={[prefix, processedIcon] || 'question'} aria-label={label} className={classNames} {...rest} />;
 };
 Icon.propTypes = {
 

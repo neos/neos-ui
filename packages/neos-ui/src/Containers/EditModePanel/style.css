@@ -37,10 +37,6 @@
 .editModePanel__buttonWrapper {
     margin-right: 1rem;
     white-space: nowrap;
-
-    &:.editModePanel__lastButtonWrapper {
-        margin-right: 1rem;
-    }
 }
 
 .editModePanel__current {

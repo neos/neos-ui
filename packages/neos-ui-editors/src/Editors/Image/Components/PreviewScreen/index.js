@@ -65,7 +65,7 @@ export default class PreviewScreen extends PureComponent {
                     highlight={highlight}
                     ref={this.setAssetUploadReference}
                     imagesOnly={true}
-                    accept={accept === undefined ? 'image/*' : accept}
+                    accept={accept || 'image/*'}
                     >
                     {this.renderPreview()}
                 </AssetUpload>

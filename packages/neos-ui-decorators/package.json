@@ -24,7 +24,7 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "reselect": "^2.4.0"
+    "reselect": "^3.0.1"
   },
   "license": "GNU GPLv3",
   "jest": {

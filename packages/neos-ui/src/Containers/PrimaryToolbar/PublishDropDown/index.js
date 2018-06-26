@@ -115,7 +115,9 @@ export default class PublishDropDown extends PureComponent {
         const dropDownBtnClassName = mergeClassNames({
             [style.dropDown__btn]: true,
             [style['dropDown__item--canPublish']]: canPublishGlobally,
-            [style['dropDown__item--isPublishing']]: isPublishing
+            [style['dropDown__item--isPublishing']]: isPublishing,
+            [style['dropDown__item--isSaving']]: isSaving,
+            [style['dropDown__item--isDiscarding']]: isDiscarding
         });
         const publishableNodesInDocumentCount = publishableNodesInDocument ? publishableNodesInDocument.count() : 0;
         const publishableNodesCount = publishableNodes ? publishableNodes.count() : 0;
@@ -124,7 +126,7 @@ export default class PublishDropDown extends PureComponent {
                 <AbstractButton
                     id="neos-PublishDropDown-Publish"
                     className={style.publishBtn}
-                    isEnabled={!isWorkspaceReadOnly && (canPublishLocally || isSaving)}
+                    isEnabled={!isWorkspaceReadOnly && (canPublishLocally)}
                     isHighlighted={canPublishLocally || isSaving || isPublishing}
                     onClick={this.handlePublishClick}
                     >
@@ -133,7 +135,7 @@ export default class PublishDropDown extends PureComponent {
                 </AbstractButton>
 
                 <DropDown className={style.dropDown}>
-                    {isPublishing ? (
+                    {isPublishing || isSaving || isDiscarding ? (
                         <DropDown.Header
                             iconIsOpen={'spinner'}
                             iconIsClosed={'spinner'}

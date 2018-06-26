@@ -97,6 +97,7 @@ export class Header extends PureComponent {
         hasError: PropTypes.bool.isRequired,
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
+        customIconComponent: PropTypes.node,
         iconLabel: PropTypes.string,
         level: PropTypes.number.isRequired,
         dragAndDropContext: PropTypes.shape({
@@ -152,6 +153,7 @@ export class Header extends PureComponent {
             isLoading,
             label,
             icon,
+            customIconComponent,
             iconLabel,
             level,
             onClick,
@@ -197,7 +199,10 @@ export class Header extends PureComponent {
                             style={{paddingLeft: (level * 18) + 'px'}}
                             >
                             <div className={theme.header__labelWrapper}>
-                                <IconComponent icon={icon || 'question'} label={iconLabel} className={theme.header__icon}/>
+                                {customIconComponent ?
+                                  customIconComponent :
+                                  <IconComponent icon={icon || 'question'} label={iconLabel} className={theme.header__icon} />
+                                }
                                 <span {...rest} id={labelIdentifier} className={theme.header__label} onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                                     {label}
                                 </span>

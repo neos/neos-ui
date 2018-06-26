@@ -5,7 +5,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import mapper from './mapper';
 
 const Icon = props => {
-    const {size, padded, theme, label, icon, className, ...rest} = props;
+    const {size, padded, theme, label, icon, className, color, ...rest} = props;
     const iconClassName = icon;
     const classNames = mergeClassNames({
         [theme.icon]: true,
@@ -16,7 +16,10 @@ const Icon = props => {
         [theme['icon--small']]: size === 'small',
         [theme['icon--tiny']]: size === 'tiny',
         [theme['icon--paddedLeft']]: padded === 'left',
-        [theme['icon--paddedRight']]: padded === 'right'
+        [theme['icon--paddedRight']]: padded === 'right',
+        [theme['icon--color-warn']]: color === 'warn',
+        [theme['icon--color-error']]: color === 'error',
+        [theme['icon--color-primaryBlue']]: color === 'primaryBlue'
     });
 
     const mappedIcon = mapper(icon);
@@ -69,10 +72,15 @@ Icon.propTypes = {
     className: PropTypes.string,
 
     /**
+     *  Adjust the color of the icon
+     */
+    color: PropTypes.oneOf(['default', 'warn', 'error', 'primaryBlue']),
+
+    /**
     * An optional css theme to be injected.
     */
     theme: PropTypes.shape({
-        'icon': PropTypes.string,
+        icon: PropTypes.string,
         'icon--big': PropTypes.string,
         'icon--small': PropTypes.string,
         'icon--tiny': PropTypes.string,

@@ -98,8 +98,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 // if we are only rendering the tree state, ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
                 '_hidden' => $node->isHidden(),
                 '_hiddenInIndex' => $node->isHiddenInIndex(),
-                '_hiddenBefore' => $node->getHiddenBeforeDateTime() instanceof \DateTime,
-                '_hiddenAfter' => $node->getHiddenAfterDateTime() instanceof \DateTime,
+                '_hiddenBeforeDateTime' => $node->getHiddenBeforeDateTime() instanceof \DateTime,
+                '_hiddenAfterDateTime' => $node->getHiddenAfterDateTime() instanceof \DateTime,
             ] : $this->nodePropertyConverterService->getPropertiesArray($node),
             'label' => $node->getLabel(),
             'isAutoCreated' => $node->isAutoCreated(),

@@ -25,8 +25,7 @@
 .header__chevron--isCollapsed > svg {
     transform: translateY(3px) translateX(-2px) rotate(-90deg);
 }
-.header__chevron--isHiddenInIndex,
-.header__data--isHidden {
+.header__chevron--isHiddenInIndex {
     opacity: .5;
 }
 
@@ -61,7 +60,6 @@
     opacity: .5;
 }
 .header__data--isHidden {
-    opacity: .5;
     text-decoration: line-through;
 }
 .header__data--isDragging {

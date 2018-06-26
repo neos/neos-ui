@@ -7,11 +7,10 @@
     top: calc(var(--spacing-GoldenUnit) + 1px);
     left: 0;
     z-index: var(--zIndex-Drawer-Context);
-    height: 100%;
+    height: calc(100% - calc(var(--spacing-GoldenUnit) + 1px));
     width: var(--size-SidebarWidth);
     background: var(--colors-ContrastDarker);
     transition: var(--transition-Default) ease transform;
-    padding-bottom: calc(var(--spacing-GoldenUnit) + 1px);
     overflow: scroll;
 }
 .drawer--isHidden {
@@ -23,6 +22,7 @@
     flex-shrink: 0;
     flex-direction: column;
     overflow-y: auto;
+    padding-bottom: calc(var(--spacing-GoldenUnit) + 1px);
 }
 
 .drawer__menuItem {

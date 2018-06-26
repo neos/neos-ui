@@ -141,8 +141,6 @@ tag: called-with-version
 # and make sure that every lint and test stage is running through
 release: called-with-version check-requirements \
 	build-production \
-	lint lint-editorconfig \
-	test \
 	bump-version publish-npm tag
 	@echo
 	@echo

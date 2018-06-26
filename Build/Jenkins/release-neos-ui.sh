@@ -20,7 +20,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/../../
 
 # go to $BRANCH
-#git reset --hard origin/$BRANCH
+git reset --hard origin/$BRANCH
 
 # download JQ if we don't have it yet, for manipulating composer.json
 if [ ! -f "jq-linux64" ]; then
@@ -51,5 +51,7 @@ make release
 
 git add .
 git commit -m "Updating composer dependency and npm versions for release of $VERSION"
+
+git push origin HEAD:master
 git tag -a -m "$VERSION" $VERSION
 git push origin $VERSION

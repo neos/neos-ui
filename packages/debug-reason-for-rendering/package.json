@@ -1,11 +1,11 @@
 {
   "name": "@neos-project/debug-reason-for-rendering",
-  "version": "1.1.1",
+  "version": "0.0.1",
   "description": "React Performance Optimization Utility - Why does a component re-render?",
   "main": "./src/index.js",
   "license": "MIT",
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.1.1"
+    "@neos-project/babel-preset-neos-ui": "0.0.1"
   },
   "peerDependencies": {
     "react": "^16.0.0"

@@ -38,8 +38,8 @@
     margin-right: 1rem;
     white-space: nowrap;
 
-    &:last-child {
-        margin-right: 0;
+    &:.editModePanel__lastButtonWrapper {
+        margin-right: 1rem;
     }
 }
 

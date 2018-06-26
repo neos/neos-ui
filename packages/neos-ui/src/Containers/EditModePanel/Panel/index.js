@@ -33,6 +33,17 @@ export default class Panel extends PureComponent {
         onPreviewModeClick: PropTypes.func.isRequired
     };
 
+    getButtonWrapperClassNames(currentIndex) {
+        const {modes, style} = this.props;
+        const amountOfModes = modes.length - 1;
+        const classNames = [style.editModePanel__buttonWrapper];
+        if (currentIndex === amountOfModes) {
+            classNames.push(style.editModePanel__lastButtonWrapper);
+        }
+
+        return classNames;
+    }
+
     render() {
         const {title, className, modes, current, currentMode, style, onPreviewModeClick} = this.props;
 
@@ -51,8 +62,8 @@ export default class Panel extends PureComponent {
             <div className={className}>
                 <p>{title} {currentMode && <b className={style.editModePanel__current}><I18n id={currentMode.title}/></b>}</p>
                 <Slider {...sliderSettings}>
-                    {modes.map(previewMode => (
-                        <div key={previewMode.id} className={style.editModePanel__buttonWrapper}>
+                    {modes.map((previewMode, index) => (
+                        <div key={previewMode.id} className={this.getButtonWrapperClassNames(index)}>
                             <Button
                                 isDisabled={previewMode.id === current}
                                 onClick={onPreviewModeClick(previewMode.id)}

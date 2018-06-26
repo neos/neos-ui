@@ -7,8 +7,17 @@ import SlickStyles from './slick-styles.vanilla-css';
 /* eslint-enable no-unused-vars */
 
 import Button from '@neos-project/react-ui-components/src/Button/index';
-import Arrow from '@neos-project/react-ui-components/src/Arrow/index';
+import IconComponent from '@neos-project/react-ui-components/src/Icon/index';
 import I18n from '@neos-project/neos-ui-i18n';
+
+const Arrow = props => {
+    const {className, style, onClick, direction, size} = props;
+    return (
+        <div className={className} style={{...style}} onClick={onClick} role="button">
+            <IconComponent icon={`angle-${direction}`} size={size} />
+        </div>
+    );
+};
 
 export default class Panel extends PureComponent {
     static propTypes = {

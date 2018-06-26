@@ -55,5 +55,5 @@
 .drawer__version {
     color: var(--colors-ContrastBright);
     padding: var(--spacing-Full);
-    margin-top:auto;
+    margin-top: auto;
 }

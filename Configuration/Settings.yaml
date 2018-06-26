@@ -24,6 +24,7 @@ Neos:
       autoInclude:
         Neos.Neos.Ui: true
     Ui:
+
       # API: "start 100" and smaller numbers; "no numbers", ...
       resources:
 
@@ -51,6 +52,13 @@ Neos:
         # You may use this place to deliver some configuration to your custom UI components, e.g.:
         # 'Your.Own:Package':
         #   someKey: someValue
+
+        hotkeys:
+          'UI.RightSideBar.toggle': 't i'
+          'UI.FullScreen.toggle': 't f'
+
+        legacy:
+          enableUiSwitch: false
 
       #################################
       # INTERNAL CONFIG (no API)

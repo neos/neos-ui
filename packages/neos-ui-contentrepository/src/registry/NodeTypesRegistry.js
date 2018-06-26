@@ -2,6 +2,7 @@ import {map} from 'ramda';
 import {$get, $transform} from 'plow-js';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import getNormalizedDeepStructureFromNodeType from './getNormalizedDeepStructureFromNodeType';
+import positionalArraySorter from '@neos-project/positional-array-sorter';
 
 export default class NodeTypesRegistry extends SynchronousRegistry {
     _constraints = [];
@@ -77,13 +78,11 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             // If a nodetype does not have group defined it means it's a system nodetype like "unstrctured"
             const nodesForGroup = nodeTypes
                 // Filter by current group
-                .filter(i => $get('ui.group', i) === groupName)
-                // Sort nodetypes within group by position
-                .sort((a, b) => $get('ui.position', a) > $get('ui.position', b) ? 1 : -1);
-
+                .filter(i => $get('ui.group', i) === groupName);
+            const nodesForGroupSorted = positionalArraySorter(nodesForGroup, $get('ui.position'), 'name');
             if (nodesForGroup.length > 0) {
                 const group = Object.assign({}, this._groups[groupName]);
-                group.nodeTypes = nodesForGroup;
+                group.nodeTypes = nodesForGroupSorted;
                 group.name = groupName;
                 return group;
             }
@@ -114,8 +113,8 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return this._inspectorViewConfigurationCache[nodeTypeName];
         }
 
-        const tabs = getNormalizedDeepStructureFromNodeType('ui.inspector.tabs')(nodeType);
-        const groups = getNormalizedDeepStructureFromNodeType('ui.inspector.groups')(nodeType);
+        const tabs = positionalArraySorter(getNormalizedDeepStructureFromNodeType('ui.inspector.tabs')(nodeType), 'position', 'id');
+        const groups = positionalArraySorter(getNormalizedDeepStructureFromNodeType('ui.inspector.groups')(nodeType), 'position', 'id');
         const views = getNormalizedDeepStructureFromNodeType('ui.inspector.views')(nodeType);
         const properties = getNormalizedDeepStructureFromNodeType('properties')(nodeType);
 
@@ -126,24 +125,30 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                     groups: map(
                         group => ({
                             ...group,
-                            properties: map(
-                                $transform({
-                                    id: $get('id'),
-                                    label: $get('ui.label'),
-                                    editor: $get('ui.inspector.editor'),
-                                    editorOptions: $get('ui.inspector.editorOptions')
-                                }),
-                                properties.filter(p => $get('ui.inspector.group', p) === group.id)
-                            ),
-                            views: map(
-                                $transform({
-                                    id: $get('id'),
-                                    label: $get('label'),
-                                    view: $get('view'),
-                                    viewOptions: $get('viewOptions')
-                                }),
-                                views.filter(v => $get('group', v) === group.id)
-                            )
+                            items: positionalArraySorter([
+                                ...map(
+                                    $transform({
+                                        type: 'editor',
+                                        id: $get('id'),
+                                        label: $get('ui.label'),
+                                        editor: $get('ui.inspector.editor'),
+                                        editorOptions: $get('ui.inspector.editorOptions'),
+                                        position: $get('ui.inspector.position')
+                                    }),
+                                    properties.filter(p => $get('ui.inspector.group', p) === group.id)
+                                ),
+                                ...map(
+                                    $transform({
+                                        type: 'view',
+                                        id: $get('id'),
+                                        label: $get('label'),
+                                        view: $get('view'),
+                                        viewOptions: $get('viewOptions'),
+                                        position: $get('position')
+                                    }),
+                                    views.filter(v => $get('group', v) === group.id)
+                                )
+                            ], 'position', 'id')
                         }),
                         groups.filter(g => {
                             const isMatch = g.tab === tab.id;

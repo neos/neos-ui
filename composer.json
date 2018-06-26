@@ -2,14 +2,16 @@
     "name": "neos/neos-ui",
     "type": "neos-package",
     "description": "NEOS CMS UI rewritten in React",
-    "license": ["GPL-3.0-or-later"],
+    "license": [
+        "GPL-3.0-or-later"
+    ],
     "require": {
-        "neos/neos": "^4.0 || dev-master",
+        "neos/neos": "^3.3 || ^4.0 || dev-master",
         "neos/neos-ui-compiled": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "Neos\\Neos\\Ui": "Classes"
+        "psr-4": {
+            "Neos\\Neos\\Ui\\": "Classes"
         }
     },
     "extra": {
@@ -84,7 +86,10 @@
             "Neos.Fusion-20170120013047",
             "Neos.Flow-20170125103800",
             "Neos.Seo-20170127154600",
-            "Neos.Flow-20170127183102"
+            "Neos.Flow-20170127183102",
+            "Neos.Fusion-20180211175500",
+            "Neos.Fusion-20180211184832",
+            "Neos.Flow-20180415105700"
         ]
     }
 }

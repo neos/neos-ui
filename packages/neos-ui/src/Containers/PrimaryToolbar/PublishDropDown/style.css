@@ -68,6 +68,10 @@
 .dropDown__item--canPublish {
     background: var(--colors-Warn);
 }
+.dropDown__item--isPublishing {
+    background: var(--colors-Warn);
+    opacity: .5;
+}
 
 
 .badge {

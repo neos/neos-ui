@@ -239,6 +239,8 @@ export default class Node extends PureComponent {
 
         const labelIdentifier = (isContentTreeNode ? 'content-' : '') + 'treeitem-' + hashSum($get('contextPath', node)) + '-label';
 
+        const labelTitle = decodeLabel($get('label', node)) + ' (' + this.getNodeTypeLabel() + ')';
+
         return (
             <Tree.Node aria-expanded={this.isCollapsed() ? 'false' : 'true'} aria-labelledby={labelIdentifier}>
                 <span ref={refHandler}/>
@@ -264,6 +266,7 @@ export default class Node extends PureComponent {
                     onClick={this.handleNodeClick}
                     dragAndDropContext={this.getDragAndDropContext()}
                     dragForbidden={$get('isAutoCreated', node)}
+                    title={labelTitle}
                     />
                 {this.isCollapsed() ? null : (
                     <Tree.Node.Contents>

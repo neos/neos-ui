@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
 import mergeClassNames from 'classnames';
 import {AssetUpload} from '../../../../Library/index';
 
@@ -55,19 +54,6 @@ export default class PreviewScreen extends PureComponent {
 
     render() {
         const {afterUpload, isLoading, highlight, propertyName, isUploadEnabled} = this.props;
-
-        const classNames = mergeClassNames({
-            [style.thumbnail]: true,
-            [style['thumbnail--highlight']]: highlight
-        });
-
-        if (isLoading) {
-            return (
-                <div className={classNames}>
-                    <Icon icon="spinner" spin={true} size="big" className={style.thumbnail__loader}/>
-                </div>
-            );
-        }
 
         if (isUploadEnabled) {
             return (

@@ -1,3 +1,6 @@
+const isOriginal = value => value && value.indexOf && value.indexOf('_original_') === 0;
+const getOriginal = value => value && value.substring && Number(value.substring(10));
+
 /**
  * Flexible array sorter that sorts an array according to a "position" meta data.
  * The expected format for the subject is:
@@ -24,9 +27,15 @@
  * "key" is a string that references another key in the subject
  * and "numerical-order" is an integer that defines the order independently from the other keys.
  */
-const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key') => {
-    // Extract all position keys from the subject
-    const positionsArray = subject.map(value => positionKey in value ? value[positionKey] : 0);
+const positionalArraySorter = (subject, position = 'position', idKey = 'key') => {
+    const positionAccessor = typeof position === 'string' ? value => value[position] : position;
+    // Extract all position keys from the subject.
+    // If the position is not in the value, we encode its original position into a string
+    // to preserve original sort order later
+    const positionsArray = subject.map((value, index) => {
+        const position = positionAccessor(value);
+        return position === undefined ? `_original_${index}` : position;
+    });
     // Extract valid id keys
     const validKeys = subject.map(value => idKey in value && value[idKey]).filter(i => i).map(i => String(i));
 
@@ -39,8 +48,8 @@ const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key')
 
     // Split all positions into start, end, before, after and middle keys
     positionsArray.forEach((value, index) => {
-        if (isNaN(value) === false) {
-            middleKeys.push([index, Number(value)]);
+        if (isNaN(value) === false || isOriginal(value)) {
+            middleKeys.push([index, value]);
         } else if (typeof value === 'string') {
             if (value.includes('start')) {
                 const weightMatch = value.match(/start\s+(\d+)/);
@@ -79,11 +88,29 @@ const positionalArraySorter = (subject, positionKey = 'position', idKey = 'key')
     });
 
     const sortByWeightFunc = (a, b) => a[1] - b[1];
+    const sortWithRetainingOriginalPos = (a, b) => {
+        a = a[1];
+        b = b[1];
+        // If both items don't have position, retain original sorting order
+        if (isOriginal(a) && isOriginal(b)) {
+            return getOriginal(a) - getOriginal(b);
+        }
+        // If only item `a` doesn't have position, push it down
+        if (a && a.includes && a.includes('_original_')) {
+            return 1;
+        }
+        // If only item `b` doesn't have position, push it down
+        if (b && b.includes && b.includes('_original_')) {
+            return -1;
+        }
+        // If both items have position, sort them in a standard way
+        return Number(a) - Number(b);
+    };
 
     // Merged array of all sorted indexes, except for before and after
     let sortedIndexes = [].concat(
         startKeys.sort(sortByWeightFunc).map(pair => pair[0]),
-        middleKeys.sort(sortByWeightFunc).map(pair => pair[0]),
+        middleKeys.sort(sortWithRetainingOriginalPos).map(pair => pair[0]),
         corruptKeys,
         endKeys.sort(sortByWeightFunc).map(pair => pair[0])
     );

@@ -33,8 +33,24 @@ fi
 jq ".require[\"neos/neos-ui-compiled\"] = \"$VERSION\"" composer.json > composer.json.new
 rm composer.json
 mv composer.json.new composer.json
+rm jq-linux64
 
-git add composer.json
-git commit -m "Updating composer dependency for release of $VERSION"
+# install yarn if not already
+path_to_yarn=$(which yarn)
+if [ -z "$path_to_yarn" ] ; then
+    echo "installing yarn:"
+    npm install -g yarn
+fi
+
+# install dependencies and login to npm
+make install
+NPM_EMAIL=hello@neos.io ./node_modules/.bin/npm-cli-login
+
+# release includes publishing to npm
+make release
+
+git add .
+git commit -m "Updating composer dependency and npm versions for release of $VERSION"
+git push origin master
 git tag -a -m "$VERSION" $VERSION
 git push origin $VERSION

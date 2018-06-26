@@ -424,8 +424,6 @@ const mapper = icon => {
         'safari',
         'scribd',
         'sellsy',
-        'share-alt',
-        'share-alt-square',
         'shirtsinbulk',
         'simplybuilt',
         'skyatlas',

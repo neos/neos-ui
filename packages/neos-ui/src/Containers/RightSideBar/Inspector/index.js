@@ -99,8 +99,10 @@ export default class Inspector extends PureComponent {
     // Fetch viewConfiguration and clone it once the focusedNode changes
     //
     cloneViewConfiguration = props => {
-        this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
-        this.originalViewConfiguration = this.viewConfiguration;
+        if (props.focusedNode) {
+            this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
+            this.originalViewConfiguration = this.viewConfiguration;
+        }
     };
 
     //
@@ -215,7 +217,10 @@ export default class Inspector extends PureComponent {
             i18nRegistry
         } = this.props;
 
-        if (!focusedNode || !$get('isFullyLoaded', focusedNode)) {
+        if (!focusedNode) {
+            return null;
+        }
+        if (!$get('isFullyLoaded', focusedNode)) {
             return this.renderFallback();
         }
 
@@ -246,11 +251,8 @@ export default class Inspector extends PureComponent {
                         //
                         .filter(t => $get('groups', t) && $get('groups', t).count() > 0 && $get('groups', t).reduce((acc, group) => (
                             acc ||
-                            $get('properties', group).filter(this.isPropertyEnabled).count() > 0 ||
-                            $get('views', group).count() > 0
+                            $get('items', group).filter(this.isPropertyEnabled).count() > 0
                         ), false))
-
-                        .sort((a, b) => $get('position', a) > $get('position', b))
 
                         //
                         // Render each tab as a TabPanel
@@ -269,6 +271,7 @@ export default class Inspector extends PureComponent {
                                     handlePanelToggle={path => {
                                         this.handlePanelToggle([$get('id', tab), ...path]);
                                     }}
+                                    handleInspectorApply={this.handleApply}
                                     />);
                         })
                     }

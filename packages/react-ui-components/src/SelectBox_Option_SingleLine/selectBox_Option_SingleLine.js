@@ -20,12 +20,14 @@ export default class SelectBox_Option_SingleLine extends PureComponent {
     render() {
         const {option, className, disabled} = this.props;
 
+        const isDisabled = disabled || option.disabled;
+
         const finalClassNames = mergeClassNames({
             [className]: className
         });
 
         return (
-            <ListPreviewElement {...this.props} icon={option.icon} disabled={disabled} className={finalClassNames}>
+            <ListPreviewElement {...this.props} icon={option.icon} disabled={isDisabled} className={finalClassNames}>
                 <span>{option.label}</span>
             </ListPreviewElement>
         );

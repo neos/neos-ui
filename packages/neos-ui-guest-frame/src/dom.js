@@ -249,3 +249,24 @@ export const animateScrollToElementInGuestFrame = (element, offsetY = 0, offsetX
 
     animateScrollToPositionInGuestFrame(left - offsetX, top - offsetY);
 };
+
+//
+// Dispatch custom event onto the document of the guest frame.
+// Used for backwards compatibility with events from Ember UI
+//
+export const dispatchCustomEvent = (eventName, eventDescription, eventDetail = {}) => {
+    const detail = {
+        message: eventDescription,
+        time: new Date(),
+        ...eventDetail
+    };
+    const event = new CustomEvent(
+        eventName,
+        {
+            detail,
+            bubbles: true,
+            cancelable: true
+        }
+    );
+    getGuestFrameDocument().dispatchEvent(event);
+};

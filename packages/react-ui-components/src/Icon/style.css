@@ -27,13 +27,13 @@
 }
 
 .icon--color-warn {
-  color: var(--colors-Warn)
+    color: var(--colors-Warn);
 }
 
 .icon--color-error {
-  color: var(--colors-Error)
+    color: var(--colors-Error);
 }
 
 .icon--color-primaryBlue {
-  color: var(--colors-PrimaryBlue)
+    color: var(--colors-PrimaryBlue);
 }

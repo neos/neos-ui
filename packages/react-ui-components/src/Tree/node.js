@@ -200,8 +200,8 @@ export class Header extends PureComponent {
                             >
                             <div className={theme.header__labelWrapper}>
                                 {customIconComponent ?
-                                  customIconComponent :
-                                  <IconComponent icon={icon || 'question'} label={iconLabel} className={theme.header__icon} />
+                                    customIconComponent :
+                                    <IconComponent icon={icon || 'question'} label={iconLabel} className={theme.header__icon} />
                                 }
                                 <span {...rest} id={labelIdentifier} className={theme.header__label} onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                                     {label}

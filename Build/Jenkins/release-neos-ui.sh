@@ -52,9 +52,6 @@ make release
 git add .
 git commit -m "Updating composer dependency and npm versions for release of $VERSION"
 
-# debug
-git show-ref
-
-git push origin master
+git push origin HEAD:master
 git tag -a -m "$VERSION" $VERSION
 git push origin $VERSION

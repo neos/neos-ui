@@ -28,7 +28,8 @@ export default class AssetUpload extends PureComponent {
         children: PropTypes.any.isRequired,
         multiple: PropTypes.bool,
         multipleData: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.array]),
-        imagesOnly: PropTypes.bool
+        imagesOnly: PropTypes.bool,
+        accept: PropTypes.string
     };
 
     chooseFromLocalFileSystem = () => {
@@ -54,7 +55,7 @@ export default class AssetUpload extends PureComponent {
         this.uploadMultipleFiles(0, values, files);
     }
 
-    uploadMultipleFiles(index, values, files) {
+    uploadMultipleFiles = (index, values, files) => {
         const {uploadAsset} = backend.get().endpoints;
         const {onAfterUpload, focusedNodePath, siteNodePath} = this.props;
 
@@ -73,12 +74,12 @@ export default class AssetUpload extends PureComponent {
         });
     }
 
-    getUploadMetaData() {
+    getUploadMetaData = () => {
         return this.props.imagesOnly ? 'Image' : 'Asset';
     }
 
     render() {
-        const {isLoading, highlight} = this.props;
+        const {isLoading, highlight, multiple, children, accept} = this.props;
 
         const classNames = mergeClassNames({
             [style.thumbnail]: true,
@@ -99,14 +100,15 @@ export default class AssetUpload extends PureComponent {
                 <div style={{display: isLoading ? 'none' : 'block'}}>
                     <Dropzone
                         ref={this.setDropzoneReference}
-                        onDropAccepted={this.props.multiple ? this.handleMultiUpload : this.handleUpload}
+                        accept={accept}
+                        onDropAccepted={multiple ? this.handleMultiUpload : this.handleUpload}
                         className={style.dropzone}
                         activeClassName={style['dropzone--isActive']}
                         rejectClassName={style['dropzone--isRejecting']}
                         disableClick={true}
-                        multiple={Boolean(this.props.multiple)}
+                        multiple={Boolean(multiple)}
                         >
-                        {this.props.children}
+                        {children}
                     </Dropzone>
                 </div>
             </React.Fragment>

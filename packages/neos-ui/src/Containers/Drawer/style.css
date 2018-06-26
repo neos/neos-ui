@@ -1,19 +1,33 @@
 .drawer {
     position: fixed;
-    top: 41px;
+    display: flex;
+    flex-flow: column;
+    flex-shrink: 0;
+    justify-content: flex-start;
+    top: calc(var(--spacing-GoldenUnit) + 1px);
     left: 0;
     z-index: var(--zIndex-Drawer-Context);
     height: 100%;
     width: var(--size-SidebarWidth);
     background: var(--colors-ContrastDarker);
     transition: var(--transition-Default) ease transform;
-    padding-bottom: 41px;
+    padding-bottom: calc(var(--spacing-GoldenUnit) + 1px);
     overflow: scroll;
 }
 .drawer--isHidden {
     transform: translateX(-var(--size-SidebarWidth));
 }
+
+.drawer__menuItemGroupsWrapper {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
 .drawer__menuItem {
+    display: flex;
+    flex-direction: column;
     border-top: 1px solid var(--colors-ContrastDark);
     cursor: pointer;
 
@@ -23,6 +37,7 @@
 }
 .drawer__menuItemGroupBtn,
 .drawer__menuItemBtn {
+    display: flex;
     width: 100%;
     padding: 0;
     text-align: left;
@@ -40,6 +55,5 @@
 .drawer__version {
     color: var(--colors-ContrastBright);
     padding: var(--spacing-Full);
-    bottom: var(--spacing-GoldenUnit);
-    position: absolute;
+    margin-top:auto;
 }

@@ -134,24 +134,6 @@ publish-npm: called-with-version
 	$(lerna) publish --skip-git --exact --repo-version=$(VERSION) \
 		--yes --force-publish
 
-tag: called-with-version
-	git tag $(VERSION)
-
-# make a production-clean build
-# and make sure that every lint and test stage is running through
-release: called-with-version check-requirements \
-	build-production \
-	bump-version publish-npm tag
-	@echo
-	@echo
-	@echo
-	@echo '####################################################################'
-	@echo
-	@echo You should look at the git diff carefully and commit your changes
-	@echo
-	@echo Then push your changes into the master and trigger the jenkins build.
-
-
 ################################################################################
 # Misc
 ################################################################################

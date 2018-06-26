@@ -46,8 +46,10 @@ fi
 make install
 NPM_EMAIL=hello@neos.io ./node_modules/.bin/npm-cli-login
 
-# release includes publishing to npm
-make release
+# acutal release process
+make build-production
+VERSION=$VERSION make bump-version
+VERSION=$VERSION make publish-npm
 
 git add .
 git commit -m "Updating composer dependency and npm versions for release of $VERSION"

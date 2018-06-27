@@ -80,6 +80,9 @@ backend = Neos.Fusion:Template {
                 getWorkspaceInfo = Neos.Fusion:UriBuilder {
                     action = 'getWorkspaceInfo'
                 }
+                getPolicyInfo = Neos.Fusion:UriBuilder {
+                    action = 'getPolicyInformation'
+                }
             }
         }
         core = Neos.Fusion:RawArray {

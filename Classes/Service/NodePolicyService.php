@@ -1,17 +1,7 @@
 <?php
+namespace Neos\Neos\Ui\Service;
 
-namespace Neos\Neos\Ui\Aspects;
-
-/*
- * This file is part of the Neos.Neos.Ui package.
- *
- * (c) Contributors of the Neos Project - www.neos.io
- *
- * This package is Open Source Software. For the full copyright and license
- * information, please view the LICENSE file which was distributed with this
- * source code.
- */
-
+use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
@@ -21,7 +11,7 @@ use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSu
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\PropertyAwareNodePrivilegeSubject;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\RemoveNodePrivilege;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Aop\JoinPointInterface;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
@@ -29,20 +19,11 @@ use Neos\Flow\Security\Policy\PolicyService;
 use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
 
 /**
- * Add information to rendered nodes relevant to enforce the following privileges
- * in the UI:
- *
- * - NodeTreePrivilege
- * - CreateNodePrivilege
- * - RemoveNodePrivilege
- * - EditNodePrivilege
- * - EditNodePropertyPrivilege
- *
  * @Flow\Scope("singleton")
- * @Flow\Aspect
  */
-class PolicyAspect
+class NodePolicyService
 {
+
     /**
      * @Flow\Inject
      * @var PrivilegeManagerInterface
@@ -83,40 +64,50 @@ class PolicyAspect
     }
 
     /**
-     * @Flow\Around("method(Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper->renderNode())")
-     * @return void
+     * @param NodeInterface $node
+     * @return array
      */
-    public function enforceNodeTreePrivilege(JoinPointInterface $joinPoint)
+    public function getNodePolicyInformation(NodeInterface $node): array
+    {
+        return [
+            'disallowedNodeTypes' => $this->getDisallowedNodeTypes($node),
+            'canRemove' => $this->canRemoveNode($node),
+            'canEdit' => $this->canEditNode($node),
+            'disallowedProperties' => $this->getDisallowedProperties($node)
+        ];
+    }
+
+    /**
+     * @param NodeInterface $node
+     * @return bool
+     */
+    public function isNodeTreePrivilegeGranted(NodeInterface $node): bool
     {
         if (!isset(self::getUsedPrivilegeClassNames($this->objectManager)[NodeTreePrivilege::class])) {
-            // no NodeTreePrivilege configured; directly proceed. (Performance optimization)
-            return $joinPoint->getAdviceChain()->proceed($joinPoint);
+            return true;
         }
-        $node = $joinPoint->getMethodArgument('node');
         $hasNodeTreePrivilege = $this->privilegeManager->isGranted(
             NodeTreePrivilege::class,
             new NodePrivilegeSubject($node)
         );
 
         if ($hasNodeTreePrivilege) {
-            return $joinPoint->getAdviceChain()->proceed($joinPoint);
+            return true;
         }
+
+        return false;
     }
 
     /**
-     * @Flow\Around("method(Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper->renderNode())")
-     * @return void
+     * @param NodeInterface $node
+     * @return array
      */
-    public function enforceCreateNodePrivilege(JoinPointInterface $joinPoint)
+    public function getDisallowedNodeTypes(NodeInterface $node): array
     {
-        $node = $joinPoint->getMethodArgument('node');
-        $nodeInfo = $joinPoint->getAdviceChain()->proceed($joinPoint);
-
-        $nodeInfo['policy'] = array_key_exists('policy', $nodeInfo) ? $nodeInfo['policy'] : [];
-        $nodeInfo['policy']['disallowedNodeTypes'] = [];
-
+        $disallowedNodeTypes = [];
         // performance optimization: we ensure that CreateNodePrivilege is actually used before running this code
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[CreateNodePrivilege::class])) {
+            /** @var NodeType $nodeType */
             foreach ($this->nodeTypeManager->getNodeTypes() as $nodeType) {
                 $canCreate = $this->privilegeManager->isGranted(
                     CreateNodePrivilege::class,
@@ -124,22 +115,20 @@ class PolicyAspect
                 );
 
                 if (!$canCreate) {
-                    $nodeInfo['policy']['disallowedNodeTypes'][] = $nodeType->getName();
+                    $disallowedNodeTypes[] = $nodeType->getName();
                 }
             }
         }
 
-        return $nodeInfo;
+        return $disallowedNodeTypes;
     }
 
     /**
-     * @Flow\Around("method(Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper->renderNode())")
-     * @return array
+     * @param NodeInterface $node
+     * @return bool
      */
-    public function enforceRemoveNodePrivilege(JoinPointInterface $joinPoint)
+    public function canRemoveNode(NodeInterface $node): bool
     {
-        $node = $joinPoint->getMethodArgument('node');
-        $nodeInfo = $joinPoint->getAdviceChain()->proceed($joinPoint);
 
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[RemoveNodePrivilege::class])) {
             $canRemove = $this->privilegeManager->isGranted(RemoveNodePrivilege::class, new NodePrivilegeSubject($node));
@@ -147,44 +136,31 @@ class PolicyAspect
             $canRemove = true;
         }
 
-        $nodeInfo['policy'] = array_key_exists('policy', $nodeInfo) ? $nodeInfo['policy'] : [];
-        $nodeInfo['policy']['canRemove'] = $canRemove;
-
-        return $nodeInfo;
+        return $canRemove;
     }
 
     /**
-     * @Flow\Around("method(Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper->renderNode())")
-     * @return array
+     * @param NodeInterface $node
+     * @return bool
      */
-    public function enforceEditNodePrivilege(JoinPointInterface $joinPoint)
+    public function canEditNode(NodeInterface $node): bool
     {
-        $node = $joinPoint->getMethodArgument('node');
-        $nodeInfo = $joinPoint->getAdviceChain()->proceed($joinPoint);
-
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[EditNodePrivilege::class])) {
             $canEdit = $this->privilegeManager->isGranted(EditNodePrivilege::class, new NodePrivilegeSubject($node));
         } else {
             $canEdit = true;
         }
 
-        $nodeInfo['policy'] = array_key_exists('policy', $nodeInfo) ? $nodeInfo['policy'] : [];
-        $nodeInfo['policy']['canEdit'] = $canEdit;
-
-        return $nodeInfo;
+        return $canEdit;
     }
 
     /**
-     * @Flow\Around("method(Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper->renderNode())")
-     * @return void
+     * @param NodeInterface $node
+     * @return array
      */
-    public function enforceEditNodePropertyPrivilege(JoinPointInterface $joinPoint)
+    public function getDisallowedProperties(NodeInterface $node): array
     {
-        $node = $joinPoint->getMethodArgument('node');
-        $nodeInfo = $joinPoint->getAdviceChain()->proceed($joinPoint);
-
-        $nodeInfo['policy'] = array_key_exists('policy', $nodeInfo) ? $nodeInfo['policy'] : [];
-        $nodeInfo['policy']['disallowedProperties'] = [];
+        $disallowedProperties = [];
 
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[EditNodePropertyPrivilege::class])) {
             foreach ($node->getNodeType()->getProperties() as $propertyName => $propertyConfiguration) {
@@ -194,11 +170,11 @@ class PolicyAspect
                 );
 
                 if (!$canEdit) {
-                    $nodeInfo['policy']['disallowedProperties'][] = $propertyName;
+                    $disallowedProperties[] = $propertyName;
                 }
             }
         }
 
-        return $nodeInfo;
+        return $disallowedProperties;
     }
 }

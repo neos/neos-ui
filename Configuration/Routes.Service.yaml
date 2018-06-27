@@ -53,3 +53,10 @@
     '@controller': 'BackendService'
     '@action': 'getWorkspaceInfo'
   httpMethods: ['GET']
+-
+  name: 'Get Policy Info'
+  uriPattern: 'get-policy-info'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'getPolicyInformation'
+  httpMethods: ['POST']

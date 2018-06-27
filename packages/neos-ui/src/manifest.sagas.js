@@ -5,6 +5,7 @@ import * as browser from './Sagas/Browser/index';
 import * as changes from './Sagas/Changes/index';
 import * as crContentDimensions from './Sagas/CR/ContentDimensions/index';
 import * as crNodeOperations from './Sagas/CR/NodeOperations/index';
+import * as crPolicies from './Sagas/CR/Policies/index';
 import * as publish from './Sagas/Publish/index';
 import * as serverFeedback from './Sagas/ServerFeedback/index';
 import * as uiContentCanvas from './Sagas/UI/ContentCanvas/index';
@@ -40,6 +41,9 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/CR/NodeOperations/showNode', {saga: crNodeOperations.showNode});
     sagasRegistry.set('neos-ui/CR/NodeOperations/removeNodeIfConfirmed', {saga: crNodeOperations.removeNodeIfConfirmed});
     sagasRegistry.set('neos-ui/CR/NodeOperations/reloadState', {saga: crNodeOperations.reloadState});
+
+    sagasRegistry.set('neos-ui/CR/Policies/watchNodeFocus', {saga: crPolicies.watchNodeFocus});
+    sagasRegistry.set('neos-ui/CR/Policies/watchMergeFromGuestFrame', {saga: crPolicies.watchMergeFromGuestFrame});
 
     sagasRegistry.set('neos-ui/Publish/watchChangeBaseWorkspace', {saga: publish.watchChangeBaseWorkspace});
     sagasRegistry.set('neos-ui/Publish/discardIfConfirmed', {saga: publish.discardIfConfirmed});

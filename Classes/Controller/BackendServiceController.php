@@ -23,6 +23,7 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Service\ContentContextFactory;
 use Neos\Neos\Service\PublishingService;
 use Neos\Neos\Service\UserService;
+use Neos\Neos\TypeConverter\NodeConverter;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
@@ -35,6 +36,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
+use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
@@ -98,6 +100,12 @@ class BackendServiceController extends ActionController
      * @var UserService
      */
     protected $userService;
+
+    /**
+     * @Flow\Inject
+     * @var NodePolicyService
+     */
+    protected $nodePolicyService;
 
     /**
      * Set the controller context on the feedback collection after the controller
@@ -342,6 +350,29 @@ class BackendServiceController extends ActionController
     {
         $nodeTreeArguments->setControllerContext($this->controllerContext);
         $this->view->assign('value', $nodeTreeArguments->build($includeRoot));
+    }
+
+    /**
+     * @throws \Neos\Flow\Mvc\Exception\NoSuchArgumentException
+     */
+    public function initializeGetPolicyInformationAction()
+    {
+        $this->arguments->getArgument('nodes')->getPropertyMappingConfiguration()->allowAllProperties();
+    }
+
+    /**
+     * @param array<NodeInterface> $nodes
+     */
+    public function getPolicyInformationAction(array $nodes)
+    {
+        $result = [];
+        /** @var NodeInterface $node */
+        foreach ($nodes as $node)
+        {
+            $result[$node->getContextPath()] = ['policy' => $this->nodePolicyService->getNodePolicyInformation($node)];
+        }
+
+        $this->view->assign('value', $result);
     }
 
     /**

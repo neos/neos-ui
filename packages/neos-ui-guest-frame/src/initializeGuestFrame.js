@@ -2,6 +2,7 @@ import {takeEvery, put, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
+import backend from '@neos-project/neos-ui-backend-connector';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';
@@ -51,7 +52,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         [documentInformation.metaData.contextPath]: documentInformation.metaData.documentNodeSerialization
     });
 
-    yield put(actions.CR.Nodes.add(nodes));
+    yield put(actions.CR.Nodes.mergeFromGuestFrame(nodes));
 
     // Remove the inline scripts after initialization
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));

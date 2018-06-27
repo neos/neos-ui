@@ -231,8 +231,8 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 subject: clipboardNodeContextPath,
                 reference: focusedNodeContextPath
             });
-            const canBeDeleted = $get('policy.canRemove', focusedNode);
-            const canBeEdited = $get('policy.canEdit', focusedNode);
+            const canBeDeleted = $get('policy.canRemove', focusedNode) || false;
+            const canBeEdited = $get('policy.canEdit', focusedNode) || false;
             const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';

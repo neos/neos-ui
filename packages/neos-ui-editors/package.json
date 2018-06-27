@@ -13,8 +13,7 @@
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
-    "jest": "NODE_ENV=test jest",
-    "postpublish": "greenkeeper-postpublish"
+    "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "0.0.1",

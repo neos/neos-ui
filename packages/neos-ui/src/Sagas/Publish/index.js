@@ -8,7 +8,6 @@ import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 export function * watchPublish() {
-    const {q} = backend.get();
     const {publish} = backend.get().endpoints;
 
     yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {

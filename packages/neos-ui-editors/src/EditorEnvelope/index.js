@@ -21,15 +21,8 @@ export default class EditorEnvelope extends PureComponent {
         identifier: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
         editor: PropTypes.string.isRequired,
-        options: PropTypes.object,
-        value: PropTypes.any,
-        renderSecondaryInspector: PropTypes.func,
         editorRegistry: PropTypes.object.isRequired,
-        validationErrors: PropTypes.array,
-        onEnterKey: PropTypes.func,
-        helpMessage: PropTypes.string,
-
-        commit: PropTypes.func.isRequired
+        helpMessage: PropTypes.string
     };
 
     generateIdentifier() {

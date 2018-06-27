@@ -17,7 +17,9 @@
     height: 216px;
     overflow: hidden;
     cursor: pointer;
-    /* TODO: border-color: #fff; on hover */
+}
+.thumbnail:hover {
+    border-color: #fff;
 }
 .thumbnail--disabled {
     cursor: not-allowed;

@@ -19,6 +19,10 @@
 .toolBar__btnGroup__btn {
     float: left;
 
+    &:hover {
+        background-color: var(--colors-PrimaryBlue)
+    }
+
     svg {
         width: 1em;
     }

@@ -56,6 +56,14 @@
     background-color: var(--colors-Warn);
 }
 
+.btn--brandActive {
+    background-color:  var(--colors-PrimaryBlue);
+
+    svg {
+        color:  var(--colors-ContrastBrightest);
+    }
+}
+
 .btn--brandHover:hover:enabled,
 .btn--brandHover:hover:enabled i,
 .btn--brandHover.btn--isPressed,

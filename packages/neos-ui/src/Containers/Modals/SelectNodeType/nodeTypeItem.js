@@ -27,10 +27,19 @@ class NodeTypeItem extends PureComponent {
         }).isRequired
     };
 
+    renderHelpIcon = () => {
+        return (
+            <span className={style.nodeType__help}n>
+                <Icon icon="question-circle" />
+            </span>
+        );
+    }
+
     render() {
         const {ui} = this.props.nodeType;
         const icon = $get('icon', ui);
         const label = $get('label', ui);
+        const helpMessage = $get('help.message', ui);
 
         return (
             <Button
@@ -38,9 +47,11 @@ class NodeTypeItem extends PureComponent {
                 style="clean"
                 className={style.nodeType}
                 onClick={this.handleNodeTypeClick}
+                title={helpMessage ? helpMessage : ''}
                 >
                 {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
                 <I18n id={label} fallback={label}/>
+                {helpMessage ? this.renderHelpIcon() : null}
             </Button>
         );
     }

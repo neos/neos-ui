@@ -41,3 +41,7 @@
 .nodeTypeFilter__label {
     margin-right: var(--spacing-Half);
 }
+
+.nodeType__help {
+    float: right;
+}

@@ -4,6 +4,7 @@ import mergeClassNames from 'classnames';
 import {AssetUpload} from '../../../../Library/index';
 
 import {Thumbnail} from '../../Utils/index';
+import {Icon} from '@neos-project/react-ui-components';
 import style from './style.css';
 
 export default class PreviewScreen extends PureComponent {
@@ -41,13 +42,21 @@ export default class PreviewScreen extends PureComponent {
                 onClick={handleClick()}
                 role="button"
                 >
-                <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
-                    <img
-                        className={(thumbnail ? style.cropArea__image : style['cropArea__image--placeholder'])}
-                        src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg'}
-                        style={thumbnail ? thumbnail.styles.thumbnail : {}}
-                        role="presentation"
-                        />
+                <div className={style.thumbnail__overlay}>
+                    <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
+                        <div className={style.thumbnail__overlay__icon}>
+                            {thumbnail ?
+                                <Icon icon="camera" size="5x" mask={['fas', 'circle']} transform="shrink-8" /> :
+                                this.props.isUploadEnabled && <Icon icon="upload" size="5x" mask={['fas', 'circle']} transform="shrink-8" />
+                            }
+                        </div>
+                        <img
+                            className={(thumbnail ? style.cropArea__image : style['cropArea__image--placeholder'])}
+                            src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg'}
+                            style={thumbnail ? thumbnail.styles.thumbnail : {}}
+                            role="presentation"
+                            />
+                    </div>
                 </div>
             </div>
         );

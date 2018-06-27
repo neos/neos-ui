@@ -315,7 +315,7 @@ export const reducer = handleActions({
             )
         )),
     ),
-    [MERGE_FROM_GUEST_FRAME]: ({ nodeMap }) => $all(
+    [MERGE_FROM_GUEST_FRAME]: ({nodeMap}) => $all(
         ...Object.keys(nodeMap).map(contextPath => $merge(
             ['cr', 'nodes', 'byContextPath', contextPath],
             Immutable.fromJS(

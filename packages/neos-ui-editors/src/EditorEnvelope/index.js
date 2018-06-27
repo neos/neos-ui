@@ -5,6 +5,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.css';
 
+import {Icon} from '@neos-project/react-ui-components';
+
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors')
 }))
@@ -21,6 +23,7 @@ export default class EditorEnvelope extends PureComponent {
         editorRegistry: PropTypes.object.isRequired,
         validationErrors: PropTypes.array,
         onEnterKey: PropTypes.func,
+        helpMessage: PropTypes.string,
 
         commit: PropTypes.func.isRequired
     };
@@ -72,8 +75,21 @@ export default class EditorEnvelope extends PureComponent {
         return (
             <Label htmlFor={this.generateIdentifier()}>
                 <I18n id={label}/>
+                {this.renderHelpIcon()}
             </Label>
         );
+    }
+
+    renderHelpIcon() {
+        if (this.props.helpMessage) {
+            return (
+                <span className={style.envelope__help}n>
+                    <Icon icon="question-circle" />
+                </span>
+            );
+        }
+
+        return '';
     }
 
     render() {
@@ -86,7 +102,9 @@ export default class EditorEnvelope extends PureComponent {
 
         return (
             <div>
-                {this.renderLabel()}
+                <span title={this.props.helpMessage}>
+                    {this.renderLabel()}
+                </span>
                 {this.renderEditorComponent()}
             </div>
         );

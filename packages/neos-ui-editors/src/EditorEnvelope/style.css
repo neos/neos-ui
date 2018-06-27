@@ -2,3 +2,7 @@
     padding: .5em;
     border: 1px solid var(--colors-Error);
 }
+
+.envelope__help {
+    margin-left: var(--spacing-Half);
+}

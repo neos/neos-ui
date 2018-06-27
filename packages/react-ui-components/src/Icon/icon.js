@@ -5,16 +5,12 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import mapper from './mapper';
 
 const Icon = props => {
-    const {size, padded, theme, label, icon, className, color, ...rest} = props;
+    const {padded, theme, label, icon, className, color, ...rest} = props;
     const iconClassName = icon;
     const classNames = mergeClassNames({
         [theme.icon]: true,
         [iconClassName]: true,
         [props.className]: className && className.length,
-        [theme['icon--big']]: size === 'big',
-        [theme['icon--medium']]: size === 'medium',
-        [theme['icon--small']]: size === 'small',
-        [theme['icon--tiny']]: size === 'tiny',
         [theme['icon--paddedLeft']]: padded === 'left',
         [theme['icon--paddedRight']]: padded === 'right',
         [theme['icon--color-warn']]: color === 'warn',
@@ -55,11 +51,6 @@ Icon.propTypes = {
      * The (accessibility) label for this icon
      */
     label: PropTypes.string,
-
-    /**
-     * Controls the rendered size of the icon.
-     */
-    size: PropTypes.oneOf(['big', 'medium', 'small', 'tiny']),
 
     /**
      * Controls the padding around the icon in a standardized way.

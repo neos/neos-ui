@@ -117,7 +117,7 @@ Neos:
         metaData:
           contextPath: '${q(documentNode).property("_contextPath")}'
           siteNode: '${q(site).property(''_contextPath'')}'
-          previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0), controllerContext)}'
+          previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0), controllerContext)}'
           contentDimensions:
             active: '${documentNode.context.dimensions}'
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'

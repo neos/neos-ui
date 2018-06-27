@@ -157,6 +157,17 @@ class BackendController extends ActionController
     }
 
     /**
+     * @param NodeInterface $node
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     */
+    public function redirectToAction(NodeInterface $node)
+    {
+        $this->response->getHeaders()->setCacheControlDirective('no-cache');
+        $this->response->getHeaders()->setCacheControlDirective('no-store');
+        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
+    }
+
+    /**
      * @return NodeInterface|null
      */
     protected function getSiteNodeForLoggedInUser()

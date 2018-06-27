@@ -12,3 +12,12 @@
   defaults:
     '@controller': 'Backend'
     '@action': 'deactivate'
+
+-
+  name: 'Redirect to frontend URL'
+  uriPattern: 'redirect'
+  defaults:
+    '@controller': 'Backend'
+    '@action': 'redirectTo'
+    '@format': 'html'
+  appendExceedingArguments: true

@@ -21,19 +21,6 @@ export function * watchPublish() {
                 const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
                 yield put(actions.UI.Remote.finishPublishing());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-
-                //
-                // Fetch the current content canvas document node, to retrieve a new preview uri,
-                // but only if the document is amongst the latest published nodes
-                //
-                const contentCanvasContextPath = yield select($get('ui.contentCanvas.contextPath'));
-
-                if (nodeContextPaths.contains(contentCanvasContextPath)) {
-                    const [contentCanvasNode] = yield q(contentCanvasContextPath).get();
-                    const previewUrl = $get('previewUri', contentCanvasNode);
-
-                    yield put(actions.UI.ContentCanvas.setPreviewUrl(previewUrl));
-                }
             } catch (error) {
                 console.error('Failed to publish', error);
             }

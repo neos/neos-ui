@@ -68,7 +68,23 @@
 .header__data--isDirty {
     border-left: 2px solid var(--colors-Warn);
 }
+.header__data--isRemoved {
+    border-left: 2px solid var(--colors-Error);
+    opacity: .5;
+    cursor: normal;
 
+    &:hover {
+        cursor: default;
+    }
+
+    span {
+        text-decoration: line-through;
+
+        &:hover {
+            cursor: default;
+        }
+    }
+}
 .header__data--isFocused {
     background: var(--colors-ContrastNeutral);
 

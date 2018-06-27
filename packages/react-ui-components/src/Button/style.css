@@ -57,10 +57,10 @@
 }
 
 .btn--brandActive {
-    background-color:  var(--colors-PrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 
     svg {
-        color:  var(--colors-ContrastBrightest);
+        color: var(--colors-ContrastBrightest);
     }
 }
 

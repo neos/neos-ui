@@ -20,7 +20,7 @@
     float: left;
 
     &:hover {
-        background-color: var(--colors-PrimaryBlue)
+        background-color: var(--colors-PrimaryBlue);
     }
 
     svg {

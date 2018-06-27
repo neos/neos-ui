@@ -13,6 +13,10 @@ import {Icon} from '@neos-project/react-ui-components';
 export default class EditorEnvelope extends PureComponent {
     state = {};
 
+    static defaultProps = {
+        helpMessage: ''
+    };
+
     static propTypes = {
         identifier: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,

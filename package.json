@@ -97,7 +97,6 @@
     "lodash.sortby": "^4.7.0",
     "lodash.throttle": "^4.1.1",
     "lodash.unescape": "4.0.1",
-    "mime-types": "^2.1.10",
     "moment": "^2.20.1",
     "monet": "^0.8.10",
     "mousetrap": "^1.6.1",

@@ -114,7 +114,12 @@ class NodePolicyService
         };
 
         $disallowedNodeTypeObjects = array_filter($this->nodeTypeManager->getNodeTypes(), $filter);
-        $disallowedNodeTypes = array_map(function ($nodeType) {$nodeType->getName();}, $disallowedNodeTypeObjects);
+
+        $mapper = function ($nodeType) {
+            $nodeType->getName();
+        };
+
+        $disallowedNodeTypes = array_map($mapper, $disallowedNodeTypeObjects);
         return $disallowedNodeTypes;
     }
 

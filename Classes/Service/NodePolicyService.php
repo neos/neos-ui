@@ -91,11 +91,7 @@ class NodePolicyService
             new NodePrivilegeSubject($node)
         );
 
-        if ($hasNodeTreePrivilege) {
-            return true;
-        }
-
-        return false;
+        return $hasNodeTreePrivilege;
     }
 
     /**
@@ -105,21 +101,20 @@ class NodePolicyService
     public function getDisallowedNodeTypes(NodeInterface $node): array
     {
         $disallowedNodeTypes = [];
-        // performance optimization: we ensure that CreateNodePrivilege is actually used before running this code
-        if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[CreateNodePrivilege::class])) {
-            /** @var NodeType $nodeType */
-            foreach ($this->nodeTypeManager->getNodeTypes() as $nodeType) {
-                $canCreate = $this->privilegeManager->isGranted(
-                    CreateNodePrivilege::class,
-                    new CreateNodePrivilegeSubject($node, $nodeType)
-                );
 
-                if (!$canCreate) {
-                    $disallowedNodeTypes[] = $nodeType->getName();
-                }
-            }
+        if (!isset(self::getUsedPrivilegeClassNames($this->objectManager)[CreateNodePrivilege::class])) {
+            return $disallowedNodeTypes;
         }
 
+        $filter = function ($nodeType) use ($node) {
+            return $this->privilegeManager->isGranted(
+                CreateNodePrivilege::class,
+                new CreateNodePrivilegeSubject($node, $nodeType)
+            );
+        };
+
+        $disallowedNodeTypeObjects = array_filter($this->nodeTypeManager->getNodeTypes(), $filter);
+        $disallowedNodeTypes = array_map(function ($nodeType) {$nodeType->getName();}, $disallowedNodeTypeObjects);
         return $disallowedNodeTypes;
     }
 
@@ -129,11 +124,9 @@ class NodePolicyService
      */
     public function canRemoveNode(NodeInterface $node): bool
     {
-
+        $canRemove = true;
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[RemoveNodePrivilege::class])) {
             $canRemove = $this->privilegeManager->isGranted(RemoveNodePrivilege::class, new NodePrivilegeSubject($node));
-        } else {
-            $canRemove = true;
         }
 
         return $canRemove;
@@ -145,10 +138,9 @@ class NodePolicyService
      */
     public function canEditNode(NodeInterface $node): bool
     {
+        $canEdit = true;
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[EditNodePrivilege::class])) {
             $canEdit = $this->privilegeManager->isGranted(EditNodePrivilege::class, new NodePrivilegeSubject($node));
-        } else {
-            $canEdit = true;
         }
 
         return $canEdit;
@@ -162,19 +154,18 @@ class NodePolicyService
     {
         $disallowedProperties = [];
 
-        if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[EditNodePropertyPrivilege::class])) {
-            foreach ($node->getNodeType()->getProperties() as $propertyName => $propertyConfiguration) {
-                $canEdit = $this->privilegeManager->isGranted(
-                    EditNodePropertyPrivilege::class,
-                    new PropertyAwareNodePrivilegeSubject($node, null, $propertyName)
-                );
-
-                if (!$canEdit) {
-                    $disallowedProperties[] = $propertyName;
-                }
-            }
+        if (!isset(self::getUsedPrivilegeClassNames($this->objectManager)[EditNodePropertyPrivilege::class])) {
+            return $disallowedProperties;
         }
 
+        $filter = function ($propertyName) use ($node) {
+            return $this->privilegeManager->isGranted(
+                EditNodePropertyPrivilege::class,
+                new PropertyAwareNodePrivilegeSubject($node, null, $propertyName)
+            );
+        };
+
+        $disallowedProperties = array_filter(array_keys($node->getNodeType()->getProperties()), $filter);
         return $disallowedProperties;
     }
 }

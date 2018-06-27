@@ -367,8 +367,7 @@ class BackendServiceController extends ActionController
     {
         $result = [];
         /** @var NodeInterface $node */
-        foreach ($nodes as $node)
-        {
+        foreach ($nodes as $node) {
             $result[$node->getContextPath()] = ['policy' => $this->nodePolicyService->getNodePolicyInformation($node)];
         }
 

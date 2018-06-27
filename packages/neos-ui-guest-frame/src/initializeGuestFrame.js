@@ -2,7 +2,6 @@ import {takeEvery, put, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
-import backend from '@neos-project/neos-ui-backend-connector';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';

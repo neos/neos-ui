@@ -5,12 +5,4 @@ import TextArea from './textArea.js';
 
 const ThemedTextArea = themr(identifiers.textArea, style)(TextArea);
 
-//
-// Dependency injection
-//
-import injectProps from './../_lib/injectProps.js';
-import Tooltip from '../Tooltip/index';
-
-export default injectProps({
-    TooltipComponent: Tooltip
-})(ThemedTextArea);
+export default ThemedTextArea;

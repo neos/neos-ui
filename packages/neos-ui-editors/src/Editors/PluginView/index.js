@@ -24,6 +24,7 @@ class PluginViewEditor extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string,
         value: PropTypes.string,
+        className: PropTypes.string,
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
         activeContentDimensions: PropTypes.object.isRequired,
@@ -99,6 +100,7 @@ class PluginViewEditor extends React.PureComponent {
         return (
             <SelectBox
                 options={options}
+                className={this.props.className}
                 value={this.props.value}
                 onValueChange={this.handleValueChange}
                 displayLoadingIndicator={isLoading}

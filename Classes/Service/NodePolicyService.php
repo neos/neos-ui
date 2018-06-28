@@ -1,7 +1,6 @@
 <?php
 namespace Neos\Neos\Ui\Service;
 
-use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
@@ -47,7 +46,7 @@ class NodePolicyService
      * @return array the key is a Privilege class name; the value is "true" if privileges are configured for this class name.
      * @Flow\CompileStatic
      */
-    public static function getUsedPrivilegeClassNames($objectManager)
+    public static function getUsedPrivilegeClassNames(ObjectManagerInterface $objectManager): array
     {
         $policyService = $objectManager->get(PolicyService::class);
         $usedPrivilegeClassNames = [];
@@ -86,12 +85,11 @@ class NodePolicyService
         if (!isset(self::getUsedPrivilegeClassNames($this->objectManager)[NodeTreePrivilege::class])) {
             return true;
         }
-        $hasNodeTreePrivilege = $this->privilegeManager->isGranted(
+
+        return $this->privilegeManager->isGranted(
             NodeTreePrivilege::class,
             new NodePrivilegeSubject($node)
         );
-
-        return $hasNodeTreePrivilege;
     }
 
     /**
@@ -116,11 +114,10 @@ class NodePolicyService
         $disallowedNodeTypeObjects = array_filter($this->nodeTypeManager->getNodeTypes(), $filter);
 
         $mapper = function ($nodeType) {
-            $nodeType->getName();
+            return $nodeType->getName();
         };
 
-        $disallowedNodeTypes = array_map($mapper, $disallowedNodeTypeObjects);
-        return $disallowedNodeTypes;
+        return array_map($mapper, $disallowedNodeTypeObjects);
     }
 
     /**

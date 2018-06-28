@@ -39,7 +39,7 @@ export function * watchMergeFromGuestFrame() {
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
             const node = select(getNodeByContextPathSelector);
             const policyInfo = $get('policy', node);
-            return (!policyInfo || policyInfo === false);
+            return (!policyInfo);
         });
 
         if (nodesWithoutPolicies.length === 0) {

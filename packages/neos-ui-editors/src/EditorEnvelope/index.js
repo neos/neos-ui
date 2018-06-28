@@ -67,7 +67,7 @@ export default class EditorEnvelope extends PureComponent {
             // We pass down a classname to render a highlight status on the editor field
             const classNames = mergeClassNames({
                 [style['envelope--highlight']]: highlight && !isInvalid,
-                [style['envelope--invalid']]: validationErrors
+                [style['envelope--invalid']]: validationErrors && validationErrors.length > 0
             });
 
             return (
@@ -149,7 +149,7 @@ export default class EditorEnvelope extends PureComponent {
                 </span>
 
                 {this.renderEditorComponent()}
-                {this.props.validationErrors && <Tooltip renderInline asError>{validationErrors}</Tooltip>}
+                {this.props.validationErrors && this.props.validationErrors.length > 0 && <Tooltip renderInline asError>{validationErrors}</Tooltip>}
             </Fragment>
         );
     }

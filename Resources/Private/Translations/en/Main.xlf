@@ -80,6 +80,72 @@
 			<trans-unit id="searchBoxLeftToType" xml:space="preserve">
 				<source>Please enter ###CHARACTERS### more character</source>
 			</trans-unit>
+			<trans-unit id="UI.RightSideBar.toggle" xml:space="preserve">
+				<source>Toggle inspector</source>
+			</trans-unit>
+			<trans-unit id="UI.FullScreen.toggle" xml:space="preserve">
+				<source>Toggle full screen</source>
+			</trans-unit>
+			<trans-unit id="UI.LeftSideBar.toggle" xml:space="preserve">
+				<source>Toggle left sidebar</source>
+			</trans-unit>
+			<trans-unit id="UI.LeftSideBar.toggleContentTree" xml:space="preserve">
+				<source>Toggle contenttree</source>
+			</trans-unit>
+			<trans-unit id="UI.AddNodeModal.close" xml:space="preserve">
+				<source>Close Add-Node-Modal</source>
+			</trans-unit>
+			<trans-unit id="UI.Drawer.toggle" xml:space="preserve">
+				<source>Toggle Drawer</source>
+			</trans-unit>
+			<trans-unit id="UI.EditModePanel.toggle" xml:space="preserve">
+				<source>Toggle EditModePanel</source>
+			</trans-unit>
+			<trans-unit id="UI.InsertionModeModal.cancel" xml:space="preserve">
+				<source>Cancel InsertionModeModal</source>
+			</trans-unit>
+			<trans-unit id="UI.InsertionModeModal.apply" xml:space="preserve">
+				<source>Apply InsertionModeModal</source>
+			</trans-unit>
+			<trans-unit id="UI.ContentCanvas.reload" xml:space="preserve">
+				<source>Reload ContentCanvas</source>
+			</trans-unit>
+			<trans-unit id="UI.Inspector.discard" xml:space="preserve">
+				<source>Discard Inspector</source>
+			</trans-unit>
+			<trans-unit id="UI.Inspector.escape" xml:space="preserve">
+				<source>Escape Inspector</source>
+			</trans-unit>
+			<trans-unit id="UI.Inspector.resume" xml:space="preserve">
+				<source>Resume Inspector</source>
+			</trans-unit>
+			<trans-unit id="UI.NodeCreationDialog.back" xml:space="preserve">
+				<source>NodeCreationDialog Back</source>
+			</trans-unit>
+			<trans-unit id="UI.NodeCreationDialog.cancel" xml:space="preserve">
+				<source>NodeCreationDialog Cancel</source>
+			</trans-unit>
+			<trans-unit id="UI.NodeCreationDialog.apply" xml:space="preserve">
+				<source>NodeCreationDialog Apply</source>
+			</trans-unit>
+			<trans-unit id="UI.NodeVariantCreationDialog.cancel" xml:space="preserve">
+				<source>NodeVariantCreationDialog Cancel</source>
+			</trans-unit>
+			<trans-unit id="UI.NodeVariantCreationDialog.createEmpty" xml:space="preserve">
+				<source>NodeVariantCreationDialog Create Empty</source>
+			</trans-unit>
+			<trans-unit id="UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve">
+				<source>NodeVariantCreationDialog Create and Copy</source>
+			</trans-unit>
+			<trans-unit id="UI.SelectNodeTypeModal.cancel" xml:space="preserve">
+				<source>SelectNodeTypeModal Cancel</source>
+			</trans-unit>
+			<trans-unit id="UI.SelectNodeTypeModal.apply" xml:space="preserve">
+				<source>SelectNodeTypeModal Apply</source>
+			</trans-unit>
+			<trans-unit id="CR.Nodes.unfocus" xml:space="preserve">
+				<source>Unfocus Node</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

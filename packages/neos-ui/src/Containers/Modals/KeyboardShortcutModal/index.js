@@ -24,15 +24,18 @@ class KeyboardShortcutModal extends Component {
         toggleFullScreen: PropTypes.func.isRequired
     }
 
-    renderShortcut = ({description, keys}) => (
-        <div className={style.keyboardShortcut}>
-            <div className={style.keyboardShortcut__label}>{description}</div>
+    renderShortcut = ({id, description, keys}) => (
+        <div key={id} className={style.keyboardShortcut}>
+            <div className={style.keyboardShortcut__label}>
+                <I18n id={`Neos.Neos.Ui:Main:${id}`} fallback={description} />
+            </div>
             <div className={style.keyboardShortcut__keys}>{keys}</div>
         </div>
     )
 
     render() {
         const {toggleFullScreen, isOpen, hotkeyRegistry} = this.props;
+
         return (
             <Dialog
                 title={<I18n fallback="Keyboard Shortcuts" />}

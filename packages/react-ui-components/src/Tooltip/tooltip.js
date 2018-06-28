@@ -7,12 +7,12 @@ const Tooltip = props => {
         children,
         className,
         theme,
-        error,
+        asError,
         ...rest
     } = props;
     const classNames = mergeClassNames({
         [theme.tooltip]: true,
-        [theme['tooltip--error']]: error,
+        [theme['tooltip--asError']]: asError,
         [className]: className && className.length
     });
 
@@ -44,7 +44,7 @@ Tooltip.propTypes = {
     /**
      * Whether this tooltip should indicate an error or not
      */
-    error: PropTypes.bool
+    asError: PropTypes.bool
 };
 
 export default Tooltip;

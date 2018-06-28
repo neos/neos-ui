@@ -92,7 +92,7 @@ export default class EditorEnvelope extends PureComponent {
         return (
             <Tooltip className={style.envelope__tooltip}>
                 {this.props.helpMessage ? this.props.helpMessage : ''}
-                {this.props.helpThumbnail ? <img className={style.envelope__tooltip__image} src={this.props.helpThumbnail} /> : ''}
+                {this.props.helpThumbnail ? <img src={this.props.helpThumbnail} /> : ''}
             </Tooltip>
         );
     }

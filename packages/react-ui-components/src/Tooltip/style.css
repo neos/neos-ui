@@ -14,7 +14,7 @@
     border-bottom: var(--spacing-Half) solid var(--colors-ContrastNeutral);
 }
 
-.tooltip--error .tooltip--arrow {
+.tooltip--asError .tooltip--arrow {
     border-bottom: var(--spacing-Half) solid var(--colors-Error);
 }
 
@@ -25,6 +25,6 @@
     color: white;
 }
 
-.tooltip--error .tooltip--inner {
+.tooltip--asError .tooltip--inner {
     background: var(--colors-Error);
 }

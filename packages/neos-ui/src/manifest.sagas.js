@@ -42,8 +42,7 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/CR/NodeOperations/removeNodeIfConfirmed', {saga: crNodeOperations.removeNodeIfConfirmed});
     sagasRegistry.set('neos-ui/CR/NodeOperations/reloadState', {saga: crNodeOperations.reloadState});
 
-    sagasRegistry.set('neos-ui/CR/Policies/watchNodeFocus', {saga: crPolicies.watchNodeFocus});
-    sagasRegistry.set('neos-ui/CR/Policies/watchMergeFromGuestFrame', {saga: crPolicies.watchMergeFromGuestFrame});
+    sagasRegistry.set('neos-ui/CR/Policies/watchNodeInformationChanges', {saga: crPolicies.watchNodeInformationChanges});
 
     sagasRegistry.set('neos-ui/Publish/watchChangeBaseWorkspace', {saga: publish.watchChangeBaseWorkspace});
     sagasRegistry.set('neos-ui/Publish/discardIfConfirmed', {saga: publish.discardIfConfirmed});

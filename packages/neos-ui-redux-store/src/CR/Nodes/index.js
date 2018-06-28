@@ -26,7 +26,6 @@ const PASTE = '@neos/neos-ui/CR/Nodes/PASTE';
 const HIDE = '@neos/neos-ui/CR/Nodes/HIDE';
 const SHOW = '@neos/neos-ui/CR/Nodes/SHOW';
 const UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI';
-const MERGE_FROM_GUEST_FRAME = '@neos/neos-ui/CR/Nodes/MERGE_FROM_GUEST_FRAME';
 
 //
 // Export the action types
@@ -34,7 +33,6 @@ const MERGE_FROM_GUEST_FRAME = '@neos/neos-ui/CR/Nodes/MERGE_FROM_GUEST_FRAME';
 export const actionTypes = {
     ADD,
     MERGE,
-    MERGE_FROM_GUEST_FRAME,
     FOCUS,
     UNFOCUS,
     COMMENCE_CREATION,
@@ -68,12 +66,6 @@ const add = createAction(ADD, nodeMap => ({nodeMap}));
  * @param {Object} nodeMap A map of nodes, with contextPaths as key
  */
 const merge = createAction(MERGE, nodeMap => ({nodeMap}));
-
-/**
- * Specific action for node information coming from the guest frame,
- * to be able to trigger more specific sagas based on that information.
- */
-const mergeFromGuestFrame = createAction(MERGE_FROM_GUEST_FRAME, nodeMap => ({nodeMap}));
 
 /**
  * Marks a node as focused
@@ -292,30 +284,6 @@ export const reducer = handleActions({
         return $all(...transformations, state);
     },
     [MERGE]: ({nodeMap}) => $all(
-        ...Object.keys(nodeMap).map(contextPath => $merge(
-            ['cr', 'nodes', 'byContextPath', contextPath],
-            Immutable.fromJS(
-                //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
-                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
-                // the data, to scope it relative to *this* frame.
-                //
-                JSON.parse(JSON.stringify(nodeMap[contextPath]))
-            )
-        )),
-        ...Object.keys(nodeMap).filter(contextPath => contextPath.children !== undefined).map(contextPath => $set(
-            ['cr', 'nodes', 'byContextPath', contextPath, 'children'],
-            Immutable.fromJS(
-                //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
-                // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
-                // the data, to scope it relative to *this* frame.
-                //
-                JSON.parse(JSON.stringify(nodeMap[contextPath].children))
-            )
-        )),
-    ),
-    [MERGE_FROM_GUEST_FRAME]: ({nodeMap}) => $all(
         ...Object.keys(nodeMap).map(contextPath => $merge(
             ['cr', 'nodes', 'byContextPath', contextPath],
             Immutable.fromJS(

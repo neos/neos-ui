@@ -484,9 +484,19 @@ const mapper = icon => {
         'youtube-square'
     ];
 
+    /**
+     *  Neos <= 3.3 prefixed icons with this, we need to strip those
+     *  otherwise the mapping would'nt work for brand icons
+     */
+    if (icon.startsWith('fas fa-')) {
+        icon = icon.substr(7);
+    }
+
     if (icon.startsWith('icon-')) {
         icon = icon.substr(5);
     }
+
+    icon = icon.trim();
 
     if (map[icon]) {
         return map[icon];

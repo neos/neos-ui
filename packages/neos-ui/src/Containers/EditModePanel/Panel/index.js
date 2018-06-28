@@ -43,8 +43,8 @@ export default class Panel extends PureComponent {
             slidesToShow: Math.round(modes.length / 2), // https://github.com/kenwheeler/slick/issues/1207#issuecomment-105663300
             variableWidth: true,
             adaptiveHeight: true,
-            nextArrow: <Arrow direction="right" size="big" />,
-            prevArrow: <Arrow direction="left" size="big" />
+            nextArrow: <Arrow direction="right" size="lg" />,
+            prevArrow: <Arrow direction="left" size="lg" />
         };
 
         return (

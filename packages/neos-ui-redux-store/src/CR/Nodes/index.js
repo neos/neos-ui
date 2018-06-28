@@ -194,7 +194,6 @@ const updateUri = createAction(UPDATE_URI, (oldUriFragment, newUriFragment) => (
 export const actions = {
     add,
     merge,
-    mergeFromGuestFrame,
     focus,
     unFocus,
     commenceCreation,

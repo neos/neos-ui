@@ -9,6 +9,12 @@
     justify-content: flex-start;
 }
 
-.envelope__help {
+.envelope__tooltipButton {
     padding-left: var(--spacing-Half);
+}
+
+.envelope__tooltip {
+    position: absolute;
+    z-index: var(--zIndex-NodeToolBar);
+    max-width: 100%;
 }

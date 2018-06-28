@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Label from '@neos-project/react-ui-components/src/Label/';
+import {Tooltip} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.css';
@@ -11,10 +12,13 @@ import {Icon} from '@neos-project/react-ui-components';
     editorRegistry: globalRegistry.get('inspector').get('editors')
 }))
 export default class EditorEnvelope extends PureComponent {
-    state = {};
+    state = {
+        showTooltip: false
+    };
 
     static defaultProps = {
-        helpMessage: ''
+        helpMessage: '',
+        helpThumbnail: ''
     };
 
     static propTypes = {
@@ -22,7 +26,8 @@ export default class EditorEnvelope extends PureComponent {
         label: PropTypes.string.isRequired,
         editor: PropTypes.string.isRequired,
         editorRegistry: PropTypes.object.isRequired,
-        helpMessage: PropTypes.string
+        helpMessage: PropTypes.string,
+        helpThumbnail: PropTypes.string
     };
 
     generateIdentifier() {
@@ -77,10 +82,25 @@ export default class EditorEnvelope extends PureComponent {
         );
     }
 
+    toggleTooltip = () => {
+        this.setState({
+            showTooltip: !this.state.showTooltip
+        });
+    };
+
+    renderTooltip() {
+        return (
+            <Tooltip className={style.envelope__tooltip}>
+                {this.props.helpMessage ? this.props.helpMessage : ''}
+                {this.props.helpThumbnail ? <img className={style.envelope__tooltip__image} src={this.props.helpThumbnail} /> : ''}
+            </Tooltip>
+        );
+    }
+
     renderHelpIcon() {
-        if (this.props.helpMessage) {
+        if (this.props.helpMessage || this.props.helpThumbnail) {
             return (
-                <span className={style.envelope__help}n>
+                <span role="button" onClick={this.toggleTooltip} className={style.envelope__tooltipButton}>
                     <Icon icon="question-circle" />
                 </span>
             );
@@ -99,8 +119,9 @@ export default class EditorEnvelope extends PureComponent {
 
         return (
             <div>
-                <span title={this.props.helpMessage}>
+                <span>
                     {this.renderLabel()}
+                    {this.state.showTooltip ? this.renderTooltip() : ''}
                 </span>
                 {this.renderEditorComponent()}
             </div>

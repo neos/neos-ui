@@ -60,6 +60,7 @@ export default class PropertyGroup extends PureComponent {
                                     commit={commit}
                                     onEnterKey={handleInspectorApply}
                                     helpMessage={$get('helpMessage', item)}
+                                    helpThumbnail={$get('helpThumbnail', item)}
                                     />);
                         }
                         if (itemType === 'view') {

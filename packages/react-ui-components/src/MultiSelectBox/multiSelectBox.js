@@ -35,6 +35,11 @@ export default class MultiSelectBox extends PureComponent {
         ),
 
         /**
+         * Additional className wich will be applied
+         */
+        className: PropTypes.string,
+
+        /**
          * Field name specifying which field in a single "option" contains the "value"
          */
         optionValueField: PropTypes.string,
@@ -76,11 +81,6 @@ export default class MultiSelectBox extends PureComponent {
          * Limit height and show scrollbars if needed, defaults to true
          */
         scrollable: PropTypes.bool,
-
-        /**
-         * Should the MultiSelectBox be highlighted? (e.g. if the property was modified)
-         */
-        highlight: PropTypes.bool,
 
         /**
          * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
@@ -150,7 +150,6 @@ export default class MultiSelectBox extends PureComponent {
         // ------------------------------
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'selectedOptions': PropTypes.string,
-            'selectedOptions--highlight': PropTypes.string,
             'selectedOptions__item': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
@@ -175,18 +174,17 @@ export default class MultiSelectBox extends PureComponent {
             values,
             optionValueField,
             theme,
-            highlight,
             SelectBox,
             MultiSelectBox_ListPreviewSortable,
-            disabled
+            disabled,
+            className
         } = this.props;
 
         const filteredSearchOptions = (searchOptions || [])
             .filter(option => !(values && values.indexOf(option[optionValueField]) !== -1));
 
         const selectedOptionsClassNames = mergeClassNames({
-            [theme.selectedOptions]: true,
-            [theme['selectedOptions--highlight']]: highlight
+            [theme.selectedOptions]: true
         });
 
         const optionValueAccessor = this.getOptionValueAccessor();
@@ -202,8 +200,8 @@ export default class MultiSelectBox extends PureComponent {
                 </ul>
                 <SelectBox
                     {...omit(this.props, ['theme'])}
+                    className={className}
                     options={filteredSearchOptions}
-                    highlight={false}
                     value=""
                     onValueChange={this.handleNewValueSelected}
                     disabled={disabled}

@@ -10,17 +10,13 @@
     width: calc(100% / 2);
     border-bottom: 1px solid var(--colors-ContrastDark);
     border-right: 1px solid var(--colors-ContrastDark);
-    padding:  var(--spacing-Half) var(--spacing-Full);
+    padding: var(--spacing-Half) var(--spacing-Full);
     font-size: var(--fontSize-Base);
 
     display: flex;
     vertical-align: center;
     align-items: center;
-    justify-content: space-between
-}
-
-.keyboardShortcut__label {
-
+    justify-content: space-between;
 }
 
 .keyboardShortcut__keys {
@@ -29,5 +25,5 @@
     padding: var(--spacing-Half);
     text-align: center;
     width: 60px;
-    margin-left:var(--spacing-Full);
+    margin-left: var(--spacing-Full);
 }

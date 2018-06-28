@@ -11,12 +11,20 @@
     margin-left: -var(--spacing-Half);
     border-left: var(--spacing-Half) solid transparent;
     border-right: var(--spacing-Half) solid transparent;
+    border-bottom: var(--spacing-Half) solid var(--colors-ContrastNeutral);
+}
+
+.tooltip--asError .tooltip--arrow {
     border-bottom: var(--spacing-Half) solid var(--colors-Error);
 }
 
 .tooltip--inner {
     position: relative;
     padding: var(--spacing-Half);
-    background: var(--colors-Error);
+    background: var(--colors-ContrastNeutral);
     color: white;
+}
+
+.tooltip--asError .tooltip--inner {
+    background: var(--colors-Error);
 }

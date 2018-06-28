@@ -7,10 +7,12 @@ const Tooltip = props => {
         children,
         className,
         theme,
+        asError,
         ...rest
     } = props;
     const classNames = mergeClassNames({
         [theme.tooltip]: true,
+        [theme['tooltip--asError']]: asError,
         [className]: className && className.length
     });
 
@@ -37,7 +39,12 @@ Tooltip.propTypes = {
     /**
      * An optional css theme to be injected.
      */
-    theme: PropTypes.object
+    theme: PropTypes.object,
+
+    /**
+     * Whether this tooltip should indicate an error or not
+     */
+    asError: PropTypes.bool
 };
 
 export default Tooltip;

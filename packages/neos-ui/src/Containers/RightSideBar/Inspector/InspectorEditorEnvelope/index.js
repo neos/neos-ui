@@ -32,6 +32,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
         options: PropTypes.object,
         renderSecondaryInspector: PropTypes.func.isRequired,
         validationErrors: PropTypes.array,
+        helpMessage: PropTypes.string,
 
         node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired

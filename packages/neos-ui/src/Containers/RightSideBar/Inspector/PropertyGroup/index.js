@@ -46,6 +46,7 @@ export default class PropertyGroup extends PureComponent {
                     {items.map(item => {
                         const itemId = $get('id', item);
                         const itemType = $get('type', item);
+
                         if (itemType === 'editor') {
                             return (
                                 <InspectorEditorEnvelope
@@ -58,6 +59,8 @@ export default class PropertyGroup extends PureComponent {
                                     node={node}
                                     commit={commit}
                                     onEnterKey={handleInspectorApply}
+                                    helpMessage={$get('helpMessage', item)}
+                                    helpThumbnail={$get('helpThumbnail', item)}
                                     />);
                         }
                         if (itemType === 'view') {

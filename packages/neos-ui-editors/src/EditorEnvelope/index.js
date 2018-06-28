@@ -149,7 +149,7 @@ export default class EditorEnvelope extends PureComponent {
                 </span>
 
                 {this.renderEditorComponent()}
-                {validationErrors && validationErrors.length > 0 && <Tooltip renderInline asError><ul>{validationErrors.map(error => <li>{error}</li>)}</ul></Tooltip>}
+                {validationErrors && validationErrors.length > 0 && <Tooltip renderInline asError><ul>{validationErrors.map((error, index) => <li key={index}>{error}</li>)}</ul></Tooltip>}
             </Fragment>
         );
     }

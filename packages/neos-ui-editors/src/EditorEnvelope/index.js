@@ -1,9 +1,13 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
+import omit from 'lodash.omit';
+import mergeClassNames from 'classnames';
+
 import Label from '@neos-project/react-ui-components/src/Label/';
 import {Tooltip} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
+
 import style from './style.css';
 
 import {Icon} from '@neos-project/react-ui-components';
@@ -13,12 +17,13 @@ import {Icon} from '@neos-project/react-ui-components';
 }))
 export default class EditorEnvelope extends PureComponent {
     state = {
-        showTooltip: false
+        showHelpmessage: false
     };
 
     static defaultProps = {
         helpMessage: '',
-        helpThumbnail: ''
+        helpThumbnail: '',
+        highlight: false
     };
 
     static propTypes = {
@@ -33,6 +38,7 @@ export default class EditorEnvelope extends PureComponent {
         onEnterKey: PropTypes.func,
         helpMessage: PropTypes.string,
         helpThumbnail: PropTypes.string,
+        highlight: PropTypes.bool,
 
         commit: PropTypes.func.isRequired
     };
@@ -54,15 +60,22 @@ export default class EditorEnvelope extends PureComponent {
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;
 
+            const restProps = omit(this.props, ['validationErrors', 'highlight']);
+            const {highlight, validationErrors} = this.props;
+            const isInvalid = validationErrors && validationErrors.length > 1;
+
+            // We pass down a classname to render a highlight status on the editor field
+            const classNames = mergeClassNames({
+                [style['envelope--highlight']]: highlight && !isInvalid,
+                [style['envelope--invalid']]: validationErrors
+            });
+
             return (
-                <EditorComponent
-                    {...this.props}
-                    id={this.generateIdentifier()}
-                    />
+                <EditorComponent className={classNames} id={this.generateIdentifier()} {...restProps} />
             );
         }
 
-        return (<div className={style.envelope__error}>Missing Editor {this.props.editor}</div>);
+        return (<div className={style['envelope--invalid']}>Missing Editor {this.props.editor}</div>);
     }
 
     componentDidCatch(error, errorInfo) {
@@ -89,17 +102,19 @@ export default class EditorEnvelope extends PureComponent {
         );
     }
 
-    toggleTooltip = () => {
+    toggleHelmpessage = () => {
         this.setState({
-            showTooltip: !this.state.showTooltip
+            showHelpmessage: !this.state.showHelpmessage
         });
     };
 
-    renderTooltip() {
+    renderHelpmessage() {
+        const {helpMessage, helpThumbnail, label} = this.props;
+
         return (
-            <Tooltip className={style.envelope__tooltip}>
-                {this.props.helpMessage ? this.props.helpMessage : ''}
-                {this.props.helpThumbnail ? <img src={this.props.helpThumbnail} /> : ''}
+            <Tooltip className={style.envelope__helpmessage}>
+                {helpMessage ? helpMessage : ''}
+                {helpThumbnail ? <img alt={label} src={helpThumbnail} /> : ''}
             </Tooltip>
         );
     }
@@ -107,7 +122,7 @@ export default class EditorEnvelope extends PureComponent {
     renderHelpIcon() {
         if (this.props.helpMessage || this.props.helpThumbnail) {
             return (
-                <span role="button" onClick={this.toggleTooltip} className={style.envelope__tooltipButton}>
+                <span role="button" onClick={this.toggleHelmpessage} className={style.envelope__tooltipButton}>
                     <Icon icon="question-circle" />
                 </span>
             );
@@ -124,14 +139,18 @@ export default class EditorEnvelope extends PureComponent {
             return <div className={style.envelope__error}>{this.state.error.toString()}</div>;
         }
 
+        const {validationErrors} = this.props;
+
         return (
-            <div>
+            <Fragment>
                 <span>
                     {this.renderLabel()}
-                    {this.state.showTooltip ? this.renderTooltip() : ''}
+                    {this.state.showHelpmessage ? this.renderHelpmessage() : ''}
                 </span>
+
                 {this.renderEditorComponent()}
-            </div>
+                {this.props.validationErrors && <Tooltip renderInline asError>{validationErrors}</Tooltip>}
+            </Fragment>
         );
     }
 }

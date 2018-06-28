@@ -3,6 +3,7 @@ import {handleActions} from '@neos-project/utils-redux';
 
 import * as FlashMessages from './FlashMessages/index';
 import * as FullScreen from './FullScreen/index';
+import * as KeyboardShortcut from './KeyboardShortcut/index';
 import * as LeftSideBar from './LeftSideBar/index';
 import * as EditModePanel from './EditModePanel/index';
 import * as EditPreviewMode from './EditPreviewMode/index';
@@ -24,6 +25,7 @@ import * as ContentTree from './ContentTree/index';
 const all = {
     FlashMessages,
     FullScreen,
+    KeyboardShortcut,
     LeftSideBar,
     EditModePanel,
     EditPreviewMode,

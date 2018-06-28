@@ -23,7 +23,7 @@ export default class EditorEnvelope extends PureComponent {
     static defaultProps = {
         helpMessage: '',
         helpThumbnail: '',
-        highlight: true
+        highlight: false
     };
 
     static propTypes = {
@@ -149,7 +149,7 @@ export default class EditorEnvelope extends PureComponent {
                 </span>
 
                 {this.renderEditorComponent()}
-                {this.props.validationErrors && this.props.validationErrors.length > 0 && <Tooltip renderInline asError>{validationErrors}</Tooltip>}
+                {validationErrors && validationErrors.length > 0 && <Tooltip renderInline asError><ul>{validationErrors.map(error => <li>{error}</li>)}</ul></Tooltip>}
             </Fragment>
         );
     }

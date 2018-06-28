@@ -1,5 +1,9 @@
 .tooltip {
     position: absolute;
+
+    ul  {
+        margin: 0;
+    }
 }
 
 .tooltip--inline {

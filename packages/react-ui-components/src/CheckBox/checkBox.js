@@ -29,8 +29,8 @@ class CheckBox extends PureComponent {
          */
         theme: PropTypes.shape({
             checkbox: PropTypes.string,
-            checkbox__input: PropTypes.string,
-            checkbox__inputMirror: PropTypes.string,
+            checkbox__input: PropTypes.string, // eslint-disable-line
+            checkbox__inputMirror: PropTypes.string, // eslint-disable-line
             'checkbox__inputMirror--active': PropTypes.string
         }).isRequired
     };

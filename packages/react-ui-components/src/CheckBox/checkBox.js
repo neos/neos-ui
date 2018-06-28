@@ -25,19 +25,13 @@ class CheckBox extends PureComponent {
         onChange: PropTypes.func,
 
         /**
-         * Highlight input
-         */
-        highlight: PropTypes.bool,
-
-        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({
-            'checkbox': PropTypes.string,
-            'checkbox__input': PropTypes.string,
-            'checkbox__inputMirror': PropTypes.string,
-            'checkbox__inputMirror--active': PropTypes.string,
-            'checkbox__inputMirror--highlight': PropTypes.string
+            checkbox: PropTypes.string,
+            checkbox__input: PropTypes.string,
+            checkbox__inputMirror: PropTypes.string,
+            'checkbox__inputMirror--active': PropTypes.string
         }).isRequired
     };
 
@@ -55,7 +49,6 @@ class CheckBox extends PureComponent {
             isDisabled,
             className,
             theme,
-            highlight,
             ...rest
         } = this.props;
         const finalClassName = mergeClassNames({
@@ -65,9 +58,7 @@ class CheckBox extends PureComponent {
         });
         const mirrorClassNames = mergeClassNames({
             [theme.checkbox__inputMirror]: true,
-            [theme['checkbox__inputMirror--active']]: isChecked,
-            [theme['checkbox__inputMirror--highlight-checked']]: highlight && isChecked,
-            [theme['checkbox__inputMirror--highlight-unchecked']]: highlight && !isChecked
+            [theme['checkbox__inputMirror--active']]: isChecked
         });
 
         return (

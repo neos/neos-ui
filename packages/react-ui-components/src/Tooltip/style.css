@@ -2,6 +2,10 @@
     position: absolute;
 }
 
+.tooltip--inline {
+    position: relative;
+}
+
 .tooltip--arrow {
     position: relative;
     top: 0;
@@ -11,7 +15,7 @@
     margin-left: -var(--spacing-Half);
     border-left: var(--spacing-Half) solid transparent;
     border-right: var(--spacing-Half) solid transparent;
-    border-bottom: var(--spacing-Half) solid var(--colors-ContrastNeutral);
+    border-bottom: var(--spacing-Half) solid var(--colors-ContrastDarkest);
 }
 
 .tooltip--asError .tooltip--arrow {
@@ -21,8 +25,9 @@
 .tooltip--inner {
     position: relative;
     padding: var(--spacing-Half);
-    background: var(--colors-ContrastNeutral);
+    background: var(--colors-ContrastDarkest);
     color: white;
+    box-shadow: 0px 0px 10px rgba(125, 125, 125, .2);
 }
 
 .tooltip--asError .tooltip--inner {

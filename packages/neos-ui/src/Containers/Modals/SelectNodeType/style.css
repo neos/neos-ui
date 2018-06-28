@@ -1,7 +1,9 @@
 .nodeType {
-    flex: 0 1 auto;
     width: calc(100% / 3);
     text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .nodeType__icon {
     color: var(--colors-PrimaryBlue);
@@ -40,8 +42,4 @@
 
 .nodeTypeFilter__label {
     margin-right: var(--spacing-Half);
-}
-
-.nodeType__help {
-    float: right;
 }

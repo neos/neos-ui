@@ -70,7 +70,7 @@ export default class EditorEnvelope extends PureComponent {
         const {label} = this.props;
 
         return (
-            <Label htmlFor={this.generateIdentifier()}>
+            <Label className={style.envelope__label} htmlFor={this.generateIdentifier()}>
                 <I18n id={label}/>
                 {this.renderHelpIcon()}
             </Label>

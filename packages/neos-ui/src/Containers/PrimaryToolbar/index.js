@@ -18,14 +18,16 @@ export default class PrimaryToolbar extends PureComponent {
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
 
-        isHidden: PropTypes.bool.isRequired
+        isHidden: PropTypes.bool.isRequired,
+        isBackendModule: PropTypes.bool
     };
 
     render() {
-        const {isHidden, containerRegistry} = this.props;
+        const {isHidden, containerRegistry, isBackendModule} = this.props;
 
-        const PrimaryToolbarLeft = containerRegistry.getChildren('PrimaryToolbar/Left');
-        const PrimaryToolbarRight = containerRegistry.getChildren('PrimaryToolbar/Right');
+        // TODO: Find a generic way to identify the drawer and user settings
+        const PrimaryToolbarLeft = isBackendModule ? [containerRegistry.getChildren('PrimaryToolbar/Left')[0]] : containerRegistry.getChildren('PrimaryToolbar/Left');
+        const PrimaryToolbarRight = isBackendModule ? [containerRegistry.getChildren('PrimaryToolbar/Right')[0]] : containerRegistry.getChildren('PrimaryToolbar/Right');
 
         const classNames = mergeClassNames({
             [style.primaryToolbar]: true,

@@ -13,6 +13,9 @@
         position: absolute;
     }
 }
+.contentCanvas--fullWidth {
+    padding: 41px 0 0;
+}
 .contentCanvas--isFringeLeft {
     padding-left: 0;
 }

@@ -42,6 +42,7 @@ export default class ContentCanvas extends PureComponent {
         requestRegainControl: PropTypes.func.isRequired,
         requestLogin: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
+        isBackendModule: PropTypes.bool,
 
         editPreviewModes: PropTypes.object.isRequired,
         guestFrameRegistry: PropTypes.object.isRequired
@@ -75,7 +76,8 @@ export default class ContentCanvas extends PureComponent {
             currentEditPreviewMode,
             editPreviewModes,
             guestFrameRegistry,
-            backgroundColor
+            backgroundColor,
+            isBackendModule
         } = this.props;
         const {isVisible} = this.state;
         const classNames = mergeClassNames({
@@ -84,7 +86,8 @@ export default class ContentCanvas extends PureComponent {
             [style['contentCanvas--isFringeRight']]: isFringeRight,
             [style['contentCanvas--isMovedDown']]: !isEditModePanelHidden,
             [style['contentCanvas--isFullScreen']]: isFullScreen,
-            [style['contentCanvas--isHidden']]: !isVisible
+            [style['contentCanvas--isHidden']]: !isVisible,
+            [style['contentCanvas--fullWidth']]: isBackendModule
         });
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
         const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode];

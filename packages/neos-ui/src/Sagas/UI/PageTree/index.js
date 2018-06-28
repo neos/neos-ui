@@ -115,7 +115,6 @@ export function * watchCurrentDocument({configuration}) {
         }
 
         yield put(actions.UI.PageTree.focus(contextPath));
-
         if (hasLoadedNodes) {
             yield put(actions.UI.PageTree.setAsLoaded(siteNodeContextPath));
         }

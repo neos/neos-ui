@@ -189,8 +189,13 @@ export default class MultiSelectBox extends PureComponent {
 
         const optionValueAccessor = this.getOptionValueAccessor();
 
+        const classNames = mergeClassNames({
+            [className]: true,
+            [theme.wrapper]: true
+        });
+
         return (
-            <div className={theme.wrapper}>
+            <div className={classNames}>
                 <ul className={selectedOptionsClassNames}>
                     <MultiSelectBox_ListPreviewSortable
                         {...omit(this.props, ['theme'])}
@@ -199,8 +204,7 @@ export default class MultiSelectBox extends PureComponent {
                         />
                 </ul>
                 <SelectBox
-                    {...omit(this.props, ['theme'])}
-                    className={className}
+                    {...omit(this.props, ['theme', 'className'])}
                     options={filteredSearchOptions}
                     value=""
                     onValueChange={this.handleNewValueSelected}

@@ -23,7 +23,7 @@ export default class EditorEnvelope extends PureComponent {
     static defaultProps = {
         helpMessage: '',
         helpThumbnail: '',
-        highlight: false
+        highlight: true
     };
 
     static propTypes = {

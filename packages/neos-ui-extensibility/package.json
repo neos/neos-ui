@@ -35,7 +35,7 @@
     "json-loader": "^0.5.4",
     "postcss-loader": "^2.0.10",
     "react-dev-utils": "^0.5.0",
-    "style-loader": "^0.19.0"
+    "style-loader": "^0.21.0"
   },
   "bin": {
     "neos-react-scripts": "./bin/neos-react-scripts.js"

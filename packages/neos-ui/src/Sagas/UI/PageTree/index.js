@@ -98,7 +98,7 @@ export function * watchCurrentDocument({configuration}) {
             if (!node) {
                 yield put(actions.UI.PageTree.setAsLoading(siteNodeContextPath));
                 const nodes = yield q(parentContextPath).get();
-                yield put(actions.CR.Nodes.add(nodes.reduce((nodeMap, node) => {
+                yield put(actions.CR.Nodes.merge(nodes.reduce((nodeMap, node) => {
                     nodeMap[$get('contextPath', node)] = node;
                     return nodeMap;
                 }, {})));

@@ -164,7 +164,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         try {
-            $nodeInfo['uri'] = $this->createRedirectToNode($node, $controllerContext);
+            $nodeInfo['uri'] = $this->createRedirectToNode($controllerContext, $node);
         } catch (\Neos\Flow\Mvc\Routing\Exception\MissingActionNameException $exception) {
             // Unless there is a serious problem with routes there shouldn't be an exception ever.
             $nodeInfo['uri'] = '';
@@ -319,13 +319,17 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     }
 
     /**
-     * @param NodeInterface $node
      * @param ControllerContext $controllerContext
+     * @param NodeInterface $node
      * @return string
      * @throws \Neos\Flow\Mvc\Routing\Exception\MissingActionNameException
      */
-    public function createRedirectToNode(NodeInterface $node, ControllerContext $controllerContext)
+    public function createRedirectToNode(ControllerContext $controllerContext, NodeInterface $node = null)
     {
+        if ($node === null) {
+            return '';
+        }
+
         $basicRedirectUrl = $controllerContext->getUriBuilder()
             ->reset()
             ->setCreateAbsoluteUri(true)

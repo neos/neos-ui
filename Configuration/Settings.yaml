@@ -60,6 +60,8 @@ Neos:
         legacy:
           enableUiSwitch: false
 
+        defaultInlineEditor: 'ckeditor'
+
       #################################
       # INTERNAL CONFIG (no API)
       #################################

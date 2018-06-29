@@ -34,17 +34,21 @@ const webpackConfig = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /node_modules\/((?!@neos-project).)*$/,
+                exclude: /node_modules\/(?!@ckeditor)(?!@neos-project).*$/,
                 use: [{
                     loader: 'babel-loader'
                 }]
             },
             {
                 test: /\.json$/,
-                exclude: /node_modules\/((?!@neos-project).)*$/,
+                exclude: /node_modules\/(?!@neos-project).*$/,
                 use: [{
                     loader: 'json-loader'
                 }]
+            },
+            {
+                test: /node_modules\/@ckeditor\/.*\.svg$/,
+                use: ['raw-loader']
             },
             {
                 test: /\.(woff|woff2|eot|ttf|svg)$/,

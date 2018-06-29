@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/build-essentials",
-  "version": "0.0.1",
+  "version": "1.1.2",
   "description": "Dependencies for building @neos-project packages",
   "main": "./src",
   "bin": {
@@ -17,7 +17,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "0.0.1"
+    "@neos-project/babel-preset-neos-ui": "1.1.2"
   },
   "dependencies": {
     "babel-core": "^6.13.2",

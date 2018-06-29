@@ -245,7 +245,9 @@ export default ckEditorRegistry => {
         isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'pre'
     });
 
-    // // Example of custom headline:
+    // // Example of custom headline
+    // // Don't forget about updating the config registry with relevant config
+    // // @see https://docs.ckeditor.com/ckeditor5/latest/features/headings.html
     //
     // richtextToolbar.set('style/fancy', {
     //     commandName: 'heading',

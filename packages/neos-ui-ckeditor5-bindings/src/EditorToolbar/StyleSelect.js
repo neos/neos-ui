@@ -38,6 +38,7 @@ export default class StyleSelect extends PureComponent {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.bool,
+            PropTypes.string,
             PropTypes.object
         ])),
 

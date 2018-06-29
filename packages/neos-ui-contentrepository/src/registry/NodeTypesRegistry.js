@@ -34,7 +34,9 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     }
 
     setDefaultInlineEditor(defaultInlineEditor) {
-        this._defaultInlineEditor = defaultInlineEditor;
+        if (defaultInlineEditor) {
+            this._defaultInlineEditor = defaultInlineEditor;
+        }
     }
 
     getDefaultInlineEditor() {

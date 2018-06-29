@@ -1,5 +1,4 @@
 import React from 'react';
-import {$get} from 'plow-js';
 import omit from 'lodash.omit';
 
 import isToolbarItemVisible from './isToolbarItemVisible';

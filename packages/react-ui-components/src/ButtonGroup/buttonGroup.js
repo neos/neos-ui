@@ -1,65 +1,64 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import ButtonGroupItem from './buttonGroupItem.js';
 
-export default class ButtonGroup extends PureComponent {
-    static propTypes = {
-        /**
-         * An optional `className` to attach to the wrapper.
-         */
-        className: PropTypes.string,
+const ButtonGroup = props => {
+    const {
+        children,
+        className,
+        theme,
+        value,
+        ...rest
+    } = props;
+    const finalClassName = mergeClassNames({
+        [theme.buttonGroup]: true,
+        [className]: className && className.length
+    });
 
-        /**
-         * Current value
-         */
-        value: PropTypes.any,
+    return (
+        <div {...rest} className={finalClassName}>
+            {React.Children.map(children, (child, index) => {
+                return (
+                    <ButtonGroupItem
+                        {...child.props}
+                        key={index}
+                        onClick={this.props.onSelect}
+                        isPressed={value === child.props.id}
+                        element={child}
+                        />
+                );
+            })}
+        </div>
+    );
+};
+ButtonGroup.propTypes = {
+    /**
+     * An optional `className` to attach to the wrapper.
+     */
+    className: PropTypes.string,
 
-        /**
-         * Called when new value is selected. Returns an id of the activated button
-         */
-        onSelect: PropTypes.func.isRequired,
+    /**
+     * Current value
+     */
+    value: PropTypes.any,
 
-        /**
-         * The contents to be rendered within the `Bar`.
-         */
-        children: PropTypes.any.isRequired,
+    /**
+     * Called when new value is selected. Returns an id of the activated button
+     */
+    onSelect: PropTypes.func.isRequired,
 
-        /**
-         * An optional css theme to be injected.
-         */
-        theme: PropTypes.shape({
-            buttonGroup: PropTypes.string
-        }).isRequired
-    }
+    /**
+     * The contents to be rendered within the `Bar`.
+     */
+    children: PropTypes.any.isRequired,
 
-    render() {
-        const {
-            children,
-            className,
-            theme,
-            value,
-            ...rest
-        } = this.props;
-        const finalClassName = mergeClassNames({
-            [theme.buttonGroup]: true,
-            [className]: className && className.length
-        });
+    /**
+     * An optional css theme to be injected.
+     */
+    theme: PropTypes.shape({
+        buttonGroup: PropTypes.string
+    }).isRequired
+};
 
-        return (
-            <div {...rest} className={finalClassName}>
-                {React.Children.map(children, (child, index) => {
-                    return (
-                        <ButtonGroupItem
-                            {...child.props}
-                            key={index}
-                            onClick={this.props.onSelect}
-                            isPressed={value === child.props.id}
-                            element={child}
-                            />
-                    );
-                })}
-            </div>
-        );
-    }
-}
+export default ButtonGroup;

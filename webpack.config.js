@@ -10,7 +10,10 @@ module.exports = merge(
             Host: [
                 './packages/neos-ui/src/index.js'
             ],
-            HostOnlyStyles: './packages/neos-ui/src/styleHostOnly.css',
+            HostOnlyStyles: [
+                './packages/neos-ui/src/styleHostOnly.css',
+                './packages/neos-ui/src/Containers/EditModePanel/Panel/slick-styles.vanilla-css'
+            ],
             Guest: [
                 './polyfills.js',
                 './packages/neos-ui-ckeditor-bindings/src/index.js'

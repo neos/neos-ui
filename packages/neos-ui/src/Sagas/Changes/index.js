@@ -38,7 +38,7 @@ export function * watchPersist() {
     while (true) {
         const {action} = yield race({
             action: take(actionTypes.Changes.PERSIST),
-            time: call(delay, 1500)
+            saveFinished: take(actionTypes.UI.Remote.FINISH_SAVING)
         });
 
         if (action) {
@@ -52,4 +52,3 @@ export function * watchPersist() {
         }
     }
 }
-

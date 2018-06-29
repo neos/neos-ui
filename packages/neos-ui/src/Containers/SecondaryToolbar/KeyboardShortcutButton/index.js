@@ -11,7 +11,7 @@ import {actions} from '@neos-project/neos-ui-redux-store';
 }))
 @connect(
     $transform({isOpen: $get('ui.keyboardShortcut.isOpen')}),
-    {toggleFullScreen: actions.UI.KeyboardShortcut.toggle}
+    {open: actions.UI.KeyboardShortcut.open}
 )
 export default class KeyboardShortcutButton extends PureComponent {
     static propTypes = {
@@ -20,13 +20,13 @@ export default class KeyboardShortcutButton extends PureComponent {
     };
 
     render() {
-        const {i18nRegistry, toggleFullScreen} = this.props;
+        const {i18nRegistry, open} = this.props;
 
         return (
             <IconButton
                 icon="keyboard"
                 aria-label={i18nRegistry.translate('Neos.Neos:Main:displayKeyboardShortcuts', 'Display Keyboard Shortcuts')}
-                onClick={toggleFullScreen}
+                onClick={open}
                 />
         );
     }

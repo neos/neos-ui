@@ -1,29 +1,37 @@
 import {createAction} from 'redux-actions';
 import Immutable from 'immutable';
-import {$get, $set, $toggle} from 'plow-js';
+import {$get, $set} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
-const TOGGLE = '@neos/neos-ui/UI/KeyboardShortcut/TOGGLE';
+const OPEN = '@neos/neos-ui/UI/KeyboardShortcut/OPEN';
+const CLOSE = '@neos/neos-ui/UI/KeyboardShortcut/CLOSE';
 
 //
 // Export the action types
 //
 export const actionTypes = {
-    TOGGLE
+    OPEN,
+    CLOSE
 };
 
 /**
- * Toggles the fullscreen mode on/off.
+ * Opens the KeyboardShortcut Modal
  */
-const toggle = createAction(TOGGLE);
+const open = createAction(OPEN);
+
+/**
+ * Closes the KeyboardShortcut Modal
+ */
+const close = createAction(CLOSE);
 
 //
 // Export the actions
 //
 export const actions = {
-    toggle
+    open,
+    close
 };
 
 //
@@ -34,7 +42,8 @@ export const reducer = handleActions({
         'ui.keyboardShortcut',
         Immutable.fromJS($get('ui.keyboardShortcut', payload) ? $get('ui.keyboardShortcut', payload) : {isOpen: false})
     ),
-    [TOGGLE]: () => $toggle('ui.keyboardShortcut.isOpen')
+    [OPEN]: () => $set('ui.keyboardShortcut.isOpen', true),
+    [CLOSE]: () => $set('ui.keyboardShortcut.isOpen', false)
 });
 
 //

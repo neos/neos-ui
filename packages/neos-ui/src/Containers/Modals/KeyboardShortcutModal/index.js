@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
@@ -15,13 +15,13 @@ import style from './style.css';
 }))
 @connect(
     $transform({isOpen: $get('ui.keyboardShortcut.isOpen')}),
-    {toggleFullScreen: actions.UI.KeyboardShortcut.toggle}
+    {close: actions.UI.KeyboardShortcut.close}
 )
-class KeyboardShortcutModal extends Component {
+class KeyboardShortcutModal extends PureComponent {
     static propTypes = {
         hotkeyRegistry: PropTypes.object.isRequired,
         isOpen: PropTypes.bool.isRequired,
-        toggleFullScreen: PropTypes.func.isRequired
+        close: PropTypes.func.isRequired
     }
 
     renderShortcut = ({id, description, keys}) => (
@@ -34,13 +34,13 @@ class KeyboardShortcutModal extends Component {
     )
 
     render() {
-        const {toggleFullScreen, isOpen, hotkeyRegistry} = this.props;
+        const {close, isOpen, hotkeyRegistry} = this.props;
 
         return (
             <Dialog
                 title={<I18n fallback="Keyboard Shortcuts" />}
                 isOpen={isOpen}
-                onRequestClose={() => toggleFullScreen()}
+                onRequestClose={() => close()}
                 >
                 <div className={style.keyboardShortcutIntroText}>
                     <I18n id={`Neos.Neos.Ui:Main:Shortcut__Introduction`} fallback={''} />

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Provider} from 'react-redux';
 import {withDragDropContext} from '@neos-project/neos-ui-decorators';
@@ -6,7 +6,7 @@ import style from './style.css';
 
 import Neos from './Neos/index';
 
-class Root extends Component {
+class Root extends PureComponent {
     render() {
         const {store, globalRegistry, configuration, menu, routes} = this.props;
 

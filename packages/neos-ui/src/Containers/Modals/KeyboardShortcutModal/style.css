@@ -1,3 +1,7 @@
+.keyboardShortcutIntroText {
+    padding: var(--spacing-Half) var(--spacing-Full);
+}
+
 .keyboardShortcutList {
     display: flex;
     width: 100%;

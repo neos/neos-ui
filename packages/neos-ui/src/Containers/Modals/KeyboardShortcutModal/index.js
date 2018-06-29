@@ -27,7 +27,7 @@ class KeyboardShortcutModal extends Component {
     renderShortcut = ({id, description, keys}) => (
         <div key={id} className={style.keyboardShortcut}>
             <div className={style.keyboardShortcut__label}>
-                <I18n id={`Neos.Neos.Ui:Main:${id}`} fallback={description} />
+                <I18n id={`Neos.Neos.Ui:Main:Shortcut__${id}`} fallback={description} />
             </div>
             <div className={style.keyboardShortcut__keys}>{keys}</div>
         </div>
@@ -41,8 +41,11 @@ class KeyboardShortcutModal extends Component {
                 title={<I18n fallback="Keyboard Shortcuts" />}
                 isOpen={isOpen}
                 onRequestClose={() => toggleFullScreen()}
-                // isOpen={true}
+                isOpen={true}
                 >
+                <div className={style.keyboardShortcutIntroText}>
+                    <I18n id={`Neos.Neos.Ui:Main:Shortcut__Introduction`} fallback={''} />
+                </div>
                 <div className={style.keyboardShortcutList}>
                     {hotkeyRegistry.getAllAsList().map(key => this.renderShortcut(key))}
                 </div>

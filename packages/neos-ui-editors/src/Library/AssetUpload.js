@@ -19,6 +19,7 @@ export default class AssetUpload extends PureComponent {
     };
 
     static propTypes = {
+        className: PropTypes.string,
         propertyName: PropTypes.string,
         isLoading: PropTypes.bool.isRequired,
         onAfterUpload: PropTypes.func.isRequired,
@@ -79,11 +80,11 @@ export default class AssetUpload extends PureComponent {
     }
 
     render() {
-        const {isLoading, highlight, multiple, children, accept} = this.props;
+        const {isLoading, multiple, children, accept, className} = this.props;
 
         const classNames = mergeClassNames({
-            [style.thumbnail]: true,
-            [style['thumbnail--highlight']]: highlight
+            [className]: true,
+            [style.thumbnail]: true
         });
 
         return (
@@ -97,7 +98,7 @@ export default class AssetUpload extends PureComponent {
                     </div>
                 )}
                 {/* We should not remove Dropzone element when loading, as that would kill the upload */}
-                <div style={{display: isLoading ? 'none' : 'block'}}>
+                <div className={className} style={{display: isLoading ? 'none' : 'block'}}>
                     <Dropzone
                         ref={this.setDropzoneReference}
                         accept={accept}

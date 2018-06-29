@@ -54,14 +54,6 @@
         transform: translateX(-50%) translateY(-50%);
     }
 }
-.checkbox__inputMirror--highlight-checked {
-    background: var(--colors-Success);
-    border-color: var(--colors-Success);
-    color: #fff;
-}
-.checkbox__inputMirror--highlight-unchecked {
-    border-color: var(--colors-Success);
-}
 .checkbox__disabled {
     opacity: .65;
     cursor: not-allowed;

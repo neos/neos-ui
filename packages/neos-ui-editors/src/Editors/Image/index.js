@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {$set, $drop, $get} from 'plow-js';
+import mergeClassNames from 'classnames';
 
 import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -17,9 +18,7 @@ const DEFAULT_FEATURES = {
     upload: true
 };
 
-@neos(globalRegistry => ({
-    secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')
-}))
+@neos(globalRegistry => ({secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')}))
 export default class ImageEditor extends Component {
     state = {
         image: null,
@@ -33,9 +32,7 @@ export default class ImageEditor extends Component {
         identifier: PropTypes.string,
 
         value: PropTypes.oneOfType([
-            PropTypes.shape({
-                __identifier: PropTypes.string
-            }),
+            PropTypes.shape({__identifier: PropTypes.string}),
             PropTypes.string
         ]),
         // "hooks" are the hooks specified by commit()
@@ -46,7 +43,6 @@ export default class ImageEditor extends Component {
         secondaryEditorsRegistry: PropTypes.object.isRequired,
 
         options: PropTypes.object,
-        highlight: PropTypes.bool,
 
         // Public API:
         // I18N key
@@ -66,13 +62,9 @@ export default class ImageEditor extends Component {
             this.setState({
                 isAssetLoading: true
             }, () => {
-                this.loadImage = loadImageMetadata(this.props.value.__identity)
-                    .then(image => {
-                        this.setState({
-                            image,
-                            isAssetLoading: false
-                        });
-                    });
+                this.loadImage = loadImageMetadata(this.props.value.__identity).then(image => {
+                    this.setState({image, isAssetLoading: false});
+                });
             });
         }
 
@@ -93,30 +85,25 @@ export default class ImageEditor extends Component {
         //
         // Re-Load the image metadata in case a new image was selected.
         //
-        if (
-            nextProps.value &&
-            nextProps.value.__identity &&
-            nextProps.value.__identity !== (this.props.value && this.props.value.__identity)
-        ) {
-            loadImageMetadata(nextProps.value.__identity)
-                .then(image => {
-                    if (this._isMounted) {
-                        this.setState({
-                            image,
-                            isAssetLoading: false
-                        }, () => {
-                            // When forceCrop option is enabled and we were requested to do the force cropping...
-                            if (this.state.requestOpenImageCropper && $get('crop.aspectRatio.forceCrop', this.props.options)) {
-                                this.handleCloseSecondaryScreen();
-                                this.handleOpenImageCropper();
-                                this.setState({requestOpenImageCropper: false});
-                            } else if (this.state.isImageCropperOpen) {
-                                this.handleCloseSecondaryScreen();
-                                this.handleOpenImageCropper();
-                            }
-                        });
-                    }
-                });
+        if (nextProps.value && nextProps.value.__identity && nextProps.value.__identity !== (this.props.value && this.props.value.__identity)) {
+            loadImageMetadata(nextProps.value.__identity).then(image => {
+                if (this._isMounted) {
+                    this.setState({
+                        image,
+                        isAssetLoading: false
+                    }, () => {
+                        // When forceCrop option is enabled and we were requested to do the force cropping...
+                        if (this.state.requestOpenImageCropper && $get('crop.aspectRatio.forceCrop', this.props.options)) {
+                            this.handleCloseSecondaryScreen();
+                            this.handleOpenImageCropper();
+                            this.setState({requestOpenImageCropper: false});
+                        } else if (this.state.isImageCropperOpen) {
+                            this.handleCloseSecondaryScreen();
+                            this.handleOpenImageCropper();
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -127,10 +114,7 @@ export default class ImageEditor extends Component {
 
     afterUpload = uploadResult => {
         this.props.commit(uploadResult.object);
-        this.setState({
-            requestOpenImageCropper: true,
-            isAssetLoading: false
-        });
+        this.setState({requestOpenImageCropper: true, isAssetLoading: false});
     }
 
     handleMediaCrop = cropArea => {
@@ -147,9 +131,7 @@ export default class ImageEditor extends Component {
         };
         const nextimage = $set(CROP_IMAGE_ADJUSTMENT, cropAdjustments, image);
 
-        commit(value, {
-            'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
-        });
+        commit(value, {'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage});
         this.setState({isImageCropperOpen: false});
     }
 
@@ -157,13 +139,10 @@ export default class ImageEditor extends Component {
         const {commit, value} = this.props;
         const {image} = this.state;
         const nextimage = resizeAdjustment ?
-            $set(RESIZE_IMAGE_ADJUSTMENT, resizeAdjustment, image) : $drop(RESIZE_IMAGE_ADJUSTMENT, image);
-        this.setState({
-            image: nextimage
-        });
-        commit(value, {
-            'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage
-        });
+            $set(RESIZE_IMAGE_ADJUSTMENT, resizeAdjustment, image) :
+            $drop(RESIZE_IMAGE_ADJUSTMENT, image);
+        this.setState({image: nextimage});
+        commit(value, {'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage});
     }
 
     handleCloseSecondaryScreen = () => {
@@ -171,7 +150,9 @@ export default class ImageEditor extends Component {
     }
 
     getValue() {
-        return this.props.value ? this.props.value : {};
+        return this.props.value ?
+            this.props.value :
+            {};
     }
 
     handleRemoveFile = () => {
@@ -187,7 +168,9 @@ export default class ImageEditor extends Component {
 
     handleMediaSelected = assetIdentifier => {
         const {commit} = this.props;
-        const newAsset = {__identity: assetIdentifier};
+        const newAsset = {
+            __identity: assetIdentifier
+        };
 
         this.setState({
             image: null,
@@ -205,12 +188,7 @@ export default class ImageEditor extends Component {
         const imageIdentity = $get('__identity', this.props.value);
 
         if (imageIdentity) {
-            this.props.renderSecondaryInspector('IMAGE_MEDIA_DETAILS', () =>
-                <MediaDetailsScreen
-                    onClose={this.handleCloseSecondaryScreen}
-                    imageIdentity={imageIdentity}
-                    />
-            );
+            this.props.renderSecondaryInspector('IMAGE_MEDIA_DETAILS', () => <MediaDetailsScreen onClose={this.handleCloseSecondaryScreen} imageIdentity={imageIdentity}/>);
         } else {
             this.handleChooseFile();
         }
@@ -225,76 +203,51 @@ export default class ImageEditor extends Component {
         const {secondaryEditorsRegistry} = this.props;
         const {component: MediaSelectionScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen');
 
-        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () =>
-            <MediaSelectionScreen onComplete={this.handleMediaSelected}/>
-        );
+        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () => <MediaSelectionScreen onComplete={this.handleMediaSelected}/>);
     }
 
     handleOpenImageCropper = () => {
         const {secondaryEditorsRegistry} = this.props;
         const {component: ImageCropper} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/ImageCropper');
 
-        this.setState({isImageCropperOpen: true}, () => {
-            this.props.renderSecondaryInspector('IMAGE_CROP', () => <ImageCropper
-                sourceImage={Image.fromImageData(this.getUsedImage())}
-                options={this.props.options}
-                onComplete={this.handleMediaCrop}
-                />);
+        this.setState({
+            isImageCropperOpen: true
+        }, () => {
+            this.props.renderSecondaryInspector('IMAGE_CROP', () => <ImageCropper sourceImage={Image.fromImageData(this.getUsedImage())} options={this.props.options} onComplete={this.handleMediaCrop}/>);
         });
     }
 
     render() {
-        const {
-            isAssetLoading,
-            image
-        } = this.state;
-        const {highlight} = this.props;
+        const {isAssetLoading, image} = this.state;
+        const {className} = this.props;
         const disabled = $get('options.disabled', this.props);
         const accept = $get('options.accept', this.props);
 
-        return (
-            <div className={style.imageEditor}>
-                <PreviewScreen
-                    propertyName={this.props.identifier}
-                    ref={this.setPreviewScreenRef}
-                    image={this.getUsedImage()}
-                    isLoading={isAssetLoading}
-                    afterUpload={this.afterUpload}
-                    highlight={highlight}
-                    onClick={this.handleThumbnailClicked}
-                    isUploadEnabled={this.isFeatureEnabled('upload')}
-                    disabled={disabled}
-                    accept={accept}
-                    />
-                <Controls
-                    onChooseFromMedia={this.handleChooseFromMedia}
-                    onChooseFromLocalFileSystem={this.handleChooseFile}
-                    isUploadEnabled={this.isFeatureEnabled('upload')}
-                    isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')}
-                    onRemove={image ? this.handleRemoveFile : null}
-                    onCrop={image ? this.isFeatureEnabled('crop') && this.handleOpenImageCropper : null}
-                    disabled={disabled}
-                    />
-                {this.isFeatureEnabled('resize') && <ResizeControls
-                    onChange={this.handleResize}
-                    resizeAdjustment={$get(RESIZE_IMAGE_ADJUSTMENT, image)}
-                    imageDimensions={{
-                        width: $get('originalDimensions.width', image),
-                        height: $get('originalDimensions.height', image)
-                    }}
-                    disabled={disabled}
-                    />}
-            </div>
-        );
+        const classNames = mergeClassNames({
+            [style.imageEditor]: true
+        });
+        return (<div className={classNames}>
+            <PreviewScreen className={className} propertyName={this.props.identifier} ref={this.setPreviewScreenRef} image={this.getUsedImage()} isLoading={isAssetLoading} afterUpload={this.afterUpload} onClick={this.handleThumbnailClicked} isUploadEnabled={this.isFeatureEnabled('upload')} disabled={disabled} accept={accept}/>
+            <Controls onChooseFromMedia={this.handleChooseFromMedia} onChooseFromLocalFileSystem={this.handleChooseFile} isUploadEnabled={this.isFeatureEnabled('upload')} isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')} onRemove={image ?
+                    this.handleRemoveFile :
+                    null} onCrop={image ?
+                    this.isFeatureEnabled('crop') && this.handleOpenImageCropper :
+                    null} disabled={disabled}/> {
+                this.isFeatureEnabled('resize') && <ResizeControls onChange={this.handleResize} resizeAdjustment={$get(RESIZE_IMAGE_ADJUSTMENT, image)} imageDimensions={{
+                    width: $get('originalDimensions.width', image),
+                    height: $get('originalDimensions.height', image)
+                }} disabled={disabled}/>
+            }
+        </div>);
     }
 
     getUsedImage() {
-        return this.props.hooks ? this.props.hooks['Neos.UI:Hook.BeforeSave.CreateImageVariant'] : this.state.image;
+        return this.props.hooks ?
+            this.props.hooks['Neos.UI:Hook.BeforeSave.CreateImageVariant'] :
+            this.state.image;
     }
 
     setPreviewScreenRef = ref => {
         this.previewScreen = ref;
     }
-
-    handleDrop
 }

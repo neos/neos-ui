@@ -9,12 +9,12 @@ import style from './style.css';
 
 export default class PreviewScreen extends PureComponent {
     static propTypes = {
+        className: PropTypes.string,
         propertyName: PropTypes.string,
         image: PropTypes.object,
         afterUpload: PropTypes.func.isRequired,
         onClick: PropTypes.func.isRequired,
         isLoading: PropTypes.bool.isRequired,
-        highlight: PropTypes.bool,
         isUploadEnabled: PropTypes.bool.isRequired,
         disabled: PropTypes.bool,
         accept: PropTypes.string
@@ -25,11 +25,11 @@ export default class PreviewScreen extends PureComponent {
     }
 
     renderPreview() {
-        const {image, onClick, highlight, disabled} = this.props;
+        const {image, onClick, disabled, className} = this.props;
 
         const classNames = mergeClassNames({
+            [className]: true,
             [style.thumbnail]: true,
-            [style['thumbnail--highlight']]: highlight,
             [style['thumbnail--disabled']]: disabled
         });
 
@@ -37,8 +37,7 @@ export default class PreviewScreen extends PureComponent {
         const handleClick = () => disabled ? null : onClick;
 
         return (
-            <div
-                className={classNames}
+            <div className={classNames}
                 onClick={handleClick()}
                 role="button"
                 >
@@ -63,7 +62,7 @@ export default class PreviewScreen extends PureComponent {
     }
 
     render() {
-        const {afterUpload, isLoading, highlight, propertyName, isUploadEnabled, accept} = this.props;
+        const {afterUpload, isLoading, propertyName, isUploadEnabled, accept} = this.props;
 
         if (isUploadEnabled) {
             return (
@@ -71,7 +70,6 @@ export default class PreviewScreen extends PureComponent {
                     onAfterUpload={afterUpload}
                     isLoading={isLoading}
                     propertyName={propertyName}
-                    highlight={highlight}
                     ref={this.setAssetUploadReference}
                     imagesOnly={true}
                     accept={accept || 'image/*'}

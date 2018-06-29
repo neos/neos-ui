@@ -12,14 +12,13 @@ import {$transform, $get} from 'plow-js';
         i18nRegistry: globalRegistry.get('i18n')
     };
 })
-
 @connect($transform({
     activeContentDimensions: selectors.CR.ContentDimensions.active,
     personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector
 }))
-
 class MasterPluginEditor extends React.PureComponent {
     static propTypes = {
+        className: PropTypes.string,
         id: PropTypes.string,
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
@@ -84,6 +83,7 @@ class MasterPluginEditor extends React.PureComponent {
 
         return (
             <SelectBox
+                className={this.props.className}
                 options={options}
                 value={this.props.value}
                 onValueChange={this.handleValueChange}

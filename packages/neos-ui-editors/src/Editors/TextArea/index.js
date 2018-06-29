@@ -12,22 +12,21 @@ const defaultOptions = {
 };
 
 const TextAreaEditor = props => {
-    const {id, value, commit, highlight, options, validationErrors} = props;
+    const {id, value, commit, options, className} = props;
 
     const finalOptions = Object.assign({}, defaultOptions, options);
 
     return (<TextArea
         id={id}
         value={value}
+        className={className}
         onChange={commit}
-        highlight={highlight}
         disabled={finalOptions.disabled}
         maxLength={finalOptions.maxlength}
         readOnly={finalOptions.readonly}
         placeholder={finalOptions.placeholder}
         minRows={finalOptions.minRows}
         expandedRows={finalOptions.expandedRows}
-        validationErrors={validationErrors}
         />
     );
 };

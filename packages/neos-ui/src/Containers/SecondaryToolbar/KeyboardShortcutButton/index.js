@@ -10,8 +10,8 @@ import {actions} from '@neos-project/neos-ui-redux-store';
     i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect(
-    $transform({isOpen: $get('ui.keyboardShortcut.isOpen')}),
-    {open: actions.UI.KeyboardShortcut.open}
+    $transform({isOpen: $get('ui.keyboardShortcutModal.isOpen')}),
+    {open: actions.UI.KeyboardShortcutModal.open}
 )
 export default class KeyboardShortcutButton extends PureComponent {
     static propTypes = {

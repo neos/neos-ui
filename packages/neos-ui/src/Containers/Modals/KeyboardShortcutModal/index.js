@@ -14,8 +14,8 @@ import style from './style.css';
     hotkeyRegistry: globalRegistry.get('hotkeys')
 }))
 @connect(
-    $transform({isOpen: $get('ui.keyboardShortcut.isOpen')}),
-    {close: actions.UI.KeyboardShortcut.close}
+    $transform({isOpen: $get('ui.keyboardShortcutModal.isOpen')}),
+    {close: actions.UI.KeyboardShortcutModal.close}
 )
 class KeyboardShortcutModal extends PureComponent {
     static propTypes = {

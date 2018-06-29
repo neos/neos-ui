@@ -10,6 +10,7 @@ import SelectNodeTypeModal from './Containers/Modals/SelectNodeType/index';
 import NodeCreationDialog from './Containers/Modals/NodeCreationDialog/index';
 import NodeVariantCreationDialog from './Containers/Modals/NodeVariantCreationDialog/index';
 import ReloginDialog from './Containers/Modals/ReloginDialog/index';
+import KeyboardShortcutModal from './Containers/Modals/KeyboardShortcutModal/index';
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
 
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
@@ -24,6 +25,7 @@ import EditModePanel from './Containers/EditModePanel/index';
 import SecondaryToolbar from './Containers/SecondaryToolbar/index';
 import DimensionSwitcher from './Containers/SecondaryToolbar/DimensionSwitcher/index';
 import LoadingIndicator from './Containers/SecondaryToolbar/LoadingIndicator/index';
+import KeyboardShortcutButton from './Containers/SecondaryToolbar/KeyboardShortcutButton/index';
 import PreviewButton from './Containers/SecondaryToolbar/PreviewButton/index';
 import FullScreenButton from './Containers/SecondaryToolbar/FullScreenButton/index';
 
@@ -52,6 +54,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('Modals/NodeCreationDialog', NodeCreationDialog);
     containerRegistry.set('Modals/NodeVariantCreationDialog', NodeVariantCreationDialog);
     containerRegistry.set('Modals/ReloginDialog', ReloginDialog);
+    containerRegistry.set('Modals/KeyboardShortcutModal', KeyboardShortcutModal);
     containerRegistry.set('Modals/UnappliedChangesDialog', UnappliedChangesDialog);
 
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
@@ -66,6 +69,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('SecondaryToolbar', SecondaryToolbar);
     containerRegistry.set('SecondaryToolbar/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('SecondaryToolbar/LoadingIndicator', LoadingIndicator);
+    containerRegistry.set('SecondaryToolbar/Right/KeyboardShortcutButton', KeyboardShortcutButton);
     containerRegistry.set('SecondaryToolbar/Right/PreviewButton', PreviewButton);
     containerRegistry.set('SecondaryToolbar/Right/FullScreenButton', FullScreenButton);
 

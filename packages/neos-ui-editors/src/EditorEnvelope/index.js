@@ -110,7 +110,7 @@ export default class EditorEnvelope extends PureComponent {
         const {helpMessage, helpThumbnail, label} = this.props;
 
         return (
-            <Tooltip className={style.envelope__helpmessage}>
+            <Tooltip renderInline className={style.envelope__helpmessage}>
                 {helpMessage ? helpMessage : ''}
                 {helpThumbnail ? <img alt={label} src={helpThumbnail} /> : ''}
             </Tooltip>
@@ -143,8 +143,9 @@ export default class EditorEnvelope extends PureComponent {
             <Fragment>
                 <span>
                     {this.renderLabel()}
-                    {this.state.showHelpmessage ? this.renderHelpmessage() : ''}
                 </span>
+
+                {this.state.showHelpmessage ? this.renderHelpmessage() : ''}
 
                 {this.renderEditorComponent()}
                 {validationErrors && validationErrors.length > 0 && <Tooltip renderInline asError><ul>{validationErrors.map((error, index) => <li key={index}>{error}</li>)}</ul></Tooltip>}

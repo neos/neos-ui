@@ -3,12 +3,16 @@ import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 
 const ButtonGroupItem = props => {
+    const handleButtonClick = () => {
+        props.onClick(props.id);
+    };
+
     const {element, ...restProps} = props;
     const rest = omit(restProps, ['onClick']);
     return (
         React.cloneElement(element, {
             ...rest,
-            onClick: this.handleButtonClick
+            onClick: handleButtonClick
         })
     );
 };

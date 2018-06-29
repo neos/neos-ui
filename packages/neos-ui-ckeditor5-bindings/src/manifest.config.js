@@ -46,7 +46,7 @@ export default ckEditorRegistry => {
     // Add plugins
     //
     config.set('essentials', addPlugin(Essentials));
-    // config.set('neosPlaceholder', addPlugin(NeosPlaceholder));
+    config.set('neosPlaceholder', addPlugin(NeosPlaceholder));
     config.set('paragraph', addPlugin(Paragraph));
     config.set('bold', addPlugin(Bold, $get('formatting.strong')));
     config.set('italic', addPlugin(Italic, $get('formatting.em')));
@@ -77,11 +77,11 @@ export default ckEditorRegistry => {
     //
     // @see https://docs.ckeditor.com/ckeditor5/latest/features/table.html
     //
-    config.set('configureTable', config => Object.assign(config, {
+    config.set('configureTable', (config, {editorOptions}) => Object.assign(config, $get('table', editorOptions) ? {
         table: {
             toolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
         }
-    }));
+    } : {}));
 
     //
     // @see https://docs.ckeditor.com/ckeditor5/latest/features/headings.html#configuring-heading-levels

@@ -25,6 +25,7 @@ class NodeTypeGroupPanel extends PureComponent {
         toggleNodeTypeGroup: PropTypes.func.isRequired,
         collapsedGroups: PropTypes.array.isRequired,
         filterSearchTerm: PropTypes.string,
+        onHelpMessage: PropTypes.func.isRequired,
 
         group: PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -42,7 +43,8 @@ class NodeTypeGroupPanel extends PureComponent {
             collapsedGroups,
             onSelect,
             filterSearchTerm,
-            i18nRegistry
+            i18nRegistry,
+            onHelpMessage
         } = this.props;
         const {name, label, nodeTypes} = group;
 
@@ -64,7 +66,7 @@ class NodeTypeGroupPanel extends PureComponent {
                     <I18n className={style.groupTitle} fallback={label} id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
-                    {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect}/>)}
+                    {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} />)}
                 </ToggablePanel.Contents>
             </ToggablePanel>
         );

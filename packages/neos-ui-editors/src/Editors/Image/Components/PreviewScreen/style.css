@@ -18,6 +18,11 @@
     overflow: hidden;
     cursor: pointer;
 }
+
+.thumbnail__overlay {
+    transition: var(--transition-Default) background-color ease-out;
+}
+
 .thumbnail:hover > .thumbnail__overlay {
     height: 100%;
     width: 100%;

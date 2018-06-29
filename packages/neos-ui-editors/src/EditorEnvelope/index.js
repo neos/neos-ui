@@ -60,18 +60,17 @@ export default class EditorEnvelope extends PureComponent {
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;
 
-            const restProps = omit(this.props, ['validationErrors', 'highlight']);
-            const {highlight, validationErrors} = this.props;
-            const isInvalid = validationErrors && validationErrors.length > 1;
+            const {highlight, validationErrors, ...rest} = this.props;
+            const isInvalid = validationErrors && validationErrors.length > 0;
 
             // We pass down a classname to render a highlight status on the editor field
             const classNames = mergeClassNames({
                 [style['envelope--highlight']]: highlight && !isInvalid,
-                [style['envelope--invalid']]: validationErrors && validationErrors.length > 0
+                [style['envelope--invalid']]: isInvalid
             });
 
             return (
-                <EditorComponent className={classNames} id={this.generateIdentifier()} {...restProps} />
+                <EditorComponent className={classNames} id={this.generateIdentifier()} {...rest} />
             );
         }
 

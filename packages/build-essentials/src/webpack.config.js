@@ -52,6 +52,7 @@ const webpackConfig = {
             },
             {
                 test: /\.(woff|woff2|eot|ttf|svg)$/,
+                exclude: /node_modules\/@ckeditor.*$/,
                 use: [{
                     loader: 'url-loader',
                     options: {

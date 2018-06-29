@@ -1,6 +1,5 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 
 import Label from '@neos-project/react-ui-components/src/Label/';

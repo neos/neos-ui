@@ -1,5 +1,4 @@
 import {take, race, put, call, select} from 'redux-saga/effects';
-import {delay} from 'redux-saga';
 import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';

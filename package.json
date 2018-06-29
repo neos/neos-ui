@@ -50,6 +50,7 @@
     "redux-saga-test-plan": "^3.6.0",
     "regenerator-runtime": "^0.10.3",
     "rimraf": "^2.5.4",
+    "raw-loader": "^0.5",
     "semantic-release": "^6.3.2",
     "string-replace-loader": "^2.1.1",
     "style-loader": "^0.19.0",
@@ -63,6 +64,15 @@
     "webpack-merge": "^4.1.1"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-editor-decoupled": "^10.0",
+    "@ckeditor/ckeditor5-essentials": "^10.0",
+    "@ckeditor/ckeditor5-paragraph": "^10.0",
+    "@ckeditor/ckeditor5-basic-styles": "^10.0",
+    "@ckeditor/ckeditor5-heading": "^10.0",
+    "@ckeditor/ckeditor5-alignment": "^10.0",
+    "@ckeditor/ckeditor5-table": "^10.0",
+    "@ckeditor/ckeditor5-list": "^10.0",
+    "@ckeditor/ckeditor5-link": "^10.0",
     "@fortawesome/fontawesome": "^1.1.5",
     "@fortawesome/fontawesome-free-brands": "^5.0.9",
     "@fortawesome/fontawesome-free-regular": "^5.0.9",

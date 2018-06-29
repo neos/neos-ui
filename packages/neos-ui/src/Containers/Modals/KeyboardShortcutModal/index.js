@@ -41,7 +41,6 @@ class KeyboardShortcutModal extends Component {
                 title={<I18n fallback="Keyboard Shortcuts" />}
                 isOpen={isOpen}
                 onRequestClose={() => toggleFullScreen()}
-                isOpen={true}
                 >
                 <div className={style.keyboardShortcutIntroText}>
                     <I18n id={`Neos.Neos.Ui:Main:Shortcut__Introduction`} fallback={''} />

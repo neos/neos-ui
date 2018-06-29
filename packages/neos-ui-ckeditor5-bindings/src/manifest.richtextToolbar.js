@@ -96,27 +96,29 @@ export default ckEditorRegistry => {
         isActive: $get('underline')
     });
 
-    // // Subscript
-    // richtextToolbar.set('subscript', {
-    //     formattingRule: 'sub',
-    //     component: IconButtonComponent,
-    //     callbackPropName: 'onClick',
+    // Subscript
+    richtextToolbar.set('subscript', {
+        commandName: 'sub',
+        component: IconButtonComponent,
+        callbackPropName: 'onClick',
+        icon: 'subscript',
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__subscript',
+        isVisible: $get('formatting.sub'),
+        isActive: $get('sub')
+    });
 
-    //     icon: 'subscript',
-    //     hoverStyle: 'brand',
-    //     tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__subscript'
-    // });
-
-    // // Superscript
-    // richtextToolbar.set('superscript', {
-    //     formattingRule: 'sup',
-    //     component: IconButtonComponent,
-    //     callbackPropName: 'onClick',
-
-    //     icon: 'superscript',
-    //     hoverStyle: 'brand',
-    //     tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__superscript'
-    // });
+    // Superscript
+    richtextToolbar.set('superscript', {
+        formattingRule: 'sup',
+        component: IconButtonComponent,
+        callbackPropName: 'onClick',
+        icon: 'superscript',
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__superscript',
+        isVisible: $get('formatting.sup'),
+        isActive: $get('sup')
+    });
 
     // Strike-Through
     richtextToolbar.set('strikethrough', {

@@ -1,6 +1,6 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import {stripTags} from '@neos-project/utils-helpers';
-import styles from './style.vanilla-css'; // eslint-disable-line no-unused-vars
+import styles from './neosPlaceholder.vanilla-css'; // eslint-disable-line no-unused-vars
 
 // If the data is "empty" (BR, P) or the placeholder then return an empty string.
 // Otherwise return the original data

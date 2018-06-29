@@ -2,6 +2,8 @@ import CkEditorConfigRegistry from './registry/CkEditorConfigRegistry';
 import {$add, $get, $or} from 'plow-js';
 
 import NeosPlaceholder from './plugins/neosPlaceholder';
+import Sub from './plugins/sub';
+import Sup from './plugins/sup';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
@@ -58,6 +60,8 @@ export default ckEditorRegistry => {
     //
     config.set('essentials', addPlugin(Essentials));
     config.set('neosPlaceholder', addPlugin(NeosPlaceholder));
+    config.set('sub', addPlugin(Sub, $get('formatting.sub')));
+    config.set('sup', addPlugin(Sup, $get('formatting.sup')));
     config.set('paragraph', addPlugin(Paragraph));
     config.set('bold', addPlugin(Bold, $get('formatting.strong')));
     config.set('italic', addPlugin(Italic, $get('formatting.em')));

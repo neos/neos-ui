@@ -12,6 +12,12 @@ manifest('@neos-project/neos-ui-ckeditor5-bindings', {}, (globalRegistry, {route
         'ckEditor5',
         new SynchronousMetaRegistry(`
             # Registries for CK Editor 5
+
+            We provide a very slim configuration API over CKE5:
+            - manifest.config.js: configuration registry
+            - manifest.richtextToolbar.js: registry for our custom toolbar
+
+            See their manifest files for more details
         `)
     );
     const richtextToolbarRegistry = initializeRichtextToolbarRegistry(ckEditorRegistry);

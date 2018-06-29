@@ -29,6 +29,17 @@ const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, {editorOptions}
 export default ckEditorRegistry => {
     const config = ckEditorRegistry.set('config', new CkEditorConfigRegistry(`
         Contains custom config for CkEditor
+
+        In CKE all things are configured via a single configuration object: plugins, custom configs, etc (@see https://docs.ckeditor.com/ckeditor5/latest/builds/guides/integration/configuration.html)
+        This registry allows to register a custom configuration processor that takes a configuration object, modifies it and returns a new one. Example:
+
+        config.set('doSmthWithConfig' ckeConfig => {
+            ckeConfig.mySetting = true;
+            return ckeConfig;
+        })
+
+        That is all you need to know about configuring CKE in Neos,
+        refer to CKeditor5 documentationfor more details on what you can do with it: https://docs.ckeditor.com/ckeditor5/latest/index.html
     `));
 
     //

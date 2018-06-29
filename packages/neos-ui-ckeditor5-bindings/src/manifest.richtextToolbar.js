@@ -31,27 +31,25 @@ export default ckEditorRegistry => {
     const richtextToolbar = ckEditorRegistry.set('richtextToolbar', new RichTextToolbarRegistry(`
         Contains the Rich Text Editing Toolbar components.
 
+        Buttons in the Rich Text Editing Toolbar are just plain React components.
+        The only way for these components to communicate with CKE is via its commands mechanism
+        (@see https://docs.ckeditor.com/ckeditor5/latest/framework/guides/architecture/core-editor-architecture.html#commands)
+        Some commands may take arguments.
+        Commands are provided and handled by CKE plugins. Refer to manifest.config.js to see how to configure custom plugins.
+
         The values are objects of the following form:
 
             {
-                formattingRule: 'h1' // References a key inside "formattingRules"
+                commandName: 'bold' // A CKE command that gets dispatched
+                commandArgs: [arg1, arg2] // Additional arguments passed together with a command
                 component: Button // the React component being used for rendering
+                isVisible: (editorOptions, formattingUnderCursor) => true // A function that decides is the button should be visible or not
+                isActive: (formattingUnderCursor, editorOptions) => true // A function that decides is the button should be active or not
                 callbackPropName: 'onClick' // Name of the callback prop of the Component which is
                                             fired when the component's value changes.
 
                 // all other properties are directly passed on to the component.
             }
-
-        ## Component wiring
-
-        - Each toolbar component receives all properties except "formattingRule" and "component" directly as props.
-        - Furthermore, the "isActive" property is bound, which is a boolean flag defining whether the text style
-            referenced by "formatting" is currently active or not.
-        - Furthermore, the callback specified in "callbackPropName" is wired, which toggles the value.
-
-        For advanced use-cases; also the "formattingRule" is bound to the component; containing a formatting-rule identifier (string).
-        If you need this, you'll most likely need to listen to selectors.UI.ContentCanvas.formattingUnderCursor and extract
-        your relevant information manually.
     `));
 
     //

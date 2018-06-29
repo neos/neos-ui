@@ -1,5 +1,4 @@
 import {take, race, put, call, select} from 'redux-saga/effects';
-import {delay} from 'redux-saga';
 import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -38,7 +37,7 @@ export function * watchPersist() {
     while (true) {
         const {action} = yield race({
             action: take(actionTypes.Changes.PERSIST),
-            time: call(delay, 1500)
+            saveFinished: take(actionTypes.UI.Remote.FINISH_SAVING)
         });
 
         if (action) {
@@ -52,4 +51,3 @@ export function * watchPersist() {
         }
     }
 }
-

@@ -23,7 +23,7 @@ const ButtonGroup = props => {
                     <ButtonGroupItem
                         {...child.props}
                         key={index}
-                        onClick={this.props.onSelect}
+                        onClick={props.onSelect}
                         isPressed={value === child.props.id}
                         element={child}
                         />

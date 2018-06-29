@@ -69,7 +69,7 @@ export const createEditor = ({propertyDomNode, propertyName, contextPath, editor
                     isInline: true
                 }
             }), 1500), 150));
-        });
+        }).catch(e => console.error(e));
 };
 
 export const executeCommand = (command, argument, reFocusEditor = true) => {

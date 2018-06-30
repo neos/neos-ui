@@ -72,6 +72,8 @@
     "@ckeditor/ckeditor5-table": "^10.0",
     "@ckeditor/ckeditor5-list": "^10.0",
     "@ckeditor/ckeditor5-link": "^10.0",
+    "@ckeditor/ckeditor5-theme-lark": "^10.0",
+    "@ckeditor/ckeditor5-dev-utils": "^9.0",
     "@fortawesome/fontawesome": "^1.1.5",
     "@fortawesome/fontawesome-free-brands": "^5.0.9",
     "@fortawesome/fontawesome-free-regular": "^5.0.9",

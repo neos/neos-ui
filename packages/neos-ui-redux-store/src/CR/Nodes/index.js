@@ -294,7 +294,7 @@ export const reducer = handleActions({
                 JSON.parse(JSON.stringify(nodeMap[contextPath]))
             )
         )),
-        ...Object.keys(nodeMap).map(contextPath => $set(
+        ...Object.keys(nodeMap).filter(contextPath => contextPath.children !== undefined).map(contextPath => $set(
             ['cr', 'nodes', 'byContextPath', contextPath, 'children'],
             Immutable.fromJS(
                 //

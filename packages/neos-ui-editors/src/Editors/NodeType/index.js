@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
+import mergeClassNames from 'classnames';
 
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -29,9 +30,9 @@ import style from './style.css';
 })
 export default class NodeType extends PureComponent {
     static propTypes = {
+        className: PropTypes.string,
         value: PropTypes.string.isRequired,
         commit: PropTypes.func.isRequired,
-        highlight: PropTypes.bool,
         options: PropTypes.object,
 
         isSiteNode: PropTypes.bool,
@@ -42,17 +43,22 @@ export default class NodeType extends PureComponent {
     }
 
     renderNoOptionsAvailable() {
-        const {value, nodeTypesRegistry, i18nRegistry} = this.props;
+        const {value, nodeTypesRegistry, i18nRegistry, className} = this.props;
+
+        const classNames = mergeClassNames({
+            [className]: true,
+            [style.noOptionsAvailable]: true
+        });
 
         return (
-            <div className={style.noOptionsAvailable}>
+            <div className={classNames}>
                 {i18nRegistry.translate($get('ui.label', nodeTypesRegistry.get(value)))}
             </div>
         );
     }
 
     render() {
-        const {value, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry, highlight, focusedNode, isSiteNode} = this.props;
+        const {value, className, commit, nodeTypesRegistry, allowedSiblingNodeTypesForFocusedNode, i18nRegistry, focusedNode, isSiteNode} = this.props;
         const disabled = $get('options.disabled', this.props);
 
         // Auto-created child nodes cannot change type
@@ -75,7 +81,7 @@ export default class NodeType extends PureComponent {
         }, []);
 
         if (nodeTypes.length) {
-            return <SelectBox options={nodeTypes} disabled={disabled} highlight={highlight} value={value} onValueChange={commit}/>;
+            return <SelectBox className={className} options={nodeTypes} disabled={disabled} value={value} onValueChange={commit}/>;
         }
 
         return this.renderNoOptionsAvailable();

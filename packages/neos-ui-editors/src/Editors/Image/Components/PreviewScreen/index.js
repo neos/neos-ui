@@ -4,18 +4,20 @@ import mergeClassNames from 'classnames';
 import {AssetUpload} from '../../../../Library/index';
 
 import {Thumbnail} from '../../Utils/index';
+import {Icon} from '@neos-project/react-ui-components';
 import style from './style.css';
 
 export default class PreviewScreen extends PureComponent {
     static propTypes = {
+        className: PropTypes.string,
         propertyName: PropTypes.string,
         image: PropTypes.object,
         afterUpload: PropTypes.func.isRequired,
         onClick: PropTypes.func.isRequired,
         isLoading: PropTypes.bool.isRequired,
-        highlight: PropTypes.bool,
         isUploadEnabled: PropTypes.bool.isRequired,
-        disabled: PropTypes.bool
+        disabled: PropTypes.bool,
+        accept: PropTypes.string
     };
 
     chooseFromLocalFileSystem() {
@@ -23,11 +25,11 @@ export default class PreviewScreen extends PureComponent {
     }
 
     renderPreview() {
-        const {image, onClick, highlight, disabled} = this.props;
+        const {image, onClick, disabled, className} = this.props;
 
         const classNames = mergeClassNames({
+            [className]: true,
             [style.thumbnail]: true,
-            [style['thumbnail--highlight']]: highlight,
             [style['thumbnail--disabled']]: disabled
         });
 
@@ -35,25 +37,32 @@ export default class PreviewScreen extends PureComponent {
         const handleClick = () => disabled ? null : onClick;
 
         return (
-            <div
-                className={classNames}
+            <div className={classNames}
                 onClick={handleClick()}
                 role="button"
                 >
-                <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
-                    <img
-                        className={(thumbnail ? style.cropArea__image : style['cropArea__image--placeholder'])}
-                        src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg'}
-                        style={thumbnail ? thumbnail.styles.thumbnail : {}}
-                        role="presentation"
-                        />
+                <div className={style.thumbnail__overlay}>
+                    <div className={style.cropArea} style={(thumbnail ? thumbnail.styles.cropArea : {})}>
+                        <div className={style.thumbnail__overlay__icon}>
+                            {thumbnail ?
+                                <Icon icon="camera" size="5x" mask={['fas', 'circle']} transform="shrink-8" /> :
+                                this.props.isUploadEnabled && <Icon icon="upload" size="5x" mask={['fas', 'circle']} transform="shrink-8" />
+                            }
+                        </div>
+                        <img
+                            className={(thumbnail ? style.cropArea__image : style['cropArea__image--placeholder'])}
+                            src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg'}
+                            style={thumbnail ? thumbnail.styles.thumbnail : {}}
+                            role="presentation"
+                            />
+                    </div>
                 </div>
             </div>
         );
     }
 
     render() {
-        const {afterUpload, isLoading, highlight, propertyName, isUploadEnabled} = this.props;
+        const {afterUpload, isLoading, propertyName, isUploadEnabled, accept} = this.props;
 
         if (isUploadEnabled) {
             return (
@@ -61,9 +70,9 @@ export default class PreviewScreen extends PureComponent {
                     onAfterUpload={afterUpload}
                     isLoading={isLoading}
                     propertyName={propertyName}
-                    highlight={highlight}
                     ref={this.setAssetUploadReference}
                     imagesOnly={true}
+                    accept={accept || 'image/*'}
                     >
                     {this.renderPreview()}
                 </AssetUpload>

@@ -54,8 +54,40 @@ Neos:
         #   someKey: someValue
 
         hotkeys:
+
           'UI.RightSideBar.toggle': 't i'
+
           'UI.FullScreen.toggle': 't f'
+          'UI.LeftSideBar.toggle': 't l'
+          'UI.LeftSideBar.toggleContentTree': 't c'
+
+          'UI.AddNodeModal.close': 'c m'
+
+          'UI.Drawer.toggle': 't d'
+
+          'UI.EditModePanel.toggle': 't e'
+
+          'UI.InsertionModeModal.cancel': 'c i'
+          'UI.InsertionModeModal.apply': 'a i'
+
+          'UI.ContentCanvas.reload': 'r c'
+
+          'UI.Inspector.discard': 'd i'
+          'UI.Inspector.escape': 'e i'
+          'UI.Inspector.resume': 'r i'
+
+          'UI.NodeCreationDialog.back': 'b n'
+          'UI.NodeCreationDialog.cancel': 'c n'
+          'UI.NodeCreationDialog.apply': 'a n'
+
+          'UI.NodeVariantCreationDialog.cancel': 'c v'
+          'UI.NodeVariantCreationDialog.createEmpty': 'c e v'
+          'UI.NodeVariantCreationDialog.createAndCopy': 'c c v'
+
+          'UI.SelectNodeTypeModal.cancel': 'c s'
+          'UI.SelectNodeTypeModal.apply': 'a s'
+
+          'CR.Nodes.unfocus': 'u n'
 
         legacy:
           enableUiSwitch: false
@@ -87,11 +119,11 @@ Neos:
         metaData:
           contextPath: '${q(documentNode).property("_contextPath")}'
           siteNode: '${q(site).property(''_contextPath'')}'
-          previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0), controllerContext)}'
+          previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0))}'
           contentDimensions:
             active: '${documentNode.context.dimensions}'
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
-          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, controllerContext)}'
+          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
           url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
       initialState:
         changes:

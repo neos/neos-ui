@@ -113,14 +113,16 @@ export default class Drawer extends PureComponent {
                 onMouseLeave={this.handleMouseLeave}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
-                {!isHidden && Object.values(menuData).map((item, index) => (
-                    <MenuItemGroup
-                        key={index}
-                        onClick={this.handleMenuItemClick}
-                        onChildClick={this.handleMenuItemClick}
-                        {...item}
-                        />
-                ))}
+                <div className={style.drawer__menuItemGroupsWrapper}>
+                    {!isHidden && Object.values(menuData).map((item, index) => (
+                        <MenuItemGroup
+                            key={index}
+                            onClick={this.handleMenuItemClick}
+                            onChildClick={this.handleMenuItemClick}
+                            {...item}
+                            />
+                    ))}
+                </div>
                 <div className={style.drawer__version}>{version}</div>
             </div>
         );

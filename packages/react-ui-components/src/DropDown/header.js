@@ -16,10 +16,13 @@ const ShallowDropDownHeader = props => {
         IconComponent,
         _refHandler,
         shouldKeepFocusState,
+        iconIsOpen,
+        iconIsClosed,
+        iconRest,
         disabled,
         ...rest
     } = props;
-    const iconName = isOpen ? 'chevron-up' : 'chevron-down';
+    const iconName = isOpen ? iconIsOpen : iconIsClosed;
     const finalClassName = mergeClassNames({
         [theme.dropDown__btn]: true,
         [className]: className && className.length,
@@ -36,7 +39,7 @@ const ShallowDropDownHeader = props => {
             aria-haspopup="true"
             >
             {children}
-            {showDropDownToggle && <IconComponent icon={iconName} className={theme.dropDown__chevron}/>}
+            {showDropDownToggle && <IconComponent icon={iconName} className={theme.dropDown__chevron} {...iconRest} />}
         </div>
     );
 };
@@ -64,6 +67,21 @@ ShallowDropDownHeader.propTypes = {
      * Static component dependencies which are injected from the outside (index.js)
      */
     IconComponent: PropTypes.any.isRequired,
+
+    /**
+     * Icon to use if the dropdown is opened
+     */
+    iconIsOpen: PropTypes.string,
+
+    /**
+     * Icon to use if the dropdown is opened
+     */
+    iconIsClosed: PropTypes.string,
+
+    /**
+     * A object wich will be spreaded on the icon component
+     */
+    iconRest: PropTypes.object,
 
     /**
      * These props control the visual state of the contents, and are passed
@@ -94,7 +112,9 @@ ShallowDropDownHeader.propTypes = {
 ShallowDropDownHeader.defaultProps = {
     _refHandler: makeFocusNode,
     showDropDownToggle: true,
-    shouldKeepFocusState: true
+    shouldKeepFocusState: true,
+    iconIsOpen: 'chevron-up',
+    iconIsClosed: 'chevron-down'
 };
 
 export default ShallowDropDownHeader;

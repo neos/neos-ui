@@ -41,6 +41,10 @@
 
     > .tabNavigation__itemBtn {
         color: var(--colors-PrimaryBlue);
+
+        &:hover {
+            color: var(--colors-ContrastBrightest);
+        }
     }
 }
 .tabNavigation__itemBtn {
@@ -52,6 +56,10 @@
     cursor: pointer;
     border: 0;
     background: 0;
+
+    &:hover {
+        background-color: var(--colors-PrimaryBlue);
+    }
 
     &:focus {
         outline: 0;

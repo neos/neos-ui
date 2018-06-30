@@ -7,10 +7,14 @@ const Tooltip = props => {
         children,
         className,
         theme,
+        renderInline,
+        asError,
         ...rest
     } = props;
     const classNames = mergeClassNames({
         [theme.tooltip]: true,
+        [theme['tooltip--asError']]: asError,
+        [theme['tooltip--inline']]: renderInline,
         [className]: className && className.length
     });
 
@@ -35,9 +39,24 @@ Tooltip.propTypes = {
     children: PropTypes.node,
 
     /**
+     * If set to true the tooltip won't be positioned absolute but relative and
+     * show up inline
+     */
+    renderInline: PropTypes.bool,
+
+    /**
      * An optional css theme to be injected.
      */
-    theme: PropTypes.object
+    theme: PropTypes.object,
+
+    /**
+     * Whether this tooltip should indicate an error or not
+     */
+    asError: PropTypes.bool
+};
+
+Tooltip.defaultProps = {
+    renderInline: false
 };
 
 export default Tooltip;

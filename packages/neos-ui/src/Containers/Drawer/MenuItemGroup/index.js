@@ -50,7 +50,7 @@ export default class MenuItemGroup extends PureComponent {
                         style="transparent"
                         hoverStyle="clean"
                         >
-                        {icon && <Icon icon={icon} size="medium" padded="right"/>}
+                        {icon && <Icon icon={icon} size="1x" padded="right"/>}
 
                         <I18n id={label} fallback={label}/>
                     </Button>

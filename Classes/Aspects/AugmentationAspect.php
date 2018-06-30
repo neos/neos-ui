@@ -151,7 +151,7 @@ class AugmentationAspect
 
         $this->userLocaleService->switchToUILocale();
 
-        $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
+        $serializedNode = json_encode($this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $this->controllerContext));
 
         $this->userLocaleService->switchToUILocale(true);
 
@@ -226,7 +226,7 @@ class AugmentationAspect
             }
 
             if (isset($this->renderedNodes[$node->getIdentifier()]) === false) {
-                $serializedNode = json_encode($this->nodeInfoHelper->renderNode($node, $this->controllerContext));
+                $serializedNode = json_encode($this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $this->controllerContext));
                 $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
             }
 

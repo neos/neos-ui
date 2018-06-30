@@ -21,9 +21,9 @@ import {isUri} from '@neos-project/utils-helpers';
 class LinkEditor extends PureComponent {
     static propTypes = {
         identifier: PropTypes.string.isRequired,
+        className: PropTypes.string,
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
-        highlight: PropTypes.bool,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string,
@@ -131,15 +131,17 @@ class LinkEditor extends PureComponent {
     }
 
     render() {
+        const {className, value, i18nRegistry, options} = this.props;
+
         return (
             <SelectBox
-                options={this.props.value ? this.state.options : this.state.searchOptions}
+                className={className}
+                options={value ? this.state.options : this.state.searchOptions}
                 optionValueField="loaderUri"
-                highlight={this.props.highlight}
-                value={this.props.value}
+                value={value}
                 onValueChange={this.handleValueChange}
-                placeholder={this.props.i18nRegistry.translate(this.props.options.placeholder)}
-                loadingLabel={this.props.i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main')}
+                placeholder={i18nRegistry.translate(this.props.options.placeholder)}
+                loadingLabel={i18nRegistry.translate('loading', 'Loading', [], 'Neos.Neos', 'Main')}
                 displayLoadingIndicator={this.state.isLoading}
                 displaySearchBox={true}
                 showDropDownToggle={false}
@@ -147,9 +149,9 @@ class LinkEditor extends PureComponent {
                 searchTerm={this.state.searchTerm}
                 onSearchTermChange={this.handleSearchTermChange}
                 ListPreviewElement={LinkOption}
-                noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
-                disabled={this.props.options.disabled}
+                noMatchesFoundLabel={i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                disabled={options.disabled}
                 />
         );
     }

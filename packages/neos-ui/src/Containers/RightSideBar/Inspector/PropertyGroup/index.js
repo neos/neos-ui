@@ -46,18 +46,22 @@ export default class PropertyGroup extends PureComponent {
                     {items.map(item => {
                         const itemId = $get('id', item);
                         const itemType = $get('type', item);
+                        const label = $get('label', item) || '';
+
                         if (itemType === 'editor') {
                             return (
                                 <InspectorEditorEnvelope
                                     key={$get('contextPath', node) + itemId}
                                     id={itemId}
-                                    label={$get('label', item)}
+                                    label={label}
                                     editor={$get('editor', item)}
                                     options={$get('editorOptions', item) && $get('editorOptions', item).toJS ? $get('editorOptions', item).toJS() : $get('editorOptions', item)}
                                     renderSecondaryInspector={renderSecondaryInspector}
                                     node={node}
                                     commit={commit}
                                     onEnterKey={handleInspectorApply}
+                                    helpMessage={$get('helpMessage', item)}
+                                    helpThumbnail={$get('helpThumbnail', item)}
                                     />);
                         }
                         if (itemType === 'view') {

@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 
 import flowright from 'lodash.flowright';
 import Tree from '@neos-project/react-ui-components/src/Tree/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
@@ -152,6 +153,40 @@ export default class Node extends PureComponent {
         return $get('ui.icon', nodeTypesRegistry.get(nodeType));
     }
 
+    /**
+     * This function will render some additons to the nodetype icon
+     * if the page is (currently) hidden
+     */
+    getCustomIconComponent() {
+        const {node} = this.props;
+
+        const isHidden = $get('properties._hidden', node);
+        const isHiddenBefore = $get('properties._hiddenBeforeDateTime', node);
+        const isHiddenAfter = $get('properties._hiddenAfterDateTime', node);
+
+        if (isHidden) {
+            return (
+                <span className="fa-layers fa-fw">
+                    <Icon icon={this.getIcon()} />
+                    <Icon icon="circle" color="error" transform="shrink-3 down-6 right-4" />
+                    <Icon icon="times" transform="shrink-7 down-6 right-4" />
+                </span>
+            );
+        }
+
+        if (isHiddenBefore || isHiddenAfter) {
+            return (
+                <span className="fa-layers fa-fw">
+                    <Icon icon={this.getIcon()} />
+                    <Icon icon="circle" color="primaryBlue" transform="shrink-5 down-6 right-4" />
+                    <Icon icon="clock" transform="shrink-9 down-6 right-4" />
+                </span>
+            );
+        }
+
+        return null;
+    }
+
     getNodeTypeLabel() {
         const {node, nodeTypesRegistry, i18nRegistry} = this.props;
         const nodeType = $get('nodeType', node);
@@ -260,6 +295,7 @@ export default class Node extends PureComponent {
                     hasError={this.hasError()}
                     label={decodeLabel($get('label', node))}
                     icon={this.getIcon()}
+                    customIconComponent={this.getCustomIconComponent()}
                     iconLabel={this.getNodeTypeLabel()}
                     level={level}
                     onToggle={this.handleNodeToggle}

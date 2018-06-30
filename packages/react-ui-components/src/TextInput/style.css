@@ -20,13 +20,6 @@
     font-weight: normal;
     color: var(--colors-ContrastBright);
 }
-.textInput--invalid {
-    outline: 2px solid var(--colors-Error) !important;
-    color: var(--colors-Error) !important;
-}
-.textInput--highlight {
-    outline: 2px solid var(--colors-Success);
-}
 
 .textInput--disabled {
     opacity: .65;

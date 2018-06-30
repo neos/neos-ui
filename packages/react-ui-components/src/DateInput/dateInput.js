@@ -17,6 +17,11 @@ export class DateInput extends PureComponent {
         value: PropTypes.instanceOf(Date),
 
         /**
+         * Additional className to render into the wrapper div
+         */
+        className: PropTypes.string,
+
+        /**
          * An optional placeholder which will be rendered if no date was selected.
          */
         placeholder: PropTypes.string,
@@ -42,11 +47,6 @@ export class DateInput extends PureComponent {
         labelFormat: PropTypes.string,
 
         /**
-         * Highlight input
-         */
-        highlight: PropTypes.bool,
-
-        /**
          * Display only date picker
          */
         dateOnly: PropTypes.bool,
@@ -60,16 +60,6 @@ export class DateInput extends PureComponent {
          * Locale for the date picker (determines time format)
          */
         locale: PropTypes.string,
-
-        /**
-         * Static component dependencies which are injected from the outside (index.js)
-         */
-        TooltipComponent: PropTypes.any.isRequired,
-
-        /**
-         * An array of error messages
-         */
-        validationErrors: PropTypes.array,
 
         /**
          * Disable the DateInput
@@ -110,19 +100,17 @@ export class DateInput extends PureComponent {
             IconComponent,
             DatePickerComponent,
             CollapseComponent,
-            TooltipComponent,
             placeholder,
             theme,
             value,
+            className,
             id,
             todayLabel,
             applyLabel,
             labelFormat,
             dateOnly,
             timeOnly,
-            highlight,
             locale,
-            validationErrors,
             disabled
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
@@ -135,14 +123,9 @@ export class DateInput extends PureComponent {
             [theme.disabled]: disabled
         });
 
-        const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
-            return <div key={key}>{validationError}</div>;
-        });
-
         const calendarInputWrapper = mergeClassNames({
-            [theme.calendarInputWrapper]: true,
-            [theme['calendarInputWrapper--highlight']]: highlight,
-            [theme['calendarInputWrapper--invalid']]: validationErrors && validationErrors.length > 0
+            [className]: true,
+            [theme.calendarInputWrapper]: true
         });
 
         const calendarFakeInputMirror = mergeClassNames({
@@ -215,7 +198,6 @@ export class DateInput extends PureComponent {
                         {applyLabel}
                     </ButtonComponent>
                 </CollapseComponent>
-                {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>
         );
     }

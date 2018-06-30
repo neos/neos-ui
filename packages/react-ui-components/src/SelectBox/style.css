@@ -3,10 +3,6 @@
     padding: 0;
 }
 
-.selectBox--highlight {
-    outline: 2px solid var(--colors-Success);
-}
-
 .selectBox {
     composes: reset from './../reset.css', dropDown from './../DropDown/style.css';
     position: relative;

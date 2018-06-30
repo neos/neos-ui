@@ -51,7 +51,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         [documentInformation.metaData.contextPath]: documentInformation.metaData.documentNodeSerialization
     });
 
-    yield put(actions.CR.Nodes.add(nodes));
+    yield put(actions.CR.Nodes.merge(nodes));
 
     // Remove the inline scripts after initialization
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));

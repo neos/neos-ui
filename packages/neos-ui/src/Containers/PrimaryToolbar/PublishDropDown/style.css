@@ -68,6 +68,14 @@
 .dropDown__item--canPublish {
     background: var(--colors-Warn);
 }
+.dropDown__item--isPublishing,
+.dropDown__item--isSaving {
+    background: var(--colors-Warn);
+    opacity: .5;
+}
+.dropDown__item--isDiscarding {
+    opacity: .5;
+}
 
 
 .badge {

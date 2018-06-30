@@ -222,7 +222,7 @@ export class Header extends PureComponent {
             <div aria-expanded={isPanelOpen} {...rest}>
                 <HeadlineComponent
                     className={finalClassName}
-                    type="h1"
+                    type="h2"
                     >
                     {children}
                 </HeadlineComponent>

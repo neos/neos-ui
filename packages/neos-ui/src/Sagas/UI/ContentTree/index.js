@@ -24,7 +24,7 @@ export function * watchReloadTree({globalRegistry}) {
 
         yield put(actions.UI.ContentTree.stopLoading());
 
-        yield put(actions.CR.Nodes.add(self.concat(directChildNodes, consecutiveChildNodes).reduce((result, node) => {
+        yield put(actions.CR.Nodes.merge(self.concat(directChildNodes, consecutiveChildNodes).reduce((result, node) => {
             result[node.contextPath] = node;
             return result;
         }, {})));

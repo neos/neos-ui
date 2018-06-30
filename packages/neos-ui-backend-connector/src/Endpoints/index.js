@@ -323,6 +323,19 @@ export default routes => {
         }
     })).then(response => fetchWithErrorHandling.parseJson(response));
 
+    const getPolicyInfo = nodeContextPaths => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+        return {
+            url: routes.ui.service.getPolicyInfo,
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({nodes: nodeContextPaths}),
+            headers: {
+                'X-Flow-Csrftoken': csrfToken,
+                'Content-Type': 'application/json'
+            }
+        };
+    }).then(response => fetchWithErrorHandling.parseJson(response));
+
     const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(dataSourceUri || `${routes.core.service.dataSource}/${dataSourceIdentifier}`, params),
 
@@ -375,6 +388,7 @@ export default routes => {
         dataSource,
         getJsonResource,
         getWorkspaceInfo,
+        getPolicyInfo,
         tryLogin,
         contentDimensions
     };

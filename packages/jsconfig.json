@@ -19,6 +19,9 @@
             "@neos-project/neos-ui-ckeditor-bindings" : ["neos-ui-ckeditor-bindings/src/index"],
             "@neos-project/neos-ui-ckeditor-bindings/*" : ["neos-ui-ckeditor-bindings/*/index", "neos-ui-ckeditor-bindings/*"],
 
+            "@neos-project/neos-ui-ckeditor5-bindings" : ["neos-ui-ckeditor5-bindings/src/index"],
+            "@neos-project/neos-ui-ckeditor5-bindings/*" : ["neos-ui-ckeditor5-bindings/*/index", "neos-ui-ckeditor5-bindings/*"],
+
             "@neos-project/neos-ui-constants" : ["neos-ui-constants/src/index"],
             "@neos-project/neos-ui-constants/*" : ["neos-ui-constants/*/index", "neos-ui-constants/*"],
 

@@ -1,11 +1,3 @@
-// import React from 'react';
-// import manifest from '@neos-project/neos-ui-extensibility';
-// import {actions} from '@neos-project/neos-ui-redux-store';
-
-// import EditorToolbar from './EditorToolbar';
-// import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
-
-// import initializeRichtextToolbarRegistry from './manifest.richtextToolbar';
 import throttle from 'lodash.throttle';
 import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';

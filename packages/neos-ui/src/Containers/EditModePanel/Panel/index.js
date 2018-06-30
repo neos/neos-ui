@@ -1,11 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
-
-/* eslint-disable no-unused-vars */
-import SlickStyles from './slick-styles.vanilla-css';
-/* eslint-enable no-unused-vars */
-
 import Button from '@neos-project/react-ui-components/src/Button/index';
 import IconComponent from '@neos-project/react-ui-components/src/Icon/index';
 import I18n from '@neos-project/neos-ui-i18n';

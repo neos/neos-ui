@@ -12,10 +12,11 @@ export function * watchNodeInformationChanges() {
 
         const nodesWithoutPolicies = Object.keys(nodeMap).filter(contextPath => {
             const node = selectors.CR.Nodes.nodeByContextPath(state)(contextPath);
-            const isFullyLoaded = $get('isFullyLoaded', node);
-            if (!isFullyLoaded) {
+
+            if (!$get('isFullyLoaded', node) || $get('properties._removed', node)) {
                 return false;
             }
+
             const policyInfo = $get('policy', node);
             return (!policyInfo);
         });

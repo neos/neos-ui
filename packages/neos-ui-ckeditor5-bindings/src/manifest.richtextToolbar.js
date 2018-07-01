@@ -110,7 +110,7 @@ export default ckEditorRegistry => {
 
     // Superscript
     richtextToolbar.set('superscript', {
-        formattingRule: 'sup',
+        commandName: 'sup',
         component: IconButtonComponent,
         callbackPropName: 'onClick',
         icon: 'superscript',

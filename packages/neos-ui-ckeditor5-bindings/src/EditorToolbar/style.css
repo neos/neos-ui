@@ -1,0 +1,47 @@
+.toolBar__btnGroup {
+    display: flex;
+
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+.toolBar__btnGroup__btn {
+    float: left;
+}
+
+
+.linkIconButton__flyout {
+    position: fixed;
+    z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
+    width: 460px;
+    border: var(--spacing-Half) solid var(--colors-ContrastDarker);
+    line-height: 0;
+}
+
+.linkIconButton__item {
+    padding: var(--spacing-Half);
+    box-sizing: content-box;
+    height: calc(var(--spacing-GoldenUnit) * 1.5);
+    line-height: 20px;
+}
+
+.linkIconButton__link {
+    color: var(--colors-ContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.linkIconButton__image {
+    height: calc(var(--spacing-GoldenUnit) * 1.5);
+    width: auto;
+    float: right;
+}
+
+.linkIconButton__link--active {
+    color: #fff;
+}

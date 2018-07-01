@@ -9,6 +9,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     _inheritanceMap = [];
     _groups = [];
     _roles = [];
+    _defaultInlineEditor = 'ckeditor';
 
     _inspectorViewConfigurationCache = {};
 
@@ -30,6 +31,16 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
 
     getRole(roleName) {
         return this._roles[roleName];
+    }
+
+    setDefaultInlineEditor(defaultInlineEditor) {
+        if (defaultInlineEditor) {
+            this._defaultInlineEditor = defaultInlineEditor;
+        }
+    }
+
+    getDefaultInlineEditor() {
+        return this._defaultInlineEditor;
     }
 
     hasRole(nodeTypeName, roleName) {
@@ -176,7 +187,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         //
         // TODO: Add documentation for this node type configuration, once it can be considered to be public API
         //
-        return $get(['properties', propertyName, 'ui', 'inline', 'editor'], nodeType) || 'ckeditor';
+        return $get(['properties', propertyName, 'ui', 'inline', 'editor'], nodeType) || this._defaultInlineEditor;
     }
 
     /**

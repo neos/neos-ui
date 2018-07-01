@@ -46,6 +46,7 @@ require('@neos-project/neos-ui-editors');
 require('@neos-project/neos-ui-views/src/manifest');
 require('@neos-project/neos-ui-guest-frame');
 require('@neos-project/neos-ui-ckeditor-bindings');
+require('@neos-project/neos-ui-ckeditor5-bindings');
 require('@neos-project/neos-ui-validators');
 require('@neos-project/neos-ui-i18n/src/manifest');
 
@@ -123,6 +124,7 @@ function * application() {
     nodeTypesRegistry.setInheritanceMap(nodeTypesSchema.inheritanceMap);
     nodeTypesRegistry.setGroups(groupsAndRoles.groups);
     nodeTypesRegistry.setRoles(groupsAndRoles.roles);
+    nodeTypesRegistry.setDefaultInlineEditor($get('defaultInlineEditor', frontendConfiguration));
 
     //
     // Load translations

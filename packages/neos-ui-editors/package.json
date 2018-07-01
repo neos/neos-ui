@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@neos-project/neos-ui-ckeditor-bindings": "1.1.2",
+    "@neos-project/neos-ui-ckeditor5-bindings": "1.1.2",
     "@neos-project/neos-ui-constants": "1.1.2",
     "@neos-project/neos-ui-decorators": "1.1.2",
     "@neos-project/neos-ui-extensibility": "1.1.2",

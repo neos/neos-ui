@@ -4,6 +4,7 @@ const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
+const {styles} = require('@ckeditor/ckeditor5-dev-utils');
 //
 // Prevent from failing, when NEOS_BUILD_ROOT env variable isn't set
 // (e.g. when extending this config from storybook)
@@ -34,20 +35,25 @@ const webpackConfig = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /node_modules\/((?!@neos-project).)*$/,
+                exclude: /node_modules\/(?!@ckeditor)(?!@neos-project).*$/,
                 use: [{
                     loader: 'babel-loader'
                 }]
             },
             {
                 test: /\.json$/,
-                exclude: /node_modules\/((?!@neos-project).)*$/,
+                exclude: /node_modules\/(?!@neos-project).*$/,
                 use: [{
                     loader: 'json-loader'
                 }]
             },
             {
+                test: /node_modules\/@ckeditor\/.*\.svg$/,
+                use: ['raw-loader']
+            },
+            {
                 test: /\.(woff|woff2|eot|ttf|svg)$/,
+                exclude: /node_modules\/@ckeditor.*$/,
                 use: [{
                     loader: 'url-loader',
                     options: {
@@ -75,7 +81,10 @@ const webpackConfig = {
             },
             {
                 test: /\.css$/,
-                exclude: /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
+                exclude: [
+                    /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
+                    /node_modules\/@ckeditor.*\.css$/
+                ],
                 use: extractCss.extract({
                     use: [{
                         loader: 'css-loader',
@@ -103,6 +112,26 @@ const webpackConfig = {
                     }],
                     fallback: 'style-loader'
                 })
+            },
+            {
+                test: /node_modules\/@ckeditor.*\.css$/,
+                use: [
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            singleton: true
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: styles.getPostCssConfig({
+                            themeImporter: {
+                                themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
+                            },
+                            minify: true
+                        })
+                    }
+                ]
             }
         ]
     },

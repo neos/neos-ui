@@ -313,8 +313,14 @@ manifest('main', {}, globalRegistry => {
             siblingDomAddress.contextPath,
             siblingDomAddress.fusionPath
         );
-        const contentElement = (new DOMParser())
-            .parseFromString(renderedContent, 'text/html')
+
+        // We need to create the new DOM nodes from within the iframe document,
+        // because many frameworkds (e.g. CKE, React) use the following checks
+        // `obj instanceof obj.ownerDocument.defaultView.Node`
+        // which would fail if this node was created in Host
+        const tempNodeInGuest = getGuestFrameDocument().createElement('div');
+        tempNodeInGuest.innerHTML = renderedContent;
+        const contentElement = tempNodeInGuest
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
 
         if (!contentElement) {
@@ -390,8 +396,14 @@ manifest('main', {}, globalRegistry => {
             nodeDomAddress.contextPath,
             nodeDomAddress.fusionPath
         );
-        const contentElement = (new DOMParser())
-            .parseFromString(renderedContent, 'text/html')
+
+        // We need to create the new DOM nodes from within the iframe document,
+        // because many frameworkds (e.g. CKE, React) use the following checks
+        // `obj instanceof obj.ownerDocument.defaultView.Node`
+        // which would fail if this node was created in Host
+        const tempNodeInGuest = getGuestFrameDocument().createElement('div');
+        tempNodeInGuest.innerHTML = renderedContent;
+        const contentElement = tempNodeInGuest
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
 
         if (!contentElement) {

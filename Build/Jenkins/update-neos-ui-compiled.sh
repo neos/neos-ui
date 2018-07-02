@@ -17,6 +17,7 @@ fi
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`
 
+make install
 make build-production
 
 rm -Rf tmp_compiled_pkg

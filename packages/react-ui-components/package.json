@@ -39,7 +39,6 @@
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
     "moment": "^2.14.1",
-    "object-assign": "^4.1.0",
     "prop-types": "^15.5.10",
     "react": "^16.0.0",
     "react-click-outside": "^2.3.1",

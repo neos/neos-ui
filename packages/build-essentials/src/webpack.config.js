@@ -31,6 +31,7 @@ const extractCss = new ExtractTextPlugin({
 const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
+    mode: env.isProduction ? 'production' : 'development',
     module: {
         rules: [
             {
@@ -38,13 +39,6 @@ const webpackConfig = {
                 exclude: /node_modules\/(?!@ckeditor)(?!@neos-project).*$/,
                 use: [{
                     loader: 'babel-loader'
-                }]
-            },
-            {
-                test: /\.json$/,
-                exclude: /node_modules\/(?!@neos-project).*$/,
-                use: [{
-                    loader: 'json-loader'
                 }]
             },
             {
@@ -145,8 +139,13 @@ const webpackConfig = {
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new ExtractTextPlugin('./Styles/[name].css', {allChunks: true}),
-        new webpack.optimize.CommonsChunkPlugin({names: ['Vendor']})
     ],
+
+    optimization: {
+        splitChunks: {
+            name: 'Vendor'
+        }
+    },
 
     resolve: {
         modules: [
@@ -161,6 +160,9 @@ const webpackConfig = {
     stats: {
         assets: false,
         children: false
+    },
+    performance: {
+        hints: env.isProduction ? 'warning' : false
     }
 };
 

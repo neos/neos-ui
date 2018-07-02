@@ -180,14 +180,16 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
 if (env.isProduction) {
     webpackConfig.optimization.push(
         new UglifyJsPlugin({
-            sourceMap: true,
-            minimize: true,
-            compress: {
-                keep_fnames: true,
-                warnings: false
-            },
-            mangle: {
-                keep_fnames: true
+            uglifyOptions: {
+                sourceMap: true,
+                minimize: true,
+                compress: {
+                    keep_fnames: true,
+                    warnings: false
+                },
+                mangle: {
+                    keep_fnames: true
+                }
             }
         })
     );

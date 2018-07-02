@@ -138,7 +138,7 @@ const webpackConfig = {
             }
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true}),
+        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
     ],
 
     optimization: {

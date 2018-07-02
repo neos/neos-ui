@@ -17,7 +17,8 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.2.1"
+    "@neos-project/babel-preset-neos-ui": "1.2.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^9.0",
@@ -38,8 +39,8 @@
     "stylelint": "^9.3.0",
     "url-loader": "^1.0.1",
     "watch": "^1.0.2",
-    "webpack": "^3.8.1",
-    "webpack-livereload-plugin": "^1.0.0"
+    "webpack": "^4.14.0",
+    "webpack-livereload-plugin": "^2.1.1"
   },
   "license": "GNU GPLv3"
 }

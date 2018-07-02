@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import withScrolling, {createVerticalStrength, createHorizontalStrength} from 'react-dnd-scrollzone';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
@@ -6,49 +6,46 @@ import mergeClassNames from 'classnames';
 const ScrollingComponent = withScrolling('div');
 const verticalStrength = createVerticalStrength(50);
 
-export class Tree extends PureComponent {
-    static propTypes = {
-        focused: PropTypes.string,
-        active: PropTypes.string,
-        className: PropTypes.string,
+const Tree = props => {
+    const {NodeComponent, className, theme, ...rest} = props;
+    const classNames = mergeClassNames({
+        [className]: className && className.length,
+        [theme.treeWrapper]: true
+    });
 
-        onNodeToggle: PropTypes.func,
-        onNodeClick: PropTypes.func,
-        onNodeFocus: PropTypes.func,
+    return (
+        <ScrollingComponent
+            strengthMultiplier={20}
+            verticalStrength={verticalStrength}
+            horizontalStrength={createHorizontalStrength(50)}
+            className={classNames}
+            tabIndex="0"
+            role="tree"
+            >
+            <NodeComponent {...rest}>
+                {props.children}
+            </NodeComponent>
+        </ScrollingComponent>
+    );
+};
+Tree.propTypes = {
+    focused: PropTypes.string,
+    active: PropTypes.string,
+    className: PropTypes.string,
 
-        children: PropTypes.any.isRequired,
-        theme: PropTypes.shape({/* eslint-disable quote-props */
-            'treeWrapper': PropTypes.string
-        }).isRequired, /* eslint-enable quote-props */
+    onNodeToggle: PropTypes.func,
+    onNodeClick: PropTypes.func,
+    onNodeFocus: PropTypes.func,
 
-        //
-        // Static component dependencies which are injected from the outside (index.js)
-        //
-        NodeComponent: PropTypes.any.isRequired
-    };
+    children: PropTypes.any.isRequired,
+    theme: PropTypes.shape({/* eslint-disable quote-props */
+        'treeWrapper': PropTypes.string
+    }).isRequired, /* eslint-enable quote-props */
 
-    render() {
-        const {NodeComponent, className, theme, ...rest} = this.props;
-        const classNames = mergeClassNames({
-            [className]: className && className.length,
-            [theme.treeWrapper]: true
-        });
-
-        return (
-            <ScrollingComponent
-                strengthMultiplier={20}
-                verticalStrength={verticalStrength}
-                horizontalStrength={createHorizontalStrength(50)}
-                className={classNames}
-                tabIndex="0"
-                role="tree"
-                >
-                <NodeComponent {...rest}>
-                    {this.props.children}
-                </NodeComponent>
-            </ScrollingComponent>
-        );
-    }
-}
+    //
+    // Static component dependencies which are injected from the outside (index.js)
+    //
+    NodeComponent: PropTypes.any.isRequired
+};
 
 export default Tree;

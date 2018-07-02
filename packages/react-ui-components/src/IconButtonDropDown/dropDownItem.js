@@ -1,41 +1,39 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class DropDownItem extends PureComponent {
-    static propTypes = {
-        /**
-         * The handler to call when clicking on the item of the DropDown.
-         */
-        onClick: PropTypes.func.isRequired,
-
-        /**
-         * The ID to reference the clicked item in the `onClick` handker.
-         */
-        id: PropTypes.string.isRequired,
-
-        /**
-         * The children to render within the anchor.
-         */
-        children: PropTypes.element.isRequired
+const DropDownItem = props => {
+    const handleClick = () => {
+        const {onClick, id} = props;
+        onClick(id);
     };
 
-    handleClick = () => {
-        const {onClick, id} = this.props;
+    const {children, ...rest} = props;
 
-        onClick(id);
-    }
+    return (
+        <a
+            {...rest}
+            role="button"
+            onClick={handleClick}
+            >
+            {children}
+        </a>
+    );
+};
+DropDownItem.propTypes = {
+    /**
+     * The handler to call when clicking on the item of the DropDown.
+     */
+    onClick: PropTypes.func.isRequired,
 
-    render() {
-        const {children, ...rest} = this.props;
+    /**
+     * The ID to reference the clicked item in the `onClick` handker.
+     */
+    id: PropTypes.string.isRequired,
 
-        return (
-            <a
-                {...rest}
-                role="button"
-                onClick={this.handleClick}
-                >
-                {children}
-            </a>
-        );
-    }
-}
+    /**
+     * The children to render within the anchor.
+     */
+    children: PropTypes.element.isRequired
+};
+
+export default DropDownItem;

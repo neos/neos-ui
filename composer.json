@@ -7,7 +7,7 @@
   ],
   "require": {
     "neos/neos": "^3.3 || ^4.0 || dev-master",
-    "neos/neos-ui-compiled": "1.1.2"
+    "neos/neos-ui-compiled": "1.2.0"
   },
   "autoload": {
     "psr-4": {

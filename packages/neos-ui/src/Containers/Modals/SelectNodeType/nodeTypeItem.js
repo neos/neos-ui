@@ -2,11 +2,11 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+
 import Icon from '@neos-project/react-ui-components/src/Icon/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import Button from '@neos-project/react-ui-components/src/Button/';
-
 import {actions} from '@neos-project/neos-ui-redux-store';
-
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';
@@ -20,6 +20,7 @@ import style from './style.css';
 class NodeTypeItem extends PureComponent {
     static propTypes = {
         onSelect: PropTypes.func.isRequired,
+        onHelpMessage: PropTypes.func.isRequired,
 
         nodeType: PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -28,25 +29,28 @@ class NodeTypeItem extends PureComponent {
     };
 
     render() {
-        const {ui} = this.props.nodeType;
+        const {ui, name} = this.props.nodeType;
         const icon = $get('icon', ui);
         const label = $get('label', ui);
         const helpMessage = $get('help.message', ui);
+        const {onHelpMessage} = this.props;
 
         return (
-            <Button
-                hoverStyle="brand"
-                style="clean"
-                className={style.nodeType}
-                onClick={this.handleNodeTypeClick}
-                title={helpMessage ? helpMessage : ''}
+            <div className={style.nodeType}>
+                <Button
+                    hoverStyle="brand"
+                    style="clean"
+                    className={style.nodeType__item}
+                    onClick={this.handleNodeTypeClick}
+                    title={helpMessage ? helpMessage : ''}
                 >
-                <span>
-                    {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
-                    <I18n id={label} fallback={label}/>
-                </span>
-                {helpMessage ? <Icon icon="question-circle" /> : null}
-            </Button>
+                    <span>
+                        {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
+                        <I18n id={label} fallback={label}/>
+                    </span>
+                </Button>
+                {helpMessage ? <IconButton className={style.nodeType__helpIcon} onClick={() => onHelpMessage(name)} icon="question-circle" /> : null}
+            </div>
         );
     }
 

@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
 const {styles} = require('@ckeditor/ckeditor5-dev-utils');
@@ -144,7 +145,8 @@ const webpackConfig = {
     optimization: {
         splitChunks: {
             name: 'Vendor'
-        }
+        },
+        minimizer: []
     },
 
     resolve: {
@@ -176,17 +178,19 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
 
 /* eslint camelcase: ["error", {properties: "never"}] */
 if (env.isProduction) {
-    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        sourceMap: true,
-        minimize: true,
-        compress: {
-            keep_fnames: true,
-            warnings: false
-        },
-        mangle: {
-            keep_fnames: true
-        }
-    }));
+    webpackConfig.optimization.push(
+        new UglifyJsPlugin({
+            sourceMap: true,
+            minimize: true,
+            compress: {
+                keep_fnames: true,
+                warnings: false
+            },
+            mangle: {
+                keep_fnames: true
+            }
+        })
+    );
 }
 
 webpackConfig.__internalDependencies = {

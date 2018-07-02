@@ -178,7 +178,7 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
 
 /* eslint camelcase: ["error", {properties: "never"}] */
 if (env.isProduction) {
-    webpackConfig.optimization.push(
+    webpackConfig.optimization.minimizer.push(
         new UglifyJsPlugin({
             uglifyOptions: {
                 sourceMap: true,

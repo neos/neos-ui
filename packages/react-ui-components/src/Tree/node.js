@@ -19,22 +19,19 @@ const collect = (connect, monitor) => ({
     isOver: monitor.isOver()
 });
 
-export class Node extends PureComponent {
-    static propTypes = {
-        children: PropTypes.node
-    };
+export const Node = props => {
+    const {children, ...restProps} = props;
+    const rest = omit(restProps, ['theme']);
 
-    render() {
-        const {children, ...restProps} = this.props;
-        const rest = omit(restProps, ['theme']);
-
-        return (
-            <div {...rest} role="treeitem">
-                {children}
-            </div>
-        );
-    }
-}
+    return (
+        <div {...rest} role="treeitem">
+            {children}
+        </div>
+    );
+};
+Node.propTypes = {
+    children: PropTypes.node
+};
 
 @DropTarget(({nodeDndType}) => nodeDndType, spec, collect)
 class NodeDropTarget extends PureComponent {

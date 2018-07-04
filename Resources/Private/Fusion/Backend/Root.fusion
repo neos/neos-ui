@@ -254,7 +254,7 @@ backend = Neos.Fusion:Template {
 
                         @if {
                             isNotHiddenInMenu = ${!submodule.hideInMenu}
-                            isAvailable = ${Neos.Ui.Modules.isAvailable(submoduleName)}
+                            isAvailable = ${Neos.Ui.Modules.isAvailable(moduleName + '/' + submoduleName)}
                         }
                     }
                 }

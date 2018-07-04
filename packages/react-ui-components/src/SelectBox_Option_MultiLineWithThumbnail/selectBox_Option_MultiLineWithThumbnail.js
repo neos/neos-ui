@@ -1,51 +1,50 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import React, {PureComponent} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ListPreviewElement from '../ListPreviewElement/index';
 import mergeClassNames from 'classnames';
 
-export default class SelectBox_Option_MultiLineWithThumbnail extends PureComponent {
-    static propTypes = {
-        label: PropTypes.string.isRequired,
-        secondaryLabel: PropTypes.string,
-        tertiaryLabel: PropTypes.string,
-        imageUri: PropTypes.string,
-        icon: PropTypes.string,
+const SelectBox_Option_MultiLineWithThumbnail = props => {
+    const {
+        label,
+        secondaryLabel,
+        tertiaryLabel,
+        imageUri,
+        icon,
+        className,
+        theme,
+        ...rest
+    } = props;
 
-        className: PropTypes.string,
+    const finalClassNames = mergeClassNames({
+        [theme.multiLineWithThumbnail__item]: true,
+        [className]: className
+    });
 
-        theme: PropTypes.shape({
-            multiLineWithThumbnail__item: PropTypes.string.isRequired,
-            multiLineWithThumbnail__secondaryLabel: PropTypes.string.isRequired,
-            multiLineWithThumbnail__tertiaryLabel: PropTypes.string.isRequired,
-            multiLineWithThumbnail__image: PropTypes.string.isRequired
-        }).isRequired
-    };
+    return (
+        <ListPreviewElement {...rest} icon={icon} className={finalClassNames}>
+            {Boolean(imageUri) && <img src={imageUri} alt={label} className={theme.multiLineWithThumbnail__image}/>}
+            <span>{label}</span>
+            {Boolean(secondaryLabel) && <span className={theme.multiLineWithThumbnail__secondaryLabel}>{secondaryLabel}</span>}
+            {Boolean(tertiaryLabel) && <span className={theme.multiLineWithThumbnail__tertiaryLabel}>{tertiaryLabel}</span>}
+        </ListPreviewElement>
+    );
+};
+SelectBox_Option_MultiLineWithThumbnail.propTypes = {
+    label: PropTypes.string.isRequired,
+    secondaryLabel: PropTypes.string,
+    tertiaryLabel: PropTypes.string,
+    imageUri: PropTypes.string,
+    icon: PropTypes.string,
 
-    render() {
-        const {
-            label,
-            secondaryLabel,
-            tertiaryLabel,
-            imageUri,
-            icon,
-            className,
-            theme,
-            ...rest
-        } = this.props;
+    className: PropTypes.string,
 
-        const finalClassNames = mergeClassNames({
-            [theme.multiLineWithThumbnail__item]: true,
-            [className]: className
-        });
+    theme: PropTypes.shape({
+        multiLineWithThumbnail__item: PropTypes.string.isRequired,
+        multiLineWithThumbnail__secondaryLabel: PropTypes.string.isRequired,
+        multiLineWithThumbnail__tertiaryLabel: PropTypes.string.isRequired,
+        multiLineWithThumbnail__image: PropTypes.string.isRequired
+    }).isRequired
+};
 
-        return (
-            <ListPreviewElement {...rest} icon={icon} className={finalClassNames}>
-                {Boolean(imageUri) && <img src={imageUri} alt={label} className={theme.multiLineWithThumbnail__image}/>}
-                <span>{label}</span>
-                {Boolean(secondaryLabel) && <span className={theme.multiLineWithThumbnail__secondaryLabel}>{secondaryLabel}</span>}
-                {Boolean(tertiaryLabel) && <span className={theme.multiLineWithThumbnail__tertiaryLabel}>{tertiaryLabel}</span>}
-            </ListPreviewElement>
-        );
-    }
-}
+export default SelectBox_Option_MultiLineWithThumbnail;

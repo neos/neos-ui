@@ -6,14 +6,14 @@ import backend from '@neos-project/neos-ui-backend-connector';
 export function * watchNodeInformationChanges() {
     const {endpoints} = backend.get();
     while (true) {
-        const action = yield take([actionTypes.CR.Nodes.MERGE, actionTypes.CR.Nodes.ADD]);
-        const {nodeMap} = action.payload;
+        const action = yield take([actionTypes.CR.Nodes.MERGE, actionTypes.CR.Nodes.ADD, actionTypes.CR.Nodes.SET_STATE]);
+        const nodeMap = (action.type === actionTypes.CR.Nodes.SET_STATE) ? action.payload.nodes : action.payload.nodeMap;
         const state = yield select();
 
         const nodesWithoutPolicies = Object.keys(nodeMap).filter(contextPath => {
             const node = selectors.CR.Nodes.nodeByContextPath(state)(contextPath);
 
-            if (!$get('isFullyLoaded', node) || $get('properties._removed', node)) {
+            if ($get('properties._removed', node)) {
                 return false;
             }
 

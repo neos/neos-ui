@@ -1,10 +1,26 @@
-import {select, take, put} from 'redux-saga/effects';
+import {select, take, put, fork} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-export function * watchNodeInformationChanges() {
+let nodesCurrentlyProcessed = [];
+
+function * fetchPolicies(nodesWithoutPolicies) {
+    const nodesNotProcessed = nodesWithoutPolicies.filter(nodePath => !nodesCurrentlyProcessed.includes(nodePath));
+    if (nodesNotProcessed.length === 0) {
+        return;
+    }
+
+    nodesCurrentlyProcessed.push(...nodesWithoutPolicies);
+
     const {endpoints} = backend.get();
+    const policyData = yield endpoints.getPolicyInfo(nodesWithoutPolicies);
+    yield put(actions.CR.Nodes.merge(policyData));
+
+    nodesCurrentlyProcessed = nodesCurrentlyProcessed.filter(nodePath => !nodesWithoutPolicies.includes(nodePath));
+}
+
+export function * watchNodeInformationChanges() {
     while (true) {
         const action = yield take([actionTypes.CR.Nodes.MERGE, actionTypes.CR.Nodes.ADD, actionTypes.CR.Nodes.SET_STATE]);
         const nodeMap = (action.type === actionTypes.CR.Nodes.SET_STATE) ? action.payload.nodes : action.payload.nodeMap;
@@ -25,8 +41,7 @@ export function * watchNodeInformationChanges() {
             continue;
         }
 
-        const policyData = yield endpoints.getPolicyInfo(nodesWithoutPolicies);
-        yield put(actions.CR.Nodes.merge(policyData));
+        yield fork(fetchPolicies, nodesWithoutPolicies);
     }
 }
 

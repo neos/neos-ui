@@ -96,20 +96,17 @@ export default class Node extends PureComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
         // If focused node changed
-        if (this.props.isFocused !== nextProps.isFocused) {
+        if (prevProps.isFocused !== this.props.isFocused) {
             // And it is the current node
-            if (nextProps.isFocused) {
+            if (this.props.isFocused) {
                 // Request scrolling itself into view
                 this.setState({
                     shouldScrollIntoView: true
                 });
             }
         }
-    }
-
-    componentDidUpdate() {
         this.scrollFocusedNodeIntoView();
     }
 

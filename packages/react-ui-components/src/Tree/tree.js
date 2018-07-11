@@ -3,7 +3,7 @@ import withScrolling, {createVerticalStrength, createHorizontalStrength} from 'r
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
-const ScrollingComponent = withScrolling('div');
+//const ScrollingComponent = withScrolling('div');
 const verticalStrength = createVerticalStrength(50);
 
 const Tree = props => {
@@ -14,18 +14,18 @@ const Tree = props => {
     });
 
     return (
-        <ScrollingComponent
+        /*<ScrollingComponent
             strengthMultiplier={20}
             verticalStrength={verticalStrength}
             horizontalStrength={createHorizontalStrength(50)}
             className={classNames}
             tabIndex="0"
             role="tree"
-            >
+            >*/
             <NodeComponent {...rest}>
                 {props.children}
             </NodeComponent>
-        </ScrollingComponent>
+        /*</ScrollingComponent>*/
     );
 };
 Tree.propTypes = {

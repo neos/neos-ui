@@ -23,6 +23,7 @@ export default class AssetUpload extends PureComponent {
         propertyName: PropTypes.string,
         isLoading: PropTypes.bool.isRequired,
         onAfterUpload: PropTypes.func.isRequired,
+        onFileDialogCancel: PropTypes.func,
         siteNodePath: PropTypes.string.isRequired,
         focusedNodePath: PropTypes.string.isRequired,
         highlight: PropTypes.bool,
@@ -54,6 +55,13 @@ export default class AssetUpload extends PureComponent {
         const {multipleData} = this.props;
         const values = multipleData ? multipleData.slice() : [];
         this.uploadMultipleFiles(0, values, files);
+    }
+
+    handleFileDialogCancel = () => {
+        const {onFileDialogCancel} = this.props;
+        if (onFileDialogCancel) {
+            onFileDialogCancel();
+        }
     }
 
     uploadMultipleFiles = (index, values, files) => {
@@ -103,6 +111,7 @@ export default class AssetUpload extends PureComponent {
                         ref={this.setDropzoneReference}
                         accept={accept}
                         onDropAccepted={multiple ? this.handleMultiUpload : this.handleUpload}
+                        onFileDialogCancel={this.handleFileDialogCancel}
                         className={style.dropzone}
                         activeClassName={style['dropzone--isActive']}
                         rejectClassName={style['dropzone--isRejecting']}

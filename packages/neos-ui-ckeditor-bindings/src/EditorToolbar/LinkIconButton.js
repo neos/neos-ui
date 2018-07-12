@@ -29,7 +29,8 @@ export default class LinkIconButton extends PureComponent {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.bool,
-            PropTypes.object
+            PropTypes.object,
+            PropTypes.string
         ])),
         formattingRule: PropTypes.string,
         i18nRegistry: PropTypes.object.isRequired

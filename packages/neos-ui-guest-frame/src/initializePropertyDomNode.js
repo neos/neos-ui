@@ -68,7 +68,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                 )
             });
 
-            propertyDomNode.classList.add(style.inlineEditorIsInitialized);
+            propertyDomNode.dataset.neosInlineEditorIsInitialized = true;
         } catch (err) {
             //
             // The entire function is executed in a saga-context. Since we're fiddeling with the guest

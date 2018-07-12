@@ -11,11 +11,10 @@ import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
-import Link from '@ckeditor/ckeditor5-link/src/link';
+import Link from '@ckeditor/ckeditor5-link/src/linkediting';
 import List from '@ckeditor/ckeditor5-list/src/list';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Table from '@ckeditor/ckeditor5-table/src/table';
-import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 
 const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, {editorOptions}) => {
     if (!isEnabled || isEnabled(editorOptions)) {
@@ -69,7 +68,6 @@ export default ckEditorRegistry => {
     config.set('strikethrough', addPlugin(Strikethrough, $get('formatting.strikethrough')));
     config.set('link', addPlugin(Link, $get('formatting.a')));
     config.set('table', addPlugin(Table, i => $get('formatting.table', i)));
-    config.set('tableBaloonToolbar', addPlugin(TableToolbar, i => $get('formatting.table', i)));
     config.set('list', addPlugin(List, $or(
         $get('formatting.ul'),
         $get('formatting.ol')
@@ -88,15 +86,6 @@ export default ckEditorRegistry => {
         $get('formatting.h5'),
         $get('formatting.h6')
     )));
-
-    //
-    // @see https://docs.ckeditor.com/ckeditor5/latest/features/table.html
-    //
-    config.set('configureTable', (config, {editorOptions}) => Object.assign(config, $get('table', editorOptions) ? {
-        table: {
-            toolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
-        }
-    } : {}));
 
     //
     // @see https://docs.ckeditor.com/ckeditor5/latest/features/headings.html#configuring-heading-levels

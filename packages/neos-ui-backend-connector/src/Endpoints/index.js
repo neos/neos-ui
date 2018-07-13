@@ -334,7 +334,8 @@ export default routes => {
                 'Content-Type': 'application/json'
             }
         };
-    }).then(response => fetchWithErrorHandling.parseJson(response));
+    }).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(dataSourceUri || `${routes.core.service.dataSource}/${dataSourceIdentifier}`, params),

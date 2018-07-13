@@ -335,7 +335,7 @@ export default routes => {
             }
         };
     }).then(response => fetchWithErrorHandling.parseJson(response))
-    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => console.warn('Something went wrong with requesting policy information:', reason));
 
     const dataSource = (dataSourceIdentifier, dataSourceUri, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(dataSourceUri || `${routes.core.service.dataSource}/${dataSourceIdentifier}`, params),

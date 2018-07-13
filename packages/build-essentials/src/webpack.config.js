@@ -4,7 +4,6 @@ const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
-const {styles} = require('@ckeditor/ckeditor5-dev-utils');
 //
 // Prevent from failing, when NEOS_BUILD_ROOT env variable isn't set
 // (e.g. when extending this config from storybook)
@@ -82,8 +81,7 @@ const webpackConfig = {
             {
                 test: /\.css$/,
                 exclude: [
-                    /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
-                    /node_modules\/@ckeditor.*\.css$/
+                    /node_modules\/@fortawesome\/fontawesome\/styles\.css$/
                 ],
                 use: extractCss.extract({
                     use: [{
@@ -112,26 +110,6 @@ const webpackConfig = {
                     }],
                     fallback: 'style-loader'
                 })
-            },
-            {
-                test: /node_modules\/@ckeditor.*\.css$/,
-                use: [
-                    {
-                        loader: 'style-loader',
-                        options: {
-                            singleton: true
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: styles.getPostCssConfig({
-                            themeImporter: {
-                                themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
-                            },
-                            minify: true
-                        })
-                    }
-                ]
             }
         ]
     },

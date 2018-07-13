@@ -149,7 +149,9 @@ class FetchWithErrorHandling {
         } else {
             errorText = String(reason);
         }
-        this._generalErrorHandlerFn(errorText);
+        if (errorText) {
+            this._generalErrorHandlerFn(errorText);
+        }
         // Re-throw, so the promise chain would be interrupted
         throw new Error(errorText);
     }

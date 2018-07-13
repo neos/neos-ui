@@ -45,8 +45,8 @@ export default class InlineUI extends PureComponent {
         }
         const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
         const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
-        const canBeDeleted = $get('policy.canRemove', this.props.focusedNode);
-        const canBeEdited = $get('policy.canEdit', this.props.focusedNode);
+        const canBeDeleted = $get('policy.canRemove', this.props.focusedNode) || false;
+        const canBeEdited = $get('policy.canEdit', this.props.focusedNode) || false;
         const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode);
 
         return (

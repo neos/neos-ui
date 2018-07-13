@@ -4,8 +4,6 @@ import {actions} from '@neos-project/neos-ui-redux-store';
 
 import {getGuestFrameWindow, closestContextPathInGuestFrame} from './dom';
 
-import style from './style.css';
-
 export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => propertyDomNode => {
     const guestFrameWindow = getGuestFrameWindow();
     if (!guestFrameWindow['@Neos.Neos.Ui:InitializedInlineEditors']) {

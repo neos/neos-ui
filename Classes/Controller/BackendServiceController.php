@@ -365,7 +365,6 @@ class BackendServiceController extends ActionController
      */
     public function getPolicyInformationAction(array $nodes)
     {
-        sleep(5);
         $result = [];
         /** @var NodeInterface $node */
         foreach ($nodes as $node) {

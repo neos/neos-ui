@@ -99,6 +99,8 @@ Neos:
       #################################
       frontendDevelopmentMode: false
       nodeTypeRoles:
+        # The ignored types will never have metadata in the UI, they are invisible to the content module.
+        ignored: 'unstructured'
         document: 'Neos.Neos:Document'
         content: 'Neos.Neos:Content'
         contentCollection: 'Neos.Neos:ContentCollection'

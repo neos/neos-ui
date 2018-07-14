@@ -283,8 +283,7 @@ class AugmentationAspect
         $allFilteredNodeTypes = array_merge($documentNodeTypes, $ignoredNodeTypes);
         $negatedNodeTypes = array_map(function ($nodeTypeName) {
             return '!' . trim($nodeTypeName);
-            }, $allFilteredNodeTypes
-        );
+        }, $allFilteredNodeTypes);
         return implode(',', $negatedNodeTypes);
     }
 }

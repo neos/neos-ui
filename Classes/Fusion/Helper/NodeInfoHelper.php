@@ -394,8 +394,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     {
         $preparedExcludedNodeTypes = array_map(function ($nodeTypeName) {
             return '!' . $nodeTypeName;
-            }, $excludedNodeTypes
-        );
+        }, $excludedNodeTypes);
         $mergedIncludesAndExcludes = array_merge($includedNodeTypes, $preparedExcludedNodeTypes);
         return implode(',', $mergedIncludesAndExcludes);
     }

@@ -16,6 +16,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Neos\Domain\Context\Content\NodeAddress;
+use Neos\Neos\Domain\Context\Content\NodeAddressFactory;
 use Neos\Neos\Domain\Model\User;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
@@ -58,6 +59,12 @@ class WorkspaceService
     protected $domainUserService;
 
     /**
+     * @Flow\Inject
+     * @var NodeAddressFactory
+     */
+    protected $nodeAddressFactory;
+
+    /**
      * Get all publishable node context paths for a workspace
      *
      * @param Workspace $workspaceName
@@ -70,8 +77,8 @@ class WorkspaceService
         $publishableNodes = array_map(function ($node) {
             if ($documentNode = $this->nodeService->getClosestDocument($node)) {
                 return [
-                    'contextPath' => NodeAddress::fromNode($node)->serializeForUri(),
-                    'documentContextPath' => NodeAddress::fromNode($documentNode)->serializeForUri()
+                    'contextPath' => $this->nodeAddressFactory->createFromNode($node)->serializeForUri(),
+                    'documentContextPath' => $this->nodeAddressFactory->createFromNode($documentNode)->serializeForUri()
                 ];
             }
         }, $publishableNodes);

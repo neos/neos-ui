@@ -21,6 +21,7 @@ use Neos\ContentRepository\Domain\Utility\NodePaths;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Neos\Domain\Context\Content\NodeAddress;
+use Neos\Neos\Domain\Context\Content\NodeAddressFactory;
 use Neos\Neos\Domain\Model\Site;
 use Neos\Neos\Domain\Model\Domain;
 use Neos\Neos\Domain\Projection\Domain\DomainFinder;
@@ -63,6 +64,12 @@ class NodeService
     protected $contentGraph;
 
     /**
+     * @Flow\Inject
+     * @var NodeAddressFactory
+     */
+    protected $nodeAddressFactory;
+
+    /**
      * Helper method to retrieve the closest document for a node
      *
      * @param NodeInterface $node
@@ -101,7 +108,7 @@ class NodeService
      */
     public function getNodeFromContextPath($contextPath)
     {
-        $nodeAddress = NodeAddress::fromUriString($contextPath);
+        $nodeAddress = $this->nodeAddressFactory->createFromUriString($contextPath);
         return $this->contentGraph
             ->getSubgraphByIdentifier($nodeAddress->getContentStreamIdentifier(), $nodeAddress->getDimensionSpacePoint())
             ->findNodeByNodeAggregateIdentifier($nodeAddress->getNodeAggregateIdentifier());

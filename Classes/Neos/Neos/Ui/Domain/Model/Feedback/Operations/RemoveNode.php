@@ -11,8 +11,10 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Neos\Domain\Context\Content\NodeAddress;
+use Neos\Neos\Domain\Context\Content\NodeAddressFactory;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
@@ -23,6 +25,12 @@ class RemoveNode extends AbstractFeedback
      * @var NodeInterface
      */
     protected $node;
+
+    /**
+     * @Flow\Inject
+     * @var NodeAddressFactory
+     */
+    protected $nodeAddressFactory;
 
     /**
      * Set the node
@@ -89,7 +97,7 @@ class RemoveNode extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
-            'contextPath' => NodeAddress::fromNode($this->getNode())->serializeForUri(),
+            'contextPath' => $this->nodeAddressFactory->createFromNode($this->getNode())->serializeForUri(),
             'parentContextPath' => $this->getNode()->getParent()->getContextPath()
         ];
     }

@@ -15,7 +15,7 @@ use Neos\ContentRepository\Domain\Projection\Content\ContentGraphInterface;
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Context\Content\NodeAddress;
-use Neos\Neos\Domain\Context\Content\NodeAddressService;
+use Neos\Neos\Domain\Context\Content\NodeAddressFactory;
 use Neos\Neos\View\FusionView;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Fusion\Core\Cache\ContentCache;
@@ -46,9 +46,9 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var NodeAddressService
+     * @var NodeAddressFactory
      */
-    protected $nodeAddressService;
+    protected $nodeAddressFactory;
 
     /**
      * @Flow\Inject
@@ -144,7 +144,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
-            'contextPath' => NodeAddress::fromNode($this->getNode())->serializeForUri(),
+            'contextPath' => $this->nodeAddressFactory->createFromNode($this->getNode())->serializeForUri(),
             'nodeDomAddress' => $this->getNodeDomAddress(),
             'renderedContent' => $this->renderContent($controllerContext)
         ];
@@ -163,7 +163,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
         $nodeDomAddress = $this->getNodeDomAddress();
 
         $fusionView = new FusionView();
-        $site = $this->nodeAddressService->findSiteNodeForNodeAddress(NodeAddress::fromNode($this->getNode()));
+        $site = $this->nodeAddressFactory->findSiteNodeForNodeAddress($this->nodeAddressFactory->createFromNode($this->getNode()));
         $fusionView->setControllerContext($controllerContext);
 
         $subgraph = $this->contentGraph->getSubgraphByIdentifier($site->getContentStreamIdentifier(), $site->getDimensionSpacePoint());

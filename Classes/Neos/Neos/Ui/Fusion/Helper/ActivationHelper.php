@@ -17,7 +17,7 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Neos\Domain\Context\Content\NodeAddress;
-use Neos\Neos\Domain\Context\Content\NodeAddressService;
+use Neos\Neos\Domain\Context\Content\NodeAddressFactory;
 
 class ActivationHelper implements ProtectedContextAwareInterface
 {

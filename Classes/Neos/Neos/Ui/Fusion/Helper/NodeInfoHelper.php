@@ -26,7 +26,7 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Context\Content\NodeAddress;
-use Neos\Neos\Domain\Context\Content\NodeAddressService;
+use Neos\Neos\Domain\Context\Content\NodeAddressFactory;
 use Neos\Neos\Domain\Projection\Site\SiteFinder;
 use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
@@ -115,9 +115,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var NodeAddressService
+     * @var NodeAddressFactory
      */
-    protected $nodeAddressService;
+    protected $nodeAddressFactory;
 
 
     private static function getDepth(NodeInterface $node, ContentSubgraphInterface $subgraph)
@@ -154,7 +154,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
         $nodeInfo = [
             // contextPath == NodeAddress
-            'contextPath' => NodeAddress::fromNode($node)->serializeForUri(),
+            'contextPath' => $this->nodeAddressFactory->createFromNode($node)->serializeForUri(),
             'name' => (string)$node->getNodeName(),
             'identifier' => (string)$node->getNodeIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
@@ -176,7 +176,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             if ($workspace) {
                 // TODO figure out current site, instead of just using default site!!
                 $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName($this->getRootNodeIdentifier(), new NodeName($this->siteFinder->findDefault()->nodeName));
-                $nodeInfo['uri'] = $this->uri(NodeAddress::fromNode($node), $controllerContext);
+                $nodeInfo['uri'] = $this->uri($this->nodeAddressFactory->createFromNode($node), $controllerContext);
             }
 
             // TODO
@@ -202,7 +202,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         foreach ($childNodes as $childNode) {
             /* @var NodeInterface $childNode */
             $nodeInfo['children'][] = [
-                'contextPath' => NodeAddress::fromNode($childNode)->serializeForUri(),
+                'contextPath' => $this->nodeAddressFactory->createFromNode($childNode)->serializeForUri(),
                 'nodeType' => $childNode->getNodeType()->getName() // TODO: DUPLICATED; should NOT be needed!!!
             ];
         }
@@ -214,7 +214,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function renderNodeToList(&$nodes, NodeInterface $node, ContentSubgraphInterface $subgraph, ControllerContext $controllerContext)
     {
         if ($nodeInfo = $this->renderNode($node, $subgraph, $controllerContext)) {
-            $nodeAddress = NodeAddress::fromNode($node)->serializeForUri();
+            $nodeAddress = $this->nodeAddressFactory->createFromNode($node)->serializeForUri();
             $nodes[$nodeAddress] = $nodeInfo;
         }
     }
@@ -305,7 +305,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function nodeAddress(NodeInterface $node)
     {
-        return NodeAddress::fromNode($node);
+        return $this->nodeAddressFactory->createFromNode($node);
     }
 
     public function uri(NodeAddress $nodeAddress = null, ControllerContext $controllerContext)
@@ -337,7 +337,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function serializedNodeAddress(NodeInterface $node): string
     {
-        return NodeAddress::fromNode($node)->serializeForUri();
+        return $this->nodeAddressFactory->createFromNode($node)->serializeForUri();
     }
 
     /**
@@ -353,7 +353,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function inBackend(NodeInterface $node)
     {
-        return !$this->nodeAddressService->isInLiveWorkspace(NodeAddress::fromNode($node));
+        return !$this->nodeAddressFactory->isInLiveWorkspace($this->nodeAddressFactory->createFromNode($node));
     }
 
 }

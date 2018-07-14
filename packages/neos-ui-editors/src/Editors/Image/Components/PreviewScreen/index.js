@@ -13,6 +13,7 @@ export default class PreviewScreen extends PureComponent {
         propertyName: PropTypes.string,
         image: PropTypes.object,
         afterUpload: PropTypes.func.isRequired,
+        onFileDialogCancel: PropTypes.func.isRequired,
         onClick: PropTypes.func.isRequired,
         isLoading: PropTypes.bool.isRequired,
         isUploadEnabled: PropTypes.bool.isRequired,
@@ -62,12 +63,13 @@ export default class PreviewScreen extends PureComponent {
     }
 
     render() {
-        const {afterUpload, isLoading, propertyName, isUploadEnabled, accept} = this.props;
+        const {afterUpload, onFileDialogCancel, isLoading, propertyName, isUploadEnabled, accept} = this.props;
 
         if (isUploadEnabled) {
             return (
                 <AssetUpload
                     onAfterUpload={afterUpload}
+                    onFileDialogCancel={onFileDialogCancel}
                     isLoading={isLoading}
                     propertyName={propertyName}
                     ref={this.setAssetUploadReference}

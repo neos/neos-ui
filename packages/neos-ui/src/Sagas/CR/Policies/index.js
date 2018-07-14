@@ -15,9 +15,10 @@ function * fetchPolicies(nodesWithoutPolicies) {
 
     const {endpoints} = backend.get();
     const policyData = yield endpoints.getPolicyInfo(nodesWithoutPolicies);
-    yield put(actions.CR.Nodes.merge(policyData));
-
-    nodesCurrentlyProcessed = nodesCurrentlyProcessed.filter(nodePath => !nodesWithoutPolicies.includes(nodePath));
+    if (policyData) {
+        yield put(actions.CR.Nodes.merge(policyData));
+        nodesCurrentlyProcessed = nodesCurrentlyProcessed.filter(nodePath => !nodesWithoutPolicies.includes(nodePath));
+    }
 }
 
 export function * watchNodeInformationChanges() {

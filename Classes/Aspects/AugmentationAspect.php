@@ -221,7 +221,8 @@ class AugmentationAspect
         }
 
         foreach ($documentNode->getChildNodes() as $node) {
-            if ($node->getNodeType()->isOfType('Neos.Neos:Document') === true) {
+            /** @var NodeInterface $node */
+            if ($node->getNodeType()->isOfType('Neos.Neos:Document') === true || $node->getNodeType()->isOfType('unstructured')) {
                 continue;
             }
 

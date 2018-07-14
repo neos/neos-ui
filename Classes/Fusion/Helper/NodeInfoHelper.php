@@ -77,28 +77,34 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $documentNodeTypeRole;
 
     /**
+     * @Flow\InjectConfiguration(path="nodeTypeRoles.ignored", package="Neos.Neos.Ui")
+     * @var string
+     */
+    protected $ignoredNodeTypeRole;
+
+    /**
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
      * @param bool $omitMostPropertiesForTreeState
-     * @param string $baseNodeTypeOverride
+     * @param string $nodeTypeFilterOverride
      * @return array
      * @deprecated See methods with specific names for different behaviors
      */
-    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false, $baseNodeTypeOverride = null)
+    public function renderNode(NodeInterface $node, ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false, $nodeTypeFilterOverride = null)
     {
         return ($omitMostPropertiesForTreeState ?
-            $this->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $controllerContext, $baseNodeTypeOverride) :
-            $this->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext, $baseNodeTypeOverride)
+            $this->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $controllerContext, $nodeTypeFilterOverride) :
+            $this->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext, $nodeTypeFilterOverride)
         );
     }
 
     /**
      * @param NodeInterface $node
      * @param ControllerContext|null $controllerContext
-     * @param string $baseNodeTypeOverride
+     * @param string $nodeTypeFilterOverride
      * @return array
      */
-    public function renderNodeWithMinimalPropertiesAndChildrenInformation(NodeInterface $node, ControllerContext $controllerContext = null, string $baseNodeTypeOverride = null): array
+    public function renderNodeWithMinimalPropertiesAndChildrenInformation(NodeInterface $node, ControllerContext $controllerContext = null, string $nodeTypeFilterOverride = null): array
     {
         $this->userLocaleService->switchToUILocale();
 
@@ -115,8 +121,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
         }
 
-        $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
-        $nodeInfo['children'] = $this->renderChildrenInformation($node, $baseNodeType);
+        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : $this->baseNodeType;
+        $nodeTypeFilter = $this->buildNodeTypeFilterString($this->nodeTypeStringsToList($baseNodeType), $this->nodeTypeStringsToList($this->ignoredNodeTypeRole));
+
+        $nodeInfo['children'] = $this->renderChildrenInformation($node, $nodeTypeFilter);
 
         $this->userLocaleService->switchToUILocale(true);
 
@@ -126,10 +134,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     /**
      * @param NodeInterface $node
      * @param ControllerContext|null $controllerContext
-     * @param string $baseNodeTypeOverride
+     * @param string $nodeTypeFilterOverride
      * @return array
      */
-    public function renderNodeWithPropertiesAndChildrenInformation(NodeInterface $node, ControllerContext $controllerContext = null, string $baseNodeTypeOverride = null): array
+    public function renderNodeWithPropertiesAndChildrenInformation(NodeInterface $node, ControllerContext $controllerContext = null, string $nodeTypeFilterOverride = null): array
     {
         $this->userLocaleService->switchToUILocale();
 
@@ -141,7 +149,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
         }
 
-        $baseNodeType = $baseNodeTypeOverride ? $baseNodeTypeOverride : $this->baseNodeType;
+        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : $this->baseNodeType;
         $nodeInfo['children'] = $this->renderChildrenInformation($node, $baseNodeType);
 
         $this->userLocaleService->switchToUILocale(true);
@@ -198,14 +206,14 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * Get information for all children of the given parent node.
      *
      * @param NodeInterface $node
-     * @param string $baseNodeTypeName
+     * @param string $nodeTypeFilterString
      * @return array
      */
-    protected function renderChildrenInformation(NodeInterface $node, string $baseNodeTypeName): array
+    protected function renderChildrenInformation(NodeInterface $node, string $nodeTypeFilterString): array
     {
-        $documentChildNodes = $node->getChildNodes($baseNodeTypeName);
+        $documentChildNodes = $node->getChildNodes($nodeTypeFilterString);
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
-        $contentChildNodes = $node->getChildNodes('!' . $this->documentNodeTypeRole);
+        $contentChildNodes = $node->getChildNodes($this->buildContentChildNodeFilterString());
         $childNodes = array_merge($documentChildNodes, $contentChildNodes);
 
         $mapper = function (NodeInterface $childNode) {
@@ -298,10 +306,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     {
         $reducer = function ($nodes, $node) use ($controllerContext) {
             $nodes = array_merge($nodes, $this->renderNodeAndChildContent($node, $controllerContext));
+
             return $nodes;
         };
 
-        return array_reduce($node->getChildNodes('!' . $this->documentNodeTypeRole), $reducer, [$node->getContextPath() => $this->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext)]);
+        return array_reduce($node->getChildNodes($this->buildContentChildNodeFilterString()), $reducer, [$node->getContextPath() => $this->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext)]);
     }
 
     /**
@@ -337,6 +346,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             ->uriFor('redirectTo', [], 'Backend', 'Neos.Neos.Ui');
 
         $basicRedirectUrl .= '?' . http_build_query(['node' => $node->getContextPath()]);
+
         return $basicRedirectUrl;
     }
 
@@ -355,6 +365,44 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         // Create an absolute URI without resolving shortcuts
         return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, [], '', false, [], false);
+    }
+
+    /**
+     * @param string ...$nodeTypeStrings
+     * @return string[]
+     */
+    protected function nodeTypeStringsToList(string ...$nodeTypeStrings)
+    {
+        $reducer = function ($nodeTypeList, $nodeTypeString) {
+            $nodeTypeParts = explode(',', $nodeTypeString);
+            foreach ($nodeTypeParts as $nodeTypeName) {
+                $nodeTypeList[] = trim($nodeTypeName);
+            }
+
+            return $nodeTypeList;
+        };
+
+        return array_reduce($nodeTypeStrings, $reducer, []);
+    }
+
+    /**
+     * @param array $includedNodeTypes
+     * @param array $excludedNodeTypes
+     * @return string
+     */
+    protected function buildNodeTypeFilterString(array $includedNodeTypes, array $excludedNodeTypes)
+    {
+        $preparedExcludedNodeTypes = array_map(function ($nodeTypeName) {return '!' . $nodeTypeName;}, $excludedNodeTypes);
+        $mergedIncludesAndExcludes = array_merge($includedNodeTypes, $preparedExcludedNodeTypes);
+        return implode(',', $mergedIncludesAndExcludes);
+    }
+
+    /**
+     * @return string
+     */
+    protected function buildContentChildNodeFilterString()
+    {
+        return $this->buildNodeTypeFilterString([], $this->nodeTypeStringsToList($this->documentNodeTypeRole, $this->ignoredNodeTypeRole));
     }
 
     /**

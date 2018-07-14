@@ -281,7 +281,10 @@ class AugmentationAspect
         $ignoredNodeTypes = explode(',', $this->nodeTypeRoles['ignored']);
 
         $allFilteredNodeTypes = array_merge($documentNodeTypes, $ignoredNodeTypes);
-        $negatedNodeTypes = array_map(function ($nodeTypeName) {return '!' . trim($nodeTypeName);}, $allFilteredNodeTypes);
+        $negatedNodeTypes = array_map(function ($nodeTypeName) {
+            return '!' . trim($nodeTypeName);
+            }, $allFilteredNodeTypes
+        );
         return implode(',', $negatedNodeTypes);
     }
 }

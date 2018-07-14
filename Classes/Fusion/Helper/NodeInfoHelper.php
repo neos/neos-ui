@@ -392,7 +392,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected function buildNodeTypeFilterString(array $includedNodeTypes, array $excludedNodeTypes)
     {
-        $preparedExcludedNodeTypes = array_map(function ($nodeTypeName) {return '!' . $nodeTypeName;}, $excludedNodeTypes);
+        $preparedExcludedNodeTypes = array_map(function ($nodeTypeName) {
+            return '!' . $nodeTypeName;
+            }, $excludedNodeTypes
+        );
         $mergedIncludesAndExcludes = array_merge($includedNodeTypes, $preparedExcludedNodeTypes);
         return implode(',', $mergedIncludesAndExcludes);
     }

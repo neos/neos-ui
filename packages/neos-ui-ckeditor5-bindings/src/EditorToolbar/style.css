@@ -16,11 +16,22 @@
 
 
 .linkIconButton__flyout {
+    display: flex;
+    align-items: stretch;
+    background-color: var(--colors-ContrastDarker);
     position: fixed;
     z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
     width: 460px;
     border: var(--spacing-Half) solid var(--colors-ContrastDarker);
     line-height: 0;
+}
+
+.linkIconButton__innerButton {
+    height: auto;
+}
+
+.linkIconButton__loader {
+    margin: var(--spacing-Quarter);
 }
 
 .linkIconButton__item {

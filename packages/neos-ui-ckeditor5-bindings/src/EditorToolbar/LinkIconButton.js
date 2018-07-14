@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
+import {IconButton, SelectBox, Icon} from '@neos-project/react-ui-components';
 import LinkOption from './LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {executeCommand} from './../ckEditorApi';
@@ -67,10 +66,8 @@ export default class LinkIconButton extends PureComponent {
     }
 }
 
-// allow to insert node:// and asset:// links by pasting
 const isUriOrInternalLink = link => Boolean(isUri(link) || link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
-// If node links have a hash in them, treat them like normal links
-const isUriOrHasHash = link => Boolean(isUri(link) || link.includes('#'));
+const isInternalLink = link => Boolean(link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
 
 @neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
@@ -96,6 +93,7 @@ class LinkTextField extends PureComponent {
     };
 
     state = {
+        isEditMode: false,
         searchTerm: '',
         isLoading: false,
         searchOptions: [],
@@ -109,30 +107,6 @@ class LinkTextField extends PureComponent {
         };
     }
 
-    refreshState() {
-        if (isUriOrHasHash(this.props.hrefValue)) {
-            this.setState({
-                searchTerm: this.props.hrefValue,
-                options: []
-            });
-        } else {
-            if (this.props.hrefValue) {
-                this.setState({isLoading: true});
-                this.props.linkLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.hrefValue)
-                    .then(options => {
-                        this.setState({
-                            isLoading: false,
-                            options
-                        });
-                    });
-            }
-            // ToDo: Couldn't this lead to bugs in the future due to the async operation on top?
-            this.setState({
-                searchTerm: ''
-            });
-        }
-    }
-
     componentDidMount() {
         this.refreshState();
     }
@@ -143,26 +117,44 @@ class LinkTextField extends PureComponent {
         }
     }
 
-    // TODO: this should be debounced, but it's super hard to do, because then hrefValue would override searchTerm
+    refreshState() {
+        if (this.props.hrefValue) {
+            if (isInternalLink(this.props.hrefValue)) {
+                this.setState({
+                    isLoading: true,
+                    isEditMode: false
+                });
+                this.props.linkLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.hrefValue.split('#')[0])
+                    .then(options => {
+                        this.setState({
+                            isLoading: false,
+                            options
+                        });
+                    });
+            } else {
+                this.setState({
+                    isEditMode: false,
+                    options: []
+                });
+            }
+        } else {
+            this.setState({
+                isEditMode: true,
+                searchTerm: ''
+            });
+        }
+    }
+
     commitValue = value => executeCommand('link', value, false);
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
         if (isUriOrInternalLink(searchTerm)) {
-            this.commitValue(searchTerm);
-
             this.setState({
                 isLoading: false,
                 searchOptions: []
             });
-        } else if (!searchTerm && isUriOrInternalLink(this.props.hrefValue)) {
-            // The user emptied the URL value, so we need to reset it
-            this.commitValue('');
         } else if (searchTerm) {
-            // When changing from uri mode to search mode, we should clear the value
-            if (isUriOrInternalLink(this.state.searchTerm)) {
-                this.commitValue('');
-            }
             this.setState({isLoading: true, searchOptions: []});
             this.props.linkLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
@@ -178,36 +170,72 @@ class LinkTextField extends PureComponent {
     handleValueChange = value => {
         this.commitValue(value || '');
 
-        if (!isUriOrHasHash(value)) {
+        if (isInternalLink(value)) {
             const options = this.state.searchOptions.reduce((current, option) =>
                     (option.loaderUri === value) ? [Object.assign({}, option)] : current
                 , []);
 
-            this.setState({options, searchOptions: [], searchTerm: ''});
+            this.setState({
+                options,
+                searchOptions: [],
+                searchTerm: '',
+                isEditMode: false
+            });
         }
     }
 
+    handleManualSetLink = () => {
+        this.commitValue(this.state.searchTerm);
+        this.setState({
+            isEditMode: false
+        });
+    }
+
+    handleSwitchToEditMode = () => {
+        this.setState({
+            isEditMode: true,
+            searchTerm: this.props.hrefValue
+        });
+    }
+
     render() {
+        if (this.state.isEditMode) {
+            return (
+                <div className={style.linkIconButton__flyout}>
+                    <SelectBox
+                        options={this.state.searchOptions}
+                        optionValueField="loaderUri"
+                        value={''}
+                        plainInputMode={isUri(this.state.searchTerm)}
+                        onValueChange={this.handleValueChange}
+                        placeholder="Paste a link, or search"
+                        displayLoadingIndicator={this.state.isLoading}
+                        displaySearchBox={true}
+                        setFocus={!this.props.hrefValue}
+                        showDropDownToggle={false}
+                        allowEmpty={true}
+                        searchTerm={this.state.searchTerm}
+                        onSearchTermChange={this.handleSearchTermChange}
+                        ListPreviewElement={LinkOption}
+                        noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+                        searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                        />
+                    <IconButton className={style.linkIconButton__innerButton} icon="check" onClick={this.handleManualSetLink} />
+                    <IconButton className={style.linkIconButton__innerButton} icon="ellipsis-v"/>
+                </div>
+            );
+        }
         return (
             <div className={style.linkIconButton__flyout}>
-                <SelectBox
-                    options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
-                    optionValueField="loaderUri"
-                    value={isUriOrHasHash(this.props.hrefValue) ? '' : this.props.hrefValue}
-                    plainInputMode={isUriOrHasHash(this.props.hrefValue)}
-                    onValueChange={this.handleValueChange}
-                    placeholder="Paste a link, or search"
-                    displayLoadingIndicator={this.state.isLoading}
-                    displaySearchBox={true}
-                    setFocus={!this.props.hrefValue}
-                    showDropDownToggle={false}
-                    allowEmpty={true}
-                    searchTerm={this.state.searchTerm}
-                    onSearchTermChange={this.handleSearchTermChange}
-                    ListPreviewElement={LinkOption}
-                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
-                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
-                    />
+                <div style={{flexGrow: 1}} onClick={this.handleSwitchToEditMode} role="button">
+                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkIconButton__loader} spin={true} size="lg" /> : (
+                        this.state.options[0] ? <LinkOption option={this.state.options[0]} /> : (
+                            <LinkOption option={{label: this.props.hrefValue, loaderUri: this.props.hrefValue}} />
+                        )
+                    )}
+                </div>
+                <IconButton className={style.linkIconButton__innerButton} icon="pencil-alt" onClick={this.handleSwitchToEditMode} />
+                <IconButton className={style.linkIconButton__innerButton} icon="ellipsis-v" />
             </div>
         );
     }

@@ -353,7 +353,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function inBackend(NodeInterface $node)
     {
-        return !$this->nodeAddressFactory->isInLiveWorkspace($this->nodeAddressFactory->createFromNode($node));
+        return !$this->nodeAddressFactory->createFromNode($node)->isInLiveWorkspace();
     }
 
 }

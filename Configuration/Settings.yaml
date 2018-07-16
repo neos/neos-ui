@@ -125,9 +125,6 @@ Neos:
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, subgraph, controllerContext)}'
           url: '${Neos.Ui.NodeInfo.uri(Neos.Ui.NodeInfo.nodeAddress(documentNode), controllerContext)}'
-          dimensionSpacePoint: '${documentNode.context.contentSubgraph.dimensionSpacePoint.serializeForUri()}'
-          workspaceName: '${documentNode.context.workspaceName}'
-          documentNodeAggregateIdentifier: '${documentNode.nodeAggregateIdentifier}'
       initialState:
         changes:
           pending: {  }

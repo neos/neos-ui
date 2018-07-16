@@ -63,10 +63,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // We need to set the src to the actual src of the iframe, and not retrive it from documentInformation, as it may differ, e.g. contain additional arguments.
     yield put(actions.UI.ContentCanvas.setSrc(guestFrameWindow.document.location.href));
 
-    // TODO: use one action instead of 5
-    yield put(actions.UI.ContentCanvas.loaded(documentInformation.metaData.workspaceName, documentInformation.metaData.dimensionSpacePoint, documentInformation.metaData.documentNodeAggregateIdentifier));
-
-
     const focusSelectedNode = event => {
         const clickPath = Array.prototype.slice.call(eventPath(event));
         const isInsideInlineUi = clickPath.some(domNode =>

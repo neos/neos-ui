@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
+import ReactMarkdown from 'react-markdown';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -170,7 +171,7 @@ export default class SelectNodeType extends PureComponent {
                         {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
                         <I18n id={label} fallback={label}/>
                     </span>
-                    {message}
+                    <ReactMarkdown source={message} />
                 </div>
 
                 <IconButton className={style.helpMessage__closeButton} icon="times" onClick={() => this.handleCloseHelpMessage()} />

@@ -35,7 +35,7 @@ class CheckBox extends PureComponent {
         }).isRequired
     };
 
-    handleChange() {
+    handleChange = () => {
         const {onChange, isChecked} = this.props;
 
         if (onChange) {

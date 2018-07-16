@@ -128,7 +128,7 @@ class DialogWithEscape extends PureComponent {
         onRequestClose: PropTypes.func.isRequired
     };
 
-    onEscape() {
+    onEscape = () => {
         const {onRequestClose} = this.props;
         onRequestClose();
     }

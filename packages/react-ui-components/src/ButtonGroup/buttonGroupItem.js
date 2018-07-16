@@ -9,7 +9,7 @@ class ButtonGroupItem extends PureComponent {
         element: PropTypes.any.isRequired
     };
 
-    handleButtonClick() {
+    handleButtonClick = () => {
         const {onClick, id} = this.props;
         onClick(id);
     }

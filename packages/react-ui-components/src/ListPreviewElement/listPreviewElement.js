@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
@@ -22,68 +22,71 @@ import mergeClassNames from 'classnames';
  * }
  * ```
  */
-const ListPreviewElement = props => {
-    const {
-        icon,
-        className,
-        disabled,
-        children,
+class ListPreviewElement extends PureComponent {
+    static propTypes = {
+        // ------------------------------
+        // API inside custom ListPreviewElements
+        // ------------------------------
+        icon: PropTypes.string,
+        className: PropTypes.string,
+        disabled: PropTypes.bool,
+        children: PropTypes.node.isRequired,
 
-        onClick,
-        isHighlighted,
-        onMouseEnter,
+        // ------------------------------
+        // API as needed by SelectBox
+        // ------------------------------
+        onClick: PropTypes.func,
+        isHighlighted: PropTypes.bool,
+        onMouseEnter: PropTypes.func,
 
-        theme,
-        Icon
-    } = props;
+        // ------------------------------
+        // Theme & Dependencies
+        // ------------------------------
+        theme: PropTypes.shape({/* eslint-disable quote-props */
+            'listPreviewElement': PropTypes.string.isRequired,
+            'listPreviewElement--isHighlighted': PropTypes.string.isRequired,
+            'listPreviewElement--isDisabled': PropTypes.string.isRequired,
+            'listPreviewElement__icon': PropTypes.string.isRequired
+        }).isRequired, /* eslint-enable quote-props */
+        Icon: PropTypes.any.isRequired
+    }
 
-    const optionClassName = mergeClassNames({
-        [theme.listPreviewElement]: true,
-        [theme['listPreviewElement--isHighlighted']]: isHighlighted,
-        [theme['listPreviewElement--isDisabled']]: disabled,
-        [className]: className
-    });
+    render() {
+        const {
+            icon,
+            className,
+            disabled,
+            children,
 
-    const noop = () => {};
+            onClick,
+            isHighlighted,
+            onMouseEnter,
 
-    return (
-        <div
-            onMouseEnter={disabled ? noop : onMouseEnter}
-            onClick={disabled ? noop : onClick}
-            className={optionClassName}
-            >
-            {Boolean(icon) && <Icon className={theme.listPreviewElement__icon} icon={icon}/>}
-            {children}
+            theme,
+            Icon
+        } = this.props;
 
-        </div>
-    );
-};
-ListPreviewElement.propTypes = {
-    // ------------------------------
-    // API inside custom ListPreviewElements
-    // ------------------------------
-    icon: PropTypes.string,
-    className: PropTypes.string,
-    disabled: PropTypes.bool,
-    children: PropTypes.node.isRequired,
+        const optionClassName = mergeClassNames({
+            [theme.listPreviewElement]: true,
+            [theme['listPreviewElement--isHighlighted']]: isHighlighted,
+            [theme['listPreviewElement--isDisabled']]: disabled,
+            [className]: className
+        });
 
-    // ------------------------------
-    // API as needed by SelectBox
-    // ------------------------------
-    onClick: PropTypes.func,
-    isHighlighted: PropTypes.bool,
-    onMouseEnter: PropTypes.func,
+        const noop = () => {};
 
-    // ------------------------------
-    // Theme & Dependencies
-    // ------------------------------
-    theme: PropTypes.shape({/* eslint-disable quote-props */
-        'listPreviewElement': PropTypes.string.isRequired,
-        'listPreviewElement--isHighlighted': PropTypes.string.isRequired,
-        'listPreviewElement--isDisabled': PropTypes.string.isRequired,
-        'listPreviewElement__icon': PropTypes.string.isRequired
-    }).isRequired, /* eslint-enable quote-props */
-    Icon: PropTypes.any.isRequired
-};
+        return (
+            <div
+                onMouseEnter={disabled ? noop : onMouseEnter}
+                onClick={disabled ? noop : onClick}
+                className={optionClassName}
+                >
+                {Boolean(icon) && <Icon className={theme.listPreviewElement__icon} icon={icon}/>}
+                {children}
+
+            </div>
+        );
+    }
+}
 
 export default ListPreviewElement;

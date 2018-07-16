@@ -1,5 +1,5 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import AttributeCommand from '@ckeditor/ckeditor5-basic-styles/src/attributecommand';
+import LinkAttributeCommand from './linkAttributeCommand';
 
 const TARGET_BLANK = 'targetBlank';
 
@@ -22,6 +22,6 @@ export default class TargetBlank extends Plugin {
                 priority: 5
             }
         });
-        editor.commands.add(TARGET_BLANK, new AttributeCommand(this.editor, TARGET_BLANK));
+        editor.commands.add(TARGET_BLANK, new LinkAttributeCommand(this.editor, TARGET_BLANK));
     }
 }

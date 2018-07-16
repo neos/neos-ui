@@ -1,5 +1,5 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import AttributeCommand from '@ckeditor/ckeditor5-basic-styles/src/attributecommand';
+import LinkAttributeCommand from './linkAttributeCommand';
 
 const REL_NOFOLLOW = 'relNofollow';
 
@@ -22,6 +22,6 @@ export default class RelNofollow extends Plugin {
                 priority: 5
             }
         });
-        editor.commands.add(REL_NOFOLLOW, new AttributeCommand(this.editor, REL_NOFOLLOW));
+        editor.commands.add(REL_NOFOLLOW, new LinkAttributeCommand(this.editor, REL_NOFOLLOW));
     }
 }

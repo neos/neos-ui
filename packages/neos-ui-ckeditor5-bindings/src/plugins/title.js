@@ -1,5 +1,5 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import AttributeCommand from './attributeCommand';
+import LinkAttributeCommand from './linkAttributeCommand';
 import {downcastAttributeToElement} from '@ckeditor/ckeditor5-engine/src/conversion/downcast-converters';
 import {upcastElementToAttribute} from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
 
@@ -34,6 +34,6 @@ export default class LinkTitle extends Plugin {
                     value: viewElement => viewElement.getAttribute('title')
                 }
             }));
-        editor.commands.add(TITLE, new AttributeCommand(this.editor, TITLE));
+        editor.commands.add(TITLE, new LinkAttributeCommand(this.editor, TITLE));
     }
 }

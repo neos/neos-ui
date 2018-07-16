@@ -1,6 +1,7 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
+import ReactMarkdown from 'react-markdown';
 
 import Label from '@neos-project/react-ui-components/src/Label/';
 import {Tooltip} from '@neos-project/react-ui-components';
@@ -111,7 +112,7 @@ export default class EditorEnvelope extends PureComponent {
 
         return (
             <Tooltip renderInline className={style.envelope__helpmessage}>
-                {helpMessage ? helpMessage : ''}
+                {helpMessage ? <ReactMarkdown source={helpMessage} /> : ''}
                 {helpThumbnail ? <img alt={label} src={helpThumbnail} /> : ''}
             </Tooltip>
         );

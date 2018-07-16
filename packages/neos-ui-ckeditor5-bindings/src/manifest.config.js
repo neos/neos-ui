@@ -4,9 +4,9 @@ import {$add, $get, $or} from 'plow-js';
 import NeosPlaceholder from './plugins/neosPlaceholder';
 import Sub from './plugins/sub';
 import Sup from './plugins/sup';
-import TargetBlank from './plugins/targetBlank';
-import RelNofollow from './plugins/relNofollow';
-import LinkTitle from './plugins/title';
+import LinkTargetBlank from './plugins/linkTargetBlank';
+import LinkRelNofollow from './plugins/linkRelNofollow';
+import LinkTitle from './plugins/linkTitle';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
@@ -70,8 +70,8 @@ export default ckEditorRegistry => {
     config.set('underline', addPlugin(Underline, $get('formatting.underline')));
     config.set('strikethrough', addPlugin(Strikethrough, $get('formatting.strikethrough')));
     config.set('link', addPlugin(Link, $get('formatting.a')));
-    config.set('linkTargetBlank', addPlugin(TargetBlank, $get('formatting.a')));
-    config.set('linkRelNofollow', addPlugin(RelNofollow, $get('formatting.a')));
+    config.set('linkTargetBlank', addPlugin(LinkTargetBlank, $get('formatting.a')));
+    config.set('linkRelNofollow', addPlugin(LinkRelNofollow, $get('formatting.a')));
     config.set('linkTitle', addPlugin(LinkTitle, $get('formatting.a')));
     config.set('table', addPlugin(Table, i => $get('formatting.table', i)));
     config.set('list', addPlugin(List, $or(

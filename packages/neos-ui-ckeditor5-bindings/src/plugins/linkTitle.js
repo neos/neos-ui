@@ -3,11 +3,11 @@ import LinkAttributeCommand from './linkAttributeCommand';
 import {downcastAttributeToElement} from '@ckeditor/ckeditor5-engine/src/conversion/downcast-converters';
 import {upcastElementToAttribute} from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
 
-const TITLE = 'neosLinkTitle';
+const TITLE = 'linkTitle';
 
 export default class LinkTitle extends Plugin {
     static get pluginName() {
-        return 'Link Title';
+        return 'LinkTitle';
     }
     init() {
         const editor = this.editor;

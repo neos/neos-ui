@@ -1,27 +1,27 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import LinkAttributeCommand from './linkAttributeCommand';
 
-const REL_NOFOLLOW = 'relNofollow';
+const TARGET_BLANK = 'linkTargetBlank';
 
-export default class RelNofollow extends Plugin {
+export default class TargetBlank extends Plugin {
     static get pluginName() {
-        return 'RelNofollow';
+        return 'LinkTargetBlank';
     }
     init() {
         const editor = this.editor;
-        editor.model.schema.extend('$text', {allowAttributes: REL_NOFOLLOW});
+        editor.model.schema.extend('$text', {allowAttributes: TARGET_BLANK});
         editor.conversion.attributeToElement({
-            model: REL_NOFOLLOW,
+            model: TARGET_BLANK,
             view: {
                 name: 'a',
                 attributes: {
-                    rel: 'nofollow'
+                    target: '_blank'
                 },
                 // the priority has got to be the same as here so the elements would get merged:
                 // https://github.com/ckeditor/ckeditor5-link/blob/20e96361014fd13bfb93620f5eb5f528e6b1fe6d/src/utils.js#L33
                 priority: 5
             }
         });
-        editor.commands.add(REL_NOFOLLOW, new LinkAttributeCommand(this.editor, REL_NOFOLLOW));
+        editor.commands.add(TARGET_BLANK, new LinkAttributeCommand(this.editor, TARGET_BLANK));
     }
 }

@@ -281,9 +281,9 @@ class LinkTextField extends PureComponent {
                     <div>
                         <TextInput
                             id="__neos__linkEditor--title"
-                            value={$get('neosLinkTitle', this.props.formattingUnderCursor) || ''}
+                            value={$get('linkTitle', this.props.formattingUnderCursor) || ''}
                             onChange={value => {
-                                executeCommand('neosLinkTitle', value, false);
+                                executeCommand('linkTitle', value, false);
                             }}
                             />
                     </div>
@@ -292,9 +292,9 @@ class LinkTextField extends PureComponent {
                     <label>
                         <CheckBox
                             onChange={() => {
-                                executeCommand('targetBlank', undefined, false);
+                                executeCommand('linkTargetBlank', undefined, false);
                             }}
-                            isChecked={$get('targetBlank', this.props.formattingUnderCursor) || false}
+                            isChecked={$get('linkTargetBlank', this.props.formattingUnderCursor) || false}
                         /> Open in new window
                     </label>
                 </div>
@@ -302,9 +302,9 @@ class LinkTextField extends PureComponent {
                     <label>
                         <CheckBox
                             onChange={() => {
-                                executeCommand('relNofollow', undefined, false);
+                                executeCommand('linkRelNofollow', undefined, false);
                             }}
-                            isChecked={$get('relNofollow', this.props.formattingUnderCursor) || false}
+                            isChecked={$get('linkRelNofollow', this.props.formattingUnderCursor) || false}
                         /> No follow
                     </label>
                 </div>

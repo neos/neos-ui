@@ -1,9 +1,9 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
-import {IconButton, SelectBox, Icon} from '@neos-project/react-ui-components';
+import {IconButton, SelectBox, Icon, CheckBox, TextInput} from '@neos-project/react-ui-components';
 import LinkOption from './LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {executeCommand} from './../ckEditorApi';
@@ -42,7 +42,7 @@ export default class LinkIconButton extends PureComponent {
     }
 
     render() {
-        const {i18nRegistry, isActive} = this.props;
+        const {i18nRegistry, isActive, formattingUnderCursor} = this.props;
 
         return (
             <div>
@@ -52,7 +52,7 @@ export default class LinkIconButton extends PureComponent {
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />
-                {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} /> : null}
+                {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} formattingUnderCursor={formattingUnderCursor} /> : null}
             </div>
         );
     }
@@ -97,7 +97,8 @@ class LinkTextField extends PureComponent {
         searchTerm: '',
         isLoading: false,
         searchOptions: [],
-        options: []
+        options: [],
+        optionsPanelIsOpen: false
     };
 
     getDataLoaderOptions() {
@@ -198,44 +199,132 @@ class LinkTextField extends PureComponent {
         });
     }
 
-    render() {
-        if (this.state.isEditMode) {
-            return (
-                <div className={style.linkIconButton__flyout}>
-                    <SelectBox
-                        options={this.state.searchOptions}
-                        optionValueField="loaderUri"
-                        value={''}
-                        plainInputMode={isUri(this.state.searchTerm)}
-                        onValueChange={this.handleValueChange}
-                        placeholder="Paste a link, or search"
-                        displayLoadingIndicator={this.state.isLoading}
-                        displaySearchBox={true}
-                        setFocus={!this.props.hrefValue}
-                        showDropDownToggle={false}
-                        allowEmpty={true}
-                        searchTerm={this.state.searchTerm}
-                        onSearchTermChange={this.handleSearchTermChange}
-                        ListPreviewElement={LinkOption}
-                        noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
-                        searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
-                        />
-                    <IconButton className={style.linkIconButton__innerButton} icon="check" onClick={this.handleManualSetLink} />
-                    <IconButton className={style.linkIconButton__innerButton} icon="ellipsis-v"/>
-                </div>
-            );
-        }
+    handleToggleOptionsPanel = () => {
+        this.setState({
+            optionsPanelIsOpen: !this.state.optionsPanelIsOpen
+        });
+    }
+
+    renderEditMode() {
         return (
-            <div className={style.linkIconButton__flyout}>
+            <Fragment>
+                <SelectBox
+                    options={this.state.searchOptions}
+                    optionValueField="loaderUri"
+                    value={''}
+                    plainInputMode={isUri(this.state.searchTerm)}
+                    onValueChange={this.handleValueChange}
+                    placeholder="Paste a link, or search"
+                    displayLoadingIndicator={this.state.isLoading}
+                    displaySearchBox={true}
+                    setFocus={!this.props.hrefValue}
+                    showDropDownToggle={false}
+                    allowEmpty={true}
+                    searchTerm={this.state.searchTerm}
+                    onSearchTermChange={this.handleSearchTermChange}
+                    ListPreviewElement={LinkOption}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                />
+                <IconButton
+                    className={style.linkIconButton__innerButton}
+                    icon="check"
+                    onClick={this.handleManualSetLink}
+                    />
+            </Fragment>
+        );
+    }
+
+    renderViewMode() {
+        return (
+            <Fragment>
                 <div style={{flexGrow: 1}} onClick={this.handleSwitchToEditMode} role="button">
                     {this.state.isLoading ? <Icon icon="spinner" className={style.linkIconButton__loader} spin={true} size="lg" /> : (
-                        this.state.options[0] ? <LinkOption option={this.state.options[0]} /> : (
-                            <LinkOption option={{label: this.props.hrefValue, loaderUri: this.props.hrefValue}} />
+                        // if options then it's an asset or node, otherwise a plain link
+                        this.state.options[0] ? (
+                            <LinkOption option={this.state.options[0]} />
+                        ) : (
+                            <LinkOption option={{
+                                icon: 'external-link-alt',
+                                label: this.props.hrefValue,
+                                loaderUri: this.props.hrefValue
+                            }} />
                         )
                     )}
                 </div>
-                <IconButton className={style.linkIconButton__innerButton} icon="pencil-alt" onClick={this.handleSwitchToEditMode} />
-                <IconButton className={style.linkIconButton__innerButton} icon="ellipsis-v" />
+                <IconButton
+                    className={style.linkIconButton__innerButton}
+                    icon="pencil-alt"
+                    onClick={this.handleSwitchToEditMode}
+                    />
+            </Fragment>
+        );
+    }
+
+    renderOptionsPanel() {
+        return (
+            <div className={style.linkIconButton__optionsPanel}>
+                <div className={style.linkIconButton__optionsPanelItem}>
+                    <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">Link to Anchor</label>
+                    <div>
+                        <TextInput
+                            id="__neos__linkEditor--anchor"
+                            value={$get('link', this.props.formattingUnderCursor).split('#')[1] || ''}
+                            onChange={value => {
+                                executeCommand('link', $get('link', this.props.formattingUnderCursor).split('#')[0] + '#' + value, false);
+                            }}
+                            />
+                    </div>
+                </div>
+                <div className={style.linkIconButton__optionsPanelItem}>
+                    <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--title">Title</label>
+                    <div>
+                        <TextInput
+                            id="__neos__linkEditor--title"
+                            value={$get('neosLinkTitle', this.props.formattingUnderCursor) || ''}
+                            onChange={value => {
+                                executeCommand('neosLinkTitle', value, false);
+                            }}
+                            />
+                    </div>
+                </div>
+                <div className={style.linkIconButton__optionsPanelItem}>
+                    <label>
+                        <CheckBox
+                            onChange={() => {
+                                executeCommand('targetBlank', undefined, false);
+                            }}
+                            isChecked={$get('targetBlank', this.props.formattingUnderCursor) || false}
+                        /> Open in new window
+                    </label>
+                </div>
+                <div className={style.linkIconButton__optionsPanelItem}>
+                    <label>
+                        <CheckBox
+                            onChange={() => {
+                                executeCommand('relNofollow', undefined, false);
+                            }}
+                            isChecked={$get('relNofollow', this.props.formattingUnderCursor) || false}
+                        /> No follow
+                    </label>
+                </div>
+            </div>
+        );
+    }
+
+    render() {
+        return (
+            <div className={style.linkIconButton__flyout}>
+                <div className={style.linkIconButton__wrap}>
+                    {this.state.isEditMode ? this.renderEditMode() : this.renderViewMode()}
+                    <IconButton
+                        onClick={this.handleToggleOptionsPanel}
+                        style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
+                        className={style.linkIconButton__innerButton}
+                        icon="ellipsis-v"
+                        />
+                </div>
+                {this.state.optionsPanelIsOpen && this.renderOptionsPanel()}
             </div>
         );
     }

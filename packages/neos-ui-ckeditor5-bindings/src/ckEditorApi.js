@@ -9,16 +9,12 @@ let editorConfig = {};
 // As there is only a single cursor active at any given time, it is safe to do this caching here inside the singleton object.
 let lastFormattingUnderCursorSerialized = '';
 
+// We get the state of all commands from CKE5 and serialize it into "formattingUnderCursor"
 const handleUserInteractionCallback = () => {
     const formattingUnderCursor = {};
-    editorConfig.toolbarItems.forEach(toolbarItem => {
-        const commandName = toolbarItem.commandName;
-        if (commandName) {
-            const command = currentEditor.commands.get(commandName);
-            if (!command) {
-                formattingUnderCursor[commandName] = false;
-                return;
-            }
+    [...currentEditor.commands].forEach(commandTuple => {
+        const [commandName, command] = commandTuple;
+        if (command.value !== undefined) {
             formattingUnderCursor[commandName] = command.value;
         }
     });

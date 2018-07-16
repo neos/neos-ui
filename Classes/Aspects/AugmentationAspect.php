@@ -12,6 +12,7 @@ namespace Neos\Neos\Ui\Aspects;
  */
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Projection\Content\ContentSubgraphInterface;
 use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
@@ -126,6 +127,9 @@ class AugmentationAspect
         /** @var NodeInterface $node */
         $node = $joinPoint->getMethodArgument('node');
 
+        /** @var ContentSubgraphInterface $subgraph */
+        $subgraph = $joinPoint->getMethodArgument('subgraph');
+
         if (
             !$this->session->isStarted()
             || $this->session->getData('__neosLegacyUiEnabled__')
@@ -151,7 +155,7 @@ class AugmentationAspect
 
         $this->userLocaleService->switchToUILocale();
 
-        $serializedNode = json_encode($this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $this->controllerContext));
+        $serializedNode = json_encode($this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $subgraph, $this->controllerContext));
 
         $this->userLocaleService->switchToUILocale(true);
 

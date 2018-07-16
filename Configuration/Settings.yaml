@@ -115,7 +115,7 @@ Neos:
         Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper
       documentNodeInformation:
         metaData:
-          '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
+          contextPath: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
           siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)}'
           # TODO Fix!
           #previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0), controllerContext)}'
@@ -123,8 +123,8 @@ Neos:
           contentDimensions:
             active: '${documentNode.dimensionSpacePoint.toLegacyDimensionArray()}'
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
-          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
-          url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, subgraph, controllerContext)}'
+          url: '${Neos.Ui.NodeInfo.uri(Neos.Ui.NodeInfo.nodeAddress(documentNode), controllerContext)}'
           dimensionSpacePoint: '${documentNode.context.contentSubgraph.dimensionSpacePoint.serializeForUri()}'
           workspaceName: '${documentNode.context.workspaceName}'
           documentNodeAggregateIdentifier: '${documentNode.nodeAggregateIdentifier}'

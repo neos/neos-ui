@@ -200,10 +200,10 @@ class BackendController extends ActionController
     }
 
     /**
-     * @param NodeInterface $node
+     * @param NodeAddress $node
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      */
-    public function redirectToAction(NodeInterface $node)
+    public function redirectToAction(NodeAddress $node)
     {
         $this->response->getHeaders()->setCacheControlDirective('no-cache');
         $this->response->getHeaders()->setCacheControlDirective('no-store');

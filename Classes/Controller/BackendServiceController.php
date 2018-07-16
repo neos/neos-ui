@@ -40,6 +40,7 @@ use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\Neos\Ui\Service\NodePolicyService;
 
 class BackendServiceController extends ActionController
 {

@@ -23,6 +23,7 @@ export default class PropertyGroup extends PureComponent {
 
         node: PropTypes.object.isRequired,
         handlePanelToggle: PropTypes.func.isRequired,
+        handleInspectorApply: PropTypes.func,
         commit: PropTypes.func.isRequired
     };
 
@@ -31,7 +32,7 @@ export default class PropertyGroup extends PureComponent {
     };
 
     render() {
-        const {items, label, icon, collapsed, handlePanelToggle, renderSecondaryInspector, node, commit} = this.props;
+        const {items, label, icon, collapsed, handlePanelToggle, handleInspectorApply, renderSecondaryInspector, node, commit} = this.props;
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
@@ -45,17 +46,22 @@ export default class PropertyGroup extends PureComponent {
                     {items.map(item => {
                         const itemId = $get('id', item);
                         const itemType = $get('type', item);
+                        const label = $get('label', item) || '';
+
                         if (itemType === 'editor') {
                             return (
                                 <InspectorEditorEnvelope
                                     key={$get('contextPath', node) + itemId}
                                     id={itemId}
-                                    label={$get('label', item)}
+                                    label={label}
                                     editor={$get('editor', item)}
                                     options={$get('editorOptions', item) && $get('editorOptions', item).toJS ? $get('editorOptions', item).toJS() : $get('editorOptions', item)}
                                     renderSecondaryInspector={renderSecondaryInspector}
                                     node={node}
                                     commit={commit}
+                                    onEnterKey={handleInspectorApply}
+                                    helpMessage={$get('helpMessage', item)}
+                                    helpThumbnail={$get('helpThumbnail', item)}
                                     />);
                         }
                         if (itemType === 'view') {

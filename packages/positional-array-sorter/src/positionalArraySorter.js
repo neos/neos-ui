@@ -1,5 +1,5 @@
-const isOriginal = value => value.indexOf && value.indexOf('_original_') === 0;
-const getOriginal = value => value.substring && Number(value.substring(10));
+const isOriginal = value => value && value.indexOf && value.indexOf('_original_') === 0;
+const getOriginal = value => value && value.substring && Number(value.substring(10));
 
 /**
  * Flexible array sorter that sorts an array according to a "position" meta data.
@@ -96,11 +96,11 @@ const positionalArraySorter = (subject, position = 'position', idKey = 'key') =>
             return getOriginal(a) - getOriginal(b);
         }
         // If only item `a` doesn't have position, push it down
-        if (a.includes && a.includes('_original_')) {
+        if (a && a.includes && a.includes('_original_')) {
             return 1;
         }
         // If only item `b` doesn't have position, push it down
-        if (b.includes && b.includes('_original_')) {
+        if (b && b.includes && b.includes('_original_')) {
             return -1;
         }
         // If both items have position, sort them in a standard way

@@ -106,7 +106,9 @@ export default class ContentCanvas extends PureComponent {
             canvasContentOnlyStyle.overflow = 'auto';
         }
 
-        if (backgroundColor) {
+        if (currentEditPreviewModeConfiguration.backgroundColor) {
+            canvasContentStyle.background = currentEditPreviewModeConfiguration.backgroundColor;
+        } else if (backgroundColor) {
             canvasContentStyle.background = backgroundColor;
         }
 

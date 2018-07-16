@@ -43,7 +43,7 @@ createConsumerApi(manifests, apiExposureMap);
 require('./manifest');
 require('@neos-project/neos-ui-contentrepository');
 require('@neos-project/neos-ui-editors');
-require('@neos-project/neos-ui-views');
+require('@neos-project/neos-ui-views/src/manifest');
 require('@neos-project/neos-ui-guest-frame');
 require('@neos-project/neos-ui-ckeditor-bindings');
 require('@neos-project/neos-ui-validators');
@@ -61,7 +61,7 @@ function * application() {
     //
     ReactDOM.render(
         <div style={{width: '100vw', height: '100vh', backgroundColor: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '30px'}}>
-            <Icon icon="circle-notch" label="Loading..." spin={true} size="big"/>
+            <Icon icon="circle-notch" label="Loading..." spin={true} size="2x"/>
         </div>,
         appContainer
     );

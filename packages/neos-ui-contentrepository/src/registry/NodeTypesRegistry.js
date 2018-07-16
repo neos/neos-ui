@@ -133,7 +133,9 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                                         label: $get('ui.label'),
                                         editor: $get('ui.inspector.editor'),
                                         editorOptions: $get('ui.inspector.editorOptions'),
-                                        position: $get('ui.inspector.position')
+                                        position: $get('ui.inspector.position'),
+                                        helpMessage: $get('ui.help.message'),
+                                        helpThumbnail: $get('ui.help.thumbnail')
                                     }),
                                     properties.filter(p => $get('ui.inspector.group', p) === group.id)
                                 ),
@@ -144,7 +146,8 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                                         label: $get('label'),
                                         view: $get('view'),
                                         viewOptions: $get('viewOptions'),
-                                        position: $get('position')
+                                        position: $get('position'),
+                                        helpMessage: $get('helpMessage')
                                     }),
                                     views.filter(v => $get('group', v) === group.id)
                                 )

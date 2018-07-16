@@ -17,7 +17,30 @@
     height: 216px;
     overflow: hidden;
     cursor: pointer;
-    /* TODO: border-color: #fff; on hover */
+}
+
+.thumbnail__overlay {
+    transition: var(--transition-Default) background-color ease-out;
+}
+
+.thumbnail:hover > .thumbnail__overlay {
+    height: 100%;
+    width: 100%;
+    background-color: var(--colors-PrimaryBlue);
+}
+.thumbnail:hover .cropArea {
+    opacity: .7;
+}
+.thumbnail .thumbnail__overlay__icon {
+    display: none;
+}
+.thumbnail:hover .thumbnail__overlay__icon {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 .thumbnail--disabled {
     cursor: not-allowed;

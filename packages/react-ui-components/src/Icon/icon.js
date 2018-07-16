@@ -5,38 +5,43 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import mapper from './mapper';
 
 const Icon = props => {
-    const {size, padded, theme, label} = props;
-    const iconClassName = props.icon;
+    const {padded, theme, label, icon, className, color, ...rest} = props;
+    const iconClassName = icon;
     const classNames = mergeClassNames({
         [theme.icon]: true,
         [iconClassName]: true,
-        [props.className]: props.className && props.className.length,
-        [theme['icon--big']]: size === 'big',
-        [theme['icon--medium']]: size === 'medium',
-        [theme['icon--small']]: size === 'small',
-        [theme['icon--tiny']]: size === 'tiny',
+        [props.className]: className && className.length,
         [theme['icon--paddedLeft']]: padded === 'left',
         [theme['icon--paddedRight']]: padded === 'right',
-        [theme['icon--spin']]: props.spin
+        [theme['icon--color-warn']]: color === 'warn',
+        [theme['icon--color-error']]: color === 'error',
+        [theme['icon--color-primaryBlue']]: color === 'primaryBlue'
     });
 
-    const mappedIcon = mapper(props.icon);
+    const mappedIcon = mapper(icon);
     const iconArray = mappedIcon.split(' ');
-    let icon = mappedIcon;
+    let processedIcon = mappedIcon;
     let prefix = 'fas';
     if (iconArray.length > 1) {
         prefix = iconArray[0];
         const iconClass = iconArray[1];
         if (iconClass.startsWith('fa-')) {
-            icon = iconClass.substr(3);
+            processedIcon = iconClass.substr(3);
         } else {
-            icon = iconClass;
+            processedIcon = iconClass;
         }
     }
 
-    return <FontAwesomeIcon icon={[prefix, icon] || 'question'} aria-label={label} className={classNames} />;
+    return <FontAwesomeIcon icon={[prefix, processedIcon] || 'question'} aria-label={label} className={classNames} {...rest} />;
 };
 Icon.propTypes = {
+
+    /**
+     * We use the react component FortAwesome provides to render icons.
+     * we will pass down all props to the component via {...rest} to expose it's api
+     * https://github.com/FortAwesome/react-fontawesome/blob/master/README.md
+     */
+
     /**
      * The ID of the icon to render.
      */
@@ -46,11 +51,6 @@ Icon.propTypes = {
      * The (accessibility) label for this icon
      */
     label: PropTypes.string,
-
-    /**
-     * Controls the rendered size of the icon.
-     */
-    size: PropTypes.oneOf(['big', 'medium', 'small', 'tiny']),
 
     /**
      * Controls the padding around the icon in a standardized way.
@@ -63,15 +63,15 @@ Icon.propTypes = {
     className: PropTypes.string,
 
     /**
-     * When truthy, the icon will spin continously.
+     *  Adjust the color of the icon
      */
-    spin: PropTypes.bool,
+    color: PropTypes.oneOf(['default', 'warn', 'error', 'primaryBlue']),
 
     /**
     * An optional css theme to be injected.
     */
     theme: PropTypes.shape({
-        'icon': PropTypes.string,
+        icon: PropTypes.string,
         'icon--big': PropTypes.string,
         'icon--small': PropTypes.string,
         'icon--tiny': PropTypes.string,

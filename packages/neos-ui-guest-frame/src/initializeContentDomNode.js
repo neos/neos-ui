@@ -15,6 +15,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
     const isHidden = $get([contextPath, 'properties', '_hidden'], nodes);
     const hasChildren = Boolean($count([contextPath, 'children'], nodes));
     const isInlineEditable = nodeTypesRegistry.isInlineEditable($get([contextPath, 'nodeType'], nodes));
+    const matchesCurrentDimensions = !$get([contextPath, 'matchesCurrentDimensions'], nodes);
 
     if (isHidden) {
         contentDomNode.classList.add(style.markHiddenNodeAsHidden);
@@ -22,6 +23,14 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
 
     if (!isInlineEditable && !hasChildren) {
         createNotInlineEditableOverlay(contentDomNode);
+    }
+
+    if (matchesCurrentDimensions) {
+        /**
+         * Adding legacy class for content elements shining through
+         * @see Neos\Neos\Service\ContentElementWrappingService::addCssClasses()
+         */
+        contentDomNode.classList.add('neos-contentelement-shine-through');
     }
 
     contentDomNode.addEventListener('mouseenter', e => {

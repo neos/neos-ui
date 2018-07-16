@@ -17,26 +17,24 @@ class DateTime extends PureComponent {
     static propTypes = {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
         commit: PropTypes.func.isRequired,
-        highlight: PropTypes.bool,
+        className: PropTypes.string,
         placeholder: PropTypes.string,
         options: PropTypes.object,
         id: PropTypes.string,
         i18nRegistry: PropTypes.object,
-        interfaceLanguage: PropTypes.string,
-        validationErrors: PropTypes.array
+        interfaceLanguage: PropTypes.string
     }
 
     render() {
         const {
             id,
+            className,
             value,
             commit,
             placeholder,
             options,
             i18nRegistry,
-            highlight,
-            interfaceLanguage,
-            validationErrors
+            interfaceLanguage
         } = this.props;
         const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
 
@@ -47,17 +45,16 @@ class DateTime extends PureComponent {
         return (
             <DateInput
                 id={id}
+                className={className}
                 value={mappedValue}
                 onChange={onChange}
                 labelFormat={convertPhpDateFormatToMoment(options.format)}
-                highlight={highlight}
                 dateOnly={!hasTimeFormat(options.format)}
                 timeOnly={!hasDateFormat(options.format)}
                 placeholder={placeholder || i18nRegistry.translate('content.inspector.editors.dateTimeEditor.noDateSet', '', {}, 'Neos.Neos', 'Main')}
                 todayLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.today', 'Today', {}, 'Neos.Neos', 'Main')}
                 applyLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.apply', 'Apply', {}, 'Neos.Neos', 'Main')}
                 locale={interfaceLanguage}
-                validationErrors={validationErrors}
                 disabled={options.disabled}
                 />
         );

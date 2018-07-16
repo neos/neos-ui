@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import CodeMirror from 'react-codemirror';
+import {UnControlled as CodeMirror} from 'react-codemirror2';
 
 // TODO: Find way to dynamically load any mode?
 /* eslint-disable no-unused-vars */
@@ -25,12 +25,12 @@ export default class CodeMirrorWrap extends PureComponent {
         if (!ref) {
             return;
         }
-        const codeMirrorRef = ref.getCodeMirror();
-        const codeMirrorWrapperDomElement = codeMirrorRef.display.wrapper;
+        const codeMirrorRef = ref;
+        const codeMirrorWrapperDomElement = codeMirrorRef.editor.display.wrapper;
         const offsetTop = codeMirrorWrapperDomElement.getBoundingClientRect().top;
         const clientHeight = window.innerHeight || document.clientHeight || document.getElementByTagName('body').clientHeight;
         const height = clientHeight - offsetTop;
-        codeMirrorRef.setSize(null, height);
+        codeMirrorRef.editor.setSize(null, height);
     }
 
     render() {
@@ -44,12 +44,8 @@ export default class CodeMirrorWrap extends PureComponent {
         };
 
         return (
-            <CodeMirror value={this.props.value} onChange={this.handleChange} options={options} ref={this.editorRefCallback}/>
+            <CodeMirror value={this.props.value} options={options} ref={this.editorRefCallback}
+                onChange={(editor, data, value) => this.props.onChange(value)} />
         );
-    }
-
-    // ToDo: Why not directly passing the commit prop down if the argument just gets forwarded?
-    handleChange = newValue => {
-        this.props.onChange(newValue);
     }
 }

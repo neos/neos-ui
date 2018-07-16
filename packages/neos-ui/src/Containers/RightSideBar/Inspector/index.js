@@ -197,7 +197,7 @@ export default class Inspector extends PureComponent {
     }
 
     renderFallback() {
-        return (<div className={style.loader}><div><Icon icon="spinner" spin={true} size="big" /></div></div>);
+        return (<div className={style.loader}><div><Icon icon="spinner" spin={true} size="lg" /></div></div>);
     }
 
     handlePanelToggle = path => {
@@ -271,6 +271,7 @@ export default class Inspector extends PureComponent {
                                     handlePanelToggle={path => {
                                         this.handlePanelToggle([$get('id', tab), ...path]);
                                     }}
+                                    handleInspectorApply={this.handleApply}
                                     />);
                         })
                     }

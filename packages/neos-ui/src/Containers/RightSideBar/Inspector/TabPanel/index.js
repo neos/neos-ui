@@ -14,7 +14,8 @@ export default class TabPanel extends PureComponent {
         groups: PropTypes.object,
         renderSecondaryInspector: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,
-        commit: PropTypes.func.isRequired
+        commit: PropTypes.func.isRequired,
+        handleInspectorApply: PropTypes.func
     };
 
     isPropertyEnabled = ({id}) => {
@@ -24,7 +25,7 @@ export default class TabPanel extends PureComponent {
     };
 
     render() {
-        const {handlePanelToggle, toggledPanels, groups, renderSecondaryInspector, node, commit} = this.props;
+        const {handlePanelToggle, handleInspectorApply, toggledPanels, groups, renderSecondaryInspector, node, commit} = this.props;
 
         if (!groups) {
             return (<div>...</div>);
@@ -37,6 +38,7 @@ export default class TabPanel extends PureComponent {
                     groups.filter(g => ($get('items', g) && $get('items', g).filter(this.isPropertyEnabled).count())).map(group => (
                         <PropertyGroup
                             handlePanelToggle={() => handlePanelToggle([$get('id', group)])}
+                            handleInspectorApply={handleInspectorApply}
                             key={$get('id', group)}
                             label={$get('label', group)}
                             icon={$get('icon', group)}

@@ -39,6 +39,11 @@ export default class SelectBox extends PureComponent {
         ),
 
         /**
+         * Additional className wich will be applied
+         */
+        className: PropTypes.string,
+
+        /**
          * Field name specifying which field in a single "option" contains the "value"
          */
         optionValueField: PropTypes.string,
@@ -86,11 +91,6 @@ export default class SelectBox extends PureComponent {
          * Limit height and show scrollbars if needed, defaults to true
          */
         scrollable: PropTypes.bool,
-
-        /**
-         * Should the SelectBox be highlighted? (e.g. if the property was modified)
-         */
-        highlight: PropTypes.bool,
 
         /**
          * Component used for rendering the individual option elements; Usually this component uses "ListPreviewElement" internally for common styling.
@@ -149,7 +149,6 @@ export default class SelectBox extends PureComponent {
         // Theme & Dependencies
         // ------------------------------
         theme: PropTypes.shape({/* eslint-disable quote-props */
-            'wrapper--highlight': PropTypes.string,
             'selectBox__btn--noRightPadding': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
@@ -177,7 +176,6 @@ export default class SelectBox extends PureComponent {
         const {
             options,
             theme,
-            highlight,
             showDropDownToggle,
             threshold,
             displaySearchBox,
@@ -185,7 +183,7 @@ export default class SelectBox extends PureComponent {
             ListPreviewElement,
             plainInputMode,
             disabled,
-
+            className,
             DropDown,
             SelectBox_ListPreview
         } = this.props;
@@ -196,8 +194,8 @@ export default class SelectBox extends PureComponent {
         const isExpanded = disabled ? false : this.state.isExpanded;
 
         const headerClassName = mergeClassNames({
+            [className]: true,
             [theme.selectBox__btn]: true,
-            [theme['selectBox--highlight']]: highlight,
             [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle,
             [theme['selectBox--disabled']]: disabled
         });
@@ -285,8 +283,10 @@ export default class SelectBox extends PureComponent {
     }
 
     handleDeleteClick = event => {
-        // Don't open SelectBox on value clear
-        event.stopPropagation();
+        if (event) {
+            // Don't open SelectBox on value clear
+            event.stopPropagation();
+        }
         this.props.onValueChange('');
     }
 

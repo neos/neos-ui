@@ -29,11 +29,10 @@ export default class AssetEditor extends PureComponent {
     static propTypes = {
         // The propertyName this editor is used for, coming from the inspector
         identifier: PropTypes.string,
-
+        className: PropTypes.string,
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
         options: PropTypes.object,
         searchOptions: PropTypes.array,
-        highlight: PropTypes.bool,
         placeholder: PropTypes.string,
         onSearchTermChange: PropTypes.func,
         commit: PropTypes.func.isRequired,
@@ -99,7 +98,7 @@ export default class AssetEditor extends PureComponent {
     }
 
     isFeatureEnabled(featureName) {
-        const features = Object.assign({}, DEFAULT_FEATURES, this.props.options.features);
+        const features = Object.assign({}, DEFAULT_FEATURES, (this.props.options ? this.props.options.features : {}));
         return features[featureName];
     }
 
@@ -175,17 +174,20 @@ export default class AssetEditor extends PureComponent {
         }
 
         const disabled = $get('options.disabled', this.props);
+        const accept = $get('options.accept', this.props);
+        const {className} = this.props;
 
         if (this.props.options.multiple) {
             return (
                 <AssetUpload
-                    highlight={this.props.highlight}
+                    className={className}
                     multiple={true}
                     multipleData={this.props.value}
                     onAfterUpload={this.handleValuesChange}
                     ref={this.setAssetUploadReference}
                     isLoading={false}
                     imagesOnly={this.props.imagesOnly}
+                    accept={accept}
                     >
                     <MultiSelectBox
                         dndType={dndTypes.MULTISELECT}
@@ -196,7 +198,6 @@ export default class AssetEditor extends PureComponent {
                         placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                         options={this.state.options || []}
                         values={this.getValues()}
-                        highlight={this.props.highlight}
                         onValuesChange={this.handleValuesChange}
                         displayLoadingIndicator={this.state.isLoading}
                         searchOptions={this.state.searchOptions}
@@ -212,12 +213,13 @@ export default class AssetEditor extends PureComponent {
         }
         return (
             <AssetUpload
-                highlight={this.props.highlight}
+                className={className}
                 multiple={false}
                 onAfterUpload={this.handleValueChange}
                 ref={this.setAssetUploadReference}
                 isLoading={false}
                 imagesOnly={this.props.imagesOnly}
+                accept={accept}
                 >
                 <SelectBox
                     optionValueField="identifier"
@@ -227,7 +229,6 @@ export default class AssetEditor extends PureComponent {
                     placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                     options={this.props.value ? this.state.options : this.state.searchOptions}
                     value={this.getValue()}
-                    highlight={this.props.highlight}
                     onValueChange={this.handleValueChange}
                     displayLoadingIndicator={this.state.isLoading}
                     showDropDownToggle={false}

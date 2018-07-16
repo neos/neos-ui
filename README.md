@@ -6,14 +6,14 @@
 
 ## Browser support
 
-The new interface supports all evergreen (i.e. self-updating) browsers, including: Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers. If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
+The new interface supports all evergreen (i.e. self-updating) browsers, including: Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers. In addition IE11 should also work, but please try to use more modern browsers, as the performance might suffer. If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
 
 ## Features
 
 * Better editing experience for responsive websites.
 * Faster load times for the backend.
 * No reload constraint for the correct stylesheets on multi-site systems.
-* Updated Font-Awesome to v4.5.0 (old icon names are migrated on the fly).
+* Updated Font-Awesome to v5.0 (old icon names are migrated on the fly).
 
 
 ## Installation and usage
@@ -122,17 +122,9 @@ For end to end testing we use the headless chrome. So it is mandatory to install
 Since Chrome 59 the headless mode is integrated. So please install a Chome 59 or higher to execute the end to end tests.
 
 #### Releasing
-Run `VERSION=<VERSION_YOU_WANT_TO_RELEASE> make release`
-e.g `VERSION=1.0.2 make release`.
-This checks if you set the environment variable, reinstall all node_modules,
-builds a production release runs `make lint`, `make test` and `make test-e2e`,
-bumps the version locally via lerna and publish the version as a new npm tag.
-After that you should carefully revisit your local changes, commit then and
-open a pull request on Github. When travis runs through merge it an tag a new
-release on Github.
 
-After that trigger jenkins with the new version.
-
+You only need to trigger the jenkins release with the version you want to release.
+After jenkins has finished you need release a new version on github.
 
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR

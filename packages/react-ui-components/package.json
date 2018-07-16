@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "1.0.14",
+  "version": "1.1.2",
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
@@ -15,14 +15,13 @@
     "lint": "eslint src && stylelint 'src/**/*.css'",
     "jest": "NODE_ENV=test jest",
     "jest:updateSnapshots": "NODE_ENV=test jest -u",
-    "start": "cross-env STORY=true start-storybook -p 9001",
-    "postpublish": "greenkeeper-postpublish"
+    "start": "cross-env STORY=true start-storybook -p 9001"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.0.14",
-    "@neos-project/build-essentials": "1.0.14",
-    "@neos-project/debug-reason-for-rendering": "1.0.14",
-    "@neos-project/jest-preset-neos-ui": "1.0.14",
+    "@neos-project/babel-preset-neos-ui": "1.1.2",
+    "@neos-project/build-essentials": "1.1.2",
+    "@neos-project/debug-reason-for-rendering": "1.1.2",
+    "@neos-project/jest-preset-neos-ui": "1.1.2",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/react": "3.2.16",
@@ -45,7 +44,7 @@
     "react": "^16.0.0",
     "react-click-outside": "^2.3.1",
     "react-close-on-escape": "^2.0.0",
-    "react-collapse": "^4.0.3",
+    "react-collapse": "^2.4.1",
     "react-css-themr": "^2.1.0",
     "react-datetime": "^2.8.10",
     "react-dnd": "^2.5.1",

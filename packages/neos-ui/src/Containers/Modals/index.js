@@ -16,6 +16,7 @@ export default class Modals extends PureComponent {
         const DiscardDialog = containerRegistry.get('Modals/DiscardDialog');
         const DeleteNodeModal = containerRegistry.get('Modals/DeleteNodeModal');
         const InsertModeModal = containerRegistry.get('Modals/InsertModeModal');
+        const KeyboardShortcutModal = containerRegistry.get('Modals/KeyboardShortcutModal');
         const SelectNodeTypeModal = containerRegistry.get('Modals/SelectNodeTypeModal');
         const NodeCreationDialog = containerRegistry.get('Modals/NodeCreationDialog');
         const NodeVariantCreationDialog = containerRegistry.get('Modals/NodeVariantCreationDialog');
@@ -27,6 +28,7 @@ export default class Modals extends PureComponent {
                 <DiscardDialog/>
                 <DeleteNodeModal/>
                 <InsertModeModal/>
+                <KeyboardShortcutModal />
                 <SelectNodeTypeModal/>
                 <NodeCreationDialog/>
                 <NodeVariantCreationDialog/>

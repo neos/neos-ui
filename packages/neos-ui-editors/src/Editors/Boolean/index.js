@@ -30,29 +30,34 @@ const defaultOptions = {
 };
 
 const BooleanEditor = props => {
-    const {value, label, identifier, commit, options, highlight} = props;
+    const {value, label, identifier, commit, options, className} = props;
     const finalOptions = Object.assign({}, defaultOptions, options);
+
+    const wrapperClassName = mergeClassNames({
+        [className]: true,
+        [style.boolean__wrapper]: true
+    });
 
     const finalClassName = mergeClassNames({
         [style.boolean__disabled]: finalOptions.disabled
     });
 
     return (
-        <div>
+        <div className={wrapperClassName}>
             <Label htmlFor={identifier} className={finalClassName}>
-                <CheckBox id={identifier} highlight={highlight} isChecked={toBoolean(value)} isDisabled={finalOptions.disabled} onChange={commit}/>
+                <CheckBox id={identifier} isChecked={toBoolean(value)} isDisabled={finalOptions.disabled} onChange={commit}/>
                 <I18n id={label}/>
             </Label>
         </div>
     );
 };
 BooleanEditor.propTypes = {
+    className: PropTypes.string,
     identifier: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     commit: PropTypes.func.isRequired,
-    options: PropTypes.object,
-    highlight: PropTypes.bool
+    options: PropTypes.object
 };
 
 export default BooleanEditor;

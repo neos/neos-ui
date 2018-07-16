@@ -4,6 +4,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
+import mergeClassNames from 'classnames';
 import {$transform} from 'plow-js';
 import style from './style.css';
 
@@ -24,6 +25,7 @@ import style from './style.css';
 class PluginViewsEditor extends React.PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object.isRequired,
+        className: PropTypes.string,
         activeContentDimensions: PropTypes.object.isRequired,
         personalWorkspace: PropTypes.string,
         focusedNodeIdentifier: PropTypes.string.isRequired,
@@ -106,8 +108,14 @@ class PluginViewsEditor extends React.PureComponent {
     }
 
     render() {
+        const {className} = this.props;
+        const classNames = mergeClassNames({
+            [className]: true,
+            [style.pluginViewContainer]: true
+        });
+
         return (
-            <ul className={style.pluginViewContainer}>
+            <ul className={classNames}>
                 {this.renderViewListItems()}
             </ul>
         );

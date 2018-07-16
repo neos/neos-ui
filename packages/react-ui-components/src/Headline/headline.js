@@ -42,6 +42,7 @@ class Headline extends PureComponent {
             'heading--h1': PropTypes.string
         }).isRequired
     };
+
     static defaultProps = {
         type: 'h1'
     };

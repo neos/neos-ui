@@ -72,6 +72,7 @@ class ShallowDropDownHeader extends PureComponent {
          */
         disabled: PropTypes.bool
     };
+
     static defaultProps = {
         _refHandler: makeFocusNode,
         showDropDownToggle: true,

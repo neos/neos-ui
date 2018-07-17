@@ -19,7 +19,7 @@ class IconButtonComponent extends PureComponent {
         tooltip: PropTypes.string
     };
     render() {
-        const finalProps = omit(this.props, ['formattingRule', 'i18nRegistry', 'tooltip']);
+        const finalProps = omit(this.props, ['formattingRule', 'inlineEditorOptions', 'i18nRegistry', 'tooltip']);
         return (<IconButton {...finalProps} title={this.props.i18nRegistry.translate(this.props.tooltip)}/>);
     }
 }

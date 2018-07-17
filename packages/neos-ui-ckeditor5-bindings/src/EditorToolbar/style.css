@@ -28,6 +28,11 @@
     align-items: stretch;
 }
 
+.linkIconButton__optionsPanelDouble {
+    display: flex;
+    flex-basis: 100%;
+}
+
 .linkIconButton__optionsPanel {
     padding-top: var(--spacing-Full);
     display: flex;

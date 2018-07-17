@@ -30,11 +30,15 @@ export default class LinkIconButton extends PureComponent {
             PropTypes.string,
             PropTypes.object
         ])),
+        inlineEditorOptions: PropTypes.object,
         i18nRegistry: PropTypes.object.isRequired
     };
 
     handleLinkButtonClick = () => {
         if (this.isOpen()) {
+            executeCommand('linkTitle', false, false);
+            executeCommand('linkRelNofollow', false, false);
+            executeCommand('linkTargetBlank', false, false);
             executeCommand('unlink');
         } else {
             executeCommand('link', '', false);
@@ -42,7 +46,7 @@ export default class LinkIconButton extends PureComponent {
     }
 
     render() {
-        const {i18nRegistry, isActive, formattingUnderCursor} = this.props;
+        const {i18nRegistry, isActive, formattingUnderCursor, inlineEditorOptions} = this.props;
 
         return (
             <div>
@@ -52,7 +56,7 @@ export default class LinkIconButton extends PureComponent {
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />
-                {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} formattingUnderCursor={formattingUnderCursor} /> : null}
+                {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} formattingUnderCursor={formattingUnderCursor} inlineEditorOptions={inlineEditorOptions} /> : null}
             </div>
         );
     }
@@ -81,6 +85,7 @@ class LinkTextField extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
         hrefValue: PropTypes.string,
+        inlineEditorOptions: PropTypes.object,
 
         linkLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
@@ -264,65 +269,75 @@ class LinkTextField extends PureComponent {
     renderOptionsPanel() {
         return (
             <div className={style.linkIconButton__optionsPanel}>
-                <div className={style.linkIconButton__optionsPanelItem}>
-                    <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">Link to Anchor</label>
-                    <div>
-                        <TextInput
-                            id="__neos__linkEditor--anchor"
-                            value={$get('link', this.props.formattingUnderCursor).split('#')[1] || ''}
-                            onChange={value => {
-                                executeCommand('link', $get('link', this.props.formattingUnderCursor).split('#')[0] + '#' + value, false);
-                            }}
-                            />
-                    </div>
-                </div>
-                <div className={style.linkIconButton__optionsPanelItem}>
-                    <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--title">Title</label>
-                    <div>
-                        <TextInput
-                            id="__neos__linkEditor--title"
-                            value={$get('linkTitle', this.props.formattingUnderCursor) || ''}
-                            onChange={value => {
-                                executeCommand('linkTitle', value, false);
-                            }}
-                            />
-                    </div>
-                </div>
-                <div className={style.linkIconButton__optionsPanelItem}>
-                    <label>
-                        <CheckBox
-                            onChange={() => {
-                                executeCommand('linkTargetBlank', undefined, false);
-                            }}
-                            isChecked={$get('linkTargetBlank', this.props.formattingUnderCursor) || false}
-                        /> Open in new window
-                    </label>
-                </div>
-                <div className={style.linkIconButton__optionsPanelItem}>
-                    <label>
-                        <CheckBox
-                            onChange={() => {
-                                executeCommand('linkRelNofollow', undefined, false);
-                            }}
-                            isChecked={$get('linkRelNofollow', this.props.formattingUnderCursor) || false}
-                        /> No follow
-                    </label>
+                {$get('linking.anchor', this.props.inlineEditorOptions) && (
+                    <div className={style.linkIconButton__optionsPanelItem}>
+                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">Link to Anchor</label>
+                        <div>
+                            <TextInput
+                                id="__neos__linkEditor--anchor"
+                                value={$get('link', this.props.formattingUnderCursor).split('#')[1] || ''}
+                                onChange={value => {
+                                    executeCommand('link', $get('link', this.props.formattingUnderCursor).split('#')[0] + '#' + value, false);
+                                }}
+                                />
+                        </div>
+                    </div>)}
+                {$get('linking.title', this.props.inlineEditorOptions) && (
+                    <div className={style.linkIconButton__optionsPanelItem}>
+                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--title">Title</label>
+                        <div>
+                            <TextInput
+                                id="__neos__linkEditor--title"
+                                value={$get('linkTitle', this.props.formattingUnderCursor) || ''}
+                                onChange={value => {
+                                    executeCommand('linkTitle', value, false);
+                                }}
+                                />
+                        </div>
+                    </div>)}
+                <div className={style.linkIconButton__optionsPanelDouble}>
+                    {$get('linking.targetBlank', this.props.inlineEditorOptions) && (
+                        <div className={style.linkIconButton__optionsPanelItem}>
+                            <label>
+                                <CheckBox
+                                    onChange={() => {
+                                        executeCommand('linkTargetBlank', undefined, false);
+                                    }}
+                                    isChecked={$get('linkTargetBlank', this.props.formattingUnderCursor) || false}
+                                /> Open in new window
+                            </label>
+                        </div>)}
+                    {$get('linking.relNofollow', this.props.inlineEditorOptions) && (
+                        <div className={style.linkIconButton__optionsPanelItem}>
+                            <label>
+                                <CheckBox
+                                    onChange={() => {
+                                        executeCommand('linkRelNofollow', undefined, false);
+                                    }}
+                                    isChecked={$get('linkRelNofollow', this.props.formattingUnderCursor) || false}
+                                /> No follow
+                            </label>
+                        </div>)}
                 </div>
             </div>
         );
     }
 
     render() {
+        const linkingOptions = $get('linking', this.props.inlineEditorOptions);
+        const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
         return (
             <div className={style.linkIconButton__flyout}>
                 <div className={style.linkIconButton__wrap}>
                     {this.state.isEditMode ? this.renderEditMode() : this.renderViewMode()}
-                    <IconButton
-                        onClick={this.handleToggleOptionsPanel}
-                        style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
-                        className={style.linkIconButton__innerButton}
-                        icon="ellipsis-v"
-                        />
+                    {optionsPanelEnabled && (
+                        <IconButton
+                            onClick={this.handleToggleOptionsPanel}
+                            style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
+                            className={style.linkIconButton__innerButton}
+                            icon="ellipsis-v"
+                            />
+                    )}
                 </div>
                 {this.state.optionsPanelIsOpen && this.renderOptionsPanel()}
             </div>

@@ -36,8 +36,12 @@ export default class LinkAttributeCommand extends Command {
 
                 if (selection.hasAttribute('linkHref')) {
                     const linkRange = findLinkRange(selection.getFirstPosition(), selection.getAttribute('linkHref'));
-                    writer.setAttribute(this.attributeKey, value, linkRange);
-                    writer.setSelection(linkRange);
+                    if (value === false) {
+                        writer.removeAttribute(this.attributeKey, linkRange);
+                    } else {
+                        writer.setAttribute(this.attributeKey, value, linkRange);
+                        writer.setSelection(linkRange);
+                    }
                 } else if (value !== '') {
                     const attributes = toMap(selection.getAttributes());
                     attributes.set(this.attributeKey, value);
@@ -49,7 +53,11 @@ export default class LinkAttributeCommand extends Command {
                 const ranges = model.schema.getValidRanges(selection.getRanges(), this.attributeKey);
 
                 for (const range of ranges) {
-                    writer.setAttribute(this.attributeKey, value, range);
+                    if (value === false) {
+                        writer.removeAttribute(this.attributeKey, range);
+                    } else {
+                        writer.setAttribute(this.attributeKey, value, range);
+                    }
                 }
             }
         });

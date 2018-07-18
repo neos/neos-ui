@@ -1,5 +1,5 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -7,75 +7,79 @@ import PropTypes from 'prop-types';
  *
  * It is used inside SelectBox as the header component when no value is selected, and a filter/search box is shown.
  */
-const SelectBox_HeaderWithSearchInput = props => {
-    const {
-        searchTerm,
-        onSearchTermChange,
-        onKeyDown,
-        placeholder,
-        displayLoadingIndicator,
-        setFocus,
-        theme,
-        Icon,
-        TextInput,
-        IconButton,
-        disabled
-    } = props;
+class SelectBox_HeaderWithSearchInput extends PureComponent {
+    static propTypes = {
+        // For explanations of the PropTypes, see SelectBox.js
+        placeholder: PropTypes.string,
+        displayLoadingIndicator: PropTypes.bool,
+        searchTerm: PropTypes.string.isRequired,
+        onSearchTermChange: PropTypes.func.isRequired,
+        setFocus: PropTypes.bool,
+        disabled: PropTypes.bool,
 
-    const clearSearch = event => {
+        // For keyboard handling
+        onKeyDown: PropTypes.func,
+
+        /* ------------------------------
+         * Theme & Dependencies
+         * ------------------------------ */
+        theme: PropTypes.shape({
+            selectBoxHeaderWithSearchInput: PropTypes.string.isRequired,
+            selectBoxHeaderWithSearchInput__inputContainer: PropTypes.string.isRequired,
+            selectBoxHeaderWithSearchInput__icon: PropTypes.string.isRequired,
+            selectBoxHeaderWithSearchInput__input: PropTypes.string.isRequired
+        }).isRequired,
+        Icon: PropTypes.any.isRequired,
+        TextInput: PropTypes.any.isRequired,
+        IconButton: PropTypes.any.isRequired
+    }
+
+    static defaultProps = {
+        placeholder: ''
+    }
+
+    clearSearch = event => {
         event.stopPropagation();
-        onSearchTermChange('');
-    };
+        this.props.onSearchTermChange('');
+    }
 
-    return (
-        <div className={theme.selectBoxHeaderWithSearchInput}>
-            <Icon
-                icon="search"
-                className={theme.selectBoxHeaderWithSearchInput__icon}
-                />
-            <TextInput
-                containerClassName={theme.selectBoxHeaderWithSearchInput__inputContainer}
-                className={theme.selectBoxHeaderWithSearchInput__input}
-                value={searchTerm}
-                onChange={onSearchTermChange}
-                onKeyDown={onKeyDown}
-                placeholder={placeholder}
-                setFocus={setFocus}
-                type="search"
-                disabled={disabled}
-                />
-            {displayLoadingIndicator && <Icon className={theme.selectBoxHeaderWithSearchInput__icon} spin={true} icon="spinner"/>}
-            {searchTerm && <IconButton className={theme.selectBoxHeaderWithSearchInput__icon} icon="times" onClick={clearSearch}/>}
-        </div>
-    );
-};
-SelectBox_HeaderWithSearchInput.defaultProps = {
-    placeholder: ''
-};
-SelectBox_HeaderWithSearchInput.propTypes = {
-    // For explanations of the PropTypes, see SelectBox.js
-    placeholder: PropTypes.string,
-    displayLoadingIndicator: PropTypes.bool,
-    searchTerm: PropTypes.string.isRequired,
-    onSearchTermChange: PropTypes.func.isRequired,
-    setFocus: PropTypes.bool,
-    disabled: PropTypes.bool,
+    render() {
+        const {
+            searchTerm,
+            onSearchTermChange,
+            onKeyDown,
+            placeholder,
+            displayLoadingIndicator,
+            setFocus,
+            theme,
+            Icon,
+            TextInput,
+            IconButton,
+            disabled
+        } = this.props;
 
-    // For keyboard handling
-    onKeyDown: PropTypes.func,
-
-    /* ------------------------------
-     * Theme & Dependencies
-     * ------------------------------ */
-    theme: PropTypes.shape({
-        selectBoxHeaderWithSearchInput: PropTypes.string.isRequired,
-        selectBoxHeaderWithSearchInput__inputContainer: PropTypes.string.isRequired,
-        selectBoxHeaderWithSearchInput__icon: PropTypes.string.isRequired,
-        selectBoxHeaderWithSearchInput__input: PropTypes.string.isRequired
-    }).isRequired,
-    Icon: PropTypes.any.isRequired,
-    TextInput: PropTypes.any.isRequired,
-    IconButton: PropTypes.any.isRequired
-};
+        return (
+            <div className={theme.selectBoxHeaderWithSearchInput}>
+                <Icon
+                    icon="search"
+                    className={theme.selectBoxHeaderWithSearchInput__icon}
+                    />
+                <TextInput
+                    containerClassName={theme.selectBoxHeaderWithSearchInput__inputContainer}
+                    className={theme.selectBoxHeaderWithSearchInput__input}
+                    value={searchTerm}
+                    onChange={onSearchTermChange}
+                    onKeyDown={onKeyDown}
+                    placeholder={placeholder}
+                    setFocus={setFocus}
+                    type="search"
+                    disabled={disabled}
+                    />
+                {displayLoadingIndicator && <Icon className={theme.selectBoxHeaderWithSearchInput__icon} spin={true} icon="spinner"/>}
+                {searchTerm && <IconButton className={theme.selectBoxHeaderWithSearchInput__icon} icon="times" onClick={this.clearSearch}/>}
+            </div>
+        );
+    }
+}
 
 export default SelectBox_HeaderWithSearchInput;

@@ -134,9 +134,8 @@ class DialogWithEscape extends PureComponent {
     }
 
     render() {
-        const rest = omit(this.props, ['onRequestClose']);
         return (
-            <CloseOnEscape onEscape={this.onEscape}><DialogWithoutEscape {...rest}/></CloseOnEscape>
+            <CloseOnEscape onEscape={this.onEscape}><DialogWithoutEscape {...this.props}/></CloseOnEscape>
         );
     }
 }

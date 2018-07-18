@@ -271,11 +271,14 @@ class LinkTextField extends PureComponent {
             <div className={style.linkIconButton__optionsPanel}>
                 {$get('linking.anchor', this.props.inlineEditorOptions) && (
                     <div className={style.linkIconButton__optionsPanelItem}>
-                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">Link to Anchor</label>
+                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">
+                            {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__anchor', 'Link to anchor')}
+                        </label>
                         <div>
                             <TextInput
                                 id="__neos__linkEditor--anchor"
                                 value={$get('link', this.props.formattingUnderCursor).split('#')[1] || ''}
+                                placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__anchorPlaceholder', 'Enter anchor name')}
                                 onChange={value => {
                                     executeCommand('link', $get('link', this.props.formattingUnderCursor).split('#')[0] + '#' + value, false);
                                 }}
@@ -284,11 +287,14 @@ class LinkTextField extends PureComponent {
                     </div>)}
                 {$get('linking.title', this.props.inlineEditorOptions) && (
                     <div className={style.linkIconButton__optionsPanelItem}>
-                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--title">Title</label>
+                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--title">
+                            {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__title', 'Title')}
+                        </label>
                         <div>
                             <TextInput
                                 id="__neos__linkEditor--title"
                                 value={$get('linkTitle', this.props.formattingUnderCursor) || ''}
+                                placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__titlePlaceholder', 'Enter link title')}
                                 onChange={value => {
                                     executeCommand('linkTitle', value, false);
                                 }}
@@ -304,7 +310,7 @@ class LinkTextField extends PureComponent {
                                         executeCommand('linkTargetBlank', undefined, false);
                                     }}
                                     isChecked={$get('linkTargetBlank', this.props.formattingUnderCursor) || false}
-                                /> Open in new window
+                                /> {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
                             </label>
                         </div>)}
                     {$get('linking.relNofollow', this.props.inlineEditorOptions) && (
@@ -315,7 +321,7 @@ class LinkTextField extends PureComponent {
                                         executeCommand('linkRelNofollow', undefined, false);
                                     }}
                                     isChecked={$get('linkRelNofollow', this.props.formattingUnderCursor) || false}
-                                /> No follow
+                                /> {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__noFollow', 'No follow')}
                             </label>
                         </div>)}
                 </div>

@@ -9,10 +9,7 @@ import {getVersion} from '@neos-project/utils-helpers';
 
 import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.css';
-
-const TARGET_WINDOW = 'Window';
-const TARGET_CONTENT_CANVAS = 'ContentCanvas';
-const THRESHOLD_MOUSE_LEAVE = 500;
+import {TARGET_WINDOW, TARGET_CONTENT_CANVAS, THRESHOLD_MOUSE_LEAVE} from './constants';
 
 @connect($transform({
     isHidden: $get('ui.drawer.isHidden')
@@ -91,7 +88,9 @@ export default class Drawer extends PureComponent {
 
             case TARGET_WINDOW:
             default:
-                window.location.href = uri;
+                // we do not need to do anything here, as MenuItems of type TARGET_WINDOW automatically
+                // wrap their contents in an <a>-tag (such that the user can crtl-click it to open in a
+                // new window).
                 break;
         }
     }

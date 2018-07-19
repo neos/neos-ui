@@ -1,6 +1,7 @@
 <?php
 namespace Neos\Neos\Ui\Service;
 
+use Neos\ContentRepository\Domain\Projection\Content\ContentGraphInterface;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
@@ -10,11 +11,11 @@ use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSu
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\PropertyAwareNodePrivilegeSubject;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\RemoveNodePrivilege;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
 use Neos\Flow\Security\Policy\PolicyService;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
 use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
 
 /**
@@ -42,6 +43,12 @@ class NodePolicyService
     protected $objectManager;
 
     /**
+     * @Flow\Inject
+     * @var ContentGraphInterface
+     */
+    protected $contentGraph;
+
+    /**
      * @param ObjectManagerInterface $objectManager
      * @return array the key is a Privilege class name; the value is "true" if privileges are configured for this class name.
      * @Flow\CompileStatic
@@ -63,24 +70,24 @@ class NodePolicyService
     }
 
     /**
-     * @param NodeInterface $node
+     * @param NodeAddress $nodeAddress
      * @return array
      */
-    public function getNodePolicyInformation(NodeInterface $node): array
+    public function getNodePolicyInformation(NodeAddress $nodeAddress): array
     {
         return [
-            'disallowedNodeTypes' => $this->getDisallowedNodeTypes($node),
-            'canRemove' => $this->canRemoveNode($node),
-            'canEdit' => $this->canEditNode($node),
-            'disallowedProperties' => $this->getDisallowedProperties($node)
+            'disallowedNodeTypes' => $this->getDisallowedNodeTypes($nodeAddress),
+            'canRemove' => $this->canRemoveNode($nodeAddress),
+            'canEdit' => $this->canEditNode($nodeAddress),
+            'disallowedProperties' => $this->getDisallowedProperties($nodeAddress)
         ];
     }
 
     /**
-     * @param NodeInterface $node
+     * @param NodeAddress $nodeAddress
      * @return bool
      */
-    public function isNodeTreePrivilegeGranted(NodeInterface $node): bool
+    public function isNodeTreePrivilegeGranted(NodeAddress $nodeAddress): bool
     {
         if (!isset(self::getUsedPrivilegeClassNames($this->objectManager)[NodeTreePrivilege::class])) {
             return true;
@@ -88,15 +95,15 @@ class NodePolicyService
 
         return $this->privilegeManager->isGranted(
             NodeTreePrivilege::class,
-            new NodePrivilegeSubject($node)
+            new NodePrivilegeSubject($nodeAddress)
         );
     }
 
     /**
-     * @param NodeInterface $node
+     * @param NodeAddress $nodeAddress
      * @return array
      */
-    public function getDisallowedNodeTypes(NodeInterface $node): array
+    public function getDisallowedNodeTypes(NodeAddress $nodeAddress): array
     {
         $disallowedNodeTypes = [];
 
@@ -104,10 +111,10 @@ class NodePolicyService
             return $disallowedNodeTypes;
         }
 
-        $filter = function ($nodeType) use ($node) {
+        $filter = function ($nodeType) use ($nodeAddress) {
             return $this->privilegeManager->isGranted(
                 CreateNodePrivilege::class,
-                new CreateNodePrivilegeSubject($node, $nodeType)
+                new CreateNodePrivilegeSubject($nodeAddress, $nodeType)
             );
         };
 
@@ -121,38 +128,38 @@ class NodePolicyService
     }
 
     /**
-     * @param NodeInterface $node
+     * @param NodeAddress $nodeAddress
      * @return bool
      */
-    public function canRemoveNode(NodeInterface $node): bool
+    public function canRemoveNode(NodeAddress $nodeAddress): bool
     {
         $canRemove = true;
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[RemoveNodePrivilege::class])) {
-            $canRemove = $this->privilegeManager->isGranted(RemoveNodePrivilege::class, new NodePrivilegeSubject($node));
+            $canRemove = $this->privilegeManager->isGranted(RemoveNodePrivilege::class, new NodePrivilegeSubject($nodeAddress));
         }
 
         return $canRemove;
     }
 
     /**
-     * @param NodeInterface $node
+     * @param NodeAddress $nodeAddress
      * @return bool
      */
-    public function canEditNode(NodeInterface $node): bool
+    public function canEditNode(NodeAddress $nodeAddress): bool
     {
         $canEdit = true;
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[EditNodePrivilege::class])) {
-            $canEdit = $this->privilegeManager->isGranted(EditNodePrivilege::class, new NodePrivilegeSubject($node));
+            $canEdit = $this->privilegeManager->isGranted(EditNodePrivilege::class, new NodePrivilegeSubject($nodeAddress));
         }
 
         return $canEdit;
     }
 
     /**
-     * @param NodeInterface $node
+     * @param NodeAddress $nodeAddress
      * @return array
      */
-    public function getDisallowedProperties(NodeInterface $node): array
+    public function getDisallowedProperties(NodeAddress $nodeAddress): array
     {
         $disallowedProperties = [];
 
@@ -160,12 +167,15 @@ class NodePolicyService
             return $disallowedProperties;
         }
 
-        $filter = function ($propertyName) use ($node) {
+        $filter = function ($propertyName) use ($nodeAddress) {
             return $this->privilegeManager->isGranted(
                 EditNodePropertyPrivilege::class,
-                new PropertyAwareNodePrivilegeSubject($node, null, $propertyName)
+                new PropertyAwareNodePrivilegeSubject($nodeAddress, null, $propertyName)
             );
         };
+
+        $subgraph = $this->contentGraph->getSubgraphByIdentifier($nodeAddress->getContentStreamIdentifier(), $nodeAddress->getDimensionSpacePoint());
+        $node = $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->getNodeAggregateIdentifier());
 
         $disallowedProperties = array_filter(array_keys($node->getNodeType()->getProperties()), $filter);
         return $disallowedProperties;

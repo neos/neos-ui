@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\ContentRepository\Domain\Projection\Content\ContentGraphInterface;
 use Neos\ContentRepository\Domain\ValueObject\WorkspaceName;
 use Neos\Flow\Mvc\View\JsonView;
+use Neos\Neos\Domain\Context\Content\NodeAddress;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
 use Neos\Flow\Annotations as Flow;
@@ -390,14 +391,14 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * @param array<NodeInterface> $nodes
+     * @param array<NodeAddress> $nodes
      */
     public function getPolicyInformationAction(array $nodes)
     {
         $result = [];
-        /** @var NodeInterface $node */
+        /** @var NodeAddress $node */
         foreach ($nodes as $node) {
-            $result[$node->getContextPath()] = ['policy' => $this->nodePolicyService->getNodePolicyInformation($node)];
+            $result[$node->serializeForUri()] = ['policy' => $this->nodePolicyService->getNodePolicyInformation($node)];
         }
 
         $this->view->assign('value', $result);

@@ -34,7 +34,8 @@ export const createEditor = ({propertyDomNode, propertyName, contextPath, editor
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
         userPreferences,
-        globalRegistry
+        globalRegistry,
+        propertyDomNode
     });
 
     DecoupledEditor

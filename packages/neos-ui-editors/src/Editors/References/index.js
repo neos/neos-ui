@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import createNew from '../Reference/createNew';
 import dataLoader from '../Reference/referenceDataLoader';
-import NodeOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/NodeOption';
+import NodeOption from '../../Library/NodeOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
 

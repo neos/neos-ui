@@ -13,9 +13,6 @@ import {isUri} from '@neos-project/utils-helpers';
 
 import style from './style.css';
 
-/**
- * The Actual StyleSelect component
- */
 @connect($transform({
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
@@ -36,6 +33,7 @@ export default class LinkIconButton extends PureComponent {
 
     handleLinkButtonClick = () => {
         if (this.isOpen()) {
+            // We need to remove all attirbutes before unsetting the link
             executeCommand('linkTitle', false, false);
             executeCommand('linkRelNofollow', false, false);
             executeCommand('linkTargetBlank', false, false);
@@ -80,7 +78,6 @@ const isInternalLink = link => Boolean(link.indexOf('node://') === 0 || link.ind
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }))
-
 class LinkTextField extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
@@ -172,6 +169,12 @@ class LinkTextField extends PureComponent {
         }
     }
 
+    handleSearchTermKeyPress = e => {
+        if (e && e.key === 'Enter') {
+            this.handleManualSetLink();
+        }
+    }
+
     // A node has been selected
     handleValueChange = value => {
         this.commitValue(value || '');
@@ -227,6 +230,7 @@ class LinkTextField extends PureComponent {
                     allowEmpty={true}
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
+                    onSearchTermKeyPress={this.handleSearchTermKeyPress}
                     ListPreviewElement={LinkOption}
                     noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                     searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}

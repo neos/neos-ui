@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
 import {IconButton, SelectBox, Icon, CheckBox, TextInput} from '@neos-project/react-ui-components';
-import LinkOption from './LinkOption';
+import LinkOption from '@neos-project/neos-ui-editors/src/Library/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {executeCommand} from './../ckEditorApi';
 

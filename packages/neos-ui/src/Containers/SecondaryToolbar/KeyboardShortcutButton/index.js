@@ -7,7 +7,8 @@ import {$transform, $get} from 'plow-js';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
+    i18nRegistry: globalRegistry.get('i18n'),
+    hotkeyRegistry: globalRegistry.get('hotkeys')
 }))
 @connect(
     $transform({isOpen: $get('ui.keyboardShortcutModal.isOpen')}),
@@ -16,11 +17,16 @@ import {actions} from '@neos-project/neos-ui-redux-store';
 export default class KeyboardShortcutButton extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object.isRequired,
-        toggleFullScreen: PropTypes.func
+        toggleFullScreen: PropTypes.func,
+        hotkeyRegistry: PropTypes.object.isRequired
     };
 
     render() {
-        const {i18nRegistry, open} = this.props;
+        const {i18nRegistry, open, hotkeyRegistry} = this.props;
+
+        if (hotkeyRegistry._registry === null || hotkeyRegistry._registry.length === 0) {
+            return null;
+        }
 
         return (
             <IconButton

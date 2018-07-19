@@ -12,8 +12,7 @@ import style from './style.css';
 @neos(globalRegistry => ({
     inlineEditorRegistry: globalRegistry.get('inlineEditors'),
     containerRegistry: globalRegistry.get('containers'),
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
-    frontendConfigurationRegistry: globalRegistry.get('frontendConfiguration')
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect($transform({
     currentlyEditedPropertyName: $get('ui.contentCanvas.currentlyEditedPropertyName'),
@@ -29,7 +28,6 @@ export default class SecondaryToolbar extends PureComponent {
         containerRegistry: PropTypes.object.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
         inlineEditorRegistry: PropTypes.object.isRequired,
-        frontendConfigurationRegistry: PropTypes.object.isRequired,
 
         focusedNodeTypeName: PropTypes.string,
         currentlyEditedPropertyName: PropTypes.string,
@@ -61,7 +59,6 @@ export default class SecondaryToolbar extends PureComponent {
     render() {
         const {
             containerRegistry,
-            frontendConfigurationRegistry,
             isFringedLeft,
             isFringedRight,
             isEditModePanelHidden,
@@ -76,14 +73,7 @@ export default class SecondaryToolbar extends PureComponent {
         });
 
         const Toolbar = this.getToolbarComponent();
-        const dontShowKeyboardShortcuts = frontendConfigurationRegistry._registry
-            // Filter for every item which key is hotkeys and check if it's an empty object
-            .filter(i => i.key === 'hotkeys' && Object.keys(i.value).length === 0)
-            .length !== 0;
-        const SecondaryToolbarRight = containerRegistry.getChildren('SecondaryToolbar/Right')
-            // Filter every item that has not KeyboardShortcutButton in it's name if KeyboardShortcutButton
-            // shouldn't be displayed
-            .filter(i => dontShowKeyboardShortcuts ? i.displayName.indexOf('KeyboardShortcutButton') === -1 : true);
+        const SecondaryToolbarRight = containerRegistry.getChildren('SecondaryToolbar/Right');
 
         return (
             <div className={classNames}>

@@ -116,6 +116,7 @@ export default class SelectBox extends PureComponent {
         // ------------------------------
         displaySearchBox: PropTypes.bool,
         onSearchTermChange: PropTypes.func,
+        onSearchTermKeyPress: PropTypes.func,
         threshold: PropTypes.number,
         searchTerm: PropTypes.string,
         searchBoxLeftToTypeLabel: PropTypes.string,
@@ -349,11 +350,15 @@ export default class SelectBox extends PureComponent {
     }
 
     handleKeyDown = e => {
+        const {options, onSearchTermKeyPress} = this.props;
+        if (typeof onSearchTermKeyPress === 'function') {
+            // Pass through keydown event, needed for keyboard handling
+            onSearchTermKeyPress(e);
+        }
         if (this.state.isExpanded && e && ['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
             // Do not scroll while we are doing keyboard interaction
             e.preventDefault();
 
-            const {options} = this.props;
             const optionValueAccessor = this.getOptionValueAccessor();
             const currentIndex = options.findIndex(option => optionValueAccessor(option) === this.state.focusedValue);
 

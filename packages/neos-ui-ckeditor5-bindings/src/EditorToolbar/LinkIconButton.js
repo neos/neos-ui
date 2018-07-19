@@ -1,10 +1,9 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
+import {IconButton, SelectBox, Icon, CheckBox, TextInput} from '@neos-project/react-ui-components';
 import LinkOption from './LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {executeCommand} from './../ckEditorApi';
@@ -14,9 +13,6 @@ import {isUri} from '@neos-project/utils-helpers';
 
 import style from './style.css';
 
-/**
- * The Actual StyleSelect component
- */
 @connect($transform({
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
@@ -31,11 +27,16 @@ export default class LinkIconButton extends PureComponent {
             PropTypes.string,
             PropTypes.object
         ])),
+        inlineEditorOptions: PropTypes.object,
         i18nRegistry: PropTypes.object.isRequired
     };
 
     handleLinkButtonClick = () => {
         if (this.isOpen()) {
+            // We need to remove all attirbutes before unsetting the link
+            executeCommand('linkTitle', false, false);
+            executeCommand('linkRelNofollow', false, false);
+            executeCommand('linkTargetBlank', false, false);
             executeCommand('unlink');
         } else {
             executeCommand('link', '', false);
@@ -43,7 +44,7 @@ export default class LinkIconButton extends PureComponent {
     }
 
     render() {
-        const {i18nRegistry, isActive} = this.props;
+        const {i18nRegistry, isActive, formattingUnderCursor, inlineEditorOptions} = this.props;
 
         return (
             <div>
@@ -53,7 +54,7 @@ export default class LinkIconButton extends PureComponent {
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />
-                {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} /> : null}
+                {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} formattingUnderCursor={formattingUnderCursor} inlineEditorOptions={inlineEditorOptions} /> : null}
             </div>
         );
     }
@@ -67,10 +68,8 @@ export default class LinkIconButton extends PureComponent {
     }
 }
 
-// allow to insert node:// and asset:// links by pasting
 const isUriOrInternalLink = link => Boolean(isUri(link) || link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
-// If node links have a hash in them, treat them like normal links
-const isUriOrHasHash = link => Boolean(isUri(link) || link.includes('#'));
+const isInternalLink = link => Boolean(link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
 
 @neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
@@ -79,11 +78,11 @@ const isUriOrHasHash = link => Boolean(isUri(link) || link.includes('#'));
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }))
-
 class LinkTextField extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
         hrefValue: PropTypes.string,
+        inlineEditorOptions: PropTypes.object,
 
         linkLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
@@ -96,10 +95,12 @@ class LinkTextField extends PureComponent {
     };
 
     state = {
+        isEditMode: false,
         searchTerm: '',
         isLoading: false,
         searchOptions: [],
-        options: []
+        options: [],
+        optionsPanelIsOpen: false
     };
 
     getDataLoaderOptions() {
@@ -107,30 +108,6 @@ class LinkTextField extends PureComponent {
             nodeTypes: ['Neos.Neos:Document'],
             contextForNodeLinking: this.props.contextForNodeLinking.toJS()
         };
-    }
-
-    refreshState() {
-        if (isUriOrHasHash(this.props.hrefValue)) {
-            this.setState({
-                searchTerm: this.props.hrefValue,
-                options: []
-            });
-        } else {
-            if (this.props.hrefValue) {
-                this.setState({isLoading: true});
-                this.props.linkLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.hrefValue)
-                    .then(options => {
-                        this.setState({
-                            isLoading: false,
-                            options
-                        });
-                    });
-            }
-            // ToDo: Couldn't this lead to bugs in the future due to the async operation on top?
-            this.setState({
-                searchTerm: ''
-            });
-        }
     }
 
     componentDidMount() {
@@ -143,26 +120,44 @@ class LinkTextField extends PureComponent {
         }
     }
 
-    // TODO: this should be debounced, but it's super hard to do, because then hrefValue would override searchTerm
+    refreshState() {
+        if (this.props.hrefValue) {
+            if (isInternalLink(this.props.hrefValue)) {
+                this.setState({
+                    isLoading: true,
+                    isEditMode: false
+                });
+                this.props.linkLookupDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.hrefValue.split('#')[0])
+                    .then(options => {
+                        this.setState({
+                            isLoading: false,
+                            options
+                        });
+                    });
+            } else {
+                this.setState({
+                    isEditMode: false,
+                    options: []
+                });
+            }
+        } else {
+            this.setState({
+                isEditMode: true,
+                searchTerm: ''
+            });
+        }
+    }
+
     commitValue = value => executeCommand('link', value, false);
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
         if (isUriOrInternalLink(searchTerm)) {
-            this.commitValue(searchTerm);
-
             this.setState({
                 isLoading: false,
                 searchOptions: []
             });
-        } else if (!searchTerm && isUriOrInternalLink(this.props.hrefValue)) {
-            // The user emptied the URL value, so we need to reset it
-            this.commitValue('');
         } else if (searchTerm) {
-            // When changing from uri mode to search mode, we should clear the value
-            if (isUriOrInternalLink(this.state.searchTerm)) {
-                this.commitValue('');
-            }
             this.setState({isLoading: true, searchOptions: []});
             this.props.linkLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
@@ -174,27 +169,58 @@ class LinkTextField extends PureComponent {
         }
     }
 
+    handleSearchTermKeyPress = e => {
+        if (e && e.key === 'Enter') {
+            this.handleManualSetLink();
+        }
+    }
+
     // A node has been selected
     handleValueChange = value => {
         this.commitValue(value || '');
 
-        if (!isUriOrHasHash(value)) {
+        if (isInternalLink(value)) {
             const options = this.state.searchOptions.reduce((current, option) =>
                     (option.loaderUri === value) ? [Object.assign({}, option)] : current
                 , []);
 
-            this.setState({options, searchOptions: [], searchTerm: ''});
+            this.setState({
+                options,
+                searchOptions: [],
+                searchTerm: '',
+                isEditMode: false
+            });
         }
     }
 
-    render() {
+    handleManualSetLink = () => {
+        this.commitValue(this.state.searchTerm);
+        this.setState({
+            isEditMode: false
+        });
+    }
+
+    handleSwitchToEditMode = () => {
+        this.setState({
+            isEditMode: true,
+            searchTerm: this.props.hrefValue
+        });
+    }
+
+    handleToggleOptionsPanel = () => {
+        this.setState({
+            optionsPanelIsOpen: !this.state.optionsPanelIsOpen
+        });
+    }
+
+    renderEditMode() {
         return (
-            <div className={style.linkIconButton__flyout}>
+            <Fragment>
                 <SelectBox
-                    options={this.props.hrefValue ? this.state.options : this.state.searchOptions}
+                    options={this.state.searchOptions}
                     optionValueField="loaderUri"
-                    value={isUriOrHasHash(this.props.hrefValue) ? '' : this.props.hrefValue}
-                    plainInputMode={isUriOrHasHash(this.props.hrefValue)}
+                    value={''}
+                    plainInputMode={isUri(this.state.searchTerm)}
                     onValueChange={this.handleValueChange}
                     placeholder="Paste a link, or search"
                     displayLoadingIndicator={this.state.isLoading}
@@ -204,10 +230,126 @@ class LinkTextField extends PureComponent {
                     allowEmpty={true}
                     searchTerm={this.state.searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
+                    onSearchTermKeyPress={this.handleSearchTermKeyPress}
                     ListPreviewElement={LinkOption}
                     noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                     searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                />
+                <IconButton
+                    className={style.linkIconButton__innerButton}
+                    icon="check"
+                    onClick={this.handleManualSetLink}
                     />
+            </Fragment>
+        );
+    }
+
+    renderViewMode() {
+        return (
+            <Fragment>
+                <div style={{flexGrow: 1}} onClick={this.handleSwitchToEditMode} role="button">
+                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkIconButton__loader} spin={true} size="lg" /> : (
+                        // if options then it's an asset or node, otherwise a plain link
+                        this.state.options[0] ? (
+                            <LinkOption option={this.state.options[0]} />
+                        ) : (
+                            <LinkOption option={{
+                                icon: 'external-link-alt',
+                                label: this.props.hrefValue,
+                                loaderUri: this.props.hrefValue
+                            }} />
+                        )
+                    )}
+                </div>
+                <IconButton
+                    className={style.linkIconButton__innerButton}
+                    icon="pencil-alt"
+                    onClick={this.handleSwitchToEditMode}
+                    />
+            </Fragment>
+        );
+    }
+
+    renderOptionsPanel() {
+        return (
+            <div className={style.linkIconButton__optionsPanel}>
+                {$get('linking.anchor', this.props.inlineEditorOptions) && (
+                    <div className={style.linkIconButton__optionsPanelItem}>
+                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">
+                            {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__anchor', 'Link to anchor')}
+                        </label>
+                        <div>
+                            <TextInput
+                                id="__neos__linkEditor--anchor"
+                                value={$get('link', this.props.formattingUnderCursor).split('#')[1] || ''}
+                                placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__anchorPlaceholder', 'Enter anchor name')}
+                                onChange={value => {
+                                    executeCommand('link', $get('link', this.props.formattingUnderCursor).split('#')[0] + '#' + value, false);
+                                }}
+                                />
+                        </div>
+                    </div>)}
+                {$get('linking.title', this.props.inlineEditorOptions) && (
+                    <div className={style.linkIconButton__optionsPanelItem}>
+                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--title">
+                            {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__title', 'Title')}
+                        </label>
+                        <div>
+                            <TextInput
+                                id="__neos__linkEditor--title"
+                                value={$get('linkTitle', this.props.formattingUnderCursor) || ''}
+                                placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__titlePlaceholder', 'Enter link title')}
+                                onChange={value => {
+                                    executeCommand('linkTitle', value, false);
+                                }}
+                                />
+                        </div>
+                    </div>)}
+                <div className={style.linkIconButton__optionsPanelDouble}>
+                    {$get('linking.targetBlank', this.props.inlineEditorOptions) && (
+                        <div className={style.linkIconButton__optionsPanelItem}>
+                            <label>
+                                <CheckBox
+                                    onChange={() => {
+                                        executeCommand('linkTargetBlank', undefined, false);
+                                    }}
+                                    isChecked={$get('linkTargetBlank', this.props.formattingUnderCursor) || false}
+                                /> {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
+                            </label>
+                        </div>)}
+                    {$get('linking.relNofollow', this.props.inlineEditorOptions) && (
+                        <div className={style.linkIconButton__optionsPanelItem}>
+                            <label>
+                                <CheckBox
+                                    onChange={() => {
+                                        executeCommand('linkRelNofollow', undefined, false);
+                                    }}
+                                    isChecked={$get('linkRelNofollow', this.props.formattingUnderCursor) || false}
+                                /> {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__noFollow', 'No follow')}
+                            </label>
+                        </div>)}
+                </div>
+            </div>
+        );
+    }
+
+    render() {
+        const linkingOptions = $get('linking', this.props.inlineEditorOptions);
+        const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
+        return (
+            <div className={style.linkIconButton__flyout}>
+                <div className={style.linkIconButton__wrap}>
+                    {this.state.isEditMode ? this.renderEditMode() : this.renderViewMode()}
+                    {optionsPanelEnabled && (
+                        <IconButton
+                            onClick={this.handleToggleOptionsPanel}
+                            style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
+                            className={style.linkIconButton__innerButton}
+                            icon="ellipsis-v"
+                            />
+                    )}
+                </div>
+                {this.state.optionsPanelIsOpen && this.renderOptionsPanel()}
             </div>
         );
     }

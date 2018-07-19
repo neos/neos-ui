@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\Projection\Content\ContentGraphInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Projection\Content\NodeInterface;
 use Neos\Neos\Domain\Context\Content\NodeAddressFactory;
@@ -26,10 +27,21 @@ class RemoveNode extends AbstractFeedback
     protected $node;
 
     /**
+     * @var NodeInterface
+     */
+    protected $parentNode;
+
+    /**
      * @Flow\Inject
      * @var NodeAddressFactory
      */
     protected $nodeAddressFactory;
+
+    /**
+     * @Flow\Inject
+     * @var ContentGraphInterface
+     */
+    protected $contentGraph;
 
     /**
      * Set the node
@@ -40,6 +52,8 @@ class RemoveNode extends AbstractFeedback
     public function setNode(NodeInterface $node)
     {
         $this->node = $node;
+        $subgraph = $this->contentGraph->getSubgraphByIdentifier($node->getContentStreamIdentifier(), $node->getDimensionSpacePoint());
+        $this->parentNode = $subgraph->findParentNode($node->getNodeIdentifier());
     }
 
     /**
@@ -97,7 +111,7 @@ class RemoveNode extends AbstractFeedback
     {
         return [
             'contextPath' => $this->nodeAddressFactory->createFromNode($this->getNode())->serializeForUri(),
-            'parentContextPath' => $this->getNode()->getParent()->getContextPath()
+            'parentContextPath' => $this->nodeAddressFactory->createFromNode($this->parentNode)->serializeForUri(),
         ];
     }
 }

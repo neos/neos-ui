@@ -222,7 +222,7 @@ class LinkTextField extends PureComponent {
                     value={''}
                     plainInputMode={isUri(this.state.searchTerm)}
                     onValueChange={this.handleValueChange}
-                    placeholder="Paste a link, or search"
+                    placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
                     setFocus={!this.props.hrefValue}

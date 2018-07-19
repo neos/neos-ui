@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
 import {IconButton, SelectBox, Icon, CheckBox, TextInput} from '@neos-project/react-ui-components';
-import LinkOption from './LinkOption';
+import LinkOption from '@neos-project/neos-ui-editors/src/Library/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {executeCommand} from './../ckEditorApi';
 
@@ -222,7 +222,7 @@ class LinkTextField extends PureComponent {
                     value={''}
                     plainInputMode={isUri(this.state.searchTerm)}
                     onValueChange={this.handleValueChange}
-                    placeholder="Paste a link, or search"
+                    placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
                     setFocus={!this.props.hrefValue}

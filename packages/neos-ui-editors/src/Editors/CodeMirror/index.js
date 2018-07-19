@@ -38,8 +38,8 @@ export default class CodeMirror extends PureComponent {
         return (
             <div>
                 <Label className={style.codemirror__label} htmlFor={identifier}>
-                    <Button className={className} style="clean" disabled={disabled} onClick={handleClick()}>
-                        <Icon icon="pencil" padded="right" style="lighter" title="Edit"/>
+                    <Button className={className} style="lighter" disabled={disabled} onClick={handleClick()}>
+                        <Icon icon="pencil" padded="right" title="Edit"/>
                         <I18n id={label}/>
                     </Button>
                 </Label>

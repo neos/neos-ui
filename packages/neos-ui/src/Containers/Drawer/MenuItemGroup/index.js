@@ -8,6 +8,7 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import MenuItem from '../MenuItem/index';
+import {TARGET_WINDOW} from '../constants';
 import style from '../style.css';
 
 export default class MenuItemGroup extends PureComponent {
@@ -39,21 +40,27 @@ export default class MenuItemGroup extends PureComponent {
     }
 
     render() {
-        const {label, icon, children, onChildClick} = this.props;
+        const {label, icon, children, onChildClick, target, uri} = this.props;
+
+        const headerButton = (
+            <Button
+                className={style.drawer__menuItemGroupBtn}
+                onClick={this.handleClick}
+                style="transparent"
+                hoverStyle="clean"
+                >
+                {icon && <Icon icon={icon} size="1x" padded="right"/>}
+
+                <I18n id={label} fallback={label}/>
+            </Button>
+        );
+
+        const header = (target === TARGET_WINDOW ? <a href={uri}>{headerButton}</a> : headerButton);
 
         return (
             <ToggablePanel isOpen={true} style="condensed" className={style.drawer__menuItem}>
                 <ToggablePanel.Header className={style.drawer__menuItem__header}>
-                    <Button
-                        className={style.drawer__menuItemGroupBtn}
-                        onClick={this.handleClick}
-                        style="transparent"
-                        hoverStyle="clean"
-                        >
-                        {icon && <Icon icon={icon} size="1x" padded="right"/>}
-
-                        <I18n id={label} fallback={label}/>
-                    </Button>
+                    {header}
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {children.map((item, index) => (

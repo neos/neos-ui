@@ -5,7 +5,7 @@ import {$get, $or} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import LinkIconButton from './EditorToolbar/LinkIconButton';
 import TableIconButton from './EditorToolbar/TableIconButton';
-import DropDownButton from './EditorToolbar/DropDownButton';
+import TableDropDown from './EditorToolbar/TableDropDown';
 import {neos} from '@neos-project/neos-ui-decorators';
 import StyleSelect from './EditorToolbar/StyleSelect';
 import RichTextToolbarRegistry from './registry/RichTextToolbarRegistry';
@@ -383,7 +383,7 @@ export default ckEditorRegistry => {
         isVisible: $get('formatting.table')
     });
     richtextToolbar.set('tableColumn', {
-        component: DropDownButton,
+        component: TableDropDown,
         isVisible: () => true,
         options: [
             {
@@ -405,7 +405,7 @@ export default ckEditorRegistry => {
         ]
     });
     richtextToolbar.set('tableRow', {
-        component: DropDownButton,
+        component: TableDropDown,
         isVisible: () => true,
         options: [
             {
@@ -427,7 +427,7 @@ export default ckEditorRegistry => {
         ]
     });
     richtextToolbar.set('mergeTableCells', {
-        component: DropDownButton,
+        component: TableDropDown,
         isVisible: () => true,
         options: [
             {

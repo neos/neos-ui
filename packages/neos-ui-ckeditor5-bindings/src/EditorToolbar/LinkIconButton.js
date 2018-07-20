@@ -11,7 +11,7 @@ import {executeCommand} from './../ckEditorApi';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {isUri} from '@neos-project/utils-helpers';
 
-import style from './style.css';
+import style from './LinkIconButton.css';
 
 @connect($transform({
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor

@@ -4,9 +4,9 @@ import omit from 'lodash.omit';
 import {$get, $or} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import LinkIconButton from './EditorToolbar/LinkIconButton';
+import TableIconButton from './EditorToolbar/TableIconButton';
+import DropDownButton from './EditorToolbar/DropDownButton';
 import {neos} from '@neos-project/neos-ui-decorators';
-
-// import LinkIconButton from './EditorToolbar/LinkIconButton';
 import StyleSelect from './EditorToolbar/StyleSelect';
 import RichTextToolbarRegistry from './registry/RichTextToolbarRegistry';
 
@@ -379,15 +379,82 @@ export default ckEditorRegistry => {
      * Tables
      */
     richtextToolbar.set('table', {
-        commandName: 'insertTable',
-        commandArgs: [{rows: 2, columns: 5}],
-        component: IconButtonComponent,
-        callbackPropName: 'onClick',
-        icon: 'table',
-        hoverStyle: 'brand',
-        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__table',
-        isVisible: $get('formatting.table'),
-        isActive: formattingUnderCursor => $get('table', formattingUnderCursor)
+        component: TableIconButton,
+        isVisible: $get('formatting.table')
+    });
+    richtextToolbar.set('tableColumn', {
+        component: DropDownButton,
+        isVisible: () => true,
+        options: [
+            {
+                commandName: 'setTableColumnHeader',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__setTableColumnHeader'
+            },
+            {
+                commandName: 'insertTableColumnBefore',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__insertTableColumnBefore'
+            },
+            {
+                commandName: 'insertTableColumnAfter',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__insertTableColumnAfter'
+            },
+            {
+                commandName: 'removeTableColumn',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__removeTableColumn'
+            }
+        ]
+    });
+    richtextToolbar.set('tableRow', {
+        component: DropDownButton,
+        isVisible: () => true,
+        options: [
+            {
+                commandName: 'setTableRowHeader',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__setTableRowHeader'
+            },
+            {
+                commandName: 'insertTableRowBelow',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__insertTableRowBelow'
+            },
+            {
+                commandName: 'insertTableRowAbove',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__insertTableRowAbove'
+            },
+            {
+                commandName: 'removeTableRow',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__removeTableRow'
+            }
+        ]
+    });
+    richtextToolbar.set('mergeTableCells', {
+        component: DropDownButton,
+        isVisible: () => true,
+        options: [
+            {
+                commandName: 'mergeTableCellUp',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__mergeTableCellUp'
+            },
+            {
+                commandName: 'mergeTableCellRight',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__mergeTableCellRight'
+            },
+            {
+                commandName: 'mergeTableCellDown',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__mergeTableCellDown'
+            },
+            {
+                commandName: 'mergeTableCellLeft',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__mergeTableCellLeft'
+            },
+            {
+                commandName: 'splitTableCellVertically',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__splitTableCellVertically'
+            },
+            {
+                commandName: 'splitTableCellHorizontally',
+                label: 'Neos.Neos:Main:ckeditor__toolbar__splitTableCellHorizontally'
+            }
+        ]
     });
 
     // /**

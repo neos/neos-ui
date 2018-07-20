@@ -1,0 +1,22 @@
+// Taken from https://github.com/ckeditor/ckeditor5-table/blob/master/theme/table.css
+
+.ck-content .table {
+    margin: 1em auto;
+    display: table;
+}
+.ck-content .table table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px double hsl(0, 0%, 70%);
+}
+.ck-content .table td,
+.ck-content .table th {
+    min-width: 2em;
+    padding: .4em;
+    text-align: center;
+    border-color: hsl(0, 0%, 85%);
+}
+.ck-content .table th {
+    font-weight: bold;
+    background: hsl(0, 0%, 98%);
+}

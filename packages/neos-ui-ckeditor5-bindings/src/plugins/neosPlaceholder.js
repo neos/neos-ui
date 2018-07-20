@@ -16,6 +16,7 @@ const htmlIsEmptyish = data => {
     const a = (
         !value ||
         value === '<br>' ||
+        value === '<span>&nbsp;</span>' ||
         value === '<p>&nbsp;</p>' ||
         value === '<p>&nbsp;<br></p>' ||
         value === '<p><br></p>' ||

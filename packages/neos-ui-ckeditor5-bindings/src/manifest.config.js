@@ -2,6 +2,7 @@ import CkEditorConfigRegistry from './registry/CkEditorConfigRegistry';
 import {$add, $get, $or} from 'plow-js';
 
 import NeosPlaceholder from './plugins/neosPlaceholder';
+import InlineMode from './plugins/inlineMode';
 import Sub from './plugins/sub';
 import Sup from './plugins/sup';
 import LinkTargetBlank from './plugins/linkTargetBlank';
@@ -19,13 +20,26 @@ import List from '@ckeditor/ckeditor5-list/src/list';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 
-const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, {editorOptions}) => {
-    if (!isEnabled || isEnabled(editorOptions)) {
+const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, options) => {
+    // we duplicate editorOptions here so it would be possible to write smth like `$get('formatting.sup')`
+    if (!isEnabled || isEnabled(options.editorOptions, options)) {
         ckEditorConfiguration.plugins = ckEditorConfiguration.plugins || [];
         return $add('plugins', Plugin, ckEditorConfiguration);
     }
     return ckEditorConfiguration;
 };
+
+// If the editable is a span or a heading, we automatically disable paragraphs and enable the soft break mode
+// Also possible to force this behavior with `formatting.paragraph: false`
+const disableParagraph = (editorOptions, {propertyDomNode}) =>
+    $get('formatting.paragraph', editorOptions) === false ||
+    propertyDomNode.tagName === 'SPAN' ||
+    propertyDomNode.tagName === 'H1' ||
+    propertyDomNode.tagName === 'H2' ||
+    propertyDomNode.tagName === 'H3' ||
+    propertyDomNode.tagName === 'H4' ||
+    propertyDomNode.tagName === 'H5' ||
+    propertyDomNode.tagName === 'H6';
 
 //
 // Create richtext editing toolbar registry
@@ -61,10 +75,11 @@ export default ckEditorRegistry => {
     // Add plugins
     //
     config.set('essentials', addPlugin(Essentials));
+    config.set('paragraph', addPlugin(Paragraph));
+    config.set('inlineMode', addPlugin(InlineMode, disableParagraph));
     config.set('neosPlaceholder', addPlugin(NeosPlaceholder));
     config.set('sub', addPlugin(Sub, $get('formatting.sub')));
     config.set('sup', addPlugin(Sup, $get('formatting.sup')));
-    config.set('paragraph', addPlugin(Paragraph));
     config.set('bold', addPlugin(Bold, $get('formatting.strong')));
     config.set('italic', addPlugin(Italic, $get('formatting.em')));
     config.set('underline', addPlugin(Underline, $get('formatting.underline')));
@@ -95,18 +110,19 @@ export default ckEditorRegistry => {
 
     //
     // @see https://docs.ckeditor.com/ckeditor5/latest/features/headings.html#configuring-heading-levels
+    // The element names for the heading dropdown are coming from richtextToolbar registry
     //
     config.set('configureHeadings', config => Object.assign(config, {
         heading: {
             options: [
-                {model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph'},
-                {model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1'},
-                {model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2'},
-                {model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3'},
-                {model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4'},
-                {model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5'},
-                {model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6'},
-                {model: 'pre', view: 'pre', title: 'Preformated', class: 'ck-heading_pre'}
+                {model: 'paragraph'},
+                {model: 'heading1', view: 'h1'},
+                {model: 'heading2', view: 'h2'},
+                {model: 'heading3', view: 'h3'},
+                {model: 'heading4', view: 'h4'},
+                {model: 'heading5', view: 'h5'},
+                {model: 'heading6', view: 'h6'},
+                {model: 'pre', view: 'pre'}
             ]}
     }));
 

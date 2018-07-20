@@ -2,6 +2,16 @@ import throttle from 'lodash.throttle';
 import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
 
+// We remove opening and closing span tags that are produced by the inlineMode plugin
+const cleanupContentBeforeCommit = content => {
+    if (content.match(/^<span>/) && content.match(/<\/span>$/)) {
+        return content
+            .replace(/^<span>/, '')
+            .replace(/<\/span>$/, '');
+    }
+    return content;
+};
+
 let currentEditor = null;
 let editorConfig = {};
 
@@ -34,7 +44,8 @@ export const createEditor = ({propertyDomNode, propertyName, contextPath, editor
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
         userPreferences,
-        globalRegistry
+        globalRegistry,
+        propertyDomNode
     });
 
     DecoupledEditor
@@ -53,7 +64,7 @@ export const createEditor = ({propertyDomNode, propertyName, contextPath, editor
                 subject: contextPath,
                 payload: {
                     propertyName,
-                    value: editor.getData(),
+                    value: cleanupContentBeforeCommit(editor.getData()),
                     isInline: true
                 }
             }), 1500), 150));

@@ -219,8 +219,9 @@ class AugmentationAspect
      * within the structure tree which are not actually rendered.
      *
      * @param NodeInterface $documentNode
+     * @return void
      */
-    protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
+    protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode): void
     {
         if ($documentNode->getContext()->getWorkspace()->isPublicWorkspace()) {
             return;
@@ -233,7 +234,7 @@ class AugmentationAspect
             }
 
             if ($node->hasChildNodes() === true) {
-                $this->nonRenderedContentNodeMetadata .= $this->appendNonRenderedContentNodeMetadata($node);
+                $this->appendNonRenderedContentNodeMetadata($node);
             }
         }
     }

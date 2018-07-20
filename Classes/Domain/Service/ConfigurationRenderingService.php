@@ -33,7 +33,13 @@ class ConfigurationRenderingService
      */
     protected $defaultContext;
 
-    public function computeConfiguration(array $configuration, $context)
+    /**
+     * @param array $configuration
+     * @param array $context
+     * @return array
+     * @throws \Neos\Eel\Exception
+     */
+    public function computeConfiguration(array $configuration, array $context): array
     {
         $adjustedConfiguration = $configuration;
         $this->computeConfigurationInternally($adjustedConfiguration, $context);
@@ -41,7 +47,12 @@ class ConfigurationRenderingService
         return $adjustedConfiguration;
     }
 
-    protected function computeConfigurationInternally(&$adjustedConfiguration, $context)
+    /**
+     * @param array $adjustedConfiguration
+     * @param array $context
+     * @throws \Neos\Eel\Exception
+     */
+    protected function computeConfigurationInternally(array &$adjustedConfiguration, array $context): void
     {
         foreach ($adjustedConfiguration as $key => &$value) {
             if (is_array($value)) {

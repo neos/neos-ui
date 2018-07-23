@@ -36,6 +36,7 @@
     "lerna": "^2.5.1",
     "node": "8.11.0",
     "npm-cli-login": "^0.0.10",
+    "null-loader": "^0.1.1",
     "postcss-css-variables": "^0.9.0",
     "postcss-hexrgba": "^1.0.0",
     "postcss-import": "^11.0.0",

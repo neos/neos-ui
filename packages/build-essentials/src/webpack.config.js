@@ -51,6 +51,10 @@ const webpackConfig = {
                 use: ['raw-loader']
             },
             {
+                test: /node_modules\/@ckeditor\/.*\.css$/,
+                use: ['null-loader']
+            },
+            {
                 test: /\.(woff|woff2|eot|ttf|svg)$/,
                 exclude: /node_modules\/@ckeditor.*$/,
                 use: [{
@@ -81,7 +85,8 @@ const webpackConfig = {
             {
                 test: /\.css$/,
                 exclude: [
-                    /node_modules\/@fortawesome\/fontawesome\/styles\.css$/
+                    /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
+                    /node_modules\/@ckeditor.*$/
                 ],
                 use: extractCss.extract({
                     use: [{

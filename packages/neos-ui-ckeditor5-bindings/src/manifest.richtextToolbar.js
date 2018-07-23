@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
-import {$get, $or} from 'plow-js';
+import {$get} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import LinkButton from './EditorToolbar/LinkButton';
 import TableButton from './EditorToolbar/TableButton';

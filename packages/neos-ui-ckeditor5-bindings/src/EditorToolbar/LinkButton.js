@@ -9,7 +9,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {executeCommand} from './../ckEditorApi';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import {isUri} from '@neos-project/utils-helpers';
+import {isUri, isEmail} from '@neos-project/utils-helpers';
 
 import style from './LinkButton.css';
 
@@ -31,26 +31,40 @@ export default class LinkButton extends PureComponent {
         i18nRegistry: PropTypes.object.isRequired
     };
 
+    state = {
+        isOpen: false
+    };
+
+    componentWillReceiveProps(nextProps) {
+        // if new selection doesn't have a link, close the link dialog
+        if (!$get('link', nextProps.formattingUnderCursor)) {
+            this.setState({isOpen: false});
+        }
+    }
+
     handleLinkButtonClick = () => {
         if (this.isOpen()) {
-            // We need to remove all attirbutes before unsetting the link
-            executeCommand('linkTitle', false, false);
-            executeCommand('linkRelNofollow', false, false);
-            executeCommand('linkTargetBlank', false, false);
-            executeCommand('unlink');
+            if ($get('link', this.props.formattingUnderCursor) !== undefined) {
+                // We need to remove all attirbutes before unsetting the link
+                executeCommand('linkTitle', false, false);
+                executeCommand('linkRelNofollow', false, false);
+                executeCommand('linkTargetBlank', false, false);
+                executeCommand('unlink');
+                this.setState({isOpen: false});
+            }
         } else {
-            executeCommand('link', '', false);
+            this.setState({isOpen: true});
         }
     }
 
     render() {
-        const {i18nRegistry, isActive, formattingUnderCursor, inlineEditorOptions} = this.props;
+        const {i18nRegistry, formattingUnderCursor, inlineEditorOptions} = this.props;
 
         return (
             <div>
                 <IconButton
                     title={`${i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link')}`}
-                    isActive={isActive}
+                    isActive={this.isOpen()}
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />
@@ -60,16 +74,29 @@ export default class LinkButton extends PureComponent {
     }
 
     isOpen() {
-        return this.getHrefValue() === '' || this.getHrefValue();
+        return this.state.isOpen || this.getHrefValue();
     }
 
     getHrefValue() {
-        return $get('link', this.props.formattingUnderCursor);
+        return $get('link', this.props.formattingUnderCursor) || '';
     }
 }
 
+// TODO: extract this isInternalLink logic into a registry, possibly defining a schema and a custom data loader
 const isUriOrInternalLink = link => Boolean(isUri(link) || link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
 const isInternalLink = link => Boolean(link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
+const looksLikeExternalLink = link => {
+    if (typeof link !== 'string') {
+        return false;
+    }
+    if (isUriOrInternalLink(link)) {
+        return false;
+    }
+    if (link.match(/^[\w.-]{2,}\.[\w]{2,10}$/)) {
+        return true;
+    }
+    return false;
+};
 
 @neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
@@ -152,20 +179,44 @@ class LinkTextField extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
-        if (isUriOrInternalLink(searchTerm)) {
+        if (looksLikeExternalLink(searchTerm)) {
+            this.setState({
+                isLoading: false,
+                searchOptions: [{
+                    label: this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__formatAsHttp', 'Format as http link?'),
+                    loaderUri: `http://${searchTerm}`
+                }]
+            });
+        } else if (isEmail(searchTerm)) {
+            this.setState({
+                isLoading: false,
+                searchOptions: [{
+                    label: this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__formatAsEmail', 'Format as email?'),
+                    loaderUri: `mailto:${searchTerm}`
+                }]
+            });
+        } else if (isUriOrInternalLink(searchTerm)) {
             this.setState({
                 isLoading: false,
                 searchOptions: []
             });
         } else if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
+            // We store the searchTerm at the moment lookup was triggered, and only update the options if the search term hasn't changed
+            const searchTermWhenLookupWasTriggered = searchTerm;
             this.props.linkLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
-                    this.setState({
-                        isLoading: false,
-                        searchOptions
-                    });
+                    if (searchTermWhenLookupWasTriggered === this.state.searchTerm) {
+                        this.setState({
+                            isLoading: false,
+                            searchOptions
+                        });
+                    }
                 });
+        } else {
+            this.setState({
+                isLoading: false
+            });
         }
     }
 
@@ -175,7 +226,6 @@ class LinkTextField extends PureComponent {
         }
     }
 
-    // A node has been selected
     handleValueChange = value => {
         this.commitValue(value || '');
 
@@ -188,6 +238,10 @@ class LinkTextField extends PureComponent {
                 options,
                 searchOptions: [],
                 searchTerm: '',
+                isEditMode: false
+            });
+        } else {
+            this.setState({
                 isEditMode: false
             });
         }
@@ -225,7 +279,7 @@ class LinkTextField extends PureComponent {
                     placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
-                    setFocus={!this.props.hrefValue}
+                    setFocus={true}
                     showDropDownToggle={false}
                     allowEmpty={true}
                     searchTerm={this.state.searchTerm}
@@ -244,22 +298,25 @@ class LinkTextField extends PureComponent {
         );
     }
 
+    renderLinkOption = () => {
+        // if options then it's an asset or node, otherwise a plain link
+        if (this.state.options[0]) {
+            return <LinkOption option={this.state.options[0]} />;
+        }
+        return (
+            <LinkOption option={{
+                icon: this.props.hrefValue.startsWith('mailto:') ? 'at' : 'external-link-alt',
+                label: this.props.hrefValue,
+                loaderUri: this.props.hrefValue
+            }} />
+        );
+    }
+
     renderViewMode() {
         return (
             <Fragment>
                 <div style={{flexGrow: 1}} onClick={this.handleSwitchToEditMode} role="button">
-                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkButton__loader} spin={true} size="lg" /> : (
-                        // if options then it's an asset or node, otherwise a plain link
-                        this.state.options[0] ? (
-                            <LinkOption option={this.state.options[0]} />
-                        ) : (
-                            <LinkOption option={{
-                                icon: 'external-link-alt',
-                                label: this.props.hrefValue,
-                                loaderUri: this.props.hrefValue
-                            }} />
-                        )
-                    )}
+                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkButton__loader} spin={true} size="lg" /> : this.renderLinkOption()}
                 </div>
                 <IconButton
                     className={style.linkButton__innerButton}
@@ -268,6 +325,19 @@ class LinkTextField extends PureComponent {
                     />
             </Fragment>
         );
+    }
+
+    getBaseValue = () => {
+        if (typeof $get('link', this.props.formattingUnderCursor) === 'string') {
+            return $get('link', this.props.formattingUnderCursor).split('#')[0];
+        }
+        return '';
+    }
+    getAnchorValue = () => {
+        if (typeof $get('link', this.props.formattingUnderCursor) === 'string') {
+            return $get('link', this.props.formattingUnderCursor).split('#')[1];
+        }
+        return '';
     }
 
     renderOptionsPanel() {
@@ -281,10 +351,10 @@ class LinkTextField extends PureComponent {
                         <div>
                             <TextInput
                                 id="__neos__linkEditor--anchor"
-                                value={$get('link', this.props.formattingUnderCursor).split('#')[1] || ''}
+                                value={this.getAnchorValue()}
                                 placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__anchorPlaceholder', 'Enter anchor name')}
                                 onChange={value => {
-                                    executeCommand('link', $get('link', this.props.formattingUnderCursor).split('#')[0] + '#' + value, false);
+                                    executeCommand('link', this.getBaseValue() + '#' + value, false);
                                 }}
                                 />
                         </div>
@@ -345,7 +415,7 @@ class LinkTextField extends PureComponent {
                             onClick={this.handleToggleOptionsPanel}
                             style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
                             className={style.linkButton__innerButton}
-                            icon="ellipsis-v"
+                            icon="cog"
                             />
                     )}
                 </div>

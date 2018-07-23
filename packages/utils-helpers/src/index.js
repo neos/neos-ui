@@ -7,6 +7,7 @@ import decodeHtml from './decodeHtml';
 import requestIdleCallback from './requestIdleCallback';
 import cancelIdleCallback from './cancelIdleCallback';
 import getVersion from './getVersion';
+import isEmail from './isEmail';
 import {isUri} from './isUri';
 
 export {
@@ -16,6 +17,7 @@ export {
     getVersion,
     isThenable,
     isUri,
+    isEmail,
     loadScript,
     stripTags,
     stripTagsEncoded,

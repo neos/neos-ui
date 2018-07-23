@@ -51,14 +51,14 @@ export default class TableIconButton extends PureComponent {
     };
 
     render() {
-        const {i18nRegistry, inlineEditorOptions} = this.props;
+        const {i18nRegistry, inlineEditorOptions, tooltip, icon} = this.props;
 
         return (
             <div>
                 <IconButton
-                    title={`${i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__icon', 'Insert table')}`}
+                    title={`${i18nRegistry.translate(tooltip, 'Insert table')}`}
                     isActive={this.state.isOpen}
-                    icon="table"
+                    icon={icon}
                     onClick={this.handleTableButtonClick}
                     />
                 {this.state.isOpen ? <TableCreationGrid

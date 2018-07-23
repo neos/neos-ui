@@ -380,79 +380,87 @@ export default ckEditorRegistry => {
      */
     richtextToolbar.set('table', {
         component: TableIconButton,
-        isVisible: $get('formatting.table')
+        icon: 'table',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__table',
+        isVisible: (editorOptions, formattingUnderCursor) => !$get('insideTable', formattingUnderCursor) && $get('formatting.table', editorOptions)
     });
     richtextToolbar.set('tableColumn', {
         component: TableDropDown,
+        icon: 'tableColumn',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__tableColumn',
         isVisible: (editorOptions, formattingUnderCursor) => $get('insideTable', formattingUnderCursor),
         options: [
             {
                 commandName: 'setTableColumnHeader',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__setTableColumnHeader'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__setTableColumnHeader'
             },
             {
                 commandName: 'insertTableColumnBefore',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__insertTableColumnBefore'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnBefore'
             },
             {
                 commandName: 'insertTableColumnAfter',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__insertTableColumnAfter'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnAfter'
             },
             {
                 commandName: 'removeTableColumn',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__removeTableColumn'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__removeTableColumn'
             }
         ]
     });
     richtextToolbar.set('tableRow', {
         component: TableDropDown,
+        icon: 'tableRow',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__tableRow',
         isVisible: (editorOptions, formattingUnderCursor) => $get('insideTable', formattingUnderCursor),
         options: [
             {
                 commandName: 'setTableRowHeader',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__setTableRowHeader'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__setTableRowHeader'
             },
             {
                 commandName: 'insertTableRowBelow',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__insertTableRowBelow'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableRowBelow'
             },
             {
                 commandName: 'insertTableRowAbove',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__insertTableRowAbove'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableRowAbove'
             },
             {
                 commandName: 'removeTableRow',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__removeTableRow'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__removeTableRow'
             }
         ]
     });
     richtextToolbar.set('mergeTableCells', {
         component: TableDropDown,
+        icon: 'tableMergeCells',
         isVisible: (editorOptions, formattingUnderCursor) => $get('insideTable', formattingUnderCursor),
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__tableMergeCells',
         options: [
             {
                 commandName: 'mergeTableCellUp',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__mergeTableCellUp'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__mergeTableCellUp'
             },
             {
                 commandName: 'mergeTableCellRight',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__mergeTableCellRight'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__mergeTableCellRight'
             },
             {
                 commandName: 'mergeTableCellDown',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__mergeTableCellDown'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__mergeTableCellDown'
             },
             {
                 commandName: 'mergeTableCellLeft',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__mergeTableCellLeft'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__mergeTableCellLeft'
             },
             {
                 commandName: 'splitTableCellVertically',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__splitTableCellVertically'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__splitTableCellVertically'
             },
             {
                 commandName: 'splitTableCellHorizontally',
-                label: 'Neos.Neos:Main:ckeditor__toolbar__splitTableCellHorizontally'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__splitTableCellHorizontally'
             }
         ]
     });

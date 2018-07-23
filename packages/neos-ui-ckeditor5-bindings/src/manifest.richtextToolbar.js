@@ -419,12 +419,12 @@ export default ckEditorRegistry => {
                 label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__setTableRowHeader'
             },
             {
-                commandName: 'insertTableRowBelow',
-                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableRowBelow'
-            },
-            {
                 commandName: 'insertTableRowAbove',
                 label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableRowAbove'
+            },
+            {
+                commandName: 'insertTableRowBelow',
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableRowBelow'
             },
             {
                 commandName: 'removeTableRow',

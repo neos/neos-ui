@@ -392,7 +392,8 @@ export default ckEditorRegistry => {
         options: [
             {
                 commandName: 'setTableColumnHeader',
-                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__setTableColumnHeader'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__setTableColumnHeader',
+                type: 'checkBox'
             },
             {
                 commandName: 'insertTableColumnBefore',
@@ -416,7 +417,8 @@ export default ckEditorRegistry => {
         options: [
             {
                 commandName: 'setTableRowHeader',
-                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__setTableRowHeader'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__setTableRowHeader',
+                type: 'checkBox'
             },
             {
                 commandName: 'insertTableRowAbove',

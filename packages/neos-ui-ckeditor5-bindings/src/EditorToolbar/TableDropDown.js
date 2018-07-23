@@ -1,8 +1,8 @@
-import {DropDown, Icon, Button} from '@neos-project/react-ui-components';
+import {DropDown, CheckBox, Button} from '@neos-project/react-ui-components';
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -54,7 +54,16 @@ export default class TableDropDownButton extends PureComponent {
                     <img style={{verticalAlign: 'text-top'}} src={ckeIcons[this.props.icon]} alt={this.props.i18nRegistry.translate(this.props.tooltip)} />
                 </DropDown.Header>
                 <DropDown.Contents className={style.contents} scrollable={false}>
-                    {this.props.options.map(item => (
+                    {this.props.options.map(item => item.type === 'checkBox' ? (
+                        <label
+                            key={item.commandName}
+                            className={style.checkBox}
+                            onClick={() => this.handleClick(item.commandName)}
+                            >
+                            <CheckBox isChecked={$get(item.commandName, this.props.formattingUnderCursor)} />
+                            {this.props.i18nRegistry.translate(item.label)}
+                        </label>
+                    ) : (
                         <Button
                             key={item.commandName}
                             style="transparent"

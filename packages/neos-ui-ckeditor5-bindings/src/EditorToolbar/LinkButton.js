@@ -44,25 +44,27 @@ export default class LinkButton extends PureComponent {
 
     handleLinkButtonClick = () => {
         if (this.isOpen()) {
-            // We need to remove all attirbutes before unsetting the link
-            executeCommand('linkTitle', false, false);
-            executeCommand('linkRelNofollow', false, false);
-            executeCommand('linkTargetBlank', false, false);
-            executeCommand('unlink');
-            this.setState({isOpen: false});
+            if ($get('link', this.props.formattingUnderCursor) !== undefined) {
+                // We need to remove all attirbutes before unsetting the link
+                executeCommand('linkTitle', false, false);
+                executeCommand('linkRelNofollow', false, false);
+                executeCommand('linkTargetBlank', false, false);
+                executeCommand('unlink');
+                this.setState({isOpen: false});
+            }
         } else {
             this.setState({isOpen: true});
         }
     }
 
     render() {
-        const {i18nRegistry, isActive, formattingUnderCursor, inlineEditorOptions} = this.props;
+        const {i18nRegistry, formattingUnderCursor, inlineEditorOptions} = this.props;
 
         return (
             <div>
                 <IconButton
                     title={`${i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link')}`}
-                    isActive={isActive}
+                    isActive={this.isOpen()}
                     icon="link"
                     onClick={this.handleLinkButtonClick}
                     />
@@ -80,6 +82,7 @@ export default class LinkButton extends PureComponent {
     }
 }
 
+// TODO: extract this isInternalLink logic into a registry, possibly defining a schema and a custom data loader
 const isUriOrInternalLink = link => Boolean(isUri(link) || link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
 const isInternalLink = link => Boolean(link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
 const looksLikeExternalLink = link => {
@@ -210,6 +213,10 @@ class LinkTextField extends PureComponent {
                         });
                     }
                 });
+        } else {
+            this.setState({
+                isLoading: false
+            });
         }
     }
 
@@ -291,28 +298,25 @@ class LinkTextField extends PureComponent {
         );
     }
 
+    renderLinkOption = () => {
+        // if options then it's an asset or node, otherwise a plain link
+        if (this.state.options[0]) {
+            return <LinkOption option={this.state.options[0]} />;
+        }
+        return (
+            <LinkOption option={{
+                icon: this.props.hrefValue.startsWith('mailto:') ? 'at' : 'external-link-alt',
+                label: this.props.hrefValue,
+                loaderUri: this.props.hrefValue
+            }} />
+        );
+    }
+
     renderViewMode() {
         return (
             <Fragment>
                 <div style={{flexGrow: 1}} onClick={this.handleSwitchToEditMode} role="button">
-                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkButton__loader} spin={true} size="lg" /> : (
-                        // if options then it's an asset or node, otherwise a plain link
-                        this.state.options[0] ? (
-                            <LinkOption option={this.state.options[0]} />
-                        ) : this.props.hrefValue.startsWith('mailto:') ? (
-                            <LinkOption option={{
-                                icon: 'at',
-                                label: this.props.hrefValue,
-                                loaderUri: this.props.hrefValue
-                            }} />
-                        ) : (
-                            <LinkOption option={{
-                                icon: 'external-link-alt',
-                                label: this.props.hrefValue,
-                                loaderUri: this.props.hrefValue
-                            }} />
-                        )
-                    )}
+                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkButton__loader} spin={true} size="lg" /> : this.renderLinkOption()}
                 </div>
                 <IconButton
                     className={style.linkButton__innerButton}
@@ -321,6 +325,19 @@ class LinkTextField extends PureComponent {
                     />
             </Fragment>
         );
+    }
+
+    getBaseValue = () => {
+        if (typeof $get('link', this.props.formattingUnderCursor) === 'string') {
+            return $get('link', this.props.formattingUnderCursor).split('#')[0];
+        }
+        return '';
+    }
+    getAnchorValue = () => {
+        if (typeof $get('link', this.props.formattingUnderCursor) === 'string') {
+            return $get('link', this.props.formattingUnderCursor).split('#')[1];
+        }
+        return '';
     }
 
     renderOptionsPanel() {
@@ -334,10 +351,10 @@ class LinkTextField extends PureComponent {
                         <div>
                             <TextInput
                                 id="__neos__linkEditor--anchor"
-                                value={$get('link', this.props.formattingUnderCursor).split('#')[1] || ''}
+                                value={this.getAnchorValue()}
                                 placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__anchorPlaceholder', 'Enter anchor name')}
                                 onChange={value => {
-                                    executeCommand('link', $get('link', this.props.formattingUnderCursor).split('#')[0] + '#' + value, false);
+                                    executeCommand('link', this.getBaseValue() + '#' + value, false);
                                 }}
                                 />
                         </div>
@@ -398,7 +415,7 @@ class LinkTextField extends PureComponent {
                             onClick={this.handleToggleOptionsPanel}
                             style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
                             className={style.linkButton__innerButton}
-                            icon="ellipsis-v"
+                            icon="cog"
                             />
                     )}
                 </div>

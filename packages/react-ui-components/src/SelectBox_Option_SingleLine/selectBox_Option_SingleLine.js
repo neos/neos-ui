@@ -1,34 +1,37 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import ListPreviewElement from '../ListPreviewElement/index';
 import mergeClassNames from 'classnames';
 
-const SelectBox_Option_SingleLine = props => {
-    const {option, className, disabled} = props;
+class SelectBox_Option_SingleLine extends PureComponent {
+    static propTypes = {
+        option: PropTypes.shape({
+            label: PropTypes.string.isRequired,
+            icon: PropTypes.string,
+            disabled: PropTypes.bool
+        }).isRequired,
 
-    const isDisabled = disabled || option.disabled;
+        disabled: PropTypes.bool,
 
-    const finalClassNames = mergeClassNames({
-        [className]: className
-    });
+        className: PropTypes.string
+    }
 
-    return (
-        <ListPreviewElement {...props} icon={option.icon} disabled={isDisabled} className={finalClassNames}>
-            <span>{option.label}</span>
-        </ListPreviewElement>
-    );
-};
-SelectBox_Option_SingleLine.propTypes = {
-    option: PropTypes.shape({
-        label: PropTypes.string.isRequired,
-        icon: PropTypes.string,
-        disabled: PropTypes.bool
-    }).isRequired,
+    render() {
+        const {option, className, disabled} = this.props;
 
-    disabled: PropTypes.bool,
+        const isDisabled = disabled || option.disabled;
 
-    className: PropTypes.string
-};
+        const finalClassNames = mergeClassNames({
+            [className]: className
+        });
+
+        return (
+            <ListPreviewElement {...this.props} icon={option.icon} disabled={isDisabled} className={finalClassNames}>
+                <span>{option.label}</span>
+            </ListPreviewElement>
+        );
+    }
+}
 
 export default SelectBox_Option_SingleLine;

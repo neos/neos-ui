@@ -34,11 +34,11 @@
     --ck-spacing-medium:calc(var(--ck-spacing-unit) * 0.8);
     --ck-spacing-small:calc(var(--ck-spacing-unit) * 0.5);
     --ck-spacing-tiny:calc(var(--ck-spacing-unit) * 0.3);
-    --ck-spacing-extra-tiny:calc(var(--ck-spacing-unit) * 0.16)
+    --ck-spacing-extra-tiny:calc(var(--ck-spacing-unit) * 0.16);
     --ck-icon-size:calc(var(--ck-line-height-base) * var(--ck-font-size-normal))
 }
 .ck.ck-icon{
-    vertical-align:middle
+    vertical-align:middle;
     width:var(--ck-icon-size);
     height:var(--ck-icon-size);
     font-size:.8333350694em;

@@ -384,7 +384,7 @@ export default ckEditorRegistry => {
     });
     richtextToolbar.set('tableColumn', {
         component: TableDropDown,
-        isVisible: () => true,
+        isVisible: (editorOptions, formattingUnderCursor) => $get('insideTable', formattingUnderCursor),
         options: [
             {
                 commandName: 'setTableColumnHeader',
@@ -406,7 +406,7 @@ export default ckEditorRegistry => {
     });
     richtextToolbar.set('tableRow', {
         component: TableDropDown,
-        isVisible: () => true,
+        isVisible: (editorOptions, formattingUnderCursor) => $get('insideTable', formattingUnderCursor),
         options: [
             {
                 commandName: 'setTableRowHeader',
@@ -428,7 +428,7 @@ export default ckEditorRegistry => {
     });
     richtextToolbar.set('mergeTableCells', {
         component: TableDropDown,
-        isVisible: () => true,
+        isVisible: (editorOptions, formattingUnderCursor) => $get('insideTable', formattingUnderCursor),
         options: [
             {
                 commandName: 'mergeTableCellUp',

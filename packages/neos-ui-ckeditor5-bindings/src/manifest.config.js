@@ -19,6 +19,7 @@ import Link from '@ckeditor/ckeditor5-link/src/linkediting';
 import List from '@ckeditor/ckeditor5-list/src/list';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Table from '@ckeditor/ckeditor5-table/src/table';
+import InsideTable from './plugins/insideTable';
 
 const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, options) => {
     // we duplicate editorOptions here so it would be possible to write smth like `$get('formatting.sup')`
@@ -89,6 +90,7 @@ export default ckEditorRegistry => {
     config.set('linkRelNofollow', addPlugin(LinkRelNofollow, $get('formatting.a')));
     config.set('linkTitle', addPlugin(LinkTitle, $get('formatting.a')));
     config.set('table', addPlugin(Table, i => $get('formatting.table', i)));
+    config.set('insideTable', addPlugin(InsideTable, i => $get('formatting.table', i)));
     config.set('list', addPlugin(List, $or(
         $get('formatting.ul'),
         $get('formatting.ol')

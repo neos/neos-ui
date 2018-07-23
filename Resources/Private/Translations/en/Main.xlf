@@ -62,6 +62,15 @@
 			<trans-unit id="ckeditor__toolbar__table" xml:space="preserve">
 				<source>Table</source>
 			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve">
+				<source>Column</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
+				<source>Row</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__tableMergeCells" xml:space="preserve">
+				<source>Merge cells</source>
+			</trans-unit>
 			<trans-unit id="ckeditor__toolbar__remove-format" xml:space="preserve">
 				<source>Remove format</source>
 			</trans-unit>
@@ -70,6 +79,48 @@
 			</trans-unit>
 			<trans-unit id="ckeditor__toolbar__indent" xml:space="preserve">
 				<source>Indent</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve">
+				<source>Header column</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__insertTableColumnBefore" xml:space="preserve">
+				<source>Insert column before</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__insertTableColumnAfter" xml:space="preserve">
+				<source>Insert column after</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve">
+				<source>Delete column</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__setTableRowHeader" xml:space="preserve">
+				<source>Header row</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__insertTableRowBelow" xml:space="preserve">
+				<source>Insert row below</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__insertTableRowAbove" xml:space="preserve">
+				<source>Insert row above</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__removeTableRow" xml:space="preserve">
+				<source>Delete row</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__mergeTableCellUp" xml:space="preserve">
+				<source>Merge cell up</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__mergeTableCellRight" xml:space="preserve">
+				<source>Merge cell right</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__mergeTableCellDown" xml:space="preserve">
+				<source>Merge cell down</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__mergeTableCellLeft" xml:space="preserve">
+				<source>Merge cell left</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__splitTableCellVertically" xml:space="preserve">
+				<source>Split cell vertically</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__splitTableCellHorizontally" xml:space="preserve">
+				<source>Split cell horizontally</source>
 			</trans-unit>
 			<trans-unit id="createNew" xml:space="preserve">
 				<source>Create new</source>

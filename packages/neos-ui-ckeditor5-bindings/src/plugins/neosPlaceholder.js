@@ -38,11 +38,11 @@ export default class NeosPlaceholder extends Plugin {
     }
 
     addPlaceholder() {
-        this.editor.element.dataset.neosPlaceholder = this.getPlaceholder();
+        this.editor.sourceElement.dataset.neosPlaceholder = this.getPlaceholder();
     }
 
     removePlaceholder() {
-        delete this.editor.element.dataset.neosPlaceholder;
+        delete this.editor.sourceElement.dataset.neosPlaceholder;
     }
 
     updatePlaceholder() {

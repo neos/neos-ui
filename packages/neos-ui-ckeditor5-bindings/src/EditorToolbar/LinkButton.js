@@ -11,7 +11,7 @@ import {executeCommand} from './../ckEditorApi';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {isUri} from '@neos-project/utils-helpers';
 
-import style from './LinkIconButton.css';
+import style from './LinkButton.css';
 
 @connect($transform({
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
@@ -19,7 +19,7 @@ import style from './LinkIconButton.css';
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-export default class LinkIconButton extends PureComponent {
+export default class LinkButton extends PureComponent {
     static propTypes = {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
@@ -236,7 +236,7 @@ class LinkTextField extends PureComponent {
                     searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                 />
                 <IconButton
-                    className={style.linkIconButton__innerButton}
+                    className={style.linkButton__innerButton}
                     icon="check"
                     onClick={this.handleManualSetLink}
                     />
@@ -248,7 +248,7 @@ class LinkTextField extends PureComponent {
         return (
             <Fragment>
                 <div style={{flexGrow: 1}} onClick={this.handleSwitchToEditMode} role="button">
-                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkIconButton__loader} spin={true} size="lg" /> : (
+                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkButton__loader} spin={true} size="lg" /> : (
                         // if options then it's an asset or node, otherwise a plain link
                         this.state.options[0] ? (
                             <LinkOption option={this.state.options[0]} />
@@ -262,7 +262,7 @@ class LinkTextField extends PureComponent {
                     )}
                 </div>
                 <IconButton
-                    className={style.linkIconButton__innerButton}
+                    className={style.linkButton__innerButton}
                     icon="pencil-alt"
                     onClick={this.handleSwitchToEditMode}
                     />
@@ -272,10 +272,10 @@ class LinkTextField extends PureComponent {
 
     renderOptionsPanel() {
         return (
-            <div className={style.linkIconButton__optionsPanel}>
+            <div className={style.linkButton__optionsPanel}>
                 {$get('linking.anchor', this.props.inlineEditorOptions) && (
-                    <div className={style.linkIconButton__optionsPanelItem}>
-                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">
+                    <div className={style.linkButton__optionsPanelItem}>
+                        <label className={style.linkButton__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">
                             {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__anchor', 'Link to anchor')}
                         </label>
                         <div>
@@ -290,8 +290,8 @@ class LinkTextField extends PureComponent {
                         </div>
                     </div>)}
                 {$get('linking.title', this.props.inlineEditorOptions) && (
-                    <div className={style.linkIconButton__optionsPanelItem}>
-                        <label className={style.linkIconButton__optionsPanelLabel} htmlFor="__neos__linkEditor--title">
+                    <div className={style.linkButton__optionsPanelItem}>
+                        <label className={style.linkButton__optionsPanelLabel} htmlFor="__neos__linkEditor--title">
                             {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__title', 'Title')}
                         </label>
                         <div>
@@ -305,9 +305,9 @@ class LinkTextField extends PureComponent {
                                 />
                         </div>
                     </div>)}
-                <div className={style.linkIconButton__optionsPanelDouble}>
+                <div className={style.linkButton__optionsPanelDouble}>
                     {$get('linking.targetBlank', this.props.inlineEditorOptions) && (
-                        <div className={style.linkIconButton__optionsPanelItem}>
+                        <div className={style.linkButton__optionsPanelItem}>
                             <label>
                                 <CheckBox
                                     onChange={() => {
@@ -318,7 +318,7 @@ class LinkTextField extends PureComponent {
                             </label>
                         </div>)}
                     {$get('linking.relNofollow', this.props.inlineEditorOptions) && (
-                        <div className={style.linkIconButton__optionsPanelItem}>
+                        <div className={style.linkButton__optionsPanelItem}>
                             <label>
                                 <CheckBox
                                     onChange={() => {
@@ -337,14 +337,14 @@ class LinkTextField extends PureComponent {
         const linkingOptions = $get('linking', this.props.inlineEditorOptions);
         const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
         return (
-            <div className={style.linkIconButton__flyout}>
-                <div className={style.linkIconButton__wrap}>
+            <div className={style.linkButton__flyout}>
+                <div className={style.linkButton__wrap}>
                     {this.state.isEditMode ? this.renderEditMode() : this.renderViewMode()}
                     {optionsPanelEnabled && (
                         <IconButton
                             onClick={this.handleToggleOptionsPanel}
                             style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
-                            className={style.linkIconButton__innerButton}
+                            className={style.linkButton__innerButton}
                             icon="ellipsis-v"
                             />
                     )}

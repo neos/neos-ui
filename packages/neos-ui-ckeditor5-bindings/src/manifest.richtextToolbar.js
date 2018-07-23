@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 import {$get, $or} from 'plow-js';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import LinkIconButton from './EditorToolbar/LinkIconButton';
-import TableIconButton from './EditorToolbar/TableIconButton';
+import LinkButton from './EditorToolbar/LinkButton';
+import TableButton from './EditorToolbar/TableButton';
 import TableDropDown from './EditorToolbar/TableDropDown';
 import {neos} from '@neos-project/neos-ui-decorators';
 import StyleSelect from './EditorToolbar/StyleSelect';
@@ -135,7 +135,7 @@ export default ckEditorRegistry => {
     // Strike-Through
     richtextToolbar.set('link', {
         commandName: 'link',
-        component: LinkIconButton,
+        component: LinkButton,
         callbackPropName: 'onClick',
         icon: 'link',
         hoverStyle: 'brand',
@@ -379,7 +379,7 @@ export default ckEditorRegistry => {
      * Tables
      */
     richtextToolbar.set('table', {
-        component: TableIconButton,
+        component: TableButton,
         icon: 'table',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__table',
         isVisible: (editorOptions, formattingUnderCursor) => !$get('insideTable', formattingUnderCursor) && $get('formatting.table', editorOptions)

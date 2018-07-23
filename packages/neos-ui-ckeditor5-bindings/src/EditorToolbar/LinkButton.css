@@ -1,4 +1,4 @@
-.linkIconButton__flyout {
+.linkButton__flyout {
     background-color: var(--colors-ContrastDarker);
     position: fixed;
     z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
@@ -6,58 +6,58 @@
     border: var(--spacing-Half) solid var(--colors-ContrastDarker);
 }
 
-.linkIconButton__wrap {
+.linkButton__wrap {
     display: flex;
     align-items: stretch;
 }
 
-.linkIconButton__optionsPanelDouble {
+.linkButton__optionsPanelDouble {
     display: flex;
     flex-basis: 100%;
 }
 
-.linkIconButton__optionsPanel {
+.linkButton__optionsPanel {
     padding-top: var(--spacing-Full);
     display: flex;
     flex-wrap: wrap;
 }
 
-.linkIconButton__optionsPanelItem {
+.linkButton__optionsPanelItem {
     flex-basis: 50%;
     padding: var(--spacing-Half);
 }
 
-.linkIconButton__optionsPanelLabel {
+.linkButton__optionsPanelLabel {
     margin-bottom: var(--spacing-Quarter);
 }
 
-.linkIconButton__innerButton {
+.linkButton__innerButton {
     height: auto;
 }
 
-.linkIconButton__loader {
+.linkButton__loader {
     margin: var(--spacing-Quarter);
 }
 
-.linkIconButton__item {
+.linkButton__item {
     padding: var(--spacing-Half);
     box-sizing: content-box;
     height: calc(var(--spacing-GoldenUnit) * 1.5);
     line-height: 20px;
 }
 
-.linkIconButton__link {
+.linkButton__link {
     color: var(--colors-ContrastBright);
     display: block;
     font-size: 12px;
 }
 
-.linkIconButton__image {
+.linkButton__image {
     height: calc(var(--spacing-GoldenUnit) * 1.5);
     width: auto;
     float: right;
 }
 
-.linkIconButton__link--active {
+.linkButton__link--active {
     color: #fff;
 }

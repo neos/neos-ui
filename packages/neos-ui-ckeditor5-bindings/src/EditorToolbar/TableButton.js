@@ -10,7 +10,7 @@ import {executeCommand} from './../ckEditorApi';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
-import style from './TableIconButton.css';
+import style from './TableButton.css';
 import tableStyling from './TableStyles.vanilla-css'; // eslint-disable-line
 
 const numberRange = (start, end) => new Array(end - start + 1).fill().map((d, i) => i + start);
@@ -21,7 +21,7 @@ const numberRange = (start, end) => new Array(end - start + 1).fill().map((d, i)
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-export default class TableIconButton extends PureComponent {
+export default class TableButton extends PureComponent {
     static propTypes = {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,

@@ -31,9 +31,9 @@ const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, options) => {
 };
 
 // If the editable is a span or a heading, we automatically disable paragraphs and enable the soft break mode
-// Also possible to force this behavior with `formatting.paragraph: false`
+// Also possible to force this behavior with `autoparagraph: false`
 const disableParagraph = (editorOptions, {propertyDomNode}) =>
-    $get('formatting.paragraph', editorOptions) === false ||
+    $get('autoparagraph', editorOptions) === false ||
     propertyDomNode.tagName === 'SPAN' ||
     propertyDomNode.tagName === 'H1' ||
     propertyDomNode.tagName === 'H2' ||

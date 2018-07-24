@@ -74,7 +74,7 @@ export default class LinkButton extends PureComponent {
     }
 
     isOpen() {
-        return this.state.isOpen || this.getHrefValue();
+        return Boolean(this.state.isOpen || this.getHrefValue());
     }
 
     getHrefValue() {

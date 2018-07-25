@@ -315,7 +315,7 @@ class LinkTextField extends PureComponent {
     renderViewMode() {
         return (
             <Fragment>
-                <div style={{flexGrow: 1}} onClick={this.handleSwitchToEditMode} role="button">
+                <div style={{flexGrow: 1, maxWidth: '365px'}} onClick={this.handleSwitchToEditMode} role="button">
                     {this.state.isLoading ? <Icon icon="spinner" className={style.linkButton__loader} spin={true} size="lg" /> : this.renderLinkOption()}
                 </div>
                 <IconButton

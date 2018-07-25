@@ -50,8 +50,8 @@ export default class LinkButton extends PureComponent {
                 executeCommand('linkRelNofollow', false, false);
                 executeCommand('linkTargetBlank', false, false);
                 executeCommand('unlink');
-                this.setState({isOpen: false});
             }
+            this.setState({isOpen: false});
         } else {
             this.setState({isOpen: true});
         }
@@ -63,9 +63,9 @@ export default class LinkButton extends PureComponent {
         return (
             <div>
                 <IconButton
-                    title={`${i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link')}`}
+                    title={this.getHrefValue() ? `${i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__unlink', 'Unlink')}` : `${i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link', 'Link')}`}
                     isActive={this.isOpen()}
-                    icon="link"
+                    icon={this.getHrefValue() ? 'unlink' : 'link'}
                     onClick={this.handleLinkButtonClick}
                     />
                 {this.isOpen() ? <LinkTextField hrefValue={this.getHrefValue()} formattingUnderCursor={formattingUnderCursor} inlineEditorOptions={inlineEditorOptions} /> : null}
@@ -189,7 +189,7 @@ class LinkTextField extends PureComponent {
             this.setState({
                 isLoading: false,
                 searchOptions: [{
-                    label: this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__formatAsHttp', 'Format as http link?'),
+                    label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsHttp', 'Format as http link?'),
                     loaderUri: `http://${searchTerm}`
                 }]
             });
@@ -197,7 +197,7 @@ class LinkTextField extends PureComponent {
             this.setState({
                 isLoading: false,
                 searchOptions: [{
-                    label: this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__formatAsEmail', 'Format as email?'),
+                    label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsEmail', 'Format as email?'),
                     loaderUri: `mailto:${searchTerm}`
                 }]
             });
@@ -282,7 +282,7 @@ class LinkTextField extends PureComponent {
                     value={''}
                     plainInputMode={isUri(this.state.searchTerm)}
                     onValueChange={this.handleValueChange}
-                    placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
+                    placeholder={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
                     setFocus={true}
@@ -292,13 +292,14 @@ class LinkTextField extends PureComponent {
                     onSearchTermChange={this.handleSearchTermChange}
                     onSearchTermKeyPress={this.handleSearchTermKeyPress}
                     ListPreviewElement={LinkOption}
-                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
-                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 />
                 <IconButton
                     className={style.linkButton__innerButton}
                     icon="check"
                     onClick={this.handleManualSetLink}
+                    title={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__apply', 'Apply link')}
                     />
             </Fragment>
         );
@@ -321,13 +322,14 @@ class LinkTextField extends PureComponent {
     renderViewMode() {
         return (
             <Fragment>
-                <div style={{flexGrow: 1}} onClick={this.handleSwitchToEditMode} role="button">
+                <div className={style.linkButton__optionWrapper} onClick={this.handleSwitchToEditMode} role="button">
                     {this.state.isLoading ? <Icon icon="spinner" className={style.linkButton__loader} spin={true} size="lg" /> : this.renderLinkOption()}
                 </div>
                 <IconButton
                     className={style.linkButton__innerButton}
                     icon="pencil-alt"
                     onClick={this.handleSwitchToEditMode}
+                    title={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__edit', 'Edit link')}
                     />
             </Fragment>
         );
@@ -352,15 +354,15 @@ class LinkTextField extends PureComponent {
                 {$get('linking.anchor', this.props.inlineEditorOptions) && (
                     <div className={style.linkButton__optionsPanelItem}>
                         <label className={style.linkButton__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">
-                            {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__anchor', 'Link to anchor')}
+                            {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__anchor', 'Link to anchor')}
                         </label>
                         <div>
                             <TextInput
                                 id="__neos__linkEditor--anchor"
                                 value={this.getAnchorValue()}
-                                placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__anchorPlaceholder', 'Enter anchor name')}
+                                placeholder={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__anchorPlaceholder', 'Enter anchor name')}
                                 onChange={value => {
-                                    executeCommand('link', this.getBaseValue() + '#' + value, false);
+                                    executeCommand('link', value ? `${this.getBaseValue()}#${value}` : this.getBaseValue(), false);
                                 }}
                                 />
                         </div>
@@ -368,13 +370,13 @@ class LinkTextField extends PureComponent {
                 {$get('linking.title', this.props.inlineEditorOptions) && (
                     <div className={style.linkButton__optionsPanelItem}>
                         <label className={style.linkButton__optionsPanelLabel} htmlFor="__neos__linkEditor--title">
-                            {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__title', 'Title')}
+                            {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__title', 'Title')}
                         </label>
                         <div>
                             <TextInput
                                 id="__neos__linkEditor--title"
                                 value={$get('linkTitle', this.props.formattingUnderCursor) || ''}
-                                placeholder={this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__titlePlaceholder', 'Enter link title')}
+                                placeholder={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__titlePlaceholder', 'Enter link title')}
                                 onChange={value => {
                                     executeCommand('linkTitle', value, false);
                                 }}
@@ -390,7 +392,7 @@ class LinkTextField extends PureComponent {
                                         executeCommand('linkTargetBlank', undefined, false);
                                     }}
                                     isChecked={$get('linkTargetBlank', this.props.formattingUnderCursor) || false}
-                                /> {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
+                                /> {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
                             </label>
                         </div>)}
                     {$get('linking.relNofollow', this.props.inlineEditorOptions) && (
@@ -401,7 +403,7 @@ class LinkTextField extends PureComponent {
                                         executeCommand('linkRelNofollow', undefined, false);
                                     }}
                                     isChecked={$get('linkRelNofollow', this.props.formattingUnderCursor) || false}
-                                /> {this.props.i18nRegistry.translate('Neos.Neos:Main:ckeditor__toolbar__link__noFollow', 'No follow')}
+                                /> {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__noFollow', 'No follow')}
                             </label>
                         </div>)}
                 </div>
@@ -421,6 +423,7 @@ class LinkTextField extends PureComponent {
                             onClick={this.handleToggleOptionsPanel}
                             style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
                             className={style.linkButton__innerButton}
+                            title={this.state.optionsPanelIsOpen ? this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__hideOptions', 'Hide link options') : this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__showOptions', 'Link options')}
                             icon="cog"
                             />
                     )}

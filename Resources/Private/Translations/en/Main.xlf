@@ -41,6 +41,66 @@
 			<trans-unit id="ckeditor__toolbar__link" xml:space="preserve">
 				<source>Link</source>
 			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
+				<source>Unlink</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__hideOptions" xml:space="preserve">
+				<source>Hide link options</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__showOptions" xml:space="preserve">
+				<source>Link options</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__noFollow" xml:space="preserve">
+				<source>No follow</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__targetBlank" xml:space="preserve">
+				<source>Open in new window</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve">
+				<source>Enter link title</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__anchorPlaceholder" xml:space="preserve">
+				<source>Enter anchor name</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__anchor" xml:space="preserve">
+				<source>Link to anchor</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__edit" xml:space="preserve">
+				<source>Edit link</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__apply" xml:space="preserve">
+				<source>Apply link</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__placeholder" xml:space="preserve">
+				<source>Paste a link, or search</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__formatAsHttp" xml:space="preserve">
+				<source>Format as http link?</source>
+			</trans-unit>
+			<trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
+				<source>Format as email?</source>
+			</trans-unit>
+			<trans-unit id="" xml:space="preserve">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="" xml:space="preserve">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="" xml:space="preserve">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="" xml:space="preserve">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="" xml:space="preserve">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="" xml:space="preserve">
+				<source></source>
+			</trans-unit>
 			<trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
 				<source>Ordered list</source>
 			</trans-unit>

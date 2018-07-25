@@ -136,15 +136,7 @@ export default ckEditorRegistry => {
     richtextToolbar.set('link', {
         commandName: 'link',
         component: LinkButton,
-        callbackPropName: 'onClick',
-        icon: 'link',
-        hoverStyle: 'brand',
-        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__link',
-        isVisible: $get('formatting.a'),
-        isActive: formattingUnderCursor => {
-            const link = $get('link', formattingUnderCursor);
-            return Boolean(link === '' || link);
-        }
+        isVisible: $get('formatting.a')
     });
 
     /**

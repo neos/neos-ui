@@ -52,7 +52,7 @@ class ConfigurationRenderingService
      * @param array $context
      * @throws \Neos\Eel\Exception
      */
-    protected function computeConfigurationInternally(array &$adjustedConfiguration, array $context): void
+    protected function computeConfigurationInternally(array &$adjustedConfiguration, array $context)
     {
         foreach ($adjustedConfiguration as $key => &$value) {
             if (is_array($value)) {

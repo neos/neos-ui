@@ -175,7 +175,13 @@ class LinkTextField extends PureComponent {
         }
     }
 
-    commitValue = value => executeCommand('link', value, false);
+    commitValue = value => {
+        if (value === '') {
+            executeCommand('unlink');
+        } else {
+            executeCommand('link', value, false);
+        }
+    }
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});

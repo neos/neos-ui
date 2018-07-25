@@ -221,7 +221,7 @@ class AugmentationAspect
      * @param NodeInterface $documentNode
      * @return void
      */
-    protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode): void
+    protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {
         if ($documentNode->getContext()->getWorkspace()->isPublicWorkspace()) {
             return;

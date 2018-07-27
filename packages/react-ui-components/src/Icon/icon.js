@@ -16,7 +16,7 @@ class Icon extends PureComponent {
         /**
          * The ID of the icon to render.
          */
-        icon: PropTypes.string,
+        icon: PropTypes.string.isRequired,
 
         /**
          * The (accessibility) label for this icon
@@ -54,6 +54,9 @@ class Icon extends PureComponent {
 
     render() {
         const {padded, theme, label, icon, className, color, ...rest} = this.props;
+        if (!icon || typeof icon !== 'string') {
+            return null;
+        }
         const iconClassName = icon;
         const classNames = mergeClassNames({
             [theme.icon]: true,

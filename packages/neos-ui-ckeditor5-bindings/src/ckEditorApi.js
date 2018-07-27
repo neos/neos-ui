@@ -1,4 +1,3 @@
-import throttle from 'lodash.throttle';
 import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
 
@@ -59,7 +58,7 @@ export const createEditor = ({propertyDomNode, propertyName, contextPath, editor
             });
 
             editor.model.document.on('change', () => handleUserInteractionCallback());
-            editor.model.document.on('change:data', debounce(throttle(() => persistChange({
+            editor.model.document.on('change:data', debounce(() => persistChange({
                 type: 'Neos.Neos.Ui:Property',
                 subject: contextPath,
                 payload: {
@@ -67,7 +66,7 @@ export const createEditor = ({propertyDomNode, propertyName, contextPath, editor
                     value: cleanupContentBeforeCommit(editor.getData()),
                     isInline: true
                 }
-            }), 1500), 150));
+            }), 450, {maxWait: 5000}));
         }).catch(e => console.error(e));
 };
 

@@ -20,6 +20,9 @@ let lastFormattingUnderCursorSerialized = '';
 
 // We get the state of all commands from CKE5 and serialize it into "formattingUnderCursor"
 const handleUserInteractionCallback = () => {
+    if (!currentEditor) {
+        return;
+    }
     const formattingUnderCursor = {};
     [...currentEditor.commands].forEach(commandTuple => {
         const [commandName, command] = commandTuple;

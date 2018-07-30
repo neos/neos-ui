@@ -18,6 +18,7 @@ import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 import * as UtilsRedux from '@neos-project/utils-redux';
 import NeosUiI18n from '@neos-project/neos-ui-i18n';
+import * as CkEditorApi from '@neos-project/neos-ui-ckeditor5-bindings/src/ckEditorApi';
 import NeosUiBackendConnectorDefault, * as NeosUiBackendConnector from '@neos-project/neos-ui-backend-connector';
 import * as NeosUiViews from '@neos-project/neos-ui-views';
 
@@ -41,6 +42,7 @@ export default {
     '@NeosProjectPackages': () => ({
         NeosUiBackendConnectorDefault,
         NeosUiBackendConnector,
+        CkEditorApi,
         NeosUiDecorators,
         NeosUiEditors: EditorEnvelope,
         NeosUiI18n,

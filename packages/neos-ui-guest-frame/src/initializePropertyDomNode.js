@@ -51,22 +51,24 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         }
 
         try {
-            const userPreferences = $get('user.preferences', store.getState());
+            if (!propertyDomNode.dataset.neosInlineEditorIsInitialized) {
+                const userPreferences = $get('user.preferences', store.getState());
 
-            createInlineEditor({
-                propertyDomNode,
-                propertyName,
-                contextPath,
-                nodeType,
-                editorOptions,
-                globalRegistry,
-                userPreferences,
-                persistChange: change => store.dispatch(
-                    actions.Changes.persistChanges([change])
-                )
-            });
+                createInlineEditor({
+                    propertyDomNode,
+                    propertyName,
+                    contextPath,
+                    nodeType,
+                    editorOptions,
+                    globalRegistry,
+                    userPreferences,
+                    persistChange: change => store.dispatch(
+                        actions.Changes.persistChanges([change])
+                    )
+                });
 
-            propertyDomNode.dataset.neosInlineEditorIsInitialized = true;
+                propertyDomNode.dataset.neosInlineEditorIsInitialized = true;
+            }
         } catch (err) {
             //
             // The entire function is executed in a saga-context. Since we're fiddeling with the guest

@@ -42,7 +42,8 @@ export const bootstrap = _editorConfig => {
     editorConfig = _editorConfig;
 };
 
-export const createEditor = ({propertyDomNode, propertyName, contextPath, editorOptions, globalRegistry, userPreferences, persistChange}) => {
+export const createEditor = options => {
+    const {propertyDomNode, propertyName, contextPath, editorOptions, globalRegistry, userPreferences, persistChange} = options;
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
         userPreferences,
@@ -59,6 +60,9 @@ export const createEditor = ({propertyDomNode, propertyName, contextPath, editor
                     editorConfig.setCurrentlyEditedPropertyName(propertyName);
                 }
             });
+
+            // We attach all options for this editor to the editor DOM node, so it would be easier to access them from CKE plugins
+            editor.neos = options;
 
             editor.model.document.on('change', () => handleUserInteractionCallback());
             editor.model.document.on('change:data', debounce(() => persistChange({

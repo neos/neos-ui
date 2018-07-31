@@ -30,7 +30,7 @@ fi
 
 
 # update neos-ui-compiled version
-jq ".require[\"neos/neos-ui-compiled\"] = \"$VERSION\"" composer.json > composer.json.new
+jq ".require[\"neos/neos-ui-compiled\"] = \"$VERSION || master\"" composer.json > composer.json.new
 rm composer.json
 mv composer.json.new composer.json
 rm jq-linux64

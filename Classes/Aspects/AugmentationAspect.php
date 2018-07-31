@@ -152,6 +152,7 @@ class AugmentationAspect
         $attributes = $joinPoint->isMethodArgument('additionalAttributes') ? $joinPoint->getMethodArgument('additionalAttributes') : [];
         $attributes['data-__neos-node-contextpath'] = $node->getContextPath();
         $attributes['data-__neos-fusion-path'] = $fusionPath;
+        $attributes['data-__neos-node-nodetype'] = $node->getNodeType();
 
         $this->renderedNodes[] = $node->getIdentifier();
 

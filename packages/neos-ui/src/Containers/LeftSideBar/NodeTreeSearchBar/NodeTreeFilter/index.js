@@ -40,41 +40,41 @@ export default class NodeTreeFilter extends PureComponent {
             .filter(presetName => (presetName !== 'default'))
             .map(presetName => ({
                     value: presets[presetName].baseNodeType,
-                    label: presets[presetName].ui && presets[presetName].ui.label || '[' + presetName + ']',
-                    icon: presets[presetName].ui && presets[presetName].ui.icon || null,
+                    label: $get('ui.label', presets[presetName]) || '[' + presetName + ']',
+                    icon: $get('ui.icon', presets[presetName]),
                 })
             );
 
         if (options.length === 0) {
             const documentNodeTypes = nodeTypesRegistry
-                .getSubTypesOf('Neos.Neos:Document')
+                .getSubTypesOf(nodeTypesRegistry.getRole('document'))
                 .map(nodeTypeName => nodeTypesRegistry.getNodeType(nodeTypeName))
                 .filter(i => i);
 
             options = documentNodeTypes.map(nodeType => ({
                 value: nodeType.name,
                 label: i18nRegistry.translate(nodeType.label),
-                icon: nodeType.ui.icon
+                icon: $get('ui.icon', nodeType)
             }));
         }
 
         return (
             <div id="neos-NodeTreeFilter" className={style.searchBar}>
-    <SelectBox
-        placeholder={label}
-        placeholderIcon={'filter'}
-        onValueChange={onChange}
-        allowEmpty={true}
-        value={value}
-        options={searchOptions(this.state.filterTerm, options)}
-        displaySearchBox={true}
-        searchTerm={this.state.filterTerm}
-        onSearchTermChange={this.handleFilterTermChange}
-        threshold={0}
-        noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
-        searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
-        />
-        </div>
-    );
+                <SelectBox
+                    placeholder={label}
+                    placeholderIcon={'filter'}
+                    onValueChange={onChange}
+                    allowEmpty={true}
+                    value={value}
+                    options={searchOptions(this.state.filterTerm, options)}
+                    displaySearchBox={true}
+                    searchTerm={this.state.filterTerm}
+                    onSearchTermChange={this.handleFilterTermChange}
+                    threshold={0}
+                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                    />
+            </div>
+        );
     }
 }

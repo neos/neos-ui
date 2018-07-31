@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {$get} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {SelectBox} from '@neos-project/react-ui-components';
@@ -17,6 +18,7 @@ export default class NodeTreeFilter extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
+        neos: PropTypes.object.isRequired,
         onChange: PropTypes.func.isRequired,
         value: PropTypes.any
     }
@@ -30,36 +32,49 @@ export default class NodeTreeFilter extends PureComponent {
     }
 
     render() {
-        const {i18nRegistry, nodeTypesRegistry, onChange, value} = this.props;
+        const {i18nRegistry, nodeTypesRegistry, neos, onChange, value} = this.props;
         const label = i18nRegistry.translate('filter', 'Filter', {}, 'Neos.Neos', 'Main');
 
-        const documentNodeTypes = nodeTypesRegistry
-            .getSubTypesOf('Neos.Neos:Document')
-            .map(nodeTypeName => nodeTypesRegistry.getNodeType(nodeTypeName))
-            .filter(i => i);
-        const options = documentNodeTypes.map(nodeType => ({
-            value: nodeType.name,
-            label: i18nRegistry.translate(nodeType.label),
-            icon: nodeType.ui.icon
-        }));
+        const presets = $get('configuration.nodeTree.presets', neos);
+        let options = Object.keys(presets)
+            .filter(presetName => (presetName !== 'default'))
+            .map(presetName => ({
+                    value: presets[presetName].baseNodeType,
+                    label: presets[presetName].ui && presets[presetName].ui.label || '[' + presetName + ']',
+                    icon: presets[presetName].ui && presets[presetName].ui.icon || null,
+                })
+            );
+
+        if (options.length === 0) {
+            const documentNodeTypes = nodeTypesRegistry
+                .getSubTypesOf('Neos.Neos:Document')
+                .map(nodeTypeName => nodeTypesRegistry.getNodeType(nodeTypeName))
+                .filter(i => i);
+
+            options = documentNodeTypes.map(nodeType => ({
+                value: nodeType.name,
+                label: i18nRegistry.translate(nodeType.label),
+                icon: nodeType.ui.icon
+            }));
+        }
 
         return (
             <div id="neos-NodeTreeFilter" className={style.searchBar}>
-                <SelectBox
-                    placeholder={label}
-                    placeholderIcon={'filter'}
-                    onValueChange={onChange}
-                    allowEmpty={true}
-                    value={value}
-                    options={searchOptions(this.state.filterTerm, options)}
-                    displaySearchBox={true}
-                    searchTerm={this.state.filterTerm}
-                    onSearchTermChange={this.handleFilterTermChange}
-                    threshold={0}
-                    noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
-                    searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
-                    />
-            </div>
-        );
+    <SelectBox
+        placeholder={label}
+        placeholderIcon={'filter'}
+        onValueChange={onChange}
+        allowEmpty={true}
+        value={value}
+        options={searchOptions(this.state.filterTerm, options)}
+        displaySearchBox={true}
+        searchTerm={this.state.filterTerm}
+        onSearchTermChange={this.handleFilterTermChange}
+        threshold={0}
+        noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+        searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+        />
+        </div>
+    );
     }
 }

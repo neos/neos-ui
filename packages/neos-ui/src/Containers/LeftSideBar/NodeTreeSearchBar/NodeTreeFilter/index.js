@@ -39,9 +39,9 @@ export default class NodeTreeFilter extends PureComponent {
         let options = Object.keys(presets)
             .filter(presetName => (presetName !== 'default'))
             .map(presetName => ({
-                    value: presets[presetName].baseNodeType,
-                    label: $get('ui.label', presets[presetName]) || '[' + presetName + ']',
-                    icon: $get('ui.icon', presets[presetName]),
+                value: $get([presetName, 'baseNodeType'], presets),
+                label: $get([presetName, 'ui', 'label'], presets) || '[' + presetName + ']',
+                icon: $get([presetName, 'ui', 'icon'], presets)
                 })
             );
 

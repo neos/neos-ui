@@ -229,7 +229,7 @@ const createCKEditorAPI = CKEDITOR => {
                     handleUserInteraction();
                 });
 
-                editor.on('change', debounce(() => onChange(editor.getData()), 350, {maxWait: 5000}));
+                editor.on('change', debounce(() => onChange(editor.getData()), 500, {maxWait: 5000}));
             });
         }
     };

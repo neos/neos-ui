@@ -73,7 +73,7 @@ export const createEditor = options => {
                     value: cleanupContentBeforeCommit(editor.getData()),
                     isInline: true
                 }
-            }), 350, {maxWait: 5000}));
+            }), 500, {maxWait: 5000}));
         }).catch(e => console.error(e));
 };
 

@@ -42,7 +42,7 @@ export default class NodeTreeFilter extends PureComponent {
                 value: $get([presetName, 'baseNodeType'], presets),
                 label: $get([presetName, 'ui', 'label'], presets) || '[' + presetName + ']',
                 icon: $get([presetName, 'ui', 'icon'], presets)
-                })
+            })
             );
 
         if (options.length === 0) {

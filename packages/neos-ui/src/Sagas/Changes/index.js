@@ -1,4 +1,4 @@
-import {take, race, put, call, select} from 'redux-saga/effects';
+import {takeEvery, put, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -13,7 +13,6 @@ function * persistChanges(changes) {
 
     try {
         const feedback = yield call(change, changes);
-        yield put(actions.UI.Remote.finishSaving());
         yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
         const state = yield select();
@@ -34,20 +33,20 @@ function * persistChanges(changes) {
 export function * watchPersist() {
     let changes = [];
 
-    while (true) {
-        const {action} = yield race({
-            action: take(actionTypes.Changes.PERSIST),
-            saveFinished: take(actionTypes.UI.Remote.FINISH_SAVING)
-        });
-
-        if (action) {
+    yield takeEvery([actionTypes.Changes.PERSIST, actionTypes.UI.Remote.FINISH_SAVING], function * (action) {
+        if (action.type === actionTypes.Changes.PERSIST) {
             changes.push(...action.payload.changes);
         }
 
         const state = yield select();
+        // If there's already a pending request, don't start the new one;
+        // the data will be stored in `changes` closure and when the current request finishes saving
+        // it will be re-triggered by FINISH_SAVING
         if (changes.length > 0 && !$get('ui.remote.isSaving', state)) {
-            yield call(persistChanges, changes);
+            // we need to clear out the changes array before yield, so the best I could think of is this
+            const clonedChanges = changes.slice(0);
             changes = [];
+            yield call(persistChanges, clonedChanges);
         }
-    }
+    });
 }

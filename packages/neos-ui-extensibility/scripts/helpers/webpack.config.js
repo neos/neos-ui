@@ -59,6 +59,7 @@ module.exports = function (neosPackageJson) {
                 'redux-saga': '@neos-project/neos-ui-extensibility/src/shims/vendor/redux-saga/index',
                 'reselect': '@neos-project/neos-ui-extensibility/src/shims/vendor/reselect/index',
                 'react-css-themr': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-css-themr/index',
+                'ckeditor5-exports': '@neos-project/neos-ui-extensibility/src/shims/vendor/ckeditor5-exports/index',
 
                 '@neos-project/react-ui-components': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/react-ui-components/index',
                 '@neos-project/neos-ui-backend-connector': '@neos-project/neos-ui-extensibility/src/shims/neosProjectPackages/neos-ui-backend-connector/index',

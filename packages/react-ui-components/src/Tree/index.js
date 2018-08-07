@@ -1,4 +1,4 @@
-import {themr} from 'react-css-themr';
+import {themr} from '@friendsofreactjs/react-css-themr';
 import identifiers from './../identifiers.js';
 import treeStyle from './tree.css';
 import nodeStyle from './node.css';

@@ -67,7 +67,7 @@ const webpackConfig = {
                 }]
             },
             {
-                test: /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
+                test: /node_modules\/@fortawesome\/fontawesome-svg-core\/styles\.css$/,
                 use: extractCss.extract({
                     use: [{
                         loader: 'css-loader'
@@ -85,7 +85,7 @@ const webpackConfig = {
             {
                 test: /\.css$/,
                 exclude: [
-                    /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
+                    /node_modules\/@fortawesome\/fontawesome-svg-core\/styles\.css$/,
                     /node_modules\/@ckeditor.*$/
                 ],
                 use: extractCss.extract({

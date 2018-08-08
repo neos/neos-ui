@@ -9,6 +9,12 @@ const {publishableNodesInDocumentSelector, baseWorkspaceSelector} = selectors.CR
 function * persistChanges(changes) {
     const {change} = backend.get().endpoints;
 
+    const confirmExit = () => {
+        return 'You have attempted to leave this page. Your changes are currently persisted, if you leave now your changes will may not be saved.  Are you sure you want to exit this page?';
+    };
+
+    window.onbeforeunload = confirmExit;
+
     yield put(actions.UI.Remote.startSaving());
 
     try {
@@ -27,6 +33,7 @@ function * persistChanges(changes) {
         console.error('Failed to persist changes', error);
     } finally {
         yield put(actions.UI.Remote.finishSaving());
+        window.onbeforeunload = null;
     }
 }
 

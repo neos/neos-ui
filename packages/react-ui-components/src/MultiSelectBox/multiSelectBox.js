@@ -151,7 +151,7 @@ class MultiSelectBox extends PureComponent {
         MultiSelectBox_ListPreviewSortable: PropTypes.any.isRequired
     }
 
-    defaultProps = {
+    static defaultProps = {
         optionValueField: 'value',
         dndType: 'multiselect-box-value',
         allowEmpty: true,

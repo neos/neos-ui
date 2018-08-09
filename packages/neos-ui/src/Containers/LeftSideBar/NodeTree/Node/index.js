@@ -166,7 +166,7 @@ export default class Node extends PureComponent {
 
         if (isHidden) {
             return (
-                <span className="fa-layers fa-fw">
+                <span className="fa-layers fa-fw node__header__icon___1KHge">
                     <Icon icon={this.getIcon()} />
                     <Icon icon="circle" color="error" transform="shrink-3 down-6 right-4" />
                     <Icon icon="times" transform="shrink-7 down-6 right-4" />
@@ -176,7 +176,7 @@ export default class Node extends PureComponent {
 
         if (isHiddenBefore || isHiddenAfter) {
             return (
-                <span className="fa-layers fa-fw">
+                <span className="fa-layers fa-fw node__header__icon___1KHge">
                     <Icon icon={this.getIcon()} />
                     <Icon icon="circle" color="primaryBlue" transform="shrink-5 down-6 right-4" />
                     <Icon icon="clock" transform="shrink-9 down-6 right-4" />

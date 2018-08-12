@@ -15,6 +15,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import animate from 'amator';
 import hashSum from 'hash-sum';
 
+import style from './style.css';
+
 const getContextPath = $get('contextPath');
 
 //
@@ -164,9 +166,11 @@ export default class Node extends PureComponent {
         const isHiddenBefore = $get('properties._hiddenBeforeDateTime', node);
         const isHiddenAfter = $get('properties._hiddenAfterDateTime', node);
 
+        const classNames = 'fa-layers fa-fw ' + style.header__icon;
+
         if (isHidden) {
             return (
-                <span className="fa-layers fa-fw node__header__icon___1KHge">
+                <span className={classNames}>
                     <Icon icon={this.getIcon()} />
                     <Icon icon="circle" color="error" transform="shrink-3 down-6 right-4" />
                     <Icon icon="times" transform="shrink-7 down-6 right-4" />
@@ -176,7 +180,7 @@ export default class Node extends PureComponent {
 
         if (isHiddenBefore || isHiddenAfter) {
             return (
-                <span className="fa-layers fa-fw node__header__icon___1KHge">
+                <span className={classNames}>
                     <Icon icon={this.getIcon()} />
                     <Icon icon="circle" color="primaryBlue" transform="shrink-5 down-6 right-4" />
                     <Icon icon="clock" transform="shrink-9 down-6 right-4" />

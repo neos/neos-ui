@@ -139,7 +139,7 @@ export default class Inspector extends PureComponent {
         // Eval the view configuration
         this.preprocessViewConfiguration({node: nodeForContext});
         // Force re-render, since we were debounced
-        this.setState({});
+        this.forceUpdate();
     }, 250);
 
     handleCloseSecondaryInspector = () => {

@@ -96,9 +96,11 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             $nodes[] = $documentNode;
         }
 
-        $clipboardNode = $this->propertyMapper->convert($clipboardNodeContextPath, NodeInterface::class);
-        if (!in_array($clipboardNode, $nodes)) {
-            $nodes[] = $clipboardNode;
+        if ($clipboardNodeContextPath) {
+            $clipboardNode = $this->propertyMapper->convert($clipboardNodeContextPath, NodeInterface::class);
+            if (!in_array($clipboardNode, $nodes)) {
+                $nodes[] = $clipboardNode;
+            }
         }
 
         $flowQuery->setContext($nodes);

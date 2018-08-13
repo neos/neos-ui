@@ -45,7 +45,8 @@ export default class SynchronousRegistry extends AbstractRegistry {
      */
     get(key) {
         if (typeof key !== 'string') {
-            throw new Error('Key must be a string');
+            console.error('Key must be a string');
+            return null;
         }
         const result = this._registry.find(item => item.key === key);
         return result ? result.value : false;
@@ -88,7 +89,8 @@ export default class SynchronousRegistry extends AbstractRegistry {
      */
     has(key) {
         if (typeof key !== 'string') {
-            throw new Error('Key must be a string');
+            console.error('Key must be a string');
+            return null;
         }
         return this._registry.find(item => item.key === key) && true;
     }

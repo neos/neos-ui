@@ -30,7 +30,8 @@ class NodeTypeGroupPanel extends PureComponent {
         group: PropTypes.shape({
             name: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
-            nodeTypes: PropTypes.array.isRequired
+            nodeTypes: PropTypes.array.isRequired,
+            collapsed: PropTypes.bool
         }).isRequired,
         onSelect: PropTypes.func.isRequired,
 
@@ -57,9 +58,12 @@ class NodeTypeGroupPanel extends PureComponent {
                 return false;
             });
 
+        // Take `collapsed: true` group seting into account
+        const isOpen = $get('collapsed', group) ? collapsedGroups.includes(name) : !collapsedGroups.includes(name);
+
         return (
             <ToggablePanel
-                isOpen={collapsedGroups.includes(name) === false}
+                isOpen={isOpen}
                 onPanelToggle={this.handleToggleGroup}
                 >
                 <ToggablePanel.Header className={style.groupHeader}>

@@ -38,10 +38,6 @@
     margin-top: 6px;
 }
 
-.header__icon {
-    margin: 0 .4em;
-}
-
 .header__iconWrapper {
     width: 2em;
     display: inline-block;

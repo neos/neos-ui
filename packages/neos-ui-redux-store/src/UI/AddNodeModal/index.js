@@ -63,7 +63,7 @@ export const reducer = handleActions({
         new Map({
             contextPath: '',
             fusionPath: '',
-            collapsedGroups: $get('ui.addNodeModal.collapsedGroups', state) ? $get('ui.addNodeModal.collapsedGroups', state) : []
+            toggledGroups: $get('ui.addNodeModal.toggledGroups', state) ? $get('ui.addNodeModal.toggledGroups', state) : []
         })
     ),
     [OPEN]: ({contextPath, fusionPath}) => {
@@ -83,5 +83,5 @@ export const reducer = handleActions({
         $set('ui.addNodeModal.contextPath', ''),
         $set('ui.addNodeModal.fusionPath', '')
     ),
-    [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.collapsedGroups', groupId)
+    [TOGGLE_GROUP]: groupId => $toggle('ui.addNodeModal.toggledGroups', groupId)
 });

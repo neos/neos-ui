@@ -16,14 +16,14 @@ import style from './style.css';
     i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect($transform({
-    collapsedGroups: $get('ui.addNodeModal.collapsedGroups')
+    toggledGroups: $get('ui.addNodeModal.toggledGroups')
 }), {
     toggleNodeTypeGroup: actions.UI.AddNodeModal.toggleGroup
 })
 class NodeTypeGroupPanel extends PureComponent {
     static propTypes = {
         toggleNodeTypeGroup: PropTypes.func.isRequired,
-        collapsedGroups: PropTypes.array.isRequired,
+        toggledGroups: PropTypes.array.isRequired,
         filterSearchTerm: PropTypes.string,
         onHelpMessage: PropTypes.func.isRequired,
 
@@ -41,7 +41,7 @@ class NodeTypeGroupPanel extends PureComponent {
     render() {
         const {
             group,
-            collapsedGroups,
+            toggledGroups,
             onSelect,
             filterSearchTerm,
             i18nRegistry,
@@ -58,8 +58,8 @@ class NodeTypeGroupPanel extends PureComponent {
                 return false;
             });
 
-        // Take `collapsed: true` group seting into account
-        const isOpen = $get('collapsed', group) ? collapsedGroups.includes(name) : !collapsedGroups.includes(name);
+        // Take `collapsed: true` group setting into account
+        const isOpen = $get('collapsed', group) ? toggledGroups.includes(name) : !toggledGroups.includes(name);
 
         return (
             <ToggablePanel

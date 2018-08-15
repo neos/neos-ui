@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
 
-import Tree from '@neos-project/react-ui-components/src/Tree/';
+import {Tree, Icon} from '@neos-project/react-ui-components';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {dndTypes} from '@neos-project/neos-ui-constants';
@@ -91,7 +91,11 @@ export default class NodeTree extends PureComponent {
     render() {
         const {rootNode, ChildRenderer} = this.props;
         if (!rootNode) {
-            return (<div>...</div>);
+            return (
+                <div className={style.loader}>
+                    <Icon icon="spinner" spin={true} />
+                </div>
+            );
         }
 
         const classNames = mergeClassNames({

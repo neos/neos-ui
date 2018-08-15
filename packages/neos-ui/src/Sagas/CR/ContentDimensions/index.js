@@ -1,4 +1,4 @@
-import {put, select, race, take, takeLatest, call} from 'redux-saga/effects';
+import {put, select, race, take, takeLatest, takeEvery, call} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
@@ -35,19 +35,23 @@ export function * watchSelectPreset() {
                 continue;
             }
 
-            const {nodeFrontendUri, nodeContextPath} = informationAboutNodeInTargetDimension;
-
-            const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
-            const siteNodeContextPath = $get('contextPath', siteNode);
-            const targetSiteNodeContextPath = `${siteNodeContextPath.split('@')[0]}@${nodeContextPath.split('@')[1]}`;
-
+            const {nodeFrontendUri} = informationAboutNodeInTargetDimension;
             yield put(actions.UI.ContentCanvas.setSrc(nodeFrontendUri));
-
-            yield put(actions.CR.Nodes.reloadState({
-                siteNodeContextPath: targetSiteNodeContextPath,
-                documentNodeContextPath: nodeContextPath
-            }));
         }
+    });
+}
+
+/**
+ * Watch for dimension changes and then reload state
+ */
+export function * watchSetActive() {
+    let previousActiveDimensions = yield select(selectors.CR.ContentDimensions.active);
+    yield takeEvery(actionTypes.CR.ContentDimensions.SET_ACTIVE, function * () {
+        const activeDimensions = yield select(selectors.CR.ContentDimensions.active);
+        if (previousActiveDimensions && JSON.stringify(activeDimensions) !== JSON.stringify(previousActiveDimensions)) {
+            yield put(actions.CR.Nodes.reloadState({merge: true}));
+        }
+        previousActiveDimensions = activeDimensions;
     });
 }
 

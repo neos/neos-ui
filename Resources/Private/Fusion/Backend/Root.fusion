@@ -193,7 +193,7 @@ backend = Neos.Fusion:Template {
             label = 'Neos.Neos:Main:content'
             icon = 'file'
             uri = Neos.Neos:NodeUri {
-                node = ${sitesForMenu[0]}
+                node = ${site}
             }
             target = 'ContentCanvas'
 

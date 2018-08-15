@@ -39,14 +39,18 @@ export default class SecondaryToolbar extends PureComponent {
     };
 
     getToolbarComponent() {
-        const {containerRegistry, currentlyEditedPropertyName, hasFocusedContentNode} = this.props;
+        const {containerRegistry, currentlyEditedPropertyName, hasFocusedContentNode, nodeTypesRegistry, inlineEditorRegistry, focusedNodeTypeName} = this.props;
         const DimensionSwitcher = containerRegistry.get('SecondaryToolbar/DimensionSwitcher');
+
+        // Focused node is not yet in state, we need to wait a bit
+        if (!focusedNodeTypeName) {
+            return null;
+        }
 
         if (!hasFocusedContentNode && !currentlyEditedPropertyName) {
             return DimensionSwitcher;
         }
 
-        const {nodeTypesRegistry, inlineEditorRegistry, focusedNodeTypeName} = this.props;
         const editorIdentifier = nodeTypesRegistry.getInlineEditorIdentifierForProperty(
             focusedNodeTypeName,
             currentlyEditedPropertyName

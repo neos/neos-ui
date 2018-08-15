@@ -42,6 +42,13 @@
     margin: 0 .4em;
 }
 
+.header__iconWrapper {
+    width: 2em;
+    display: inline-block;
+    position: absolute;
+    text-align: center;
+}
+
 .header__data {
     composes: reset from './../reset.css';
     position: relative;
@@ -95,6 +102,7 @@
 }
 .header__label {
     composes: reset from './../reset.css';
+    margin-left: 2em;
 
     .header__data--isActive & {
         color: var(--colors-PrimaryBlue);

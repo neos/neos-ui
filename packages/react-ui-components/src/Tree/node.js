@@ -122,7 +122,7 @@ export class Header extends PureComponent {
             'header__chevron': PropTypes.string,
             'header__chevron--isCollapsed': PropTypes.string,
             'header__chevron--isLoading': PropTypes.string,
-            'header__icon': PropTypes.string,
+            'header__iconWrapper': PropTypes.string,
             'dropZone': PropTypes.string,
             'dropZone--accepts': PropTypes.string,
             'dropZone--denies': PropTypes.string
@@ -196,10 +196,12 @@ export class Header extends PureComponent {
                             style={{paddingLeft: (level * 18) + 'px'}}
                             >
                             <div className={theme.header__labelWrapper}>
-                                {customIconComponent ?
-                                    customIconComponent :
-                                    <IconComponent icon={icon || 'question'} label={iconLabel} className={theme.header__icon} />
-                                }
+                                <div className={theme.header__iconWrapper}>
+                                    {customIconComponent ?
+                                        customIconComponent :
+                                        <IconComponent icon={icon || 'question'} label={iconLabel} />
+                                    }
+                                </div>
                                 <span {...rest} id={labelIdentifier} className={theme.header__label} onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
                                     {label}
                                 </span>

@@ -45,3 +45,7 @@ test('emptyish should pass', () => {
 test('Number with trailing chars should not be a valid integer', () => {
     expect(integerValidator('1w')).not.toBe(null);
 });
+
+test('Number with trailing chars should not be a valid integer(paradox  test case)', () => {
+    expect(integerValidator('1w')).toBe(null);
+});

@@ -7747,7 +7747,7 @@ node@8.11.0:
   dependencies:
     node-bin-setup "^1.0.0"
 
-node@^8.9.4:
+node@^8.11.0:
   version "8.11.3"
   resolved "https://registry.yarnpkg.com/node/-/node-8.11.3.tgz#b9efe2c3f4c8c84ee78439b119d768ad3b30eed6"
   dependencies:

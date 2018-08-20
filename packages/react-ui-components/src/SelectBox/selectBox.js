@@ -191,7 +191,7 @@ export default class SelectBox extends PureComponent {
 
         const searchTerm = this.getSearchTerm();
 
-        const focusedValue = this.state.focusedValue;
+        const {focusedValue} = this.state;
         const isExpanded = disabled ? false : this.state.isExpanded;
 
         const headerClassName = mergeClassNames({

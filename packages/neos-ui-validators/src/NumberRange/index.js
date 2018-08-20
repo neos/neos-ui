@@ -26,7 +26,8 @@ const NumberRange = (value, validatorOptions) => {
 
     if (value.length > 0 && !Number.isSafeInteger(number)) {
         return <I18n id="content.inspector.validators.numberRangeValidator.validNumberExpected"/>;
-    } else if (number < minimum || number > maximum) {
+    }
+    if (number < minimum || number > maximum) {
         return <I18n id="content.inspector.validators.numberRangeValidator.numberShouldBeInRange" params={{minimum, maximum}}/>;
     }
     return null;

@@ -9,6 +9,7 @@ export default class IconButtonDropDown extends PureComponent {
     };
 
     _mouseHoldTimeout = null;
+
     _mouseHoverTimeout = null;
 
     static propTypes = {

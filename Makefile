@@ -49,6 +49,8 @@ install:
 	yarn install
 
 setup: check-requirements install build
+	nvm install || true
+	nvm use || true
 	@echo Please remember to set frontendDevelopmentMode \
 		to true in your Settings.yaml.
 	@echo

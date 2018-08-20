@@ -46,11 +46,11 @@ check-requirements:
 		(echo yarn is not installed: https://github.com/yarnpkg/yarn && false)
 
 install:
+	nvm install || true
+	nvm use || true
 	yarn install
 
 setup: check-requirements install build
-	nvm install || true
-	nvm use || true
 	@echo Please remember to set frontendDevelopmentMode \
 		to true in your Settings.yaml.
 	@echo

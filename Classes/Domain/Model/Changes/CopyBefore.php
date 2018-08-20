@@ -38,7 +38,7 @@ class CopyBefore extends AbstractCopy
     public function apply()
     {
         if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
+            $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent(), true);
             $node = $this->getSubject()->copyBefore($this->getSiblingNode(), $nodeName);
             $this->finish($node);
         }

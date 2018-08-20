@@ -47,6 +47,7 @@ before_install:
   - sleep 3
   - fluxbox >/dev/null 2>&1 &
   - export FLOW_CONTEXT=Production
+  - nvm install 8.11
 
 #
 # Install and setup the neos instance.

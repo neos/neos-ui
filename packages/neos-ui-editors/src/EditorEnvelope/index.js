@@ -13,7 +13,8 @@ import style from './style.css';
 import {Icon} from '@neos-project/react-ui-components';
 
 @neos(globalRegistry => ({
-    editorRegistry: globalRegistry.get('inspector').get('editors')
+    editorRegistry: globalRegistry.get('inspector').get('editors'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class EditorEnvelope extends PureComponent {
     state = {
@@ -34,6 +35,7 @@ export default class EditorEnvelope extends PureComponent {
         renderSecondaryInspector: PropTypes.func,
         editor: PropTypes.string.isRequired,
         editorRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
         validationErrors: PropTypes.array,
         onEnterKey: PropTypes.func,
         helpMessage: PropTypes.string,
@@ -108,11 +110,13 @@ export default class EditorEnvelope extends PureComponent {
     };
 
     renderHelpmessage() {
-        const {helpMessage, helpThumbnail, label} = this.props;
+        const {i18nRegistry, helpMessage, helpThumbnail, label} = this.props;
+
+        const translatedHelpMessage = i18nRegistry.translate(helpMessage);
 
         return (
             <Tooltip renderInline className={style.envelope__helpmessage}>
-                {helpMessage ? <ReactMarkdown source={helpMessage} /> : ''}
+                {helpMessage ? <ReactMarkdown source={translatedHelpMessage} /> : ''}
                 {helpThumbnail ? <img alt={label} src={helpThumbnail} /> : ''}
             </Tooltip>
         );

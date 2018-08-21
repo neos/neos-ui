@@ -13,7 +13,7 @@ export default class AssetOption extends PureComponent {
     };
 
     render() {
-        const option = this.props.option;
+        const {option} = this.props;
 
         return (
             <SelectBox_Option_MultiLineWithThumbnail {...this.props} imageUri={option.preview} label={option.label}/>

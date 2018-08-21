@@ -26,10 +26,10 @@ export default class UserDropDown extends PureComponent {
     render() {
         const logoutUri = $get('routes.core.logout', this.props.neos);
         const userSettingsUri = $get('routes.core.modules.userSettings', this.props.neos);
-        const csrfToken = document.getElementById('appContainer').dataset.csrfToken;
+        const {csrfToken} = document.getElementById('appContainer').dataset;
 
         const legacyUiSwitch = () => {
-            const enableLegacyUiSwitch = this.props.enableLegacyUiSwitch;
+            const {enableLegacyUiSwitch} = this.props;
 
             // Don't show legacy ui switch only if
             // explicitly set to false

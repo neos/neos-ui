@@ -43,6 +43,7 @@ class NodeDropTarget extends PureComponent {
         theme: PropTypes.object,
         mode: PropTypes.string.isRequired
     };
+
     render() {
         const {connectDropTarget, isOver, canDrop, mode, theme} = this.props;
         const classNames = mergeClassNames({

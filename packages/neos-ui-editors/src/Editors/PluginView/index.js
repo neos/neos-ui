@@ -60,6 +60,7 @@ class PluginViewEditor extends React.PureComponent {
     componentDidMount() {
         this.loadOptions(this.props);
     }
+
     componentWillReceiveProps(nextProps) {
         if ($get('plugin.value', nextProps.transientValues) !== $get('plugin.value', this.props.transientValues)) {
             this.loadOptions(nextProps);

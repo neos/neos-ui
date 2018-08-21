@@ -266,7 +266,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 return this._lru().get(cacheKey);
             }
 
-            const dataSource = backend.get().endpoints.dataSource;
+            const {dataSource} = backend.get().endpoints;
             const params = Object.assign({node: options.contextNodePath}, options.dataSourceAdditionalData || {});
             const resultPromise = dataSource(options.dataSourceIdentifier, options.dataSourceUri, params);
 

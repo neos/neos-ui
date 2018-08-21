@@ -22,7 +22,7 @@ export default class TableView extends PureComponent {
             return [];
         }
         const collection = $get(collectionPath, data);
-        const columns = options.columns;
+        const {columns} = options;
         return collection.map(row => columns.map(column => {
             const rowValue = {
                 value: $get(column.data, row),

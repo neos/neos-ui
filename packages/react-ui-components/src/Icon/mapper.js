@@ -489,11 +489,11 @@ const mapper = icon => {
      *  otherwise the mapping would'nt work for brand icons
      */
     if (icon.startsWith('fas fa-')) {
-        icon = icon.substr(7);
+        icon = icon.substr(7).split(' ')[0];
     }
 
     if (icon.startsWith('icon-')) {
-        icon = icon.substr(5);
+        icon = icon.substr(5).split(' ')[0];
     }
 
     icon = icon.trim();

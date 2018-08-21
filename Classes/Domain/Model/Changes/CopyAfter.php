@@ -39,7 +39,7 @@ class CopyAfter extends AbstractCopy
     public function apply()
     {
         if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
+            $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent(), true);
             $node = $this->getSubject()->copyAfter($this->getSiblingNode(), $nodeName);
             $this->finish($node);
         }

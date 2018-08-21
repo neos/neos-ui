@@ -52,10 +52,10 @@ before_install:
 # Install and setup the neos instance.
 #
 install:
-  # Execute the optional install shell script for the environment.
-  - if [ -f "Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
   # The correct version of node is taken from .nvmrc file
   - nvm install && nvm use
+  # Execute the optional install shell script for the environment.
+  - if [ -f "Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
   # Since all environments depend on the node dependencies, install and
   # afterwards prune them to remove extranous packages from previous/cached runs.
   - make setup

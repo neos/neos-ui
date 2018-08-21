@@ -58,6 +58,7 @@ cd Packages/Application/Neos.Neos.Ui
 
 # Since all environments depend on the node dependencies, install and
 # afterwards prune them to remove extranous packages from previous/cached runs.
+nvm use
 make install
 make build-production
 

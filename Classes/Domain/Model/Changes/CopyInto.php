@@ -74,7 +74,7 @@ class CopyInto extends AbstractCopy
     public function apply()
     {
         if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
+            $nodeName = $this->generateUniqueNodeName($this->getParentNode(), true);
             $node = $this->getSubject()->copyInto($this->getParentNode(), $nodeName);
             $this->finish($node);
         }

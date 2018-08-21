@@ -46,8 +46,6 @@ check-requirements:
 		(echo yarn is not installed: https://github.com/yarnpkg/yarn && false)
 
 install:
-	nvm install || true
-	nvm use || true
 	yarn install
 
 setup: check-requirements install build

@@ -7740,18 +7740,6 @@ node-version@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/node-version/-/node-version-1.2.0.tgz#34fde3ffa8e1149bd323983479dda620e1b5060d"
 
-node@8.11.0:
-  version "8.11.0"
-  resolved "https://registry.yarnpkg.com/node/-/node-8.11.0.tgz#25f4fef2b16bf681f3314ae39eb39f68ee14f4a4"
-  dependencies:
-    node-bin-setup "^1.0.0"
-
-node@^8.11.0:
-  version "8.11.3"
-  resolved "https://registry.yarnpkg.com/node/-/node-8.11.3.tgz#b9efe2c3f4c8c84ee78439b119d768ad3b30eed6"
-  dependencies:
-    node-bin-setup "^1.0.0"
-
 nomnom@~1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/nomnom/-/nomnom-1.6.2.tgz#84a66a260174408fc5b77a18f888eccc44fb6971"

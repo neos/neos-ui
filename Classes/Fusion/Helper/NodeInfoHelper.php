@@ -268,6 +268,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $contentContext = $node->getContext();
             $siteNodePath = $contentContext->getCurrentSiteNode()->getPath();
             $parentNode = $node->getParent();
+            if ($parentNode === null) {
+                // There are a multitude of reasons why a node might not have a parent and we should ignore these gracefully.
+                continue;
+            }
 
             // we additionally need to check that our parent nodes are underneath the site node; otherwise it might happen that
             // we try to send the "/sites" node to the UI (which we cannot do, because this does not have an URL)
@@ -281,6 +285,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                     $renderedNodes[$parentNode->getPath()] = $renderedParentNode;
                 }
                 $parentNode = $parentNode->getParent();
+                if ($parentNode === null) {
+                    // There are a multitude of reasons why a node might not have a parent and we should ignore these gracefully.
+                    break;
+                }
             }
         }
 

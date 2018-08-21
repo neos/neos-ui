@@ -53,7 +53,7 @@ In order to start contributing, follow the following steps:
 
 2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(https://yarnpkg.com/en/) command and GNU Make(https://www.gnu.org/software/make/) to be installed on your system.
 
-3) The currently supported version of `node` is defined in `.nvmrc` file. If you have [nvm](https://github.com/creationix/nvm) installed, you don't need to do any additional steps.
+3) The currently supported version of `node` is defined in `.nvmrc` file. If you have [nvm](https://github.com/creationix/nvm) installed, you can just run `nvm install && nvm use` from the project directory.
 
 4) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 

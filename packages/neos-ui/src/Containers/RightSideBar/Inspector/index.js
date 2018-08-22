@@ -7,8 +7,8 @@ import Bar from '@neos-project/react-ui-components/src/Bar/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
-import Immutable from 'immutable';
 import debounce from 'lodash.debounce';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -70,7 +70,7 @@ export default class Inspector extends PureComponent {
 
     state = {
         secondaryInspectorComponent: null,
-        toggledPanels: Immutable.fromJS({})
+        toggledPanels: fromJSOrdered({})
     };
 
     constructor(props) {
@@ -100,7 +100,7 @@ export default class Inspector extends PureComponent {
     //
     cloneViewConfiguration = props => {
         if (props.focusedNode) {
-            this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
+            this.viewConfiguration = fromJSOrdered(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
             this.originalViewConfiguration = this.viewConfiguration;
         }
     };

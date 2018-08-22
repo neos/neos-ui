@@ -1,10 +1,10 @@
 import {createAction} from 'redux-actions';
-import Immutable from 'immutable';
 import {$toggle, $get, $set} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 
 import {actionTypes as system} from '../../System/index';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const TOGGLE = '@neos/neos-ui/UI/Drawer/TOGGLE';
 const HIDE = '@neos/neos-ui/UI/Drawer/HIDE';
@@ -41,7 +41,7 @@ export const actions = {
 export const reducer = handleActions({
     [system.INIT]: payload => $set(
         'ui.drawer',
-        Immutable.fromJS($get('ui.drawer', payload) ? $get('ui.drawer', payload) : {isHidden: true})
+        fromJSOrdered($get('ui.drawer', payload) ? $get('ui.drawer', payload) : {isHidden: true})
     ),
     [TOGGLE]: () => $toggle('ui.drawer.isHidden'),
     [HIDE]: () => $set('ui.drawer.isHidden', true)

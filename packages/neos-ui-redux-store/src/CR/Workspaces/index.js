@@ -1,11 +1,12 @@
 import {createAction} from 'redux-actions';
-import Immutable, {Map} from 'immutable';
+import {Map} from 'immutable';
 import {$set, $get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
 import * as selectors from './selectors';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE';
 const PUBLISH = '@neos/neos-ui/CR/Workspaces/PUBLISH';
@@ -73,13 +74,13 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'cr.workspaces',
         new Map({
-            personalWorkspace: Immutable.fromJS($get('cr.workspaces.personalWorkspace', state))
+            personalWorkspace: fromJSOrdered($get('cr.workspaces.personalWorkspace', state))
         })
     ),
     [COMMENCE_DISCARD]: nodeContextPaths => $set('cr.workspaces.toBeDiscarded', nodeContextPaths),
     [DISCARD_ABORTED]: () => $set('cr.workspaces.toBeDiscarded', null),
     [DISCARD_CONFIRMED]: () => $set('cr.workspaces.toBeDiscarded', null),
-    [UPDATE]: data => $set('cr.workspaces.personalWorkspace', Immutable.fromJS(data))
+    [UPDATE]: data => $set('cr.workspaces.personalWorkspace', fromJSOrdered(data))
 });
 
 //

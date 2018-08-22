@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {$all, $get, $set, $drop, $toggle} from 'plow-js';
-import Immutable, {Map} from 'immutable';
+import {Map} from 'immutable';
 
 import {handleActions} from '@neos-project/utils-redux';
 
@@ -8,6 +8,7 @@ import {actionTypes as system} from '../../System/index';
 import {selectors as nodes} from '../../CR/Nodes/index';
 
 import * as selectors from './selectors.js';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 //
 // System actions
@@ -103,11 +104,11 @@ export const reducer = handleActions({
         const transientValueDiffers = (value !== null) && (value !== currentPropertyValue);
 
         if (transientValueDiffers && hooks) {
-            return setValueForProperty(Immutable.fromJS({value, hooks}), state);
+            return setValueForProperty(fromJSOrdered({value, hooks}), state);
         }
 
         if (transientValueDiffers) {
-            return setValueForProperty(Immutable.fromJS({value}), state);
+            return setValueForProperty(fromJSOrdered({value}), state);
         }
 
         return $drop(['ui', 'inspector', 'valuesByNodePath', focusedNodePath, propertyId], state);

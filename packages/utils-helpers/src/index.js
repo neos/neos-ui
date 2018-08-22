@@ -8,6 +8,7 @@ import requestIdleCallback from './requestIdleCallback';
 import cancelIdleCallback from './cancelIdleCallback';
 import getVersion from './getVersion';
 import isEmail from './isEmail';
+import fromJSOrdered from './fromJSOrdered';
 import {isUri} from './isUri';
 
 export {
@@ -22,5 +23,6 @@ export {
     stripTags,
     stripTagsEncoded,
     cancelIdleCallback,
-    requestIdleCallback
+    requestIdleCallback,
+    fromJSOrdered
 };

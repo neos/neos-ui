@@ -1,8 +1,8 @@
-import Immutable from 'immutable';
 import {$get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {createSelector} from 'reselect';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 //
 // Export the action types
@@ -32,7 +32,7 @@ const contextForNodeLinking = createSelector(
         siteNodePath,
         activeContentDimensions
     ) => {
-        return Immutable.fromJS({
+        return fromJSOrdered({
             workspaceName: activeWorkspace,
             contextNode: siteNodePath,
             dimensions: activeContentDimensions

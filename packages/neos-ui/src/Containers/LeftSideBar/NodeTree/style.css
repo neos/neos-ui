@@ -4,3 +4,6 @@
     flex: 1 0 0px;
     transition: var(--transition-Slow) ease height, overflow-y var(--transition-Slow);
 }
+.loader {
+    margin: var(--spacing-Half);
+}

@@ -7,11 +7,7 @@ import PropTypes from 'prop-types';
  *
  * It is used inside SelectBox as the header component when no value is selected, and a filter/search box is shown.
  */
-export default class SelectBox_HeaderWithSearchInput extends PureComponent {
-    static defaultProps = {
-        placeholder: ''
-    };
-
+class SelectBox_HeaderWithSearchInput extends PureComponent {
     static propTypes = {
         // For explanations of the PropTypes, see SelectBox.js
         placeholder: PropTypes.string,
@@ -38,6 +34,15 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
         IconButton: PropTypes.any.isRequired
     }
 
+    static defaultProps = {
+        placeholder: ''
+    }
+
+    clearSearch = event => {
+        event.stopPropagation();
+        this.props.onSearchTermChange('');
+    }
+
     render() {
         const {
             searchTerm,
@@ -52,11 +57,6 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
             IconButton,
             disabled
         } = this.props;
-
-        const clearSearch = event => {
-            event.stopPropagation();
-            onSearchTermChange('');
-        };
 
         return (
             <div className={theme.selectBoxHeaderWithSearchInput}>
@@ -76,8 +76,10 @@ export default class SelectBox_HeaderWithSearchInput extends PureComponent {
                     disabled={disabled}
                     />
                 {displayLoadingIndicator && <Icon className={theme.selectBoxHeaderWithSearchInput__icon} spin={true} icon="spinner"/>}
-                {searchTerm && <IconButton className={theme.selectBoxHeaderWithSearchInput__icon} icon="times" onClick={clearSearch}/>}
+                {searchTerm && <IconButton className={theme.selectBoxHeaderWithSearchInput__icon} icon="times" onClick={this.clearSearch}/>}
             </div>
         );
     }
 }
+
+export default SelectBox_HeaderWithSearchInput;

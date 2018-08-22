@@ -63,6 +63,12 @@ class AugmentationAspect
     protected $session;
 
     /**
+     * @Flow\InjectConfiguration(package="Neos.Neos.Ui", path="nodeTypeRoles")
+     * @var array
+     */
+    protected $nodeTypeRoles;
+
+    /**
      * Current controller context, will be set by advices
      *
      * This is a workaround to have the controller context available
@@ -147,7 +153,7 @@ class AugmentationAspect
         $attributes['data-__neos-node-contextpath'] = $node->getContextPath();
         $attributes['data-__neos-fusion-path'] = $fusionPath;
 
-        $this->renderedNodes[$node->getIdentifier()] = $node;
+        $this->renderedNodes[] = $node->getIdentifier();
 
         $this->userLocaleService->switchToUILocale();
 
@@ -213,6 +219,7 @@ class AugmentationAspect
      * within the structure tree which are not actually rendered.
      *
      * @param NodeInterface $documentNode
+     * @return void
      */
     protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {
@@ -220,18 +227,14 @@ class AugmentationAspect
             return;
         }
 
-        foreach ($documentNode->getChildNodes() as $node) {
-            if ($node->getNodeType()->isOfType('Neos.Neos:Document') === true) {
-                continue;
-            }
-
-            if (isset($this->renderedNodes[$node->getIdentifier()]) === false) {
+        foreach ($documentNode->getChildNodes($this->buildFilterForNonRenderedContent()) as $node) {
+            if (in_array($node->getIdentifier(), $this->renderedNodes) === false) {
                 $serializedNode = json_encode($this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $this->controllerContext));
                 $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
             }
 
             if ($node->hasChildNodes() === true) {
-                $this->nonRenderedContentNodeMetadata .= $this->appendNonRenderedContentNodeMetadata($node);
+                $this->appendNonRenderedContentNodeMetadata($node);
             }
         }
     }
@@ -268,5 +271,20 @@ class AugmentationAspect
         $this->userLocaleService->switchToUILocale(true);
 
         return $nonRenderedContentNodeMetadata;
+    }
+
+    /**
+     * @return string
+     */
+    protected function buildFilterForNonRenderedContent()
+    {
+        $documentNodeTypes = explode(',', $this->nodeTypeRoles['document']);
+        $ignoredNodeTypes = explode(',', $this->nodeTypeRoles['ignored']);
+
+        $allFilteredNodeTypes = array_merge($documentNodeTypes, $ignoredNodeTypes);
+        $negatedNodeTypes = array_map(function ($nodeTypeName) {
+            return '!' . trim($nodeTypeName);
+        }, $allFilteredNodeTypes);
+        return implode(',', $negatedNodeTypes);
     }
 }

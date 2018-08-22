@@ -31,12 +31,15 @@ export default richtextToolbarRegistry => {
 
                 const finalProps = {
                     ...restProps,
+                    key: index,
+                    isActive: isActiveProp,
+                    inlineEditorOptions,
                     [callbackPropName]: e => e.stopPropagation() || executeCommand(commandName, ...commandArgs)
                 };
 
                 const Component = component;
 
-                return <Component key={index} isActive={isActiveProp} {...finalProps}/>;
+                return <Component {...finalProps}/>;
             });
     };
 };

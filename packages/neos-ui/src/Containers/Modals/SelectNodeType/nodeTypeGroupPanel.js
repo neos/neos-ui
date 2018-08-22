@@ -16,21 +16,22 @@ import style from './style.css';
     i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect($transform({
-    collapsedGroups: $get('ui.addNodeModal.collapsedGroups')
+    toggledGroups: $get('ui.addNodeModal.toggledGroups')
 }), {
     toggleNodeTypeGroup: actions.UI.AddNodeModal.toggleGroup
 })
 class NodeTypeGroupPanel extends PureComponent {
     static propTypes = {
         toggleNodeTypeGroup: PropTypes.func.isRequired,
-        collapsedGroups: PropTypes.array.isRequired,
+        toggledGroups: PropTypes.array.isRequired,
         filterSearchTerm: PropTypes.string,
         onHelpMessage: PropTypes.func.isRequired,
 
         group: PropTypes.shape({
             name: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
-            nodeTypes: PropTypes.array.isRequired
+            nodeTypes: PropTypes.array.isRequired,
+            collapsed: PropTypes.bool
         }).isRequired,
         onSelect: PropTypes.func.isRequired,
 
@@ -40,7 +41,7 @@ class NodeTypeGroupPanel extends PureComponent {
     render() {
         const {
             group,
-            collapsedGroups,
+            toggledGroups,
             onSelect,
             filterSearchTerm,
             i18nRegistry,
@@ -57,9 +58,12 @@ class NodeTypeGroupPanel extends PureComponent {
                 return false;
             });
 
+        // Take `collapsed: true` group setting into account
+        const isOpen = $get('collapsed', group) ? toggledGroups.includes(name) : !toggledGroups.includes(name);
+
         return (
             <ToggablePanel
-                isOpen={collapsedGroups.includes(name) === false}
+                isOpen={isOpen}
                 onPanelToggle={this.handleToggleGroup}
                 >
                 <ToggablePanel.Header className={style.groupHeader}>

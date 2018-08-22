@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ListPreviewElement from '../ListPreviewElement/index';
 import mergeClassNames from 'classnames';
 
-export default class SelectBox_Option_SingleLine extends PureComponent {
+class SelectBox_Option_SingleLine extends PureComponent {
     static propTypes = {
         option: PropTypes.shape({
             label: PropTypes.string.isRequired,
@@ -15,7 +15,7 @@ export default class SelectBox_Option_SingleLine extends PureComponent {
         disabled: PropTypes.bool,
 
         className: PropTypes.string
-    };
+    }
 
     render() {
         const {option, className, disabled} = this.props;
@@ -33,3 +33,5 @@ export default class SelectBox_Option_SingleLine extends PureComponent {
         );
     }
 }
+
+export default SelectBox_Option_SingleLine;

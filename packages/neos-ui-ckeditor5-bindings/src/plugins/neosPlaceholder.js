@@ -16,6 +16,7 @@ const htmlIsEmptyish = data => {
     const a = (
         !value ||
         value === '<br>' ||
+        value === '<span>&nbsp;</span>' ||
         value === '<p>&nbsp;</p>' ||
         value === '<p>&nbsp;<br></p>' ||
         value === '<p><br></p>' ||
@@ -37,11 +38,11 @@ export default class NeosPlaceholder extends Plugin {
     }
 
     addPlaceholder() {
-        this.editor.element.dataset.neosPlaceholder = this.getPlaceholder();
+        this.editor.sourceElement.dataset.neosPlaceholder = this.getPlaceholder();
     }
 
     removePlaceholder() {
-        delete this.editor.element.dataset.neosPlaceholder;
+        delete this.editor.sourceElement.dataset.neosPlaceholder;
     }
 
     updatePlaceholder() {
@@ -55,7 +56,6 @@ export default class NeosPlaceholder extends Plugin {
     init() {
         if (this.editor.config.get('neosPlaceholder')) {
             this.updatePlaceholder();
-            console.log(this.editor);
 
             const model = this.editor.data.model;
 

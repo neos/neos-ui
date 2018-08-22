@@ -117,6 +117,10 @@ export default class ImageEditor extends Component {
         this.setState({requestOpenImageCropper: true, isAssetLoading: false});
     }
 
+    handleFileDialogCancel = () => {
+        this.setState({isAssetLoading: false});
+    }
+
     handleMediaCrop = cropArea => {
         const {commit, value} = this.props;
         const {image} = this.state;
@@ -227,7 +231,7 @@ export default class ImageEditor extends Component {
             [style.imageEditor]: true
         });
         return (<div className={classNames}>
-            <PreviewScreen className={className} propertyName={this.props.identifier} ref={this.setPreviewScreenRef} image={this.getUsedImage()} isLoading={isAssetLoading} afterUpload={this.afterUpload} onClick={this.handleThumbnailClicked} isUploadEnabled={this.isFeatureEnabled('upload')} disabled={disabled} accept={accept}/>
+            <PreviewScreen className={className} propertyName={this.props.identifier} ref={this.setPreviewScreenRef} image={this.getUsedImage()} isLoading={isAssetLoading} afterUpload={this.afterUpload} onFileDialogCancel={this.handleFileDialogCancel} onClick={this.handleThumbnailClicked} isUploadEnabled={this.isFeatureEnabled('upload')} disabled={disabled} accept={accept}/>
             <Controls onChooseFromMedia={this.handleChooseFromMedia} onChooseFromLocalFileSystem={this.handleChooseFile} isUploadEnabled={this.isFeatureEnabled('upload')} isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')} onRemove={image ?
                     this.handleRemoveFile :
                     null} onCrop={image ?

@@ -25,6 +25,7 @@
     flex-basis: 100%;
     display: flex;
     flex-direction: column;
+    min-height: 40px;
 }
 
 .leftSideBar__bottom {
@@ -32,6 +33,7 @@
     transition: flex-basis var(--transition-Slow), height var(--transition-Slow), overflow-y var(--transition-Slow);
     display: flex;
     flex-direction: column;
+    min-height: 40px;
 }
 
 .leftSideBar__bottom--isCollapsed {

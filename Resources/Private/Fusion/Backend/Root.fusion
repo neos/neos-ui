@@ -193,7 +193,7 @@ backend = Neos.Fusion:Template {
             label = 'Neos.Neos:Main:content'
             icon = 'file'
             uri = Neos.Neos:NodeUri {
-                node = ${q(site).parent().children().get(0)}
+                node = ${site}
             }
             target = 'ContentCanvas'
 
@@ -254,7 +254,7 @@ backend = Neos.Fusion:Template {
 
                         @if {
                             isNotHiddenInMenu = ${!submodule.hideInMenu}
-                            isAvailable = ${Neos.Ui.Modules.isAvailable(submoduleName)}
+                            isAvailable = ${Neos.Ui.Modules.isAvailable(moduleName + '/' + submoduleName)}
                         }
                     }
                 }

@@ -1,0 +1,70 @@
+.linkButton__flyout {
+    background-color: var(--colors-ContrastDarker);
+    position: fixed;
+    z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
+    width: 460px;
+    border: var(--spacing-Half) solid var(--colors-ContrastDarker);
+}
+
+.linkButton__wrap {
+    display: flex;
+    align-items: stretch;
+}
+
+.linkButton__optionWrapper {
+    flex-grow: 1;
+    flex-shrink: 1;
+    /* see https://css-tricks.com/flexbox-truncated-text/ */
+    min-width: 0;
+}
+
+.linkButton__optionsPanelDouble {
+    display: flex;
+    flex-basis: 100%;
+}
+
+.linkButton__optionsPanel {
+    padding-top: var(--spacing-Full);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.linkButton__optionsPanelItem {
+    flex-basis: 50%;
+    padding: var(--spacing-Half);
+}
+
+.linkButton__optionsPanelLabel {
+    margin-bottom: var(--spacing-Quarter);
+}
+
+.linkButton__innerButton {
+    height: auto;
+}
+
+.linkButton__loader {
+    margin: var(--spacing-Quarter);
+}
+
+.linkButton__item {
+    padding: var(--spacing-Half);
+    box-sizing: content-box;
+    height: calc(var(--spacing-GoldenUnit) * 1.5);
+    line-height: 20px;
+}
+
+.linkButton__link {
+    color: var(--colors-ContrastBright);
+    display: block;
+    font-size: 12px;
+}
+
+.linkButton__image {
+    height: calc(var(--spacing-GoldenUnit) * 1.5);
+    width: auto;
+    float: right;
+}
+
+.linkButton__link--active {
+    color: #fff;
+}

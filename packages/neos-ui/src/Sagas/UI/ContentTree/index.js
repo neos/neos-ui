@@ -39,7 +39,7 @@ export function * watchNodeFocus({configuration}) {
         let parentContextPath = contextPath;
 
         const documentNode = yield select(selectors.UI.ContentCanvas.documentNodeSelector);
-        const loadingDepth = configuration.structureTree.loadingDepth;
+        const {loadingDepth} = configuration.structureTree;
         while (parentContextPath !== documentNodeContextPath) {
             parentContextPath = parentNodeContextPath(parentContextPath);
             if (!parentContextPath) {

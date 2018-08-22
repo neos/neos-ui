@@ -1,6 +1,15 @@
-import throttle from 'lodash.throttle';
 import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
+
+// We remove opening and closing span tags that are produced by the inlineMode plugin
+const cleanupContentBeforeCommit = content => {
+    if (content.match(/^<span>/) && content.match(/<\/span>$/)) {
+        return content
+            .replace(/^<span>/, '')
+            .replace(/<\/span>$/, '');
+    }
+    return content;
+};
 
 let currentEditor = null;
 let editorConfig = {};
@@ -9,16 +18,15 @@ let editorConfig = {};
 // As there is only a single cursor active at any given time, it is safe to do this caching here inside the singleton object.
 let lastFormattingUnderCursorSerialized = '';
 
+// We get the state of all commands from CKE5 and serialize it into "formattingUnderCursor"
 const handleUserInteractionCallback = () => {
+    if (!currentEditor) {
+        return;
+    }
     const formattingUnderCursor = {};
-    editorConfig.toolbarItems.forEach(toolbarItem => {
-        const commandName = toolbarItem.commandName;
-        if (commandName) {
-            const command = currentEditor.commands.get(commandName);
-            if (!command) {
-                formattingUnderCursor[commandName] = false;
-                return;
-            }
+    [...currentEditor.commands].forEach(commandTuple => {
+        const [commandName, command] = commandTuple;
+        if (command.value !== undefined) {
             formattingUnderCursor[commandName] = command.value;
         }
     });
@@ -34,11 +42,13 @@ export const bootstrap = _editorConfig => {
     editorConfig = _editorConfig;
 };
 
-export const createEditor = ({propertyDomNode, propertyName, contextPath, editorOptions, globalRegistry, userPreferences, persistChange}) => {
+export const createEditor = options => {
+    const {propertyDomNode, propertyName, contextPath, editorOptions, globalRegistry, userPreferences, persistChange} = options;
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
         userPreferences,
-        globalRegistry
+        globalRegistry,
+        propertyDomNode
     });
 
     DecoupledEditor
@@ -51,16 +61,19 @@ export const createEditor = ({propertyDomNode, propertyName, contextPath, editor
                 }
             });
 
+            // We attach all options for this editor to the editor DOM node, so it would be easier to access them from CKE plugins
+            editor.neos = options;
+
             editor.model.document.on('change', () => handleUserInteractionCallback());
-            editor.model.document.on('change:data', debounce(throttle(() => persistChange({
+            editor.model.document.on('change:data', debounce(() => persistChange({
                 type: 'Neos.Neos.Ui:Property',
                 subject: contextPath,
                 payload: {
                     propertyName,
-                    value: editor.getData(),
+                    value: cleanupContentBeforeCommit(editor.getData()),
                     isInline: true
                 }
-            }), 1500), 150));
+            }), 500, {maxWait: 5000}));
         }).catch(e => console.error(e));
 };
 

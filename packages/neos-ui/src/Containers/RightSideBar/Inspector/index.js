@@ -121,6 +121,7 @@ export default class Inspector extends PureComponent {
                 const {node} = context; // eslint-disable-line
                 const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
                 if (evaluatedValue !== propertyValue) {
+                    this.configurationIsProcessed = true;
                     this.viewConfiguration = $set(newPath, evaluatedValue, this.viewConfiguration);
                 }
             }
@@ -136,10 +137,12 @@ export default class Inspector extends PureComponent {
             nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
         }
 
-        // Eval the view configuration
+        // Eval the view configuration and re-render if the configuration has changed
+        this.configurationIsProcessed = false;
         this.preprocessViewConfiguration({node: nodeForContext});
-        // Force re-render, since we were debounced
-        this.setState({});
+        if (this.configurationIsProcessed) {
+            this.forceUpdate();
+        }
     }, 250);
 
     handleCloseSecondaryInspector = () => {
@@ -225,7 +228,7 @@ export default class Inspector extends PureComponent {
         }
 
         this.preprocessViewConfigurationDebounced();
-        const viewConfiguration = this.viewConfiguration;
+        const {viewConfiguration} = this;
 
         if (!$get('tabs', viewConfiguration)) {
             return this.renderFallback();

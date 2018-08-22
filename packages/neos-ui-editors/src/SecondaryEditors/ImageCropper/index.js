@@ -54,6 +54,7 @@ class AspectRatioItem extends PureComponent {
     }
 
     handleWidthInputChange = val => this.handleInputChange('width', val);
+
     handleHeightInputChange = val => this.handleInputChange('height', val);
 
     handleInputChange(type, val) {

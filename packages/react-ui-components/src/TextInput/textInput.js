@@ -79,7 +79,7 @@ class TextInput extends PureComponent {
     }
 
     handleValueChange = e => {
-        const value = e.target.value;
+        const {value} = e.target;
         const {onChange} = this.props;
 
         if (onChange) {

@@ -2,8 +2,12 @@ import CkEditorConfigRegistry from './registry/CkEditorConfigRegistry';
 import {$add, $get, $or} from 'plow-js';
 
 import NeosPlaceholder from './plugins/neosPlaceholder';
+import InlineMode from './plugins/inlineMode';
 import Sub from './plugins/sub';
 import Sup from './plugins/sup';
+import LinkTargetBlank from './plugins/linkTargetBlank';
+import LinkRelNofollow from './plugins/linkRelNofollow';
+import LinkTitle from './plugins/linkTitle';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
@@ -11,19 +15,32 @@ import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
-import Link from '@ckeditor/ckeditor5-link/src/link';
+import Link from '@ckeditor/ckeditor5-link/src/linkediting';
 import List from '@ckeditor/ckeditor5-list/src/list';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Table from '@ckeditor/ckeditor5-table/src/table';
-import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import InsideTable from './plugins/insideTable';
 
-const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, {editorOptions}) => {
-    if (!isEnabled || isEnabled(editorOptions)) {
+const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, options) => {
+    // we duplicate editorOptions here so it would be possible to write smth like `$get('formatting.sup')`
+    if (!isEnabled || isEnabled(options.editorOptions, options)) {
         ckEditorConfiguration.plugins = ckEditorConfiguration.plugins || [];
         return $add('plugins', Plugin, ckEditorConfiguration);
     }
     return ckEditorConfiguration;
 };
+
+// If the editable is a span or a heading, we automatically disable paragraphs and enable the soft break mode
+// Also possible to force this behavior with `autoparagraph: false`
+const disableParagraph = (editorOptions, {propertyDomNode}) =>
+    $get('autoparagraph', editorOptions) === false ||
+    propertyDomNode.tagName === 'SPAN' ||
+    propertyDomNode.tagName === 'H1' ||
+    propertyDomNode.tagName === 'H2' ||
+    propertyDomNode.tagName === 'H3' ||
+    propertyDomNode.tagName === 'H4' ||
+    propertyDomNode.tagName === 'H5' ||
+    propertyDomNode.tagName === 'H6';
 
 //
 // Create richtext editing toolbar registry
@@ -59,17 +76,21 @@ export default ckEditorRegistry => {
     // Add plugins
     //
     config.set('essentials', addPlugin(Essentials));
+    config.set('paragraph', addPlugin(Paragraph));
+    config.set('inlineMode', addPlugin(InlineMode, disableParagraph));
     config.set('neosPlaceholder', addPlugin(NeosPlaceholder));
     config.set('sub', addPlugin(Sub, $get('formatting.sub')));
     config.set('sup', addPlugin(Sup, $get('formatting.sup')));
-    config.set('paragraph', addPlugin(Paragraph));
     config.set('bold', addPlugin(Bold, $get('formatting.strong')));
     config.set('italic', addPlugin(Italic, $get('formatting.em')));
     config.set('underline', addPlugin(Underline, $get('formatting.underline')));
     config.set('strikethrough', addPlugin(Strikethrough, $get('formatting.strikethrough')));
     config.set('link', addPlugin(Link, $get('formatting.a')));
+    config.set('linkTargetBlank', addPlugin(LinkTargetBlank, $get('formatting.a')));
+    config.set('linkRelNofollow', addPlugin(LinkRelNofollow, $get('formatting.a')));
+    config.set('linkTitle', addPlugin(LinkTitle, $get('formatting.a')));
     config.set('table', addPlugin(Table, i => $get('formatting.table', i)));
-    config.set('tableBaloonToolbar', addPlugin(TableToolbar, i => $get('formatting.table', i)));
+    config.set('insideTable', addPlugin(InsideTable, i => $get('formatting.table', i)));
     config.set('list', addPlugin(List, $or(
         $get('formatting.ul'),
         $get('formatting.ol')
@@ -90,28 +111,20 @@ export default ckEditorRegistry => {
     )));
 
     //
-    // @see https://docs.ckeditor.com/ckeditor5/latest/features/table.html
-    //
-    config.set('configureTable', (config, {editorOptions}) => Object.assign(config, $get('table', editorOptions) ? {
-        table: {
-            toolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
-        }
-    } : {}));
-
-    //
     // @see https://docs.ckeditor.com/ckeditor5/latest/features/headings.html#configuring-heading-levels
+    // The element names for the heading dropdown are coming from richtextToolbar registry
     //
     config.set('configureHeadings', config => Object.assign(config, {
         heading: {
             options: [
-                {model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph'},
-                {model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1'},
-                {model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2'},
-                {model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3'},
-                {model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4'},
-                {model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5'},
-                {model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6'},
-                {model: 'pre', view: 'pre', title: 'Preformated', class: 'ck-heading_pre'}
+                {model: 'paragraph'},
+                {model: 'heading1', view: 'h1'},
+                {model: 'heading2', view: 'h2'},
+                {model: 'heading3', view: 'h3'},
+                {model: 'heading4', view: 'h4'},
+                {model: 'heading5', view: 'h5'},
+                {model: 'heading6', view: 'h6'},
+                {model: 'pre', view: 'pre'}
             ]}
     }));
 

@@ -8,7 +8,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {executeCommand} from './../ckEditorApi';
 
-import style from './style.css';
+import style from './index.css';
 import {renderToolbarComponents} from './Helpers/index';
 
 @connect($transform({
@@ -27,7 +27,8 @@ export default class EditorToolbar extends PureComponent {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.bool,
-            PropTypes.object
+            PropTypes.object,
+            PropTypes.string
         ])),
 
         toolbarRegistry: PropTypes.object.isRequired,

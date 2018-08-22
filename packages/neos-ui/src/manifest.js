@@ -246,7 +246,7 @@ manifest('main', {}, globalRegistry => {
     // When the server has updated node info, apply it to the store
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodeInfo/Main', (feedbackPayload, {store}) => {
-        store.dispatch(actions.CR.Nodes.add(feedbackPayload.byContextPath));
+        store.dispatch(actions.CR.Nodes.merge(feedbackPayload.byContextPath));
     });
 
     //

@@ -11,7 +11,8 @@ const CREATE_NEW_IS_FOCUSED = 'NEOS_UI_CREATE_NEW_IS_FOCUSED';
  * It is used inside SelectBox_ListPreview as the last list element; and it is rendered if the `onCreateNew`
  * prop is specified.
  */
-export default class SelectBox_CreateNew extends PureComponent {
+
+class SelectBox_CreateNew extends PureComponent {
     static propTypes = {
         // For explanations of the PropTypes, see SelectBox.js
         optionValueField: PropTypes.string.isRequired,
@@ -23,32 +24,6 @@ export default class SelectBox_CreateNew extends PureComponent {
         // API with SelectBox
         focusedValue: PropTypes.string,
         onOptionFocus: PropTypes.func.isRequired
-    };
-
-    render() {
-        const {
-            searchTerm,
-            onCreateNew,
-            createNewLabel,
-            focusedValue
-        } = this.props;
-        const isHighlighted = focusedValue === CREATE_NEW_IS_FOCUSED;
-
-        const isCreateNewEnabled = onCreateNew && searchTerm;
-
-        if (!isCreateNewEnabled) {
-            return null;
-        }
-
-        return (
-            <SelectBox_Option_SingleLine
-                option={{label: `${createNewLabel} "${searchTerm}"`, icon: 'plus-circle'}}
-                key={'___createNew'}
-                isHighlighted={isHighlighted}
-                onClick={this.handleCreateNew}
-                onMouseEnter={this.handleMouseEnter}
-                />
-        );
     }
 
     handleCreateNew = () => {
@@ -73,5 +48,32 @@ export default class SelectBox_CreateNew extends PureComponent {
         };
 
         onOptionFocus(selectedOption);
+    };
+
+    render() {
+        const {
+            searchTerm,
+            onCreateNew,
+            createNewLabel,
+            focusedValue
+        } = this.props;
+        const isHighlighted = focusedValue === CREATE_NEW_IS_FOCUSED;
+        const isCreateNewEnabled = onCreateNew && searchTerm;
+
+        if (!isCreateNewEnabled) {
+            return null;
+        }
+
+        return (
+            <SelectBox_Option_SingleLine
+                option={{label: `${createNewLabel} "${searchTerm}"`, icon: 'plus-circle'}}
+                key={'___createNew'}
+                isHighlighted={isHighlighted}
+                onClick={this.handleCreateNew}
+                onMouseEnter={this.handleMouseEnter}
+                />
+        );
     }
 }
+
+export default SelectBox_CreateNew;

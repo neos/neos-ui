@@ -1,19 +1,19 @@
-import fontawesome from '@fortawesome/fontawesome';
-import brands from '@fortawesome/fontawesome-free-brands';
-import solid from '@fortawesome/fontawesome-free-solid';
-import regular from '@fortawesome/fontawesome-free-regular';
-import {themr} from 'react-css-themr';
+import {library, config} from '@fortawesome/fontawesome-svg-core';
+import {fab} from '@fortawesome/free-brands-svg-icons';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+import {far} from '@fortawesome/free-regular-svg-icons';
+import {themr} from '@friendsofreactjs/react-css-themr';
 import identifiers from './../identifiers.js';
 import style from './style.css';
 import Icon from './icon.js';
 /* eslint-disable no-unused-vars */
-import faStyle from '@fortawesome/fontawesome/styles.css';
+import faStyle from '@fortawesome/fontawesome-svg-core/styles.css';
 /* eslint-enable no-unused-vars */
 
-fontawesome.config.autoAddCss = false;
-fontawesome.config.familyPrefix = 'neos-fa';
-fontawesome.config.replacementClass = 'neos-svg-inline--fa';
-fontawesome.library.add(brands, solid, regular);
+config.autoAddCss = false;
+config.familyPrefix = 'neos-fa';
+config.replacementClass = 'neos-svg-inline--fa';
+library.add(fab, fas, far);
 
 const ThemedIcon = themr(identifiers.icon, style)(Icon);
 

@@ -105,7 +105,7 @@ class NodePolicyService
         }
 
         $filter = function ($nodeType) use ($node) {
-            return $this->privilegeManager->isGranted(
+            return !$this->privilegeManager->isGranted(
                 CreateNodePrivilege::class,
                 new CreateNodePrivilegeSubject($node, $nodeType)
             );
@@ -161,7 +161,7 @@ class NodePolicyService
         }
 
         $filter = function ($propertyName) use ($node) {
-            return $this->privilegeManager->isGranted(
+            return !$this->privilegeManager->isGranted(
                 EditNodePropertyPrivilege::class,
                 new PropertyAwareNodePrivilegeSubject($node, null, $propertyName)
             );

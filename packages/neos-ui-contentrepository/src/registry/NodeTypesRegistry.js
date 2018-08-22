@@ -6,9 +6,13 @@ import positionalArraySorter from '@neos-project/positional-array-sorter';
 
 export default class NodeTypesRegistry extends SynchronousRegistry {
     _constraints = [];
+
     _inheritanceMap = [];
+
     _groups = [];
+
     _roles = [];
+
     _defaultInlineEditor = 'ckeditor';
 
     _inspectorViewConfigurationCache = {};

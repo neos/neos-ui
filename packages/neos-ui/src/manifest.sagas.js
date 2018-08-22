@@ -32,6 +32,7 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/Changes/watchPersist', {saga: changes.watchPersist});
 
     sagasRegistry.set('neos-ui/CR/ContentDimensions/watchSelectPreset', {saga: crContentDimensions.watchSelectPreset});
+    sagasRegistry.set('neos-ui/CR/ContentDimensions/watchSetActive', {saga: crContentDimensions.watchSetActive});
 
     sagasRegistry.set('neos-ui/CR/NodeOperations/addNode', {saga: crNodeOperations.addNode});
     sagasRegistry.set('neos-ui/CR/NodeOperations/copyAndPasteNode', {saga: crNodeOperations.copyAndPasteNode});

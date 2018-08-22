@@ -109,15 +109,24 @@ export default class EditorEnvelope extends PureComponent {
         });
     };
 
+    getThumbnailSrc(thumbnail) {
+        if (thumbnail.substr(0, 11) === 'resource://') {
+            thumbnail = '/_Resources/Static/Packages/' + thumbnail.substr(11);
+        }
+
+        return thumbnail;
+    }
+
     renderHelpmessage() {
         const {i18nRegistry, helpMessage, helpThumbnail, label} = this.props;
 
         const translatedHelpMessage = i18nRegistry.translate(helpMessage);
+        const helpThumbnailSrc = this.getThumbnailSrc(helpThumbnail);
 
         return (
             <Tooltip renderInline className={style.envelope__helpmessage}>
                 {helpMessage ? <ReactMarkdown source={translatedHelpMessage} /> : ''}
-                {helpThumbnail ? <img alt={label} src={helpThumbnail} /> : ''}
+                {helpThumbnail ? <img alt={label} src={helpThumbnailSrc} className={style.envelope__helpThumbnail} /> : ''}
             </Tooltip>
         );
     }

@@ -68,7 +68,7 @@ class FetchWithErrorHandling {
     }
 
     _handleWindowClosing(event) {
-        const dialogText = 'You have attempted to leave this page. Your changes are currently being persisted, if you leave now your changes will may not be saved.  Are you sure you want to exit this page?';
+        const dialogText = 'You have attempted to leave this page. Your changes are currently being persisted, if you leave now your changes will may not be saved. Are you sure you want to exit this page?';
         event.returnValue = dialogText;
         return dialogText;
     }

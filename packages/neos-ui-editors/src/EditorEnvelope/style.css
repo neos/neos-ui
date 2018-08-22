@@ -20,3 +20,7 @@
 .envelope--highlight {
     outline: 2px solid var(--colors-Success);
 }
+
+.envelope__helpThumbnail {
+	max-width: 100%;
+}

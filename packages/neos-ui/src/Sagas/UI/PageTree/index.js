@@ -124,10 +124,7 @@ export function * watchCurrentDocument({configuration}) {
 export function * watchSearch({configuration}) {
     yield takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
         const {contextPath, query: searchQuery, filterNodeType} = action.payload;
-
-        if (!searchQuery && !filterNodeType) {
-            return;
-        }
+        const effectiveFilterNodeType = filterNodeType || configuration.nodeTree.presets.default.baseNodeType;
 
         yield put(actions.UI.PageTree.setAsLoading(contextPath));
         let matchingNodes = [];
@@ -135,7 +132,7 @@ export function * watchSearch({configuration}) {
         try {
             const {q} = backend.get();
             const query = q(contextPath);
-            matchingNodes = yield query.search(searchQuery, filterNodeType).getForTreeWithParents();
+            matchingNodes = yield query.search(searchQuery, effectiveFilterNodeType).getForTreeWithParents();
         } catch (err) {
             console.error('Error while executing a tree search: ', err);
             yield put(actions.UI.PageTree.invalidate(contextPath));

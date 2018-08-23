@@ -28,7 +28,7 @@ shouldComponentUpdate(...args) {
 ```
 @debugReasonForRendering
 class MyComponent extends PureComponent {
-   ...
+    ...
 }
 ```
 

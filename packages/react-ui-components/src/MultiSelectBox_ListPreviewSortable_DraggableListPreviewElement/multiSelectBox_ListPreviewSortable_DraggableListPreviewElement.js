@@ -100,7 +100,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             onRemoveItem,
             index,
             IconButton
-         } = this.props;
+        } = this.props;
 
         // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
 

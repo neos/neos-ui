@@ -1,5 +1,11 @@
 {
     "compilerOptions": {
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+
         "target": "ES6",
         "experimentalDecorators": true,
         "baseUrl": "./",

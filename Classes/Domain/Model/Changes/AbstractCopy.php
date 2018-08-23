@@ -27,11 +27,12 @@ abstract class AbstractCopy extends AbstractStructuralChange
      * Generate a unique node name for the copied node
      *
      * @param NodeInterface $parentNode
+     * @param bool $forceRegeneration
      * @return string
      */
-    protected function generateUniqueNodeName(NodeInterface $parentNode)
+    protected function generateUniqueNodeName(NodeInterface $parentNode, $forceRegeneration = false)
     {
         return $this->contentRepositoryNodeService
-            ->generateUniqueNodeName($parentNode->getPath(), $this->getSubject()->getName());
+            ->generateUniqueNodeName($parentNode->getPath(), $forceRegeneration ? null : $this->getSubject()->getName());
     }
 }

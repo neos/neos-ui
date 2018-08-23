@@ -133,11 +133,11 @@ manifest('inspectorEditors', {}, globalRegistry => {
 
             const uuidOfImage = originalAsset ? originalAsset.__identity : __identity;
             if (!uuidOfImage) {
-                return Promise.reject('Received malformed originalImageUuid.');
+                return Promise.reject(new Error('Received malformed originalImageUuid.'));
             }
 
             if (!adjustments) {
-                return Promise.reject('Received malformed adjustments.');
+                return Promise.reject(new Error('Received malformed adjustments.'));
             }
 
             return createImageVariant(uuidOfImage, adjustments);

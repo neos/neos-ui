@@ -13,7 +13,8 @@ import style from './style.css';
 import {Icon} from '@neos-project/react-ui-components';
 
 @neos(globalRegistry => ({
-    editorRegistry: globalRegistry.get('inspector').get('editors')
+    editorRegistry: globalRegistry.get('inspector').get('editors'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class EditorEnvelope extends PureComponent {
     state = {
@@ -34,6 +35,7 @@ export default class EditorEnvelope extends PureComponent {
         renderSecondaryInspector: PropTypes.func,
         editor: PropTypes.string.isRequired,
         editorRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
         validationErrors: PropTypes.array,
         onEnterKey: PropTypes.func,
         helpMessage: PropTypes.string,
@@ -107,13 +109,24 @@ export default class EditorEnvelope extends PureComponent {
         });
     };
 
+    getThumbnailSrc(thumbnail) {
+        if (thumbnail.substr(0, 11) === 'resource://') {
+            thumbnail = '/_Resources/Static/Packages/' + thumbnail.substr(11);
+        }
+
+        return thumbnail;
+    }
+
     renderHelpmessage() {
-        const {helpMessage, helpThumbnail, label} = this.props;
+        const {i18nRegistry, helpMessage, helpThumbnail, label} = this.props;
+
+        const translatedHelpMessage = i18nRegistry.translate(helpMessage);
+        const helpThumbnailSrc = this.getThumbnailSrc(helpThumbnail);
 
         return (
             <Tooltip renderInline className={style.envelope__helpmessage}>
-                {helpMessage ? <ReactMarkdown source={helpMessage} /> : ''}
-                {helpThumbnail ? <img alt={label} src={helpThumbnail} /> : ''}
+                {helpMessage ? <ReactMarkdown source={translatedHelpMessage} /> : ''}
+                {helpThumbnail ? <img alt={label} src={helpThumbnailSrc} className={style.envelope__helpThumbnail} /> : ''}
             </Tooltip>
         );
     }

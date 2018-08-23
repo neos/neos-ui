@@ -10,6 +10,7 @@ import style from './style.css';
 
 export default class TabPanel extends PureComponent {
     static displayName = 'Inspector Tab Panel';
+
     static propTypes = {
         groups: PropTypes.object,
         renderSecondaryInspector: PropTypes.func.isRequired,

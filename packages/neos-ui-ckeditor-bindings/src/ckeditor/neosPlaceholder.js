@@ -27,7 +27,7 @@ const htmlIsEmptyish = data => {
 
 export default CKEDITOR => {
     function addPlaceholder(event) {
-        const editor = event.editor;
+        const {editor} = event;
         const editable = editor.editable();
         if (!editable) {
             return;
@@ -48,7 +48,7 @@ export default CKEDITOR => {
     }
 
     function removePlaceholder(event) {
-        const editor = event.editor;
+        const {editor} = event;
         const editable = editor.editable();
         if (!editable) {
             return;

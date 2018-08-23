@@ -1,4 +1,4 @@
-import {put, select, race, take, call} from 'redux-saga/effects';
+import {put, select, race, take, takeLatest, takeEvery, call} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
@@ -15,42 +15,44 @@ import backend from '@neos-project/neos-ui-backend-connector';
  * 3. Load all default nodes needed for the tree
  */
 export function * watchSelectPreset() {
-    yield take(actionTypes.System.READY);
+    yield takeLatest(actionTypes.CR.ContentDimensions.SET_ACTIVE, function * () {
+        const sourceDimensions = yield select(selectors.CR.ContentDimensions.active);
 
-    let sourceDimensions = yield select(selectors.CR.ContentDimensions.active);
+        while (true) { // eslint-disable-line no-constant-condition
+            yield take(actionTypes.CR.ContentDimensions.SELECT_PRESET);
+            const targetDimensions = yield select(selectors.CR.ContentDimensions.active);
+            const currentContentCanvasNode = yield select(selectors.CR.Nodes.currentContentCanvasNodeSelector);
+            const currentContentCanvasNodeIdentifier = $get('identifier', currentContentCanvasNode);
 
-    while (true) { // eslint-disable-line no-constant-condition
-        yield take(actionTypes.CR.ContentDimensions.SELECT_PRESET);
-        const targetDimensions = yield select(selectors.CR.ContentDimensions.active);
-        const currentContentCanvasNode = yield select(selectors.CR.Nodes.currentContentCanvasNodeSelector);
-        const currentContentCanvasNodeIdentifier = $get('identifier', currentContentCanvasNode);
+            const informationAboutNodeInTargetDimension = yield call(ensureNodeInSelectedDimension, {
+                nodeIdentifier: currentContentCanvasNodeIdentifier,
+                sourceDimensions,
+                targetDimensions
+            });
 
-        const informationAboutNodeInTargetDimension = yield call(ensureNodeInSelectedDimension, {
-            nodeIdentifier: currentContentCanvasNodeIdentifier,
-            sourceDimensions,
-            targetDimensions
-        });
+            if (!informationAboutNodeInTargetDimension) {
+                yield put(actions.CR.ContentDimensions.setActive(sourceDimensions));
+                continue;
+            }
 
-        if (!informationAboutNodeInTargetDimension) {
-            yield put(actions.CR.ContentDimensions.setActive(sourceDimensions));
-            continue;
+            const {nodeFrontendUri} = informationAboutNodeInTargetDimension;
+            yield put(actions.UI.ContentCanvas.setSrc(nodeFrontendUri));
         }
+    });
+}
 
-        const {nodeFrontendUri, nodeContextPath} = informationAboutNodeInTargetDimension;
-
-        const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
-        const siteNodeContextPath = $get('contextPath', siteNode);
-        const targetSiteNodeContextPath = `${siteNodeContextPath.split('@')[0]}@${nodeContextPath.split('@')[1]}`;
-
-        yield put(actions.UI.ContentCanvas.setSrc(nodeFrontendUri));
-
-        yield put(actions.CR.Nodes.reloadState({
-            siteNodeContextPath: targetSiteNodeContextPath,
-            documentNodeContextPath: nodeContextPath
-        }));
-
-        sourceDimensions = targetDimensions;
-    }
+/**
+ * Watch for dimension changes and then reload state
+ */
+export function * watchSetActive() {
+    let previousActiveDimensions = yield select(selectors.CR.ContentDimensions.active);
+    yield takeEvery(actionTypes.CR.ContentDimensions.SET_ACTIVE, function * () {
+        const activeDimensions = yield select(selectors.CR.ContentDimensions.active);
+        if (previousActiveDimensions && JSON.stringify(activeDimensions) !== JSON.stringify(previousActiveDimensions)) {
+            yield put(actions.CR.Nodes.reloadState({merge: true}));
+        }
+        previousActiveDimensions = activeDimensions;
+    });
 }
 
 /**

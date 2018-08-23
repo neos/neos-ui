@@ -228,7 +228,7 @@ export default class Inspector extends PureComponent {
         }
 
         this.preprocessViewConfigurationDebounced();
-        const viewConfiguration = this.viewConfiguration;
+        const {viewConfiguration} = this;
 
         if (!$get('tabs', viewConfiguration)) {
             return this.renderFallback();

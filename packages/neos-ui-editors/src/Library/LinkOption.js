@@ -15,7 +15,7 @@ export default class LinkOption extends PureComponent {
     };
 
     render() {
-        const option = this.props.option;
+        const {option} = this.props;
 
         if (option.dataType === 'Neos.ContentRepository:Node') {
             return <NodeOption {...this.props}/>;

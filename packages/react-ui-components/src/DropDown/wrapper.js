@@ -55,6 +55,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
         onToggle: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired
     };
+
     static defaultProps = defaultProps;
 
     static childContextTypes = {
@@ -117,6 +118,7 @@ export const StatelessDropDownWrapper = enhanceWithClickOutside(StatelessDropDow
 
 export class DropDownWrapper extends PureComponent {
     static propTypes = wrapperPropTypes;
+
     static defaultProps = defaultProps;
 
     state = {

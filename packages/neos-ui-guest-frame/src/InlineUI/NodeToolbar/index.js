@@ -67,23 +67,24 @@ export default class NodeToolbar extends PureComponent {
         this.iframeWindow.addEventListener('resize', debounce(() => this.forceUpdate(), 20));
         this.iframeWindow.addEventListener('scroll', debounce(this.updateStickyness, 5));
         this.iframeWindow.addEventListener('load', debounce(() => this.forceUpdate(), 5));
+
+        this.scrollIntoView();
+        this.updateStickyness();
     }
 
     componentDidUpdate() {
-        // Only scroll into view when triggered from content tree (on focus change)
-        if (this.props.shouldScrollIntoView) {
-            this.scrollIntoView();
-            this.props.requestScrollIntoView(false);
-        }
-
+        this.scrollIntoView();
         this.updateStickyness();
     }
 
     scrollIntoView() {
-        const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
-
-        if (nodeElement && !isElementVisibleInGuestFrame(nodeElement)) {
-            animateScrollToElementInGuestFrame(nodeElement, 100);
+        // Only scroll into view when triggered from content tree (on focus change)
+        if (this.props.shouldScrollIntoView) {
+            const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
+            if (nodeElement && !isElementVisibleInGuestFrame(nodeElement)) {
+                animateScrollToElementInGuestFrame(nodeElement, 100);
+            }
+            this.props.requestScrollIntoView(false);
         }
     }
 

@@ -38,7 +38,7 @@ export function * watchRequestChildrenForContextPath({configuration}) {
             const query = q(contextPath);
 
             parentNodes = yield query.getForTree();
-            const baseNodeType = configuration.nodeTree.presets.default.baseNodeType;
+            const {baseNodeType} = configuration.nodeTree.presets.default;
             childNodes = yield query.neosUiFilteredChildren(baseNodeType).getForTree();
         } catch (err) {
             yield put(actions.UI.PageTree.invalidate(contextPath));
@@ -87,7 +87,7 @@ export function * watchCurrentDocument({configuration}) {
         let parentContextPath = contextPath;
 
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
-        const loadingDepth = configuration.nodeTree.loadingDepth;
+        const {loadingDepth} = configuration.nodeTree;
         let hasLoadedNodes = false;
         while (parentContextPath !== siteNodeContextPath) {
             parentContextPath = parentNodeContextPath(parentContextPath);
@@ -140,7 +140,7 @@ export function * watchSearch({configuration}) {
             return;
         }
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
-        const loadingDepth = configuration.nodeTree.loadingDepth;
+        const {loadingDepth} = configuration.nodeTree;
 
         if (matchingNodes.length > 0) {
             const nodes = matchingNodes.reduce((map, node) => {

@@ -45,6 +45,7 @@ export default class NodeCreationDialog extends PureComponent {
         validationErrors: false,
         isDirty: false
     };
+
     state = this.defaultState;
 
     resetState() {

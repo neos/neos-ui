@@ -3,7 +3,7 @@ import removeTags from './removeTags';
 /* eslint babel/new-cap: 0 */
 export default CKEDITOR => {
     function paste(event) {
-        const editor = event.editor;
+        const {editor} = event;
         const editable = editor.editable();
         if (!CKEDITOR.dtd.$block[editable.getName()]) {
             // For INLINE elements like SPANs, we need to do extra magic to make copy/paste behave well;

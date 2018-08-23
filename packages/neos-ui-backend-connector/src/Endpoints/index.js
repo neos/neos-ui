@@ -258,7 +258,8 @@ export default routes => {
                     nodeFrontendUri,
                     nodeContextPath
                 };
-            } else if (result.status === 404) {
+            }
+            if (result.status === 404) {
                 const nodeExistsInOtherDimensions = Boolean(result.headers.get('X-Neos-Node-Exists-In-Other-Dimensions'));
                 const numberOfNodesMissingOnRootline = parseInt(result.headers.get('X-Neos-Nodes-Missing-On-Rootline'), 10) - 1;
                 return {

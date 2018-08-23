@@ -25,7 +25,7 @@ export default class WorkspaceSelector extends PureComponent {
     render() {
         const {allowedWorkspaces, baseWorkspace, changeBaseWorkspaceAction, changingWorkspaceAllowed, i18nRegistry} = this.props;
 
-        const context = this.context;
+        const {context} = this;
         const workspacesOptions = Object.keys(allowedWorkspaces).map(i => $transform({label: $get('title'), value: $get('name')}, allowedWorkspaces[i]));
         const onWorkspaceSelect = workspaceName => {
             changeBaseWorkspaceAction(workspaceName);

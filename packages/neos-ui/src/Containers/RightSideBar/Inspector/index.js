@@ -143,7 +143,7 @@ export default class Inspector extends PureComponent {
         if (this.configurationIsProcessed) {
             this.forceUpdate();
         }
-    }, 250);
+    }, 250, {leading: true});
 
     handleCloseSecondaryInspector = () => {
         this.props.closeSecondaryInspector();

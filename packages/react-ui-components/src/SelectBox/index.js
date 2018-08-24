@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import {themr} from '@friendsofreactjs/react-css-themr';
 import keydown from 'react-keydown';
-import identifiers from './../identifiers.js';
+import identifiers from './../identifiers';
 import style from './style.css';
 import {keys} from './config.js';
 import SelectBox from './selectBox.js';

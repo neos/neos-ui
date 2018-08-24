@@ -1,5 +1,5 @@
 import {themr} from '@friendsofreactjs/react-css-themr';
-import identifiers from './../identifiers.js';
+import identifiers from './../identifiers';
 import treeStyle from './tree.css';
 import nodeStyle from './node.css';
 import Tree from './tree.js';

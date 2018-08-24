@@ -43,7 +43,7 @@ import Button from '@neos-project/react-ui-components/src/Button/button.js';
 All components can be themed using the [react-css-themr](https://github.com/javivelasco/react-css-themr) package,
 visit their docs for more information about how this approach works. Our identifiers can be imported e.g.
 ```js
-import identifiers from '@neos-project/react-ui-components/src/identifiers.js';
+import identifiers from '@neos-project/react-ui-components/src/identifiers';
 ```
 
 ## Contributing

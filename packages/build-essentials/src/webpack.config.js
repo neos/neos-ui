@@ -40,7 +40,7 @@ const webpackConfig = {
                 }]
             },
             {
-                test: /\.ts$/,
+                test: /\.tsx?$/,
                 exclude: /node_modules/,
                 use: [{
                     loader: 'ts-loader'
@@ -97,7 +97,7 @@ const webpackConfig = {
                 ],
                 use: extractCss.extract({
                     use: [{
-                        loader: 'css-loader',
+                        loader: 'typings-for-css-modules-loader',
                         options: {
                             modules: true,
                             importLoaders: 1,
@@ -142,7 +142,7 @@ const webpackConfig = {
         modules: [
             path.resolve(rootPath, './node_modules')
         ],
-        extensions: ['.ts', '.js']
+        extensions: ['.ts', '.tsx', '.js']
     },
 
     output: {

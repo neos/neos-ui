@@ -97,7 +97,7 @@ const webpackConfig = {
                 ],
                 use: extractCss.extract({
                     use: [{
-                        loader: 'typings-for-css-modules-loader',
+                        loader: 'css-loader',
                         options: {
                             modules: true,
                             importLoaders: 1,

@@ -117,4 +117,6 @@ prototype(Neos.Neos:Page) {
         }
         node = ${node}
     }
+
+    @exceptionHandler = 'Neos\\Neos\\Ui\\Fusion\\ExceptionHandler\\PageExceptionHandler'
 }

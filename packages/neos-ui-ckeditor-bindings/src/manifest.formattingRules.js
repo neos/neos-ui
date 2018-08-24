@@ -52,7 +52,7 @@ export default ckEditorRegistry => {
         ## CKEditor Configuration Helpers
 
         - \`config: registry.ckEditor.formattingRules.config.addToFormatTags('h1')\`: adds the passed-in tag to the
-          \`format_tags\` configuration option of CKEditor.
+            \`format_tags\` configuration option of CKEditor.
 
         - \`registry.ckEditor.formattingRules.config.add('Strong')\`: adds the passed-in *Button Definition Name*
             to the ACF configuration (automatic mode). This means the button names are standard CKEditor config

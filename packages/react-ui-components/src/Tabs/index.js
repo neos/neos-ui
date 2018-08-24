@@ -1,5 +1,5 @@
 import {themr} from '@friendsofreactjs/react-css-themr';
-import identifiers from './../identifiers.js';
+import identifiers from './../identifiers';
 import style from './style.css';
 import Tabs from './tabs';
 import Panel from './panel';

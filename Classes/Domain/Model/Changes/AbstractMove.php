@@ -13,10 +13,17 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\Domain\Model\Node;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Service as ContentRepository;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
+use Neos\Flow\Annotations as Flow;
 
 abstract class AbstractMove extends AbstractStructuralChange
 {
+    /**
+     * @Flow\Inject
+     * @var ContentRepository\NodeServiceInterface
+     */
+    protected $contentRepositoryNodeService;
 
     /**
      * Perform finish tasks - needs to be called from inheriting class on `apply`
@@ -47,5 +54,17 @@ abstract class AbstractMove extends AbstractStructuralChange
             // do a best-effort clone
             return clone $node;
         }
+    }
+
+    /**
+     * Generate a unique node name for the copied node
+     *
+     * @param NodeInterface $parentNode
+     * @return string
+     */
+    protected function generateUniqueNodeName(NodeInterface $parentNode)
+    {
+        return $this->contentRepositoryNodeService
+            ->generateUniqueNodeName($parentNode->getPath());
     }
 }

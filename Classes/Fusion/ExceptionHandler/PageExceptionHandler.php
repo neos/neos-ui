@@ -4,6 +4,7 @@ namespace Neos\Neos\Ui\Fusion\ExceptionHandler;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\ContentStream;
 use Neos\Flow\Http\Response;
+use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Flow\Utility\Environment;
 use Neos\FluidAdaptor\View\StandaloneView;
 use Neos\Fusion\Core\ExceptionHandlers\AbstractRenderingExceptionHandler;
@@ -40,6 +41,7 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
      * @return string
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Security\Exception
+     * @throws \Neos\FluidAdaptor\Exception
      */
     protected function handle($fusionPath, \Exception $exception, $referenceCode)
     {
@@ -66,7 +68,7 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
      * @param string $bodyContent
      * @return string
      */
-    protected function wrapHttpResponse(\Exception $exception, $bodyContent)
+    protected function wrapHttpResponse(\Exception $exception, string $bodyContent): string
     {
         $body = fopen('php://temp', 'rw');
         fputs($body, $bodyContent);
@@ -84,9 +86,10 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
     /**
      * Prepare a Fluid view for rendering an error page with the Neos backend
      *
-     * @return StandaloneView
+     * @return ViewInterface
+     * @throws \Neos\FluidAdaptor\Exception
      */
-    protected function prepareFluidView()
+    protected function prepareFluidView(): ViewInterface
     {
         $fluidView = new StandaloneView();
         $fluidView->setControllerContext($this->runtime->getControllerContext());

@@ -35,6 +35,7 @@ export PATH := ./node_modules/.bin:./bin:$(PATH)
 # Add lerna alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
 lerna = ./node_modules/.bin/lerna
+editorconfigChecker = ./node_modules/.bin/editorconfig-checker
 
 ################################################################################
 # Setup
@@ -105,7 +106,7 @@ lint-js:
 
 
 lint-editorconfig:
-	editorconfig-checker \
+	$(editorconfigChecker) \
 		--exclude-regexp 'LICENSE|\.vanilla\-css$$|banner\.js$$' \
 		--exclude-pattern \
 		'./{README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'

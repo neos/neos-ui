@@ -48,6 +48,27 @@ class NodeTypeGroupPanel extends PureComponent {
         i18nRegistry: PropTypes.object.isRequired
     };
 
+    componentDidUpdate() {
+        this.scrollIntoView();
+    }
+
+    scrollIntoView() {
+        const {
+            showHelpMessageFor,
+            activeHelpMessageGroupPanel,
+            group
+        } = this.props;
+
+        if (showHelpMessageFor !== '' && activeHelpMessageGroupPanel !== group.name) {
+            const helpMessage = document.querySelector('#nodeTypeGroupPanelhelpMessage');
+            const scrollParent = document.getElementById('neos-SelectNodeTypeDialog').querySelector('.dialog__body');
+
+            if (helpMessage && scrollParent && scrollParent.getBoundingClientRect().bottom < helpMessage.getBoundingClientRect().top + 100) {
+                scrollParent.scrollTop += helpMessage.getBoundingClientRect().bottom - scrollParent.getBoundingClientRect().bottom;
+            }
+        }
+    }
+
     renderHelpMessage = () => {
         const {
             i18nRegistry,
@@ -70,7 +91,7 @@ class NodeTypeGroupPanel extends PureComponent {
         }
 
         return (
-            <div className={style.helpMessage__wrapper}>
+            <div className={style.helpMessage__wrapper} id="nodeTypeGroupPanelhelpMessage">
                 <div className={style.helpMessage}>
                     <span className={style.helpMessage__label}>
                         {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}

@@ -7,13 +7,18 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import escaperegexp from 'lodash.escaperegexp';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
+import ReactMarkdown from 'react-markdown';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
+
 import I18n from '@neos-project/neos-ui-i18n';
 
 import NodeTypeItem from './nodeTypeItem';
 import style from './style.css';
 
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
+    i18nRegistry: globalRegistry.get('i18n'),
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect($transform({
     toggledGroups: $get('ui.addNodeModal.toggledGroups')
@@ -22,10 +27,10 @@ import style from './style.css';
 })
 class NodeTypeGroupPanel extends PureComponent {
     static propTypes = {
+        nodeTypesRegistry: PropTypes.object.isRequired,
         toggleNodeTypeGroup: PropTypes.func.isRequired,
         toggledGroups: PropTypes.array.isRequired,
         filterSearchTerm: PropTypes.string,
-        onHelpMessage: PropTypes.func.isRequired,
 
         group: PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -35,8 +40,50 @@ class NodeTypeGroupPanel extends PureComponent {
         }).isRequired,
         onSelect: PropTypes.func.isRequired,
 
+        showHelpMessageFor: PropTypes.string.isRequired,
+        activeHelpMessageGroupPanel: PropTypes.string.isRequired,
+        onHelpMessage: PropTypes.func.isRequired,
+        onCloseHelpMessage: PropTypes.func.isRequired,
+
         i18nRegistry: PropTypes.object.isRequired
     };
+
+    renderHelpMessage = () => {
+        const {
+            i18nRegistry,
+            nodeTypesRegistry,
+            activeHelpMessageGroupPanel,
+            showHelpMessageFor,
+            onCloseHelpMessage,
+            group
+        } = this.props;
+
+        const nodeType = nodeTypesRegistry.getNodeType(showHelpMessageFor);
+        const message = i18nRegistry.translate($get('ui.help.message', nodeType));
+        const thumbnail = $get('ui.help.thumbnail', nodeType);
+
+        const icon = $get('ui.icon', nodeType);
+        const label = $get('ui.label', nodeType);
+
+        if (activeHelpMessageGroupPanel !== group.name) {
+            return null;
+        }
+
+        return (
+            <div className={style.helpMessage__wrapper}>
+                <div className={style.helpMessage}>
+                    <span className={style.helpMessage__label}>
+                        {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
+                        <I18n id={label} fallback={label}/>
+                    </span>
+                    {thumbnail ? <img alt={label} src={thumbnail} className={style.helpThumbnail} /> : ''}
+                    <ReactMarkdown source={message} />
+                </div>
+
+                <IconButton className={style.helpMessage__closeButton} icon="times" onClick={onCloseHelpMessage} />
+            </div>
+        );
+    }
 
     render() {
         const {
@@ -45,9 +92,12 @@ class NodeTypeGroupPanel extends PureComponent {
             onSelect,
             filterSearchTerm,
             i18nRegistry,
-            onHelpMessage
+            onHelpMessage,
+            showHelpMessageFor
         } = this.props;
         const {name, label, nodeTypes} = group;
+
+        const showHelpMessage = showHelpMessageFor !== '';
 
         const filteredNodeTypes = (nodeTypes || [])
             .filter(nodeType => {
@@ -70,7 +120,8 @@ class NodeTypeGroupPanel extends PureComponent {
                     <I18n className={style.groupTitle} fallback={label} id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
-                    {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} />)}
+                    {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} groupName={group.name} />)}
+                    {showHelpMessage ? this.renderHelpMessage() : null}
                 </ToggablePanel.Contents>
             </ToggablePanel>
         );

@@ -30,7 +30,7 @@
     "webpack-merge": "^4.1.1"
   },
   "peerDependencies": {
-    "@friendsofreactjs/react-css-themr": "^3.0.0",
+    "@friendsofreactjs/react-css-themr": "^3.3.2",
     "@neos-project/utils-redux": "^4.4.8",
     "classnames": "^2.2.3",
     "lodash.debounce": "^4.0.8",

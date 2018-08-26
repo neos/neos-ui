@@ -45,6 +45,7 @@ async function goToPage(t, pageTitle) {
 
 fixture`Content Module`
     .beforeEach(async t => {
+        await t.setNativeDialogHandler(() => true);
         await t.useRole(adminUser);
         await discardAll(t);
         await goToPage(t, 'Home');

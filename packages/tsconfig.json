@@ -25,6 +25,7 @@
         "strict": true,
         "pretty": true,
         "removeComments": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "typeRoots": ["./../@types/", "./../node_modules/@types/"]
     }
 }

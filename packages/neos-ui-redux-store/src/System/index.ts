@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
+import Immutable from 'seamless-immutable';
 import {$set, $get} from 'plow-js';
 import {handleActions} from '@neos-project/utils-redux';
 
@@ -21,7 +21,7 @@ export const actionTypes = {
 };
 
 const boot = createAction(BOOT);
-const init = createAction(INIT, state => state);
+const init = createAction(INIT, <S>(state: S): S => state);
 const ready = createAction(READY);
 const authenticationTimeout = createAction(AUTHENTICATION_TIMEOUT);
 const reauthenticationSucceeded = createAction(REAUTHENTICATION_SUCCEEDED);
@@ -37,23 +37,27 @@ export const actions = {
     reauthenticationSucceeded
 };
 
+export interface State {
+    authenticationTimeout: boolean;
+}
+
+// TODO: later this RootState would be automatically generated from exported states from sub-reducers
+interface RootState {
+    system: State
+}
+
 //
 // Export the reducer
 //
 export const reducer = handleActions({
-    [INIT]: () => $set(
-        'system',
-        new Map({
-            authenticationTimeout: false
-        })
-    ),
-    [AUTHENTICATION_TIMEOUT]: () => $set('system.authenticationTimeout', true),
-    [REAUTHENTICATION_SUCCEEDED]: () => $set('system.authenticationTimeout', false)
+    [INIT]: () => (state: RootState) => $set(['system'], Immutable({authenticationTimeout: false}), state),
+    [AUTHENTICATION_TIMEOUT]: () => (state: RootState) => $set(['system', 'authenticationTimeout'], true, state),
+    [REAUTHENTICATION_SUCCEEDED]: () => (state: RootState) => $set(['system', 'authenticationTimeout'], false, state)
 });
 
 //
 // Export the selectors
 //
 export const selectors = {
-    authenticationTimeout: $get('system.authenticationTimeout')
+    authenticationTimeout: () => (state: RootState) => $get(['system', 'authenticationTimeout'], state)
 };

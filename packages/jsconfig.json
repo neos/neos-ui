@@ -24,6 +24,10 @@
         "pretty": true,
         "removeComments": true,
         "sourceMap": true,
+        "typeRoots": [
+            "./../@types/",
+            "./../node_modules/@types/"
+        ],
 
         "target": "ES6",
         "baseUrl": "./",

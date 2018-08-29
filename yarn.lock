@@ -4392,7 +4392,7 @@ ends-with@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/ends-with/-/ends-with-0.2.0.tgz#2f9da98d57a50cfda4571ce4339000500f4e6b8a"
 
-enhanced-resolve@^3.0.0, enhanced-resolve@^3.4.0:
+enhanced-resolve@^3.4.0:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-3.4.1.tgz#0421e339fd71419b3da13d129b3979040230476e"
   dependencies:
@@ -11798,12 +11798,12 @@ tryor@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/tryor/-/tryor-0.1.2.tgz#8145e4ca7caff40acde3ccf946e8b8bb75b4172b"
 
-ts-loader@^3:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-3.5.0.tgz#151d004dcddb4cf8e381a3bf9d6b74c2d957a9c0"
+ts-loader@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-4.5.0.tgz#a1ce70b2dc799941fb2197605f0d67874097859b"
   dependencies:
     chalk "^2.3.0"
-    enhanced-resolve "^3.0.0"
+    enhanced-resolve "^4.0.0"
     loader-utils "^1.0.2"
     micromatch "^3.1.4"
     semver "^5.0.1"

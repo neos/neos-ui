@@ -13,6 +13,7 @@ module.exports = (storybookBaseConfig, configType) => {
         // Add project specific loader configurations.
         //
         module: {
+            mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
             rules: [
                 {
                     test: /\.js$/,

@@ -23,6 +23,7 @@ module.exports = (storybookBaseConfig, configType) => {
                     }]
                 },
                 {
+                    type: 'javascript/auto',
                     test: /\.json$/,
                     exclude: /(node_modules)/,
                     use: [{

@@ -49,6 +49,7 @@ const webpackConfig = {
                 }]
             },
             {
+                type: 'javascript/auto',
                 test: /\.json$/,
                 exclude: /node_modules\/(?!@neos-project).*$/,
                 use: [{

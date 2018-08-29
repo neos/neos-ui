@@ -6,13 +6,13 @@
     border-bottom: 1px solid var(--colors-ContrastDarker);
 
     &:hover {
-      .selectedOptions__itemIcon {
-        display: none;
-      }
+        .selectedOptions__itemIcon {
+            display: none;
+        }
 
-      .selectedOptions__itemIcon--onHover {
-        display: inline;
-      }
+        .selectedOptions__itemIcon--onHover {
+            display: inline;
+        }
     }
 }
 

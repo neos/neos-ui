@@ -4,14 +4,14 @@ The expected format for the subject is:
 
 ```js
 [
-  [
-    'key' => 'bar'
-    'position' => '<position-string>',
-  ],
-  [
-    'key' => 'baz'
-    'position' => '<position-string>',
-  ],
+    [
+        'key' => 'bar'
+        'position' => '<position-string>',
+    ],
+    [
+        'key' => 'baz'
+        'position' => '<position-string>',
+    ],
 ]
 ```
 

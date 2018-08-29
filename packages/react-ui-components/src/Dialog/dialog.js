@@ -101,7 +101,7 @@ class DialogWithoutEscape extends PureComponent {
                                 className={theme.dialog__closeBtn}
                                 onClick={onRequestClose}
                                 />
-                              }
+                            }
                             <div className={theme.dialog__title}>
                                 {title}
                             </div>

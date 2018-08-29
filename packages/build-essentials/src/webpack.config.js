@@ -42,6 +42,20 @@ const webpackConfig = {
                 }]
             },
             {
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                use: [{
+                    loader: 'ts-loader'
+                }]
+            },
+            {
+                test: /\.json$/,
+                exclude: /node_modules\/(?!@neos-project).*$/,
+                use: [{
+                    loader: 'json-loader'
+                }]
+            },
+            {
                 test: /node_modules\/@ckeditor\/.*\.svg$/,
                 use: ['raw-loader']
             },
@@ -135,7 +149,8 @@ const webpackConfig = {
     resolve: {
         modules: [
             path.resolve(rootPath, './node_modules')
-        ]
+        ],
+        extensions: ['.ts', '.tsx', '.js']
     },
 
     output: {

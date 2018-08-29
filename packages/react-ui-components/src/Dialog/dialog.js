@@ -95,13 +95,13 @@ class DialogWithoutEscape extends PureComponent {
                 <section {...rest} className={finalClassName} role="dialog" tabIndex="0">
                     <div className={theme.dialog__contentsPosition}>
                         <div className={theme.dialog__contents}>
-                            {onRequestClose &&
-                            <IconButtonComponent
-                                icon="times"
-                                className={theme.dialog__closeBtn}
-                                onClick={onRequestClose}
-                                />
-                            }
+                            {onRequestClose && (
+                                <IconButtonComponent
+                                    icon="times"
+                                    className={theme.dialog__closeBtn}
+                                    onClick={onRequestClose}
+                                    />
+                            )}
                             <div className={theme.dialog__title}>
                                 {title}
                             </div>

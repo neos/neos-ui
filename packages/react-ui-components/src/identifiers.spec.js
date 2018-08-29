@@ -1,4 +1,4 @@
-import identifiers from './identifiers.js';
+import identifiers from './identifiers';
 
 describe('Theme identifiers', () => {
     it('should export an object of strings.', () => {

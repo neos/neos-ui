@@ -114,8 +114,8 @@ manifest('main', {}, globalRegistry => {
         - propertyName: Name of the property to edit (of the node)
         - options: additional editor options
         - commit: a callback function when the content changes.
-            - 1st argument: the new value
-            - 2nd argument (optional): an object whose keys are to-be-triggered *saveHooks*, and the values
+        - 1st argument: the new value
+        - 2nd argument (optional): an object whose keys are to-be-triggered *saveHooks*, and the values
             are hook-specific options.
             Example: {'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextImage}
         - renderSecondaryInspector(inspectorIdentifier, secondaryInspectorComponentFactory):

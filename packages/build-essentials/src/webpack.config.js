@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
 //
@@ -30,6 +31,7 @@ const extractCss = new ExtractTextPlugin({
 const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
+    mode: env.isProduction ? 'production' : 'development',
     module: {
         rules: [
             {
@@ -134,9 +136,15 @@ const webpackConfig = {
             }
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true}),
-        new webpack.optimize.CommonsChunkPlugin({names: ['Vendor']})
+        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true})
     ],
+
+    optimization: {
+        splitChunks: {
+            name: 'Vendor'
+        },
+        minimizer: []
+    },
 
     resolve: {
         modules: [
@@ -152,6 +160,9 @@ const webpackConfig = {
     stats: {
         assets: false,
         children: false
+    },
+    performance: {
+        hints: env.isProduction ? 'warning' : false
     }
 };
 
@@ -165,17 +176,21 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
 
 /* eslint camelcase: ["error", {properties: "never"}] */
 if (env.isProduction) {
-    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        sourceMap: true,
-        minimize: true,
-        compress: {
-            keep_fnames: true,
-            warnings: false
-        },
-        mangle: {
-            keep_fnames: true
-        }
-    }));
+    webpackConfig.optimization.minimizer.push(
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                sourceMap: true,
+                minimize: true,
+                compress: {
+                    keep_fnames: true,
+                    warnings: false
+                },
+                mangle: {
+                    keep_fnames: true
+                }
+            }
+        })
+    );
 }
 
 webpackConfig.__internalDependencies = {

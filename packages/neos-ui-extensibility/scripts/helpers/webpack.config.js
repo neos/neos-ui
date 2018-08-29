@@ -6,6 +6,7 @@ delete sharedWebPackConfig.__internalDependencies;
 module.exports = function (neosPackageJson) {
     return Object.assign({}, sharedWebPackConfig, {
         module: {
+            mode: sharedWebPackConfig.mode,
             rules: sharedWebPackConfig.module.rules.map(loaderConfig => {
                 if (loaderConfig.use[0].loader === 'babel-loader') {
                     loaderConfig.use[0].options = {

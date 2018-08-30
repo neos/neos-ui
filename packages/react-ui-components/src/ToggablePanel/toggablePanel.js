@@ -287,7 +287,7 @@ export class Contents extends PureComponent {
         });
 
         return (
-            <Collapse isOpened={isPanelOpen}>
+            <Collapse isOpened={isPanelOpen} springConfig={{stiffness: 300, damping: 30}}>
                 <div className={finalClassName} aria-hidden={isPanelOpen ? 'false' : 'true'}>
                     {children}
                 </div>

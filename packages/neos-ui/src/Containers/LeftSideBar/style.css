@@ -4,7 +4,7 @@
     flex-basis: 100%;
 
     padding-top: 41px;
-    transition: var(--transition-Default)  ease transform;
+    transition: var(--transition-Default) ease transform;
     will-change: transform;
 
     &:before,
@@ -30,7 +30,7 @@
 
 .leftSideBar__bottom {
     flex: 0 0 50%;
-    transition: flex-basis var(--transition-Slow), height var(--transition-Slow), overflow-y var(--transition-Slow);
+    transition: flex-basis var(--transition-Default), height var(--transition-Default), overflow-y var(--transition-Default);
     display: flex;
     flex-direction: column;
     min-height: 40px;

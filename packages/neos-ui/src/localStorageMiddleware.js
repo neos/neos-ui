@@ -12,7 +12,8 @@ const localStorageMiddleware = ({getState}) => {
     const persistentActionsPatterns = [
         '@neos/neos-ui/UI/LeftSideBar/TOGGLE',
         '@neos/neos-ui/UI/LeftSideBar/TOGGLE_CONTENT_TREE',
-        '@neos/neos-ui/UI/RightSidebar/TOGGLE'
+        '@neos/neos-ui/UI/RightSidebar/TOGGLE',
+        '@neos/neos-ui/UI/Drawer/TOGGLE_MENU_GROUP'
     ];
 
     return next => action => {
@@ -29,6 +30,9 @@ const localStorageMiddleware = ({getState}) => {
                 // TODO: figure out a more declarative way to manage this. Or just move all persistent state under "ui"
                 const persistentStateSubset = {
                     ui: {
+                        drawer: {
+                            collapsedMenuGroups: $get('ui.drawer.collapsedMenuGroups', state)
+                        },
                         leftSideBar: {
                             isHidden: $get('ui.leftSideBar.isHidden', state),
                             contentTree: {

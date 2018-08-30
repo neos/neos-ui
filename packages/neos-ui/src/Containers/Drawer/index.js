@@ -12,15 +12,20 @@ import style from './style.css';
 import {TARGET_WINDOW, TARGET_CONTENT_CANVAS, THRESHOLD_MOUSE_LEAVE} from './constants';
 
 @connect($transform({
-    isHidden: $get('ui.drawer.isHidden')
+    isHidden: $get('ui.drawer.isHidden'),
+    collapsedMenuGroups: $get('ui.drawer.collapsedMenuGroups')
 }), {
     hideDrawer: actions.UI.Drawer.hide,
+    toggleMenuGroup: actions.UI.Drawer.toggleMenuGroup,
     setContentCanvasSrc: actions.UI.ContentCanvas.setSrc
 })
 export default class Drawer extends PureComponent {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
+        collapsedMenuGroups: PropTypes.array.isRequired,
+
         hideDrawer: PropTypes.func.isRequired,
+        toggleMenuGroup: PropTypes.func.isRequired,
         setContentCanvasSrc: PropTypes.func.isRequired,
 
         menuData: PropTypes.objectOf(
@@ -96,7 +101,7 @@ export default class Drawer extends PureComponent {
     }
 
     render() {
-        const {isHidden, menuData} = this.props;
+        const {isHidden, menuData, collapsedMenuGroups, toggleMenuGroup} = this.props;
         const classNames = mergeClassNames({
             [style.drawer]: true,
             [style['drawer--isHidden']]: isHidden
@@ -113,12 +118,14 @@ export default class Drawer extends PureComponent {
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
                 <div className={style.drawer__menuItemGroupsWrapper}>
-                    {!isHidden && Object.values(menuData).map((item, index) => (
+                    {!isHidden && Object.entries(menuData).map(([menuGroup, menuGroupConfiguration]) => (
                         <MenuItemGroup
-                            key={index}
+                            key={menuGroup}
                             onClick={this.handleMenuItemClick}
                             onChildClick={this.handleMenuItemClick}
-                            {...item}
+                            collapsed={Boolean(collapsedMenuGroups.includes(menuGroup))}
+                            handleMenuGroupToggle={() => toggleMenuGroup(menuGroup)}
+                            {...menuGroupConfiguration}
                             />
                     ))}
                 </div>

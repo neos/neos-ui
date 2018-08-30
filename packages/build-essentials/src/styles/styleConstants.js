@@ -13,7 +13,7 @@ const config = {
     },
     transition: {
         fast: '.1s',
-        default: '.3s',
+        default: '.25s',
         slow: '.5s'
     },
     zIndex: {

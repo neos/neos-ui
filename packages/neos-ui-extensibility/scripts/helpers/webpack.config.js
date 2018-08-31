@@ -1,6 +1,6 @@
 const sharedWebPackConfig = require('@neos-project/build-essentials/src/webpack.config.js');
 const path = require('path');
-const ExtractTextPlugin = sharedWebPackConfig.__internalDependencies.ExtractTextPlugin;
+const MiniCssExtractPlugin = sharedWebPackConfig.__internalDependencies.MiniCssExtractPlugin;
 delete sharedWebPackConfig.__internalDependencies;
 
 module.exports = function (neosPackageJson) {
@@ -30,7 +30,7 @@ module.exports = function (neosPackageJson) {
             Plugin: './src/index.js'
         },
         plugins: [
-            new ExtractTextPlugin('./[name].css', {allChunks: true})
+            new MiniCssExtractPlugin({filename: './[name].css'})
         ],
         output: {
             path: path.resolve(process.cwd(), neosPackageJson.buildTargetDirectory),

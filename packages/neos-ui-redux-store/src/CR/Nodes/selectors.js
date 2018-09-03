@@ -1,8 +1,8 @@
 import {$get} from 'plow-js';
-import Immutable from 'immutable';
 import {createSelector, defaultMemoize} from 'reselect';
 
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const nodes = $get(['cr', 'nodes', 'byContextPath']);
 const siteNode = $get('cr.nodes.siteNode');
@@ -314,7 +314,7 @@ export const focusedNodeParentLineSelector = createSelector(
         (_, highestConsideredParentNode) => highestConsideredParentNode
     ],
     (focusedNode, nodesByContextPath, highestConsideredParentNode) => {
-        let result = Immutable.fromJS([focusedNode]);
+        let result = fromJSOrdered([focusedNode]);
         let currentNode = focusedNode;
 
         while (currentNode && $get('contextPath', currentNode) !== $get('contextPath', highestConsideredParentNode)) {

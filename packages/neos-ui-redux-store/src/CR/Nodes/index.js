@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import Immutable, {Map} from 'immutable';
+import {Map} from 'immutable';
 import {$all, $set, $drop, $get, $merge} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -7,6 +7,7 @@ import {actionTypes as system} from '../../System/index';
 
 import * as selectors from './selectors';
 import {parentNodeContextPath} from './helpers';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const ADD = '@neos/neos-ui/CR/Nodes/ADD';
 const MERGE = '@neos/neos-ui/CR/Nodes/MERGE';
@@ -219,7 +220,7 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'cr.nodes',
         new Map({
-            byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)) || new Map(),
+            byContextPath: fromJSOrdered($get('cr.nodes.byContextPath', state)) || new Map(),
             siteNode: $get('cr.nodes.siteNode', state) || '',
             focused: new Map({
                 contextPath: '',
@@ -233,9 +234,9 @@ export const reducer = handleActions({
     [ADD]: ({nodeMap}) => $all(
         ...Object.keys(nodeMap).map(contextPath => $set(
             ['cr', 'nodes', 'byContextPath', contextPath],
-            Immutable.fromJS(
+            fromJSOrdered(
                 //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, fromJSOrdered() does not do anything;
                 // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
                 // the data, to scope it relative to *this* frame.
                 //
@@ -285,9 +286,9 @@ export const reducer = handleActions({
     [MERGE]: ({nodeMap}) => $all(
         ...Object.keys(nodeMap).map(contextPath => $merge(
             ['cr', 'nodes', 'byContextPath', contextPath],
-            Immutable.fromJS(
+            fromJSOrdered(
                 //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, fromJSOrdered() does not do anything;
                 // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
                 // the data, to scope it relative to *this* frame.
                 //
@@ -296,9 +297,9 @@ export const reducer = handleActions({
         )),
         ...Object.keys(nodeMap).filter(contextPath => nodeMap[contextPath].children !== undefined).map(contextPath => $set(
             ['cr', 'nodes', 'byContextPath', contextPath, 'children'],
-            Immutable.fromJS(
+            fromJSOrdered(
                 //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, fromJSOrdered() does not do anything;
                 // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
                 // the data, to scope it relative to *this* frame.
                 //
@@ -330,7 +331,7 @@ export const reducer = handleActions({
             contextPath: '',
             fusionPath: ''
         })),
-        merge ? $merge('cr.nodes.byContextPath', Immutable.fromJS(nodes)) : $set('cr.nodes.byContextPath', Immutable.fromJS(nodes))
+        merge ? $merge('cr.nodes.byContextPath', fromJSOrdered(nodes)) : $set('cr.nodes.byContextPath', fromJSOrdered(nodes))
     ),
     [COPY]: contextPath => $all(
         $set('cr.nodes.clipboard', contextPath),

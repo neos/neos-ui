@@ -100,8 +100,16 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         }
     };
 
-    getGuestFrameDocument().addEventListener('click', e => {
-        focusSelectedNode(e);
+    // We store the original mousedown event in order to prevent bugs like this: https://github.com/neos/neos-ui/issues/1934
+    let mouseDownEvent = null;
+    getGuestFrameDocument().addEventListener('mousedown', event => {
+        mouseDownEvent = event;
+    });
+    getGuestFrameDocument().addEventListener('mouseup', () => {
+        if (mouseDownEvent) {
+            focusSelectedNode(mouseDownEvent);
+        }
+        mouseDownEvent = null;
     });
 
     getGuestFrameDocument().addEventListener('keyup', e => {

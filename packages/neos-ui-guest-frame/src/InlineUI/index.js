@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {$transform, $get, $contains} from 'plow-js';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-
+import {findNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 import NodeToolbar from './NodeToolbar/index';
 
 import style from './style.css';
@@ -48,6 +48,8 @@ export default class InlineUI extends PureComponent {
         const canBeDeleted = $get('policy.canRemove', this.props.focusedNode) || false;
         const canBeEdited = $get('policy.canEdit', this.props.focusedNode) || false;
         const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode);
+        // Check if focusedNode is in Guest frame to prevent errors (e.g. if still in store)
+        const focusedNodeInGuestFrame = findNodeInGuestFrame(focusedNodeContextPath) ? focused : {};
 
         return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">
@@ -60,7 +62,7 @@ export default class InlineUI extends PureComponent {
                     canBeDeleted={canBeDeleted}
                     canBeEdited={canBeEdited}
                     visibilityCanBeToggled={visibilityCanBeToggled}
-                    {...focused}
+                    {...focusedNodeInGuestFrame}
                     />
             </div>
         );

@@ -50,6 +50,8 @@ export default class NodeToolbar extends PureComponent {
 
     iframeWindow = getGuestFrameWindow();
 
+    mounted = false;
+
     updateStickyness = () => {
         const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
         if (nodeElement) {
@@ -64,9 +66,29 @@ export default class NodeToolbar extends PureComponent {
     };
 
     componentDidMount() {
-        this.iframeWindow.addEventListener('resize', debounce(() => this.forceUpdate(), 20));
-        this.iframeWindow.addEventListener('scroll', debounce(this.updateStickyness, 5));
-        this.iframeWindow.addEventListener('load', debounce(() => this.forceUpdate(), 5));
+        this.mounted = true;
+        this.iframeWindow.addEventListener('resize', debounce(() => {
+            // Prevent forceUpdate from being called if already unmounted
+            if (this.mounted) {
+                this.forceUpdate();
+            }
+        }, 20));
+
+        this.iframeWindow.addEventListener('load', debounce(() => {
+            // Prevent state update from being called if already unmounted
+
+            if (this.mounted) {
+                this.updateStickynes();
+            }
+        }, 5));
+
+        this.iframeWindow.addEventListener('load', debounce(() => {
+            // Prevent forceUpdate from being called if already unmounted
+
+            if (this.mounted) {
+                this.forceUpdate();
+            }
+        }, 5));
 
         this.scrollIntoView();
         this.updateStickyness();
@@ -75,6 +97,10 @@ export default class NodeToolbar extends PureComponent {
     componentDidUpdate() {
         this.scrollIntoView();
         this.updateStickyness();
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
     }
 
     scrollIntoView() {
@@ -117,6 +143,12 @@ export default class NodeToolbar extends PureComponent {
         };
 
         const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
+
+        // Check if nodeElement exists before accessing its props
+        if (!nodeElement) {
+            return null;
+        }
+
         const {top, right} = getAbsolutePositionOfElementInGuestFrame(nodeElement);
 
         // TODO: hardcoded dimensions

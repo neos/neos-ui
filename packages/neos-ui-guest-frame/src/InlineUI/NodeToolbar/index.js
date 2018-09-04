@@ -50,8 +50,6 @@ export default class NodeToolbar extends PureComponent {
 
     iframeWindow = getGuestFrameWindow();
 
-    mounted = false;
-
     updateStickyness = () => {
         const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
         if (nodeElement) {
@@ -65,30 +63,16 @@ export default class NodeToolbar extends PureComponent {
         }
     };
 
+    debouncedSticky = debounce(this.updateStickyness, 5);
+
+    debouncedUpdate = debounce(() => this.forceUpdate(), 5);
+
     componentDidMount() {
-        this.mounted = true;
-        this.iframeWindow.addEventListener('resize', debounce(() => {
-            // Prevent forceUpdate from being called if already unmounted
-            if (this.mounted) {
-                this.forceUpdate();
-            }
-        }, 20));
+        this.iframeWindow.addEventListener('resize', this.debouncedUpdate);
 
-        this.iframeWindow.addEventListener('load', debounce(() => {
-            // Prevent state update from being called if already unmounted
+        this.iframeWindow.addEventListener('scroll', this.debouncedSticky);
 
-            if (this.mounted) {
-                this.updateStickynes();
-            }
-        }, 5));
-
-        this.iframeWindow.addEventListener('load', debounce(() => {
-            // Prevent forceUpdate from being called if already unmounted
-
-            if (this.mounted) {
-                this.forceUpdate();
-            }
-        }, 5));
+        this.iframeWindow.addEventListener('load', this.debouncedUpdate);
 
         this.scrollIntoView();
         this.updateStickyness();
@@ -100,7 +84,17 @@ export default class NodeToolbar extends PureComponent {
     }
 
     componentWillUnmount() {
-        this.mounted = false;
+        this.iframeWindow.removeEventListener('resize', this.debouncedUpdate);
+        this.iframeWindow.removeEventListener('scroll', this.debouncedSticky);
+        this.iframeWindow.removeEventListener('load', this.debouncedUpdate);
+
+        if (this.debouncedUpdate && this.debouncedUpdate.cancel) {
+            this.debouncedUpdate.cancel();
+        }
+
+        if (this.debouncedSticky && this.debouncedSticky.cancel) {
+            this.debouncedSticky.cancel();
+        }
     }
 
     scrollIntoView() {

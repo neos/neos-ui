@@ -48,10 +48,8 @@ export default class InlineUI extends PureComponent {
         const canBeDeleted = $get('policy.canRemove', this.props.focusedNode) || false;
         const canBeEdited = $get('policy.canEdit', this.props.focusedNode) || false;
         const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode);
-        // Check if focusedNode is in Guest frame to prevent errors (e.g. if still in store)
-        const focusedNodeInGuestFrame = findNodeInGuestFrame(focusedNodeContextPath) ? focused : {};
 
-        return (
+        return (findNodeInGuestFrame(focusedNodeContextPath) &&
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">
                 <NodeToolbar
                     shouldScrollIntoView={shouldScrollIntoView}
@@ -62,7 +60,7 @@ export default class InlineUI extends PureComponent {
                     canBeDeleted={canBeDeleted}
                     canBeEdited={canBeEdited}
                     visibilityCanBeToggled={visibilityCanBeToggled}
-                    {...focusedNodeInGuestFrame}
+                    {...focused}
                     />
             </div>
         );

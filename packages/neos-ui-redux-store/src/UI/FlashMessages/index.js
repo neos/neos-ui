@@ -1,9 +1,10 @@
 import {createAction} from 'redux-actions';
-import Immutable, {Map} from 'immutable';
+import {Map} from 'immutable';
 import {$set, $drop} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const ADD = '@neos/neos-ui/UI/FlashMessages/ADD';
 const REMOVE = '@neos/neos-ui/UI/FlashMessages/REMOVE';
@@ -79,7 +80,7 @@ export const reducer = handleActions({
         //
         message.severity = message.severity.toLowerCase();
 
-        return $set(['ui', 'flashMessages', message.id], Immutable.fromJS(message), state);
+        return $set(['ui', 'flashMessages', message.id], fromJSOrdered(message), state);
     },
     [REMOVE]: ({id}) => $drop(['ui', 'flashMessages', id])
 });

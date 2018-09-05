@@ -19,14 +19,14 @@
     }
 
     &:before {
-        top: 12px;
+        top: 10px;
         border-top: 3px solid;
         border-bottom: 3px solid;
         content: '';
     }
 
     &:after {
-        top: 24px;
+        top: 22px;
         background-color: currentColor;
         content: '';
     }

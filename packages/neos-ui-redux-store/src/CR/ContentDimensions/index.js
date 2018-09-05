@@ -1,10 +1,11 @@
 import {createAction} from 'redux-actions';
-import Immutable, {List, Map} from 'immutable';
+import {List, Map} from 'immutable';
 import {$set, $get, $all} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 import {createSelector} from 'reselect';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const SELECT_PRESET = '@neos/neos-ui/CR/ContentDimensions/SELECT_PRESET';
 const SET_ACTIVE = '@neos/neos-ui/CR/ContentDimensions/SET_ACTIVE';
@@ -93,9 +94,9 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'cr.contentDimensions',
         new Map({
-            byName: Immutable.fromJS(byName(state)),
-            active: Immutable.fromJS(active(state)),
-            allowedPresets: Immutable.fromJS(allowedPresets(state))
+            byName: fromJSOrdered(byName(state)),
+            active: fromJSOrdered(active(state)),
+            allowedPresets: fromJSOrdered(allowedPresets(state))
         })
     ),
     [SELECT_PRESET]: ({targetPresets}) => state => $all(...Object.keys(targetPresets).map(dimensionName => {
@@ -108,7 +109,7 @@ export const reducer = handleActions({
         const newActive = previousActive.toSeq().map((values, dimensionName) => new List(dimensionValues[dimensionName])).toMap();
         return $set('cr.contentDimensions.active', newActive, state);
     },
-    [SET_ALLOWED]: ({dimensionName, allowedPresets}) => $set(['cr', 'contentDimensions', 'allowedPresets', dimensionName], Immutable.fromJS(allowedPresets))
+    [SET_ALLOWED]: ({dimensionName, allowedPresets}) => $set(['cr', 'contentDimensions', 'allowedPresets', dimensionName], fromJSOrdered(allowedPresets))
 });
 
 /**

@@ -13,7 +13,7 @@
     transition: var(--transition-Fast) ease-in-out;
 }
 .secondaryToolbar--isMovedDown {
-    transform: translateY(110px);  /* height of EditModePanel - 41px added */
+    transform: translateY(110px); /* height of EditModePanel - 41px added */
 }
 .secondaryToolbar--isFringeLeft {
     padding-left: 0;

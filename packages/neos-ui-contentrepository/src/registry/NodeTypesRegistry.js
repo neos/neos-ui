@@ -149,6 +149,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                                         editor: $get('ui.inspector.editor'),
                                         editorOptions: $get('ui.inspector.editorOptions'),
                                         position: $get('ui.inspector.position'),
+                                        hidden: $get('ui.inspector.hidden'),
                                         helpMessage: $get('ui.help.message'),
                                         helpThumbnail: $get('ui.help.thumbnail')
                                     }),

@@ -48,7 +48,10 @@ export default class PropertyGroup extends PureComponent {
                         const itemType = $get('type', item);
                         const label = $get('label', item) || '';
 
-                        if (itemType === 'editor' && $get('hidden', item) !== true) {
+                        if ($get('hidden', item) !== true) {
+                            return null;
+                        }
+                        if (itemType === 'editor') {
                             return (
                                 <InspectorEditorEnvelope
                                     key={$get('contextPath', node) + itemId}

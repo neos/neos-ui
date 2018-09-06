@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {$transform, $get, $contains} from 'plow-js';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+
 import NodeToolbar from './NodeToolbar/index';
 
 import style from './style.css';

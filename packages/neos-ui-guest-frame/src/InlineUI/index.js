@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {$transform, $get, $contains} from 'plow-js';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {findNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 import NodeToolbar from './NodeToolbar/index';
 
 import style from './style.css';
@@ -49,7 +48,7 @@ export default class InlineUI extends PureComponent {
         const canBeEdited = $get('policy.canEdit', this.props.focusedNode) || false;
         const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode);
 
-        return (findNodeInGuestFrame(focusedNodeContextPath) &&
+        return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">
                 <NodeToolbar
                     shouldScrollIntoView={shouldScrollIntoView}

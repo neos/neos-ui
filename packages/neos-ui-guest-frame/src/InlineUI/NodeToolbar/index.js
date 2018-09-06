@@ -69,9 +69,7 @@ export default class NodeToolbar extends PureComponent {
 
     componentDidMount() {
         this.iframeWindow.addEventListener('resize', this.debouncedUpdate);
-
         this.iframeWindow.addEventListener('scroll', this.debouncedSticky);
-
         this.iframeWindow.addEventListener('load', this.debouncedUpdate);
 
         this.scrollIntoView();

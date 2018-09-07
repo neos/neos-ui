@@ -89,6 +89,9 @@ class Version20180907103800 extends AbstractMigration
             $editorOptions['formatting']['em'] = true;
             unset($editorOptions['formatting']['i']);
         }
+        if ($editorOptions['formatting'] === []) {
+            unset($editorOptions['formatting']);
+        }
         return $editorOptions;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Neos\Neos\Ui\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
  * This file is part of the Neos.Neos.Ui package.
@@ -11,7 +11,6 @@ namespace Neos\Neos\Ui\Core\Migrations;
  * source code.
  */
 use Neos\Flow\Configuration\ConfigurationManager;
-use Neos\Flow\Core\Migrations\AbstractMigration;
 
 /**
  * Migrate RTE formatting configuration to new format

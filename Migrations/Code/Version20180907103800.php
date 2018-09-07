@@ -51,7 +51,7 @@ class Version20180907103800 extends AbstractMigration
 
     /**
      * Takes legacy aloha formatting and return editorOptions
-     * 
+     *
      * @param array $aloha
      * @return array $editorOptions
      */

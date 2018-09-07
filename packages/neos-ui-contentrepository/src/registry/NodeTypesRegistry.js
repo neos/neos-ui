@@ -225,6 +225,13 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return acc;
         }, {});
 
+        if ($get('formatting.b', legacyConfiguration)) {
+            legacyConfiguration.formatting.strong = true;
+        }
+        if ($get('formatting.i', legacyConfiguration)) {
+            legacyConfiguration.formatting.em = true;
+        }
+
         return inlineEditorOptions ? merge(legacyConfiguration, inlineEditorOptions) : legacyConfiguration;
     }
 

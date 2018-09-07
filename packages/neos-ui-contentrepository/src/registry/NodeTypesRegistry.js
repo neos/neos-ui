@@ -208,14 +208,10 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     getInlineEditorOptionsForProperty(nodeTypeName, propertyName) {
         const nodeType = this.get(nodeTypeName);
 
-        const inlineEditorOptions = $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType);
+        const inlineEditorOptions = $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType) || {};
 
         // OLD variant of configuration
-        const legacyConfiguration = $get(['properties', propertyName, 'ui', 'aloha'], nodeType);
-
-        if (inlineEditorOptions && !legacyConfiguration) {
-            return inlineEditorOptions;
-        }
+        const legacyConfiguration = $get(['properties', propertyName, 'ui', 'aloha'], nodeType) || {};
 
         legacyConfiguration.formatting = [].concat(
             ...['format', 'link', 'list', 'table', 'alignment']
@@ -225,14 +221,16 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return acc;
         }, {});
 
-        if ($get('formatting.b', legacyConfiguration)) {
-            legacyConfiguration.formatting.strong = true;
+        const mergedConfig = merge(legacyConfiguration, inlineEditorOptions);
+
+        if ($get('formatting.b', mergedConfig)) {
+            mergedConfig.formatting.strong = true;
         }
-        if ($get('formatting.i', legacyConfiguration)) {
-            legacyConfiguration.formatting.em = true;
+        if ($get('formatting.i', mergedConfig)) {
+            mergedConfig.formatting.em = true;
         }
 
-        return inlineEditorOptions ? merge(legacyConfiguration, inlineEditorOptions) : legacyConfiguration;
+        return mergedConfig;
     }
 
     isInlineEditable(nodeTypeName) {

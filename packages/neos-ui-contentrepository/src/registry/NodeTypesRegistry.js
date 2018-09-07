@@ -1,4 +1,5 @@
 import {map} from 'ramda';
+import merge from 'lodash.merge';
 import {$get, $transform} from 'plow-js';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import getNormalizedDeepStructureFromNodeType from './getNormalizedDeepStructureFromNodeType';
@@ -209,14 +210,14 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
 
         const inlineEditorOptions = $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType);
 
-        if (inlineEditorOptions) {
-            return inlineEditorOptions;
-        }
-
         // OLD variant of configuration
         const legacyConfiguration = $get(['properties', propertyName, 'ui', 'aloha'], nodeType);
 
-        const convertedLegacyFormatting = [].concat(
+        if (inlineEditorOptions && !legacyConfiguration) {
+            return inlineEditorOptions;
+        }
+
+        legacyConfiguration.formatting = [].concat(
             ...['format', 'link', 'list', 'table', 'alignment']
                 .map(configurationKey => (legacyConfiguration && legacyConfiguration[configurationKey]) || [])
         ).reduce((acc, item) => {
@@ -224,14 +225,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return acc;
         }, {});
 
-        return {
-            formatting: convertedLegacyFormatting,
-            placeholder: $get('placeholder', legacyConfiguration),
-            autoparagraph: $get('autoparagraph', legacyConfiguration)
-        };
-        //
-        // TODO: Add documentation for this node type configuration, once it can be considered to be public API
-        //
+        return inlineEditorOptions ? merge(legacyConfiguration, inlineEditorOptions) : legacyConfiguration;
     }
 
     isInlineEditable(nodeTypeName) {

@@ -38,7 +38,8 @@ class Version20180907103800 extends AbstractMigration
                     if (isset($nodeType['properties'])) {
                         foreach ($nodeType['properties'] as &$propertyConfiguration) {
                             if (isset($propertyConfiguration['ui']['aloha'])) {
-                                $propertyConfiguration['ui']['inline']['editorOptions'] = $this->transformAlohaFormat($propertyConfiguration['ui']['aloha']);
+                                $editorOptions = $this->transformAlohaFormat($propertyConfiguration['ui']['aloha']);
+                                $propertyConfiguration['ui']['inline']['editorOptions'] = isset($propertyConfiguration['ui']['inline']['editorOptions']) ? array_merge_recursive($propertyConfiguration['ui']['inline']['editorOptions'], $editorOptions) : $editorOptions;
                                 unset($propertyConfiguration['ui']['aloha']);
                             }
                         }

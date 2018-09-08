@@ -46,7 +46,9 @@ export default class LinkInput extends PureComponent {
             anchor: PropTypes.bool,
             title: PropTypes.bool,
             targetBlank: PropTypes.bool,
-            relNofollow: PropTypes.bool
+            relNofollow: PropTypes.bool,
+            assets: PropTypes.bool,
+            nodes: PropTypes.bool
         }),
         setFocus: PropTypes.bool,
         onLinkChange: PropTypes.func.isRequired,
@@ -76,6 +78,8 @@ export default class LinkInput extends PureComponent {
     getDataLoaderOptions() {
         return {
             nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
+            asset: $get('options.assets', this.props) || true,
+            node: $get('options.nodes', this.props) || true,
             contextForNodeLinking: this.props.contextForNodeLinking.toJS()
         };
     }

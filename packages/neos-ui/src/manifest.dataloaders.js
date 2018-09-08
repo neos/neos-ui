@@ -50,6 +50,8 @@ manifest('main.dataloaders', {}, globalRegistry => {
             OPTIONS:
                 - contextForNodeLinking: the current value of "selectors.UI.NodeLinking.contextForNodeLinking", required.
                 - nodeTypes: an array of node type names; if set, the search is restricted to these node types.
+                - asset: asset === false would disable searching for assets.
+                - node: node === false would disable searching for nodes.
         `,
 
         _lru() {
@@ -325,7 +327,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
 
         search(options, searchTerm) {
             return Promise.all(this.dataLoaders().map(dataLoaderInfo =>
-                dataLoaderInfo.dataLoader.search(options, searchTerm)
+                options[dataLoaderInfo.prefix] === false ? [] : dataLoaderInfo.dataLoader.search(options, searchTerm)
             )).then(values => {
                 return values.reduce((runningValues, singleDataLoaderValues) =>
                     runningValues.concat(singleDataLoaderValues)

@@ -90,7 +90,7 @@ export default class LinkButton extends PureComponent {
                 {this.isOpen() ? (
                     <div className={style.linkButton__flyout}>
                         <LinkInput
-                            editorOptions={inlineEditorOptions}
+                            options={$get('linking', inlineEditorOptions)}
                             linkValue={this.getLinkValue()}
                             linkTitleValue={this.getLinkTitleValue()}
                             linkRelValue={this.getLinkRelValue()}

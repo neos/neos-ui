@@ -22,7 +22,7 @@ class LinkEditor extends PureComponent {
             <LinkInput
                 linkValue={value}
                 onLinkChange={this.props.commit}
-                editorOptions={options}
+                options={options}
                 />
         );
     }

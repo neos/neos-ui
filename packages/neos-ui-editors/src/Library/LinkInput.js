@@ -39,16 +39,14 @@ export default class LinkInput extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
         linkValue: PropTypes.string,
-        editorOptions: PropTypes.shape({
+        options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string,
             disabled: PropTypes.bool,
-            linking: PropTypes.shape({
-                anchor: PropTypes.bool,
-                title: PropTypes.bool,
-                targetBlank: PropTypes.bool,
-                relNofollow: PropTypes.bool
-            })
+            anchor: PropTypes.bool,
+            title: PropTypes.bool,
+            targetBlank: PropTypes.bool,
+            relNofollow: PropTypes.bool
         }),
         setFocus: PropTypes.bool,
         onLinkChange: PropTypes.func.isRequired,
@@ -77,7 +75,7 @@ export default class LinkInput extends PureComponent {
 
     getDataLoaderOptions() {
         return {
-            nodeTypes: $get('editorOptions.nodeTypes', this.props) || ['Neos.Neos:Document'],
+            nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
             contextForNodeLinking: this.props.contextForNodeLinking.toJS()
         };
     }
@@ -219,7 +217,7 @@ export default class LinkInput extends PureComponent {
                     value={''}
                     plainInputMode={isUri(this.state.searchTerm)}
                     onValueChange={this.handleValueChange}
-                    placeholder={this.props.i18nRegistry.translate($get('editorOptions.placeholder', this.props) || 'Neos.Neos.Ui:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
+                    placeholder={this.props.i18nRegistry.translate($get('options.placeholder', this.props) || 'Neos.Neos.Ui:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
                     setFocus={this.props.setFocus}
@@ -291,7 +289,7 @@ export default class LinkInput extends PureComponent {
     renderOptionsPanel() {
         return (
             <div className={style.linkInput__optionsPanel}>
-                {$get('linking.anchor', this.props.editorOptions) && (
+                {$get('anchor', this.props.options) && (
                     <div className={style.linkInput__optionsPanelItem}>
                         <label className={style.linkInput__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">
                             {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__anchor', 'Link to anchor')}
@@ -307,7 +305,7 @@ export default class LinkInput extends PureComponent {
                             />
                         </div>
                     </div>)}
-                {$get('linking.title', this.props.editorOptions) && (
+                {$get('title', this.props.options) && (
                     <div className={style.linkInput__optionsPanelItem}>
                         <label className={style.linkInput__optionsPanelLabel} htmlFor="__neos__linkEditor--title">
                             {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__title', 'Title')}
@@ -324,7 +322,7 @@ export default class LinkInput extends PureComponent {
                         </div>
                     </div>)}
                 <div className={style.linkInput__optionsPanelDouble}>
-                    {$get('linking.targetBlank', this.props.editorOptions) && (
+                    {$get('targetBlank', this.props.options) && (
                         <div className={style.linkInput__optionsPanelItem}>
                             <label>
                                 <CheckBox
@@ -333,7 +331,7 @@ export default class LinkInput extends PureComponent {
                                 /> {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
                             </label>
                         </div>)}
-                    {$get('linking.relNofollow', this.props.editorOptions) && (
+                    {$get('relNofollow', this.props.options) && (
                         <div className={style.linkInput__optionsPanelItem}>
                             <label>
                                 <CheckBox
@@ -348,12 +346,12 @@ export default class LinkInput extends PureComponent {
     }
 
     render() {
-        const linkingOptions = $get('linking', this.props.editorOptions);
+        const linkingOptions = $get('linking', this.props.options);
         const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
         return (
             <div>
                 <div className={style.linkInput__wrap}>
-                    {this.state.isEditMode && !$get('editorOptions.disabled', this.props) ? this.renderEditMode() : this.renderViewMode()}
+                    {this.state.isEditMode && !$get('options.disabled', this.props) ? this.renderEditMode() : this.renderViewMode()}
                     {optionsPanelEnabled && (
                         <IconButton
                             onClick={this.handleToggleOptionsPanel}

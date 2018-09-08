@@ -20,7 +20,7 @@ const StringLength = (value, validatorOptions) => {
         return 'The minimum StringLength can not be less than zero';
     }
 
-    const stringLength = value.toString().length;
+    const stringLength = (value !== undefined && value !== null && value.toString) ? value.toString().length : 0;
     if (stringLength < minimum || stringLength > maximum) {
         if (minimum > 0 && maximum < 10000) {
             return <I18n id="content.inspector.validators.stringLength.outOfBounds" params={{minimum, maximum}}/>;

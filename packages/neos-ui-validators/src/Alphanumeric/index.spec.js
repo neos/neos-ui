@@ -20,6 +20,8 @@ test('"ab c" should not be alphanumeric', () => {
     expect(alphanumericValidator('ab c')).not.toBe(null);
 });
 
-test('empty value should be valid', () => {
+test('emptyish should pass', () => {
+    expect(alphanumericValidator(null)).toBe(null);
+    expect(alphanumericValidator(undefined)).toBe(null);
     expect(alphanumericValidator('')).toBe(null);
 });

@@ -1,6 +1,8 @@
 import labelValidator from './index';
 
-test('empty value should be valid', () => {
+test('emptyish should pass', () => {
+    expect(labelValidator(null)).toBe(null);
+    expect(labelValidator(undefined)).toBe(null);
     expect(labelValidator('')).toBe(null);
 });
 

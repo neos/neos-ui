@@ -15,7 +15,7 @@
   ],
   "testEnvironment": "node",
   "testMatch": [
-    "./src/**/?(*.)spec.js"
+    "**/src/**/?(*.)spec.js"
   ],
   "transform": {
     "^.+\\.js$": "babel-jest"

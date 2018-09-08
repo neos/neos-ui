@@ -108,6 +108,8 @@ test('"email@domain..com" should not be a valid email adress', () => {
     expect(emailAddressValidator('email@domain..com')).not.toBe(null);
 });
 
-test('empty value should be valid', () => {
+test('emptyish should pass', () => {
+    expect(emailAddressValidator(null)).toBe(null);
+    expect(emailAddressValidator(undefined)).toBe(null);
     expect(emailAddressValidator('')).toBe(null);
 });

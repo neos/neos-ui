@@ -78,8 +78,8 @@ export default class LinkInput extends PureComponent {
     getDataLoaderOptions() {
         return {
             nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
-            asset: $get('options.assets', this.props) || true,
-            node: $get('options.nodes', this.props) || true,
+            asset: $get('options.assets', this.props),
+            node: $get('options.nodes', this.props),
             contextForNodeLinking: this.props.contextForNodeLinking.toJS()
         };
     }

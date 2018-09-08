@@ -199,7 +199,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
      * Inline Editor Configuration looks as follows:
      *
      * formatting: // what formatting is enabled / disabled
-     *   b: true
+     *   strong: true
      *   a: true
      *   MyFormattingRule: {Configuration Object if needed}
      * placeholder: "Placeholder text"
@@ -207,6 +207,12 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
      */
     getInlineEditorOptionsForProperty(nodeTypeName, propertyName) {
         const nodeType = this.get(nodeTypeName);
+
+        const defautlInlineEditorOptions = {
+            formatting: {},
+            placeholder: '',
+            autoparagraph: false
+        };
 
         const inlineEditorOptions = $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType) || {};
 
@@ -221,7 +227,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return acc;
         }, {});
 
-        const mergedConfig = merge(legacyConfiguration, inlineEditorOptions);
+        const mergedConfig = merge(defautlInlineEditorOptions, legacyConfiguration, inlineEditorOptions);
 
         if ($get('formatting.b', mergedConfig)) {
             mergedConfig.formatting.strong = true;

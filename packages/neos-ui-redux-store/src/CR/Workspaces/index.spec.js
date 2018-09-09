@@ -8,7 +8,9 @@ test(`should export actionTypes`, () => {
     expect(actionTypes).not.toBe(undefined);
     expect(typeof (actionTypes.UPDATE)).toBe('string');
     expect(typeof (actionTypes.PUBLISH)).toBe('string');
-    expect(typeof (actionTypes.DISCARD)).toBe('string');
+    expect(typeof (actionTypes.COMMENCE_DISCARD)).toBe('string');
+    expect(typeof (actionTypes.DISCARD_ABORTED)).toBe('string');
+    expect(typeof (actionTypes.DISCARD_CONFIRMED)).toBe('string');
     expect(typeof (actionTypes.CHANGE_BASE_WORKSPACE)).toBe('string');
 });
 
@@ -16,7 +18,9 @@ test(`should export action creators`, () => {
     expect(actions).not.toBe(undefined);
     expect(typeof (actions.update)).toBe('function');
     expect(typeof (actions.publish)).toBe('function');
-    expect(typeof (actions.discard)).toBe('function');
+    expect(typeof (actions.commenceDiscard)).toBe('function');
+    expect(typeof (actions.abortDiscard)).toBe('function');
+    expect(typeof (actions.confirmDiscard)).toBe('function');
     expect(typeof (actions.changeBaseWorkspace)).toBe('function');
 });
 

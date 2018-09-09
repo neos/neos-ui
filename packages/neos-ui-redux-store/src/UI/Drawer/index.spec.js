@@ -32,15 +32,6 @@ test(`The reducer should return an Immutable.Map as the initial state.`, () => {
     expect(nextState.get('ui').get('drawer') instanceof Map).toBe(true);
 });
 
-test(`The reducer should initially mark the drawer container as hidden.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
-    });
-
-    expect(nextState.get('ui').get('drawer').get('isHidden')).toBe(true);
-});
-
 test(`The "toggle" action should be able to reverse the value of the "isHidden" key.`, () => {
     const state = Immutable.fromJS({
         ui: {

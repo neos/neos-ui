@@ -202,6 +202,7 @@ const mapper = icon => {
         'ra': 'fab fa-rebel',
         'refresh': 'fas fa-sync',
         'remove': 'fas fa-times',
+        'remove-sign': 'fas fa-ban',
         'reorder': 'fas fa-bars',
         'repeat': 'fas fa-redo',
         'resistance': 'fab fa-rebel',

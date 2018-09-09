@@ -25,6 +25,7 @@ exports[`<Icon/> should render correctly. 1`] = `
   size={null}
   spin={false}
   symbol={false}
+  title=""
   transform={null}
 />
 `;

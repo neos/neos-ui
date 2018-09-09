@@ -26,6 +26,8 @@ class Panel extends PureComponent {
         }).isRequired/* eslint-enable quote-props */
     }
 
+    static displayName = 'Panel';
+
     render() {
         const {theme, children} = this.props;
         return (

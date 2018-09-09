@@ -1,3 +1,77 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SelectBox/> should render correctly. 1`] = `undefined`;
+exports[`<SelectBox/> should render correctly. 1`] = `
+<Component
+  isOpen={false}
+  onClose={[Function]}
+  onToggle={[Function]}
+>
+  <Component
+    className=""
+    shouldKeepFocusState={false}
+    showDropDownToggle={false}
+  >
+    <Component
+      DropDown={[Function]}
+      ListPreviewElement={[Function]}
+      SelectBox_Header={[Function]}
+      SelectBox_HeaderWithSearchInput={[Function]}
+      SelectBox_ListPreview={[Function]}
+      noMatchesFoundLabel="noMatchesFoundLabel"
+      onReset={[Function]}
+      onValueChange={[MockFunction]}
+      optionValueField="value"
+      options={Array []}
+      scrollable={true}
+      searchBoxLeftToTypeLabel="searchBoxLeftToTypeLabel"
+      showDropDownToggle={true}
+      showResetButton={false}
+      theme={
+        Object {
+          "selectBoxHeader": "selectBoxHeaderClassName",
+          "wrapper": "wrapperClassName",
+          "wrapper--highlight": "wrapperHighlightClassName",
+        }
+      }
+      threshold={2}
+      withoutGroupLabel="Without group"
+    />
+  </Component>
+  <Component
+    scrollable={true}
+  >
+    <ul>
+      <Component
+        DropDown={[Function]}
+        ListPreviewElement={[Function]}
+        SelectBox_Header={[Function]}
+        SelectBox_HeaderWithSearchInput={[Function]}
+        SelectBox_ListPreview={[Function]}
+        focusedValue=""
+        noMatchesFound={true}
+        noMatchesFoundLabel="noMatchesFoundLabel"
+        onChange={[Function]}
+        onOptionFocus={[Function]}
+        onValueChange={[MockFunction]}
+        optionValueAccessor={[Function]}
+        optionValueField="value"
+        options={Array []}
+        scrollable={true}
+        searchBoxLeftToTypeLabel="searchBoxLeftToTypeLabel"
+        searchTerm=""
+        searchTermLeftToType={0}
+        showDropDownToggle={true}
+        theme={
+          Object {
+            "selectBoxHeader": "selectBoxHeaderClassName",
+            "wrapper": "wrapperClassName",
+            "wrapper--highlight": "wrapperHighlightClassName",
+          }
+        }
+        threshold={2}
+        withoutGroupLabel="Without group"
+      />
+    </ul>
+  </Component>
+</Component>
+`;

@@ -1,8 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Icon/> should render correctly. 1`] = `
-<i
-  className=""
-  role="img"
+<FontAwesomeIcon
+  _makeGetClassName={[Function]}
+  _makeValidateId={[Function]}
+  border={false}
+  className="fooIconClassName"
+  fixedWidth={false}
+  flip={null}
+  icon={
+    Array [
+      "fas",
+      "fooIconClassName",
+    ]
+  }
+  iconMap={Object {}}
+  inverse={false}
+  listItem={false}
+  mask={null}
+  onDeprecate={[Function]}
+  pull={null}
+  pulse={false}
+  rotation={null}
+  size={null}
+  spin={false}
+  symbol={false}
+  transform={null}
 />
 `;

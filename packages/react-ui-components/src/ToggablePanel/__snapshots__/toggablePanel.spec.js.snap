@@ -6,6 +6,12 @@ exports[`<Contents/> should render correctly. 1`] = `
   isOpened={false}
   keepCollapsedContent={false}
   onHeightReady={[Function]}
+  springConfig={
+    Object {
+      "damping": 30,
+      "stiffness": 300,
+    }
+  }
   style={Object {}}
 >
   <div
@@ -23,14 +29,14 @@ exports[`<Header/> should render correctly. 1`] = `
 >
   <Component
     className="panelHeadlineClassName"
-    type="h1"
+    type="h2"
   >
     Foo children
   </Component>
   <Component
     className="panelToggleBtnClassName"
     icon="closed-icon-prop"
-    onClick={[Function]}
+    onClick={[MockFunction]}
   />
 </div>
 `;

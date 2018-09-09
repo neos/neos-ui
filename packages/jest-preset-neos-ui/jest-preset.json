@@ -18,9 +18,18 @@
     "**/src/**/?(*.)spec.js"
   ],
   "transform": {
-    "^.+\\.js$": "babel-jest"
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.tsx?$": "ts-jest"
   },
   "moduleNameMapper": {
     "\\.css$": "identity-obj-proxy"
-  }
+  },
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ]
 }

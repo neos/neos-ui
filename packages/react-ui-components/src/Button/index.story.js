@@ -26,7 +26,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Clean')}</span>
                     </Button>
                     <Button
@@ -40,7 +40,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Brand')}</span>
                     </Button>
                     <Button
@@ -54,7 +54,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
@@ -68,7 +68,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Transparent')}</span>
                     </Button>
                 </div>
@@ -86,7 +86,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Clean')}</span>
                     </Button>
                     <Button
@@ -101,7 +101,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Brand')}</span>
                     </Button>
                     <Button
@@ -116,7 +116,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
@@ -131,7 +131,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Transparent')}</span>
                     </Button>
                 </div>
@@ -149,7 +149,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Clean')}</span>
                     </Button>
                     <Button
@@ -164,7 +164,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Brand')}</span>
                     </Button>
                     <Button
@@ -179,7 +179,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
@@ -194,7 +194,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Transparent')}</span>
                     </Button>
                 </div>
@@ -212,7 +212,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Clean')}</span>
                     </Button>
                     <Button
@@ -227,7 +227,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Brand')}</span>
                     </Button>
                     <Button
@@ -242,7 +242,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
@@ -257,7 +257,7 @@ storiesOf('Button', module)
                         isActive={boolean('Active', false)}
                         isDisabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
-                        >
+                    >
                         <span>{text('Label', 'Button Transparent')}</span>
                     </Button>
                 </div>

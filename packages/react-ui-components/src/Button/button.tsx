@@ -1,0 +1,138 @@
+import mergeClassNames from 'classnames';
+import React from 'react';
+import {makeFocusNode} from '../_lib/focusNode';
+
+export type ButtonStyle = 'clean' | 'brand' | 'lighter' | 'transparent' | 'warn';
+export type ButtonHoverStyle = 'clean' | 'brand' | 'darken' | 'warn';
+export type ButtonSize = 'small' | 'regular';
+
+interface IButtonTheme {
+    readonly 'btn': string;
+    readonly 'btn--clean': string;
+    readonly 'btn--lighter': string;
+    readonly 'btn--transparent': string;
+    readonly 'btn--brand': string;
+    readonly 'btn--brandHover': string;
+    readonly 'btn--cleanHover': string;
+    readonly 'btn--isPressed': string;
+    readonly 'btn--darkenHover': string;
+    readonly [key: string]: string; // TODO: this should be removed and be replaced with the actual css class override
+}
+
+type Diff<T, U> = T extends U ? never : T;
+type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
+// We omit the standard HTML button style attribute,
+// so we have no collision with the Button component's style property,
+// while still enjoying the intellisense and type checking for the rest of the HTML button attributes
+type HTMLButtonElementWithoutStyle = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'style'>;
+
+// own props and (optional) HTML button attributes except 'style'
+export interface IButtonProps extends HTMLButtonElementWithoutStyle {
+    /**
+     * This prop controls the visual pressed state of the `Button`.
+     */
+    readonly isPressed?: boolean;
+
+    /**
+     * This prop controls the visual focused state of the `Button`.
+     * When `true`, the node gets focused via the DOM API.
+     */
+    readonly isFocused?: boolean;
+
+    /**
+     * This prop controls the visual and interactive disabled state of the `Button`.
+     * When `true`, the node gets rendered with a truthy `disabled` prop.
+     */
+    readonly isDisabled?: boolean;
+
+    /**
+     * This prop controls the visual active state of the `Button`.
+     */
+    readonly isActive?: boolean;
+
+    /**
+     * The `kind` prop defines the regular visual style of the `Button`.
+     */
+    readonly style?: ButtonStyle;
+
+    /**
+     * As the `style` prop, this prop controls the visual :hover style of the `Button`.
+     */
+    readonly hoverStyle?: ButtonHoverStyle;
+
+    /**
+     * Defines the size of the button.
+     */
+    readonly size: ButtonSize;
+
+    /**
+     * An optional `className` to attach to the wrapper.
+     */
+    readonly className?: string;
+
+    /**
+     * The contents to be rendered within the `Bar`.
+     */
+    readonly children: React.ReactNode;
+
+    /**
+     * An optional css theme to be injected.
+     */
+    readonly theme?: IButtonTheme;
+
+    /**
+     * An interal prop for testing purposes, do not set this prop manually.
+     */
+    readonly _refHandler?: (isFocused: boolean) => (node: any) => void;
+}
+
+class Button extends React.PureComponent<IButtonProps> {
+    public static readonly defaultProps: Partial<IButtonProps> = {
+        _refHandler: makeFocusNode,
+        hoverStyle: 'brand',
+        isActive: false,
+        isDisabled: false,
+        isFocused: false,
+        size: 'regular',
+        type: 'button',
+    };
+
+    public render(): JSX.Element {
+        const {
+            children,
+            className,
+            isPressed,
+            isFocused,
+            isDisabled,
+            isActive,
+            style,
+            hoverStyle,
+            size,
+            theme,
+            type,
+            _refHandler,
+            ...rest
+        } = this.props;
+        const effectiveStyle = isActive ? 'brand' : style;
+        const effectiveHoverStyle = isActive ? 'brand' : hoverStyle;
+        const finalClassName = mergeClassNames(
+            theme!.btn,
+            theme![`btn--size-${size}`],
+            theme![`btn--${effectiveStyle!}`],
+            theme![`btn--${effectiveHoverStyle!}Hover`],
+            {
+                [theme!['btn--brandActive']]: isActive,
+                [theme!['btn--isPressed']]: isPressed,
+            },
+            className,
+        );
+
+        return (
+            <button {...rest} disabled={isDisabled} type={type} className={finalClassName} role="button" ref={_refHandler && _refHandler(isFocused!)}>
+                {children}
+            </button>
+        );
+    }
+}
+
+export default Button;

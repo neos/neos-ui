@@ -10,8 +10,8 @@ const ThemedIconButtonDropDown = themr(identifiers.iconButtonDropDown, style)(Ic
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps';
-import Icon from './../Icon/index';
-import Button from './../Button/index';
+import Icon from './../Icon';
+import Button from './../Button';
 
 export default injectProps({
     IconComponent: Icon,

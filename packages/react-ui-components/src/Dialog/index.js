@@ -9,7 +9,7 @@ const ThemedDialog = themr(identifiers.dialog, style)(Dialog);
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps';
-import IconButton from './../IconButton/index';
+import IconButton from './../IconButton';
 
 export default injectProps({
     IconButtonComponent: IconButton

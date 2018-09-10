@@ -3,7 +3,7 @@ import {storiesOf, action} from '@storybook/react';
 import {withKnobs, text} from '@storybook/addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils';
 import SelectBox from '.';
-import DropDown from './../DropDown/index';
+import DropDown from './../DropDown';
 
 const optionsWithoutGroups = [
     {value: 'opt1', label: 'Option 1', icon: 'bookmark'},

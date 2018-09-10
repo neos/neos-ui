@@ -3,7 +3,7 @@ import {storiesOf, action} from '@storybook/react';
 import {withKnobs} from '@storybook/addon-knobs';
 import {StoryWrapper} from './../_lib/storyUtils';
 import ButtonGroup from '.';
-import IconButton from './../IconButton/index';
+import IconButton from './../IconButton';
 
 storiesOf('ButtonGroup', module)
     .addDecorator(withKnobs)

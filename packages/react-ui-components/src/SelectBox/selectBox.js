@@ -2,7 +2,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
-import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 import mergeClassNames from 'classnames';
 import isEqual from 'lodash.isequal';
 

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import ListPreviewElement from '../ListPreviewElement/index';
+import ListPreviewElement from '../ListPreviewElement';
 import mergeClassNames from 'classnames';
 
 class SelectBox_Option_SingleLine extends PureComponent {

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 
 /**
  * **SelectBox_ListPreview is an internal implementation detail of SelectBox**, meant to improve code quality.

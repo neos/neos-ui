@@ -9,7 +9,7 @@ const ThemedListPreviewElement = themr(identifiers.listPreviewElement, style)(Li
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps';
-import Icon from './../Icon/index';
+import Icon from './../Icon';
 
 export default injectProps({
     Icon

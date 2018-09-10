@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
-import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 
 class MultiSelectBox extends PureComponent {
     static propTypes = {

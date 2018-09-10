@@ -2,7 +2,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import injectProps from './../_lib/injectProps';
-import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement/index';
+import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement';
 
 const ensureIsArray = v => {
     if (Array.isArray(v)) {

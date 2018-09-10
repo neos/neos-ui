@@ -11,9 +11,9 @@ const ThemedSelectBox_HeaderWithSearchInput = themr(identifiers.selectBox_Header
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps';
-import Icon from './../Icon/index';
-import TextInput from './../TextInput/index';
-import IconButton from './../IconButton/index';
+import Icon from './../Icon';
+import TextInput from './../TextInput';
+import IconButton from './../IconButton';
 
 export default injectProps({
     Icon,

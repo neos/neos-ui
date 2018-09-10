@@ -10,10 +10,10 @@ const ThemedMultiSelectBox = themr(identifiers.multiSelectBox, style)(MultiSelec
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps';
-import SelectBox from './../SelectBox/index';
-import MultiSelectBox_ListPreviewSortable from './../MultiSelectBox_ListPreviewSortable/index';
-import Icon from './../Icon/index';
-import IconButton from './../IconButton/index';
+import SelectBox from './../SelectBox';
+import MultiSelectBox_ListPreviewSortable from './../MultiSelectBox_ListPreviewSortable';
+import Icon from './../Icon';
+import IconButton from './../IconButton';
 
 export default injectProps({
     IconComponent: Icon,

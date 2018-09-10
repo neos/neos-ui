@@ -11,8 +11,8 @@ const ThemedSelectBox_Header = themr(identifiers.selectBox_Header, style)(Select
 // Dependency injection
 //
 import injectProps from './../_lib/injectProps';
-import Icon from './../Icon/index';
-import IconButton from './../IconButton/index';
+import Icon from './../Icon';
+import IconButton from './../IconButton';
 
 export default injectProps({
     Icon,

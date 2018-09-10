@@ -4,7 +4,7 @@ import SelectBox_ListPreview from './selectBox_ListPreview';
 //
 // Dependency injection
 //
-import injectProps from './../_lib/injectProps.js';
+import injectProps from './../_lib/injectProps';
 import SelectBox_CreateNew from './../SelectBox_CreateNew/index';
 import SelectBox_ListPreviewFlat from './../SelectBox_ListPreviewFlat/index';
 import SelectBox_ListPreviewGrouped from './../SelectBox_ListPreviewGrouped/index';

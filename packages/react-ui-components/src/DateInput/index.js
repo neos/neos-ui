@@ -1,5 +1,5 @@
 import {themr} from '@friendsofreactjs/react-css-themr';
-import identifiers from './../identifiers';
+import identifiers from '../identifiers';
 import style from './style.css';
 import DateInput from './dateInput';
 
@@ -8,7 +8,7 @@ const ThemedDateInput = themr(identifiers.dateInput, style)(DateInput);
 //
 // Dependency injection
 //
-import injectProps from './../_lib/injectProps.js';
+import injectProps from './../_lib/injectProps';
 import Button from './../Button/index';
 import Icon from './../Icon/index';
 import DatePicker from 'react-datetime';

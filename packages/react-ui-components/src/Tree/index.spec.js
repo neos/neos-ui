@@ -1,4 +1,4 @@
-import Tree from './index.js';
+import Tree from '.';
 
 describe('<Tree/> (entry point)', () => {
     it('should export a Component.', () => {

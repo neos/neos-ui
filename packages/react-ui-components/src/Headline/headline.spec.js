@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Headline from './headline.js';
+import Headline from './headline';
 
 describe('<Headline/>', () => {
     let props;

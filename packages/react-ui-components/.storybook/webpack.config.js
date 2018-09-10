@@ -15,6 +15,13 @@ module.exports = (storybookBaseConfig, configType) => {
         module: {
             rules: [
                 {
+                    test: /\.tsx?$/,
+                    exclude: /(node_modules)/,
+                    use: [{
+                        loader: 'awesome-typescript-loader'
+                    }]
+                },
+                {
                     test: /\.js$/,
                     exclude: /(node_modules)/,
                     use: [{
@@ -58,6 +65,10 @@ module.exports = (storybookBaseConfig, configType) => {
                     }]
                 }
             ]
-        }
+        },
+
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js']
+        },
     });
 };

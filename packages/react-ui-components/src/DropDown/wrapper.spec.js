@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {DropDownWrapper} from './wrapper.js';
+import {DropDownWrapper} from './wrapper';
 
 describe('<DropDownWrapper/>', () => {
     let props;

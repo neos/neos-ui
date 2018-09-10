@@ -1,9 +1,9 @@
 import React from 'react';
 import {storiesOf, action} from '@storybook/react';
 import {withKnobs, text} from '@storybook/addon-knobs';
-import {StoryWrapper} from './../_lib/storyUtils.js';
-import SelectBox from './index.js';
-import DropDown from './../DropDown/index.js';
+import {StoryWrapper} from './../_lib/storyUtils';
+import SelectBox from '.';
+import DropDown from './../DropDown/index';
 
 const optionsWithoutGroups = [
     {value: 'opt1', label: 'Option 1', icon: 'bookmark'},

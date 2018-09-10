@@ -1,4 +1,4 @@
-import CheckBox from './index.js';
+import CheckBox from '.';
 
 describe('<CheckBox/> (entry point)', () => {
     it('should export a Component.', () => {

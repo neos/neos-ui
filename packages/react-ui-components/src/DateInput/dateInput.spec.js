@@ -2,8 +2,8 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import moment from 'moment';
-import {createStubComponent} from './../_lib/testUtils.js';
-import {DateInput} from './dateInput.js';
+import {createStubComponent} from './../_lib/testUtils';
+import {DateInput} from './dateInput';
 
 describe('<DateInput/>', () => {
     let props;

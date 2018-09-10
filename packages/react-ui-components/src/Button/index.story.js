@@ -1,8 +1,8 @@
 import React from 'react';
 import {storiesOf, action} from '@storybook/react';
 import {withKnobs, text, boolean, select} from '@storybook/addon-knobs';
-import {StoryWrapper} from './../_lib/storyUtils.js';
-import Button from './index.js';
+import {StoryWrapper} from './../_lib/storyUtils';
+import Button from '.';
 
 const validSizes = ['small', 'regular'];
 

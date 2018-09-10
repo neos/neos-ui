@@ -1,4 +1,4 @@
-import TextInput from './index.js';
+import TextInput from '.';
 
 describe('<TextInput/> (entry point)', () => {
     it('should export a Component.', () => {

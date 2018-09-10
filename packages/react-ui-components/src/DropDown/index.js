@@ -1,11 +1,11 @@
 import {themr} from '@friendsofreactjs/react-css-themr';
-import identifiers from './../identifiers';
+import identifiers from '../identifiers';
 import style from './style.css';
 import ContextDropDownWrapper, {
     StatelessDropDownWrapper,
     ContextDropDownHeader,
     ContextDropDownContents
-} from './wrapper.js';
+} from './wrapper';
 
 const DropDown = themr(identifiers.dropDown, style)(ContextDropDownWrapper);
 const StatelessDropDown = themr(identifiers.dropDown, style)(StatelessDropDownWrapper);
@@ -15,7 +15,7 @@ const DropDownContents = themr(identifiers.dropDownContents, style)(ContextDropD
 //
 // Dependency injection
 //
-import injectProps from './../_lib/injectProps.js';
+import injectProps from './../_lib/injectProps';
 import Icon from './../Icon/index';
 
 DropDown.Header = injectProps({

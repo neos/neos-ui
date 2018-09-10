@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import injectProps from './../_lib/injectProps.js';
+import injectProps from './../_lib/injectProps';
 import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement/index';
 
 const ensureIsArray = v => {

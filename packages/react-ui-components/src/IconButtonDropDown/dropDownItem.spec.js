@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import DropDownItem from './dropDownItem.js';
+import DropDownItem from './dropDownItem';
 
 describe('<DropDownItem/>', () => {
     let props;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import CheckBox from './checkBox.js';
+import CheckBox from './checkBox';
 
 describe('<CheckBox/>', () => {
     let props;

@@ -1,9 +1,9 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils.js';
-import IconButtonDropDown from './iconButtonDropDown.js';
-import DropDownItem from './dropDownItem.js';
+import {createStubComponent} from './../_lib/testUtils';
+import IconButtonDropDown from './iconButtonDropDown';
+import DropDownItem from './dropDownItem';
 
 describe('<IconButtonDropDown/>', () => {
     let props;

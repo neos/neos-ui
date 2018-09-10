@@ -1,4 +1,4 @@
-import SelectBox from './index.js';
+import SelectBox from '.';
 
 describe('<SelectBox/> (entry point)', () => {
     it('should export a Component.', () => {

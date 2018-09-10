@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import DropDownItem from './dropDownItem.js';
+import DropDownItem from './dropDownItem';
 
 export default class IconButtonDropDown extends PureComponent {
     state = {

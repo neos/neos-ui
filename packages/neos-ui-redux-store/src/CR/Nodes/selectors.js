@@ -75,7 +75,10 @@ export const makeChildrenOfSelector = allowedNodeTypes => createSelector(
     ],
     (childNodeEnvelopes, nodesByContextPath) => (childNodeEnvelopes || [])
     .filter(
-        childNodeEnvelope => allowedNodeTypes.includes($get('nodeType', childNodeEnvelope))
+        childNodeEnvelope => {
+            const nodeType = $get('nodeType', childNodeEnvelope);
+            return allowedNodeTypes.includes(nodeType) || nodeType === 'Neos.Neos:FallbackNode';
+        }
     )
     .map(
         $get('contextPath')

@@ -7,7 +7,5 @@ exports[`<ShallowDropDownContents/> should render correctly. 1`] = `
   className="baseDropDownContentsClassName"
   onClick={[Function]}
   role="listbox"
->
-  Foo children
-</ul>
+/>
 `;

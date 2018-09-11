@@ -48,10 +48,11 @@ test('"/\\d/" should not match "a"', () => {
     expect(regularExpressionValidator('a', validatorOptions)).not.toBe(null);
 });
 
-test('empty value should be valid', () => {
+test('emptyish should pass', () => {
     const validatorOptions = {
         regularExpression: '/abc/'
     };
-
+    expect(regularExpressionValidator(null, validatorOptions)).toBe(null);
+    expect(regularExpressionValidator(undefined, validatorOptions)).toBe(null);
     expect(regularExpressionValidator('', validatorOptions)).toBe(null);
 });

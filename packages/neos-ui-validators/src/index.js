@@ -1,3 +1,4 @@
+import {$get} from 'plow-js';
 /**
  * Takes object of values and their configuration, and returns either null
  * or object filled with validation erros per element.
@@ -29,15 +30,13 @@ const validate = (values, elementConfigurations, validatorRegistry) => {
 
     const errors = {};
     let hasErrors = false;
-    Object.keys(values).forEach(elementName => {
-        if ((elementName in values) && (elementName in elementConfigurations)) {
-            const elementValue = values[elementName];
-            const elementConfiguration = elementConfigurations[elementName];
-            const elementErrors = validateElement(elementValue, elementConfiguration);
-            if (elementErrors && elementErrors.length > 0) {
-                hasErrors = true;
-                errors[elementName] = elementErrors;
-            }
+    Object.keys(elementConfigurations).forEach(elementName => {
+        const elementValue = $get(elementName, values);
+        const elementConfiguration = elementConfigurations[elementName];
+        const elementErrors = validateElement(elementValue, elementConfiguration);
+        if (elementErrors && elementErrors.length > 0) {
+            hasErrors = true;
+            errors[elementName] = elementErrors;
         }
     });
     return hasErrors ? errors : null;

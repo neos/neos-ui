@@ -7,7 +7,7 @@ import CloseOnEscape from 'react-close-on-escape';
 
 const validStyleKeys = ['wide', 'narrow'];
 
-class DialogWithoutEscape extends PureComponent {
+export class DialogWithoutEscape extends PureComponent {
     static propTypes = {
         /**
          * This prop controls the rendered state of the Dialog, when falsy, nothing gets rendered into the DOM.

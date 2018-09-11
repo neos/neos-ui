@@ -1,4 +1,4 @@
-import Label from './index.js';
+import Label from './index';
 
 describe('<Label/> (entry point)', () => {
     it('should export a Component.', () => {

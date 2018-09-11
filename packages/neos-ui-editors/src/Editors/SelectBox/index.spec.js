@@ -37,6 +37,7 @@ test(`SelectBox > single, no dataSource, no preselected value`, () => {
     );
 
     expect(dropdownHeader(component).text()).toBe('');
+    dropdownHeader(component).simulate('click');
     expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
 });
 
@@ -48,6 +49,7 @@ test(`SelectBox > single, no dataSource, preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
+    dropdownHeader(component).simulate('click');
     expect(dropdownHeader(component).text()).toBe('barLabel');
     expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
 });
@@ -63,6 +65,7 @@ test(`SelectBox > multi, no dataSource, no preselected value`, () => {
 
     );
 
+    dropdownHeader(component).simulate('click');
     expect(multiselectLabels(component)).toEqual([]);
     expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
@@ -79,6 +82,7 @@ test(`SelectBox > multi, no dataSource, preselected value`, () => {
 
     );
 
+    dropdownHeader(component).simulate('click');
     expect(multiselectLabels(component)).toEqual(['fooLabel']);
     expect(dropdownHeader(component).text()).toBe('');
     // Already selected values should not be in the list to choose anymore
@@ -108,6 +112,7 @@ test(`SelectBox > single, dataSource, no preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
+    dropdownHeader(component).simulate('click');
     expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
@@ -129,6 +134,7 @@ test(`SelectBox > single, dataSource, preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
+    dropdownHeader(component).simulate('click');
     expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
 
@@ -150,6 +156,7 @@ test(`SelectBox > multi, dataSource, no preselected value`, () => {
         </WrapWithMockGlobalRegistry>
     );
 
+    dropdownHeader(component).simulate('click');
     expect(multiselectLabels(component)).toEqual([]);
     expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);
@@ -175,6 +182,7 @@ test(`SelectBox > multi, dataSource, preselected value`, () => {
         </DragDropContextProvider>
     );
 
+    dropdownHeader(component).simulate('click');
     expect(multiselectLabels(component)).toEqual([]);
     expect(dropdownHeader(component).text()).toBe('');
     expect(dropdownElementLabels(component)).toEqual([]);

@@ -78,7 +78,7 @@ test(`validationErrorsSelector should return null, when there's no validator con
 
 test(`validationErrorsSelector should read the nodeType configuration for the currently focused node`, () => {
     const nodeTypesRegistry = {
-        get: jest.fn()
+        get: jest.fn().mockReturnValue({properties: {}})
     };
     const validatorRegistry = {
         get: () => () => null

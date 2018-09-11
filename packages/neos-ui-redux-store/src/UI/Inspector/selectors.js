@@ -39,7 +39,7 @@ const propertiesForValidationSelector = createSelector(
         transientValues,
         focusedNode
     ) => {
-        const propertiesForValidation = Object.assign({}, $get('properties', focusedNode));
+        const propertiesForValidation = $get('properties', focusedNode) || {};
         if (transientValues) {
             // Override values with transient values
             Object.keys(transientValues.toJS()).forEach(key => {

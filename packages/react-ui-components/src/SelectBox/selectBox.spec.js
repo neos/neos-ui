@@ -9,6 +9,10 @@ describe('<SelectBox/>', () => {
     let props;
 
     beforeEach(() => {
+        const DropDown = createStubComponent();
+        DropDown.Stateless = createStubComponent();
+        DropDown.Header = createStubComponent();
+        DropDown.Contents = createStubComponent();
         props = {
             theme: {
                 'wrapper': 'wrapperClassName',
@@ -19,7 +23,7 @@ describe('<SelectBox/>', () => {
             noMatchesFoundLabel: 'noMatchesFoundLabel',
             onValueChange: jest.fn(),
             options: [],
-            DropDown: createStubComponent(),
+            DropDown,
             SelectBox_Header: createStubComponent(),
             SelectBox_HeaderWithSearchInput: createStubComponent(),
             SelectBox_ListPreview: createStubComponent()

@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "babel-core": "^6.13.2",
-    "babel-jest": "^19.0.0",
-    "jest": "^19.0.2",
+    "babel-jest": "^23.4.2",
+    "jest": "^23.5.0",
     "raf": "^3.4.0"
   },
   "license": "GNU GPLv3"

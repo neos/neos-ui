@@ -43,7 +43,7 @@ interface IIconButtonProps {
     readonly disabled?: boolean;
 
     readonly style: ButtonStyle;
-    
+
     readonly hoverStyle: ButtonHoverStyle;
 }
 

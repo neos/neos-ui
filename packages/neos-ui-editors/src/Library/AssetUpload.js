@@ -111,6 +111,7 @@ export default class AssetUpload extends PureComponent {
                         ref={this.setDropzoneReference}
                         accept={accept}
                         onDropAccepted={multiple ? this.handleMultiUpload : this.handleUpload}
+                        onDropRejected={this.handleFileDialogCancel}
                         onFileDialogCancel={this.handleFileDialogCancel}
                         className={style.dropzone}
                         activeClassName={style['dropzone--isActive']}

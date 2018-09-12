@@ -48,7 +48,7 @@ interface IIconButtonProps {
 }
 
 class IconButton extends PureComponent<IIconButtonProps> {
-    public static readonly defaultProps: Partial<IIconButtonProps> = {
+    public static readonly defaultProps = {
         hoverStyle: 'brand',
         size: 'regular',
         style: 'transparent',

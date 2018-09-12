@@ -37,7 +37,7 @@ interface IHeadlineProps {
 }
 
 class Headline extends PureComponent<IHeadlineProps> {
-    public static readonly defaultProps: Partial<IHeadlineProps> = {
+    public static readonly defaultProps = {
         type: 'h1'
     };
 

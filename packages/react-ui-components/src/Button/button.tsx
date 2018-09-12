@@ -87,7 +87,7 @@ export interface IButtonProps extends HTMLButtonElementWithoutStyle {
 }
 
 class Button extends React.PureComponent<IButtonProps> {
-    public static readonly defaultProps: Partial<IButtonProps> = {
+    public static readonly defaultProps = {
         _refHandler: makeFocusNode,
         hoverStyle: 'brand',
         isActive: false,

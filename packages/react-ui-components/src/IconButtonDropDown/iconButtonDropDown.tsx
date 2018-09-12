@@ -102,7 +102,7 @@ export default class IconButtonDropDown extends PureComponent<IIconButtonDropDow
         };
     }
 
-    public static readonly defaultProps: Partial<IIconButtonDropDownProps> = {
+    public static readonly defaultProps = {
         directButtonProps: {},
         isDisabled: false,
         modeIcon: 'long-arrow-right',

@@ -57,6 +57,15 @@ export class DateInput extends PureComponent {
         timeOnly: PropTypes.bool,
 
         /**
+         * Add some constraints to the timepicker.
+         * It accepts an object with the format { hours: { min: 9, max: 15, step: 2 }},
+         * this example means the hours can't be lower than 9 and higher than 15,
+         * and it will change adding or subtracting 2 hours everytime the buttons are clicked.
+         * The constraints can be added to the hours, minutes, seconds and milliseconds.
+         */
+        timeConstraints: PropTypes.object,
+
+        /**
          * Locale for the date picker (determines time format)
          */
         locale: PropTypes.string,
@@ -91,7 +100,8 @@ export class DateInput extends PureComponent {
     };
 
     static defaultProps = {
-        labelFormat: 'DD-MM-YYYY hh:mm'
+        labelFormat: 'DD-MM-YYYY hh:mm',
+        timeConstraints: {minutes: {step: 5}}
     };
 
     render() {
@@ -189,6 +199,7 @@ export class DateInput extends PureComponent {
                         locale={locale}
                         timeFormat={!dateOnly}
                         onChange={this.handleChange}
+                        timeConstraints={this.props.timeConstraints}
                         />
                     <ButtonComponent
                         onClick={this.handleApply}

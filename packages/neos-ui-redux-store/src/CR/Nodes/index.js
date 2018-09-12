@@ -227,8 +227,8 @@ export const reducer = handleActions({
                 fusionPath: ''
             }),
             toBeRemoved: '',
-            clipboard: '',
-            clipboardMode: ''
+            clipboard: $get('cr.nodes.clipboard', state) || '',
+            clipboardMode: $get('cr.nodes.clipboardMode', state) || ''
         })
     ),
     [ADD]: ({nodeMap}) => $all(
@@ -341,7 +341,6 @@ export const reducer = handleActions({
         $set('cr.nodes.clipboard', contextPath),
         $set('cr.nodes.clipboardMode', 'Move')
     ),
-    [PASTE]: () => $set('cr.nodes.clipboard', ''),
     [HIDE]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], true),
     [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false),
     [UPDATE_URI]: ({oldUriFragment, newUriFragment}) => state => {

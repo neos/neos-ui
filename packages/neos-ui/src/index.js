@@ -17,6 +17,7 @@ import {handleActions} from '@neos-project/utils-redux';
 
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
+import serverStorageMiddleware from './serverStorageMiddleware';
 import Root from './Containers/Root';
 import apiExposureMap from './apiExposureMap';
 import DelegatingReducer from './DelegatingReducer';
@@ -29,7 +30,7 @@ const sagaMiddleWare = createSagaMiddleware();
 
 const delegatingReducer = new DelegatingReducer();
 const store = createStore(delegatingReducer.reducer(), new Map(), compose(
-    applyMiddleware(sagaMiddleWare, localStorageMiddleware),
+    applyMiddleware(sagaMiddleWare, localStorageMiddleware, serverStorageMiddleware),
     devToolsStoreEnhancer()
 ));
 

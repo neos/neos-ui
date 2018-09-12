@@ -108,6 +108,12 @@ class BackendServiceController extends ActionController
     protected $nodePolicyService;
 
     /**
+     * @Flow\Inject
+     * @var PersistedStateContainer
+     */
+    protected $persistedStateContainer;
+
+    /**
      * Set the controller context on the feedback collection after the controller
      * has been initialized
      *
@@ -325,6 +331,17 @@ class BackendServiceController extends ActionController
         }
 
         $this->view->assign('value', $this->feedbackCollection);
+    }
+
+    /**
+     * Persists the state
+     *
+     * @param array $state
+     * @return void
+     */
+    public function persistStateAction(array $state)
+    {
+        $this->persistedStateContainer->setState($state);
     }
 
     public function getWorkspaceInfoAction()

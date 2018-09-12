@@ -64,6 +64,21 @@ export default routes => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const persistState = state => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.persistState,
+
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            state
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfToken(() => ({
         url: `${routes.core.content.imageWithMetadata}?image=${imageVariantUuid}`,
 
@@ -377,6 +392,7 @@ export default routes => {
         publish,
         discard,
         changeBaseWorkspace,
+        persistState,
         createImageVariant,
         loadMasterPlugins,
         loadPluginViews,

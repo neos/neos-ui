@@ -71,6 +71,9 @@ backend = Neos.Fusion:Template {
                 changeBaseWorkspace = Neos.Fusion:UriBuilder {
                     action = 'changeBaseWorkspace'
                 }
+                persistState = Neos.Fusion:UriBuilder {
+                    action = 'persistState'
+                }
                 loadTree = Neos.Fusion:UriBuilder {
                     action = 'loadTree'
                 }
@@ -275,6 +278,7 @@ backend = Neos.Fusion:Template {
             documentNode = ${documentNode}
             site = ${site}
             user = ${user}
+            persistedState = ${persistedState}
         }
 
         @process.json = ${Json.stringify(value)}

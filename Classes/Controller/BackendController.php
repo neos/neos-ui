@@ -101,6 +101,13 @@ class BackendController extends ActionController
      */
     protected $styleAndJavascriptInclusionService;
 
+    /**
+     * @Flow\Inject
+     * @var PersistedStateContainer
+     */
+    protected $persistedStateContainer;
+
+
     public function initializeView(ViewInterface $view)
     {
         $view->setFusionPath('backend');
@@ -128,9 +135,12 @@ class BackendController extends ActionController
 
         $siteNode = $node->getContext()->getCurrentSiteNode();
 
+        $persistedState = $this->persistedStateContainer->getState();
+
         $this->view->assign('user', $user);
         $this->view->assign('documentNode', $node);
         $this->view->assign('site', $siteNode);
+        $this->view->assign('persistedState', $persistedState);
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));

@@ -136,6 +136,8 @@ Neos:
           nodes:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
             siteNode: '${q(site).property(''_contextPath'')}'
+            clipboard: '${persistedState.cr.nodes.clipboard || ""}'
+            clipboardMode: '${persistedState.cr.nodes.clipboardMode || ""}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
             active: '${documentNode.context.dimensions}'

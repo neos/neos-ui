@@ -31,6 +31,14 @@
   httpMethods: ['POST']
 
 -
+  name: 'Persist state'
+  uriPattern: 'persist-state'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'persistState'
+  httpMethods: ['POST']
+
+-
   name: 'Load Tree'
   uriPattern: 'load-tree'
   defaults:

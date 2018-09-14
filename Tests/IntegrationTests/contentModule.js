@@ -56,7 +56,6 @@ test('Switching dimensions', async t => {
     await goToPage(t, 'Multiple columns');
     await t
         .click(ReactSelector('DimensionSwitcher'))
-        .click(ReactSelector('DimensionSwitcher SelectBox'))
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('Latvian'))
         .click('#neos-NodeVariantCreationDialog-CreateEmpty')
         .expect(ReactSelector('Provider').getReact(({props}) => {
@@ -74,7 +73,6 @@ test('Switching dimensions', async t => {
     subSection('Switch back to original dimension');
     await t
         .click(ReactSelector('DimensionSwitcher'))
-        .click(ReactSelector('DimensionSwitcher SelectBox'))
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('English (US)'))
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();

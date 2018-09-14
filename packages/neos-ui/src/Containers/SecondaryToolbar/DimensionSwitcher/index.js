@@ -31,7 +31,7 @@ SelectedPreset.propTypes = {
 };
 
 const DimensionSelector = props => {
-    const {icon, dimensionLabel, presets, dimensionName, activePreset, onSelect, isLoading} = props;
+    const {presets, dimensionName, activePreset, onSelect, isLoading} = props;
 
     const presetOptions = $map(
         (presetConfiguration, presetName) => {
@@ -52,28 +52,35 @@ const DimensionSelector = props => {
     };
 
     return (
-        <li key={dimensionName} className={style.dimensionCategory}>
-            <div className={style.dimensionLabel}>
-                <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
-                <I18n id={dimensionLabel}/>
-            </div>
-            <SelectBox
-                displayLoadingIndicator={isLoading}
-                options={sortedPresetOptions}
-                onValueChange={onPresetSelect}
-                value={activePreset}
-                />
-        </li>
+        <SelectBox
+            displayLoadingIndicator={isLoading}
+            options={sortedPresetOptions}
+            onValueChange={onPresetSelect}
+            value={activePreset}
+            />
     );
 };
 DimensionSelector.propTypes = {
-    icon: PropTypes.string.isRequired,
-    dimensionLabel: PropTypes.string.isRequired,
     presets: PropTypes.object.isRequired,
     activePreset: PropTypes.string.isRequired,
     dimensionName: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
     onSelect: PropTypes.func.isRequired
+};
+
+const DimensionLabel = props => {
+    const {icon, dimensionLabel} = props;
+
+    return (
+        <div className={style.dimensionLabel}>
+            <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
+            <I18n id={dimensionLabel}/>
+        </div>
+    );
+};
+DimensionLabel.propTypes = {
+    icon: PropTypes.string.isRequired,
+    dimensionLabel: PropTypes.string.isRequired
 };
 
 @connect($transform({
@@ -164,65 +171,102 @@ export default class DimensionSwitcher extends PureComponent {
         const contentDimensionsObject = contentDimensions.toObject();
         const contentDimensionsObjectKeys = Object.keys(contentDimensionsObject);
 
-        return contentDimensionsObjectKeys.length ? (
-            <DropDown.Stateless
-                style="darker"
-                padded={true}
-                className={style.dropDown}
-                isOpen={this.state.isOpen}
-                onToggle={this.handleToggle}
-                onClose={this.handleClose}
-                >
-                <DropDown.Header>
-                    {contentDimensionsObjectKeys.map(dimensionName => {
-                        const dimensionConfiguration = contentDimensionsObject[dimensionName];
-                        const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
-                        return (<SelectedPreset
-                            key={dimensionName}
-                            dimensionName={dimensionName}
-                            icon={icon}
-                            dimensionLabel={$get('label', dimensionConfiguration)}
-                            presetLabel={$get([dimensionName, 'label'], activePresets)}
-                            />
-                        );
-                    })}
-                </DropDown.Header>
-                <DropDown.Contents>
-                    {contentDimensionsObjectKeys.map(dimensionName => {
-                        const dimensionConfiguration = contentDimensionsObject[dimensionName];
-                        const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
-                        // First look for active preset in transient state, else take it from activePresets prop
-                        const activePreset = this.getEffectivePresets()[dimensionName];
-                        return (<DimensionSelector
-                            isLoading={this.state.loadingPresets[dimensionName]}
-                            key={dimensionName}
-                            dimensionName={dimensionName}
-                            icon={icon}
-                            dimensionLabel={$get('label', dimensionConfiguration)}
-                            presets={this.presetsForDimension(dimensionName)}
-                            activePreset={activePreset}
-                            onSelect={this.handleSelectPreset}
-                            />
-                        );
-                    })}
-                    {contentDimensions.count() > 1 && <div className={style.buttonGroup}>
-                        <Button
-                            onClick={this.handleClose}
-                            style="lighter"
-                            className={style.cancelButton}
-                            >
-                            <I18n id="Neos.Neos:Main:cancel" fallback="Cancel"/>
-                        </Button>
-                        <Button
-                            onClick={this.handleApplyPresets}
-                            style="brand"
-                            >
-                            <I18n id="Neos.Neos:Main:apply" fallback="Apply"/>
-                        </Button>
-                    </div>}
-                </DropDown.Contents>
-            </DropDown.Stateless>
-        ) : null;
+        switch (contentDimensionsObjectKeys.length) {
+            case 0:
+                return null;
+            case 1: {
+                const dimensionName = contentDimensionsObjectKeys[0];
+                const dimensionConfiguration = contentDimensionsObject[dimensionName];
+                const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+                // First look for active preset in transient state, else take it from activePresets prop
+                const activePreset = this.getEffectivePresets()[dimensionName];
+                return (
+                    <div className={style.singleSelector}>
+                        <div className={style.singleSelectorIcon}>
+                            <Icon
+                                icon={icon}
+                                label={$get('label', dimensionConfiguration)}
+                                />
+                        </div>
+                        <div className={style.singleSelectorDropdown}>
+                            <DimensionSelector
+                                isLoading={this.state.loadingPresets[dimensionName]}
+                                key={dimensionName}
+                                dimensionName={dimensionName}
+                                presets={this.presetsForDimension(dimensionName)}
+                                activePreset={activePreset}
+                                onSelect={this.handleSelectPreset}
+                                />
+                        </div>
+                    </div>
+                );
+            }
+            default:
+                return (
+                    <DropDown.Stateless
+                        style="darker"
+                        padded={true}
+                        className={style.dropDown}
+                        isOpen={this.state.isOpen}
+                        onToggle={this.handleToggle}
+                        onClose={this.handleClose}
+                        >
+                        <DropDown.Header>
+                            {contentDimensionsObjectKeys.map(dimensionName => {
+                                const dimensionConfiguration = contentDimensionsObject[dimensionName];
+                                const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+                                return (<SelectedPreset
+                                    key={dimensionName}
+                                    dimensionName={dimensionName}
+                                    icon={icon}
+                                    dimensionLabel={$get('label', dimensionConfiguration)}
+                                    presetLabel={$get([dimensionName, 'label'], activePresets)}
+                                    />
+                                );
+                            })}
+                        </DropDown.Header>
+                        <DropDown.Contents>
+                            {contentDimensionsObjectKeys.map(dimensionName => {
+                                const dimensionConfiguration = contentDimensionsObject[dimensionName];
+                                const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+                                // First look for active preset in transient state, else take it from activePresets prop
+                                const activePreset = this.getEffectivePresets()[dimensionName];
+                                return (
+                                    <li key={dimensionName} className={style.dimensionCategory}>
+                                        <DimensionLabel
+                                            icon={icon}
+                                            dimensionLabel={$get('label', dimensionConfiguration)}
+                                            />
+                                        <DimensionSelector
+                                            isLoading={this.state.loadingPresets[dimensionName]}
+                                            key={dimensionName}
+                                            dimensionName={dimensionName}
+                                            presets={this.presetsForDimension(dimensionName)}
+                                            activePreset={activePreset}
+                                            onSelect={this.handleSelectPreset}
+                                            />
+                                    </li>
+                                );
+                            })}
+                            {contentDimensions.count() > 1 && <div className={style.buttonGroup}>
+                                <Button
+                                    onClick={this.handleClose}
+                                    style="lighter"
+                                    className={style.cancelButton}
+                                    >
+                                    <I18n id="Neos.Neos:Main:cancel" fallback="Cancel"/>
+                                </Button>
+                                <Button
+                                    onClick={this.handleApplyPresets}
+                                    style="brand"
+                                    >
+                                    <I18n id="Neos.Neos:Main:apply" fallback="Apply"/>
+                                </Button>
+                            </div>}
+                        </DropDown.Contents>
+                    </DropDown.Stateless>
+                );
+        }
     }
 
     presetsForDimension(dimensionName) {

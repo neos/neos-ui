@@ -64,8 +64,8 @@ export default routes => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const persistState = state => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.persistState,
+    const persistClipboardState = (clipboardSubject, clipboardMode) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.persistClipboardState,
 
         method: 'POST',
         credentials: 'include',
@@ -74,7 +74,8 @@ export default routes => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            state
+            clipboardSubject,
+            clipboardMode
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
@@ -392,7 +393,7 @@ export default routes => {
         publish,
         discard,
         changeBaseWorkspace,
-        persistState,
+        persistClipboardState,
         createImageVariant,
         loadMasterPlugins,
         loadPluginViews,

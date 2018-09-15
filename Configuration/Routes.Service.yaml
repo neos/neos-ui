@@ -31,11 +31,11 @@
   httpMethods: ['POST']
 
 -
-  name: 'Persist state'
-  uriPattern: 'persist-state'
+  name: 'Persist clipboard state'
+  uriPattern: 'persist-clipboard-state'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'persistState'
+    '@action': 'persistClipboardState'
   httpMethods: ['POST']
 
 -

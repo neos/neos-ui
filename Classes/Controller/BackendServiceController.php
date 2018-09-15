@@ -109,9 +109,9 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var PersistedStateContainer
+     * @var ClipboardStateContainer
      */
-    protected $persistedStateContainer;
+    protected $clipboardStateContainer;
 
     /**
      * Set the controller context on the feedback collection after the controller
@@ -334,14 +334,16 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * Persists the state
+     * Persists the clipboard state
      *
-     * @param array $state
+     * @param string $clipboardSubject
+     * @param string $clipboardMode
      * @return void
      */
-    public function persistStateAction(array $state)
+    public function persistClipboardStateAction(string $clipboardSubject, string $clipboardMode)
     {
-        $this->persistedStateContainer->setState($state);
+        $this->clipboardStateContainer->setClipboardSubject($clipboardSubject);
+        $this->clipboardStateContainer->setClipboardMode($clipboardMode);
     }
 
     public function getWorkspaceInfoAction()

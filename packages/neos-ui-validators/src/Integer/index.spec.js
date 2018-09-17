@@ -43,9 +43,13 @@ test('emptyish should pass', () => {
 });
 
 test('Number with trailing chars should not be a valid integer', () => {
-    expect(integerValidator('1w')).not.toBe(null);
+    expect(integerValidator('1a')).not.toBe(null);
 });
 
-test('Number with trailing chars should not be a valid integer(paradox  test case)', () => {
-    expect(integerValidator('1w')).toBe(null);
+test('Number with leading chars should not be a valid integer', () => {
+    expect(integerValidator('a1')).not.toBe(null);
+});
+
+test('Number with chars inside should not be a valid integer', () => {
+    expect(integerValidator('1a1')).not.toBe(null);
 });

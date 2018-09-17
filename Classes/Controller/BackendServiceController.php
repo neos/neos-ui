@@ -344,7 +344,7 @@ class BackendServiceController extends ActionController
     {
         if ($clipboardMode === 'Copy') {
             $this->clipboardStateContainer->copyNode($clipboardSubject);
-        } else if ($clipboardMode === 'Cut') {
+        } elseif ($clipboardMode === 'Cut') {
             $this->clipboardStateContainer->cutNode($clipboardSubject);
         } else {
             throw new \Exception('clipboardMode must be either "Copy" or "Cut"');

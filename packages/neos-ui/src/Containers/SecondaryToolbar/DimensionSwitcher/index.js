@@ -182,22 +182,17 @@ export default class DimensionSwitcher extends PureComponent {
                 const activePreset = this.getEffectivePresets()[dimensionName];
                 return (
                     <div className={style.singleSelector}>
-                        <div className={style.singleSelectorIcon}>
-                            <Icon
-                                icon={icon}
-                                label={$get('label', dimensionConfiguration)}
-                                />
+                        <div className={style.singleSelector__Icon}>
+                            <Icon icon={icon} />
                         </div>
-                        <div className={style.singleSelectorDropdown}>
-                            <DimensionSelector
-                                isLoading={this.state.loadingPresets[dimensionName]}
-                                key={dimensionName}
-                                dimensionName={dimensionName}
-                                presets={this.presetsForDimension(dimensionName)}
-                                activePreset={activePreset}
-                                onSelect={this.handleSelectPreset}
-                                />
-                        </div>
+                        <DimensionSelector
+                            isLoading={this.state.loadingPresets[dimensionName]}
+                            key={dimensionName}
+                            dimensionName={dimensionName}
+                            presets={this.presetsForDimension(dimensionName)}
+                            activePreset={activePreset}
+                            onSelect={this.handleSelectPreset}
+                            />
                     </div>
                 );
             }
@@ -218,7 +213,7 @@ export default class DimensionSwitcher extends PureComponent {
                                 return (<SelectedPreset
                                     key={dimensionName}
                                     dimensionName={dimensionName}
-                                    icon={icon}
+                                    s={icon}
                                     dimensionLabel={$get('label', dimensionConfiguration)}
                                     presetLabel={$get([dimensionName, 'label'], activePresets)}
                                     />

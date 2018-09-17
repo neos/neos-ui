@@ -26,20 +26,10 @@
 
 .singleSelector {
     max-width: 352px;
-    position: relative;
-    border-right: 1px solid var(--colors-ContrastDark);
+    display: flex;
 }
 
-.singleSelectorIcon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 2em;
-    padding: .75em;
-    display: inline-block;
-}
-
-.singleSelectorDropdown {
-    margin-left: 2em;
-    display: inline-block;
+.singleSelector__Icon {
+    margin: .75em;
+    margin-right: 0;
 }

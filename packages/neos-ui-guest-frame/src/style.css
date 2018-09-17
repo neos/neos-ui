@@ -17,6 +17,11 @@
     outline: 2px solid var(--colors-PrimaryBlue);
 }
 
+:global(.neos-contentelement-shine-through:hover).markHoveredNodeAsHovered,
+:global(.neos-contentelement-shine-through).markActiveNodeAsFocused--focusedNode {
+    outline-color: var(--colors-Warn);
+}
+
 :global(.neos-inline-editable:focus) {
     outline: none;
 }

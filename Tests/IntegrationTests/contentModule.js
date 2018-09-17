@@ -45,6 +45,10 @@ async function goToPage(t, pageTitle) {
 
 fixture`Content Module`
     .beforeEach(async t => {
+        // click false in case a native dialog happens
+        // because of closing prevention and wait
+        // one second
+        await t.setNativeDialogHandler(() => false);
         await t.wait(1000);
         await t.useRole(adminUser);
         await discardAll(t);

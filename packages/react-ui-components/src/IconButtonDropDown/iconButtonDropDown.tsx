@@ -27,9 +27,11 @@ interface IIconButtonDropDownProps {
     /**
      * Children to be rendered inside the DropDown.
      */
-    readonly children: ReadonlyArray<React.ReactElement<{
-        readonly dropDownId: string;
-    }>>;
+    readonly children:  ReadonlyArray<
+        React.ReactElement<{
+            readonly dropDownId: string;
+        }>
+    >;
 
     /**
      * You can pass an modeIcon which displays the current selected item in a leaner way.
@@ -82,23 +84,32 @@ interface IIconButtonDropDownProps {
     /**
      * Props which are propagated to the <Button> component.
      */
-    readonly directButtonProps: Partial<IButtonProps>;
+    readonly directButtonProps: IButtonProps;
 }
 
 interface IIconButtonDropDownState {
     readonly isOpen: boolean;
-    readonly mouseHoldTimeout: number | undefined;
-    readonly mouseHoverTimeout: number | undefined;
 }
 
 export default class IconButtonDropDown extends PureComponent<IIconButtonDropDownProps, IIconButtonDropDownState> {
+    // here we have to disable the tslint rule
+    // tslint:disable:readonly-keyword
+    private _timeouts: {
+        hold?: number,
+        hover?: number
+    };
+    // tslint:enable:readonly-keyword
+
     constructor(props: IIconButtonDropDownProps) {
         super(props);
 
         this.state = {
             isOpen: false,
-            mouseHoldTimeout: undefined,
-            mouseHoverTimeout: undefined,
+        };
+
+        this._timeouts = {
+            hold: undefined,
+            hover: undefined
         };
     }
 
@@ -144,15 +155,15 @@ export default class IconButtonDropDown extends PureComponent<IIconButtonDropDow
                     onMouseEnter={this.handleHoverTimeout}
                     onFocus={this.handleHoverTimeout}
                     onClick={this.handleClick}
-                    size={size!}
+                    size={size}
                 >
                     <IconComponent icon={modeIcon} className={theme!.wrapper__btnModeIcon}/>
                     <IconComponent icon={icon} className={theme!.wrapper__btnIcon}/>
                 </ButtonComponent>
                 <div className={dropDownClassNames} aria-hidden={isOpen ? 'false' : 'true'}>
-                    {children.map((child) => (
+                    {children.map((child, index) => (
                         <DropDownItem
-                            key={child.props.dropDownId}
+                            key={index}
                             className={theme!.wrapper__dropDownItem}
                             onClick={this.handleItemSelected}
                             id={child.props.dropDownId}
@@ -166,37 +177,21 @@ export default class IconButtonDropDown extends PureComponent<IIconButtonDropDow
     }
 
     private readonly createHoldTimeout = () => {
-        this.setState({
-            mouseHoldTimeout: window.setTimeout(() => this.openDropDown(), 200),
-        });
+        // tslint:disable-next-line:no-object-mutation
+        this._timeouts.hold = window.setTimeout(() => this.openDropDown(), 200);
     }
 
     private readonly cancelHoldTimeout = () => {
-        const {mouseHoldTimeout} = this.state;
-
-        if (mouseHoldTimeout) {
-            clearTimeout(mouseHoldTimeout);
-            this.setState({
-                mouseHoldTimeout: undefined,
-            });
-        }
+        window.clearTimeout(this._timeouts.hold);
     }
 
     private readonly createHoverTimeout = () => {
-        this.setState({
-            mouseHoverTimeout: window.setTimeout(() => this.openDropDown(), 700),
-        });
+        // tslint:disable-next-line:no-object-mutation
+        this._timeouts.hover = window.setTimeout(() => this.openDropDown(), 700);
     }
 
     private readonly cancelHoverTimeout = () => {
-        const {mouseHoverTimeout} = this.state;
-
-        if (mouseHoverTimeout) {
-            clearTimeout(mouseHoverTimeout);
-            this.setState({
-                mouseHoverTimeout: undefined,
-            });
-        }
+        window.clearTimeout(this._timeouts.hover);
     }
 
     private readonly handleHoverTimeout = () => this.createHoverTimeout();
@@ -205,7 +200,6 @@ export default class IconButtonDropDown extends PureComponent<IIconButtonDropDow
 
     private readonly handleClick = () => {
         const {isOpen} = this.state;
-
         this.cancelHoldTimeout();
         this.cancelHoverTimeout();
 

@@ -36,9 +36,11 @@ interface IHeadlineProps {
     readonly theme?: IHeadlineTheme;
 }
 
+type DefaultProps = Pick<IHeadlineProps, 'type'>;
+
 class Headline extends PureComponent<IHeadlineProps> {
-    public static readonly defaultProps = {
-        type: 'h1'
+    public static readonly defaultProps: DefaultProps = {
+        type: 'h1',
     };
 
     public render(): JSX.Element {

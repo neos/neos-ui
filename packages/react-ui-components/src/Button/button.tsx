@@ -6,6 +6,7 @@ export type ButtonStyle = 'clean' | 'brand' | 'lighter' | 'transparent' | 'warn'
 export type ButtonHoverStyle = 'clean' | 'brand' | 'darken' | 'warn';
 export type ButtonSize = 'small' | 'regular';
 
+// TODO: remove capital I on all interface names
 interface IButtonTheme {
     readonly 'btn': string;
     readonly 'btn--clean': string;
@@ -24,10 +25,10 @@ type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
 // We omit the standard HTML button style attribute,
 // so we have no collision with the Button component's style property,
 // while still enjoying the intellisense and type checking for the rest of the HTML button attributes
-type HTMLButtonElementWithoutStyle = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'style'>;
+type HTMLButtonElementAttributesExceptStyle = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'style'>;
 
 // own props and (optional) HTML button attributes except 'style'
-export interface IButtonProps extends HTMLButtonElementWithoutStyle {
+export interface IButtonProps extends HTMLButtonElementAttributesExceptStyle {
     /**
      * This prop controls the visual pressed state of the `Button`.
      */
@@ -85,17 +86,35 @@ export interface IButtonProps extends HTMLButtonElementWithoutStyle {
      */
     readonly _refHandler?: (isFocused: boolean) => (node: any) => void;
 }
+// TODO: into own toplevel d.ts file
+type DP<Props, defaultPropsKeys extends keyof Props> = Required<{
+    [P in defaultPropsKeys]: Props[P]
+}>;
+
+type DefaultProps = DP<IButtonProps,
+    '_refHandler' |
+    'hoverStyle' |
+    'isActive' |
+    'isDisabled' |
+    'isFocused' |
+    'size' |
+    'style' |
+    'type'
+>;
+
+const defaultProps: DefaultProps = {
+    _refHandler: makeFocusNode,
+    hoverStyle: 'brand',
+    isActive: false,
+    isDisabled: false,
+    isFocused: false,
+    size: 'regular',
+    style: 'lighter',
+    type: 'button',
+};
 
 class Button extends React.PureComponent<IButtonProps> {
-    public static readonly defaultProps = {
-        _refHandler: makeFocusNode,
-        hoverStyle: 'brand',
-        isActive: false,
-        isDisabled: false,
-        isFocused: false,
-        size: 'regular',
-        type: 'button',
-    };
+    public static readonly defaultProps = defaultProps;
 
     public render(): JSX.Element {
         const {
@@ -126,9 +145,11 @@ class Button extends React.PureComponent<IButtonProps> {
             },
             className,
         );
+        // set disabled to `undefined` if `false` to not render the attribute at all, otherwise it would render disabled={false}
+        const disabled = isDisabled ? true : undefined;
 
         return (
-            <button {...rest} disabled={isDisabled} type={type} className={finalClassName} role="button" ref={_refHandler && _refHandler(isFocused!)}>
+            <button {...rest} disabled={disabled} type={type} className={finalClassName} role="button" ref={_refHandler && _refHandler(isFocused!)}>
                 {children}
             </button>
         );

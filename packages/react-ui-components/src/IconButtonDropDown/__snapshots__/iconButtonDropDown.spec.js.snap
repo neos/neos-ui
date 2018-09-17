@@ -31,7 +31,7 @@ exports[`<IconButtonDropDown/> should render correctly. 1`] = `
     <DropDownItem
       className="baseIconButtonDropDownClassName"
       id="foo1"
-      key="0/.0"
+      key="0"
       onClick={[Function]}
     >
       <div
@@ -42,7 +42,7 @@ exports[`<IconButtonDropDown/> should render correctly. 1`] = `
     <DropDownItem
       className="baseIconButtonDropDownClassName"
       id="foo2"
-      key="1/.1"
+      key="1"
       onClick={[Function]}
     >
       <div

@@ -248,7 +248,7 @@ export default class DimensionSwitcher extends PureComponent {
                                     </li>
                                 );
                             })}
-                            {contentDimensions.count() > 1 && <div className={style.buttonGroup}>
+                            <div className={style.buttonGroup}>
                                 <Button
                                     onClick={this.handleClose}
                                     style="lighter"
@@ -262,7 +262,7 @@ export default class DimensionSwitcher extends PureComponent {
                                     >
                                     <I18n id="Neos.Neos:Main:apply" fallback="Apply"/>
                                 </Button>
-                            </div>}
+                            </div>
                         </DropDown.Contents>
                     </DropDown.Stateless>
                 );

@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Controller;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Error\Messages\Message;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * This is a container for clipboard state that needs to be persisted server side
@@ -22,9 +23,9 @@ use Neos\Error\Messages\Message;
 class ClipboardStateContainer
 {
     /**
-     * @var string
+     * @var NodeInterface
      */
-    protected $clipboardSubject = '';
+    protected $clipboardSubject = null;
 
     /**
      * @var string
@@ -32,27 +33,29 @@ class ClipboardStateContainer
     protected $clipboardMode = '';
 
     /**
-     * Set clipboard subject.
+     * Save copied node to clipboard.
      *
-     * @param string $clipboardSubject
+     * @param NodeInterface $clipboardSubject
      * @return void
      * @Flow\Session(autoStart=true)
      */
-    public function setClipboardSubject(string $clipboardSubject)
+    public function copyNode(NodeInterface $clipboardSubject)
     {
         $this->clipboardSubject = $clipboardSubject;
+        $this->clipboardMode = 'Copy';
     }
 
     /**
-     * Set clipboard mode.
+     * Save cut node to clipboard.
      *
-     * @param string $clipboardMode
+     * @param NodeInterface $clipboardSubject
      * @return void
      * @Flow\Session(autoStart=true)
      */
-    public function setClipboardMode(string $clipboardMode)
+    public function cutNode(NodeInterface $clipboardSubject)
     {
-        $this->clipboardMode = $clipboardMode;
+        $this->clipboardSubject = $clipboardSubject;
+        $this->clipboardMode = 'Cut';
     }
 
     /**
@@ -62,7 +65,7 @@ class ClipboardStateContainer
      */
     public function getClipboardSubject()
     {
-        return $this->clipboardSubject;
+        return $this->clipboardSubject ? $this->clipboardSubject->getContextPath() : '';
     }
 
     /**

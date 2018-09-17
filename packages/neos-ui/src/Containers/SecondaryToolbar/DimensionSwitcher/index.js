@@ -177,7 +177,7 @@ export default class DimensionSwitcher extends PureComponent {
             case 1: {
                 const dimensionName = contentDimensionsObjectKeys[0];
                 const dimensionConfiguration = contentDimensionsObject[dimensionName];
-                const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+                const icon = $get('icon', dimensionConfiguration);
                 // First look for active preset in transient state, else take it from activePresets prop
                 const activePreset = this.getEffectivePresets()[dimensionName];
                 return (
@@ -228,7 +228,7 @@ export default class DimensionSwitcher extends PureComponent {
                         <DropDown.Contents>
                             {contentDimensionsObjectKeys.map(dimensionName => {
                                 const dimensionConfiguration = contentDimensionsObject[dimensionName];
-                                const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+                                const icon = $get('icon', dimensionConfiguration);
                                 // First look for active preset in transient state, else take it from activePresets prop
                                 const activePreset = this.getEffectivePresets()[dimensionName];
                                 return (

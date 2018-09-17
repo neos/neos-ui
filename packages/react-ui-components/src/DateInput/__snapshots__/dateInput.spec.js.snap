@@ -47,6 +47,13 @@ exports[`<DateInput/> should render correctly. 1`] = `
       dateFormat={true}
       onChange={[Function]}
       open={true}
+      timeConstraints={
+        Object {
+          "minutes": Object {
+            "step": 5,
+          },
+        }
+      }
       timeFormat={true}
     />
     <Component

@@ -62,7 +62,7 @@ test('Switching dimensions', async t => {
         .click('#neos-NodeVariantCreationDialog-CreateEmpty')
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
-            const isLoading = reduxState.ui.contentCanvas.isLoading;
+            const {isLoading} = reduxState.ui.contentCanvas;
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'lv';
         })).ok('Loading stopped and dimension switched to Latvian')
@@ -79,7 +79,7 @@ test('Switching dimensions', async t => {
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('English (US)'))
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
-            const isLoading = reduxState.ui.contentCanvas.isLoading;
+            const {isLoading} = reduxState.ui.contentCanvas;
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'en_US';
         })).ok('Loading stopped and dimension back to English')

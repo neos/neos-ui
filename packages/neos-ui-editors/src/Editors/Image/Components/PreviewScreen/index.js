@@ -26,7 +26,7 @@ export default class PreviewScreen extends PureComponent {
     }
 
     renderPreview() {
-        const {image, onClick, disabled, className} = this.props;
+        const {image, onClick, disabled, className, propertyName} = this.props;
 
         const classNames = mergeClassNames({
             [className]: true,
@@ -54,7 +54,7 @@ export default class PreviewScreen extends PureComponent {
                             className={(thumbnail ? style.cropArea__image : style['cropArea__image--placeholder'])}
                             src={thumbnail ? thumbnail.uri : '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg'}
                             style={thumbnail ? thumbnail.styles.thumbnail : {}}
-                            alt="thumbnail"
+                            alt={propertyName}
                             />
                     </div>
                 </div>

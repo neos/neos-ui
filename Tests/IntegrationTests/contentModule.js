@@ -1,6 +1,7 @@
 import {Selector, Role} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
 import checkPropTypes from '../checkPropTypes';
+import waitForRequestsToFinish from '../waitForRequestsToFinish';
 
 import Page from './pageModel';
 
@@ -48,13 +49,12 @@ fixture`Content Module`
         // click false in case a native dialog happens
         // because of closing prevention and wait
         // one second
-        await t.setNativeDialogHandler(() => false);
-        await t.wait(1000);
         await t.useRole(adminUser);
         await discardAll(t);
         await goToPage(t, 'Home');
     })
-    .afterEach(() => checkPropTypes());
+    .afterEach(() => checkPropTypes())
+    .afterEach(async t => waitForRequestsToFinish(t));
 
 test('Switching dimensions', async t => {
     subSection('Navigate to some inner page and switch dimension');

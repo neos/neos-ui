@@ -1,7 +1,7 @@
 import mergeClassNames from 'classnames';
 import React from 'react';
 
-import {PickDefaultProps} from '../../types';
+import {Omit, PickDefaultProps} from '../../types';
 import {makeFocusNode} from '../_lib/focusNode';
 
 export type ButtonStyle = 'clean' | 'brand' | 'lighter' | 'transparent' | 'warn';
@@ -14,15 +14,13 @@ interface ButtonTheme {
     readonly 'btn--lighter': string;
     readonly 'btn--transparent': string;
     readonly 'btn--brand': string;
+    readonly 'btn--brandActive': string;
     readonly 'btn--brandHover': string;
     readonly 'btn--cleanHover': string;
     readonly 'btn--isPressed': string;
     readonly 'btn--darkenHover': string;
-    readonly [key: string]: string; // TODO: this should be removed and be replaced with the actual css class override
 }
 
-type Diff<T, U> = T extends U ? never : T;
-type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
 // We omit the standard HTML button style attribute,
 // so we have no collision with the Button component's style property,
 // while still enjoying the intellisense and type checking for the rest of the HTML button attributes
@@ -133,8 +131,11 @@ class Button extends React.PureComponent<ButtonProps> {
         const effectiveHoverStyle = isActive ? 'brand' : hoverStyle;
         const finalClassName = mergeClassNames(
             theme!.btn,
+            // @ts-ignore implizit any because ButtonTheme has no index signature
             theme![`btn--size-${size}`],
+            // @ts-ignore implizit any because ButtonTheme has no index signature
             theme![`btn--${effectiveStyle!}`],
+            // @ts-ignore implizit any because ButtonTheme has no index signature
             theme![`btn--${effectiveHoverStyle!}Hover`],
             {
                 [theme!['btn--brandActive']]: isActive,

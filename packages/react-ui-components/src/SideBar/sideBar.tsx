@@ -23,7 +23,7 @@ interface SideBarProps {
     /**
      * The children to render within the div node.
      */
-    readonly children: any; // TODO
+    readonly children: React.ReactNode;
 
     /**
      * An optional css theme to be injected.

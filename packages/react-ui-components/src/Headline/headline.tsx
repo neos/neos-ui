@@ -51,7 +51,7 @@ class Headline extends PureComponent<HeadlineProps> {
             className,
             children,
             theme,
-            style, // TODO: not used
+            style, // TODO: Discuss what this style prop should do.
             ...rest
         } = this.props;
         const classNames = mergeClassNames(theme!.heading, theme!['heading--h1'], className);

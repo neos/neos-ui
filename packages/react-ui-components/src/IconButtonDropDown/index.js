@@ -5,7 +5,6 @@ import IconButtonDropDown from './iconButtonDropDown';
 
 const ThemedIconButtonDropDown = themr(identifiers.iconButtonDropDown, style)(IconButtonDropDown);
 
-// TODO: why here?
 //
 // Dependency injection
 //

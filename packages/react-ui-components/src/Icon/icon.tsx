@@ -17,7 +17,9 @@ interface IconTheme {
     readonly 'icon--paddedLeft': string;
     readonly 'icon--paddedRight': string;
     readonly 'icon--spin': string;
-    readonly [key: string]: string;
+    readonly 'icon--color-warn': string;
+    readonly 'icon--color-error': string;
+    readonly 'icon--color-primaryBlue': string;
 }
 
 export interface IconProps {

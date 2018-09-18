@@ -12,7 +12,6 @@ import injectProps from './../_lib/injectProps';
 import Icon from './../Icon';
 import Button from './../Button';
 
-// TODO why?
 export default injectProps({
     IconComponent: Icon,
     ButtonComponent: Button

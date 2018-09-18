@@ -22,3 +22,8 @@
 export type PickDefaultProps<Props, defaultPropsKeys extends keyof Props> = Readonly<Required<{
     [P in defaultPropsKeys]: Props[P]
 }>>;
+
+
+export type Diff<T, U> = T extends U ? never : T;
+
+export type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;

@@ -15,7 +15,7 @@ interface IconButtonDropDownTheme {
     readonly 'wrapper__dropDown': string;
     readonly 'wrapper__dropDown--isOpen': string;
     readonly 'wrapper__dropDownItem': string;
-    readonly [key: string]: string; // TODO should this be more restrictive?
+    readonly 'wrapper__btnIcon': string;
 }
 
 interface IconButtonDropDownProps {
@@ -24,7 +24,6 @@ interface IconButtonDropDownProps {
      */
     readonly icon: string;
 
-    // TODO: be more specific or use children as a function
     /**
      * Children to be rendered inside the DropDown.
      */
@@ -59,8 +58,6 @@ interface IconButtonDropDownProps {
      */
     readonly theme?: IconButtonDropDownTheme;
 
-    // TODO: This feels strange. We should just import the component classes here.
-    // also those interfaces should be exposed (export interface ...)
     /**
      * Static component dependencies which are injected from the outside (index.js)
      */
@@ -100,7 +97,6 @@ interface IconButtonDropDownState {
 }
 
 export default class IconButtonDropDown extends PureComponent<IconButtonDropDownProps, IconButtonDropDownState> {
-    // here we have to disable the tslint rule
     // tslint:disable:readonly-keyword
     private _timeouts: {
         hold?: number,
@@ -171,7 +167,7 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
                             className={theme!.wrapper__dropDownItem}
                             onClick={this.handleItemSelected}
                             id={child.props.dropDownId}
-                            >
+                        >
                             {child}
                         </DropDownItem>
                     ))}

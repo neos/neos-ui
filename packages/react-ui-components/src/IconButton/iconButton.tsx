@@ -8,7 +8,7 @@ import {IconProps} from '../Icon/icon';
 
 interface IconButtonTheme {
     readonly 'iconButton': string;
-    readonly [key: string]: string;
+    readonly 'iconButton--disabled': string;
 }
 
 interface IconButtonProps {
@@ -74,6 +74,7 @@ class IconButton extends PureComponent<IconButtonProps> {
         const finalClassName = mergeClassNames(
             className,
             theme!.iconButton,
+            // @ts-ignore implizit any because IconButtonTheme has no index signature
             theme![`size-${size}`],
             {
                 [theme!['iconButton--disabled']]: disabled

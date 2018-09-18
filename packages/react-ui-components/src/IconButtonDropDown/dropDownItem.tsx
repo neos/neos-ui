@@ -3,7 +3,6 @@ import React, {PureComponent} from 'react';
 type DropDownItemId = string;
 
 interface DropDownItemProps {
-    // TODO: think about declaring currying the function with the id in the parent component/container
     /**
      * The handler to call when clicking on the item of the DropDown.
      */
@@ -31,7 +30,7 @@ class DropDownItem extends PureComponent<DropDownItemProps> {
                 {...rest}
                 role="button"
                 onClick={this.handleClick}
-                >
+            >
                 {children}
             </a>
         );

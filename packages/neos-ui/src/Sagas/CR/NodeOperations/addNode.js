@@ -108,7 +108,7 @@ export default function * addNode({globalRegistry}) {
                     }]));
                 }
 
-                default: return;
+                default: return null;
             }
         });
     });

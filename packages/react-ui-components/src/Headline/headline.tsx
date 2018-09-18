@@ -1,14 +1,16 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
+import {PickDefaultProps} from '../../types';
+
 type HeadlineType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-interface IHeadlineTheme {
+interface HeadlineTheme {
     readonly 'heading': string;
     readonly 'heading--h1': string;
 }
 
-interface IHeadlineProps {
+interface HeadlineProps {
     /**
      * The contents to be rendered.
      */
@@ -33,12 +35,12 @@ interface IHeadlineProps {
     /**
      * An optional css theme to be injected.
      */
-    readonly theme?: IHeadlineTheme;
+    readonly theme?: HeadlineTheme;
 }
 
-type DefaultProps = Pick<IHeadlineProps, 'type'>;
+type DefaultProps = PickDefaultProps<HeadlineProps, 'type'>;
 
-class Headline extends PureComponent<IHeadlineProps> {
+class Headline extends PureComponent<HeadlineProps> {
     public static readonly defaultProps: DefaultProps = {
         type: 'h1',
     };

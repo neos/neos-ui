@@ -1,10 +1,10 @@
 import React, {PureComponent} from 'react';
 
-interface IPanelTheme {
+interface PanelTheme {
     readonly 'panel': string;
 }
 
-interface IPanelProps {
+interface PanelProps {
     /**
      * The title to be rendered within the navigation item of this Panel.
      */
@@ -23,10 +23,10 @@ interface IPanelProps {
     /**
      * An optional css theme to be injected.
      */
-    readonly theme?: IPanelTheme;
+    readonly theme?: PanelTheme;
 }
 
-class Panel extends PureComponent<IPanelProps> {
+class Panel extends PureComponent<PanelProps> {
     public static readonly displayName = 'Panel';
 
     public render(): JSX.Element {

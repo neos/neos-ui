@@ -1,14 +1,17 @@
 import {IconName} from '@fortawesome/fontawesome-svg-core';
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
-import {ButtonHoverStyle, ButtonSize, ButtonStyle, IButtonProps} from '../Button/button';
+
+import {PickDefaultProps} from '../../types';
+import {ButtonHoverStyle, ButtonProps, ButtonSize, ButtonStyle} from '../Button/button';
+import {IconProps} from '../Icon/icon';
 
 interface IconButtonTheme {
     readonly 'iconButton': string;
     readonly [key: string]: string;
 }
 
-interface IIconButtonProps {
+interface IconButtonProps {
     /**
      * The icon key which gets passed to the Icon Component.
      */
@@ -29,13 +32,12 @@ interface IIconButtonProps {
      */
     readonly theme?: IconButtonTheme;
 
-    // TODO: This feels strange. Can we define the interface of those injected Components somewhere else?
-    // also those interfaces should be exposed (export interface ...)
+    // TODO: This feels strange. Can we use the actual class here?
     /**
      * Static component dependencies which are injected from the outside (index.js)
      */
-    readonly IconComponent: React.ComponentClass<{readonly icon: string}>;
-    readonly ButtonComponent: React.ComponentClass<IButtonProps>;
+    readonly IconComponent: React.ComponentClass<IconProps>;
+    readonly ButtonComponent: React.ComponentClass<ButtonProps>;
 
     /**
      * Optional disabled flag
@@ -47,12 +49,16 @@ interface IIconButtonProps {
     readonly hoverStyle: ButtonHoverStyle;
 }
 
-class IconButton extends PureComponent<IIconButtonProps> {
-    public static readonly defaultProps = {
-        hoverStyle: 'brand',
-        size: 'regular',
-        style: 'transparent',
-    };
+type DefaultProps = PickDefaultProps<IconButtonProps, 'hoverStyle' | 'size' | 'style'>;
+
+const defaultProps: DefaultProps = {
+    hoverStyle: 'brand',
+    size: 'regular',
+    style: 'transparent',
+};
+
+class IconButton extends PureComponent<IconButtonProps> {
+    public static readonly defaultProps = defaultProps;
 
     public render(): JSX.Element {
         const {

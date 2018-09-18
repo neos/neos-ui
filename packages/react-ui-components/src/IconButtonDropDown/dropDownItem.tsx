@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 
 type DropDownItemId = string;
 
-interface IDropDownItemProps {
+interface DropDownItemProps {
     // TODO: think about declaring currying the function with the id in the parent component/container
     /**
      * The handler to call when clicking on the item of the DropDown.
@@ -22,7 +22,7 @@ interface IDropDownItemProps {
     readonly className: string;
 }
 
-class DropDownItem extends PureComponent<IDropDownItemProps> {
+class DropDownItem extends PureComponent<DropDownItemProps> {
     public render(): JSX.Element {
         const {children, ...rest} = this.props;
 

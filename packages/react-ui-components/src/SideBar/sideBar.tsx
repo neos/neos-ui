@@ -3,13 +3,13 @@ import React, {PureComponent} from 'react';
 
 type SideBarPosition = 'left' | 'right';
 
-interface ISideBarTheme {
+interface SideBarTheme {
     readonly 'sideBar': string;
     readonly 'sideBar--left': string;
     readonly 'sideBar--right': string;
 }
 
-interface ISideBarProps {
+interface SideBarProps {
     /**
      * This prop controls the absolute positioning of the SideBar.
      */
@@ -28,10 +28,10 @@ interface ISideBarProps {
     /**
      * An optional css theme to be injected.
      */
-    readonly theme?: ISideBarTheme;
+    readonly theme?: SideBarTheme;
 }
 
-class SideBar extends PureComponent<ISideBarProps> {
+class SideBar extends PureComponent<SideBarProps> {
     public render(): JSX.Element {
         const {
             position,

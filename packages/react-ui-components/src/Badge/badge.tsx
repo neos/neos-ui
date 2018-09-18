@@ -1,11 +1,11 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
-interface IBadgeTheme {
+interface BadgeTheme {
     readonly badge: string;
 }
 
-interface IBadgeProps {
+interface BadgeProps {
     /**
      * An optional `className` to attach to the wrapper.
      */
@@ -19,10 +19,10 @@ interface IBadgeProps {
     /**
      * An optional css theme to be injected.
      */
-    readonly theme?: IBadgeTheme;
+    readonly theme?: BadgeTheme;
 }
 
-class Badge extends PureComponent<IBadgeProps> {
+class Badge extends PureComponent<BadgeProps> {
     public render(): JSX.Element {
         const {
             className,

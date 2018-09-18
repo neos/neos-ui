@@ -2,6 +2,8 @@ import {IconName, IconPrefix, IconProp} from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
+
+import {PickDefaultProps} from '../../types';
 import mapper from './mapper';
 
 type IconPadding = 'none' | 'left' | 'right';
@@ -18,7 +20,7 @@ interface IconTheme {
     readonly [key: string]: string;
 }
 
-interface IconProps {
+export interface IconProps {
     /**
      * We use the react component FortAwesome provides to render icons.
      * we will pass down all props to the component via {...rest} to expose it's api
@@ -38,7 +40,7 @@ interface IconProps {
     /**
      * Controls the padding around the icon in a standardized way.
      */
-    readonly padded: IconPadding;
+    readonly padded?: IconPadding;
 
     /**
      * An optional `className` to attach to the wrapper.
@@ -56,12 +58,18 @@ interface IconProps {
     readonly theme?: IconTheme;
 }
 
+type DefaultProps = PickDefaultProps<IconProps, 'color' | 'padded'>;
+
+const defaultProps: DefaultProps = {
+    color: 'default',
+    padded: 'none'
+};
+
 class Icon extends PureComponent<IconProps> {
+    public static readonly defaultProps = defaultProps;
+
     public render(): JSX.Element | null {
         const {padded, theme, label, icon, className, color, ...rest} = this.props;
-        if (!icon || typeof icon !== 'string') {
-            return null;
-        }
         const iconClassName = icon;
         const classNames = mergeClassNames(
             theme!.icon,

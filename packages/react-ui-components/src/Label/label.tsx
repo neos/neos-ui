@@ -1,7 +1,7 @@
 import mergeClassNames from 'classnames';
 import React from 'react';
 
-export interface ILabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
+export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
     /**
      * The `for` standard html attribute, defined to make it always required.
      */
@@ -22,7 +22,7 @@ export interface ILabelProps extends React.LabelHTMLAttributes<HTMLLabelElement>
     };
 }
 
-const Label: React.SFC<ILabelProps> = ({
+const Label: React.SFC<LabelProps> = ({
         children,
         className,
         htmlFor,

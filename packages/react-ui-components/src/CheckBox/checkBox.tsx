@@ -1,7 +1,7 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
-interface ICheckBoxTheme {
+interface CheckBoxTheme {
     readonly checkbox: string;
     readonly checkbox__disabled: string;
     readonly checkbox__input: string; // eslint-disable-line
@@ -9,7 +9,7 @@ interface ICheckBoxTheme {
     readonly 'checkbox__inputMirror--active': string;
 }
 
-interface ICheckBoxProps {
+interface CheckBoxProps {
     /**
      * This prop controls the visual active state of the CheckBox.
      */
@@ -33,10 +33,10 @@ interface ICheckBoxProps {
     /**
      * An optional css theme to be injected.
      */
-    readonly theme: ICheckBoxTheme;
+    readonly theme: CheckBoxTheme;
 }
 
-class CheckBox extends PureComponent<ICheckBoxProps> {
+class CheckBox extends PureComponent<CheckBoxProps> {
     public render(): JSX.Element {
         const {
             isChecked,

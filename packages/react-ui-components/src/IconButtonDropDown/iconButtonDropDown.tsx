@@ -1,33 +1,34 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
-import {IButtonProps} from '../Button/button';
+import {PickDefaultProps} from '../../types';
+import {ButtonProps} from '../Button/button';
+import {IconProps} from '../Icon/icon';
 import DropDownItem from './dropDownItem';
 
 type DropDownId = string;
 
-interface IIconButtonDropDownTheme {
+interface IconButtonDropDownTheme {
     readonly 'wrapper': string;
     readonly 'wrapper__btn': string;
     readonly 'wrapper__btnModeIcon': string;
     readonly 'wrapper__dropDown': string;
     readonly 'wrapper__dropDown--isOpen': string;
     readonly 'wrapper__dropDownItem': string;
-    readonly [key: string]: string;
+    readonly [key: string]: string; // TODO should this be more restrictive?
 }
 
-interface IIconButtonDropDownProps {
+interface IconButtonDropDownProps {
     /**
      * The key of the Icon which is always displayed.
      */
     readonly icon: string;
 
-    // TODO: be more specific
-    // TODO: use render prop
+    // TODO: be more specific or use children as a function
     /**
      * Children to be rendered inside the DropDown.
      */
-    readonly children:  ReadonlyArray<
+    readonly children: ReadonlyArray<
         React.ReactElement<{
             readonly dropDownId: string;
         }>
@@ -56,19 +57,16 @@ interface IIconButtonDropDownProps {
     /**
      * An optional css theme to be injected.
      */
-    readonly theme?: IIconButtonDropDownTheme;
+    readonly theme?: IconButtonDropDownTheme;
 
     // TODO: This feels strange. We should just import the component classes here.
     // also those interfaces should be exposed (export interface ...)
     /**
      * Static component dependencies which are injected from the outside (index.js)
      */
-    readonly IconComponent: React.ComponentClass<{
-        readonly icon: string;
-        readonly className?: string;
-    }>;
+    readonly IconComponent: React.ComponentClass<IconProps>;
 
-    readonly ButtonComponent: React.ComponentClass<IButtonProps>;
+    readonly ButtonComponent: React.ComponentClass<ButtonProps>;
 
     /**
      * An optional `className` to attach to the wrapper.
@@ -80,18 +78,28 @@ interface IIconButtonDropDownProps {
      */
     readonly isDisabled: boolean;
 
-    // we can remove this if we should import and use the _actual_ component
     /**
      * Props which are propagated to the <Button> component.
      */
-    readonly directButtonProps: IButtonProps;
+    readonly directButtonProps: ButtonProps;
 }
 
-interface IIconButtonDropDownState {
+type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps' | 'isDisabled' | 'modeIcon'>;
+
+const defaultProps: DefaultProps = {
+    directButtonProps: {
+        children: undefined,
+        size: 'regular',
+    },
+    isDisabled: false,
+    modeIcon: 'long-arrow-right',
+};
+
+interface IconButtonDropDownState {
     readonly isOpen: boolean;
 }
 
-export default class IconButtonDropDown extends PureComponent<IIconButtonDropDownProps, IIconButtonDropDownState> {
+export default class IconButtonDropDown extends PureComponent<IconButtonDropDownProps, IconButtonDropDownState> {
     // here we have to disable the tslint rule
     // tslint:disable:readonly-keyword
     private _timeouts: {
@@ -100,7 +108,7 @@ export default class IconButtonDropDown extends PureComponent<IIconButtonDropDow
     };
     // tslint:enable:readonly-keyword
 
-    constructor(props: IIconButtonDropDownProps) {
+    constructor(props: IconButtonDropDownProps) {
         super(props);
 
         this.state = {
@@ -113,11 +121,7 @@ export default class IconButtonDropDown extends PureComponent<IIconButtonDropDow
         };
     }
 
-    public static readonly defaultProps = {
-        directButtonProps: {},
-        isDisabled: false,
-        modeIcon: 'long-arrow-right',
-    };
+    public static readonly defaultProps = defaultProps;
 
     public render(): JSX.Element {
         const {
@@ -177,6 +181,7 @@ export default class IconButtonDropDown extends PureComponent<IIconButtonDropDow
     }
 
     private readonly createHoldTimeout = () => {
+        this.cancelHoldTimeout();
         // tslint:disable-next-line:no-object-mutation
         this._timeouts.hold = window.setTimeout(() => this.openDropDown(), 200);
     }
@@ -186,6 +191,7 @@ export default class IconButtonDropDown extends PureComponent<IIconButtonDropDow
     }
 
     private readonly createHoverTimeout = () => {
+        this.cancelHoverTimeout();
         // tslint:disable-next-line:no-object-mutation
         this._timeouts.hover = window.setTimeout(() => this.openDropDown(), 700);
     }

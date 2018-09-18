@@ -3,13 +3,13 @@ import React, {PureComponent} from 'react';
 
 type BarPosition = 'top' | 'bottom';
 
-interface IBarTheme {
+interface BarTheme {
     readonly 'bar': string;
     readonly 'bar--top': string;
     readonly 'bar--bottom': string;
 }
 
-interface IBarProps {
+interface BarProps {
     /**
      * This prop controls the vertical positioning of the Bar.
      */
@@ -18,7 +18,7 @@ interface IBarProps {
     /**
      * An optional css theme to be injected.
      */
-    readonly theme?: IBarTheme;
+    readonly theme?: BarTheme;
 
     /**
      * An optional `className` to attach to the wrapper.
@@ -31,7 +31,7 @@ interface IBarProps {
     readonly children: React.ReactNode;
 }
 
-class Bar extends PureComponent<IBarProps> {
+class Bar extends PureComponent<BarProps> {
     public render(): JSX.Element {
         const {position, className, theme, children, ...rest} = this.props;
         const finalClassName = mergeClassNames(

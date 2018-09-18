@@ -33,3 +33,9 @@ Resources/Public/Styles/**/*.map
 Resources/Public/Styles/Font*
 lerna-debug.log
 npm-debug.log
+
+#
+# editors / IDEs
+#
+.vscode/
+.idea/

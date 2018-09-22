@@ -1,5 +1,5 @@
 import {createSelector, defaultMemoize} from 'reselect';
-import {$get, $count} from 'plow-js';
+import {$get, $set, $count} from 'plow-js';
 import validate from '@neos-project/neos-ui-validators/src/index';
 import {selectors as nodes} from '../../CR/Nodes/index';
 
@@ -39,11 +39,11 @@ const propertiesForValidationSelector = createSelector(
         transientValues,
         focusedNode
     ) => {
-        const propertiesForValidation = $get('properties', focusedNode) || {};
+        let propertiesForValidation = $get('properties', focusedNode) || {};
         if (transientValues) {
             // Override values with transient values
             Object.keys(transientValues.toJS()).forEach(key => {
-                propertiesForValidation[key] = $get([key, 'value'], transientValues);
+                propertiesForValidation = $set(key, $get([key, 'value'], transientValues), propertiesForValidation);
             });
         }
         return propertiesForValidation;

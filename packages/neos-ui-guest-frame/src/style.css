@@ -27,7 +27,7 @@
 }
 
 :global([data-neos-inline-editor-is-initialized]:hover) {
-    outline-offset: .5em;
+    outline-offset: .3em;
     outline: 2px dashed var(--colors-PrimaryBlue);
 }
 

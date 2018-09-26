@@ -3,8 +3,8 @@
   "rules": {
     "interface-name": false,
     "member-ordering": false,
-    "no-console": false,
-    "no-debugger": false,
+    "no-console": true,
+    "no-debugger": true,
     "no-delete": true,
     "no-method-signature": true,
     "no-let": true,

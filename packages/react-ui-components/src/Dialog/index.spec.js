@@ -1,4 +1,4 @@
-import Dialog from './index.js';
+import Dialog from '.';
 
 describe('<Dialog/> (entry point)', () => {
     it('should export a Component.', () => {

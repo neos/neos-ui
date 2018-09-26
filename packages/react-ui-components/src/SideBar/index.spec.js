@@ -1,4 +1,4 @@
-import SideBar from './index.js';
+import SideBar from '.';
 
 describe('<SideBar/> (entry point)', () => {
     it('should export a Component.', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Panel from './panel.js';
+import Panel from './panel';
 
 describe('<Panel/>', () => {
     let props;

@@ -4,7 +4,7 @@
  *
  * @param {Boolean} Indicates wether the node should be focused or not,
  */
-export const makeFocusNode = isFocused => node => {
+export const makeFocusNode = (isFocused: boolean) => (node: any) => {
     if (node) {
         const method = isFocused ? 'focus' : 'blur';
 

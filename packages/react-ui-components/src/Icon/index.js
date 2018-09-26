@@ -3,9 +3,9 @@ import {fab} from '@fortawesome/free-brands-svg-icons';
 import {fas} from '@fortawesome/free-solid-svg-icons';
 import {far} from '@fortawesome/free-regular-svg-icons';
 import {themr} from '@friendsofreactjs/react-css-themr';
-import identifiers from './../identifiers';
+import identifiers from '../identifiers';
 import style from './style.css';
-import Icon from './icon.js';
+import Icon from './icon';
 /* eslint-disable no-unused-vars */
 import faStyle from '@fortawesome/fontawesome-svg-core/styles.css';
 /* eslint-enable no-unused-vars */

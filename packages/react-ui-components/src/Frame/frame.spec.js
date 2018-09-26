@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Frame from './frame.js';
+import Frame from './frame';
 
 describe('<Frame/>', () => {
     let props;

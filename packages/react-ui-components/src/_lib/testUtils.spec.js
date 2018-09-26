@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createStubComponent} from './testUtils.js';
+import {createStubComponent} from './testUtils';
 
 describe('createStubComponent()', () => {
     it('should be a function', () => {

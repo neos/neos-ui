@@ -1,4 +1,4 @@
-import Tabs from './index.js';
+import Tabs from '.';
 
 describe('<Tabs/> (entry point)', () => {
     it('should export a Component.', () => {

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import ButtonGroupItem from './buttonGroupItem.js';
+import ButtonGroupItem from './buttonGroupItem';
 
 class ButtonGroup extends PureComponent {
     static propTypes = {

@@ -1,26 +1,25 @@
-import React from 'react';
 import mergeClassNames from 'classnames';
+import React from 'react';
 
-export interface LabelProps {
+export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
     /**
      * The `for` standard html attribute, defined to make it always required.
      */
-    htmlFor: string;
+    readonly htmlFor: string;
     /**
      * An optional className to render on the label node.
      */
-    className: string | null | undefined;
+    readonly className?: string;
     /**
      * The children to render within the label node.
      */
-    children?: React.ReactNode;
+    readonly children?: React.ReactNode;
     /**
      * An optional css theme to be injected.
      */
-    theme?: {
-        label: string
+    readonly theme?: {
+        readonly label: string
     };
-    [x: string]: any;
 }
 
 const Label: React.SFC<LabelProps> = ({
@@ -30,10 +29,8 @@ const Label: React.SFC<LabelProps> = ({
         theme,
         ...rest
     }) => {
-    const classNames = mergeClassNames({
-        [theme && theme.label || '']: true,
-        [className || '']: className && className.length
-    });
+    const classNames = mergeClassNames(theme!.label, className);
+
     return (
         <label {...rest} htmlFor={htmlFor} className={classNames}>
             {children}

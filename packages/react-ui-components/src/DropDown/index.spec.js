@@ -1,4 +1,4 @@
-import DropDown from './index.js';
+import DropDown from '.';
 
 describe('<DropDown/> (entry point)', () => {
     it('should export a Component.', () => {

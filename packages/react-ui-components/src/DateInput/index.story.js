@@ -1,8 +1,8 @@
 import React from 'react';
 import {storiesOf, action} from '@storybook/react';
 import {withKnobs, text, boolean} from '@storybook/addon-knobs';
-import {StoryWrapper} from './../_lib/storyUtils.js';
-import DateInput from './index.js';
+import {StoryWrapper} from './../_lib/storyUtils';
+import DateInput from '.';
 
 storiesOf('DateInput', module)
     .addDecorator(withKnobs)

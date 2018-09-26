@@ -1,4 +1,4 @@
-import Headline from './index.js';
+import Headline from '.';
 
 describe('<Headline/> (entry point)', () => {
     it('should export a Component.', () => {

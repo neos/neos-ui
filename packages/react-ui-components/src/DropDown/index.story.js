@@ -1,8 +1,8 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
 import {withKnobs, text, boolean, select} from '@storybook/addon-knobs';
-import {StoryWrapper} from './../_lib/storyUtils.js';
-import DropDown from './index.js';
+import {StoryWrapper} from './../_lib/storyUtils';
+import DropDown from '.';
 
 const validStyles = ['default', 'darker'];
 

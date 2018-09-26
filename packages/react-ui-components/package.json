@@ -12,7 +12,7 @@
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src && stylelint 'src/**/*.css'",
+    "lint": "eslint src && stylelint 'src/**/*.css' && tslint -t codeFrame -p ../tsconfig.json -c ../../tslint.json",
     "jest": "NODE_ENV=test jest",
     "jest:updateSnapshots": "NODE_ENV=test jest -u",
     "start": "cross-env STORY=true start-storybook -p 9001"

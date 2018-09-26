@@ -1,4 +1,4 @@
-import Tooltip from './index.js';
+import Tooltip from '.';
 
 describe('<Tooltip/> (entry point)', () => {
     it('should export a Component.', () => {

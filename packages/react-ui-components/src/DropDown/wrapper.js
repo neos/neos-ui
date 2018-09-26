@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
-import ShallowDropDownHeader from './header.js';
-import ShallowDropDownContents from './contents.js';
+import ShallowDropDownHeader from './header';
+import ShallowDropDownContents from './contents';
 
 const wrapperPropTypes = {
     /**

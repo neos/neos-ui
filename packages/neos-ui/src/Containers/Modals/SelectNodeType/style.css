@@ -1,7 +1,3 @@
-.dialog__padded {
-    padding-bottom: 80px;
-}
-
 .nodeType {
     width: calc(100% / 3);
     text-align: left;
@@ -45,20 +41,15 @@
 
 .helpMessage__wrapper {
     position: relative;
-    height: 120px;
+    width: 100%;
     background-color: var(--colors-ContrastDark);
+    clear: right;
 }
 
 .helpMessage {
-    position: absolute;
     background-color: var(--colors-ContrastDark);
-    left: 0;
-    right: 0;
-    bottom: 0;
     border-top: 1px solid var(--colors-ContrastDark);
     padding: var(--spacing-Full);
-    height: 120px;
-    overflow: scroll;
 }
 
 .helpMessage__label {
@@ -70,6 +61,13 @@
     right: 1px;
     top: 1px;
     background-color: var(--colors-ContrastDark);
+}
+
+.helpThumbnail {
+    float: right;
+    max-width: 342px;
+    margin-bottom: 16px;
+    margin-left: 16px;
 }
 /* TODO: refactor such typography things to Headline component */
 .groupHeader {

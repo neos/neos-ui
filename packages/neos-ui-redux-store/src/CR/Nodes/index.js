@@ -306,6 +306,10 @@ export const reducer = handleActions({
                 JSON.parse(JSON.stringify(nodeMap[contextPath].children))
             )
         )),
+        ...Object.keys(nodeMap).filter(contextPath => nodeMap[contextPath].matchesCurrentDimensions !== undefined).map(contextPath => $set(
+            ['cr', 'nodes', 'byContextPath', contextPath, 'matchesCurrentDimensions'],
+            nodeMap[contextPath].matchesCurrentDimensions
+        )),
     ),
     [FOCUS]: ({contextPath, fusionPath}) => state => $all(
         $set('cr.nodes.focused', new Map({contextPath, fusionPath})),

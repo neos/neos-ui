@@ -17,12 +17,17 @@
     outline: 2px solid var(--colors-PrimaryBlue);
 }
 
+:global(.neos-contentelement-shine-through:hover).markHoveredNodeAsHovered,
+:global(.neos-contentelement-shine-through).markActiveNodeAsFocused--focusedNode {
+    outline-color: var(--colors-Warn);
+}
+
 :global(.neos-inline-editable:focus) {
     outline: none;
 }
 
 :global([data-neos-inline-editor-is-initialized]:hover) {
-    outline-offset: .5em;
+    outline-offset: .3em;
     outline: 2px dashed var(--colors-PrimaryBlue);
 }
 

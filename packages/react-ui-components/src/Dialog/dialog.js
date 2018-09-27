@@ -90,7 +90,7 @@ export class DialogWithoutEscape extends PureComponent {
             [className]: className && className.length
         });
         const finalClassNameBody = mergeClassNames({
-            [theme.dialog__body]: true,
+            [theme.dialog__body]: Boolean(theme.dialog__body), // set only if it's not a faulty value
             'dialog__body': true
         });
 

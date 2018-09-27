@@ -19,7 +19,9 @@ exports[`<Dialog/> should render correctly. 1`] = `
           onClick={[Function]}
         />
         <div />
-        <div>
+        <div
+          className="dialog__body"
+        >
           Foo children
         </div>
         <div>

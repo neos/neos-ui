@@ -6,7 +6,7 @@ set -e
 # file to read the version information from
 SOURCE_FILE='./packages/neos-ui/package.json'
 # file to write the version information to
-TARGET_FILE='./packages/utils-helpers/src/getVersion.js'
+TARGET_FILE='./packages/utils-helpers/src/getVersion.ts'
 
 # -e = if file exists
 if [[ -e $SOURCE_FILE && -e $TARGET_FILE ]]; then

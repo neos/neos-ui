@@ -23,3 +23,11 @@ test(`null should throw a TypeError`, () => {
 test(`undefined should throw a TypeError`, () => {
     expect(() => isEmail(undefined)).toThrow(TypeError);
 });
+
+test(`an array should throw a TypeError`, () => {
+    expect(() => isEmail([])).toThrow(TypeError);
+});
+
+test(`an object should throw a TypeError`, () => {
+    expect(() => isEmail({})).toThrow(TypeError);
+});

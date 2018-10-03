@@ -292,14 +292,7 @@
     "@ckeditor/ckeditor5-ui" "^11.0.0"
     "@ckeditor/ckeditor5-utils" "^10.2.0"
 
-"@ckeditor/ckeditor5-engine@^10.0.0", "@ckeditor/ckeditor5-engine@^10.1.0", "@ckeditor/ckeditor5-engine@^10.2.0":
-  version "10.2.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-10.2.0.tgz#f4cf448c0482233557f48d4b9a97baa571c0e9cc"
-  integrity sha512-QHXozzZ3Ppzc/8yuu3/dcdwz65kWK81iCiadCgTTi+y7ts2i7GjmWSG4Xb0jOeXEbKEKnkWJ9UVO+V7efs8c0g==
-  dependencies:
-    "@ckeditor/ckeditor5-utils" "^10.2.0"
-
-"@ckeditor/ckeditor5-engine@https://github.com/dimaip/ckeditor5-engine#iframe":
+"@ckeditor/ckeditor5-engine@^10.0.0", "@ckeditor/ckeditor5-engine@^10.1.0", "@ckeditor/ckeditor5-engine@^10.2.0", "@ckeditor/ckeditor5-engine@https://github.com/dimaip/ckeditor5-engine#iframe":
   version "10.2.0"
   resolved "https://github.com/dimaip/ckeditor5-engine#c0d426f95cc75d966fe11cf9f000f236213ff404"
   dependencies:

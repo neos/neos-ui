@@ -1,7 +1,7 @@
 //
 // Determines whether a value is a thenable
 //
-export default function isThenable(maybeThenable) {
+export default function isThenable(maybeThenable : any) : boolean {
     if (typeof maybeThenable !== 'object') {
         return false;
     }

@@ -1,4 +1,4 @@
-const getVersion = () => {
+const getVersion = () : string => {
     return 'v1.3.4';
 };
 

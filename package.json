@@ -102,7 +102,7 @@
     "classnames": "^2.2.3",
     "codemirror": "^5.24.0",
     "core-js": "^2.4.1",
-    "custom-event-polyfill": "^0.3.0",
+    "custom-event-polyfill": "^1.0.6",
     "d3-scale": "^2.0.0",
     "d3-time": "^1.0.8",
     "debug": "^3.1.0",

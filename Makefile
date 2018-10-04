@@ -29,13 +29,12 @@
 ################################################################################
 
 
-# Add node_modules and composer binaries to $PATH
-export PATH := ./node_modules/.bin:./bin:$(PATH)
-
 # Add lerna alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
 lerna = ./node_modules/.bin/lerna
 editorconfigChecker = ./node_modules/.bin/editorconfig-checker
+webpack = ./node_modules/.bin/webpack
+crossenv = ./node_modules/.bin/crossenv
 
 ################################################################################
 # Setup
@@ -66,19 +65,19 @@ setup: check-requirements install build
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
 build:
-	NEOS_BUILD_ROOT=$(shell pwd) webpack --progress --colors
+	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --colors
 
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) webpack --progress --colors --watch
+	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --colors --watch
 
 build-watch-poll:
-	NEOS_BUILD_ROOT=$(shell pwd) webpack \
+	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) \
 		--progress --colors --watch-poll --watch
 
 # clean anything before building for production just to be sure
 build-production:
-	cross-env NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		webpack --progress --colors
+	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
+		$(webpack) --progress --colors
 
 
 ################################################################################

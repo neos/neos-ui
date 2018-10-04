@@ -25,6 +25,16 @@
 
 
 ################################################################################
+# Make ALL targets phony targets (Rebuild every time)
+################################################################################
+
+.PHONY: check-requirements install setup \
+	build build-watch build-watch-poll build-production \
+	storybook test test-e2e lint lint-js lint-editorconfig \
+	called-with-version bump-version publish-npm \
+	clean
+
+################################################################################
 # Variables
 ################################################################################
 
@@ -141,8 +151,3 @@ publish-npm: called-with-version
 
 clean:
 	rm -Rf node_modules; rm -rf packages/*/node_modules
-
-
-# Make ALL targets phony targets
-# (Rebuild every time)
-.PHONY: *
